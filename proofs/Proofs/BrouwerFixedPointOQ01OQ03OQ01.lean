@@ -336,6 +336,65 @@ theorem ham_sandwich_standard_of_scalar_continuity (n : ℕ) (hn : n ≥ 1)
     (fun x i => volume_inter_ne_top n (bodies i) _ (hbody i))
     hcont_pos hcont_neg
 
+-- ============================================================
+-- PART 7: A bisecting hyperplane cuts each body into EXACT halves
+-- ============================================================
+
+/-- **Volume partition across a strict/strict/boundary cut.**
+
+    The two strict open half-spaces `P`, `N` and the boundary hyperplane `B`
+    partition the ambient space. Restricting to a measurable `body`, its volume
+    splits additively over the three slices. This is the elementary measure
+    decomposition underlying "each side gets exactly half": it needs only
+    measurability and a genuine partition (`P ∪ N ∪ B = univ`, pairwise
+    disjoint), no continuity. -/
+theorem volume_body_eq_slices_add_boundary (n : ℕ)
+    (body P N B : Set (EuclideanSpace ℝ (Fin n)))
+    (hbody : MeasurableSet body) (hP : MeasurableSet P) (hN : MeasurableSet N)
+    (hB : MeasurableSet B)
+    (hcover : P ∪ N ∪ B = Set.univ)
+    (hPN : Disjoint P N) (hPB : Disjoint P B) (hNB : Disjoint N B) :
+    volume body
+      = volume (body ∩ P) + volume (body ∩ N) + volume (body ∩ B) := by
+  have hsplit : body = (body ∩ P) ∪ (body ∩ N) ∪ (body ∩ B) := by
+    rw [← Set.inter_union_distrib_left, ← Set.inter_union_distrib_left, hcover,
+      Set.inter_univ]
+  have dPN : Disjoint (body ∩ P) (body ∩ N) :=
+    hPN.mono Set.inter_subset_right Set.inter_subset_right
+  have dPB : Disjoint (body ∩ P) (body ∩ B) :=
+    hPB.mono Set.inter_subset_right Set.inter_subset_right
+  have dNB : Disjoint (body ∩ N) (body ∩ B) :=
+    hNB.mono Set.inter_subset_right Set.inter_subset_right
+  have dUB : Disjoint ((body ∩ P) ∪ (body ∩ N)) (body ∩ B) :=
+    Disjoint.union_left dPB dNB
+  conv_lhs => rw [hsplit]
+  rw [measure_union dUB (hbody.inter hB), measure_union dPN (hbody.inter hN)]
+
+/-- **A bisecting hyperplane gives each body exactly half its volume.**
+
+    Given the strict/strict/boundary partition, a *finite-volume* body whose two
+    strict slices have equal volume (`hbis`) and whose boundary slice is null
+    (`hnull`) is split into two pieces of volume **exactly** `vol(body)/2`:
+    `2 · vol(body ∩ P) = vol(body)`.
+
+    This upgrades the conclusion of `ham_sandwich_of_discrepancy`
+    (`vol(body ∩ pos) = vol(body ∩ neg)`, i.e. the two sides are *equal*) to the
+    textbook statement that each side is *exactly half*. The only extra input is
+    that the boundary hyperplane carries no volume of the body — the same
+    Lebesgue null-set fact that the rest of the file isolates as the residual
+    analytic keystone. No continuity is used here. -/
+theorem each_slice_exactly_half (n : ℕ)
+    (body P N B : Set (EuclideanSpace ℝ (Fin n)))
+    (hbody : MeasurableSet body) (hP : MeasurableSet P) (hN : MeasurableSet N)
+    (hB : MeasurableSet B)
+    (hcover : P ∪ N ∪ B = Set.univ)
+    (hPN : Disjoint P N) (hPB : Disjoint P B) (hNB : Disjoint N B)
+    (hbis : volume (body ∩ P) = volume (body ∩ N))
+    (hnull : volume (body ∩ B) = 0) :
+    2 * volume (body ∩ P) = volume body := by
+  rw [volume_body_eq_slices_add_boundary n body P N B hbody hP hN hB hcover
+    hPN hPB hNB, ← hbis, hnull, add_zero, two_mul]
+
 /-
 ## Significance and the Remaining Gap
 

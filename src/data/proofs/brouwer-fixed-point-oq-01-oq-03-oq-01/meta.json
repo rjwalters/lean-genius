@@ -22,8 +22,8 @@
     "dateAdded": "2026-06-15",
     "axiomCount": 1,
     "assumptions": "0 axiom declarations in this file, but the construction is not standalone-verified: (1) it rests on the inherited axiom no_continuous_odd_nonzero_on_sphere from BorsukUlam.lean — the genuine degree-theory core of Borsuk-Ulam, unavoidable for n >= 2; and (2) the capstone theorems (ham_sandwich_of_discrepancy, ham_sandwich_standard) take the continuity of the half-volume discrepancy map as the hypothesis hcomp (the discrepancy is supplied as a continuous SphereFun). The contribution is to prove everything else — the topological reduction, oddness, and the zero-implies-bisected bridge — so that the parent's opaque ham_sandwich_theorem axiom is reduced precisely to this one Lebesgue-continuity input (dominated convergence for parameterized half-spaces), which is measure-theoretic, not topological.",
-    "lineCount": 371,
-    "theoremCount": 9,
+    "lineCount": 430,
+    "theoremCount": 11,
     "definitionCount": 3,
     "originalContributions": [
       "ham_sandwich_reduction: the topological core — a continuous odd F: S^n -> R^n with a 'F x = 0 implies Bisected x' bridge yields a bisecting point; proved directly from borsuk_ulam_antipodal_collapse (no axiom)",
@@ -33,7 +33,9 @@
       "stdPos_neg / stdNeg_neg: for the standard linear parameterization, the antipodal swap is a consequence of linearity (not an assumption)",
       "volume_inter_ne_top: finiteness vol(body_i intersect H) < infinity follows from vol(body_i) < infinity since the slice is a subset",
       "ham_sandwich_standard: the standard-parameterization Ham Sandwich, with only the (vector) continuity hypothesis remaining, assembled from the above",
-      "ham_sandwich_standard_of_scalar_continuity: the sharpest packaging — Ham Sandwich whose ONLY hypotheses are finite body volumes and continuity of each scalar slice-volume on S^n"
+      "ham_sandwich_standard_of_scalar_continuity: the sharpest packaging — Ham Sandwich whose ONLY hypotheses are finite body volumes and continuity of each scalar slice-volume on S^n",
+      "volume_body_eq_slices_add_boundary: the strict/strict/boundary partition decomposes a measurable body's volume additively over its two open half-space slices and the boundary hyperplane slice — the elementary measure-additivity (measure_union) underlying 'each side is exactly half', needing only measurability and a genuine partition",
+      "each_slice_exactly_half: upgrades the conclusion from 'the two slices have EQUAL volume' to 'each slice is EXACTLY half the body' (2 * vol(body ∩ P) = vol(body)) — for a finite-volume body whose boundary hyperplane slice is null, the textbook Ham Sandwich statement, isolating the same boundary-null keystone as the residual"
     ]
   },
   "overview": {
