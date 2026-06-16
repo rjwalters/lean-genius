@@ -71,7 +71,7 @@ theorem upper_eq_lower :
   intro i hi
   apply Finset.sum_congr rfl
   intro j hj
-  by_cases h : j < i
+  by_cases h : i < j
   · simp [h, mul_comm]
   · simp [h]
 
@@ -90,8 +90,11 @@ theorem newton_girard : (e1 n f) ^ 2 = p2 n f + 2 * e2 n f := by
 /-- Cauchy-Schwarz / power-mean bound: (Σ xᵢ)² ≤ n · Σ xᵢ². -/
 theorem sq_e1_le_card_mul_p2 : (e1 n f) ^ 2 ≤ (n : ℝ) * p2 n f := by
   unfold e1 p2
-  have h := Finset.sq_sum_le_card_mul_sum_sq (s := range n) (f := f)
-  simpa [Finset.card_range] using h
+  have h := Finset.sum_mul_sq_le_sq_mul_sq (range n) f (fun _ => 1)
+  simp only [mul_one, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul,
+    mul_one] at h
+  rw [mul_comm]
+  exact h
 
 -- ============================================================
 -- Maclaurin base step
@@ -118,7 +121,7 @@ theorem maclaurin_base_step (hn : 2 ≤ n) :
   have hC : (0 : ℝ) < (n.choose 2 : ℝ) := by
     have : 0 < n.choose 2 := Nat.choose_pos (by omega)
     exact_mod_cast this
-  rw [div_pow, div_le_div_iff hC (pow_pos hn0 2)]
+  rw [div_pow, div_le_div_iff₀ hC (pow_pos hn0 2)]
   nlinarith [maclaurin_cleared n f]
 
 end AmgmInequalityOQ02OQ01OQ05
