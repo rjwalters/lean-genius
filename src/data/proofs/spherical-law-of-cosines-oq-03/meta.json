@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/SphericalLawOfCosinesOQ03.lean",
     "tags": [
       "geometry",
@@ -18,11 +18,11 @@
       "non-euclidean-geometry",
       "research"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 424,
-    "assumptions": "No axioms or sorries. The dual law is reduced to a polynomial identity (ring) after clearing all radicals and denominators, so no non-degeneracy side conditions are needed in the cleared form. BUILD-PENDING: the file is registered in Proofs.lean but its Lean compilation has not been independently confirmed in this entry (authored/registered under a Docker build blackout); badge will be upgraded to original/verified once a green build is on record.",
+    "assumptions": "No axioms or sorries. The dual law is reduced to a polynomial identity (ring) after clearing all radicals and denominators, so no non-degeneracy side conditions are needed in the cleared form. VERIFIED: Proofs.SphericalLawOfCosinesOQ03 compiles green via docker-build.sh (7743 jobs, 2026-06-15), so all theorems (Parts I–VII: Binet–Cauchy/Lagrange/Gram infrastructure, cleared abstract/geometric dual law, literal trig form, cross-product form, and polar-triangle form) are machine-checked.",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
     "originalContributions": [

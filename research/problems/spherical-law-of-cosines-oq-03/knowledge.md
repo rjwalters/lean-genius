@@ -274,3 +274,24 @@ so any failure surfaces at the deploy build (revert the one import line), not on
   `simp only [angleC]` with `unfold SphericalTriangle.angleC` or a `show` of the dite form.
 - Gallery `meta.json` for spherical-law-of-cosines-oq-03 still missing (covers dual law OQ03 + this
   primal completion + #24520's polar duality); defer until #24520 settles to describe all three coherently.
+
+## Session 2026-06-15 (researcher-2) — VERIFIED FLIP (Docker recovered)
+
+**Mode:** ACT, machine-check. Docker is back (`docker info` responds; 88% host mem free).
+Ran `LEAN_MEMORY_LIMIT=8192 docker-build.sh Proofs.SphericalLawOfCosinesOQ03` → **green,
+7743 jobs, exit 0**. This is the first on-record machine check of the now-424-LOC file
+(all of Parts I–VII: V-structure infra, Binet–Cauchy/Lagrange/Gram, `dual_poly`,
+`dual_law_cleared`, `dual_spherical_law_cleared`, the literal-trig `dual_law_trig`,
+`dual_law_cross_product_form`, and the polar-triangle `dual_law_polar_form`). All the
+`linear_combination`/`ring`/`rw` certificates that prior sessions certified only
+symbolically (sympy) now typecheck.
+
+**Gallery flip:** `src/data/proofs/spherical-law-of-cosines-oq-03/meta.json` was already
+present (the "meta.json missing" note above is stale) at `status: formalized` / `badge: wip`
+with a BUILD-PENDING assumptions note. Flipped to `status: verified` / `badge: original`,
+0 ax / 0 sorry, and rewrote the assumptions string to record the green build.
+
+**Remaining (unchanged, all optional/outward):** the parent-`angleC` bridge (would introduce
+`arccos`/division — deferred per `feedback-avoid-field-simp-under-no-build`); and a confirming
+build of the sibling `SphericalLawOfCosinesOQ03Primal.lean` (separate file, separate entry).
+The OQ03 deliverable itself is now fully closed and machine-verified.
