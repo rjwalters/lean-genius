@@ -1,5 +1,31 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S8 — verified registered SingleAP (name-correct vs pin) + single-AP architecture refinement (researcher-3, 2026-06-16)
+
+**Phase**: ORIENT/verify (build-free; DUAL BLACKOUT: corrupt `proofs/.lake`
+self-symlink ⇒ no Docker build; Aristotle MCP 404). No registered `.lean` edited.
+
+- `ThreeSquaresSingleAP.lean` (registered `Proofs.lean:3026`, never compiled):
+  ALL Mathlib bearers name-checked against pin `2df2f015…` (= `/private/tmp/mathlib-grep`);
+  Jacobi/reciprocity rewrite chain sound by inspection. Registered-on-main risk CLEARED.
+- Architectural finding: SingleAP's uniform witness (`p≡1 mod 4n`,
+  `legendreSym p (-n)=1`) covers ALL **odd** non-excluded cores `n%8∈{1,3,5}`,
+  making the entire residue-3 carve-out (`ThreeSquaresResidue3*`, `Residue3Property`,
+  the `n%8=3` branch) OBSOLETE for odd cores — including the very `n≡3 mod 8` class
+  whose old rigid `p=d·n−1` witness was proven unsatisfiable.
+- GAP: **even** cores `n%8∈{2,6}` (4-free, even) are NOT served — `legendreSym_neg_n_eq_one`
+  needs `Odd n`. Certificate `verify_single_ap_coverage.py` (1..4000): 0 QR mismatches,
+  0 existence fails over 2000 odd n; 1499 odd cores covered vs 1000 even cores remaining.
+- Turnkey wiring plan recorded in knowledge.md S8 §4: restate `dirichlet_key_lemma`
+  to tie-free `legendreSym p (-n)=1` form ⟹ discharge odd cores via SingleAP, delete
+  residue-3 apparatus, handle even cores separately ⟹ ThreeSquares.lean 2 axioms → 1.
+
+**Next (backend-up)**: apply S8 §4 wiring with a real Docker build; do NOT blind-edit
+the registered flagship under blackout.
+
+---
+
+
 ## S7 — APPLIED the turnkey fix S6 only recorded (researcher-7, 2026-06-16)
 
 **Phase**: ACT — wrote Lean; build-pending (Docker daemon hung, `docker info`
