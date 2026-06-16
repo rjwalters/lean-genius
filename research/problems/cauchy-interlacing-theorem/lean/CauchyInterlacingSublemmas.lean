@@ -10,31 +10,30 @@ the per-step Mathlib lemma map. That design recommends building / submitting
 these two first because they are *closed* (known-mathematics, HARD-not-OPEN) and
 have no upstream dependencies.
 
-This file turns that prose design into **typed Lean statements** so they are
-directly submittable to Aristotle / buildable the moment a backend frees.
-Sublemma B carries a **full candidate proof** (Grassmann dimension count).
-Sublemma A is fully decomposed: its convex-combination core is split off as
-`weighted_mean_mem_inf_sup` (a standalone, inner-product-free lemma with a
-**full candidate proof**), and the assembly `rayleigh_bounds_on_eigenspan` is now
-**`sorry`-free** — it reduces to exactly the two Parseval leaf identities
-`norm_sq_eq_sum_repr_sq` and `re_inner_apply_eq_sum_repr_mul`, which are the only
-remaining `sorry` targets (the positive-mass hypothesis is *derived* from the
-norm identity, not assumed).
+This file turns that prose design into machine-checked Lean. Sublemma B is the
+Grassmann dimension count; Sublemma A is fully decomposed into its
+convex-combination core `weighted_mean_mem_inf_sup`, the two Parseval leaf
+identities `norm_sq_eq_sum_repr_sq` and `re_inner_apply_eq_sum_repr_mul` (both now
+proved via the shared support lemma `repr_eq_zero_of_not_mem`), and the assembly
+`rayleigh_bounds_on_eigenspan`.
 
 ## Status
 
-BUILD-PENDING (candidate proof for B, sorry for A). Authored / extended while both
-backends were down (Aristotle MCP → `Resource not found`; Docker VM saturated at 3
-concurrent `lean-build` containers on the 7.65 GiB VM, above the safe ≤2
-threshold), so the proof below is **not yet machine-checked**.
+VERIFIED — `sorry`-free, 0 axioms. Compiles against Mathlib (Lean v4.26.0) under
+`docker-build.sh`. The two Parseval leaves were the last remaining `sorry`s and
+are now discharged:
+* `repr_eq_zero_of_not_mem` — coordinates vanish off the support, by `span`
+  induction + orthonormality (`orthonormal_iff_ite`).
+* `norm_sq_eq_sum_repr_sq` — `b.repr.norm_map` + `EuclideanSpace.norm_eq` +
+  `Real.sq_sqrt`, then `Finset.sum_subset` to restrict to `I`.
+* `repr_apply_of_diag` — `b.repr (T x) i = b.repr x i * μ i` via `sum_repr` +
+  `inner_sum` + `Finset.sum_eq_single`.
+* `re_inner_apply_eq_sum_repr_mul` — `b.repr.inner_map_map` + `PiLp.inner_apply` +
+  `RCLike.mul_conj`/`conj_ofReal`, then restrict and take `re`.
 
-Sublemma B is pure finite-dimensional linear algebra: the four lemmas it uses
-(`Submodule.finrank_sup_add_finrank_inf_eq`, `Submodule.finrank_le`,
-`finrank_bot` via `simp`, `Submodule.ne_bot_iff`) are all standard Mathlib API
-and the `omega` arithmetic is routine, so confidence is high — but it must still
-be compiled to confirm. Sublemma A carries an inner-product/eigenbasis hypothesis
-and its exact spelling (`inner` field annotation, `Finset → Set` image coercion)
-should be re-confirmed at first compile. Not registered in `Proofs.lean`.
+Not registered in `Proofs.lean` (research file). The remaining open obligation for
+the problem is the Courant–Fischer max–min keystone itself
+(`CauchyInterlacing.lean:95`), which these sublemmas feed.
 -/
 
 open scoped InnerProductSpace
@@ -131,15 +130,40 @@ just above — each a standard orthonormal-basis computation and an ideal Aristo
 on `I` (because `x ∈ span (b '' I)`), so proving that support lemma first
 discharges both. -/
 
+/-- **Support of the coordinates.** When `x ∈ span (b '' I)` the orthonormal
+coordinates `b.repr x i = ⟪b i, x⟫` vanish for every index `i ∉ I`. Proved by
+`span` induction: generators `b j` (`j ∈ I`) are orthogonal to `b i` since
+`i ≠ j`, and the predicate `⟪b i, ·⟫ = 0` is closed under `+` and `•`. This is
+the single fact both Parseval identities below reduce to. -/
+theorem repr_eq_zero_of_not_mem
+    {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
+    [FiniteDimensional 𝕜 E] {n : ℕ}
+    (b : OrthonormalBasis (Fin n) 𝕜 E)
+    (I : Finset (Fin n))
+    (x : E) (hx : x ∈ Submodule.span 𝕜 ((b : Fin n → E) '' (↑I : Set (Fin n)))) :
+    ∀ i, i ∉ I → b.repr x i = 0 := by
+  intro i hiI
+  rw [b.repr_apply_apply]
+  induction hx using Submodule.span_induction with
+  | mem y hy =>
+      obtain ⟨j, hj, rfl⟩ := hy
+      have hij : i ≠ j := by
+        rintro rfl; exact hiI (Finset.mem_coe.mp hj)
+      have h := (orthonormal_iff_ite.mp b.orthonormal) i j
+      rw [if_neg hij] at h
+      exact h
+  | zero => simp
+  | add y z _ _ hyih hzih => rw [inner_add_right, hyih, hzih, add_zero]
+  | smul a y _ hyih => rw [inner_smul_right, hyih, mul_zero]
+
 /-- **Parseval for the norm, restricted to the support `I`.** Since
 `x ∈ span (b '' I)` the coordinates `b.repr x i` vanish off `I`, so the full
 Parseval identity `‖x‖² = ∑_i ‖b.repr x i‖²` collapses to a sum over `I`.
 
 Mathlib map: full Parseval is `b.repr.norm_map` (the `repr` is a
-`LinearIsometryEquiv` to `EuclideanSpace`) combined with
-`EuclideanSpace.norm_eq` / `EuclideanSpace.inner_eq_star_dotProduct`; the
-restriction to `I` is `Finset.sum_subset` with the off-support vanishing
-`b.repr x i = ⟪b i, x⟫ = 0` for `i ∉ I` (orthonormality + span membership). -/
+`LinearIsometryEquiv` to `EuclideanSpace`) combined with `EuclideanSpace.norm_eq`
+and `Real.sq_sqrt`; the restriction to `I` is `Finset.sum_subset` with the
+off-support vanishing `repr_eq_zero_of_not_mem`. -/
 theorem norm_sq_eq_sum_repr_sq
     {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
     [FiniteDimensional 𝕜 E] {n : ℕ}
@@ -147,7 +171,13 @@ theorem norm_sq_eq_sum_repr_sq
     (I : Finset (Fin n))
     (x : E) (hx : x ∈ Submodule.span 𝕜 ((b : Fin n → E) '' (↑I : Set (Fin n)))) :
     ‖x‖ ^ 2 = ∑ i ∈ I, ‖b.repr x i‖ ^ 2 := by
-  sorry
+  have hsupp := repr_eq_zero_of_not_mem b I x hx
+  have h_full : ‖x‖ ^ 2 = ∑ i, ‖b.repr x i‖ ^ 2 := by
+    rw [← b.repr.norm_map x, EuclideanSpace.norm_eq,
+        Real.sq_sqrt (Finset.sum_nonneg (fun i _ => sq_nonneg _))]
+  rw [h_full]
+  exact (Finset.sum_subset (Finset.subset_univ I)
+    (fun i _ hi => by rw [hsupp i hi]; simp)).symm
 
 /-- **Diagonalisation + Parseval for the quadratic form.** When `b` diagonalises
 `T` with real eigenvalues `μ`, the quadratic form is the eigenvalue-weighted
@@ -157,6 +187,28 @@ Mathlib map: expand `x = ∑ i, b.repr x i • b i` (`OrthonormalBasis.sum_repr`
 push `T` through (`hb`: `T (b i) = μ i • b i`), then Parseval the inner product
 `⟪T x, x⟫ = ∑ i, μ i * ‖b.repr x i‖²`; `RCLike.re` of a real-weighted sum of
 `‖·‖²` is the real sum, and `Finset.sum_subset` restricts to `I`. -/
+theorem repr_apply_of_diag
+    {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
+    [FiniteDimensional 𝕜 E] {n : ℕ}
+    (T : E →ₗ[𝕜] E) (b : OrthonormalBasis (Fin n) 𝕜 E) (μ : Fin n → ℝ)
+    (hb : ∀ i, T (b i) = (μ i : 𝕜) • b i) (x : E) :
+    ∀ i, b.repr (T x) i = b.repr x i * (μ i : 𝕜) := by
+  intro i
+  have hTx : T x = ∑ j, b.repr x j • ((μ j : 𝕜) • b j) := by
+    conv_lhs => rw [← b.sum_repr x]
+    rw [map_sum]
+    refine Finset.sum_congr rfl (fun j _ => ?_)
+    rw [map_smul, hb j]
+  rw [b.repr_apply_apply, hTx, inner_sum]
+  rw [Finset.sum_eq_single i]
+  · rw [inner_smul_right, inner_smul_right,
+        (orthonormal_iff_ite.mp b.orthonormal) i i, if_pos rfl, mul_one]
+  · intro j _ hji
+    rw [inner_smul_right, inner_smul_right,
+        (orthonormal_iff_ite.mp b.orthonormal) i j, if_neg (fun h => hji h.symm),
+        mul_zero, mul_zero]
+  · intro h; exact absurd (Finset.mem_univ i) h
+
 theorem re_inner_apply_eq_sum_repr_mul
     {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
     [FiniteDimensional 𝕜 E] {n : ℕ}
@@ -165,7 +217,22 @@ theorem re_inner_apply_eq_sum_repr_mul
     (I : Finset (Fin n))
     (x : E) (hx : x ∈ Submodule.span 𝕜 ((b : Fin n → E) '' (↑I : Set (Fin n)))) :
     RCLike.re (@inner 𝕜 E _ (T x) x) = ∑ i ∈ I, ‖b.repr x i‖ ^ 2 * μ i := by
-  sorry
+  have hsupp := repr_eq_zero_of_not_mem b I x hx
+  have hrepr := repr_apply_of_diag T b μ hb x
+  have hinner : (@inner 𝕜 E _ (T x) x)
+      = ∑ i, (μ i : 𝕜) * ((‖b.repr x i‖ ^ 2 : ℝ) : 𝕜) := by
+    rw [← b.repr.inner_map_map (T x) x, PiLp.inner_apply]
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    rw [RCLike.inner_apply, hrepr i, map_mul, RCLike.conj_ofReal, ← mul_assoc,
+        RCLike.mul_conj]
+    push_cast
+    ring
+  rw [hinner, map_sum]
+  rw [← Finset.sum_subset (Finset.subset_univ I)
+        (fun i _ hi => by rw [hsupp i hi]; simp)]
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  rw [RCLike.re_ofReal_mul]
+  simp [mul_comm]
 
 theorem rayleigh_bounds_on_eigenspan
     {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]

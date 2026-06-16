@@ -16,6 +16,44 @@ codimension-one coordinate subspace.
 
 ## Insights
 
+### Session 2026-06-16 (s04, REVISIT → ACT) — both Parseval leaves PROVED, Sublemmas file now VERIFIED
+
+**Mode**: REVISIT (Aristotle MCP down → `Resource not found`; Docker had room:
+1 active build + 1 idle 8h zombie, ~300 MB of 7.65 GiB used, so the
+"Docker target" path was open even though the Aristotle path was not).
+
+**Outcome**: `CauchyInterlacingSublemmas.lean` is now `sorry`-free / 0-axiom and
+**machine-checked green** (`docker-build.sh`, Lean v4.26.0, full file 131 s). The
+two remaining `sorry`s (the Parseval leaf identities from s03) were discharged by
+hand, and the previously *unverified* candidate proofs (Sublemma B dimension
+count, `weighted_mean_mem_inf_sup`) were confirmed to compile.
+
+- **Shared support lemma** `repr_eq_zero_of_not_mem`: for `x ∈ span (b '' I)` and
+  `i ∉ I`, `b.repr x i = 0`. Proof: `b.repr_apply_apply` → `⟪b i, x⟫ = 0`, then
+  `Submodule.span_induction` — `mem` generator case is orthonormality
+  `orthonormal_iff_ite` with `i ≠ j` (from `i ∉ I`, `j ∈ I`), closed under
+  `+`/`•` by `inner_add_right` / `inner_smul_right`. Discharges both leaves (the
+  exact prediction from s03).
+- **Leaf A** `norm_sq_eq_sum_repr_sq`: `← b.repr.norm_map x`,
+  `EuclideanSpace.norm_eq`, `Real.sq_sqrt (sum_nonneg …)`; then
+  `(Finset.sum_subset (subset_univ I) …).symm` restricts to `I`.
+- **Leaf B** `re_inner_apply_eq_sum_repr_mul`: helper `repr_apply_of_diag` proves
+  `b.repr (T x) i = b.repr x i * μ i` (expand `T x` via `← b.sum_repr x`,
+  `map_sum`/`map_smul`/`hb`, then `inner_sum` + `Finset.sum_eq_single i`). Then
+  `← b.repr.inner_map_map (T x) x`, `PiLp.inner_apply`, `RCLike.inner_apply`,
+  `RCLike.conj_ofReal`, `RCLike.mul_conj` give `⟪T x, x⟫ = ∑_i μ i · ‖b.repr x i‖²`;
+  restrict, then `RCLike.re_ofReal_mul`.
+
+**Mathlib API notes (v4.26.0)**: coords print as `(b.repr x).ofLp i`;
+`RCLike.mul_conj` matches `z * conj z` (reassociate with `← mul_assoc`, not
+`conj_mul`); `push_cast; ring` cleans `↑(‖·‖²)` casts. `Submodule.span_induction`
+uses cases `mem | zero | add | smul`.
+
+**Still open**: the Courant–Fischer max–min keystone (`CauchyInterlacing.lean:95`)
+— the actual Mathlib gap. All sublemmas it reduces to are now proven; next step is
+assembling the keystone from `rayleigh_bounds_on_eigenspan` +
+`inf_ne_bot_of_finrank_add_lt`.
+
 ### Session 2026-06-15 (s01, FRESH → ORIENT)
 
 - **Mathlib API correction (vs. older notes).** Mathlib now ships
