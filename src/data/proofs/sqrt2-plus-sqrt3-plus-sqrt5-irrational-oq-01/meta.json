@@ -2,7 +2,7 @@
   "id": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01",
   "title": "Irrationality of √2 + √3 + √5 + √7",
   "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01",
-  "description": "Proves that √2 + √3 + √5 + √7 is irrational (OQ-01 of the parent sqrt2-plus-sqrt3-plus-sqrt5-irrational entry, the four-summand generalization). Uses Strategy D — algebraic integer trapped in a bounded interval — avoiding the degree-16 minimal polynomial and iterated-squaring machinery entirely. Each √k is an algebraic integer (root of the monic integer polynomial X² − C k), so α = √2+√3+√5+√7 is integral over ℤ by closure under addition. A rational algebraic integer must be an integer (ℤ is integrally closed in ℚ), but 8 < α < 9 traps α strictly between consecutive integers, contradiction. 8 theorems, 0 sorries, 0 axioms.",
+  "description": "Proves that √2 + √3 + √5 + √7 is irrational (OQ-01 of the parent sqrt2-plus-sqrt3-plus-sqrt5-irrational entry, the four-summand generalization). Uses Strategy D — algebraic integer trapped in a bounded interval — avoiding the degree-16 minimal polynomial and iterated-squaring machinery entirely. Each √k is an algebraic integer (root of the monic integer polynomial X² − C k), so α = √2+√3+√5+√7 is integral over ℤ by closure under addition. A rational algebraic integer must be an integer (ℤ is integrally closed in ℚ), but 8 < α < 9 traps α strictly between consecutive integers, contradiction. 10 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-06-15",
@@ -112,7 +112,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms): irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7 : Irrational (√2 + √3 + √5 + √7). Proved by Strategy D — α is an algebraic integer over ℤ trapped strictly in (8,9), and a rational algebraic integer must be an integer. Build verified at Mathlib v4.26.0. 8 theorems, 113 lines.",
+    "summary": "Fully verified (0 sorries, 0 axioms): irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7 : Irrational (√2 + √3 + √5 + √7). Proved by Strategy D — α is an algebraic integer over ℤ trapped strictly in (8,9), and a rational algebraic integer must be an integer. Build verified at Mathlib v4.26.0. 10 theorems, 113 lines.",
     "implications": "Closes OQ-01 of the parent `sqrt2-plus-sqrt3-plus-sqrt5-irrational` gallery entry. The reusable criterion irrational_of_isIntegral_of_forall_ne_int proves irrationality of any finite sum of square roots of non-squares once a unit-width interval bound is supplied — independent of the number of summands, with no minimal-polynomial computation.",
     "openQuestions": [
       "Formalise Besicovitch's (1940) general linear-independence theorem for {√a_i} with distinct squarefree a_i; not in Mathlib v4.26.0.",
