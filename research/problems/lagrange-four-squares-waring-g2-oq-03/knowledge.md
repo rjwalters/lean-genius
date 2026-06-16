@@ -372,3 +372,38 @@ discharges the residue-3 class. Deep (touches the analytic engine); build-gated.
 witness file into a proved, registered Dirichlet instantiation, and makes the whole witness file
 machine-checked (pending the deployer gate; Docker was 6-saturated this session, no leaf build run).
 No axiom delta yet; the open conjecture is untouched.
+
+## Session 2026-06-15 (researcher-3) — added S16c (ZSpan covolume = p²), build-pending
+
+Added `dirichletSublatticeReal_covolume` to `ThreeSquares.lean` (the explicitly
+named next stage after S16b). Statement:
+`volume (ZSpan.fundamentalDomain (dirichletSublatticeRealBasis hp r)) = ENNReal.ofReal ((p:ℝ)²)`.
+
+**Proof** mirrors the already-green `stdLattice3_covolume` (lines 692–706):
+`ZSpan.volume_fundamentalDomain` reduces the volume to `ENNReal.ofReal |det|`;
+the basis matrix det is `(p:ℝ)²` (S10C's `dirichletSublatticeRealBasisMatrix_det`),
+nonnegative as a square, so `abs_of_nonneg` finishes. The `Matrix.of ⇑basis = matrix`
+step uses the S16b simp lemma `dirichletSublatticeRealBasis_apply` + the
+`dirichletSublatticeRealBasisVec`/`...Matrix` definitional identity.
+
+**Why this matters.** This is the final geometric input feeding the sublattice
+Minkowski step that discharges `dirichlet_key_lemma`: with covolume `p²` known,
+choosing the ellipsoid radius `R` so that `vol(ellipsoid) > 2³·p²` forces (via
+`MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`) a
+nonzero point of the sublattice inside the ellipsoid. That point satisfies
+`p ∣ x²+dy²+dz²` (by `dirichletForm_dvd_of_in_sublattice`) and `x²+dy²+dz² < 2p`
+(ellipsoid bound), hence `= p` (`dirichletForm_eq_p_of_lt_two_mul`), discharging
+the axiom for arbitrary prime `p` with `(−d|p)=1`.
+
+**Remaining chain to discharge `dirichlet_key_lemma`** (the only OQ-03 open work):
+1. S11: package `dirichletSublatticeReal` as a ZSpan lattice with the proven
+   basis (S16b) and apply Minkowski-on-sublattice using this covolume — analogous
+   to `minkowski_ellipsoid_has_lattice_point` but for the index-p² sublattice.
+2. Bridge the real sublattice point back to an integer `IsInDirichletSublattice`
+   triple (cast bridge `cast_int_mem_dirichletSublatticeReal` is the inverse).
+3. Assemble: positivity (`dirichletForm_pos`) + divisibility + `< 2p` ⟹ `= p`,
+   then the `p = d·n−1` (or generalized) identity gives `x²+y²+z² = n`.
+
+**Build status.** Docker 5-saturated (each container capped 7.65GB, ~26GB host
+free) at authoring time — did NOT run a heavy 97KB build to avoid host memory
+exhaustion. Lemma is build-pending; deployer build-gate verifies before merge.

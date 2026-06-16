@@ -1684,6 +1684,30 @@ private lemma dirichletSublatticeRealBasis_apply
     dirichletSublatticeRealBasis hp r i = dirichletSublatticeRealBasisVec p r i := by
   simp [dirichletSublatticeRealBasis, coe_basisOfLinearIndependentOfCardEqFinrank]
 
+/-- **S16c (ZSpan covolume)**: The fundamental domain of the Dirichlet sublattice
+basis `(p, 0, 0), (r, 1, 0), (0, 0, p)` has volume `(p : ℝ)²`. This is the covolume
+of the index-`p²` sublattice cut out by the congruences `x ≡ r y, x ≡ 0 (mod p)`.
+
+Proof mirrors `stdLattice3_covolume`: `ZSpan.volume_fundamentalDomain` reduces the
+volume to `ENNReal.ofReal |det|`, and S16a/S16b's basis matrix has determinant
+`(p : ℝ)²` (`dirichletSublatticeRealBasisMatrix_det`), nonnegative since it is a
+square. This is the final geometric input feeding the sublattice Minkowski step
+that will discharge `dirichlet_key_lemma`: `vol(ellipsoid) > 2³ · p²` then forces a
+nonzero sublattice point inside the ellipsoid. -/
+private lemma dirichletSublatticeReal_covolume {p : ℤ} (hp : 0 < p) (r : ℤ) :
+    MeasureTheory.volume
+        (ZSpan.fundamentalDomain (dirichletSublatticeRealBasis hp r))
+      = ENNReal.ofReal ((p : ℝ) ^ 2) := by
+  rw [ZSpan.volume_fundamentalDomain]
+  have h : (Matrix.of ⇑(dirichletSublatticeRealBasis hp r)).det = (p : ℝ) ^ 2 := by
+    have hmat : (Matrix.of ⇑(dirichletSublatticeRealBasis hp r))
+        = dirichletSublatticeRealBasisMatrix p r := by
+      ext i j
+      simp only [Matrix.of_apply, dirichletSublatticeRealBasis_apply,
+        dirichletSublatticeRealBasisVec]
+    rw [hmat, dirichletSublatticeRealBasisMatrix_det]
+  rw [h, abs_of_nonneg (by positivity)]
+
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
 **Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.
