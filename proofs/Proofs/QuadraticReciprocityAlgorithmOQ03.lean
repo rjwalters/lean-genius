@@ -1,6 +1,7 @@
 import Mathlib.NumberTheory.LegendreSymbol.Basic
 import Mathlib.GroupTheory.Perm.Cycle.Basic
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
+import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.Tactic
 
 /-
@@ -26,12 +27,20 @@ the inline `G →* Perm G` monoid-hom + `map_zpow` wiring (replacing the nonexis
 even-power `(-1)^card = 1` collapse — all flagged "unverified" by S12/S13 — compile as
 written. Removed three linter-flagged unused `simp` arguments.
 
+**S16 (2026-06-15, researcher-2, Docker recovered; Aristotle still 404).** Added the
+machine-checked **crux** `primitiveRoot_pow_half_eq_neg_one`: a generator of `(ZMod p)ˣ`
+raised to `(p−1)/2` equals `−1` in the field. Built green via
+`docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03Crux` (a uniquely-named build copy),
+0 errors / 0 sorries / 0 axioms (linter style-nags only). This is the genuinely-new Euler-side
+ingredient the headline needs; it was authored blind under blackout (S15) and is now verified.
+
 **What this file does NOT yet contain** (the OQ is NOT resolved): the headline
 Zolotarev identity `legendreSym p a = sign (mulLeft a)` still needs (i) the Euler's-criterion
-tie `legendreSym p a = (-1)^k` and (ii) the field-`mulLeft₀`/units-`mulLeft` sign bridge
-(both prose in knowledge.md, S2 numerically verified). Milestone 2 (reciprocity from the
-grid-transpose permutation sign) is also not yet in Lean. This file verifies the genuinely-new
-*producer* lemma and the Zolotarev sign computation — the reusable core Mathlib lacks.
+tie `legendreSym p a = (-1)^k` (which combines this crux with `legendreSym.eq_pow`) and (ii) the
+field-`mulLeft₀`/units-`mulLeft` sign bridge (both prose in knowledge.md, S2 numerically verified).
+Milestone 2 (reciprocity from the grid-transpose permutation sign) is also not yet in Lean. This
+file verifies the genuinely-new *producer* lemma, the Zolotarev sign computation, and now the
+primitive-root half-power crux — the reusable core Mathlib lacks.
 
 ## What this targets
 
@@ -168,5 +177,46 @@ theorem sign_mulLeft_eq_neg_one_zpow {G : Type*} [Group G] [Fintype G] [Decidabl
         G →* Equiv.Perm G) g k
     rw [ha]; simpa using hz
   rw [hmono, map_zpow, sign_mulLeft_generator hg hG heven]
+
+/-! ## The crux: a primitive root raised to `(p-1)/2` equals `-1`
+
+This is the single remaining genuinely-new ingredient (S15) the headline Zolotarev identity
+needs beyond the verified sign computation `sign_mulLeft_eq_neg_one_zpow`. Stated in the field
+`ZMod p` (not the units group) so the order-2 dichotomy uses `mul_self_eq_one_iff` directly and
+`ZMod.pow_card_sub_one_eq_one` supplies `xᵖ⁻¹ = 1` — avoiding the units `Neg`-instance question
+flagged by S15.
+
+Let `x = (g : ZMod p)` for a generator `g` of `(ZMod p)ˣ`, and `m = (p-1)/2`. Then
+`(xᵐ)² = xᵖ⁻¹ = 1`, while `xᵐ ≠ 1` because `orderOf x = p − 1 > m`; the only square root of `1`
+in a field other than `1` is `−1`. -/
+theorem primitiveRoot_pow_half_eq_neg_one {p : ℕ} [Fact p.Prime] (hp : 2 < p)
+    {g : (ZMod p)ˣ} (hg : ∀ x : (ZMod p)ˣ, x ∈ Subgroup.zpowers g) :
+    (g : ZMod p) ^ ((p - 1) / 2) = -1 := by
+  set x : ZMod p := (g : ZMod p) with hx
+  have hxne : x ≠ 0 := g.ne_zero
+  -- `orderOf x = p − 1` (a generator of the units is a primitive root in the field)
+  have hord : orderOf x = p - 1 := by
+    rw [hx, orderOf_units, orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card,
+      ZMod.card_units p]
+  set m := (p - 1) / 2 with hm
+  have heven : 2 ∣ (p - 1) := by
+    have hodd : Odd p := (Fact.out : p.Prime).odd_of_ne_two (by omega)
+    obtain ⟨t, ht⟩ := hodd
+    exact ⟨t, by omega⟩
+  have hmpos : 0 < m := by rw [hm]; omega
+  have hmlt : m < p - 1 := by rw [hm]; omega
+  have h2m : 2 * m = p - 1 := by rw [hm]; omega
+  -- `(xᵐ)² = xᵖ⁻¹ = 1`
+  have hsq : x ^ m * x ^ m = 1 := by
+    rw [← pow_add, ← two_mul, h2m]
+    exact ZMod.pow_card_sub_one_eq_one hxne
+  -- `xᵐ ≠ 1` since `m < orderOf x`
+  have hne1 : x ^ m ≠ 1 := by
+    rw [← hord] at hmlt
+    exact pow_ne_one_of_lt_orderOf (by omega) hmlt
+  -- the only non-`1` square root of `1` in a field is `-1`
+  rcases mul_self_eq_one_iff.mp hsq with h | h
+  · exact absurd h hne1
+  · exact h
 
 end QuadraticReciprocityAlgorithmOQ03
