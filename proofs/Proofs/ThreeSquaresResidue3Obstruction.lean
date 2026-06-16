@@ -66,7 +66,7 @@ theorem legendreSym_neg_m_eq_neg_one {m p : ℕ} [Fact (Nat.Prime p)]
     legendreSym p (-(m : ℤ)) = -1 := by
   have hm_odd : Odd m := Nat.odd_iff.mpr (by omega)
   have hJpm : jacobiSym (p : ℤ) m = -1 := jacobi_p_mod_m_eq_neg_one hm3 hdvd
-  rw [legendreSym.to_jacobiSym, jacobiSym.neg (m : ℤ) hp_odd]
+  rw [jacobiSym.legendreSym.to_jacobiSym, jacobiSym.neg (m : ℤ) hp_odd]
   -- goal: χ₄ p * J(m | p) = -1
   have hp2 : p % 2 = 1 := Nat.odd_iff.mp hp_odd
   rcases (by omega : p % 4 = 1 ∨ p % 4 = 3) with hp1 | hp3
@@ -95,7 +95,6 @@ theorem legendreSym_neg_d_eq_neg_m {m d p : ℕ} [Fact (Nat.Prime p)]
     push_cast at hcast; linear_combination hcast
   have hm0 : (m : ZMod p) ≠ 0 := by
     intro h; rw [h, zero_mul] at hunit; exact zero_ne_one hunit
-  have hnm0 : ((-(m : ℤ)) : ZMod p) ≠ 0 := by push_cast; exact neg_ne_zero.mpr hm0
   -- product of the two symbols is 1
   have key : legendreSym p (-(d : ℤ)) * legendreSym p (-(m : ℤ)) = 1 := by
     rw [← legendreSym.mul]
@@ -105,7 +104,8 @@ theorem legendreSym_neg_d_eq_neg_m {m d p : ℕ} [Fact (Nat.Prime p)]
       rw [hdmZ, show ((p : ℤ) + 1) = 1 + (p : ℤ) * 1 by ring, Int.add_mul_emod_self_left]
     rw [hmod, ← legendreSym.mod, legendreSym.at_one]
   -- conclude equality using `(−m | p)² = 1`
-  have hb2 : legendreSym p (-(m : ℤ)) ^ 2 = 1 := legendreSym.sq_one p hnm0
+  have hb2 : legendreSym p (-(m : ℤ)) ^ 2 = 1 := by
+    apply legendreSym.sq_one; push_cast; simpa using hm0
   calc legendreSym p (-(d : ℤ))
       = legendreSym p (-(d : ℤ)) * legendreSym p (-(m : ℤ)) ^ 2 := by rw [hb2, mul_one]
     _ = (legendreSym p (-(d : ℤ)) * legendreSym p (-(m : ℤ))) * legendreSym p (-(m : ℤ)) := by

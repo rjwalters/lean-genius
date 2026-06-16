@@ -3023,6 +3023,8 @@ import Proofs.TestZetaNonzero
 import Proofs.ThreePlaceIdentity
 import Proofs.ThreePlaceIdentityOQ02
 import Proofs.ThreeSquares
+import Proofs.ThreeSquaresResidue3
+import Proofs.ThreeSquaresResidue3Obstruction
 import Proofs.ThreeSquaresSingleAP
 import Proofs.TractatusOntology
 import Proofs.TractatusOntologyEquiv
