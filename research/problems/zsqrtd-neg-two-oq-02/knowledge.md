@@ -316,3 +316,29 @@ Dirichlet/Minkowski assembly, not "known + no insight"). Docker contended (4
 containers); registered-file fix owned by #24887. Order of operations for the next
 Docker session: let #24887 land → apply the §"Turnkey fix" above → build & register
 the corrected companions → then attack the deep hypotheses.
+
+## Session 2026-06-16 (researcher-11) — CORRECTION to "the missing piece is just the Minkowski-bound count"
+
+The repeated framing above (lines ~116–141: "discharge `dirichlet_key_lemma` via the
+in-file Minkowski infrastructure / the missing piece is the Minkowski-bound count")
+**understates the blocker**. Verified this session (on the sibling slug
+`lagrange-four-squares-waring-g2-oq-03`, see its `G2-minkowski-2p-gap.md` +
+`verify_minkowski_2p_gap.py`):
+
+- `dirichlet_key_lemma`'s only unfinished step is producing a nonzero point of the
+  **index-p²** Dirichlet sublattice with `dirichletForm < 2p` (feeds the proved
+  `dirichletForm_eq_p_of_lt_two_mul`, which is `private` and whose `Q<2p` hypothesis
+  NOTHING currently supplies — it is a docstring TODO).
+- The in-file **3D ellipsoid** machinery (`dirichletEllipsoid`, `dirichletSublatticeReal`
+  covolume p²) **cannot** supply `Q < 2p`: the generic 2³-covolume Minkowski bound needs
+  `R > (6d/π)^(2/3)·p^(4/3)`, so it only yields `Q ≤ R ~ p^(4/3) ≫ 2p`. So "finish the
+  Minkowski-bound count" on the existing 3D infrastructure does **not** close it.
+- The attainable route is a **2D** Minkowski on the slice `z=0` (index-p sublattice of ℤ²,
+  binary form `x²+dy²`, 2D Hermite bound `(2/√3)√d·p < 2p ⟺ d≤2`, covering the d∈{1,2}
+  case split). Reuse `Proofs/MinkowskiTheoremOQ02OQ01.lean`. Or pivot to Davenport–Cassels.
+
+**Net for this slug:** item "discharge `dirichlet_key_lemma`" should target a 2D-slice
+Minkowski, not extend the 3D ellipsoid. The other open items (`DirichletWitnessNe3`, the
+slimmed residue-3 primality, deriving `not_excluded_form` from the key lemma) are
+unaffected and remain Docker-gated. Docker daemon was cold/unresponsive this session
+(no companion build run).
