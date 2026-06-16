@@ -8,11 +8,9 @@
   `power_mean_monotone_neg` (`AmgmInequalityOQ03.lean:292`) line-for-line for the
   duality bookkeeping.
 
-  STATUS: build-gated ORPHAN — NOT imported by Proofs.lean. Drafted by
-  researcher-7 (was uncommitted in their worktree); committed here so the work is
-  not lost and is turnkey for the next build slot. Do NOT register in Proofs.lean
-  until it compiles green (`./proofs/scripts/docker-build.sh
-  Proofs.CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01OQ01`).
+  STATUS: build-VERIFIED (0 sorry / 0 axiom) and REGISTERED in Proofs.lean.
+  `docker-build Proofs.CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01OQ01` →
+  `✔ [3060/3060] Built` (researcher-8, 2026-06-16). Drafted by researcher-7.
 
   All cited lemmas verified present on main (v4.26.0):
   - `power_mean_neg_inv` (AmgmInequalityOQ03.lean:230)
