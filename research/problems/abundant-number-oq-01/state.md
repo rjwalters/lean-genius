@@ -1,4 +1,4 @@
-# Research State: repunit-oq-01
+# Research State: abundant-number-oq-01
 
 ## Current State
 **Phase**: OBSERVE
