@@ -132,3 +132,51 @@ proceed. Pure rewriting fix, no math change. Everything else in the draft is
 name-verified. Recommended first action when a backend returns: apply this fix,
 build `Proofs.NivenTheoremCore`; if green, inline into `NivenTheorem.lean`'s
 `two_cos_int_of_rational` (replacing its 1 sorry), register, flip to `verified`.
+
+### 2026-06-16 (Session 3) — researcher-5: STATE CORRECTION (Route-A core is OBSOLETE) + bearer audit
+
+**Mode:** CONTINUE → state reconciliation + build-free bearer audit. **Dual blackout
+reconfirmed live** (Docker `docker info` times out; Aristotle MCP `prove` returns
+`"Resource not found"` on a trivial `n+0=n` ping). Used the offline mathlib4 checkout at the
+exact pin (`2df2f0150c` / v4.26.0).
+
+**⚠ The Session-2 "next steps" are STALE and would waste a cycle.** Session 1/2 left the plan
+as: "build `NivenTheoremCore.lean` (Route-A roots-of-unity), fix the one cast bug, then inline
+it into `NivenTheorem.lean`'s `two_cos_int_of_rational` sorry." **That sorry no longer exists.**
+PR **#25163** (`Research: niven-theorem-oq-01 — discharge core via Mathlib`, merged) discharged
+the core directly by citing Mathlib and **removed `NivenTheoremCore.lean` entirely**. The current
+`proofs/Proofs/NivenTheorem.lean` on `main` is **0 sorry / 0 axiom / 0 decide**. Do NOT resurrect
+the Route-A core — it is obsolete.
+
+**Current true state of `NivenTheorem.lean` (on main, #25163):**
+- `two_cos_int_of_rational` — discharged: `rw [hq]; exact Real.isIntegral_two_mul_cos_rat_mul_pi (m/n)`
+  to get `IsIntegral ℤ (2 cos θ)`, then `hint.exists_int_iff_exists_rat.mp ⟨2*r, …⟩`. No sorry.
+- `niven` — enumeration tail: `interval_cases k` over `2 cos θ ∈ {-2..2}` (bounds from
+  `Real.cos_le_one`/`Real.neg_one_le_cos`), 5 `linarith` cases. No sorry.
+- **UNREGISTERED** (absent from `Proofs.lean`) and **NO gallery dir**
+  (`src/data/proofs/niven-theorem-oq-01/` does not exist) and **NEVER build-verified** (Session 1's
+  only build attempt was SIGTERM-killed during Mathlib cache decompression under host saturation).
+
+**Bearer audit (all 3 cited Mathlib lemmas confirmed present @ pin `2df2f01` / v4.26.0):**
+- `Real.isIntegral_two_mul_cos_rat_mul_pi (q : ℚ) : IsIntegral ℤ (2 * cos (q*π))` —
+  `Mathlib/NumberTheory/Niven.lean:98`, aliased to root namespace at `:103`. ✓
+- `IsIntegral.exists_int_iff_exists_rat (h₁ : IsIntegral ℤ x) : (∃ q:ℚ, x=q) ↔ ∃ k:ℤ, x=k` —
+  `Niven.lean:32` (dot-notation usage confirmed at `:130`). ✓
+- `Real.cos_le_one`, `Real.neg_one_le_cos` — standard, present. ✓
+- Tactic glue is routine (`push_cast`, `ring`, `interval_cases`, `linarith`, `exact_mod_cast`) on a
+  simple goal — LOW compile risk, but NOT verified (no build).
+
+**Mathlib-coverage honesty (matters for the gallery badge).** Mathlib v4.26.0 ALREADY contains a
+top-level `niven (hθ) (hcos) : cos θ ∈ ({-1, -1/2, 0, 1/2, 1} : Set ℝ)` (`Niven.lean:124`, Meiburg–
+Broshi 2025), plus `niven_sin` (:141) and `niven_angle_eq` (:149). So this gallery entry is a
+**presentation** (keeps the explicit `interval_cases` enumeration for pedagogy, delegates the deep
+algebraic-integer step to Mathlib), NOT original formalization. When galleried: `badge` should
+reflect "presentation / not a Mathlib gap" (e.g. status `verified`, badge `verified` — NOT
+`original`), and the description should state Mathlib already has the theorem.
+
+**Remaining path (single Docker build, no math left):** when a Docker slot is free —
+`./proofs/scripts/docker-build.sh Proofs.NivenTheorem`; if green (expected), register in
+`Proofs.lean` (alphabetical) and add `src/data/proofs/niven-theorem-oq-01/` (meta.json +
+annotations, model on a sibling, node-validate). NOT done under blackout: registering or galleryizing
+an unbuilt file is a false-green risk (the file has never compiled in any build graph). No Lean
+changed this session; only this knowledge correction + audit.
