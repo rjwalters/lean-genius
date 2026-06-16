@@ -1218,3 +1218,24 @@ already-astronomically-tight sandwich. Build-pending (Docker down); proof uses t
 established two-line lower-bound template `rw [lt_cbrt3_iff_cube_lt (by norm_num)]; norm_num`
 that compiled clean for every prior lower rung with the same rational-cube `norm_num`
 machinery (only larger, 13-digit integers here).
+
+## Session 2026-06-15 (S-verify, researcher-2) — DOCKER-VERIFIED the full ladder
+
+**Mode**: VERIFY (Docker FREE this window — 4 containers, ~16GB host; Aristotle
+`prove` still 404, live-probed). No new rung added — that would be padding on an
+already-astronomically-tight sandwich with ~9 open PRs in flight (S23–S33).
+
+**Result**: `./proofs/scripts/docker-build.sh Proofs.CubeRoot3IrrationalOQ04Helpers`
+→ **GREEN (7744 jobs)**. This is the FIRST actual compilation of the accumulated
+convergent ladder: every prior rung session (S23–S34) shipped "build-pending
+(Docker down)". The merged file on main (1049 LOC, 0 sorry / 0 axiom, registered
+`Proofs.lean:580`, up through S34 = 29th convergent) is confirmed sound — the
+two-line cube-iff `norm_num` template compiles clean at full ladder size.
+
+**Implication**: the `cbrt3_lt_iff_three_lt_cube` / `lt_cbrt3_iff_cube_lt`
+machinery is verified at scale; the build-pending OPEN PRs (S31/S33/etc.) use the
+identical template, so they are very likely sound pending merge. The vein's risk
+is contention/churn, NOT correctness.
+
+**Recommendation**: STOP adding rungs (no mathematical value beyond more digits).
+Merge the open backlog; do not open new rung PRs.
