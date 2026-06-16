@@ -623,6 +623,7 @@ import Proofs.DescartesRuleOfSignsOQ02OQ01
 import Proofs.DescartesRuleOfSignsOQ02OQ01OQ02
 import Proofs.DescartesRuleOfSignsOQ03
 import Proofs.DescartesRuleOfSignsOQ04
+import Proofs.DilworthTheoremOQ01
 import Proofs.DirichletApproximation
 import Proofs.DirichletsTheorem
 import Proofs.DirichletsTheoremOQ01
