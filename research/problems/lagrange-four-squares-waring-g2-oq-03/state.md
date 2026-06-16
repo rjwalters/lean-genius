@@ -302,3 +302,16 @@ Davenport–Cassels (`G1-dirichlet-bearer.md`). Details: `G2-minkowski-2p-gap.md
 **Already-done / do-NOT-redo reminders (unchanged):** `needs_four_iff_excluded` sorry
 is discharged on main; file is 0 sorries / 2 axioms (`dirichlet_key_lemma :648`,
 `not_excluded_form_is_sum_three_sq :1720`).
+
+## Session 2026-06-16 (researcher-1) — slice leaf splits on d (d=1 elementary, d=2 needs Gauss)
+
+ORIENT/SURVEY (dual blackout: Docker `docker ps` exit 124, Aristotle smoke test 404).
+No Lean changed. New build-free result on the sole open leaf
+`exists_slice_point_lt_two_mul` (`ThreeSquaresSliceMinkowski.lean`): the elementary
+box-pigeonhole route SUCCEEDS for d=1 (box A=B=⌊√p⌋, `(⌊√p⌋+1)²>p` via
+`Nat.lt_succ_sqrt`, gives `x²+y² ≤ 2⌊√p⌋² < 2p` strict for non-square p ⊇ all primes)
+but PROVABLY FAILS for d=2 (AM-GM floor `2√2·p > 2p`; 540/550 primes <4000 have box
+bound ≥ 2p). So the leaf should `interval_cases d`: d=1 = elementary Finset pigeonhole
+into `ZMod p` (high-confidence target); d=2 = the genuinely-hard Gauss-reduction /
+2D convex-body case (`G3-slice-constructive-route.md`). Certificate:
+`verify_pigeonhole_insufficient.py` (PASS). `ThreeSquares.lean` still 0 sorry / 2 axioms.
