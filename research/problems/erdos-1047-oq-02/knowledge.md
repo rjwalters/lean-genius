@@ -843,9 +843,15 @@ A new file (imports `Proofs.Erdos1047OQ02Reduction` + `Mathlib.Tactic`, namespac
   This type-checks: the plumbing (bridge signature, implicit `f`/`c`/`z₀` unification,
   membership shapes) is all verified.
 
-### The two REMAINING `sorry`s (now the entire open content, isolated + well-typed)
-1. `goodmanArc_isPreconnected : IsPreconnected goodmanArc` — `IsPreconnected.union` of
-   4 `isPreconnected_Icc.image` affine segments glued at waypoints (1−i)/2, 2, (1+i)/2.
+### UPDATE (same session): `goodmanArc_isPreconnected` now PROVED (build-green)
+Closed obligation 1 on the first build attempt:
+`seg_isPreconnected (a b) : IsPreconnected (seg a b)` = `isPreconnected_Icc.image` +
+`Continuous.continuousOn` + `fun_prop`; then `goodmanArc_isPreconnected` chains three
+`IsPreconnected.union` at the waypoints (1−i)/2, 2, (1+i)/2 (each shared as
+`mem_seg_right`/`mem_seg_left`). Rebuild: `⚠ [3060/3060] Built (165s)`, ONE sorry left.
+
+### The REMAINING `sorry` (now the SOLE open content, isolated + well-typed)
+1. ~~`goodmanArc_isPreconnected`~~ — DONE (build-verified).
 2. `goodmanArc_subset_lemniscate : goodmanArc ⊆ lemniscate f c` — the 4 segment
    inequalities `‖f(z(s))‖ ≤ c`, each ⟸ `normSq = Re(s)²+Im(s)²` (tables §Session
    2026-06-15/16) ⟸ `125/16 − (Re²+Im²) = (k/16)·SQ(s)·P(s)` (`ring`) ⟸ `sq_nonneg` +

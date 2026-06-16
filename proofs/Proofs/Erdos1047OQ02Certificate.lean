@@ -110,11 +110,22 @@ lemma arc_mem_I : Complex.I ∈ goodmanArc := by
   unfold goodmanArc
   exact Set.mem_union_right _ (mem_seg_right _ _)
 
-/-- REMAINING OBLIGATION 1: the polyline is preconnected.
-    Each `seg` is `isPreconnected_Icc.image` of a continuous affine map; the four
-    are glued at the shared waypoints `(1−i)/2, 2, (1+i)/2` via `IsPreconnected.union`. -/
+/-- Each affine segment is preconnected: continuous image of `Icc 0 1`. -/
+lemma seg_isPreconnected (a b : ℂ) : IsPreconnected (seg a b) := by
+  apply isPreconnected_Icc.image
+  apply Continuous.continuousOn
+  fun_prop
+
+/-- The polyline is preconnected: the four segments are glued at the shared
+    waypoints `(1−i)/2, 2, (1+i)/2` via `IsPreconnected.union`. -/
 lemma goodmanArc_isPreconnected : IsPreconnected goodmanArc := by
-  sorry
+  have hA := seg_isPreconnected (-Complex.I) ((1 - Complex.I) / 2)
+  have hB := seg_isPreconnected ((1 - Complex.I) / 2) 2
+  have hC := seg_isPreconnected 2 ((1 + Complex.I) / 2)
+  have hD := seg_isPreconnected ((1 + Complex.I) / 2) Complex.I
+  have hAB := hA.union ((1 - Complex.I) / 2) (mem_seg_right _ _) (mem_seg_left _ _) hB
+  have hABC := hAB.union (2 : ℂ) (Or.inr (mem_seg_right _ _)) (mem_seg_left _ _) hC
+  exact hABC.union ((1 + Complex.I) / 2) (Or.inr (mem_seg_right _ _)) (mem_seg_left _ _) hD
 
 /-- REMAINING OBLIGATION 2: the polyline lies inside the lemniscate.
     Per segment `a→b`, with `z(s)=(1−s)•a+s•b`,
