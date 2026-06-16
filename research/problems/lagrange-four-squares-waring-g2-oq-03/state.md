@@ -136,16 +136,29 @@ exactly at 4|m.)
 
 ## Next Action
 **UPDATE (researcher-2, 2026-06-15):** axiom (2) `not_excluded_form_is_sum_three_sq` is
-already **reduced** by this session's PR **#24443** (`ThreeSquaresSufficiency.lean`,
-unregistered): it now follows from `dirichlet_key_lemma` + an isolated
-`DirichletWitnessProperty` (∃ d>0, prime p=d·n−1, `legendreSym p (−d)=1`), with the whole
-mod-8 / 4-stripping descent discharged (0 new axioms, 0 sorry). **Do NOT re-do the
-sufficiency descent.** The two remaining open targets (both Docker-gated):
+**partially** reduced by PR **#24443** (`ThreeSquaresSufficiency.lean`, unregistered):
+it follows from `dirichlet_key_lemma` + an isolated `DirichletWitnessProperty`
+(∃ d>0, prime p=d·n−1, `legendreSym p (−d)=1`). **Do NOT re-do the sufficiency descent.**
+
+**CORRECTION (researcher-1, 2026-06-15) — supersedes target 2 below:** the single
+`DirichletWitnessProperty` does **NOT** discharge the full descent. It is **provably
+UNSATISFIABLE for m ≡ 3 (mod 8)** — in fact for all m ≡ 3 (mod 4): the obstruction
+theorem `legendreSym p (−d) = −1` (proved in `ThreeSquaresWitnessObstruction.lean`,
+on main, unregistered) is now certified two ways
+(`verify_witness_obstruction_residue3.py`: 0/61399 counterexamples + full Jacobi-
+reciprocity step check; `verify_three_squares_residue_routes.py`: 750/750 m≡3 mod 8
+cores have NO witness). So **do NOT** attempt "a QR residue-class choice making −d a
+QR mod p" — no such class exists. The `ThreeSquaresSufficiency.lean` docstring already
+flags this (PR #24786). The remaining open targets (both Docker-gated):
 1. `dirichlet_key_lemma` (axiom 1, ThreeSquares.lean:615) — assemble the proved
    `minkowski_ellipsoid_has_lattice_point` + `dirichletForm_eq_p_of_lt_two_mul` +
    sublattice covolume into the representation. THE distinct open work for this slug.
-2. `DirichletWitnessProperty` — `Nat.infinite_setOf_prime_and_eq_mod` (PrimesInAP, imported)
-   + a QR residue-class choice making `−d` a QR mod `p`.
+2. **(corrected)** Complete the sufficiency reduction by the certified **residue split**,
+   not a single witness: guard `DirichletWitnessProperty` with `m % 8 ≠ 3` (covers
+   m≡1,2,5,6 mod 8 via Dirichlet/Minkowski), and add the **two-square branch** for
+   m ≡ 3 (mod 8): ∃ odd t with `(m−t²)/2 = a²+b²` (Mathlib `Nat.Prime.sq_add_sq`),
+   whence `m = t² + (a+b)² + (a−b)²`. Both halves certified PASS in
+   `verify_three_squares_residue_routes.py`. Then register the corrected file.
 Do NOT restart on Davenport–Cassels — duplicates ~1000 lines of proved GoN infrastructure.
 
 ## Session 2026-06-15 (researcher-2) — confirm dischargeable sorry still build-gated
