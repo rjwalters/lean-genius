@@ -27,17 +27,25 @@ fraction *labelling* a node is the mediant of its current boundaries.
   unimodular invariant.
 * `sb_root` — the root (empty path) is labelled `1/1`.
 
-This is the structural heart of the headline ("every node is a reduced positive
-rational"). The two remaining directions — **surjectivity** (every reduced
-positive rational labels some node) and **injectivity** (no rational labels two
-nodes) — are stated as goals in the research notes; see `## Next steps`.
+Beyond the structural heart, this file now also proves:
+
+* `sb_left_lt_mediant`, `sb_mediant_lt_right` — **mediant separation**: the label
+  lies strictly between the two boundary fractions (division-free integer form),
+  both reducing to `sb_det`. This is the foundation for injectivity.
+* `sb_false_cons`, `sb_true_cons` and the four `sb{Num,Den}_{false,true}_cons`
+  **prefix-transfer** lemmas: prepending `L` sends `(num, den) ↦ (num, num+den)`,
+  prepending `R` sends `(num, den) ↦ (num+den, den)` — via the conjugation
+  homomorphisms `T`, `T'` that intertwine the two boundary folds.
+* `sb_surjective` — **surjectivity**: every reduced positive rational `a/b` labels
+  some node, by strong induction on `a + b` via the subtractive Euclidean descent.
 
 ## Next steps (not in this file)
 
-* Surjectivity: strong induction on `num + den` via the subtractive Euclidean
-  descent (`a/b ↦ (a−b)/b` when `a > b`, mirror when `a < b`).
-* Injectivity: the mediant strictly separates the two subtrees, so the labelled
-  value is strictly monotone along the in-order traversal.
+* Injectivity: the mediant strictly separates the two subtrees (now available as
+  `sb_left_lt_mediant`/`sb_mediant_lt_right`), so the labelled value is strictly
+  monotone along the in-order traversal — combine with the transfer lemmas to show
+  distinct paths give distinct labels. Together with `sb_surjective` and
+  `sb_isCoprime` this yields the full bijection with the reduced positive rationals.
 -/
 
 namespace SternBrocot
@@ -150,5 +158,142 @@ theorem sb_isCoprime (p : List Bool) : IsCoprime (sbNum p) (sbDen p) := by
 /-- The root of the tree is labelled `1/1`. -/
 theorem sb_root : sbNum [] = 1 ∧ sbDen [] = 1 := by
   refine ⟨?_, ?_⟩ <;> simp [sbNum, sbDen, sb, SB.start]
+
+/-! ## Mediant separation (foundation for injectivity)
+
+The label of a node lies *strictly* between its two boundary fractions. In
+cross-multiplied (division-free) integer form, with `bL, bR ≥ 1 > 0`:
+
+* `aL/bL < num/den` ⟺ `aL·den < num·bL`,
+* `num/den < aR/bR` ⟺ `num·bR < aR·den`.
+
+Both reduce, after expansion, to `aL·bR − aR·bL = −1 < 0`, i.e. exactly the
+unimodular invariant `sb_det`. This strict separation is the key fact behind
+injectivity: distinct subtrees occupy disjoint open intervals.
+-/
+
+/-- The label strictly exceeds the left boundary: `aL·den < num·bL`. -/
+theorem sb_left_lt_mediant (p : List Bool) :
+    (sb p).aL * sbDen p < sbNum p * (sb p).bL := by
+  have h := sb_det p
+  simp only [sbNum, sbDen]
+  nlinarith [h]
+
+/-- The label is strictly below the right boundary: `num·bR < aR·den`. -/
+theorem sb_mediant_lt_right (p : List Bool) :
+    sbNum p * (sb p).bR < (sb p).aR * sbDen p := by
+  have h := sb_det p
+  simp only [sbNum, sbDen]
+  nlinarith [h]
+
+/-! ## Surjectivity: every reduced positive rational labels some node
+
+We show the labelling map `p ↦ sbNum p / sbDen p` hits **every** reduced
+positive rational. The proof is a strong induction on `num + den` driven by the
+subtractive Euclidean descent (`a/b ↦ (a−b)/b` when `a > b`, mirror when `a < b`),
+using two *prefix-transfer* lemmas that describe how prepending a single move
+transforms the label:
+
+* prepending `L` (`false`):  `(num, den) ↦ (num, num + den)`;
+* prepending `R` (`true`):   `(num, den) ↦ (num + den, den)`.
+
+These are proved via the conjugation homomorphisms `T`, `T'` that intertwine the
+two boundary folds — `T` (resp. `T'`) is left-multiplication by the generator
+that the leading move contributes, and it commutes with `SB.step`.
+-/
+
+/-- `L`-conjugation: left-multiplication by `[[1,0],[1,1]]` on the boundary
+state. Intertwines the fold started at `start.step false` with the one at
+`start`. -/
+def T (s : SB) : SB := ⟨s.aL, s.aL + s.bL, s.aR, s.aR + s.bR⟩
+
+/-- `R`-conjugation: left-multiplication by `[[1,1],[0,1]]`. -/
+def T' (s : SB) : SB := ⟨s.aL + s.bL, s.bL, s.aR + s.bR, s.bR⟩
+
+theorem T_step (s : SB) (b : Bool) : (T s).step b = T (s.step b) := by
+  cases b <;> cases s <;> simp only [T, SB.step, SB.mk.injEq] <;> omega
+
+theorem T'_step (s : SB) (b : Bool) : (T' s).step b = T' (s.step b) := by
+  cases b <;> cases s <;> simp only [T', SB.step, SB.mk.injEq] <;> omega
+
+theorem T_sbFrom (s : SB) (q : List Bool) : sbFrom (T s) q = T (sbFrom s q) := by
+  induction q generalizing s with
+  | nil => simp only [sbFrom_nil]
+  | cons b t ih => rw [sbFrom_cons, T_step, ih (s.step b), sbFrom_cons]
+
+theorem T'_sbFrom (s : SB) (q : List Bool) :
+    sbFrom (T' s) q = T' (sbFrom s q) := by
+  induction q generalizing s with
+  | nil => simp only [sbFrom_nil]
+  | cons b t ih => rw [sbFrom_cons, T'_step, ih (s.step b), sbFrom_cons]
+
+/-- Prepending an `L` move conjugates the boundary state by `T`. -/
+theorem sb_false_cons (q : List Bool) : sb (false :: q) = T (sb q) := by
+  show sbFrom SB.start (false :: q) = T (sbFrom SB.start q)
+  rw [sbFrom_cons, show SB.start.step false = T SB.start from by decide, T_sbFrom]
+
+/-- Prepending an `R` move conjugates the boundary state by `T'`. -/
+theorem sb_true_cons (q : List Bool) : sb (true :: q) = T' (sb q) := by
+  show sbFrom SB.start (true :: q) = T' (sbFrom SB.start q)
+  rw [sbFrom_cons, show SB.start.step true = T' SB.start from by decide, T'_sbFrom]
+
+/-- `L`-transfer for the numerator: `num (L :: q) = num q`. -/
+theorem sbNum_false_cons (q : List Bool) : sbNum (false :: q) = sbNum q := by
+  simp only [sbNum, sb_false_cons, T]
+
+/-- `L`-transfer for the denominator: `den (L :: q) = num q + den q`. -/
+theorem sbDen_false_cons (q : List Bool) : sbDen (false :: q) = sbNum q + sbDen q := by
+  simp only [sbDen, sbNum, sb_false_cons, T]; ring
+
+/-- `R`-transfer for the numerator: `num (R :: q) = num q + den q`. -/
+theorem sbNum_true_cons (q : List Bool) : sbNum (true :: q) = sbNum q + sbDen q := by
+  simp only [sbNum, sbDen, sb_true_cons, T']; ring
+
+/-- `R`-transfer for the denominator: `den (R :: q) = den q`. -/
+theorem sbDen_true_cons (q : List Bool) : sbDen (true :: q) = sbDen q := by
+  simp only [sbDen, sb_true_cons, T']
+
+/-- Auxiliary strong-induction form of surjectivity, recursing on `num + den`. -/
+theorem sb_surj_aux : ∀ (n : ℕ) (a b : ℤ), (a + b).toNat = n →
+    1 ≤ a → 1 ≤ b → IsCoprime a b →
+    ∃ p : List Bool, sbNum p = a ∧ sbDen p = b := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro a b hn ha hb hcop
+    rcases lt_trichotomy a b with hab | hab | hab
+    · -- a < b : the value is < 1, descend via the left child to (a, b − a)
+      have hcop' : IsCoprime a (b - a) := by
+        have hb' : IsCoprime b a := hcop.symm
+        rw [show b = (b - a) + a * 1 from by ring] at hb'
+        exact (IsCoprime.of_add_mul_left_left hb').symm
+      obtain ⟨q, hq1, hq2⟩ :=
+        ih b.toNat (by omega) a (b - a) (by omega) ha (by omega) hcop'
+      refine ⟨false :: q, ?_, ?_⟩
+      · rw [sbNum_false_cons, hq1]
+      · rw [sbDen_false_cons, hq1, hq2]; ring
+    · -- a = b : coprimality forces a = b = 1, the root
+      rw [← hab] at hcop
+      have hu : IsUnit a := isCoprime_self.mp hcop
+      rcases Int.isUnit_iff.mp hu with h1 | h1
+      · refine ⟨[], ?_, ?_⟩
+        · rw [sb_root.1, h1]
+        · rw [sb_root.2, ← hab, h1]
+      · subst h1; exact absurd ha (by norm_num)
+    · -- b < a : the value is > 1, descend via the right child to (a − b, b)
+      have hcop' : IsCoprime (a - b) b := by
+        rw [show a = (a - b) + b * 1 from by ring] at hcop
+        exact IsCoprime.of_add_mul_left_left hcop
+      obtain ⟨q, hq1, hq2⟩ :=
+        ih a.toNat (by omega) (a - b) b (by omega) (by omega) hb hcop'
+      refine ⟨true :: q, ?_, ?_⟩
+      · rw [sbNum_true_cons, hq1, hq2]; ring
+      · rw [sbDen_true_cons, hq2]
+
+/-- **Surjectivity**: every reduced positive rational `a/b` (with `1 ≤ a`,
+`1 ≤ b`, `IsCoprime a b`) is the label of some Stern–Brocot node. -/
+theorem sb_surjective (a b : ℤ) (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (hcop : IsCoprime a b) : ∃ p : List Bool, sbNum p = a ∧ sbDen p = b :=
+  sb_surj_aux (a + b).toNat a b rfl ha hb hcop
 
 end SternBrocot
