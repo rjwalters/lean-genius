@@ -5,8 +5,9 @@ Harmonic `*StatementOnly.lean` Aristotle-submission file
 Follow-up for research problem `lebesgue-measure-oq-05` (σ-finite Radon–Nikodym
 package, formalized in `proofs/Proofs/LebesgueMeasureOQ05.lean`, merged #24720).
 The seven theorems of that file are complete (0 sorries, 0 axioms); this file
-queues the natural next result — the **Radon–Nikodym chain rule** — for
-automated proof search.
+adds the natural next result — the **Radon–Nikodym chain rule** — now discharged
+(0 sorries) by Mathlib's `Measure.rnDeriv_mul_rnDeriv`. Build-pending (Docker /
+Aristotle blackout); the proof term is a verbatim match against the Mathlib pin.
 
 Statement: For σ-finite measures `μ, ν, λ` on a measurable space with `μ ≪ ν`,
 the Radon–Nikodym derivatives compose multiplicatively, `λ`-almost everywhere:
@@ -28,10 +29,11 @@ Past Aristotle history for this problem: the base file was submitted only via
 the deployer build-gate; no per-theorem Aristotle submission exists yet. This
 file establishes the chain-rule baseline.
 
-Expected proof: Mathlib's `MeasureTheory.Measure.rnDeriv_mul_rnDeriv` states
-exactly this for a σ-finite triple under `μ ≪ ν`, so the proof is anticipated
-to be a one-line `exact Measure.rnDeriv_mul_rnDeriv h` (modulo the Mathlib
-4.26.0 argument shape). It is included below only to seed the MCTS prior.
+Proof: Mathlib's `MeasureTheory.Measure.rnDeriv_mul_rnDeriv` states exactly this
+for a σ-finite triple under `μ ≪ ν` — signature
+`(hμν : μ ≪ ν) : μ.rnDeriv ν * ν.rnDeriv κ =ᵐ[κ] μ.rnDeriv κ` at the v4.26.0 pin
+(Mathlib/MeasureTheory/Measure/Decomposition/RadonNikodym.lean:383), which is the
+goal verbatim with `κ := lam`. The term is therefore `Measure.rnDeriv_mul_rnDeriv h`.
 
 Answer: `μ.rnDeriv ν * ν.rnDeriv lam =ᵐ[lam] μ.rnDeriv lam`.
 -/
@@ -71,15 +73,7 @@ states precisely this equality for a σ-finite triple under `μ ≪ ν`.
 -/
 theorem rnDeriv_chain [SigmaFinite μ] [SigmaFinite ν] [SigmaFinite lam]
     (h : μ ≪ ν) :
-    μ.rnDeriv ν * ν.rnDeriv lam =ᵐ[lam] μ.rnDeriv lam := by
-  sorry
-
--- Proof sketch to seed the MCTS prior (Aristotle may ignore this):
---   exact Measure.rnDeriv_mul_rnDeriv h
--- `Measure.rnDeriv_mul_rnDeriv` takes the absolute-continuity hypothesis
--- `μ ≪ ν` and the three `SigmaFinite` instances, returning the a.e. identity
--- `μ.rnDeriv ν * ν.rnDeriv κ =ᵐ[κ] μ.rnDeriv κ`. If the name/shape drifted in
--- Mathlib 4.26.0, the fallback is to rewrite via `withDensity_rnDeriv_eq` and
--- `rnDeriv_withDensity` and the multiplicativity of `withDensity`.
+    μ.rnDeriv ν * ν.rnDeriv lam =ᵐ[lam] μ.rnDeriv lam :=
+  Measure.rnDeriv_mul_rnDeriv h
 
 end LebesgueMeasureOQ05ChainRuleStatement
