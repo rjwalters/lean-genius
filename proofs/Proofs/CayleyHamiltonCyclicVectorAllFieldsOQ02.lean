@@ -37,8 +37,8 @@
      Since the Krylov vectors span Kⁿ, A·w = p(M)·w for all w, hence A = p(M)
      (a matrix is determined by its action, recovered column-by-column).
 
-  ## Status: 0 sorries, 0 axioms (build-pending under Docker blackout;
-  Mathlib bearers name-checked against the pinned rev 2df2f01 / v4.26.0).
+  ## Status: 0 sorries, 0 axioms (machine-verified under Docker, full build,
+  7745 jobs, Mathlib v4.26.0).
 -/
 import Mathlib
 import Proofs.CayleyHamiltonCyclicVectorAllFields
@@ -73,7 +73,7 @@ theorem krylov_linearIndependent
     rw [hp_aeval]
     have : (∑ k : Fin n, c k • M ^ (k : ℕ)).mulVec v =
            ∑ k : Fin n, c k • (M ^ (k : ℕ)).mulVec v := by
-      simp only [← Matrix.mulVecLin_apply, map_sum, map_smul]
+      simp only [Matrix.sum_mulVec, Matrix.smul_mulVec]
     rw [this, hc]
   have hp_deg : p.natDegree < n := by
     apply lt_of_le_of_lt (natDegree_sum_le _ _)
@@ -95,8 +95,8 @@ private lemma aeval_commute_pow (p : K[X]) (M : Matrix (Fin n) (Fin n) K) (j : �
     aeval M p * M ^ j = M ^ j * aeval M p := by
   have hcomm : Commute (aeval M p) M := by
     show aeval M p * M = M * aeval M p
-    have h : aeval M p * aeval M X = aeval M X * aeval M p := by
-      rw [← map_mul, ← map_mul, mul_comm]
+    have h : aeval M p * aeval M (X : K[X]) = aeval M (X : K[X]) * aeval M p := by
+      rw [← map_mul, ← map_mul, mul_comm p X]
     simpa [aeval_X] using h
   exact hcomm.pow_right j
 
@@ -119,13 +119,14 @@ theorem commuting_matrix_is_polynomial
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · exact ⟨0, Subsingleton.elim _ _⟩
   -- Krylov vectors form a basis of Kⁿ.
+  haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
   have hli : LinearIndependent K (fun k : Fin n => (M ^ (k : ℕ)).mulVec v) :=
     krylov_linearIndependent M v hcyc hn
-  set b : Basis (Fin n) K (Fin n → K) :=
+  set b : Module.Basis (Fin n) K (Fin n → K) :=
     basisOfLinearIndependentOfCardEqFinrank hli
       (Module.finrank_fintype_fun_eq_card K).symm with hb_def
   have hb : ∀ i, b i = (M ^ (i : ℕ)).mulVec v := by
-    intro i; simp only [hb_def, coe_basisOfLinearIndependentOfCardEqFinrank]
+    intro i; rw [hb_def, coe_basisOfLinearIndependentOfCardEqFinrank]
   -- The polynomial whose coordinates are those of A·v in the Krylov basis.
   refine ⟨∑ k : Fin n, C (b.repr (A.mulVec v) k) * X ^ (k : ℕ), ?_⟩
   set p : K[X] := ∑ k : Fin n, C (b.repr (A.mulVec v) k) * X ^ (k : ℕ) with hp_def
@@ -138,7 +139,7 @@ theorem commuting_matrix_is_polynomial
     rw [hp_aeval]
     have hdist : (∑ k : Fin n, b.repr (A.mulVec v) k • M ^ (k : ℕ)).mulVec v =
         ∑ k : Fin n, b.repr (A.mulVec v) k • (M ^ (k : ℕ)).mulVec v := by
-      simp only [← Matrix.mulVecLin_apply, map_sum, map_smul]
+      simp only [Matrix.sum_mulVec, Matrix.smul_mulVec]
     rw [hdist,
         show (∑ k : Fin n, b.repr (A.mulVec v) k • (M ^ (k : ℕ)).mulVec v) =
              ∑ k : Fin n, b.repr (A.mulVec v) k • b k from
@@ -151,7 +152,7 @@ theorem commuting_matrix_is_polynomial
         (M ^ (i : ℕ)).mulVec (A.mulVec v) := by
       rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
       congr 1
-      exact hA.pow_right i
+      exact Commute.pow_right hA (i : ℕ)
     have e2 : (aeval M p).mulVec ((M ^ (i : ℕ)).mulVec v) =
         (M ^ (i : ℕ)).mulVec ((aeval M p).mulVec v) := by
       rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
@@ -174,8 +175,8 @@ theorem commuting_matrix_is_polynomial
   -- Recover the matrix equality column-by-column.
   ext i j
   have h := congr_fun (hall (Pi.single j 1)) i
-  simp only [Matrix.mulVec, Matrix.dotProduct, Pi.single_apply] at h
-  simpa using h
+  simpa only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero,
+             Finset.sum_ite_eq', Finset.mem_univ, if_true] using h
 
 -- ============================================================
 -- SECTION IV: Consequences
@@ -199,9 +200,7 @@ theorem commutant_commutative
     this gives the full equality of the centralizer with `K[M]`. -/
 theorem aeval_commute (M : Matrix (Fin n) (Fin n) K) (p : K[X]) :
     aeval M p * M = M * aeval M p := by
-  have h : aeval M p * aeval M X = aeval M X * aeval M p := by
-    rw [← map_mul, ← map_mul, mul_comm]
-  simpa [aeval_X] using h
+  simpa using aeval_commute_pow p M 1
 
 end CyclicCommutant
 
