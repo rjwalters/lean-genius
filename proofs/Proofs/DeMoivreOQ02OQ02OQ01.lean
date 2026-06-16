@@ -36,9 +36,14 @@ Let `S(m,n) := ∑_{k=0}^{n} U_{m+n−2k}`.  Two facts give the result:
 
 ## Build status
 
-VERIFIED: machine-checked via `docker-build.sh Proofs.DeMoivreOQ02OQ02OQ01`
-(7743 jobs, Lean 4 / Mathlib 4.26.0, 2026-06-15). 0 axioms, 0 sorries.
-Numerically cross-checked: `U_2·U_2 = U_4+U_2+U_0`, `U_3·U_1 = U_4+U_2`.
+BUILD-PENDING (not yet machine-checked). The proof is written with 0 axioms and
+0 sorries, but it has never been successfully compiled: the flip-to-verified build
+(#24866) was terminated during the Mathlib cache download, before this file was ever
+elaborated. Verify with `docker-build.sh Proofs.DeMoivreOQ02OQ02OQ01` once the build
+backend is available, then flip status to verified/original.
+Numerically cross-checked by hand (not machine): `U_2·U_2 = U_4+U_2+U_0`,
+`U_3·U_1 = U_4+U_2`. Likely-fragile spot to watch on first real build: the boundary
+`congr 1` in `Ssum_rec`'s `hB` (the `↑(n+1)` vs `↑n+1` cast on the peeled term).
 -/
 
 open Polynomial Polynomial.Chebyshev

@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_polynomials#Products_of_Chebyshev_polynomials",
     "date": "2026",
-    "status": "verified",
+    "status": "pending",
     "proofRepoPath": "Proofs/DeMoivreOQ02OQ02OQ01.lean",
     "tags": [
       "chebyshev-polynomials",
@@ -20,14 +20,13 @@
       "finset-sum",
       "research"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
-    "verifiedDate": "2026-06-15",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
     "lineCount": 141,
-    "assumptions": "0 axioms, 0 sorries. Machine-verified via docker-build.sh (7743 jobs, Lean 4 / Mathlib 4.26.0, 2026-06-15). Polynomial identity over any commutative ring R, for m : ℤ and n : ℕ.",
+    "assumptions": "0 axioms, 0 sorries, but BUILD-PENDING — not yet machine-checked. The proof is fully written, but the flip-to-verified build (#24866) was terminated during the Mathlib cache download before this file was ever elaborated, so no successful compilation exists. Needs `docker-build.sh Proofs.DeMoivreOQ02OQ02OQ01` to confirm before any verified claim. Polynomial identity over any commutative ring R, for m : ℤ and n : ℕ.",
     "theoremCount": 6,
     "definitionCount": 1,
     "originalContributions": [
