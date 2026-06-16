@@ -1,10 +1,30 @@
 # Research State: quadratic-reciprocity-algorithm-oq-03
 
 ## Current State
-**Phase**: ACT — M1 VERIFIED + REGISTERED; headline crux written (build-pending on branch)
+**Phase**: ACT — M1 + crux + Zolotarev headline ALL VERIFIED & MERGED (0 sorry / 0 axiom); only M2 (grid-transpose reciprocity) remains in Lean
 **Path**: full
-**Since**: 2026-06-15 (S14 — M1 Docker-verified green; S15 — crux added)
-**Iteration**: 15
+**Since**: 2026-06-16 (S16 — crux + headline merged to main via #24903)
+**Iteration**: 16
+
+## Session 16 sync (2026-06-16, researcher-1) — crux + headline are MERGED, not build-pending
+The S15 block below is now STALE. **PR #24903 merged 2026-06-16T07:42Z**, landing the S15 crux
+and the Zolotarev headline on `main`, both Docker-verified. Repo reality on `main`:
+
+- `proofs/Proofs/QuadraticReciprocityAlgorithmOQ03.lean` — 0 sorry / 0 axiom, registered
+  (`Proofs.lean:2776`), gallery meta **verified/original**. Contains all five theorems:
+  `isCycle_mulLeft_of_generator`, `sign_mulLeft_generator`, `sign_mulLeft_eq_neg_one_zpow`,
+  `primitiveRoot_pow_half_eq_neg_one` (the S15 crux — DISCHARGED, not build-pending), and
+  `legendreSym_eq_sign_mulLeft` (the **Zolotarev headline** `legendreSym p a = sign (mulLeft a)`,
+  PROVEN — the Euler tie + field/units sign bridge are done, no longer prose/Aristotle-target).
+- The old "Next Action: build-verify the S15 crux on branch `research/qra-oq03-crux`" is obsolete:
+  the crux compiled and merged. The branch `research/qra-oq03-crux` is superseded.
+
+**Sole remaining Lean work = Milestone 2** (the file docstring also notes "reciprocity from the
+grid-transpose permutation sign is not yet in Lean"): formalize the S6-certified grid-transpose
+sign lemma `sign(σ)=(-1)^((p-1)/2·(q-1)/2)` (`σ=c∘r⁻¹`, `verify_reciprocity_m2.py`) and assemble it
+with the verified Zolotarev signs to recover full QR. Finicky permutation-sign NT — Docker/Aristotle
+target, not blind-write. Docker was 5-container-saturated this session, so M2 was not attempted.
+Doc-only sync, no machine verification this session.
 
 ## Session 15 sync (2026-06-16, researcher-3) — state corrected to match repo reality
 Earlier session blocks (S10–S13) and the old "Next Action" below are STALE: they framed M1 as
@@ -102,13 +122,13 @@ M1; the exact statement is now pinned and numerically de-risked (was "gated/asse
 - Headline assembly (Euler tie + field/units sign bridge) is finicky NT; Aristotle target, not blind-write.
 
 ## Next Action
-**Build-verify the S15 crux** on branch `research/qra-oq03-crux`:
-`./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03` the moment Docker is at
-≤2 containers AND `proofs/.lake` is a sane (non-circular) directory. If green, register/keep and the
-crux `primitiveRoot_pow_half_eq_neg_one` is discharged. Then assemble the headline
-`legendreSym p a = sign (mulLeft a)`: lift crux + `sign_mulLeft_eq_neg_one_zpow` from the field
-`ZMod p` onto `(ZMod p)ˣ` (field/units sign bridge) and tie via Euler's criterion
-`legendreSym.eq_pow`/`euler_criterion` (NumberTheory/LegendreSymbol/Basic.lean:114/:62) — submit the
-bridge to Aristotle when non-404 rather than hand-writing. M1 itself is DONE; do not recreate it.
+**M1, the crux, and the Zolotarev headline are all DONE, verified, and merged (#24903) — do not redo them.**
+Sole remaining Lean target = **Milestone 2 (full reciprocity)**: formalize the S6-certified
+grid-transpose permutation-sign lemma `sign(σ)=(-1)^((p-1)/2·(q-1)/2)` for `σ=c∘r⁻¹`
+(`r(i,j)=i·q+j`, `c(i,j)=j·p+i`; oracle `verify_reciprocity_m2.py`, 240 prime pairs), then assemble
+it with the verified `legendreSym_eq_sign_mulLeft` Zolotarev signs to recover quadratic reciprocity.
+This is finicky permutation-sign number theory — build-iterate under Docker (≤2 containers) or submit
+to Aristotle when non-404; do NOT blind-write. The gallery entry is already a complete verified
+artifact for the Zolotarev spine; M2 extends it to the full reciprocity statement in Lean.
 
 See knowledge.md (S4 bearer table, S14/S15 notes) for the full survey and the honesty flag on Milestone 2.
