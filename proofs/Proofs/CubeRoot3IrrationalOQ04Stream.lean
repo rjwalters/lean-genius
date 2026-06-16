@@ -40,18 +40,34 @@ tying the existing `cbrt3_aₙ` floors to the canonical API for the first time.
 The reusable step lemma `cbrt3_stream_succ` makes each further index mechanical
 (reuse with `cbrt3_a3, cbrt3_a4, …` plus the matching irrationality witness).
 
-## Mathlib API this file depends on (VERIFY THESE NAMES at v4.26.0 first)
+## Mathlib API this file depends on (names offline-verified at v4.26.0, S36)
 
-  * `GenContFract.IntFractPair`            (namespace + structure; opened below)
-  * `IntFractPair.of`, fields `.b`, `.fr`
-  * `IntFractPair.stream_zero`
-  * `IntFractPair.stream_succ_of_some`
-  * `Irrational.ne_int`, `Irrational.sub_int`, `Irrational.inv`
-  * `Int.fract` (unfolds under `simp`), `inv_eq_one_div`, `sub_ne_zero`
+Checked against the pinned Mathlib4 checkout `2df2f0150c` (= lakefile
+`rev = "v4.26.0"`) in S36 (researcher-3):
 
-If any name drifted, the proof structure is unchanged — only the cited lemma
-needs swapping. The numbers are cert-verified, so no math re-derivation is
-needed.
+  * `GenContFract.IntFractPair`            ✓ structure (ContinuedFractions/Computation/Basic.lean),
+                                             fields `.b : ℤ`, `.fr : K`
+  * `IntFractPair.of`                       ✓ (Basic.lean:125)
+  * `IntFractPair.stream_zero`              ✓ (Computation/Translations.lean:64), exact form
+                                             `stream v 0 = some (of v)`
+  * `IntFractPair.stream_succ_of_some`      ✓ (Translations.lean:97)
+  * `Irrational.ne_int`                     ✓ (NumberTheory/Real/Irrational.lean:180)
+  * `Irrational.sub_intCast`                ✓ (Irrational.lean:272) — NOTE: an earlier draft
+                                             cited `Irrational.sub_int`, which does NOT exist at
+                                             this pin (the Int-cast subtraction lemma is
+                                             `sub_intCast`). Fixed in S36.
+  * `Irrational.inv`                        ✓ (Irrational.lean:332, `protected theorem inv`)
+  * `Int.fract`, `inv_eq_one_div`, `sub_ne_zero`  ✓ standard
+
+`Irrational` content lives in `Mathlib.NumberTheory.Real.Irrational` at this pin
+(`Mathlib.Data.Real.Irrational` is a 5-line re-export stub) — the base file's
+`import Mathlib.Data.Real.Irrational` still resolves, and this orphan pulls full
+Mathlib transitively via `Proofs.CubeRoot3IrrationalOQ04`.
+
+The numbers are cert-verified and the only name drift (`sub_int`) is now fixed,
+so this orphan should build first-try on the next Docker-up session; remaining
+risk is purely tactic-level (`simp`/`simpa` normalising `IntFractPair.of` /
+`Int.fract` and the `⁻¹ ↔ 1/·` bridge), not name resolution.
 -/
 
 import Proofs.CubeRoot3IrrationalOQ04
@@ -113,7 +129,7 @@ theorem cbrt3_stream_two :
     IntFractPair.stream cbrt3 2
       = some (IntFractPair.of ((cbrt3 - 1)⁻¹ - 2)⁻¹) := by
   have hirr1 : Irrational ((cbrt3 - 1)⁻¹) := by
-    have hsub : Irrational (cbrt3 - 1) := by simpa using irrational_cbrt3.sub_int 1
+    have hsub : Irrational (cbrt3 - 1) := by simpa using irrational_cbrt3.sub_intCast 1
     exact hsub.inv
   have hfl1 : ⌊(cbrt3 - 1)⁻¹⌋ = (2 : ℤ) := by
     rw [inv_eq_one_div]; exact cbrt3_a1
