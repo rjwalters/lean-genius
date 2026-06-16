@@ -1,0 +1,162 @@
+{
+  "id": "simson-line-theorem-oq-01",
+  "title": "Simson's Line Theorem",
+  "slug": "simson-line-theorem-oq-01",
+  "description": "For a point P on the circumcircle of triangle ABC, the feet of the perpendiculars from P onto the three side-lines AB, BC, CA are collinear. The line they span is the Simson line of P.",
+  "meta": {
+    "author": "Robert Simson / William Wallace (attributed)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Simson_line",
+    "date": "~1797 (Wallace)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SimsonLineTheorem.lean",
+    "tags": [
+      "geometry",
+      "triangle",
+      "circumcircle",
+      "collinearity",
+      "complex-coordinates",
+      "classic"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex",
+        "description": "Complex number field ℂ and basic arithmetic",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.normSq",
+        "description": "Squared modulus, used to encode the unit-circle constraint |z|² = 1",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.mul_conj",
+        "description": "z · conj z = normSq z, the bridge from the unit circle to conj z = z⁻¹",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.conj_im",
+        "description": "Imaginary part of a conjugate, used in the real/collinearity criterion",
+        "module": "Mathlib.Data.Complex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Closed-form perpendicular foot onto a unit-circle chord: foot u v p = (u + v + p - u·v·conj p)/2",
+      "Foot characterization split into perpendicularity (foot_perp, Re = 0) and incidence (foot_on_chord, Im = 0)",
+      "Difference identity foot bc p − foot ab p = (c − a)(1 − b·conj p)/2 as a pure ring fact",
+      "Collinearity reduced to the complex criterion w = conj w (simson_key), then to vanishing signed area w.im = 0 (simson_collinear)",
+      "Whole theorem discharged by conj z = z⁻¹ substitution + field_simp + ring, no axioms or sorries"
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "lineCount": 136,
+    "assumptions": "0 axioms. 0 sorries. Fully verified. Circumcircle normalised to the unit circle (Complex.normSq = 1) without loss of generality.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "sections": [
+    {
+      "title": "Foot of the Perpendicular",
+      "startLine": 40,
+      "endLine": 45,
+      "description": "Closed-form definition foot u v p = (u + v + p − u·v·conj p)/2 for the perpendicular foot from p onto the chord through unit-circle points u, v.",
+      "summary": "Foot of the Perpendicular",
+      "id": "foot-of-the-perpendicular"
+    },
+    {
+      "title": "Unit-Circle Algebra",
+      "startLine": 46,
+      "endLine": 68,
+      "description": "Helper lemmas: a unit-circle point is nonzero, conj z = z⁻¹ on the unit circle, and the real/imaginary collinearity bridges (conj z = z ⟹ im = 0, conj z = −z ⟹ re = 0).",
+      "summary": "Unit-Circle Algebra",
+      "id": "unit-circle-algebra"
+    },
+    {
+      "title": "Difference Identities",
+      "startLine": 69,
+      "endLine": 80,
+      "description": "The two foot-difference identities foot bc − foot ab = (c−a)(1−b·conj p)/2 and foot ca − foot ab = (c−b)(1−a·conj p)/2, both pure ring facts independent of the unit-circle constraint.",
+      "summary": "Difference Identities",
+      "id": "difference-identities"
+    },
+    {
+      "title": "Foot Characterization",
+      "startLine": 81,
+      "endLine": 108,
+      "description": "foot_perp: the segment P→foot is perpendicular to the chord (Re = 0). foot_on_chord: the foot lies on the chord line (Im = 0). Together they certify foot is the genuine orthogonal projection.",
+      "summary": "Foot Characterization",
+      "id": "foot-characterization"
+    },
+    {
+      "title": "Simson's Theorem",
+      "startLine": 109,
+      "endLine": 136,
+      "description": "simson_key: the complex collinearity criterion w = conj w for the triangle of feet. simson_collinear: the equivalent vanishing signed area w.im = 0, proving the three feet are collinear.",
+      "summary": "Simson's Theorem",
+      "id": "simsons-theorem"
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Simson line is named after the Scottish mathematician Robert Simson (1687–1768), though the result does not appear in his surviving work; it was first explicitly published by William Wallace in 1797 and is sometimes called the Wallace line. The theorem is a cornerstone of triangle geometry: it characterizes the circumcircle as exactly the locus of points whose three perpendicular feet onto the side-lines are collinear (a point off the circumcircle produces a genuine 'pedal triangle' of positive area).\n\nThe Simson line carries a rich further structure. As P traverses the circumcircle, the Simson line envelopes a deltoid (Steiner's deltoid), and the Simson lines of diametrically opposite points are perpendicular. The Simson line of P also bisects the segment joining P to the orthocenter of the triangle. These refinements make the Simson line a gateway to the deeper projective and metric geometry of the triangle.\n\nThe complex-number proof used here is the standard modern treatment: placing the circumcircle at the unit circle turns the orthogonal projection onto a chord into a rational expression in the vertices and their conjugates, and the unit-circle constraint conj z = 1/z collapses the collinearity condition to a polynomial identity.",
+    "problemStatement": "**Simson's Line Theorem**: Let ABC be a triangle and P a point on its circumcircle. Let F_AB, F_BC, F_CA be the feet of the perpendiculars dropped from P onto the lines AB, BC, CA respectively. Then F_AB, F_BC, F_CA are collinear; the line through them is called the Simson line (or Wallace line) of P with respect to the triangle.",
+    "text": "For a point P on the circumcircle of a triangle, the three feet of the perpendiculars from P to the sides of the triangle lie on a single line — the Simson line.",
+    "proofStrategy": "The proof uses **complex coordinates** with the circumcircle normalised to the **unit circle**.\n\n1. **Foot formula**: For u, v on the unit circle, the foot of the perpendicular from any p onto the chord-line uv has the closed form foot(u,v,p) = (u + v + p − u·v·conj p)/2. This is verified to be the orthogonal projection by checking perpendicularity (Re((p−foot)·conj(v−u)) = 0) and incidence on the line (Im((foot−u)·conj(v−u)) = 0).\n\n2. **Difference identity**: foot(b,c,p) − foot(a,b,p) = (c−a)(1 − b·conj p)/2, a pure algebraic identity. Symmetrically, foot(c,a,p) − foot(a,b,p) = (c−b)(1 − a·conj p)/2.\n\n3. **Collinearity criterion**: three complex points are collinear iff w = (z₂−z₁)·conj(z₃−z₁) is real, i.e. w = conj w (equivalently Im w = 0, the vanishing of the signed area). Applying this to the three feet and substituting conj z = z⁻¹ (valid on the unit circle) reduces the statement to a rational-function identity, closed by field_simp and ring.",
+    "keyInsights": [
+      "**Unit-circle normalisation**: placing the circumcircle at |z| = 1 makes conj z = z⁻¹, turning conjugation into a rational operation and the whole theorem into a polynomial identity",
+      "**Closed-form foot**: foot(u,v,p) = (u+v+p − u·v·conj p)/2 packages the orthogonal projection onto a chord; it needs only u, v on the circle, not p",
+      "**Difference identity**: foot(b,c,p) − foot(a,b,p) = (c−a)(1 − b·conj p)/2 is a pure ring fact — the geometric content is entirely in this factorisation through the chord direction c−a",
+      "**Real-ratio = collinear**: the classical criterion that (z₂−z₁)·conj(z₃−z₁) ∈ ℝ encodes collinearity (its imaginary part is twice the signed area of the triangle of feet)",
+      "**Circumcircle is essential**: the same computation off the unit circle yields a nonzero signed area, recovering the converse that only circumcircle points give a degenerate pedal triangle"
+    ],
+    "prerequisites": [
+      "Complex numbers and arithmetic in ℂ",
+      "Complex conjugation and modulus (normSq)",
+      "The unit-circle identity conj z = z⁻¹",
+      "Collinearity of complex points via the vanishing imaginary part of a cross product"
+    ],
+    "openQuestions": [
+      "Can the Steiner deltoid (the envelope of all Simson lines as P moves on the circumcircle) be formalized?",
+      "Can the fact that the Simson line bisects the segment from P to the orthocenter be proved in this framework?"
+    ]
+  },
+  "conclusion": {
+    "summary": "Simson's theorem is formalized with complex coordinates and the circumcircle normalised to the unit circle. The closed-form perpendicular foot foot(u,v,p) = (u+v+p − u·v·conj p)/2 and its difference identity reduce collinearity of the three feet to the complex criterion w = conj w, discharged by substituting conj z = z⁻¹ and applying field_simp with ring. The perpendicular foot is independently certified by perpendicularity and incidence lemmas.",
+    "implications": "**Theoretical Significance**: The proof again demonstrates the leverage of complex coordinates in classical plane geometry: a metric statement about perpendicular feet on a circle becomes a rational identity. The unit-circle substitution conj z = z⁻¹ is the same device that powers the complex proofs of Ptolemy's and Napoleon's theorems, situating Simson's line within a common algebraic toolkit for circle and triangle geometry.",
+    "openQuestions": [
+      "Can the Steiner deltoid envelope of Simson lines be formalized?",
+      "Can the Simson-line/orthocenter bisection property be established in this framework?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "napoleons-theorem",
+      "relationship": "companion",
+      "description": "Both reduce a classical triangle theorem to a complex-coordinate identity; Napoleon uses a rotation identity while Simson uses the unit-circle substitution conj z = z⁻¹ for perpendicular feet"
+    },
+    {
+      "targetId": "ptolemys-complex-proof",
+      "relationship": "related",
+      "description": "Both are circle theorems proved by the same complex device: normalising to the unit circle so that conj z = 1/z turns the geometric condition into an algebraic identity"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+    ],
+    "opens": [
+      "Complex",
+      "ComplexConjugate"
+    ],
+    "namespace": "SimsonLineTheorem",
+    "lineCount": 136,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "sorries": 0,
+    "path": "Proofs/SimsonLineTheorem.lean"
+  }
+}
