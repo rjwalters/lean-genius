@@ -82,6 +82,14 @@
   ],
   "sections": [
     {
+      "id": "overview",
+      "title": "Statement and Proof Idea",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring stating the theorem (|PA|² + |PC|² = |PB|² + |PD|² for any point P), justifying the explicit Euclidean sqDist on ℝ×ℝ (the ambient Prod metric is the sup metric, not Euclidean), encoding 'rectangle' by perpendicularity plus a parallelogram closing condition, and sketching the proof idea that the difference of the two sums collapses to 2(u·v) = 0.",
+      "mathContext": "With $u=B-A$, $v=D-A$: $(|PA|^2+|PC|^2)-(|PB|^2+|PD|^2) = |u+v|^2-|u|^2-|v|^2 = 2(u\\cdot v) = 0$."
+    },
+    {
       "id": "setup",
       "title": "Coordinate Setup and Squared Distance",
       "startLine": 39,
@@ -103,6 +111,11 @@
       "targetId": "pythagorean-theorem",
       "relationship": "prerequisite",
       "description": "The squared-distance formula is the Pythagorean theorem in coordinates; the British Flag identity is a two-dimensional algebraic consequence of it"
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "The classical synthetic proof of the British Flag theorem applies the law of cosines to the four triangles formed by P and the rectangle's sides; the supplementary angles at the feet of the perpendiculars make the cosine terms cancel, mirroring how 2(u·v) vanishes here"
     }
   ],
   "references": [
