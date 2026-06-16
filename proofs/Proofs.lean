@@ -3030,6 +3030,7 @@ import Proofs.ThreeSquares
 import Proofs.ThreeSquaresResidue3
 import Proofs.ThreeSquaresResidue3Obstruction
 import Proofs.ThreeSquaresSingleAP
+import Proofs.ThueMorse
 import Proofs.TractatusOntology
 import Proofs.TractatusOntologyEquiv
 import Proofs.TractatusOntologyHorn
