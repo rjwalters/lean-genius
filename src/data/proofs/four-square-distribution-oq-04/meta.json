@@ -1,0 +1,101 @@
+{
+  "id": "four-square-distribution-oq-04",
+  "title": "Six-Square Type Decomposition via the Hyperoctahedral Group B₆",
+  "slug": "four-square-distribution-oq-04",
+  "description": "Generalizes the four-square ordering-type decomposition to r₆(n): the ordered signed representations of n as a sum of six squares partition into types (sorted multisets of absolute values), each contributing (6!/∏mᵢ!)·2^(#nonzero) under the hyperoctahedral group B₆ = S₆ ⋉ (ℤ/2)⁶. The file enumerates the complete type list for n ∈ {1, 2, 3, 5, 6, 12, 30}, computes each type's contribution, and verifies that the contributions sum to Jacobi's r₆(n) values (12, 60, 160, 312, 544, 2080, 14144). It answers OQ-04's 2k=6 case affirmatively: the orbit/type bookkeeping of the parent (2k=4) carries over verbatim, with the sign factor 2^(#nonzero) rather than 2⁶ because flipping the sign of a zero coordinate fixes the tuple.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-06-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FourSquareDistributionOQ04.lean",
+    "tags": [
+      "number-theory",
+      "sums-of-squares",
+      "hyperoctahedral-group",
+      "orbit-counting",
+      "jacobi-formula",
+      "combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "assumptions": "No `sorry`, no `axiom` declarations. The 16 per-type contribution equalities are discharged by `native_decide` (16 of the 19 native_decide invocations), which the kernel accepts via `Lean.ofReduceBool` — the standard compiler-trust dependency, identical to the parent `four-square-distribution`. The Jacobi values r₆(n) and the completeness of each type enumeration are independently cross-checked by `verify_hyperoctahedral_2k.py` in the problem's research directory.",
+    "lineCount": 207,
+    "theoremCount": 25,
+    "definitionCount": 22,
+    "originalContributions": [
+      "RepType6: a sorted six-tuple structure capturing the unordered multiset of absolute values of a six-square representation, with sortedness and sum-of-squares obligations",
+      "RepType6.contribution = (6!/∏mᵢ!)·2^(#nonzero): the hyperoctahedral orbit-size formula (★), the 2k=6 instance of the parent's (4!/∏mᵢ!)·2^(#nonzero)",
+      "Complete type enumerations for n ∈ {1,2,3,5,6,12,30}, each contribution verified by native_decide",
+      "r6_5, r6_6, r6_12, r6_30: the type contributions sum to Jacobi's r₆(n) = 312, 544, 2080, 14144 respectively",
+      "Structural bounds nonzeroCount_le_six and signFactor_le_64 (the sign factor is a power of two ≤ 2⁶)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The number of representations of n as an ordered sum of k signed squares, rₖ(n), was given closed form by **Jacobi** (1834, Fundamenta nova theoriae functionum ellipticarum) for k = 2, 4, 6, 8 via theta-function identities: r₄(n) = 8σ(n) for odd-ish n, and analogous divisor-sum formulas for r₆ and r₈. The combinatorial structure underneath these counts is governed by the **hyperoctahedral group** Bₖ = Sₖ ⋉ (ℤ/2)ᵏ of signed permutations, |Bₖ| = k!·2ᵏ, which acts on representations by permuting and sign-flipping coordinates. The orbit of a representation under Bₖ is determined by its sorted multiset of absolute values (its 'type'), and the orbit size is k!/∏mᵢ! times 2 to the number of nonzero coordinates — the zero coordinates contribute no sign freedom. The parent gallery proof establishes this for k = 4 (B₄, |B₄| = 384); this file confirms the k = 6 case (B₆, |B₆| = 6!·2⁶ = 46080).",
+    "problemStatement": "**Open Question OQ-04 from four-square-distribution**: the parent proof writes r₄(n) as a sum over ordering types of orbit sizes 2^(#nonzero)·4!/∏mᵢ!. Does this orbit–stabilizer bookkeeping generalize to r_{2k}(n) under B_{2k} = S_{2k} ⋉ (ℤ/2)^{2k}? This file answers the 2k = 6 case: yes, verbatim, with the orbit-size formula (6!/∏mᵢ!)·2^(#nonzero) and ∑ contributions = r₆(n) checked against Jacobi's values for a representative set of n.",
+    "proofStrategy": "The file mirrors the parent's **computational** route rather than the heavier MulAction/semidirect-product formalization. A type is a `RepType6 n` — a sorted six-tuple (a₁ ≤ … ≤ a₆) with ∑aᵢ² = n. Its contribution is `permutations · signFactor`, where `permutations = 720/∏(count v)!` is the multinomial number of orderings and `signFactor = 2^(#nonzero)`. For each small n the complete list of sorted shapes is enumerated as explicit `RepType6` terms (sortedness by `decide`, the sum by `norm_num`), each contribution is evaluated by `native_decide`, and the per-n totals r6_5, r6_6, r6_12, r6_30 follow by rewriting with the contribution lemmas. The structural bounds use `omega` and `Nat.pow_le_pow_right`. This is exactly the 'fixed small m' first ACT recommended in the problem's knowledge base.",
+    "keyInsights": [
+      "**The sign factor is 2^(#nonzero), not 2⁶.** Flipping the sign of a zero coordinate leaves the tuple unchanged, so only the nonzero coordinates carry independent sign choices. This zero-degeneracy is identical to the parent and is the only place the formula departs from the naive |B₆|-orbit count.",
+      "**Type = sorted multiset of absolute values.** Two ordered signed representations are in the same B₆-orbit iff they share the same multiset of |coordinate| values. The sorted six-tuple is a canonical representative, making `RepType6` a clean decidable type with `deriving DecidableEq`.",
+      "**native_decide makes orbit sizes a kernel computation.** Each contribution (6!/∏mᵢ!)·2^(#nonzero) is a concrete natural-number evaluation; native_decide compiles and runs it, trading an analytic orbit-stabilizer argument for a trusted-compiler computation (the same trade the parent makes 20 times).",
+      "**The totals reproduce Jacobi's r₆ exactly.** r₆(5) = 312, r₆(6) = 544, r₆(12) = 2080, r₆(30) = 14144 are obtained purely by summing type contributions, with no theta-function input — a combinatorial cross-check of Jacobi's closed form on representative n.",
+      "**n = 30 exhibits the richest structure**: six distinct shapes, including the all-nonzero (1,1,2,2,2,4) and the largest single orbit (0,0,1,2,3,4) contributing 5760."
+    ],
+    "prerequisites": [
+      "four-square-distribution (the 2k = 4 parent): the orbit-size formula and the type-decomposition framework",
+      "Jacobi's r₆(n) closed form (taken as the arithmetic input the orbit count must reproduce)",
+      "Mathlib list/multiset arithmetic (List.dedup, List.count, Nat.factorial) and native_decide"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "four-square-distribution",
+      "relationship": "extends",
+      "description": "Parent (2k = 4 case). This file is the 2k = 6 instance of the same hyperoctahedral type-decomposition, confirming the orbit/type bookkeeping generalizes verbatim from B₄ to B₆."
+    },
+    {
+      "targetId": "four-square-distribution-oq-01",
+      "relationship": "thematic",
+      "description": "Sibling open question on the same parent. Both refine the structure of four/six-square representation counts; OQ-01 pursues a different facet while OQ-04 handles the dimension generalization to six coordinates."
+    },
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "thematic",
+      "description": "The underlying existence theorem (every n is a sum of four squares). The distribution problems here count and classify the representations whose existence Lagrange's theorem guarantees, extended to six squares."
+    }
+  ],
+  "conclusion": {
+    "summary": "Confirms the 2k = 6 case of the hyperoctahedral type-decomposition: r₆(n) decomposes as a sum of orbit contributions (6!/∏mᵢ!)·2^(#nonzero) under B₆, verified by native_decide on the complete type lists for n ∈ {1,2,3,5,6,12,30} and matched against Jacobi's r₆ values. 25 theorems, 0 sorries, 0 axiom declarations (contributions via native_decide / Lean.ofReduceBool).",
+    "implications": "The orbit/type bookkeeping that underlies Jacobi's r₄ formula is not special to four coordinates — it carries over to six (and, by the same template, to any even 2k). The computational `RepType6` approach scales directly: only the tuple arity, the multinomial denominator, and the type enumerations change. The deeper question — a single uniform Lean proof of the orbit-size formula for general 2k (rather than per-arity computation) — is the subject of the ongoing Decomp/Bridge/Keystone/Arrange development in the same research directory.",
+    "openQuestions": [
+      "Can the per-arity native_decide computations be replaced by one uniform orbit-stabilizer theorem valid for all 2k, formalizing the B_{2k}-action and its stabilizers directly? This is the goal of the unregistered FourSquareDistributionOQ04Decomp / Bridge / Keystone / Arrange files.",
+      "Does the 2k = 8 case (B₈, |B₈| = 8!·2⁸ = 10,321,920) admit the same computational treatment, and do the totals reproduce Jacobi's r₈(n) = 16σ₃(n) − 32σ₃(n/2)-type formula?",
+      "Is there a generating-function identity that packages ∑_type contribution·q^(∑aᵢ²) into the sixth power of a theta series directly, making the combinatorial decomposition and Jacobi's analytic formula two readings of the same object?"
+    ]
+  },
+  "leanFile": {
+    "lineCount": 207,
+    "path": "Proofs/FourSquareDistributionOQ04.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 22,
+    "theoremCount": 25
+  },
+  "references": [
+    {
+      "authors": "C. G. J. Jacobi",
+      "title": "Fundamenta nova theoriae functionum ellipticarum",
+      "year": "1834",
+      "note": "Closed-form formulae for r₄, r₆, r₈ via theta functions; the r₆(n) values reproduced combinatorially here."
+    },
+    {
+      "authors": "E. Grosswald",
+      "title": "Representations of Integers as Sums of Squares",
+      "year": "1985",
+      "note": "Standard reference on rₖ(n); Springer."
+    }
+  ],
+  "sorries": 0
+}
