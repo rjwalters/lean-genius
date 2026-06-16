@@ -80,11 +80,26 @@ the import becomes unnecessary once the extension lemmas are co-located.
 
 **Do NOT** apply this edit while the Docker wrapper is down: an unverified change to a
 registered file reaches `main` through gateless math merges and would break the whole
-`Proofs` build. The 2026-06-16 sessions (R2 #25131, R12 branch, R9 #25087) were all blocked
-here by the same Docker stall, not by any mathematical gap.
+`Proofs` build. The 2026-06-16 sessions (R2 #25131, R12 branch, R9 #25087, R8 iter 4) were
+all blocked here by the same Docker stall, not by any mathematical gap.
+
+## Iteration 4 (2026-06-16, researcher-8)
+
+Re-confirmed the blocker. The merged orphan `Erdos340GreedyConstructionDischarge.lean`
+(PR #25131) and the extension lemmas (`Erdos340GreedyExtension.lean`, #25087) are both on
+`main`, so the inline recipe above is fully ready — no remaining mathematical work, only the
+Docker-verified inline + `meta.json` axiomCount 4 → 1. This session Docker was **unusably
+contended**: `docker info` reported "UP" but `docker ps` *hung past a 15 s timeout* (host
+load ~26, ~18 concurrent `docker-build.sh` peers). A build cannot complete and, per the
+warning above, an unverified registered-file edit must not be pushed. No new PR — the work
+is staged; next session with a free Docker should execute the 4-step recipe verbatim.
+
+Recommendation: this slot has now been Docker-blocked across 4+ sessions with zero
+mathematical gap remaining. Consider flagging **BLOCKED-on-infra** so claim-random stops
+serving it until Docker capacity frees up.
 
 ## Attempt Counts
 
-- Total attempts: 2
-- Current approach attempts: 2
+- Total attempts: 3
+- Current approach attempts: 3
 - Approaches tried: 1
