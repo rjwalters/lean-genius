@@ -79,7 +79,7 @@
     {
       "id": "sums-of-powers",
       "title": "Sums of k-th Powers",
-      "startLine": 24,
+      "startLine": 27,
       "endLine": 36,
       "summary": "Defines `IsSumOfPowers(n,k,m)` ($\\exists x_1,\\ldots,x_m: n = \\sum x_i^k$) and `powerSumCount` ($f_{k,m}(x) = |\\{n \\le x : \\text{IsSumOfPowers}(n,k,m)\\}|$).",
       "mathContext": "$\\text{IsSumOfPowers}(n, k, m) \\iff \\exists x_1, \\ldots, x_m \\in \\mathbb{N}: n = \\sum_{i=1}^{m} x_i^k$. $f_{k,m}(x) = |\\{n \\le x : \\text{IsSumOfPowers}(n,k,m)\\}|$."
@@ -88,31 +88,31 @@
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 37,
-      "endLine": 45,
+      "endLine": 102,
       "summary": "Trivial case $k=1$: $f_{1,m}(x) \\ge m$. Monotonicity: $f_{k,m}(x) \\le f_{k,m+1}(x)$ via zero-padding ($0^k = 0$).",
       "mathContext": "$f_{1,m}(x) \\ge m$ (trivial for first powers). $f_{k,m}(x) \\le f_{k,m+1}(x)$ (monotonicity via zero-padding)."
     },
     {
       "id": "landau",
       "title": "Landau's Theorem",
-      "startLine": 46,
-      "endLine": 53,
+      "startLine": 103,
+      "endLine": 111,
       "summary": "Landau's theorem: $f_{2,2}(x) \\sim c \\cdot x / \\sqrt{\\log x}$ where $c \\approx 0.7642$ is the Landau–Ramanujan constant. Resolves $k = 2$.",
       "mathContext": "$f_{2,2}(x) \\sim \\frac{c \\cdot x}{\\sqrt{\\log x}}$ where $c = \\frac{1}{\\sqrt{2}} \\prod_{p \\equiv 3 \\pmod{4}} \\frac{1}{\\sqrt{1 - p^{-2}}}$ (Landau-Ramanujan constant). An integer is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ divides it to an even power."
     },
     {
       "id": "main-conjectures",
       "title": "Main Conjectures",
-      "startLine": 54,
-      "endLine": 76,
+      "startLine": 112,
+      "endLine": 132,
       "summary": "Part 1: $f_{k,k}(x) \\gg_{\\varepsilon} x^{1-\\varepsilon}$ (near-full density). Part 2: $f_{k,m}(x) \\gg x^{m/k}$ for $m < k$ (dimensional lower bound). Combined as `ErdosProblem323`.",
       "mathContext": "Part 1: $\\forall k \\ge 2,\\, \\forall \\varepsilon > 0,\\, \\exists c > 0,\\, x_0: f_{k,k}(x) \\ge c \\cdot x^{1-\\varepsilon}$ for $x \\ge x_0$. Part 2: $\\forall 1 \\le m < k,\\, k \\ge 2,\\, \\exists c > 0,\\, x_0: f_{k,m}(x) \\ge c \\cdot x^{m/k}$ for $x \\ge x_0$."
     },
     {
       "id": "density-question",
       "title": "Density Question",
-      "startLine": 77,
-      "endLine": 84,
+      "startLine": 133,
+      "endLine": 139,
       "summary": "Open: is $f_{k,k}(x) = o(x)$ for $k > 2$? Known for $k = 2$ (Landau). `DensityQuestion(k)` formalizes $\\lim f_{k,k}(x)/x = 0$.",
       "mathContext": "$\\text{DensityQuestion}(k) \\iff \\forall \\varepsilon > 0,\\, \\exists x_0: f_{k,k}(x) < \\varepsilon \\cdot x$ for $x \\ge x_0$. Equivalently, $f_{k,k}(x) = o(x)$. Known for $k = 2$ (Landau), open for $k > 2$."
     }
