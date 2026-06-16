@@ -1,4 +1,4 @@
-# Knowledge Base: niven-theorem-oq-01
+# Knowledge Base: lucas-theorem-oq-01
 
 Insights accumulated during research on this problem.
 

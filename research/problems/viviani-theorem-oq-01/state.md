@@ -1,4 +1,4 @@
-# Research State: niven-theorem-oq-01
+# Research State: viviani-theorem-oq-01
 
 ## Current State
 **Phase**: OBSERVE
