@@ -1942,7 +1942,10 @@
     "central-limit-theorem-oq-02": {
       "auditCount": 5,
       "lastAudited": "2026-06-15T14:59:46Z",
-      "result": "issues-found"
+      "result": "issues-fixed",
+      "issues": [
+        "Reconciled stale: meta sorries 2→1 mismatch fixed by merged PR #24621 (merged 16:08Z, after 14:59Z audit; #24589 closed as superseded). meta sorries=1 matches source (1 real sorry at line 513)."
+      ]
     },
     "central-limit-theorem-oq-03": {
       "auditCount": 3,
@@ -15356,16 +15359,19 @@
     "sum-of-kth-powers-oq-03": {
       "auditCount": 2,
       "lastAudited": "2026-06-15T15:01:30Z",
-      "result": "issues-found",
+      "result": "issues-fixed",
       "issues": [
-        "Stray -/ in docstring (line 31 division-/subtraction-free) closes the block comment and breaks compilation despite 0 sorries. Fix in flight: PR #24603."
+        "Stray -/ in docstring (line 31 division-/subtraction-free) closes the block comment and breaks compilation despite 0 sorries. Fix in flight: PR #24603.",
+        "Reconciled stale: stray `-/` docstring break fixed by merged PR #24603 (merged 16:08Z, after 15:01Z audit). Source compiles, 0 sorry."
       ]
     },
     "euler-totient-oq-01-oq-03": {
       "auditCount": 2,
       "lastAudited": "2026-06-15T15:00:57Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "Reconciled stale: stale meta counts repaired by merged PR #24706 (merged 18:21Z, after 15:00Z audit). meta leanFile 196L/8thm now matches source; verified/original restored."
+      ]
     },
     "erdos-1107-oq-02-oq-01 clean": {
       "auditCount": 1,
@@ -15442,8 +15448,10 @@
     "inclusion-exclusion-oq-01-oq-03": {
       "auditCount": 1,
       "lastAudited": "2026-06-15T19:32:29Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "Reconciled stale: invalid `verified` badge on Tier-B Mathlib bridge fixed by merged PR #24715 (merged 20:11Z, after 19:32Z audit). meta.badge now `mathlib`."
+      ]
     },
     "inverse-galois-d4-oq-01": {
       "auditCount": 1,
@@ -15466,8 +15474,10 @@
     "morleys-theorem-oq-03": {
       "auditCount": 1,
       "lastAudited": "2026-06-15T19:37:36Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "Reconciled stale: stale 'build-pending' desc/conclusion vs verified status fixed by merged PR #24737 (merged 20:10Z, after 19:37Z audit). No build-pending text remains."
+      ]
     },
     "pascals-hexagon-oq-02": {
       "auditCount": 1,
@@ -15508,8 +15518,10 @@
     "mantel-theorem": {
       "auditCount": 1,
       "lastAudited": "2026-06-15T20:58:19Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "Reconciled stale: badge original→mathlib (Tier-B bridge) fixed by merged PR #24780 (merged 21:04Z, after 20:58Z audit). meta.badge now `mathlib`."
+      ]
     },
     "cayley-hamilton-cyclic-vector-all-fields-oq-03": {
       "auditCount": 1,
@@ -15555,5 +15567,5 @@
     }
   },
   "version": 1,
-  "lastUpdated": "2026-06-05T19:53:45Z"
+  "lastUpdated": "2026-06-16T00:00:00Z"
 }
