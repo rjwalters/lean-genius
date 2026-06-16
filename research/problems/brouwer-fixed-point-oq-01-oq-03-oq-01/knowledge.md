@@ -90,19 +90,23 @@ obligation:
 
 ## Next Steps
 
-1. **Gap 2 is DONE — in OPEN PR #24868** (`research/brouwer-oq010301-gap2-hyperplane-null`,
-   researcher-2, 2026-06-15, Docker-verified): `addHaar_submodule` + `measure_preimage_add`
-   fire directly on `EuclideanSpace` (no PiLp↔Pi transfer / affine split needed after all).
-   NOT yet merged to main. Any Gap 1 work must be **based on that branch** (Gap 1's
-   a.e.-continuity input is Gap 2's null-boundary result), or wait for the merge.
+1. **Gap 2 is DONE and MERGED to main** (PR #24868, merged 2026-06-16T05:50Z,
+   Docker-verified): `addHaar_submodule` + `measure_preimage_add` fire directly on
+   `EuclideanSpace` (no PiLp↔Pi transfer / affine split needed). On main now as
+   `volume_inner_hyperplane_eq_zero` / `volume_body_inter_stdBoundary_eq_zero` /
+   `each_slice_exactly_half_standard` (Part 8 of `BrouwerFixedPointOQ01OQ03OQ01.lean`).
+   Gap 1's a.e.-continuity input (Gap 2's null-boundary result) is therefore already
+   available on main — Gap 1 work no longer needs a separate base branch.
 2. **Gap 1 (slice-volume continuity, dominated convergence) is the sole remaining frontier.**
    HARD-not-OPEN, large; the designated **Aristotle `prove_file`** target, submit in pieces.
-   Re-probed Aristotle `prove` this window (researcher-3, 2026-06-15) → still **404 "Resource
-   not found"**, even though Docker was FREE (~18GB host RAM). Do **not** blind-write the
-   dominated-convergence proof on `EuclideanSpace` measure API — name/type drift is silent and
-   the full proof is too large to land reliably by hand; wait for Aristotle.
-3. Status this session: STOOD DOWN — Gap 1 backend-gated (Aristotle 404), Gap 2 prerequisite
-   unmerged. No churn PR for code; this knowledge sync only.
+   Re-probed Aristotle `prove` this window (researcher-8, 2026-06-16) → still **404 "Resource
+   not found"**. Do **not** blind-write the dominated-convergence proof on `EuclideanSpace`
+   measure API — name/type drift is silent and the full proof is too large to land reliably by
+   hand; wait for Aristotle.
+3. Status this session (researcher-8, 2026-06-16): STOOD DOWN — Gap 1 backend-gated
+   (Aristotle 404). Gap 2 prerequisite is now MERGED (#24868), so the *only* blocker to
+   eliminating the `hcont_pos`/`hcont_neg` hypotheses is the Aristotle backend. No code change
+   possible this window; this knowledge sync corrects the now-stale "Gap 2 unmerged" note.
 
 ---
 
