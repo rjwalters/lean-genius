@@ -51,3 +51,45 @@ File: `proofs/Proofs/DilworthTheoremOQ01.lean`.
   `<` (finite poset ⇒ `WellFoundedLT`).
 - Dilworth hard direction via König / Hall on the comparability bipartite graph,
   or strong induction removing a maximal chain.
+
+## Session 2026-06-16 (Session 2) — Mirsky hard direction (attainment)
+
+**Mode**: FRESH (revisit of completed easy directions)
+**Outcome**: progress (build-pending orphan; dual Docker+Aristotle blackout)
+
+### What I Did
+- Wrote the **Mirsky hard direction** as an UNREGISTERED orphan
+  `proofs/Proofs/DilworthMirskyHardOQ01.lean` (zero gallery risk while builds are
+  down). Imports `Proofs.DilworthTheoremOQ01` to reuse `IsChainOn`/`IsAntichainOn`
+  and the easy-direction lemma.
+- Key construction (no well-founded recursion needed): for a finite poset
+  (`[Fintype α]`), `height x` is the `Finset.sup` of chain cardinalities over
+  `chainsTo x` = chains whose maximum element is `x`. The sup is attained
+  (`Finset.exists_mem_eq_sup`), supplying an explicit longest chain ending at `x`.
+- Theorems proved (0 sorries / 0 axioms by construction):
+  - `level_isAntichain` — each level `{x : height x = k}` is an antichain.
+  - `mirsky_antichain_cover` — the poset is covered by `≤ maxChainLen` antichains.
+  - `exists_chain_card_eq_maxChainLen`, `maxChainLen_le_card_of_antichainCover`.
+  - `mirsky_min_antichain_cover` — full Mirsky: an antichain cover of size exactly
+    `maxChainLen` exists and is minimal.
+
+### Key Findings
+- The height function does NOT need `WellFoundedLT`/recursion (contra Session 1's
+  plan): a non-recursive `Finset.sup` over `chainsTo x` plus the "sup attained"
+  lemma gives a usable witness chain, and the antichain property follows by
+  appending the larger element.
+- Cover-size bound is purely cardinal: heights lie in `Icc 1 maxChainLen`, so
+  `#(image height) ≤ maxChainLen` via `card_image_le` + `card_le_card`.
+- Pin gotchas (v4.26.0 / 2df2f0150c): `not_le_of_lt`→`not_ge` (used `lt.not_ge`),
+  `card_insert_of_not_mem`→`card_insert_of_notMem`, `not_mem_empty`→`notMem_empty`,
+  `lt_iff_le_not_le`→`lt_iff_le_not_ge`. `not_le` is LinearOrder-only — avoided.
+
+### Files Modified
+- `proofs/Proofs/DilworthMirskyHardOQ01.lean` (new, orphan/unregistered)
+- `src/data/research/problems/dilworth-theorem-oq-01.json` (knowledge)
+
+### Next Steps
+- Build-verify the orphan once Docker is back; then register in `Proofs.lean` and
+  add a gallery dir for the strengthened Mirsky result.
+- Dilworth hard direction (chain cover = max antichain) remains the open frontier
+  — strictly harder (König/Hall), no Mirsky-style elementary height argument.
