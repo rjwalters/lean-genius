@@ -1649,8 +1649,6 @@ private lemma dirichletSublatticeRealBasisLinearIndependent
   -- by definition; `Matrix.row` is the identity coercion, so the two functions agree
   -- pointwise and we can convert.
   convert hLI using 1
-  funext i
-  rfl
 
 /-- **S16b ACT** — Promote `dirichletSublatticeRealBasisVec p r` from a linearly
 independent family (S16a) to a `Module.Basis` of the ambient pi-space `Fin 3 → ℝ`.
@@ -1989,8 +1987,8 @@ theorem needs_four_iff_excluded (n : ℕ) (hn : n ≥ 1) :
     squaresNeeded n = 4 ↔ IsExcludedForm n := by
   have hn0 : ¬ (n = 0) := by omega
   unfold squaresNeeded
-  split_ifs with h0 h1 h2 h3
-  · exact absurd h0 hn0
+  rw [if_neg hn0]
+  split_ifs with h1 h2 h3
   · -- n is a perfect square, so not excluded (a² + 0² + 0² = n)
     refine iff_of_false (by norm_num) ?_
     intro hexc
@@ -2001,10 +1999,10 @@ theorem needs_four_iff_excluded (n : ℕ) (hn : n ≥ 1) :
     intro hexc
     obtain ⟨a, b, hab⟩ := h2
     exact excluded_form_not_sum_three_sq hexc ⟨(a : ℤ), (b : ℤ), 0, by rw [← hab]; push_cast; ring⟩
-  · -- value 3: ¬IsExcludedForm n holds directly
+  · -- value 4: reached only when IsExcludedForm n (h3 : IsExcludedForm n)
+    exact iff_of_true rfl h3
+  · -- value 3: ¬IsExcludedForm n holds directly (h3 : ¬IsExcludedForm n)
     exact iff_of_false (by norm_num) h3
-  · -- value 4: reached only when IsExcludedForm n
-    exact iff_of_true rfl (not_not.mp h3)
 
 /-- The density of numbers needing 4 squares:
     |{n ≤ x : n = 4^a(8b+7)}| / x → 1/6 as x → ∞.
