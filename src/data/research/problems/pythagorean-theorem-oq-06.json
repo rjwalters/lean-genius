@@ -33,11 +33,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (merged): de Gua proved in DeGuaTheorem.lean, 0 sorry/0 axiom, build GREEN, registered in Proofs.lean, merged via PR #24992",
+    "progressSummary": "COMPLETE + GALLERIED: de Gua proved (PR #24992), gallery entry src/data/proofs/pythagorean-theorem-oq-06 added (meta + annotations)",
     "builtItems": [
       "de_gua_core (edge-vector form) in Proofs/DeGuaTheorem.lean — crossSq identity under mutual orthogonality, via linear_combination",
       "de_gua (vertex form) — full tetrahedron statement reduced to de_gua_core",
-      "de_gua_axis_aligned — canonical axis-aligned model, pure ring"
+      "de_gua_axis_aligned — canonical axis-aligned model, pure ring",
+      "Gallery entry created: src/data/proofs/pythagorean-theorem-oq-06/ (meta.json + 6 annotations), resolver-validated 0 misaligned"
     ],
     "insights": [
       "de Gua reduces to one polynomial identity: (v-u)x(w-u) = uxv+vxw+wxu, then Binet-Cauchy cross terms vanish under orthogonality",
