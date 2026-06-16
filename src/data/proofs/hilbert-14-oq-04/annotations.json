@@ -1,0 +1,97 @@
+[
+  {
+    "id": "hilbert-14-oq-04-isinvariant",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 42,
+      "endLine": 49
+    },
+    "type": "insight",
+    "title": "Fixed-Points Subalgebra is G-Invariant",
+    "content": "Registers the Algebra.IsInvariant instance for the fixed-points subalgebra B = FixedPoints.subalgebra k R G inside R. The witness is definitional: any b ∈ R that is fixed by every g already lies in the image of B's inclusion, so the membership obligation is discharged by ⟨⟨b, hb⟩, rfl⟩. This instance is the entry point that lets the downstream integrality and Artin-Tate machinery fire automatically.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fixed points",
+      "invariant subring",
+      "typeclass instance",
+      "Algebra.IsInvariant"
+    ],
+    "mathContext": "$B = R^G = \\{b \\in R : g\\cdot b = b \\ \\forall g \\in G\\}$; the IsInvariant predicate holds definitionally."
+  },
+  {
+    "id": "hilbert-14-oq-04-integral",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 51,
+      "endLine": 58
+    },
+    "type": "insight",
+    "title": "Integrality of R over the Invariant Subring",
+    "content": "Records Algebra.IsIntegral (R^G) R via Mathlib's Algebra.IsInvariant.isIntegral. The mathematical content is the orbit polynomial: for r ∈ R the product ∏_{g∈G}(X − g·r) is monic of degree |G|, and its coefficients are the elementary symmetric functions of the orbit, which are G-invariant and therefore live in R^G. Hence every element of R is integral over R^G — the engine of the whole finiteness argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "integral extension",
+      "orbit polynomial",
+      "elementary symmetric functions",
+      "monic polynomial"
+    ],
+    "mathContext": "$r$ is a root of $\\prod_{g\\in G}(X - g\\cdot r)$, monic of degree $|G|$ with coefficients in $R^G$."
+  },
+  {
+    "id": "hilbert-14-oq-04-main",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 60,
+      "endLine": 99
+    },
+    "type": "theorem",
+    "title": "Hilbert Finiteness: R^G is a Finitely Generated k-Algebra",
+    "content": "The headline result hilbert_finiteness: the invariant subring R^G = FixedPoints.subalgebra k (MvPolynomial (Fin n) k) G is Algebra.FiniteType over k for any finite group G. This is the qualitative half of Emmy Noether's 1916 theorem, proved with 0 sorries and 0 axioms. The quantitative degree bound (generators in degree ≤ |G|) is deferred.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite generation",
+      "Noether 1916",
+      "Hilbert's 14th problem",
+      "invariant theory"
+    ],
+    "mathContext": "$R^G$ is finitely generated as a $k$-algebra — the positive finite-group case of Hilbert's 14th problem."
+  },
+  {
+    "id": "hilbert-14-oq-04-artin-tate",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 84,
+      "endLine": 98
+    },
+    "type": "key-step",
+    "title": "The Artin-Tate Tower Argument",
+    "content": "The proof works the tower k → R^G → R. Restrict-scalars upgrades the automatic Algebra.FiniteType k R to Algebra.FiniteType (R^G) R; combined with integrality this yields Module.Finite (R^G) R, hence R is a finitely generated R^G-module (fg_top). With k → R algebra-f.g. and the inclusion R^G ↪ R injective, the Artin-Tate lemma fg_of_fg_of_fg forces the intermediate subalgebra k → R^G to be finitely generated; Subalgebra.fg_iff_finiteType translates this back to Algebra.FiniteType k (R^G).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Artin-Tate lemma",
+      "tower of algebras",
+      "module finiteness",
+      "restrict scalars"
+    ],
+    "mathContext": "Tower $k \\to R^G \\to R$: $k\\to R$ algebra-f.g. and $R$ a f.g. $R^G$-module $\\Rightarrow k \\to R^G$ finitely generated."
+  },
+  {
+    "id": "hilbert-14-oq-04-context",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 60,
+      "endLine": 99
+    },
+    "type": "context",
+    "title": "Why the Finite Case is the Tame Case",
+    "content": "Hilbert's 14th problem has a famously mixed answer: finitely generated for reductive groups (Hilbert, Weyl) but not in general (Nagata's 1959 unipotent counterexample). Finite groups sit squarely on the positive side — Noether settled them in 1916. The orbit-polynomial route used here is characteristic-free, sidestepping the Reynolds averaging operator that breaks in the modular case (when char k divides |G|).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hilbert's 14th problem",
+      "reductive groups",
+      "Nagata counterexample",
+      "modular invariant theory"
+    ],
+    "mathContext": "Finite $\\Rightarrow$ f.g. invariants (Noether); unipotent $\\not\\Rightarrow$ f.g. (Nagata 1959)."
+  }
+]
