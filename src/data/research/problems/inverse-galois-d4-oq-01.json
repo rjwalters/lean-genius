@@ -1,7 +1,7 @@
 {
   "slug": "inverse-galois-d4-oq-01",
   "title": "Semidirect-Product Structure ℤ/4 ⋊ ℤ/2 of the D₄ Galois Action",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "available",
   "tier": "B",
   "path": "Proofs/InverseGaloisD4OQ01.lean",
@@ -28,27 +28,28 @@
     "focus": "Internal structure complete; external SemidirectProduct equivalence blueprinted (lift compatibility reduces to reflection_conj_rotation'). Build + Aristotle unavailable this session."
   },
   "knowledge": {
-    "progressSummary": "ORIENT: internal ℤ/4 ⋊ ℤ/2 decomposition already proven (0 sorry/0 axiom); external SemidirectProduct ≃* DihedralGroup 4 drafted as a blueprint, unverified (no build, Aristotle down).",
+    "progressSummary": "ACT: external d4Equiv companion file written in full (no sorry), build-pending; SDP/MulAut/TypeTags API source-confirmed; only 3 tactic-level points remain to verify at build.",
     "builtItems": [
       "InverseGaloisD4OQ01.lean: rotations ≅ ℤ/4 (rHom, rHom_injective, rotationsEquiv, card_rotations)",
       "InverseGaloisD4OQ01.lean: rotations_normal, reflection_conj_rotation, reflection_conj_rotation'",
       "InverseGaloisD4OQ01.lean: reflections ≅ ℤ/2, rotations ⊔ reflections = ⊤, rotations ⊓ reflections = ⊥",
-      "InverseGaloisD4OQ01.lean: d4_internal_semidirect (the four defining properties)"
+      "InverseGaloisD4OQ01.lean: d4_internal_semidirect (the four defining properties)",
+      "Wrote complete external companion (build-pending, staged outside proofs/Proofs/): research/problems/inverse-galois-d4-oq-01/lean/InverseGaloisD4OQ01External.lean — invAut, φ, sHom, lift_compat, lift_surjective, lift_injective, d4Equiv (DihedralGroup 4 ≃* ℤ/4 ⋊ ℤ/2)"
     ],
     "insights": [
       "Order 8 does not fix the isomorphism type (D₄ vs Q₈ vs 3 abelian); the internal decomposition with the inversion action does.",
       "SemidirectProduct.lift compatibility hypothesis collapses, on the ℤ/2 generator, to exactly reflection_conj_rotation' — the hard content is already proven.",
       "Bijectivity of the lift needs no Fintype/cardinality lemma: surjectivity from explicit preimages of r i and sr i; injectivity from lift⟨n,g⟩ = rHom n * sHom g plus sr a ≠ 1.",
-      "Mathlib (v4.26.0) has SemidirectProduct but no DihedralGroup-as-semidirect-product result, so the external d4Equiv is a genuine addition."
+      "Mathlib (v4.26.0) has SemidirectProduct but no DihedralGroup-as-semidirect-product result, so the external d4Equiv is a genuine addition.",
+      "Source-confirmed (Mathlib v4.26.0 rev 2df2f01) that SemidirectProduct.lift compatibility hypothesis is exactly (MulAut.conj (fg g)).toMonoidHom.comp fn and element form is fn a.1 * fg a.2 — the blueprint API recollection is now verified, removing the #1 build risk."
     ],
     "mathlibGaps": [
       "No DihedralGroup n ≃* SemidirectProduct ... result in Mathlib v4.26.0.",
       "Need to confirm exact SemidirectProduct.lift hypothesis form and MulAut.conj_apply at build time."
     ],
     "nextSteps": [
-      "On a warm cache: paste the knowledge.md external blueprint into a companion file, build via docker-build.sh, fix the listed API points, register, and flip gallery status to verified/original.",
-      "Verify the existing InverseGaloisD4OQ01.lean builds, then upgrade meta.json status formalized → verified (currently under-claimed at 0 sorry/0 axiom).",
-      "Pursue OQ-03 separately (uniqueness of transitive order-8 subgroup of S₄)."
+      "When Docker ≤2 containers or Aristotle back: copy staged InverseGaloisD4OQ01External.lean into proofs/Proofs/, build via docker-build.sh, fix any of 3 residual tactic points (ZMod-2 if-discharge; MulAut.mul_apply/one_apply names; lift_apply rfl), register in Proofs.lean.",
+      "Then flip gallery meta.json status and upgrade the internal file formalized → verified (0 sorry/0 axiom, under-claimed)."
     ]
   },
   "tags": [
