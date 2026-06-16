@@ -59,3 +59,40 @@ Advanced `D5-draft.lean` from 2 sorries → 1:
 
 Phase: still OBSERVE→ACT, build-pending. Draft remains UNREGISTERED (zero
 build-gate risk). 0 axioms introduced. Claim released.
+
+## S3 ACT (researcher-1, 2026-06-16) — discharged the load-bearing lower bound (1 sorry → 0)
+
+Dual blackout persists (Docker `docker run alpine echo` exit 124; Aristotle 404).
+`D5-draft.lean` now has **0 sorries** (build-pending, UNREGISTERED, 0 axioms).
+
+- **Obligation (1) simplified.** Discovered `admissible_quintuple_0_2_6_8_12`
+  ALREADY exists registered+verified in `BoundedPrimeGaps.lean:572`. Replaced the
+  S2 hand-transcribed copy with a one-line delegation — the witness is no longer
+  hand-rolled.
+- **Obligation (2) `admissible_5tuple_diam_ge_12`: DONE** with a `native_decide`-FREE,
+  fully symbolic proof (avoids the S2 `Decidable IsAdmissible` obstruction
+  entirely — only p ∈ {2,3} are interrogated). Argument mirrors the verified
+  `admissible_triple_diam_ge_6` parity proof:
+  1. p=2 admissibility (`(H.image (·%2)).card < 2 ⇒ =1`) forces all elements to
+     share `m = min`'s parity (exact mixed-parity step of D(3)).
+  2. Same parity + diameter < 12 ⇒ `H ⊆ {m, m+2, m+4, m+6, m+8, m+10}` (`hsub6`,
+     via `interval_cases (x-m)`, same shape as D(3)'s `{m,m+2,m+4}` step).
+  3. The two disjoint triples `{m,m+2,m+4}` and `{m+6,m+8,m+10}` are each
+     mod-3-COMPLETE (`m, m+2, m+4 (mod 3) = {0,1,2}`). If H held an entire triple,
+     `(H.image (·%3)).card = 3` contra p=3 admissibility ⇒ H omits ≥1 from EACH
+     triple = ≥2 omissions. But `H ⊆` a 6-set with `card 5` omits exactly 1:
+     `insert a (insert b H)` would have card 7 ≤ card(6-set) ≤ 6. Absurd.
+- Lemma names verified vs offline Mathlib @ pin 2df2f0150c: `Finset.card_insert_le`,
+  `Finset.card_singleton`, `Finset.card_eq_three` (arg order x≠y,x≠z,y≠z,s={x,y,z}).
+  All other tactics/lemmas reuse patterns already verified in the parent file.
+
+**Residual risk (build-pending):** purely Lean-elaboration (e.g. `omega` proving
+disjunctive membership goals, `interval_cases`/`set` interplay), not mathematics —
+the argument is complete and elementary. The two `native_decide` calls in
+`minAdmissibleDiameter_5` (card and diameter of the concrete `{0,2,6,8,12}`) are
+the only remaining `native_decide`, and are trivially decidable closed terms.
+
+**Next ACT (Docker-up):** build `D5-draft.lean`; if green, register as
+`Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean` (or fold the two lower-bound theorems
++ `minAdmissibleDiameter_5` into the parent next to D(2)/D(3)) and add to
+`Proofs.lean`. Phase OBSERVE→ACT, build-pending. Claim released.
