@@ -1,0 +1,45 @@
+{
+  "slug": "sylvester-sequence-oq-01",
+  "title": "Sylvester's Sequence: Telescoping Reciprocal Sums and Pairwise Coprimality",
+  "tier": "B",
+  "significance": 5,
+  "tractability": 6,
+  "status": "completed",
+  "phase": "COMPLETED",
+  "problemStatement": "For Sylvester's sequence a₀=2, a_{n+1}=aₙ²-aₙ+1, prove the closed-form partial reciprocal sum ∑_{k≤n} 1/aₖ = 1 - 1/(a_{n+1}-1) (so the infinite reciprocal sum is 1) and that distinct terms are pairwise coprime.",
+  "tags": [
+    "number-theory",
+    "recurrence",
+    "egyptian-fractions",
+    "coprimality",
+    "telescoping",
+    "sylvester"
+  ],
+  "knownResults": "Classical (Sylvester 1880; Euclid-style coprimality). Absent from Mathlib and the gallery prior to this entry.",
+  "currentState": "COMPLETE. Full Lean proof in proofs/Proofs/SylvesterSequenceOQ01.lean, 0 sorries, 0 axioms, build-verified.",
+  "knowledge": {
+    "insights": [
+      "The entire result hinges on the algebraic identity a_{n+1} - 1 = aₙ(aₙ - 1), which makes the per-term reciprocal telescope: 1/aₙ = 1/(aₙ-1) - 1/(a_{n+1}-1).",
+      "Working the recurrence in ℤ (syl_cast_succ) avoids ℕ truncated-subtraction pain; the lower bound 2 ≤ aₙ justifies the cast via Nat.cast_sub.",
+      "Pairwise coprimality follows the Euclid-numbers pattern: aᵢ divides ∏_{k≤n} aₖ = a_{n+1} - 1 for i ≤ n, so any common divisor of aᵢ and a_{n+1} divides 1.",
+      "field_simp; ring closes the per-term rational identity once the three relevant denominators are known nonzero."
+    ],
+    "builtItems": [
+      "def syl and syl_succ/syl_zero — sequence definition (SylvesterSequenceOQ01.lean)",
+      "two_le_syl : 2 ≤ syl n (induction + omega over an opaque square atom)",
+      "syl_cast_succ : (syl (n+1):ℤ) = (syl n)^2 - syl n + 1",
+      "syl_recip_term : 1/aₙ = 1/(aₙ-1) - 1/(a_{n+1}-1) (telescoping engine)",
+      "syl_partial_sum : ∑_{k≤n} 1/aₖ = 1 - 1/(a_{n+1}-1) (headline)",
+      "syl_eq_prod_add_one : a_{n+1} = (∏_{k≤n} aₖ) + 1 (Euclid product formula)",
+      "syl_dvd_succ_sub_one and syl_coprime : pairwise coprimality"
+    ],
+    "nextSteps": [
+      "Optional follow-up: formalize the limit Tendsto (partial sum) atTop (𝓝 1) by showing a_{n+1}-1 → ∞ (needs strict monotonicity / exponential growth bound).",
+      "Optional follow-up: the closeness 0 < 1 - ∑_{k≤n} 1/aₖ = 1/(a_{n+1}-1) connects to the Vardi constant / Erdős #315 gallery entry."
+    ],
+    "progressSummary": "COMPLETE: closed-form partial reciprocal sum and pairwise coprimality both proved, 0 sorries / 0 axioms, build-verified."
+  },
+  "started": "2026-06-16",
+  "lastUpdate": "2026-06-16",
+  "path": "proofs/Proofs/SylvesterSequenceOQ01.lean"
+}
