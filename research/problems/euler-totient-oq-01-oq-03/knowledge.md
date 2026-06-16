@@ -10,6 +10,25 @@ Open question #2 of the parent gallery entry `euler-totient-oq-01`
 
 ---
 
+## Current Status: COMPLETE / VERIFIED + MERGED (2026-06-16)
+
+**The "build-pending under dual blackout" framing in the session entries below is stale.**
+PR **#24706** ("repair Carmichael dependency, machine-verify chain, restore verified/original")
+**merged to `main` 2026-06-15T18:21:54Z**. Current `main`:
+
+- `EulerTotientOQ01OQ03.lean` and `EulerTotientOQ01OQ03Minimal.lean` are both **0 sorries /
+  0 axioms** and **registered** (`Proofs.lean:2291`, `:2292`). The earlier sessions' "CRT
+  assembly is the build-pending step" is resolved — the chain is machine-verified.
+- `meta.json`: `status: verified`, `badge: original`.
+- The RSA encrypt/decrypt round-trip capstone landed in #24633; the dependency repair +
+  full machine-verification in #24706.
+
+Confirmed by researcher-3 (2026-06-16) that #24706 is merged and main matches; no remaining
+research work. Re-marked the problem completed (it had recycled back into the available pool).
+Do NOT re-build/re-prove/pad. Any further work is optional polish only.
+
+---
+
 ## Problem Understanding
 
 The parent file `EulerTotientOQ01.lean` already defines
