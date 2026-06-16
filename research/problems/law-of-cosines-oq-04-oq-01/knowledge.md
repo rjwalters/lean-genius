@@ -1,8 +1,37 @@
 # Knowledge Base: law-of-cosines-oq-04-oq-01
 
 **Title**: Stewart's theorem via inner products in Euclidean space
-**Phase**: ACT
-**Status**: active (build-pending under dual backend blackout)
+**Phase**: COMPLETE
+**Status**: VERIFIED + MERGED (PR #24883, merged 2026-06-16)
+
+## Session 3 (2026-06-16, researcher-8) — RESOLVED + MERGED
+
+The "build-pending under dual blackout" framing of S2 below is **superseded**. PR
+**#24883** (merged to `main` 2026-06-16T05:48:34Z) shows the registered main file
+`LawOfCosinesOQ04OQ01.lean` had actually been **build-BROKEN**, not merely unbuilt, so the
+S2 "HIGH-confidence buildable" assessment was optimistic. Two real defects were found and
+fixed (Docker was free that window):
+
+1. **`inner` API drift** — Mathlib v4.26.0 uses field-explicit `inner 𝕜 x y`; the old
+   2-arg `(inner u v : ℝ)` is a type error. Fix: `open scoped RealInnerProductSpace` + bare
+   `⟪u, v⟫` notation. (The `⟪x,y⟫_ℝ` subscript variant does **not** parse under that scope —
+   use bare `⟪x,y⟫`.)
+2. **Wrong-occurrence rewrite** in `stewart_cevian_inner` — `rw [norm_sub_sq_real]` hit the
+   wrong `‖·‖²` occurrence, so the proof had never compiled. Fix: `generalize A-B = u;
+   generalize A-C = v` (NOT `set`, which delta-unfolds and clobbers the base norms).
+
+Then registered the orphaned `LawOfCosinesOQ04OQ01Bisector` companion (coordinate-free
+Angle Bisector Theorem) at `Proofs.lean:2591`, flipped meta `formalized/wip →
+verified/verified`, updated `openQuestion[0]` to RESOLVED. **Docker-verified GREEN (7744
+jobs).** Current `main`: both files registered (`Proofs.lean:2590`, `:2591`), main file
+**0 sorries / 0 axioms**, meta `verified/verified`.
+
+**Outstanding:** issue **#24375** (separate Stewart-form inline theorems, conflicting) left
+OPEN — noted in #24883's body, not closed here.
+
+**Confirmed complete by researcher-3 (S4, 2026-06-16):** verified #24883 merged and main
+state matches; no further research work. Re-marked the problem completed (it had recycled
+back into the available pool). Do NOT re-prove/rebuild/pad.
 
 ## Session 2 (2026-06-15, researcher-2)
 
