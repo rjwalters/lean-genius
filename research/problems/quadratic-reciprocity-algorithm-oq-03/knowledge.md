@@ -646,3 +646,40 @@ grid-transpose / commutation-matrix permutation sign directly:
 `sign_permCongr`; no shorter bearer route exists. Bijective characterization of the inversions
 (choose 2 rows × 2 columns → exactly one inversion) is the cleanest count to aim the Lean proof at.
 No Lean written this session.
+
+### Session 2026-06-16 (S20, researcher-8) — M2 materialized in Lean: parity reduction VERIFIED, sorry isolated to the lone inversion count
+
+**Mode:** CONTINUE → ACT (build-verified). Aristotle `prove` still **404** (live-probed on the M2
+crux snippet). Docker **recovered to a usable slot** this session: host drained from 7 → 2
+`lean-build` containers (background until-loop, `LEAN_MEMORY_LIMIT=6144`); built the new file by name
+**GREEN**: `⚠ [7743/7743] Built Proofs.QuadraticReciprocityAlgorithmOQ03M2 (453s)`, exit 0, the only
+warning being the single intended `sorry`.
+
+**New file** `proofs/Proofs/QuadraticReciprocityAlgorithmOQ03M2.lean` (UNREGISTERED — carries one
+sorry). Supersedes the CONFLICTING scaffold PR #24990 (same filename, but that one had only the def +
+a monolithic sorry). Structure splits M2's `sign_gridTranspose` into:
+
+- `gridTranspose p q` — the permutation (verbatim from #24990's verified scaffold). **complete**
+- `choose_two_mod_two (hn : Odd n) : Nat.choose n 2 % 2 = ((n-1)/2) % 2` — **VERIFIED**. Proof: write
+  `n = 2m+1` (`obtain ⟨m, rfl⟩`), `Nat.choose_two_right`, `Nat.mul_div_cancel_left _ (two-pos)`,
+  `Nat.mul_mod`, `omega`. (This is S8's parity-reduction step III, now machine-checked.)
+- `neg_one_units_pow_mod_two (n) : (-1:ℤˣ)^n = (-1:ℤˣ)^(n%2)` — **VERIFIED**. **KEY GOTCHA:** Mathlib's
+  `neg_one_pow_eq_pow_mod_two` is in `section Ring` (`Algebra/Ring/Commute.lean:171`, needs `[Ring R]`)
+  — **ℤˣ is NOT a ring**, so it does not apply. Derived directly from `neg_one_sq : (-1:R)^2=1`
+  (`Commute.lean:154`, holds for `[Monoid R][HasDistribNeg R]`, and `ℤˣ` has `HasDistribNeg` via
+  `Algebra/Ring/Units.lean:46`): `nth_rewrite 1 [← Nat.mod_add_div n 2]; rw [pow_add, pow_mul,
+  neg_one_sq, one_pow, mul_one]`.
+- `neg_one_pow_choose_two (hp hq : Odd) : (-1:ℤˣ)^(C(p,2)*C(q,2)) = (-1:ℤˣ)^((p-1)/2*((q-1)/2))` —
+  **VERIFIED**. `Nat.mul_mod` + the two `choose_two_mod_two` rewrites give the exponents are ≡ mod 2,
+  then the units helper. **This is the entire elementary half of M2, now proven.**
+- `sign_gridTranspose_eq_choose (p q) : sign (gridTranspose p q) = (-1)^(C(p,2)*C(q,2))` — **the ONE
+  remaining sorry**. Primality-free; the genuinely-new combinatorial content (no upstream bearer, S18).
+- `sign_gridTranspose (hp hq : Odd) : sign (gridTranspose p q) = (-1)^((p-1)/2*((q-1)/2))` —
+  **VERIFIED assembly** of the two above.
+
+**Net:** M2's open obligation is now a *single isolated, build-verified-context* lemma —
+`sign_gridTranspose_eq_choose` — exactly the inversion count `inv(σ)=C(p,2)·C(q,2)` via
+`signAux=∏finPairsLT` (S8). Everything around it (parity reduction + assembly) compiles. This is the
+ideal self-contained Aristotle target the moment the backend stops 404'ing; until then it needs the
+explicit `card_bij` (inversions ↔ {row-pairs i<i′} × {col-pairs j>j′}) — finicky but the cleanest count.
+M1/headline unchanged (merged #24903). PR opened with `research` label.

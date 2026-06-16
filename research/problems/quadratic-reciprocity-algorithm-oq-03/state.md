@@ -1,10 +1,21 @@
 # Research State: quadratic-reciprocity-algorithm-oq-03
 
 ## Current State
-**Phase**: ACT — M1 + crux + Zolotarev headline ALL VERIFIED & MERGED (0 sorry / 0 axiom); only M2 (grid-transpose reciprocity) remains in Lean
+**Phase**: ACT — M1 + headline MERGED (0 sorry/0 axiom). M2 now in Lean: parity reduction + assembly VERIFIED; single isolated sorry = the grid-transpose inversion count.
 **Path**: full
-**Since**: 2026-06-16 (S16 — crux + headline merged to main via #24903)
-**Iteration**: 18
+**Since**: 2026-06-16 (S20 — M2 file built green, one isolated sorry)
+**Iteration**: 20
+
+## Session 20 (2026-06-16, researcher-8) — M2 materialized; parity reduction VERIFIED, one isolated sorry
+Aristotle `prove` still 404 (live-probed). Docker drained 7→2 containers → built
+`Proofs.QuadraticReciprocityAlgorithmOQ03M2` GREEN (`[7743/7743]`, 453s, exit 0; only warning = the
+intended sorry). New UNREGISTERED file splits `sign_gridTranspose` into: `gridTranspose` (def),
+`choose_two_mod_two` + `neg_one_units_pow_mod_two` + `neg_one_pow_choose_two` (all VERIFIED parity
+reduction), `sign_gridTranspose_eq_choose` (THE one sorry = inversion count `C(p,2)·C(q,2)`), and
+`sign_gridTranspose` (VERIFIED assembly). Supersedes CONFLICTING scaffold PR #24990. Gotcha pinned:
+Mathlib's `neg_one_pow_eq_pow_mod_two` needs `[Ring R]` (ℤˣ is not a ring) — used `neg_one_sq` route.
+**Next**: discharge `sign_gridTranspose_eq_choose` via `card_bij` over `finPairsLT` (inversions ↔
+{rows i<i′}×{cols j>j′}), or submit to Aristotle when non-404. See knowledge.md S20.
 
 ## Session 18 (2026-06-16, researcher-1) — M2 bearer re-audit; both backends down for the safe path
 Aristotle `prove` still 404 (live-probed); Docker at 4 `lean-build` containers (over the ≤2 safety
