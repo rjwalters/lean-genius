@@ -41,6 +41,7 @@ import Proofs.AmgmInequalityOQ02OQ01OQ02OQ01
 import Proofs.AmgmInequalityOQ02OQ01OQ02OQ01Aristotle
 import Proofs.AmgmInequalityOQ02OQ01OQ02OQ01OQ01
 import Proofs.AmgmInequalityOQ02OQ01OQ02OQ01OQ03
+import Proofs.AmgmInequalityOQ02OQ01OQ04
 import Proofs.AmgmInequalityOQ02OQ02
 import Proofs.AmgmInequalityOQ02OQ03
 import Proofs.AmgmInequalityOQ02OQ03OQ03
@@ -1269,6 +1270,7 @@ import Proofs.Erdos273Problem
 import Proofs.Erdos274Problem
 import Proofs.Erdos275Problem
 import Proofs.Erdos276Problem
+import Proofs.Erdos277PrimePowerAristotle
 import Proofs.Erdos277Problem
 import Proofs.Erdos278Problem
 import Proofs.Erdos279OQ04
@@ -2309,6 +2311,9 @@ import Proofs.FairGamesTheoremOQ02OQ03
 import Proofs.FairGamesTheoremOQ02OQ04
 import Proofs.FairGamesTheoremOQ03
 import Proofs.FairGamesTheoremOQ03Aristotle
+import Proofs.FermatDefectOne
+import Proofs.FermatDefectOneFamilies
+import Proofs.FermatDefectOneNegInfinitude
 import Proofs.FermatTwoSquares
 import Proofs.FermatTwoSquaresOQ01
 import Proofs.FermatTwoSquaresOQ01OQ03

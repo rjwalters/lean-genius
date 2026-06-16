@@ -1,8 +1,8 @@
 {
   "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-02",
   "title": "Multinomial Marginal Distribution is Binomial via piAntidiag reindexing",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,10 +28,11 @@
     "goal": "Close BinomialTheoremOQ02OQ01OQ01.multinomial_marginal_binomial. This session produced proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean: the full reduction (combining Leaves A/B/C + the in-line power fold) written in tactics, with the three combinatorial leaves stated precisely as sorry (Aristotle targets). Build-pending: Docker pool saturated, Aristotle backend offline."
   },
   "knowledge": {
-    "progressSummary": "ACT (researcher-9, 2026-06-15): decomposed the parent's marginal-binomial sorry into a reindex bijection + coefficient split + product split + multinomial-theorem power fold; wrote the full reduction in tactics and isolated the three mechanical combinatorial leaves as Aristotle-ingestible sorries. All Mathlib API verified against mathlib4_docs. Build-pending (both backends offline this session).",
+    "progressSummary": "COMPLETED (2026-06-16): proved all three combinatorial leaf lemmas of BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean from Mathlib (Aristotle 404 all session, done by hand mirroring the verified sibling BinomialTheoremOQ02OQ01OQ02.lean). Leaf A marginal_sum_reindex via Finset.sum_nbij (forward update k i 0, inverse update f i m); Leaf B multinomial_update_eq via Nat.multinomial_insert + Nat.multinomial_congr; Leaf C prod_update_eq via Finset.mul_prod_erase. Main theorem multinomial_marginal_binomial now 0 sorries / 0 axioms. Docker-verified GREEN (3060 jobs). Same marginal law also proved independently in sibling as multinomial_marginal_pmf; this file is the clean Function.update decomposition into reusable leaves.",
     "builtItems": [
       "proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean — namespace BinomialMultinomialMarginal: theorem multinomial_marginal_binomial proved modulo three leaf lemmas; reduction (sum_congr with B+C, mul_sum, sum_pow_eq_sum_piAntidiag reversed, sum_erase_eq_sub, ring) written in full.",
-      "Registered the file in proofs/Proofs.lean (import after BinomialTheoremOQ02OQ01OQ01OQ01OQ01)."
+      "Registered the file in proofs/Proofs.lean (import after BinomialTheoremOQ02OQ01OQ01OQ01OQ01).",
+      "2026-06-16: discharged the 3 leaf sorries (A/B/C); full file Docker-verified GREEN (3060 jobs). 0 sorries, 0 axioms."
     ],
     "insights": [
       "The whole proof is reindex-then-fold: fix k_i=m, peel coordinate i off s via s = insert i (s.erase i), then the residual sum over compositions of n-m on s.erase i is exactly the multinomial theorem, giving (1-p_i)^(n-m).",
@@ -43,9 +44,8 @@
       "Mathlib has no packaged 'marginal of multinomial is binomial' lemma; this is a gallery-internal de-sorry, not an upstream contribution candidate."
     ],
     "nextSteps": [
-      "When Aristotle recovers: submit BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean (or the three leaf lemmas individually) to fill Leaves A/B/C.",
-      "When Docker has <=2 containers: build Proofs.BinomialTheoremOQ02OQ01OQ01OQ01OQ02 to verify the reduction and the (currently sorry-gated) leaves once filled.",
-      "After completion, reuse Leaf A + Leaf B to attack multinomial_mean and multinomial_covariance (parent sorries)."
+      "Reuse Leaf A (marginal_sum_reindex) and Leaf B (multinomial_update_eq) to attack the parent BinomialTheoremOQ02OQ01OQ01 sorries multinomial_mean and multinomial_covariance.",
+      "The parent multinomial_marginal_binomial sorry can now be discharged by referencing this file or the sibling multinomial_marginal_pmf."
     ]
   },
   "tags": [
@@ -80,7 +80,7 @@
     ]
   },
   "started": "2026-06-15T00:00:00.000Z",
-  "lastUpdate": "2026-06-15T00:00:00.000Z",
+  "lastUpdate": "2026-06-16T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

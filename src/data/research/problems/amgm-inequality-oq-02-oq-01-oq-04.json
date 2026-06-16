@@ -1,7 +1,7 @@
 {
   "slug": "amgm-inequality-oq-02-oq-01-oq-04",
   "title": "General Finset-level Newton-Girard recurrence",
-  "phase": "ORIENT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,28 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (ACT, build-pending): full Route-A proof written with confirmed v4.26 API; 0 sorries; awaiting Docker verification.",
+    "progressSummary": "COMPLETE: full Route-A proof Docker-verified GREEN (0 sorries, 0 axioms, Lean v4.26.0). newton_girard recurrence for arbitrary k proved by aeval-transport of MvPolynomial.mul_esymm_eq_sum; esymm_bridge fixed (Multiset.attach_map_val via rw did not match — replaced with exact Multiset.attach_map_val'). Gallery entry created, registered in Proofs.lean. Resolves parent open question.",
     "builtItems": [
       "newton_girard statement + psum/esymm Finset defs in proofs/Proofs/AmgmInequalityOQ02OQ01OQ04.lean (sorry on main thm)",
-      "proofs/Proofs/AmgmInequalityOQ02OQ01OQ04.lean: complete (0-sorry) proof attempt of newton_girard plus psum_bridge, esymm_bridge, reindex_filter. BUILD-PENDING/UNVERIFIED (Docker saturated, Aristotle 404)."
+      "proofs/Proofs/AmgmInequalityOQ02OQ01OQ04.lean: complete (0-sorry) proof attempt of newton_girard plus psum_bridge, esymm_bridge, reindex_filter. BUILD-PENDING/UNVERIFIED (Docker saturated, Aristotle 404).",
+      "VERIFIED proofs/Proofs/AmgmInequalityOQ02OQ01OQ04.lean: psum, esymm defs + psum_bridge, esymm_bridge, reindex_filter, newton_girard (4 thm, 2 def, 0 sorry, 0 axiom). Registered in proofs/Proofs.lean. Gallery entry src/data/proofs/amgm-inequality-oq-02-oq-01-oq-04/meta.json (verified/original)."
     ],
     "insights": [
       "Sign convention verified on s={a,b}: k=1 gives p1-e1=0; k=2 gives e0·p2 - e1·p1 + 2e2 = (x²+y²)-(x+y)²+2xy = 0.",
       "e_0 = 1 (empty product over the unique 0-subset), so the j=0 summand is exactly p_k; recurrence closes with the (-1)^k·k·e_k correction.",
       "Two reductions: (A) aeval-specialize Mathlib MvPolynomial.mul_esymm_eq_sum over subtype {i//i∈s}; (B) self-contained induction on s via e_k(s∪{a})=e_k(s)+a·e_{k-1}(s).",
       "Route A is fully concrete in Mathlib v4.26.0: applying MvPolynomial.aeval (fun i:↥s => f i.1) to MvPolynomial.mul_esymm_eq_sum transports the universal Newton identity to the Finset/CommRing form. The esymm bridge is Finset.esymm_map_val composed with Multiset.attach_map_val (univ.val.map = s.val.map).",
-      "Sign closure: (k:R)·e_k = (-1)^(k+1)·S with S=∑_{j<k}(-1)^j e_j p_{k-j}; (-1)^k·(-1)^(k+1)=(-1)^(2k+1)=-1 via Odd.neg_one_pow, so S + (-1)^k·k·e_k = S - S = 0."
+      "Sign closure: (k:R)·e_k = (-1)^(k+1)·S with S=∑_{j<k}(-1)^j e_j p_{k-j}; (-1)^k·(-1)^(k+1)=(-1)^(2k+1)=-1 via Odd.neg_one_pow, so S + (-1)^k·k·e_k = S - S = 0.",
+      "Docker-verified GREEN 2026-06-15: the build-pending Route-A proof compiles after one fix. The original `rw [Multiset.attach_map_val']` failed keyed-pattern matching on `Multiset.map (fun i => f ↑i) s.val.attach`; `exact Multiset.attach_map_val' s.val f` (defeq unification) closes it."
     ],
     "mathlibGaps": [
       "Mathlib provides Newton identities only in the polynomial-root / universal MvPolynomial form (NewtonSums / MvPolynomial.NewtonIdentities); the directly-usable Finset/CommRing combinatorial layer (explicit finite family) is absent and must be bridged.",
       "No Finset/CommRing-level Newton-Girard in Mathlib; only the universal MvPolynomial form (mul_esymm_eq_sum). Bridged here via aeval + esymm_map_val."
     ],
     "nextSteps": [
-      "Route A: prove aeval (MvPolynomial.esymm) = esymm s f · and aeval (psum) = psum s f ·, then transport mul_esymm_eq_sum.",
-      "Route B: induction on s; base s=∅ trivial, step uses e_k(s∪{a})=e_k(s)+a·e_{k-1}(s) and p_k(s∪{a})=p_k(s)+a^k.",
-      "Submit newton_girard to Aristotle when backend returns (known result, ideal proof-search target).",
-      "Build Proofs.AmgmInequalityOQ02OQ01OQ04 under Docker ≤2 to verify; fragile spots flagged in file header (simp-at-key normal form, huniv rfl, reindex if_pos closing).",
-      "On a normal-form mismatch in the aeval-transport simp, submit the isolated helper to Aristotle when the 404 clears."
+      "Upstream psum_bridge/esymm_bridge + Finset-level newton_girard to Mathlib (only universal MvPolynomial form exists there).",
+      "Transport dual Newton identities (complete homogeneous hₖ) via the same aeval bridge.",
+      "Derive Maclaurin base case S₁²≥S₂ over an ordered field from this recurrence + a power-mean bound."
     ],
     "markdown": "# Knowledge Base: amgm-inequality-oq-02-oq-01-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
