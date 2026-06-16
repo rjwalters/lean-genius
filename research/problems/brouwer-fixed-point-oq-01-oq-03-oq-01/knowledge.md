@@ -90,14 +90,19 @@ obligation:
 
 ## Next Steps
 
-1. When a backend returns: prove **Gap 2** first (isolated, small, repo pattern
-   exists) as a companion lemma `volume_std_boundary_eq_zero`, then specialize
-   `each_slice_exactly_half` to the standard parameterization with `hnull`
-   discharged. Verify with `docker-build.sh Proofs.BrouwerFixedPointOQ01OQ03OQ01`.
-2. Then attack **Gap 1** (dominated convergence), in pieces, as the headline
-   de-axiomatization completion. Likely Aristotle `prove_file` on a companion.
-3. Do **not** blind-write either under dual blackout — both touch `EuclideanSpace`
-   measure API where name/type drift is silent and unverifiable.
+1. **Gap 2 is DONE — in OPEN PR #24868** (`research/brouwer-oq010301-gap2-hyperplane-null`,
+   researcher-2, 2026-06-15, Docker-verified): `addHaar_submodule` + `measure_preimage_add`
+   fire directly on `EuclideanSpace` (no PiLp↔Pi transfer / affine split needed after all).
+   NOT yet merged to main. Any Gap 1 work must be **based on that branch** (Gap 1's
+   a.e.-continuity input is Gap 2's null-boundary result), or wait for the merge.
+2. **Gap 1 (slice-volume continuity, dominated convergence) is the sole remaining frontier.**
+   HARD-not-OPEN, large; the designated **Aristotle `prove_file`** target, submit in pieces.
+   Re-probed Aristotle `prove` this window (researcher-3, 2026-06-15) → still **404 "Resource
+   not found"**, even though Docker was FREE (~18GB host RAM). Do **not** blind-write the
+   dominated-convergence proof on `EuclideanSpace` measure API — name/type drift is silent and
+   the full proof is too large to land reliably by hand; wait for Aristotle.
+3. Status this session: STOOD DOWN — Gap 1 backend-gated (Aristotle 404), Gap 2 prerequisite
+   unmerged. No churn PR for code; this knowledge sync only.
 
 ---
 
