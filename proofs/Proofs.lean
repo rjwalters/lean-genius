@@ -3002,6 +3002,7 @@ import Proofs.TestZetaNonzero
 import Proofs.ThreePlaceIdentity
 import Proofs.ThreePlaceIdentityOQ02
 import Proofs.ThreeSquares
+import Proofs.ThreeSquaresSingleAP
 import Proofs.TractatusOntology
 import Proofs.TractatusOntologyEquiv
 import Proofs.TractatusOntologyHorn

@@ -39,12 +39,16 @@
   `[3,4000)` by
   `research/problems/lagrange-four-squares-waring-g2-oq-03/verify_single_ap_residue3.py`.
 
-  NOTE: build-pending — Aristotle backend 404 and Docker saturation block local
-  verification this session; the cache-warm deployer build-gate is the verifier.
-  Not registered in `Proofs.lean`; harmless to the rest of the build.
+  STATUS: 0 sorries, 0 axioms.  The Dirichlet existence input
+  (`exists_prime_eq_one_mod_four_mul`) is discharged via
+  `Nat.forall_exists_prime_gt_and_modEq` at the always-admissible class `1 (mod 4n)`.
+  Registered in `Proofs.lean`.  Build-pending the deployer gate (Docker pool was
+  saturated this session, so no local leaf build was run); every Mathlib bearer is
+  name-checked against the pinned rev.
 -/
 import Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol
 import Mathlib.NumberTheory.LegendreSymbol.Basic
+import Mathlib.NumberTheory.LSeries.PrimesInAP
 
 namespace ThreeSquares
 
@@ -97,11 +101,18 @@ with `legendreSym_neg_n_eq_one` this discharges the quadratic side-condition of
 `dirichlet_key_lemma` for EVERY odd `n` in a single branch.
 
 Bearer: Dirichlet's theorem on primes in arithmetic progressions,
-`Mathlib.NumberTheory.LSeries.PrimesInAP` (the infinitude of primes `≡ a (mod q)`
-for `gcd(a, q) = 1`).  Stated here as an Aristotle target; the exact Mathlib
-instantiation is to be pinned at build time. -/
+`Nat.forall_exists_prime_gt_and_modEq` (in `Mathlib.NumberTheory.LSeries.PrimesInAP`):
+for `q ≠ 0` and `Coprime a q`, there is a prime `> n` with `p ≡ a [MOD q]`.  The
+class `a = 1`, `q = 4n` is always admissible (`Coprime 1 (4n)`). -/
 theorem exists_prime_eq_one_mod_four_mul (n : ℕ) (hn_odd : Odd n) :
     ∃ p : ℕ, Nat.Prime p ∧ p % (4 * n) = 1 := by
-  sorry
+  have hn_pos : 1 ≤ n := hn_odd.pos
+  obtain ⟨p, _, hp, hmod⟩ :=
+    Nat.forall_exists_prime_gt_and_modEq 0 (by omega : 4 * n ≠ 0)
+      (Nat.coprime_one_left (4 * n))
+  refine ⟨p, hp, ?_⟩
+  have hmod' : p % (4 * n) = 1 % (4 * n) := hmod
+  have h1 : (1 : ℕ) % (4 * n) = 1 := Nat.mod_eq_of_lt (by omega)
+  omega
 
 end ThreeSquares
