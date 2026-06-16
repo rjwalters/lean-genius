@@ -52,7 +52,8 @@
       "S₁² ≥ S₂ is Cauchy-Schwarz in disguise. After substituting Newton-Girard 2e₂ = e₁² − p₂ into the cleared form C(n,2)·e₁² ≥ n²·e₂, every term cancels down to n·p₂ ≥ e₁² — the power-mean bound. The 'Maclaurin' framing adds no inequality content beyond Cauchy-Schwarz at this rung.",
       "No nonnegativity is needed. Although Maclaurin's chain is stated for nonnegative reals, the base rung holds for all reals because both ingredients (Newton-Girard, Cauchy-Schwarz) are sign-agnostic. The nonnegativity hypothesis only becomes essential at higher rungs where one takes real roots.",
       "The cleared form is the robust statement. C(n,2)·e₁² ≥ n²·e₂ holds for every n including the degenerate n = 0, 1 (both sides vanish), so the only role of n ≥ 2 is to make the denominators n² and C(n,2) positive when passing to the averaged form.",
-      "Re-deriving Newton-Girard locally keeps the entry self-contained. Rather than importing the parent's identity, the diagonal/off-diagonal trichotomy split is repeated for the range-n family, so the file depends only on Mathlib's Cauchy-Schwarz lemma and the choose-two cast."
+      "Re-deriving Newton-Girard locally keeps the entry self-contained. Rather than importing the parent's identity, the diagonal/off-diagonal trichotomy split is repeated for the range-n family, so the file depends only on Mathlib's Cauchy-Schwarz lemma and the choose-two cast.",
+      "The factor of 2 in e₁² = p₂ + 2e₂ is a double-counting phenomenon. The two off-diagonal triangles (i<j and j<i) carry identical mass (upper_eq_lower via Finset.sum_comm + mul_comm), so the off-diagonal part of the squared sum is exactly twice e₂ — the same mechanism that gives the 2 in (a+b)² = a² + b² + 2ab, here generalized over a range-n index family."
     ],
     "prerequisites": [
       "Elementary symmetric sums e₁, e₂ and power sums p₂ over a Finset",
@@ -92,11 +93,18 @@
       "summary": "sq_e1_le_card_mul_p2 specializes Mathlib's Finset.sq_sum_le_card_mul_sum_sq to s = range n and simplifies the cardinality with Finset.card_range, yielding (Σ f)² ≤ n · Σ f²."
     },
     {
-      "id": "maclaurin",
-      "title": "Maclaurin Base Step",
+      "id": "maclaurin-cleared",
+      "title": "Cleared-Denominator Form: C(n,2)·e₁² ≥ n²·e₂",
       "startLine": 96,
+      "endLine": 110,
+      "summary": "maclaurin_cleared derives C(n,2)·e₁² ≥ n²·e₂ for all n (both sides vanish at n = 0, 1): it forms the intermediate bound 2n·e₂ ≤ (n−1)·e₁² from Cauchy-Schwarz + Newton-Girard (nlinarith), rewrites C(n,2) via Nat.cast_choose_two ℝ n, and closes by nlinarith with Nat.cast_nonneg n and sq_nonneg. Kept separate as a reusable polynomial inequality independent of any averaging."
+    },
+    {
+      "id": "maclaurin-base-step",
+      "title": "Averaged Form: S₁² ≥ S₂ for n ≥ 2",
+      "startLine": 112,
       "endLine": 124,
-      "summary": "maclaurin_cleared derives C(n,2)·e₁² ≥ n²·e₂ for all n: it forms 2n·e₂ ≤ (n−1)·e₁² from Cauchy-Schwarz + Newton-Girard (nlinarith), rewrites C(n,2) via Nat.cast_choose_two ℝ n, and closes by nlinarith with Nat.cast_nonneg n. maclaurin_base_step passes to the averaged form (e₁/n)² ≥ e₂/C(n,2) for n ≥ 2 using div_pow, div_le_div_iff and positivity of n and C(n,2)."
+      "summary": "maclaurin_base_step lifts the cleared inequality to (e₁/n)² ≥ e₂/C(n,2) for n ≥ 2, where the hypothesis supplies strict positivity of n (hn0) and C(n,2) (hC via Nat.choose_pos). div_pow distributes the square over the quotient, div_le_div_iff clears both positive denominators, and nlinarith [maclaurin_cleared n f] closes the resulting polynomial goal."
     }
   ],
   "crossReferences": [
