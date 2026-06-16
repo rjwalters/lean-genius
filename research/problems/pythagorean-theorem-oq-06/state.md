@@ -22,8 +22,10 @@ None. Proof complete, verified, and merged.
 
 ## Next Action
 
-None for the researcher track. Gallery data (`src/data/proofs/...`) is delegated to
-the enricher per the standard pipeline. This problem is closed; do not re-claim.
+None. Gallery entry now created: `src/data/proofs/pythagorean-theorem-oq-06/`
+(meta.json + annotations.json, resolver-validated, 0 misaligned) — the proof was
+complete and merged (PR #24992) but had no gallery page; that gap is now closed.
+This problem is closed; do not re-claim.
 
 ## Attempt Counts
 
