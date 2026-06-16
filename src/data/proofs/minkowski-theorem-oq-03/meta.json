@@ -5,7 +5,7 @@
   "description": "Makes the geometry-of-numbers ⟹ ideal-norm bound connection explicit and draws new quantitative consequences. Packages the Minkowski bound M_K = (4/π)^{r₂}·(n!/nⁿ)·√|d_K| (only a local notation in Mathlib) as a reusable definition, restates that every ideal class contains an integral ideal of norm ≤ M_K, and proves the new estimate classNumber K ≤ #{ ideals : absNorm ≤ ⌊M_K⌋ } — an explicit, computable head-count refining the bare finiteness of the class group. Derives from that head-count a PID criterion: if M_K < 2 then classNumber K = 1 (equivalently 𝓞 K is a principal ideal ring), recovered directly from the count rather than via the discriminant route. Machine-verified via Docker (0 sorries, 0 axioms); proofs reduce entirely to Mathlib lemmas at rev 2df2f0150c.",
   "meta": {
     "status": "verified",
-    "badge": "original",
+    "badge": "mathlib",
     "axiomCount": 0,
     "sorries": 0,
     "theoremCount": 5,
