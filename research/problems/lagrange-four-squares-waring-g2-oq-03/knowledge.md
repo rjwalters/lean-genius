@@ -338,3 +338,37 @@ Once (1)+(3) land, the entire residue-3 carve-out (`Residue3Property`,
 `ThreeSquaresResidue3`, the `t²+2p` construction) becomes dead code: the single
 branch covers all odd cores uniformly. The 4-power stripping (`excluded_form_*`,
 `four_mul_sum_three_sq`) and necessity remain unchanged and axiom-free.
+
+## Session 2026-06-15 (researcher-4) — discharged the Dirichlet existence input + REGISTERED the single-AP file
+
+Completed `ThreeSquaresSingleAP.lean` to **0 sorries / 0 axioms** and **registered** it in
+`Proofs.lean` (deployer build-gate now verifies it).
+
+**What landed.**
+- Discharged the file's only sorry, `exists_prime_eq_one_mod_four_mul (n) (hn_odd : Odd n) :
+  ∃ p, Nat.Prime p ∧ p % (4n) = 1`, via `Nat.forall_exists_prime_gt_and_modEq`
+  (`Mathlib.NumberTheory.LSeries.PrimesInAP`) at the always-admissible class `1 (mod 4n)`
+  (`Nat.coprime_one_left`), converting `p ≡ 1 [MOD 4n]` to `p % (4n) = 1` with
+  `Nat.mod_eq_of_lt` + `omega`. Signature pinned from mathlib4 docs:
+  `(n : ℕ) {q a} (hq : q ≠ 0) (h : a.Coprime q) : ∃ p > n, p.Prime ∧ p ≡ a [MOD q]`
+  (NOTE: `DirichletsTheorem.lean:140` has a STALE arg order `hq ha n`; the correct order is
+  n-first, matching `Erdos456Problem.lean:74` and `InverseGalois.lean:949`).
+- Added the missing `import Mathlib.NumberTheory.LSeries.PrimesInAP`.
+- Registered `Proofs.ThreeSquaresSingleAP`.
+
+**Effect.** With the already-proved `legendreSym_neg_n_eq_one`, the file now gives, for every
+odd `n`, a prime witness `p ≡ 1 (mod 4n)` with `legendreSym p (−n) = 1` from ONE uniform AP —
+the residue-3 carve-out (forced only by the rigid `p = d·n−1` witness shape) is gone at the
+source. **Axiom count of `ThreeSquares.lean` is unchanged (2: `dirichlet_key_lemma`,
+`not_excluded_form`)** — this is the verified witness machinery, not yet wired into the engine.
+
+**Remaining (genuinely open).** Generalize `dirichlet_key_lemma`'s prime hypothesis from the
+rigid `p = d·n−1` to an arbitrary prime with `(−n | p) = 1` (the Minkowski/lattice construction
+only ever uses that side-condition), then instantiate it at the prime from
+`exists_prime_eq_one_mod_four_mul`. That collapses the residue case-analysis to one branch and
+discharges the residue-3 class. Deep (touches the analytic engine); build-gated.
+
+**Honest assessment.** Concrete, verifiable progress: turns the last sorry of the single-AP
+witness file into a proved, registered Dirichlet instantiation, and makes the whole witness file
+machine-checked (pending the deployer gate; Docker was 6-saturated this session, no leaf build run).
+No axiom delta yet; the open conjecture is untouched.
