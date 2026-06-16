@@ -53,18 +53,34 @@
     {
       "id": "density",
       "title": "The Uniform Density",
-      "summary": "uniformPDF a b x = Set.indicator (Icc a b) (fun _ => 1/(b-a)) x, with uniformPDF_integral_eq_one and uniformPDF_nonneg establishing it is a genuine probability density.",
-      "startLine": 38,
-      "endLine": 60,
-      "mathContext": "The Uniform[a,b] density is f(x) = 1/(b-a) for x ∈ [a,b] and 0 otherwise. Encoding it as a Lebesgue indicator makes `uniformPDF_integral_eq_one` a one-line indicator integral: ∫ f = (volume(Icc a b)).toReal · (1/(b-a)) = (b-a)·(1/(b-a)) = 1. Nonnegativity is immediate from 1/(b-a) > 0 when a < b."
+      "summary": "uniformPDF a b x = Set.indicator (Set.Icc a b) (fun _ => 1/(b-a)) x — the Uniform[a,b] density encoded as a Lebesgue indicator.",
+      "startLine": 37,
+      "endLine": 40,
+      "mathContext": "The Uniform[a,b] density is f(x) = 1/(b-a) for x ∈ [a,b] and 0 otherwise. Encoding it as `Set.indicator (Set.Icc a b) (fun _ => 1/(b-a))` rather than a piecewise `if` lets every downstream integral be discharged by `MeasureTheory.integral_indicator` + `setIntegral_const`, with the off-support branch handled by the indicator rather than by case analysis."
+    },
+    {
+      "id": "valid-density",
+      "title": "A Valid Probability Density",
+      "summary": "uniformPDF_integral_eq_one: ∫ x, uniformPDF a b x = 1 for a < b — the uniform density integrates to 1.",
+      "startLine": 42,
+      "endLine": 51,
+      "mathContext": "Integrating the indicator: ∫ f = (volume (Set.Icc a b)).toReal · (1/(b-a)). Via `Real.volume_Icc` the measure of [a,b] is `ENNReal.ofReal (b-a)`, whose `toReal` is exactly b-a since a < b, so ∫ f = (b-a)·(1/(b-a)) = 1 by `div_self` on b-a ≠ 0. Confirms uniformPDF is a genuine probability density."
     },
     {
       "id": "entropy",
       "title": "Differential Entropy = ln(b-a)",
-      "summary": "uniformDifferentialEntropy: differentialEntropy (uniformPDF a b) = Real.log (b-a) for a < b.",
-      "startLine": 62,
-      "endLine": 82,
-      "mathContext": "The key lemma rewrites the integrand f·ln f to the indicator of the constant (1/(b-a))·ln(1/(b-a)) on [a,b] (on the complement, 0·ln 0 = 0). Then ∫ f·ln f = (b-a)·(1/(b-a))·ln(1/(b-a)) = ln(1/(b-a)) = -ln(b-a), and h = -∫ f·ln f = ln(b-a). For b-a < 1 this is negative, the canonical example that differential entropy need not be nonnegative."
+      "summary": "uniformDifferentialEntropy: differentialEntropy (uniformPDF a b) = Real.log (b-a) for a < b — the headline result.",
+      "startLine": 53,
+      "endLine": 76,
+      "mathContext": "The key step (hkey) rewrites the integrand f·ln f to the indicator of the constant (1/(b-a))·ln(1/(b-a)) on [a,b] (off the support, 0·ln 0 = 0 is automatic since Real.log 0 = 0). Then ∫ f·ln f = (b-a)·(1/(b-a))·ln(1/(b-a)) = ln(1/(b-a)) = -ln(b-a) via Real.log_inv, and h = -∫ f·ln f = ln(b-a). For b-a < 1 this is negative — the canonical example that differential entropy, unlike discrete Shannon entropy, need not be nonnegative."
+    },
+    {
+      "id": "nonneg",
+      "title": "Nonnegativity of the Density",
+      "summary": "uniformPDF_nonneg: 0 ≤ uniformPDF a b x for all x when a < b.",
+      "startLine": 78,
+      "endLine": 86,
+      "mathContext": "Pointwise nonnegativity by `Set.indicator_apply` and `split_ifs`: on [a,b] the value 1/(b-a) is positive (positivity, using b-a > 0 from a < b); off [a,b] the indicator is 0. Establishes uniformPDF as a nonnegative function, the second half of the 'genuine density' claim alongside the unit-integral lemma."
     }
   ],
   "conclusion": {
