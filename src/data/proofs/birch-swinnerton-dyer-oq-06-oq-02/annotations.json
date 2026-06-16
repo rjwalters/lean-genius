@@ -2,7 +2,7 @@
   {
     "id": "ann-weierstrass-equation",
     "proofId": "birch-swinnerton-dyer-oq-06-oq-02",
-    "range": { "startLine": 60, "endLine": 72 },
+    "range": { "startLine": 70, "endLine": 72 },
     "type": "definition",
     "title": "The Weierstrass Equation of Curve 389a",
     "content": "Curve 389a has the Weierstrass equation y² + y = x³ + x² - 2x, corresponding to Weierstrass coefficients [a₁,a₂,a₃,a₄,a₆] = [0,1,1,-2,0]. This is the smallest-conductor elliptic curve of rank 2 (conductor N = 389, a prime). The equation is not in short Weierstrass form (y² = x³ + ax + b) because the a₂ and a₃ coefficients are nonzero.",
@@ -54,7 +54,7 @@
   {
     "id": "ann-addition-formula",
     "proofId": "birch-swinnerton-dyer-oq-06-oq-02",
-    "range": { "startLine": 100, "endLine": 117 },
+    "range": { "startLine": 104, "endLine": 117 },
     "type": "technique",
     "title": "P₁ + P₂ = (1,0) via the Weierstrass Addition Formula",
     "content": "For distinct points P₁ = (0,0) and P₂ = (-1,1), the addition formula gives slope λ = (1-0)/(-1-0) = -1, then x₃ = (-1)² - 1 - 0 - (-1) = 1, and y₃ = -(-1)(1+0) + 0 - 1 = 0. Thus P₁ + P₂ = (1,0). Verification: 0² + 0 = 0 = 1³ + 1² - 2. This shows the generators are not negatives of each other (which would require y₃ = -y₁ - 1 = -1 for x₃ = 0).",
@@ -67,7 +67,7 @@
   {
     "id": "ann-group-law-verification",
     "proofId": "birch-swinnerton-dyer-oq-06-oq-02",
-    "range": { "startLine": 119, "endLine": 174 },
+    "range": { "startLine": 123, "endLine": 174 },
     "type": "technique",
     "title": "Exact Group Law Computation via Weierstrass Formulas",
     "content": "The group law on curve 389a is computed using the exact Weierstrass formulas. For the doubling formula with slope λ = (3x₁² + 2x₁ - 2)/(2y₁+1), the x-coordinate of [2]P is x₂ = λ² - 1 - 2x₁, and the y-coordinate is y₂ = λ(x₁-x₂) - y₁ - 1. All computations are over ℚ and verified by norm_num — giving machine-checked rational arithmetic. The proof decomposes each computation into three sub-theorems: slope, x-coordinate, and y-coordinate.",
@@ -80,7 +80,7 @@
   {
     "id": "ann-height-approximations",
     "proofId": "birch-swinnerton-dyer-oq-06-oq-02",
-    "range": { "startLine": 176, "endLine": 199 },
+    "range": { "startLine": 180, "endLine": 199 },
     "type": "insight",
     "title": "Naive Height Approximations vs. Néron-Tate Canonical Height",
     "content": "The canonical height ĥ(P) is the limit ĥ(P) = lim_{n→∞} h_x([2^n]P)/4^n where h_x(P) = log(max(|x_num|, x_den)). The first two approximations for P₁ are: h_x([2]P₁)/4 = log(3)/4 ≈ 0.275 and h_x([4]P₁)/16 = log(121)/16 ≈ 0.300. The axiomatized value h₁₁ ≈ 0.7622 is much larger. The slow convergence arises from large local height corrections at p = 389 (the conductor prime), which the naive x-coordinate height does not capture.",
@@ -93,7 +93,7 @@
   {
     "id": "ann-height-gap",
     "proofId": "birch-swinnerton-dyer-oq-06-oq-02",
-    "range": { "startLine": 200, "endLine": 213 },
+    "range": { "startLine": 201, "endLine": 213 },
     "type": "insight",
     "title": "Monotonicity of Height Approximations and the Local Height Gap",
     "content": "The proof that log(121)/16 > log(3)/4 uses the identity log(3)/4 = log(81)/16 since 81 = 3⁴, reducing the comparison to log(81) < log(121), which follows from log monotonicity and 81 < 121. This rewriting trick — converting log(a)/4^n to log(a⁴)/4^(n+1) — is the core monotonicity argument for Néron-Tate approximation sequences. For curve 389a with conductor 389, the Néron-Tate height decomposes as ĥ(P) = h_x(P) + Σ_v λ_v(P) where the local contribution λ₃₈₉(P₁) at the conductor prime is large and positive.",
@@ -106,7 +106,7 @@
   {
     "id": "ann-summary-theorem",
     "proofId": "birch-swinnerton-dyer-oq-06-oq-02",
-    "range": { "startLine": 215, "endLine": 249 },
+    "range": { "startLine": 219, "endLine": 249 },
     "type": "context",
     "title": "Summary: Collecting All Group Law Results",
     "content": "The weierstrass_group_law_summary theorem assembles all verified results into a single conjunction: curve membership for all six computed rational points, positivity of the first height approximation, and strict monotonicity of the approximation sequence. This conjunction serves as the formal interface to OQ-06's height pairing matrix, giving the computational evidence that the height values h₁₁ ≈ 0.7622 are approached (from below) by iterated doubling.",
