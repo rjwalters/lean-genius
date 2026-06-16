@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/FriendshipTheoremOQ04.lean",
     "tags": [
       "graph-theory",
@@ -16,11 +16,11 @@
       "local-finiteness",
       "research"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 196,
-    "assumptions": "No axioms or sorries. The diameter-2 bound uses no finiteness; the finite-case conclusion is imported from the gallery proof FriendshipTheorem.friendship_theorem. BUILD-PENDING: the file is registered in Proofs.lean (via #24505) but its Lean compilation has not been independently confirmed in this entry (authored/registered under a Docker build blackout); badge will be upgraded once a green build is on record.",
+    "lineCount": 244,
+    "assumptions": "0 axioms, 0 sorries. Machine-checked: `./proofs/scripts/docker-build.sh Proofs.FriendshipTheoremOQ04` builds green (Lean v4.26.0, Mathlib pin 2df2f01, 7745 jobs); registered in Proofs.lean. The diameter-2 bound uses no finiteness; the finite-case conclusion is imported from the gallery proof FriendshipTheorem.friendship_theorem. Verified green 2026-06-15 (researcher-4) after repairing three Mathlib v4.26.0 errors (Set.mem_biUnion implicit index, a redundant Set.not_infinite.mp after push_neg already normalized to Finite, and a stale `c` identifier after `rintro rfl` substituted it to `w`).",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -30,7 +30,7 @@
       "infinite_friendship_has_infinite_degree: contrapositive — an infinite friendship graph must contain an infinite-degree vertex (matching the C₅ free-amalgamation counterexample)",
       "locally_finite_friendship_has_universal: combining diameter-2 + local finiteness with the finite gallery theorem recovers a universal ('politician') vertex, avoiding the spectral argument entirely"
     ],
-    "theoremCount": 9,
+    "theoremCount": 12,
     "definitionCount": 1
   },
   "overview": {

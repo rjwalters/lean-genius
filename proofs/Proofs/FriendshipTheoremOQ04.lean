@@ -103,7 +103,7 @@ theorem univ_subset_two_ball (hF : IsFriendshipGraph G) (v : V) :
   · by_cases hadj : G.Adj v u
     · exact Or.inl (Or.inr ((G.mem_neighborSet v u).mpr hadj))
     · obtain ⟨x, hvx, hux⟩ := exists_common_neighbor hF (Ne.symm huv)
-      refine Or.inr (Set.mem_biUnion ?_ ?_)
+      refine Or.inr (Set.mem_biUnion (x := x) ?_ ?_)
       · exact (G.mem_neighborSet v x).mpr hvx
       · exact (G.mem_neighborSet x u).mpr hux.symm
 
@@ -139,7 +139,7 @@ theorem infinite_friendship_has_infinite_degree (hF : IsFriendshipGraph G) [Infi
     ∃ w : V, (G.neighborSet w).Infinite := by
   by_contra h
   push_neg at h
-  have hfin : ∀ w : V, (G.neighborSet w).Finite := fun w => Set.not_infinite.mp (h w)
+  have hfin : ∀ w : V, (G.neighborSet w).Finite := fun w => h w
   haveI : Finite V := locally_finite_is_finite hF hfin
   exact not_finite V
 
@@ -239,6 +239,6 @@ theorem unique_infinite_degree_vertex (hF : IsFriendshipGraph G) [Infinite V]
   constructor
   · exact infinite_degree_vertex_eq_universal hF c hc w
   · rintro rfl
-    exact universal_vertex_infinite_degree hF c hc
+    exact universal_vertex_infinite_degree hF w hc
 
 end FriendshipTheoremOQ04
