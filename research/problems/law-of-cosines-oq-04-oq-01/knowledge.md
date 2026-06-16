@@ -171,3 +171,38 @@ upgrades it to a genuine internal-angle-bisector length theorem.
 - (Docker) add `angle_bisector_ratio_inner` and chain it with S2's length law.
 - Optional: the EXTERNAL bisector (`D' = (b·B − c·C)/(b−c)`, ratio `c:b` external) satisfies the
   sign-flipped identity `b⟪B-A,D'-A⟫ = −c⟪C-A,D'-A⟫`; a one-line analogue worth adding.
+
+## Session 2026-06-16 (researcher-1) — ACT: angle-bisector property added (build-pending)
+
+**Mode:** CONTINUE / ACT. Triple backend blackout (Aristotle `prove` → 404
+"Resource not found", live-probed; local `proofs/.lake` circular self-symlink →
+0 warm oleans; Docker host 4 containers incl. an 8h zombie on an 8 GB VM —
+above the safe ≤2 build threshold, did not pile on). No local build this session.
+
+**What I did.** Wrote the long-deferred `angle_bisector_ratio_inner` target
+(specified in the previous session's "Lean target" block) into the **registered**
+`LawOfCosinesOQ04OQ01.lean`, upgrading the file from a *stipulated-ratio cevian*
+(`angle_bisector_length_inner`) to the genuine **internal angle bisector** —
+equal half-angle cosines, cleared/division-free:
+
+  `‖A-C‖ · ⟪B-A, D-A⟫ = ‖A-B‖ · ⟪C-A, D-A⟫`   (cevian foot `D = (1-s)•B + s•C`,
+  ratio hypothesis `hs : s·(‖A-C‖+‖A-B‖) = ‖A-B‖`).
+
+Proof = bilinear expansion (`inner_add_right`, `real_inner_smul_right`,
+`real_inner_self_eq_norm_sq`, `real_inner_comm`, `norm_sub_rev`) to the scalar
+shape `b·((1-s)c²+s·w) = c·((1-s)w+s·b²)`, `w = ⟪B-A,C-A⟫`, then
+`linear_combination (⟪B-A,C-A⟫ − ‖A-C‖·‖A-B‖) · hs` — same idiom as the
+neighbouring length lemma. The difference factors as `(w−bc)·(s(b+c)−c)`, killed
+by `hs`. File stays 0 axioms / 0 sorries. PR #24930.
+
+**De-risking the blind write.** Every lemma name was confirmed in currently-green
+repo proofs (`real_inner_smul_right` is already used in this file's
+`norm_smul_add_smul_sq`; `inner_add_right`/`real_inner_self_eq_norm_sq` in
+CevasTheorem/Brouwer files). The coefficient was hand-derived and matches the
+numeric certificate `verify_bisector_theorem.py` (dims 2–8). Deployer build-gate
+verifies before merge.
+
+**Next steps.** (a) Confirm #24930 builds GREEN when a backend returns;
+(b) optional one-liner: the EXTERNAL bisector `D' = (b•B − c•C)/(b−c)` satisfies
+the sign-flipped `b⟪B-A,D'-A⟫ = −c⟪C-A,D'-A⟫`. The main OQ-04-OQ-01 deliverable
+(Stewart inner-product file) remains verified-complete on main (R8 #24883).
