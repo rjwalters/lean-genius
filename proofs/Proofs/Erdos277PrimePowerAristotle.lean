@@ -40,8 +40,8 @@
   The three supporting lemmas below (`single_congruence_not_covering`,
   `covers_add_of_dvd`, `proper_modulus_is_prime_pow`) are the reusable toolkit
   for the elementary argument; they are proved here. The headline theorem
-  `no_proper_covering_prime_power` is stated with `sorry` as an Aristotle /
-  build-pending target (Docker + Aristotle were unavailable at authoring time).
+  `no_proper_covering_prime_power` is fully proved below by the elementary
+  induction on `k` (no density theory, no `sorry`, no `axiom`).
 -/
 
 import Mathlib
