@@ -395,6 +395,111 @@ theorem each_slice_exactly_half (n : ℕ)
   rw [volume_body_eq_slices_add_boundary n body P N B hbody hP hN hB hcover
     hPN hPB hNB, ← hbis, hnull, add_zero, two_mul]
 
+-- ============================================================
+-- PART 8: Gap 2 discharged — the boundary hyperplane is Lebesgue-null
+-- ============================================================
+
+/-- **The boundary hyperplane carries no Lebesgue volume.**
+
+    A real-inner-product level set `{y | ⟪u, y⟫ = c}` with nonzero normal `u`
+    is an additive Haar (Lebesgue) null set. This is the lone analytic fact the
+    `hnull` hypothesis of `each_slice_exactly_half` isolated as Gap 2.
+
+    Proof: `{y | ⟪u, y⟫ = c}` is the translate by any point `y₀` on the
+    hyperplane of the kernel of the nonzero functional `⟪u, ·⟫`. That kernel is a
+    *proper* submodule (it omits `u`, since `⟪u, u⟫ = ‖u‖² ≠ 0`), hence null by
+    `Measure.addHaar_submodule`; translation preserves Haar measure. No
+    continuity / dominated-convergence input is needed — this gap is genuinely
+    elementary, unlike the headline Gap 1 (scalar slice-volume continuity). -/
+theorem volume_inner_hyperplane_eq_zero {m : ℕ}
+    (u : EuclideanSpace ℝ (Fin m)) (hu : u ≠ 0) (c : ℝ) :
+    volume {y : EuclideanSpace ℝ (Fin m) | inner (𝕜 := ℝ) u y = c} = 0 := by
+  have huu : inner (𝕜 := ℝ) u u ≠ 0 := by
+    rw [real_inner_self_eq_norm_sq]
+    have : ‖u‖ ≠ 0 := norm_ne_zero_iff.mpr hu
+    positivity
+  -- a point on the hyperplane
+  set y₀ : EuclideanSpace ℝ (Fin m) := (c / inner (𝕜 := ℝ) u u) • u with hy₀
+  have hy₀c : inner (𝕜 := ℝ) u y₀ = c := by
+    rw [hy₀, real_inner_smul_right]
+    field_simp
+  -- kernel submodule of the functional ⟪u, ·⟫
+  set K : Submodule ℝ (EuclideanSpace ℝ (Fin m)) :=
+    LinearMap.ker (innerSL ℝ u).toLinearMap with hK
+  have hmemK : ∀ z, z ∈ K ↔ inner (𝕜 := ℝ) u z = 0 := by
+    intro z
+    rw [hK, LinearMap.mem_ker]
+    simp [innerSL_apply_apply]
+  have hKne : K ≠ ⊤ := by
+    intro h
+    have : u ∈ K := by rw [h]; exact Submodule.mem_top
+    rw [hmemK] at this
+    exact huu this
+  -- the hyperplane is a translate of the kernel
+  have hset : {y : EuclideanSpace ℝ (Fin m) | inner (𝕜 := ℝ) u y = c}
+      = ((-y₀) + ·) ⁻¹' (K : Set (EuclideanSpace ℝ (Fin m))) := by
+    ext y
+    simp only [Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe]
+    rw [hmemK, inner_add_right, inner_neg_right, hy₀c]
+    constructor <;> intro h <;> linarith
+  rw [hset, measure_preimage_add]
+  exact Measure.addHaar_submodule volume K hKne
+
+/-- The boundary slice of a body under the standard parameterization is null
+    whenever the cutting direction `u x` is nonzero — discharging the `hnull`
+    hypothesis of `each_slice_exactly_half` from `volume_inner_hyperplane_eq_zero`
+    and `body ∩ B ⊆ B`. -/
+theorem volume_body_inter_stdBoundary_eq_zero (n : ℕ)
+    (body : Set (EuclideanSpace ℝ (Fin n)))
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ)
+    (x : EuclideanSpace ℝ (Fin (n + 1))) (hux : u x ≠ 0) :
+    volume (body ∩ {y | inner (𝕜 := ℝ) (u x) y = t x}) = 0 :=
+  measure_mono_null Set.inter_subset_right
+    (volume_inner_hyperplane_eq_zero (u x) hux (t x))
+
+/-- **Each side is exactly half, standard parameterization — `hnull` discharged.**
+
+    Specializes `each_slice_exactly_half` to the standard linear cut
+    `stdPos`/`stdNeg`. The strict/strict/boundary partition, measurability of the
+    three slices, and the boundary null condition are *all proved here*: the
+    boundary hyperplane is null by Gap 2 (`volume_body_inter_stdBoundary_eq_zero`)
+    given only `u x ≠ 0`. The sole remaining input is the bisection equality
+    `hbis` — i.e. the Ham Sandwich conclusion itself. -/
+theorem each_slice_exactly_half_standard (n : ℕ)
+    (body : Set (EuclideanSpace ℝ (Fin n)))
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ)
+    (x : EuclideanSpace ℝ (Fin (n + 1))) (i : Fin n)
+    (hbody : MeasurableSet body) (hux : u x ≠ 0)
+    (hbis : volume (body ∩ stdPos n u t x i) = volume (body ∩ stdNeg n u t x i)) :
+    2 * volume (body ∩ stdPos n u t x i) = volume body := by
+  have hcont : Continuous fun y : EuclideanSpace ℝ (Fin n) => inner (𝕜 := ℝ) (u x) y :=
+    continuous_const.inner continuous_id
+  have hPm : MeasurableSet (stdPos n u t x i) :=
+    (isOpen_lt hcont continuous_const).measurableSet
+  have hNm : MeasurableSet (stdNeg n u t x i) :=
+    (isOpen_lt continuous_const hcont).measurableSet
+  have hBm : MeasurableSet {y : EuclideanSpace ℝ (Fin n) | inner (𝕜 := ℝ) (u x) y = t x} :=
+    (isClosed_eq hcont continuous_const).measurableSet
+  have hcover : stdPos n u t x i ∪ stdNeg n u t x i
+      ∪ {y | inner (𝕜 := ℝ) (u x) y = t x} = Set.univ := by
+    ext y
+    simp only [stdPos, stdNeg, Set.mem_union, Set.mem_setOf_eq, Set.mem_univ, iff_true]
+    rcases lt_trichotomy (inner (𝕜 := ℝ) (u x) y) (t x) with h | h | h <;> tauto
+  have hPN : Disjoint (stdPos n u t x i) (stdNeg n u t x i) := by
+    rw [Set.disjoint_left]; intro y h1 h2
+    simp only [stdPos, stdNeg, Set.mem_setOf_eq] at h1 h2; linarith
+  have hPB : Disjoint (stdPos n u t x i) {y | inner (𝕜 := ℝ) (u x) y = t x} := by
+    rw [Set.disjoint_left]; intro y h1 h2
+    simp only [stdPos, Set.mem_setOf_eq] at h1 h2; linarith
+  have hNB : Disjoint (stdNeg n u t x i) {y | inner (𝕜 := ℝ) (u x) y = t x} := by
+    rw [Set.disjoint_left]; intro y h1 h2
+    simp only [stdNeg, Set.mem_setOf_eq] at h1 h2; linarith
+  exact each_slice_exactly_half n body (stdPos n u t x i) (stdNeg n u t x i)
+    {y | inner (𝕜 := ℝ) (u x) y = t x} hbody hPm hNm hBm hcover hPN hPB hNB hbis
+    (volume_body_inter_stdBoundary_eq_zero n body u t x hux)
+
 /-
 ## Significance and the Remaining Gap
 
@@ -413,6 +518,14 @@ standard parameterization (Parts 4–6):
     linearity, not an assumption,
   * finiteness `vol(bodyᵢ ∩ H) < ⊤` follows from `vol(bodyᵢ) < ⊤` since the
     slice is a subset (`volume_inter_ne_top`).
+
+The boundary-null side condition (Gap 2) is also now discharged (Part 8):
+  * `volume_inner_hyperplane_eq_zero` proves any level hyperplane
+    `{y | ⟨u, y⟩ = c}` with `u ≠ 0` is Lebesgue-null (translate of the kernel of
+    a nonzero functional + `Measure.addHaar_submodule`), and
+    `each_slice_exactly_half_standard` uses it to drop `hnull` entirely: under the
+    standard cut, "each side is exactly half" follows from the bisection equality
+    alone, with measurability and the strict/strict/boundary partition proved.
 
 The single genuinely-remaining analytic input is therefore:
   * the continuity of `x ↦ vol(bodyᵢ ∩ {y | ⟨u(x), y⟩ < t(x)}).toReal` on `Sⁿ`
