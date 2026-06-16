@@ -28,6 +28,54 @@ bounded brute-force reproduces the known small narcissistic numbers
 
 ---
 
+## Session 2026-06-16 (s02) — REVISIT (researcher-9): both HARD sorries discharged
+
+**Mode**: REVISIT · **Outcome**: progress (file now 0 sorries / 0 axioms, build-pending)
+
+### What I did
+Discharged the two documented `sorry`s left by s01, so the orphan file is now
+mathematically complete (still UNREGISTERED → 0 gallery risk):
+
+- **`crossover : ∀ n, 61 ≤ n → n · 9ⁿ < 10^(n-1)`** — `Nat.le_induction` from 61.
+  - Base `61·9⁶¹ < 10⁶⁰` by `norm_num` (evaluates the ~60-digit literals).
+  - Step factors out `9ⁿ`: `(n+1)·9^(n+1) = 9·(n+1)·9ⁿ ≤ 10·n·9ⁿ`
+    (`Nat.mul_le_mul` with `9·(n+1) ≤ 10·n` by `omega`, valid since `n ≥ 9`),
+    then `= 10·(n·9ⁿ) < 10·10^(n-1)` (`mul_lt_mul_of_pos_left ih`), `= 10ⁿ`.
+  - Key rewrite `10ⁿ = 10^(n-1)·10` via `← pow_succ` + `Nat.sub_add_cancel`
+    (avoids the simultaneous-`n`-rewrite cascade that breaks `rw [hsplit]` on
+    a goal containing both `n` and `n-1`).
+- **`pow_pred_length_le : m ≠ 0 → 10^(numDigits m − 1) ≤ m`** — from
+  `Nat.base_pow_length_digits_le 10 m (1<10) hm : 10^L ≤ 10·m` (L = numDigits),
+  split `L = (L-1)+1` (needs `0 < L` via
+  `List.length_pos_of_ne_nil (Nat.digits_ne_nil_iff_ne_zero.mpr hm)`), `pow_succ`,
+  `Nat.mul_comm`, then cancel the `10` with `Nat.le_of_mul_le_mul_left`.
+
+### Key findings / API (verified vs offline mathlib4 @ v4.26.0 rev 2df2f0150c)
+- `Nat.base_pow_length_digits_le (b m) (hb) : m ≠ 0 → b^(digits b m).length ≤ b·m`
+  — the s01 "gap" lemma, name CONFIRMED (was the one flagged "verify when Docker
+  returns"). Returns an implication in `m ≠ 0`.
+- `List.length_pos_of_ne_nil`, `Nat.digits_ne_nil_iff_ne_zero`,
+  `Nat.le_of_mul_le_mul_left`, `mul_lt_mul_of_pos_left`, `Nat.mul_le_mul`,
+  `pow_succ`, `Nat.sub_add_cancel` all present at the pin.
+- Used term-mode (defeq) for `numDigits m ≡ (digits 10 m).length` instead of
+  `rw [numDigits]` (rw-on-plain-def is fragile).
+
+### Blackout (unchanged)
+Docker daemon WEDGED (`docker run --rm alpine echo ok` prints `ok` then the wrapper
+hangs → rc=124 on teardown; image/cache presumed still wiped) and Aristotle MCP
+`prove` returns 404 "Resource not found". So the file is **hand-verified only**, not
+machine-checked — kept as an orphan.
+
+### Next steps (when Docker / Aristotle return)
+1. `./proofs/scripts/docker-build.sh Proofs.NarcissisticNumberOQ01`; fix any residual
+   lemma-name drift from `grep error:` (most-likely suspects: the s01-authored
+   `digitPowSum_le` uses `smul_eq_mul; rfl` for `length • 9ⁿ` — may need
+   `nsmul_eq_mul`).
+2. If green, register in `Proofs.lean` + add gallery data under
+   `src/data/proofs/narcissistic-number-oq-01/`.
+
+---
+
 ## Session 2026-06-16 (s01) — FRESH
 
 **Mode:** FRESH. **Outcome:** progress (structure + certificate; build-pending).
