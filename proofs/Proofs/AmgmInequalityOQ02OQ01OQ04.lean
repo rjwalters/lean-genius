@@ -36,25 +36,17 @@
       dependency on uncertain Mathlib API names.  Preferred if (A)'s bridging
       lemmas are absent.
 
-  Status: ACT (build-pending).  Route A executed below: the concrete recurrence
-  is obtained by applying `MvPolynomial.aeval (fun i : ↥s => f i.1)` to Mathlib's
-  universal Newton identity `MvPolynomial.mul_esymm_eq_sum`.  Confirmed Mathlib
-  v4.26.0 API used:
-    * `MvPolynomial.mul_esymm_eq_sum`              (RingTheory/.../Symmetric/NewtonIdentities)
-    * `MvPolynomial.aeval_esymm_eq_multiset_esymm` (RingTheory/.../Symmetric/Defs)
-    * `Finset.esymm_map_val`                       (RingTheory/.../Symmetric/Defs)
+  Status: VERIFIED.  Route A executed below: the concrete recurrence is obtained
+  by applying `MvPolynomial.aeval (fun i : s => f i.1)` to Mathlib's universal
+  Newton identity `MvPolynomial.mul_esymm_eq_sum`.  Machine-checked under Lean
+  v4.26.0 (0 sorries, 0 axioms).  Mathlib API used:
+    * `MvPolynomial.mul_esymm_eq_sum`              (RingTheory Symmetric NewtonIdentities)
+    * `MvPolynomial.aeval_esymm_eq_multiset_esymm` (RingTheory Symmetric Defs)
+    * `Finset.esymm_map_val`                       (RingTheory Symmetric Defs)
     * `MvPolynomial.psum`, `MvPolynomial.aeval_X`
     * `Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk`, `Finset.sum_range_succ`
     * `Multiset.attach_map_val'`, `Finset.attach_val`, `Finset.sum_coe_sort`
     * `Odd.neg_one_pow`
-  This file now carries a complete proof (no `sorry`), but is BUILD-PENDING /
-  UNVERIFIED: Docker pool saturated (5 containers) and Aristotle backend 404 on
-  2026-06-15, so it was never machine-checked.  A few steps are name-/normal-form
-  fragile and may need minor adjustment on first build, in particular:
-    - the `simp only [...] at key` aeval-transport normal form;
-    - `huniv : (univ : Finset ↥s) = s.attach := rfl` (Fintype-instance defeq);
-    - the `if_pos`/`lt_self_iff_false` reindex closing.
-  Do NOT mark the gallery entry `verified` until this compiles under Docker.
 -/
 
 import Mathlib
@@ -88,9 +80,11 @@ theorem esymm_bridge (s : Finset ι) (f : ι → R) (n : ℕ) :
   rw [MvPolynomial.aeval_esymm_eq_multiset_esymm]
   -- Goal: ((univ : Finset ↥s).val.map (fun i => f i.1)).esymm n = esymm s f n
   have himg : (Finset.univ : Finset ↥s).val.map (fun i : ↥s => f i.1) = s.val.map f := by
-    -- `univ = s.attach` (Fintype instance for the coe-sort), then `attach_map_val'`.
+    -- `univ = s.attach` (Fintype instance for the coe-sort), then collapse the attach
+    -- via `Multiset.attach_map_val'` (`s.attach.map (f ∘ val) = s.map f`).
     have huniv : (Finset.univ : Finset ↥s) = s.attach := rfl
-    rw [huniv, Finset.attach_val, Multiset.attach_map_val']
+    rw [huniv, Finset.attach_val]
+    exact Multiset.attach_map_val' s.val f
   rw [himg]
   -- `Finset.esymm_map_val f s n : (s.val.map f).esymm n = ∑ t ∈ s.powersetCard n, ∏ i ∈ t, f i`
   rw [Finset.esymm_map_val f s n]
@@ -115,7 +109,7 @@ theorem reindex_filter (s : Finset ι) (f : ι → R) (k : ℕ) :
     Note `esymm s f 0 = 1` (empty product over the unique 0-subset `∅`), so the
     `j = 0` summand is `p_k`, and the sign-alternating tail closes with the
     `(-1)^k · k · e_k` correction term. -/
-theorem newton_girard (s : Finset ι) (f : ι → R) (k : ℕ) (hk : 1 ≤ k) :
+theorem newton_girard (s : Finset ι) (f : ι → R) (k : ℕ) (_hk : 1 ≤ k) :
     (∑ j ∈ Finset.range k, (-1) ^ j * esymm s f j * psum s f (k - j))
       + (-1) ^ k * (k : R) * esymm s f k = 0 := by
   classical
