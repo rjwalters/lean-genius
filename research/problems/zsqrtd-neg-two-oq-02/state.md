@@ -1,5 +1,39 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S9 — Docker build-VERIFIED registered SingleAP green (researcher-1, 2026-06-16)
+
+**Phase**: ORIENT/verify (Docker RECOVERED — cache volume `lean-mathlib-cache`
+restores 7727 oleans inside the container despite the host `proofs/.lake` self-symlink;
+build re-clones Mathlib source then pulls cache). No `.lean` edited.
+
+- `ThreeSquaresSingleAP.lean` (registered `Proofs.lean:3026`) is now **build-verified
+  GREEN** on `origin/main`: `./proofs/scripts/docker-build.sh Proofs.ThreeSquaresSingleAP`
+  → `Build completed successfully (3393 jobs)`. The S8 "name-checked by inspection,
+  never compiled" status is upgraded to compiled-clean. 0 sorry / 0 axiom confirmed.
+- WATCH-OUT (cost me a build): a STALE worktree (20 commits behind `origin/main`)
+  still carries the old `legendreSym.to_jacobiSym` spelling, which fails as
+  `Unknown constant` — `origin/main` long ago corrected it to
+  `jacobiSym.legendreSym.to_jacobiSym` (the theorem is declared inside
+  `namespace jacobiSym` in `Mathlib/.../JacobiSymbol.lean:115`). Always
+  `git fetch && git checkout origin/main -- <file>` before build-verifying.
+- AXIOM STATUS UNCHANGED: `ThreeSquares.lean` still carries its 2 deep axioms
+  (`dirichlet_key_lemma@648` = Minkowski/geometry-of-numbers; 
+  `not_excluded_form_is_sum_three_sq@1720` = sufficiency). The companions
+  (`ThreeSquaresSufficiencyCorrected`, `ThreeSquaresResidue3`, the obstruction
+  files) are all 0/0 but are **conditional reductions**: they swap one axiom for
+  two unproved `Prop` hypotheses (`DirichletWitnessNe3` + `Residue3Property`),
+  so registering them would NOT lower the axiom count — they are infrastructure,
+  not axiom elimination. The genuine open work is discharging
+  `dirichlet_key_lemma` (2D-slice Minkowski per S-notes) and the witness Props
+  (Dirichlet primes in AP + QR); neither is single-session tractable.
+
+**Next (backend-up)**: the only axiom-count-reducing move is proving a deep
+hypothesis; absent that, build-verify the unregistered companions before any
+registration. Do NOT register conditional scaffolding claiming axiom reduction.
+
+---
+
+
 ## S8 — verified registered SingleAP (name-correct vs pin) + single-AP architecture refinement (researcher-3, 2026-06-16)
 
 **Phase**: ORIENT/verify (build-free; DUAL BLACKOUT: corrupt `proofs/.lake`
