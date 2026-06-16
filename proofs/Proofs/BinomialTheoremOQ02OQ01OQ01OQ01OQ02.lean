@@ -57,10 +57,15 @@ The proof is a reindex-then-fold:
 
 ## Status
 
-The reduction (combining the leaves + the power fold) is written out. The three
-combinatorial leaf lemmas are stated precisely and left as `sorry` — they are
-self-contained, mechanical, and are ideal Aristotle targets (HARD-but-known).
-Build-pending: Docker pool saturated and Aristotle backend offline this session.
+Complete: the three combinatorial leaf lemmas (A reindexing bijection, B
+multinomial coefficient split, C product split) are proved from Mathlib, and the
+main theorem `multinomial_marginal_binomial` assembles them with the multinomial
+theorem `Finset.sum_pow_eq_sum_piAntidiag`. 0 sorries, 0 axioms.
+
+Note: the same marginal law is also established independently in
+`BinomialTheoremOQ02OQ01OQ02.lean` (`multinomial_marginal_pmf`, an inline
+`if`-based bijection over `multinomialProb`). This file's contribution is the
+clean `Function.update`-based decomposition into three reusable leaf lemmas.
 -/
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Algebra.BigOperators.Ring.Finset
@@ -89,7 +94,76 @@ theorem marginal_sum_reindex
     (G : (α → ℕ) → ℝ) :
     ∑ k ∈ (s.piAntidiag n).filter (fun k => k i = m), G k =
     ∑ f ∈ (s.erase i).piAntidiag (n - m), G (Function.update f i m) := by
-  sorry
+  have hi_notin : i ∉ s.erase i := Finset.notMem_erase i s
+  refine Finset.sum_nbij'
+    (fun k => Function.update k i 0)
+    (fun f => Function.update f i m)
+    ?_ ?_ ?_ ?_ ?_
+  · -- forward image: σ k ∈ (s.erase i).piAntidiag (n - m)
+    intro k hk
+    simp only [Finset.mem_filter, Finset.mem_piAntidiag] at hk
+    obtain ⟨⟨hksum, hksup⟩, hki⟩ := hk
+    rw [Finset.mem_piAntidiag]
+    refine ⟨?_, ?_⟩
+    · have h1 : ∑ a ∈ s.erase i, Function.update k i 0 a = ∑ a ∈ s.erase i, k a := by
+        apply Finset.sum_congr rfl
+        intro a ha
+        rw [Function.update_of_ne (Finset.ne_of_mem_erase ha)]
+      have h2 : k i + ∑ a ∈ s.erase i, k a = n :=
+        (Finset.add_sum_erase s k hi).trans hksum
+      rw [h1]; omega
+    · intro a ha
+      by_cases haa : a = i
+      · subst haa; simp at ha
+      · simp only [Function.update_of_ne haa] at ha
+        exact Finset.mem_erase.mpr ⟨haa, hksup a ha⟩
+  · -- backward image: τ f ∈ (s.piAntidiag n).filter (· i = m)
+    intro f hf
+    simp only [Finset.mem_piAntidiag] at hf
+    obtain ⟨hfsum, hfsup⟩ := hf
+    have hfi : f i = 0 := by
+      by_contra h; exact hi_notin (hfsup i h)
+    rw [Finset.mem_filter, Finset.mem_piAntidiag]
+    refine ⟨⟨?_, ?_⟩, ?_⟩
+    · have h1 : ∑ a ∈ s.erase i, Function.update f i m a = ∑ a ∈ s.erase i, f a := by
+        apply Finset.sum_congr rfl
+        intro a ha
+        rw [Function.update_of_ne (Finset.ne_of_mem_erase ha)]
+      have h2 : Function.update f i m i + ∑ a ∈ s.erase i, Function.update f i m a
+          = ∑ a ∈ s, Function.update f i m a := Finset.add_sum_erase s (Function.update f i m) hi
+      rw [← h2, Function.update_self, h1, hfsum]; omega
+    · intro a ha
+      by_cases haa : a = i
+      · rw [haa]; exact hi
+      · simp only [Function.update_of_ne haa] at ha
+        exact Finset.erase_subset i s (hfsup a ha)
+    · exact Function.update_self i m f
+  · -- left inverse: τ (σ k) = k
+    intro k hk
+    simp only [Finset.mem_filter, Finset.mem_piAntidiag] at hk
+    obtain ⟨_, hki⟩ := hk
+    funext a
+    rcases eq_or_ne a i with rfl | haa
+    · simp [Function.update_self, hki]
+    · simp [Function.update_of_ne haa]
+  · -- right inverse: σ (τ f) = f
+    intro f hf
+    simp only [Finset.mem_piAntidiag] at hf
+    have hfi : f i = 0 := by
+      by_contra h; exact hi_notin (hf.2 i h)
+    funext a
+    rcases eq_or_ne a i with rfl | haa
+    · simp [Function.update_self, hfi]
+    · simp [Function.update_of_ne haa]
+  · -- summand equality: G k = G (update (σ k) i m)
+    intro k hk
+    simp only [Finset.mem_filter, Finset.mem_piAntidiag] at hk
+    obtain ⟨_, hki⟩ := hk
+    congr 1
+    funext a
+    rcases eq_or_ne a i with rfl | haa
+    · simp [Function.update_self, hki]
+    · simp [Function.update_of_ne haa]
 
 /-! ## Leaf B — multinomial coefficient split (Aristotle target)
 
@@ -105,7 +179,20 @@ theorem multinomial_update_eq
     (hfi : f i = 0) (hfsum : ∑ j ∈ s.erase i, f j = n - m) :
     Nat.multinomial s (Function.update f i m)
       = n.choose m * Nat.multinomial (s.erase i) f := by
-  sorry
+  have hi_notin : i ∉ s.erase i := Finset.notMem_erase i s
+  have hsum_eq : ∑ j ∈ s.erase i, (Function.update f i m) j = ∑ j ∈ s.erase i, f j := by
+    apply Finset.sum_congr rfl
+    intro j hj
+    rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]
+  have hmulti_eq : Nat.multinomial (s.erase i) (Function.update f i m)
+      = Nat.multinomial (s.erase i) f := by
+    apply Nat.multinomial_congr
+    intro a ha
+    rw [Function.update_of_ne (Finset.ne_of_mem_erase ha)]
+  conv_lhs => rw [show s = insert i (s.erase i) from (Finset.insert_erase hi).symm]
+  rw [Nat.multinomial_insert hi_notin]
+  simp only [Function.update_self]
+  rw [hsum_eq, hfsum, hmulti_eq, Nat.add_sub_cancel' hm]
 
 /-! ## Leaf C — product split (Aristotle target)
 
@@ -118,7 +205,11 @@ theorem prod_update_eq
     (s : Finset α) (p : α → ℝ) (i : α) (hi : i ∈ s) (m : ℕ) (f : α → ℕ) :
     ∏ j ∈ s, p j ^ (Function.update f i m) j
       = p i ^ m * ∏ j ∈ s.erase i, p j ^ f j := by
-  sorry
+  rw [← Finset.mul_prod_erase s (fun j => p j ^ (Function.update f i m) j) hi]
+  simp only [Function.update_self]
+  congr 1
+  refine Finset.prod_congr rfl (fun j hj => ?_)
+  rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]
 
 /-! ## Main theorem — marginal distribution is binomial
 
@@ -146,7 +237,7 @@ theorem multinomial_marginal_binomial
     obtain ⟨hfsum, hfsupp⟩ := hf
     have hfi : f i = 0 := by
       by_contra h
-      exact (Finset.not_mem_erase i s) (hfsupp i h)
+      exact (Finset.notMem_erase i s) (hfsupp i h)
     rw [multinomial_update_eq s i hi m n hm f hfi hfsum,
         prod_update_eq s p i hi m f]
     push_cast
@@ -158,6 +249,5 @@ theorem multinomial_marginal_binomial
   rw [← Finset.sum_pow_eq_sum_piAntidiag (s.erase i) p (n - m)]
   -- Step 5: `∑_{s.erase i} p = 1 - p i` from the normalization `∑_s p = 1`.
   rw [Finset.sum_erase_eq_sub hi, hp_sum]
-  ring
 
 end BinomialMultinomialMarginal
