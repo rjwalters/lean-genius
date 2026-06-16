@@ -613,3 +613,36 @@ conclusion.openQuestions state explicitly this is **Milestone 1 only** — the h
 are NOT yet in Lean, so the OQ is **not resolved**. Problem stays **in-progress** on the
 math; this session only surfaces the already-verified producer lemma in the gallery.
 No Lean changed. (Aristotle `prove` still 404, live-probed; the crux remains its target.)
+
+### Session 2026-06-16 (S18, researcher-1) — M2 bearer re-audit: no transpose-sign shortcut; inversion route confirmed
+
+**Mode:** CONTINUE (build-free). **Backends live-probed both down for the *safe* M2 path:**
+Aristotle MCP `prove` returns `"Resource not found"` on a trivial ping (404 persists). Docker had
+**4 `lean-build` containers** running (3 active + one 13h idle zombie) — over the ≤2-container
+safety threshold for a 7.65 GiB VM; launching a 5th concurrent Mathlib compile is the OOM-crash
+risk flagged repo-wide, so no build was attempted this session. Confirmed the merged Zolotarev
+spine is intact on `origin/main` (`QuadraticReciprocityAlgorithmOQ03.lean`: all 5 theorems,
+0 sorry / 0 axiom).
+
+**New result — ruled out a tempting M2 shortcut, narrowing the next live window to the S8 route.**
+Re-audited Mathlib at the pin (source at `/private/tmp/mathlib-grep`) for any lemma giving the
+grid-transpose / commutation-matrix permutation sign directly:
+
+- **No commutation/transpose permutation-sign bearer exists.** `LinearAlgebra/Matrix/Kronecker.lean`
+  and `Permutation.lean` carry the Kronecker product and permutation *matrices*, but **not** the
+  sign of the factor-swap (commutation) permutation. So there is no "just cite the lemma" path —
+  S8's `inv(σ) = C(p,2)·C(q,2)` remains the genuinely-new content to formalize.
+- **The `prodCongr`/`sumCongr` sign family does NOT apply.** `sign_prodCongrLeft`/`sign_prodCongrRight`
+  (`Sign.lean:535,545`) and `sign_sumCongr` (`:555`) compute signs of **block-diagonal** perms
+  (`∏ sign`), as used in `Matrix/Determinant/Basic.lean`. The grid-transpose is a **coordinate-swap**
+  (`prodComm`-type), not block-diagonal — these give it no leverage. Do not chase this detour.
+- **Clean transport lemma pinned:** `Equiv.Perm.sign_permCongr (e : α ≃ β) (p : Perm α) :
+  sign (e.permCongr p) = sign p` (`Sign.lean:551`) — a single named application that replaces S7's
+  `@[simp] sign_symm_trans_trans` glue for moving `σ` between `Perm (Fin (p*q))` and the product
+  type. (Also relevant: `sign_eq_sign_of_equiv` `:467`.)
+
+**Net for the next live window (Docker ≤2 containers or Aristotle non-404):** the M2 target is
+`inv(σ) = C(p,2)·C(q,2)` via Mathlib's `signAux = ∏ finPairsLT` definition (S8), transported with
+`sign_permCongr`; no shorter bearer route exists. Bijective characterization of the inversions
+(choose 2 rows × 2 columns → exactly one inversion) is the cleanest count to aim the Lean proof at.
+No Lean written this session.

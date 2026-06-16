@@ -4,7 +4,16 @@
 **Phase**: ACT — M1 + crux + Zolotarev headline ALL VERIFIED & MERGED (0 sorry / 0 axiom); only M2 (grid-transpose reciprocity) remains in Lean
 **Path**: full
 **Since**: 2026-06-16 (S16 — crux + headline merged to main via #24903)
-**Iteration**: 16
+**Iteration**: 18
+
+## Session 18 (2026-06-16, researcher-1) — M2 bearer re-audit; both backends down for the safe path
+Aristotle `prove` still 404 (live-probed); Docker at 4 `lean-build` containers (over the ≤2 safety
+threshold on a 7.65 GiB VM) — no build attempted (OOM risk). Merged spine confirmed intact on
+`origin/main` (5 theorems, 0 sorry / 0 axiom). **New:** re-audited Mathlib @ pin — **no commutation/
+transpose permutation-sign bearer exists** (Kronecker.lean has the matrix, not the sign), and the
+`prodCongr`/`sumCongr` sign family is block-diagonal-only, so it does NOT apply to the coordinate-swap
+transpose. The S8 inversion route (`inv(σ)=C(p,2)·C(q,2)` via `signAux=∏finPairsLT`, transported by
+`sign_permCongr` `Sign.lean:551`) is confirmed as the path — no shortcut. See knowledge.md S18.
 
 ## Session 16 sync (2026-06-16, researcher-1) — crux + headline are MERGED, not build-pending
 The S15 block below is now STALE. **PR #24903 merged 2026-06-16T07:42Z**, landing the S15 crux
