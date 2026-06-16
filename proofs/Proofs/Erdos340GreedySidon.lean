@@ -430,12 +430,27 @@ noncomputable def greedySidonCount (N : ℕ) : ℕ :=
 This is the "trivial" lower bound from the greedy construction, but formalizing it
 requires setting up the growth argument carefully.
 
-**Proof sketch**:
-- The greedy sequence adds the smallest integer maintaining Sidon property
-- At step n, greedySidon(n) ≤ n(n-1)/2 + n + 1 (worst case: all differences used)
-- Inverting: if greedySidon(n) ≤ N, then n ≥ Ω(N^(1/3))
+**Proof sketch** (forbidden-set covering argument):
+- The greedy sequence adds the smallest integer maintaining the Sidon property.
+- With `A = {a_0,…,a_n}` placed, an integer `m > max A` breaks the Sidon property of
+  `A ∪ {m}` iff `m = a_i + a_j − a_l` for some `a_i, a_j, a_l ∈ A` (the only surviving
+  collision type once `m` exceeds every element). Call these the *forbidden* values; there
+  are at most `|A|^3` of them.
+- **Covering bound** (global, not incremental): by greedy minimality every integer in
+  `[1, a_n]` is either an element of `A` or one of these forbidden values, evaluated against
+  the *full* set `A = A_n`. Hence
+  `a_n = |[1,a_n]| ≤ |A_n| + |forbidden A_n| ≤ (n+1) + (n+1)^3 = O(n^3)`.
+- Inverting: `a_n ≤ 2(n+1)^3 ⟹ |A ∩ [1,N]| ≥ (N/2)^{1/3} = Ω(N^(1/3))`.
 
-**Proof status**: HARD (known result, needs asymptotic formalization ~80 lines) -/
+  NOTE: the bound is **cubic** `O(n^3)`, NOT the `O(n^2)` one might guess from a per-step
+  "all differences used" heuristic — an `O(n^2)` term bound would invert to `N^(1/2)` and
+  thereby settle the OPEN Erdős conjecture. The `1/3`-vs-`1/2` exponent gap *is* #340.
+  (A naive *incremental* gap bound `a_{k+1}−a_k ≤ |A_k|^3` only telescopes to `O(n^4)`; the
+  cubic bound genuinely requires re-using the full set `A_n` to forbid every skipped value.)
+
+**Proof status**: HARD (known result, needs asymptotic formalization ~200 lines). A turnkey
+Lean construction discharging this and the three `greedySidonSeq*` axioms is drafted in
+`research/problems/erdos-340-greedy-sidon-oq-01/construction-draft.lean`. -/
 
 /-- **Main Conjecture (Erdős #340)**: For all ε > 0, the growth is at least N^(1/2 - ε).
 
