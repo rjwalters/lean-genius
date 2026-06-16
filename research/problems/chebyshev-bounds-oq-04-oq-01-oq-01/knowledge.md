@@ -57,12 +57,41 @@ Aristotle `prove` once a backend recovers. Expected glue:
 `ArithmeticFunction.moebius`, `coe_moebius_mul_coe_zeta` (μ ∗ ζ = δ), and a
 `Finset.Icc 1 N` hyperbola reindexing.
 
-### Mathlib search to do on recovery (could not grep — `.lake` corrupt)
+## This session (2026-06-16, Researcher-5) — Mathlib searches RESOLVED
 
-- Does Mathlib already have `Σ_{d≤N} μ(d)⌊N/d⌋ = 1`? Search
-  `ArithmeticFunction.sum_moebius_mul`, `Nat.sum_div`, hyperbola lemmas.
-- Möbius indicator: `ArithmeticFunction.sum_moebius_eq_...` /
-  `coe_moebius_mul_coe_zeta` for `Σ_{d∣n} μ(d) = δ_{n,1}`.
+Dual blackout persists (`.lake` literal self-symlink → builds re-clone Mathlib;
+Aristotle `prove` → 404). But the `/private/tmp/mathlib-grep` v4.26.0 mirror was
+readable, so I resolved every "search to do on recovery" the prior session left.
+
+**No, Mathlib does NOT have `Σ_{d≤N} μ(d)⌊N/d⌋ = 1` directly** (only
+`sum_moebius_mul_log_eq` in VonMangoldt.lean). But all four building blocks exist:
+
+| # | Lemma | Location | Role |
+|---|-------|----------|------|
+| 1 | `Nat.Ioc_filter_dvd_card_eq_div (n p) : #{x∈Ioc 0 n \| p∣x} = n/p` | `Data/Nat/Factorization/Basic.lean:475` | ⌊N/d⌋ = #multiples |
+| 2 | `coe_mul_zeta_apply : (f*ζ) x = ∑ i∈x.divisors, f i` | `NumberTheory/ArithmeticFunction/Zeta.lean:81` | divisor sum ← (μ*ζ) x |
+| 3 | `moebius_mul_coe_zeta : (μ*ζ : ArithmeticFunction ℤ) = 1` | `…/Moebius.lean:157` | μ∗ζ = δ |
+| 4 | `one_apply : (1:ArithmeticFunction R) x = ite (x=1) 1 0` | `…/Defs.lean:96` | δ as if-then-else |
+
+**Full grounded proof chain** (now embedded as a paste-ready attempt in the
+orphan file's docstring, kept behind `sorry` since BUILD-UNVERIFIED):
+
+```
+Σ_{d∈Icc 1 N} μ d·(N/d)
+ = Σ_{d∈Icc 1 N} Σ_{x∈Ioc 0 N, d∣x} μ d     [1: sum_const + Ioc_filter_dvd_card_eq_div + nsmul_eq_mul]
+ = Σ_{x∈Ioc 0 N} Σ_{d∈Icc 1 N, d∣x} μ d     [Finset.sum_filter then Finset.sum_comm]
+ = Σ_{x∈Ioc 0 N} Σ_{d∈x.divisors} μ d        [for x≤N: {d∈Icc 1 N : d∣x} = x.divisors]
+ = Σ_{x∈Ioc 0 N} (μ*ζ) x                       [2: coe_mul_zeta_apply]
+ = Σ_{x∈Ioc 0 N} ite(x=1) 1 0                  [3+4: moebius_mul_coe_zeta, one_apply]
+ = 1                                            [Finset.sum_ite_eq'; 1∈Ioc 0 N as N≥1]
+```
+
+**Residual compile risks** (what the next build slot must check): the
+`Finset.sum_comm` order swap producing the exact double-sum shape; the
+`filter = divisors` `ext` (binder order, `Nat.pos_of_dvd_of_pos`); and the
+`show … from coe_mul_zeta_apply.symm` typeclass elaboration (`μ` as
+`ArithmeticFunction ℤ`). The mathematics is fully grounded; only Lean
+bookkeeping remains.
 
 ### Next Steps
 
