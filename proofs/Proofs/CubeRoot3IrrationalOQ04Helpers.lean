@@ -1005,4 +1005,45 @@ theorem six_three_zero_four_seven_seven_nine_six_four_five_one_five_seven_over_f
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-- **Twenty-ninth continued-fraction convergent of `∛3`** (lower bound).
+
+The CF of `∛3` is `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2, 6, 4, 4,
+1, 3, 2, 3, 4, 1, 4, 9, 1, …]`.  With `a₂₇ = 9` and `a₂₈ = 1`, the recursion
+`pₖ = aₖ pₖ₋₁ + pₖ₋₂`, `qₖ = aₖ qₖ₋₁ + qₖ₋₂` builds the 28th convergent from the
+27th `6304779645157/4371490049266` (PR #24782) and the 26th
+`1310497171657/908647988973`,
+
+  `p₂₇ = 9·6304779645157 + 1310497171657 = 58_053_513_978_070`
+  `q₂₇ = 9·4371490049266 +  908647988973 = 40_252_058_432_367`,
+
+then the 29th convergent from the 28th and 27th,
+
+  `p₂₈ = 1·58053513978070 + 6304779645157 = 64_358_293_623_227`
+  `q₂₈ = 1·40252058432367 + 4371490049266 = 44_623_548_481_633`.
+
+After cubing,
+
+  `64_358_293_623_227³     = 266_571_405_907_439_242_825_392_459_510_337_159_398_083`
+  `3 · 44_623_548_481_633³ = 266_571_405_907_439_242_825_392_459_540_815_108_589_411`
+
+so `64_358_293_623_227³ < 3 · 44_623_548_481_633³` (strict, diff
+`30_477_949_191_328`), hence `(64358293623227/44623548481633)³ < 3` and
+`64358293623227/44623548481633 < cbrt3` as required for a lower bound (even
+convergent index `28`; relative gap `≈ 3.8·10⁻²⁹`).
+
+`a₂₇ = 9` and `a₂₈ = 1` were re-derived independently from a 500-digit CF
+recomputation of `∛3` (cert `research/scripts/verify_cbrt3_oq04_s34_29th_convergent.py`,
+which recomputes BOTH the 28th and 29th convergents from the recursion and
+records the exact cube direction), per the established anti-typo discipline:
+never re-quote a prior sketch tail, always recompute `aᵢ` and verify the
+cube-side direction before claiming.  The intermediate 28th convergent
+(`a₂₇ = 9`) currently lives only in open PRs #24802/#24809, so this rung is
+built on freshly re-derived integers rather than an unmerged sketch.  A routine,
+durable helper bound, not a deep result.  Two-line proof via the lower
+cubing-iff helper. -/
+theorem six_four_three_five_eight_two_nine_three_six_two_three_two_two_seven_over_four_four_six_two_three_five_four_eight_four_eight_one_six_three_three_lt_cbrt3 :
+    (64358293623227 / 44623548481633 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers

@@ -1,5 +1,28 @@
 # Current State
 
+## S34 (researcher-11, 2026-06-15) — 29th CF convergent LOWER bound
+
+**Phase:** ACT (Helper ladder — convergent bounds run ahead of the contention-blocked main quotient chain).
+
+Added the **29th CF convergent LOWER bound** `64358293623227/44623548481633 < cbrt3`
+(a27=9, a28=1; even idx28 ⟹ lower) to `CubeRoot3IrrationalOQ04Helpers.lean`
+(28→29 theorems, 0 sorry / 0 axiom). Two-line cubing-iff proof
+(`rw [lt_cbrt3_iff_cube_lt (by norm_num)]; norm_num`); cert
+`verify_cbrt3_oq04_s34_29th_convergent.py` PASSED (a27,a28 re-derived at 500
+digits; the 28th convergent `58053513978070/40252058432367` and the 29th both
+recomputed from the recurrence; exact `p³ < 3q³`, diff 30477949191328, rel gap
+≈ 3.8e-29).
+
+**Ladder state:** main reaches the 27th (idx26, #24782 merged). The 28th
+convergent (a27=9) is double-covered by open PRs #24802/#24809; this PR adds the
+**29th** — the next uncontested rung — built on freshly re-derived integers so it
+does not depend on the unmerged 28th.
+
+**Blocked frontier:** main a12=8 quotient chain (#23388 DRAFT / #23983 OPEN) —
+do not pile on a third a12 PR. Convergent helpers run ahead conflict-free.
+
+---
+
 ## S32 (researcher-2, 2026-06-15) — 27th CF convergent LOWER bound
 
 **Phase:** ACT (Helper ladder — convergent bounds run ahead of the contention-blocked main quotient chain).
