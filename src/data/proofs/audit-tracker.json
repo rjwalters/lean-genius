@@ -1942,7 +1942,8 @@
     "central-limit-theorem-oq-02": {
       "auditCount": 5,
       "lastAudited": "2026-06-15T14:59:46Z",
-      "result": "issues-found"
+      "result": "issues-fixed",
+      "issues": []
     },
     "central-limit-theorem-oq-03": {
       "auditCount": 3,
@@ -15356,15 +15357,13 @@
     "sum-of-kth-powers-oq-03": {
       "auditCount": 2,
       "lastAudited": "2026-06-15T15:01:30Z",
-      "result": "issues-found",
-      "issues": [
-        "Stray -/ in docstring (line 31 division-/subtraction-free) closes the block comment and breaks compilation despite 0 sorries. Fix in flight: PR #24603."
-      ]
+      "result": "issues-fixed",
+      "issues": []
     },
     "euler-totient-oq-01-oq-03": {
       "auditCount": 2,
       "lastAudited": "2026-06-15T15:00:57Z",
-      "result": "issues-found",
+      "result": "issues-fixed",
       "issues": []
     },
     "erdos-1107-oq-02-oq-01 clean": {
@@ -15442,7 +15441,7 @@
     "inclusion-exclusion-oq-01-oq-03": {
       "auditCount": 1,
       "lastAudited": "2026-06-15T19:32:29Z",
-      "result": "issues-found",
+      "result": "issues-fixed",
       "issues": []
     },
     "inverse-galois-d4-oq-01": {
@@ -15466,7 +15465,7 @@
     "morleys-theorem-oq-03": {
       "auditCount": 1,
       "lastAudited": "2026-06-15T19:37:36Z",
-      "result": "issues-found",
+      "result": "issues-fixed",
       "issues": []
     },
     "pascals-hexagon-oq-02": {
@@ -15508,7 +15507,7 @@
     "mantel-theorem": {
       "auditCount": 1,
       "lastAudited": "2026-06-15T20:58:19Z",
-      "result": "issues-found",
+      "result": "issues-fixed",
       "issues": []
     },
     "cayley-hamilton-cyclic-vector-all-fields-oq-03": {
@@ -15555,5 +15554,5 @@
     }
   },
   "version": 1,
-  "lastUpdated": "2026-06-05T19:53:45Z"
+  "lastUpdated": "2026-06-16T15:24:22Z"
 }
