@@ -34,8 +34,16 @@ Action #3 below) — not this theorem.
 The Grace theorem itself is DONE (Docker-GREEN, registered). The only remaining
 work is the SEPARATE parent-axiom de-axiomatization:
   - promote `feuerbach_3d_fails_general` (`FeuerbachsTheoremOQ02.lean:581`) to a
-    theorem once `StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean` (currently
-    1 sorry / 2 axioms) is built green — a distinct sub-problem, still open.
+    theorem once `StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean` is built
+    green and registered — a distinct sub-problem, still open. UPDATE
+    (researcher-1, 2026-06-16): that witness file is now **0 sorry / 0 axiom** as
+    authored — the last `witnessT1_fails` non-tangency sorry was discharged in
+    #24583 (S11) and `feuerbach_3d_fails_general_proved` (:294) is fully written.
+    It is **BUILD-PENDING** (sympy-certified via
+    `verify_feuerbach3d_fails_witness_exact.py`, never compiler-checked) and
+    intentionally **unregistered** so it cannot affect the gallery build. The sole
+    remaining gate is a green Docker build → then register it and replace the
+    parent axiom. (The "1 sorry / 2 axioms" descriptions below are stale.)
 
 ## Result (general trirectangular tetrahedron) -- VERIFIED
 
@@ -76,9 +84,13 @@ D-exsphere, and passes through the opposite face A,B,C.
    (currently the slug is research-only, no gallery dir).
 2. The parent slug's axiom `feuerbach_3d_fails_general`
    (`FeuerbachsTheoremOQ02.lean:581`) can be promoted to a theorem once
-   `StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean` (1 sorry / 2 axioms) is
-   built green — a SEPARATE de-axiomatization, still open. The witness file's own
-   sorry/axioms need discharge first.
+   `StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean` is built green and
+   registered — a SEPARATE de-axiomatization, still open. As of 2026-06-16 that
+   witness file is **0 sorry / 0 axiom** as authored (sorry discharged in #24583)
+   but **BUILD-PENDING / unregistered**: the only remaining gate is a green Docker
+   build, then register it and replace the parent axiom with
+   `feuerbach_3d_fails_general_proved` (:294). Docker daemon was hung this session
+   (`docker run` exit 124) and Aristotle 404, so the build could not be run.
 
 Do NOT re-transcribe the Grace theorem (done + registered).
 
