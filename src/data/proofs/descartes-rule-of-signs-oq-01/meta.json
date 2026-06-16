@@ -73,9 +73,9 @@
       "zero_sv_no_positive_roots, positive_root_count_from_sv: summary theorems"
     ],
     "dateAdded": "2026-02-24",
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 1074,
-    "assumptions": "1 axiom: descartes_parity. See Lean source for the complete statement. 0 sorries remain.",
+    "assumptions": "0 axioms, 0 sorries in source. Former axiom descartes_parity was removed in #24803 — parity is now theorem descartes_parity, discharged by descartes_parity_proved (Part X). Status held conservative (axiomatized) pending a green Docker build before any verified flip.",
     "mathlib_version": "4.26.0",
     "theoremCount": 48,
     "definitionCount": 1
