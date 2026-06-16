@@ -1,0 +1,72 @@
+{
+  "id": "binomial-theorem-oq-02-oq-01-oq-04",
+  "title": "Multinomial Variance: Var(Xᵢ) = n·pᵢ·(1 − pᵢ)",
+  "slug": "binomial-theorem-oq-02-oq-01-oq-04",
+  "description": "Proves the diagonal of the multinomial covariance matrix: the variance of a single component Var(Xᵢ) = n·pᵢ·(1 − pᵢ). The cross-moment lemma in the sibling file BinomialTheoremOQ02OQ01OQ03 carries the hypothesis i ≠ j, so it only reaches the off-diagonal entries Cov(Xᵢ,Xⱼ) = −n·pᵢ·pⱼ; this file supplies the missing diagonal. The proof reduces the second moment E[Xᵢ²] to the binomial second moment by fiber grouping over the value j = k(i₀) and the marginal-PMF identity, then combines with the mean E[Xᵢ] = n·pᵢ and the binomial variance. Fully machine-verified with 0 sorries and 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ04.lean",
+    "tags": [
+      "probability",
+      "multinomial distribution",
+      "variance",
+      "second moment",
+      "covariance matrix",
+      "fiber grouping",
+      "binomial marginal",
+      "combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 151,
+    "assumptions": "None. Both theorems (second moment, variance) are fully machine-verified with 0 sorries and 0 axioms, reusing the verified marginal PMF (OQ02), multinomial mean (OQ03), and binomial variance (OQ03).",
+    "theoremCount": 2,
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "For (X₁,…,Xₖ) ~ Multinomial(n, p₁,…,pₖ) the full second-order structure is the covariance matrix Σ = n·(diag(p) − ppᵀ), the object that underlies Karl Pearson's 1900 chi-squared goodness-of-fit test and R. A. Fisher's later work on contingency tables. The off-diagonal entries Σᵢⱼ = −n·pᵢpⱼ (i ≠ j) reflect the hard constraint ∑Xₗ = n: more of one outcome forces less of another. The diagonal entries Σᵢᵢ = Var(Xᵢ) = n·pᵢ(1 − pᵢ) are exactly the binomial variances, because each marginal Xᵢ is itself Binomial(n, pᵢ). This file machine-checks the diagonal, completing the covariance matrix begun in the covariance sibling.",
+    "problemStatement": "For (X₁,…,Xₖ) ~ Multinomial(n, p₁,…,pₖ) with ∑pᵢ = 1, prove that Var(Xᵢ) = E[Xᵢ²] − (E[Xᵢ])² = n·pᵢ·(1 − pᵢ).",
+    "text": "Proves Var(Xᵢ) = n·pᵢ·(1 − pᵢ) with both theorems fully machine-verified (0 sorries, 0 axioms). The second moment E[Xᵢ²] = ∑ⱼ j²·binomPMF(n, pᵢ, j) is proved by fiber grouping over j = k(i₀), the squared-statistic analogue of the multinomial mean. Combining with E[Xᵢ] = n·pᵢ and the binomial variance E[X²] − (E[X])² = n·p(1 − p) yields the result.",
+    "proofStrategy": "Each marginal Xᵢ is Binomial(n, pᵢ) (multinomial_marginal_pmf, from BinomialTheoremOQ02OQ01OQ02). The theorem multinomial_second_moment uses sum_fiberwise_of_maps_to to group the multinomial sum by the value k(i₀) = j; on each fiber the statistic k(i₀)² is the constant j², which factors out, leaving the marginal PMF P(Xᵢ=j) = binomPMF(n, pᵢ, j). This reduces E[Xᵢ²] to the binomial second moment ∑ⱼ j²·binomPMF. The variance then follows from the binomial variance (BinomialTheoremOQ03.binomial_variance, extended here to all n) together with the mean E[Xᵢ] = n·pᵢ (BinomialTheoremOQ02OQ01OQ03.multinomial_mean).",
+    "keyInsights": [
+      "The diagonal of the covariance matrix is not reachable from the cross-moment lemma, which assumes i ≠ j; the variance needs its own argument.",
+      "The component Xᵢ is marginally Binomial(n, pᵢ), so Var(Xᵢ) is literally the binomial variance n·pᵢ(1 − pᵢ) — no multinomial-specific second-moment computation is required beyond fiber grouping.",
+      "The second-moment proof is the squared-statistic copy of the multinomial mean: replacing k(i₀) by k(i₀)² in the fiber-grouping argument, the constant j² factors out of each fiber and the remaining sum is the marginal PMF.",
+      "BinomialTheoremOQ03.binomial_variance requires 2 ≤ n; the degenerate cases n = 0 (variance 0) and n = 1 (a single Bernoulli trial, variance p(1 − p)) are discharged directly so the multinomial result holds for every n.",
+      "Together with the off-diagonal Cov(Xᵢ,Xⱼ) = −n·pᵢpⱼ this determines the full covariance matrix Σᵢⱼ = n·pᵢ(δᵢⱼ − pⱼ), which is singular of rank k−1 because ∑Xₗ = n confines all variation to the constraint hyperplane."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header: Variance of a Multinomial Component",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Imports the multinomial choose lemmas, BigOperators, and three parent proof files: BinomialTheoremOQ02OQ01OQ02 (marginal PMF), BinomialTheoremOQ02OQ01OQ03 (multinomial mean, multinomialProb), and BinomialTheoremOQ03 (binomial variance). The docblock states the open question (the i ≠ j cross-moment leaves the diagonal unreached), the answer Var(Xᵢ) = n·pᵢ(1 − pᵢ), and the three-step fiber-grouping reduction to the binomial variance."
+    },
+    {
+      "id": "binomial-variance-all",
+      "title": "Binomial mean and variance for all n",
+      "startLine": 49,
+      "endLine": 70,
+      "summary": "Two private helpers extend the binomial facts to every n: binomial_variance_all case-splits on n ∈ {0, 1, ≥2}, handling the degenerate cases by simp/ring and delegating n ≥ 2 to BinomialTheoremOQ03.binomial_variance; binomial_mean_all_n similarly extends the binomial mean (which requires n ≥ 1) to n = 0."
+    },
+    {
+      "id": "second-moment",
+      "title": "Second Moment E[Xᵢ²] = ∑ⱼ j²·binomPMF",
+      "startLine": 71,
+      "endLine": 111,
+      "summary": "multinomial_second_moment proves E[Xᵢ²] = ∑ⱼ j²·binomPMF(n, pᵢ, j) by fiber grouping. sum_fiberwise_of_maps_to regroups the multinomial sum by j = k(i₀); on each fiber k(i₀)² is the constant j² (factored out via mul_sum), and the remaining probability sum is rewritten to the marginal PMF binomPMF via multinomial_marginal_pmf. This is the squared-statistic analogue of OQ03.multinomial_mean."
+    },
+    {
+      "id": "variance",
+      "title": "Main Theorem: Var(Xᵢ) = n·pᵢ·(1 − pᵢ)",
+      "startLine": 112,
+      "endLine": 151,
+      "summary": "multinomial_variance rewrites E[Xᵢ²] via multinomial_second_moment and E[Xᵢ] via multinomial_mean, re-expresses (n·pᵢ)² as (∑ⱼ j·binomPMF)² using the all-n mean, and closes by binomial_variance_all. The result is the diagonal companion to OQ03.multinomial_covariance, completing the multinomial covariance matrix."
+    }
+  ]
+}
