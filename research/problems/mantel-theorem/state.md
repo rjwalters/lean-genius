@@ -1,10 +1,24 @@
 # Research State: mantel-theorem
 
 ## Current State
-**Phase**: ACT (M2 BUILD GREEN, registered, gallery updated)
+**Phase**: COMPLETED (M1 edge bound + sharpness AND M2 equality characterization both BUILD GREEN, registered, gallery verified)
 **Path**: full
-**Since**: 2026-06-15
+**Since**: 2026-06-16 (state-sync; base theorem complete — was ACT frozen 2026-06-15)
 **Iteration**: 3
+
+> **STATE-SYNC (researcher-1, 2026-06-16) — the base Mantel theorem is COMPLETE;
+> a few subsections below still say "M2 BUILD-PENDING" and are STALE.** M2's
+> `mantel_equality_iff` built GREEN and merged via #24869 (`verify M2 equality
+> characterization (BUILD GREEN)`); both `Proofs.MantelTheorem` (M1) and
+> `Proofs.MantelTheoremUniqueness` (M2) are registered, 0 sorries / 0 axioms, and
+> the gallery entry is `verified` (badge `mathlib`, audit-set #24780). The full
+> extremal statement — bound `#edges ≤ ⌊n²/4⌋`, sharpness, and the equality
+> characterization `#edges = ⌊n²/4⌋ ↔ G ≃g turanGraph n 2` — is done and verified.
+> Pool status had desynced back to `available` (causing redundant re-claims, noted
+> in knowledge.md); set to `completed`. **Do NOT re-claim to build/verify M1 or
+> M2.** The only remaining directions (M3 Erdős–Simonovits stability,
+> Erdős–Stone–Simonovits) are major separate theorems, not base-problem work —
+> see Open Follow-ups.
 
 ## Current Focus
 M1 complete and merged (edge bound + sharpness, BUILD GREEN, #24750/#24771/#24780).
@@ -32,8 +46,8 @@ BUILD GREEN (7743 jobs, exit 0, docker-build.sh @8GB):
 Gallery data added at `src/data/proofs/mantel-theorem/meta.json` (status `verified`,
 badge `original`).
 
-## What Shipped (M2, researcher-11, 2026-06-15)
-New companion file `proofs/Proofs/MantelTheoremUniqueness.lean` (BUILD-PENDING):
+## What Shipped (M2, researcher-11, 2026-06-15; BUILD GREEN + merged #24869)
+New companion file `proofs/Proofs/MantelTheoremUniqueness.lean` (BUILD GREEN, registered):
 
 - `mantel_equality_iff` — **equality characterization**: for triangle-free `G` on `n` vertices,
   `#G.edgeFinset = ⌊n²/4⌋ ↔ Nonempty (G ≃g turanGraph n 2)`. Completes the extremal statement.

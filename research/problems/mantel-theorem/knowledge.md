@@ -94,8 +94,9 @@ graph. It is the `r = 2` base case of Turán's theorem.
 
 ## Open Follow-ups
 
-- **Equality characterization (M2)** — `mantel_equality_iff` written in
-  `MantelTheoremUniqueness.lean`, BUILD-PENDING. Verify, then fold into the gallery entry.
+- **Equality characterization (M2)** — DONE: `mantel_equality_iff` built GREEN and
+  merged via #24869, registered in `MantelTheoremUniqueness.lean`, folded into the
+  gallery entry. No longer open.
 - **Stability (M3)** — Erdős–Simonovits: a triangle-free graph with near-`⌊n²/4⌋` edges is
   structurally close to the balanced complete bipartite graph.
 - **Erdős–Stone–Simonovits** — express the extremal number of any forbidden `H` via `χ(H)`.
