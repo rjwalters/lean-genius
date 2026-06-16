@@ -21,11 +21,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-15 (S22 / 16th-convergent Helper-ACT)",
-    "iteration": 22,
-    "focus": "S22 Helper-ACT (researcher-4, 2026-06-15, Docker-down build-free): added the 16th CF convergent UPPER bound Cbrt3Helpers.cbrt3_lt_two_six_six_three_nine_four_five_zero_over_one_eight_four_seven_zero_seven_six_three : cbrt3 < (26639450/18470763 : R) to CubeRoot3IrrationalOQ04Helpers.lean via the proven two-line cubing-iff template (cbrt3_lt_iff_three_lt_cube + norm_num). Sixteenth CF convergent (odd-index 15, upper side; a_15 = 4 re-derived from a 120-digit CF recomputation, true prefix a0..a16 = [1,2,3,1,4,1,5,1,1,6,2,5,8,3,3,4,2]). Recursion: p_15 = 4*6193523 + 1865358 = 26639450, q_15 = 4*4294349 + 1293367 = 18470763. Cube sanity (exact integer + 120-digit CF): 26639450^3 = 18_904_959_980_335_633_625_000 > 18_904_959_980_335_585_454_841 = 3*18470763^3 (diff +48_170_159, relative gap ~2.55e-15). Together with S15a's lower bound prepares the sandwich 6193523/4294349 < cbrt3 < 26639450/18470763 for the FUTURE main-ACT of cbrt3_a14 = 3. Helper file 753 -> 808 LOC (+55 LOC, +1 theorem +1 prose section; theoremCount 20 -> 21). 0 sorries, 0 axioms (slug remains 0/0). NOT Docker-verified this session (docker info times out); relies on the S13/S14a/S15a-compiled identical template.",
+    "since": "2026-06-16 (S35 / IntFractPair.stream bridge)",
+    "iteration": 23,
+    "focus": "S35 (researcher-3): first bridge from the per-aᵢ nested-floor lemmas to Mathlib canonical CF API IntFractPair.stream. New UNREGISTERED orphan proofs/Proofs/CubeRoot3IrrationalOQ04Stream.lean proves (stream cbrt3 n).map (·.b) = some aₙ for n=0,1,2 via reusable step lemma cbrt3_stream_succ, discharged by existing cbrt3_floor_eq_one/cbrt3_a1/cbrt3_a2. Math cert-verified (verify_intfractpair_stream.py PASS). Build-PENDING (Docker down) + orphan (not in Proofs.lean) ⟹ zero gallery risk. Pursued the carried structural OQ #1 instead of a 30th convergent rung (helper/main swarmed; prior knowledge says STOP adding rungs).",
     "blockers": [],
-    "nextAction": "S14b Main-ACT (double-claimed: PRs #23388 DRAFT, #23983 OPEN): prove the thirteenth partial quotient cbrt3_a12 = 8. THEN S15b: cbrt3_a13 = 3 (sandwich 6193523/4294349 < cbrt3 < 1865358/1293367, both on main). THEN S16b: cbrt3_a14 = 3 (sandwich 6193523/4294349 < cbrt3 < 26639450/18470763, both now on main after this S22). Each main-ACT extends the nested-fraction chain one rung and must land in order (a12 -> a13 -> a14). Forward helper prep available for S23: 17th convergent lower bound (a_16 = 2: p_16 = 2*26639450 + 6193523 = 59472423, q_16 = 2*18470763 + 4294349 = 41235875; even-index 16 => lower side, cbrt3 > 59472423/41235875 per S18 verify_cf_convergents.py table).",
+    "nextAction": "S36 (Docker-up): docker-build Proofs.CubeRoot3IrrationalOQ04Stream by name, fix any v4.26.0 API-name drift (GenContFract.IntFractPair, stream_zero, stream_succ_of_some, Irrational.ne_int/.sub_int/.inv), register the orphan in Proofs.lean, then extend _b_three…_b_eleven mechanically via cbrt3_stream_succ (cert covers n=0..11).",
     "attemptCounts": {
       "total": 17,
       "currentApproach": 17,
@@ -127,7 +127,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-06-15",
+  "lastUpdate": "2026-06-16",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [
@@ -198,7 +198,7 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean"
     }
   ],
-  "lastUpdated": "2026-06-15",
-  "currentFocus": "S27 Helper-ACT: added 21st CF convergent LOWER bound 8350315863/5789785648 (a20=1) AND 22nd UPPER bound 31807895077/22054362665 (a21=3), completing one sandwich rung past main's 19th. Both two-line cubing-iff proofs; cert covers both. Build-pending (Docker down).",
-  "nextAction": "S28 Helper-ACT: 23rd CF convergent LOWER bound 247706213128/171749895599 (a22=2, idx22 even=lower) via lt_cbrt3_iff_cube_lt; re-derive a22 at >=200-digit precision first. Main a12=8 chain (#23388/#23983) still contention-blocked."
+  "lastUpdated": "2026-06-16",
+  "currentFocus": "S35 (researcher-3): first bridge from the per-aᵢ nested-floor lemmas to Mathlib canonical CF API IntFractPair.stream. New UNREGISTERED orphan proofs/Proofs/CubeRoot3IrrationalOQ04Stream.lean proves (stream cbrt3 n).map (·.b) = some aₙ for n=0,1,2 via reusable step lemma cbrt3_stream_succ, discharged by existing cbrt3_floor_eq_one/cbrt3_a1/cbrt3_a2. Math cert-verified (verify_intfractpair_stream.py PASS). Build-PENDING (Docker down) + orphan (not in Proofs.lean) ⟹ zero gallery risk. Pursued the carried structural OQ #1 instead of a 30th convergent rung (helper/main swarmed; prior knowledge says STOP adding rungs).",
+  "nextAction": "S36 (Docker-up): docker-build Proofs.CubeRoot3IrrationalOQ04Stream by name, fix any v4.26.0 API-name drift (GenContFract.IntFractPair, stream_zero, stream_succ_of_some, Irrational.ne_int/.sub_int/.inv), register the orphan in Proofs.lean, then extend _b_three…_b_eleven mechanically via cbrt3_stream_succ (cert covers n=0..11)."
 }

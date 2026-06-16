@@ -1239,3 +1239,64 @@ is contention/churn, NOT correctness.
 
 **Recommendation**: STOP adding rungs (no mathematical value beyond more digits).
 Merge the open backlog; do not open new rung PRs.
+
+## Session 2026-06-16 (S35, BUILD orphan, by researcher-3) — IntFractPair.stream BRIDGE
+
+**Mode:** BUILD (new orphan file). Docker DOWN, Aristotle 404 ⟹ build-pending.
+Acted on the prior knowledge recommendation ("STOP adding rungs") by attacking
+the carried structural open question #1 instead of a 30th convergent rung.
+
+### Result
+
+First-ever connection between the slug's ad-hoc nested-floor lemmas and Mathlib's
+*canonical* CF API `IntFractPair.stream` (open question #1, carried since S5).
+New **unregistered orphan** `proofs/Proofs/CubeRoot3IrrationalOQ04Stream.lean`:
+
+| Theorem | Statement | Discharged by |
+|---|---|---|
+| `cbrt3_stream_succ` | step: `stream n = some(of x)`, `Irrational x`, `⌊x⌋=a` ⟹ `stream (n+1) = some(of (x-a)⁻¹)` | `stream_succ_of_some` + `ne_int` |
+| `cbrt3_stream_b_zero` | `(stream cbrt3 0).map (·.b) = some 1` | `cbrt3_floor_eq_one` |
+| `cbrt3_stream_b_one`  | `… 1 … = some 2` | `cbrt3_a1` |
+| `cbrt3_stream_b_two`  | `… 2 … = some 3` | `cbrt3_a2` |
+| `cbrt3_stream_prefix` | bundled conjunction | the three above |
+
+### Key insight — the fract-chain identity (cert-verified)
+
+The value whose floor `cbrt3_aᵢ` computes is *exactly* the stream's `xᵢ`:
+with `x₀ = cbrt3`, `xᵢ₊₁ = (Int.fract xᵢ)⁻¹` and `Int.fract xᵢ = xᵢ - aᵢ`,
+so `xᵢ` is the nested reciprocal `1/(1/(…-a₀) - a₁ …)`. The step lemma
+`cbrt3_stream_succ` formalizes one rung; everything else is reuse. This means
+**the bridge to ALL proven indices n=0..11 is mechanical** — each
+`cbrt3_stream_b_k` needs only `cbrt3_ak` + an `Irrational` witness for the k-th
+nested reciprocal (`irrational_cbrt3` then `.sub_int`/`.inv`).
+
+`verify_intfractpair_stream.py` confirms (A) `stream.b[n] = aₙ` for n=0..11 and
+(B) the fract-chain identity, residuals < 10⁻⁸⁰ at 120-digit precision.
+
+### Honesty / status
+
+- NOT registered in `Proofs.lean` ⟹ zero gallery-build risk (register-orphan pattern).
+- NOT Docker-verified ⟹ API names unverified at v4.26.0. The file header lists
+  every dependency (`GenContFract.IntFractPair`, `IntFractPair.stream_zero`,
+  `IntFractPair.stream_succ_of_some`, `Irrational.ne_int/.sub_int/.inv`,
+  `Int.fract` simp-unfold, `inv_eq_one_div`). Proof structure is cert-correct;
+  name drift only swaps a single lemma.
+- Conflict-free: new file, does not touch the swarmed helper/main files.
+
+### Gotcha for the register-when-Docker-up session
+
+- `IntFractPair.of v = ⟨⌊v⌋, Int.fract v⟩`, so `(of v).b = ⌊v⌋` and
+  `(of v).fr = Int.fract v` should both close by `rfl`/`show`. If the structure
+  projection doesn't reduce, add `IntFractPair.of` to the `simp` set.
+- The `simpa using (cbrt3_stream_succ …)` calls absorb `((a:ℤ):ℝ) → (a:ℝ)`
+  literal-cast normalization (`Int.cast_one`, `Int.cast_ofNat`). If `simpa`
+  leaves a cast, add `Int.cast_one`/`push_cast` explicitly.
+- `cbrt3_stream_succ`'s `simp [IntFractPair.of, Int.fract, hfl]` relies on `simp`
+  unfolding `Int.fract` (precedent: `CubeRoot3...:450  simp [Int.fract, hfloor]`).
+
+### Next steps
+
+1. (S36) Build orphan by name, fix drift, register in `Proofs.lean`.
+2. Extend `_b_three … _b_eleven` via `cbrt3_stream_succ` (mechanical).
+3. (Stretch) Single bundled `List`/`Fin` statement; then bridge to
+   `GenContFract.of cbrt3` partial denominators — the fully canonical form.
