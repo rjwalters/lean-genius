@@ -36,8 +36,25 @@
       dependency on uncertain Mathlib API names.  Preferred if (A)'s bridging
       lemmas are absent.
 
-  Status: SURVEYED / ORIENT.  Statement of record below; proof deferred
-  (build infrastructure saturated, Aristotle backend unavailable this session).
+  Status: ACT (build-pending).  Route A executed below: the concrete recurrence
+  is obtained by applying `MvPolynomial.aeval (fun i : ↥s => f i.1)` to Mathlib's
+  universal Newton identity `MvPolynomial.mul_esymm_eq_sum`.  Confirmed Mathlib
+  v4.26.0 API used:
+    * `MvPolynomial.mul_esymm_eq_sum`              (RingTheory/.../Symmetric/NewtonIdentities)
+    * `MvPolynomial.aeval_esymm_eq_multiset_esymm` (RingTheory/.../Symmetric/Defs)
+    * `Finset.esymm_map_val`                       (RingTheory/.../Symmetric/Defs)
+    * `MvPolynomial.psum`, `MvPolynomial.aeval_X`
+    * `Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk`, `Finset.sum_range_succ`
+    * `Multiset.attach_map_val'`, `Finset.attach_val`, `Finset.sum_coe_sort`
+    * `Odd.neg_one_pow`
+  This file now carries a complete proof (no `sorry`), but is BUILD-PENDING /
+  UNVERIFIED: Docker pool saturated (5 containers) and Aristotle backend 404 on
+  2026-06-15, so it was never machine-checked.  A few steps are name-/normal-form
+  fragile and may need minor adjustment on first build, in particular:
+    - the `simp only [...] at key` aeval-transport normal form;
+    - `huniv : (univ : Finset ↥s) = s.attach := rfl` (Fintype-instance defeq);
+    - the `if_pos`/`lt_self_iff_false` reindex closing.
+  Do NOT mark the gallery entry `verified` until this compiles under Docker.
 -/
 
 import Mathlib
@@ -55,6 +72,44 @@ def psum (s : Finset ι) (f : ι → R) (k : ℕ) : R := ∑ i ∈ s, f i ^ k
 def esymm (s : Finset ι) (f : ι → R) (k : ℕ) : R :=
   ∑ T ∈ s.powersetCard k, ∏ i ∈ T, f i
 
+/-- **Power-sum bridge.**  `aeval` of the universal power sum `MvPolynomial.psum`
+    over the index subtype `↥s`, evaluated at `i ↦ f i`, is the concrete `psum s f`. -/
+theorem psum_bridge (s : Finset ι) (f : ι → R) (n : ℕ) :
+    MvPolynomial.aeval (fun i : ↥s => f i.1) (MvPolynomial.psum (↥s) R n) = psum s f n := by
+  rw [MvPolynomial.psum, map_sum, psum]
+  rw [← Finset.sum_coe_sort s (fun i => f i ^ n)]
+  exact Finset.sum_congr rfl (fun i _ => by rw [map_pow, MvPolynomial.aeval_X])
+
+/-- **Elementary-symmetric bridge.**  `aeval` of the universal elementary symmetric
+    polynomial `MvPolynomial.esymm` over `↥s`, evaluated at `i ↦ f i`, is the
+    concrete `esymm s f`. -/
+theorem esymm_bridge (s : Finset ι) (f : ι → R) (n : ℕ) :
+    MvPolynomial.aeval (fun i : ↥s => f i.1) (MvPolynomial.esymm (↥s) R n) = esymm s f n := by
+  rw [MvPolynomial.aeval_esymm_eq_multiset_esymm]
+  -- Goal: ((univ : Finset ↥s).val.map (fun i => f i.1)).esymm n = esymm s f n
+  have himg : (Finset.univ : Finset ↥s).val.map (fun i : ↥s => f i.1) = s.val.map f := by
+    -- `univ = s.attach` (Fintype instance for the coe-sort), then `attach_map_val'`.
+    have huniv : (Finset.univ : Finset ↥s) = s.attach := rfl
+    rw [huniv, Finset.attach_val, Multiset.attach_map_val']
+  rw [himg]
+  -- `Finset.esymm_map_val f s n : (s.val.map f).esymm n = ∑ t ∈ s.powersetCard n, ∏ i ∈ t, f i`
+  rw [Finset.esymm_map_val f s n]
+  rfl
+
+/-- The filtered universal-Newton sum over `antidiagonal k` reindexes onto `range k`. -/
+theorem reindex_filter (s : Finset ι) (f : ι → R) (k : ℕ) :
+    ∑ a ∈ (Finset.antidiagonal k).filter (fun a => a.1 < k),
+        (-1) ^ a.1 * esymm s f a.1 * psum s f a.2
+      = ∑ j ∈ Finset.range k, (-1) ^ j * esymm s f j * psum s f (k - j) := by
+  rw [Finset.sum_filter,
+      Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk
+        (fun a => if a.1 < k then (-1) ^ a.1 * esymm s f a.1 * psum s f a.2 else 0) k,
+      Finset.sum_range_succ]
+  simp only [lt_self_iff_false, if_false, add_zero]
+  apply Finset.sum_congr rfl
+  intro j hj
+  rw [if_pos (Finset.mem_range.mp hj)]
+
 /-- **Newton–Girard recurrence** (Finset / CommRing form).
 
     Note `esymm s f 0 = 1` (empty product over the unique 0-subset `∅`), so the
@@ -63,6 +118,18 @@ def esymm (s : Finset ι) (f : ι → R) (k : ℕ) : R :=
 theorem newton_girard (s : Finset ι) (f : ι → R) (k : ℕ) (hk : 1 ≤ k) :
     (∑ j ∈ Finset.range k, (-1) ^ j * esymm s f j * psum s f (k - j))
       + (-1) ^ k * (k : R) * esymm s f k = 0 := by
-  sorry
+  classical
+  -- Universal Newton identity over `↥s`, transported by the algebra map `aeval`.
+  have key := MvPolynomial.mul_esymm_eq_sum (↥s) R k
+  apply_fun (MvPolynomial.aeval (fun i : ↥s => f i.1)) at key
+  simp only [map_mul, map_pow, map_neg, map_one, map_natCast, map_sum,
+    esymm_bridge, psum_bridge] at key
+  rw [reindex_filter s f k] at key
+  -- `key : (k : R) * esymm s f k = (-1) ^ (k + 1) * (∑ j ∈ range k, (-1)^j e_j p_{k-j})`
+  have hsign : ((-1 : R)) ^ k * ((-1 : R)) ^ (k + 1) = -1 := by
+    rw [← pow_add, show k + (k + 1) = 2 * k + 1 by ring]
+    exact Odd.neg_one_pow ⟨k, by ring⟩
+  rw [mul_assoc ((-1 : R) ^ k) (k : R) (esymm s f k), key, ← mul_assoc, hsign, neg_one_mul]
+  ring
 
 end AmgmNewtonGirard
