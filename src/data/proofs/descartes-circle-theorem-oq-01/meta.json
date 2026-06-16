@@ -1,0 +1,83 @@
+{
+  "id": "descartes-circle-theorem-oq-01",
+  "title": "Descartes Circle Theorem: Curvature Relation and Soddy Circles",
+  "slug": "descartes-circle-theorem-oq-01",
+  "description": "For four mutually tangent circles with signed curvatures k₁,k₂,k₃,k₄, the Descartes relation (k₁+k₂+k₃+k₄)² = 2(k₁²+k₂²+k₃²+k₄²) is equivalent to k₄ being one of the two Soddy curvatures k₄ = (k₁+k₂+k₃) ± 2√(k₁k₂+k₂k₃+k₃k₁). Formalizes the curvature arithmetic and the quadratic (Soddy) solution, plus the Vieta relations of the two solutions.",
+  "meta": {
+    "author": "Lean Genius Researcher (2026)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Descartes%27_theorem",
+    "date": "2026-06-16",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DescartesCircleTheorem.lean",
+    "tags": [
+      "geometry",
+      "circles",
+      "curvature",
+      "descartes-circle-theorem",
+      "soddy-circles",
+      "quadratic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sq_sqrt",
+        "description": "(√a)² = a for 0 ≤ a, used to convert the Soddy square root into the symmetric product",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+      }
+    ],
+    "originalContributions": [
+      "descartesRel_iff_sq: the Descartes relation is equivalent to the perfect-square condition (k₄−(k₁+k₂+k₃))² = 4(k₁k₂+k₂k₃+k₃k₁), the quadratic-in-k₄ rewriting (single ring identity, both directions)",
+      "descartes_symmProd_nonneg: the symmetric product k₁k₂+k₂k₃+k₃k₁ is automatically ≥ 0 whenever the relation holds (it equals (k₄−S)²/4), so the Soddy root is always defined",
+      "descartes_soddy_forward / descartes_soddy_backward: equivalence of the relation with the two Soddy curvatures k₄ = (k₁+k₂+k₃) ± 2√(k₁k₂+k₂k₃+k₃k₁), via factoring (k₄−S)²−(2√D)² and mul_eq_zero",
+      "descartes_circle: headline iff packaging the relation as (D ≥ 0) ∧ (k₄ is a Soddy curvature)",
+      "soddy_sum / soddy_prod: Vieta relations — the two Soddy curvatures sum to 2(k₁+k₂+k₃) and have product (k₁+k₂+k₃)²−4(k₁k₂+k₂k₃+k₃k₁)"
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "lineCount": 104,
+    "assumptions": "0 axioms. 0 sorries. Fully verified. Scope: formalizes the curvature arithmetic of the Descartes Circle Theorem and the Soddy-circle quadratic solution. Does NOT derive the curvature relation from the planar tangency geometry (centers in ℂ with tangency distance equations) — that derivation (the Lagarias–Mallows–Wilks complex Descartes theorem) is left as a follow-up.",
+    "mathlib_version": "4.26.0",
+    "parentProof": null,
+    "theoremCount": 7,
+    "definitionCount": 1
+  },
+  "sections": [
+    {
+      "title": "The Descartes Relation",
+      "startLine": 29,
+      "endLine": 34,
+      "description": "Definition of descartesRel: (k₁+k₂+k₃+k₄)² = 2(k₁²+k₂²+k₃²+k₄²) for four signed curvatures.",
+      "summary": "descartesRel definition",
+      "id": "descartes-relation",
+      "mathContext": "Signed curvature $k = \\pm 1/r$, negative for a circle internally enclosing the others. The relation $(k_1+k_2+k_3+k_4)^2 = 2(k_1^2+k_2^2+k_3^2+k_4^2)$ is the curvature constraint among four mutually tangent circles."
+    },
+    {
+      "title": "Quadratic Rewriting",
+      "startLine": 35,
+      "endLine": 49,
+      "description": "descartesRel_iff_sq rewrites the relation as a perfect square in k₄; descartes_symmProd_nonneg shows the symmetric product is forced nonnegative.",
+      "summary": "Perfect-square form and nonnegativity of the symmetric product",
+      "id": "quadratic-rewriting",
+      "mathContext": "Viewing the relation as a quadratic in $k_4$: $(k_4 - S)^2 = 4D$ where $S = k_1+k_2+k_3$ and $D = k_1k_2+k_2k_3+k_3k_1$. Since the left side is a square, $D \\ge 0$ automatically — the discriminant condition for the Soddy square root is free."
+    },
+    {
+      "title": "Soddy Circles",
+      "startLine": 50,
+      "endLine": 88,
+      "description": "Forward and backward equivalence between the relation and the two Soddy solutions, packaged into the headline iff descartes_circle.",
+      "summary": "k₄ = S ± 2√D via factoring and mul_eq_zero",
+      "id": "soddy-circles",
+      "mathContext": "Solving $(k_4-S)^2 = 4D$ gives the two Soddy circles $k_4 = (k_1+k_2+k_3) \\pm 2\\sqrt{k_1k_2+k_2k_3+k_3k_1}$. Factoring $(k_4-S)^2 - (2\\sqrt{D})^2 = (k_4-S-2\\sqrt D)(k_4-S+2\\sqrt D)$ and applying $\\mathtt{mul\\_eq\\_zero}$ yields the disjunction."
+    },
+    {
+      "title": "Vieta Relations",
+      "startLine": 89,
+      "endLine": 103,
+      "description": "soddy_sum and soddy_prod: the two Soddy curvatures sum to 2(k₁+k₂+k₃) and have product (k₁+k₂+k₃)²−4D.",
+      "summary": "Sum and product of the two Soddy curvatures",
+      "id": "vieta-relations",
+      "mathContext": "The two Soddy curvatures are the roots of $k^2 - 2Sk + (2Q - S^2) = 0$, so by Vieta their sum is $2S = 2(k_1+k_2+k_3)$ and their product is $S^2 - 4D$."
+    }
+  ]
+}
