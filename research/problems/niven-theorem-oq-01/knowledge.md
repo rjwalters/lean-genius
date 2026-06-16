@@ -100,3 +100,35 @@ Route B — **Chebyshev (matches pool note):**
    to verify the tail; then build/iterate `NivenTheoremCore.lean`; on success, fold the core
    into `NivenTheorem.lean`, register in `Proofs.lean`, flip to `verified`.
 2. When Aristotle recovers (not 404): submit `two_cos_int_of_rational` to `prove_file`.
+
+### 2026-06-16 (Session 2) — researcher-1: Route-A core name-verification + 1 bug flag
+
+Dual blackout again (Aristotle MCP loads but backend 404; Docker down). No build
+possible. Source-verified ALL 7 "fragile" Mathlib names in the existing
+`NivenTheoremCore.lean` Route-A draft against the v4.26.0 mirror at pin
+`2df2f0150c` — **all present with matching signatures**:
+- `Complex.exp_int_mul_two_pi_mul_I (n:ℤ) : exp (n*(2*π*I)) = 1`
+  (Trigonometric/Basic.lean:1233) ✓
+- `Complex.exp_mul_I : exp (x*I) = cos x + sin x*I` (Complex/Trigonometric.lean:506) ✓
+- `Complex.ofReal_cos (x:ℝ) : (Real.cos x:ℂ) = cos x` (Complex/Trigonometric.lean:397) ✓
+- `monic_X_pow_sub_C (a:R) {n} (h:n≠0)` (Polynomial/Monic.lean:440) ✓
+- `isIntegral_algHom_iff (f:A→ₐ[R]B) (hf:Injective f) {x} : IsIntegral R (f x) ↔ IsIntegral R x`
+  (IntegralClosure/IsIntegral/Basic.lean:57) ✓
+- `IsScalarTower.toAlgHom (R S A) : S →ₐ[R] A`, `toAlgHom_apply : toAlgHom R S A y = algebraMap S A y`
+  (Algebra/Tower.lean:137,140) ✓ — takes 3 explicit args, matches `toAlgHom ℤ ℚ ℂ`.
+- `IsIntegrallyClosed.isIntegral_iff [IsIntegrallyClosed R] {x:K} : IsIntegral R x ↔ ∃ y:R, algebraMap R K y = x`
+  (IntegralClosure/IntegrallyClosed.lean:210) ✓
+Also confirmed: `Complex.exp_nat_mul`, `Complex.exp_neg`, `inv_eq_of_mul_eq_one_left`
+(Group/Defs.lean:1127, `(h:a*b=1) : b⁻¹=a`), `Int.one_le_abs (h:z≠0) : 1≤|z|`.
+
+⚠ **ONE RESIDUAL BUG to fix on first build** (last block of the draft):
+`obtain ⟨k, hk⟩ := IsIntegrallyClosed.isIntegral_iff.mp hint_q` gives
+`hk : algebraMap ℤ ℚ k = 2*r`, but the next line `have : ((k:ℚ):ℝ) = ((2*r:ℚ):ℝ) := by rw [hk]`
+rewrites a term `(k:ℚ)` that is only DEFEQ (not syntactically equal) to
+`algebraMap ℤ ℚ k`, so `rw [hk]` will fail (no syntactic occurrence). Fix: first
+normalize `hk` with `rw [eq_intCast (algebraMap ℤ ℚ)] at hk` (or
+`have hk' : (k:ℚ) = 2*r := by exact_mod_cast hk`) to expose `(k:ℚ) = 2*r`, then
+proceed. Pure rewriting fix, no math change. Everything else in the draft is
+name-verified. Recommended first action when a backend returns: apply this fix,
+build `Proofs.NivenTheoremCore`; if green, inline into `NivenTheorem.lean`'s
+`two_cos_int_of_rational` (replacing its 1 sorry), register, flip to `verified`.
