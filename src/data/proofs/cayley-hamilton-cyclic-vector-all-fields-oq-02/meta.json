@@ -2,11 +2,11 @@
   "id": "cayley-hamilton-cyclic-vector-all-fields-oq-02",
   "title": "Commutant of a Cyclic Matrix is K[M]",
   "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-02",
-  "description": "Proves the third classical characterization of nonderogatory matrices: if M has a cyclic vector, then every matrix commuting with M is a polynomial in M. Equivalently, the centralizer of M coincides with the algebra K[M] and is commutative. A structural consequence of the cyclic-vector theorem (Hoffman & Kunze §7.5), over an arbitrary field. 0 sorries, 0 axioms (build-pending verification).",
+  "description": "Proves the third classical characterization of nonderogatory matrices: if M has a cyclic vector, then every matrix commuting with M is a polynomial in M. Equivalently, the centralizer of M coincides with the algebra K[M] and is commutative. A structural consequence of the cyclic-vector theorem (Hoffman & Kunze §7.5), over an arbitrary field. 0 sorries, 0 axioms (machine-verified).",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-06-15",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02.lean",
     "parentProofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
     "additionalFiles": [
@@ -25,13 +25,13 @@
       "research",
       "open-question"
     ],
-    "badge": "wip",
+    "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 208,
     "theoremCount": 4,
     "definitionCount": 0,
-    "assumptions": "No axioms or sorries. Uses only Mathlib's Polynomial, Matrix, and FiniteDimensional APIs. Build-pending verification under the current Docker blackout; all Mathlib bearers name-checked against the pinned rev (v4.26.0).",
+    "assumptions": "No axioms or sorries. Machine-verified under Docker (full build, 7745 jobs). Uses only Mathlib's Polynomial, Matrix, and Module.Basis APIs (Mathlib v4.26.0).",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
     "originalContributions": [
