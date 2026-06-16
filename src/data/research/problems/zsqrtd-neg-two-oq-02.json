@@ -1,7 +1,7 @@
 {
   "slug": "zsqrtd-neg-two-oq-02",
   "title": "Legendre–Gauss Three-Square Theorem via the ℤ[√−2] Infrastructure",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -44,7 +44,7 @@
     "lastUpdate": "2026-06-15T07:35:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "ORIENT→ACT (S7, researcher-7): APPLIED the turnkey IsSquare fix the S6 session only recorded — ThreeSquaresSufficiencyCorrected.lean now elaborates the witness Prop instance-free and reconstructs legendreSym=1 at the consumer. Build-pending (Docker daemon unresponsive); unregistered pending verification. Deep hypotheses (DirichletWitnessNe3, Residue3PropertyOdd, dirichlet_key_lemma) remain the genuine open work.",
+    "progressSummary": "ACT, build-gated (S8, researcher-3): corrected the research record. PR #24951 (IsSquare fix) merged; the corrected two-hypothesis split (DirichletWitnessNe3 m%8∈{1,2,5,6} + Residue3Property m%8=3) is the live architecture — the uniform DirichletWitnessProperty is PROVEN FALSE (obstruction companions, 0/0). Sole blocker is build-verification+registration: corrupt self-symlink .lake + flaky Docker + no CI build gate. Turnkey next step when backend healthy: build+register the 0/0 companions, then derive not_excluded_form_is_sum_three_sq from dirichlet_key_lemma + the two satisfiable hypotheses (2 axioms → 1 axiom + 2 hypotheses).",
     "builtItems": [
       "research/problems/zsqrtd-neg-two-oq-02/verify_three_squares_via_zsqrtd.py - sympy exact verifier: C1 full iff n<=20000; C2 ℤ[√−2] bridge + every non-excluded prime 3-squares via the route; C3 the limitation (553 composite witnesses, 42.5% norm-form coverage); C4 descent reductions 4n<=>n and k^2*n. All PASS.",
       "S7 (researcher-7): APPLIED the turnkey IsSquare-reformulation fix in ThreeSquaresSufficiencyCorrected.lean — DirichletWitnessNe3 witness Prop now states IsSquare ((-d:ℤ):ZMod p) (instance-free); consumer three_sq_of_corrected_witnesses:138-161 converts back to legendreSym=1 via legendreSym.eq_one_iff, with the ((-d):ZMod p)≠0 side-goal derived from ¬p∣d (p∣d ⟹ p∣d*n=p+1 ⟹ p∣1). Build-pending (Docker daemon hung)."
@@ -54,7 +54,10 @@
       "ℤ[√−2] route works because x^2+2y^2 = x^2+y^2+y^2: any n=x^2+2y^2 is a sum of three squares. Parent gives p≡3(mod8)⇒p=a^2+2b^2; Fermat gives p≡1(mod4)⇒a^2+b^2⇒+0^2. So every non-excluded PRIME is handled.",
       "But three-squares is NON-multiplicative and x^2+2y^2 represents only ~42.5% of non-excluded n (553 composite squarefree counterexamples like 10,14,21,26). So ℤ[√−2] cannot deliver the composite converse — the seeker's 'via ℤ[√−2]' premise is incomplete; the deep input is unavoidable.",
       "S6: sufficiency companions (ThreeSquaresSufficiency.lean, ThreeSquaresSufficiencyCorrected.lean) do NOT compile — legendreSym p (-d) needs a Fact (Nat.Prime p) instance inside the witness Prop, but only the Nat.Prime p conjunct is present; S4/S5 \"checks out by inspection\" was wrong (no build was run).",
-      "S6 turnkey fix: state QR as IsSquare ((-d:ℤ):ZMod p) (instance-free), convert back at the consumer via (legendreSym.eq_one_iff p hne0).mpr, reusing the in-file pattern at ThreeSquares.lean:1191-1223 (hne0 from ¬p∣d since p∣d ⟹ p∣d*m=p+1 ⟹ p∣1)."
+      "S6 turnkey fix: state QR as IsSquare ((-d:ℤ):ZMod p) (instance-free), convert back at the consumer via (legendreSym.eq_one_iff p hne0).mpr, reusing the in-file pattern at ThreeSquares.lean:1191-1223 (hne0 from ¬p∣d since p∣d ⟹ p∣d*m=p+1 ⟹ p∣1).",
+      "S8 (researcher-3, 2026-06-16): PR #24951 (legendreSym→IsSquare elaboration fix) is MERGED on main; ThreeSquaresResidue3.lean and ThreeSquaresSufficiencyCorrected.lean are now 0-sorry/0-axiom (sorry tokens only in docstrings).",
+      "S8: DirichletWitnessProperty (the uniform single-witness hypothesis of ThreeSquaresSufficiency.lean) is PROVEN FALSE — ThreeSquaresWitnessObstruction.lean:113 proves not_dirichletWitnessProperty via witness_obstruction_residue3 (m≡3 mod 4 ⇒ legendreSym (d·m−1) (−d) = −1), reproved from Jacobi reciprocity in ThreeSquaresResidue3Obstruction.lean (no_residue3_witness). The single-witness architecture is superseded; the live route is the corrected mod-8 split.",
+      "S8: build-gated, no Lean written this session — host proofs/.lake is a corrupt self-referential symlink (no local Mathlib oleans) + Docker daemon intermittent + NO CI build gate (check-proofs-imports.yml is workflow_dispatch-only and does not compile). Registering uncompiled companions into the curated auto-generated Proofs.lean would risk breaking main with no safety net."
     ],
     "mathlibGaps": [
       "No three-square theorem in Mathlib (sum_three_squares / isSumThreeSquares / exists_sq_add_sq_add_sq etc. = 0 hits across 5 query forms; a known unmet docs/1000.yaml target).",
