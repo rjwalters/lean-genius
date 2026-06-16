@@ -1300,3 +1300,47 @@ nested reciprocal (`irrational_cbrt3` then `.sub_int`/`.inv`).
 2. Extend `_b_three … _b_eleven` via `cbrt3_stream_succ` (mechanical).
 3. (Stretch) Single bundled `List`/`Fin` statement; then bridge to
    `GenContFract.of cbrt3` partial denominators — the fully canonical form.
+
+## Session 2026-06-16 (S36, researcher-3) — Stream-bridge extension to full proven prefix n=0..11
+
+**Mode:** BUILD on carried structural OQ #1 (canonical-CF-API bridge), Docker-free.
+Dual blackout live: `docker run --rm alpine echo` rc=124 (daemon hung); Stream orphan
+stays build-PENDING. Acted on the prior "STOP adding convergent rungs" recommendation
+(ladder saturated, ~9 open rung PRs) by advancing the Mathlib-canonical bridge instead.
+
+**Context / concurrency note.** Independently audited the S35 orphan's Mathlib
+dependencies against the offline mathlib4 checkout at the exact pin (v4.26.0, rev
+2df2f0150c) and found the same drift a concurrent S36 had landed on main:
+`Irrational.sub_int` does NOT exist at this pin — the real lemma is
+`Irrational.sub_intCast (h)(m:ℤ):Irrational (x - m)` (NumberTheory/Real/Irrational.lean).
+By the time this PR was rebuilt, the audit-header + `sub_intCast` fix were already on
+main, so **this PR's net-new content is the EXTENSION only** (the audit is corroborating).
+
+**Net-new deliverable — extension from n=0,1,2 to the full proven prefix n=0..11.**
+Added to the orphan (UNREGISTERED ⟹ zero gallery risk):
+- `cbrt3_stream_irr_1 … _10` — irrationality witnesses `Irrational Uₙ` for the nested
+  reciprocals `Uₙ = (Uₙ₋₁ - aₙ₋₁)⁻¹`, each `(prev.sub_intCast aₙ₋₁ |> simpa).inv`.
+- `cbrt3_stream_three … _eleven` — stream values `stream cbrt3 n = some (of Uₙ)`, one
+  `cbrt3_stream_succ` application per level.
+- `cbrt3_stream_b_three … _b_eleven` — `(stream cbrt3 n).map .b = some aₙ`, n=3..11.
+- `cbrt3_stream_prefix_eleven` — bundled conjunction over n=0..11 (extends the S35
+  `cbrt3_stream_prefix`, left intact).
+b-components = OEIS A002945 a₀..a₁₁ = [1,2,3,1,4,1,5,1,1,6,2,5], matching the proven
+`cbrt3_aₙ` lemmas exactly.
+
+**Zero-transcription-risk generation.** The deep nested expressions were GENERATED in
+Python from the recursion `Eₙ=1/(Eₙ₋₁-aₙ₋₁)` (the `1/`-floor form) and
+`Uₙ=(Uₙ₋₁-aₙ₋₁)⁻¹` (the `⁻¹` stream form); the generated `E₁₁` was checked byte-equal to
+the merged `cbrt3_a11` floor argument before pasting. Every theorem mirrors the S35 base
+tactic pattern verbatim (only changed name = the audited `sub_intCast`). Residual
+unverified surface = the `simp only [inv_eq_one_div]`/`simpa`/`show` reductions, uniform
+across levels and identical to the cert-and-pattern-validated base.
+
+**Honesty / status.** Build-PENDING (Docker down), NOT elaborated. Math cert-backed by
+`verify_intfractpair_stream.py` (covers exactly n=0..11). Incremental structural work on
+OQ #1 — mechanically completes the canonical-API bridge over the already-proven prefix.
+
+**Next action (S37, Docker-up):** `docker-build Proofs.CubeRoot3IrrationalOQ04Stream` by
+name; add `push_cast`/`Int.cast_ofNat` if a level leaves a residual cast; register in
+`proofs/Proofs.lean`. Further extension tracks new `cbrt3_aₙ` landings (gated on the
+contended a12=8 chain #23388/#23983).

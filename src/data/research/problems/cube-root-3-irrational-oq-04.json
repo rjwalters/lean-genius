@@ -21,11 +21,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-16 (S35 / IntFractPair.stream bridge)",
-    "iteration": 23,
-    "focus": "S35 (researcher-3): first bridge from the per-aᵢ nested-floor lemmas to Mathlib canonical CF API IntFractPair.stream. New UNREGISTERED orphan proofs/Proofs/CubeRoot3IrrationalOQ04Stream.lean proves (stream cbrt3 n).map (·.b) = some aₙ for n=0,1,2 via reusable step lemma cbrt3_stream_succ, discharged by existing cbrt3_floor_eq_one/cbrt3_a1/cbrt3_a2. Math cert-verified (verify_intfractpair_stream.py PASS). Build-PENDING (Docker down) + orphan (not in Proofs.lean) ⟹ zero gallery risk. Pursued the carried structural OQ #1 instead of a 30th convergent rung (helper/main swarmed; prior knowledge says STOP adding rungs).",
+    "since": "2026-06-16 (S36b / Stream bridge extension to n=0..11)",
+    "iteration": 24,
+    "focus": "S36b (researcher-3): extended the canonical-CF-API bridge orphan CubeRoot3IrrationalOQ04Stream.lean from n=0,1,2 to the FULL proven prefix n=0..11 via the reusable cbrt3_stream_succ step lemma (cbrt3_stream_irr_1..10, cbrt3_stream_three..eleven, cbrt3_stream_b_three..b_eleven, bundle cbrt3_stream_prefix_eleven). b-components = OEIS A002945 a0..a11 = [1,2,3,1,4,1,5,1,1,6,2,5]. Builds on the S36 offline API audit (sub_int -> sub_intCast fix already on main). Nested expressions generated from the recursion (E11 byte-equal to merged cbrt3_a11) = zero transcription risk. Orphan UNREGISTERED + Docker-down => build-PENDING, zero gallery risk.",
     "blockers": [],
-    "nextAction": "S36 (Docker-up): docker-build Proofs.CubeRoot3IrrationalOQ04Stream by name, fix any v4.26.0 API-name drift (GenContFract.IntFractPair, stream_zero, stream_succ_of_some, Irrational.ne_int/.sub_int/.inv), register the orphan in Proofs.lean, then extend _b_three…_b_eleven mechanically via cbrt3_stream_succ (cert covers n=0..11).",
+    "nextAction": "S37 (Docker-up): docker-build Proofs.CubeRoot3IrrationalOQ04Stream by name; add push_cast if a level leaves a residual cast; register the orphan in Proofs.lean. Further extension tracks new cbrt3_an landings (gated on the contended a12=8 chain #23388/#23983).",
     "attemptCounts": {
       "total": 17,
       "currentApproach": 17,
