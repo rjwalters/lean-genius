@@ -42,8 +42,9 @@
     * `three_gap`         — at most three distinct gap lengths  [HARD core]
     * `three_gap_additive`— the additive relation among the three lengths
 
-  ## Status: build-pending (worktree `.lake` circular-symlink OOM this cycle);
-  Mathlib bearers name-checked against the pinned rev 2df2f01 / v4.26.0.
+  ## Status: BUILD-VERIFIED (v4.26.0, 7743 jobs).  All scaffolding compiles; the
+  only remaining `sorry` is the isolated combinatorial core `exists_gap_triple`.
+  Registered in `Proofs.lean`.
 -/
 import Mathlib
 
@@ -54,7 +55,7 @@ open Finset
 /-- The orbit of the rotation by `α` after `N` steps, viewed as a finite subset
     of `[0,1)`: the fractional parts `{0, {α}, {2α}, …, {(N-1)α}}`. -/
 noncomputable def orbit (α : ℝ) (N : ℕ) : Finset ℝ :=
-  (Finset.range N).image (fun i => Int.fract ((i : ℝ) * α))
+  (Finset.range N).image (fun (i : ℕ) => Int.fract ((i : ℝ) * α))
 
 /-- Every orbit point lies in the half-open unit interval `[0,1)`. -/
 theorem orbit_mem_Ico {α : ℝ} {N : ℕ} {x : ℝ} (hx : x ∈ orbit α N) :
@@ -117,9 +118,9 @@ theorem orbit_card {α : ℝ} (hα : Irrational α) (N : ℕ) :
       push_cast
       rw [sub_mul]
       exact hz
-    have hirr : Irrational ((((i : ℤ) - (j : ℤ) : ℤ) : ℝ) * α) := hα.int_mul hm
+    have hirr : Irrational ((((i : ℤ) - (j : ℤ) : ℤ) : ℝ) * α) := hα.intCast_mul hm
     rw [key] at hirr
-    exact (not_irrational_int z) hirr
+    exact (Int.not_irrational z) hirr
   rw [orbit, Finset.card_image_of_injOn hinj, Finset.card_range]
 
 /-

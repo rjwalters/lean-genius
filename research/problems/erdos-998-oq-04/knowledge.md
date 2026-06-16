@@ -225,3 +225,66 @@ now sorry-free, resting on one precisely-stated combinatorial core
 1. Submit `exists_gap_triple` to Aristotle `prove_file` once non-404.
 2. `docker-build Proofs.Erdos998ThreeGapOQ04` to verify the scaffolding compiles.
 3. Register in `proofs/Proofs.lean` and add a gallery entry.
+
+---
+
+## Session 2026-06-16 (Session 5) — researcher-5 — FIRST GREEN BUILD + registration
+
+**Mode**: REVISIT (claimed in-progress problem) — **Outcome**: progress (build-verified + registered)
+
+### What I Did
+Probed Aristotle (`prove` → 404 again — backend still down this session). Took
+the Docker path instead and discovered that the file **never actually compiled**
+in the prior four sessions — the "name-checked bearers" were wrong:
+
+1. `orbit` definition (line 57): `(Finset.range N).image (fun i => Int.fract ((i : ℝ) * α))`
+   — the type *ascription* `(i : ℝ)` forced `i : ℝ` (no coercion inserted), so
+   `image` expected `Finset ℝ` but got `range N : Finset ℕ`. This made `orbit`
+   elaborate to `sorry`, **cascading** "uses sorry" into every downstream theorem
+   (orbit_mem_Ico, zero_mem_orbit, orbit_card). Fixed: `fun (i : ℕ) => …`.
+2. `orbit_card` (line 120): `hα.int_mul hm` — `Irrational.int_mul` does not exist
+   (dot notation failed: `Irrational` unfolds to a Pi type). Correct lemma is
+   `Irrational.intCast_mul (h : Irrational x) {m : ℤ} (hm : m ≠ 0) : Irrational (↑m * x)`
+   (Mathlib/Data/Real/Irrational.lean / NumberTheory.Real.Irrational:315). Fixed.
+3. `orbit_card` (line 122): `not_irrational_int z` — unknown. Correct name is
+   `Int.not_irrational (m : ℤ) : ¬Irrational m` (same file:200). Fixed.
+
+After these three fixes the file builds GREEN: `⚠ [7743/7743] Built
+Proofs.Erdos998ThreeGapOQ04 (322s)`, the **only** warning being the intended
+`sorry` at `exists_gap_triple` (line 181). The unused-variable / unused-simp-arg
+warnings reported in the first build were cascade artifacts of the broken
+`orbit` def and disappeared once it elaborated correctly.
+
+Registered `import Proofs.Erdos998ThreeGapOQ04` in `proofs/Proofs.lean` (between
+Erdos998Problem and Erdos999Problem) — the file is now in CI for the first time.
+
+### Key Findings
+- The prior sessions' claim of "proved orbit_card / build-pending only" was
+  **incorrect**: the file had three hard compile errors and never passed the
+  kernel. This is the classic "name-checked ≠ compiled" hazard. The scaffolding
+  is now genuinely verified.
+- Aristotle MCP is loaded this session but still returns 404 ("Resource not
+  found"), so `exists_gap_triple` could not be submitted. Docker, however, works
+  fine (warm `lean-mathlib-cache` volume, ~5–6 min including cache download).
+
+### Files Modified
+- `proofs/Proofs/Erdos998ThreeGapOQ04.lean` — 3 compile fixes + status docstring.
+- `proofs/Proofs.lean` — registered the import.
+- `research/problems/erdos-998-oq-04/{knowledge.md, meta.json}` + src/data sync.
+
+### Sorry Ledger
+- Before: 1 sorry CLAIMED, but file did not compile (3 errors).
+- After: **1 sorry** (`exists_gap_triple`), file BUILD-VERIFIED green, registered.
+
+### Next Steps (unchanged frontier — now genuinely turnkey)
+1. Discharge `exists_gap_triple` via Aristotle `prove_file` once the backend is
+   non-404 (KNOWN math — Sós–Surányi–Świerczkowski classification), or formalize
+   the Steinhaus first-return generators p, q manually.
+2. Once sorry-free, flip status to `verified` (0 axioms) and add gallery entry.
+
+**progressSummary:** ATTACK → build-verified scaffolding. Corrected the
+4-session-old false "build-pending" state: the file had three real compile
+errors (broken `orbit` def via a type-ascription bug; wrong lemma names
+`Irrational.int_mul`/`not_irrational_int` → `Irrational.intCast_mul`/`Int.not_irrational`).
+Now compiles green (7743 jobs, sole `sorry` = `exists_gap_triple`) and is
+registered in Proofs.lean / CI. Aristotle still 404; remaining core deferred to it.
