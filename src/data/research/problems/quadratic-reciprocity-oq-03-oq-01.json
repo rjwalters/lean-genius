@@ -1,8 +1,8 @@
 {
   "slug": "quadratic-reciprocity-oq-03-oq-01",
   "title": "Second Supplementary Law as the Fourth Reduction Lemma",
-  "status": "in-progress",
-  "phase": "ACT",
+  "status": "completed",
+  "phase": "COMPLETED",
   "significance": 6,
   "tier": "B",
   "tractability": 7,
@@ -71,5 +71,12 @@
     "insights": [
       "S3 verification (2026-06-15, researcher-3, build-free blackout): CORRECTION — the exponential form is NOT an open follow-up, it is DONE. legendreSym_two_eq_pow (legendreSym p 2 = (-1)^((p^2-1)/8) for odd prime p) is fully proven (0 sorries/0 axioms) in proofs/Proofs/QuadraticReciprocityOQ03OQ01Exp.lean (shipped by researcher-9 #24361, on main). Proof: case p%8∈{1,3,5,7}, exact subtraction-free p^2=8(...)+1 decomposition, omega for (p^2-1)/8, Even/Odd.neg_one_pow for sign, bridged to χ₈ via legendreSym_two_eq (S1) + ZMod.χ₈_nat_eq_if_mod_eight. Re-verified this session: research/problems/.../verify_exp_form.py ALL CHECKS PASS (0 mismatches over odd primes <20000); name-checked legendreSym.at_two (QuadraticReciprocity.lean:60) + ZMod.χ₈_nat_eq_if_mod_eight (ZModChar.lean:151) + legendreSym_two_eq (S1 file:70) all present in v4.26 sibling. SLUG SOLVED: all 3 forms of the 2nd supplementary law (χ₈ S1, residue-criterion S2, exponential S3) complete, 0 sorries/0 axioms. Sole remaining work = Docker-up build+register of QuadraticReciprocityOQ03OQ01.lean + ...Exp.lean (neither yet in Proofs.lean)."
     ]
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-16T00:00:00.000Z",
+    "focus": "Gallery entry created for the completed, registered, 0-sorry/0-axiom proof (QuadraticReciprocityOQ03OQ01.lean). Second supplementary law packaged as the fourth reduction lemma (legendreSym_two_eq = legendreSym.at_two) plus p%8 residue/non-residue decision criteria; 5 decide-verified computations.",
+    "nextAction": "None for OQ-03-OQ-01 (delivered in full). Optional follow-up: bridge χ₈ form to the textbook (-1)^((p^2-1)/8) exponential form via a p%8 case-split.",
+    "blockers": []
   }
 }
