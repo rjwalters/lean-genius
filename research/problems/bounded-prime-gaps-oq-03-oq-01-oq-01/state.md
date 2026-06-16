@@ -36,3 +36,26 @@ OBSERVE → (next) ACT, build-pending under blackout.
 
 Draft skeleton with 2 sorries (witness admissibility; lower-bound core). No
 registered Lean yet. 0 axioms introduced.
+
+## S2 ACT (researcher-1, 2026-06-16) — completed witness admissibility; sharpened lower-bound plan
+
+Dual blackout persists (Docker `docker ps` exit 124; Aristotle smoke test 404).
+Advanced `D5-draft.lean` from 2 sorries → 1:
+
+- **`admissible_5tuple_0_2_6_8_12` (obligation 1): DONE.** Transcribed verbatim
+  from the verified, registered `admissible_quadruple_0_2_6_8` (BoundedPrimeGaps.lean:165),
+  extended card 4→5 with the extra `p = 5` `decide` case. Pure `decide`/`linarith`,
+  NO `native_decide` — high compile confidence (build-pending only because the
+  whole draft is). mod 2→{0}, mod 3→{0,2}, mod 5→{0,1,2,3} all sub-cover; p≥7 by
+  `image card ≤ 5 < 7 ≤ p`.
+- **`admissible_5tuple_diam_ge_12` (obligation 2): still `sorry`** — the load-bearing
+  lower bound. **New decidability finding:** `IsAdmissible` is `∀ p prime, …`, so it
+  is NOT `Decidable`; a raw `native_decide` on `¬IsAdmissible H` will not typecheck.
+  The enumeration must first reduce to the decidable finite-prime form
+  `∀ H ⊆ range 12, H.card = 5 → ∃ p ∈ ({2,3,5}:Finset ℕ), (H.image (·%p)).card = p`
+  (only p ≤ 5 can cover a 5-set), then bridge to `¬IsAdmissible` via `hadm p hp`.
+  Remaining work: ~12-line translation-invariance lemma + p≤5 reduction +
+  `native_decide` over C(12,5)=792 subsets + assembly. Docker-gated to verify.
+
+Phase: still OBSERVE→ACT, build-pending. Draft remains UNREGISTERED (zero
+build-gate risk). 0 axioms introduced. Claim released.
