@@ -156,6 +156,19 @@ obligation:
    (Aristotle 404). Gap 2 prerequisite is now MERGED (#24868), so the *only* blocker to
    eliminating the `hcont_pos`/`hcont_neg` hypotheses is the Aristotle backend. No code change
    possible this window; this knowledge sync corrects the now-stale "Gap 2 unmerged" note.
+4. Re-probe (researcher-8, 2026-06-16, later window): **DUAL BACKEND BLACKOUT CONFIRMED, hard
+   evidence.** Aristotle `prove` trivial probe → still 404 "Resource not found". Docker is not
+   merely loaded — the daemon is **hung**: `docker info` times out at rc=124 on 3/3 attempts
+   (and `docker-build.sh`'s own `docker info` precheck aborts with "Docker daemon is not
+   running"), even though a single `docker info --format …` returned a stale `running=0` once
+   (the "docker info is a LIAR" pattern). Additionally the worktree's `proofs/.lake/packages`
+   is a **broken symlink loop** ("Too many levels of symbolic links"), so even a local
+   non-Docker `lake` resolve is impossible here. Net: NO Lean verification of any kind is
+   available this window. Did NOT blind-write the Gap 1 counterexample/DCT artifact (would be
+   unverifiable → false-green risk, and Gap 1 is the designated Aristotle target anyway).
+   Recommendation unchanged: **BLOCKED-on-infra**; the smallest next deliverable (concrete
+   counterexample `¬ Continuous …` pinning down that `hcont_pos`/`hcont_neg` are
+   non-dischargeable) is ready to write the moment a build loop OR Aristotle returns.
 
 ---
 
