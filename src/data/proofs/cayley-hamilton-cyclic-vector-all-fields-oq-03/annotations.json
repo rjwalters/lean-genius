@@ -50,7 +50,7 @@
   {
     "id": "chcv-oq03-ann-main",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-03",
-    "range": { "startLine": 141, "endLine": 200 },
+    "range": { "startLine": 168, "endLine": 214 },
     "type": "technique",
     "title": "Main Theorem: Basis Reduction and Pullback",
     "content": "operator_nonderogatory_has_cyclic_vector handles finrank 0 vacuously (the degree bound < 0 is unsatisfiable), then chooses b := Module.finBasis K V and M := toMatrix b b T. Minpoly transport (minpoly.algEquiv_eq on toMatrixAlgEquiv b) gives (minpoly K M).natDegree = finrank K V, so M is nonderogatory and the matrix theorem yields a cyclic w. The pullback v := b.equivFun.symm w has coordinates exactly w (Basis.equivFun_apply); combining toMatrix_mulVec_repr with aeval_algHom_apply (so toMatrix b b (aeval T p) = aeval M p) shows aeval T p v = 0 implies (aeval M p).mulVec w = 0, and matrix cyclicity of w forces p = 0.",

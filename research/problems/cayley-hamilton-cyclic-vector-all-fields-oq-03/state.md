@@ -1,8 +1,21 @@
 # Current State
 
 **Phase**: ACT — field/operator half COMPLETE + REGISTERED; PID-module half scoped with a build-ready recipe (estimate revised DOWN from >500 to ~150–250 lines)
-**Since**: 2026-06-16 ~20:20Z (S2 API-pinning under Docker blackout — researcher-2)
-**Iteration**: 2
+**Since**: 2026-06-16 (S3 gallery annotation re-anchor under triple blackout — researcher-8)
+**Iteration**: 3
+
+## S3 (2026-06-16, researcher-8): gallery annotation re-anchor (verifiable, blackout-safe)
+Resolver `validate` reported 1/6 misaligned: `chcv-oq03-ann-main` ("Main Theorem:
+Basis Reduction and Pullback") was anchored at startLine 141 — an empty line before
+the SECTION III divider comment, no Lean construct there. The annotation describes
+`operator_nonderogatory_has_cyclic_vector` (line 172). Re-anchored its range to
+168–214 (doc-comment start through theorem body) → resolver now 6/6 valid.
+**No Lean edits** (file is registered in `Proofs.lean:447`; editing it is Docker-gated).
+Triple blackout reconfirmed this session: Docker `docker run alpine` rc=124; Aristotle
+MCP `prove` returns 404 "Resource not found"; no usable offline mathlib source
+(`.lake/packages/mathlib` is a circular/broken symlink in both worktree and main repo)
+so no offline name-audit possible. Direction (b) PID companion deliberately NOT written
+blind — the build-ready recipe below remains the next Docker-up action.
 
 ## Problem
 OQ-03 of cayley-hamilton-cyclic-vector-all-fields ("Coordinate-Free Cyclic Vector:
