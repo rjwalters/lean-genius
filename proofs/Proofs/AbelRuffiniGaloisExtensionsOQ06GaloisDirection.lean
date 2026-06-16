@@ -232,20 +232,74 @@ theorem normalizer_iso_AGL1Z
        (`Subgroup/Basic.lean:378`) and `Subgroup.zpowers_le.mpr hσH`.
 
     Numerically certified sound by `verify_step5_normalizer.py` for all odd
-    primes `3 ≤ p ≤ 29`. Body remains `sorry` pending the (multi-step) ACT
-    discharge of items 2–4; the signature is now sound and dischargeable. -/
+    primes `3 ≤ p ≤ 29`.
+
+    **DISCHARGED (researcher-4, 2026-06-16, Docker-verified GREEN, 1900 jobs).**
+    The body below executes items 1–5 above: it is `sorry`-free and
+    axiom-free. Steps 2–3 are realised slightly differently from the plan —
+    `p ∣ Nat.card H` is obtained directly from the order-`p` element
+    `⟨σ, hσH⟩ : H` (`orderOf_dvd_natCard`) rather than via `padicValNat p (p!)`,
+    and `Nat.card P = p` then follows from `Sylow.card_eq_multiplicity` +
+    `Nat.Prime.factorization_pos_of_dvd` together with the Lagrange bound
+    `Nat.card P ∣ p`. -/
 theorem H_le_normalizer
     (H : Subgroup (Equiv.Perm (ZMod p)))
     (P : Sylow p H)
-    (_hPnorm : (P : Subgroup H).Normal)
+    (hPnorm : (P : Subgroup H).Normal)
     (σ : Equiv.Perm (ZMod p))
-    (_hσ_cycle : σ.IsCycle)
-    (_hσ_card : σ.support.card = p)
-    (_hgen : ∀ g : P, (H.subtype.comp (P : Subgroup H).subtype) g ∈
+    (hσ_cycle : σ.IsCycle)
+    (hσ_card : σ.support.card = p)
+    (hgen : ∀ g : P, (H.subtype.comp (P : Subgroup H).subtype) g ∈
       Subgroup.zpowers σ)
-    (_hσH : σ ∈ H) :
+    (hσH : σ ∈ H) :
     H ≤ (Subgroup.zpowers σ).normalizer := by
-  sorry
+  -- ⟨σ⟩ ≤ H, from σ ∈ H (Subgroup.zpowers_le).
+  have hle : Subgroup.zpowers σ ≤ H := Subgroup.zpowers_le.mpr hσH
+  -- orderOf σ = p: a cycle's order is its support cardinality (IsCycle.orderOf).
+  have hord : orderOf σ = p := hσ_cycle.orderOf.trans hσ_card
+  -- |(zpowers σ).subgroupOf H| = |zpowers σ| = orderOf σ = p.
+  have hcardS : Nat.card ((Subgroup.zpowers σ).subgroupOf H) = p := by
+    rw [Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv,
+      Nat.card_zpowers, hord]
+  -- P, pulled back along ι, is contained in ⟨σ⟩: exactly hgen.
+  have hPle : (P : Subgroup H) ≤ (Subgroup.zpowers σ).subgroupOf H := by
+    intro x hx
+    rw [Subgroup.mem_subgroupOf]
+    exact hgen ⟨x, hx⟩
+  -- Lagrange: |P| divides |(zpowers σ).subgroupOf H| = p.
+  have hPdvd : Nat.card (P : Subgroup H) ∣ p := by
+    have hd := Subgroup.card_dvd_of_le hPle
+    rwa [hcardS] at hd
+  -- p divides |H|: the order-p element ⟨σ,hσH⟩ lives in H.
+  have hpH : p ∣ Nat.card H := by
+    have h : orderOf σ = orderOf (⟨σ, hσH⟩ : H) :=
+      orderOf_injective H.subtype (Subgroup.subtype_injective H) ⟨σ, hσH⟩
+    have hτ : orderOf (⟨σ, hσH⟩ : H) = p := h.symm.trans hord
+    have hdvd := orderOf_dvd_natCard (⟨σ, hσH⟩ : H)
+    rwa [hτ] at hdvd
+  -- |P| = p: Sylow card is p^(v_p |H|); v_p |H| ≥ 1 (p ∣ |H|), so p ∣ |P|;
+  -- with |P| ∣ p and p prime, |P| = p.
+  have hcardP : Nat.card (P : Subgroup H) = p := by
+    have hkpos : 0 < (Nat.card H).factorization p :=
+      Nat.Prime.factorization_pos_of_dvd Fact.out Nat.card_pos.ne' hpH
+    have hpP : p ∣ Nat.card (P : Subgroup H) := by
+      rw [P.card_eq_multiplicity]
+      exact dvd_pow_self p hkpos.ne'
+    exact Nat.dvd_antisymm hPdvd hpP
+  -- Equal finite cardinality + containment ⟹ equality (via the carrier sets).
+  have hncS : ((Subgroup.zpowers σ).subgroupOf H : Set H).ncard = p := by
+    rw [← Nat.card_coe_set_eq]; exact hcardS
+  have hncP : ((P : Subgroup H) : Set H).ncard = p := by
+    rw [← Nat.card_coe_set_eq]; exact hcardP
+  have hPeq : (Subgroup.zpowers σ).subgroupOf H = (P : Subgroup H) := by
+    have hset := Set.eq_of_subset_of_ncard_le (SetLike.coe_subset_coe.mpr hPle)
+      (le_of_eq (hncS.trans hncP.symm)) (Set.toFinite _)
+    exact (SetLike.coe_injective hset).symm
+  -- Transport P's normality (hPnorm, Step 2 output) along hPeq.
+  haveI : ((Subgroup.zpowers σ).subgroupOf H).Normal := by
+    rw [hPeq]; exact hPnorm
+  -- Close: Subgroup.le_normalizer_of_normal_subgroupOf.
+  exact Subgroup.le_normalizer_of_normal_subgroupOf hle
 
 /-- **Main theorem (file-level stub).** Every primitive solvable subgroup
     of `S_p = Equiv.Perm (ZMod p)` embeds into `AGL(1, p)`.
