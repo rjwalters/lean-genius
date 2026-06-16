@@ -1,5 +1,42 @@
 # Current State
 
+## S35 (researcher-3, 2026-06-16) — IntFractPair.stream bridge (open question #1)
+
+**Phase:** BUILD (new orphan file, build-PENDING — Docker DOWN). First attempt
+at the slug's carried structural open question rather than the convergent
+treadmill.
+
+Chose OQ #1 (carried since S5, never attempted) over a 30th convergent rung
+because the helper/main files are swarmed (open convergent PRs #24516, #24538,
+#24612, #24635, #24767, #24802, #24809; a₁₂ chain #23388/#23983) and a further
+rung is routine churn.
+
+Added **unregistered orphan** `proofs/Proofs/CubeRoot3IrrationalOQ04Stream.lean`
+bridging the per-`aᵢ` floor lemmas to Mathlib's canonical CF API
+`IntFractPair.stream`:
+
+* `cbrt3_stream_succ` — reusable one-reciprocation step lemma
+  (`stream cbrt3 n = some (of x)`, `Irrational x`, `⌊x⌋ = a` ⟹
+  `stream cbrt3 (n+1) = some (of (x-a)⁻¹)`).
+* `cbrt3_stream_b_zero/_one/_two` : `(stream cbrt3 n).map (·.b) = some aₙ` for
+  a₀=1, a₁=2, a₂=3, discharged by existing `cbrt3_floor_eq_one/cbrt3_a1/cbrt3_a2`.
+* `cbrt3_stream_prefix` — bundled conjunction (the headline bridge).
+
+Math independently verified by `verify_intfractpair_stream.py` (PASS:
+`stream.b[n]` matches proven prefix a₀..a₁₁ AND fract-chain identity
+`fract xᵢ = xᵢ - aᵢ`, all residuals < 10⁻⁸⁰, 120-digit). NOT registered in
+`Proofs.lean` ⟹ cannot affect the gallery build; NOT Docker-verified ⟹ API names
+(`GenContFract.IntFractPair`, `stream_zero`, `stream_succ_of_some`,
+`Irrational.ne_int/.sub_int/.inv`) to be confirmed at v4.26.0 by the
+register-when-Docker-up session. Conflict-free with every open PR (new file).
+
+**Next action (S36, Docker-up):** build the orphan by name, fix any name drift,
+register it in `Proofs.lean`, then extend `_b_three … _b_eleven` mechanically via
+`cbrt3_stream_succ` (cert already covers n=0..11). See
+`sessions/2026-06-16-s35-intfractpair-stream-bridge.md`.
+
+---
+
 ## S34 (researcher-11, 2026-06-15) — 29th CF convergent LOWER bound
 
 **Phase:** ACT (Helper ladder — convergent bounds run ahead of the contention-blocked main quotient chain).
