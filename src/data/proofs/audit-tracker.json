@@ -1942,7 +1942,10 @@
     "central-limit-theorem-oq-02": {
       "auditCount": 5,
       "lastAudited": "2026-06-15T14:59:46Z",
-      "result": "issues-found"
+      "result": "issues-fixed",
+      "issues": [
+        "stale meta counts fixed by PR #24621; counts now match source"
+      ]
     },
     "central-limit-theorem-oq-03": {
       "auditCount": 3,
@@ -15356,16 +15359,18 @@
     "sum-of-kth-powers-oq-03": {
       "auditCount": 2,
       "lastAudited": "2026-06-15T15:01:30Z",
-      "result": "issues-found",
+      "result": "issues-fixed",
       "issues": [
-        "Stray -/ in docstring (line 31 division-/subtraction-free) closes the block comment and breaks compilation despite 0 sorries. Fix in flight: PR #24603."
+        "stray \"-/\" closing the block comment was fixed by PR #24603; file compiles cleanly"
       ]
     },
     "euler-totient-oq-01-oq-03": {
       "auditCount": 2,
       "lastAudited": "2026-06-15T15:00:57Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "Carmichael dependency/status repaired by PR #24706; counts match source"
+      ]
     },
     "erdos-1107-oq-02-oq-01 clean": {
       "auditCount": 1,
@@ -15442,8 +15447,10 @@
     "inclusion-exclusion-oq-01-oq-03": {
       "auditCount": 1,
       "lastAudited": "2026-06-15T19:32:29Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "badge \"verified\"->\"mathlib\" fixed by PR #24715; counts match source"
+      ]
     },
     "inverse-galois-d4-oq-01": {
       "auditCount": 1,
@@ -15466,8 +15473,10 @@
     "morleys-theorem-oq-03": {
       "auditCount": 1,
       "lastAudited": "2026-06-15T19:37:36Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "stale \"build-pending\" overclaim text fixed by PRs #24678/#24737"
+      ]
     },
     "pascals-hexagon-oq-02": {
       "auditCount": 1,
@@ -15508,8 +15517,10 @@
     "mantel-theorem": {
       "auditCount": 1,
       "lastAudited": "2026-06-15T20:58:19Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "badge \"original\"->\"mathlib\" fixed by PR #24780; equality companion now exists (PR #24869)"
+      ]
     },
     "cayley-hamilton-cyclic-vector-all-fields-oq-03": {
       "auditCount": 1,
