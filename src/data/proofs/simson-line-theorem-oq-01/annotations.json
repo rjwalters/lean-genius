@@ -25,7 +25,7 @@
   {
     "id": "ann-simson-foot",
     "proofId": "simson-line-theorem-oq-01",
-    "range": { "startLine": 40, "endLine": 45 },
+    "range": { "startLine": 41, "endLine": 45 },
     "type": "definition",
     "title": "Closed-Form Perpendicular Foot",
     "content": "The foot of the perpendicular from p onto the chord-line through u and v is defined as foot u v p = (u + v + p − u·v·conj p)/2. For u, v on the unit circle this is exactly the orthogonal projection of p onto the line uv, as certified by foot_perp (perpendicularity) and foot_on_chord (incidence). The definition is the single geometric ingredient of the whole proof.",
@@ -45,6 +45,30 @@
     "significance": "key",
     "relatedConcepts": ["chord direction", "parallel vectors", "ring identity"],
     "prerequisites": ["polynomial arithmetic"]
+  },
+  {
+    "id": "ann-simson-perp",
+    "proofId": "simson-line-theorem-oq-01",
+    "range": { "startLine": 80, "endLine": 91 },
+    "type": "lemma",
+    "title": "The Foot Is Perpendicular to the Chord",
+    "content": "foot_perp certifies the first half of 'foot u v p is the orthogonal projection': the segment P → foot u v p is perpendicular to the chord uv, expressed as Re((p − foot u v p)·conj(v − u)) = 0. The proof reduces perpendicularity to conj w = −w (a purely imaginary cross-term) via re_eq_zero_of_conj_eq_neg, substitutes conj z = z⁻¹ for the unit-circle points u, v, and closes with field_simp; ring. Notably it needs no constraint on p — only u, v on the unit circle.",
+    "mathContext": "Two complex segments are perpendicular iff the real part of one times the conjugate of the other vanishes: $\\operatorname{Re}\\big((p-f)\\,\\overline{(v-u)}\\big)=0$, equivalently $(p-f)\\overline{(v-u)}$ is purely imaginary ($\\bar w=-w$).",
+    "significance": "supporting",
+    "relatedConcepts": ["perpendicularity", "orthogonal projection", "purely imaginary number"],
+    "prerequisites": ["complex inner product geometry", "conj z = z⁻¹ on the unit circle"]
+  },
+  {
+    "id": "ann-simson-onchord",
+    "proofId": "simson-line-theorem-oq-01",
+    "range": { "startLine": 93, "endLine": 104 },
+    "type": "lemma",
+    "title": "The Foot Lies on the Chord Line",
+    "content": "foot_on_chord certifies the second half: foot u v p actually lies on the line through u and v, expressed as Im((foot u v p − u)·conj(v − u)) = 0 (the displacement from u is a real multiple of the chord direction). The proof mirrors foot_perp but reduces incidence to conj w = w (a real cross-term) via im_eq_zero_of_conj_eq. Together foot_perp and foot_on_chord prove the closed-form foot really is the orthogonal projection — the geometric justification of the definition.",
+    "mathContext": "A point $f$ lies on the line $uv$ iff $f-u$ is a real multiple of $v-u$, i.e. $\\operatorname{Im}\\big((f-u)\\,\\overline{(v-u)}\\big)=0$ (the cross product / signed area is zero).",
+    "significance": "supporting",
+    "relatedConcepts": ["collinearity", "chord line", "real multiple of a direction"],
+    "prerequisites": ["complex coordinate geometry", "conj z = z⁻¹ on the unit circle"]
   },
   {
     "id": "ann-simson-main",
