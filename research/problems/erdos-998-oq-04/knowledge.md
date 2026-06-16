@@ -179,3 +179,49 @@ surrounding finite-cardinality scaffolding.
 **progressSummary:** ATTACK. Net sorry count 2 → 1. Both headline theorems are
 now sorry-free, resting on one precisely-stated combinatorial core
 (`exists_gap_triple`). Build-pending (dual-backend blackout).
+
+---
+
+## Session 2026-06-16 (Session 4) — researcher-11 — re-confirm frontier + metadata repair
+
+**Mode**: REVISIT (claimed available problem) — **Outcome**: blocked (build-gated); metadata fixed
+
+### What I Did
+- Re-read `proofs/Proofs/Erdos998ThreeGapOQ04.lean` and confirmed the exact
+  frontier: **252 LOC, 9 theorems, 0 axioms, exactly 1 `sorry`** —
+  `exists_gap_triple` at line 183. `three_gap`, `three_gap_additive`, and
+  `card_le_three_of_subset_triple` are all sorry-free and depend only on it;
+  `orbit_card` is fully proved.
+- Confirmed the file is **NOT registered** in `proofs/Proofs.lean` (so it is not
+  in CI and the build status is genuinely unverified).
+- **Probed both backends** at session start: Aristotle MCP `prove` → `404
+  Resource not found`; `docker run --rm alpine echo` → hung (exit 124). Dual
+  blackout. No Lean shipped (blind-writing the cyclic-successor index arithmetic
+  of `exists_gap_triple` under blackout is unsafe and forbidden).
+- **Fixed a metadata-propagation gap.** This problem had a rich `knowledge.md`
+  but **no `meta.json`**, so `scripts/sync-research.sh` never produced
+  `src/data/research/problems/erdos-998-oq-04.json`. Because `knowledge-scores.sh`
+  reads only that `src/data` store, the problem was invisible to the knowledge
+  prioritizer and scored 0 — it surfaced as an EMPTY `available` stub despite
+  being a MODERATE/ATTACK problem with one isolated sorry. Authored a complete
+  `meta.json` (knowledge score 11) and synced it to `src/data`.
+
+### Key Findings
+- The remaining `exists_gap_triple` is **KNOWN mathematics**
+  (Sós–Surányi–Świerczkowski / van Ravenstein), hence a **HARD (not OPEN)
+  sorry** — the correct tool is Aristotle `prove_file`, with manual fallback only
+  for the index arithmetic of the cyclic-successor map.
+- The pool record (`.lean/state/candidate-pool.json`, untracked) carried
+  `status=available`, `phase=null`, `notes="AVAILABLE: AVAILABLE"` — also updated
+  this cycle to reflect the true ATTACK/1-sorry state.
+
+### Files Modified
+- `research/problems/erdos-998-oq-04/meta.json` (new — propagates knowledge to prioritizer)
+- `src/data/research/problems/erdos-998-oq-04.json` (new — sync of the above)
+- `research/problems/erdos-998-oq-04/knowledge.md` (this log)
+- `.lean/state/candidate-pool.json` (untracked — pool note/phase corrected, not in PR)
+
+### Next Steps (unchanged frontier — turnkey on backend recovery)
+1. Submit `exists_gap_triple` to Aristotle `prove_file` once non-404.
+2. `docker-build Proofs.Erdos998ThreeGapOQ04` to verify the scaffolding compiles.
+3. Register in `proofs/Proofs.lean` and add a gallery entry.
