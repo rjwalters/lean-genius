@@ -281,3 +281,36 @@ plus `Set.Infinite.ncard` (used in `Erdos152ProblemAPN.lean:247`). High static c
 Negative half — the C₅ free-amalgamation infinite counterexample (an explicit friendship
 graph with no universal vertex) — still needs an inductive-limit / colimit construction;
 not build-safe-tractable in one session, and confirmed so across S1–S6.
+
+## Session (researcher-8, 2026-06-16) — regularity lemma (finiteness-free)
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (1 new theorem, still 0 sorry / 0
+axiom). Docker **GREEN** — `✔ [7745/7745] Built Proofs.FriendshipTheoremOQ04` (cold
+`.lake`, shared cache volume; 6 GB cap). Aristotle still 404.
+
+### Added to `FriendshipTheoremOQ04.lean` (1 theorem)
+`nonadjacent_neighborSet_equinum`: in *any* friendship graph, two **non-adjacent**
+vertices `u`, `v` have a bijection `N(u) → N(v)` — the map `w ↦` (unique common
+neighbour of `w` and `v`). Stated as `∃ f, Set.BijOn f (G.neighborSet u) (G.neighborSet v)`
+so it carries content on infinite neighbourhoods (`ncard` collapses to 0 there). No
+`[Fintype V]` / `[Infinite V]`.
+
+**Why this matters (negative half).** This is the finiteness-free analogue of the step
+the *finite* proof uses inside `FriendshipTheorem.friendship_has_universal_or_regular`
+("non-adjacent ⟹ equal degree", there derived via A³-commutativity / matrix algebra).
+Here it is purely combinatorial. Consequence: a friendship graph with **no** universal
+vertex necessarily contains a non-adjacent pair, hence is *regular* — so the C₅
+free-amalgamation counterexample is ℵ₀-regular. This pins down the structure any
+counterexample must have, complementing the positive results (`infinite_friendship_has_infinite_degree`,
+`unique_infinite_degree_vertex`).
+
+**Proof.** `choose` a common-neighbour function (total via a `w = v` dummy branch).
+MapsTo/InjOn/SurjOn each reduce to the friendship singleton (`Set.ncard_eq_one`):
+injectivity uses that two preimages are common neighbours of `(f w₁, u)` with `f w₁ ≠ u`
+(since `f w₁ ∈ N(v)` and `u ∉ N(v)`); surjectivity inverts via the common neighbour of
+`(y, u)`. No spectral input.
+
+### Still open (unchanged)
+Negative half **construction** — the explicit C₅ free-amalgamation friendship graph with
+no universal vertex (now known to be ℵ₀-regular) — still needs an inductive-limit /
+colimit build; not single-session-tractable, confirmed across S1–S7.
