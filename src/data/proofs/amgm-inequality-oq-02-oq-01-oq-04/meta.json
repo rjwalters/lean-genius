@@ -74,11 +74,18 @@
   },
   "sections": [
     {
-      "id": "header-defs",
-      "title": "Module Header, Imports, and Concrete Definitions",
+      "id": "docstring-strategy",
+      "title": "Module Docstring: Statement, Two-Route Strategy, and Verification Status",
       "startLine": 1,
+      "endLine": 50,
+      "summary": "States the target Finset/CommRing Newton-Girard recurrence Σ_{j<k} (-1)^j eⱼ p_{k-j} + (-1)^k k eₖ = 0 with worked k=1,2 sanity checks on s={a,b}. Lays out the two viable reductions — Route A (apply the algebra map aeval to Mathlib's universal MvPolynomial.mul_esymm_eq_sum) versus Route B (self-contained ~150–250-line induction on s via the update rule eₖ(s∪{a}) = eₖ(s) + a·e_{k-1}(s)) — records that Route A was executed and machine-checked under Lean v4.26.0 (0 sorries, 0 axioms), and enumerates every Mathlib lemma the transport depends on."
+    },
+    {
+      "id": "imports-defs",
+      "title": "Imports, Namespace, and Concrete Definitions",
+      "startLine": 52,
       "endLine": 65,
-      "summary": "Documents Route A (aeval-transport) and the confirmed Mathlib v4.26.0 API. Imports Mathlib, opens Finset and BigOperators, declares variables {ι R : Type*} [CommRing R]. Defines the concrete power sum psum s f k = Σ_{i∈s} (f i)^k and elementary symmetric function esymm s f k = Σ_{T ∈ s.powersetCard k} ∏_{i∈T} f i."
+      "summary": "Imports Mathlib, opens Finset and BigOperators, opens namespace AmgmNewtonGirard, and declares variables {ι R : Type*} [CommRing R]. Defines the concrete power sum psum s f k = Σ_{i∈s} (f i)^k and the concrete elementary symmetric function esymm s f k = Σ_{T ∈ s.powersetCard k} ∏_{i∈T} f i — the explicit Finset-indexed objects onto which the universal MvPolynomial identity is transported."
     },
     {
       "id": "bridges",
