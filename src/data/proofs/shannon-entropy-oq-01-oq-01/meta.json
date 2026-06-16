@@ -40,7 +40,8 @@
       "The 0·ln 0 = 0 convention (Real.log 0 = 0) makes the off-support contribution vanish automatically — the same mechanism the parent file relies on",
       "Real.volume_Icc gives volume(Icc a b) = ENNReal.ofReal (b-a), whose toReal is exactly the interval length b-a since a < b",
       "ln(1/(b-a)) = -ln(b-a) via Real.log_inv collapses the final constant to the closed form ln(b-a)",
-      "Differential entropy is negative for b-a < 1 — the concrete witness of the parent entry's remark that continuous entropy, unlike discrete entropy, can be negative"
+      "Differential entropy is negative for b-a < 1 — the concrete witness of the parent entry's remark that continuous entropy, unlike discrete entropy, can be negative",
+      "h = ln(b-a) carries the units of x: rescaling x by a factor c (changing units) sends b-a to c(b-a) and adds ln c, so differential entropy is not a dimensionless invariant the way discrete Shannon entropy is. The value measures the log-length of the support — the log-'volume' the distribution occupies — which is precisely why it can be negative and why it shifts under affine reparametrization"
     ],
     "prerequisites": [
       "differentialEntropy from shannon-entropy-oq-01 (h(f) = -∫ f·ln f)",
@@ -104,6 +105,21 @@
       "targetId": "shannon-entropy-oq-01",
       "relationship": "extends",
       "description": "Parent: differential-entropy framework (Gibbs inequality, Gaussian maximum entropy); this entry resolves its first open question"
+    },
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "related",
+      "description": "The discrete counterpart H(X) = -∑ p log p, which is always nonnegative. This entry is the canonical contrast: the continuous analogue h = ln(b-a) goes negative for b-a < 1, showing differential entropy is not a faithful extension of discrete entropy"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "related",
+      "description": "Supplies the measure-theoretic foundation: the computation reduces ∫ f·ln f over [a,b] to the Lebesgue measure of the interval (Real.volume_Icc gives volume(Icc a b) = b-a), the step that produces the closed form ln(b-a)"
+    },
+    {
+      "targetId": "shannon-channel-coding",
+      "relationship": "related",
+      "description": "Differential entropy is the building block of capacity for continuous channels: C = max I(X;Y) is expressed via differential entropies h(Y) - h(Y|X), so concrete values like h(Uniform[a,b]) = ln(b-a) feed directly into continuous-channel capacity computations"
     }
   ],
   "leanFile": {
