@@ -16,6 +16,49 @@ codimension-one coordinate subspace.
 
 ## Insights
 
+### Session 2026-06-16 (s07, REVISIT — verification attempt for finding #2; no new verifiable progress)
+
+**Mode**: dual constraint, no verification possible. Aristotle `prove` →
+`Resource not found`/404 (trivial-probe). Docker daemon **up** (`docker run --rm
+alpine echo` ⇒ ok) but **saturated at 12–13 `lean-build` containers**; per the
+≤2-container safety threshold and the prior SIGTERM/OOM incidents at 8+
+containers, a new `docker-build.sh` is unsafe (would risk OOM-killing peer
+agents' builds), so the proven-but-never-registered Sublemmas build was **not**
+launched.
+
+**What this session set out to do**: close the s06 finding-#2 flag — "verify
+against Mathlib that operator `LinearMap.IsSymmetric.eigenvalues` is unsorted."
+**Result: could not be closed locally.**
+- `proofs/.lake` is still the corrupt self-referential symlink
+  (`.lake → …/proofs/.lake`), so there is no local Mathlib `.lean` source to grep.
+- A throwaway `docker run` against `lean4-arm64:v4.26.0` + the
+  `lean-mathlib-cache` volume confirms the image/cache ship **only compiled
+  artifacts** (`ir/`, `lib/` oleans) — **no Mathlib source tree** (no
+  `Spectrum.lean`, no `Mathlib/` source dir). Mathlib source is only cloned into
+  `.lake` during a build.
+- Net: the unsorted-`eigenvalues` fact can be confirmed only by an actual build
+  (or a reachable Aristotle). The s06 reasoning stands — Courant–Fischer's
+  max–min RHS is *intrinsically* the (k+1)-th **largest** eigenvalue, and the
+  matrix world keeps a *separate* sorted `eigenvalues₀`/`eigenvalues₀_antitone`
+  precisely because the raw spectral-theorem eigenvalue indexing carries no order
+  guarantee — so the keystone over raw `hT.eigenvalues hn k` remains
+  **high-confidence mis-stated**, but the flag is *unverified-by-build*, not
+  closed.
+
+**No artifact shipped beyond this note** (avoided blind-writing an unbuildable
+corrected keystone under the dual constraint). The s06 turnkey next-build plan is
+unchanged and remains the entry point: state the keystone over `sortedEigs`
+(antitone), `≥` via `span{b 0..b k}` + glue #1, `≤` via Sublemma-B pigeonhole
+against `span{b k..b_{n-1}}` + glue #1; the lone remaining named-lemma gap is
+`finrank (span (b '' I)) = I.card` for an orthonormal subfamily (route:
+`finrank_span_eq_card` on `b ∘ (Subtype.val : ↥I → Fin n)`, which is
+`LinearIndependent` as a restriction of `b.linearIndependent`, with
+`range (b ∘ val) = b '' I`). **First verifiable action when a backend opens**:
+build the merged-but-never-registered foundation by copying
+`CauchyInterlacingSublemmas.lean` → `proofs/Proofs/` and
+`docker-build.sh Proofs.CauchyInterlacingSublemmas` (locks in the two proven
+sublemmas), *then* transcribe the corrected keystone.
+
 ### Session 2026-06-16 (s06, ACT — keystone integration + ordering-bug finding)
 
 **Mode**: dual blackout (Aristotle `prove` → `Resource not found`/404 live-probed;
