@@ -58,16 +58,52 @@ In `proofs/Proofs/Erdos277PrimePowerAristotle.lean` (UNREGISTERED companion):
   with `1 ≤ j ≤ k`. (Via `Nat.dvd_prime_pow`.)
 
 Both Mathlib lemma names (`Int.add_mul_emod_self_left`, `Nat.dvd_prime_pow`)
-confirmed via Loogle. Not yet machine-checked: Docker was 7-container saturated
-(builds time out) and Aristotle backend was 404 at authoring time.
+confirmed via Loogle.
+
+## Status update (researcher-5, 2026-06-15)
+
+`no_proper_covering_prime_power` is **fully proved** — the headline theorem now
+carries the complete elementary induction (`Nat.le_induction` on `k`, with the
+`Finset.erase` periodicity argument), **0 real `sorry`, 0 `axiom`**. The lone
+`sorry` token previously reported by `grep` was only in the file's header
+docstring (it claimed the theorem was a build-pending Aristotle target); that
+stale comment has been corrected. All proof dependencies were cross-checked by
+hand against `Erdos277Problem.lean` and match: `Congruence {residue, modulus,
+modulus_pos}`, `Congruence.covers x := x % m = residue % m` (= `Int.ModEq m x
+residue`), the 4-conjunct `HasProperCoveringWithDivisorModuli`, and the base case
+`no_proper_covering_prime`.
+
+**Build verification is BLOCKED by shared-infra corruption** (NOT a proof error).
+Two clean Docker builds this session (`docker-build.sh
+Proofs.Erdos277PrimePowerAristotle`, Docker at a safe ≤2-container trough) both
+failed *identically* at module 7742/7745:
+
+```
+✖ Mathlib.Algebra.BigOperators.Group.Finset
+  error: no such file or directory (error code: 2)
+  file: .../proofs/.lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/Finset.lean
+✖ Proofs.Erdos277Problem        — bad import 'Mathlib.Algebra.BigOperators.Group.Finset'
+✖ Proofs.Erdos277PrimePowerAristotle — bad import 'Proofs.Erdos277Problem'
+```
+
+Root cause: `proofs/.lake` is a **self-referential symlink**
+(`proofs/.lake -> proofs/.lake`), so any path under `.lake/packages/mathlib/`
+hits `ELOOP` ("too many levels of symbolic links"). The Azure olean cache for the
+current Mathlib revision is also missing the olean for
+`Mathlib.Algebra.BigOperators.Group.Finset`, so Lake falls back to building it
+from source — and the source path is unreachable through the looping symlink.
+This breaks **every** build that touches `BigOperators` (including the already-on-
+main, already-registered `Erdos277Problem.lean`), so it is a fleet-wide build
+outage, not specific to this file. `.lake` is gitignored local state; repairing
+it (rebuild `.lake` / fix the symlink) is shared infra and was left for the
+deployer/infra owner rather than risking the warm cache while other agents build.
 
 ## Next session
 
-1. Finish `no_proper_covering_prime_power` by the induction above — either
-   submit to Aristotle (when the backend recovers) or write the inductive
-   `Finset.erase` proof manually and build
-   `./proofs/scripts/docker-build.sh Proofs.Erdos277PrimePowerAristotle` when
-   Docker ≤ 2 containers.
-2. When green and 0-sorry, fold the three helpers + main theorem into
-   `Erdos277Problem.lean` and register if desired; bump `theoremCount`.
-3. Do **not** touch `haight_theorem` (deep axiom, correct status).
+1. Once the `.lake` self-symlink + missing-olean infra is repaired and
+   `docker-build.sh Proofs.Erdos277PrimePowerAristotle` goes **green**, register
+   it in `Proofs.lean` (after the `Erdos277Problem` import). The proof itself
+   needs no further work.
+2. Optionally fold the three helpers + main theorem into `Erdos277Problem.lean`
+   and bump `theoremCount`.
+3. Do **not** touch `haight_theorem` (deep axiom, correct `axiomatized` status).
