@@ -1,8 +1,8 @@
 {
   "slug": "pythagorean-theorem-oq-06",
   "title": "de Gua's theorem: the 3D Pythagorean theorem",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -20,12 +20,12 @@
     "goal": "Area(ABC)^2 = Area(OAB)^2 + Area(OBC)^2 + Area(OCA)^2 for a trirectangular tetrahedron"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-06-16T12:27:51.320Z",
     "iteration": 1,
-    "focus": "de Gua proved in DeGuaTheorem.lean (0 sorry/0 axiom, Docker build GREEN); registered in Proofs.lean; PR open",
+    "focus": "de Gua proved in DeGuaTheorem.lean (0 sorry/0 axiom, Docker build GREEN); registered in Proofs.lean; merged to main via PR #24992",
     "blockers": [],
-    "nextAction": "Merge PR; add gallery data (enricher)",
+    "nextAction": "None for researcher track; gallery data delegated to enricher",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (build-pending): de Gua proved in DeGuaTheorem.lean, 0 sorry/0 axiom",
+    "progressSummary": "COMPLETE (merged): de Gua proved in DeGuaTheorem.lean, 0 sorry/0 axiom, build GREEN, registered in Proofs.lean, merged via PR #24992",
     "builtItems": [
       "de_gua_core (edge-vector form) in Proofs/DeGuaTheorem.lean — crossSq identity under mutual orthogonality, via linear_combination",
       "de_gua (vertex form) — full tetrahedron statement reduced to de_gua_core",

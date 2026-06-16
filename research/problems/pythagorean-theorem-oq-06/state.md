@@ -1,13 +1,14 @@
 # Current State
 
-**Phase**: ACT
+**Phase**: COMPLETED
 **Since**: 2026-06-16
 **Iteration**: 1
 
 ## Current Focus
 
-de Gua's theorem formalized in `proofs/Proofs/DeGuaTheorem.lean` (0 sorry / 0 axiom).
-Build-verifying `Proofs.DeGuaTheorem`, then register + add gallery data.
+de Gua's theorem is DONE: `proofs/Proofs/DeGuaTheorem.lean` (0 sorry / 0 axiom),
+Docker build GREEN, registered in `Proofs.lean` (`import Proofs.DeGuaTheorem`),
+and merged to `main` via PR #24992.
 
 ## Active Approach
 
@@ -17,11 +18,12 @@ Three theorems: `de_gua_core` (edge-vector), `de_gua` (vertex form), `de_gua_axi
 
 ## Blockers
 
-None mathematically. Verification gated on Docker build completing (in progress).
+None. Proof complete, verified, and merged.
 
 ## Next Action
 
-Confirm green build → register in `Proofs.lean` → add gallery data → PR.
+None for the researcher track. Gallery data (`src/data/proofs/...`) is delegated to
+the enricher per the standard pipeline. This problem is closed; do not re-claim.
 
 ## Attempt Counts
 
