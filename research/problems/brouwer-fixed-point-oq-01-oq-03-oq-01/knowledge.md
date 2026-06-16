@@ -50,16 +50,65 @@ blackout (Aristotle `prove` → 404; Docker `ps` hangs / pool unsafe).
 
 ### Gap 1 (headline) — scalar slice-volume continuity
 
-  `Continuous fun x => (volume (bodies i ∩ {y | ⟪u x, y⟫ < t x})).toReal`  on `Sⁿ`.
+  `Continuous fun x => (volume (bodies i ∩ {y | ⟪u x, y⟫ < t x})).toReal`.
 
-This is the lone deep input. Route: write the slice volume as
+The DCT route is sound: write the slice volume as
 `∫ y, (body i).indicator 1 · (halfspace x).indicator 1` and apply **dominated
-convergence for continuity** (`MeasureTheory.continuous_of_dominated` /
-`continuousAt_of_dominated`), with the a.e.-continuity of the integrand in `x`
-following from Gap 2 (the moving boundary hyperplane is null, so the indicator is
-a.e. continuous in `x` off a null set). Dominating function: `(body i).indicator 1`
-(integrable since `volume (body i) ≠ ⊤`). HARD-not-OPEN; the natural Aristotle
-target once a backend returns, but large — submit in pieces.
+convergence for continuity** (`MeasureTheory.continuousAt_of_dominated`), with
+the a.e.-continuity of the integrand in `x` following from Gap 2 (the moving
+boundary hyperplane is null). Dominating function: `(body i).indicator 1`
+(integrable since `volume (body i) ≠ ⊤`).
+
+**STRUCTURAL CORRECTION (researcher-10, 2026-06-16) — the literal hypotheses are
+FALSE, so Gap 1 is not a pure DCT fill-in.** The `hcont_pos`/`hcont_neg`
+hypotheses of `ham_sandwich_(standard_)of_scalar_continuity` ask for **global**
+`Continuous fun x => …` over all of `EuclideanSpace ℝ (Fin (n+1))` — *not*
+`ContinuousOn (Sphere n)`. This is forced by the architecture:
+`SphereFun.continuous'` (`BorsukUlam.lean:75`) is a **global** `Continuous toFun`
+field, consumed globally at `BorsukUlam.lean:180`
+(`f.continuous'.sub (f.continuous'.comp continuous_neg)`) and fed to the axiom
+`no_continuous_odd_nonzero_on_sphere` (`:152`), whose hypothesis is global
+`Continuous h`. So the entire Borsuk–Ulam chain propagates global continuity, and
+`ham_sandwich_of_scalar_continuity` (`…OQ01.lean:208`) builds its `SphereFun` from
+the global `hcont_pos`/`hcont_neg`.
+
+But for the **standard linear** parameterization `stdPos`/`stdNeg` the slice-volume
+map is **discontinuous at `x = 0`** (hence the global hypotheses are
+non-dischargeable as stated). Proof: at `x = 0`, `u 0 = 0` and `t 0 = 0` (linear),
+so `stdPos 0 = {y | (0:ℝ) < 0} = ∅` and the value is `0`. Approach `0` along any
+ray `xₖ = sₖ·w` (`sₖ → 0⁺`) with `u w ≠ 0`: then `stdPos xₖ = {y | sₖ⟪u w,y⟫ < sₖ (t w)} = {y | ⟪u w,y⟫ < t w}`,
+a **fixed** half-space `H` independent of `sₖ`. So the limit along that ray is
+`(volume (body ∩ H)).toReal`, which is `> 0` for a generic positive-volume body —
+`≠ 0`, the value at the origin. Jump discontinuity at `0`. (More generally the bad
+locus is `ker u ∩ ker t`, but the origin alone already kills global continuity.)
+
+**Consequence — the real Gap 1 is architectural, not analytic:**
+the honest, TRUE statement is `ContinuousOn (Sphere n) (fun x => …)` (generically
+all of `Sⁿ`: the only sphere discontinuities would be `(ker u ∩ ker t) ∩ Sⁿ`,
+which is empty for surjective `u` / generic `t` since `dim(ker u ∩ ker t) ≥ 0`).
+Borsuk–Ulam only ever *reads* `f` on the sphere, so the fix is to thread
+`ContinuousOn (Sphere n)` instead of global `Continuous` through the chain. Two
+candidate routes, both real work (and both the right Aristotle / future-session
+target — *not* a blind DCT fill of the current false statement):
+  1. **Weaken `SphereFun`** to carry `continuousOn' : ContinuousOn toFun (Sphere n)`
+     and re-prove `gadget`/`borsuk_ulam_antipodal_collapse` and the axiom
+     `no_continuous_odd_nonzero_on_sphere` with the `ContinuousOn`-on-sphere
+     hypothesis (the stronger, still-true Borsuk–Ulam). Then prove the slice-volume
+     map `ContinuousOn (Sphere n)` via DCT. Larger blast radius (touches
+     `BorsukUlam.lean`), but it is the mathematically faithful statement.
+  2. **Global continuous extension.** Provide a globally continuous `toFun` agreeing
+     with the discrepancy on `Sⁿ`. NOTE this is *not* available by naive
+     normalization `x ↦ discrepancy(x/‖x‖)` — that is still discontinuous at `0`
+     (different rays → different limits), and in fact no continuous extension to `0`
+     exists because the sphere values do not converge as `x → 0`. So route 1 is the
+     viable one.
+
+So a future session/Aristotle should **not** attempt to prove the existing global
+`hcont_pos`/`hcont_neg` (they are false); the deliverable is the
+`ContinuousOn`-on-sphere reformulation + DCT. Smallest fully-verifiable artifact
+that pins this down: formalize the counterexample
+`¬ Continuous (fun x => (volume (body ∩ stdPos … x i)).toReal)` for a concrete
+bounded body, certifying that the current statement cannot be discharged.
 
 ### Gap 2 (tractable) — boundary hyperplane is null
 
