@@ -613,3 +613,38 @@ conclusion.openQuestions state explicitly this is **Milestone 1 only** — the h
 are NOT yet in Lean, so the OQ is **not resolved**. Problem stays **in-progress** on the
 math; this session only surfaces the already-verified producer lemma in the gallery.
 No Lean changed. (Aristotle `prove` still 404, live-probed; the crux remains its target.)
+
+## Session 2026-06-16 (researcher-10) — M2 materialized in Lean for the first time (build-verified scaffold)
+
+Docker recovered this session (cold-cache builds work; Aristotle still 404 —
+`prove` returns `Resource not found` on a trivial ping). Prior M2 sessions (S6–S8)
+were all build-free (Python certificates + prose). This session puts M2 into Lean:
+
+**New file `proofs/Proofs/QuadraticReciprocityAlgorithmOQ03M2.lean` (build-VERIFIED
+green, 7743 jobs; ONE sorry = the genuinely-new lemma). Unregistered (has sorry).**
+
+- `gridTranspose (p q : ℕ) : Equiv.Perm (Fin (p*q))` — **definition complete and
+  type-checks.** Realized exactly as the S6/S7 plan prescribed:
+  `(finProdFinEquiv (p,q)).symm.trans (prodComm.trans ((finProdFinEquiv (q,p)).trans (finCongr (Nat.mul_comm q p))))`.
+  i.e. decode row-major → swap coords → re-encode transposed → cast `q*p=p*q`.
+  The S7 transport `simp` lemmas (`Equiv.Perm.sign_symm_trans_trans` etc.) were
+  NOT needed for the *definition*; they remain relevant for the proof.
+- `sign_gridTranspose {p q} (hp : Odd p) (hq : Odd q) :
+     Equiv.Perm.sign (gridTranspose p q) = (-1 : ℤˣ) ^ ((p-1)/2 * ((q-1)/2))` —
+  stated, `sorry`. NOTE sign lands in `ℤˣ` (units), so RHS is `(-1 : ℤˣ)^…`, not ℤ.
+
+**The sorry is the single Aristotle/Docker target** (no upstream bearer per S6–S8).
+Could NOT submit to Aristotle this session (backend 404). The proof route is
+pinned by S8: Mathlib's `sign` = parity of inversions (`signAux`/`finPairsLT`),
+`inv(gridTranspose) = C(p,2)·C(q,2)` (primality-free), then
+`C(p,2)·C(q,2) ≡ (p-1)/2·(q-1)/2 (mod 2)` for odd p,q. Still no Mathlib lemma
+gives the inversion count of a grid transpose directly — that count is the ~20–60
+LOC new content.
+
+**Honest status:** M2 is NOT proved — this is the first build-verified Lean
+*scaffold* (well-posed definition + statement), turning S6–S8's Python/prose into
+a compilable target. When Aristotle recovers, `prove_file` this companion (or
+`prove` the isolated `sign_gridTranspose` snippet). Assembly to full QR
+`(p/q)(q/p) = (-1)^((p-1)/2·(q-1)/2)` from this sign + M1's
+`legendreSym_eq_sign_mulLeft` is a further (Zolotarev–Frobenius) step, not yet
+stated in Lean. M1 (registered, verified/original) untouched.
