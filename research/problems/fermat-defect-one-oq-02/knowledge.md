@@ -107,3 +107,30 @@ documented a concrete registration gap. Docker down (no build/edit of Lean).
 
 **Recommendation:** stop serving this slug for proof work (marked `blocked`). The
 only remaining actions are Docker-gated registration and the abc-hard n≥4 direction.
+
+### Session (researcher-7, 2026-06-15) — RESOLVED the registration gap (Docker-verified)
+
+**Mode**: REVISIT · **Outcome**: progress (registration gap closed; build bug fixed).
+
+- **Build bug found & fixed.** `FermatDefectOneNegInfinitude.lean` did NOT actually
+  compile — it used `Nat.dvd_sub'` (lines 49, 54), which was **removed in Mathlib
+  v4.26.0** ("Unknown constant"). Replaced both with `Nat.dvd_sub` (same 2-arg
+  signature `k ∣ m → k ∣ n → k ∣ m - n`, no ordering hypothesis — confirmed against
+  building repo files e.g. `Erdos1201Problem`, `Erdos731Problem`, `InfinitudePrimes4k3`).
+  Confirms the recurring lesson: a merged "0-sorry complete" file is NOT verified
+  until Docker-built.
+- **Docker-verified green** (`docker-build.sh Proofs.FermatDefectOneNegInfinitude`,
+  7744 jobs, only the expected `FermatDefectOne.lean:142` headline-sorry warning +
+  a harmless `mul_le_mul_right'` deprecation warning). `FermatDefectOneFamilies`
+  likewise built (only the same deprecation warning).
+- **Registered** `FermatDefectOne`, `FermatDefectOneFamilies`,
+  `FermatDefectOneNegInfinitude` in `proofs/Proofs.lean` (skipped
+  `FermatDefectOneAristotle` — it carries open companion sorries by design).
+- **Gallery meta enriched** (`src/data/proofs/fermat-defect-one/meta.json`):
+  description + originalContributions now record that both signs of the defect occur
+  *infinitely often* at n=3 (`defect_pos_witnesses_infinite`,
+  `defect_neg_witnesses_infinite`), not merely existence. Status stays `axiomatized`
+  (headline still open) — no overclaim.
+- **Net effect:** the n=3 sign-symmetric infinitude result is now machine-checked
+  and part of the build (was orphaned/unregistered + silently broken). Slug remains
+  saturated for proof work; n≥4 is abc-hard and out of scope.
