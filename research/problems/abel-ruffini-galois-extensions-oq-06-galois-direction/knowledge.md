@@ -628,3 +628,37 @@ Medium-confidence (?) names to check: `MulAction.card_orbit_mul_card_stabilizer_
 `Nat.Prime.factorization_factorial`. High-confidence (★): the Step-5-shared
 idioms (`P.card_eq_multiplicity`, `Nat.Prime.factorization_pos_of_dvd`,
 `orderOf_injective`, `IsCycle.orderOf`, `map_zpow`, `Subgroup.mem_zpowers_iff`).
+
+## S17 lemma-name resolution (researcher-5, 2026-06-16) — Step-3 companion corrected
+
+Checked the `?`-flagged Step-3 calls against the Mathlib source mirror
+(`/private/tmp/mathlib-grep`, v4.26.0) and corrected the companion
+`AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3.lean`. Resolved signatures:
+
+- **`Nat.factorization_factorial`** (`Data/Nat/Choose/Factorization.lean:42`) — namespace
+  `Nat` (NOT `Nat.Prime`), signature `(hp : p.Prime) {n b} (h : log p n < b) :
+  (n)!.factorization p = ∑ i ∈ Ico 1 b, n / p^i`. **Takes an explicit bound.** The old
+  `rw [hp.factorization_factorial]` was broken; fixed to
+  `rw [Nat.factorization_factorial hp hlog]` with `hlog : log p p < p` via
+  `Nat.log_lt_self p hp.pos.ne'` (`Data/Nat/Log.lean:196`). The `sum_eq_single 1` body
+  is valid for any bound `b ≥ 2` (only the `i=1` term survives), so `b = p` works.
+- **`isCyclic_of_prime_card`** (`SpecificGroups/Cyclic.lean:185`) — `[Fact p.Prime]
+  (h : Nat.card α = p) : IsCyclic α`. Uses **`Nat.card`**; fixed to pass `hcardP`
+  (was `hcardP_ft : Fintype.card = p`).
+- **`Equiv.Perm.isCycle_of_prime_order`** (`Perm/Cycle/Type.lean:230`) —
+  `(h1 : (orderOf σ).Prime) (h2 : #σ.support < 2 * orderOf σ) : σ.IsCycle`. **Two args,
+  stated over `orderOf σ`**; old `(hp) (hords) (hsupp_lt)` (3 args, over `p`) was wrong.
+  Fixed: `hprime : (orderOf (ι a)).Prime := hords ▸ hp`, `hsupp_lt` restated over
+  `2 * orderOf (ι a)` (rw `hords`), then `isCycle_of_prime_order hprime hsupp_lt`.
+
+Confirmed present (★): `card_subgroup_dvd_card` (`Subgroup`, `Coset/Card.lean:69`,
+`Nat.card s ∣ Nat.card α`), `card_orbit_mul_card_stabilizer_eq_card_group`
+(`GroupAction/Quotient.lean:180`, but `[Fintype α] [Fintype (orbit α b)]` — Step-A/B
+Fintype-vs-`Nat.card` plumbing still wants a first build), `factorization_le_iff_dvd`
+(`Factorization/Defs.lean:161`), `orderOf_eq_card_of_forall_mem_zpowers`
+(`Cyclic.lean:217`, returns `Fintype.card`).
+
+Status: companion is now **source-verified** on these three signatures (was
+best-effort). Still BUILD-PENDING (dual blackout). On recovery:
+`docker-build Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3`; if green,
+fold the body verbatim into the registered `sylow_p_is_pcycle` (signatures match).
