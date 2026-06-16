@@ -2585,6 +2585,7 @@ import Proofs.LawOfCosinesOQ03
 import Proofs.LawOfCosinesOQ03OQ02
 import Proofs.LawOfCosinesOQ04
 import Proofs.LawOfCosinesOQ04OQ01
+import Proofs.LawOfCosinesOQ04OQ01Bisector
 import Proofs.LawOfCosinesOQ04OQ02
 import Proofs.LawOfCosinesOQ04OQ02OQ01
 import Proofs.LawOfCosinesOQ05
