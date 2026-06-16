@@ -54,6 +54,36 @@ uses cases `mem | zero | add | smul`.
 assembling the keystone from `rayleigh_bounds_on_eigenspan` +
 `inf_ne_bot_of_finrank_add_lt`.
 
+### Session 2026-06-16 (s05, REVISIT → stand-down, dual blackout)
+
+**Mode**: REVISIT under dual backend blackout. Aristotle MCP `prove` →
+`Resource not found` (404); Docker daemon hung (`docker info` times out, no
+`docker ps`). No verifiable Lean possible this session.
+
+**State confirmed**: `CauchyInterlacingSublemmas.lean` is `sorry`-free / 0-axiom
+on `origin/main` (the 5 `sorry` greps are all in comments). The lone open
+obligation is the keystone `cauchy_interlacing` (`CauchyInterlacing.lean:95`),
+which still reduces to `courant_fischer_placeholder : True` — i.e. the
+Courant–Fischer max–min identity is genuinely not yet started in Lean.
+
+**Pointer fix (the reason for this note)**: the s04 note and `Sublemmas.lean`
+header both cite `approaches/keystone-minmax-proof-design.md` for the full
+keystone proof design + per-step Mathlib lemma map. **That file is NOT on
+`main`** — it lives only in the still-OPEN PR #24796
+(branch `research/cauchy-interlacing-orient`, commit `0dab61880d7`). A future
+session that greps `main` for it will come up empty; read it via
+`git show 0dab61880d7:research/problems/cauchy-interlacing-theorem/approaches/keystone-minmax-proof-design.md`
+or from PR #24796.
+
+**Why no Lean shipped**: the next step (boundedness `have`s §3 → max–min identity
+§2 → matrix↔operator eigenvalue bridge → assembly) is all API-heavy closed
+mathematics (`ciSup`/`ciInf` plumbing, `eigenvalues_antitone`,
+`apply_eigenvectorBasis`, `finrank_span_eq_card`, the
+`Matrix.IsHermitian.eigenvalues₀` ↔ operator-`eigenvalues` correspondence). None
+of these names can be confirmed without a compiler; blind-writing them would be
+unverifiable scaffolding. ACT (submit the max–min identity as an Aristotle
+`prove_file` companion, or build it under Docker) when either backend returns.
+
 ### Session 2026-06-15 (s01, FRESH → ORIENT)
 
 - **Mathlib API correction (vs. older notes).** Mathlib now ships
