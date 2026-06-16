@@ -16,108 +16,67 @@ codimension-one coordinate subspace.
 
 ## Insights
 
-### Session 2026-06-16 (s08, REVISIT → ACT, **KEYSTONE PROVEN**) — Courant–Fischer max–min, 0-sorry/0-axiom, build-green
+### Session 2026-06-16 (s06, ACT — keystone integration + ordering-bug finding)
 
-**Mode**: REVISIT → ACT. Aristotle MCP `prove` still 404 (re-probed `a+b=b+a`).
-But Docker builds **WORK** — the `proofs/.lake` self-symlink does NOT block builds
-(the s05/s07 "blackout" diagnosis was wrong): `docker-build.sh` clones the source
-tree fresh inside the container and pulls 7727 oleans from the Azure mathlib cache
-through the symlink. Always check by actually building, not by `ls -ld proofs/.lake`.
+**Mode**: dual blackout (Aristotle `prove` → `Resource not found`/404 live-probed;
+Docker saturated — **10** `lean-build` containers running, host 92 GiB used / 3 GiB
+free, so a new `docker-build.sh` would SIGTERM-kill peer agents' builds; the safe
+threshold is ≤2 containers). No verification possible; build-free grounded ACT.
+`proofs/.lake` is again the corrupt self-symlink (`.lake → …/proofs/.lake`), so no
+local Mathlib to grep — findings below are reasoned against the merged source +
+the open-PR draft, not a fresh Mathlib grep.
 
-**Result**: new file `proofs/Proofs/CauchyInterlacingKeystone.lean` —
-`✔ [7743/7743] Built … (31s)`, **0 sorry / 0 axiom** (verified: build emitted no
-`declaration uses sorry`). This **closes the single documented Mathlib gap** that
-blocked the problem for s03–s07. The dishonest `courant_fischer_placeholder : True`
-in `CauchyInterlacing.lean` is now superseded by the real, proven content.
+Two concrete results, both about the **open PR #24796** keystone draft
+(`research/cauchy-interlacing-orient:…/lean/CauchyInterlacingMinMax.lean`), which is
+NOT on main:
 
-**Key idea — state the max–min in BOUND FORM, not `iSup`/`iInf`.** The
-conditionally-complete-lattice junk-value pain of an `⨆/⨅` formulation is entirely
-avoided by splitting Courant–Fischer into two bound statements that carry the same
-information and reduce *directly* to the two verified sublemmas:
+1. **Sublemma A is already DONE on main — the draft's `sorry` is redundant.** The
+   merged `CauchyInterlacingSublemmas.lean` (PR #24939, verified, 0 sorry/0 axiom)
+   proves `rayleigh_bounds_on_eigenspan T b μ hb I hI x hx hx0` for a *generic*
+   orthonormal eigenbasis `b` with `hb : ∀ i, T (b i) = μ i • b i`. The draft's
+   `rayleigh_mem_Icc_of_mem_eigenspan` (line 91 `sorry`) is the *specialisation* to
+   Mathlib's `hT.eigenvectorBasis hn` / `hT.eigenvalues hn`. It is a mechanical
+   instantiation — `b := hT.eigenvectorBasis hn`, `μ := hT.eigenvalues hn`,
+   `hb := hT.apply_eigenvectorBasis hn` (the diagonalisation lemma). `rayleigh T x`
+   is defeq to the Sublemmas RHS. **Turnkey glue** (build-pending, unverified):
+   ```lean
+   theorem rayleigh_mem_Icc_of_mem_eigenspan … := by
+     simp only [rayleigh]
+     exact CauchyInterlacing.Sublemmas.rayleigh_bounds_on_eigenspan
+       T (hT.eigenvectorBasis hn) (hT.eigenvalues hn)
+       (hT.apply_eigenvectorBasis hn) I hI x hmem hx
+   ```
+   (No `IsSymmetric` needed by the Sublemmas lemma; the eigenbasis identity alone
+   supplies `hb`.) Net: importing the merged Sublemmas file removes one of the
+   draft's three obligations outright.
 
-* LOWER (`eigenvalue_maxmin_lower`): for antitone `μ`, the `(k+1)`-dim eigenspan
-  `span {b 0,…,b k}` (= `span (b '' Iic k)`) has *every* nonzero Rayleigh quotient
-  `≥ μ k`. ⇒ an optimal subspace witnessing `max min R ≥ μ k` exists. Proof =
-  `rayleigh_bounds_on_eigenspan.1` (Sublemma A) + `Finset.le_inf'` (antitone ⇒
-  `μ k ≤ μ i` for `i ≤ k`).
-* UPPER (`eigenvalue_maxmin_upper`): for antitone `μ`, *every* `(k+1)`-dim subspace
-  `S` contains a nonzero `x` with Rayleigh `≤ μ k`. ⇒ no subspace beats `μ k`.
-  Proof = intersect `S` with `W := span (b '' Ici k)` (dim `n-k`); dimension count
-  `(k+1)+(n-k)=n+1 > n` ⇒ `inf_ne_bot_of_finrank_add_lt` (Sublemma B) gives nonzero
-  `x ∈ S ⊓ W`; `rayleigh_bounds_on_eigenspan.2` + `Finset.sup'_le` bound it by `μ k`.
+2. **The keystone STATEMENT is mis-stated (likely false as written).**
+   `eigenvalue_eq_iSup_iInf_rayleigh` (line 104) claims
+   `hT.eigenvalues hn k = ⨆_{dim S = k+1} ⨅_{0≠x∈S} rayleigh T x`. The RHS max–min
+   is the **(k+1)-th largest** eigenvalue (descending Courant–Fischer). But
+   `LinearMap.IsSymmetric.eigenvalues hn` is **not sorted** — it is the
+   diagonalisation indexing, in no guaranteed order (exactly why the matrix world
+   has a *separate* `IsHermitian.eigenvalues₀` + `eigenvalues₀_antitone`, used by
+   `CauchyInterlacing.sortedEigs`). So the identity holds only after sorting; as
+   written it equates an arbitrary-index eigenvalue to the k-th largest. **Fix**:
+   state the keystone for *descending-sorted* eigenvalues. For this problem the
+   cleanest target is to prove it directly for `CauchyInterlacing.sortedEigs`
+   (built on `eigenvalues₀`, with `sortedEigs_antitone` already proven on main),
+   not generic `eigenvalues` — that antitone fact is also what collapses
+   `I.inf'`/`I.sup'` over the interval `{0..k}` / `{k..n-1}` to the endpoint `μ k`
+   in the two keystone halves. (High-confidence but flagged: verify against
+   Mathlib that operator `eigenvalues` is unsorted when `.lake`/a backend returns.)
 
-**New reusable lemmas (all 0-sorry):**
-- `finrank_span_image_eq_card b I : finrank (span (b '' ↑I)) = I.card`. Recipe:
-  `(b.orthonormal.linearIndependent).comp _ Subtype.val_injective` →
-  `Set.range_comp` + `Subtype.range_coe` → `finrank_span_eq_card` → `simp`.
-- `rayleigh_ge_on_eigenspan_of_lb` / `exists_rayleigh_le_in_subspace` — the
-  index-set-parametrised halves (the genuinely reusable content; the Fin-interval
-  versions are thin corollaries).
+**Net next-build plan (turnkey when a backend opens):** state the keystone over
+`sortedEigs` (antitone), prove `≥` with the witness span `span{b 0,…,b k}` (lower
+endpoint `μ k` via `Finset.inf'` of antitone over `{0..k}` + glue #1) and `≤` with
+the Sublemma-B pigeonhole `inf_ne_bot_of_finrank_add_lt` against `span{b k,…,b_{n-1}}`
+(`(k+1)+(n-k) = n+1 > n`) + glue #1 (upper endpoint `μ k` via `sup'` of antitone
+over `{k..n-1}`). The span-dimension fact (`finrank (span (b''I)) = I.card` for an
+orthonormal subfamily) is the one remaining named-lemma gap to pin down. Do NOT
+re-prove Sublemma A; do NOT submit the unsorted-eigenvalues keystone statement.
 
-**Mathlib API that worked first-try (v4.26.0):** `Fin.card_Iic` (`= ↑k+1`),
-`Fin.card_Ici` (`= n - ↑k`), `Module.finrank_eq_card_basis b.toBasis` +
-`Fintype.card_fin` (⇒ `finrank E = n`), `Finset.le_inf'`/`Finset.sup'_le`,
-`Submodule.mem_inf`. All in the abstract `LinearMap`/`OrthonormalBasis` framework
-(eigenvalues as `μ : Fin n → ℝ`, `T (b i) = μ i • b i`), matching the sublemmas.
-
-**Still open (next session):** (1) bridge the abstract keystone to
-`Matrix.IsHermitian.eigenvalues₀` / `CauchyInterlacing.sortedEigs` (matrix ↔
-linear-map + sorting permutation); (2) assemble the final `cauchy_interlacing`
-inequality `λ(i+1) ≤ μ i ≤ λ i` for `principalDrop` from the two halves via the
-coordinate-subspace inclusion. The hard variational core is now DONE; what remains
-is the (still nontrivial) impedance-matching bookkeeping.
-
-### Session 2026-06-16 (s07, REVISIT → stand-down, dual blackout) — Sublemma A glue transcribed turnkey
-
-**Mode**: REVISIT under dual backend blackout, **new blackout flavor**. Aristotle
-MCP `prove` → `Resource not found` (404, re-confirmed this session with a trivial
-`a+b=b+a` probe). Docker *daemon* is UP (`docker run --rm alpine echo` → rc 0) but
-**builds are blocked**: `proofs/.lake` is a **circular self-symlink**
-(`proofs/.lake -> /Users/.../proofs/.lake`, in BOTH the worktree and main repo), so
-`docker-build.sh` cannot reach the Mathlib oleans / its git-clone of the tree fails.
-This is distinct from s05/s06's "Docker saturated/hung" — the daemon answers, the
-build tree is corrupt. Don't conclude "Docker down" from `docker run` succeeding;
-check `ls -ld proofs/.lake`.
-
-**No new PR** — the problem already has 3 open PRs (#24977 mergeable doc-plan,
-#24796 + #24924 both CONFLICTING) and adding a 4th unverifiable orphan would be
-churn. This entry instead **transcribes** the exact code for the s06-documented
-turnkey step so the next backend-up session can paste-and-build with zero
-re-derivation.
-
-**Turnkey #1 — discharge Sublemma A's `sorry` in `lean/CauchyInterlacingMinMax.lean`.**
-The merged `lean/CauchyInterlacingSublemmas.lean` (#24939, VERIFIED 0-sorry/0-axiom)
-already proves the general bound `Sublemmas.rayleigh_bounds_on_eigenspan`. Sublemma A
-(`rayleigh_mem_Icc_of_mem_eigenspan`) is its instantiation. Replace the `sorry` with:
-
-```lean
-  -- `rayleigh T x` is defeq to `RCLike.re ⟪T x, x⟫ / ‖x‖ ^ 2`.
-  unfold rayleigh
-  exact Sublemmas.rayleigh_bounds_on_eigenspan T
-    (hT.eigenvectorBasis hn) (hT.eigenvalues hn)
-    (fun i => hT.apply_eigenvectorBasis hn i) I hI x hmem hx
-```
-
-To make this compile in one shot, the two files must be co-located (inline the
-`CauchyInterlacing.Sublemmas` namespace into the same file, or build them as one
-Lake target — the staging `lean/` dir is NOT a package). Confidence: HIGH on the
-math/instantiation; UNVERIFIED on exact API spellings — watch (a)
-`hT.apply_eigenvectorBasis hn i : T (eigenvectorBasis hn i) = (eigenvalues hn i:𝕜) • …`
-(need the `∀ i` form, hence the `fun i =>`), and (b) the `'' (I : Set (Fin n))`
-vs `(b : Fin n → E) '' ↑I` coercion match — if `unfold rayleigh` doesn't fire, try
-`show RCLike.re _ / _ ≤ _ ∧ _` / `simp only [rayleigh]`.
-
-**Turnkey #2 — fix the mis-stated keystone (still open, the real gap).** As flagged
-in s06 (#24977), `eigenvalue_eq_iSup_iInf_rayleigh` equates the **unsorted**
-`hT.eigenvalues hn k` to a max–min that returns the (k+1)-th *largest* eigenvalue.
-`LinearMap.IsSymmetric.eigenvalues` is indexed by the eigenbasis, NOT sorted, so the
-identity is false as written. Restate over a descending-sorted enumeration
-(`CauchyInterlacing.sortedEigs`, antitone — lives in
-`lean/CauchyInterlacing.lean` on branch `research/cauchy-interlacing-statement`,
-not yet co-located) before attempting the proof. Do NOT submit the current statement
-to Aristotle — it would chase a false goal.
-
-
+### Session 2026-06-16 (s04, REVISIT → ACT) — both Parseval leaves PROVED, Sublemmas file now VERIFIED
 
 **Mode**: REVISIT (Aristotle MCP down → `Resource not found`; Docker had room:
 1 active build + 1 idle 8h zombie, ~300 MB of 7.65 GiB used, so the
@@ -272,29 +231,6 @@ Docker `ps` hangs / pool unsafe). Build-free ACT step on the **merged**
   (`b.repr.norm_map` + `EuclideanSpace.norm_eq` + `Finset.sum_subset` for the
   norm leaf; `OrthonormalBasis.sum_repr` + `hb` + Parseval for the form leaf).
 - **Not** verified (build-pending under blackout); not registered in `Proofs.lean`.
-
-### Session 2026-06-16 (s08, REVISIT → witness cert, dual blackout) — sorted-vs-unsorted bug WITNESSED
-
-**Mode**: REVISIT under dual blackout (Aristotle 404; Docker down — `proofs/.lake`
-still a circular self-symlink, builds blocked). Slug has 4 open PRs (#25063 keystone,
-#24796/#24924 conflicting, #24977 doc-plan), so no 5th unverifiable orphan — instead
-shipped a build-free *verification artifact* that hardens the central correctness claim.
-
-**What**: `verify_sorted_vs_unsorted_keystone.py` turns the s06/s07 abstract finding
-("the keystone is false over Mathlib's unsorted `eigenvalues`") into a CONCRETE,
-checkable witness. PASS:
-- (A) over 14000 (Hermitian, dropped-index) pairs (n=2..5), interlacing holds for
-  BOTH the ascending-sorted and the descending `eigenvalues₀` conventions —
-  confirming the corrected statement of record is true.
-- (B) explicit 3×3 witness: eigenbasis-order permutation (0,2,1) gives unsorted
-  λ = [-1.7281, 1.9377, -0.1931]; against sorted μ = [-1.1913, 0.9914] the triple
-  `λ_1 ≤ μ_1 ≤ λ_2` reads `1.9377 ≤ 0.9914 ≤ -0.1931` → FALSE.
-
-**Why it matters**: `LinearMap.IsSymmetric.eigenvalues` is indexed by the eigenbasis
-(an arbitrary permutation of the spectrum), so the keystone MUST be stated over
-`eigenvalues₀`/`sortedEigs` (descending). This cert is a regression anchor guarding
-against a future session "fixing" the keystone back onto the unsorted enumeration —
-exactly the trap s06 flagged. No Lean change; conflict-free with all 4 open PRs.
 
 ---
 
