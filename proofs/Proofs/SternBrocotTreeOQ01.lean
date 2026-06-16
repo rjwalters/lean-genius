@@ -39,13 +39,20 @@ Beyond the structural heart, this file now also proves:
 * `sb_surjective` — **surjectivity**: every reduced positive rational `a/b` labels
   some node, by strong induction on `a + b` via the subtractive Euclidean descent.
 
-## Next steps (not in this file)
+Finally, this file closes the loop:
 
-* Injectivity: the mediant strictly separates the two subtrees (now available as
-  `sb_left_lt_mediant`/`sb_mediant_lt_right`), so the labelled value is strictly
-  monotone along the in-order traversal — combine with the transfer lemmas to show
-  distinct paths give distinct labels. Together with `sb_surjective` and
-  `sb_isCoprime` this yields the full bijection with the reduced positive rationals.
+* `sb_injective` — **injectivity**: distinct paths carry distinct labels. The head
+  move of a path is *forced* by the order of `num` versus `den`: prepending `L`
+  yields `num < den` (value `< 1`), prepending `R` yields `num > den` (value `> 1`),
+  and the empty path is the unique node with `num = den` (the root `1/1`). Peeling
+  the forced head via the transfer lemmas and recursing on the tail gives
+  injectivity by a clean structural induction — the cross cases collapse to
+  positivity contradictions (`sbNum_pos`, `sbDen_pos`), needing no Mathlib beyond
+  `omega`.
+* `sb_enumerates_pos_rationals` — the **capstone**: the labelling map is a bijection
+  between finite `L/R` paths and reduced positive rationals (injective + surjective,
+  with every label coprime and positive). This is the precise content of
+  `stern-brocot-tree-oq-01`.
 -/
 
 namespace SternBrocot
@@ -295,5 +302,103 @@ theorem sb_surj_aux : ∀ (n : ℕ) (a b : ℤ), (a + b).toNat = n →
 theorem sb_surjective (a b : ℤ) (ha : 1 ≤ a) (hb : 1 ≤ b)
     (hcop : IsCoprime a b) : ∃ p : List Bool, sbNum p = a ∧ sbDen p = b :=
   sb_surj_aux (a + b).toNat a b rfl ha hb hcop
+
+/-! ## Injectivity: distinct paths carry distinct labels
+
+The head move of a path is *forced* by comparing the label's numerator and
+denominator. Using the transfer lemmas:
+
+* `L :: q` has `den = num + den(q) > num` (value `< 1`);
+* `R :: q` has `num = num(q) + den > den` (value `> 1`);
+* the root `[]` is the unique node with `num = den` (namely `1 = 1`).
+
+Hence two paths with equal labels must share the same head, and (after the
+transfer lemmas peel it off) the same tail. The "wrong head" cross cases all
+collapse to a positivity contradiction via `sbNum_pos`/`sbDen_pos` and `omega`.
+-/
+
+/-- **Injectivity**: paths with the same label numerator and denominator are
+equal. Proved by structural induction on the first path, peeling the head move
+(which the label's `num` vs `den` order forces) with the transfer lemmas. -/
+theorem sb_injective :
+    ∀ (p q : List Bool), sbNum p = sbNum q → sbDen p = sbDen q → p = q := by
+  intro p
+  induction p with
+  | nil =>
+    intro q hn hd
+    rw [sb_root.1] at hn
+    rw [sb_root.2] at hd
+    cases q with
+    | nil => rfl
+    | cons c q' =>
+      exfalso
+      have hnq := sbNum_pos q'
+      have hdq := sbDen_pos q'
+      cases c with
+      | false => rw [sbNum_false_cons] at hn; rw [sbDen_false_cons] at hd; omega
+      | true  => rw [sbNum_true_cons] at hn; rw [sbDen_true_cons] at hd; omega
+  | cons b p' ih =>
+    intro q hn hd
+    have hnp := sbNum_pos p'
+    have hdp := sbDen_pos p'
+    cases b with
+    | false =>
+      rw [sbNum_false_cons] at hn
+      rw [sbDen_false_cons] at hd
+      cases q with
+      | nil =>
+        exfalso; rw [sb_root.1] at hn; rw [sb_root.2] at hd; omega
+      | cons c q' =>
+        have hnq := sbNum_pos q'
+        have hdq := sbDen_pos q'
+        cases c with
+        | false =>
+          rw [sbNum_false_cons] at hn
+          rw [sbDen_false_cons] at hd
+          have hd' : sbDen p' = sbDen q' := by omega
+          rw [ih q' hn hd']
+        | true =>
+          exfalso
+          rw [sbNum_true_cons] at hn
+          rw [sbDen_true_cons] at hd
+          omega
+    | true =>
+      rw [sbNum_true_cons] at hn
+      rw [sbDen_true_cons] at hd
+      cases q with
+      | nil =>
+        exfalso; rw [sb_root.1] at hn; rw [sb_root.2] at hd; omega
+      | cons c q' =>
+        have hnq := sbNum_pos q'
+        have hdq := sbDen_pos q'
+        cases c with
+        | false =>
+          exfalso
+          rw [sbNum_false_cons] at hn
+          rw [sbDen_false_cons] at hd
+          omega
+        | true =>
+          rw [sbNum_true_cons] at hn
+          rw [sbDen_true_cons] at hd
+          have hn' : sbNum p' = sbNum q' := by omega
+          rw [ih q' hn' hd]
+
+/-! ## Capstone: the Stern–Brocot labelling is a bijection -/
+
+/-- **The Stern–Brocot enumeration theorem** (`stern-brocot-tree-oq-01`): the map
+sending a finite `L/R` path `p` to the fraction `sbNum p / sbDen p` is a bijection
+onto the reduced positive rationals. Concretely:
+
+* every label is a *positive* fraction (`1 ≤ sbNum p`, `1 ≤ sbDen p`) in *lowest
+  terms* (`IsCoprime (sbNum p) (sbDen p)`);
+* the map is **injective**: distinct paths give distinct labels;
+* the map is **surjective**: every reduced positive rational `a/b` is some label.
+-/
+theorem sb_enumerates_pos_rationals :
+    (∀ p : List Bool, 1 ≤ sbNum p ∧ 1 ≤ sbDen p ∧ IsCoprime (sbNum p) (sbDen p)) ∧
+    (∀ p q : List Bool, sbNum p = sbNum q → sbDen p = sbDen q → p = q) ∧
+    (∀ a b : ℤ, 1 ≤ a → 1 ≤ b → IsCoprime a b →
+      ∃ p : List Bool, sbNum p = a ∧ sbDen p = b) :=
+  ⟨fun p => ⟨sbNum_pos p, sbDen_pos p, sb_isCoprime p⟩, sb_injective, sb_surjective⟩
 
 end SternBrocot

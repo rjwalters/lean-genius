@@ -18,13 +18,65 @@ factors as: (a) every label is a reduced positive rational [kernel, done];
 - **(a) Structural kernel — DONE** (build-pending orphan, prior session):
   `sb_det` (unimodular invariant `aL·bR − aR·bL = −1`), `sb_pos`, `sbNum_pos`,
   `sbDen_pos`, `sb_isCoprime` (lowest terms via explicit Bézout), `sb_root`.
-- **(b) Surjectivity — DONE this session** (`sb_surjective`).
-- **(c) Injectivity — foundation done** (`sb_left_lt_mediant`,
-  `sb_mediant_lt_right`); full injectivity still open.
+- **(b) Surjectivity — DONE** (`sb_surjective`).
+- **(c) Injectivity — DONE this session** (`sb_injective`).
+- **Capstone — DONE this session** (`sb_enumerates_pos_rationals`): all three
+  directions (positive + coprime + injective + surjective) bundled. **The full
+  bijection is now mathematically complete; only a green Docker build + gallery
+  registration remain.**
 
 All work is in the **unregistered orphan** `SternBrocotTreeOQ01.lean` (not in
 `Proofs.lean`, no `src/data/proofs/` gallery dir) → zero gallery/build risk
 while build-pending under the Docker blackout.
+
+---
+
+## Session 2026-06-16 (s3, researcher-9) — ACT, injectivity + capstone (bijection complete)
+
+**Mode**: REVISIT (own prior in-progress work). **Backend**: Docker still
+blacked out (`docker run --rm alpine echo ok` → rc=124, 9 stuck sibling build
+wrappers); Aristotle not used. **No Lean compiled**, but the new proof uses
+**only core tactics** (`induction`, `cases`, `rw`, `exfalso`, `omega`) plus this
+file's own already-stated lemmas — **zero Mathlib API surface**, so there is no
+name-drift risk and the proof is verifiable by hand.
+
+### What I proved (new, sorry-free by construction)
+
+1. **Injectivity** `sb_injective : ∀ p q, sbNum p = sbNum q → sbDen p = sbDen q
+   → p = q`. Structural induction on the first path `p` (motive
+   `∀ q, … → p = q`, so `ih` is fully general in `q`). The head move is *forced*
+   by the label's `num` vs `den` order — proved not via mediant separation but
+   directly from the transfer lemmas + positivity:
+   - `[]` has `num = den = 1` (`sb_root`); any `c :: q'` head makes the two
+     unequal (`L` ⟹ `den = num + den q' > num`; `R` ⟹ `num = num q' + den > den`).
+   - The four "mismatched head" cross cases (`nil/L`, `nil/R`, `L/R`, `R/L`)
+     collapse to `omega` contradictions seeded by `sbNum_pos`/`sbDen_pos`
+     (a positive integer plus a positive integer is never `≤ 1` or `= 0`).
+   - The two "matching head" cases peel via `sbNum_*_cons`/`sbDen_*_cons` and an
+     `omega`-derived tail equality, then recurse with `ih`.
+
+   Note: mediant separation (`sb_left_lt_mediant`/`sb_mediant_lt_right`) turned
+   out **not** to be needed — the transfer lemmas already force the head, giving
+   a shorter, Mathlib-free injectivity proof. The separation lemmas remain as
+   independent geometric facts.
+
+2. **Capstone** `sb_enumerates_pos_rationals`: trivial bundling of
+   `⟨sbNum_pos, sbDen_pos, sb_isCoprime⟩`, `sb_injective`, `sb_surjective` —
+   the precise statement of the open question.
+
+### Files Modified
+- `proofs/Proofs/SternBrocotTreeOQ01.lean` (+~95 lines: `sb_injective`,
+  `sb_enumerates_pos_rationals`; updated module docstring "Finally / Capstone").
+
+### Next Steps
+1. **Docker-up gate** (only remaining blocker):
+   `./proofs/scripts/docker-build.sh Proofs.SternBrocotTreeOQ01`; grep log for
+   `error:`. Injectivity is core-tactic-only so the *new* risk is ~nil; the
+   pre-existing watch points from s2 (T_step `omega`, transfer `simp only [.., T]`
+   projection, `by decide` step facts) still apply to the earlier lemmas.
+2. After green build: register in `Proofs.lean` + add
+   `src/data/proofs/stern-brocot-tree-oq-01/` gallery data (meta.json +
+   annotations); status `axiomatized`→ `verified`/`original` (0 sorry/0 axiom).
 
 ---
 
