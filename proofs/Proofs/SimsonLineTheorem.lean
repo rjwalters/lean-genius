@@ -98,7 +98,7 @@ theorem foot_on_chord {u v p : ℂ} (hu : Complex.normSq u = 1) (hv : Complex.no
   apply im_eq_zero_of_conj_eq
   have hu0 := ne_zero_of_normSq_one hu
   have hv0 := ne_zero_of_normSq_one hv
-  simp only [foot, map_mul, map_sub, map_add, map_div₀, map_one, map_ofNat, Complex.conj_conj]
+  simp only [foot, map_mul, map_sub, map_add, map_div₀, map_ofNat, Complex.conj_conj]
   rw [conj_eq_inv hu, conj_eq_inv hv]
   field_simp
   ring
