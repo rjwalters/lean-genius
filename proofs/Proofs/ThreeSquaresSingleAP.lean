@@ -89,7 +89,7 @@ theorem legendreSym_neg_n_eq_one {n p : ℕ} [Fact (Nat.Prime p)]
   have hJpn : jacobiSym (p : ℤ) n = 1 := jacobi_p_mod_n_eq_one hp_pos hn_dvd
   -- `p` is odd (needed for `jacobiSym.neg`).
   have hp_odd : Odd p := Nat.odd_iff.mpr (by omega)
-  rw [legendreSym.to_jacobiSym, jacobiSym.neg (n : ℤ) hp_odd]
+  rw [jacobiSym.legendreSym.to_jacobiSym, jacobiSym.neg (n : ℤ) hp_odd]
   -- goal: `χ₄ p * J(n | p) = 1`
   rw [ZMod.χ₄_nat_one_mod_four hp4, one_mul,
       ← jacobiSym.quadratic_reciprocity_one_mod_four hp4 hn_odd]

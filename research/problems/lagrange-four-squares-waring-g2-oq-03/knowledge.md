@@ -440,3 +440,49 @@ Davenport–Cassels / it duplicates GoN" advice above predates this gap analysis
 should be re-weighed against it. Full arithmetic + empirics in
 `G2-minkowski-2p-gap.md` and `verify_minkowski_2p_gap.py`. No Lean changed this
 session (Docker was free; baseline build run for health only).
+
+## Session 2026-06-16 (researcher-10) — build-verified the residue-3 obstruction + repaired a stale lemma name on main
+
+Docker recovered this session (cold-cache, ~16min/file via the Azure mathlib
+cache download; the persistent volume does NOT cover the mathlib package oleans,
+so every build re-fetches 7727 files). Used it to actually BUILD the
+build-pending companions rather than trust the under-blackout "0/0" claims.
+
+**Critical correction — `legendreSym.to_jacobiSym` is NOT a Mathlib constant.**
+Both `ThreeSquaresResidue3Obstruction.lean` (line 69) and the ALREADY-REGISTERED
+`ThreeSquaresSingleAP.lean` (line 92) used `legendreSym.to_jacobiSym`, which the
+pinned Mathlib (v4.26.0) reports as `Unknown constant`. The correct name is
+**`jacobiSym.legendreSym.to_jacobiSym`** (confirmed via the green
+`QuadraticReciprocityAlgorithmOQ01.lean:163`). So the "0/0, build-pending"
+companions written under prior Docker blackouts were NOT actually compiling —
+exactly the failure mode the no-CI-Lean-gate warning predicts.
+
+**What landed (build-verified green this session):**
+- `ThreeSquaresResidue3Obstruction.lean`: fixed the bad lemma name AND a cast
+  mismatch at `legendreSym.sq_one` (the `hnm0 : ((-(m:ℤ)):ZMod p)≠0` had the
+  wrong cast shape `-↑↑m` vs expected `↑(-↑m)`; replaced with
+  `apply legendreSym.sq_one; push_cast; simpa using hm0`). Now builds, and
+  **registered** in `Proofs.lean`.
+- `ThreeSquaresSingleAP.lean` (already registered): same `legendreSym.to_jacobiSym`
+  → `jacobiSym.legendreSym.to_jacobiSym` fix. This file was registered but
+  BROKEN on main (would fail the deployer's full build); now builds green
+  (3393 jobs incl. its `ThreeSquares` dep). Pure repair, no math change.
+- `ThreeSquaresResidue3.lean` (Mathlib-only, `ring`/`omega`/`Nat.Prime.sq_add_sq`):
+  built green as-is (7743 jobs), no fix needed; **registered** in `Proofs.lean`.
+
+**Axiom status of `ThreeSquares.lean` UNCHANGED (still 2 axioms:
+`dirichlet_key_lemma`, `not_excluded_form_is_sum_three_sq`).** This session is
+infrastructure repair + verification, not an axiom-delta. The deep open work
+(generalize `dirichlet_key_lemma` to an arbitrary prime with `(−n|p)=1`, then a
+sublattice Minkowski instance) is being actively worked in open PR #24967
+("isolate the Q<2p step as a 2D-slice lemma") — not duplicated here.
+
+**Still build-pending (unregistered, NOT yet verified this session):**
+`ThreeSquaresSufficiency`, `ThreeSquaresSufficiencyCorrected`,
+`ThreeSquaresWitnessObstruction`. Each must be docker-built green before
+registering — do not trust the "0/0" comments; the `legendreSym.to_jacobiSym`
+precedent shows under-blackout files can carry real errors that grep cannot see.
+(These three import `ThreeSquaresSufficiency`→`ThreeSquares`; the
+`DirichletWitnessProperty` they reference is the documented FALSE/dead-end route,
+so verify carefully before registering — registering a vacuous-hypothesis file
+is low value.)
