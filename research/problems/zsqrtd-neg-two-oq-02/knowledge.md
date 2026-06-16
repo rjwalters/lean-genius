@@ -259,3 +259,60 @@ above is unchanged.
 **Next session**: with Docker, build `Proofs.ThreeSquaresResidue3` +
 `Proofs.ThreeSquaresSufficiencyCorrected`; remaining math = items 1–3 (all
 Dirichlet/Minkowski-deep, not session-sized).
+
+## Session 2026-06-15 (S6, researcher-7) — CORRECTION: the companions have a real elaboration bug, not just "build-pending"
+
+**Mode**: REVISIT · **Phase**: ORIENT · **Outcome**: documentary correction + turnkey
+fix recipe (Docker contended at 4 lean-build containers on the 8 GiB VM → no safe
+build; no registered file touched). This session CORRECTS the S4/S5 claim that the
+sufficiency-reduction companions "check out by inspection, just build-pending."
+
+### What's actually wrong (found via open PR #24887)
+
+`ThreeSquares.lean` (registered) was **red on `main`** against Mathlib v4.26.0; the
+fix is in flight as **PR #24887** (not this slug's deep math — two pre-existing
+v4.26.0 tactic drifts, axiom budget unchanged at 2). While building the chain,
+#24887 surfaced that the **unregistered** sufficiency companions do **not compile**:
+
+- `ThreeSquaresSufficiency.lean:79` (`DirichletWitnessProperty`) and
+- `ThreeSquaresSufficiencyCorrected.lean:65` (`DirichletWitnessNe3`)
+
+both put `legendreSym p (-d : ℤ) = 1` *inside the witness `Prop`*:
+`∃ d p : ℕ, 0 < d ∧ p = d*m-1 ∧ Nat.Prime p ∧ legendreSym p (-d : ℤ) = 1`.
+`legendreSym (p) [Fact p.Prime] (a)` needs the `Fact (Nat.Prime p)` **instance** at
+elaboration; the `Nat.Prime p` conjunct is a plain Prop term, NOT an instance, so
+instance synthesis fails and the `def` does not elaborate. S4/S5's "checks out by
+inspection" missed this because no build was ever run. **The companions cannot be
+registered as-is.**
+
+### Turnkey fix (apply with a free Docker, ≤2 containers)
+
+State the QR condition in an **instance-free** form, then convert back at the one
+consumer site. Both pieces already exist verbatim in the registered file:
+
+1. **Statement** (both files): replace `legendreSym p (-d : ℤ) = 1` with
+   `IsSquare ((-d : ℤ) : ZMod p)`. `IsSquare` over the `CommRing` `ZMod p` needs no
+   `Fact`, so the `Prop` elaborates for any `p : ℕ`.
+2. **Consumer** (`three_sq_of_corrected_witnesses`, Corrected:139–141; and the twin
+   in `three_sq_of_dirichlet_witness`): after `haveI : Fact (Nat.Prime p) := ⟨hpp⟩`,
+   recover `legendreSym p (-d) = 1` via
+   `(legendreSym.eq_one_iff p hne0).mpr hqr` where
+   `hne0 : ((-d : ℤ) : ZMod p) ≠ 0`. This `≠ 0` step + the `.eq_one_iff` conversion
+   are **already proved in-file** at `ThreeSquares.lean:1191–1223`
+   (`exists_int_sqrt_neg_d_mod_p`: `hd_zmod_ne` → `hneg_d_ne` → `legendreSym.eq_one_iff`).
+   The `≠ 0` needs `¬ p ∣ d`, which is immediate from the witness shape:
+   `p ∣ d ⟹ p ∣ d*m = p+1 ⟹ p ∣ 1`, contradicting `p` prime (`m ≥ 2`, so
+   `d*m = (d*m-1)+1 = p+1`). No `0 < d < p` bound needed.
+
+This is a ~15-line edit per file, zero new axioms/sorries, and unblocks registering
+the corrected sufficiency reduction. It does **not** discharge any of the 3 deep
+hypotheses (`DirichletWitnessNe3`, `Residue3PropertyOdd`, `dirichlet_key_lemma`) —
+those remain the genuine open work (Dirichlet primes-in-AP + QR; in-file Minkowski).
+
+### Aristotle / infra status (this session)
+No Aristotle submission: the companions' blocker is an elaboration error, not a
+`sorry`, and the 3 deep hypotheses are not single-`prove()` targets (large
+Dirichlet/Minkowski assembly, not "known + no insight"). Docker contended (4
+containers); registered-file fix owned by #24887. Order of operations for the next
+Docker session: let #24887 land → apply the §"Turnkey fix" above → build & register
+the corrected companions → then attack the deep hypotheses.

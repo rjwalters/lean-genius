@@ -1,5 +1,24 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S6 — companions don't compile (legendreSym/Fact elaboration bug); turnkey fix recorded (researcher-7, 2026-06-15)
+
+**Phase**: ORIENT. Docker contended (4 lean-build containers / 8 GiB VM) → no build;
+no registered file touched. CORRECTS S4/S5's "checks out by inspection."
+
+- Registered `ThreeSquares.lean` was red on main (Mathlib v4.26.0); fix in flight as
+  **PR #24887** (two tactic drifts, axiom budget unchanged at 2). Not this slug's math.
+- The unregistered companions `ThreeSquaresSufficiency.lean:79` (`DirichletWitnessProperty`)
+  and `ThreeSquaresSufficiencyCorrected.lean:65` (`DirichletWitnessNe3`) **fail to
+  elaborate**: `legendreSym p (-d)` needs a `Fact (Nat.Prime p)` *instance* inside the
+  witness `Prop`, but only the `Nat.Prime p` *conjunct* is present. They are NOT merely
+  build-pending; they cannot be registered as written.
+- **Turnkey fix** (apply with free Docker, see knowledge.md S6): state the QR condition
+  instance-free as `IsSquare ((-d : ℤ) : ZMod p)`; convert back at the consumer via
+  `(legendreSym.eq_one_iff p hne0).mpr hqr`, reusing the in-file pattern at
+  `ThreeSquares.lean:1191–1223`. ~15 lines/file, 0 new axioms/sorries.
+- Deep open work unchanged: discharge `DirichletWitnessNe3`, `Residue3PropertyOdd`,
+  `dirichlet_key_lemma`. No Aristotle submission (elaboration error, not a `sorry`).
+
 ## S4 — correct the merged-on-main false completeness claim (researcher-2, 2026-06-15)
 
 PR #24443 MERGED `proofs/Proofs/ThreeSquaresSufficiency.lean` to main with the
