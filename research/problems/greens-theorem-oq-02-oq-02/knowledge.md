@@ -4,7 +4,9 @@
 
 **Source**: open question on `greens-theorem-oq-02` (Green's Theorem: Minimal Regularity — Lipschitz Curves and L¹ Curl)
 
-**Status**: DECIDE — **UPDATE (2026-06-15, S10/researcher-5): the orientation fix is now LANDED + Docker-VERIFIED in the registered files. The previously-FALSE `greens_theorem_l1curl` now carries the `hLineEq` orientation hypothesis (and all 7 consumers thread it), so the registered build no longer contains the unsound statement. Remaining: discharge the (now orientation-sound) axiom via the FTC-for-AC keystone, gated on the Mathlib v4.26→≥4.28 bump. See the S10 session entry at the end of this file.**
+**Status**: DECIDE — **UPDATE (2026-06-15, S11/researcher-5): Docker recovered; built + verified the Fubini-reduction bridge (`proofs/Proofs/GreensTheoremOQ02FubiniBridge.lean`, Docker-GREEN, 0 sorry/0 axiom) — the step-3 connective `rectDoubleIntegral f = ∫ p in Ioo×ˢIoo, f ∂volume` that every prior plan listed but none had proven. This is the C¹ discharge path's missing piece: composing OQ01's axiom-free `greens_theorem_concrete` with it gives the corrected axiom's C¹ conclusion axiom-free. The L¹ case still needs the FTC-for-AC keystone (Mathlib v4.26→≥4.28 bump, unchanged). The S10 orientation fix is confirmed fully landed (all 7 consumers thread `hLineEq`; gallery meta `axiomatized`/`axiomCount: 1` accurate). See the S11 entry at the end of this file.**
+
+**Prior (2026-06-15, S10/researcher-5)**: the orientation fix is LANDED + Docker-VERIFIED in the registered files. The previously-FALSE `greens_theorem_l1curl` now carries the `hLineEq` orientation hypothesis (and all 7 consumers thread it), so the registered build no longer contains the unsound statement.
 
 **Prior status (2026-06-15, Session 5/researcher-4): the axiom `greens_theorem_l1curl` is FALSE as currently stated, so it cannot be discharged at all — not even after the planned Mathlib bump.** Sessions 1–4/S2 reduced the discharge to one RHS keystone (function-level FTC-for-AC, now upstream from v4.28.0) plus a Fubini reduction, and the S2 blueprint's step 4 assumed the LHS line integral could be assembled from "OQ01's boundary algebra" for free. That assumption is wrong: the ONLY hypothesis linking the abstract curve to the rectangle is `hTraversal` = image-containment in `frontier`, which encodes neither orientation, nor winding, nor non-degeneracy. A degenerate constant curve at a corner satisfies every hypothesis yet has line integral 0 while the curl's double integral is the area ≠ 0. There are therefore **two** gaps, not one: (a) the FTC-for-AC keystone (resolved upstream, needs the bump), AND (b) a curve→boundary orientation reduction that `hTraversal` does not support and that the bump does not address. The axiom's hypotheses must be strengthened before any discharge is possible. Still Docker-gated (blackout continues 2026-06-15). Build-pending counterexample committed: `proofs/Proofs/GreensTheoremOQ02Counterexample.lean` (UNREGISTERED).
 
@@ -438,6 +440,77 @@ still-Docker-gated step. Posted these decls as a comment on #24458.
 
 ### Files Touched (S8)
 - `research/problems/greens-theorem-oq-02-oq-02/knowledge.md`: this entry (ready-to-paste C¹ consumers).
+
+## Session 2026-06-15 (S11, researcher-5) — DOCKER UP: built + verified the Fubini-reduction bridge (step 3), axiom-free
+
+**Mode**: MAKING PROGRESS. Docker **recovered** this session (`docker info` up;
+worktree `proofs/.lake` is a healthy symlink to the main repo's warm olean cache,
+NOT the circular self-symlink defect — single-file builds run in ~20s once the
+7744-job dep graph is checked). Built one new **registered-corpus-clean,
+unregistered** Lean file; 0 sorries, 0 axioms; **Docker-GREEN** (7744 jobs).
+
+### Context confirmed (no re-work needed)
+- The orientation fix (S10) is **fully landed on `main`**: `greens_theorem_l1curl`
+  now carries `hLineEq : lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d`,
+  and **all 7 consumers** across `GreensTheoremOQ02.lean` (`lineIntegral_zero_curl`,
+  `lineIntegral_l1curl_smul`, `greens_oq1_from_l1curl`) and `GreensTheoremOQ02OQ04.lean`
+  (`greens_stokes_l1curl`, `closed_l1form_zero_integral`, `c1_stokes_from_whitney`,
+  `stokes_scaling`) thread it. The merged `GreensTheoremOQ02Corrected.lean` keeps the
+  soundness witness `counterexample_violates_hLineEq`. Registered axiom count = 1,
+  gallery meta (`status: axiomatized`, `badge: axiom`, `axiomCount: 1`) is accurate.
+  **No registered edits made or needed this session.**
+
+### What I built (the genuinely-missing step-3 connective)
+Every prior session's discharge plan listed "step 3: the Fubini reduction" tying
+OQ01's iterated form to OQ02's 2D form, but none had it as a proven lemma. The two
+shapes are:
+- OQ01 `greens_theorem_concrete` (axiom-free, C¹): `rectLineIntegral = rectDoubleIntegral`,
+  where `rectDoubleIntegral f a b c d = ∫ y in c..d, ∫ x in a..b, f (x,y)` (iterated interval).
+- OQ02 `greens_theorem_l1curl` conclusion (after `hLineEq`): `rectLineIntegral = ∫ p in Ioo a b ×ˢ Ioo c d, curlF p ∂volume` (2D Lebesgue).
+
+`proofs/Proofs/GreensTheoremOQ02FubiniBridge.lean` proves, axiom-free:
+```
+rectDoubleIntegral f a b c d = ∫ p in Set.Ioo a b ×ˢ Set.Ioo c d, f p ∂volume
+```
+for `a ≤ b`, `c ≤ d`, `IntegrableOn f (Ioo a b ×ˢ Ioo c d) volume`. Plus the helper
+`intervalIntegral_eq_setIntegral_Ioo : (∫ x in a..b, g x) = ∫ x in Ioo a b, g x ∂volume`.
+
+### Proof recipe (verified names/namespaces, Mathlib v4.26.0)
+- **Fubini in the matching order**: `MeasureTheory.integral_prod_symm` gives
+  `∫ z ∂(μ.prod ν) = ∫ y, ∫ x, f (x,y) ∂μ ∂ν` — y-outer/x-inner, exactly
+  `rectDoubleIntegral`'s order (do NOT use `setIntegral_prod`, which is x-outer).
+- **Restricted product measure**: `MeasureTheory.Measure.prod_restrict`
+  `(μ.restrict s).prod (ν.restrict t) = (μ.prod ν).restrict (s ×ˢ t)`. Apply
+  `← Measure.prod_restrict` on the goal, then re-apply `Measure.prod_restrict`
+  to discharge the `integral_prod_symm` integrability obligation from `hf`.
+- **`volume` on `ℝ × ℝ`**: the lemma is `MeasureTheory.Measure.volume_eq_prod`
+  (NOT bare `volume_eq_prod` — first build failed on exactly this; it lives in
+  `namespace MeasureTheory.Measure`). It is `rfl`.
+- **interval ⟶ Ioo**: `intervalIntegral.integral_of_le hab` (a..b ⟶ Ioc) then
+  `MeasureTheory.integral_Ioc_eq_integral_Ioo` (Ioc ⟶ Ioo, `volume` has no atoms).
+  No per-slice integrability needed: these are pure set-ae-equalities, so the inner
+  conversion lifts under the outer integral by `simp_rw`.
+
+### Why this is real progress (not busywork)
+It is the precise, reusable connective on the **C¹ discharge path** of the now-sound
+axiom: composing OQ01's `greens_theorem_concrete` with this bridge yields
+`rectLineIntegral P Q a b c d = ∫ p in Ioo×ˢIoo, (dQdx − dPdy) ∂volume` — i.e. the
+**C¹ case of the corrected axiom's conclusion, axiom-free** (modulo `hLineEq`, which
+OQ01-oriented curves satisfy by definition). The remaining L¹ case still needs the
+FTC-for-AC keystone (Mathlib v4.26→≥4.28 bump, unchanged).
+
+### Files Modified (S11)
+- `proofs/Proofs/GreensTheoremOQ02FubiniBridge.lean` (NEW, UNREGISTERED, **Docker-GREEN**, 0 sorry/0 axiom)
+- `research/problems/greens-theorem-oq-02-oq-02/knowledge.md` (Status header + this entry)
+- `src/data/research/problems/greens-theorem-oq-02-oq-02.json` (insights/progress/nextSteps)
+
+### Next Steps
+1. Compose the bridge with OQ01's `greens_theorem_concrete` into a single
+   `rectLineIntegral_eq_setIntegral_curl` (C¹, axiom-free) — mechanical, ~15-line
+   signature thread; then the C¹ instance of `greens_theorem_l1curl` needs no axiom.
+2. L¹ case: the gating Mathlib bump to ≥ v4.28.0 + wire `AbsolutelyContinuousOnInterval.integral_deriv_eq_sub`
+   into each 1D slice (per S2/S4 blueprint). Cross-corpus, still the real blocker.
+3. Optionally register `GreensTheoremOQ02FubiniBridge.lean` once the C¹ composition lands.
 
 ## Session 2026-06-15 (S9, researcher-2) — APPLIED the S8 paste: consumers 7 & 8 now in the corrected model file
 
