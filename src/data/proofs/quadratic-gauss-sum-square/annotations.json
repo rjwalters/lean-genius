@@ -1,0 +1,68 @@
+[
+  {
+    "id": "qgss-ann-transport",
+    "proofId": "quadratic-gauss-sum-square",
+    "range": {
+      "startLine": 28,
+      "endLine": 39
+    },
+    "type": "insight",
+    "title": "Transporting the ℤ-Valued Character to ℂ",
+    "content": "Mathlib's `quadraticChar (ZMod p)` is valued in ℤ, but `gaussSum χ ψ` demands that the multiplicative character χ and the additive character ψ live in a common codomain. Since ψ here is ℂ-valued, the quadratic character must be pushed forward along the ring hom ℤ → ℂ. The definition `chiC p = (quadraticChar (ZMod p)).ringHomComp (Int.castRingHom ℂ)` does exactly this, and `MulChar.IsQuadratic` is preserved under `ringHomComp`, so `chiC_isQuadratic` follows immediately.",
+    "mathContext": "$\\chi_{\\mathbb{C}} = \\iota \\circ \\left(\\tfrac{\\cdot}{p}\\right)$ where $\\iota : \\mathbb{Z} \\hookrightarrow \\mathbb{C}$ is the canonical embedding and $\\left(\\tfrac{\\cdot}{p}\\right)$ is the Legendre symbol viewed as a multiplicative character.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multiplicative characters",
+      "quadratic residue character",
+      "ring homomorphism composition"
+    ],
+    "prerequisites": [
+      "Legendre symbol",
+      "MulChar.ringHomComp"
+    ]
+  },
+  {
+    "id": "qgss-ann-neg-one",
+    "proofId": "quadratic-gauss-sum-square",
+    "range": {
+      "startLine": 49,
+      "endLine": 67
+    },
+    "type": "insight",
+    "title": "Value at -1 and the First Supplement",
+    "content": "Evaluating χ(-1) = (-1)^((p-1)/2) is the first supplement to quadratic reciprocity (-1 is a QR mod p iff p ≡ 1 mod 4). The formalization reconciles two exponent conventions: `quadraticChar_neg_one` produces (-1)^(p/2) via `ZMod.χ₄_eq_neg_one_pow`, while the supplement is conventionally (-1)^((p-1)/2). For an odd prime p = 2k+1 these coincide because p/2 = k = (p-1)/2 (closed by `omega`), and the equality is then transported to ℂ.",
+    "mathContext": "$\\left(\\tfrac{-1}{p}\\right) = (-1)^{(p-1)/2} = \\begin{cases} +1 & p \\equiv 1 \\pmod 4 \\\\ -1 & p \\equiv 3 \\pmod 4 \\end{cases}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic reciprocity",
+      "first supplement",
+      "χ₄ character"
+    ],
+    "prerequisites": [
+      "Legendre symbol of -1",
+      "ZMod.χ₄_eq_neg_one_pow"
+    ]
+  },
+  {
+    "id": "qgss-ann-main",
+    "proofId": "quadratic-gauss-sum-square",
+    "range": {
+      "startLine": 69,
+      "endLine": 74
+    },
+    "type": "theorem",
+    "title": "Assembling g² = (-1)^((p-1)/2)·p",
+    "content": "The headline theorem `gaussSum_quadratic_sq` is a two-line assembly over Mathlib's generic `gaussSum_sq`, which states g² = χ(-1)·#F for a nontrivial quadratic multiplicative character and a primitive additive character over a finite field F. The three feeder lemmas (`chiC_ne_one`, `chiC_isQuadratic`, `chiC_neg_one`) supply exactly its hypotheses; substituting the character value and the cardinality `ZMod.card p = p` yields g² = (-1)^((p-1)/2)·p with zero axioms and zero sorries.",
+    "mathContext": "$g^2 = \\left(\\sum_{n \\in \\mathbb{Z}/p\\mathbb{Z}} \\left(\\tfrac{n}{p}\\right)\\psi(n)\\right)^2 = (-1)^{(p-1)/2}\\, p$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Gauss sum",
+      "gaussSum_sq",
+      "quadratic reciprocity"
+    ],
+    "prerequisites": [
+      "primitive additive character",
+      "finite field cardinality"
+    ]
+  }
+]
