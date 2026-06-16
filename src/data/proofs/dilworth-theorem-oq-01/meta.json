@@ -100,7 +100,18 @@
       "Derive Mirsky's hard direction constructively for finite posets and connect it to Mathlib's Set.chainHeight."
     ]
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "proofId": "erdos-szekeres",
+      "relationship": "Application of chain/antichain pigeonhole",
+      "description": "The Erdős–Szekeres monotone-subsequence theorem is the canonical corollary of this circle of ideas: a sequence longer than $(r-1)(s-1)$ has an increasing subsequence of length $r$ or a decreasing one of length $s$, provable by a Dilworth/pigeonhole argument on a dominance order — the same chain-vs-antichain trade-off proved here."
+    },
+    {
+      "proofId": "ramseys-theorem",
+      "relationship": "Partition / pigeonhole combinatorics",
+      "description": "Ramsey's theorem is another min–max partition result whose lower bounds rest on pigeonhole; both belong to the family of extremal duality theorems where a covering/coloring count is forced by an unavoidable monochromatic or comparable structure."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
