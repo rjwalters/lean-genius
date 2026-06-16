@@ -33,7 +33,8 @@
       "Nontriviality of the transported character reduces, via `MulChar.ringHomComp_ne_one_iff`, to injectivity of ℤ → ℂ (automatic since ℂ is `CharZero`) together with nontriviality of the original quadratic character, which holds because `ringChar (ZMod p) = p ≠ 2` for an odd prime.",
       "Evaluating χ(-1) requires bridging two index conventions: `quadraticChar_neg_one` gives $(-1)^{p/2}$ while the reciprocity supplement is stated as $(-1)^{(p-1)/2}$. For odd $p = 2k+1$ these agree ($p/2 = k = (p-1)/2$ by `omega`), so the two forms are reconciled before transport to ℂ.",
       "The entire mathematical content of $g^2 = \\chi(-1)\\,\\#F$ lives in Mathlib's `gaussSum_sq`; this entry is a faithful specialisation that supplies exactly the three hypotheses that lemma demands, with no axioms and no sorries.",
-      "The $g^2$ identity is the *easy half* of the Gauss-sum theory: it is purely algebraic, holding over any finite field for any nontrivial quadratic character, and never needs to know which sign √p carries. Determining the sign of $g$ itself (the *hard half*) requires analytic input — the ordering of the complex plane and Gauss's delicate evaluation — and is deliberately out of scope here, which is why the formalization stays short and axiom-free."
+      "The $g^2$ identity is the *easy half* of the Gauss-sum theory: it is purely algebraic, holding over any finite field for any nontrivial quadratic character, and never needs to know which sign √p carries. Determining the sign of $g$ itself (the *hard half*) requires analytic input — the ordering of the complex plane and Gauss's delicate evaluation — and is deliberately out of scope here, which is why the formalization stays short and axiom-free.",
+      "Read as Fourier analysis on $\\mathbb{Z}/p\\mathbb{Z}$, $g$ is the discrete Fourier transform of the Legendre symbol, and $g^2 = (-1)^{(p-1)/2}p$ cleanly separates two phenomena: the *magnitude* $|g|^2 = p$ is soft — it is Parseval/character orthogonality and holds for any nontrivial multiplicative character — while the *sign* $(-1)^{(p-1)/2} = \\chi(-1)$ is the only place the specifically quadratic nature enters and the sole carrier of reciprocity information. The single algebraic identity packages both, which is why $|g| = \\sqrt{p}$ falls out for free."
     ]
   },
   "conclusion": {
@@ -55,6 +56,21 @@
       "proofId": "gauss-wilson-non-cyclic",
       "relationship": "related",
       "description": "Both entries exploit the multiplicative structure of (ZMod p)× and the quadratic residue character; the Gauss sum is the discrete Fourier transform of that character."
+    },
+    {
+      "proofId": "elementary-quadratic-reciprocity",
+      "relationship": "complementary",
+      "description": "g² = (-1)^((p-1)/2)·p is the central lemma of Gauss's Gauss-sum proof of quadratic reciprocity; the elementary-quadratic-reciprocity entries reach the same reciprocity law by Eisenstein-style lattice-point counting, giving a complementary, Gauss-sum-free route to the result this identity underpins."
+    },
+    {
+      "proofId": "legendre-partial",
+      "relationship": "related",
+      "description": "The quadratic residue character χ transported to ℂ here is the Legendre symbol (·/p); legendre-partial develops the Legendre-symbol machinery, and its value χ(-1) = (-1)^((p-1)/2) — the first supplement to reciprocity — is exactly what fixes the sign of g²."
+    },
+    {
+      "proofId": "quadratic-reciprocity-algorithm",
+      "relationship": "related",
+      "description": "The Legendre-symbol evaluation that the reciprocity algorithm automates is the same character χ whose Gauss sum is squared here; g² = ±p is the classical Gauss-sum mechanism behind computing χ(-1) and the reciprocity law the algorithm applies."
     }
   ],
   "leanFile": {
