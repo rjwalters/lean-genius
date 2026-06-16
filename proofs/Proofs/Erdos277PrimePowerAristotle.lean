@@ -90,18 +90,95 @@ theorem proper_modulus_is_prime_pow (p k : ℕ) (hp : p.Prime)
     omega
   · exact hjpos
 
-/-- **Prime-power non-vacuity (Aristotle / build-pending target).**
+/-- **Prime-power non-vacuity.**
     No prime power `p^k` (`k ≥ 1`) admits a proper covering with distinct
     divisor moduli each `> 1`. This strengthens `no_proper_covering_prime`
     (the `k = 1` case) and shows the corrected `ErdosQuestion277` is non-vacuous
     on the infinite set of all prime powers.
 
-    Proof strategy (elementary induction on `k`): see the file header. The base
-    case is `no_proper_covering_prime`; the inductive step uses
-    `single_congruence_not_covering`, `covers_add_of_dvd`, and
-    `proper_modulus_is_prime_pow`. -/
+    Proof (elementary induction on `k`): see the file header. The base case is
+    `no_proper_covering_prime`; the inductive step uses
+    `covers_add_of_dvd` and `proper_modulus_is_prime_pow`. -/
 theorem no_proper_covering_prime_power (p k : ℕ) (hp : p.Prime) (hk : 1 ≤ k) :
     ¬ HasProperCoveringWithDivisorModuli (p ^ k) := by
-  sorry
+  induction k, hk using Nat.le_induction with
+  | base => rw [pow_one]; exact no_proper_covering_prime p hp
+  | succ k hk ih =>
+    rintro ⟨S, hcov, hdistinct, hgt, hdvd⟩
+    have hp2 : 2 ≤ p := hp.two_le
+    -- Every modulus of `S` other than the top one `p^(k+1)` divides `p^k`.
+    have key : ∀ c ∈ S, c.modulus ≠ p ^ (k + 1) → c.modulus ∣ p ^ k := by
+      intro c hc hne
+      obtain ⟨j, hj1, hjk, hmj⟩ :=
+        proper_modulus_is_prime_pow p (k + 1) hp c.modulus (hgt c hc) (hdvd c hc)
+      have hjle : j ≤ k := by
+        by_contra h
+        push_neg at h
+        have hjeq : j = k + 1 := by omega
+        rw [hjeq] at hmj
+        exact hne hmj
+      rw [hmj]
+      exact pow_dvd_pow p hjle
+    by_cases htop : ∃ c ∈ S, c.modulus = p ^ (k + 1)
+    · -- Top modulus occurs: erase it and show the rest still covers ℤ.
+      obtain ⟨c₀, hc₀S, hc₀mod⟩ := htop
+      have hdvd' : ∀ c ∈ S.erase c₀, c.modulus ∣ p ^ k := by
+        intro c hc
+        have hcS : c ∈ S := Finset.mem_of_mem_erase hc
+        have hcne : c ≠ c₀ := Finset.ne_of_mem_erase hc
+        refine key c hcS ?_
+        intro heq
+        exact hcne (hdistinct c hcS c₀ hc₀S (by rw [heq, hc₀mod]))
+      have hcov' : IsCoveringSystem (S.erase c₀) := by
+        intro x
+        by_contra hno
+        push_neg at hno
+        -- `x + p^k` is also uncovered by the erased system (periodicity).
+        have hnox' : ∀ c ∈ S.erase c₀, ¬ c.covers (x + (p : ℤ) ^ k) := by
+          intro c hc hcc
+          have hd : (c.modulus : ℤ) ∣ (p : ℤ) ^ k := by
+            have h2 : (c.modulus : ℤ) ∣ ((p ^ k : ℕ) : ℤ) :=
+              Int.natCast_dvd_natCast.mpr (hdvd' c hc)
+            rwa [show ((p ^ k : ℕ) : ℤ) = (p : ℤ) ^ k by push_cast; ring] at h2
+          have h3 : c.covers ((x + (p : ℤ) ^ k) + (-(p : ℤ) ^ k)) :=
+            covers_add_of_dvd c (x + (p : ℤ) ^ k) (-(p : ℤ) ^ k) (dvd_neg.mpr hd) hcc
+          rw [show (x + (p : ℤ) ^ k) + (-(p : ℤ) ^ k) = x by ring] at h3
+          exact hno c hc h3
+        -- Then `c₀` must cover both `x` and `x + p^k`, forcing `p^(k+1) ∣ p^k`.
+        obtain ⟨c, hcS, hcx⟩ := hcov x
+        have hcc₀ : c = c₀ := by
+          by_contra h
+          exact hno c (Finset.mem_erase.mpr ⟨h, hcS⟩) hcx
+        obtain ⟨c', hc'S, hc'x⟩ := hcov (x + (p : ℤ) ^ k)
+        have hc'c₀ : c' = c₀ := by
+          by_contra h
+          exact hnox' c' (Finset.mem_erase.mpr ⟨h, hc'S⟩) hc'x
+        rw [hcc₀] at hcx
+        rw [hc'c₀] at hc'x
+        simp only [Congruence.covers] at hcx hc'x
+        have hmod : (x + (p : ℤ) ^ k) ≡ x [ZMOD (c₀.modulus : ℤ)] := by
+          unfold Int.ModEq; rw [hc'x, hcx]
+        have hdvdpk : (c₀.modulus : ℤ) ∣ (p : ℤ) ^ k := by
+          have hd := Int.modEq_iff_dvd.mp hmod
+          rw [show x - (x + (p : ℤ) ^ k) = -(p : ℤ) ^ k by ring] at hd
+          exact (dvd_neg).mp hd
+        have hdvdN : c₀.modulus ∣ p ^ k := by
+          have h2 : (c₀.modulus : ℤ) ∣ ((p ^ k : ℕ) : ℤ) := by
+            rwa [show ((p ^ k : ℕ) : ℤ) = (p : ℤ) ^ k by push_cast; ring]
+          exact_mod_cast h2
+        rw [hc₀mod] at hdvdN
+        have hppos : 0 < p ^ k := pow_pos hp.pos k
+        have hmul : p ^ k * p ≤ p ^ k * 1 := by
+          rw [mul_one, ← pow_succ]; exact Nat.le_of_dvd hppos hdvdN
+        have hp1 : p ≤ 1 := Nat.le_of_mul_le_mul_left hmul hppos
+        omega
+      -- The erased system is a proper covering of `p^k`: contradiction by IH.
+      exact ih ⟨S.erase c₀, hcov',
+        fun c₁ h₁ c₂ h₂ hmeq =>
+          hdistinct c₁ (Finset.mem_of_mem_erase h₁) c₂ (Finset.mem_of_mem_erase h₂) hmeq,
+        fun c hc => hgt c (Finset.mem_of_mem_erase hc), hdvd'⟩
+    · -- Top modulus absent: every modulus divides `p^k`, so `S` covers `p^k`.
+      exact ih ⟨S, hcov, hdistinct, hgt,
+        fun c hc => key c hc (fun heq => htop ⟨c, hc, heq⟩)⟩
 
 end Erdos277
