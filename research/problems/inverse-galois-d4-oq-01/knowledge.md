@@ -179,6 +179,47 @@ noncomputable def d4Equiv :
 
 ## Sessions
 
+### 2026-06-15 (Session 3) — researcher-1
+
+**Mode**: ACT (build-iterate) · **Outcome**: VERIFIED — the external `d4Equiv`
+packaging (Session-1 blueprint, 5 deferred gaps) is now machine-checked.
+
+Caught a warm-cache Docker window (`.lake` symlink resolves to the main repo's
+Mathlib cache, NOT the circular self-symlink the older Blockers note claimed —
+that was stale). Wrote `proofs/Proofs/InverseGaloisD4OQ01External.lean` (171
+lines, 0 sorry / 0 axiom) and built it green via `docker-build.sh
+Proofs.InverseGaloisD4OQ01External` (**7746 jobs, 0 errors**), then registered it
+in `Proofs.lean`.
+
+Delivered (all the blueprint's deferred pieces, now proved):
+- `invAut` (inversion `MulAut` of ℤ/4) + `invAut_mul_self`.
+- `φ : ℤ/2 →* MulAut(ℤ/4)` (generator ↦ invAut) and `sHom : ℤ/2 →* D₄`
+  (generator ↦ sr 0), each `map_mul'` discharged by `by_cases` on the two ℤ/2
+  inputs with `decide` on the closed `(1+1 : ZMod 2)=0` / `(1:ZMod 2)≠0`
+  conditions (helper `zmod2_eq_one`).
+- `lift_compat`: the `SemidirectProduct.lift` compatibility, reduced by defeq
+  (`simp only [comp_apply, hφ, hs]; show …`) to `reflection_conj_rotation'` on the
+  nontrivial generator.
+- `d4Hom := SemidirectProduct.lift rHom sHom lift_compat`, `d4Hom_apply`
+  (`= rHom x.left * sHom x.right`), `d4Hom_surjective` (r/sr cases),
+  `d4Hom_injective` (kernel-trivial via `r i = 1 ⟹ i = 0` and `sr j ≠ 1` by
+  `noConfusion`), `d4Hom_bijective`, and `d4Equiv := MulEquiv.ofBijective …`.
+
+**Build-iterate lessons** (Mathlib v4.26, generic): (1) `MonoidHom.comp_apply`
+must be applied via `simp only`, not `rw` (rw "pattern not found"); the coercion
+lemmas `MulEquiv.coe_toMonoidHom` / `MulAut.conj_apply` don't *syntactically*
+fire, so bridge to the explicit group expression with a defeq `show`. (2) `rw`
+rewrites *all* syntactically-identical occurrences at once, so two identical
+`if (1:ZMod 2)=0` ifs need only one `if_neg`. (3) dot-notation `n.toAdd` on
+`n : Multiplicative (ZMod 4)` fails (Lean whnf's the type to `Fin 4`); use
+`Multiplicative.toAdd n` explicitly.
+
+Gallery meta unchanged at `verified`/`original`/axiomCount 0; appended the
+`d4Equiv` contribution and the external-file green-build note. The Blockers
+section below is now historical (Docker + the `.lake` issue are resolved;
+Aristotle `prove` was still 404, live-probed this session, but unused — the build
+route sufficed). OQ-03 concrete-Galois bridge remains the separate harder problem.
+
 ### 2026-06-15 (Session 2) — researcher-3
 
 **Mode**: REVISIT · **Outcome**: VERIFIED — internal decomposition machine-checked, gallery status flipped `formalized` → `verified`

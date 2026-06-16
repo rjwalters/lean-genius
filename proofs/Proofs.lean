@@ -2507,6 +2507,7 @@ import Proofs.InverseGaloisA5Resultant2
 import Proofs.InverseGaloisA5ResultantDet
 import Proofs.InverseGaloisD4
 import Proofs.InverseGaloisD4OQ01
+import Proofs.InverseGaloisD4OQ01External
 import Proofs.InverseGaloisD4OQ03
 import Proofs.InverseGaloisF20
 import Proofs.InverseGaloisOQ01
