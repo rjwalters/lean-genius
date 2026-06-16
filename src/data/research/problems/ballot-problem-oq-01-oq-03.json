@@ -4,10 +4,10 @@
   "tier": "B",
   "significance": 7,
   "tractability": 7,
-  "status": "in-progress",
-  "phase": "ACT",
+  "status": "completed",
+  "phase": "COMPLETED",
   "started": "2026-06-15",
-  "lastUpdate": "2026-06-15T00:00:00Z",
+  "lastUpdate": "2026-06-16",
   "path": "research/problems/ballot-problem-oq-01-oq-03",
   "tags": [
     "combinatorics",
@@ -46,7 +46,7 @@
       "Optionally connect to a concrete Dyck-path Finset count = catalan n to make the 'ballot count' interpretation literal rather than documentary.",
       "Add a numeric example theorem (e.g. catalan 3 = C(6,3)-C(6,4) = 5) once build is available."
     ],
-    "progressSummary": "SOLVED/build-pending (2026-06-15): reflection form catalan n = C(2n,n)-C(2n,n+1) proven + reconciled with Mathlib division form in BallotProblemOQ01OQ03.lean (0 sorries/0 axioms). All 4 Mathlib deps name-checked vs v4.26 (researcher-3) — build-ready, unregistered. Only Docker-up build+register remains. PROGRESS: proved the reflection form catalan n = C(2n,n) - C(2n,n+1) (0 sorries, 0 axioms) build-pending under Docker blackout; reconciled with Mathlib's division form."
+    "progressSummary": "COMPLETED (2026-06-16): reflection form catalan n = C(2n,n)-C(2n,n+1) proven + reconciled with Mathlib division form in BallotProblemOQ01OQ03.lean (0 sorries/0 axioms). Registered in Proofs.lean (line 165, merged #24433) and now galleried at src/data/proofs/ballot-problem-oq-01-oq-03 (meta + 5 annotations, resolver 5/5)."
   },
   "leanFiles": [
     {
