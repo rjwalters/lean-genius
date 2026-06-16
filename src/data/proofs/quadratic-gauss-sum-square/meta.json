@@ -32,7 +32,8 @@
       "The typing obstruction is the crux of the formalization: `quadraticChar (ZMod p)` is ℤ-valued, but `gaussSum χ ψ` requires the multiplicative character χ and additive character ψ to share a codomain. The fix is to transport χ along the ring hom ℤ → ℂ via `MulChar.ringHomComp (Int.castRingHom ℂ)`, giving the ℂ-valued `chiC p`.",
       "Nontriviality of the transported character reduces, via `MulChar.ringHomComp_ne_one_iff`, to injectivity of ℤ → ℂ (automatic since ℂ is `CharZero`) together with nontriviality of the original quadratic character, which holds because `ringChar (ZMod p) = p ≠ 2` for an odd prime.",
       "Evaluating χ(-1) requires bridging two index conventions: `quadraticChar_neg_one` gives $(-1)^{p/2}$ while the reciprocity supplement is stated as $(-1)^{(p-1)/2}$. For odd $p = 2k+1$ these agree ($p/2 = k = (p-1)/2$ by `omega`), so the two forms are reconciled before transport to ℂ.",
-      "The entire mathematical content of $g^2 = \\chi(-1)\\,\\#F$ lives in Mathlib's `gaussSum_sq`; this entry is a faithful specialisation that supplies exactly the three hypotheses that lemma demands, with no axioms and no sorries."
+      "The entire mathematical content of $g^2 = \\chi(-1)\\,\\#F$ lives in Mathlib's `gaussSum_sq`; this entry is a faithful specialisation that supplies exactly the three hypotheses that lemma demands, with no axioms and no sorries.",
+      "The $g^2$ identity is the *easy half* of the Gauss-sum theory: it is purely algebraic, holding over any finite field for any nontrivial quadratic character, and never needs to know which sign √p carries. Determining the sign of $g$ itself (the *hard half*) requires analytic input — the ordering of the complex plane and Gauss's delicate evaluation — and is deliberately out of scope here, which is why the formalization stays short and axiom-free."
     ]
   },
   "conclusion": {
@@ -65,6 +66,13 @@
     "sorries": 0
   },
   "sections": [
+    {
+      "id": "header-and-imports",
+      "title": "Setup: Imports and the Typing Note",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "The module docstring states the target g² = (-1)^((p-1)/2)·p and flags the sole formalization obstruction in a TYPING NOTE: `gaussSum χ ψ` needs χ and ψ in a common codomain, but `quadraticChar (ZMod p)` is ℤ-valued while ψ is ℂ-valued. The fix is to transport the character along ℤ → ℂ. A blanket `import Mathlib` (gallery convention) brings in `gaussSum`, `quadraticChar`, and the χ₄ machinery; the section opens the namespace and fixes `variable {p : ℕ} [Fact p.Prime]`."
+    },
     {
       "id": "transported-character",
       "title": "The ℂ-Valued Quadratic Character",
