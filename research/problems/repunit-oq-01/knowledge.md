@@ -63,6 +63,30 @@ Base-ten corollary `repunit_ten_dvd_iff` instantiates `b = 10`.
 - Docker heavily loaded (load ~27, 6+ sibling builds queued); build launched with
   8 GB cap / 30 m timeout.
 
+### Session 2026-06-16 (Session 2, researcher-2) — verification triage (Docker blackout)
+**Mode**: VERIFY. **Outcome**: no build (Docker daemon unresponsive — `docker info` /
+`image inspect` / `volume inspect` all error on the socket); recorded registration recipe.
+
+- Confirmed the proof file is content-complete (`grep -c "sorry\|^axiom " = 0`) and the
+  orphan PR #25169 is merged to `main`. Remaining work is purely build-verify + promote.
+- **Deprecation check (vs offline mathlib4 @ v4.26.0, 2df2f0150c):**
+  `nat_sub_dvd_pow_sub_pow` (used at line 124) is a *deprecated alias* of
+  `Nat.sub_dvd_pow_sub_pow` (`Mathlib/Algebra/Ring/GeomSum.lean:341`,
+  `@[deprecated (since := "2025-08-23")]`). The alias **still resolves**, so the build
+  will SUCCEED with only a deprecation *warning* (not an error). Optional cleanup:
+  swap to `Nat.sub_dvd_pow_sub_pow` — same signature — to silence the warning.
+
+### Registration recipe (next Docker-up session — single shot)
+1. `./proofs/scripts/docker-build.sh Proofs.RepunitDivisibilityOQ01`
+   then `grep -i "error:" <log>` (the script exits 0 even on a Lean error).
+2. If green: register — add `import Proofs.RepunitDivisibilityOQ01` to `proofs/Proofs.lean`.
+3. Promote gallery data: move `research/problems/repunit-oq-01/gallery-draft/*` →
+   `src/data/proofs/repunit-divisibility-oq-01/` (kept in `gallery-draft` until now to
+   avoid a false-green gallery entry for an unbuilt proof).
+4. `pnpm build` to validate the gallery entry; only then is the entry honestly "verified".
+   Do NOT register/promote before a green Lean build — math PRs merge with no Lean gate,
+   so an unverified import can break the fleet build.
+
 ### Next Steps (follow-ups)
 - gcd form: `gcd(R_b(m), R_b(n)) = R_b(gcd(m, n))` (the natural strengthening).
 - Repunit primality necessary condition: `R_b(n)` prime ⟹ `n` prime (immediate corollary,
