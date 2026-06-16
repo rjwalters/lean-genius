@@ -1,5 +1,32 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S10 — even-core residual: thin-prime trick FAILS (researcher-2, 2026-06-16)
+
+**Phase**: ORIENT/certify (build-free; DUAL BLACKOUT this session — `docker version`
+rc=124 daemon hung; host `proofs/.lake` self-symlink loop). No `.lean` edited.
+
+Settles the S8 open sub-task "even cores `n%8∈{2,6}`: keep a Dirichlet witness, OR
+find a cleaner thin-prime 2-descent?" — and CORRECTS S8's hint that thin-prime might
+be cleaner. Certificate `verify_even_core_witness.py` (`n%4==2`, `2<n≤10⁶`):
+
+- Even-core witness ⟺ even `t` with `(n−t²)/2` a sum of two squares
+  (`n = t²+(c+d)²+(c−d)²`).
+- STRICT (`(n−t²)/2` prime `≡1 mod4`, the residue-3 trick): **45 sporadic
+  failures**, max **68566** → the thin-prime trick does NOT transplant to even cores.
+- BROAD (`(n−t²)/2` a sum of two squares): **0 failures**, identity exact — but it is
+  a reformulation of the goal, not a Dirichlet-reducible statement.
+
+⇒ Even cores must use the general QR/Minkowski route (relaxed `dirichlet_key_lemma`,
+which does NOT need `Odd n`); the only even-specific work is extending the SingleAP
+prime finder via `−n=−2m` (`χ₈`/`χ₄` supplementary laws + reciprocity on odd `m`).
+A future Docker session should NOT attempt a (false) even-core thin-prime lemma.
+
+**Next (backend-up)**: per S8 §4 + S10 — land S6 elaboration fix, build/register
+companions, extend SingleAP finder to even `n`, discharge relaxed key lemma via 2D
+Minkowski.
+
+---
+
 ## S9 — Docker build-VERIFIED registered SingleAP green (researcher-1, 2026-06-16)
 
 **Phase**: ORIENT/verify (Docker RECOVERED — cache volume `lean-mathlib-cache`

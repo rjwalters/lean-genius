@@ -436,3 +436,66 @@ subset, structurally insufficient).
 ### Files touched (S8)
 - `verify_single_ap_coverage.py` — new (single-AP QR + coverage certificate).
 - `knowledge.md` / `state.md` — this entry.
+
+## Session 2026-06-16 (S10, researcher-2) — even-core residual: thin-prime trick FAILS; correction to S8
+
+**Mode**: REVISIT · **Phase**: ORIENT/certify (build-free; DUAL BLACKOUT confirmed
+this session — `docker version` rc=124 timeout, daemon hung; `proofs/.lake` is the
+self-referential symlink loop `proofs/.lake -> proofs/.lake` ⇒ "Too many levels of
+symbolic links" ⇒ Mathlib oleans unreachable even if Docker came up). No `.lean`
+edited. Aristotle not applicable (the residual is a reduction-design question, not a
+single `sorry` target).
+
+### What S8 left open, and what this session settles
+
+S8 reduced the sufficiency picture to: ODD 4-free cores discharged via
+`ThreeSquaresSingleAP` (prime `p ≡ 1 mod 4n` ⇒ `legendreSym(p,−n)=1`), leaving the
+**EVEN 4-free cores** `n%8 ∈ {2,6}` (`4∤n`) as the sole residual, with the open
+question *"keep a Dirichlet witness restricted to even cores, OR find a 2-descent —
+which is cleaner?"*. The tempting clean option is to transplant the residue-3
+**thin-prime** trick (odd `t`, `(m−t²)/2` prime ⇒ Fermat two-squares) to even cores
+using **even** `t`.
+
+**That transplant is FALSE.** Certified in `verify_even_core_witness.py`
+(`n%4==2`, `2<n≤10⁶`, 249999 cores):
+
+- Parity: a three-square rep of `n≡2 mod4` uses exactly two ODD squares + one EVEN
+  square `t`, so `n − t² = (odd)²+(odd)² = 2s`, `s=(n−t²)/2` odd, and
+  `s=c²+d² ⟺ n = t² + (c+d)² + (c−d)²`. So an even-core witness ⟺ **even `t` with
+  `(n−t²)/2` a sum of two squares.**
+- **STRICT** ("`s` prime, `s%4=1`" — the residue-3-style reduction): **45 sporadic
+  failures**, members as large as **68566** within 10⁶:
+  `{6,18,22,54,66,102,114,130,166,190,286,306,354,438,454,478,534,646,666,694,766,
+  826,994,2146,…,36670,68566}`. E.g. `n=22`: even `t∈{0,2,4}` give `s∈{11,9,3}`;
+  `11,3` are primes `≡3 mod4`, `9` is composite — yet `9=3²+0²` so `22=2²+3²+3²`.
+  ⇒ the thin-prime trick does **not** transplant to even cores.
+- **BROAD** ("`s` a sum of two squares" — the true characterization): **0 failures**,
+  identity `n=t²+(c+d)²+(c−d)²` exact (0 failures), max even `t` needed = 96. But
+  "∃ even `t` with `(n−t²)/2` a sum of two squares" is a **reformulation of the goal**
+  (n is three squares with an even coordinate), NOT a reduction to a
+  Dirichlet-dischargeable statement.
+
+### Correction to S8 and refined wiring plan
+
+- **S8's "even-core thin-prime might be cleaner" is wrong.** There is no clean
+  thin-prime even-core lemma; a future Docker session should NOT attempt one.
+- Even cores must go through the **general QR/Minkowski route**: the relaxed
+  `dirichlet_key_lemma` `(hqr : legendreSym p (−(n:ℤ)) = 1) ⇒ ∃ x y z, x²+y²+z²=n`
+  (S8 §"Turnkey wiring", which does NOT require `Odd n` — `legendreSym p a` is fine
+  for even residue `a`). The ONLY even-specific work is the **prime finder**:
+  `ThreeSquaresSingleAP.legendreSym_neg_n_eq_one` needs `Odd n` for the Jacobi
+  reciprocity step, so for even `n=2m` (`m` odd) split `−n = −2m` and choose `p`'s
+  residue class mod `8m` so that `legendreSym p (−2)·legendreSym p m = +1` (the
+  `χ₈`/`χ₄` supplementary laws + reciprocity on the odd part `m`). Then Dirichlet-AP
+  supplies the prime. This is an **extension** of SingleAP for the factor of 2, not a
+  Fermat shortcut.
+- Net unchanged deep work (Docker-gated): (1) land the S6 elaboration fix
+  (`IsSquare ((−d:ℤ):ZMod p)` form) + build/register the corrected companions;
+  (2) generalize the SingleAP prime finder to even `n` per the split above;
+  (3) discharge the relaxed `dirichlet_key_lemma` via a **2D-slice** Minkowski
+  (S "researcher-11" note: the 3D ellipsoid cannot reach `Q<2p`).
+
+### Files touched (S9)
+- `research/problems/zsqrtd-neg-two-oq-02/verify_even_core_witness.py` — new
+  (STRICT-fails-sporadically + BROAD-always-holds + identity certificate).
+- `knowledge.md` / `state.md` — this entry.
