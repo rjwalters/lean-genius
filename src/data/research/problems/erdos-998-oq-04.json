@@ -1,0 +1,132 @@
+{
+  "slug": "erdos-998-oq-04",
+  "title": "Three-Gap (Steinhaus) Theorem: formalization path via Finset and order theory",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall \\alpha \\text{ irrational}, \\forall N \\geq 1: |\\{\\text{gap lengths of } \\{0, \\{\\alpha\\}, \\ldots, \\{(N-1)\\alpha\\}\\}\\}| \\leq 3",
+    "plain": "Is there a formalization path for the three-distance (three-gap / Steinhaus) theorem using Mathlib's Finset and order theory? The theorem: for irrational α and every N ≥ 1, the N points {0, {α}, {2α}, …, {(N-1)α}} cut the circle [0,1) into N arcs whose lengths take at most three distinct values; when three values occur, the largest is the sum of the other two. The orbit structure of the irrational rotation m ↦ {mα} underlies Erdős #998 (Kesten's equidistribution theorem).",
+    "whyMatters": [
+      "Underlies the orbit structure of irrational rotations behind Erdős #998 (Kesten equidistribution)",
+      "Purely finite / order-theoretic — no measure theory or analysis — so it is a clean Mathlib-style target",
+      "Mathlib4 has no three-gap theorem; a Coq formalization (van Ravenstein) exists but no Lean version — a genuine gap",
+      "Answer to the question is YES: the formal statement and all structural scaffolding are in place, reduced to one combinatorial core lemma"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Classical theorem (Sós 1958; Surányi; Świerczkowski 1959); elementary proof via first-return generators",
+      "Coq formalization exists (van Ravenstein's proof); no Lean4/Mathlib version",
+      "In this repo: first formal Lean statement (three_gap, three_gap_additive) plus all structural scaffolding, modulo one isolated combinatorial sorry"
+    ],
+    "open": [
+      "exists_gap_triple — the gap-classification core (define Steinhaus generators p, q and the cyclic-successor map). Known mathematics; HARD to formalize, not an open conjecture."
+    ],
+    "goal": "Discharge exists_gap_triple to obtain a sorry-free three_gap and three_gap_additive; then build, register in Proofs.lean, and add a gallery entry."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-16T00:00:00Z",
+    "iteration": 4,
+    "focus": "Re-confirmed (researcher-11, 2026-06-16) the exact frontier: proofs/Proofs/Erdos998ThreeGapOQ04.lean is 252 LOC, 9 theorems, 0 axioms, exactly 1 sorry — exists_gap_triple at line 183. Both headline theorems (three_gap, three_gap_additive) and the cardinality engine (card_le_three_of_subset_triple) are sorry-free, depending only on exists_gap_triple. orbit_card (orbit has N distinct points for irrational α) is fully proved via Int.fract_eq_fract + Irrational.int_mul. The file is build-pending and NOT yet registered in Proofs.lean, so the build is unverified. This session also fixed a metadata-propagation gap: the problem had a rich research/problems/erdos-998-oq-04/knowledge.md but no meta.json, so it was invisible to knowledge-scores.sh (which reads only src/data/research/problems/*.json) and scored 0 / showed as an EMPTY 'available' stub despite being a MODERATE/ATTACK problem.",
+    "blockers": [
+      "Dual-backend blackout this cycle: Aristotle MCP prove returned 404 'Resource not found'; Docker run hung (exit 124). No build or proof-search verification possible, so no new Lean committed (blind-writing the intricate index arithmetic of exists_gap_triple under blackout is unsafe)."
+    ],
+    "nextAction": "On backend recovery: submit exists_gap_triple to Aristotle prove_file (it is KNOWN mathematics — the Sós–Surányi–Świerczkowski classification — an ideal Aristotle target), or formalize manually: define p (least 1≤p<N minimizing forward return {pα}) and q (least minimizing backward return 1-{qα}) via Finset.exists_min_image, prove the cyclic-successor map (neighbour of {iα} is {(i+p)α} if i+p<N else the wrap via q), and read off the three values {pα}, 1-{qα}, {pα}+(1-{qα}). Then docker-build Proofs.Erdos998ThreeGapOQ04, register in Proofs.lean, add gallery entry (status formalized/wip until built).",
+    "attemptCounts": {
+      "total": 4,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ATTACK (build-gated). The three-gap theorem is reduced to a SINGLE isolated combinatorial core lemma exists_gap_triple; both headline theorems (≤3 distinct gap lengths; long = sum of two short) and all finite-cardinality scaffolding are sorry-free and depend only on it. File: 252 LOC, 9 thms, 0 axioms, 1 sorry. Build-pending + unregistered in Proofs.lean (build unverified). This session (researcher-11, 2026-06-16) re-confirmed the frontier under a dual-backend blackout (Aristotle 404, Docker exit 124 — no Lean shipped) and repaired the metadata gap that made this MODERATE problem invisible to the knowledge prioritizer (missing meta.json → no src/data json → score 0).",
+    "builtItems": [
+      {
+        "file": "proofs/Proofs/Erdos998ThreeGapOQ04.lean",
+        "iteration": 3,
+        "loc": 252,
+        "axioms": 0,
+        "sorries": 1,
+        "summary": "First formal Lean statement of the three-gap/Steinhaus theorem. Definitions: orbit, forwardGap, gapLengths. Proved: orbit_mem_Ico, zero_mem_orbit, orbit_nonempty, forwardGap_nonneg, orbit_card (N distinct points for irrational α), card_le_three_of_subset_triple. three_gap and three_gap_additive proved modulo the single core sorry exists_gap_triple (line 183). Build-pending, not yet registered in Proofs.lean."
+      }
+    ],
+    "insights": [
+      "The whole theorem reduces to ONE set-containment statement plus an additive equation: exists_gap_triple : ∃ a b c, a + b = c ∧ gapLengths α N ⊆ {a, b, c}. The '≤ 3 distinct values' and 'long = short + short' claims are NOT independent — both fall out of this single lemma.",
+      "Distinctness need not be hypothesized: given (gapLengths).card = 3 and a 3-element superset literal {a,b,c}, Finset.eq_of_subset_of_card_le forces equality, and the three witnesses are automatically pairwise distinct (collapsing any pair drops card to ≤ 2).",
+      "The ≤3-lengths claim needs NO equidistribution and NO irrationality of α; irrationality is only used in orbit_card to guarantee the N orbit points are distinct. The gap structure itself is purely combinatorial.",
+      "Defining gaps via forwardGap (minimum positive cyclic distance {y-x}, using Finset.inf') sidesteps an explicit sort / orderEmbOfFin, keeping the statement order-theoretic and the successor map index-arithmetic over Finset.range.",
+      "orbit_card is provable cleanly: {iα} = {jα} ⇒ (i-j)α ∈ ℤ (Int.fract_eq_fract); for i ≠ j this makes a nonzero-int multiple of α rational, contradicting Irrational.int_mul / not_irrational_int.",
+      "The remaining content exists_gap_triple is KNOWN mathematics (Sós–Surányi–Świerczkowski / van Ravenstein), so it is a HARD (not OPEN) sorry: the correct tool is Aristotle prove_file, not manual creative work — reserve manual effort for the index-arithmetic of the cyclic-successor map if Aristotle stalls."
+    ],
+    "mathlibGaps": [
+      "Mathlib4 has no three-gap / three-distance / Steinhaus theorem (verified June 2026); only a Coq (van Ravenstein) formalization exists. The proof needs no new infrastructure — only Int.fract, Finset.image/erase/min'/inf'/exists_min_image, and Nat/range order arithmetic."
+    ],
+    "nextSteps": [
+      "Backend up: submit exists_gap_triple to Aristotle prove_file (KNOWN math, ideal target), or manually define the Steinhaus first-return generators p, q via Finset.exists_min_image and prove the cyclic-successor neighbour map.",
+      "Once exists_gap_triple compiles: docker-build Proofs.Erdos998ThreeGapOQ04 to verify the file (currently build-pending under the corrupt self-referential .lake symlink / OOM hazard).",
+      "Register Erdos998ThreeGapOQ04 in proofs/Proofs.lean (currently unregistered, so not in CI) and add a gallery entry (status formalized/wip until a green build, then verified-modulo nothing since axioms=0)."
+    ]
+  },
+  "approaches": [
+    {
+      "id": "approach-01",
+      "name": "Order-theoretic Finset formalization reduced to one combinatorial core",
+      "status": "in-progress",
+      "hypothesis": "The three-gap theorem can be stated and almost fully proved in Lean using only Int.fract, Finset, and the linear order on ℝ, with the entire mathematical content isolated into a single classification lemma exists_gap_triple.",
+      "strategy": "Define orbit/forwardGap/gapLengths over Finset; prove structural scaffolding (orbit_mem_Ico, orbit_card via irrationality, forwardGap_nonneg, card_le_three_of_subset_triple); collapse three_gap and three_gap_additive onto exists_gap_triple; discharge exists_gap_triple via the Steinhaus first-return generators (Aristotle target).",
+      "risks": [
+        "Build verification blocked by the repo-wide corrupt self-referential .lake symlink (Mathlib recompiles from source → OOM) plus dual-backend blackout this cycle.",
+        "exists_gap_triple's cyclic-successor index arithmetic is intricate; unsafe to blind-write without a build/Aristotle backend to iterate against."
+      ],
+      "attempts": [
+        {
+          "id": "attempt-01",
+          "session": 3,
+          "outcome": "success",
+          "notes": "Net sorry count 2 → 1: added card_le_three_of_subset_triple, introduced exists_gap_triple, rewrote three_gap and three_gap_additive sorry-free depending only on it."
+        },
+        {
+          "id": "attempt-02",
+          "session": 4,
+          "outcome": "blocked",
+          "notes": "researcher-11 2026-06-16: re-confirmed exact frontier (1 sorry @ line 183, unregistered, build unverified) and repaired metadata propagation (created this meta.json so the prioritizer sees the accumulated knowledge). No Lean shipped — dual-backend blackout (Aristotle 404, Docker exit 124)."
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "number-theory",
+    "three-distance-theorem",
+    "steinhaus",
+    "irrational-rotation",
+    "ergodic",
+    "combinatorics",
+    "order-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-998"
+  ],
+  "references": {
+    "papers": [
+      "Sós, V. T. (1958). On the distribution mod 1 of the sequence nα. Ann. Univ. Sci. Budapest.",
+      "Świerczkowski, S. (1959). On successive settings of an arc on the circumference of a circle. Fund. Math. 46.",
+      "van Ravenstein, T. (1988). The three-gap theorem (Steinhaus conjecture). J. Austral. Math. Soc."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Three-gap_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.Algebra.Order.Round (Int.fract)",
+      "Mathlib.Data.Finset.Lattice (Finset.inf', Finset.min')",
+      "Mathlib.Data.Finset.Basic (Finset.image, Finset.erase, Finset.exists_min_image)"
+    ]
+  },
+  "started": "2026-06-15T00:00:00Z",
+  "lastUpdate": "2026-06-16T00:00:00Z",
+  "significance": 7,
+  "tractability": 7
+}
