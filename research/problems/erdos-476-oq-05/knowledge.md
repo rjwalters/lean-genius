@@ -326,3 +326,40 @@ Strict-shrink (`|B'| < |B|` for a non-AP `B` and suitable `e`) and nonemptiness 
 2. State + prove `etransform_snd_ssubset` (strict `(τ).2 ⊊ B` when `B` is not an AP
    with diff `e`) and nonemptiness of both transformed components.
 3. The AP pull-back lemma → Aristotle when up, else manual.
+
+## Session 2026-06-16 (Session 2) — Correctness audit of `ap_sdiff_endpoint`
+
+**Mode**: REVISIT (FRESH-claimed from pool)
+**Outcome**: progress (correctness fix; no sorries discharged)
+
+### What I Did
+- Re-probed backends: Aristotle 404 (live `n+0=n` probe), local `.lake` circular
+  self-symlink (0 oleans), Docker saturated (5 containers incl 7h zombie). No verifiable
+  proof work possible this cycle.
+- Audited the two open sorries in `Erdos476OQ05Aristotle.lean`. Found `ap_sdiff_endpoint`
+  is **false as stated** (hypothesis `0 < AP₁.card` allows the singleton AP₁).
+
+### Key Findings
+- **Counterexample** (p=7, d=1): AP₂={0,1,2} (s₂=0, m=3), AP₁={4} (s₁=4, n=1).
+  Then (AP₁\AP₂).card=1, n+m=4≤p, yet s₁=4 ∉ {s₂−d=6, s₂+(m−n+1)d=3}.
+  A length-1 AP can sit anywhere outside AP₂, so no endpoint constraint holds.
+- **Correct hypothesis**: `2 ≤ AP₁.card`. For n≥2 the statement is true; proof reduces
+  (via ×d⁻¹ and −s₂ translation) to two intervals mod p, I₂={x:x.val<m} and
+  I₁={c,…,c+n−1} with c=(s₁−s₂)·d⁻¹. Split on wrap of [γ,γ+n) where γ=c.val (the
+  bound n+m≤p rules out double wrap):
+    - no wrap: |I₁\I₂| = n − clamp(m−γ,0,n); =1 ⟹ (n≥2) γ=m−n+1 ⟹ s₁=s₂+(m−n+1)d.
+    - wrap (γ≥p−n+1): high block {γ,…,p−1}⊄I₂, wrapped low block ⊂I₂; |I₁\I₂|=p−γ;
+      =1 ⟹ γ=p−1 ⟹ c=−1 ⟹ s₁=s₂−d.
+  n=1 collapses both regimes to "count=n=1" for every γ — exactly why n≥2 is needed.
+
+### Files Modified
+- `proofs/Proofs/Erdos476OQ05Aristotle.lean`: `ap_sdiff_endpoint` hypothesis
+  `0 < AP₁.card` → `2 ≤ AP₁.card`; full corrected blueprint inlined above the sorry.
+  Lemma is currently unused (support for the line-269 Dyson e-transform step), so the
+  strengthening is safe and cannot break call sites.
+- `research/problems/erdos-476-oq-05/state.md`: recorded finding + next action.
+
+### Next Steps
+- When Aristotle non-404 / Docker trough (≤2): prove corrected `ap_sdiff_endpoint`
+  (now TRUE), then the line-269 Dyson e-transform induction.
+- Do NOT resubmit the `0 < AP₁.card` form — Aristotle returns the n=1 counterexample.

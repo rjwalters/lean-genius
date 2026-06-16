@@ -106,11 +106,29 @@ lemma ap_sdiff_endpoint (AP₁ AP₂ : Finset (ZMod p)) (s₁ s₂ d : ZMod p)
     (hAP₁ : IsArithmeticProgression AP₁ s₁ d)
     (hAP₂ : IsArithmeticProgression AP₂ s₂ d)
     (hd : d ≠ 0)
-    (h₁ : 0 < AP₁.card)
+    (h₁ : 2 ≤ AP₁.card)
     (h₁₂ : AP₁.card ≤ AP₂.card)
     (hlt : AP₁.card + AP₂.card ≤ p)
     (h_sdiff : (AP₁ \ AP₂).card = 1) :
     s₁ = s₂ - d ∨ s₁ = s₂ + ((AP₂.card - AP₁.card + 1 : ℕ) : ZMod p) * d := by
+  -- NOTE (hypothesis corrected): the bound here is `2 ≤ AP₁.card`, not `0 < AP₁.card`.
+  -- With only `0 < AP₁.card` the statement is FALSE: take p = 7, d = 1,
+  -- AP₂ = {0,1,2} (s₂ = 0, m = 3) and AP₁ = {4} (s₁ = 4, n = 1). Then
+  -- (AP₁ \ AP₂).card = 1 and n + m = 4 ≤ 7, yet s₁ = 4 is neither s₂ - d = 6
+  -- nor s₂ + (m - n + 1)·d = 3. A singleton AP can sit anywhere outside AP₂.
+  --
+  -- Proof blueprint for the corrected (n ≥ 2) statement [Aristotle target]:
+  -- Multiply through by d⁻¹ and translate by -s₂ (a ZMod-p bijection) to reduce to
+  -- two "intervals mod p": I₂ = {x : x.val < m} = {0,…,m-1} and
+  -- I₁ = {c, c+1, …, c+(n-1)} with c = (s₁ - s₂)·d⁻¹. Using n + m ≤ p (no
+  -- double wraparound), split on whether [γ, γ+n) wraps p where γ = c.val:
+  --   • no wrap (γ ≤ p-n): |I₁ \ I₂| = n - clamp(m-γ, 0, n); = 1 forces
+  --     (given n ≥ 2) γ = m - n + 1, i.e. c = m - n + 1, i.e. s₁ = s₂ + (m-n+1)·d.
+  --   • wrap (γ ≥ p-n+1): the high block {γ,…,p-1} lies outside I₂ (since
+  --     γ ≥ p-n+1 ≥ m) and the wrapped low block stays inside I₂ (vals < n ≤ m),
+  --     so |I₁ \ I₂| = p - γ; = 1 forces γ = p-1, i.e. c = -1, i.e. s₁ = s₂ - d.
+  -- The n = 1 case collapses both regimes to "count = n = 1" for *every* γ,
+  -- which is exactly why n ≥ 2 is required.
   sorry
 
 /-
