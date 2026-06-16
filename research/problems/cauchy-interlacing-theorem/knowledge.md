@@ -16,7 +16,57 @@ codimension-one coordinate subspace.
 
 ## Insights
 
-### Session 2026-06-16 (s04, REVISIT → ACT) — both Parseval leaves PROVED, Sublemmas file now VERIFIED
+### Session 2026-06-16 (s07, REVISIT → stand-down, dual blackout) — Sublemma A glue transcribed turnkey
+
+**Mode**: REVISIT under dual backend blackout, **new blackout flavor**. Aristotle
+MCP `prove` → `Resource not found` (404, re-confirmed this session with a trivial
+`a+b=b+a` probe). Docker *daemon* is UP (`docker run --rm alpine echo` → rc 0) but
+**builds are blocked**: `proofs/.lake` is a **circular self-symlink**
+(`proofs/.lake -> /Users/.../proofs/.lake`, in BOTH the worktree and main repo), so
+`docker-build.sh` cannot reach the Mathlib oleans / its git-clone of the tree fails.
+This is distinct from s05/s06's "Docker saturated/hung" — the daemon answers, the
+build tree is corrupt. Don't conclude "Docker down" from `docker run` succeeding;
+check `ls -ld proofs/.lake`.
+
+**No new PR** — the problem already has 3 open PRs (#24977 mergeable doc-plan,
+#24796 + #24924 both CONFLICTING) and adding a 4th unverifiable orphan would be
+churn. This entry instead **transcribes** the exact code for the s06-documented
+turnkey step so the next backend-up session can paste-and-build with zero
+re-derivation.
+
+**Turnkey #1 — discharge Sublemma A's `sorry` in `lean/CauchyInterlacingMinMax.lean`.**
+The merged `lean/CauchyInterlacingSublemmas.lean` (#24939, VERIFIED 0-sorry/0-axiom)
+already proves the general bound `Sublemmas.rayleigh_bounds_on_eigenspan`. Sublemma A
+(`rayleigh_mem_Icc_of_mem_eigenspan`) is its instantiation. Replace the `sorry` with:
+
+```lean
+  -- `rayleigh T x` is defeq to `RCLike.re ⟪T x, x⟫ / ‖x‖ ^ 2`.
+  unfold rayleigh
+  exact Sublemmas.rayleigh_bounds_on_eigenspan T
+    (hT.eigenvectorBasis hn) (hT.eigenvalues hn)
+    (fun i => hT.apply_eigenvectorBasis hn i) I hI x hmem hx
+```
+
+To make this compile in one shot, the two files must be co-located (inline the
+`CauchyInterlacing.Sublemmas` namespace into the same file, or build them as one
+Lake target — the staging `lean/` dir is NOT a package). Confidence: HIGH on the
+math/instantiation; UNVERIFIED on exact API spellings — watch (a)
+`hT.apply_eigenvectorBasis hn i : T (eigenvectorBasis hn i) = (eigenvalues hn i:𝕜) • …`
+(need the `∀ i` form, hence the `fun i =>`), and (b) the `'' (I : Set (Fin n))`
+vs `(b : Fin n → E) '' ↑I` coercion match — if `unfold rayleigh` doesn't fire, try
+`show RCLike.re _ / _ ≤ _ ∧ _` / `simp only [rayleigh]`.
+
+**Turnkey #2 — fix the mis-stated keystone (still open, the real gap).** As flagged
+in s06 (#24977), `eigenvalue_eq_iSup_iInf_rayleigh` equates the **unsorted**
+`hT.eigenvalues hn k` to a max–min that returns the (k+1)-th *largest* eigenvalue.
+`LinearMap.IsSymmetric.eigenvalues` is indexed by the eigenbasis, NOT sorted, so the
+identity is false as written. Restate over a descending-sorted enumeration
+(`CauchyInterlacing.sortedEigs`, antitone — lives in
+`lean/CauchyInterlacing.lean` on branch `research/cauchy-interlacing-statement`,
+not yet co-located) before attempting the proof. Do NOT submit the current statement
+to Aristotle — it would chase a false goal.
+
+
 
 **Mode**: REVISIT (Aristotle MCP down → `Resource not found`; Docker had room:
 1 active build + 1 idle 8h zombie, ~300 MB of 7.65 GiB used, so the
