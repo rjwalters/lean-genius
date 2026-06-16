@@ -1,0 +1,48 @@
+{
+  "id": "pompeiu-theorem-oq-01",
+  "title": "Pompeiu's Theorem",
+  "slug": "pompeiu-theorem-oq-01",
+  "description": "For an equilateral triangle ABC and an arbitrary point P in the plane, the three distances PA, PB, PC satisfy the triangle inequality — they are the side lengths of a (possibly degenerate) triangle. The proof models the points as complex numbers and rests on the algebraic identity (P-A)(B-C) + (P-B)(C-A) + (P-C)(A-B) = 0: three complex numbers summing to zero have norms obeying the triangle inequality, and for an equilateral triangle the common side length cancels.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pompeiu%27s_theorem",
+    "date": "2026-06-16",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PompeiuTheoremOQ01.lean",
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "equilateral-triangle",
+      "complex-numbers",
+      "triangle-inequality",
+      "plane-geometry"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "assumptions": "",
+    "lineCount": 96,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "instanceCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "norm_add_le",
+        "description": "The triangle inequality for the norm on a normed space: ‖x + y‖ ≤ ‖x‖ + ‖y‖. Combined with norm_neg, this gives the central lemma norm_le_of_add_eq_zero: if z₁ + z₂ + z₃ = 0 then ‖z₁‖ ≤ ‖z₂‖ + ‖z₃‖, because z₁ = -(z₂ + z₃).",
+        "module": "Mathlib.Analysis.Normed.Group.Basic"
+      },
+      {
+        "theorem": "norm_mul",
+        "description": "Multiplicativity of the norm on a normed field: ‖x * y‖ = ‖x‖ * ‖y‖. Applied over ℂ to split each Pompeiu summand ‖(P-A)(B-C)‖ into the product of a distance ‖P-A‖ and a side length ‖B-C‖, so the equilateral hypothesis (equal side lengths) can be factored out.",
+        "module": "Mathlib.Analysis.Normed.Field.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Pompeiu identity (P-A)(B-C) + (P-B)(C-A) + (P-C)(A-B) = 0 over ℂ, the algebraic heart of the theorem (pure ring fact)",
+      "norm_le_of_add_eq_zero: three complex numbers summing to zero have norms satisfying the triangle inequality",
+      "pompeiu_dist_le: PA ≤ PB + PC for an equilateral triangle, via cancellation of the common side length",
+      "pompeiu_triangle_inequalities: all three triangle inequalities on PA, PB, PC by cyclic relabelling"
+    ]
+  }
+}

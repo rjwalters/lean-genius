@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-pompeiu-identity",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": { "startLine": 36, "endLine": 39 },
+    "type": "insight",
+    "title": "The Pompeiu Identity: A Closed Vector Triangle",
+    "content": "The entire theorem reduces to the algebraic identity (P-A)(B-C) + (P-B)(C-A) + (P-C)(A-B) = 0, which holds for ANY four complex numbers and is proved by `ring`. The P-terms cancel because (B-C)+(C-A)+(A-B) = 0, and the remaining constant terms also telescope to zero. Geometrically this says the three vectors (P-A)(B-C), (P-B)(C-A), (P-C)(A-B) form a closed triangle in the complex plane, so their lengths obey the triangle inequality. This single identity is what makes Pompeiu's theorem an elementary consequence rather than a delicate geometric argument.",
+    "mathContext": "$(P-A)(B-C) + (P-B)(C-A) + (P-C)(A-B) = 0$. The coefficient of $P$ is $(B-C)+(C-A)+(A-B)=0$; the remaining terms $-A(B-C)-B(C-A)-C(A-B) = -(AB-AC+BC-AB+CA-CB) = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["complex numbers", "vector triangle", "algebraic identity", "ring tactic"],
+    "prerequisites": ["complex arithmetic", "ring tactic"]
+  },
+  {
+    "id": "ann-norm-closed-triangle",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": { "startLine": 43, "endLine": 49 },
+    "type": "insight",
+    "title": "Norms of a Zero Sum Satisfy the Triangle Inequality",
+    "content": "If z₁ + z₂ + z₃ = 0 then ‖z₁‖ ≤ ‖z₂‖ + ‖z₃‖. The proof is one line: z₁ = -(z₂ + z₃), so ‖z₁‖ = ‖z₂ + z₃‖ ≤ ‖z₂‖ + ‖z₃‖ by the ordinary triangle inequality (`norm_add_le`) together with `norm_neg`. This is the abstract reason a closed vector polygon's side lengths obey the polygon inequality, specialized to three sides.",
+    "mathContext": "$z_1 = -(z_2+z_3) \\Rightarrow \\|z_1\\| = \\|z_2+z_3\\| \\le \\|z_2\\| + \\|z_3\\|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["triangle inequality", "normed space", "polygon inequality"],
+    "prerequisites": ["norm_add_le", "norm_neg"]
+  },
+  {
+    "id": "ann-equilateral-cancellation",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": { "startLine": 56, "endLine": 73 },
+    "type": "insight",
+    "title": "Why Equilateral Is Essential: Cancelling the Side Length",
+    "content": "Taking norms of the three Pompeiu summands gives ‖P-A‖·‖B-C‖, ‖P-B‖·‖C-A‖, ‖P-C‖·‖A-B‖ — each a distance times a side length. For a general triangle these side factors differ and no clean inequality on the distances survives. The equilateral hypothesis ‖A-B‖ = ‖B-C‖ = ‖C-A‖ makes all three side factors equal to one common positive value s, which then cancels: from PA·s ≤ PB·s + PC·s we divide by s > 0 to get PA ≤ PB + PC. The three cyclic inequalities follow by relabelling the vertices.",
+    "mathContext": "Equilateral: $\\|A-B\\|=\\|B-C\\|=\\|C-A\\|=s>0$. Then $PA\\cdot s \\le PB\\cdot s + PC\\cdot s \\Rightarrow PA \\le PB + PC$ (and cyclically).",
+    "significance": "key",
+    "relatedConcepts": ["equilateral triangle", "norm multiplicativity", "cancellation", "cyclic symmetry"],
+    "prerequisites": ["norm_mul", "le_of_mul_le_mul_right"]
+  }
+]

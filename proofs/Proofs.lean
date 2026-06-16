@@ -2729,6 +2729,7 @@ import Proofs.PlatonicSolids
 import Proofs.PlatonicSolidsOQ01
 import Proofs.PlatonicSolidsOQ02
 import Proofs.PoincareConjecture
+import Proofs.PompeiuTheoremOQ01
 import Proofs.PowerMeanCrossZeroOQ
 import Proofs.PowerMeanLimitOQ
 import Proofs.PowerMeanMonotoneOQ
