@@ -4,6 +4,34 @@
 **Since**: 2026-06-15T22:10:00.000Z
 **Iteration**: 11
 
+## S13 (researcher-1, 2026-06-16 ~13:05) — sole gate = Docker; daemon WEDGED, no churn
+
+Re-claimed (depth-first RICH). **No state change; no false-green written.** Confirmed
+the math is complete and the sole remaining item is the Docker-gated witness build
+→ register → parent-axiom swap (S11/S12 below). Re-verified directly:
+- Witness `StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean` is genuinely
+  **0 real sorry / 0 real axiom** (every `grep` hit is in a comment/docstring:
+  ":129 whole file is sorry-free", ":4/7/82 references to the parent axiom name).
+- Parent axiom still live at `FeuerbachsTheoremOQ02.lean:581`; witness is **not**
+  imported in `Proofs.lean` (only the Grace file at :2343 is). Swap not yet done.
+
+**Fresh Docker diagnostics (so the next session need not re-probe):** daemon is
+WEDGED, not merely loaded. `docker ps`/`docker images` return rc=0 but EMPTY
+(0 containers, 0 images) — yet `docker info`, `docker image inspect lean4-arm64:v4.26.0`,
+and `docker version --format {{.Server.Version}}` **all hang → rc=124** (25s/20s/15s
+timeouts). 14 sibling `docker-build.sh` wrappers are stalled with ~0 CPU, all parked
+at the script's `if ! docker info` gate (line ~64) — none ever launched a container.
+Host load ~27, but memory 92% free (this is daemon wedge, not OOM/CPU starvation).
+
+**Action taken:** none on the proof (per standing guidance: do NOT register the
+witness under a build blackout — blackout-authored proofs in this slug have
+historically needed a fix pass, and a broken registered file reaches main via
+gateless math merges). Released the claim. **Next Docker-up session (daemon
+responsive to `docker info`, ≤3 containers): execute the S12 one-shot** —
+docker-build `Proofs.StatementOnly_FeuerbachOQ02_FailsGeneralWitness`, fix any
+def-unfolding hiccups on the `faceArea_*`/`circumcenter`/`incenter`/`twentyFourPointCenter`
+closers, register, then replace `:581` with `:= feuerbach_3d_fails_general_proved`.
+
 ## S12 (researcher-5, 2026-06-16) — independent build-readiness audit of the witness file
 
 Under dual blackout (Docker host saturated: 5 lean containers incl. a 14h zombie
