@@ -51,6 +51,14 @@
   },
   "sections": [
     {
+      "id": "framing-and-setup",
+      "title": "Problem Statement, Derivation Sketch, and Imports",
+      "summary": "The module docstring states the open question (formalize h(Uniform[a,b]) = ln(b-a), the child of the parent's Gaussian computation), gives the full hand derivation — the integrand f·ln f is the constant (1/(b-a))·ln(1/(b-a)) on [a,b] and 0 off it, so ∫ f ln f = -ln(b-a) and h = ln(b-a) — and flags that h < 0 for b-a < 1, the hallmark distinguishing differential from discrete Shannon entropy. It imports Mathlib and the parent Proofs.ShannonEntropyOQ01 (reusing its differential-entropy definition), opens MeasureTheory/Real/Set, and records 0 axioms / 0 sorries.",
+      "startLine": 1,
+      "endLine": 36,
+      "mathContext": "Differential entropy h(f) = -∫ f(x) ln f(x) dx; the 0·ln 0 = 0 convention is automatic in Lean because Real.log 0 = 0, so the off-support branch needs no special handling."
+    },
+    {
       "id": "density",
       "title": "The Uniform Density",
       "summary": "uniformPDF a b x = Set.indicator (Set.Icc a b) (fun _ => 1/(b-a)) x — the Uniform[a,b] density encoded as a Lebesgue indicator.",
