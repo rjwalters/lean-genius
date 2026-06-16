@@ -1,4 +1,4 @@
-# Knowledge Base: pentagonal-number-theorem-oq-01
+# Knowledge Base: sylvester-gallai-theorem-oq-01
 
 Insights accumulated during research on this problem.
 
