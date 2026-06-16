@@ -2662,6 +2662,7 @@ import Proofs.MinpolyCharpolyOQ01
 import Proofs.MinpolyCharpolyOQ02
 import Proofs.MinpolyCharpolyOQ03
 import Proofs.MinpolyCharpolyOQ03OQ01
+import Proofs.MiquelPivotTheoremOQ01
 import Proofs.MobiusInversionIE
 import Proofs.MorleysTheorem
 import Proofs.MorleysTheoremOQ01

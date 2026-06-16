@@ -1,0 +1,154 @@
+{
+  "id": "miquel-pivot-theorem-oq-01",
+  "title": "Miquel's Pivot Theorem",
+  "slug": "miquel-pivot-theorem-oq-01",
+  "description": "For points X, Y, Z on the sides BC, CA, AB of a triangle ABC, the three circles (AYZ), (BZX), (CXY) pass through a common point — the Miquel point. Proved via complex cross-ratios: the product of the three Miquel cross-ratios is independent of the pivot point.",
+  "meta": {
+    "author": "Auguste Miquel (1838)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Miquel%27s_theorem",
+    "date": "1838",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MiquelPivotTheoremOQ01.lean",
+    "tags": [
+      "geometry",
+      "triangle",
+      "circles",
+      "concyclic",
+      "cross-ratio",
+      "complex-coordinates",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex",
+        "description": "Complex number field ℂ and its field arithmetic",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "sub_ne_zero",
+        "description": "a - b ≠ 0 ↔ a ≠ b, used to discharge nondegeneracy denominators",
+        "module": "Mathlib.Algebra.Group.Basic"
+      },
+      {
+        "theorem": "div_ne_zero",
+        "description": "Nonvanishing of a quotient of nonzero terms",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "eq_div_iff",
+        "description": "a = b / c ↔ a * c = b for c ≠ 0, used to isolate the third cross-ratio",
+        "module": "Mathlib.Algebra.Field.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Conditional cross-ratio formulation of Miquel's pivot theorem that avoids constructing the Miquel point as an intersection of two circles",
+      "The pivot-cancellation identity: the product (M,A;Y,Z)·(M,B;Z,X)·(M,C;X,Y) is independent of M and equals [(A-Z)/(B-Z)]·[(B-X)/(C-X)]·[(C-Y)/(A-Y)]",
+      "Reduction of concyclicity-from-two-circles to a quotient of reals using a real-closed-under-×-and-÷ predicate, with no complex conjugation",
+      "Fully algebraic, axiom-free, sorry-free proof in ℂ via a single field identity"
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "lineCount": 114,
+    "assumptions": "0 axioms. 0 sorries. Nondegeneracy hypotheses (the relevant points are distinct) are explicit. Concyclicity and collinearity are encoded by the classical cross-ratio realness criterion.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 4
+  },
+  "sections": [
+    {
+      "title": "Realness Predicate and Closure",
+      "startLine": 44,
+      "endLine": 57,
+      "description": "Define IsReal z := ∃ r : ℝ, z = r and prove it is closed under multiplication and division — the only structural facts the proof needs.",
+      "summary": "Realness Predicate and Closure",
+      "id": "realness-predicate-and-closure"
+    },
+    {
+      "title": "Cross-Ratio, Concyclicity, Collinearity",
+      "startLine": 58,
+      "endLine": 64,
+      "description": "The cross-ratio (a,b;c,d) = (a-c)(b-d)/((a-d)(b-c)); four points are concyclic-or-collinear iff it is real, three points collinear iff (a-c)/(b-c) is real.",
+      "summary": "Cross-Ratio, Concyclicity, Collinearity",
+      "id": "cross-ratio-concyclicity-collinearity"
+    },
+    {
+      "title": "The Pivot-Cancellation Identity",
+      "startLine": 85,
+      "endLine": 90,
+      "description": "The algebraic heart: the product of the three Miquel cross-ratios is independent of M and factors as a product of the three side-collinearity ratios. Proved by field_simp after clearing denominators.",
+      "summary": "The Pivot-Cancellation Identity",
+      "id": "the-pivot-cancellation-identity"
+    },
+    {
+      "title": "Miquel's Pivot Theorem",
+      "startLine": 91,
+      "endLine": 113,
+      "description": "Given M on circles (AYZ) and (BZX), and X, Y, Z on the side lines, the product of cross-ratios is real (from collinearity), the first two factors are real and nonzero, so the third — M on (CXY) — is real as a quotient of reals.",
+      "summary": "Miquel's Pivot Theorem",
+      "id": "miquels-pivot-theorem"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Auguste Miquel published a family of circle-concurrence theorems in Liouville's Journal in 1838. The 'pivot theorem' (also called the Miquel point theorem) states that if one point is chosen on each side of a triangle, the three circles through a vertex and the two chosen points on the adjacent sides meet at a single point, the Miquel point. The result is a cornerstone of triangle geometry and generalizes in many directions: the Miquel point of a complete quadrilateral, the six-circle theorem, the pivot theorem for cyclic configurations, and the spiral-similarity interpretation in which the Miquel point is the center of the spiral similarity carrying one pair of points to another.\n\nThe theorem is most often proved by directed-angle chasing. The complex-number proof formalized here instead exploits the fact that concyclicity is governed by the cross-ratio, turning the geometric statement into a single rational identity.",
+    "problemStatement": "**Miquel's Pivot Theorem.** Let ABC be a triangle and let X, Y, Z be points on lines BC, CA, AB respectively. Then the three circles (AYZ), (BZX), (CXY) are concurrent; their common point is the Miquel point M.\n\nFormalized form: if a point M lies on circles (AYZ) and (BZX), and X, Y, Z lie on the respective side lines, then M also lies on circle (CXY).",
+    "text": "For points on the three sides of a triangle, the three circles through each vertex and its two adjacent points concur at the Miquel point.",
+    "proofStrategy": "The proof works in ℂ and uses the cross-ratio criterion for concyclicity.\n\n1. **Encoding.** Four points are concyclic-or-collinear iff their cross-ratio (a,b;c,d) = (a-c)(b-d)/((a-d)(b-c)) is real; three points are collinear iff (a-c)/(b-c) is real. 'Real' is the predicate IsReal z := ∃ r : ℝ, z = r, which is closed under products and quotients.\n\n2. **Pivot cancellation.** The product of the three Miquel cross-ratios telescopes — every factor involving the pivot M cancels:\n   (M,A;Y,Z)·(M,B;Z,X)·(M,C;X,Y) = (A-Z)(B-X)(C-Y)/((A-Y)(B-Z)(C-X)) = [(A-Z)/(B-Z)]·[(B-X)/(C-X)]·[(C-Y)/(A-Y)].\n   This is a pure field identity (field_simp after clearing the six nondegeneracy denominators).\n\n3. **Reality of the product.** The three right-hand factors are exactly the collinearity ratios for Z∈AB, X∈BC, Y∈CA, hence each is real, so their product is real.\n\n4. **Conclusion.** M lies on the first two circles, so the first two cross-ratios are real and (being nonzero) the third equals product/(first·second) — a quotient of reals, hence real. Therefore M lies on the third circle. ∎",
+    "keyInsights": [
+      "**Pivot cancellation**: the product of the three Miquel cross-ratios is completely independent of the pivot point M — all M-dependent factors cancel, leaving a quantity built only from A, B, C, X, Y, Z.",
+      "**Concyclicity = real cross-ratio**: encoding circles by the realness of a cross-ratio turns the geometric concurrence into a rational identity, with no complex conjugation needed.",
+      "**Reality is all the structure required**: the proof only uses that the realness predicate is closed under × and ÷; the geometry lives entirely in the cancellation identity.",
+      "**Sharp conditional form**: stating 'M on two circles ⟹ M on the third' sidesteps the messy construction of the Miquel point as a circle-circle intersection.",
+      "**Collinearity ratios reappear as the product**: the same three side conditions Z∈AB, X∈BC, Y∈CA that define the configuration are exactly the factors of the cancelled product — the reason the product is forced to be real."
+    ],
+    "prerequisites": [
+      "Complex numbers and field arithmetic in ℂ",
+      "Cross-ratio of four points and its conformal invariance",
+      "The criterion: four points are concyclic-or-collinear iff their cross-ratio is real"
+    ],
+    "openQuestions": [
+      "Can the Miquel point be constructed explicitly (as the second intersection of two circles) and shown to satisfy the two concyclicity hypotheses, removing the conditional form?",
+      "Does the same cross-ratio cancellation prove the Miquel point of a complete quadrilateral / the six-circle theorem?"
+    ]
+  },
+  "conclusion": {
+    "summary": "Miquel's pivot theorem is formalized in ℂ using the cross-ratio criterion for concyclicity. The crux is that the product of the three Miquel cross-ratios is independent of the pivot point M and factors into the three side-collinearity ratios, all real. Given that M lies on two of the circles, the third cross-ratio is a quotient of reals and hence real, placing M on the third circle. The proof is axiom-free and sorry-free.",
+    "implications": "The proof shows that a classical circle-concurrence theorem usually handled by directed-angle chasing reduces to a single rational identity over ℂ. The pivot-cancellation identity isolates exactly why the theorem holds and is reusable for the Miquel-point variants (complete quadrilateral, six-circle theorem).",
+    "openQuestions": [
+      "Can the Miquel point be constructed explicitly and shown to satisfy the two concyclicity hypotheses?",
+      "Does the cross-ratio cancellation extend to the complete-quadrilateral Miquel point?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "simson-line-theorem-oq-01",
+      "relationship": "companion",
+      "description": "Both reduce a classical triangle/circle theorem to a complex-coordinate identity: Simson uses points on a circumcircle and a collinearity (conjugate) condition, Miquel uses points on the sides and the realness of cross-ratios for concyclicity."
+    },
+    {
+      "targetId": "ptolemys-complex-proof",
+      "relationship": "related",
+      "description": "Both translate Euclidean circle geometry into algebra over ℂ; Ptolemy via the complex modulus inequality, Miquel via the realness of cross-ratios."
+    },
+    {
+      "targetId": "napoleons-theorem",
+      "relationship": "related",
+      "description": "Both are classical triangle theorems proved by turning a geometric construction into a polynomial/rational identity in complex coordinates."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "MiquelPivotTheoremOQ01",
+    "lineCount": 114,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 4,
+    "sorries": 0,
+    "path": "Proofs/MiquelPivotTheoremOQ01.lean"
+  }
+}
