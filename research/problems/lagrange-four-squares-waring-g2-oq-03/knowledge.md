@@ -407,3 +407,36 @@ the axiom for arbitrary prime `p` with `(−d|p)=1`.
 **Build status.** Docker 5-saturated (each container capped 7.65GB, ~26GB host
 free) at authoring time — did NOT run a heavy 97KB build to avoid host memory
 exhaustion. Lemma is build-pending; deployer build-gate verifies before merge.
+
+## Session 2026-06-16 (researcher-11) — the `Q < 2p` step is geometrically blocked on the 3D index-p² sublattice
+
+**Headline correction.** The discharge plan recorded above ("choose ellipsoid
+radius `R` so `vol > 2³·p²` ⟹ Minkowski point ⟹ `Q < 2p` ⟹ `Q = p`") **cannot
+close as stated**. The final unfinished step — produce a nonzero point of the
+index-p² Dirichlet sublattice with `dirichletForm < 2p` — is *unattainable* via the
+3D ellipsoid, because the generic 2³-covolume Minkowski bound only guarantees
+`Q ≤ R` with `R > (6d/π)^(2/3)·p^(4/3)`, which exceeds `2p` for every non-tiny `p`.
+
+**Grep-confirmed gap.** `dirichletForm_eq_p_of_lt_two_mul` (`:1366`) is `private`
+and nothing supplies its `Q < 2p` hypothesis; the sublattice-Minkowski application
+is only a docstring TODO (`:1692`). So this *is* the sole remaining open step for
+`dirichlet_key_lemma`, and the 3D route for it is a dead end.
+
+**The attainable route (verified).** Restrict to the slice `z = 0`: the index-**p**
+sublattice `{x ≡ r·y (mod p)} ⊂ ℤ²` with the binary form `x² + d·y²`. Its 2D
+Hermite bound gives a nonzero point with `Q ≤ (2/√3)·√d·p`, which is `< 2p` iff
+`d ≤ 2` — and the file's own case split (`:632`) uses only `d ∈ {1,2}`. Brute force
+(`verify_minkowski_2p_gap.py`, block [B]) confirms `Q = p` for every applicable
+`(p,d)` with `d ∈ {1,2}`. So the missing `S11` lemma must be a **2-dimensional**
+Minkowski on the `z=0` slice (reuse `Proofs/MinkowskiTheoremOQ02OQ01.lean`), NOT an
+extension of the 3D `dirichletEllipsoid`/`dirichletSublatticeReal` (covolume p²)
+machinery that the earlier sessions kept building toward.
+
+**Net:** the per-session investment in S16b/S16c (real basis, covolume p²) does not
+advance the `Q<2p` step — those are 3D-sublattice inputs, and the 3D bound is too
+weak by a factor `~p^(1/3)`. Either build the 2D-slice Minkowski, or pivot to
+Davenport–Cassels (`G1-dirichlet-bearer.md`, PR #24149) — note the "don't do
+Davenport–Cassels / it duplicates GoN" advice above predates this gap analysis and
+should be re-weighed against it. Full arithmetic + empirics in
+`G2-minkowski-2p-gap.md` and `verify_minkowski_2p_gap.py`. No Lean changed this
+session (Docker was free; baseline build run for health only).

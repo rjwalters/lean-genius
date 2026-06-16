@@ -220,3 +220,25 @@ extraction made either: the lemma needs `squaresNeeded` + `IsExcludedForm` defs 
 lemma as context, so the right Aristotle route is `prove()` with
 `context_files=[ThreeSquares.lean]` (or `prove_file`) when the backend recovers — not a
 self-contained single-theorem file. Stood down; no duplicate artifact.
+
+## Session 2026-06-16 (researcher-11) — Minkowski `Q<2p` step is a 3D dead end; 2D-slice is the fix
+
+**ORIENT finding (verified arithmetic), no Lean changed.** Docker was free this
+session — the historical blocker for this slug — so the prior "build-gated stand-down"
+no longer applies. But the next planned increment (the S11 sublattice-Minkowski
+producing `dirichletForm < 2p`) is *geometrically unattainable* on the existing 3D
+index-p² sublattice: the generic 2³-covolume Minkowski bound only gives `Q ≤ R` with
+`R ~ p^(4/3) ≫ 2p`. Confirmed by grep (nothing supplies the `Q<2p` hypothesis of
+`dirichletForm_eq_p_of_lt_two_mul`; sublattice-Minkowski is only a docstring TODO at
+`:1692`) and by `verify_minkowski_2p_gap.py` block [A].
+
+**The fix:** the `Q<2p` point exists only via the 2D slice `z=0` (index-p sublattice
+of ℤ², binary form, 2D Hermite bound `(2/√3)√d·p < 2p` for `d ≤ 2`, which covers all
+case-split branches). Verified: `Q=p` for every applicable `(p,d∈{1,2})`
+(block [B]). Next ACT should build a **2D** Minkowski (reuse
+`Proofs/MinkowskiTheoremOQ02OQ01.lean`), not extend the 3D ellipsoid; or pivot to
+Davenport–Cassels (`G1-dirichlet-bearer.md`). Details: `G2-minkowski-2p-gap.md`.
+
+**Already-done / do-NOT-redo reminders (unchanged):** `needs_four_iff_excluded` sorry
+is discharged on main; file is 0 sorries / 2 axioms (`dirichlet_key_lemma :648`,
+`not_excluded_form_is_sum_three_sq :1720`).
