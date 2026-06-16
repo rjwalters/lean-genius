@@ -81,14 +81,14 @@
       "id": "examples",
       "title": "Concrete Calculations",
       "startLine": 164,
-      "endLine": 184,
-      "summary": "A fair-coin numerical sanity check (3 flips sum to 1) plus multinomial_expectation, a rfl placeholder that restates a tautology rather than proving a real expectation formula."
+      "endLine": 258,
+      "summary": "A fair-coin numerical sanity check (3 flips sum to 1) plus multinomial_mean, a genuine moment formula E[Xi] = n·pi derived by differentiating the MGF at t=0 (replacing the former rfl placeholder)."
     },
     {
       "id": "counting",
       "title": "Counting Identity (Multinomial Analog of ∑C(n,k)=2ⁿ)",
-      "startLine": 186,
-      "endLine": 199,
+      "startLine": 259,
+      "endLine": 294,
       "summary": "Specializes the multinomial theorem at f(i)=1 to prove |s|ⁿ = ∑ multinomial(s,k), generalizing the sum of binomial coefficients."
     }
   ],
@@ -99,7 +99,7 @@
       "RESOLVED: Multinomial PMF integrated with Mathlib PMF framework in BinomialTheoremOQ02OQ01OQ01.lean — construction via Composition type + ENNReal normalization",
       "Can marginal distributions be formally derived as binomials?",
       "Can the variance-covariance matrix Cov(Xi, Xj) = -n*pi*pj be proved?",
-      "The current `multinomial_expectation` theorem is a vacuous `rfl` (it restates ∑ P(k)·w(k) = ∑ P(k)·w(k)). Can a substantive mean E[Xi] = n·pi be derived by differentiating the MGF (∑ pj·e^{tj})^n at t = 0, giving a genuine moment formula rather than a tautology?"
+      "RESOLVED: `multinomial_mean` now proves E[Xi] = n·pi by differentiating the MGF (∑ pj·e^{tj})^n at t = 0 (specializing multinomial_mgf_real to g_j = if j=i then e^t else 1, then HasDerivAt.unique), replacing the former vacuous `rfl` placeholder. Open follow-up: variance Var(Xi) = n·pi·(1-pi) and covariance Cov(Xi,Xj) = -n·pi·pj via second MGF derivatives."
     ]
   },
   "leanFile": {
