@@ -7,15 +7,28 @@
   UNVERIFIED. Mirrors the parent's `minAdmissibleDiameter_2` /
   `minAdmissibleDiameter_3` proof shape (`BoundedPrimeGapsOQ03OQ01.lean:173/188`).
 
-  Two load-bearing obligations:
-    (1) `admissible_5tuple_0_2_6_8_12` — witness admissibility (easy; copy the
-        `admissible_quadruple_0_2_6_8` shape, line 165 of the parent).
-    (2) `admissible_5tuple_diam_ge_12` — the lower bound (the real content).
-        Strategy: translation-invariance to fix min = 0, then a finite
-        `native_decide` over the 5-subsets of {0,…,11} containing 0, each
-        inadmissible mod 2 or mod 3.
+  Obligations:
+    (1) `admissible_5tuple_0_2_6_8_12` — witness admissibility. **DONE** (S2,
+        researcher-1, 2026-06-16): transcribed verbatim from the verified
+        `admissible_quadruple_0_2_6_8` (parent line 165), extended card 4→5 with
+        the extra p=5 case. Pure `decide`/`linarith`, no `native_decide`; high
+        compile confidence (build-pending only because the whole file is).
+    (2) `admissible_5tuple_diam_ge_12` — the lower bound (the real content,
+        still `sorry`). Strategy: translation-invariance to fix min = 0, then a
+        finite enumeration over the 5-subsets of {0,…,11}, each inadmissible.
+        IMPORTANT decidability note (S2): `IsAdmissible` is `∀ p prime, …`, NOT
+        directly `Decidable`, so a raw `native_decide` on `¬IsAdmissible H`
+        will NOT typecheck. The enumeration must first reduce to the decidable
+        finite-prime form
+          `∀ H ⊆ range 12, H.card = 5 → ∃ p ∈ ({2,3,5} : Finset ℕ),
+             (H.image (· % p)).card = p`
+        (only p ≤ card = 5 can cover a 5-set), then bridge that to
+        `¬IsAdmissible` via `hadm p hp`. Needs: a ~12-line translation-invariance
+        lemma for `IsAdmissible`/`fsDiameter` + the p≤5 reduction + the
+        `native_decide` enumeration (~C(12,5)=792 subsets) + assembly.
 
-  On a Docker-up worktree: build this file; if green, transcribe into a new
+  On a Docker-up worktree: build this file; obligation (1) should go green as-is;
+  obligation (2) is the remaining work. If green, transcribe into a new
   registered `Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean` (or fold into the parent
   next to D(2)/D(3)).
 -/
@@ -33,7 +46,27 @@ open Nat Finset BoundedPrimeGaps BoundedPrimeGapsOQ03OQ01
     the `IsAdmissible` predicate, exactly as `admissible_quadruple_0_2_6_8`. -/
 theorem admissible_5tuple_0_2_6_8_12 :
     IsAdmissible ({0, 2, 6, 8, 12} : Finset ℕ) := by
-  sorry  -- copy admissible_quadruple_0_2_6_8 shape (parent line 165)
+  -- Transcribed from the verified `admissible_quadruple_0_2_6_8` (parent line
+  -- 165), extended from card 4 to card 5 with the extra p = 5 case. Covering
+  -- check by `decide`: mod 2 → {0} (1<2), mod 3 → {0,2} (2<3),
+  -- mod 5 → {0,1,2,3} (4<5); every p ≥ 7 has image card ≤ 5 < 7 ≤ p.
+  intro p hp
+  have himg : (({0, 2, 6, 8, 12} : Finset ℕ).image (· % p)).card ≤ 5 := by
+    calc (({0, 2, 6, 8, 12} : Finset ℕ).image (· % p)).card
+        ≤ ({0, 2, 6, 8, 12} : Finset ℕ).card := Finset.card_image_le
+      _ = 5 := by decide
+  by_cases hp2 : p = 2
+  · subst hp2; decide
+  · by_cases hp3 : p = 3
+    · subst hp3; decide
+    · by_cases hp5 : p = 5
+      · subst hp5; decide
+      · have hp7 : p ≥ 7 := by
+          have h2le := hp.two_le
+          rcases hp.eq_two_or_odd with h2 | hodd
+          · exact absurd h2 hp2
+          · omega
+        linarith
 
 /-- **Lower bound — the real content.** Every admissible 5-tuple has diameter
     ≥ 12. By translation-invariance assume `min = 0`; then `H ⊆ {0,…,11}` would
