@@ -91,7 +91,7 @@
     "range": { "startLine": 6, "endLine": 59 },
     "type": "concept",
     "title": "Verification Provenance and Build-Free Numerical Certificates",
-    "content": "The module docstring records the epistemic status of this entry, which is unusually explicit. Sessions S1–S13 transcribed the proof *blind*, under a simultaneous Docker and Aristotle outage, so no step could be machine-checked; session S14 (the first with a live Docker backend) confirmed the blind transcription compiles green via `docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03`, with 0 errors / 0 sorries / 0 axioms. Two re-runnable Python scripts certify the mathematics independently of the Lean build: `verify_zolotarev.py` checks the headline identity $(a/p) = \\operatorname{sign}(\\pi_a)$ for every $a$ across all odd primes $3 \\le p < 80$, and `verify_m1_cycle_lemma.py` checks the `IsCycle` constructor obligations for $\\operatorname{mulLeft} g$ across 45 odd primes up to 199. The docstring is equally explicit about scope: this is Milestone 1 only — the headline Zolotarev identity and Milestone 2 (reciprocity from the grid-transpose sign) are NOT yet in Lean, so the open question is verified *partial* progress, not resolved.",
+    "content": "The module docstring records the epistemic status of this entry, which is unusually explicit. Sessions S1–S13 transcribed the proof *blind*, under a simultaneous Docker and Aristotle outage, so no step could be machine-checked; session S14 (the first with a live Docker backend) confirmed the blind transcription compiles green via `docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03`, with 0 errors / 0 sorries / 0 axioms. Two re-runnable Python scripts certify the mathematics independently of the Lean build: `verify_zolotarev.py` checks the headline identity $(a/p) = \\operatorname{sign}(\\pi_a)$ for every $a$ across all odd primes $3 \\le p < 80$, and `verify_m1_cycle_lemma.py` checks the `IsCycle` constructor obligations for $\\operatorname{mulLeft} g$ across 45 odd primes up to 199. The docstring is equally explicit about scope: sessions S16/S17 (Docker recovered) extended the file beyond Milestone 1 to the verified Euler-side crux and the units-form Zolotarev headline, but the exact OQ-pinned field statement (via mulLeft₀) and Milestone 2 (reciprocity from the grid-transpose sign) are NOT yet in Lean, so the open question is verified *partial* progress, not resolved.",
     "mathContext": "Imports are deliberately narrow — `Mathlib.NumberTheory.LegendreSymbol.Basic` for the Legendre symbol, `Mathlib.GroupTheory.Perm.Cycle.Basic` for `IsCycle`/`sign`, and `Mathlib.GroupTheory.SpecificGroups.Cyclic` for the generator API — pinned at mathlib rev `2df2f01` (v4.26.0), the same pin at which `Equiv.mulLeft_zpow` was confirmed absent. Separating a numerically-certified claim (decidable, finite checks over small primes) from the asymptotic/structural Lean theorem is the same honesty discipline used elsewhere in the gallery: a finite certificate corroborates but never substitutes for the machine-checked proof.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -105,6 +105,50 @@
       "Lean 4 build process",
       "Legendre symbol",
       "reading a formalization's epistemic status"
+    ]
+  },
+  {
+    "id": "ann-euler-crux",
+    "proofId": "quadratic-reciprocity-algorithm-oq-03",
+    "range": { "startLine": 190, "endLine": 230 },
+    "type": "insight",
+    "title": "The Euler-Side Crux: Primitive Root to the (p−1)/2 Power",
+    "content": "`primitiveRoot_pow_half_eq_neg_one` (session S16) is the genuinely-new Euler-side ingredient the headline needs beyond the verified sign computation. For a generator $g$ of $(\\mathbb{Z}/p)^\\times$ it shows $(g : \\mathbb{Z}/p)^{(p-1)/2} = -1$ in the field. The decisive design choice is to argue in the FIELD $\\mathbb{Z}/p$ rather than the units group: with $x = (g : \\mathbb{Z}/p)$ and $m = (p-1)/2$, one has $(x^m)^2 = x^{p-1} = 1$ by `ZMod.pow_card_sub_one_eq_one`, while $x^m \\neq 1$ because $m < \\operatorname{orderOf} x = p-1$. In a field the only square root of $1$ other than $1$ is $-1$ (`mul_self_eq_one_iff`), so $x^m = -1$. Staying field-side sidesteps the units `Neg`-instance subtlety flagged at S15.",
+    "mathContext": "$\\operatorname{orderOf}(g \\bmod p) = p-1$, so for $m = \\tfrac{p-1}{2}$: $(x^m)^2 = x^{2m} = x^{p-1} = 1$ and $x^m \\neq 1$, hence $x^m = -1$ by $t^2 = 1 \\Rightarrow t = \\pm 1$ in a field. This is Euler's criterion specialised to the quadratic non-residue value $-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's criterion",
+      "primitive root",
+      "order of a group element",
+      "square roots of unity in a field",
+      "ZMod.pow_card_sub_one_eq_one"
+    ],
+    "prerequisites": [
+      "multiplicative order",
+      "finite field arithmetic",
+      "mul_self_eq_one_iff"
+    ]
+  },
+  {
+    "id": "ann-units-form-headline",
+    "proofId": "quadratic-reciprocity-algorithm-oq-03",
+    "range": { "startLine": 232, "endLine": 289 },
+    "type": "theorem",
+    "title": "Units-Form Zolotarev Headline: legendreSym = sign(mulLeft)",
+    "content": "`legendreSym_eq_sign_mulLeft` (session S17) assembles the verified pieces into the units-form Zolotarev identity: for an odd prime $p$ and $u : (\\mathbb{Z}/p)^\\times$, $\\operatorname{legendreSym} p\\,(u.\\mathrm{val}) = \\operatorname{sign}(\\operatorname{mulLeft} u)$. Writing $u = g^k$ for a generator $g$ (its discrete log), the SIGN side gives $(-1)^k$ via `sign_mulLeft_eq_neg_one_zpow`, while the LEGENDRE side gives $(-1)^k$ via `legendreSym.eq_pow` together with the crux $(g)^{(p-1)/2} = -1$. Both sides are $\\pm 1$ but live in different types — `legendreSym` is ℤ-valued, the computation happens in $\\mathbb{Z}/p$ — so the proof finishes by lifting the equality back to ℤ with `intCast_inj_pm`, valid because $1 \\neq -1$ in $\\mathbb{Z}/p$ for odd $p$ (`zmod_one_ne_neg_one`). This is Zolotarev's lemma on the units group; the field form via `mulLeft₀` (fixing 0) still needs the units→field sign bridge.",
+    "mathContext": "$\\left(\\tfrac{u}{p}\\right) = \\operatorname{legendreSym} p\\,(u.\\mathrm{val}) = (-1)^k = \\operatorname{sign}(\\operatorname{mulLeft} u)$, where $u = g^k$ and $g$ generates $(\\mathbb{Z}/p)^\\times$; the middle equality on the Legendre side uses $\\operatorname{legendreSym} p\\,a \\equiv a^{(p-1)/2} \\pmod p$ and $(g^k)^{(p-1)/2} = ((g)^{(p-1)/2})^k = (-1)^k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zolotarev's lemma",
+      "discrete logarithm",
+      "legendreSym.eq_pow",
+      "MonoidHom functoriality",
+      "integer cast injectivity on ±1"
+    ],
+    "prerequisites": [
+      "Euler's criterion (legendreSym.eq_pow)",
+      "discrete log in a cyclic group",
+      "casting between ZMod p and ℤ"
     ]
   }
 ]
