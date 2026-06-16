@@ -1,4 +1,4 @@
-# Knowledge Base: descartes-circle-theorem-oq-01
+# Knowledge Base: routh-theorem-oq-01
 
 Insights accumulated during research on this problem.
 
