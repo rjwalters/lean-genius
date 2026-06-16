@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-15",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ShannonEntropyOQ01OQ01.lean",
     "tags": [
       "information-theory",
@@ -23,7 +23,7 @@
     "lineCount": 88,
     "theoremCount": 3,
     "definitionCount": 1,
-    "assumptions": "None mathematically (0 axioms, 0 sorries). Build pending: not yet machine-verified locally because the Docker build pool was saturated this session. Reuses the verified `differentialEntropy` definition from shannon-entropy-oq-01.",
+    "assumptions": "None mathematically (0 axioms, 0 sorries). Machine-verified locally via Docker (lean4-arm64:v4.26.0, 7744 jobs, green). Reuses the verified `differentialEntropy` definition from shannon-entropy-oq-01.",
     "originalContributions": [
       "uniformPDF: the Uniform[a,b] density as a Lebesgue indicator Set.indicator (Icc a b) (1/(b-a))",
       "uniformDifferentialEntropy: h(Uniform[a,b]) = ln(b-a)",
@@ -84,7 +84,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the differential entropy of Uniform[a,b]: h = ln(b-a), answering the first open question of shannon-entropy-oq-01. 88 lines, 3 theorems, 1 definition, 0 sorries, 0 axioms (build pending local verification).",
+    "summary": "Formalizes the differential entropy of Uniform[a,b]: h = ln(b-a), answering the first open question of shannon-entropy-oq-01. 88 lines, 3 theorems, 1 definition, 0 sorries, 0 axioms (Docker-verified, 7744 jobs green).",
     "implications": "Confirms the differentialEntropy framework of the parent entry handles concrete continuous distributions cleanly via Lebesgue indicators, and supplies the canonical example of a negative differential entropy (b-a < 1).",
     "openQuestions": [
       "Formalize the maximum-entropy characterization of the uniform distribution: among densities supported on [a,b], the uniform density maximizes differential entropy",

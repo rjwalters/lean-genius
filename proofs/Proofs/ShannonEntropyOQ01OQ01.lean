@@ -47,8 +47,9 @@ theorem uniformPDF_integral_eq_one {a b : ℝ} (hab : a < b) :
   have hne : b - a ≠ 0 := ne_of_gt hpos
   unfold uniformPDF
   rw [MeasureTheory.integral_indicator measurableSet_Icc,
-      MeasureTheory.setIntegral_const, Real.volume_Icc,
-      ENNReal.toReal_ofReal hpos.le, smul_eq_mul, mul_one_div, div_self hne]
+      MeasureTheory.setIntegral_const, MeasureTheory.measureReal_def,
+      Real.volume_Icc, ENNReal.toReal_ofReal hpos.le, smul_eq_mul, mul_one_div,
+      div_self hne]
 
 /-- Differential entropy of the Uniform[a,b] distribution is `ln(b - a)`. -/
 theorem uniformDifferentialEntropy {a b : ℝ} (hab : a < b) :
@@ -64,14 +65,14 @@ theorem uniformDifferentialEntropy {a b : ℝ} (hab : a < b) :
     unfold uniformPDF
     by_cases hx : x ∈ Set.Icc a b
     · simp only [Set.indicator_of_mem hx]
-    · simp only [Set.indicator_of_not_mem hx, zero_mul]
+    · simp only [Set.indicator_of_notMem hx, zero_mul]
   -- Integrate the constant over [a,b] of Lebesgue length (b-a).
   have hint :
       ∫ x, uniformPDF a b x * Real.log (uniformPDF a b x) = -Real.log (b - a) := by
     rw [hkey, MeasureTheory.integral_indicator measurableSet_Icc,
-        MeasureTheory.setIntegral_const, Real.volume_Icc,
-        ENNReal.toReal_ofReal hpos.le, smul_eq_mul, one_div, Real.log_inv,
-        ← mul_assoc, mul_inv_cancel₀ hne, one_mul]
+        MeasureTheory.setIntegral_const, MeasureTheory.measureReal_def,
+        Real.volume_Icc, ENNReal.toReal_ofReal hpos.le, smul_eq_mul, one_div,
+        Real.log_inv, ← mul_assoc, mul_inv_cancel₀ hne, one_mul]
   unfold differentialEntropy
   rw [hint, neg_neg]
 
