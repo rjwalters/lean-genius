@@ -58,5 +58,17 @@
     "significance": "key",
     "relatedConcepts": ["cyclic symmetry", "triangle inequality", "vertex relabeling"],
     "prerequisites": ["symmetry arguments"]
+  },
+  {
+    "id": "ann-linear-combination",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": { "startLine": 44, "endLine": 49 },
+    "type": "tactic",
+    "title": "Using the Identity as a Certificate: linear_combination",
+    "content": "The bridge from the hypothesis-free identity to the inequality. `linear_combination pompeiu_identity a b c p` proves the rearranged goal $(p-a)(b-c) = -((p-b)(c-a) + (p-c)(a-b))$ by certifying that goal-minus-(1·identity) reduces to $0 = 0$ under `ring`. This isolates the $a$-term so that the next line can hit it with `norm_add_le`. The pattern — prove a clean polynomial identity once, then `linear_combination` it into whatever local rearrangement a step needs — is the standard Lean idiom for reusing algebraic identities without re-running `ring` on a bespoke expression each time.",
+    "mathContext": "$\\text{goal} - 1\\cdot\\text{identity} \\xrightarrow{\\text{ring}} 0;\\quad (p-a)(b-c) = -\\big((p-b)(c-a) + (p-c)(a-b)\\big).$",
+    "significance": "supporting",
+    "relatedConcepts": ["linear_combination tactic", "polynomial certificate", "ring normalization", "norm_add_le"],
+    "prerequisites": ["Lean tactics", "commutative ring identities"]
   }
 ]

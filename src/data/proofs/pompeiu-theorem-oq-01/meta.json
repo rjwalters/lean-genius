@@ -85,7 +85,8 @@
       "**Hypothesis-free identity**: (p-a)(b-c) + (p-b)(c-a) + (p-c)(a-b) = 0 holds for *any* four points — geometry enters only through the equilateral side-length equality",
       "**Side-length cancellation**: the equilateral hypothesis equates the three coefficient magnitudes so the common side length divides out, turning a weighted inequality into the plain triangle inequality",
       "**Equality = circumcircle**: the degenerate triangle occurs exactly when P lies on the circumcircle, which is the equality case of Ptolemy's inequality for the equilateral triangle",
-      "**Same engine as Ptolemy**: the three-term Lagrange identity used here is the algebraic core shared with the complex-number proof of Ptolemy's inequality"
+      "**Same engine as Ptolemy**: the three-term Lagrange identity used here is the algebraic core shared with the complex-number proof of Ptolemy's inequality",
+      "**Rotation-free**: unlike the gallery's complex proof of Napoleon's theorem — which needs the primitive cube root of unity to encode a 60° rotation — Pompeiu uses no orientation, angle, or rotation data at all. Only the scalar equalities |a-b|=|b-c|=|c-a| are consumed, so the proof never distinguishes the two orientations of the equilateral triangle and holds verbatim for the degenerate (single-point) configuration"
     ],
     "prerequisites": [
       "Complex numbers and arithmetic in ℂ",
