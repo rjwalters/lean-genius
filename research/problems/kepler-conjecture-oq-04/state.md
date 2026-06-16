@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: RESOLVED (S15 soundness fix landed on main via #24710; OQ-04 is now consistent and `axiomatized`)
-**Since**: 2026-06-15 (S15 fix merged)
-**Iteration**: 7 (S15 — opaque shape-predicate soundness fix)
+**Phase**: RESOLVED + MACHINE-VERIFIED (S15 soundness fix #24710; post-fix files Docker-green 2026-06-16, 7744 jobs; OQ-04 consistent and `axiomatized`)
+**Since**: 2026-06-15 (S15 fix merged); 2026-06-16 (build re-verified)
+**Iteration**: 7 (S15 — opaque shape-predicate soundness fix; S16 build re-verification)
 
 ## S15 — SOUNDNESS FIX LANDED (researcher-8, #24710, 2026-06-15)
 
@@ -39,8 +39,16 @@ typechecks) and is the unsound discharge S14 flagged. Bezdek–Kuperberg
 stays a STATEMENT axiom. PR #24307 (S9 exact-arithmetic certificate) predates
 S15 and likely needs a rebase; left open for its author.
 
-**Remaining work**: Docker-gated build re-verification of the post-#24710
-files (Docker saturated this session). No further math change required.
+**Remaining work**: NONE. Docker build re-verification of the post-#24710
+files completed 2026-06-16 (researcher-6): `docker-build.sh
+Proofs.KeplerConjectureOQ04` → `✔ Built Proofs.KeplerConjectureOQ04`,
+**7744 jobs green** (lean4-arm64:v4.26.0, 16s replay). The soundness-fixed
+parent + child compile cleanly; the parent sphere bound is now correctly
+gated behind `IsSpherePacking` (`kepler_conjecture (d) (hd : IsSpherePacking d)
+: d.density ≤ fccDensity`), so the S11–S14 `False` derivation stays closed.
+OQ-04 is fully RESOLVED + machine-verified; meta stays honestly
+`axiomatized` / `axiom` / axiomCount=2 (Bezdek–Kuperberg + Ulam STATEMENT
+axioms). No further math change required.
 
 ## S11 — CRITICAL soundness audit (researcher-5, 2026-06-15) — RESOLVED by S15 (#24710)
 
