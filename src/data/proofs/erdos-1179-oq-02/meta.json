@@ -67,11 +67,19 @@
   "sections": [
     {
       "id": "overview-and-setup",
-      "title": "Problem Framing, Parent Dependency, and Imports",
+      "title": "Problem Framing and Parent Dependency",
       "startLine": 1,
-      "endLine": 48,
+      "endLine": 43,
       "summary": "The module docstring frames Erdős #1179 (Erdős–Hall 1976, gₑ(N) = (1+oₑ(1))·log₂N) and OQ-02's sharpening to an additive Oₑ(1) error, then states what is formalized here: the axiom-free per-subset lower bound N ≤ 2^|A| underlying the parent's abstract axiom basic_lower_bound. It explains the key non-circular insight (μ > 0 from N ≥ 1 alone drives spanning) and records the only dependencies — Erdos1179.total_reprCount and expectedReprCount_pos — followed by the imports (Proofs.Erdos1179Problem, Mathlib), the Erdos1179 namespace, and open Finset Real.",
       "mathContext": "Sets up $\\mu = 2^{|A|}/N$, the ε-uniformity bound $|F_A(g)-\\mu| \\le \\varepsilon\\mu$, and the parent identity $\\sum_g F_A(g) = 2^{|A|}$ used downstream."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Namespace Setup",
+      "startLine": 44,
+      "endLine": 48,
+      "summary": "Imports the parent Erdős #1179 development (which supplies the definitions reprCount, expectedReprCount μ, the ε-uniformity predicate epsUniform, and the lemmas expectedReprCount_pos and total_reprCount) and opens the Erdos1179 namespace so the concrete lower-bound theorems can reuse the parent's machinery without redefining it.",
+      "mathContext": "Brings the parent identities $\\mu = 2^{|A|}/N > 0$ (for $N \\ge 1$) and $\\sum_g F_A(g) = 2^{|A|}$ into scope for the three theorems that follow."
     },
     {
       "id": "spanning",
@@ -82,12 +90,20 @@
       "mathContext": "$F_A(g) \\ge (1-\\varepsilon)\\mu > 0 \\Rightarrow F_A(g) \\ge 1$ for all $g$, given $\\varepsilon < 1$."
     },
     {
-      "id": "lower-bound",
-      "title": "The Trivial Lower Bound N ≤ 2^|A| and ⌈log₂N⌉ ≤ |A|",
+      "id": "lower-bound-card",
+      "title": "The Trivial Lower Bound N ≤ 2^|A|",
       "startLine": 77,
+      "endLine": 91,
+      "summary": "card_le_two_pow_of_epsUniform sums the spanning bound over all N group elements: N = Σ_g 1 ≤ Σ_g F_A(g) (Finset.sum_le_sum with epsUniform_spanning), and total_reprCount gives Σ_g F_A(g) = 2^|A|. The calc chain yields N ≤ 2^|A| — the information-theoretic statement that the 2^|A| subsets of A must cover all N group elements.",
+      "mathContext": "$N=\\sum_g 1 \\le \\sum_g F_A(g) = 2^{|A|}$."
+    },
+    {
+      "id": "lower-bound-clog",
+      "title": "Logarithmic Form ⌈log₂N⌉ ≤ |A|",
+      "startLine": 93,
       "endLine": 104,
-      "summary": "card_le_two_pow_of_epsUniform sums spanning over all N group elements and applies total_reprCount (Σ_g F_A(g) = 2^|A|) to get N ≤ 2^|A|. clog_le_card_of_epsUniform converts this via Nat.le_pow_iff_clog_le into the integer headline bound ⌈log₂N⌉ ≤ |A|.",
-      "mathContext": "$N=\\sum_g 1 \\le \\sum_g F_A(g) = 2^{|A|}$, so $\\lceil\\log_2 N\\rceil \\le |A|$."
+      "summary": "clog_le_card_of_epsUniform converts N ≤ 2^|A| into the integer headline bound Nat.clog 2 N ≤ |A| via Nat.le_pow_iff_clog_le (valid since base 2 > 1). Since Nat.clog 2 N = ⌈log₂N⌉, this is exactly the trivial lower bound gₑ(N) ≥ log₂N at the per-subset level.",
+      "mathContext": "$N \\le 2^{|A|} \\iff \\lceil\\log_2 N\\rceil = \\operatorname{clog}_2 N \\le |A|$."
     }
   ],
   "crossReferences": [

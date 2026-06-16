@@ -3,11 +3,11 @@
     "id": "e1179-oq02-ann-overview",
     "proofId": "erdos-1179-oq-02",
     "range": { "startLine": 1, "endLine": 43 },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős #1179 OQ-02 and the Trivial Lower Bound",
     "content": "Erdős #1179 (Erdős–Hall, 1976) gives the minimal number gₑ(N) of random group elements needed for an ε-uniform subset-sum representation in an abelian group of order N: gₑ(N) = (1 + oₑ(1))·log₂N. OQ-02 asks whether the multiplicative (1+o(1)) factor sharpens to a bounded additive error gₑ(N) ≤ log₂N + Oₑ(1), matching the trivial lower bound gₑ(N) ≥ log₂N. This file formalizes the lower-bound side concretely and axiom-free at the per-subset level, replacing the parent file's abstract axiom basic_lower_bound and removing its circular uniform_implies_spanning hypothesis. The headline additive upper bound remains open.",
     "mathContext": "$g_\\varepsilon(N) = (1+o_\\varepsilon(1))\\log_2 N$; OQ-02 target: $g_\\varepsilon(N) \\le \\log_2 N + O_\\varepsilon(1)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős problems", "additive combinatorics", "subset sums", "abelian groups", "information-theoretic lower bound"],
     "prerequisites": ["finite abelian groups", "subset-sum representations", "asymptotic notation"]
   },
@@ -31,7 +31,7 @@
     "title": "Transferring a Strict Real Bound to a ℕ Lower Bound",
     "content": "The spanning conclusion is the natural-number inequality 1 ≤ reprCount A g, but the uniformity hypothesis lives over ℝ. The proof bridges the two with a reusable three-step pattern. (1) Derive the strict real inequality 0 < (reprCount A g : ℝ) from (1−ε)·μ > 0 (a product of two positives, mul_pos) and F_A(g) ≥ (1−ε)·μ (linarith). (2) Convert positivity of the cast to non-vanishing of the natural number: reprCount A g ≠ 0, since reprCount A g = 0 would force the cast to 0, contradicting hpos (rw + simp). (3) Close with omega, which upgrades n ≠ 0 to 1 ≤ n for n : ℕ. The key subtlety is that ℕ has no strict order below 1 — there is no natural number strictly between 0 and 1 — so a real lower bound that is merely positive (not ≥ 1) still yields the sharp integer bound 1 ≤ n once cast-positivity rules out n = 0. Using nlinarith/linarith for the ℝ side and omega for the ℕ side keeps each step in the arithmetic where it is decidable.",
     "mathContext": "$0 < (\\,\\mathrm{reprCount}\\,A\\,g : \\mathbb{R}) \\Rightarrow \\mathrm{reprCount}\\,A\\,g \\neq 0 \\xrightarrow{\\;\\omega\\;} 1 \\le \\mathrm{reprCount}\\,A\\,g$, exploiting that $\\mathbb{N}$ has no element in $(0,1)$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["Nat.cast positivity", "ℕ↔ℝ coercion", "omega", "mul_pos", "discreteness of ℕ"],
     "prerequisites": ["Nat.cast and Nat.cast_pos", "linarith/nlinarith", "omega decision procedure"]
   },
