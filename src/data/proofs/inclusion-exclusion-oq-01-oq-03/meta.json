@@ -56,7 +56,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Möbius inversion, introduced by August Ferdinand Möbius in 1832, is the number-theoretic form of inclusion–exclusion: the Möbius function μ plays the role of the inclusion–exclusion sign on the lattice of divisors. The classical statement is that f(n) = Σ_{d|n} g(d) for all n is equivalent to g(n) = Σ_{d|n} μ(d)·f(n/d). This entry — open question OQ-03 of the parent gallery entry inclusion-exclusion-oq-01, which proves the divisor–totient identity Σ_{d|n} φ(d) = n via the inclusion–exclusion sieve — formalizes the textbook divisor-form inversion and uses it to invert the parent's identity into the Möbius form of Euler's totient.",
+    "historicalContext": "Möbius inversion, introduced by August Ferdinand Möbius in 1832, is the number-theoretic form of inclusion–exclusion: the Möbius function μ plays the role of the inclusion–exclusion sign on the lattice of divisors. The classical statement is that f(n) = Σ_{d|n} g(d) for all n is equivalent to g(n) = Σ_{d|n} μ(d)·f(n/d). This entry — open question OQ-03 of the parent gallery entry inclusion-exclusion-oq-01, which proves the divisor–totient identity Σ_{d|n} φ(d) = n via the inclusion–exclusion sieve — formalizes the textbook divisor-form inversion and uses it to invert the parent's identity into the Möbius form of Euler's totient. The formula soon became a workhorse of analytic number theory: written through Dirichlet generating series it is the relation 1/ζ(s) = Σ_{n≥1} μ(n)/nˢ, so the Möbius function controls the inversion of the Riemann zeta function's Euler product and, through Mertens' estimates on Σ μ(n), the error terms in the prime number theorem. In 1964 Gian-Carlo Rota, in 'On the foundations of combinatorial theory I', recognized Möbius inversion as a single phenomenon living in the incidence algebra of any locally finite partially ordered set: the number-theoretic μ is the Möbius function of the divisor lattice, while the alternating signs of ordinary inclusion–exclusion are the Möbius function of the Boolean (subset) lattice — unifying this entry with the classical inclusion–exclusion results.",
     "problemStatement": "Formalize Möbius inversion in divisor form: f(n) = Σ_{d|n} g(d) ⟺ g(n) = Σ_{d|n} μ(d)·f(n/d).",
     "text": "A 94-line formalization. Mathlib proves Möbius inversion in antidiagonal form (sum_eq_iff_sum_mul_moebius_eq); this file states and proves the equivalent textbook divisor-sum form by bridging through Nat.sum_divisorsAntidiagonal, then applies it to the parent's Σ_{d|n} φ(d) = n to obtain the Möbius expression φ(n) = Σ_{d|n} μ(d)·(n/d). 0 axioms, 0 sorries.",
     "proofStrategy": "moebius_inversion_divisors proves both directions: from f(n) = Σ_{d|n} g(d), apply Mathlib's antidiagonal inversion to get the antidiagonal sum, then rewrite via Nat.sum_divisorsAntidiagonal into the divisor sum (and eq_comm for orientation); the converse mirrors this. totient_eq_sum_moebius_mul instantiates f = id, g = φ and feeds the cast of Nat.sum_totient as the forward hypothesis, yielding the Möbius totient identity over ℤ.",
@@ -65,7 +65,10 @@
       "Mathlib's inversion is stated over divisorsAntidiagonal; the genuinely useful textbook shape Σ_{d|n} μ(d)·f(n/d) requires the Nat.sum_divisorsAntidiagonal reindexing bridge, which is the technical content here",
       "The mathematical depth lives in Mathlib's sum_eq_iff_sum_mul_moebius_eq; the contribution is a faithful, reusable restatement plus the Euler-φ corollary, not new depth — stated honestly",
       "The Euler-φ corollary is the literal inverse of the parent entry's Σ_{d|n} φ(d) = n: inverting a divisor-sum identity with μ recovers the summand, here φ(n) = Σ_{d|n} μ(d)·(n/d)",
-      "The Möbius convolution identity Σ_{d|n} μ(d) = [n=1] — the defining property μ ∗ 1 = δ — falls out of the same inversion with f ≡ 1, exhibiting the cleanest inclusion–exclusion cancellation: the divisor-lattice IE signs sum to zero except at n = 1"
+      "The Möbius convolution identity Σ_{d|n} μ(d) = [n=1] — the defining property μ ∗ 1 = δ — falls out of the same inversion with f ≡ 1, exhibiting the cleanest inclusion–exclusion cancellation: the divisor-lattice IE signs sum to zero except at n = 1",
+      "Over Dirichlet generating series the same convolution is the identity 1/ζ(s) = Σ_{n≥1} μ(n)/nˢ: the coefficient-level statement μ ∗ 1 = δ proved here is the arithmetic shadow of inverting the Riemann zeta function's Euler product, which is exactly why μ governs the error terms in analytic number theory",
+      "Möbius inversion on divisors is the divisor-lattice case of Rota's general theory of Möbius functions on locally finite posets (1964); ordinary inclusion–exclusion (and the derangement count) is the subset-lattice case, so this entry and the classical IE entries are two specializations of a single incidence-algebra theorem rather than separate results",
+      "Because the theorem is stated over an arbitrary commutative ring R, one proof simultaneously delivers the integer totient identity, rational/real Dirichlet-coefficient inversions, and the complex-analytic form — the generality is free since μ enters only through the canonical ℤ → R map"
     ]
   },
   "sections": [
@@ -120,6 +123,31 @@
       "targetId": "inclusion-exclusion",
       "relationship": "applies",
       "description": "Realizes the inclusion–exclusion principle in its Möbius-function form on the divisor lattice."
+    },
+    {
+      "targetId": "inclusion-exclusion-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "General k-set inclusion–exclusion is the subset-lattice instance of the incidence-algebra Möbius function; this entry is its divisor-lattice counterpart, with the number-theoretic μ playing the role of the lattice's Möbius sign."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "The Euler-φ corollary here, φ(n) = Σ_{d|n} μ(d)·(n/d), is the Möbius-inverted form of the totient: it exhibits φ as both a divisor sum (Σ_{d|n} φ(d) = n) and a Möbius sum, the two faces connected by the inversion proved in this entry."
+    },
+    {
+      "targetId": "sum-of-divisors",
+      "relationship": "related",
+      "description": "The sum-of-divisors function σ(n) = Σ_{d|n} d is another divisor-sum arithmetic function; the divisor-form inversion established here inverts it to a Möbius expression σ(n) = Σ_{d|n} μ(d)·F(n/d) exactly as it inverts the totient identity, illustrating the reusability of the bridge."
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "complementary",
+      "description": "The derangement count Dₙ = n!·Σ_{k}(−1)ᵏ/k! is ordinary inclusion–exclusion on the subset lattice; the Möbius inversion here is the divisor-lattice instance of the same principle, so the two entries are parallel specializations of Rota's general Möbius function on a locally finite poset."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The Möbius convolution identity Σ_{d|n} μ(d) = [n=1] (μ ∗ 1 = δ) proved here is the elementary seed of the Möbius/Mertens machinery — the partial-sum estimate Σ_{n≤x} μ(n) = o(x) — that underlies analytic proofs of the prime number theorem."
     }
   ],
   "conclusion": {
