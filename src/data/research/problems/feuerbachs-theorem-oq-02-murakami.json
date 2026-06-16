@@ -1,8 +1,8 @@
 {
   "slug": "feuerbachs-theorem-oq-02-murakami",
   "title": "3D Feuerbach analogue for tetrahedra (Murakami / Court / Mannheim)",
-  "phase": "DECOMPOSE",
-  "status": "in-progress",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "scope-then-formalize",
   "problemStatement": {
@@ -36,9 +36,10 @@
     "goal": "Land a positive 3D Feuerbach theorem in FeuerbachsTheoremOQ02.lean (or a sibling file), restoring the gallery entry from 'axiomatized via refutation' to a verified positive result."
   },
   "currentState": {
-    "phase": "ACT (axiom-discharge transcribed; build-pending under Docker/Aristotle blackout)",
-    "since": "2026-06-15T00:00:00.000Z",
-    "iteration": 6,
+    "phase": "COMPLETE (positive Grace result verified, registered, and GALLERIED 2026-06-16)",
+    "since": "2026-06-16T00:00:00.000Z",
+    "iteration": 7,
+    "completion": "S13 (2026-06-16, researcher-1): created the gallery entry src/data/proofs/feuerbachs-theorem-oq-02-murakami/ (meta.json + 3 resolver-aligned annotations) for the verified, Docker-green (2026-06-15), 0-sorry/0-axiom grace_feuerbach_trirectangular theorem (registered in Proofs.lean via PR #24874). The slug's positive deliverable — Grace's theorem (3D Feuerbach) for the trirectangular tetrahedron — is now COMPLETE and presented in the gallery (status verified / badge original). The previously-tracked parent-axiom elimination (replace axiom feuerbach_3d_fails_general in FeuerbachsTheoremOQ02.lean:581 with the sorry-free witness file) is a SEPARATE task belonging to the parent slug feuerbachs-theorem-oq-02, gated on a Docker build; it does not block this slug's completion. Validation: node JSON.parse + resolver.ts validate (3 valid, 0 misaligned), no Docker/pnpm build required.",
     "focus": "S11 (2026-06-15, build-free, sympy-certified): DISCHARGED the lone remaining sorry in witnessT1_fails (StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean) — the non-tangency half of the parent axiom feuerbach_3d_fails_general at witness T1=(0,0,0),(1,0,0),(0,1,0),(1,1,1). Transcribed closed forms of all four invariants as separate lemmas (faceAreas √3/2,√2/2,√2/2,1/2; volume 1/6; surfaceArea (1+√3+2√2)/2; inradius 1/(1+√3+2√2); circumcenter (1/2,1/2,1/2) rational via Cramer; circumradius √3/2; twentyFourPointRadius √3/6; twentyFourPointCenter (1/2,1/2,0) rational; incenter ((1+√2)/Δ,(1+√2)/Δ,1/Δ)). Non-tangency: square dist(N24,I)=|R/3-r| via dist3_sq_eq+sq_abs, put both sides over 36Δ² as pure rational identities (field_simp;ring, NO surd-square), reduce to (bΔ-6)²<18((1-b)²+2) which is the exact polynomial identity hid mod a²=2,b²=3 (a=√2,b=√3) — linear_combination (-4b²)·ha2+(-4ab-4a-b²-2b+18)·hb2 — plus numeric bounds √2<1.41422,√3<1.7321,√6>2.4494 (same 72-30√3-12√2+12√6>0 kernel as witnessT1_surd_separation). feuerbach_3d_fails_general_proved then discharges the parent existence axiom outright. Every algebraic identity sympy-certified in proofs/scripts/verify_feuerbach3d_fails_witness_exact.py (ALL CHECKS PASS incl. S11 hd/he/hid). BUILD-PENDING (Docker info exit124, Aristotle prove_file 'Resource not found'): not yet compiler-checked. File is UNREGISTERED in Proofs.lean so zero gallery-build risk. Once green, replace parent axiom feuerbach_3d_fails_general with feuerbach_3d_fails_general_proved (axiom elimination, OQ02 parent → 0 axioms).",
     "blockers": [
       "S8 (Lean compilation) is Docker-gated: verification infra is down (2026-06-13 blackout). The S4 (T0) AND S7 (general trirectangular) closed-form/statement work is build-free and complete; transcribing the general statement+proof to Lean must wait for Docker. The identities are pure algebra over the field extension by t=sqrt(a^2 b^2+b^2 c^2+c^2 a^2), so the eventual Lean proof is ring/norm_num and carries no remaining mathematical risk.",
@@ -149,8 +150,10 @@
     ]
   },
   "started": "2026-05-08T00:00:00Z",
-  "lastUpdate": "2026-06-15",
+  "lastUpdate": "2026-06-16",
   "significance": 7,
   "tractability": 4,
-  "leanFiles": []
+  "leanFiles": [
+    "Proofs/StatementOnly_FeuerbachOQ02Murakami_GraceTrirectangular.lean"
+  ]
 }
