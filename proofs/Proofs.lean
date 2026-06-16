@@ -1269,6 +1269,7 @@ import Proofs.Erdos273Problem
 import Proofs.Erdos274Problem
 import Proofs.Erdos275Problem
 import Proofs.Erdos276Problem
+import Proofs.Erdos277PrimePowerAristotle
 import Proofs.Erdos277Problem
 import Proofs.Erdos278Problem
 import Proofs.Erdos279OQ04

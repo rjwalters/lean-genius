@@ -31,11 +31,7 @@
   - Related: Problems #276, #278 (covering systems)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib
 
 open Finset BigOperators
 
@@ -51,16 +47,17 @@ noncomputable def sigma (n : ℕ) : ℕ :=
 
 /-- σ(1) = 1. -/
 theorem sigma_one : sigma 1 = 1 := by
-  simp [sigma, Nat.divisors]
+  simp [sigma, Nat.divisors_one]
 
 /-- σ(p) = p + 1 for prime p. -/
 theorem sigma_prime (p : ℕ) (hp : Nat.Prime p) : sigma p = p + 1 := by
-  simp [sigma, hp.divisors, add_comm]
+  rw [sigma, hp.divisors, Finset.sum_pair hp.one_lt.ne]
+  omega
 
 /-- σ(n) ≥ n for all n ≥ 1. -/
 theorem sigma_ge_self (n : ℕ) (hn : n ≥ 1) : sigma n ≥ n := by
   unfold sigma
-  exact Finset.single_le_sum (fun _ _ => Nat.zero_le _)
+  exact Finset.single_le_sum (f := fun x => x) (fun _ _ => Nat.zero_le _)
     (Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩)
 
 /-- The abundancy ratio σ(n)/n. -/
@@ -245,7 +242,7 @@ def IsNonTrivialCovering (S : Finset Congruence) : Prop :=
 def HasNonTrivialCoveringWithDivisorModuli (n : ℕ) : Prop :=
   ∃ S : Finset Congruence, IsNonTrivialCovering S ∧ AllModuliDivide S n
 
-/-- Haight actually proved the stronger result about non-trivial coverings. -/
+/- Haight actually proved the stronger result about non-trivial coverings. -/
 /-
 ## Part VI: Key Properties of Covering Systems
 -/
@@ -254,8 +251,8 @@ def HasNonTrivialCoveringWithDivisorModuli (n : ℕ) : Prop :=
 noncomputable def reciprocalSum (S : Finset Congruence) : ℝ :=
   ∑ c ∈ S, (1 : ℝ) / (c.modulus : ℝ)
 
-/-- In a covering system with distinct moduli, ∑ 1/m_i ≥ 1. -/
-/-- This is related to the "Chinese Remainder" aspect of coverings:
+/-- In a covering system with distinct moduli, ∑ 1/m_i ≥ 1.
+    This is related to the "Chinese Remainder" aspect of coverings:
     every modulus that appears in the system has some residue class in S. -/
 theorem covering_crt_connection :
     ∀ S : Finset Congruence, IsCoveringSystem S →
@@ -300,7 +297,7 @@ def IsHighlyComposite (n : ℕ) : Prop :=
 def IsSuperabundant (n : ℕ) : Prop :=
   ∀ m : ℕ, m < n → abundancyRatio m < abundancyRatio n
 
-/-- Haight used properties related to superabundance. -/
+/- Haight used properties related to superabundance. -/
 /-
 ## Part IX: Connections to Other Problems
 -/
