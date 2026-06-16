@@ -1,0 +1,118 @@
+[
+  {
+    "id": "ann-weitzenbock-header",
+    "proofId": "weitzenbock-inequality-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Weitzenböck's Inequality: a²+b²+c² ≥ 4√3·T via a Sum of Squares",
+    "content": "Weitzenböck's inequality (R. Weitzenböck, 1919; IMO 1961 Problem 1) bounds a triangle's area below the sum of its squared side lengths: a²+b²+c² ≥ 4√3·T, with equality exactly for the equilateral triangle. The formalization encodes area through the Heron product T = √(s(s-a)(s-b)(s-c)) and proves the inequality by squaring the target — which removes both the √3 and the area's square root — and exhibiting the gap as a non-negative sum of squares. Zero axioms, zero sorries.",
+    "mathContext": "The constant $4\\sqrt3$ is sharp. For an equilateral triangle of side $a$: $a^2+a^2+a^2 = 3a^2$ and $T = \\frac{\\sqrt3}{4}a^2$, so $4\\sqrt3\\,T = 3a^2$ — equality. Squaring is legitimate because both sides are non-negative, and it converts the only transcendental ingredients (the constant $\\sqrt3$ and the area $T=\\sqrt{\\dots}$) into the polynomial quantity $48T^2 = 3\\cdot 16T^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Weitzenböck's inequality",
+      "Heron's formula",
+      "sum of squares",
+      "Hadwiger–Finsler inequality",
+      "IMO 1961"
+    ],
+    "prerequisites": [
+      "triangle area",
+      "Real.sqrt",
+      "polynomial sum-of-squares non-negativity"
+    ]
+  },
+  {
+    "id": "ann-weitzenbock-heron",
+    "proofId": "weitzenbock-inequality-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "heron_product and the 16-fold Expansion",
+    "content": "`heron_product a b c := s*(s-a)*(s-b)*(s-c)` with s = (a+b+c)/2, and `triangle_area a b c := √(heron_product a b c)`. For a valid triangle (positive sides obeying the triangle inequalities) the Heron product is non-negative, so `triangle_area_sq` gives T² = heron_product. The lemma `heron_sixteen` records the symmetric-polynomial form 16·heron_product = 2a²b²+2b²c²+2c²a²−a⁴−b⁴−c⁴, proved by `ring` after unfolding. This is the only place the geometry of area enters; everything downstream is algebra.",
+    "mathContext": "Heron's formula $16T^2 = 2a^2b^2+2b^2c^2+2c^2a^2-a^4-b^4-c^4$ is the classical area expansion; here it is obtained directly from the product form $s(s-a)(s-b)(s-c)$ by `ring`, so no separate appeal to a metric area definition is required.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Heron product",
+      "semiperimeter",
+      "symmetric polynomials"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "Real.sq_sqrt",
+      "ring"
+    ]
+  },
+  {
+    "id": "ann-weitzenbock-sos",
+    "proofId": "weitzenbock-inequality-oq-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 122
+    },
+    "type": "key-step",
+    "title": "The Sum-of-Squares Identity",
+    "content": "`weitzenbock_sos_identity` is the algebraic heart: (a²+b²+c²)² − 48·heron_product = 2[(a²−b²)²+(b²−c²)²+(c²−a²)²]. Substituting heron_sixteen, this is a pure polynomial identity. Since the right side is manifestly ≥ 0, `weitzenbock_sq` concludes 48·heron_product ≤ (a²+b²+c²)², i.e. the squared form of Weitzenböck's inequality, with no transcendental input.",
+    "mathContext": "Expanding, $(a^2+b^2+c^2)^2 - 3(2a^2b^2+2b^2c^2+2c^2a^2-a^4-b^4-c^4) = 2(a^4+b^4+c^4) - 2(a^2b^2+b^2c^2+c^2a^2) = (a^2-b^2)^2+(b^2-c^2)^2+(c^2-a^2)^2$ doubled. The factor $48 = 3\\cdot 16$ comes from $(4\\sqrt3)^2 = 48$ paired with $16T^2$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "sum of squares",
+      "nlinarith",
+      "polynomial identity"
+    ],
+    "prerequisites": [
+      "sq_nonneg",
+      "nlinarith"
+    ]
+  },
+  {
+    "id": "ann-weitzenbock-main",
+    "proofId": "weitzenbock-inequality-oq-01",
+    "range": {
+      "startLine": 124,
+      "endLine": 166
+    },
+    "type": "key-step",
+    "title": "Descending to the Inequality",
+    "content": "`weitzenbock` assembles the pieces: with c3 = √3 (so c3² = 3) and T² = heron_product, the right-hand side squared is (4·c3·T)² = 16·c3²·T² = 48·heron_product. The squared inequality from `weitzenbock_sq` then reads (4√3·T)² ≤ (a²+b²+c²)². Both sides are non-negative, so applying √ (via Real.sqrt_sq and Real.sqrt_le_sqrt) descends to 4√3·T ≤ a²+b²+c².",
+    "mathContext": "The descent step uses that $x \\mapsto \\sqrt{x}$ is monotone and $\\sqrt{y^2}=y$ for $y\\ge 0$: from $u^2 \\le v^2$ with $u,v\\ge 0$ one gets $u = \\sqrt{u^2} \\le \\sqrt{v^2} = v$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "monotonicity of sqrt",
+      "Real.sq_sqrt",
+      "Real.sqrt_le_sqrt"
+    ],
+    "prerequisites": [
+      "Real.sqrt_sq",
+      "Real.sqrt_le_sqrt"
+    ]
+  },
+  {
+    "id": "ann-weitzenbock-equality",
+    "proofId": "weitzenbock-inequality-oq-01",
+    "range": {
+      "startLine": 168,
+      "endLine": 220
+    },
+    "type": "key-step",
+    "title": "Equality iff Equilateral, and Sanity Checks",
+    "content": "`weitzenbock_eq_iff` characterizes equality. Forward: squaring a²+b²+c² = 4√3·T gives (a²+b²+c²)² = 48·heron_product, so the SOS identity forces (a²−b²)²+(b²−c²)²+(c²−a²)² = 0; each term then vanishes, giving a²=b²=c², and positivity upgrades to a=b=c. Reverse: for the equilateral triangle the area is √3·a²/4, and 4√3·(√3·a²/4) = 3a² = a²+a²+a². The examples confirm the equilateral side-2 case attains equality while the 3-4-5 triangle is strict (50 > 24√3).",
+    "mathContext": "Recovering $a=b$ from $a^2=b^2$ uses $(a-b)(a+b)=a^2-b^2=0$ with $a+b>0$, so $a=b$. This 'SOS vanishes ⟹ equal variables' pattern is exactly why the extremal configuration is the equilateral triangle.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "equality case",
+      "equilateral triangle",
+      "positivity",
+      "mul_eq_zero"
+    ],
+    "prerequisites": [
+      "sq_eq_zero_iff",
+      "linear_combination",
+      "Real.sqrt_mul"
+    ]
+  }
+]

@@ -1,0 +1,163 @@
+{
+  "id": "weitzenbock-inequality-oq-01",
+  "title": "Weitzenböck's Inequality",
+  "slug": "weitzenbock-inequality-oq-01",
+  "description": "For a triangle with side lengths a, b, c and area T, a² + b² + c² ≥ 4√3·T, with equality if and only if the triangle is equilateral. The classical lower bound relating a triangle's side lengths to its area.",
+  "meta": {
+    "author": "Roland Weitzenböck (1919)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Weitzenb%C3%B6ck%27s_inequality",
+    "date": "1919",
+    "status": "verified",
+    "proofRepoPath": "Proofs/WeitzenbockInequalityOQ01.lean",
+    "tags": [
+      "geometry",
+      "triangle",
+      "inequality",
+      "area",
+      "sum-of-squares",
+      "heron"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root used to encode triangle area and the constant √3",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      },
+      {
+        "theorem": "Real.sq_sqrt",
+        "description": "(√x)² = x for x ≥ 0, recovering area² = Heron product",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      },
+      {
+        "theorem": "Real.sqrt_le_sqrt",
+        "description": "Monotonicity of √ used to descend from the squared inequality",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "Self-contained formalization of Weitzenböck's inequality a²+b²+c² ≥ 4√3·T with area encoded through Heron's product",
+      "Sum-of-squares identity (a²+b²+c²)² − 48T² = 2[(a²−b²)²+(b²−c²)²+(c²−a²)²], the algebraic heart of the proof",
+      "Full equality characterization: equality holds iff a = b = c (equilateral), via vanishing of each squared difference",
+      "Worked sanity checks: equilateral side-2 attains equality; the 3-4-5 triangle is strict"
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "lineCount": 220,
+    "assumptions": "0 axioms. 0 sorries. Fully verified. Area is encoded via the Heron product heron_product a b c = s(s-a)(s-b)(s-c) with T = √(heron_product); the inequality is proved for valid triangles (positive sides satisfying the triangle inequalities).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 2
+  },
+  "sections": [
+    {
+      "title": "Area via Heron's Product",
+      "startLine": 36,
+      "endLine": 90,
+      "description": "Define heron_product a b c = s(s-a)(s-b)(s-c) and triangle_area = √(heron_product), prove non-negativity for valid triangles, and establish area² = heron_product.",
+      "summary": "Area via Heron's Product",
+      "id": "area-via-herons-product"
+    },
+    {
+      "title": "Heron 16-fold Expansion",
+      "startLine": 78,
+      "endLine": 90,
+      "description": "16·T² = 2a²b² + 2b²c² + 2c²a² − a⁴ − b⁴ − c⁴, the symmetric polynomial form of the squared area, proved by ring after unfolding the Heron product.",
+      "summary": "Heron 16-fold Expansion",
+      "id": "heron-sixteen-expansion"
+    },
+    {
+      "title": "The Sum-of-Squares Core",
+      "startLine": 92,
+      "endLine": 122,
+      "description": "The key identity (a²+b²+c²)² − 48·heron_product = 2[(a²−b²)²+(b²−c²)²+(c²−a²)²], giving the squared inequality (a²+b²+c²)² ≥ 48T² with no transcendental input.",
+      "summary": "The Sum-of-Squares Core",
+      "id": "sum-of-squares-core"
+    },
+    {
+      "title": "Weitzenböck's Inequality",
+      "startLine": 124,
+      "endLine": 166,
+      "description": "Descend from the squared inequality to a²+b²+c² ≥ 4√3·T using (√3)² = 3, area² = heron_product, and monotonicity of √.",
+      "summary": "Weitzenböck's Inequality",
+      "id": "weitzenbock-inequality"
+    },
+    {
+      "title": "Equality Characterization",
+      "startLine": 168,
+      "endLine": 200,
+      "description": "Equality a²+b²+c² = 4√3·T holds iff a = b = c. The forward direction squares the equality, forces the sum of squares to vanish, and recovers a = b = c by positivity; the reverse direction computes both sides for the equilateral triangle.",
+      "summary": "Equality Characterization",
+      "id": "equality-characterization"
+    },
+    {
+      "title": "Worked Examples",
+      "startLine": 202,
+      "endLine": 220,
+      "description": "Equilateral triangle with side 2 attains equality; the 3-4-5 right triangle yields a strict inequality (50 > 24√3).",
+      "summary": "Worked Examples",
+      "id": "worked-examples"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Weitzenböck's inequality was published by the Austrian mathematician Roland Weitzenböck in 1919. It states that for any triangle with side lengths a, b, c and area T, one has a² + b² + c² ≥ 4√3·T, with equality precisely for the equilateral triangle. The constant 4√3 is sharp: an equilateral triangle of side a has a² + a² + a² = 3a² and area T = (√3/4)a², so 4√3·T = 3a², attaining equality.\n\nThe inequality became widely known after it appeared as Problem 1 of the 1961 International Mathematical Olympiad. It is the simplest member of a family of triangle inequalities; the Hadwiger–Finsler inequality a² + b² + c² ≥ 4√3·T + (a−b)² + (b−c)² + (c−a)² is a strengthening that recovers Weitzenböck by dropping the non-negative correction terms.\n\nThe slickest proofs route through Heron's formula 16T² = 2a²b² + 2b²c² + 2c²a² − a⁴ − b⁴ − c⁴, reducing the squared inequality to a sum of squares — exactly the path taken in this formalization.",
+    "problemStatement": "**Weitzenböck's Inequality**: For a triangle with side lengths a, b, c and area T,\n\n  a² + b² + c² ≥ 4√3·T,\n\nwith equality if and only if the triangle is equilateral (a = b = c).",
+    "text": "For a triangle with side lengths a, b, c and area T, a² + b² + c² ≥ 4√3·T, with equality iff the triangle is equilateral.",
+    "proofStrategy": "The proof is entirely elementary and reduces the geometric inequality to a polynomial sum of squares.\n\n1. **Encode area via Heron.** Set s = (a+b+c)/2 and T = √(s(s-a)(s-b)(s-c)). For a valid triangle the Heron product is non-negative, so T² = s(s-a)(s-b)(s-c) and 16T² = 2a²b² + 2b²c² + 2c²a² − a⁴ − b⁴ − c⁴.\n\n2. **Square the target.** Since both a²+b²+c² and 4√3·T are non-negative, it suffices to prove (a²+b²+c²)² ≥ (4√3·T)² = 48T².\n\n3. **Sum of squares.** Substituting the Heron expansion gives the identity\n   (a²+b²+c²)² − 48T² = 2[(a²−b²)² + (b²−c²)² + (c²−a²)²] ≥ 0,\n   dischargeable by nlinarith / ring.\n\n4. **Descend.** From (4√3·T)² ≤ (a²+b²+c²)² and non-negativity of both sides, monotonicity of √ yields 4√3·T ≤ a²+b²+c².\n\n5. **Equality.** Equality forces the sum of squares to vanish, hence a² = b² = c², and positivity gives a = b = c. Conversely the equilateral triangle attains equality by direct computation.",
+    "keyInsights": [
+      "**Squaring removes the irrational constant**: the √3 and the area's √ both disappear once the target is squared, leaving a pure polynomial inequality in a, b, c.",
+      "**Heron is the bridge**: 16T² = 2a²b²+2b²c²+2c²a²−a⁴−b⁴−c⁴ converts 'area' into a symmetric polynomial, so no metric geometry is needed.",
+      "**The whole theorem is one SOS identity**: (a²+b²+c²)² − 48T² = 2[(a²−b²)²+(b²−c²)²+(c²−a²)²], making both the inequality and its equality case transparent.",
+      "**Equality is structural**: vanishing of the three squared differences is exactly a=b=c, so the equilateral characterization is read straight off the identity.",
+      "**Sharp constant**: 4√3 is the largest constant that works, witnessed by the equilateral triangle."
+    ],
+    "prerequisites": [
+      "Heron's formula for the area of a triangle",
+      "Real square root and (√x)² = x for x ≥ 0",
+      "Sum-of-squares non-negativity (nlinarith)",
+      "Monotonicity of the square root"
+    ],
+    "openQuestions": [
+      "Can the Hadwiger–Finsler strengthening a²+b²+c² ≥ 4√3·T + (a−b)²+(b−c)²+(c−a)² be formalized on top of this SOS identity?",
+      "Does the same squaring/SOS template extend to the Pedoe inequality relating two triangles?"
+    ]
+  },
+  "conclusion": {
+    "summary": "Weitzenböck's inequality a²+b²+c² ≥ 4√3·T is formalized with area encoded through the Heron product. Squaring the target eliminates both √3 and the area's square root, reducing the inequality to the sum-of-squares identity (a²+b²+c²)² − 48T² = 2[(a²−b²)²+(b²−c²)²+(c²−a²)²]. The equality case a = b = c is fully characterized. Zero axioms, zero sorries.",
+    "implications": "The proof illustrates a reusable template: geometric inequalities whose only transcendental content is an area (a square root) and a fixed irrational constant can often be reduced, by squaring, to a polynomial sum-of-squares problem that nlinarith dispatches mechanically. The same scaffold supports the Hadwiger–Finsler refinement and related triangle inequalities.",
+    "openQuestions": [
+      "Can the Hadwiger–Finsler strengthening be derived by keeping the correction terms in the SOS identity?",
+      "Can the equality analysis be packaged as a general 'SOS equality ⟹ equal variables' lemma for reuse?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "herons-formula",
+      "relationship": "foundational",
+      "description": "Weitzenböck's inequality is proved by substituting Heron's formula 16T² = 2a²b²+2b²c²+2c²a²−a⁴−b⁴−c⁴ for the area, turning a metric statement into a polynomial sum of squares."
+    },
+    {
+      "targetId": "napoleons-theorem",
+      "relationship": "related",
+      "description": "Both are classical triangle results that reduce to algebra: Napoleon's theorem to a complex-coordinate rotation identity, Weitzenböck's inequality to a real sum-of-squares identity, and both attain their extremal/structural case at the equilateral triangle."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "WeitzenbockInequality",
+    "lineCount": 220,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "sorries": 0,
+    "path": "Proofs/WeitzenbockInequalityOQ01.lean"
+  }
+}
