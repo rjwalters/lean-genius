@@ -145,18 +145,18 @@
     "proofId": "binomial-theorem-oq-02-oq-01",
     "range": {
       "startLine": 164,
-      "endLine": 184
+      "endLine": 258
     },
     "type": "context",
-    "title": "Concrete Sanity Check and a Vacuous Expectation Stub",
-    "content": "`fair_coin_three_flips` (lines 169–175) is a closed numerical instance: three flips of a $1/2$-coin sum to $1$ over the four outcomes $(3,0),(2,1),(1,2),(0,3)$ with probabilities $\\tfrac18,\\tfrac38,\\tfrac38,\\tfrac18$, closed by `norm_num` after expanding the pair sum. Note that `multinomial_expectation` (lines 180–184) is proved by `rfl` — its statement is the tautology $\\sum_k P(k)\\,w(k) = \\sum_k P(k)\\,w(k)$, so despite the docstring's framing as 'the general expectation formula $E[w(X)]$' it asserts nothing and uses no probabilistic content. It is a placeholder marking where a substantive expectation/moment result (e.g. $E[X_i] = n p_i$) would go.",
-    "mathContext": "A genuine mean derivation would differentiate the MGF: $E[X_i] = \\partial_{t_i} M(t)\\big|_{t=0} = n p_i$, and the covariance $\\mathrm{Cov}(X_i,X_j) = -n p_i p_j$ for $i \\neq j$, $\\mathrm{Var}(X_i) = n p_i(1-p_i)$. None of these are established here; `multinomial_expectation` only restates a reflexive equality. The fair-coin check, by contrast, is a real (if elementary) verification that the abstract normalization specializes correctly to numbers.",
+    "title": "Concrete Sanity Check and the Coordinate Mean",
+    "content": "`fair_coin_three_flips` is a closed numerical instance: three flips of a $1/2$-coin sum to $1$ over the four outcomes $(3,0),(2,1),(1,2),(0,3)$ with probabilities $\\tfrac18,\\tfrac38,\\tfrac38,\\tfrac18$, closed by `norm_num` after expanding the pair sum. The former `rfl` placeholder `multinomial_expectation` (which restated the tautology $\\sum_k P(k)\\,w(k) = \\sum_k P(k)\\,w(k)$) has been replaced by `multinomial_mean`, a genuine moment formula: $\\sum_k P(k)\\,k_i = n\\,p_i$, i.e. $E[X_i] = n p_i$.",
+    "mathContext": "`multinomial_mean` is proved by differentiating the MGF. Specializing the weight $g_j = e^t$ for $j=i$ and $g_j = 1$ otherwise reduces `multinomial_mgf_real` to the one-variable identity $(p_i e^t + (1-p_i))^n = \\sum_k P(k)\\,e^{t k_i}$ for all $t$; differentiating both sides at $t=0$ and applying uniqueness of the derivative ($\\partial_t\\,\\text{LHS}|_0 = n p_i$, $\\partial_t\\,\\text{RHS}|_0 = \\sum_k P(k)\\,k_i$) yields $E[X_i] = n p_i$. The natural follow-ups via second MGF derivatives are $\\mathrm{Var}(X_i) = n p_i(1-p_i)$ and $\\mathrm{Cov}(X_i,X_j) = -n p_i p_j$ for $i\\neq j$.",
     "significance": "technical",
     "relatedConcepts": [
       "norm_num",
       "expected value",
-      "reflexivity (rfl)",
-      "placeholder theorem"
+      "moment-generating function",
+      "HasDerivAt.unique"
     ],
     "prerequisites": [
       "multinomialProb_sum_eq_one",
@@ -167,8 +167,8 @@
     "id": "ann-multinom-count",
     "proofId": "binomial-theorem-oq-02-oq-01",
     "range": {
-      "startLine": 195,
-      "endLine": 222
+      "startLine": 259,
+      "endLine": 294
     },
     "type": "concept",
     "title": "multinomial_count: |s|^n = ∑ Multinomial Coefficients",

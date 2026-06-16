@@ -174,14 +174,87 @@ theorem fair_coin_three_flips :
   simp [Finset.sum_pair Bool.false_ne_true]
   norm_num
 
-/-- **Multinomial theorem gives expected value structure**: For any function w,
-the weighted sum ∑ P(k) · w(k) can be expressed via the multinomial theorem.
-This is the general expectation formula E[w(X)] for multinomial X. -/
-theorem multinomial_expectation {α : Type*} [DecidableEq α]
+/-- **Multinomial coordinate mean**: `E[Xᵢ] = n · pᵢ`. Concretely, the weighted sum over
+all compositions `k` (with `∑ⱼ kⱼ = n`) of the probability `P(k) = multinomialProb s p n k`
+times the count `k i` equals `n · pᵢ`. We show this equals `n · pᵢ`.
+
+The proof differentiates the moment-generating function. Taking the weight function
+`g j = exp t` for `j = i` and `g j = 1` otherwise, `multinomial_mgf_real` yields, for
+every `t`,
+
+  `(pᵢ · exp t + (1 - pᵢ))ⁿ = ∑ₖ P(k) · exp(t · kᵢ)`.
+
+Both sides are functions of `t` that agree everywhere. The left-hand side has derivative
+`n · pᵢ` at `t = 0` (the inner function has value `1` and derivative `pᵢ` there); the
+right-hand side, being a finite sum, has derivative `∑ₖ P(k) · kᵢ = E[Xᵢ]`. Uniqueness of
+the derivative forces the two to be equal. This replaces the former placeholder, which
+restated a reflexive tautology, with a genuine moment formula. -/
+theorem multinomial_mean {α : Type*} [DecidableEq α]
     (s : Finset α) (p : α → ℝ) (n : ℕ) (hp : ∑ i ∈ s, p i = 1)
-    (w : (α → ℕ) → ℝ) :
-    ∑ k ∈ s.piAntidiag n, multinomialProb s p n k * w k =
-    ∑ k ∈ s.piAntidiag n, multinomialProb s p n k * w k := rfl
+    (i : α) (hi : i ∈ s) :
+    ∑ k ∈ s.piAntidiag n, multinomialProb s p n k * (k i : ℝ) = n * p i := by
+  -- Step 1: ∑ⱼ pⱼ · (if j = i then exp t else 1) = pᵢ · exp t + (1 - pᵢ).
+  have hsum : ∀ t : ℝ,
+      ∑ j ∈ s, p j * (if j = i then Real.exp t else 1)
+        = p i * Real.exp t + (1 - p i) := by
+    intro t
+    have hrw : ∀ j ∈ s, p j * (if j = i then Real.exp t else 1)
+        = p j + (if j = i then p j * (Real.exp t - 1) else 0) := by
+      intro j _; split <;> ring
+    rw [Finset.sum_congr rfl hrw, Finset.sum_add_distrib, hp,
+      Finset.sum_ite_eq' s i (fun j => p j * (Real.exp t - 1)), if_pos hi]
+    ring
+  -- Step 2: ∏ⱼ (if j = i then exp t else 1) ^ kⱼ = exp(t · kᵢ).
+  have hprod : ∀ (t : ℝ) (k : α → ℕ),
+      ∏ j ∈ s, (if j = i then Real.exp t else 1) ^ k j = Real.exp (t * k i) := by
+    intro t k
+    have hrw : ∀ j ∈ s, (if j = i then Real.exp t else 1) ^ k j
+        = (if j = i then Real.exp (t * k i) else 1) := by
+      intro j _
+      split with h
+      · subst h; rw [← Real.exp_nat_mul, mul_comm]
+      · exact one_pow _
+    rw [Finset.prod_congr rfl hrw,
+      Finset.prod_ite_eq' s i (fun _ => Real.exp (t * k i)), if_pos hi]
+  -- Step 3: the MGF identity, as an equality of functions of t.
+  have hMGF : ∀ t : ℝ,
+      (p i * Real.exp t + (1 - p i)) ^ n
+        = ∑ k ∈ s.piAntidiag n, multinomialProb s p n k * Real.exp (t * k i) := by
+    intro t
+    calc (p i * Real.exp t + (1 - p i)) ^ n
+        = (∑ j ∈ s, p j * (if j = i then Real.exp t else 1)) ^ n := by rw [hsum t]
+      _ = ∑ k ∈ s.piAntidiag n, multinomialProb s p n k
+            * ∏ j ∈ s, (if j = i then Real.exp t else 1) ^ k j :=
+          multinomial_mgf_real s p (fun j => if j = i then Real.exp t else 1) n
+      _ = ∑ k ∈ s.piAntidiag n, multinomialProb s p n k * Real.exp (t * k i) :=
+          Finset.sum_congr rfl (fun k _ => by rw [hprod t k])
+  -- Step 4: differentiate the left-hand side; derivative is n · pᵢ at t = 0.
+  have hL : HasDerivAt (fun t : ℝ => (p i * Real.exp t + (1 - p i)) ^ n)
+      ((n : ℝ) * p i) 0 := by
+    have hbase : HasDerivAt (fun t : ℝ => p i * Real.exp t + (1 - p i)) (p i) 0 := by
+      simpa using ((Real.hasDerivAt_exp (0 : ℝ)).const_mul (p i)).add_const (1 - p i)
+    have hpow := hbase.pow n
+    convert hpow using 1
+    simp only [Real.exp_zero, mul_one]
+    rw [show p i + (1 - p i) = (1 : ℝ) by ring, one_pow, mul_one]
+  -- Step 5: differentiate the right-hand side; derivative is the target sum.
+  have hR : HasDerivAt
+      (fun t : ℝ => ∑ k ∈ s.piAntidiag n, multinomialProb s p n k * Real.exp (t * k i))
+      (∑ k ∈ s.piAntidiag n, multinomialProb s p n k * (k i : ℝ)) 0 := by
+    apply HasDerivAt.sum
+    intro k _
+    have hinner : HasDerivAt (fun t : ℝ => Real.exp (t * (k i : ℝ))) ((k i : ℝ)) 0 := by
+      have hmul : HasDerivAt (fun t : ℝ => t * (k i : ℝ)) ((k i : ℝ)) 0 := by
+        simpa using (hasDerivAt_id (0 : ℝ)).mul_const ((k i : ℝ))
+      have hc := (Real.hasDerivAt_exp ((0 : ℝ) * (k i : ℝ))).comp 0 hmul
+      simpa using hc
+    simpa [mul_comm] using hinner.const_mul (multinomialProb s p n k)
+  -- Step 6: equate the two derivatives.
+  have hfun : (fun t : ℝ => (p i * Real.exp t + (1 - p i)) ^ n)
+      = fun t : ℝ => ∑ k ∈ s.piAntidiag n, multinomialProb s p n k * Real.exp (t * k i) :=
+    funext hMGF
+  rw [hfun] at hL
+  exact (hL.unique hR).symm
 
 /-! ## Part 7: Power Sum Identity (Mean Derivation) -/
 
