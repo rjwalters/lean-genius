@@ -5,8 +5,8 @@
     "range": { "startLine": 3, "endLine": 28 },
     "type": "concept",
     "title": "The Beta Integral as the Analytic Core",
-    "content": "The module docstring frames the problem: the n-dimensional Cauchy–Crofton angular averaging identity reduces, via polar-coordinate decomposition of the sphere integral on S^{n-1}, to a single one-dimensional integral. Proving that integral axiom-free closes the last gap in the n ≥ 3 case (the n = 2 case lives in the parent file). The value 1/(n-1) is exactly the proportionality factor sphereArea(n-2)/((n:ℝ)-1) needed downstream.",
-    "mathContext": "$\\int_0^{\\pi/2} \\cos\\theta \\cdot \\sin^{n-2}\\theta \\, d\\theta = \\frac{1}{n-1}$, a special case of the Beta function $B(a,b) = 2\\int_0^{\\pi/2} \\sin^{2a-1}\\theta \\cos^{2b-1}\\theta\\, d\\theta$.",
+    "content": "The module docstring frames the problem: the n-dimensional Cauchy–Crofton angular averaging identity reduces, via polar-coordinate decomposition of the sphere integral on S^{n-1}, to a single one-dimensional integral. Proving that integral axiom-free closes the last gap in the n ≥ 3 case (the n = 2 case lives in the parent file). The value 1/(n-1) is exactly the proportionality factor sphereArea(n-2)/((n:ℝ)-1) needed downstream. Structurally this is the Beta function evaluated at cos-exponent 1: with B(a,b) = 2∫_0^{π/2} sin^{2a-1}θ cos^{2b-1}θ dθ, here 2b-1 = 1 forces b = 1 and 2a-1 = n-2 gives a = (n-1)/2, so the integral is (1/2)B((n-1)/2, 1) = 1/(n-1) via B(a,1) = 1/a. The b = 1 degeneracy is exactly why an elementary antiderivative exists.",
+    "mathContext": "$\\int_0^{\\pi/2} \\cos\\theta \\cdot \\sin^{n-2}\\theta \\, d\\theta = \\tfrac12 B\\!\\left(\\tfrac{n-1}{2}, 1\\right) = \\frac{1}{n-1}$, the $b=1$ slice of $B(a,b) = 2\\int_0^{\\pi/2} \\sin^{2a-1}\\theta \\cos^{2b-1}\\theta\\, d\\theta$ where $B(a,1) = \\Gamma(a)/\\Gamma(a+1) = 1/a$.",
     "significance": "supporting",
     "relatedConcepts": ["Cauchy–Crofton formula", "Beta function", "integral geometry", "Buffon's needle"],
     "prerequisites": ["integral geometry", "spherical coordinates"]
