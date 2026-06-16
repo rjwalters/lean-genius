@@ -1,4 +1,4 @@
-# Research State: pythagorean-theorem-oq-06
+# Research State: herons-formula-oq-05
 
 ## Current State
 **Phase**: OBSERVE

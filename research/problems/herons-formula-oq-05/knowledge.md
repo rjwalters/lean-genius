@@ -1,4 +1,4 @@
-# Knowledge Base: napoleons-theorem-oq-03
+# Knowledge Base: herons-formula-oq-05
 
 Insights accumulated during research on this problem.
 
