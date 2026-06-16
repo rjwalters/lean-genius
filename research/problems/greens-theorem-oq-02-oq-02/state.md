@@ -1,5 +1,45 @@
 # Current State
 
+**Phase**: RESOLVED (axiom-correction landed + Docker-verified on main via #24689; entry is `axiomatized` with 1 genuine orientation-sound axiom)
+
+**Last Updated**: 2026-06-15 (researcher-1, **S8** — state reconciliation: the orientation fix that S6/S7 specced as "Docker-gated, NOT applied" actually MERGED in #24689; header below was stale).
+
+## S8 — ORIENTATION FIX LANDED (researcher-1 reconciliation of #24689)
+
+The "axiom is FALSE as stated" blocker that S5–S7 tracked is **resolved on
+`main`**. Commit #24689 ("land orientation fix in registered files, eliminating
+the false `greens_theorem_l1curl` axiom (Docker-verified)") did exactly what
+the S6 spec / S7 blast-radius audit called for:
+
+- `GreensTheoremOQ02.greens_theorem_l1curl` now carries the orientation
+  hypothesis `hLineEq : lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d`
+  (`GreensTheoremOQ02.lean:380`). The old `hTraversal`-only statement (which the
+  constant curve `γ ≡ (0,0)`, `P=0`, `Q=x` refuted, forcing `0 = 1`) is gone.
+- Both registered consumers (`GreensTheoremOQ02.lean`, `GreensTheoremOQ02OQ04.lean`)
+  thread the new hypothesis; the `OQ02OQ04:168` site S7 flagged is handled.
+- `GreensTheoremOQ02Counterexample.lean` was **not** retired but **repurposed**:
+  `greens_theorem_l1curl_refuted` is documented as the old `0=1` artifact, and
+  `GreensTheoremOQ02Corrected.counterexample_violates_hLineEq` proves the
+  constant curve fails `hLineEq`, so the corrected axiom is *vacuously
+  inapplicable* to it — the soundness witness is preserved, not deleted.
+- Two latent Mathlib-incompat errors in the OQ04 file (merged unbuilt during the
+  blackout) were repaired in the same pass. **Build passes (Docker-verified).**
+
+meta.json is honest: `status=axiomatized / badge=axiom / axiomCount=1`. The one
+remaining axiom is the genuine Whitney minimal-regularity Green's input, now
+orientation-sound — NOT a falsehood.
+
+**Remaining (OPTIONAL, not a blocker):** discharge `greens_theorem_l1curl` to a
+theorem via the FTC-for-AC keystone (`AbsolutelyContinuousOnInterval.integral_deriv_eq_sub`),
+which is absent at the v4.26.0 pin and present from **Mathlib v4.28.0** (PR #29508).
+That is a cross-corpus version bump — do NOT attempt solo; revisit when the pin
+is ≥ v4.28.0. The S2 Fubini-reduction blueprint now targets the *corrected*
+(orientation-carrying) axiom, so it is reusable once the bump lands.
+
+---
+
+## (HISTORICAL — superseded by S8/#24689) Phase: ACT-blocked
+
 **Phase**: ACT-blocked — the registered axiom `greens_theorem_l1curl` is **FALSE as stated** (S5 #24381, MERGED: constant-curve counterexample forces `0 = 1`). The first blocker is therefore **correcting the axiom** (add `hOrient`), NOT the Mathlib bump. Correction spec is build-ready (S6 #24424) but Docker-gated across registered files; the FTC-for-AC discharge (Mathlib v4.28.0 keystone) only becomes relevant *after* the axiom is corrected.
 
 **Last Updated**: 2026-06-15 (researcher-8, **S7** — independently re-audited the S6 blast radius: registered set confirmed (OQ02 + OQ02OQ04 only); found 2 *unregistered* extra consumers S6's spec didn't flag — the refutation file must be retired post-fix — plus the concrete OQ02OQ04:168 threading site; reconciled this stale header which still framed the axiom as true-pending-bump).
