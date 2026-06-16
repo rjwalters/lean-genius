@@ -1,27 +1,41 @@
 # Current State
 
-**Phase**: VERIFY (math + Lean transcription COMPLETE; only Docker build-check + registration remain)
-**Since**: 2026-06-15T00:00:00.000Z
-**Iteration**: 10
+**Phase**: LEAN-VERIFIED (Grace trirectangular theorem Docker-built GREEN + registered)
+**Since**: 2026-06-15T22:10:00.000Z
+**Iteration**: 11
+
+## S11 (researcher-2, 2026-06-15) — Lean build GREEN + registered + bug fix
+
+`StatementOnly_FeuerbachOQ02Murakami_GraceTrirectangular.lean` (theorem
+`grace_feuerbach_trirectangular`, all 5 identities, 0 sorry / 0 axiom) is now
+**Docker-verified GREEN** and registered in `Proofs.lean` (after the Feuerbach
+OQ02 imports). Docker was FREE this window (Aristotle still 404).
+
+**Bug fixed:** the previously-"merged" proof did NOT actually compile. The two
+tangency goals used a BARE `linear_combination (1/(2σ²)) * ht`, which fails
+`ring` (build error at the insphere goal): although the t² parts cancel exactly,
+`ring` treats `(2σ)⁻¹²` and `(2σ²)⁻¹` as distinct opaque atoms and cannot
+reconcile `(2σ)⁻¹²·2 = (2σ²)⁻¹`. Fix = `field_simp; linear_combination 2 * ht`
+(clears the inverses first; post-clear coefficient 4σ²·(1/2σ²)=2) — the SAME form
+the file's own line-105 plan note and sibling PRs #23382/#23322 prescribe. The
+earlier note claiming "NO field_simp required" was wrong; corrected in-file.
 
 ## Current Focus
 
-The mathematics AND the Lean transcription are both finished. S4 (T0 closed
-form) and S7 (general trirectangular family) were verified by the reproducible
-sympy script `verify_grace_trirectangular.py` (16/16 identities OK). S8/S9 (the
-Lean transcription) are ALSO DONE and merged: theorem
-`grace_feuerbach_trirectangular` in
-`proofs/Proofs/StatementOnly_FeuerbachOQ02Murakami_GraceTrirectangular.lean`
-proves all five identities (3 incidence + 2 internal-tangency) with 0 sorry / 0
-axiom, symbolically certified by `verify_grace_proof_certificate.py` (15/15 PASS),
-landed build-pending in #24189 (cert) and #24444 (discharge). The proof is
-`field_simp; ring` for incidence and `linear_combination (1/(2σ²))·ht` for both
-tangency goals (surd cancels: odd-in-t part ≡ 0).
+The mathematics AND the Lean machine-check are now both finished and verified.
+S4 (T0 closed form) and S7 (general trirectangular family) were verified by the
+reproducible sympy script `verify_grace_trirectangular.py` (16/16 identities OK).
+Theorem `grace_feuerbach_trirectangular` proves all five identities (3 incidence
+`field_simp; ring` + 2 internal-tangency `field_simp; linear_combination 2 * ht`,
+surd cancels: odd-in-t part ≡ 0) with 0 sorry / 0 axiom, Docker-GREEN and
+registered. Remaining: the SEPARATE parent-axiom de-axiomatization (see Next
+Action #3 below) — not this theorem.
 
-The only remaining steps are infra-gated, NOT mathematical:
-  - machine-check the file with Docker (`docker-build.sh`), currently the file is
-    build-pending (authored under a Docker blackout);
-  - register it in `proofs/Proofs.lean` and add a gallery entry once green.
+The Grace theorem itself is DONE (Docker-GREEN, registered). The only remaining
+work is the SEPARATE parent-axiom de-axiomatization:
+  - promote `feuerbach_3d_fails_general` (`FeuerbachsTheoremOQ02.lean:581`) to a
+    theorem once `StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean` (currently
+    1 sorry / 2 axioms) is built green — a distinct sub-problem, still open.
 
 ## Result (general trirectangular tetrahedron) -- VERIFIED
 
@@ -50,31 +64,28 @@ D-exsphere, and passes through the opposite face A,B,C.
 
 ## Blockers
 
-- Docker build-verification is gated by container saturation (observed 6-7
-  containers, host RAM low); a cold single-file build times out under that
-  contention. The Lean file is already written and certified — only the
-  machine-check is pending.
+- None for the Grace theorem — Docker-GREEN and registered as of 2026-06-15.
 - Aristotle is irrelevant here: the file has 0 sorries, so there is nothing for
   the prover to fill.
 
-## Next Action (Docker-gated, when containers ≤ 2)
+## Next Action
 
-1. `./proofs/scripts/docker-build.sh Proofs.StatementOnly_FeuerbachOQ02Murakami_GraceTrirectangular`
-   (set `LEAN_BUILD_TIMEOUT=40m` if cold) to machine-check
-   `grace_feuerbach_trirectangular`.
-2. On green: register the module in `proofs/Proofs.lean` and add a gallery entry
-   under `src/data/proofs/feuerbachs-theorem-oq-02-murakami/`.
-3. Independently, the parent slug's axiom `feuerbach_3d_fails_general`
+1. ~~Docker machine-check + register the Grace theorem~~ **DONE 2026-06-15 (S11)**:
+   build GREEN, registered in `proofs/Proofs.lean`. A gallery entry under
+   `src/data/proofs/feuerbachs-theorem-oq-02-murakami/` could optionally be added
+   (currently the slug is research-only, no gallery dir).
+2. The parent slug's axiom `feuerbach_3d_fails_general`
    (`FeuerbachsTheoremOQ02.lean:581`) can be promoted to a theorem once
-   `StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean` is built green — a
-   SEPARATE de-axiomatization, also Docker-gated.
+   `StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean` (1 sorry / 2 axioms) is
+   built green — a SEPARATE de-axiomatization, still open. The witness file's own
+   sorry/axioms need discharge first.
 
-Do NOT re-transcribe the Grace theorem (S8/S9 are complete and merged) and do
-NOT register the file unbuilt under container saturation.
+Do NOT re-transcribe the Grace theorem (done + registered).
 
 ## Attempt Counts
 
-- Total attempts: 0 Lean builds (Docker-gated throughout; file certified
-  symbolically, not yet machine-checked)
+- Total Lean builds: 3 (2026-06-15 S11) — first RED (bare `linear_combination`
+  failed `ring`), then GREEN after the `field_simp; linear_combination 2 * ht`
+  fix, plus a confirming rebuild.
 - Approaches tried: analytic derivation + sympy certification + Lean
-  transcription — all complete; only the Lean machine-check remains
+  transcription + Docker machine-check — all complete and GREEN.
