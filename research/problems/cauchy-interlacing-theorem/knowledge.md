@@ -16,6 +16,57 @@ codimension-one coordinate subspace.
 
 ## Insights
 
+### Session 2026-06-16 (s08, REVISIT → ACT, **KEYSTONE PROVEN**) — Courant–Fischer max–min, 0-sorry/0-axiom, build-green
+
+**Mode**: REVISIT → ACT. Aristotle MCP `prove` still 404 (re-probed `a+b=b+a`).
+But Docker builds **WORK** — the `proofs/.lake` self-symlink does NOT block builds
+(the s05/s07 "blackout" diagnosis was wrong): `docker-build.sh` clones the source
+tree fresh inside the container and pulls 7727 oleans from the Azure mathlib cache
+through the symlink. Always check by actually building, not by `ls -ld proofs/.lake`.
+
+**Result**: new file `proofs/Proofs/CauchyInterlacingKeystone.lean` —
+`✔ [7743/7743] Built … (31s)`, **0 sorry / 0 axiom** (verified: build emitted no
+`declaration uses sorry`). This **closes the single documented Mathlib gap** that
+blocked the problem for s03–s07. The dishonest `courant_fischer_placeholder : True`
+in `CauchyInterlacing.lean` is now superseded by the real, proven content.
+
+**Key idea — state the max–min in BOUND FORM, not `iSup`/`iInf`.** The
+conditionally-complete-lattice junk-value pain of an `⨆/⨅` formulation is entirely
+avoided by splitting Courant–Fischer into two bound statements that carry the same
+information and reduce *directly* to the two verified sublemmas:
+
+* LOWER (`eigenvalue_maxmin_lower`): for antitone `μ`, the `(k+1)`-dim eigenspan
+  `span {b 0,…,b k}` (= `span (b '' Iic k)`) has *every* nonzero Rayleigh quotient
+  `≥ μ k`. ⇒ an optimal subspace witnessing `max min R ≥ μ k` exists. Proof =
+  `rayleigh_bounds_on_eigenspan.1` (Sublemma A) + `Finset.le_inf'` (antitone ⇒
+  `μ k ≤ μ i` for `i ≤ k`).
+* UPPER (`eigenvalue_maxmin_upper`): for antitone `μ`, *every* `(k+1)`-dim subspace
+  `S` contains a nonzero `x` with Rayleigh `≤ μ k`. ⇒ no subspace beats `μ k`.
+  Proof = intersect `S` with `W := span (b '' Ici k)` (dim `n-k`); dimension count
+  `(k+1)+(n-k)=n+1 > n` ⇒ `inf_ne_bot_of_finrank_add_lt` (Sublemma B) gives nonzero
+  `x ∈ S ⊓ W`; `rayleigh_bounds_on_eigenspan.2` + `Finset.sup'_le` bound it by `μ k`.
+
+**New reusable lemmas (all 0-sorry):**
+- `finrank_span_image_eq_card b I : finrank (span (b '' ↑I)) = I.card`. Recipe:
+  `(b.orthonormal.linearIndependent).comp _ Subtype.val_injective` →
+  `Set.range_comp` + `Subtype.range_coe` → `finrank_span_eq_card` → `simp`.
+- `rayleigh_ge_on_eigenspan_of_lb` / `exists_rayleigh_le_in_subspace` — the
+  index-set-parametrised halves (the genuinely reusable content; the Fin-interval
+  versions are thin corollaries).
+
+**Mathlib API that worked first-try (v4.26.0):** `Fin.card_Iic` (`= ↑k+1`),
+`Fin.card_Ici` (`= n - ↑k`), `Module.finrank_eq_card_basis b.toBasis` +
+`Fintype.card_fin` (⇒ `finrank E = n`), `Finset.le_inf'`/`Finset.sup'_le`,
+`Submodule.mem_inf`. All in the abstract `LinearMap`/`OrthonormalBasis` framework
+(eigenvalues as `μ : Fin n → ℝ`, `T (b i) = μ i • b i`), matching the sublemmas.
+
+**Still open (next session):** (1) bridge the abstract keystone to
+`Matrix.IsHermitian.eigenvalues₀` / `CauchyInterlacing.sortedEigs` (matrix ↔
+linear-map + sorting permutation); (2) assemble the final `cauchy_interlacing`
+inequality `λ(i+1) ≤ μ i ≤ λ i` for `principalDrop` from the two halves via the
+coordinate-subspace inclusion. The hard variational core is now DONE; what remains
+is the (still nontrivial) impedance-matching bookkeeping.
+
 ### Session 2026-06-16 (s07, REVISIT → stand-down, dual blackout) — Sublemma A glue transcribed turnkey
 
 **Mode**: REVISIT under dual backend blackout, **new blackout flavor**. Aristotle
