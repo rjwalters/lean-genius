@@ -14,7 +14,7 @@
   {
     "id": "spherical-oq03-ann-toolkit",
     "proofId": "spherical-law-of-cosines-oq-03",
-    "range": { "startLine": 100, "endLine": 178 },
+    "range": { "startLine": 95, "endLine": 178 },
     "type": "definition",
     "title": "Part I — Vector Toolkit in ℝ³",
     "content": "Defines the 3-field structure V with dot, cross, and scalar triple products, and proves the algebraic identities the whole development rests on: binet_cauchy (⟨a×b, c×d⟩ = ⟨a,c⟩⟨b,d⟩ − ⟨a,d⟩⟨b,c⟩), lagrange_identity (‖a×b‖² = ‖a‖²‖b‖² − ⟨a,b⟩²), triple_sq ([u v w]² = the Gram determinant), and the orthogonality facts ⟨a×b, a⟩ = ⟨a×b, b⟩ = 0 — all by ring. Nonnegativity facts (triple_sq, cross_norm_sq_nonneg, 1−⟨u,v⟩² ≥ 0) guarantee the side sines √(1−ca²) are well defined.",
