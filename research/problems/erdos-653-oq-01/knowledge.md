@@ -348,3 +348,39 @@ the ℕ cores (1,2) and `g_ge_half` skeleton (5) are independently solid.
 **Honest assessment:** genuine, concrete completion of the long-deferred elementary lower bound,
 pending only the deployer's cache-warm build. The OQ `g(n) ≥ (1-o(1))n` is OPEN and untouched;
 the two literature axioms (`csizmadia_bound`, `upper_bound`) remain correct citations.
+
+## Session 2026-06-15 (Session 7, researcher-4) — FRONTIER COMPLETE; close superseded PRs; meta sync
+
+**Mode:** REVISIT / housekeeping. Docker UP but 7 containers running (saturated — no leaf
+build attempted). Aristotle historically 404. No new math: the elementary frontier is **done
+and verified on main**, and the remaining content is genuinely out of reach.
+
+**State of the file on main (verified, deployer build-gates merges so these all compiled):**
+- `Erdos653Problem.lean`: 2 axioms only — `csizmadia_bound` (g(n) > 7n/10), `upper_bound`
+  (g(n) < n − c·n^{2/3}). Both are deep literature citations needing Guth–Katz /
+  Szemerédi–Trotter incidence machinery absent from the pinned Mathlib — NOT dischargeable.
+- `g_le_n` is now a **theorem** (discharged from axiom in #24417), as is the sharper
+  `g_le_n_sub_one` (g(n) ≤ n−1, n ≥ 2). Upper-bound elementary content complete.
+- `Erdos653LowerBound.lean` (registered): the full lower-bound chain `g_ge_one` → … →
+  **`g_ge_half` (g(n) ≥ ⌈n/2⌉)** is merged via #24680 — the elementary lower-bound frontier
+  S1 opened. ⌈n/2⌉ is the 1D optimum (S2 finding 4a); any push toward Csizmadia's 0.7n is
+  provably 2-dimensional and has no known closed-form family (S2 finding 4b) — genuinely open.
+
+**Housekeeping done this session:**
+1. **Closed superseded PRs #24302 and #24404** (both "discharge g_le_n axiom → theorem"):
+   #24417 already did exactly this and is merged. They were exact duplicates that could only
+   cause deployer churn/conflicts; closed with explanatory comments.
+2. **Synced stale `meta.json` `assumptions`** (both the nested-`meta` and top-level copies):
+   they claimed g_le_n was "build-pending under Docker blackout" — it has been a verified
+   theorem on main since #24417. Now accurately states the 2 deep axioms, the discharged
+   theorems, and the verified `g_ge_half` lower bound.
+
+**Do NOT re-claim this problem for elementary Lean work** — it is complete. The only remaining
+targets are (a) the two deep literature axioms (need absent Mathlib incidence geometry — not a
+research-session task) and (b) the OQ `g(n) ≥ (1−o(1))·n`, which is OPEN. A 2D lower-bound
+family beating ⌈n/2⌉ for all n is the genuine open elementary question and has no known
+construction; it cannot be written blind.
+
+**Honest assessment:** no new mathematics — accuracy/integrity housekeeping only. Removes two
+dead duplicate PRs from the queue and corrects stale assumption metadata so future sessions
+(and the gallery) reflect the true verified state. OQ untouched and OPEN.

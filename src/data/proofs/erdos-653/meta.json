@@ -66,7 +66,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 328,
-    "assumptions": "2 axioms: csizmadia_bound, upper_bound. 0 sorries. g_le_n (g(n) ≤ n) was discharged from axiom to theorem via Finset.card_image_le + csSup_le' (build-pending). g_le_n_sub_one (g(n) ≤ n-1, n ≥ 2) is a sharper proved theorem.",
+    "assumptions": "2 axioms, both deep literature citations requiring incidence-geometry machinery (Guth–Katz / Szemerédi–Trotter) absent from Mathlib: csizmadia_bound (g(n) > 7n/10) and upper_bound (g(n) < n - cn^{2/3}). 0 sorries. The elementary frontier is complete and verified on main: g_le_n (g(n) ≤ n, discharged from axiom in #24417), the sharper g_le_n_sub_one (g(n) ≤ n-1 for n ≥ 2), and the lower bound g_ge_half (g(n) ≥ ⌈n/2⌉, #24680) via the explicit collinear construction. The open conjecture g(n) ≥ (1-o(1))·n remains OPEN.",
     "theoremCount": 4,
     "definitionCount": 13
   },
@@ -229,5 +229,5 @@
   ],
   "sorries": 0,
   "axiomCount": 2,
-  "assumptions": "2 axioms: csizmadia_bound (g(n) > 7n/10), upper_bound (g(n) < n - cn^{2/3}). 0 sorries. The former discharged g_le_n theorem (g(n) ≤ n) was discharged to a theorem via Finset.card_image_le + csSup_le' (build-pending under Docker blackout). g_le_n_sub_one (g(n) ≤ n-1, n ≥ 2) is the sharper proved theorem."
+  "assumptions": "2 axioms, both deep literature citations requiring incidence-geometry machinery (Guth–Katz / Szemerédi–Trotter) absent from Mathlib: csizmadia_bound (g(n) > 7n/10) and upper_bound (g(n) < n - cn^{2/3}). 0 sorries. The elementary frontier is complete and verified on main: g_le_n (g(n) ≤ n, discharged from axiom in #24417), the sharper g_le_n_sub_one (g(n) ≤ n-1 for n ≥ 2), and the lower bound g_ge_half (g(n) ≥ ⌈n/2⌉, #24680) via the explicit collinear construction. The open conjecture g(n) ≥ (1-o(1))·n remains OPEN."
 }
