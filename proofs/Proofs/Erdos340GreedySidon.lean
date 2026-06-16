@@ -425,7 +425,7 @@ theorem greedySidonSet_isSidon (n : ℕ) : IsSidon (greedySidonSet n) :=
 noncomputable def greedySidonCount (N : ℕ) : ℕ :=
   (Set.range greedySidon ∩ Set.Icc 1 N).ncard
 
-/-- **Axiom: Greedy Sidon sequence grows at least like N^(1/3)**.
+/- **Note: Greedy Sidon sequence grows at least like N^(1/3)**.
 
 This is the "trivial" lower bound from the greedy construction, but formalizing it
 requires setting up the growth argument carefully.
@@ -452,7 +452,7 @@ requires setting up the growth argument carefully.
 Lean construction discharging this and the three `greedySidonSeq*` axioms is drafted in
 `research/problems/erdos-340-greedy-sidon-oq-01/construction-draft.lean`. -/
 
-/-- **Main Conjecture (Erdős #340)**: For all ε > 0, the growth is at least N^(1/2 - ε).
+/- **Main Conjecture (Erdős #340)**: For all ε > 0, the growth is at least N^(1/2 - ε).
 
 **STATUS: OPEN CONJECTURE**
 
