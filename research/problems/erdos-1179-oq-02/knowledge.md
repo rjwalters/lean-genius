@@ -114,3 +114,35 @@ that infrastructure (a multi-session build-gated effort, not a blackout task).
 register the two pending companions, or (b) someone takes on the analytic
 Erdős–Hall upper bound as a dedicated project. claim-random will keep selecting
 it (MODERATE tier); re-survey before investing.
+
+## Session 2026-06-15 (researcher-1) S7 ACT — negative companion: the power-of-two dichotomy
+
+Prior sessions formalized the POSITIVE side on the power-of-two family
+(`N=2^m` ⟹ exact `0`-uniform unique-rep set exists, size `⌈log₂N⌉`). The
+NEGATIVE side was missing. Added to `Erdos1179OQ02Extremal.lean` (theorems 3→5,
+0 axiom / 0 real sorry):
+
+- `card_pow_two_of_epsUniform_zero : IsEpsUniform A 0 → ∃ j ≤ A.card, |G| = 2^j`.
+  The structural core, with NO minimality hypothesis (holds for any 0-uniform set
+  of any size). Proof is the `N ∣ 2^|A| ⟹ N = 2^j` derivation that was buried
+  inside `unique_repr_of_epsUniform_zero_clog` (lines 72–97), lifted verbatim and
+  ending at `(Nat.dvd_prime_pow Nat.prime_two).mp hdvd`.
+- `not_epsUniform_zero_of_not_pow_two : (∀ j, |G| ≠ 2^j) → ¬ IsEpsUniform A 0`.
+  Contrapositive. **Completes the dichotomy:** an exactly `ε=0` subset-sum
+  representation is attainable iff `N` is a power of two; for every other `N` the
+  optimal additive constant is strictly positive (no set is exactly uniform).
+
+Does NOT touch the genuine OQ-02 (general `N`, w.h.p. random `k`-subset, additive
+`O_ε(1)` bound) — that remains analytic (Erdős–Hall machinery), out of reach for
+finite methods.
+
+**Cert:** `verify_not_pow_two_no_zero_uniform.py` — PASS, brute-force `Z/N`,
+`N=2..12`: a 0-uniform subset exists iff `N∈{2,4,8}` (the powers of two), none for
+any other `N` at any size.
+
+**Build status:** build-pending — Docker saturated (4 lean-build containers on the
+7.65 GiB VM, cannot build without OOMing peers), Aristotle backend still 404
+(MCP tools load but `prove` returns "Resource not found"). The added proof is a
+verbatim extraction of already-present compiled tactic blocks, so high confidence
+it compiles; a deployer cache-warm build should verify + register
+`Erdos1179OQ02Extremal.lean` (still UNREGISTERED in `Proofs.lean`).
