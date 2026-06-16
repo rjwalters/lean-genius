@@ -814,3 +814,56 @@ downstream restructure (parent cannot import the certificate — circular — so
 removal needs `erdos_1047`/`grunskyConjecture_false` to consume a downstream theorem).
 NOT attempted under blackout. Numerical frontier (closed-form collinear-simple onset)
 also unchanged — it is not the bottleneck; the bottleneck is a single green build.
+
+---
+
+## Session 2026-06-16 (researcher-3) — Certificate.lean SKELETON, BUILD-VERIFIED GREEN
+
+**Mode**: ACT (Docker recovered). **Outcome**: the transcription bottleneck is half
+done — the structural skeleton now **builds green** (`docker-build.sh
+Proofs.Erdos1047OQ02Certificate` → `⚠ [3060/3060] Built (12s)`, only 2 expected
+`sorry` warnings), reducing the lone axiom to exactly two isolated, well-typed
+analytic obligations.
+
+### What was written + machine-checked (`Proofs/Erdos1047OQ02Certificate.lean`, orphan)
+A new file (imports `Proofs.Erdos1047OQ02Reduction` + `Mathlib.Tactic`, namespace
+`Erdos1047OQ02Cert`) applying the registered bridge
+`componentContaining_lemniscate_not_convex_of_chord_exits`. **Proved with NO sorry**
+(all compile):
+- `eval_zero_eq_four : goodmanPolynomial.eval 0 = 4` (`simp` eval lemmas + `norm_num`).
+- `eval_I_zero`, `eval_negI_zero : f(±i) = 0` via `linear_combination ((±i-2)^2) * Complex.I_sq`.
+- `chord_exit : c < ‖f((1-½)•(-i) + ½•i)‖`: midpoint = 0 (`smul_neg`+`neg_add_cancel`),
+  `eval 0 = 4`, `‖(4:ℂ)‖ = 4` (`simp`), then `c = 5^{3/2}/4 < 4` via
+  `5^{3/2} = 5·√5` (`Real.sqrt_eq_rpow`,`Real.rpow_add`,`Real.rpow_one`) and `√5 < 3`
+  (`Real.sq_sqrt` + `nlinarith`). **NB: `div_lt_iff` is GONE in v4.26.0 → use `div_lt_iff₀`.**
+- `seg`, `goodmanArc` (4-segment polyline), `mem_seg_left/right`, `arc_mem_negI`,
+  `arc_mem_I`, `negI_mem_lemniscate`.
+- `goodman_counterexample_proof` — the **full assembly** into the axiom's exact
+  statement, applying the bridge with `(C := goodmanArc) (z₁ := i) (t := 1/2)`.
+  This type-checks: the plumbing (bridge signature, implicit `f`/`c`/`z₀` unification,
+  membership shapes) is all verified.
+
+### UPDATE (same session): `goodmanArc_isPreconnected` now PROVED (build-green)
+Closed obligation 1 on the first build attempt:
+`seg_isPreconnected (a b) : IsPreconnected (seg a b)` = `isPreconnected_Icc.image` +
+`Continuous.continuousOn` + `fun_prop`; then `goodmanArc_isPreconnected` chains three
+`IsPreconnected.union` at the waypoints (1−i)/2, 2, (1+i)/2 (each shared as
+`mem_seg_right`/`mem_seg_left`). Rebuild: `⚠ [3060/3060] Built (165s)`, ONE sorry left.
+
+### The REMAINING `sorry` (now the SOLE open content, isolated + well-typed)
+1. ~~`goodmanArc_isPreconnected`~~ — DONE (build-verified).
+2. `goodmanArc_subset_lemniscate : goodmanArc ⊆ lemniscate f c` — the 4 segment
+   inequalities `‖f(z(s))‖ ≤ c`, each ⟸ `normSq = Re(s)²+Im(s)²` (tables §Session
+   2026-06-15/16) ⟸ `125/16 − (Re²+Im²) = (k/16)·SQ(s)·P(s)` (`ring`) ⟸ `sq_nonneg` +
+   all-nonneg Bernstein coefficients of P.
+
+Both are clean targets for the next session or Aristotle `prove`. File is an
+UNREGISTERED orphan (NOT in `Proofs.lean`); axiomCount of the gallery entry stays 1
+until these close AND a downstream restructure removes the parent axiom (parent
+cannot import the certificate — circular).
+
+### Build env (this session)
+Docker recovered: `info: mathlib: cloning` is NORMAL (re-clones source, then pulls
+7727 oleans from `lean-mathlib-cache` Azure volume, unpack ~60s); my file compiled in
+8–12s. Memory hard-capped 6144MB via cgroup (host-safe). 3–5 concurrent lean
+containers throughout; small-file build fine.
