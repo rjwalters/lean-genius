@@ -525,3 +525,59 @@ Mathlib has no readily-citable shortest-vector-of-binary-form lemma, so step (2)
 must be built — but it is elementary and a far better Aristotle target than the
 measure-theoretic route. Resubmit the leaf to Aristotle with hint "Lagrange–Gauss
 reduce {(p,0),(r,1)} under x²+d·y²; interval_cases d" once the 404 clears.
+
+---
+
+## S6 FRONTIER-SHARPEN (researcher-2, 2026-06-16, dual blackout)
+
+Re-probed live: Aristotle `prove` 404 ×2; `docker run --rm alpine echo` rc=124
+(wedged daemon). No build possible. ORIENT-only triage; corrects/sharpens the
+06-15 state (two newer companions `ThreeSquaresSliceMinkowski.lean` +
+`ThreeSquaresSingleAP.lean`, created 06-16, were not in the tracked list).
+
+**Both axioms are now isolated to a TOTAL of 2 `sorry`s, both in companions:**
+
+1. **`dirichlet_key_lemma` ⇒ ONE self-contained statement.**
+   `ThreeSquaresSliceMinkowski.lean` reduces it fully to a single sorry at
+   line 51, `ThreeSquaresSlice.exists_slice_point_lt_two_mul`:
+   ```
+   (p d : ℕ) (hp : 0 < p) (hd : 0 < d) (hd2 : d ≤ 2) (r : ℤ) :
+     ∃ x y : ℤ, (x,y) ≠ (0,0) ∧ (p:ℤ) ∣ (x - r*y) ∧ x^2 + (d:ℤ)*y^2 < 2*p
+   ```
+   The bridge `slice_point_to_dirichlet_vector` (:63) and the assembly
+   `exists_dirichlet_vector_lt_two_mul` (:86) are **PROVED** — once line 51 is
+   closed the whole companion is sorry-free and `dirichlet_key_lemma` follows.
+   This statement has NO project deps (pure ℤ arithmetic + ∃) ⇒ the cleanest
+   possible Aristotle target. File is UNREGISTERED (carries the sorry).
+
+2. **`not_excluded_form_is_sum_three_sq` ⇒ ONE sorry** in
+   `ThreeSquaresSufficiencyCorrected.lean` (224 LOC, 1 real sorry), which derives
+   it from `dirichlet_key_lemma` + two satisfiable hypotheses. (The monolithic
+   single-witness route in `ThreeSquaresSufficiency.lean` is a PROVED DEAD END —
+   `ThreeSquaresWitnessObstruction.not_dirichletWitnessProperty`, falsifier m=11;
+   use the *Corrected* residue-split file.)
+
+**Registration delta vs 06-15 state:** `ThreeSquaresSingleAP` (0 sorry/0 axiom,
+prime-in-AP residue input) is now REGISTERED in `Proofs.lean` (line 3046). Still
+unregistered + build-pending: `ThreeSquaresSliceMinkowski` (1 sorry),
+`ThreeSquaresSufficiency`/`Corrected`/`WitnessObstruction`.
+
+**WHY the elementary Thue/pigeonhole shortcut does NOT work (do not attempt it).**
+Pigeonhole over pairs `(a,b)`, `0 ≤ a,b ≤ ⌊√p⌋` ((⌊√p⌋+1)² > p ⇒ a collision
+`x ≡ r·y mod p`, `|x|,|y| ≤ ⌊√p⌋`) gives only
+`x² + d·y² ≤ (1+d)·⌊√p⌋² ≤ (1+d)·p`:
+- `d = 1`: `≤ 2p` but **non-strict** — fails at perfect-square `p` (where
+  `|x|=|y|=√p` is attainable, value exactly `2p`); `p = d·n−1` is not prime so
+  perfect-square `p` does occur.
+- `d = 2`: `≤ 3p` — too weak by a factor `3/2`.
+The strict `< 2p` for `d = 2` needs the Hermite/Minkowski constant `2/√3`
+(`(2/√3)·√d ≈ 1.63 < 2`), i.e. genuine geometry-of-numbers on the covolume-`p`
+sublattice — NOT a pigeonhole bound. So line 51 must go through Mathlib GoN
+(`MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`,
+already used at `ThreeSquares.lean:983` over ℤ³ — here instantiated on the 2D
+index-`p` slice lattice). Build/Aristotle-gated; do not write blind.
+
+**Net:** infra-blocked, not math-blocked. When a backend returns: (a) Aristotle
+`prove` the clean line-51 statement (best first try), else build the 2D-GoN
+proof; (b) discharge the 1 sorry in `SufficiencyCorrected`; (c) `docker-build` +
+register the 4 unregistered companions in dep order; (d) inline both axioms.

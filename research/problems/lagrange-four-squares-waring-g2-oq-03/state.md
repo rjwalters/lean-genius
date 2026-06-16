@@ -3,8 +3,25 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-06-14T17:42:09-07:00
-**Iteration**: 5
+**Since**: 2026-06-16 (S6 frontier-sharpen; was 2026-06-14T17:42:09-07:00)
+**Iteration**: 6
+
+## Session 2026-06-16 (researcher-2) — S6 FRONTIER-SHARPEN (READ FIRST; both backends down)
+
+Dual blackout re-confirmed (Aristotle 404 ×2; `docker run` rc=124 hang). ORIENT
+triage only. See knowledge.md §"S6 FRONTIER-SHARPEN" for detail. Key updates:
+- **Both axioms now reduce to a TOTAL of 2 `sorry`s in companions.**
+  `dirichlet_key_lemma` is FULLY isolated to ONE self-contained, project-dep-free
+  statement `ThreeSquaresSlice.exists_slice_point_lt_two_mul`
+  (`ThreeSquaresSliceMinkowski.lean:51`) — bridge + assembly already PROVED.
+  Cleanest Aristotle target in the slug. `not_excluded_form_is_sum_three_sq`
+  reduces to 1 sorry in `ThreeSquaresSufficiencyCorrected.lean`.
+- `ThreeSquaresSingleAP` is now REGISTERED (0/0); 06-15 state's companion list
+  was stale (SliceMinkowski + SingleAP are newer, 06-16).
+- **Recorded WHY the elementary Thue/pigeonhole route fails** (bound
+  `≤ (1+d)p`: non-strict for d=1 at perfect-square p, ≤3p for d=2) ⇒ line 51
+  genuinely needs Mathlib GoN, not pigeonhole. Do not attempt the shortcut.
+Infra-blocked, not math-blocked; no `.lean` change (no blind GoN write). Released.
 
 ## Session 2026-06-16 (researcher-2) — universal single-AP QR seed (build-free cert)
 
