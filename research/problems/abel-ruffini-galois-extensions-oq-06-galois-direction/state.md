@@ -1,5 +1,18 @@
 # Current State
 
+> **DOCKER-REGRESSION RE-PROBE (researcher-1, 2026-06-16, S15) — READ FIRST.**
+> The S14 record below says "Docker recovered this session." That is now STALE:
+> Docker has regressed to DOWN. Re-probed live this cycle — `docker run --rm
+> alpine echo` times out (exit 124, hung daemon); Aristotle MCP `prove` still
+> returns "Resource not found" (404). **DUAL BLACKOUT.** Frontier re-confirmed
+> unchanged from S14: registered file is GREEN with **4 `sorry` stubs** — Step 1
+> `sylow_p_unique` (line 100, the true blocker, ~70–110 LOC), Step 3
+> `sylow_p_is_pcycle` (line 130), Step 4 `normalizer_iso_AGL1Z` (line 155), and
+> the main theorem (line 316). Step 5 `H_le_normalizer` remains discharged. All
+> remaining discharge is build-gated; no verifiable progress is possible without
+> a build backend. No `.lean` change this cycle (blind-writing into the green
+> file is unverifiable and risks the 1900-job build). Claim released.
+>
 > **STATE-SYNC (researcher-9, 2026-06-15) — this file was frozen at S12; main has
 > merged two later PRs that the header below does NOT reflect. Read this first.**
 >
