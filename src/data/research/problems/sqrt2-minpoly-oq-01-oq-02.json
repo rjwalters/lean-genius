@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "VERIFIED: degree-2 (square root) result merged (#24789); odd-prime-degree generalization minpoly ℚ (a^(1/p))=X^p−a Docker-verified green (0 sorry/0 axiom, Kummer irreducibility) and registered in Proofs.lean (PR #24816).",
+    "progressSummary": "VERIFIED: degree-2 (square root) result merged (#24789); odd-prime-degree generalization minpoly ℚ (a^(1/p))=X^p−a Docker-verified green and registered (#24816). Prime-power generalization minpoly ℚ (a^(1/pⁿ))=X^(pⁿ)−a (odd prime p, n≥1) registered (Sqrt2MinpolyOQ01OQ02PrimePow.lean), 0 sorry/0 axiom; verbatim generalization of the green n=1 file via Kummer at general n (no pow_one rewrite). Build-pending deployer gate.",
     "builtItems": [
       "irrational_sqrt_of_not_isSquare_rat (Sqrt2MinpolyOQ01OQ02.lean:55)",
       "minpoly_sqrt_of_not_isSquare_rat — main theorem (Sqrt2MinpolyOQ01OQ02.lean:71)",
@@ -40,7 +40,10 @@
       "minpoly_rpow_of_odd_prime: minpoly ℚ (a^(1/p)) = X^p − a for odd prime p, a≥0 rational, ¬(p-th power) (Sqrt2MinpolyOQ01OQ02OQ01.lean:main)",
       "minpoly_rpow_natDegree (=p), rpow_isIntegral, adjoin_rpow_finrank ([ℚ(a^(1/p)):ℚ]=p) corollaries (Sqrt2MinpolyOQ01OQ02OQ01.lean)",
       "rpow_inv_pow: (a^(1/p))^p = a for a≥0 real (Real.rpow_mul + inv_mul_cancel₀)",
-      "Docker-verified GREEN build (7743 jobs) of Proofs.Sqrt2MinpolyOQ01OQ02OQ01 (registered in Proofs.lean): minpoly_rpow_of_odd_prime + degree/finrank corollaries, 0 sorry / 0 axiom"
+      "Docker-verified GREEN build (7743 jobs) of Proofs.Sqrt2MinpolyOQ01OQ02OQ01 (registered in Proofs.lean): minpoly_rpow_of_odd_prime + degree/finrank corollaries, 0 sorry / 0 axiom",
+      "minpoly_rpow_of_odd_prime_pow: minpoly ℚ (a^(1/pⁿ)) = X^(pⁿ) − a for odd prime p, n≥1, a≥0 rational, ¬(p-th power) (Sqrt2MinpolyOQ01OQ02PrimePow.lean); n=1 recovers the odd-prime companion",
+      "minpoly_rpow_natDegree (=pⁿ), rpow_isIntegral, adjoin_rpow_finrank ([ℚ(a^(1/pⁿ)):ℚ]=pⁿ) corollaries at general prime-power exponent (Sqrt2MinpolyOQ01OQ02PrimePow.lean)",
+      "rpow_inv_pow / aeval_rpow stated at general exponent N (generic N-th root machinery, reused for the pⁿ case)"
     ],
     "insights": [
       "For a rational radicand r, irrationality of √r is direct: a rational value s of √r squares to r, exhibiting r as a rational square. No irrational_nrt_of_notint_nrt needed (unlike the natural-number case).",
@@ -48,14 +51,16 @@
       "The degree argument (monic divisor of monic degree-2) transfers verbatim from the verified Sqrt2MinpolyOQ01 Part VII with radicand type ℕ → ℚ.",
       "algebraMap ℚ ℝ r must be identified with (r : ℝ) via eq_ratCast inside aeval simp normal forms.",
       "Follow-up (k-th roots): for COMPOSITE k, minpoly ℚ (a^(1/k)) = X^k − a is FALSE (X⁴−4=(X²−2)(X²+2)); the clean statement is prime-degree only.",
-      "Mathlib has NO plain-prime X^p−C a irreducibility lemma; the usable one is X_pow_sub_C_irreducible_iff_of_prime_pow (requires p≠2, i.e. ODD prime). The p=2 case is exactly this parent file (¬IsSquare route)."
+      "Mathlib has NO plain-prime X^p−C a irreducibility lemma; the usable one is X_pow_sub_C_irreducible_iff_of_prime_pow (requires p≠2, i.e. ODD prime). The p=2 case is exactly this parent file (¬IsSquare route).",
+      "Kummer criterion X_pow_sub_C_irreducible_iff_of_prime_pow governs ALL prime-power exponents pⁿ (n≥1), not just p; the irreducibility obstruction ∀b, b^p≠a is independent of n. X⁹−2 is irreducible because 2 is not a CUBE, not because it is not a 9th power.",
+      "Prime-power proof is the odd-prime proof with exponent p→pⁿ; at general n NO pow_one rewrite is needed (#24816 needed it only because it specialized to n=1) — the pⁿ statement is actually cleaner."
     ],
     "mathlibGaps": [
       "Mathlib has no direct minpoly-of-rational-square-root lemma; built from minpoly.dvd + irrationality + monic-divisor uniqueness."
     ],
     "nextSteps": [
-      "Build/register Sqrt2MinpolyOQ01OQ02OQ01.lean when Docker pool ≤2 containers (currently saturated at 3 on 7.65GB VM).",
-      "Add a concrete odd-prime example, e.g. minpoly ℚ (2^(1/3)) = X³−2, by proving ∀ b:ℚ, b³≠2 (rational-root / irrationality of cbrt 2).",
+      "Confirm the deployer's green build of Proofs.Sqrt2MinpolyOQ01OQ02PrimePow (now registered); a leaf build was not run this session (Docker pool saturated at 7 containers).",
+      "Add a concrete prime-power example, e.g. minpoly ℚ (2^(1/9)) = X⁹−2, by proving ∀ b:ℚ, b³≠2 (the obstruction is non-CUBE, independent of the exponent 9).",
       "Prove ℚ(√(p/q)) = ℚ(√(pq)) to reduce rational-radicand quadratic fields to squarefree-integer generators."
     ],
     "markdown": "# Knowledge Base: sqrt2-minpoly-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
