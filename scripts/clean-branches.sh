@@ -664,12 +664,27 @@ echo ""
 #   - it is NOT locked (`git worktree list` does not flag it `locked`)
 #   - no active owning process (pgrep on the worktree path)
 #   - clean working tree (`git status --porcelain` empty)
-#   - no unpushed commits (`git log @{u}..HEAD` empty; missing upstream counts
-#     as "no unpushed commits" — nothing to lose to a remote that's gone)
+#   - no commits that exist on no remote. With an upstream, `@{u}..HEAD` must
+#     be empty. WITHOUT an upstream, HEAD must be reachable from some remote
+#     ref (`git branch -r --contains HEAD` non-empty) — "no upstream" is NOT
+#     treated as "nothing to lose", since a never-pushed branch can carry
+#     local-only commits.
+#   - its branch's PR is NOT OPEN (an OPEN PR is always preserved)
 #   - AND it is reclaimable: its branch's PR is MERGED/CLOSED, OR its upstream
 #     branch is gone on origin, OR its mtime exceeds WORKTREE_MAX_AGE_DAYS.
 # Anything failing a single guard is PRESERVED. Default stays interactive;
 # --force is non-interactive.
+#
+# Decision table for the reclaim path (after the structural guards pass):
+#   PR OPEN              + stale         => PRESERVE (open-PR guard)
+#   PR OPEN              + recent        => PRESERVE (open-PR guard)
+#   PR MERGED/CLOSED                     => REMOVE   (reason: PR <status>)
+#   no upstream + HEAD on no remote ref  => PRESERVE (unbacked local commits)
+#   no upstream + HEAD on a remote ref + stale  => REMOVE (reason: stale)
+#   no upstream + HEAD on a remote ref + recent => PRESERVE (unmerged, recent)
+#   upstream gone on origin              => REMOVE   (reason: upstream gone)
+#   upstream present + stale             => REMOVE   (reason: stale)
+#   upstream present + recent            => PRESERVE (unmerged, recent)
 
 header "  Checking .loom/worktrees/* (scratch)..."
 
@@ -727,17 +742,32 @@ if [[ -d "$REPO_ROOT/.loom/worktrees" ]]; then
             continue
         fi
 
-        # GUARD: never remove a worktree with unpushed commits. A missing
-        # upstream (@{u} unresolved) yields no commits to lose, so treat the
-        # absence of an upstream as "no unpushed commits".
-        unpushed=""
+        # GUARD: never remove a worktree carrying commits that exist on no
+        # remote. Two cases must both be covered:
+        #   - upstream IS configured: preserve if `@{u}..HEAD` is non-empty
+        #     (real commits ahead of the tracked remote branch).
+        #   - upstream is NOT configured (@{u} unresolved): "no upstream" is
+        #     NOT "nothing to lose". A never-pushed branch can carry local-only
+        #     exploratory commits. Preserve unless HEAD is reachable from some
+        #     remote ref (`git branch -r --contains HEAD` non-empty ⇒ backed up
+        #     on a remote ⇒ safe). If no remote branch contains HEAD, the
+        #     commits are unbacked ⇒ preserve.
         if git -C "$wt_path" rev-parse --abbrev-ref --symbolic-full-name '@{u}' &>/dev/null; then
             unpushed=$(git -C "$wt_path" log --oneline '@{u}..HEAD' 2>/dev/null || echo "")
-        fi
-        if [[ -n "$unpushed" ]]; then
-            ((worktrees_preserved++)) || true
-            info "    Preserving: .loom/worktrees/$wt_name (unpushed commits)"
-            continue
+            if [[ -n "$unpushed" ]]; then
+                ((worktrees_preserved++)) || true
+                info "    Preserving: .loom/worktrees/$wt_name (unpushed commits)"
+                continue
+            fi
+        else
+            # No upstream configured: is HEAD backed up on any remote ref?
+            remote_containing=$(git -C "$wt_path" branch -r --contains HEAD 2>/dev/null \
+                | grep -v '\->' | sed 's/^[[:space:]]*//' | head -n 1)
+            if [[ -z "$remote_containing" ]]; then
+                ((worktrees_preserved++)) || true
+                info "    Preserving: .loom/worktrees/$wt_name (no upstream; HEAD not on any remote)"
+                continue
+            fi
         fi
 
         # Determine reclaim eligibility. Removed only if at least one of:
@@ -749,6 +779,16 @@ if [[ -d "$REPO_ROOT/.loom/worktrees" ]]; then
 
         if [[ -n "$wt_branch" ]]; then
             pr_status=$(get_pr_status "$wt_branch")
+            # GUARD: an OPEN PR must ALWAYS be preserved, regardless of mtime.
+            # Without this, a long-lived feature branch under active review
+            # whose dir mtime drifts past WORKTREE_MAX_AGE_DAYS would fall
+            # through to path (c) and be removed. Preserve before any mtime
+            # check.
+            if [[ "$pr_status" == "OPEN" ]]; then
+                ((worktrees_preserved++)) || true
+                info "    Preserving: .loom/worktrees/$wt_name (open PR)"
+                continue
+            fi
             if [[ "$pr_status" == "MERGED" || "$pr_status" == "CLOSED" ]]; then
                 reclaim_reason="PR $pr_status"
             fi
