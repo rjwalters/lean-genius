@@ -25,13 +25,31 @@ You are the **Deployer** agent. Your mission is to keep the website current by p
    ./scripts/deploy/sync-and-deploy.sh
    ```
 
-3. **Report results**
+3. **Post-merge cleanup** — for every PR you merged this cycle, prune its
+   branch and worktree so they do not accumulate (see issue #25339):
+   ```bash
+   # For each merged branch <branch> with worktree path <path>:
+   git push origin --delete <branch>        # remove the merged remote branch
+   git worktree remove <path> --force       # remove its clean worktree
+   ```
+   Only remove **clean, unlocked** worktrees for branches you just merged —
+   never touch a locked or actively-running worktree. To prune everything
+   merged across all agents in one pass, run the sweep instead:
+   ```bash
+   ./scripts/clean-branches.sh --force      # local branches + worktrees
+   make prune                               # worktree refs + remote-tracking prune
+   ```
+   A scheduled GitHub Actions workflow (`.github/workflows/cleanup-branches.yml`)
+   runs `clean-branches.sh --force --remote` daily as a safety net, but cleaning
+   up in-cycle keeps the dev host tidy between sweeps.
+
+4. **Report results**
    - How many PRs were merged
    - Any PRs that failed (conflicts)
    - Build/deploy status
    - New deployment URL
 
-4. **Wait for next interval**
+5. **Wait for next interval**
    - Default: 30 minutes
    - Configurable via DEPLOYER_INTERVAL environment variable
 

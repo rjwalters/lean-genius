@@ -11,6 +11,7 @@
 #   --dry-run       Show what would be cleaned without making changes
 #   -f, --force     Non-interactive mode (auto-confirm all prompts)
 #   --keep-no-pr    Preserve branches that have no associated PR
+#   --remote        Also delete merged/closed branches on origin (for CI use)
 #   -h, --help      Show this help message
 #
 # Safety:
@@ -18,6 +19,8 @@
 #   - Never deletes branches checked out in active worktrees
 #   - Branches with no PR: deleted if 0 commits ahead of main, preserved if ahead
 #   - --keep-no-pr overrides to preserve all branches without PRs
+#   - --remote only deletes origin branches whose PR is MERGED or CLOSED
+#     (OPEN-PR and no-PR remote branches are always preserved)
 
 set -euo pipefail
 
@@ -55,6 +58,7 @@ REPO_ROOT="$(find_repo_root)"
 DRY_RUN=false
 FORCE=false
 KEEP_NO_PR=false
+REMOTE=false
 
 for arg in "$@"; do
     case $arg in
@@ -75,6 +79,10 @@ for arg in "$@"; do
             KEEP_NO_PR=true
             shift
             ;;
+        --remote)
+            REMOTE=true
+            shift
+            ;;
         --help|-h)
             cat << 'HELPEOF'
 Comprehensive Branch & Worktree Cleanup
@@ -85,6 +93,7 @@ Options:
   --dry-run       Show what would be cleaned without making changes
   -f, --force     Non-interactive mode (auto-confirm all prompts)
   --keep-no-pr    Preserve branches that have no associated PR
+  --remote        Also delete merged/closed branches on origin (for CI use)
   -h, --help      Show this help message
 
 Branch cleanup:
@@ -94,6 +103,13 @@ Branch cleanup:
   - If no PR exists and branch is 0 commits ahead of main: DELETE
   - If no PR exists and branch has commits ahead: PRESERVE (or delete with prompt)
   - --keep-no-pr: always preserve branches with no PR
+
+Remote cleanup (--remote):
+  For every branch on origin (except main/master):
+  - If a merged/closed PR exists: DELETE on origin
+  - Otherwise (open PR or no PR): PRESERVE
+  Intended for CI/scheduled runs where a fresh checkout has no local
+  branches but origin has accumulated merged-PR branches.
 
 Worktree cleanup:
   - .claude/worktrees/agent-* without a running claude process: REMOVE
@@ -264,6 +280,11 @@ preserved_no_pr=0
 failed=0
 total_branches=0
 
+# Remote branch counters (--remote)
+remote_deleted=0
+remote_preserved=0
+remote_failed=0
+
 # Get all local branches
 all_branches=$(git branch | sed 's/^[*+ ]*//' | sort)
 total_local=$(echo "$all_branches" | wc -l | tr -d ' ')
@@ -411,6 +432,78 @@ done
 printf "                                                          \r"
 
 echo ""
+
+# =============================================================================
+# PHASE 3b: Process remote branches (--remote)
+# =============================================================================
+# On a fresh CI checkout `git branch` only lists the default branch, so the
+# local-branch phase above is a no-op there. This phase deletes branches on
+# origin whose PR is MERGED or CLOSED, reusing the PR map from Phase 1 and the
+# same safety rules (never touch main; preserve OPEN-PR and no-PR branches).
+
+if [[ "$REMOTE" == true ]]; then
+    header "Phase 3b: Processing remote branches on origin..."
+    echo ""
+
+    # Make sure we have an up-to-date view of origin's branches.
+    git fetch --prune origin &>/dev/null || warning "  git fetch failed; using cached remote refs"
+
+    # List remote-tracking branches under origin/, stripping the prefix.
+    # Skip the symbolic origin/HEAD entry.
+    remote_branches=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin \
+        | sed 's|^origin/||' \
+        | grep -v '^HEAD$' \
+        | sort -u)
+
+    remote_total=$(echo "$remote_branches" | grep -c . || true)
+    info "  Processing $remote_total remote branches..."
+    echo ""
+
+    rprocessed=0
+    for branch in $remote_branches; do
+        ((rprocessed++)) || true
+
+        if [[ $((rprocessed % progress_interval)) -eq 0 ]]; then
+            printf "  Progress: %d/%d remote branches processed...\r" "$rprocessed" "$remote_total"
+        fi
+
+        # Never delete the protected default branch on origin.
+        if [[ "$branch" == "main" || "$branch" == "master" ]]; then
+            ((remote_preserved++)) || true
+            continue
+        fi
+
+        pr_status=$(get_pr_status "$branch")
+
+        case "$pr_status" in
+            MERGED|CLOSED)
+                if [[ "$DRY_RUN" == true ]]; then
+                    info "  [DELETE] origin/$branch (PR $pr_status)"
+                    ((remote_deleted++)) || true
+                else
+                    if git push origin --delete "$branch" &>/dev/null; then
+                        success "  Deleted: origin/$branch (PR $pr_status)"
+                        ((remote_deleted++)) || true
+                    else
+                        warning "  Failed to delete: origin/$branch"
+                        ((remote_failed++)) || true
+                    fi
+                fi
+                ;;
+            *)
+                # OPEN PR or NONE: preserve.
+                ((remote_preserved++)) || true
+                if [[ "$DRY_RUN" == true ]]; then
+                    info "  [KEEP]   origin/$branch (PR ${pr_status:-NONE})"
+                fi
+                ;;
+        esac
+    done
+
+    # Clear progress line
+    printf "                                                          \r"
+    echo ""
+fi
 
 # =============================================================================
 # PHASE 4: Worktree cleanup
@@ -601,6 +694,16 @@ if [[ $failed -gt 0 ]]; then
 fi
 echo -e "    ${BOLD}Total deleted:${NC}            $total_deleted / $((total_branches + preserved_protected)) branches"
 echo ""
+
+if [[ "$REMOTE" == true ]]; then
+    echo -e "  ${BOLD}Remote branches (origin):${NC}"
+    echo -e "    ${GREEN}Deleted (PR merged/closed):${NC} $remote_deleted"
+    echo -e "    ${BLUE}Preserved:${NC}                  $remote_preserved"
+    if [[ $remote_failed -gt 0 ]]; then
+        echo -e "    ${RED}Failed:${NC}                     $remote_failed"
+    fi
+    echo ""
+fi
 
 echo -e "  ${BOLD}Worktrees:${NC}"
 echo -e "    ${GREEN}Removed:${NC}    $worktrees_removed"
