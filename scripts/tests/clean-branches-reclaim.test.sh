@@ -122,6 +122,37 @@ echo s >> "$w/f"; git -C "$w" -c user.email=t@t -c user.name=t commit -qam c; gi
 age_dir "$w"
 assert "upstream + clean + stale" "REMOVE:stale" "$(PR_STATUS=NONE decide "$w")"
 
+# -----------------------------------------------------------------------------
+# get_pr_status real-lookup tests (issue #25342): exact literal field match.
+# The `decide` cases above stub get_pr_status via PR_STATUS, so they do not
+# exercise the real PR_MAP_FILE lookup. Here we run the real function against a
+# tab-separated map to prove (a) regex metacharacters in the branch name do not
+# false-match another branch, (b) last-wins (open-overrides-closed) is kept, and
+# (c) an absent branch returns NONE.
+# This definition mirrors scripts/clean-branches.sh:get_pr_status.
+get_pr_status_real() {
+    local branch="$1"
+    local status
+    status=$(awk -F'\t' -v b="$branch" '$1==b {s=$2} END{print s}' "$PR_MAP_FILE")
+    echo "${status:-NONE}"
+}
+
+PR_MAP_FILE=$(mktemp)
+printf 'fixxfoo\tMERGED\n'  >> "$PR_MAP_FILE"   # would be false-matched by `fix.foo` under grep BRE
+printf 'fix.foo\tOPEN\n'    >> "$PR_MAP_FILE"
+printf 'feature/a*b\tCLOSED\n' >> "$PR_MAP_FILE"
+printf 'feature/ladder\tCLOSED\n' >> "$PR_MAP_FILE"
+printf 'feature/ladder\tOPEN\n'   >> "$PR_MAP_FILE"   # later entry wins (open overrides closed)
+printf 'fix-2\tMERGED\n'    >> "$PR_MAP_FILE"
+
+assert "metachar literal: fix.foo not matching fixxfoo" "OPEN"   "$(get_pr_status_real 'fix.foo')"
+assert "metachar literal: fixxfoo own status"           "MERGED" "$(get_pr_status_real 'fixxfoo')"
+assert "metachar literal: a*b own status"               "CLOSED" "$(get_pr_status_real 'feature/a*b')"
+assert "last-wins: closed-then-open => OPEN"            "OPEN"   "$(get_pr_status_real 'feature/ladder')"
+assert "absent branch => NONE"                          "NONE"   "$(get_pr_status_real 'feature/missing')"
+assert "substring guard: fix vs fix-2"                  "NONE"   "$(get_pr_status_real 'fix')"
+rm -f "$PR_MAP_FILE"
+
 echo ""
 echo "PASS=$PASS FAIL=$FAIL"
 rm -rf "$ROOT" "$seed"

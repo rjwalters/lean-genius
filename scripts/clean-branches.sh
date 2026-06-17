@@ -238,9 +238,13 @@ cat "$PR_MAP_FILE.closed" "$PR_MAP_FILE.open" > "$PR_MAP_FILE"
 # Returns: MERGED, CLOSED, OPEN, or NONE
 get_pr_status() {
     local branch="$1"
-    # Get the LAST matching entry (open overrides closed if both exist)
+    # Exact, literal field match on the tab-separated <branch>\t<status> map.
+    # Using awk (not grep) avoids interpreting regex metacharacters in the
+    # branch name as a BRE pattern, which could false-match another branch's
+    # PR status. The END{print s} form keeps the LAST matching status, so the
+    # open-overrides-closed semantics (open entries appended last) are preserved.
     local status
-    status=$(grep "^${branch}	" "$PR_MAP_FILE" | tail -1 | cut -f2)
+    status=$(awk -F'\t' -v b="$branch" '$1==b {s=$2} END{print s}' "$PR_MAP_FILE")
     echo "${status:-NONE}"
 }
 
