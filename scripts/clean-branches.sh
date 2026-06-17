@@ -568,7 +568,7 @@ if [[ "$REMOTE" == true ]]; then
     # Output: "<branch>\t<STATUS>" per branch; last map entry wins (open
     # overrides closed); absent branches resolve to NONE.
     REMOTE_RESOLVED_FILE=$(mktemp)
-    trap 'rm -f "$PR_MAP_FILE" "${PR_MAP_FILE}.open" "${PR_MAP_FILE}.closed" "$PROTECTED_BRANCHES_FILE" "$RESOLVED_STATUS_FILE" "${RESOLVED_STATUS_FILE}.merged" "$REMOTE_RESOLVED_FILE"' EXIT
+    trap 'rm -f "$PR_MAP_FILE" "${PR_MAP_FILE}.open" "${PR_MAP_FILE}.closed" "$PROTECTED_BRANCHES_FILE" "$RESOLVED_STATUS_FILE" "${RESOLVED_STATUS_FILE}.merged" "${RESOLVED_STATUS_FILE}.shares" "$NOPR_DELETE_SET_FILE" "$REMOTE_RESOLVED_FILE"' EXIT
     printf '%s\n' "$remote_branches" \
         | awk -F'\t' '
             NR==FNR { if ($1 != "") m[$1]=$2; next }

@@ -222,6 +222,33 @@ done
 assert "NOPR_DELETE set == per-branch old ahead==0 (all branches)" "0" "$mismatch"
 
 # -----------------------------------------------------------------------------
+# Trap-superset guard (issue #25349): the Phase 3b `--remote` EXIT trap must be
+# a superset of the Phase 3 EXIT trap, otherwise re-registering it (bash traps
+# replace, not append) silently de-registers cleanup for temp files created in
+# Phase 3 -- specifically `${RESOLVED_STATUS_FILE}.shares` and
+# `$NOPR_DELETE_SET_FILE` -- and they leak in $TMPDIR on a `--remote` run.
+#
+# This is a static source check (no live `gh`/remote needed): every temp file
+# mentioned in the Phase 3 trap must also appear in the `--remote` trap.
+# -----------------------------------------------------------------------------
+SRC="$(dirname "$0")/../clean-branches.sh"
+if [[ -f "$SRC" ]]; then
+    # The two trap lines, by the distinguishing temp file each registers last.
+    phase3_trap=$(grep -F '"${RESOLVED_STATUS_FILE}.merged" "${RESOLVED_STATUS_FILE}.shares"' "$SRC" | grep -F 'trap ' | head -1)
+    remote_trap=$(grep -F '"$REMOTE_RESOLVED_FILE"' "$SRC" | grep -F 'trap ' | head -1)
+    assert "phase3 trap line found" "yes" "$([[ -n "$phase3_trap" ]] && echo yes || echo no)"
+    assert "remote trap line found" "yes" "$([[ -n "$remote_trap" ]] && echo yes || echo no)"
+    for tok in \
+        '"$PR_MAP_FILE"' '"${PR_MAP_FILE}.open"' '"${PR_MAP_FILE}.closed"' \
+        '"$PROTECTED_BRANCHES_FILE"' '"$RESOLVED_STATUS_FILE"' \
+        '"${RESOLVED_STATUS_FILE}.merged"' '"${RESOLVED_STATUS_FILE}.shares"' \
+        '"$NOPR_DELETE_SET_FILE"'; do
+        in_remote=$([[ "$remote_trap" == *"$tok"* ]] && echo yes || echo no)
+        assert "remote trap cleans $tok" "yes" "$in_remote"
+    done
+fi
+
+# -----------------------------------------------------------------------------
 # Perf demonstration: scale up to N synthetic even-with-main branches and time
 # the old per-branch ahead-count vs the single for-each-ref. Best-effort; the
 # assertion only requires the batch call to be no slower than the per-branch
