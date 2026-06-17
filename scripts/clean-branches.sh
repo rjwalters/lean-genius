@@ -312,11 +312,97 @@ total_local=$(echo "$all_branches" | wc -l | tr -d ' ')
 info "  Processing $total_local local branches..."
 echo ""
 
+# -----------------------------------------------------------------------------
+# Batch precomputation (performance: avoids O(branches) subprocess spawns)
+# -----------------------------------------------------------------------------
+# The per-branch loop below used to spawn, for EACH local branch:
+#   - one `awk` over the whole PR_MAP_FILE (get_pr_status), and
+#   - in the NONE case, `git merge-base` + `git rev-list --count`.
+# On a ~3k-branch backlog that is ~100-230s of process overhead and times out
+# before Phase 4. We replace both with two one-shot passes whose results are
+# looked up cheaply inside the loop.
+#
+# bash 3.2 (macOS) has no associative arrays, so we precompute newline-delimited
+# set files and a single resolved TSV, then read them back. No `declare -A`.
+
+# (1) PR status for every local branch in ONE awk-join pass.
+#     Joins the branch list against PR_MAP_FILE; last map entry per branch wins
+#     (open-overrides-closed, since PR_MAP_FILE appends .open after .closed),
+#     matching get_pr_status's END{print s} last-wins semantics exactly. Absent
+#     branches resolve to NONE. Output: "<branch>\t<STATUS>" per branch.
+RESOLVED_STATUS_FILE=$(mktemp)
+NOPR_DELETE_SET_FILE="${RESOLVED_STATUS_FILE}.nopr_delete"
+trap 'rm -f "$PR_MAP_FILE" "${PR_MAP_FILE}.open" "${PR_MAP_FILE}.closed" "$PROTECTED_BRANCHES_FILE" "$RESOLVED_STATUS_FILE" "${RESOLVED_STATUS_FILE}.merged" "${RESOLVED_STATUS_FILE}.shares" "$NOPR_DELETE_SET_FILE"' EXIT
+printf '%s\n' "$all_branches" \
+    | awk -F'\t' '
+        NR==FNR { if ($1 != "") m[$1]=$2; next }
+        { print $0 "\t" (($1 in m) ? m[$1] : "NONE") }
+      ' "$PR_MAP_FILE" - > "$RESOLVED_STATUS_FILE"
+
+# (2) Precompute, in O(1) git calls, the set of no-PR branches the OLD per-branch
+#     ahead-count would DELETE, so the NONE fallback is byte-identical.
+#
+#     OLD logic (lines 408-415 of the pre-change script):
+#         merge_base = git merge-base main "$branch"   # EMPTY if no common ancestor
+#         ahead = (merge_base != "") ? rev-list --count merge_base..branch : 0
+#         DELETE iff ahead == 0
+#     So OLD DELETEs a no-PR branch IFF:
+#         (a) it is reachable into main (merge-base non-empty, count 0) — i.e.
+#             `--merged main`; OR
+#         (b) it has NO common ancestor with main (merge-base empty) — the
+#             `ahead` default of 0 makes the old code delete orphan-history
+#             branches too. In this repo those are the retired-master-root
+#             branches from the #13577 divergence (root ecb47b3…, disjoint from
+#             main's root). Reproducing this exactly is REQUIRED: a perf refactor
+#             must not change which branches get deleted, even where the old rule
+#             is surprising.
+#
+#     Both are computable without per-branch git spawns:
+#       MERGED  set = `git for-each-ref --merged main`        (case a)
+#       SHARES  set = branches containing one of main's root commits. A branch
+#                     shares history with main (non-empty merge-base) IFF its
+#                     tip descends from a main root, i.e. it is `--contains
+#                     <root>` for some root of main. Its complement is exactly
+#                     the empty-merge-base (orphan) set (case b). Verified on the
+#                     full 2.9k-branch backlog: contains-root partitions the
+#                     branches by merge-base emptiness with zero exceptions.
+#     OLD-DELETE(no-PR) = MERGED ∪ (ALL \ SHARES) = MERGED ∪ orphans.
+MERGED_SET_FILE="${RESOLVED_STATUS_FILE}.merged"
+SHARES_SET_FILE="${RESOLVED_STATUS_FILE}.shares"
+git for-each-ref --format='%(refname:short)' --merged main refs/heads 2>/dev/null \
+    | sort -u > "$MERGED_SET_FILE" || : > "$MERGED_SET_FILE"
+
+# Branches sharing history with main = union of `--contains <root>` over every
+# root commit of main (handles the multi-root case; main has a single root here).
+: > "$SHARES_SET_FILE"
+while IFS= read -r _root; do
+    [[ -z "$_root" ]] && continue
+    git for-each-ref --format='%(refname:short)' --contains "$_root" refs/heads 2>/dev/null >> "$SHARES_SET_FILE"
+done < <(git rev-list --max-parents=0 main 2>/dev/null)
+sort -u -o "$SHARES_SET_FILE" "$SHARES_SET_FILE"
+
+# Old-DELETE(no-PR) set = MERGED ∪ (all local branches NOT in SHARES).
+# Built once with set ops; membership tested with grep -qxF (literal, exact).
+{
+    cat "$MERGED_SET_FILE"
+    printf '%s\n' "$all_branches" | sort -u | comm -23 - "$SHARES_SET_FILE"
+} | sort -u > "$NOPR_DELETE_SET_FILE"
+
+is_nopr_deletable() {
+    # Reproduces the old `ahead == 0` (incl. empty-merge-base) DELETE decision.
+    grep -qxF "$1" "$NOPR_DELETE_SET_FILE"
+}
+
 # Progress tracking
 processed=0
 progress_interval=20
 
-for branch in $all_branches; do
+# Iterate the resolved "<branch>\t<status>" TSV so the PR status is already
+# joined (no per-branch awk). Field 1 = branch, field 2 = resolved PR status.
+# The list is read from FD 3 (not stdin), so the interactive `read -r -p`
+# prompts inside the loop still consume from the terminal in non-force mode.
+while IFS=$'\t' read -r branch pr_status <&3; do
+    [[ -z "$branch" ]] && continue
     ((processed++)) || true
 
     # Show progress every N branches
@@ -332,9 +418,8 @@ for branch in $all_branches; do
 
     ((total_branches++)) || true
 
-    # Look up PR status
-    pr_status=$(get_pr_status "$branch")
-
+    # PR status was resolved in the batch awk-join pass above (read from the
+    # resolved TSV's second field). No per-branch awk spawn here.
     case "$pr_status" in
         MERGED)
             ((deleted_merged++)) || true
@@ -405,14 +490,13 @@ for branch in $all_branches; do
                 continue
             fi
 
-            # Count commits ahead of main (use merge-base for accuracy)
-            ahead=0
-            merge_base=$(git merge-base main "$branch" 2>/dev/null || echo "")
-            if [[ -n "$merge_base" ]]; then
-                ahead=$(git rev-list --count "$merge_base..$branch" 2>/dev/null || echo "0")
-            fi
-
-            if [[ "$ahead" -eq 0 ]]; then
+            # Reproduce the old `ahead == 0` DELETE decision via the precomputed
+            # NOPR_DELETE set (built with a couple of one-shot git calls above)
+            # instead of per-branch `git merge-base` + `git rev-list --count`.
+            # The set is byte-identical to the old test: it is exactly the no-PR
+            # branches the old code would delete (merged-into-main OR
+            # empty-merge-base orphan).
+            if is_nopr_deletable "$branch"; then
                 # Branch is even with main - safe to delete
                 ((deleted_no_pr_even++)) || true
                 if [[ "$DRY_RUN" == true ]]; then
@@ -441,12 +525,12 @@ for branch in $all_branches; do
                 # Branch has unique commits - preserve by default
                 ((preserved_ahead++)) || true
                 if [[ "$DRY_RUN" == true ]]; then
-                    warning "  [KEEP]   $branch (no PR, $ahead commits ahead)"
+                    warning "  [KEEP]   $branch (no PR, commits ahead of main)"
                 fi
             fi
             ;;
     esac
-done
+done 3< "$RESOLVED_STATUS_FILE"
 
 # Clear progress line
 printf "                                                          \r"
@@ -479,8 +563,21 @@ if [[ "$REMOTE" == true ]]; then
     info "  Processing $remote_total remote branches..."
     echo ""
 
+    # Resolve PR status for every remote branch in ONE awk-join pass (same
+    # technique as Phase 3) instead of a per-branch awk scan of PR_MAP_FILE.
+    # Output: "<branch>\t<STATUS>" per branch; last map entry wins (open
+    # overrides closed); absent branches resolve to NONE.
+    REMOTE_RESOLVED_FILE=$(mktemp)
+    trap 'rm -f "$PR_MAP_FILE" "${PR_MAP_FILE}.open" "${PR_MAP_FILE}.closed" "$PROTECTED_BRANCHES_FILE" "$RESOLVED_STATUS_FILE" "${RESOLVED_STATUS_FILE}.merged" "$REMOTE_RESOLVED_FILE"' EXIT
+    printf '%s\n' "$remote_branches" \
+        | awk -F'\t' '
+            NR==FNR { if ($1 != "") m[$1]=$2; next }
+            { print $0 "\t" (($1 in m) ? m[$1] : "NONE") }
+          ' "$PR_MAP_FILE" - > "$REMOTE_RESOLVED_FILE"
+
     rprocessed=0
-    for branch in $remote_branches; do
+    while IFS=$'\t' read -r branch pr_status; do
+        [[ -z "$branch" ]] && continue
         ((rprocessed++)) || true
 
         if [[ $((rprocessed % progress_interval)) -eq 0 ]]; then
@@ -492,8 +589,6 @@ if [[ "$REMOTE" == true ]]; then
             ((remote_preserved++)) || true
             continue
         fi
-
-        pr_status=$(get_pr_status "$branch")
 
         case "$pr_status" in
             MERGED|CLOSED)
@@ -518,7 +613,7 @@ if [[ "$REMOTE" == true ]]; then
                 fi
                 ;;
         esac
-    done
+    done < "$REMOTE_RESOLVED_FILE"
 
     # Clear progress line
     printf "                                                          \r"
