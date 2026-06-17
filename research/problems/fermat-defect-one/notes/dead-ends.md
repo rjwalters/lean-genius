@@ -22,10 +22,11 @@ claim closes off a direction definitively.
     **conditional/axiomatized** finiteness lemma (not the headline, not
     `verified`).
   - *Productive vectors instead*: `witness-search` (#22635, per-$n$ verified
-    witnesses), `modular-obstruction` (#22636, the only rigorous-refutation
-    route). NB: `parameterization` was named here as "the only
+    witnesses). NB: `parameterization` was named here as "the only
     unconditional-existence route" — that is now **also closed for $n \ge 3$**;
-    see the next entry.
+    see below. And `modular-obstruction` was named "the only rigorous-refutation
+    route" — that is now **also closed for all $n$** (no prime, and no composite
+    modulus, can obstruct); see below.
 
 - **`parameterization` (polynomial families $a(t)^n + b(t)^n - c(t)^n \equiv
   \pm 1$)** — dead end for the headline existence conjecture at $n \ge 3$. See
@@ -45,5 +46,24 @@ claim closes off a direction definitively.
     $\forall n \ge 3$ existence statement has **no known uniform-construction
     route**; `witness-search` settles one exponent at a time, and a genuinely
     new idea is needed for the universal statement.
+
+- **`modular-obstruction` (single prime $p$, Level-3 refutation)** — dead end
+  for refuting Level 3 at *any* $(n, \epsilon)$, at *any* prime. See
+  `claims/2026-06-17-modular-obstruction-n456-level3.md` (issue #22636).
+  - *Exhaustive search.* All $(n, \epsilon, p)$ with $n \in \{4,5,6\}$,
+    $\epsilon \in \{-1,+1\}$, $p \in \{3,5,7,11,13\}$ — every one of the 30
+    cells admits a primitive residue solution mod $p$. No obstruction.
+  - *Unconditional obstruction to the method.* Universal "unit" residue
+    witnesses exist in *every* $\mathbb{Z}/p$ for all $n \ge 1$:
+    $(a,b,c) = (0,0,1)$ for the negative sign ($0^n + 0^n + 1 = 1^n$) and
+    $(1,0,0)$ for the positive sign ($1^n + 0^n = 0^n + 1$). The unit offset
+    "$\pm 1$" is absorbed by $1 = 1^n$, so the congruence is trivially solvable
+    mod any modulus; composite/CRT moduli inherit the same witnesses.
+  - *Consequence.* Single-modulus congruence obstructions cannot exist for
+    defect-one. Any genuine arithmetic obstruction (if Level 3 fails somewhere)
+    must be global/archimedean (size-based), not local at a prime. Formalized
+    in `proofs/Proofs/FermatDefectOne.lean`
+    (`fermat_defect_no_obstruction_{neg,pos}` + 30 `decide`-checked instances,
+    built clean: 0 sorry / 0 axiom / no new `native_decide`).
 
 (Seeded 2026-06-09 by issue #22628.)
