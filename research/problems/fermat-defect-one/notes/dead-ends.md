@@ -66,4 +66,18 @@ claim closes off a direction definitively.
     (`fermat_defect_no_obstruction_{neg,pos}` + 30 `decide`-checked instances,
     built clean: 0 sorry / 0 axiom / no new `native_decide`).
 
+## Bounded-search results (not dead ends — lower bounds on M(n))
+
+`witness-search` is *not* a dead end; it is the productive per-exponent vector.
+Exhausted ranges are recorded here so they are not re-run:
+
+- **n = 4, c ≤ 1000 — no witness (primitive or not).** Exhaustive integer
+  search, two independent methods agreeing (hashed solve-for-$b$ over 498 501
+  $(a,c)$ pairs + triple-loop cross-check). Gives $M(4) \ge 1001$ if finite.
+  See `claims/2026-06-17-witness-search-n4-bound1000.md` (issue #22635) and
+  `claims/scripts/witness_search_n4_bound1000.py`. No small modulus prunes the
+  space (consistent with the `modular-obstruction` dead-end above); the absence
+  is a global size fact, not a congruence. A future $n=4$ search should start at
+  $c > 1000$ with a sieved enumeration.
+
 (Seeded 2026-06-09 by issue #22628.)
