@@ -60,6 +60,12 @@ FORCE=false
 KEEP_NO_PR=false
 REMOTE=false
 
+# Age threshold (in days) for reclaiming scratch worktrees under
+# .loom/worktrees/* that have no merged/closed PR. A worktree older than this
+# (by mtime) with a clean tree and no unpushed commits is eligible for removal.
+# Overridable via the WORKTREE_MAX_AGE_DAYS environment variable.
+WORKTREE_MAX_AGE_DAYS="${WORKTREE_MAX_AGE_DAYS:-30}"
+
 for arg in "$@"; do
     case $arg in
         --dry-run)
@@ -115,7 +121,17 @@ Worktree cleanup:
   - .claude/worktrees/agent-* without a running claude process: REMOVE
   - .loom/worktrees/issue-* for closed GitHub issues: REMOVE
   - .loom/worktrees/temp-* (temporary rebase worktrees): REMOVE
+  - .loom/worktrees/* (scratch: audit-*, auditor-*, mechanic-*,
+    researcher-*, enricher-*, …): REMOVE when the tree is clean, has no
+    unpushed commits, is not the current checkout, is not locked, has no
+    active owning process, AND its branch is merged/closed/gone on origin
+    OR its mtime exceeds WORKTREE_MAX_AGE_DAYS (default 30). Preserved
+    otherwise.
   - git worktree prune (clean orphaned references)
+
+Environment:
+  WORKTREE_MAX_AGE_DAYS   Age threshold (days) for reclaiming stale scratch
+                          worktrees with no merged/closed PR (default 30).
 
 HELPEOF
             exit 0
@@ -632,6 +648,201 @@ for wt_dir in "$REPO_ROOT/.loom/worktrees"/temp-*/; do
         fi
     fi
 done
+
+echo ""
+
+# --- .loom/worktrees/* (generic scratch sweep) ---
+#
+# The issue-* and temp-* passes above only cover two naming conventions. The
+# bulk of accumulated disk lives under workflow-scratch names that match
+# neither (audit-*, auditor-*, mechanic-*, researcher-*, enricher-*, …). This
+# generic pass reclaims them SAFELY, mirroring the .claude/worktrees/* pass:
+# a worktree is removed only when it is provably disposable.
+#
+# A worktree is REMOVED only when ALL of these hold:
+#   - it is NOT the current checkout
+#   - it is NOT locked (`git worktree list` does not flag it `locked`)
+#   - no active owning process (pgrep on the worktree path)
+#   - clean working tree (`git status --porcelain` empty)
+#   - no commits that exist on no remote. With an upstream, `@{u}..HEAD` must
+#     be empty. WITHOUT an upstream, HEAD must be reachable from some remote
+#     ref (`git branch -r --contains HEAD` non-empty) — "no upstream" is NOT
+#     treated as "nothing to lose", since a never-pushed branch can carry
+#     local-only commits.
+#   - its branch's PR is NOT OPEN (an OPEN PR is always preserved)
+#   - AND it is reclaimable: its branch's PR is MERGED/CLOSED, OR its upstream
+#     branch is gone on origin, OR its mtime exceeds WORKTREE_MAX_AGE_DAYS.
+# Anything failing a single guard is PRESERVED. Default stays interactive;
+# --force is non-interactive.
+#
+# Decision table for the reclaim path (after the structural guards pass):
+#   PR OPEN              + stale         => PRESERVE (open-PR guard)
+#   PR OPEN              + recent        => PRESERVE (open-PR guard)
+#   PR MERGED/CLOSED                     => REMOVE   (reason: PR <status>)
+#   no upstream + HEAD on no remote ref  => PRESERVE (unbacked local commits)
+#   no upstream + HEAD on a remote ref + stale  => REMOVE (reason: stale)
+#   no upstream + HEAD on a remote ref + recent => PRESERVE (unmerged, recent)
+#   upstream gone on origin              => REMOVE   (reason: upstream gone)
+#   upstream present + stale             => REMOVE   (reason: stale)
+#   upstream present + recent            => PRESERVE (unmerged, recent)
+
+header "  Checking .loom/worktrees/* (scratch)..."
+
+# Resolve the current checkout's worktree path so we never remove ourselves.
+current_wt_path="$(git rev-parse --show-toplevel 2>/dev/null || echo "")"
+
+# Build the set of locked worktree paths once (porcelain marks them `locked`).
+locked_wt_paths=$(git worktree list --porcelain 2>/dev/null \
+    | awk '/^worktree /{p=$2} /^locked/{print p}')
+
+is_locked_wt() {
+    local path="$1"
+    [[ -n "$locked_wt_paths" ]] && grep -qxF "$path" <<< "$locked_wt_paths"
+}
+
+if [[ -d "$REPO_ROOT/.loom/worktrees" ]]; then
+    for wt_dir in "$REPO_ROOT/.loom/worktrees"/*/; do
+        [[ ! -d "$wt_dir" ]] && continue
+        wt_name=$(basename "$wt_dir")
+
+        # Skip names handled by the dedicated passes above.
+        case "$wt_name" in
+            issue-*|temp-*) continue ;;
+        esac
+
+        # Normalize trailing slash for path comparisons.
+        wt_path="${wt_dir%/}"
+        wt_real="$(cd "$wt_path" 2>/dev/null && pwd -P || echo "$wt_path")"
+
+        # GUARD: never remove the current checkout.
+        if [[ -n "$current_wt_path" && "$wt_real" == "$(cd "$current_wt_path" 2>/dev/null && pwd -P || echo "$current_wt_path")" ]]; then
+            ((worktrees_preserved++)) || true
+            info "    Preserving: .loom/worktrees/$wt_name (current checkout)"
+            continue
+        fi
+
+        # GUARD: never remove a locked worktree.
+        if is_locked_wt "$wt_path"; then
+            ((worktrees_preserved++)) || true
+            info "    Preserving: .loom/worktrees/$wt_name (locked)"
+            continue
+        fi
+
+        # GUARD: never remove a worktree with an active owning process.
+        if pgrep -f "$wt_path" &>/dev/null; then
+            ((worktrees_preserved++)) || true
+            info "    Preserving: .loom/worktrees/$wt_name (active process)"
+            continue
+        fi
+
+        # GUARD: never remove a worktree with a dirty working tree.
+        if [[ -n "$(git -C "$wt_path" status --porcelain 2>/dev/null)" ]]; then
+            ((worktrees_preserved++)) || true
+            info "    Preserving: .loom/worktrees/$wt_name (uncommitted changes)"
+            continue
+        fi
+
+        # GUARD: never remove a worktree carrying commits that exist on no
+        # remote. Two cases must both be covered:
+        #   - upstream IS configured: preserve if `@{u}..HEAD` is non-empty
+        #     (real commits ahead of the tracked remote branch).
+        #   - upstream is NOT configured (@{u} unresolved): "no upstream" is
+        #     NOT "nothing to lose". A never-pushed branch can carry local-only
+        #     exploratory commits. Preserve unless HEAD is reachable from some
+        #     remote ref (`git branch -r --contains HEAD` non-empty ⇒ backed up
+        #     on a remote ⇒ safe). If no remote branch contains HEAD, the
+        #     commits are unbacked ⇒ preserve.
+        if git -C "$wt_path" rev-parse --abbrev-ref --symbolic-full-name '@{u}' &>/dev/null; then
+            unpushed=$(git -C "$wt_path" log --oneline '@{u}..HEAD' 2>/dev/null || echo "")
+            if [[ -n "$unpushed" ]]; then
+                ((worktrees_preserved++)) || true
+                info "    Preserving: .loom/worktrees/$wt_name (unpushed commits)"
+                continue
+            fi
+        else
+            # No upstream configured: is HEAD backed up on any remote ref?
+            remote_containing=$(git -C "$wt_path" branch -r --contains HEAD 2>/dev/null \
+                | grep -v '\->' | sed 's/^[[:space:]]*//' | head -n 1)
+            if [[ -z "$remote_containing" ]]; then
+                ((worktrees_preserved++)) || true
+                info "    Preserving: .loom/worktrees/$wt_name (no upstream; HEAD not on any remote)"
+                continue
+            fi
+        fi
+
+        # Determine reclaim eligibility. Removed only if at least one of:
+        #   (a) the branch's PR is MERGED/CLOSED,
+        #   (b) the upstream branch is gone on origin, or
+        #   (c) the worktree mtime exceeds WORKTREE_MAX_AGE_DAYS.
+        wt_branch=$(git -C "$wt_path" symbolic-ref --short HEAD 2>/dev/null || echo "")
+        reclaim_reason=""
+
+        if [[ -n "$wt_branch" ]]; then
+            pr_status=$(get_pr_status "$wt_branch")
+            # GUARD: an OPEN PR must ALWAYS be preserved, regardless of mtime.
+            # Without this, a long-lived feature branch under active review
+            # whose dir mtime drifts past WORKTREE_MAX_AGE_DAYS would fall
+            # through to path (c) and be removed. Preserve before any mtime
+            # check.
+            if [[ "$pr_status" == "OPEN" ]]; then
+                ((worktrees_preserved++)) || true
+                info "    Preserving: .loom/worktrees/$wt_name (open PR)"
+                continue
+            fi
+            if [[ "$pr_status" == "MERGED" || "$pr_status" == "CLOSED" ]]; then
+                reclaim_reason="PR $pr_status"
+            fi
+        fi
+
+        # (b) Upstream gone on origin: branch tracks origin but the remote ref
+        # no longer exists (a fetch --prune would drop it).
+        if [[ -z "$reclaim_reason" && -n "$wt_branch" ]]; then
+            upstream=$(git -C "$wt_path" rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || echo "")
+            if [[ -n "$upstream" ]] && ! git -C "$wt_path" rev-parse --verify --quiet "refs/remotes/$upstream" &>/dev/null; then
+                reclaim_reason="upstream gone on origin"
+            fi
+        fi
+
+        # (c) Stale by mtime.
+        if [[ -z "$reclaim_reason" ]]; then
+            now_epoch=$(date +%s)
+            wt_mtime=$(stat -f %m "$wt_path" 2>/dev/null || stat -c %Y "$wt_path" 2>/dev/null || echo "$now_epoch")
+            age_days=$(( (now_epoch - wt_mtime) / 86400 ))
+            if [[ "$age_days" -gt "$WORKTREE_MAX_AGE_DAYS" ]]; then
+                reclaim_reason="stale ${age_days}d > ${WORKTREE_MAX_AGE_DAYS}d"
+            fi
+        fi
+
+        if [[ -z "$reclaim_reason" ]]; then
+            ((worktrees_preserved++)) || true
+            info "    Preserving: .loom/worktrees/$wt_name (unmerged, recent)"
+            continue
+        fi
+
+        ((worktrees_removed++)) || true
+        if [[ "$DRY_RUN" == true ]]; then
+            info "    [REMOVE] .loom/worktrees/$wt_name ($reclaim_reason)"
+        elif [[ "$FORCE" == true ]]; then
+            git worktree remove "$wt_path" --force 2>/dev/null && \
+                success "    Removed: .loom/worktrees/$wt_name ($reclaim_reason)" || \
+                { warning "    Fallback: rm -rf"; rm -rf "$wt_path"; }
+        else
+            echo -e "    ${YELLOW}.loom/worktrees/$wt_name${NC} ($reclaim_reason)"
+            read -r -p "      Remove? [Y/n] " -n 1 CONFIRM
+            echo ""
+            if [[ ! $CONFIRM =~ ^[Nn]$ ]]; then
+                git worktree remove "$wt_path" --force 2>/dev/null && \
+                    success "    Removed: .loom/worktrees/$wt_name" || \
+                    { warning "    Fallback: rm -rf"; rm -rf "$wt_path"; }
+            else
+                ((worktrees_removed--)) || true
+                ((worktrees_preserved++)) || true
+            fi
+        fi
+    done
+else
+    info "    No .loom/worktrees/ directory found"
+fi
 
 echo ""
 
