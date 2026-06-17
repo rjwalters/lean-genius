@@ -63,6 +63,10 @@ print_success() { echo -e "${GREEN}+ $1${NC}"; }
 print_info() { echo -e "${BLUE}i $1${NC}"; }
 print_warning() { echo -e "${YELLOW}! $1${NC}"; }
 
+# Shared worktree reclaim helper (remove_own_worktree, guards 1-5).
+# shellcheck source=../lib/worktree-cleanup.sh
+source "$REPO_ROOT/scripts/lib/worktree-cleanup.sh"
+
 # Check dependencies
 check_deps() {
     local missing=()
@@ -261,6 +265,13 @@ stop_agent() {
 
     # Clean up signal
     rm -f "$SIGNALS_DIR/stop-auditor"
+
+    # Reclaim the agent's worktree now that its session is gone. The session is
+    # dead (kill-session above) so the worktree is idle; remove_own_worktree
+    # applies the shared safety guards (dirty / unpushed-or-unbacked / locked /
+    # active-process / current-checkout) and is a no-op if there is nothing to
+    # remove.
+    remove_own_worktree "$WORKTREE_PATH"
 }
 
 # Graceful stop (just create signal, don't kill)
