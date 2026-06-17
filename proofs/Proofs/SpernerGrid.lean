@@ -49,13 +49,19 @@ vertices at different positions always differ.
 2. `boundary_doors_odd` — FALSE as stated for d=1;
    requires fundamental redesign of GridSimplex/gridAdj.
 
-## Proved this session
+## Boundary analysis (current state)
 
 - `no_boundary_door_k_lt`: boundary doors cannot occur at k < d
   (under the geometric boundary condition). Full proof, no sorry.
-- `no_boundary_doors_face_lt`: thin wrapper around the above,
-  now uses correct geometric hypothesis (not gridAdj=none).
-- Removed false `boundary_verts_on_face` theorem.
+- Removed false `boundary_verts_on_face` theorem (was unsound).
+- Removed `no_boundary_doors_face_lt` (an obsolete thin wrapper
+  around `no_boundary_door_k_lt` that nothing referenced).
+
+The remaining open piece is `boundary_doors_odd`, which is FALSE
+as currently stated because of a structural double-counting in
+the `GridSimplex`/`gridAdj` representation (see the detailed note
+on that theorem below). It cannot be discharged without a redesign
+of `GridSimplex`/`gridAdj`; see issue #9044 / parent #8998.
 
 ## Known design issues
 
@@ -1687,28 +1693,6 @@ theorem no_boundary_door_k_lt
   -- s.verts i is on face k (by geometric boundary hypothesis)
   -- Sperner forbids color k on face k
   exact hc (s.verts i) k (hbdry i hi_ne) hi_col
-
-/-- On geometric boundary face k (k < d), the Sperner condition prevents doors.
-
-If all vertices j ≠ k of simplex s lie on geometric face k (coords[k] = 0),
-and k < d, then there is no door at position k.
-
-This is a thin wrapper around `no_boundary_door_k_lt` with the same proof,
-kept for compatibility. The key point: doors cannot occur at non-last faces
-on the geometric boundary, because color k is forbidden on face k by Sperner.
-
-NOTE: The original version of this theorem used `gridAdj d N s k = none` as
-hypothesis, but that is WEAKER than the geometric condition — gridAdj incorrectly
-returns `none` for some interior facets (cross-miss adjacency bug). The correct
-hypothesis is the geometric boundary condition used here. -/
-theorem no_boundary_doors_face_lt
-    (c : BaryPoint d N → Fin (d + 1))
-    (hc : IsSperner c)
-    (s : GridSimplex d N) (k : Fin (d + 1))
-    (hk : k.val < d)
-    (hbdry : ∀ j : Fin (d + 1), j ≠ k → (s.verts j).onFace k) :
-    ¬CellComplex.IsDoor c (gridComplex d N) s k :=
-  no_boundary_door_k_lt c hc s k hk hbdry
 
 /-- The boundary door count for Sperner colorings is odd. -/
 theorem boundary_doors_odd (d N : ℕ) (hN : 0 < N)
