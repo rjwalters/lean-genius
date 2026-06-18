@@ -113,14 +113,14 @@
       "id": "converse",
       "title": "Converse Forms",
       "startLine": 200,
-      "endLine": 208,
+      "endLine": 215,
       "summary": "Direct and converse implications extracted from the main equivalence theorem.",
       "mathContext": "The equivalence $\\text{cevaProduct} = 1 \\iff \\text{paramCondition}$ splits into: (forward) product $= 1 \\implies$ parameter condition, and (converse) parameter condition $\\implies$ product $= 1$. Both are extracted from the main `Iff` via `.mp` and `.mpr`."
     },
     {
       "id": "historical-context",
       "title": "Historical Context",
-      "startLine": 209,
+      "startLine": 216,
       "endLine": 263,
       "summary": "Extended discussion of Menelaus's theorem, applications, and generalizations.",
       "mathContext": "Menelaus's theorem (dual): points $D, E, F$ on sides $BC, CA, AB$ are collinear $\\iff$ $(AF/FB) \\cdot (BD/DC) \\cdot (CE/EA) = -1$. The sign difference ($+1$ for Ceva, $-1$ for Menelaus) reflects the parity: concurrent cevians require an even number of external divisions, while a transversal requires an odd number."
@@ -215,10 +215,10 @@
   ],
   "mainTheorems": [
     {
-      "name": "ceva_theorem",
+      "name": "cevas_theorem",
       "type": "core",
-      "description": "Three cevians of a triangle are concurrent iff (AF/FB)(BD/DC)(CE/EA) = 1",
-      "leanType": "cevians_concurrent <-> (AF/FB) * (BD/DC) * (CE/EA) = 1"
+      "description": "The Ceva product (AF/FB)(BD/DC)(CE/EA) equals 1 iff the parameter condition def = (1-d)(1-e)(1-f) holds. This is the algebraic form; geometric concurrency is discussed in commentary but not formalized.",
+      "leanType": "cevaProduct cfg = 1 <-> cevaParameterCondition cfg"
     }
   ],
   "sorries": 0
