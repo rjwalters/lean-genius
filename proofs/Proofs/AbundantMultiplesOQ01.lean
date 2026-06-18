@@ -20,14 +20,13 @@
   using `σ(a) > 2a` (abundance of `a`) and `t > 0`. Hence `σ(m) > 2m`, i.e. `m`
   is abundant.
 
-  Companion to the minimality result (`AbundantNumberOQ01.lean`, PR #25180):
-  together they pin both the least abundant number (12) and the closure of the
-  abundant numbers under taking multiples.
+  Companion to the minimality result (`AbundantNumberOQ01.lean`): together they
+  pin both the least abundant number (12) and the closure of the abundant numbers
+  under taking multiples. As a structural consequence of that closure we also
+  derive `infinitely_many_abundant`: the abundant numbers form an infinite set,
+  witnessed by the family `{12·(k+1) : k ∈ ℕ}`.
 
   The proof is axiom-free (no `sorry`, no `axiom`, no `native_decide`).
-
-  STATUS: build-pending locally (Docker pool contended this session); all lemma
-  names were checked against the pinned Mathlib v4.26.0 source.
 -/
 import Mathlib
 
@@ -49,7 +48,8 @@ theorem abundant_iff_two_mul_lt_sigma (n : ℕ) :
 abundant). -/
 theorem pos_of_abundant {a : ℕ} (ha : a.Abundant) : 0 < a := by
   rcases Nat.eq_zero_or_pos a with rfl | h
-  · exact absurd ha (by decide)
+  · rw [abundant_iff_two_mul_lt_sigma, Nat.divisors_zero] at ha
+    simp at ha
   · exact h
 
 /-- **If `a` is abundant then every positive multiple `a * t` is abundant.**
@@ -72,11 +72,14 @@ theorem abundant_mul_right {a : ℕ} (ha : a.Abundant) {t : ℕ} (ht : 0 < t) :
   -- scaling is injective on `divisors a` since `t > 0`
   have hinj : Set.InjOn (fun d => t * d) (a.divisors : Set ℕ) :=
     fun x _ y _ h => Nat.eq_of_mul_eq_mul_left ht h
+  -- Summing over the bound variable keeps `sum_image`'s motive `g = id`, so the
+  -- higher-order unification succeeds (a `∑ d, t * d` target would not).
+  have himg : ∑ x ∈ a.divisors.image (fun d => t * d), x = t * (∑ d ∈ a.divisors, d) := by
+    rw [Finset.sum_image hinj, Finset.mul_sum]
   -- σ(a*t) ≥ t · σ(a)
   have hle : t * (∑ d ∈ a.divisors, d) ≤ ∑ e ∈ (a * t).divisors, e :=
     calc t * (∑ d ∈ a.divisors, d)
-        = ∑ d ∈ a.divisors, t * d := by rw [Finset.mul_sum]
-      _ = ∑ x ∈ a.divisors.image (fun d => t * d), x := (Finset.sum_image hinj).symm
+        = ∑ x ∈ a.divisors.image (fun d => t * d), x := himg.symm
       _ ≤ ∑ e ∈ (a * t).divisors, e := Finset.sum_le_sum_of_subset hsub
   rw [abundant_iff_two_mul_lt_sigma (a * t)]
   calc 2 * (a * t)
@@ -99,5 +102,27 @@ theorem abundant_of_abundant_dvd {a m : ℕ} (ha : a.Abundant) (hdvd : a ∣ m)
 abundant). In particular `24, 36, 48, …` are all abundant. -/
 theorem abundant_twelve_mul (k : ℕ) : (12 * (k + 1)).Abundant :=
   abundant_mul_right Nat.abundant_twelve (Nat.succ_pos k)
+
+/-- The map `k ↦ 12 * (k + 1)` is injective (multiplication by the nonzero
+constant `12` is cancellative on `ℕ`). -/
+theorem twelve_mul_succ_injective :
+    Function.Injective (fun k : ℕ => 12 * (k + 1)) := by
+  intro a b hab
+  have : a + 1 = b + 1 := Nat.eq_of_mul_eq_mul_left (by norm_num) hab
+  omega
+
+/-- **There are infinitely many abundant numbers.** The infinite family
+`{12·(k+1) : k ∈ ℕ} = {12, 24, 36, …}` consists entirely of abundant numbers
+(each is a positive multiple of the abundant number `12`), and these values are
+pairwise distinct, so the set of abundant numbers cannot be finite.
+
+This is the structural complement to minimality (`AbundantNumberOQ01`): not only
+does the smallest abundant number exist (it is `12`), but the abundant numbers
+form an infinite set — a direct consequence of closure under taking multiples
+(`abundant_mul_right`). The proof is elementary and axiom-free. -/
+theorem infinitely_many_abundant : {n : ℕ | n.Abundant}.Infinite :=
+  Set.infinite_of_injective_forall_mem
+    twelve_mul_succ_injective
+    (fun k => abundant_twelve_mul k)
 
 end AbundantMultiplesOQ01

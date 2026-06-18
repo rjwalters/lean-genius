@@ -15,9 +15,6 @@
 
   The proof is axiom-free: `decide` reduces in the kernel, so the result is
   `verified` (no `native_decide`/`Lean.ofReduceBool`).
-
-  STATUS: build-pending locally (Docker pool unavailable this session); the
-  statements were checked end-to-end via the Aristotle Lean+Mathlib backend.
 -/
 import Mathlib
 

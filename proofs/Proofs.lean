@@ -24,6 +24,8 @@ import Proofs.AbelRuffiniOQ04OQ07
 import Proofs.AbelRuffiniOQ04OQ09Cyclic
 import Proofs.AbelRuffiniOQ09
 import Proofs.AbelRuffiniOQ10
+import Proofs.AbundantMultiplesOQ01
+import Proofs.AbundantNumberOQ01
 import Proofs.AlgebraicNumbersCountable
 import Proofs.AlgebraicNumbersCountableAristotle
 import Proofs.AlgebraicNumbersCountableOQ02
