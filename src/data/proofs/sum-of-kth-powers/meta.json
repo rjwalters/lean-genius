@@ -8,7 +8,7 @@
     "author": "Johann Faulhaber / Nicomachus (formalized)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Faulhaber%27s_formulas",
     "date": "c. 100 CE",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/SumOfKthPowers.lean",
     "tags": [
       "algebra",
@@ -17,7 +17,7 @@
       "wiedijk-100",
       "induction"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -39,9 +39,9 @@
       "Closed-form formula for sum of fifth powers: n²(n+1)²(2n²+2n-1)/12"
     ],
     "dateAdded": "2025-12-27",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 600,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Relies on `Lean.ofReduceBool`: 14 named verification theorems (sum_squares_100, sum_cubes_100, sum_sixth_powers_10, sum_seventh_powers_5/10, sum_fourth/fifth_powers_5/10, sum_fourth/fifth_formula_check_10, sum_squares_10, sum_cubes_10, sum_10_squared) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction (the `Lean.ofReduceBool` axiom). The closed-form Faulhaber/Nicomachus formula proofs themselves are by ordinary induction and are axiom-free; only the concrete numeric instance checks invoke `native_decide`. 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 55,
     "definitionCount": 0
