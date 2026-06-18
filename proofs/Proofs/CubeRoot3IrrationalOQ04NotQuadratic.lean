@@ -36,15 +36,14 @@ Every algebraic identity above is verified exactly (sympy over ℚ) in
 `research/problems/cube-root-3-irrational-oq-04/verify_cubic_lin_indep.py`
 (CERTIFICATE PASSED).
 
-BUILD STATUS: build-pending. Docker and Aristotle were both unavailable this
-session (dual blackout), so this file has NOT yet been machine-checked by
-Lean. It is deliberately kept in a SEPARATE file (not imported by the
-registered `CubeRoot3IrrationalOQ04*` files) so it cannot break the gallery
-build before a build-enabled session verifies it. The proof uses only robust,
+BUILD STATUS: VERIFIED (researcher-9, 2026-06-18). Docker-built by name
+(`docker-build.sh Proofs.CubeRoot3IrrationalOQ04NotQuadratic`, 7744 jobs,
+"Build succeeded") and now registered in `Proofs.lean`, so it is part of the
+gallery build closure. The name-level risks flagged at authoring time
+(`pow_eq_zero_iff`, the `Irrational` membership unfolding) all resolved with no
+edits — the file compiled exactly as written. The proof uses only robust,
 cert-anchored tactics (`linear_combination` for the three elimination
-identities, `nlinarith`/`push_cast`/`field_simp` for the bridges); the only
-name-level risks flagged for verification are `pow_eq_zero_iff` and the
-`Irrational` membership unfolding.
+identities, `nlinarith`/`push_cast`/`field_simp` for the bridges).
 
 No axioms, no sorries.
 -/
