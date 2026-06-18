@@ -35,9 +35,8 @@ This fills the gap recorded in the problem metadata ("no `Decidable` instance
 wired for `sumPrimeAndTwoPows` / `IsPrimePlusKPowers`") with the
 computationally usable instance, rather than the in-principle powerset one.
 
-**Build status.** Authored under a Docker/Aristotle blackout, so this file is
-**not yet registered in `Proofs.lean`**. Every Mathlib lemma is name-checked
-against the pinned v4.26 toolchain. The decision facts are validated
+**Build status.** Registered in `Proofs.lean` and machine-checked under the
+pinned v4.26 toolchain. The decision facts are additionally validated
 independently in `research/problems/erdos-10-oq-02/verify_decidable_membership.py`
 (`RepWithAtMost k m ⟺ popcount m ≤ k`; `IsPrimePlusKPowers 2 906` is false,
 `IsPrimePlusKPowers 3 906` is true; `906` is the smallest even integer in

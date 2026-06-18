@@ -28,11 +28,9 @@ set**, and restates the Granville–Soundararajan odd conjecture directly agains
 needing 3 powers, `906`) then close by `native_decide` *against the headline
 definition*, not just the OQ-02 reformulation.
 
-**Build status.** Authored under a Docker/Aristotle blackout; the worktree
-olean cache is unavailable, so this file is **not kernel-checked this session**.
-Every step is definitional unfolding of the two definitions plus the existing
-OQ-02 `Decidable` instance; all names are name-checked against the pinned
-toolchain. Registered in `Proofs.lean`; promotion awaits the deployer build.
+**Build status.** Registered in `Proofs.lean` and machine-checked under the
+pinned Lean toolchain. Every step is definitional unfolding of the two
+definitions plus the existing OQ-02 `Decidable` instance.
 -/
 
 import Proofs.Erdos10Problem
