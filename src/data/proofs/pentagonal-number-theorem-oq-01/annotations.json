@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-setup",
+    "proofId": "pentagonal-number-theorem-oq-01",
+    "range": { "startLine": 47, "endLine": 66 },
+    "type": "concept",
+    "title": "Division-Free Generalized Pentagonal Numbers",
+    "content": "Defines `genPent k = k*(3*k-1)/2` and the membership predicate `IsGenPent m := ∃ k, 2*m = k*(3*k-1)`.\n\n**Why the doubling relation.** Integer division is awkward to reason about, so membership is phrased through `2*m = k*(3*k-1)` rather than `m = k*(3*k-1)/2`. The two agree because `k*(3*k-1)` is always even: if `k` is even the first factor is, otherwise `3k-1 = 3k-1` is even. `two_dvd_index_mul` proves the evenness by an even/odd split, and `two_mul_genPent` then certifies `2·g(k) = k(3k-1)` via `Int.mul_ediv_cancel'`.",
+    "mathContext": "$g(k) = k(3k-1)/2$ with $2g(k) = k(3k-1)$; one of $k$, $3k-1$ is even, so the half is exact.",
+    "significance": "standard",
+    "relatedConcepts": ["generalized pentagonal numbers", "parity", "integer division"],
+    "prerequisites": ["parity of integers"]
+  },
+  {
+    "id": "ann-criterion",
+    "proofId": "pentagonal-number-theorem-oq-01",
+    "range": { "startLine": 68, "endLine": 116 },
+    "type": "theorem",
+    "title": "The Square-Discriminant Recognition Criterion",
+    "content": "Proves `isGenPent_iff_isSquare`: `m` is a generalized pentagonal number iff `24m+1` is a perfect square.\n\n**Forward.** From `2m = k(3k-1)`, the polynomial identity `24m+1 = (6k-1)²` follows by a single `linear_combination 12 * hk`, exhibiting the witness `6k-1`.\n\n**Converse.** Given `24m+1 = s²`, reduce in `ZMod 6`: `s² = 1` there (since `24 ≡ 0`), and a six-element `decide` shows the only roots are `1` and `5`, i.e. `s ≡ ±1 (mod 6)`. Each case gives `6 ∣ (s∓1)`, hence `s = 6k±1`; substituting into `24m+1 = s²` and cancelling the common factor `12` (`mul_left_cancel₀`) recovers `2m = k'(3k'-1)` for the index `k' = -k` or `k+1`.",
+    "mathContext": "$24\\,g(k)+1 = (6k-1)^2$; conversely $s^2 = 24m+1 \\Rightarrow s \\equiv \\pm1 \\pmod 6 \\Rightarrow 6k-1 = \\pm s$.",
+    "significance": "key",
+    "relatedConcepts": ["perfect square", "modular arithmetic", "ZMod", "Euler partition recurrence"],
+    "prerequisites": ["divisibility", "residues mod 6"]
+  },
+  {
+    "id": "ann-structural",
+    "proofId": "pentagonal-number-theorem-oq-01",
+    "range": { "startLine": 118, "endLine": 139 },
+    "type": "theorem",
+    "title": "Nonnegativity and Injectivity of the Index Map",
+    "content": "`isGenPent_nonneg` shows generalized pentagonal numbers are `≥ 0` by a sign analysis of the two factors of `k(3k-1)`.\n\n`genPent_injective` shows the index map is injective: from `genPent a = genPent b`, multiplying by 2 gives `a(3a-1) = b(3b-1)`, which `linear_combination` rearranges to `(a-b)(3(a+b)-1) = 0`. Since `3(a+b) = 1` has no integer solution (`omega`), the only factor that can vanish is `a-b`, so `a = b`.",
+    "mathContext": "$(a-b)(3(a+b)-1)=0$ with $3(a+b)\\neq1$ over $\\mathbb{Z}$ forces $a=b$.",
+    "significance": "supporting",
+    "relatedConcepts": ["injectivity", "factorization over ℤ"],
+    "prerequisites": ["integer factorization of a product equal to zero"]
+  },
+  {
+    "id": "ann-values",
+    "proofId": "pentagonal-number-theorem-oq-01",
+    "range": { "startLine": 141, "endLine": 159 },
+    "type": "example",
+    "title": "Concrete Values (OEIS A001318)",
+    "content": "The first generalized pentagonal numbers, indexed `k = 0,1,-1,2,-2,…`, are `0,1,2,5,7,12,15,22,26`, each proved from the doubling relation by `omega`. The sanity check `twelve_isGenPent` confirms the recognition criterion fires: `12 = g(3)` is pentagonal because `24·12+1 = 289 = 17²`.",
+    "mathContext": "Indexing $k=0,1,-1,2,-2,\\dots$ enumerates A001318 in increasing order.",
+    "significance": "supporting",
+    "relatedConcepts": ["OEIS A001318", "pentagonal numbers"],
+    "prerequisites": []
+  }
+]

@@ -1,0 +1,110 @@
+{
+  "id": "pentagonal-number-theorem-oq-01",
+  "title": "Pentagonal Number Theorem: Generalized Pentagonal Numbers and the Square-Discriminant Criterion",
+  "slug": "pentagonal-number-theorem-oq-01",
+  "description": "Builds the number-theoretic foundation of Euler's pentagonal number theorem: a self-contained theory of the generalized pentagonal numbers g(k)=k(3k-1)/2 (the exponents of the lacunary series ∏(1-xⁿ)=∑(-1)ᵏx^{g(k)}). The headline is the classical recognition criterion — m is a generalized pentagonal number iff 24m+1 is a perfect square — together with injectivity of the index map, nonnegativity, and the concrete values matching OEIS A001318. The deep generating-function identity (via Franklin's involution) is documented as the open core, as Mathlib lacks the requisite distinct-partition and formal-power-series machinery.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "partitions",
+      "pentagonal-numbers",
+      "integer-arithmetic",
+      "research"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/PentagonalNumberTheoremOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.even_or_odd",
+        "description": "Every integer is even or odd — used to show k(3k-1) is always even",
+        "module": "Mathlib.Algebra.Parity"
+      },
+      {
+        "theorem": "Int.mul_ediv_cancel'",
+        "description": "a ∣ b → a * (b / a) = b — certifies the half k(3k-1)/2 is exact",
+        "module": "Mathlib.Data.Int.Order"
+      },
+      {
+        "theorem": "ZMod.intCast_zmod_eq_zero_iff_dvd",
+        "description": "(↑a : ZMod n) = 0 ↔ (n : ℤ) ∣ a — bridges the mod-6 residue argument to divisibility over ℤ",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "mul_left_cancel₀",
+        "description": "a ≠ 0 → a*b = a*c → b = c — cancels the factor 12 to read off the pentagonal index from 12·(2m)=12·k(3k-1)",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      }
+    ],
+    "originalContributions": [
+      "isGenPent_iff_isSquare: the recognition criterion 'm is a generalized pentagonal number ⟺ 24m+1 is a perfect square', the practical test for pentagonal exponents in Euler's partition recurrence",
+      "A division-free formalization of generalized pentagonal numbers via the doubling predicate 2m = k(3k-1), with two_mul_genPent certifying exactness",
+      "genPent_injective: distinctness of pentagonal numbers across indices, via the factorization (a-b)(3(a+b)-1)=0 and impossibility of 3(a+b)=1 over ℤ",
+      "A ZMod-6 decision argument turning 's² = 24m+1' into 's ≡ ±1 (mod 6)', recovering the index from each residue class",
+      "Concrete values g(0..±4) = 0,1,2,5,7,12,15,22,26 matching OEIS A001318, with a sanity check that 12 = g(3) and 24·12+1 = 17²"
+    ],
+    "dateAdded": "2026-06-18",
+    "axiomCount": 0,
+    "lineCount": 179,
+    "assumptions": "None claimed in the file: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. NOTE: machine verification is PENDING — the file was hand-audited and its algebra numerically checked, but the docker Lean build could not complete this cycle (Aristotle MCP returned 404; the shared .lake cache was contended by 10+ concurrent builds with a deterministic ProofWidgets prune error). The PR is gated loom:review-requested until a build confirms compilation.",
+    "theoremCount": 16,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Euler discovered the pentagonal number theorem in 1740s correspondence with Goldbach and proved it in 1750: the infinite product ∏_{n≥1}(1-xⁿ) equals the lacunary series ∑_{k∈ℤ}(-1)ᵏ x^{k(3k-1)/2}. The exponents are the generalized pentagonal numbers (OEIS A001318), and the theorem yields Euler's celebrated recurrence for the partition function p(n). Franklin (1881) gave the bijective proof via a sign-reversing involution on partitions into distinct parts. Mathlib formalizes Nat.Partition but not the distinct-partition parity machinery, Franklin's involution, or the formal power-series infinite product, so the deep identity remains unformalized; this entry supplies the index-set theory that any such formalization consumes.",
+    "problemStatement": "Establish the number-theoretic foundation of the pentagonal exponents g(k) = k(3k-1)/2: a robust formalization of the index set together with the recognition criterion\n\n$$ m \\text{ is a generalized pentagonal number} \\iff 24m+1 \\text{ is a perfect square}, $$\n\nthe identity underlying it being $24\\,g(k)+1 = (6k-1)^2$.",
+    "text": "A self-contained theory of generalized pentagonal numbers with the square-discriminant recognition criterion, the foundation that any formalization of Euler's pentagonal number theorem must rest on.",
+    "proofStrategy": "1. **Division-free setup**: define membership IsGenPent m := ∃ k, 2m = k(3k-1); prove k(3k-1) is even (even/odd split) so g(k)=k(3k-1)/2 is exact (two_mul_genPent).\n\n2. **Forward criterion**: from 2m = k(3k-1), the identity 24m+1 = (6k-1)² is a single linear_combination, exhibiting the square.\n\n3. **Converse**: from 24m+1 = s², reduce mod 6 in ZMod 6 — s² = 1 forces s ∈ {1,5}, i.e. s ≡ ±1 (mod 6) (a finite decide). Each class gives 6 ∣ (s∓1), hence s = 6k±1; substituting and cancelling the common factor 12 (mul_left_cancel₀) yields 2m = k'(3k'-1) for the recovered index k'.\n\n4. **Structural facts**: injectivity of the index map ((a-b)(3(a+b)-1)=0, with 3(a+b)=1 impossible over ℤ), nonnegativity, and the concrete A001318 values.",
+    "keyInsights": [
+      "The recognition criterion is exact because 24·g(k)+1 = (6k-1)² is a polynomial identity — pentagonality is detected by a single perfect-square test on 24m+1, with no search over indices.",
+      "Phrasing membership through the doubling relation 2m = k(3k-1) avoids integer division throughout; exactness of the half is a one-line even/odd argument.",
+      "The converse's only non-algebraic ingredient is the modular fact that a square ≡ 1 (mod 6) forces its root ≡ ±1 (mod 6) — a six-element decide in ZMod 6 — after which the index is recovered by divisibility.",
+      "Cancelling the factor 12 in 12·(2m) = 12·k(3k-1) (rather than dividing) keeps the recovered-index step inside ℤ with mul_left_cancel₀.",
+      "The deep content of the pentagonal number theorem (the generating-function identity) is orthogonal to this index theory: it needs Franklin's involution, which Mathlib does not yet support."
+    ],
+    "prerequisites": [
+      "Elementary number theory (parity, divisibility, modular arithmetic in ZMod n)",
+      "Generating functions and integer partitions (for context on the open core)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup: Generalized Pentagonal Numbers",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "Module documentation, the value genPent and the division-free membership predicate IsGenPent, evenness of k(3k-1), and the exact doubling relation two_mul_genPent.",
+      "mathContext": "g(k) = k(3k-1)/2 with 2·g(k) = k(3k-1). Since one of k, 3k-1 is even, the half is exact; membership is carried by the relation 2m = k(3k-1) to keep proofs over ℤ without integer division."
+    },
+    {
+      "id": "criterion",
+      "title": "The Square-Discriminant Criterion (Headline)",
+      "startLine": 68,
+      "endLine": 116,
+      "summary": "isGenPent_iff_isSquare: m is a generalized pentagonal number iff 24m+1 is a perfect square. Forward via 24·g(k)+1 = (6k-1)²; converse via a ZMod-6 residue argument recovering the index.",
+      "mathContext": "Forward: linear_combination on 2m=k(3k-1). Converse: s²=24m+1 ⟹ (s mod 6)²=1 ⟹ s≡±1 (mod 6); 6∣(s∓1) gives s=6k±1, and cancelling 12 yields 2m=k'(3k'-1)."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Facts: Nonnegativity and Injectivity",
+      "startLine": 118,
+      "endLine": 139,
+      "summary": "isGenPent_nonneg (k(3k-1) ≥ 0) and genPent_injective (distinct indices give distinct pentagonal numbers).",
+      "mathContext": "Injectivity reduces to (a-b)(3(a+b)-1)=0; since 3(a+b)=1 has no integer solution, a=b. Nonnegativity is a sign analysis of the two factors of k(3k-1)."
+    },
+    {
+      "id": "values",
+      "title": "Concrete Values (OEIS A001318)",
+      "startLine": 141,
+      "endLine": 159,
+      "summary": "The first generalized pentagonal numbers g(0..±4) = 0,1,2,5,7,12,15,22,26, and a sanity check that 12 = g(3) is recognized via 24·12+1 = 289 = 17².",
+      "mathContext": "Indexing k = 0,1,-1,2,-2,… enumerates the pentagonal numbers in increasing order, matching OEIS A001318."
+    }
+  ],
+  "openQuestions": [
+    "Formalize the deep identity ∏_{n≥1}(1-Xⁿ) = ∑_{k∈ℤ}(-1)ᵏ X^{g(k)} (equivalently p_even(n)-p_odd(n) = [n=g(k)]·(-1)ᵏ) via Franklin's sign-reversing involution on partitions into distinct parts — requires distinct-partition parity machinery and formal-power-series infinite products not yet in Mathlib.",
+    "Derive Euler's partition recurrence p(n) = ∑_{k≥1}(-1)^{k-1}(p(n-g_k)+p(n-g_{-k})) as a corollary, using this entry's recognition criterion to index the pentagonal shifts."
+  ]
+}

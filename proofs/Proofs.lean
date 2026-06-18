@@ -2745,6 +2745,7 @@ import Proofs.PascalsHexagonOQ02
 import Proofs.PascalsHexagonOQ03
 import Proofs.PellEquation
 import Proofs.PellEquationOQ01
+import Proofs.PentagonalNumberTheoremOQ01
 import Proofs.PerfectNumbers
 import Proofs.PerfectNumbersOQ03
 import Proofs.PiTranscendental
