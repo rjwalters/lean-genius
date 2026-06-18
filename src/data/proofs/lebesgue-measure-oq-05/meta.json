@@ -56,59 +56,66 @@
       "id": "preamble",
       "title": "§0: Module Setup and Statement",
       "startLine": 1,
-      "endLine": 43,
+      "endLine": 64,
       "summary": "Imports, namespace, and the module docstring stating the σ-finite Radon–Nikodym package and its honest formalization scope.",
       "mathContext": "Fixes a measurable space $\\alpha$ and measures $\\mu, \\nu$ on it. The classical σ-finite Radon–Nikodym theorem and the general Lebesgue decomposition are the targets."
     },
     {
       "id": "measurability-witness",
       "title": "Measurability and the Canonical Density",
-      "startLine": 52,
-      "endLine": 60,
+      "startLine": 66,
+      "endLine": 74,
       "summary": "rnDeriv_measurable (the Radon–Nikodym derivative is measurable) and rnDeriv_isDensity (ν.withDensity (dμ/dν) = μ for σ-finite μ ≪ ν).",
       "mathContext": "$d\\mu/d\\nu$ is measurable, and for $\\sigma$-finite $\\mu \\ll \\nu$ it is a density: $\\nu.\\mathrm{withDensity}(d\\mu/d\\nu) = \\mu$. The HaveLebesgueDecomposition instance comes from σ-finiteness."
     },
     {
       "id": "existence",
       "title": "Existence of a Density",
-      "startLine": 62,
-      "endLine": 66,
+      "startLine": 76,
+      "endLine": 80,
       "summary": "exists_density: there is a measurable f with ν.withDensity f = μ.",
       "mathContext": "Packages measurability and the witness identity into the existential form of the Radon–Nikodym theorem."
     },
     {
       "id": "integral-characterization",
       "title": "Integral Characterization and Total Mass",
-      "startLine": 68,
-      "endLine": 79,
+      "startLine": 82,
+      "endLine": 93,
       "summary": "rnDeriv_setLIntegral (∫⁻_s (dμ/dν) dν = μ s for measurable s) and rnDeriv_lintegral (the total-mass specialization to s = univ).",
       "mathContext": "$\\int_s (d\\mu/d\\nu)\\, d\\nu = \\mu(s)$ via withDensity_apply and the witness identity; specializing to $s = \\mathrm{univ}$ gives $\\int (d\\mu/d\\nu)\\, d\\nu = \\mu(\\mathrm{univ})$."
     },
     {
       "id": "uniqueness",
       "title": "ν-a.e. Uniqueness",
-      "startLine": 81,
-      "endLine": 91,
+      "startLine": 95,
+      "endLine": 105,
       "summary": "density_unique: any two measurable densities for μ with respect to σ-finite ν agree ν-a.e.",
       "mathContext": "From Measure.rnDeriv_withDensity, any density $f$ satisfies $f =^{ae}_\\nu (\\nu.\\mathrm{withDensity}\\,f).\\mathrm{rnDeriv}\\,\\nu = \\mu.\\mathrm{rnDeriv}\\,\\nu$; transitivity gives $f =^{ae}_\\nu g$."
     },
     {
       "id": "lebesgue-decomposition",
       "title": "General Lebesgue Decomposition",
-      "startLine": 93,
-      "endLine": 98,
+      "startLine": 107,
+      "endLine": 112,
       "summary": "lebesgue_decomposition: μ = μ.singularPart ν + ν.withDensity (μ.rnDeriv ν) for any σ-finite pair, no absolute continuity assumed.",
       "mathContext": "Measure.haveLebesgueDecomposition_add: every σ-finite $\\mu$ splits as a $\\nu$-singular part plus an absolutely-continuous part with density $d\\mu/d\\nu$."
     },
     {
       "id": "calculus-of-densities",
       "title": "Calculus of Densities: Chain Rule, Self-Derivative, Reciprocal",
-      "startLine": 100,
-      "endLine": 131,
+      "startLine": 114,
+      "endLine": 144,
       "summary": "rnDeriv_chain ((dμ/dν)·(dν/dλ) = dμ/dλ, λ-a.e.), rnDeriv_self_ae_one (dμ/dμ = 1, μ-a.e.), and rnDeriv_mul_symm_ae_one ((dμ/dν)·(dν/dμ) = 1, μ-a.e. for μ ≪ ν).",
       "mathContext": "The Radon–Nikodym derivative composes multiplicatively (chain rule, Measure.rnDeriv_mul_rnDeriv), has constant value 1 against its own base measure (Measure.rnDeriv_self), and therefore satisfies a reciprocal law $(d\\mu/d\\nu)(d\\nu/d\\mu) = 1$ — the chain rule at $\\lambda = \\mu$ composed with the self-derivative."
     },
-    "Pointwise Regularity and Conditional Expectation as a Density"
+    {
+      "id": "regularity-and-conditioning",
+      "title": "Pointwise Regularity and Conditional Expectation as a Density",
+      "startLine": 146,
+      "endLine": 202,
+      "summary": "Pointwise regularity of the density — rnDeriv_lt_top_ae / rnDeriv_ne_top_ae (dμ/dν < ∞ and ≠ ∞, ν-a.e.), rnDeriv_pos_ae (0 < dμ/dν, μ-a.e. for μ ≪ ν), and inv_rnDeriv_ae ((dμ/dν)⁻¹ = dν/dμ, μ-a.e.) — followed by condExp_ae_eq_signed_rnDeriv, identifying the conditional expectation μ[f|m] with the signed Radon–Nikodym derivative of the f-weighted measure trimmed to the sub-σ-algebra m.",
+      "mathContext": "The density is a.e. finite ($d\\mu/d\\nu < \\infty$, $\\nu$-a.e.) and, for $\\mu \\ll \\nu$, strictly positive $\\mu$-a.e. with pointwise inverse $(d\\mu/d\\nu)^{-1} = d\\nu/d\\mu$ ($\\mu$-a.e.). Conditional expectation is itself a density: $\\mu[f\\mid m] =^{ae}_\\mu \\mathrm{rnDeriv}\\big((\\mu.\\mathrm{withDensity}_v\\, f).\\mathrm{trim}\\,m,\\ \\mu.\\mathrm{trim}\\,m\\big)$, placing conditioning inside the same Radon–Nikodym calculus (Mathlib's rnDeriv_ae_eq_condExp)."
+    }
   ],
   "conclusion": {
     "summary": "The σ-finite Radon–Nikodym theorem and the general Lebesgue decomposition are assembled from Mathlib's HaveLebesgueDecomposition theory: existence of a measurable density, the canonical Radon–Nikodym derivative as witness, the integral characterization ∫⁻_s (dμ/dν) dν = μ s, ν-a.e. uniqueness, and the decomposition μ = μ.singularPart ν + ν.withDensity (dμ/dν). A calculus of densities is then derived: the chain rule (dμ/dν)·(dν/dλ) = dμ/dλ (λ-a.e.), the self-derivative dμ/dμ = 1 (μ-a.e.), and the reciprocal relation (dμ/dν)·(dν/dμ) = 1 (μ-a.e.) for μ ≪ ν. Finally the density's basic regularity (finiteness, positivity, pointwise inverse) and the identification of conditional expectation E[f|m] with a signed Radon–Nikodym derivative (Mathlib's rnDeriv_ae_eq_condExp) round out the package.",
@@ -134,6 +141,16 @@
       "proofId": "lebesgue-measure-oq-03",
       "relationship": "related",
       "description": "Infinite-Dimensional Measure Theory shows that no translation-invariant σ-finite measure exists on an infinite-dimensional space, forcing Gaussian/Wiener substitutes. It probes the same structural hypothesis — σ-finiteness — that this entry depends on: the σ-finite Radon–Nikodym theorem (and the third open question's counterexample) is exactly where σ-finiteness becomes load-bearing, so the two entries together map both the reach and the failure boundary of σ-finite measure theory."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+      "relationship": "used-by",
+      "description": "The 'Radon–Nikodým Route to Lp Duality' uses exactly the σ-finite Radon–Nikodym derivative packaged here to construct the representing function in the Riesz representation theorem for Lᵖ spaces: a bounded functional defines an absolutely-continuous measure whose density dμ/dν is the sought Lᵠ representative. This entry is the measure-theoretic engine behind that duality argument."
+    },
+    {
+      "targetId": "lebesgue-measure-oq-02",
+      "relationship": "complementary",
+      "description": "Hölder's Inequality for Lebesgue Integration supplies the norm estimate ‖fg‖₁ ≤ ‖f‖ₚ‖g‖ᵩ that bounds the functional in Lᵖ duality, while the Radon–Nikodym derivative developed here supplies its representative. The two together — Hölder for boundedness, Radon–Nikodym for representability — are the standard pair underlying the identification (Lᵖ)* ≅ Lᵠ."
     }
   ],
   "references": [
