@@ -4720,8 +4720,8 @@
     },
     "erdos-139": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T20:23:29Z",
+      "auditCount": 4,
+      "lastAudited": "2026-06-18T20:59:34Z",
       "result": "clean"
     },
     "erdos-14": {
@@ -4817,9 +4817,9 @@
       "result": "clean"
     },
     "erdos-152": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-03T20:23:29Z",
+      "lastAudited": "2026-06-18T20:56:51Z",
       "result": "clean"
     },
     "erdos-152-oq-01": {
@@ -5235,9 +5235,9 @@
     },
     "erdos-203": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T20:23:29Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-06-18T20:53:13Z",
+      "result": "issues-fixed"
     },
     "erdos-204": {
       "agentId": "auditor-cycle-20-batch",
@@ -5256,8 +5256,8 @@
     },
     "erdos-206": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T20:23:29Z",
+      "auditCount": 4,
+      "lastAudited": "2026-06-18T20:40:02Z",
       "result": "clean"
     },
     "erdos-207": {
@@ -8749,9 +8749,12 @@
     },
     "erdos-661": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-04T04:04:41Z",
-      "result": "clean"
+      "auditCount": 5,
+      "lastAudited": "2026-06-18T20:40:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "axiomCount 2→0 (no axiom decls; F/f are opaque stubs := fun _=>0 asserting nothing); status axiomatized→formalized; rewrote proofStrategy/section/conclusion prose that falsely claimed F/f, the conjecture, Guth–Katz, and lattice bounds were axiomatized — they are opaque placeholders or prose comments. Only Lenz ℝ⁴ + infra proved."
+      ]
     },
     "erdos-662": {
       "agentId": "auditor-cycle-20-batch",
@@ -12873,10 +12876,12 @@
       "result": "clean"
     },
     "riemann-hypothesis": {
-      "auditCount": 4,
-      "issues": [],
-      "lastAudited": "2026-05-04T04:08:16Z",
-      "result": "clean"
+      "auditCount": 5,
+      "issues": [
+        "leanFile.axiomCount 44→32 to match literal axiom declarations (32); meta.axiomCount kept at 44 as literal+structure-assumption aggregate per convention."
+      ],
+      "lastAudited": "2026-06-18T20:40:00Z",
+      "result": "issues-fixed"
     },
     "roth-theorem-k3": {
       "auditCount": 5,
@@ -15929,6 +15934,12 @@
     "napoleons-theorem-oq-03": {
       "auditCount": 1,
       "lastAudited": "2026-06-18T18:45:39Z",
+      "result": "clean",
+      "issues": []
+    },
+    "pentagonal-number-theorem-oq-01": {
+      "auditCount": 2,
+      "lastAudited": "2026-06-18T20:41:43Z",
       "result": "clean",
       "issues": []
     }

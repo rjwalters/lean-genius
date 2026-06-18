@@ -16,7 +16,7 @@
       "sierpinski",
       "open"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 203,
     "erdosUrl": "https://erdosproblems.com/203",
@@ -56,9 +56,9 @@
       "IsGeneralizedAvoiding definition: multi-prime generalization",
       "erdos_203_statement theorem: formal main statement"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 390,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "Depends on Lean.ofReduceBool: the Selfridge supporting result selfridge_sierpinski_is_sierpinski (78557 is a Sierpiński number) is proved via covering_prime, which discharges its divisibility and period facts with `native_decide` (7 calls). native_decide trusts the compiler's kernel reduction and so introduces the Lean.ofReduceBool axiom (the proof is not axiom-free). No literal `axiom` declarations and 0 sorries. The main Erdős #203 conjecture (ErdosConjecture203) remains OPEN and is stated, not proved.",
     "theoremCount": 44,
     "definitionCount": 13
   },

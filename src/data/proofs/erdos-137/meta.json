@@ -48,9 +48,9 @@
       "Axiomatization of the main conjecture (powerful products)",
       "Verified counterexample: 72 = 8 × 9 is powerful for k=2"
     ],
-    "axiomCount": 2,
+    "axiomCount": 3,
     "lineCount": 225,
-    "assumptions": "2 axioms: erdos_selfridge_theorem, erdos_powerful_conjecture. See Lean source for complete statements.",
+    "assumptions": "2 axiom declarations (erdos_selfridge_theorem, erdos_powerful_conjecture) plus Lean.ofReduceBool: the credited counterexample theorem two_consecutive_can_be_powerful proves consecutiveProduct 7 2 = 72 via native_decide, which trusts the compiler's kernel reduction (Lean.ofReduceBool). leanFile.axiomCount remains 2 (literal axiom declarations only). 0 sorries. See Lean source for complete statements.",
     "theoremCount": 9,
     "definitionCount": 3
   },
