@@ -110,4 +110,35 @@ theorem irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7 :
   have h9 : n < (9 : ℤ) := by exact_mod_cast hhi
   omega
 
+/-! ### General form of Strategy D (any number of summands)
+
+The four-summand argument above never used `4`, nor any property of `{2,3,5,7}` beyond each
+being a natural number. We isolate the two genuinely general facts: *any* finite sum of square
+roots of naturals is an algebraic integer over `ℤ`, and such a sum is irrational the moment it
+avoids every integer. Together these give Strategy D for an arbitrary finite index set, with no
+minimal-polynomial / degree-`2^k` machinery and a proof length independent of the number of
+summands — the distillation flagged as the open follow-up of this entry. -/
+
+/-- **General integrality**: a finite sum `∑ i ∈ s, √(a i)` of square roots of naturals is an
+algebraic integer over `ℤ`. Each `√(a i)` is integral via `isIntegral_of_sq` (it squares to the
+integer `a i`), and algebraic integers are closed under finite sums (`IsIntegral.sum`). -/
+theorem isIntegral_sum_sqrt {ι : Type*} (s : Finset ι) (a : ι → ℕ) :
+    IsIntegral ℤ (∑ i ∈ s, sqrt (a i)) := by
+  apply IsIntegral.sum
+  intro i _
+  exact isIntegral_of_sq _ (a i : ℤ) (by
+    rw [Real.sq_sqrt (by positivity : (0:ℝ) ≤ (a i : ℝ))]; push_cast; ring)
+
+/-- **General Strategy-D irrationality criterion**: a finite sum of square roots of naturals is
+irrational as soon as it equals no rational integer. This is the whole of Strategy D for an
+arbitrary finite index set — combine `isIntegral_sum_sqrt` with the reusable criterion
+`irrational_of_isIntegral_of_forall_ne_int`. To apply it to a concrete sum one supplies any
+unit-width interval `m < ∑ √(a i) < m+1` (a finite `norm_num` computation), exactly as the
+`8 < α < 9` bound discharges the main theorem above; no per-instance minimal polynomial is
+ever computed and the argument does not grow with the number of summands. -/
+theorem irrational_sum_sqrt_of_forall_ne_int {ι : Type*} (s : Finset ι) (a : ι → ℕ)
+    (h : ∀ n : ℤ, (∑ i ∈ s, sqrt (a i)) ≠ (n : ℝ)) :
+    Irrational (∑ i ∈ s, sqrt (a i)) :=
+  irrational_of_isIntegral_of_forall_ne_int (isIntegral_sum_sqrt s a) h
+
 end Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01

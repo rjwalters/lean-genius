@@ -2,7 +2,7 @@
   "id": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01",
   "title": "Irrationality of √2 + √3 + √5 + √7",
   "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01",
-  "description": "Proves that √2 + √3 + √5 + √7 is irrational (OQ-01 of the parent sqrt2-plus-sqrt3-plus-sqrt5-irrational entry, the four-summand generalization). Uses Strategy D — algebraic integer trapped in a bounded interval — avoiding the degree-16 minimal polynomial and iterated-squaring machinery entirely. Each √k is an algebraic integer (root of the monic integer polynomial X² − C k), so α = √2+√3+√5+√7 is integral over ℤ by closure under addition. A rational algebraic integer must be an integer (ℤ is integrally closed in ℚ), but 8 < α < 9 traps α strictly between consecutive integers, contradiction. 10 theorems, 0 sorries, 0 axioms.",
+  "description": "Proves that √2 + √3 + √5 + √7 is irrational (OQ-01 of the parent sqrt2-plus-sqrt3-plus-sqrt5-irrational entry, the four-summand generalization). Uses Strategy D — algebraic integer trapped in a bounded interval — avoiding the degree-16 minimal polynomial and iterated-squaring machinery entirely. Each √k is an algebraic integer (root of the monic integer polynomial X² − C k), so α = √2+√3+√5+√7 is integral over ℤ by closure under addition. A rational algebraic integer must be an integer (ℤ is integrally closed in ℚ), but 8 < α < 9 traps α strictly between consecutive integers, contradiction. The argument is then distilled into a general lemma — any finite sum ∑ √(a i) of square roots of naturals is an algebraic integer (isIntegral_sum_sqrt) and hence irrational once it equals no integer (irrational_sum_sqrt_of_forall_ne_int), with a proof length independent of the number of summands. 12 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-06-15",
@@ -21,12 +21,14 @@
     "sorries": 0,
     "dateAdded": "2026-06-15",
     "axiomCount": 0,
-    "assumptions": "None. Fully machine-checked: 0 sorries, 0 axioms. Uses Mathlib's integral-closure API — IsIntegral.add, isIntegral_algebraMap_iff, IsIntegrallyClosed.isIntegral_iff (ℤ integrally closed in ℚ), Polynomial.monic_X_pow_sub_C, Real.sq_sqrt, Real.lt_sqrt, Real.sqrt_lt'.",
-    "lineCount": 113,
-    "theoremCount": 10,
+    "assumptions": "None. Fully machine-checked: 0 sorries, 0 axioms. Uses Mathlib's integral-closure API — IsIntegral.add, IsIntegral.sum, isIntegral_algebraMap_iff, IsIntegrallyClosed.isIntegral_iff (ℤ integrally closed in ℚ), Polynomial.monic_X_pow_sub_C, Real.sq_sqrt, Real.lt_sqrt, Real.sqrt_lt'.",
+    "lineCount": 144,
+    "theoremCount": 12,
     "definitionCount": 0,
     "originalContributions": [
       "irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7: √2 + √3 + √5 + √7 is irrational, proved via Strategy D (algebraic integer trapped in (8,9)) rather than the iterated-squaring / degree-16 minimal-polynomial route",
+      "irrational_sum_sqrt_of_forall_ne_int: GENERAL Strategy-D criterion over an arbitrary finite index set — ∑ i ∈ s, √(a i) (a : ι → ℕ) is irrational as soon as it equals no rational integer; the four-summand theorem is one instance and the proof length is independent of the number of summands",
+      "isIntegral_sum_sqrt: GENERAL integrality — any finite sum ∑ i ∈ s, √(a i) of square roots of naturals is an algebraic integer over ℤ, via isIntegral_of_sq on each summand and IsIntegral.sum (algebraic integers are closed under finite sums)",
       "irrational_of_isIntegral_of_forall_ne_int: reusable gallery-wide criterion — an algebraic integer over ℤ that equals no rational integer is irrational; discharges any finite sum of square roots of non-squares given a unit-width interval bound",
       "isIntegral_of_sq: a real c with c² ∈ ℤ is an algebraic integer (root of the monic X² − C m); the building block making each √k integral",
       "isIntegral_alpha: α = √2+√3+√5+√7 is an algebraic integer, by IsIntegral.add applied to the four radical summands",
@@ -109,22 +111,30 @@
       "endLine": 113,
       "summary": "irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7: feeds isIntegral_alpha and the interval bounds into the reusable criterion. Any integer n with α = n would satisfy 8 < n < 9, impossible by omega — so α is irrational.",
       "mathContext": "$\\alpha = (n:\\mathbb{R})$ with $\\texttt{alpha\\_lower}$/$\\texttt{alpha\\_upper}$ casts to $8 < n < 9$ in $\\mathbb{Z}$, refuted by $\\texttt{omega}$; the unit-width interval discharges the $\\forall n,\\ \\alpha \\neq n$ hypothesis."
+    },
+    {
+      "id": "general-form",
+      "title": "General Form of Strategy D (Any Number of Summands)",
+      "startLine": 115,
+      "endLine": 144,
+      "summary": "isIntegral_sum_sqrt: any finite sum ∑ i ∈ s, √(a i) of square roots of naturals (a : ι → ℕ) is an algebraic integer over ℤ — each summand integral via isIntegral_of_sq, the sum via IsIntegral.sum. irrational_sum_sqrt_of_forall_ne_int: such a sum is irrational once it equals no integer, by the reusable criterion. The four-summand main theorem is the s = {2,3,5,7} instance, and neither proof grows with the number of summands.",
+      "mathContext": "$\\sum_{i \\in s} \\sqrt{a_i}$ lies in the subring $\\texttt{integralClosure}\\ \\mathbb{Z}\\ \\mathbb{R}$ (closed under finite sums via $\\texttt{IsIntegral.sum}$), so it is an algebraic integer for any finite index set $s$; combined with the integral-closure criterion it is irrational whenever it avoids every $(n:\\mathbb{R})$, with no minimal polynomial and no dependence on $|s|$."
     }
   ],
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms): irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7 : Irrational (√2 + √3 + √5 + √7). Proved by Strategy D — α is an algebraic integer over ℤ trapped strictly in (8,9), and a rational algebraic integer must be an integer. Build verified at Mathlib v4.26.0. 10 theorems, 113 lines.",
+    "summary": "Fully verified (0 sorries, 0 axioms): irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7 : Irrational (√2 + √3 + √5 + √7). Proved by Strategy D — α is an algebraic integer over ℤ trapped strictly in (8,9), and a rational algebraic integer must be an integer. Build verified at Mathlib v4.26.0. The proof is then distilled into a general lemma (isIntegral_sum_sqrt / irrational_sum_sqrt_of_forall_ne_int) covering an arbitrary finite sum of square roots of naturals. 12 theorems, 144 lines.",
     "implications": "Closes OQ-01 of the parent `sqrt2-plus-sqrt3-plus-sqrt5-irrational` gallery entry. The reusable criterion irrational_of_isIntegral_of_forall_ne_int proves irrationality of any finite sum of square roots of non-squares once a unit-width interval bound is supplied — independent of the number of summands, with no minimal-polynomial computation.",
     "openQuestions": [
       "Formalise Besicovitch's (1940) general linear-independence theorem for {√a_i} with distinct squarefree a_i; not in Mathlib v4.26.0.",
       "Compute the explicit degree-16 minimal polynomial of √2+√3+√5+√7 over ℚ (Galois-conjugate product over {±1}⁴) and prove [ℚ(√2,√3,√5,√7):ℚ] = 16.",
-      "Package Strategy D as a general Mathlib-style lemma: any sum of square roots of pairwise-distinct non-squares is irrational, deriving the interval bound automatically."
+      "Package Strategy D as a general Mathlib-style lemma over an arbitrary finite index set: DONE — isIntegral_sum_sqrt and irrational_sum_sqrt_of_forall_ne_int now prove that ∑ i ∈ s, √(a i) is an algebraic integer, hence irrational whenever it equals no integer; the unit-width interval is still supplied per instance (deriving it automatically would require the absent Besicovitch independence theorem)."
     ]
   },
   "leanFile": {
     "namespace": "Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01",
-    "lineCount": 113,
+    "lineCount": 144,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 12,
     "definitionCount": 0,
     "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean",
     "sorries": 0
