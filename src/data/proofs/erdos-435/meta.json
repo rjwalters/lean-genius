@@ -55,11 +55,12 @@
       "primePowerContribution: contribution from each prime factor",
       "hwangSongFormula: explicit formula for Frobenius number",
       "hwang_song_theorem axiom: main result",
-      "informal discussion of semigroup structure and coprimality (docstrings only, no Lean declarations)"
+      "informal discussion of semigroup structure and coprimality (docstrings only, no Lean declarations)",
+      "Erdos435PrimePowerObstruction.lean companion (registered, 0 axioms, 0 sorries): formalizes the prime-power obstruction — p ∣ C(p^k, j) for every middle j (Kummer), hence gcd of the generators ≠ 1 — upgrading Parts V/VI from prose to proved theorems and justifying the restriction to non-prime-powers"
     ],
     "axiomCount": 2,
     "lineCount": 233,
-    "assumptions": "2 axioms: hwang_song_theorem (Hwang-Song — non-prime-powers are representable), large_numbers_representable (large non-prime-powers are representable). 0 sorries.",
+    "assumptions": "2 axioms: hwang_song_theorem (Hwang-Song — non-prime-powers are representable), large_numbers_representable (large non-prime-powers are representable). 0 sorries. The prime-power obstruction justifying the restriction to non-prime-powers (Parts V/VI) is formally proved in the companion Erdos435PrimePowerObstruction.lean (Mathlib-only, 0 axioms, 0 sorries); it is independent of and does not discharge the 2 axioms above.",
     "theoremCount": 2,
     "definitionCount": 7
   },
@@ -144,7 +145,7 @@
     {
       "id": "prime-power-special",
       "title": "Why Prime Powers are Special",
-      "summary": "Documents the degenerate case: for $n = p^k$, Lucas' theorem gives $p \\mid \\binom{n}{i}$ for all $0 < i < n$, making the complement infinite.",
+      "summary": "Documents the degenerate case: for $n = p^k$, Lucas'/Kummer's theorem gives $p \\mid \\binom{n}{i}$ for all $0 < i < n$, making the complement infinite. This argument is now formally proved in the companion `Erdos435PrimePowerObstruction.lean` (`prime_pow_dvd_choose`, `prime_dvd_all_generators`, `generators_gcd_ne_one`), not just prose.",
       "startLine": 146,
       "endLine": 164,
       "mathContext": "Verified: Documents the degenerate case: for $n = p^k$, Lucas' theorem gives $p \\mid \\binom{n}{i}$ for all $0 < i < n$, making the complement infinite."
@@ -199,7 +200,18 @@
     "theoremCount": 2,
     "definitionCount": 7,
     "path": "Proofs/Erdos435Problem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/Erdos435PrimePowerObstruction.lean",
+        "lineCount": 83,
+        "theorems": 3,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "Prime-power obstruction (Parts V/VI, previously recorded only as prose): registered, Mathlib-only companion that upgrades the 'why prime powers are special' argument from docstring to proved theorems. prime_pow_dvd_choose shows p ∣ C(p^k, j) for every middle index 1 ≤ j < p^k (via Kummer's Nat.factorization_choose_prime_pow: v_p(C(p^k,j)) = k − v_p(j) > 0); prime_dvd_all_generators lifts this to every generator C(n, j); generators_gcd_ne_one concludes gcd{C(n,1),…,C(n,n-1)} ≠ 1, so the numerical semigroup has infinite complement and no Frobenius number exists — exactly why Erdős #435 (and the Hwang–Song formula) is restricted to non-prime-powers. Namespace Erdos435.PrimePowerObstruction; 0 axioms, 0 sorries. Does not bear on the parent's 2 axioms."
+      }
+    ]
   },
   "sorries": 0
 }
