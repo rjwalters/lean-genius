@@ -61,7 +61,8 @@
             "The erasure identity H(X|Y) = p · H(X) is the entire engine: it holds for ANY input distribution, not just the optimal one.",
             "The BEC is not weakly symmetric (the erasure column sums to 2p while the others sum to 1 - p), so the parent's symmetric-channel capacity lemmas do not apply -- a separate development is genuinely needed.",
             "Erasure is symmetric in the input symbol, so the capacity-achieving input is still uniform Bernoulli(1/2), exactly as for the BSC.",
-            "Capacity in bits is simply 1 - p: a clean operational reading as the surviving fraction of transmissions."
+            "Capacity in bits is simply 1 - p: a clean operational reading as the surviving fraction of transmissions.",
+            "Erasures are strictly cheaper than errors: because the decoder knows *where* information was lost, C_BEC = 1 - p exceeds the binary symmetric channel's C_BSC = 1 - H₂(p) for every p ∈ (0, 1) (with equality only at the endpoints) -- quantifying the operational value of knowing the location of corruption."
         ]
     },
     "sections": [
