@@ -14187,9 +14187,9 @@
       "issues": []
     },
     "dissection-of-cubes-oq-01-oq-03": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-03T22:38:59Z",
-      "result": "clean",
+      "auditCount": 2,
+      "lastAudited": "2026-06-18T12:58:33Z",
+      "result": "issues-fixed",
       "issues": [],
       "notes": "Re-audited 2026-05-04: 0 sorries, leanFile.axiomCount=0 (meta.axiomCount=2 from parent imports, by design). covers_unit_cube:=trivial is struct field fill not a True stub. Empty issues array was auditor artifact."
     },
