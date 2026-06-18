@@ -118,5 +118,123 @@
       "Metric.dist API",
       "Finset quantifiers in Lean"
     ]
+  },
+  {
+    "id": "ann-1208-def-sidon",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 37,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "The Distance-Sidon Property",
+    "content": "`IsDistanceSidon Q` formalizes the central object: a finite set $Q$ in a metric space whose $\\binom{|Q|}{2}$ pairwise distances are all distinct. The Lean phrasing is the contrapositive-friendly form — if $\\mathrm{dist}(a,b) = \\mathrm{dist}(c,e)$ then the unordered pairs $\\{a,b\\}$ and $\\{c,e\\}$ coincide. The two trivial cases (`isDistanceSidon_empty`, `isDistanceSidon_singleton`) hold vacuously: with fewer than two points there are no distinct pairs to collide.",
+    "mathContext": "$Q$ is distance-Sidon $\\iff \\forall a,b,c,e \\in Q,\\ \\mathrm{dist}(a,b)=\\mathrm{dist}(c,e) \\Rightarrow (a{=}c \\wedge b{=}e) \\vee (a{=}e \\wedge b{=}c)$. This is the metric analogue of a $B_2$ (Sidon) set, where pairwise *sums* rather than *distances* are distinct.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon-set",
+      "B2-set",
+      "metric-space",
+      "additive-combinatorics"
+    ],
+    "prerequisites": [
+      "MetricSpace",
+      "Finset",
+      "dist"
+    ]
+  },
+  {
+    "id": "ann-1208-size-bound",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 70,
+      "endLine": 109
+    },
+    "type": "theorem",
+    "title": "Key Size Bound: Pairs vs. Distinct Distances (proved in-file)",
+    "content": "`distance_sidon_size_bound` is the entry's genuine machine-checked result — not axiomatized. It proves that a distance-Sidon set $Q$ of size $k$ realizes at least $\\binom{k}{2} = k(k-1)/2$ distinct distance values. The argument is a clean fiber-counting/double-counting proof: each distance value is attained by at most 2 ordered pairs on the off-diagonal (namely $(a,b)$ and $(b,a)$, forced by the distance-Sidon property), so `Finset.card_le_mul_card_image` bounds $|Q.\\mathrm{offDiag}|$ by twice the image size, and `omega`/`linarith` close the arithmetic.",
+    "mathContext": "$\\binom{k}{2} \\le \\#\\{\\text{distinct distances in } Q\\}$. Mechanism: the off-diagonal $Q \\times Q \\setminus \\Delta$ has $k(k-1)$ ordered pairs; the fiber over each distance value has size $\\le 2$; hence $k(k-1) \\le 2\\,D$ where $D$ is the number of distinct distances. This is the combinatorial engine behind the $O(n^{1/2})$ upper bound on $F_2(n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "double-counting",
+      "fiber-bound",
+      "Finset.offDiag",
+      "Finset.card_le_mul_card_image"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "Finset.offDiag",
+      "Finset.card_le_card"
+    ]
+  },
+  {
+    "id": "ann-1208-axiom-lower",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 122,
+      "endLine": 134
+    },
+    "type": "axiom",
+    "title": "Lower Bound Axiom: Spencer–Szemerédi–Trotter",
+    "content": "`fd2_lower_bound` axiomatizes the $\\Omega(n^{1/3})$ lower bound: every $n$-point set in $\\mathbb{R}^2$ contains a distance-Sidon subset of size $\\ge C\\,n^{1/3}$. It is stated as an axiom because its proof rests on the Spencer–Szemerédi–Trotter unit-distance bound (1984) — at most $O(n^{4/3})$ unit distances among $n$ planar points — which is not yet in Mathlib. The intended proof is a greedy extraction: averaging $\\binom{n}{2}$ pairs against $O(n^{4/3})$ repetitions per distance lets a 'add a point with all-new distances' construction run for $\\Omega(n^{1/3})$ steps.",
+    "mathContext": "$\\exists C>0,\\ \\forall n,\\ \\forall P \\subset \\mathbb{R}^2,\\ |P|=n \\Rightarrow \\exists Q \\subseteq P$ distance-Sidon with $|Q| \\ge C\\,n^{1/3}$. The unit-distance bound $u(n) = O(n^{4/3})$ is the key external input.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Szemeredi-Trotter",
+      "unit-distance-problem",
+      "greedy-algorithm",
+      "incidence-geometry"
+    ],
+    "prerequisites": [
+      "EuclideanSpace",
+      "Finset.card",
+      "axiomatization"
+    ]
+  },
+  {
+    "id": "ann-1208-axiom-upper",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 136,
+      "endLine": 147
+    },
+    "type": "axiom",
+    "title": "Upper Bound Axiom: The Integer Grid and Gauss Circle Problem",
+    "content": "`fd2_upper_bound` axiomatizes the $O(n^{1/2})$ upper bound: there exist $n$-point configurations (the integer grid $\\{1,\\dots,N\\}^2$) in which every distance-Sidon subset has size $\\le C\\,n^{1/2}$. The grid has only $O(N^2)$ distinct distances (the number of integers below $N^2$ expressible as a sum of two squares — the Gauss circle problem), so by the in-file `distance_sidon_size_bound`, $\\binom{k}{2} \\le O(N^2)$ forces $k \\le O(N) = O(n^{1/2})$. The axiom packages the distinct-distance count for the grid, which Mathlib does not yet provide.",
+    "mathContext": "$\\exists C>0,\\ \\forall n,\\ \\exists P,\\ |P|=n$ with every distance-Sidon $Q \\subseteq P$ obeying $|Q| \\le C\\,n^{1/2}$. The grid $\\{1,\\dots,N\\}^2$ ($n=N^2$) has $\\Theta(N^2/\\sqrt{\\log N})$ distinct distances by Landau's refinement of Gauss's count.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Gauss-circle-problem",
+      "sum-of-two-squares",
+      "integer-grid",
+      "Landau-Ramanujan"
+    ],
+    "prerequisites": [
+      "EuclideanSpace",
+      "distance_sidon_size_bound"
+    ]
+  },
+  {
+    "id": "ann-1208-main",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 149,
+      "endLine": 163
+    },
+    "type": "theorem",
+    "title": "Erdős #1208: The Main Lower-Bound Statement",
+    "content": "`erdos_1208` states the headline result for $d=2$: every $n$-point planar set contains a distance-Sidon subset of size $\\Omega(n^{1/3})$. Since the deep extraction argument is captured by `fd2_lower_bound`, the theorem is a one-line delegation to that axiom. Together with `fd2_upper_bound` this pins the exponent $\\alpha$ in $F_2(n) \\asymp n^\\alpha$ to the interval $[1/3, 1/2]$ — the exact value remains a genuinely open problem in combinatorial geometry.",
+    "mathContext": "$F_2(n) \\ge \\Omega(n^{1/3})$ and $F_2(n) \\le O(n^{1/2})$, so $\\tfrac13 \\le \\alpha \\le \\tfrac12$. Closing this gap (the true growth rate of distance-Sidon subsets) is Erdős Problem #1208.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos-problems",
+      "open-problem",
+      "distinct-distances",
+      "Guth-Katz"
+    ],
+    "prerequisites": [
+      "fd2_lower_bound",
+      "IsDistanceSidon"
+    ]
   }
 ]
