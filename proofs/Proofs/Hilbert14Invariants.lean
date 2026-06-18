@@ -49,8 +49,11 @@ We demonstrate:
 - [x] Complete (no sorries)
 
 **Formalization Notes:**
-- Uses axioms for statements requiring deep algebraic geometry
-- Demonstrates Mathlib's ring theory infrastructure
+- This file formalizes only Hilbert's Basis Theorem (Noetherian preservation),
+  re-exported from Mathlib, plus definitions of the invariant ring and reductivity.
+- The 14th problem itself (finite generation for reductive groups, Nagata's
+  counterexample) is presented as expository commentary, not formalized.
+- Contains no axioms and no sorries.
 
 ## Mathlib Dependencies
 - `RingTheory.Polynomial.Basic` : Polynomial rings
@@ -173,7 +176,8 @@ In Mathlib, this is captured by `Algebra.FiniteType k A`.
 
     **Answer**: NO in general (Nagata 1959), but YES for reductive groups.
 
-    This axiom represents the main statement of the problem. -/
+    This is stated here as exposition only; it is not formalized as a Lean
+    declaration. -/
 
 end MainQuestion
 
