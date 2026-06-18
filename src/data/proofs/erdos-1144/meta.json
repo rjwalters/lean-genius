@@ -56,12 +56,20 @@
       "rademacher_one",
       "rademacher_values_pm1",
       "rademacher_abs_one",
-      "completely_mult_zero",
+      "completely_mult_zero_or_one",
+      "completely_mult_pow",
+      "rademacher_sq_one",
       "erdos_1144_conjecture",
       "erdos_1144_probabilistic",
       "atherfold_upper_bound",
       "partialSum_zero",
-      "atherfold_implies_subpolynomial",
+      "partialSum_one",
+      "partialSum_two",
+      "partialSum_succ",
+      "const_one_completely_mult",
+      "const_one_rademacher",
+      "partialSum_const_one",
+      "exists_linear_growth_rademacher",
       "partialSum_trivial_bound",
       "conjecture_and_atherfold_pinch"
     ],
@@ -75,7 +83,7 @@
     "historicalContext": "Erdős Problem #1144 belongs to a rich tradition of studying partial sums of multiplicative functions, beginning with the Liouville function λ(n) = (-1)^Ω(n). Pólya conjectured in 1919 that ∑_{n≤x} λ(n) ≤ 0 for all x ≥ 2, but Haselgrove disproved this in 1958, and the first counterexample (x ≈ 906,150,257) was found by Tanaka in 1980.\n\nThe study of random multiplicative functions was pioneered by Wintner (1944), who showed that for Steinhaus random multiplicative functions (f(p) uniform on the unit circle), the partial sums satisfy ∑_{n≤x} f(n) = O(x^{1/2+ε}) almost surely. For Rademacher multiplicative functions (f(p) = ±1), the behavior is subtler: Harper (2013) proved that the partial sums have typical size √x / (log log x)^{3/4+o(1)}, resolving a question of Helson.\n\nThe key recent advance is by Atherfold (2025), who proved the upper bound ∑_{m≤N} f(m) ≪ N^{1/2} (log N)^{1+o(1)} almost surely. Problem #1144 asks whether the matching lower bound holds: does the limsup of |∑ f(m)|/√N diverge? This remains open. The problem is catalogued as Va99 §1.11 and is related to Problem #520 on squarefree-restricted sums.",
     "problemStatement": "**Erdős Problem #1144**:\n\nLet $f$ be a random completely multiplicative function with $f(p) \\in \\{-1, 1\\}$ chosen independently and uniformly for each prime $p$.\n\n**Conjecture**: With probability 1,\n$$\\limsup_{N \\to \\infty} \\frac{\\left|\\sum_{m \\le N} f(m)\\right|}{\\sqrt{N}} = \\infty$$\n\n**Deterministic version**: For every Rademacher multiplicative $f$ and every $C > 0$, there exist infinitely many $N$ with $|S_f(N)| > C\\sqrt{N}$.",
     "text": "Let f be a random completely multiplicative function with f(p) ∈ {-1, 1} chosen independently for each prime p. The conjecture states that limsup |∑_{m ≤ N} f(m)| / √N = ∞ almost surely.",
-    "proofStrategy": "The formalization defines completely multiplicative and Rademacher multiplicative functions, states the conjecture using Lean's Filter.atTop for 'infinitely often', and axiomatizes Atherfold's upper bound. The key proved result is the 'pinch theorem': assuming the conjecture, combined with Atherfold's bound, the growth rate is exactly √N up to logarithmic factors. Three sorry placeholders remain for structural lemmas (pm1 values propagation, subpolynomial dominance, trivial bound via triangle inequality).",
+    "proofStrategy": "The formalization defines completely multiplicative and Rademacher multiplicative functions, states the conjecture using Lean's Filter.atTop for 'infinitely often', and axiomatizes Atherfold's upper bound (the single axiom). All supporting lemmas are fully proved (0 sorries): the ±1-on-positive-integers propagation (rademacher_values_pm1, by strong induction on prime factorization), the trivial bound |S(N)| ≤ N (partialSum_trivial_bound, via the triangle inequality and Finset.abs_sum_le_sum_abs), partial-sum recursion (partialSum_succ), and a concrete linear-growth witness (the constant function f ≡ 1, exists_linear_growth_rademacher). The key proved result is the 'pinch theorem' (conjecture_and_atherfold_pinch): assuming the conjecture, combined with Atherfold's bound, the growth rate is pinned to √N up to logarithmic factors.",
     "keyInsights": [
       "**Random ≠ independent**: Although each f(m) is ±1, the values are correlated by multiplicativity — f(6) = f(2)·f(3) — making this fundamentally different from a random walk. The multiplicative structure creates long-range dependencies.",
       "**The √N barrier**: For independent ±1 summands, |S(N)| ~ √N by the CLT. The conjecture asks if multiplicative correlations preserve this scale. Harper's 2013 result shows the typical size is actually smaller: √N / (log log N)^{3/4+o(1)}, but the limsup may still diverge.",
@@ -95,7 +103,7 @@
       "id": "header",
       "title": "Problem Statement",
       "startLine": 1,
-      "endLine": 23,
+      "endLine": 22,
       "summary": "Documentation header stating Erdős Problem #1144: the conjecture on partial sums of random multiplicative functions, its open status, Atherfold's upper bound, and relation to Problem #520.",
       "mathContext": "Bound: Documentation header stating Erdős Problem #1144: the conjecture on partial sums of random multiplicative functions, its open status, Atherfold's upper bound, and relation to Problem #520."
     },
@@ -103,7 +111,7 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 24,
-      "endLine": 28,
+      "endLine": 27,
       "summary": "Imports Mathlib.Tactic and Mathlib.Data.Nat.Prime.Basic; opens Filter and Finset namespaces.",
       "mathContext": "Mathematical content: Imports Mathlib.Tactic and Mathlib.Data.Nat.Prime.Basic; opens Filter and Finset namespaces."
     },
@@ -111,7 +119,7 @@
       "id": "core-defs",
       "title": "Core Definitions",
       "startLine": 29,
-      "endLine": 44,
+      "endLine": 43,
       "summary": "Defines IsCompletelyMultiplicative (f(mn) = f(m)f(n)), IsRademacherMultiplicative (completely multiplicative with f(p) = ±1), and partialSum as ∑ over Finset.range.",
       "mathContext": "Formal definition: Defines IsCompletelyMultiplicative (f(mn) = f(m)f(n)), IsRademacherMultiplicative (completely multiplicative with f(p) = ±1), and partialSum as ∑ over Finset.range."
     },
@@ -119,39 +127,47 @@
       "id": "basic-props",
       "title": "Basic Properties",
       "startLine": 45,
-      "endLine": 77,
-      "summary": "Four theorems: rademacher_one (f(1)=1), rademacher_values_pm1 (f(n)=±1 for n>0, sorry), rademacher_abs_one (|f(n)|=1), completely_mult_zero (f(0)=0 by algebraic argument).",
-      "mathContext": "Verified: Four theorems: rademacher_one (f(1)=1), rademacher_values_pm1 (f(n)=±1 for n>0, sorry), rademacher_abs_one (|f(n)|=1), completely_mult_zero (f(0)=0 by algebraic argument)."
+      "endLine": 95,
+      "summary": "Six proved theorems: rademacher_one (f(1)=1), rademacher_values_pm1 (f(n)=±1 for n>0, by strong induction on prime factorization), rademacher_abs_one (|f(n)|=1), completely_mult_zero_or_one (f(0) ∈ {0,1}), completely_mult_pow (f(n^k)=f(n)^k), rademacher_sq_one (f(n²)=1).",
+      "mathContext": "Verified: Six proved theorems: rademacher_one (f(1)=1), rademacher_values_pm1 (f(n)=±1 for n>0, by strong induction on prime factorization), rademacher_abs_one (|f(n)|=1), completely_mult_zero_or_one (f(0) ∈ {0,1}), completely_mult_pow (f(n^k)=f(n)^k), rademacher_sq_one (f(n²)=1)."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "startLine": 78,
-      "endLine": 103,
+      "startLine": 97,
+      "endLine": 121,
       "summary": "States the open conjecture in deterministic form (erdos_1144_conjecture: for every C>0, infinitely many N have |S_f(N)| ≥ C√N) and probabilistic form (erdos_1144_probabilistic: universal quantification over all Rademacher functions).",
       "mathContext": "States the open conjecture in deterministic form (erdos_1144_conjecture: for every C>0, infinitely many N have |S_f(N)| ≥ C√N) and probabilistic form (erdos_1144_probabilistic: universal quantification over all Rademacher functions)."
     },
     {
       "id": "known-results",
       "title": "Known Results: Atherfold's Bound",
-      "startLine": 104,
-      "endLine": 118,
+      "startLine": 123,
+      "endLine": 136,
       "summary": "Axiomatizes Atherfold's 2025 upper bound: for every ε>0, there exists C>0 such that |S_f(N)| ≤ C√N (log N)^{1+ε} eventually.",
       "mathContext": "Axiomatizes Atherfold's 2025 upper bound: for every ε>0, there exists C>0 such that |S_f(N)| $\\leq$ C$\\sqrt{N}$ (log N)^{1+ε} eventually."
     },
     {
       "id": "structural",
       "title": "Structural Theorems",
-      "startLine": 119,
-      "endLine": 141,
-      "summary": "Three structural results: partialSum_zero (S(0)=0), atherfold_implies_subpolynomial (sorry: log factors dominated by N^δ), partialSum_trivial_bound (sorry: |S(N)| ≤ N by triangle inequality).",
-      "mathContext": "Three structural results: partialSum_zero (S(0)=0), atherfold_implies_subpolynomial (sorry: log factors dominated by N^δ), partialSum_trivial_bound (sorry: |S(N)| $\\leq$ N by triangle inequality)."
+      "startLine": 138,
+      "endLine": 161,
+      "summary": "Proved structural results on partial sums: partialSum_zero (S(0)=0), partialSum_one (S(1)=0), partialSum_two (S(2)=f(1)), and partialSum_succ (recursion S(N+1)=S(N)+f(N) for N≥1).",
+      "mathContext": "Proved structural results on partial sums: partialSum_zero (S(0)=0), partialSum_one (S(1)=0), partialSum_two (S(2)=f(1)), and partialSum_succ (recursion S(N+1)=S(N)+f(N) for N≥1)."
+    },
+    {
+      "id": "example",
+      "title": "Concrete Example and Trivial Bound",
+      "startLine": 163,
+      "endLine": 209,
+      "summary": "The constant function f ≡ 1 as a worked Rademacher example: const_one_completely_mult, const_one_rademacher, partialSum_const_one (S(N)=N-1), and exists_linear_growth_rademacher (shows Atherfold's bound is probabilistic, not deterministic). Also partialSum_trivial_bound (|S(N)| ≤ N, fully proved via the triangle inequality).",
+      "mathContext": "The constant function f ≡ 1 as a worked Rademacher example: const_one_completely_mult, const_one_rademacher, partialSum_const_one (S(N)=N-1), and exists_linear_growth_rademacher (shows Atherfold's bound is probabilistic, not deterministic). Also partialSum_trivial_bound (|S(N)| ≤ N, fully proved via the triangle inequality)."
     },
     {
       "id": "pinch",
       "title": "Growth Rate Pinch Theorem",
-      "startLine": 142,
-      "endLine": 185,
+      "startLine": 211,
+      "endLine": 226,
       "summary": "The main proved result: if the conjecture holds, combined with Atherfold's bound, the growth rate is pinned between C₁√N and C₂√N(log N)^{1+ε}. Proof extracts C₁=1 and C₂ from Atherfold.",
       "mathContext": "The main proved result: if the conjecture holds, combined with Atherfold's bound, the growth rate is pinned between C₁$\\sqrt{N}$ and C₂$\\sqrt{N}$(log N)^{1+ε}. Proof extracts C₁=1 and C₂ from Atherfold."
     }
@@ -162,7 +178,7 @@
     "openQuestions": [
       "Resolve the conjecture: does limsup |S_f(N)|/√N = ∞ almost surely?",
       "Can the Atherfold upper bound be sharpened to remove the (log N)^ε factor?",
-      "Fill in the three sorry placeholders: rademacher_values_pm1 (induction on prime factorization), atherfold_implies_subpolynomial (asymptotic analysis), partialSum_trivial_bound (triangle inequality with Finset.sum_abs)",
+      "Prove that the (log N)^{1+ε} factor in Atherfold's bound cannot be reduced to a bounded power of log N (the o(1) refinement)",
       "Construct the full product probability space over prime choices to state the probabilistic version precisely"
     ]
   },
