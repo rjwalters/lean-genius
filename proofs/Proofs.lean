@@ -825,6 +825,7 @@ import Proofs.Erdos1043Problem
 import Proofs.Erdos1044Problem
 import Proofs.Erdos1045Problem
 import Proofs.Erdos1046Problem
+import Proofs.Erdos1047Main
 import Proofs.Erdos1047Problem
 import Proofs.Erdos1047OQ02
 import Proofs.Erdos1047OQ02Certificate
