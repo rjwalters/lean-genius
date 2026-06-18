@@ -288,3 +288,40 @@ errors (broken `orbit` def via a type-ascription bug; wrong lemma names
 `Irrational.int_mul`/`not_irrational_int` → `Irrational.intCast_mul`/`Int.not_irrational`).
 Now compiles green (7743 jobs, sole `sorry` = `exists_gap_triple`) and is
 registered in Proofs.lean / CI. Aristotle still 404; remaining core deferred to it.
+
+---
+
+## Session 2026-06-18 (Session 6) — researcher-1 — sharpen classification into a 4-step lemma scaffold (backend-blocked)
+
+**Mode**: REVISIT (claimed in-progress problem) — **Outcome**: progress (documentation; no Lean shipped — dual-backend blackout)
+
+### Backend probe (both down — same as S4/S5)
+- Aristotle MCP `prove` (liveness probe) → `{"status":"error","message":"Resource not found."}` (404). Backend still down — cannot submit `exists_gap_triple`.
+- Docker gated: 15 `lean-build-*` containers, ~5.7 GiB used of a 7.65 GiB VM. Per the OOM-safety rule (defer if >8 containers / >5 GiB) a new build risks crashing the host. No build attempted; no manual Lean shipped (the "name-checked ≠ compiled" hazard from S2–4 forbids blind-writing un-buildable proofs).
+
+### What I Did
+The frontier is unchanged from S5: 1 `sorry`, the `N ≥ 2` case of `exists_gap_triple` (now at line ~230), build-verified green, registered. Rather than thrash on the unavailable backends, I **factored the monolithic `sorry` into an explicit 4-step lemma decomposition** (in-file proof-path comment, lines 138–204) — a genuine sharpening of S5's prose path that the next backend-up session can execute turnkey:
+
+- **STEP A** (routine): `forwardGap α N P_k = min_{j≠k} Int.fract ((j−k)·α)` — rewrite the cyclic distance `{P_j − P_k}` as `{(j−k)α}` via integer-shift invariance of `Int.fract` (`Int.fract_int_add` / `Int.fract_add_int`).
+- **STEP B** (routine): split the index difference `d = j−k` on sign into `forwardGap = min(F_k, B_k)`, the available forward-return min `F_k = min_{1≤d≤N−1−k} {dα}` and backward-return min `B_k = min_{1≤e≤k} {−eα}`.
+- **STEP C** (routine): subset-min bounds `F_k ≥ a`, `B_k ≥ b` with full-range attainment `F_0 = a`, `B_{N−1} = b`; hence `a, b` are attained gap lengths and `forwardGap ≥ min a b` everywhere (`Finset.inf'_le`/`le_inf'`/`inf'_mem`/`exists_min_image`).
+- **STEP D** (the SOLE hard, known-not-open crux): with `p, q` the least minimizers of `a, b`, show `min(F_k, B_k) ∈ {a, b, a+b}` — forward neighbour `P_{k+p}` when `k+p<N` (gap `a`), backward when `k≥q` (gap `b`), and the `p+q−N` middle indices forced to the long gap `a+b` by minimality of `p,q`. Pure `Nat`/order index arithmetic; no new Mathlib infra.
+
+### Key Findings (new this session)
+- The classification is NOT monolithic: STEPS A–C are routine reductions (each a candidate single-lemma Aristotle `prove` target or short manual proof), isolating the genuine van Ravenstein content into STEP D alone. This is a strictly better decomposition than S5's prose — STEPS A–C give a clean ladder of provable sub-lemmas to land first.
+- The structural identity `forwardGap α N P_k = min(F_k, B_k)` with `F_k ≥ a ≥`, `B_k ≥ b`, `F_0 = a`, `B_{N−1} = b` is the load-bearing reframing: it reduces "≤ 3 distinct values" to "the attained min is `a`, `b`, or `a+b`", removing any need for an explicit sort/`orderEmbOfFin`.
+
+### Files Modified
+- `proofs/Proofs/Erdos998ThreeGapOQ04.lean` — proof-path comment block only (lines 138–204) replaced with the 4-step scaffold. **Comments only — sorry count unchanged (1), file remains build-verified.**
+- `research/problems/erdos-998-oq-04/{knowledge.md, meta.json}` + src/data sync.
+
+### Sorry Ledger
+- Before: 1 sorry (`exists_gap_triple`, N≥2). After: **1 sorry** (unchanged). No Lean proved — backend-blocked.
+
+### Honest assessment
+This is a documentation/decomposition session, NOT a proving session — both backends were down. STEP D (the real content) remains open and is now stuck across sessions 3–6; it is **BLOCKED on backend availability** (Aristotle is the right tool for this known-math sorry, and it has been 404 for S4/S5/S6). The decomposition is real, reusable progress, but no new theorem was machine-checked.
+
+### Next Steps (turnkey on backend recovery)
+1. Land STEPS A–C as named sorry-free lemmas (manual or per-lemma Aristotle `prove`), then submit STEP D / the whole file to Aristotle `prove_file`.
+2. `docker-build Proofs.Erdos998ThreeGapOQ04` (when ≤8 containers) to re-verify after each lemma lands.
+3. Once `exists_gap_triple` is sorry-free: flip status to `verified` (0 axioms) and add a gallery entry.
