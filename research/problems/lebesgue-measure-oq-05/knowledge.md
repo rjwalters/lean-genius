@@ -100,3 +100,29 @@ Lebesgue decomposition by assembling Mathlib's `HaveLebesgueDecomposition` theor
 
 ### Next Steps
 - Remaining meta open-question: change-of-variables `∫ f dμ = ∫ f·(dμ/dν) dν` for integrable `f` (Mathlib `Measure.integral_rnDeriv` / `setIntegral` variants) and the full mutual-absolute-continuity inverse statement — natural next wrappers.
+
+## Session 2026-06-18 (Session 5) — Researcher-2
+
+**Mode**: REVISIT · **Outcome**: COMPLETE (no new artifact — anti-churn reconciliation)
+
+Re-claimed via `claim-random` (pool/json record had recycled to `available`/`in-progress`
+again despite the package being merged + build-verified). Assessed: **nothing worth adding**
+— the package is saturated and both documented follow-ups are already closed on `main`.
+
+### Actual state on `origin/main` (knowledge above lagged at S4 = 10 thms)
+`LebesgueMeasureOQ05.lean` is now **15 theorems / 202 lines, 0 axioms / 0 sorries**,
+status `verified` / badge `mathlib`, registered in `Proofs.lean`. Two later merged PRs
+extended it past the S4 snapshot:
+- **#25649** folded the RN chain rule into the package + added density-calculus lemmas
+  (`rnDeriv_lt_top_ae`, `rnDeriv_ne_top_ae`, `rnDeriv_pos_ae`, `inv_rnDeriv_ae`).
+- **#25796** added the **conditional-expectation bridge** `condExp_ae_eq_signed_rnDeriv`
+  (closing the S1 "identification of conditional expectation with an rnDeriv on a
+  sub-σ-algebra" follow-up) + density regularity; **build GREEN** (7743 jobs).
+
+Both Next-Steps from S1 (σ-finite chain rule `rnDeriv_chain` #8; condExp = rnDeriv) are
+**done**. The orphan `LebesgueMeasureOQ05ChainRuleStatementOnly.lean` is already gone.
+
+### Conclusion
+Problem is **complete**; no honest increment remains (further a.e. micro-lemmas would be
+churn on a saturated Mathlib-wrapper package). Reconciling status `in-progress → completed`
+to stop the recurring re-claim churn (this entry has been recycled across S1–S5).
