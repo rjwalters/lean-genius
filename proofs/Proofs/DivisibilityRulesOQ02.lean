@@ -126,7 +126,7 @@ theorem hundredone_dvd_iff_altDigitSum (n : ℕ) :
 /-!
 ## Summary
 
-**Proved (0 axioms, 0 sorries):**
+**Proved (0 sorries; concrete instances depend on Lean.ofReduceBool via native_decide):**
 1. **seven_modEq_altDigitSum_1000**: n ≡ altDigitSum₁₀₀₀(n) (mod 7)
 2. **seven_dvd_iff_altDigitSum**: 7 | n ↔ 7 | altDigitSum₁₀₀₀(n)
 3. **thirteen_modEq_altDigitSum_1000**: n ≡ altDigitSum₁₀₀₀(n) (mod 13)
