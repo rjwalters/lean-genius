@@ -1,8 +1,8 @@
 {
   "slug": "morleys-theorem-oq-03",
   "title": "The Morley Triangle is Largest at the Equilateral",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -24,12 +24,12 @@
     "goal": "Prove the Morley side length is maximized (for fixed R) exactly at the equilateral triangle."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-15T00:00:00.000Z",
-    "iteration": 2,
-    "focus": "Proved the extremal upper bound and its attainment at the equilateral (build-pending, UNREGISTERED).",
+    "phase": "COMPLETED",
+    "since": "2026-06-18T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Saturated and machine-verified: bound + attainment + strict uniqueness, 0 sorry/0 axiom, registered (Proofs.lean:2690), kernel-built green in #24690, gallery entry verified/original.",
     "blockers": [],
-    "nextAction": "Prove strict uniqueness; build under Docker; register gallery entry.",
+    "nextAction": "None required. Optional future direction: a quantitative Δ-stability deficit bound s_max − s in terms of angle spread.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -86,7 +86,7 @@
     ]
   },
   "started": "2026-04-22T12:51:58.296Z",
-  "lastUpdate": "2026-06-15T00:00:00.000Z",
+  "lastUpdate": "2026-06-18T00:00:00.000Z",
   "significance": 7,
   "tractability": 7,
   "leanFiles": [

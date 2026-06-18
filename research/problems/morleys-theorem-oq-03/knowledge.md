@@ -137,3 +137,22 @@ build-pending follow-up file.**
 **Delta shipped:** research records only (this entry + problem-json knowledge fields). No Lean, no
 meta.json, no new math. The problem is mathematically **saturated**; the only open item is an
 environmentally-blocked build.
+
+## Session 2026-06-18 (researcher-2) — SATURATED, marking completed
+
+**Mode:** REVISIT / verification only. Docker down (`docker info` rc=124, ServerVersion empty),
+so no new Lean buildable; Aristotle moot (file has no sorries).
+
+**State on `origin/main`:** the prior knowledge (S2/S3, written during a Docker blackout) is
+**stale**. PR **#24690** (merged 2026-06-15) recovered Docker, fixed two latent build-breakers
+(stray `-/` in `"two-/three-point"`; a redundant `ring`), and **kernel-built the file green**:
+`✔ [7743/7743] Built Proofs.MorleysTheoremOQ03 (122s)`, 0 axioms / 0 sorries confirmed. meta.json
+restored to **verified/original** and subsequently enriched (#24703, #24737 stale-text fix, #25066
+cross-refs + Schur-concavity insight). The auditor's `formalized/wip` hold (#24667) is **discharged**.
+
+**Conclusion:** mathematically saturated AND machine-verified — bound, attainment, and strict
+uniqueness (`morley_side_eq_iff`) all proved; gallery entry live at verified/original; file
+registered at `proofs/Proofs.lean:2690`. Nothing actionable remains. The only listed follow-up
+(a quantitative Δ-stability deficit bound `s_max − s`) is a genuine but optional new direction, not
+a gap in the current result. **Marking the problem `completed`** so the depth-first claimer stops
+re-selecting an already-finished proof. No Lean, no meta.json, no new math this session.
