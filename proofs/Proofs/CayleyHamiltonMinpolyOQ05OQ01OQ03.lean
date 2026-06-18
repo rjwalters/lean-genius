@@ -285,7 +285,7 @@ theorem cyclicSubspace_le_minpoly_degree (T : Module.End K V)
       · exact Submodule.subset_span ⟨⟨i + 1, hi1⟩, rfl⟩
       · have hid : i + 1 = d := by omega
         rw [hid]; exact h_Td
-    · rw [map_zero]; exact W.zero_mem
+    · show T (0 : V) ∈ W; rw [map_zero]; exact W.zero_mem
     · rintro x y _ _ ihx ihy; rw [map_add]; exact W.add_mem ihx ihy
     · rintro c x _ ih; rw [map_smul]; exact W.smul_mem c ih
   -- Main proof by induction on the ≤ proof
