@@ -500,6 +500,152 @@ theorem each_slice_exactly_half_standard (n : ℕ)
     {y | inner (𝕜 := ℝ) (u x) y = t x} hbody hPm hNm hBm hcover hPN hPB hNB hbis
     (volume_body_inter_stdBoundary_eq_zero n body u t x hux)
 
+-- ============================================================
+-- PART 9: The *global* continuity hypotheses are non-dischargeable
+-- ============================================================
+
+/-
+The continuity hypotheses `hcont_pos`/`hcont_neg` of
+`ham_sandwich_(standard_)of_scalar_continuity` demand `Continuous fun x => …`
+over **all** of `EuclideanSpace ℝ (Fin (n+1))`. This is forced by the
+architecture: `SphereFun.continuous'` is a *global* `Continuous` field, consumed
+globally on the way to the Borsuk–Ulam axiom. We show here that for the standard
+linear cut these global hypotheses are **false** whenever the slice is
+nondegenerate: the slice-volume map is `0` at the origin (the cut degenerates to
+the empty half-space) but is a *constant nonzero* value along every open ray from
+the origin. Hence it has a jump discontinuity at `0`.
+
+The mathematical consequence is that the honest, still-true hypothesis is
+`ContinuousOn (Sphere n) …` (the Borsuk–Ulam machinery only ever reads `f` on the
+sphere, where `x = 0` never occurs); replacing global `Continuous` by
+`ContinuousOn (Sphere n)` throughout the chain is the genuine remaining work.
+These lemmas certify *why* that reformulation is necessary rather than optional.
+-/
+
+/-- **The standard positive slice degenerates to `∅` at the origin.** Since `u`
+    and `t` are *linear*, `u 0 = 0` and `t 0 = 0`, so the defining condition
+    `⟨u 0, y⟩ < t 0` reads `0 < 0`, satisfied by no `y`. -/
+theorem stdPos_zero (n : ℕ)
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ) (i : Fin n) :
+    stdPos n u t 0 i = (∅ : Set (EuclideanSpace ℝ (Fin n))) := by
+  unfold stdPos
+  ext y
+  simp only [map_zero, inner_zero_left, Set.mem_setOf_eq, Set.mem_empty_iff_false,
+    lt_self_iff_false]
+
+/-- The standard negative slice also degenerates to `∅` at the origin. -/
+theorem stdNeg_zero (n : ℕ)
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ) (i : Fin n) :
+    stdNeg n u t 0 i = (∅ : Set (EuclideanSpace ℝ (Fin n))) := by
+  unfold stdNeg
+  ext y
+  simp only [map_zero, inner_zero_left, Set.mem_setOf_eq, Set.mem_empty_iff_false,
+    lt_self_iff_false]
+
+/-- **The standard positive slice is invariant under positive scaling of the
+    parameter.** Linearity gives `u (c • x) = c • u x` and `t (c • x) = c • t x`;
+    dividing the strict inequality by `c > 0` recovers the original half-space. So
+    the slice — and hence its volume — is **constant along each open ray** `ℝ₊ • x`
+    from the origin. -/
+theorem stdPos_smul_pos (n : ℕ)
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ)
+    (x : EuclideanSpace ℝ (Fin (n + 1))) (i : Fin n) {c : ℝ} (hc : 0 < c) :
+    stdPos n u t (c • x) i = stdPos n u t x i := by
+  unfold stdPos
+  ext y
+  simp only [map_smul, real_inner_smul_left, smul_eq_mul, Set.mem_setOf_eq]
+  exact mul_lt_mul_iff_of_pos_left hc
+
+/-- The standard negative slice is likewise invariant under positive scaling. -/
+theorem stdNeg_smul_pos (n : ℕ)
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ)
+    (x : EuclideanSpace ℝ (Fin (n + 1))) (i : Fin n) {c : ℝ} (hc : 0 < c) :
+    stdNeg n u t (c • x) i = stdNeg n u t x i := by
+  unfold stdNeg
+  ext y
+  simp only [map_smul, real_inner_smul_left, smul_eq_mul, Set.mem_setOf_eq]
+  exact mul_lt_mul_iff_of_pos_left hc
+
+/-- **The global `hcont_pos` hypothesis is non-dischargeable for any nondegenerate
+    cut.** If some standard positive slice `bodyᵢ ∩ stdPos x₀` has finite positive
+    volume, then `x ↦ vol(bodyᵢ ∩ stdPos x).toReal` is **not** globally continuous:
+    it is `0` at the origin (`stdPos_zero`), yet equals the constant positive value
+    `vol(bodyᵢ ∩ stdPos x₀).toReal` along the ray `(k+1)⁻¹ • x₀ → 0`
+    (`stdPos_smul_pos`). The two limits disagree, so continuity fails at `0`.
+
+    This certifies the architectural correction recorded in the project notes: the
+    `hcont_pos` of `ham_sandwich_standard_of_scalar_continuity` cannot be proved as
+    stated; the faithful hypothesis is `ContinuousOn (Sphere n)`. -/
+theorem stdPos_global_continuity_fails (n : ℕ)
+    (body : Set (EuclideanSpace ℝ (Fin n)))
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ)
+    (x₀ : EuclideanSpace ℝ (Fin (n + 1))) (i : Fin n)
+    (hpos : 0 < volume (body ∩ stdPos n u t x₀ i))
+    (hfin : volume (body ∩ stdPos n u t x₀ i) ≠ ⊤) :
+    ¬ Continuous fun x => (volume (body ∩ stdPos n u t x i)).toReal := by
+  intro hcont
+  have hc_pos : 0 < (volume (body ∩ stdPos n u t x₀ i)).toReal :=
+    ENNReal.toReal_pos hpos.ne' hfin
+  -- value at the origin is `0` (the slice is empty there)
+  have hzero :
+      (volume (body ∩ stdPos n u t (0 : EuclideanSpace ℝ (Fin (n + 1))) i)).toReal = 0 := by
+    rw [stdPos_zero, Set.inter_empty, measure_empty, ENNReal.toReal_zero]
+  -- the ray `xₖ = (k+1)⁻¹ • x₀` tends to `0`
+  have htend : Filter.Tendsto (fun k : ℕ => ((k : ℝ) + 1)⁻¹ • x₀)
+      Filter.atTop (nhds 0) := by
+    have h0 : Filter.Tendsto (fun k : ℕ => ((k : ℝ) + 1)⁻¹) Filter.atTop (nhds 0) := by
+      simpa only [one_div] using tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)
+    have hcs : Continuous (fun c : ℝ => c • x₀) := continuous_id.smul continuous_const
+    simpa only [Function.comp_def, zero_smul] using (hcs.tendsto 0).comp h0
+  -- along the ray the value is the constant positive value
+  have hval : ∀ k : ℕ,
+      (volume (body ∩ stdPos n u t (((k : ℝ) + 1)⁻¹ • x₀) i)).toReal
+        = (volume (body ∩ stdPos n u t x₀ i)).toReal := by
+    intro k
+    rw [stdPos_smul_pos n u t x₀ i (by positivity : (0 : ℝ) < ((k : ℝ) + 1)⁻¹)]
+  -- continuity forces the constant sequence to converge to the origin value `0`
+  have hlim := (hcont.tendsto 0).comp htend
+  simp only [Function.comp_def, hval] at hlim
+  rw [hzero] at hlim
+  exact absurd (tendsto_nhds_unique hlim tendsto_const_nhds) hc_pos.ne
+
+/-- The symmetric statement for the negative slice: `hcont_neg` is likewise
+    non-dischargeable globally whenever the negative slice is nondegenerate. -/
+theorem stdNeg_global_continuity_fails (n : ℕ)
+    (body : Set (EuclideanSpace ℝ (Fin n)))
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ)
+    (x₀ : EuclideanSpace ℝ (Fin (n + 1))) (i : Fin n)
+    (hpos : 0 < volume (body ∩ stdNeg n u t x₀ i))
+    (hfin : volume (body ∩ stdNeg n u t x₀ i) ≠ ⊤) :
+    ¬ Continuous fun x => (volume (body ∩ stdNeg n u t x i)).toReal := by
+  intro hcont
+  have hc_pos : 0 < (volume (body ∩ stdNeg n u t x₀ i)).toReal :=
+    ENNReal.toReal_pos hpos.ne' hfin
+  have hzero :
+      (volume (body ∩ stdNeg n u t (0 : EuclideanSpace ℝ (Fin (n + 1))) i)).toReal = 0 := by
+    rw [stdNeg_zero, Set.inter_empty, measure_empty, ENNReal.toReal_zero]
+  have htend : Filter.Tendsto (fun k : ℕ => ((k : ℝ) + 1)⁻¹ • x₀)
+      Filter.atTop (nhds 0) := by
+    have h0 : Filter.Tendsto (fun k : ℕ => ((k : ℝ) + 1)⁻¹) Filter.atTop (nhds 0) := by
+      simpa only [one_div] using tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)
+    have hcs : Continuous (fun c : ℝ => c • x₀) := continuous_id.smul continuous_const
+    simpa only [Function.comp_def, zero_smul] using (hcs.tendsto 0).comp h0
+  have hval : ∀ k : ℕ,
+      (volume (body ∩ stdNeg n u t (((k : ℝ) + 1)⁻¹ • x₀) i)).toReal
+        = (volume (body ∩ stdNeg n u t x₀ i)).toReal := by
+    intro k
+    rw [stdNeg_smul_pos n u t x₀ i (by positivity : (0 : ℝ) < ((k : ℝ) + 1)⁻¹)]
+  have hlim := (hcont.tendsto 0).comp htend
+  simp only [Function.comp_def, hval] at hlim
+  rw [hzero] at hlim
+  exact absurd (tendsto_nhds_unique hlim tendsto_const_nhds) hc_pos.ne
+
 /-
 ## Significance and the Remaining Gap
 
@@ -531,6 +677,15 @@ The single genuinely-remaining analytic input is therefore:
   * the continuity of `x ↦ vol(bodyᵢ ∩ {y | ⟨u(x), y⟩ < t(x)}).toReal` on `Sⁿ`
     (Lebesgue continuity of parameterized half-spaces; dominated convergence).
 This is a self-contained measure-theory fact; it is not topological.
+
+Part 9 sharpens the statement of that remaining input. The continuity must be
+read as `ContinuousOn (Sphere n)`, **not** global `Continuous`: for the standard
+linear cut the global map is provably discontinuous at the origin whenever the
+slice is nondegenerate (`stdPos_global_continuity_fails`,
+`stdNeg_global_continuity_fails`), since the cut degenerates to the empty
+half-space at `0` (`stdPos_zero`) while staying a fixed nonzero slice along every
+ray (`stdPos_smul_pos`). The Borsuk–Ulam machinery only reads `f` on the sphere,
+where `x = 0` never occurs, so the on-sphere statement is the faithful one.
 
 `ham_sandwich_standard_of_scalar_continuity` (Part 6) states the conclusion with
 *exactly* this scalar continuity (plus finiteness) as its only hypotheses: the
