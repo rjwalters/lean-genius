@@ -8,6 +8,9 @@
     "date": "2026",
     "status": "verified",
     "proofRepoPath": "Proofs/FriendshipTheoremOQ04.lean",
+    "additionalFiles": [
+      "Proofs/FriendshipTheoremOQ04Universal.lean"
+    ],
     "tags": [
       "graph-theory",
       "friendship-theorem",
@@ -20,7 +23,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 244,
-    "assumptions": "0 axioms, 0 sorries. Machine-checked: `./proofs/scripts/docker-build.sh Proofs.FriendshipTheoremOQ04` builds green (Lean v4.26.0, Mathlib pin 2df2f01, 7745 jobs); registered in Proofs.lean. The diameter-2 bound uses no finiteness; the finite-case conclusion is imported from the gallery proof FriendshipTheorem.friendship_theorem. Verified green 2026-06-15 (researcher-4) after repairing three Mathlib v4.26.0 errors (Set.mem_biUnion implicit index, a redundant Set.not_infinite.mp after push_neg already normalized to Finite, and a stale `c` identifier after `rintro rfl` substituted it to `w`).",
+    "assumptions": "0 axioms, 0 sorries. Machine-checked: `./proofs/scripts/docker-build.sh Proofs.FriendshipTheoremOQ04` builds green (Lean v4.26.0, Mathlib pin 2df2f01, 7745 jobs); registered in Proofs.lean. The diameter-2 bound uses no finiteness; the finite-case conclusion is imported from the gallery proof FriendshipTheorem.friendship_theorem. Verified green 2026-06-15 (researcher-4) after repairing three Mathlib v4.26.0 errors (Set.mem_biUnion implicit index, a redundant Set.not_infinite.mp after push_neg already normalized to Finite, and a stale `c` identifier after `rintro rfl` substituted it to `w`). Companion file Proofs/FriendshipTheoremOQ04Universal.lean (113 lines, 4 theorems, 0 sorries / 0 axioms) adds the finiteness-free hub-uniqueness results (merged via #25260) and is registered in Proofs.lean; aggregate compilation via `./proofs/scripts/docker-build.sh Proofs.FriendshipTheoremOQ04Universal` builds green (7746 jobs, Lean v4.26.0, Mathlib pin 2df2f01) — confirmed 2026-06-18 (researcher-8).",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -28,7 +31,9 @@
       "univ_subset_two_ball / univ_finite_of_locallyFinite: the diameter-2 covering exhibits the vertex set as a finite union of finite neighbourhoods under local finiteness",
       "locally_finite_is_finite: a locally finite friendship graph has a finite vertex type — local finiteness is the sharp restoring condition",
       "infinite_friendship_has_infinite_degree: contrapositive — an infinite friendship graph must contain an infinite-degree vertex (matching the C₅ free-amalgamation counterexample)",
-      "locally_finite_friendship_has_universal: combining diameter-2 + local finiteness with the finite gallery theorem recovers a universal ('politician') vertex, avoiding the spectral argument entirely"
+      "locally_finite_friendship_has_universal: combining diameter-2 + local finiteness with the finite gallery theorem recovers a universal ('politician') vertex, avoiding the spectral argument entirely",
+      "two_universal_cover (FriendshipTheoremOQ04Universal.lean): two distinct universal vertices c, c' force V = {c, c', x} with x their unique common neighbour — so a friendship graph has two centres only if it is K₃; finiteness-free, no [Fintype V]",
+      "universal_unique_of_card_ne_three (FriendshipTheoremOQ04Universal.lean): away from the three-vertex triangle the universal vertex (windmill centre) is unique — the recovered conclusion has a single well-defined hub; corollaries nat_card_eq_three_of_two_universal and finite_of_two_universal also derived"
     ],
     "theoremCount": 12,
     "definitionCount": 1
