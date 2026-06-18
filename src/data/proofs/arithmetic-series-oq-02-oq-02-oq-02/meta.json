@@ -55,7 +55,8 @@
       "The standard and rising Vandermonde are the *same* identity over $\\mathbb{Z}$, linked by upper negation $\\binom{a+i}{i} = (-1)^i\\binom{-a-1}{i}$: applying it twice turns the rising convolution into a standard Vandermonde at negative upper index $\\binom{-a-b-2}{n}$, which negates back to $\\binom{a+b+n+1}{n}$.",
       "The distinction is purely a matter of which index is fixed: the standard form fixes the upper indices $m, s$; the rising form lets them co-vary as $a+i, b+j$ with the summation variable.",
       "In generating-function language the rising convolution is $[x^n]\\,(1-x)^{-(a+1)}(1-x)^{-(b+1)}$, the $(1+x) \\leftrightarrow (1-x)^{-1}$ dual of the standard Vandermonde $[x^r]\\,(1+x)^m(1+x)^s$.",
-      "Mathlib supplies the standard form for free (`Nat.add_choose_eq`) but not the rising form — the rising convolution must be obtained by the parent's $\\mathbb{N}$-native induction, since the slick $\\mathbb{Z}$ upper-negation proof would require negative-upper-index binomials Mathlib lacks."
+      "Mathlib supplies the standard form for free (`Nat.add_choose_eq`) but not the rising form — the rising convolution must be obtained by the parent's $\\mathbb{N}$-native induction, since the slick $\\mathbb{Z}$ upper-negation proof would require negative-upper-index binomials Mathlib lacks.",
+      "Combinatorially the rising form needs no generating function at all: $\\binom{a+i}{a}$ counts size-$i$ multisets from $a+1$ types (stars and bars), so $\\sum_{i+j=n}\\binom{a+i}{a}\\binom{b+j}{b}=\\binom{a+b+n+1}{a+b+1}$ says that choosing a size-$n$ multiset from $a+b+2$ types is the same as splitting the types into a first block of $a+1$ and a second block of $b+1$ and summing over how many of the $n$ picks fall in each block — a direct bijective reading of the convolution."
     ],
     "prerequisites": [
       "Binomial coefficients",
