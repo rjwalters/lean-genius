@@ -211,7 +211,7 @@ theorem simson_converse {a b c p : ℂ}
         · rcases mul_eq_zero.mp h' with h'' | h''
           · exact (sub_ne_zero.mpr hca) h''
           · exact (sub_ne_zero.mpr hbc) h''
-        · exact (sub_ne_zero.mpr hab) h''
+        · exact (sub_ne_zero.mpr hab) h'
       · exact h
     have h2 : p * conj p = 1 := by linear_combination -hpp
     rw [Complex.mul_conj] at h2
@@ -273,7 +273,7 @@ theorem simson_bisects_key {a b c p : ℂ}
     (foot b c p - simsonMidpoint a b c p) * conj (foot a b p - simsonMidpoint a b c p)
       = conj (foot b c p - simsonMidpoint a b c p) * (foot a b p - simsonMidpoint a b c p) := by
   rw [foot_bc_sub_midpoint, foot_ab_sub_midpoint]
-  simp only [map_mul, map_sub, map_add, map_neg, map_div₀, map_one, map_ofNat, Complex.conj_conj]
+  simp only [map_mul, map_sub, map_add, map_neg, map_div₀, map_ofNat, Complex.conj_conj]
   rw [conj_eq_inv ha, conj_eq_inv hb, conj_eq_inv hc, conj_eq_inv hp]
   have ha0 := ne_zero_of_normSq_one ha
   have hb0 := ne_zero_of_normSq_one hb
@@ -320,7 +320,7 @@ theorem antipodal_simson_perp {a b c p : ℂ}
     ((foot b c p - foot a b p) * conj (foot b c (-p) - foot a b (-p))).re = 0 := by
   apply re_eq_zero_of_conj_eq_neg
   rw [foot_diff, foot_diff]
-  simp only [map_mul, map_sub, map_add, map_neg, map_div₀, map_one, map_ofNat, Complex.conj_conj]
+  simp only [map_mul, map_sub, map_neg, map_div₀, map_one, map_ofNat, Complex.conj_conj]
   rw [conj_eq_inv ha, conj_eq_inv hb, conj_eq_inv hc, conj_eq_inv hp]
   have ha0 := ne_zero_of_normSq_one ha
   have hb0 := ne_zero_of_normSq_one hb
@@ -328,5 +328,37 @@ theorem antipodal_simson_perp {a b c p : ℂ}
   have hp0 := ne_zero_of_normSq_one hp
   field_simp
   ring
+
+/-! ## The Simson bisection point lies on the nine-point circle
+
+A further classical refinement. The Simson line of `P` passes through the midpoint
+`M = (P + H)/2` of `P` and the orthocenter `H` (`simson_bisects_orthocenter_segment`). That
+midpoint `M` is itself distinguished: it lies on the **nine-point circle** of `△ABC`.
+
+For the unit circumcircle (centre `0`) the nine-point circle has centre `N = H/2 = (A+B+C)/2`
+and radius `1/2`. The vector from `N` to `M` is `M - N = P/2`, so `|M - N| = |P|/2 = 1/2`,
+placing `M` on that circle. Combined with the bisection theorem, the point where the Simson line
+of `P` meets the segment `PH` is pinned to the nine-point circle — independently of `P`. -/
+
+/-- The **nine-point centre** of a triangle inscribed in the unit circle (centre `0`): the
+midpoint of the segment from the circumcentre `0` to the orthocenter `H = A + B + C`, i.e. `H/2`.
+The nine-point circle has this centre and radius `1/2`. -/
+noncomputable def ninePointCenter (a b c : ℂ) : ℂ := orthocenter a b c / 2
+
+/-- The vector from the nine-point centre `N = H/2` to the Simson bisection point `M = (P+H)/2`
+is exactly `P/2` (pure `ring`). -/
+theorem simsonMidpoint_sub_ninePointCenter (a b c p : ℂ) :
+    simsonMidpoint a b c p - ninePointCenter a b c = p / 2 := by
+  simp only [simsonMidpoint, ninePointCenter, orthocenter]; ring
+
+/-- **The Simson bisection point lies on the nine-point circle.** For `A, B, C, P` on the unit
+circumcircle, the midpoint `M = (P + H)/2` of `P` and the orthocenter — the point at which the
+Simson line of `P` bisects `PH` (`simson_bisects_orthocenter_segment`) — lies on the nine-point
+circle of `△ABC`, which has centre `N = H/2` (`ninePointCenter`) and radius `1/2`, encoded as
+`|M - N|² = 1/4`. -/
+theorem simsonMidpoint_on_nine_point_circle {a b c p : ℂ} (hp : Complex.normSq p = 1) :
+    Complex.normSq (simsonMidpoint a b c p - ninePointCenter a b c) = 1 / 4 := by
+  rw [simsonMidpoint_sub_ninePointCenter, Complex.normSq_div, hp, Complex.normSq_ofNat]
+  norm_num
 
 end SimsonLineTheorem
