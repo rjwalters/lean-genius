@@ -61,7 +61,7 @@
       "no_proper_covering_prime: every prime p admits no proper covering (distinctness collapses to one congruence mod p)"
     ],
     "axiomCount": 1,
-    "lineCount": 357,
+    "lineCount": 354,
     "assumptions": "1 axiom: haight_theorem (Haight 1979). 0 sorries. Statement corrected to require distinct moduli each >1 (per erdosproblems.com/277); the prior permissive statement made the axiom logically false.",
     "theoremCount": 14,
     "definitionCount": 19
@@ -88,95 +88,95 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 40,
       "summary": "Module docstring stating Erdős #277 and its resolution by Haight (1979). Imports `NumberTheory.Divisors` for $n.\\text{divisors}$, `BigOperators` for $\\sum$ notation, and `Data.Real.Basic` for the abundancy ratio $\\sigma(n)/n$.",
       "mathContext": "Imports `NumberTheory.Divisors` for $n.\\text{divisors}$, `BigOperators` for $\\sum$ notation, and `Data.Real.Basic` for the abundancy ratio $\\sigma(n)/n$."
     },
     {
       "id": "sum-of-divisors",
       "title": "Sum of Divisors",
-      "startLine": 38,
-      "endLine": 67,
+      "startLine": 41,
+      "endLine": 71,
       "summary": "Defines the sum of divisors $\\sigma(n) = \\sum_{d \\mid n} d$ via Mathlib's `Nat.divisors`. Proves $\\sigma(1) = 1$, $\\sigma(p) = p+1$ for primes, and $\\sigma(n) \\geq n$ for $n \\geq 1$. Defines the abundancy ratio $\\sigma(n)/n$ and the predicate `IsAbundant n c` for $\\sigma(n) > cn$.",
       "mathContext": "Defines the sum of divisors $\\sigma(n) = \\sum_{d \\mid n} d$ via Mathlib's `Nat.divisors`. Proves $\\sigma(1) = 1$, $\\sigma(p) = p+1$ for primes, and $\\sigma(n) \\geq n$ for $n \\geq 1$. Defines the abundancy ratio $\\sigma(n)/n$ and the predicate `IsAbundant n c` for $\\sigma(n) > cn$."
     },
     {
       "id": "covering-systems",
       "title": "Covering Systems",
-      "startLine": 68,
-      "endLine": 98,
-      "summary": "Formalizes covering systems: the `Congruence` structure for $a \\pmod{m}$, the `covers` predicate ($x \\equiv a \\pmod{m}$), `IsCoveringSystem` ($\\forall x \\in \\mathbb{Z}, \\exists c \\in S$ covering $x$), `moduliSet`, `AllModuliDivide`, and `HasCoveringWithDivisorModuli`.",
+      "startLine": 72,
+      "endLine": 122,
+      "summary": "Formalizes covering systems: the `Congruence` structure for $a \\pmod{m}$, the `covers` predicate ($x \\equiv a \\pmod{m}$), `IsCoveringSystem` ($\\forall x \\in \\mathbb{Z}, \\exists c \\in S$ covering $x$), `moduliSet`, `AllModuliDivide`, `HasCoveringWithDivisorModuli`, and `HasProperCoveringWithDivisorModuli` (distinct moduli, each $> 1$).",
       "mathContext": "Formalizes covering systems: the `Congruence` structure for $a \\pmod{m}$, the `covers` predicate ($x \\equiv a \\pmod{m}$), `IsCoveringSystem` ($\\forall x \\in \\mathbb{Z}, \\exists c \\in S$ covering $x$), `moduliSet`, `AllModuliDivide`, and `HasCoveringWithDivisorModuli`."
     },
     {
       "id": "erdos-question",
       "title": "The Erdős Question",
-      "startLine": 99,
-      "endLine": 110,
+      "startLine": 123,
+      "endLine": 140,
       "summary": "States `ErdosQuestion277`: $\\forall c > 0, \\exists n \\geq 1$ with $\\sigma(n) > cn \\wedge \\neg\\text{HasCoveringWithDivisorModuli}(n)$. This combines the number-theoretic condition (high abundancy) with the combinatorial condition (uncoverability).",
       "mathContext": "States `ErdosQuestion277`: $\\forall c > 0, \\exists n \\geq 1$ with $\\sigma(n) > cn \\wedge \\neg\\text{HasCoveringWithDivisorModuli}(n)$."
     },
     {
       "id": "haight-theorem",
       "title": "Haight's Theorem (1979)",
-      "startLine": 111,
-      "endLine": 122,
+      "startLine": 141,
+      "endLine": 152,
       "summary": "Axiomatizes Haight's main result: `ErdosQuestion277` holds (YES). The theorem `erdos_277_answer` derives from `haight_theorem` directly. Haight's proof constructs $n$ as products of large primes whose divisor sets cannot satisfy the covering reciprocal sum bound.",
       "mathContext": "Axiomatizes Haight's main result: `ErdosQuestion277` holds (YES). The theorem `erdos_277_answer` derives from `haight_theorem` directly. Haight's proof constructs $n$ as products of large primes whose divisor sets cannot satisfy the covering reciprocal sum bound."
     },
     {
       "id": "trivial-covering",
       "title": "Trivial Covering Analysis",
-      "startLine": 123,
-      "endLine": 153,
-      "summary": "Defines and proves properties of the trivial covering $\\{0 \\pmod{1}\\}$: it covers all integers (proved), $1 \\mid n$ for all $n \\geq 1$ (proved), so every $n \\geq 1$ has some covering with divisor moduli (proved). Motivates the non-trivial refinement.",
+      "startLine": 153,
+      "endLine": 233,
+      "summary": "Defines and proves properties of the trivial covering $\\{0 \\pmod{1}\\}$: it covers all integers (`trivial_is_covering`), $1 \\mid n$ for all $n \\geq 1$ (`trivial_divides_all`), so every $n \\geq 1$ has some covering with divisor moduli (`every_n_has_trivial_covering`). Then proves the proper-covering base cases `no_proper_covering_one` ($n = 1$ admits no proper covering with divisor moduli) and `no_proper_covering_prime` (a prime $p$ admits none either, since its only divisor $> 1$ is $p$ itself). Motivates the non-trivial refinement.",
       "mathContext": "Defines and proves properties of the trivial covering $\\{0 \\pmod{1}\\}$: it covers all integers (proved), $1 \\mid n$ for all $n \\geq 1$ (proved), so every $n \\geq 1$ has some covering with divisor moduli (proved)."
     },
     {
       "id": "nontrivial-refinement",
       "title": "Non-Trivial Covering Refinement",
-      "startLine": 154,
-      "endLine": 166,
+      "startLine": 234,
+      "endLine": 246,
       "summary": "Defines `HasDistinctModuli`, `IsNonTrivialCovering` ($\\geq 2$ distinct moduli), and `HasNonTrivialCoveringWithDivisorModuli`. documents in source comments `haight_strong_theorem` (no Lean declaration exists): the stronger result excluding non-trivial coverings.",
       "mathContext": "Defines `HasDistinctModuli`, `IsNonTrivialCovering` ($\\geq 2$ distinct moduli), and `HasNonTrivialCoveringWithDivisorModuli`. documents in source comments `haight_strong_theorem` (no Lean declaration exists): the stronger result excluding non-trivial coverings."
     },
     {
       "id": "covering-properties",
       "title": "Key Properties of Covering Systems",
-      "startLine": 167,
-      "endLine": 183,
+      "startLine": 247,
+      "endLine": 263,
       "summary": "Defines the reciprocal sum $\\sum_{c \\in S} 1/m_c$ and states the bound $\\sum 1/m_i \\geq 1$ in a docstring (no Lean declaration). Proves `covering_crt_connection` via `Finset.mem_image`: every modulus in a covering system has at least one congruence.",
       "mathContext": "Defines the reciprocal sum $\\sum_{c \\in S} 1/m_c$ and states the bound $\\sum 1/m_i \\geq 1$ in a docstring (no Lean declaration). Proves `covering_crt_connection` via `Finset.mem_image`: every modulus in a covering system has at least one congruence."
     },
     {
       "id": "haight-construction",
       "title": "Haight's Construction Insight",
-      "startLine": 184,
-      "endLine": 198,
+      "startLine": 264,
+      "endLine": 278,
       "summary": "Source comments outline Haight's strategy: primorial-like products $n = p_1 \\cdots p_k$ achieve high $\\sigma(n)/n$ via $\\prod (1 + 1/p_i)$ while having divisor reciprocal sums too small for covering. No Lean definitions are introduced in this section.",
       "mathContext": "Source comments outline Haight's strategy: primorial-like products $n = p_1 \\cdots p_k$ achieve high $\\sigma(n)/n$ via $\\prod (1 + 1/p_i)$ while having divisor reciprocal sums too small for covering. No Lean definitions are introduced in this section."
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
-      "startLine": 199,
-      "endLine": 221,
-      "summary": "Defines `coveringLCM` (period of covering system), `IsHighlyComposite` ($n$ maximizes $d(n)$ up to $n$), `IsSuperabundant` ($n$ maximizes $\\sigma(n)/n$ up to $n$). Proves `lcm_divides_of_all_divide` and `haight_superabundance_connection`.",
+      "startLine": 279,
+      "endLine": 301,
+      "summary": "Defines `coveringLCM` (period of a covering system), `IsHighlyComposite` ($n$ maximizes $d(n)$ up to $n$), and `IsSuperabundant` ($n$ maximizes $\\sigma(n)/n$ up to $n$). Proves `lcm_divides_of_all_divide`: if all moduli of $S$ divide $n$, then the covering LCM divides $n$ (via `Finset.lcm_dvd`).",
       "mathContext": "Defines `coveringLCM` (period of covering system), `IsHighlyComposite` ($n$ maximizes $d(n)$ up to $n$), `IsSuperabundant` ($n$ maximizes $\\sigma(n)/n$ up to $n$)."
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
-      "startLine": 222,
-      "endLine": 241,
+      "startLine": 302,
+      "endLine": 321,
       "summary": "Links to Problem #276 (distinct-moduli covering existence), #278 (covering density), and Egyptian fractions ($\\sum 1/m_i$ as unit fraction decomposition). Part of Erdős's covering system cluster #273-#279.",
       "mathContext": "Links to Problem #276 (distinct-moduli covering existence), #278 (covering density), and Egyptian fractions ($\\sum 1/m_i$ as unit fraction decomposition)."
     },
     {
       "id": "summary",
       "title": "Summary and Main Results",
-      "startLine": 242,
-      "endLine": 275,
+      "startLine": 322,
+      "endLine": 354,
       "summary": "Three restatements of the main result: `erdos_277` (abstract), `erdos_277_main` (explicit $\\sigma(n) > cn$ formulation), and `erdos_277_summary`. All derive from the axiomatized `haight_theorem`.",
       "mathContext": "Verified: Three restatements of the main result: `erdos_277` (abstract), `erdos_277_main` (explicit $\\sigma(n) > cn$ formulation), and `erdos_277_summary`. All derive from the axiomatized `haight_theorem`."
     }
@@ -275,10 +275,10 @@
       "BigOperators"
     ],
     "namespace": "Erdos277",
-    "lineCount": 275,
+    "lineCount": 354,
     "axiomCount": 1,
-    "theoremCount": 12,
-    "definitionCount": 18,
+    "theoremCount": 14,
+    "definitionCount": 19,
     "path": "Proofs/Erdos277Problem.lean",
     "sorries": 0
   },
