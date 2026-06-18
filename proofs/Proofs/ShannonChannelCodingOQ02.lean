@@ -3,8 +3,10 @@
 
   Open Question 02: Shannon random coding argument via Mathlib probability
 
-  Main result: BSC(p) capacity = log 2 - h(p), proving the parent file's
-  bsc_capacity_eq axiom from first principles.
+  Main result: BSC(p) capacity = log 2 - h(p), proven from first principles.
+  This is the exact BSC capacity value; the parent file `ShannonChannelCoding`
+  derives only the coarse bounds (≥ 0, ≤ log 2) from general capacity theorems
+  and no longer axiomatizes the exact value.
 
   The proof proceeds by:
   1. Proving H(Y|X) = h(p) for BSC with any positive input distribution
@@ -247,7 +249,9 @@ theorem bsc_mi_le_general {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)
 /-! ## BSC capacity theorem -/
 
 /-- **BSC capacity = log 2 - h(p).**
-    This proves the parent file's `bsc_capacity_eq` axiom from first principles.
+    The exact BSC capacity value, proven from first principles. The parent file
+    `ShannonChannelCoding` derives only the coarse bounds (≥ 0, ≤ log 2) and no
+    longer axiomatizes this value.
 
     Upper bound: For all input distributions, MI(X;Y) ≤ log 2 - h(p).
     Achievability: The uniform input distribution achieves MI = log 2 - h(p).

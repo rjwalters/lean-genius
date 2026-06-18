@@ -14,30 +14,30 @@
   },
   "knownResults": {
     "proven": [
-      "Existing ShannonChannelCoding sibling files include BSC capacity and binary-entropy support proofs."
+      "BSC(p) capacity = log 2 - h(p) is proven axiom-free in ShannonChannelCodingOQ02 (bsc_capacity_proved).",
+      "BEC(p) capacity = (1-p)·log 2 is proven axiom-free in ShannonChannelCodingBEC (bec_capacity), now built and registered in Proofs.lean on main.",
+      "The base file ShannonChannelCoding no longer axiomatizes the BSC capacity value: the former bsc_capacity_eq axiom was removed and its two bound consequences (bsc_capacity_le_one, bsc_capacity_nonneg) now follow from the general capacity_le_log_card / capacity_nonneg."
     ],
     "open": [
-      "BEC and AWGN capacity coverage remains to be audited separately."
+      "AWGN capacity C = ½·log(1 + P/N) (continuous, measure-theoretic differential entropy) is the only named concrete channel from the goal statement not yet formalized."
     ],
     "goal": "Replace placeholder concrete-channel capacity statements with real formal capacity results."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-06-16T12:00:00-07:00",
-    "iteration": 2,
-    "focus": "Audited concrete-channel coverage: BSC is fully proven (OQ02 bsc_capacity_proved). Added a from-first-principles BEC capacity = (1-p)log2 in a new orphan file (build-pending under Docker blackout).",
-    "blockers": [
-      "Docker daemon blackout (load ~26) — could not build/verify ShannonChannelCodingBEC.lean this session."
-    ],
-    "nextAction": "When Docker is back: build ShannonChannelCodingBEC.lean, fix any simp/lemma-name drift, then register it. AWGN (continuous) remains untouched.",
+    "phase": "ACT",
+    "since": "2026-06-18T11:45:00-07:00",
+    "iteration": 3,
+    "focus": "Reconciled stale state: BEC file is now built and registered on main (the prior 'build+register BEC' nextAction is done). Also de-axiomatized the base file — removed the vestigial bsc_capacity_eq axiom (3→2 axioms) since its only uses are coarse bounds derivable from general capacity theorems and the exact value lives axiom-free in OQ02. Only AWGN remains.",
+    "blockers": [],
+    "nextAction": "AWGN capacity (continuous Gaussian channel, C = ½ log(1 + P/N)) is the sole remaining named channel; it needs Mathlib's Gaussian measure + differential entropy and is a substantial multi-session measure-theoretic formalization.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "2026-06-16 (researcher-8): BSC capacity already DONE in OQ02 (bsc_capacity_proved, 0 axioms; parent's bsc_capacity_eq axiom is a forward-declaration discharged downstream, not inlinable due to import cycle). Added BEC capacity = (1-p)log2 from first principles in new orphan file ShannonChannelCodingBEC.lean (0 axioms / 0 sorries, build-pending under Docker blackout). Engine: H(X|Y)=p*H(X) for the erasure channel, so I(X;Y)=(1-p)H(X). Numeric cert PASS.",
+    "progressSummary": "2026-06-18 (researcher-4): BEC file is now built + registered on main (researcher-8's 2026-06-16 orphan is no longer pending). Removed the base file's vestigial bsc_capacity_eq axiom (3→2 axioms): its only uses are bsc_capacity_le_one (≤ log 2) and bsc_capacity_nonneg (≥ 0), now derived from the general capacity_le_log_card / capacity_nonneg already in the base file, and the exact value C = log 2 - h(p) is proved axiom-free in OQ02 (bsc_capacity_proved). 2026-06-16 (researcher-8): BSC capacity DONE in OQ02; added BEC capacity = (1-p)log2 from first principles via the erasure identity H(X|Y)=p*H(X), so I(X;Y)=(1-p)H(X).",
     "builtItems": [
       "proofs/Proofs/ShannonChannelCodingBEC.lean (orphan, build-pending): bec channel + bec_conditional_entropy (H(X|Y)=p*H(X)) + bec_mi_eq ((1-p)H(X)) + bec_capacity ((1-p)log2) + bits/nonneg/le-log2 corollaries.",
       "research/certs/verify_bec_capacity.py (PASS)."
@@ -50,10 +50,9 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Build + register ShannonChannelCodingBEC.lean when Docker recovers.",
-      "AWGN capacity (continuous, measure-theoretic) remains the only untouched concrete channel."
+      "AWGN capacity (continuous Gaussian channel, C = ½ log(1 + P/N)) — requires Mathlib Gaussian measure + differential entropy; multi-session measure-theoretic work."
     ],
-    "markdown": "# Knowledge Base: shannon-channel-coding-oq-01\n\n2026-06-16 (researcher-8): BSC capacity is fully proven in OQ02 (bsc_capacity_proved). Added BEC(p) capacity = (1-p)log2 from first principles in a new orphan file (build-pending under Docker blackout), via the erasure identity H(X|Y)=p*H(X). AWGN remains open.\n"
+    "markdown": "# Knowledge Base: shannon-channel-coding-oq-01\n\n2026-06-18 (researcher-4): BEC file now built + registered on main; removed the base file's vestigial bsc_capacity_eq axiom (3→2) since its bound consequences derive from general capacity theorems and the exact value is proved axiom-free in OQ02. BSC + BEC concrete capacities are both done axiom-free; AWGN (continuous) is the sole remaining named channel.\n\n2026-06-16 (researcher-8): BSC capacity proven in OQ02 (bsc_capacity_proved). Added BEC(p) capacity = (1-p)log2 from first principles via the erasure identity H(X|Y)=p*H(X).\n"
   },
   "tags": [],
   "relatedProofs": [
@@ -73,15 +72,15 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.245Z",
-  "lastUpdate": "2026-05-18T00:00:00.000Z",
+  "lastUpdate": "2026-06-18T18:50:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/ShannonChannelCoding.lean",
       "filename": "ShannonChannelCoding.lean",
-      "lineCount": 556,
-      "theoremCount": 16,
-      "axiomCount": 3,
-      "defCount": 6,
+      "lineCount": 612,
+      "theoremCount": 18,
+      "axiomCount": 2,
+      "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCoding.lean"

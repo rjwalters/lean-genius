@@ -8,8 +8,12 @@
 
   Claude Shannon (1948)
 
-  Axioms: 3 (channel_coding_achievability, channel_coding_converse,
-    bsc_capacity_eq)
+  Axioms: 2 (channel_coding_achievability, channel_coding_converse)
+    The former `bsc_capacity_eq` axiom (BSC capacity = log 2 - h(p)) has been
+    removed: its only downstream uses (`bsc_capacity_le_one`,
+    `bsc_capacity_nonneg`) now follow from the general `capacity_le_log_card`
+    and `capacity_nonneg`, and the exact capacity value is proven axiom-free in
+    `ShannonChannelCodingOQ02` (`bsc_capacity_proved`).
   Theorems: 15 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
     channelMI_le_log_card, capacity_nonneg, channelMI_le_capacity,
     capacity_le_log_card, rate_of_code_pos, fano_inequality,
@@ -588,22 +592,21 @@ noncomputable def bsc (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) : DMChannel Bool
   nonneg := fun x y => by split_ifs <;> linarith
   sum_one := fun x => by cases x <;> simp
 
-/-- BSC capacity = 1 - h(p) bits = log 2 - h(p) nats.
-    The capacity-achieving input is uniform Bernoulli(1/2). -/
-axiom bsc_capacity_eq {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :
-    channelCapacity (bsc p (le_of_lt hp0) (le_of_lt hp1)) =
-      Real.log 2 - InformationTheory.BinaryEntropy.h p
+/-- BSC capacity is at most log 2 (= 1 bit).
 
-/-- BSC capacity is at most log 2 (= 1 bit). -/
+    Proven from the general output-alphabet bound `capacity_le_log_card`
+    (capacity ≤ log |β|, here |Bool| = 2); no BSC-specific argument is needed.
+    The exact value `channelCapacity (bsc p) = log 2 - h(p)` is established
+    axiom-free downstream in `ShannonChannelCodingOQ02` (`bsc_capacity_proved`). -/
 theorem bsc_capacity_le_one {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :
     channelCapacity (bsc p (le_of_lt hp0) (le_of_lt hp1)) ≤ Real.log 2 := by
-  rw [bsc_capacity_eq hp0 hp1]
-  linarith [InformationTheory.BinaryEntropy.h_nonneg (le_of_lt hp0) (le_of_lt hp1)]
+  simpa using capacity_le_log_card (bsc p (le_of_lt hp0) (le_of_lt hp1))
 
-/-- BSC capacity is non-negative for 0 < p < 1. -/
+/-- BSC capacity is non-negative for 0 < p < 1. Immediate from the general
+    `capacity_nonneg` (capacity is a supremum of non-negative mutual
+    informations). -/
 theorem bsc_capacity_nonneg {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :
-    0 ≤ channelCapacity (bsc p (le_of_lt hp0) (le_of_lt hp1)) := by
-  rw [bsc_capacity_eq hp0 hp1]
-  linarith [InformationTheory.BinaryEntropy.h_le_log_two (le_of_lt hp0) (le_of_lt hp1)]
+    0 ≤ channelCapacity (bsc p (le_of_lt hp0) (le_of_lt hp1)) :=
+  capacity_nonneg _
 
 end InformationTheory.ChannelCoding
