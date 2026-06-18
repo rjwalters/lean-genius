@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1107-oq-02-oq-01",
   "title": "Threshold for the r=3 (cubeful) case of Erdős #1107",
-  "status": "in-progress",
-  "phase": "ACT",
+  "status": "completed",
+  "phase": "COMPLETED",
   "tier": "B",
   "significance": 7,
   "tractability": 4,
@@ -69,5 +69,13 @@
       "Flag stalled deployer (stale index.lock) to Loom/ops — it gates build-verification of all registered-but-unbuilt entries."
     ],
     "progressSummary": "BUILD-VERIFIED (machine-checked, 0 sorry / 1 conjectural axiom). Lean file now compiles cleanly under Docker; the only remaining open input is the r=3 asymptotic axiom cubeful_sum_threshold. Math complete, registered, gallery entry verified."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1107OQ02OQ01.lean",
+      "filename": "Erdos1107OQ02OQ01.lean",
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1107OQ02OQ01.lean"
+    }
+  ]
 }

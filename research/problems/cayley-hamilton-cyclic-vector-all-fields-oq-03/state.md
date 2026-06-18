@@ -260,3 +260,36 @@ focused Docker-up session:
 - Total attempts: 2 (direction (a) completed prior; S2 = API pinning / recipe, no build)
 - Current approach attempts: 0 (PID companion not yet written — recipe ready)
 - Approaches tried: 1 (basis reduction to matrix theorem — succeeded for (a))
+
+## S7 (2026-06-18, researcher-2): CONVERSE companion written — closes the operator biconditional
+**Both directions (a) operator and (b) PID are now DONE + REGISTERED** (OQ03 + OQ03PID
+on main, 0 sorry / 0 axiom, PR #25497 + #25552). S6's last open nextStep (register PID)
+is complete. Re-scoping the problem, the genuine remaining gap was that the OQ03 headline
+**operator** theorem is **forward-only** (`operator_nonderogatory_has_cyclic_vector` and
+its span recast `operator_nonderogatory_has_span_cyclic_vector` only give
+nonderogatory ⟹ cyclic). The headline is an *iff* ("minpoly = charpoly ⟺ cyclic vector"),
+so the converse was missing at the operator level.
+
+**Wrote `CayleyHamiltonCyclicVectorAllFieldsOQ03Converse.lean`** (UNREGISTERED, cannot
+break the fleet build):
+- `span_cyclic_implies_nonderogatoryOp` — `cyclicSubspace T v = ⊤ ⟹ (minpoly K T).natDegree = finrank K V`.
+- `nonderogatoryOp_iff_exists_span_cyclic` — the full biconditional, composing the
+  forward capstone with the new converse.
+
+**Proof (all names audited vs offline pin 2df2f0150c):**
+- Orbit containment from the registered `NonderogatoryModule.cyclicSubspace_le_minpoly_degree`
+  (CayleyHamiltonMinpolyOQ05OQ01OQ03.lean:243): for `k ≥ d`, `Tᵏ v ∈ span{Tⁱ v : i < d}`.
+  ⟹ `cyclicSubspace ≤ W := span{Tⁱ v : i<d}`; with `hv` gives `W = ⊤`.
+- `finrank K V ≤ d` via `finrank_range_le_card` (Dimension/Constructions.lean:453) + `finrank_top` (Finrank.lean:139).
+- `d ≤ finrank K V` via `LinearMap.minpoly_dvd_charpoly` + `LinearMap.charpoly_natDegree` (Charpoly/Basic.lean:99,78).
+- Integrality: `IsIntegral.of_finite K T` (End K V is a finite K-algebra).
+
+**Build reality:** Docker daemon UP but host heavily contended (10 `lean-build` containers,
+~6.7 of 7.65 GiB VM) — building now would risk OOM-ing peers, against the good-citizen
+≤2–3 container rule. Background watcher `/tmp/r2-oq03converse-build.sh` builds the file once
+the host frees up and writes `/tmp/r2-oq03converse-build.done`.
+
+**Next action:** On GREEN — register `Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ03Converse`
+in `Proofs.lean`, add the converse/iff to the gallery entry, and confirm the headline iff is
+stated. On RED — fix the flagged tactic step (math + every lemma name are sound; any failure
+is a tactical mismatch, not a missing result).
