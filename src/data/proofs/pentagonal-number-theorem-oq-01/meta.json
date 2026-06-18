@@ -139,6 +139,16 @@
       "proofId": "partition-theorem-oq-03",
       "relationship": "related",
       "description": "Euler partition identities for overpartitions. Overpartition generating functions are built from the same ∏(1-Xⁿ)-type Euler products whose expansion the pentagonal number theorem governs; both sit in the generating-function calculus of integer partitions that this entry's index theory underpins."
+    },
+    {
+      "proofId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's theorem that an odd prime is a sum of two squares iff p ≡ 1 (mod 4) is the archetypal recognition criterion of the same shape as the headline here: membership in a number-theoretic set is decided by a single congruence/perfect-square test, with the modular reduction (mod 4 there, mod 6 in ZMod 6 here) supplying the only non-algebraic ingredient."
+    },
+    {
+      "proofId": "triangular-reciprocals",
+      "relationship": "related",
+      "description": "The triangular numbers T(n)=n(n+1)/2 are the figurate-number neighbours of the pentagonal numbers g(k)=k(3k-1)/2, both quadratic-in-index half-integers. This connects to the open question of extending the square-discriminant viewpoint to the general figurate analogues (24m+1=□ for pentagonals, 8m+1=□ for triangulars)."
     }
   ]
 }
