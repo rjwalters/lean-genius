@@ -90,12 +90,28 @@
       "mathContext": "$2\\cos((m/n)\\pi)$ integral over $\\mathbb{Z}$ and rational $\\Rightarrow 2\\cos\\theta \\in \\mathbb{Z}$."
     },
     {
-      "id": "main-theorem",
-      "title": "Niven's Theorem: the Five-Way Enumeration",
+      "id": "main-statement",
+      "title": "Niven's Theorem: Statement and Setup",
       "startLine": 76,
+      "endLine": 83,
+      "summary": "`niven`: the headline theorem. Under the same hypotheses (θ = (m/n)·π, cos θ rational) the goal is the five-way disjunction cos θ ∈ {0, 1/2, −1/2, 1, −1}. The proof opens by destructuring the core lemma `two_cos_int_of_rational` to obtain the integer k with 2·cos θ = k, reducing the entire classification to a question about a single integer.",
+      "mathContext": "$\\cos\\theta = 0 \\lor \\cos\\theta = \\pm\\tfrac12 \\lor \\cos\\theta = \\pm 1$, with $\\exists k\\in\\mathbb{Z},\\ 2\\cos\\theta = k$ in hand."
+    },
+    {
+      "id": "integer-bounds",
+      "title": "Confining k to {−2,…,2}",
+      "startLine": 84,
+      "endLine": 91,
+      "summary": "The bridge from analysis to arithmetic. The cosine bounds `Real.cos_le_one` and `Real.neg_one_le_cos` give −1 ≤ cos θ ≤ 1; combined with 2·cos θ = (k : ℝ) and `linarith` they yield −2 ≤ (k : ℝ) ≤ 2 over the reals, which `exact_mod_cast` transports down to the integer inequalities −2 ≤ k ≤ 2. This pins k to a finite interval so that the enumeration that follows is exhaustive.",
+      "mathContext": "$-1 \\le \\cos\\theta \\le 1 \\Rightarrow (-2{:}\\mathbb{R}) \\le (k{:}\\mathbb{R}) \\le 2 \\xrightarrow{\\text{cast}} -2 \\le k \\le 2,\\ k\\in\\mathbb{Z}.$"
+    },
+    {
+      "id": "enumeration",
+      "title": "The Five-Way interval_cases Enumeration",
+      "startLine": 92,
       "endLine": 103,
-      "summary": "`niven`: obtain k = 2·cos θ ∈ ℤ from the core lemma; the bounds −1 ≤ cos θ ≤ 1 give −2 ≤ k ≤ 2; `interval_cases k` splits into k ∈ {−2,−1,0,1,2}, and each branch is closed by `linarith` from 2·cos θ = k, yielding cos θ ∈ {−1,−1/2,0,1/2,1}.",
-      "mathContext": "$-2 \\le 2\\cos\\theta \\le 2,\\ 2\\cos\\theta \\in \\mathbb{Z} \\Rightarrow \\cos\\theta \\in \\{-1,-\\tfrac12,0,\\tfrac12,1\\}.$"
+      "summary": "`interval_cases k` splits the bounded integer into exactly five goals k ∈ {−2,−1,0,1,2}; `<;> push_cast at hk` normalizes the cast in each branch so 2·cos θ = k becomes a concrete linear equation. Each of the five branches selects the matching disjunct and closes by `linarith` (e.g. k = −1 ⇒ cos θ = −1/2), recovering cos θ ∈ {−1,−1/2,0,1/2,1} and completing Niven's classification.",
+      "mathContext": "$2\\cos\\theta \\in \\{-2,-1,0,1,2\\} \\Rightarrow \\cos\\theta \\in \\{-1,-\\tfrac12,0,\\tfrac12,1\\}.$"
     }
   ],
   "conclusion": {
