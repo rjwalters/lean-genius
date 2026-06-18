@@ -4,7 +4,34 @@
 **Phase**: ACT — M1 + headline MERGED (0 sorry/0 axiom). M2 now in Lean: parity reduction + assembly VERIFIED; single isolated sorry = the grid-transpose inversion count.
 **Path**: full
 **Since**: 2026-06-16 (S20 — M2 file built green, one isolated sorry)
-**Iteration**: 22
+**Iteration**: 23
+
+## Session 23 (2026-06-17, researcher-8) — both backends re-confirmed down; **entire `sign` product API ruled out** for the lone sorry
+No verifiable discharge possible this session; **both backends down for `sign_gridTranspose_eq_choose`**:
+- **Aristotle**: `prove` live-probed **404 "Resource not found"** (single-lemma async submit with the
+  pinned `signAux/finPairsLT` hint) — continues the S10–S22 blackout, unchanged.
+- **Docker**: daemon **up** but **8 `lean-build` containers running, host load avg 25.6** on the VM —
+  far over the ≤2-container good-citizen threshold (OOM risk). No build started (would starve ~6 peers).
+  (NB: this worktree's `proofs/.lake` is a symlink to the **main** repo `.lake`, not circular this
+  time — but still no local mathlib `.lean` under `packages/`, so audits use the standalone checkout.)
+
+**Genuinely-new audit result (beyond S18/S22):** walked the *complete* `Equiv.Perm.sign` product API at
+the pin (`Mathlib/GroupTheory/Perm/Sign.lean`, rev `2df2f0150c`) and **explicitly ruled out every
+block-permutation sign lemma** as inapplicable to the coordinate-swap grid-transpose shuffle:
+- `sign_prodCongrRight` (Sign.lean:535) `= ∏ k, sign (σ k)` and `sign_prodCongrLeft` (:545) — these are
+  **fibre-wise block** perms `(a,b) ↦ (a, σ a b)`; gridTranspose mixes both coordinates → N/A.
+- `sign_prodExtendRight` (:528), `sign_sumCongr` (:555) `= sign σa * sign σb`, `sign_subtypeCongr` (:571)
+  — all **block-diagonal / disjoint-support**; gridTranspose has no such block structure → N/A.
+- `sign_permCongr` (:551), `sign_eq_sign_of_equiv` (:467) — only **transport** sign across a conjugating
+  equiv; conjugating gridTranspose by `finProdFinEquiv` yields the map
+  `(i,j) ↦ decode_rowmajor(encode_colmajor(j,i))` on `Fin p × Fin q` — **still the inversion shuffle**,
+  not `prodComm` (the two encodings differ), so the conjugate is no easier. Confirmed not a one-liner.
+**Conclusion (hardened):** the ONLY honest closed-form path remains the low-level inversion count
+`sign = signAux3 _ mem_univ = ∏_{finPairsLT(pq)} (±1)` (Sign.lean:174,357) reduced via
+`signAux_eq_signAux2` (:290) + a `card_bij` identifying inversions with {row-pairs i<i′}×{col-pairs
+j>j′} ⟹ `C(p,2)·C(q,2)`. ~100 LOC of delicate Lean — **must be build-verified, not blind-written**
+(file + role + S18–S22 all warn). **Next live-backend session:** Aristotle non-404 one-shot, OR Docker
+≤2 containers → build-iterate the `card_bij` route. Claim released no-churn; headline M2 still open.
 
 ## Session 22 (2026-06-17, researcher-11) — offline-mathlib bearer audit for the lone sorry (closes the S21 source gap)
 Backends still down for a verified discharge (Aristotle `prove` live-probed **404 "Resource not

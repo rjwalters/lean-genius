@@ -38,12 +38,24 @@
                             (injectivity of `i ↦ {iα}` via `Int.fract_eq_fract`
                             and `Irrational.int_mul`)
 
-  ISOLATED (the genuine content — see the proof-path comments and knowledge.md):
-    * `three_gap`         — at most three distinct gap lengths  [HARD core]
-    * `three_gap_additive`— the additive relation among the three lengths
+  PROVED (reductions — fully discharged modulo the isolated core):
+    * `three_gap`         — at most three distinct gap lengths, reduced to
+                            `exists_gap_triple` via `card_le_three_of_subset_triple`
+    * `three_gap_additive`— the additive relation among the three lengths,
+                            reduced to `exists_gap_triple` by pure `Finset` reasoning
 
-  ## Status: BUILD-VERIFIED (v4.26.0, 7743 jobs).  All scaffolding compiles; the
-  only remaining `sorry` is the isolated combinatorial core `exists_gap_triple`.
+  PARTIALLY PROVED (the genuine content — see the proof-path comments):
+    * `exists_gap_triple` — the Sós–Surányi–Świerczkowski / van Ravenstein
+                            classification.  The `N = 1` base case is now CLOSED
+                            (degenerate single-point orbit); the `N ≥ 2` case
+                            pins the two Steinhaus first-return generators as the
+                            minimal forward / backward cyclic returns and the long
+                            gap as their sum (`a + b = c` by construction), leaving
+                            a single `sorry` on the gap-classification step.
+
+  ## Status: BUILD-VERIFIED (v4.26.0, 7743 jobs).  All scaffolding plus the
+  `N = 1` base case compile; the only remaining `sorry` is the `N ≥ 2`
+  classification step inside the isolated core `exists_gap_triple`.
   Registered in `Proofs.lean`.
 -/
 import Mathlib
@@ -181,7 +193,41 @@ theorem card_le_three_of_subset_triple {s : Finset ℝ} {a b c : ℝ}
     `p` or `q` to its index. -/
 theorem exists_gap_triple (α : ℝ) (hα : Irrational α) {N : ℕ} (hN : 1 ≤ N) :
     ∃ a b c : ℝ, a + b = c ∧ gapLengths α N ⊆ ({a, b, c} : Finset ℝ) := by
-  sorry
+  rcases eq_or_lt_of_le hN with hN1 | hN2
+  · -- `N = 1`: the orbit is the single point `{0}`; with no second point the lone
+    -- gap length is the junk value `0`, so the degenerate triple `(0, 0, 0)`
+    -- already covers `gapLengths`.  This base case is fully closed.
+    obtain rfl : N = 1 := hN1.symm
+    refine ⟨0, 0, 0, by ring, ?_⟩
+    have horbit : orbit α 1 = {(0 : ℝ)} := by
+      simp [orbit, Finset.range_one, Finset.image_singleton, Int.fract_zero]
+    have hfg : forwardGap α 1 (0 : ℝ) = 0 := by
+      unfold forwardGap
+      rw [horbit, Finset.erase_singleton, dif_neg Finset.not_nonempty_empty]
+    have hgap : gapLengths α 1 = {(0 : ℝ)} := by
+      rw [gapLengths, horbit, Finset.image_singleton, hfg]
+    rw [hgap]
+    intro x hx
+    simp only [Finset.mem_singleton] at hx
+    subst hx
+    simp
+  · -- `N ≥ 2`: name the two genuine "short" gaps as the minimal forward / backward
+    -- cyclic returns `{iα}` / `{-iα}` over the nonzero indices `1 ≤ i < N`.  These
+    -- are the Steinhaus first-return generators; their sum is the "long" gap, so
+    -- the additive relation `a + b = c` holds by construction (`rfl`).  The single
+    -- remaining obligation is the gap *classification* (Sós–Surányi–
+    -- Świerczkowski / van Ravenstein): every forward gap length equals one of
+    -- these three values.  See the proof-path comment above.
+    have hS : ((Finset.range N).erase 0).Nonempty :=
+      ⟨1, Finset.mem_erase.mpr ⟨one_ne_zero, Finset.mem_range.mpr hN2⟩⟩
+    refine ⟨(((Finset.range N).erase 0).image
+              (fun (i : ℕ) => Int.fract ((i : ℝ) * α))).min'
+              (hS.image (fun (i : ℕ) => Int.fract ((i : ℝ) * α))),
+            (((Finset.range N).erase 0).image
+              (fun (i : ℕ) => Int.fract (-((i : ℝ) * α)))).min'
+              (hS.image (fun (i : ℕ) => Int.fract (-((i : ℝ) * α)))),
+            _, rfl, ?_⟩
+    sorry
 
 /-- **The Three-Gap (Three-Distance / Steinhaus) Theorem.**
 
