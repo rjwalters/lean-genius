@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Imports, Docstring, and Open-Question Framing",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "`import Mathlib`, `open Polynomial IntermediateField`, a raised heartbeat budget, and the module docstring. The docstring frames this as the follow-up to the parent degree-2 theorem minpoly ℚ (√r) = X² − r, explains why the X^k − a statement fails for composite k (e.g. X⁴ − 4 = (X²−2)(X²+2)) and holds for prime degree via Kummer theory, states the target minpoly ℚ (a^(1/p)) = X^p − a for odd prime p with a not a p-th power, and notes the p = 2 case is the parent's elementary square-root theorem.",
+      "mathContext": "For odd prime $p$ and $a\\ge 0$ not a $p$-th power in $\\mathbb{Q}$: target $\\mathrm{minpoly}_{\\mathbb{Q}}(a^{1/p}) = X^p - a$; composite $k$ fails (e.g. $X^4-4$ reducible)."
+    },
+    {
       "id": "root",
       "title": "Part I: The Radical is a Root of X^p − C a",
       "startLine": 61,
@@ -100,12 +108,20 @@
       "mathContext": "X_pow_sub_C_irreducible_iff_of_prime_pow with n = 1 reduces to pow_one; the .mpr direction consumes the hypothesis ∀ b : ℚ, b^p ≠ a, and minpoly.eq_of_irreducible_of_monic closes the goal up to symm."
     },
     {
-      "id": "degree-results",
-      "title": "Part III: Degree and Field-Extension Consequences",
+      "id": "integrality-degree",
+      "title": "Part III: Integrality and Algebraic Degree",
       "startLine": 99,
+      "endLine": 111,
+      "summary": "rpow_isIntegral: a^(1/p) is integral over ℚ, exhibited directly as a root of the monic X^p − C a. minpoly_rpow_natDegree: the algebraic degree natDegree (minpoly ℚ (a^(1/p))) = p, by rewriting the minimal polynomial via Part II and applying natDegree_X_pow_sub_C.",
+      "mathContext": "$a^{1/p}$ integral over $\\mathbb{Q}$ (root of monic $X^p - C\\,a$); $\\deg \\mathrm{minpoly}_{\\mathbb{Q}}(a^{1/p}) = \\deg(X^p - a) = p$."
+    },
+    {
+      "id": "field-extension",
+      "title": "Part III: Field-Extension Degree",
+      "startLine": 113,
       "endLine": 119,
-      "summary": "rpow_isIntegral: a^(1/p) is integral over ℚ (root of monic X^p − C a). minpoly_rpow_natDegree: natDegree (minpoly ℚ (a^(1/p))) = p. adjoin_rpow_finrank: [ℚ(a^(1/p)) : ℚ] = p.",
-      "mathContext": "IntermediateField.adjoin.finrank applied to the integral radical gives the extension degree as the minimal-polynomial degree, computed by natDegree_X_pow_sub_C."
+      "summary": "adjoin_rpow_finrank: the field-extension degree [ℚ(a^(1/p)) : ℚ] = p. IntermediateField.adjoin.finrank applied to the integral radical equates the extension degree with the minimal-polynomial degree, which the previous section computed to be p.",
+      "mathContext": "$[\\mathbb{Q}(a^{1/p}) : \\mathbb{Q}] = \\dim_{\\mathbb{Q}} \\mathbb{Q}(a^{1/p}) = \\deg \\mathrm{minpoly}_{\\mathbb{Q}}(a^{1/p}) = p.$"
     }
   ],
   "conclusion": {
