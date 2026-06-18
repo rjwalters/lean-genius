@@ -69,7 +69,7 @@
   {
     "id": "ann-1027-propertyb",
     "proofId": "erdos-1027",
-    "type": "definition",
+    "type": "theorem",
     "title": "Property B and 2-Colorability",
     "content": "`HasPropertyB F` holds if at least one good set exists. `Is2Colorable F` requires a function $f: \\alpha \\to \\text{Bool}$ such that every $A \\in \\mathcal{F}$ has both true-colored and false-colored elements. `propertyB_implies_2colorable` and `coloring_implies_propertyB` prove the equivalence: a good set $B$ defines the coloring $f(x) = (x \\in B)$, and conversely $B = f^{-1}(\\text{true})$ is a good set. Both proofs are sorry-free.",
     "mathContext": "$\\text{HasPropertyB}(\\mathcal{F}) \\iff \\text{Is2Colorable}(\\mathcal{F})$: good sets correspond to proper 2-colorings",

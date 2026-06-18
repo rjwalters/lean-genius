@@ -75,7 +75,7 @@
     "id": "ann-qdetf-eq-qdet00",
     "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
     "range": { "startLine": 153, "endLine": 168 },
-    "type": "theorem",
+    "type": "lemma",
     "title": "n=2 (0,0)-specialization via mul_right_cancel₀",
     "content": "Bridges `qdetF A 0 0` (the uniform commutative form) to the parent's 2×2 (0,0)-quasideterminant `qdet00 A = A 0 0 - A 0 1 * (A 1 1)⁻¹ * A 1 0`. The strategy is multiplicative cancellation: under `A 1 1 ≠ 0`, *both* sides multiply against `A 1 1` to give `A.det` — `qdetF` via `qdetF_field_quotient` (using `minorIJ_22_00_det` to identify the minor as `A 1 1`), and `qdet00` via the parent's `qdet00_mul_eq_det`. Two quantities with the same product against a nonzero `A 1 1` must be equal, so `mul_right_cancel₀` closes the goal. No further non-degeneracy is needed beyond the standard `A 1 1 ≠ 0` already carried in the parent's API.",
     "mathContext": "For a 2×2 matrix $A$ with $A_{11} \\neq 0$: $|A|_{00}^{(F)} = \\dfrac{\\det A}{A_{11}}$ and $|A|_{00}^{(\\text{Schur})} = A_{00} - A_{01} A_{11}^{-1} A_{10}$. Both satisfy $|A|_{00} \\cdot A_{11} = \\det A$, so they coincide. The Schur form is the non-commutative-friendly version; the quotient form is the commutative one.",

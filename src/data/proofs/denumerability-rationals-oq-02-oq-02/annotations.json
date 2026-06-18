@@ -6,7 +6,7 @@
       "startLine": 56,
       "endLine": 68
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "ℝ Is a Complete Ordered Field",
     "content": "The three instance declarations confirm that ℝ satisfies ConditionallyCompleteLinearOrderedField — the Mathlib typeclass encoding 'complete ordered field'. The real_archimedean theorem (inferInstance) and real_lub theorem (isLUB_csSup) make the two most important properties explicit: ℕ is cofinal in ℝ, and nonempty bounded-above sets have suprema.",
     "mathContext": "A ConditionallyCompleteLinearOrderedField is a field with a linear order satisfying: (1) order compatibility with field operations, (2) conditional completeness — every nonempty bounded-above set has a supremum. For ℝ, this is the least-upper-bound property (Dedekind completeness).",

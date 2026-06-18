@@ -56,7 +56,7 @@
       "startLine": 78,
       "endLine": 109
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Smith Normal Form Structure: Invariant Factors and Decomposition",
     "content": "The `SmithNormalForm m n` structure encodes all components of the SNF decomposition: unimodular `U : Matrix (Fin m) (Fin m) ℤ`, diagonal `D : Matrix (Fin m) (Fin n) ℤ`, and unimodular `V : Matrix (Fin n) (Fin n) ℤ`. The `hD_diag` field enforces diagonality: all off-diagonal entries are zero. The `hD_div` field encodes the **invariant factor divisibility chain**: $d_k \\mid d_{k+1}$ for consecutive diagonal entries, requiring five separate bounds proofs to correctly handle the finite type indexing. `isDecompOf A` simply states $A = U \\cdot D \\cdot V$.",
     "mathContext": "The invariant factors $d_1 \\mid d_2 \\mid \\cdots \\mid d_k$ are uniquely determined by $A$ (up to sign): $d_i = \\gcd_{i \\times i \\text{ minors}}(A) / \\gcd_{(i-1) \\times (i-1) \\text{ minors}}(A)$. This uniqueness is what makes SNF a complete invariant for equivalence of integer matrices under unimodular row/column operations. The divisibility chain is NOT present in general diagonal decompositions — it is the distinguishing feature of Smith Normal Form.",

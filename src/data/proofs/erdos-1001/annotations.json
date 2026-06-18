@@ -178,7 +178,7 @@
       "startLine": 82,
       "endLine": 84
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Limit Exists",
     "content": "**limitExists(A, c):**\n\nThe central question: does lim_{N→∞} S(N, A, c) exist?\n\nThis is formalized using filter convergence:\n\n```lean\ndef limitExists (A c : ℝ) : Prop :=\n  ∃ L : ℝ, Tendsto (fun N => S N A c) atTop (nhds L)\n```",
     "significance": "key",
