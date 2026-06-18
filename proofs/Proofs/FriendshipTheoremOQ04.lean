@@ -578,4 +578,50 @@ theorem no_universal_infinite_aleph0_regular (hF : IsFriendshipGraph G) [Infinit
   intro hwfin
   exact himg (hwfin.subset hsub)
 
+/-- **The windmill case is *not* regular (infinite).** An *infinite* friendship graph
+with a universal vertex `c` fails to be regular: the hub `c` has infinite degree
+(`universal_vertex_infinite_degree`) while every off-hub vertex `u` has exactly two
+neighbours (`universal_noncentral_ncard_two`), so no bijection `N(c) → N(u)` can exist
+(an injection out of an infinite set has infinite image, but `N(u)` is a two-element
+set). This is the missing exclusivity half of the structural dichotomy: it shows the
+"has a hub" and "ℵ₀-regular" branches are genuinely *disjoint* for infinite graphs, not
+merely jointly exhaustive. No `[Fintype V]` is used. -/
+theorem universal_infinite_not_regular (hF : IsFriendshipGraph G) [Infinite V]
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c) :
+    ¬ ∀ u v : V, ∃ f : V → V, Set.BijOn f (G.neighborSet u) (G.neighborSet v) := by
+  intro hreg
+  -- The hub has infinite degree; pick a distinct (off-hub) vertex of degree two.
+  have hc_inf : (G.neighborSet c).Infinite := universal_vertex_infinite_degree hF c hc
+  obtain ⟨u, hu⟩ := exists_ne c
+  have hu2 : (G.neighborSet u).ncard = 2 := universal_noncentral_ncard_two hF c hc u hu
+  -- A bijection `N(c) → N(u)` would force `N(u)` infinite (injective image of infinite),
+  -- contradicting `ncard = 2`.
+  obtain ⟨f, hf⟩ := hreg c u
+  have himg : (f '' (G.neighborSet c)).Infinite :=
+    fun hfin => hc_inf (Set.Finite.of_finite_image hfin hf.injOn)
+  rw [hf.image_eq] at himg
+  rw [himg.ncard] at hu2
+  omega
+
+/-- **Exclusive structural dichotomy for infinite friendship graphs (capstone).** Every
+*infinite* friendship graph satisfies **exactly one** of:
+- it has a universal vertex (an infinite *windmill* with a single infinite-degree hub
+  and every other vertex of degree two — `unique_infinite_degree_vertex`), or
+- it is hub-free and **regular** (all neighbourhoods pairwise equinumerous, i.e.
+  ℵ₀-regular — the C₅ free-amalgamation shape, `no_universal_infinite_aleph0_regular`).
+Exhaustiveness is `no_universal_regular` (excluded middle on the hub); exclusivity is
+`universal_infinite_not_regular`. This is the complete non-spectral characterization
+behind OQ-04: the finite theorem's "universal *or* `k`-regular" dichotomy, transported
+to infinite graphs, becomes a genuine `Xor'` — the regular branch is no longer vacuous
+(it is realised by the counterexample) and is mutually exclusive with the windmill
+branch. No `[Fintype V]` is used. -/
+theorem friendship_infinite_exclusive_dichotomy (hF : IsFriendshipGraph G) [Infinite V] :
+    Xor' (∃ c, FriendshipTheorem.IsUniversalVertex G c)
+      (∀ u v : V, ∃ f : V → V, Set.BijOn f (G.neighborSet u) (G.neighborSet v)) := by
+  by_cases h : ∃ c, FriendshipTheorem.IsUniversalVertex G c
+  · obtain ⟨c, hc⟩ := h
+    exact Or.inl ⟨⟨c, hc⟩, universal_infinite_not_regular hF c hc⟩
+  · have h' : ∀ c, ¬ FriendshipTheorem.IsUniversalVertex G c := fun c hc => h ⟨c, hc⟩
+    exact Or.inr ⟨no_universal_regular hF h', h⟩
+
 end FriendshipTheoremOQ04
