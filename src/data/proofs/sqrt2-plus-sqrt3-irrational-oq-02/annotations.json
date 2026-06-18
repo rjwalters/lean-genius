@@ -1,0 +1,144 @@
+[
+  {
+    "id": "ann-bes2-setup",
+    "proofId": "sqrt2-plus-sqrt3-irrational-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Setting: Besicovitch's Theorem at n = 2",
+    "content": "Besicovitch's 1940 theorem says the square roots of distinct squarefree positive integers are ℚ-linearly independent. The parent gallery entry's second open question asks to formalize it; this file answers the smallest non-trivial case, the prime set {2, 3}, by proving {1, √2, √3, √6} is ℚ-linearly independent. The radicands {1, 2, 3, 6} are exactly {d : d ∣ 6, d squarefree}, so this is the complete characterization ∑ rᵢ√aᵢ ∈ ℚ ⟺ rᵢ = 0 for that prime set. The proof imports only Real.sqrt and Irrational APIs — no field-extension tower — and is deliberately kept axiom-free.",
+    "mathContext": "Besicovitch (1940): for distinct squarefree $a_1,\\dots,a_n$, the $\\sqrt{a_i}$ are $\\mathbb{Q}$-linearly independent. Here $n=2$, primes $\\{2,3\\}$, radicands $\\{1,2,3,6\\}$, equivalently $[\\mathbb{Q}(\\sqrt2,\\sqrt3):\\mathbb{Q}]=4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Besicovitch's theorem",
+      "linear independence over ℚ",
+      "multiquadratic fields",
+      "squarefree integers"
+    ],
+    "prerequisites": [
+      "irrationality of square roots",
+      "rational vector spaces",
+      "field extension degree"
+    ]
+  },
+  {
+    "id": "ann-bes2-irrationality-inputs",
+    "proofId": "sqrt2-plus-sqrt3-irrational-oq-02",
+    "range": {
+      "startLine": 52,
+      "endLine": 76
+    },
+    "type": "technique",
+    "title": "Axiom-Free Irrationality without Kernel decide",
+    "content": "irrational_sqrt_three and irrational_sqrt_six are obtained from Mathlib's irrational_sqrt_ofNat_iff, which reduces irrationality of √n to the perfect-square obstruction ¬IsSquare n. The obstructions ¬IsSquare 3 and ¬IsSquare 6 are NOT discharged by `decide`: kernel `decide` gets stuck on Nat.sqrt (its Decidable instance does not reduce), and `native_decide` would trust the compiler and pull in the Lean.ofReduceBool axiom, forcing status 'axiomatized'. Instead each is proved elementarily: from a hypothetical n = r * r we get r ∣ n, hence r ≤ n by Nat.le_of_dvd, and interval_cases on r with omega rules out every candidate. This keeps the file genuinely axiom-free with no reliance on kernel reduction at all. rat_sq_ne_two then restates √2 ∉ ℚ in the convenient form q² ≠ 2 by pulling √2 = |q| out of a hypothetical q² = 2 via Real.sqrt_sq_eq_abs.",
+    "mathContext": "$\\mathrm{Irrational}\\,\\sqrt{n} \\iff \\lnot\\,\\mathrm{IsSquare}\\,n$. For $n\\in\\{3,6\\}$ the right side is proved by a divisor bound: $n=r^2\\Rightarrow r\\mid n\\Rightarrow r\\le n$, then a finite case split. Restated: no $q\\in\\mathbb{Q}$ has $q^2=2$, since otherwise $\\sqrt2=|q|\\in\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrational_sqrt_ofNat_iff",
+      "Nat.le_of_dvd",
+      "interval_cases / omega",
+      "Real.sqrt_sq_eq_abs"
+    ],
+    "prerequisites": [
+      "IsSquare on ℕ",
+      "axiom accounting in Lean",
+      "Real.sqrt basics"
+    ]
+  },
+  {
+    "id": "ann-bes2-base-case",
+    "proofId": "sqrt2-plus-sqrt3-irrational-oq-02",
+    "range": {
+      "startLine": 78,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "Base Case: {1, √2} Linearly Independent",
+    "content": "linearIndependent_one_sqrt2 proves p + q√2 = 0 forces p = q = 0. The argument splits on q: if q = 0 then p = 0 follows by casting; if q ≠ 0, then √2 = −p/q would be rational, exhibited as the explicit witness ⟨−p/q, …⟩ to irrational_sqrt_two and closed with linear_combination. This is the degree-2 base of the multiquadratic tower on which the main result builds.",
+    "mathContext": "$\\{1,\\sqrt2\\}$ is a $\\mathbb{Q}$-basis of $\\mathbb{Q}(\\sqrt2)$: $p+q\\sqrt2=0 \\Rightarrow p=q=0$, since $q\\ne0$ gives $\\sqrt2=-p/q\\in\\mathbb{Q}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "linear independence",
+      "ℚ(√2) as a vector space",
+      "irrational_sqrt_two",
+      "linear_combination tactic"
+    ],
+    "prerequisites": [
+      "rational arithmetic",
+      "field of fractions casting"
+    ]
+  },
+  {
+    "id": "ann-bes2-induction-heart",
+    "proofId": "sqrt2-plus-sqrt3-irrational-oq-02",
+    "range": {
+      "startLine": 92,
+      "endLine": 136
+    },
+    "type": "technique",
+    "title": "Induction Heart: √3 ∉ ℚ(√2)",
+    "content": "sqrt3_not_in_Qsqrt2 is the crux. Assuming √3 = e + f√2 with e, f ∈ ℚ, squaring (using (√2)² = 2) gives the identity e² + 2f² + 2ef√2 = 3. A three-way case analysis derives a contradiction in every branch: (i) f = 0 makes √3 = e rational, contradicting irrational_sqrt_three; (ii) e = 0 makes √3 = f√2, hence √6 = √2·√3 = 2f rational, contradicting irrational_sqrt_six; (iii) e, f both nonzero solves the identity for √2 = (3 − e² − 2f²)/(2ef) ∈ ℚ, contradicting irrational_sqrt_two via mul_right_cancel₀ on the witness. Mathematically this is the statement that adjoining √3 strictly doubles the degree of ℚ(√2) — the engine of Besicovitch's induction, here at its smallest case.",
+    "mathContext": "$\\sqrt3\\notin\\mathbb{Q}(\\sqrt2)$. If $\\sqrt3=e+f\\sqrt2$ then $e^2+2f^2+2ef\\sqrt2=3$; the cases $f=0$, $e=0$, $ef\\ne0$ force $\\sqrt3$, $\\sqrt6$, $\\sqrt2\\in\\mathbb{Q}$ respectively. Equivalently $[\\mathbb{Q}(\\sqrt2,\\sqrt3):\\mathbb{Q}(\\sqrt2)]=2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "degree-doubling step",
+      "multiquadratic tower",
+      "Real.sq_sqrt",
+      "Real.sqrt_mul",
+      "tower law"
+    ],
+    "prerequisites": [
+      "field extension towers",
+      "conjugation in quadratic fields",
+      "case analysis"
+    ]
+  },
+  {
+    "id": "ann-bes2-conjugate-isolation",
+    "proofId": "sqrt2-plus-sqrt3-irrational-oq-02",
+    "range": {
+      "startLine": 162,
+      "endLine": 201
+    },
+    "type": "technique",
+    "title": "Conjugate Multiplication Isolates √3 ∈ ℚ(√2)",
+    "content": "In the non-vanishing branch of the main theorem, the regrouped relation (a+b√2) + √3(c+d√2) = 0 is multiplied by the ℚ(√2)-conjugate (c − d√2). Since (c+d√2)(c−d√2) = c² − 2d², the √3-coefficient becomes rational and √3·(c²−2d²) equals an explicit ℚ(√2)-element. Crucially c²−2d² ≠ 0: if d = 0 it forces c = 0 (the vanishing case), and if d ≠ 0 then c²=2d² gives (c/d)²=2, contradicting rat_sq_ne_two. Dividing through exhibits √3 = e + f√2 with e = (2bd−ac)/(c²−2d²), f = (ad−bc)/(c²−2d²), contradicting sqrt3_not_in_Qsqrt2. This conjugate trick is the reusable inductive engine: it converts a √p-coefficient over a multiquadratic field into a rational and reduces independence to the single degree-doubling fact.",
+    "mathContext": "Rationalizing the $\\sqrt3$-coefficient: $(c+d\\sqrt2)(c-d\\sqrt2)=c^2-2d^2\\in\\mathbb{Q}^\\times$ (nonzero since $\\sqrt2\\notin\\mathbb{Q}$), so $\\sqrt3=\\frac{(2bd-ac)+(ad-bc)\\sqrt2}{c^2-2d^2}\\in\\mathbb{Q}(\\sqrt2)$ — impossible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "field conjugation",
+      "rationalizing denominators",
+      "linear_combination tactic",
+      "mul_right_cancel₀"
+    ],
+    "prerequisites": [
+      "quadratic field norms",
+      "ℚ(√2)-linear algebra"
+    ]
+  },
+  {
+    "id": "ann-bes2-main-result",
+    "proofId": "sqrt2-plus-sqrt3-irrational-oq-02",
+    "range": {
+      "startLine": 138,
+      "endLine": 203
+    },
+    "type": "concept",
+    "title": "Main Result and Significance",
+    "content": "linearIndependent_one_sqrt2_sqrt3_sqrt6 assembles the pieces: writing √6 = √2·√3 and regrouping a+b√2+c√3+d√6 = (a+b√2) + √3(c+d√2), it either reduces to the {1,√2} base case (when c = d = 0) or derives the √3 ∈ ℚ(√2) contradiction via the conjugate step. The conclusion a = b = c = d = 0 is the complete Besicovitch characterization for radicands {1,2,3,6}, equivalently [ℚ(√2,√3):ℚ] = 4 — the same degree-4 fact proved by minimal-polynomial methods in the sibling oq-03 entry, here reached by elementary linear-independence arithmetic. It also supplies the concrete n = 2 certificate that the general (still-sorry) reduction in the sqrt5 sibling lacks.",
+    "mathContext": "$a+b\\sqrt2+c\\sqrt3+d\\sqrt6=0 \\Rightarrow a=b=c=d=0$. This is Besicovitch's theorem for primes $\\{2,3\\}$ and gives a $\\mathbb{Q}$-basis $\\{1,\\sqrt2,\\sqrt3,\\sqrt6\\}$ of the biquadratic field $\\mathbb{Q}(\\sqrt2,\\sqrt3)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Besicovitch's theorem",
+      "biquadratic field",
+      "ℚ-basis",
+      "minimal polynomial (sibling oq-03)"
+    ],
+    "prerequisites": [
+      "linear independence over ℚ",
+      "multiquadratic field theory"
+    ]
+  }
+]

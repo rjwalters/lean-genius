@@ -31,28 +31,41 @@ the general (still-`sorry`) reduction lacks.
 
 The proof is elementary (no field-theory tower): regroup `α := a + b√2 + c√3 +
 d√6` as `(a + b√2) + √3·(c + d√2)`, multiply by the ℚ(√2)-conjugate `(c − d√2)`
-to isolate `√3·(c² − 2d²)`, and conclude with `√3 ∉ ℚ(√2)`.  All irrationality
-inputs use kernel `decide` (`¬ IsSquare n` for `n ∈ {3, 6}`), so the file is
-genuinely axiom-free — no `native_decide`, hence no `Lean.ofReduceBool`.
+to isolate `√3·(c² − 2d²)`, and conclude with `√3 ∉ ℚ(√2)`.  The irrationality
+inputs (`¬ IsSquare n` for `n ∈ {3, 6}`) are discharged by an elementary divisor
+bound (`r ∣ n → r ≤ n`) plus a finite case split (`interval_cases`/`omega`),
+*not* by kernel `decide` (which gets stuck on `Nat.sqrt`) and not by
+`native_decide`.  The file is therefore genuinely axiom-free — no
+`Lean.ofReduceBool`, only the standard `propext`/`Classical.choice`/`Quot.sound`.
 
 Tags: number-theory, field-theory, multiquadratic, besicovitch, linear-independence
 -/
 
 import Mathlib.NumberTheory.Real.Irrational
-import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 
 namespace Sqrt2PlusSqrt3IrrationalOQ02
 
 open Real
 
-/-- `√3` is irrational (3 is not a perfect square). Axiom-free via kernel `decide`. -/
+/-- `√3` is irrational (`3` is not a perfect square). Axiom-free: `¬ IsSquare 3`
+is discharged by an elementary divisor bound (`r ∣ 3 → r ≤ 3`) and a finite case
+split, avoiding kernel `decide` (which gets stuck on `Nat.sqrt`). -/
 theorem irrational_sqrt_three : Irrational (Real.sqrt 3) :=
-  irrational_sqrt_ofNat_iff.mpr (by decide)
+  irrational_sqrt_ofNat_iff.mpr (by
+    rintro ⟨r, hr⟩
+    have hle : r ≤ 3 := Nat.le_of_dvd (by norm_num) ⟨r, hr⟩
+    interval_cases r <;> omega)
 
-/-- `√6` is irrational (6 is not a perfect square). Axiom-free via kernel `decide`. -/
+/-- `√6` is irrational (`6` is not a perfect square). Axiom-free: `¬ IsSquare 6`
+is discharged by an elementary divisor bound (`r ∣ 6 → r ≤ 6`) and a finite case
+split, avoiding kernel `decide` (which gets stuck on `Nat.sqrt`). -/
 theorem irrational_sqrt_six : Irrational (Real.sqrt 6) :=
-  irrational_sqrt_ofNat_iff.mpr (by decide)
+  irrational_sqrt_ofNat_iff.mpr (by
+    rintro ⟨r, hr⟩
+    have hle : r ≤ 6 := Nat.le_of_dvd (by norm_num) ⟨r, hr⟩
+    interval_cases r <;> omega)
 
 /-- No rational is a square root of `2`. (`√2` irrational, stated over ℚ.) -/
 theorem rat_sq_ne_two (q : ℚ) : q ^ 2 ≠ 2 := by
