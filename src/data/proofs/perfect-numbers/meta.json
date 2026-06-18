@@ -7,7 +7,7 @@
     "author": "Euclid (300 BCE), Euler (1747)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Perfect_number",
     "date": "300 BCE / 1747",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "perfect-numbers",
@@ -18,7 +18,7 @@
       "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/PerfectNumbers.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -50,9 +50,9 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 70,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 202,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The general results are kernel-checked, but establish that 6, 28, 496, and 8128 are perfect numbers via `native_decide` (Mersenne-prime checks), which the kernel accepts via `Lean.ofReduceBool` (compiler trust) rather than kernel reduction. Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
     "definitionCount": 0

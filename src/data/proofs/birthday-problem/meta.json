@@ -7,7 +7,7 @@
     "author": "von Mises (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Birthday_problem",
     "date": "1939",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "probability",
       "combinatorics",
@@ -20,7 +20,7 @@
     "additionalFiles": [
       "Proofs/BirthdayProblemAsymptotics.lean"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "prerequisites": [
       "Probability theory and finite sample spaces",
@@ -55,8 +55,8 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 93,
-    "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and no structure-encoded assumptions. All 27 theorems are proved using Mathlib (Fintype.card_embedding_eq, Nat.descFactorial, Fintype.card_fun) and native_decide for large integer comparisons (up to 146-digit numbers). No custom axioms or definition sorries.",
+    "axiomCount": 1,
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The general results are kernel-checked, but the concrete probability-threshold corollaries (e.g. `birthday_23_exceeds_half`, `birthday_22_below_half`) are discharged by `native_decide`, which the kernel accepts via `Lean.ofReduceBool` (compiler trust) rather than kernel reduction. Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "relatedProblems": [
       {
         "id": "ballot-problem",

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DivisibilityRules.lean",
     "tags": [
       "number-theory",
@@ -15,11 +15,11 @@
       "elementary-number-theory",
       "digit-sum"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "axiomCount": 1,
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The general results are kernel-checked, but the concrete divisibility-rule and digital-root corollaries (e.g. `six_dvd_iff`, `digitalRoot_999`, `rules_verification`) are discharged by `native_decide`, which the kernel accepts via `Lean.ofReduceBool` (compiler trust) rather than kernel reduction. Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "lineCount": 392,
     "theoremCount": 38,
     "definitionCount": 3,

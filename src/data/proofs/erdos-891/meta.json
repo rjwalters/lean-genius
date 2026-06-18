@@ -7,7 +7,7 @@
     "author": "Erdős-Selfridge (1967 problem), Schinzel (partial result)",
     "sourceUrl": "https://erdosproblems.com/891",
     "date": "1967",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos891Problem.lean",
     "tags": [
       "erdos",
@@ -18,7 +18,7 @@
       "intervals",
       "open"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 891,
     "erdosUrl": "https://erdosproblems.com/891",
@@ -64,9 +64,9 @@
       "nthPrime_zero/one/two/three/four_val: concrete values nthPrime k for k=0..4",
       "primorial_eq_primorialComp: bridges noncomputable primorial to computable primorialComp for k≤5"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 439,
-    "assumptions": "",
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The general results are kernel-checked, but the concrete \u03a9-value and verified-range corollaries (e.g. `bigOmega_eight`, `k2_verified_range`) are discharged by `native_decide`, which the kernel accepts via `Lean.ofReduceBool` (compiler trust) rather than kernel reduction. Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "theoremCount": 30,
     "definitionCount": 11
   },

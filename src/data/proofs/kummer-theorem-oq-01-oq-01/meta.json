@@ -4,7 +4,7 @@
   "slug": "kummer-theorem-oq-01-oq-01",
   "description": "Proves that v_p(multinomial(k₁,...,kₘ)) = total carries when adding k₁,...,kₘ in base p, using Mathlib's Nat.factorization_choose' (Kummer's theorem) and the binomial decomposition from OQ-01. Refutes the claim that base-p carry counting is 'not yet in Mathlib'. 0 sorries, 0 axioms.",
   "meta": {
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "combinatorics",
       "number-theory",
@@ -12,10 +12,10 @@
       "multinomial"
     ],
     "proofRepoPath": "Proofs/KummerTheoremOQ01OQ01.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Uses Nat.factorization_choose' (Kummer carries formula, in Mathlib 4.26.0), Nat.factorization_mul, Nat.log_mono_right, and List.map_congr_left.",
+    "axiomCount": 1,
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The general results are kernel-checked, but the concrete multinomial corollaries `multinomial_123_p2`, `multinomial_123_p3`, `multinomial_123_value` are discharged by `native_decide`, which the kernel accepts via `Lean.ofReduceBool` (compiler trust) rather than kernel reduction. Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "lineCount": 201,
     "theoremCount": 10,
     "definitionCount": 0,

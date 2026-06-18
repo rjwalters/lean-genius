@@ -4,7 +4,7 @@
   "slug": "sqrt2-irrational",
   "description": "The classic proof that √2 is irrational, generalized to show √n is irrational for any non-perfect-square n. Covers √2, √3, √5, √6, √7 and the general theorem.",
   "meta": {
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "classic",
@@ -14,7 +14,7 @@
     ],
     "mathlib_version": "4.26.0",
     "proofRepoPath": "Proofs/Sqrt2Irrational.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -51,9 +51,9 @@
     ],
     "dateAdded": "2025-12-21",
     "wiedijkNumber": 1,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 222,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The general results are kernel-checked, but the presented corollary `irrational_sqrt_six` is discharged by `native_decide` (the \u221a2 result itself is kernel-checked via Mathlib), which the kernel accepts via `Lean.ofReduceBool` (compiler trust) rather than kernel reduction. Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "theoremCount": 14,
     "definitionCount": 0
   },

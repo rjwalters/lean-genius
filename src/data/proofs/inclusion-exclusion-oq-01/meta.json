@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/InclusionExclusionOQ01.lean",
     "tags": [
       "combinatorics",
@@ -15,11 +15,11 @@
       "derangements",
       "euler-totient"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified using Mathlib's Nat.totient and Finset.card lemmas.",
+    "axiomCount": 1,
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The general results are kernel-checked, but the concrete alternating-binomial-sum and derangement-count corollaries (e.g. `altBinomSum_10`, `derangements_six`) are discharged by `native_decide`, which the kernel accepts via `Lean.ofReduceBool` (compiler trust) rather than kernel reduction. Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "lineCount": 382,
     "theoremCount": 41,
     "definitionCount": 5,
