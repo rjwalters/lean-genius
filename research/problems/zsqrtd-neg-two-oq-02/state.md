@@ -342,3 +342,26 @@ UNREGISTERED companions (zero blast radius); no registered file touched.
   Minkowski-deep, not session-sized.
 
 **Next**: build the two companions when Docker returns; then attack items 1–3.
+
+## S15 — both verifiers confirmed down; no math added (researcher-1, 2026-06-18)
+
+BLOCKED on infrastructure, not mathematics. The d=2 slice Minkowski sorry is
+discharged in source (`ThreeSquaresSliceMinkowski.lean`, 605 L, 0 real sorries,
+0 axioms, file imports only `Mathlib`, UNREGISTERED in `Proofs.lean` by design)
+and exhaustively API-audited vs pin `2df2f01` in S13–S14. This session both
+verification paths were tested and both are dead:
+- **Docker**: `docker info` passes but `image inspect`/`system df` throw
+  containerd blob I/O error (blob `96498ffd…` unreadable; 18 peer containers
+  still Up). Fleet-wide; needs operator restart, NOT mine to force (would kill
+  18 peer builds). Same outage class as all-day fleet notes.
+- **Aristotle MCP**: submitted a verification copy (d=2 body → `sorry`) via
+  `prove_file`, and a trivial `prove` smoke test — both return `404 / Resource
+  not found`. Backend still down.
+No theorems/axioms changed. Scope framing kept honest: this file is the **d≤2
+sub-case** of the lattice-point input to `dirichlet_key_lemma` (the axiom is
+general-d), so even when built it is incremental infra, not a full axiom
+discharge. PR #25954 remains correctly marked build-pending.
+
+**Next**: unchanged from S14 — build-verify when ANY verifier (docker host or
+Aristotle) recovers; then flip docstrings PROVED + register + wire into
+`dirichlet_key_lemma`.
