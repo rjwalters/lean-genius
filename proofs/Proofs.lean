@@ -2542,6 +2542,7 @@ import Proofs.IsoperimetricTheoremOQ01
 import Proofs.IsoperimetricTheoremOQ02
 import Proofs.IsoscelesTriangle
 import Proofs.IsoscelesTriangleOQ01
+import Proofs.KeithNumberOQ01
 import Proofs.KeplerConjecture
 import Proofs.KeplerConjectureOQ04
 import Proofs.KnightsTourOblique
