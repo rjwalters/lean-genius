@@ -47,14 +47,15 @@
       "Difference identity foot bc p − foot ab p = (c − a)(1 − b·conj p)/2 as a pure ring fact",
       "Collinearity reduced to the complex criterion w = conj w (simson_key), then to vanishing signed area w.im = 0 (simson_collinear)",
       "Whole theorem discharged by conj z = z⁻¹ substitution + field_simp + ring, no axioms or sorries",
-      "Bisection theorem: the Simson line of P passes through the midpoint of PH (H = orthocenter = A+B+C for the unit circumcircle), proved by the same conj z = z^-1 + field_simp + ring engine (simson_bisects_orthocenter_segment)"
+      "Bisection theorem: the Simson line of P passes through the midpoint of PH (H = orthocenter = A+B+C for the unit circumcircle), proved by the same conj z = z^-1 + field_simp + ring engine (simson_bisects_orthocenter_segment)",
+      "Antipodal perpendicularity: the Simson lines of P and its antipode -P are perpendicular (antipodal_simson_perp); the antipode flips conj p -> -conj p, collapsing the Hermitian product of the two foot-difference directions to |c-a|²/4·(conj b·p - b·conj p), purely imaginary, so its real part vanishes — same conj z = z⁻¹ + field_simp + ring engine"
     ],
     "dateAdded": "2026-06-16",
     "axiomCount": 0,
-    "lineCount": 203,
+    "lineCount": 237,
     "assumptions": "0 axioms. 0 sorries. Fully verified. Circumcircle normalised to the unit circle (Complex.normSq = 1) without loss of generality; on that normalisation the orthocenter is A+B+C.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 3
   },
   "sections": [
@@ -153,9 +154,9 @@
       "ComplexConjugate"
     ],
     "namespace": "SimsonLineTheorem",
-    "lineCount": 203,
+    "lineCount": 237,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 3,
     "sorries": 0,
     "path": "Proofs/SimsonLineTheorem.lean"
