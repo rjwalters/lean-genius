@@ -50,6 +50,14 @@
   },
   "sections": [
     {
+      "id": "imports-and-docstring",
+      "title": "Imports, Docstring, and Roadmap",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring stating Midy's theorem (for a prime p coprime to the base, an even period 2k of 1/p splits the repetend into two halves summing to b^k − 1), the integer model N = (b^d − 1)/p of the repetend, and a four-step roadmap (arithmetic kernel → order 2k forces x^k = −1 → even period gives p ∣ b^k + 1 → assembled theorem). Imports ZMod.Basic, GroupTheory.OrderOfElement, and Tactic; opens the MidyTheorem namespace.",
+      "mathContext": "Repetend $N = (b^{2k}-1)/p$; the claim is $\\lfloor N/b^k\\rfloor + (N \\bmod b^k) = b^k - 1$ whenever the period of $b$ mod $p$ is the even number $2k$."
+    },
+    {
       "id": "midy-kernel",
       "title": "Arithmetic Kernel",
       "startLine": 39,
