@@ -1,5 +1,30 @@
 [
   {
+    "id": "hilbert-14-oq-04-header",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 3,
+      "endLine": 31
+    },
+    "type": "context",
+    "title": "OQ-04 Framing: From an Unformalizable Meta-Question to a Concrete Target",
+    "content": "The docstring is explicit that the headline OQ-04 — the existence of *uniform effective algorithms* for finite generation of non-reductive invariant rings — is not expressible as a single Lean theorem, since it quantifies over infinite classes of groups. Rather than state a vacuous placeholder, the file scaffolds the algorithmically refinable sibling target: **Hilbert finiteness** for invariant rings of finite-group linear actions on `MvPolynomial`. The docstring pins the exact proof architecture as a chain of five Mathlib bearers (`Algebra.IsInvariant`, `IsInvariant.isIntegral`, `FiniteType.of_restrictScalars_finiteType`, `IsIntegral.finite`, and Artin-Tate `fg_of_fg_of_fg`), all signatures fixed at the v4.26.0 lake SHA. The Scope block draws the IN/OUT line honestly: the qualitative finiteness is proved; Noether's degree bound (`gens ⊆ deg ≤ |G|`), Weitzenböck's locally nilpotent derivations, and the Nagata counterexample are all deferred. This is a model of recording an open question's *formalizable shadow* without overclaiming the question itself.",
+    "mathContext": "OQ-04 (uniform algorithms over infinite group classes) is not a single Lean statement; the formalizable shadow is $R^G$ finitely generated for each finite $G$ — the qualitative half of Noether 1916.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Hilbert's 14th problem",
+      "non-reductive invariant theory",
+      "Noether's finiteness theorem (1916)",
+      "Nagata counterexample",
+      "formalizable vs unformalizable open questions"
+    ],
+    "prerequisites": [
+      "invariant rings R^G",
+      "finite generation of k-algebras",
+      "Mathlib invariant-theory API"
+    ]
+  },
+  {
     "id": "hilbert-14-oq-04-isinvariant",
     "proofId": "hilbert-14-oq-04",
     "range": {
