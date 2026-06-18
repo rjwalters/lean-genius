@@ -38,14 +38,13 @@ Beyond the structural heart, this file now also proves:
   homomorphisms `T`, `T'` that intertwine the two boundary folds.
 * `sb_surjective` — **surjectivity**: every reduced positive rational `a/b` labels
   some node, by strong induction on `a + b` via the subtractive Euclidean descent.
-
-## Next steps (not in this file)
-
-* Injectivity: the mediant strictly separates the two subtrees (now available as
-  `sb_left_lt_mediant`/`sb_mediant_lt_right`), so the labelled value is strictly
-  monotone along the in-order traversal — combine with the transfer lemmas to show
-  distinct paths give distinct labels. Together with `sb_surjective` and
-  `sb_isCoprime` this yields the full bijection with the reduced positive rationals.
+* `sb_injective` — **injectivity**: a path is determined by its label. The sign of
+  `num − den` recovers the first move (`L ⟹ num < den`, `R ⟹ num > den`, root
+  `⟹ num = den = 1`) via the transfer lemmas, so a structural induction on the path
+  forces equality.
+* `sb_bijection` — **the full bijection** (this OQ): `(a, b)` is a reduced positive
+  rational `⟺` it is the label of a *unique* Stern–Brocot path. Combines
+  surjectivity, injectivity, positivity, and lowest terms.
 -/
 
 namespace SternBrocot
@@ -295,5 +294,115 @@ theorem sb_surj_aux : ∀ (n : ℕ) (a b : ℤ), (a + b).toNat = n →
 theorem sb_surjective (a b : ℤ) (ha : 1 ≤ a) (hb : 1 ≤ b)
     (hcop : IsCoprime a b) : ∃ p : List Bool, sbNum p = a ∧ sbDen p = b :=
   sb_surj_aux (a + b).toNat a b rfl ha hb hcop
+
+/-! ## Injectivity: distinct paths carry distinct labels
+
+The comparison of `sbNum p` against `sbDen p` recovers the *first* move of `p`.
+By the transfer lemmas, with `1 ≤ sbNum`, `1 ≤ sbDen` everywhere:
+
+* prepending `L` (`false`) gives `(num, den) ↦ (num, num + den)`, so `num < den`;
+* prepending `R` (`true`)  gives `(num, den) ↦ (num + den, den)`, so `num > den`;
+* the root `[]` is the unique node with `num = den = 1`.
+
+Hence two paths with the same label must agree on their first move; stripping it
+off and recursing (a structural induction on the path) forces the whole paths to
+coincide. No interval/order machinery is needed — the sign of `num − den` alone
+pins down each step.
+-/
+
+/-- **Injectivity**: a Stern–Brocot path is uniquely determined by its label.
+If two paths carry the same numerator *and* denominator, they are equal. -/
+theorem sb_injective : ∀ (p q : List Bool),
+    sbNum p = sbNum q → sbDen p = sbDen q → p = q := by
+  intro p
+  induction p with
+  | nil =>
+    intro q hn hd
+    have h1 := sb_root.1
+    have h2 := sb_root.2
+    cases q with
+    | nil => rfl
+    | cons c q' =>
+      exfalso
+      have hnq := sbNum_pos q'
+      have hdq := sbDen_pos q'
+      cases c with
+      | false =>
+        rw [sbNum_false_cons] at hn
+        rw [sbDen_false_cons] at hd
+        omega
+      | true =>
+        rw [sbNum_true_cons] at hn
+        rw [sbDen_true_cons] at hd
+        omega
+  | cons b p' ih =>
+    intro q hn hd
+    have hnp := sbNum_pos p'
+    have hdp := sbDen_pos p'
+    cases b with
+    | false =>
+      cases q with
+      | nil =>
+        exfalso
+        have h2 := sb_root.2
+        rw [sbDen_false_cons] at hd
+        omega
+      | cons c q' =>
+        have hnq := sbNum_pos q'
+        have hdq := sbDen_pos q'
+        cases c with
+        | false =>
+          rw [sbNum_false_cons, sbNum_false_cons] at hn
+          rw [sbDen_false_cons, sbDen_false_cons] at hd
+          have hd' : sbDen p' = sbDen q' := by omega
+          rw [ih q' hn hd']
+        | true =>
+          exfalso
+          rw [sbNum_false_cons, sbNum_true_cons] at hn
+          rw [sbDen_false_cons, sbDen_true_cons] at hd
+          omega
+    | true =>
+      cases q with
+      | nil =>
+        exfalso
+        have h1 := sb_root.1
+        rw [sbNum_true_cons] at hn
+        omega
+      | cons c q' =>
+        have hnq := sbNum_pos q'
+        have hdq := sbDen_pos q'
+        cases c with
+        | false =>
+          exfalso
+          rw [sbNum_true_cons, sbNum_false_cons] at hn
+          rw [sbDen_true_cons, sbDen_false_cons] at hd
+          omega
+        | true =>
+          rw [sbNum_true_cons, sbNum_true_cons] at hn
+          rw [sbDen_true_cons, sbDen_true_cons] at hd
+          have hn' : sbNum p' = sbNum q' := by omega
+          rw [ih q' hn' hd]
+
+/-! ## The full bijection -/
+
+/-- **Full bijection** (the open question, now settled): a pair `(a, b)` of
+integers is a reduced positive rational *if and only if* it is the label of a
+**unique** Stern–Brocot path. Forward direction packages surjectivity
+(`sb_surjective`) with injectivity (`sb_injective`); the reverse repackages
+positivity (`sbNum_pos`, `sbDen_pos`) and lowest terms (`sb_isCoprime`). -/
+theorem sb_bijection (a b : ℤ) :
+    (1 ≤ a ∧ 1 ≤ b ∧ IsCoprime a b) ↔
+      ∃! p : List Bool, sbNum p = a ∧ sbDen p = b := by
+  constructor
+  · rintro ⟨ha, hb, hcop⟩
+    obtain ⟨p, hp1, hp2⟩ := sb_surjective a b ha hb hcop
+    refine ⟨p, ⟨hp1, hp2⟩, ?_⟩
+    rintro q ⟨hq1, hq2⟩
+    exact sb_injective q p (by rw [hq1, hp1]) (by rw [hq2, hp2])
+  · rintro ⟨p, ⟨hp1, hp2⟩, _⟩
+    refine ⟨?_, ?_, ?_⟩
+    · rw [← hp1]; exact sbNum_pos p
+    · rw [← hp2]; exact sbDen_pos p
+    · rw [← hp1, ← hp2]; exact sb_isCoprime p
 
 end SternBrocot
