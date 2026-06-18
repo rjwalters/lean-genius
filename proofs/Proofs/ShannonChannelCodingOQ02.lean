@@ -33,11 +33,11 @@ namespace InformationTheory.ChannelCoding.BSCCapacity
 noncomputable def uniformBool : InputDist Bool where
   p := fun _ => 1 / 2
   nonneg := fun _ => by norm_num
-  sum_one := by simp [Fintype.sum_bool]; ring
+  sum_one := by rw [Fintype.sum_bool]; norm_num
 
 /-- Uniform input on Bool is strictly positive. -/
 lemma uniformBool_pos (b : Bool) : 0 < uniformBool.p b := by
-  simp [uniformBool]; norm_num
+  norm_num [uniformBool]
 
 /-! ## BSC properties for 0 < p < 1 -/
 
@@ -91,8 +91,7 @@ theorem mi_eq_hY_sub_hYgivenX {α β : Type*} [Fintype α] [Fintype β]
   have hp' := transposeJoint_nonneg hp
   have hsum' := transposeJoint_sum hsum
   rw [chain_rule hp' hsum']
-  congr 1
-  ext y; simp [transposeJoint]
+  congr 1 <;> ext y <;> simp [transposeJoint]
 
 /-! ## BSC conditional output entropy H(Y|X) = h(p) -/
 
@@ -141,7 +140,7 @@ theorem bsc_conditional_output_entropy {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)
   -- Factor out inp.p(b): ∑ b, ∑ a, inp.p(b) * (...) = ∑ b, inp.p(b) * ∑ a, (...)
   simp_rw [← Finset.mul_sum]
   -- Use BSC symmetry: ∑ a, ch.W(b,a) * log(ch.W(b,a)) is constant for all b
-  simp_rw [bsc_output_entropy_per_input hp0 hp1]
+  simp_rw [hch_def, bsc_output_entropy_per_input hp0 hp1]
   -- Factor: ∑ b, inp.p(b) * c = c * ∑ b, inp.p(b) = c * 1 = c
   rw [← Finset.sum_mul, inp.sum_one, one_mul]
   -- Goal: -(p * log p + (1-p) * log(1-p)) = h p
@@ -154,13 +153,12 @@ theorem bsc_conditional_output_entropy {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)
 theorem entropy_uniform_bool :
     shannonEntropy (fun (_ : Bool) => (1 : ℝ) / 2) = Real.log 2 := by
   unfold shannonEntropy
-  simp only [Fintype.sum_bool]
   have hne : ¬((1 : ℝ) / 2 = 0) := by norm_num
-  rw [if_neg hne, if_neg hne]
+  rw [Fintype.sum_bool]
+  simp only [if_neg hne]
   -- Goal: -(1/2 * log(1/2) + 1/2 * log(1/2)) = log 2
-  have h1 : (1 : ℝ) / 2 * Real.log (1 / 2) + 1 / 2 * Real.log (1 / 2) =
-      Real.log (1 / 2) := by ring
-  rw [h1, show (1 : ℝ) / 2 = (2 : ℝ)⁻¹ from by norm_num, Real.log_inv, neg_neg]
+  rw [show (1 : ℝ) / 2 = (2 : ℝ)⁻¹ from by norm_num, Real.log_inv]
+  ring
 
 /-! ## MI computations for BSC -/
 
@@ -221,7 +219,7 @@ theorem bsc_mi_le_general {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)
   · -- Some input prob is 0 → input is point mass on Bool → H(X) = 0 → MI ≤ 0
     push_neg at h
     obtain ⟨b₀, hb₀⟩ := h
-    have hb₀_eq : inp.p b₀ = 0 := le_antisymm (not_lt.mp hb₀) (inp.nonneg b₀)
+    have hb₀_eq : inp.p b₀ = 0 := le_antisymm hb₀ (inp.nonneg b₀)
     set ch := bsc p (le_of_lt hp0) (le_of_lt hp1)
     have hjoint_nn : ∀ xy, 0 ≤ jointDist ch inp xy :=
       fun xy => mul_nonneg (inp.nonneg xy.1) (ch.nonneg xy.1 xy.2)
@@ -286,12 +284,11 @@ theorem random_coding_existence {ι : Type*} [Fintype ι] [Nonempty ι]
   by_contra h
   push_neg at h
   have hcard_pos : (0 : ℝ) < Fintype.card ι := Nat.cast_pos.mpr Fintype.card_pos
-  have : ε * Fintype.card ι < ∑ i : ι, error i :=
-    calc ε * Fintype.card ι
-        = ∑ _ : ι, ε := by rw [Finset.sum_const, smul_eq_mul, Finset.card_univ]
-      _ < ∑ i : ι, error i :=
-        Finset.sum_lt_sum (fun i _ => le_of_lt (h i))
-          ⟨Classical.arbitrary ι, Finset.mem_univ _, h _⟩
-  linarith [div_le_iff hcard_pos |>.mpr (le_of_lt this)]
+  have hlt : ∑ _ : ι, ε < ∑ i : ι, error i :=
+    Finset.sum_lt_sum (fun i _ => le_of_lt (h i))
+      ⟨Classical.arbitrary ι, Finset.mem_univ _, h _⟩
+  rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at hlt
+  rw [div_le_iff₀ hcard_pos] at avg_bound
+  linarith [hlt, avg_bound]
 
 end InformationTheory.ChannelCoding.BSCCapacity
