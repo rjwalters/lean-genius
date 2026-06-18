@@ -1,8 +1,8 @@
 {
   "slug": "four-square-distribution-oq-04",
   "title": "Type-Decomposition of Sums of 2k Squares via the Hyperoctahedral Group",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "DONE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -26,20 +26,18 @@
     "goal": "Formalize the orbit-stabilizer decomposition for r_{2k}(n) (at least fixed 2k in {4,6,8}): define the signed-permutation action, prove orbit size = 2^{#nonzero}*(2k)!/prod m_i!, and recover the total as a sum over shapes."
   },
   "currentState": {
-    "phase": "ACT (arrangement_card discharged 2026-06-18, researcher-3, build-pending)",
+    "phase": "DONE (build-verified & registered 2026-06-18, researcher-12)",
     "since": "2026-06-15T07:05:00.000Z",
-    "iteration": 6,
-    "focus": "S6 ACT (researcher-1; build-pending; triple blackout re-confirmed live: docker rc=124, no local Mathlib, Aristotle prove 404 via mcp-smoke-test). Formalized the 2k=8 (|B8|=10321920) case, the example named in the OQ and the only one of {4,6,8} left: new FourSquareDistributionOQ04M8.lean mirrors the PROVEN computational route (RepType8 + (star)=8!/prod count! * 2^nonzero, native_decide contributions + r8(n) totals for n in {1..8,12}; all-ones shape at n=8 gives 2^8=256). Cert verify_r8_decomposition.py PASS (9 n: exhaustive shapes vs file, (star) vs brute signed-ordering count, sum==r8(n) vs convolution). Also refined the residue analysis: arrangement_card has TWO sub-residues lacking direct Mathlib lemmas (orbit-surjectivity + stabilizer order), not one -- corrects prior 'easy half' framing.",
-    "blockers": [
-      "Docker build verification pending (gated detached build under host contention ~9 lean containers / load ~18); arrangement_card itself is now sorry-free pending compile confirmation."
-    ],
-    "nextAction": "ACT (researcher-3, 2026-06-18): arrangement_card — the sole combinatorial residue — is now DISCHARGED in FourSquareDistributionOQ04ArrangeProof.lean (sorry-free). The two prior sorrys (orbit<->arrangements bijection + orbit-stabilizer assembly) are replaced by an ELEMENTARY Finset fiber-counting proof of arrangements_card_mul_prod_count: Finset.card_eq_sum_card_fiberwise for the precomposition map sigma |-> g0 . sigma from Perm(Fin m) onto arrangements s, each fiber over h=g0.sigma0 a coset of the stabilizer (Finset.card_nbij' sigma|->sigma*sigma0^-1) of size prod count! via the already-proved stabilizer_card_eq_prod_count. This avoids MulAction.orbit and its orbit-Fintype synthesis entirely (the landmine that stalled prior sessions). Added nonempty_arrangements (witness from s.toList via List.ofFn_get) + folded in the converse lemmas (Tuple.sort + List.Perm.eq_of_sortedLE). All names re-verified vs offline Mathlib pin 2df2f0150c. BUILD-PENDING under a gated detached Docker build (sentinel /tmp/r3-arrcard.done). NEXT after green: (1) register the OQ04 family in Proofs.lean; (2) assemble fiber_card_eq_contribution in Decomp.lean from arrangement_card_div_form x signFiber_card, discharging Decomp.lean's lone sorry; (3) wire to the headline OQ-04 statement.",
+    "iteration": 7,
+    "focus": "S7 DONE (researcher-12): BUILD-VERIFIED the full uniform OQ-04 stack and registered it. Prior sessions claimed 'sorry-free build-pending' but the stack had NEVER compiled. FourSquareDistributionOQ04ArrangeProof.lean carried 3 genuine build errors: (1) factorial `!` notation out of scope (only `open Finset`) -> added `open scoped Nat`; (2) List.Perm `~` notation out of scope -> added `open scoped List`; (3) the set-builder `{σ ∈ (univ : Finset (Perm (Fin m))) | g₀ ∘ (σ : Fin m → Fin m) = h}` with an UNANNOTATED binder + a (σ : Fin m → Fin m) ascription forced σ's type to a function, coercing univ into an IMAGE of functions (rendered `do let a ← univ; pure ⇑a`), a Finset of the wrong element type -> apply card_nbij'/Fintype.card_subtype/card_eq_sum_card_fiberwise all failed. Fix: rewrite the three set-builders as `(univ).filter (fun σ : Equiv.Perm (Fin m) => g₀ ∘ (σ : Fin m → Fin m) = X)` (annotate the binder, matching hmaps). With those, `lake build Proofs.FourSquareDistributionOQ04Bridge` SUCCEEDED (Docker, 7748 jobs, ~40min). Registered Decomp/Arrange/ArrangeProof/Keystone/Bridge in Proofs.lean.",
+    "blockers": [],
+    "nextAction": "DONE — the OQ-04 combinatorial generalization is affirmatively answered with a fully kernel-verified uniform proof for ALL m: FourSquareDistributionOQ04Bridge.reps_card_eq_sum_shapeContribution : ∀ m n, #(reps m n) = ∑ s ∈ image shape (reps m n), shapeContribution m s, where #(reps m n) is the genuine representation count r_m(n) (lossless via mem_reps_iff). 0 axioms, 0 sorries, no native_decide across the Decomp/Arrange/ArrangeProof/Keystone/Bridge stack; all registered in Proofs.lean and build-verified. The only REMAINING (separate, arithmetic) work is to instantiate the decomposition with explicit r_{2k}(n) totals from Jacobi/modular formulas — but the structural OQ is closed. Note: companion FourSquareDistributionOQ04Converse.lean is now a redundant orphan (its lemmas are folded into ArrangeProof) and carries the same latent `~` notation gap; left unregistered.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 2
     },
-    "lastUpdate": "2026-06-15T14:05:00.000Z"
+    "lastUpdate": "2026-06-18T00:00:00.000Z"
   },
   "knowledge": {
     "progressSummary": "S(researcher-3, 2026-06-18, ACT) FULL OQ-04 STACK SORRY-FREE (build-pending verification): The sole remaining residue arrangement_card was discharged sorry-free in ArrangeProof.lean (prior PR #25542); this session WIRED it into the live stack and closed the last open input. (1) Arrange.lean:133 arrangement_card now delegates to ArrangeProof.arrangement_card (import added; identical arrangements defs ⇒ defeq transfer). (2) Decomp.lean:157 sorry eliminated by lifting the orbit-size claim fiber_card_eq_contribution to an explicit hypothesis FiberFormula m n consumed by reps_card_eq_sum_contribution (Keystone-style; deleted theorem had no external callers). (3) Bridge.fiberFormula_holds discharges FiberFormula m n for ALL m,n via fiber_card_eq_shapeContribution. Net: the headline answer Bridge.reps_card_eq_sum_shapeContribution (r_m(n)=Σ_shapes 2^#nonzero·m!/∏count!) is now transitively sorry-free, and Decomp.reps_card_eq_sum_contribution m n (fiberFormula_holds m n) gives the same. grep confirms 0 real sorry tactics across all 7 stack files. PENDING: Bridge docker build green (cold cache this session).",

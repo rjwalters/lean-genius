@@ -2363,6 +2363,11 @@ import Proofs.FourColorTheoremOQ02
 import Proofs.FourSquareDistribution
 import Proofs.FourSquareDistributionOQ01
 import Proofs.FourSquareDistributionOQ04
+import Proofs.FourSquareDistributionOQ04Arrange
+import Proofs.FourSquareDistributionOQ04ArrangeProof
+import Proofs.FourSquareDistributionOQ04Bridge
+import Proofs.FourSquareDistributionOQ04Decomp
+import Proofs.FourSquareDistributionOQ04Keystone
 import Proofs.FourSquareDistributionOQ04M8
 import Proofs.FourSquareDistributionOQ04Sign
 import Proofs.FourSquareRepresentations
