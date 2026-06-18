@@ -2,10 +2,10 @@
   "id": "birthday-problem-oq-01",
   "title": "Birthday Problem OQ01: Expected Number of Shared Birthday Pairs",
   "slug": "birthday-problem-oq-01",
-  "description": "The expected number of shared birthday pairs among n people with d equally likely birthdays is C(n,2)/d = n(n-1)/(2d). Proved: formula, monotonicity, variance bounds, threshold computations (n=28 first exceeds 1 pair for d=365), and general threshold criterion.",
+  "description": "The expected number of shared birthday pairs among n people with d equally likely birthdays is C(n,2)/d = n(n-1)/(2d). Proved: formula, monotonicity, variance bounds, threshold computations (n=28 first exceeds 1 pair for d=365), and general threshold criterion. The concrete triple/quad threshold values and the thresholds_summary record are discharged by native_decide (relies on Lean.ofReduceBool).",
   "meta": {
     "author": "Lean Genius OQ-01",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BirthdayProblemOQ01.lean",
     "tags": [
       "probability",
@@ -14,12 +14,12 @@
       "expected-value",
       "variance"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 513,
     "theoremCount": 53,
-    "assumptions": "None. All 53 theorems fully proved using Mathlib combinatorics.",
+    "assumptions": "Lean.ofReduceBool. The concrete threshold deliverables — std_expected_40/39/38 (pairs cross 2), std_expected_triples_94/93 (triples cross 1 at n=94), std_expected_quads_188/187 (quads cross 1 at n=188), and the thresholds_summary record (Part XV) — are discharged by native_decide, which trusts compiler kernel reduction and so depends on the Lean.ofReduceBool axiom (#print axioms lists it). No literal `axiom` declarations exist, so leanFile.axiomCount stays 0. The abstract results (expectedPairs_eq_rational, monotonicity, variance, the general threshold criterion expectedPairs_gt_of_choose_gt) and the n=28 pair threshold (norm_num) are native_decide-free.",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -190,7 +190,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Expected birthday pairs fully formalized: 53 theorems, 0 sorries, 0 axioms. Formula E[X] = C(n,2)/d proved with monotonicity, variance bounds, and threshold computations.",
+    "summary": "Expected birthday pairs fully formalized: 53 theorems, 0 sorries. Formula E[X] = C(n,2)/d proved with monotonicity, variance bounds, and threshold computations; the concrete triple/quad threshold values are verified by native_decide (relies on Lean.ofReduceBool).",
     "implications": "The linearity-of-expectation approach provides clean proofs without independence assumptions. The variance bound shows birthday pair counts are well-concentrated, which has applications in collision probability analysis.",
     "openQuestions": [
       "Can the distribution of X (not just E[X]) be analyzed formally? The exact distribution follows a Poisson-binomial law.",
