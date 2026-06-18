@@ -41,7 +41,7 @@
     "assumptions": "4 axioms inherited from ShannonChannelCoding.lean: fano_inequality, channel_coding_achievability, channel_coding_converse, bsc_capacity_eq. 0 sorries. Note: bsc_capacity_proved in this file independently proves bsc_capacity_eq, but the import still carries those axioms in scope.",
     "dateAdded": "2026-03-30",
     "axiomCount": 4,
-    "lineCount": 297,
+    "lineCount": 294,
     "prerequisites": [
       "Shannon entropy and mutual information (ShannonEntropy.lean)",
       "Discrete memoryless channels and BSC definition (ShannonChannelCoding.lean)",
@@ -177,7 +177,7 @@
   ],
   "leanFile": {
     "axiomCount": 0,
-    "lineCount": 297,
+    "lineCount": 294,
     "path": "Proofs/ShannonChannelCodingOQ02.lean",
     "sorries": 0,
     "definitionCount": 1,
