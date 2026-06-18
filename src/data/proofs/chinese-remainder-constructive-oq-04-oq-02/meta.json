@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Researcher",
     "date": "2026-05-06",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ChineseRemainderConstructiveOQ04OQ02.lean",
     "tags": [
       "number-theory",
@@ -15,7 +15,7 @@
       "connection",
       "chinese-remainder-theorem"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -57,10 +57,10 @@
     ],
     "references": [],
     "dateAdded": "2026-05-06",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 180,
     "mathlib_version": "4.26.0",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Depends on Lean.ofReduceBool. The named contribution example_8_mod3_mod5 (x ≡ 2 mod 3, x ≡ 3 mod 5 has unique minimal solution 8) discharges its congruence-membership conditions solely via native_decide, which trusts the Lean compiler's kernel reduction and so adds the Lean.ofReduceBool axiom (#print axioms lists it). The eight ring-theoretic bridge contributions (satisfies_pair_iff, chineseRemainder_natCast, satisfies_pair_iff_chineseRemainder, chineseRemainder_symm_val_lt, chineseRemainder_symm_satisfies, crt_min_eq_chineseRemainder_val, crt_exists_via_zmod, crt_unique_two_fold) are symbolic and native_decide-free. No literal axiom declarations or sorries (leanFile.axiomCount remains 0).",
     "theoremCount": 12,
     "definitionCount": 0
   },
