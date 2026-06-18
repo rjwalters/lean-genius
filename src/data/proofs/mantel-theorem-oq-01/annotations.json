@@ -1,5 +1,29 @@
 [
   {
+    "id": "mantel-oq01-ann-import",
+    "proofId": "mantel-theorem-oq-01",
+    "range": { "startLine": 1, "endLine": 5 },
+    "type": "context",
+    "title": "A Single `import Mathlib`: Standing on Brandt's Theorem",
+    "content": "The file imports all of Mathlib for one reason: it needs SimpleGraph.colorable_of_cliqueFree_lt_minDegree, which lives in Mathlib.Combinatorics.SimpleGraph.FiveWheelLike and encodes Stephan Brandt's proof of the general Andrásfai–Erdős–Sós colorability theorem. Because the heavy structural work is already upstream, the entry's own contribution is deliberately thin — a numeral specialization and its contrapositive — and carries no new axioms or sorries.",
+    "mathContext": "Brandt (general AES): a $K_{r+1}$-free graph with $\\frac{(3r-4)n}{3r-1} < \\delta(G)$ is $r$-colorable.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "FiveWheelLike", "Andrásfai–Erdős–Sós theorem", "graph colorability"],
+    "prerequisites": ["simple graphs", "clique-free graphs"]
+  },
+  {
+    "id": "mantel-oq01-ann-setup",
+    "proofId": "mantel-theorem-oq-01",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "context",
+    "title": "Ambient Setup: Finite Graphs with Decidable Adjacency",
+    "content": "The variable block fixes a finite vertex type V with a graph G whose adjacency relation is decidable: [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj]. These are exactly the typeclass assumptions under which G.minDegree is well-defined (a minimum over the finite set of vertex degrees) and G.CliqueFree 3 is a meaningful finite condition. Stating the lemmas at this generality — rather than over a concrete Fin n — keeps them drop-in usable for whatever survivor subgraph the degree-cleaning step produces.",
+    "mathContext": "$\\delta(G) = \\min_{v \\in V} \\deg(v)$, defined for finite $V$ with decidable $\\mathrm{Adj}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimum degree", "Fintype", "DecidableRel", "finite graphs"],
+    "prerequisites": ["typeclasses", "SimpleGraph.minDegree"]
+  },
+  {
     "id": "mantel-oq01-ann-docstring",
     "proofId": "mantel-theorem-oq-01",
     "range": { "startLine": 7, "endLine": 42 },
