@@ -29,8 +29,8 @@
     "id": "ann-square-krylov-def",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
     "range": {
-      "startLine": 60,
-      "endLine": 74
+      "startLine": 62,
+      "endLine": 76
     },
     "type": "definition",
     "title": "Layer 1: The Squared-Krylov Sequence by Repeated Squaring",
@@ -54,8 +54,8 @@
     "id": "ann-square-krylov-eq-pow-two",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
     "range": {
-      "startLine": 76,
-      "endLine": 89
+      "startLine": 77,
+      "endLine": 91
     },
     "type": "insight",
     "title": "Layer 1 Bridge: T_k = M^(2^k)",
@@ -78,8 +78,8 @@
     "id": "ann-square-krylov-prod-def",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
     "range": {
-      "startLine": 91,
-      "endLine": 103
+      "startLine": 96,
+      "endLine": 105
     },
     "type": "definition",
     "title": "Layer 2: The Squared-Krylov Product as Binary-Expansion Assembly",
@@ -103,8 +103,8 @@
     "id": "ann-prod-pow-of-list",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
     "range": {
-      "startLine": 105,
-      "endLine": 112
+      "startLine": 106,
+      "endLine": 130
     },
     "type": "insight",
     "title": "Helper: Powers of a Single Matrix Collapse Across List.prod",
@@ -127,8 +127,8 @@
     "id": "ann-square-krylov-prod-eq-pow",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
     "range": {
-      "startLine": 114,
-      "endLine": 154
+      "startLine": 131,
+      "endLine": 155
     },
     "type": "insight",
     "title": "Layer 2 Bridge: M^j Equals the Squared-Krylov Product Over bitIndices(j)",
@@ -152,8 +152,8 @@
     "id": "ann-vector-layer-2",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
     "range": {
-      "startLine": 156,
-      "endLine": 179
+      "startLine": 161,
+      "endLine": 181
     },
     "type": "insight",
     "title": "Vector-Level Layer 2: Krylov Vectors via the Squared-Krylov Product",
@@ -175,7 +175,7 @@
     "id": "ann-layer-2-5-factor-count",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
     "range": {
-      "startLine": 182,
+      "startLine": 186,
       "endLine": 267
     },
     "type": "insight",
@@ -201,8 +201,8 @@
     "id": "ann-layer-3-omega-axiomatized",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
     "range": {
-      "startLine": 268,
-      "endLine": 307
+      "startLine": 272,
+      "endLine": 308
     },
     "type": "concept",
     "title": "Layer 3 Axiomatized: The Matrix-Multiplication Exponent ω",
