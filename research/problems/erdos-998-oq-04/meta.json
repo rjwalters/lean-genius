@@ -29,16 +29,16 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-18T00:00:00Z",
-    "iteration": 6,
-    "focus": "researcher-1, 2026-06-18 (S6): documentation/decomposition session — both backends down (Aristotle MCP prove → 404 'Resource not found'; Docker gated at 15 build containers / ~5.7 GiB of 7.65 GiB VM, OOM-unsafe), so no Lean shipped. Frontier unchanged from S5: 1 sorry = the N≥2 case of exists_gap_triple, build-verified green, registered. Sharpened S5's prose proof-path into an explicit 4-step lemma scaffold (in-file comment lines 138–204): STEP A forwardGap α N P_k = min_{j≠k} Int.fract((j−k)α) via integer-shift invariance of Int.fract; STEP B split index diff on sign → forwardGap = min(F_k,B_k) with forward-return min F_k and backward-return min B_k; STEP C subset-min bounds F_k≥a, B_k≥b and full-range attainment F_0=a, B_{N−1}=b (so a,b are attained gap lengths and forwardGap ≥ min a b); STEP D (sole hard, known-not-open crux) with p,q the least minimizers of a,b show min(F_k,B_k) ∈ {a,b,a+b}. STEPS A–C are routine/provable; STEP D is the genuine van Ravenstein content. Comments-only edit — sorry count unchanged (1), file stays build-verified.",
+    "iteration": 9,
+    "focus": "researcher-4, 2026-06-18 (S9): backend re-probe + CALIBRATION/state-sync. Re-confirmed Aristotle MCP prove_file -> 404 'Resource not found' (now S4-S9, consistently offline). Docker still OOM-gated (15 lean-build containers, load ~12 on a 7.65 GiB VM) -> cannot verify any manual Lean, none shipped. Reconciled stale workspace state: since this S6 record, S7 landed STEP A as named lemma fract_fract_sub_fract (PR #25755) and S8 re-verified the witnesses sound (PR #25879); frontier UNCHANGED = exactly 1 sorry, the N>=2 case of exists_gap_triple (STEP D, line 297), 0 axioms, build-verified, registered. CALIBRATION: this target has been re-claimed across 8+ sessions on the expectation it is 'nearly done'. It is NOT a quick win. STEPS A-C are routine, but STEP D is the full Sos-Suranyi-Swierczkowski / van Ravenstein three-gap classification -- a research-grade formalization (the existing Coq proof is hundreds of lines). The subtle core is that min(F_k,B_k) cannot land strictly inside (min a b, a+b); a naive 'p-in-range => F_k=a' case split does NOT close it because B_k can be < a. Realistic single-session closure requires a working Aristotle prove_file, NOT manual Lean under Docker contention.",
     "blockers": [
-      "Aristotle MCP returns 404 'Resource not found' (S4/S5/S6) — the right tool for this KNOWN-math sorry is offline.",
-      "Docker gated this cycle: 15 lean-build containers, ~5.7 GiB of a 7.65 GiB VM — a new build is OOM-unsafe (defer if >8 containers / >5 GiB). Cannot verify any manual Lean changes, so none were shipped.",
-      "exists_gap_triple (STEP D) now stuck across sessions 3–6 → BLOCKED on backend availability, not on mathematical insight."
+      "Aristotle MCP returns 404 'Resource not found' across S4-S9 -- the right tool for this known-math sorry is offline; this is the BINDING blocker.",
+      "Docker OOM-gated (15 containers, load ~12 / 7.65 GiB VM): no safe build, so no manual Lean can be verified or shipped.",
+      "exists_gap_triple STEP D is research-grade hard (full three-gap classification), NOT a routine manual sorry -- do not re-claim expecting a quick close without a working prover backend."
     ],
-    "nextAction": "Backend-up turnkey plan: land STEPS A–C as named sorry-free lemmas (manual or per-lemma Aristotle prove), then submit STEP D / the whole file to Aristotle prove_file. Re-verify with docker-build Proofs.Erdos998ThreeGapOQ04 when ≤8 containers. Once exists_gap_triple is sorry-free: flip status to verified (0 axioms) and add a gallery entry.",
+    "nextAction": "DO NOT re-claim without checking Aristotle MCP is live (prove_file must not 404). When backend recovers: submit the whole file via Aristotle prove_file (STEPS A-C as warm-up, STEP D as the target), OR per-lemma prove STEPS B/C then prove STEP D. Re-verify with docker-build Proofs.Erdos998ThreeGapOQ04 when <=8 containers. On a sorry-free exists_gap_triple: flip status to verified (0 axioms) + add gallery entry. If only doc cycles are possible, do NOT spam duplicate re-probe PRs -- the block is recorded here.",
     "attemptCounts": {
-      "total": 6,
+      "total": 9,
       "currentApproach": 1,
       "approachesTried": 1
     }
