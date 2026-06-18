@@ -116,22 +116,23 @@
     "id": "ann-converse",
     "proofId": "product-of-segments-of-chords",
     "anchor": {
-      "type": "declaration",
-      "name": "converse_product_implies_concyclic",
-      "kind": "theorem"
+      "type": "block-comment",
+      "contains": "The converse of the chord-product theorem"
     },
     "type": "insight",
-    "title": "The Converse",
-    "content": "**Converse Theorem**:\n\nIf lines AB and CD intersect at P, and:\n$$PA \\cdot PB = PC \\cdot PD$$\n\nthen A, B, C, D all lie on a common circle (they are **concyclic**).\n\nThis is a powerful criterion for proving four points lie on a circle. The converse follows because equal products imply equal power, which determines a unique circle.",
-    "mathContext": "$PA \\cdot PB = PC \\cdot PD \\Rightarrow A, B, C, D$ are concyclic. Equal products imply equal power with respect to some circle, uniquely determining the circumcircle.",
+    "title": "The Converse (Signed Form Only)",
+    "content": "**The naive unsigned converse is FALSE.** One might hope that $PA \\cdot PB = PC \\cdot PD$ (unsigned segment products) forces $A, B, C, D$ to be concyclic, but it does not: with $P=(0,0)$, $A=(1,0)$, $B=(-4,0)$, $C=(0,1)$, $D=(0,4)$ both products equal $4$, yet the four points are not concyclic, because the *signed* powers ($-4$ vs $+4$) disagree.\n\nThis statement was once present in the file as a false `axiom` (`converse_product_implies_concyclic_axiom`); it has since been **removed**, leaving the file axiom-free. The machine-checked counterexample (`unsigned_converse_counterexample`) and the **corrected signed converse** (`signed_converse_implies_concyclic`, proved with no axioms and no sorries via an explicit Cramer-rule circumcenter) live in the companion file `ProductOfSegmentsOfChordsConverse.lean`.\n\nThe correct converse uses the **signed** power equality $t\\,\\lVert A-P\\rVert^2 = s\\,\\lVert C-P\\rVert^2$ together with linear independence of $A-P$ and $C-P$ (the two chords must be genuinely distinct lines).",
+    "mathContext": "Unsigned $PA \\cdot PB = PC \\cdot PD$ does **not** imply concyclicity (counterexample with products both $=4$). The valid criterion is the *signed* relation $t\\,\\lVert A-P\\rVert^2 = s\\,\\lVert C-P\\rVert^2$ with $A-P, C-P$ linearly independent, where $t, s$ are the collinearity scalars carrying the orientation of the power of the point.",
     "significance": "key",
     "relatedConcepts": [
+      "signed power of a point",
       "concyclic points",
       "circumcircle",
       "cyclic quadrilaterals"
     ],
     "prerequisites": [
-      "power of a point uniqueness",
+      "signed power of a point",
+      "linear independence of chord directions",
       "circumcircle existence"
     ]
   },
