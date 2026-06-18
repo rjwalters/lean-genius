@@ -31,7 +31,7 @@
     "title": "Subtraction-Free Power Bridge",
     "content": "The key bridge $(b-1)\\,R_b(n) + 1 = b^n$, stated additively to sidestep $\\mathbb{N}$'s truncated subtraction. The proof substitutes $b = c + 1$ (so $b - 1$ becomes the honest natural number $c$) and inducts: the successor step rearranges $c\\,R_b(n) + c\\,b^n + 1 = (c\\,R_b(n) + 1) + c\\,b^n$, applies the induction hypothesis, and finishes with `ring` — valid precisely because no subtraction remains.",
     "mathContext": "$(b-1)\\,R_b(n) + 1 = b^n,\\qquad\\text{equivalently } c\\,R_{c+1}(n) + 1 = (c+1)^n.$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["truncated subtraction", "induction", "ring normalization"],
     "prerequisites": ["natural number subtraction semantics", "mathematical induction"]
   },
@@ -55,7 +55,7 @@
     "title": "Power-Difference Divisibility via the Division Algorithm",
     "content": "The engine: for $b \\ge 2$, $(b^m - 1) \\mid (b^n - 1) \\iff m \\mid n$. Forward direction — write $n = mq + r$ with $r < m$; modulo $b^m - 1$ one has $b^m \\equiv 1$ (`Nat.modEq_iff_dvd'` applied to `dvd_refl`), so $b^n = (b^m)^q b^r \\equiv b^r$. The hypothesis gives $b^n \\equiv 1$, hence $b^r \\equiv 1$, i.e. $(b^m - 1) \\mid (b^r - 1)$. Since $0 \\le b^r - 1 < b^m - 1$ (as $r < m$, $b \\ge 2$), a positive divisor would be too large, so $b^r - 1 = 0$, forcing $r = 0$ and $m \\mid n$. Converse — for $n = mk$, $(b^m - 1) \\mid (b^m)^k - 1^k = b^{mk} - 1$ by `nat_sub_dvd_pow_sub_pow`.",
     "mathContext": "$b^n = (b^m)^q\\,b^r \\equiv 1^q\\,b^r = b^r \\pmod{b^m - 1},\\qquad b^r - 1 < b^m - 1.$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["division algorithm", "Nat.ModEq", "multiplicative order", "Mersenne numbers"],
     "prerequisites": ["modular arithmetic", "the division algorithm"]
   },
@@ -79,7 +79,7 @@
     "title": "Repunit Divisibility by Cancelling b − 1",
     "content": "The main theorem $R_b(m) \\mid R_b(n) \\iff m \\mid n$. Rewriting both repunits through the bridge $(b-1)R_b(\\cdot) = b^{\\cdot} - 1$ turns the goal into $(b-1)R_b(m) \\mid (b-1)R_b(n) \\iff (b^m-1) \\mid (b^n-1)$; cancelling the positive common factor $b - 1$ with `Nat.mul_dvd_mul_iff_left` reduces it to the power-difference engine. The whole criterion thus rests on one cancellation plus the engine.",
     "mathContext": "$R_b(m) \\mid R_b(n) \\iff (b-1)R_b(m) \\mid (b-1)R_b(n) \\iff (b^m - 1) \\mid (b^n - 1) \\iff m \\mid n.$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["cancellation of common factors", "Nat.mul_dvd_mul_iff_left"],
     "prerequisites": ["divisibility and cancellation in ℕ"]
   },
