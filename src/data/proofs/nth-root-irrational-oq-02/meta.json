@@ -1,0 +1,205 @@
+{
+  "id": "nth-root-irrational-oq-02",
+  "title": "Nth Root Irrationality: Uniform Prime-Factorization Criterion",
+  "slug": "nth-root-irrational-oq-02",
+  "description": "Replaces the base nth-root file's per-value bounded case-analysis 'not a perfect power' lemmas with a single uniform prime-factorization criterion: if a prime p divides m to an exponent not divisible by n, then m is not a perfect nth power. The criterion scales to arbitrary radicands and exponents, reaching results the bounded approach cannot (e.g. the irrationality of the 100th root of 2 and of the square root of 1000003).",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "generalization",
+      "prime-factorization",
+      "research"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/NthRootIrrationalOQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorization_pow",
+        "description": "(n^k).factorization = k • n.factorization — every prime exponent of a power is scaled by the exponent",
+        "module": "Mathlib.Data.Nat.Factorization.Defs"
+      },
+      {
+        "theorem": "Nat.Prime.factorization_self",
+        "description": "p.factorization p = 1 for a prime p",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.pow_dvd_iff_le_factorization",
+        "description": "p^k ∣ m ↔ k ≤ m.factorization p, for prime p and m ≠ 0",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Int.natAbs_pow",
+        "description": "(a^n).natAbs = a.natAbs ^ n — bridges integer roots to natural roots",
+        "module": "Mathlib.Data.Int.Order"
+      },
+      {
+        "theorem": "irrational_nthRoot",
+        "description": "Base-file general theorem: not a perfect nth power over ℤ implies the nth root is irrational",
+        "module": "Proofs.NthRootIrrational"
+      }
+    ],
+    "originalContributions": [
+      "Uniform prime-factorization not-a-perfect-power criterion (not_perfect_pow_of_factorization) replacing the base file's per-value interval_cases lemmas",
+      "prime_not_perfect_pow: a single lemma showing no prime is a perfect nth power for all primes and all exponents n ≥ 2",
+      "not_perfect_pow_of_sq_not_dvd: certifies composite radicands via size-independent divisibility checks (p ∣ m, p² ∤ m)",
+      "Integer-to-natural bridge via Int.natAbs feeding the base general theorem",
+      "Concrete corollaries unreachable by bounded case analysis: 100th root of 2, square root of 1000003, and composite radicands 6, 12"
+    ],
+    "dateAdded": "2026-06-18",
+    "axiomCount": 0,
+    "lineCount": 189,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Builds on the base file's verified general theorem irrational_nthRoot.",
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/NthRootIrrational.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The base entry nth-root-irrational proves that m^(1/n) is irrational whenever m is not a perfect nth power, but discharges each 'not a perfect power' obligation by an ad-hoc bounded case analysis — deriving an explicit upper bound on the candidate root and running interval_cases. That entry's own open-questions list asked whether 'a more uniform approach (e.g., via prime factorization) scale to larger values'. This entry answers that question. The relevant fact — m is a perfect nth power iff every prime exponent in its factorization is divisible by n — is the standard unique-factorization criterion found in Hardy & Wright, but here it is turned into a reusable Lean lemma that eliminates the search entirely.",
+    "problemStatement": "The base file certifies 'm is not a perfect n-th power' one value at a time, via case analysis bounded by m. This does not scale: large radicands force enormous interval_cases, and large exponents are infeasible. Can these obligations be discharged uniformly?\n\n$$m = k^n \\implies \\forall p \\text{ prime}, \\; n \\mid v_p(m).$$\n\nContrapositively, a single prime $p$ with $n \\nmid v_p(m)$ certifies that $m$ is not a perfect $n$-th power — with no search over candidate roots.",
+    "text": "A uniform prime-factorization criterion for 'not a perfect nth power', replacing the base file's per-value bounded case analysis and scaling to arbitrary radicands and exponents.",
+    "proofStrategy": "1. **Uniform criterion** (`not_perfect_pow_of_factorization`): if `m = k^n`, then by `Nat.factorization_pow` we have `m.factorization p = n * k.factorization p` for every prime `p`, hence `n ∣ m.factorization p`. Contrapositively, a prime whose exponent is not divisible by `n` rules out `m` being a perfect `n`-th power.\n\n2. **Specializations**: `prime_not_perfect_pow` instantiates `p = m` (a prime has exponent `1` at itself, never divisible by `n ≥ 2`); `not_perfect_pow_of_sq_not_dvd` uses `Nat.Prime.pow_dvd_iff_le_factorization` to read off exponent `1` from the cheap conditions `p ∣ m` and `p² ∤ m`.\n\n3. **Bridge to ℤ** (`not_perfect_pow_int`): an integer root `k` of `m` yields a natural root `k.natAbs` via `Int.natAbs_pow`, so ruling out natural roots suffices.\n\n4. **Irrationality**: feed the criteria into the base `irrational_nthRoot`.",
+    "keyInsights": [
+      "The single identity (m^(1/n) is rational iff m is a perfect nth power) reduces to a divisibility condition on prime exponents, which Mathlib's Nat.factorization captures directly via Nat.factorization_pow.",
+      "Because a prime p has factorization exponent exactly 1 at itself, the lemma prime_not_perfect_pow covers ALL primes and ALL exponents n ≥ 2 in one stroke — no per-value proofs.",
+      "For composite radicands it suffices to exhibit one prime dividing m exactly once; the witnessing conditions p ∣ m and p² ∤ m are decided in time independent of the size of m.",
+      "The 100th root of 2 and the square root of 1000003 are immediate here, yet hopeless under the base file's interval_cases strategy — concretely demonstrating that the criterion scales in both the radicand and the exponent.",
+      "Working over ℕ and bridging to ℤ via Int.natAbs keeps the factorization machinery in its natural setting."
+    ],
+    "prerequisites": [
+      "Number theory (unique prime factorization, p-adic valuation / Nat.factorization)",
+      "The base entry nth-root-irrational (general theorem irrational_nthRoot)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup and Motivation",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Module documentation contrasting the bounded case analysis with the uniform criterion, imports, and namespace opening the base file.",
+      "mathContext": "Imports Mathlib and the base file Proofs.NthRootIrrational (reusing nthRoot and irrational_nthRoot). The goal is to replace per-value not-a-perfect-power lemmas with a single criterion in terms of the prime factorization $v_p(m)$."
+    },
+    {
+      "id": "criterion",
+      "title": "The Uniform Prime-Factorization Criterion",
+      "startLine": 58,
+      "endLine": 76,
+      "summary": "not_perfect_pow_of_factorization: a prime exponent not divisible by n certifies m is not a perfect nth power.",
+      "mathContext": "If $m = k^n$ then $v_p(m) = n \\cdot v_p(k)$ by `Nat.factorization_pow`, so $n \\mid v_p(m)$ for every prime $p$. Contrapositive: $n \\nmid v_p(m)$ for some prime $p$ implies $m$ is not a perfect $n$-th power."
+    },
+    {
+      "id": "bridge",
+      "title": "From ℕ to ℤ",
+      "startLine": 77,
+      "endLine": 91,
+      "summary": "not_perfect_pow_int: an integer nth root yields a natural nth root via Int.natAbs.",
+      "mathContext": "For $k^n = m$ with $m \\in \\mathbb{N}$, taking $\\lvert\\cdot\\rvert$ gives $\\lvert k\\rvert^n = m$ via `Int.natAbs_pow`, so ruling out natural roots rules out integer roots — matching the hypothesis shape of the base `irrational_nthRoot`."
+    },
+    {
+      "id": "specializations",
+      "title": "Specializations: Primes and Single-Factor Radicands",
+      "startLine": 92,
+      "endLine": 124,
+      "summary": "prime_not_perfect_pow (no prime is a perfect nth power) and not_perfect_pow_of_sq_not_dvd (radicand divisible by a prime exactly once).",
+      "mathContext": "A prime has $v_p(p) = 1$, never divisible by $n \\ge 2$, giving `prime_not_perfect_pow` for all primes and exponents at once. `Nat.Prime.pow_dvd_iff_le_factorization` converts the cheap conditions $p \\mid m$, $p^2 \\nmid m$ into $v_p(m) = 1$, handling composite radicands."
+    },
+    {
+      "id": "irrationality",
+      "title": "Uniform Irrationality Corollaries",
+      "startLine": 125,
+      "endLine": 144,
+      "summary": "irrational_nthRoot_prime and irrational_nthRoot_of_sq_not_dvd, feeding the criteria into the base general theorem.",
+      "mathContext": "Composing the criteria with the base `irrational_nthRoot` yields $\\sqrt[n]{p} \\notin \\mathbb{Q}$ for every prime $p$ and $n \\ge 2$, and $\\sqrt[n]{m} \\notin \\mathbb{Q}$ whenever a prime divides $m$ exactly once."
+    },
+    {
+      "id": "concrete",
+      "title": "Concrete Corollaries Beyond Bounded Case Analysis",
+      "startLine": 145,
+      "endLine": 189,
+      "summary": "One-line irrationality results unreachable by interval_cases: sqrt(101), sqrt(1000003), the 100th root of 2, fifth root of 7, and composite radicands sqrt(6), sqrt(12), cbrt(12).",
+      "mathContext": "Each result is immediate from the uniform corollaries. $\\sqrt{1000003}$ would require enumerating ~1000 candidate roots under the bounded approach; $\\sqrt[100]{2}$ is outright infeasible there. Composite cases ($\\sqrt{6}, \\sqrt{12}, \\sqrt[3]{12}$) are certified by a single prime dividing the radicand once."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry answers an open question posed by the base nth-root file: the per-value, interval_cases 'not a perfect power' obligations are replaced by a single uniform prime-factorization criterion. A prime whose exponent in m is not divisible by n certifies that m is not a perfect nth power, with no search over candidate roots. The criterion scales in both the radicand and the exponent, yielding irrationality results — the 100th root of 2, the square root of 1000003, composite radicands — that the bounded approach cannot reach.",
+    "implications": "**Methodological**: The result illustrates how moving from an extensional (enumerate candidates) to an intensional (read off a structural invariant) argument turns an unscalable family of lemmas into one reusable theorem. The key enabler is Mathlib's Nat.factorization together with Nat.factorization_pow, which exposes the p-adic valuation algebraically.\n\n**Reusability**: To certify any new radicand it now suffices to exhibit one prime with the wrong exponent — for primes this is automatic, and for composites a single divisibility pair (p ∣ m, p² ∤ m) suffices, both checked in size-independent time.",
+    "openQuestions": [
+      "Can the criterion be packaged as an iff (m is a perfect nth power ↔ n divides every prime exponent), giving a decision procedure for perfect-power testing?",
+      "The composite corollary requires a prime appearing to exponent exactly 1. Can the general criterion be exposed ergonomically for radicands all of whose prime exponents are ≥ 2 but not all divisible by n (e.g. 72 = 2³·3²)?",
+      "Does an analogous factorization criterion give clean irrationality proofs for nth roots in number fields or for rational radicands a/b?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "extends",
+      "description": "Directly answers the base entry's open question on whether a prime-factorization approach could replace its bounded case-analysis not-a-perfect-power lemmas and scale to larger values. Reuses the base general theorem irrational_nthRoot."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The criterion is a direct application of unique factorization: m is a perfect nth power iff every prime in its factorization appears with multiplicity divisible by n. Mathlib's Nat.factorization encodes exactly this prime-exponent data."
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "Recovers the irrationality of sqrt(2) (and of every nth root of a prime) as a one-line instance of prime_not_perfect_pow, with no parity or bounded argument."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.NthRootIrrational"
+    ],
+    "opens": [
+      "NthRootIrrational"
+    ],
+    "namespace": "NthRootIrrationalOQ02",
+    "lineCount": 189,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "path": "Proofs/NthRootIrrationalOQ02.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/NthRootIrrational.lean"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Hardy, G.H.; Wright, E.M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "The unique-factorization characterization of perfect powers underlying the criterion."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "not_perfect_pow_of_factorization",
+      "type": "core",
+      "description": "If a prime p has m.factorization p not divisible by n, then m is not a perfect nth power",
+      "leanType": "{m n p : Nat} -> not (n ∣ m.factorization p) -> not (exists k : Nat, k^n = m)"
+    },
+    {
+      "name": "prime_not_perfect_pow",
+      "type": "core",
+      "description": "No prime is a perfect nth power for n ≥ 2 — uniform in the prime and the exponent",
+      "leanType": "{p n : Nat} -> p.Prime -> 2 ≤ n -> not (exists k : Nat, k^n = p)"
+    },
+    {
+      "name": "irrational_nthRoot_prime",
+      "type": "application",
+      "description": "The nth root of any prime is irrational, for any n ≥ 2",
+      "leanType": "{p n : Nat} -> p.Prime -> 1 < n -> Irrational (nthRoot n p)"
+    }
+  ],
+  "sorries": 0
+}
