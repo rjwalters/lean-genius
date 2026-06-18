@@ -64,3 +64,40 @@ out at rc=124 even with 0 containers — container count is NOT a safe build gat
 **Difficulty:** L3 easy (log of the Nat ineq); L1 ~50–100 lines (`vonMangoldt_sum` + sum-swap
 via `Nat.Ioc_filter_dvd_card_eq_div`); L2 the crux ~80–150 lines (de Polignac floor-sum;
 the lcm route `C(2n,n)∣lcm(1..2n)` / `ψ=log lcm` is NOT in Mathlib — grep 0 hits).
+
+## Update (researcher-4, 2026-06-18) — D(5)=12 child CONFIRMED MERGED/VERIFIED; Chebyshev parent track still backend-blocked
+
+**Two clearly-distinct deliverables live under this slug — do not conflate:**
+
+1. **D(5)=12 (THE child slug's gallery deliverable) — DONE.** `proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean`
+   is REGISTERED (`proofs/Proofs.lean:322`), 0 sorry / 0 axiom, and was MERGED via PR #25419
+   (initial) + #25641 (de-axiomatized: the `native_decide` witness-diameter was replaced by a
+   symbolic `max'`/`min'` proof — flips entry to `verified`/`original`/axiomCount 0, no
+   `Lean.ofReduceBool`). Gallery `meta.json` confirms `verified` / 0-axiom / 0-sorry. The merged
+   lower bound `admissible_5tuple_diam_ge_12` is `native_decide`-FREE (p=2 parity ⇒ shared parity;
+   diam<12 confines H to the 6-set `{m,m+2,m+4,m+6,m+8,m+10}`; its two disjoint mod-3-complete
+   triples each must omit ≥1 element ⇒ ≥2 omissions from a 6-set, impossible for card 5; only
+   p∈{2,3} interrogated, no `Decidable IsAdmissible` needed). **Reviewed for soundness this
+   session and confirmed correct.** Pool/phase advanced `OBSERVE`→`COMPLETED`.
+
+2. **Chebyshev-ψ lower bound (the PARENT `oq-03-oq-01` axiom track) — STILL OPEN, backend-blocked.**
+   `BoundedPrimeGapsOQ03OQ01ChebyshevLowerAristotle.lean` is the prepared self-contained Aristotle
+   target: L3 already fully proven; **3 real sorries remain** — L1 (de Polignac floor-sum identity),
+   L2 (the crux `log C(2n,n) ≤ ψ(2n)`), and the real-analysis `chebyshev_psi_lower_bound` assembly.
+   It would discharge the parent's `diameter_upper_bound_exists` axiom (`BoundedPrimeGapsOQ03OQ01.lean:316`).
+   (The parent's other axiom, `minAdmissibleDiameter_50 = 246` at :203, is the genuine
+   Engelsma-246/Maynard-Tao hard finite barrier — out of scope here.)
+
+**Backend status this session (BOTH DOWN, same dual blackout as 2026-06-16):**
+   - **Aristotle MCP: 404 `Resource not found`** on both `prove_file` and a minimal `prove`
+     connectivity test — backend resource unavailable, could not submit the companion.
+   - **Docker: build fails on Mathlib clone** — first attempt git-errored mid-checkout of the
+     pinned revision (`2df2f0150c`), second hit a corrupted partial clone (`lean-toolchain`
+     missing). This is worktree-`.lake`-local infra (main worktree's Mathlib is intact); not a
+     proof issue. Did NOT independently re-verify D(5)=12 here, but it is verified-by-merge.
+
+**Next action (unchanged, gated on backend recovery):** when Aristotle's 404 lifts,
+`prove_file BoundedPrimeGapsOQ03OQ01ChebyshevLowerAristotle.lean` (self-contained, imports only
+Mathlib); merge proved L1/L2/assembly into `ChebyshevLower.lean`, discharge its
+`chebyshev_psi_lower_bound` sorry, then flip the parent's `diameter_upper_bound_exists` axiom →
+theorem. L3 + the L3-arithmetic are safe hand proofs if Aristotle stays down and Docker recovers.
