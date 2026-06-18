@@ -137,31 +137,72 @@ theorem orbit_card {α : ℝ} (hα : Irrational α) (N : ℕ) :
 
 /-
     PROOF PATH for the core classification `exists_gap_triple`
-    (van Ravenstein / Sós, elementary):
+    (van Ravenstein / Sós, elementary).  Session 6 (researcher-1, 2026-06-18)
+    refines the session-5 prose into an EXPLICIT lemma decomposition: the
+    monolithic `sorry` factors into three routine reductions (STEPS A–C, all
+    provable from named Mathlib API) followed by ONE genuine Steinhaus crux
+    (STEP D).  This is the turnkey scaffold for the next backend-up session.
 
-    1. Let `p` be the least index in `1 ≤ p < N` minimizing the *forward* return
-       `{pα}` (the smallest clockwise gap at the point `0`), and `q` the least
-       index minimizing the *backward* return `1 - {qα}`.  These two "first
-       return" indices are the Steinhaus generators.
+    Notation: for `k ∈ [0,N)` write `P_k := {kα} = Int.fract (k·α)`; these are
+    the orbit points (distinct, by `orbit_card`).  The two witnesses already
+    fixed in the proof below are
+        a := min_{1≤i<N} Int.fract ( i·α)      (best FORWARD  return; this file's first witness)
+        b := min_{1≤i<N} Int.fract (-i·α)      (best BACKWARD return; this file's second witness)
+    and `c := a + b` (so `a + b = c` holds by `rfl`).
 
-    2. CLASSIFICATION OF GAPS.  Walk the points in circular order.  Each point
-       `{iα}` is the left endpoint of exactly one gap, and its forward neighbour
-       is obtained by adding either `p` or `q` to the index `i` (whichever keeps
-       the result in `[0, N)` after the rotation).  Concretely the forward
-       neighbour of `{iα}` is `{(i+p)α}` if `i + p < N`, else `{(i - q)α}` /
-       wrap.  Hence every gap length is one of:
-         • `{pα}`              (a "short" gap, count `N - p`),
-         • `1 - {qα}`          (a "short" gap, count `N - q`),
-         • `{pα} + 1 - {qα}`   (the "long" gap, count `p + q - N`).
-       This already gives ≤ 3 distinct values.
+    ── STEP A  (forwardGap as a fract-of-index-difference; ROUTINE).
+       For `x = P_k`, every other orbit point is some `P_j` (j ≠ k, distinctness
+       from `orbit_card`), and
+          Int.fract (P_j − P_k) = Int.fract ((j − k)·α),
+       because `P_j − P_k = (j−k)·α − (⌊jα⌋−⌊kα⌋)` differs from `(j−k)·α` by an
+       integer, and `Int.fract` is invariant under integer shifts
+       (`Int.fract_int_add` / `Int.fract_add_int`).  Hence
+          forwardGap α N P_k = min_{j∈[0,N), j≠k} Int.fract ((j − k)·α).
+       Mathlib: `Int.fract_int_add`, `Int.fract_add_int`, `Finset.inf'_congr`.
 
-    3. The three counts sum to `N` (`(N-p) + (N-q) + (p+q-N) = N`), confirming
-       the gap-count bookkeeping.
+    ── STEP B  (split the index difference into forward/backward; ROUTINE).
+       Writing `d = j − k`, the index `d` ranges over `[−k, N−1−k] \ {0}`.
+       Splitting on the sign of `d` (with `e := −d` on the negative side):
+          forwardGap α N P_k = min ( F_k , B_k ),  where
+            F_k := min_{d=1}^{N−1−k} Int.fract ( d·α)   (forward  returns still in range)
+            B_k := min_{e=1}^{k}     Int.fract (−e·α)   (backward returns still in range)
+       (`F_{N−1}` / `B_0` are over empty ranges — drop that side; the orbit has
+       `N ≥ 2` points so at least one side is nonempty.)
+       Mathlib: `Finset.inf'_union`, image of `Finset.range` under `(· + k)` /
+       negation, `Int.fract` evaluation.
 
-    KEY MATHLIB PIECES: `Int.fract`, `Int.fract_eq_fract`, `Finset.min'`/`inf'`,
-    `Finset.exists_min_image`; the index arithmetic is `Nat`/`Finset.range`
-    order theory only.  No new Mathlib infrastructure is required — only the
-    case analysis above, which is the remaining work. -/
+    ── STEP C  (subset-min bounds + extremal attainment; ROUTINE).
+       `F_k` is a min over `{1,…,N−1−k} ⊆ {1,…,N−1}`, so `F_k ≥ a`; likewise
+       `B_k ≥ b`.  At the extremes the full range is recovered: `F_0 = a` and
+       `B_{N−1} = b`.  Therefore  `forwardGap α N P_k ≥ min a b`  for every `k`,
+       and the two witnesses `a, b` are themselves ATTAINED gap lengths
+       (`a = forwardGap α N P_0`'s forward part, `b` at `P_{N−1}`).
+       Mathlib: `Finset.inf'_le`, `Finset.le_inf'`, `Finset.inf'_mem`,
+       `Finset.exists_min_image`.
+
+    ── STEP D  (the genuine Steinhaus crux — the SOLE remaining content).
+       Let `p, q ∈ [1,N)` be the least indices attaining `a, b` respectively.
+       Claim: `forwardGap α N P_k = min (F_k, B_k) ∈ {a, b, a+b}` for every `k`.
+       The mechanism (van Ravenstein):
+         • if `k + p < N`  then `p` lies in `F_k`'s range, so `F_k = a` and the
+           forward neighbour of `P_k` is `P_{k+p}` (gap `a`);
+         • if `k ≥ q`      then `q` lies in `B_k`'s range, so `B_k = b` and the
+           backward-side neighbour gives gap `b`;
+         • the `p + q − N` indices with `k + p ≥ N` AND `k < q` have NEITHER a
+           pure forward-`p` nor backward-`q` neighbour available, and minimality
+           of `p, q` forces their gap to be exactly the LONG value `a + b`.
+       The crux is showing no orbit point lies strictly inside the candidate arc
+       — i.e. that `min (F_k, B_k)` cannot be a value strictly between in
+       `(min a b, a+b)`.  This is pure `Nat`/order arithmetic on the indices
+       once STEPS A–C are in place; it needs NO new Mathlib infrastructure.
+
+    STATUS OF THE FRONTIER: STEPS A–C are routine and provable manually or via
+    a single per-lemma Aristotle `prove` call each; STEP D is the one HARD
+    (known, not open) obligation.  Backends were BOTH down session 6
+    (Aristotle MCP → 404 "Resource not found"; Docker gated at 15 build
+    containers / ~5.7 GiB of 7.65 GiB, OOM-unsafe), so no Lean was shipped —
+    only this decomposition.  When a backend recovers, submit STEP D (or the
+    whole file) to Aristotle `prove_file`, with STEPS A–C as warm-up lemmas. -/
 /-- A finite set covered by an explicit triple `{a, b, c}` has at most three
     elements.  Pure `Finset` cardinality arithmetic — the engine behind the
     `≤ 3` bound once the gap lengths are classified. -/

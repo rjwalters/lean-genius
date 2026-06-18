@@ -28,21 +28,23 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-16T00:00:00Z",
-    "iteration": 5,
-    "focus": "researcher-5, 2026-06-16: FIRST GREEN BUILD. The file never actually compiled in sessions 2-4 ('name-checked ≠ compiled'): three real errors — (1) the orbit def used a type ascription (i : ℝ) that forced i:ℝ instead of coercing ℕ→ℝ, so Finset.image expected Finset ℝ but got range N : Finset ℕ, making orbit elaborate to sorry and cascading 'uses sorry' into every downstream theorem; (2) orbit_card used hα.int_mul (no such lemma — Irrational unfolds to a Pi type so dot notation failed); (3) orbit_card used not_irrational_int (unknown). Fixed to fun (i:ℕ) =>, Irrational.intCast_mul, and Int.not_irrational. File now builds green: ⚠ [7743/7743] Built Proofs.Erdos998ThreeGapOQ04, sole warning = intended sorry at exists_gap_triple (line 181). Registered import Proofs.Erdos998ThreeGapOQ04 in proofs/Proofs.lean (now in CI for the first time). The earlier unused-var / unused-simp-arg warnings were cascade artifacts of the broken orbit def and are gone.",
+    "since": "2026-06-18T00:00:00Z",
+    "iteration": 6,
+    "focus": "researcher-1, 2026-06-18 (S6): documentation/decomposition session — both backends down (Aristotle MCP prove → 404 'Resource not found'; Docker gated at 15 build containers / ~5.7 GiB of 7.65 GiB VM, OOM-unsafe), so no Lean shipped. Frontier unchanged from S5: 1 sorry = the N≥2 case of exists_gap_triple, build-verified green, registered. Sharpened S5's prose proof-path into an explicit 4-step lemma scaffold (in-file comment lines 138–204): STEP A forwardGap α N P_k = min_{j≠k} Int.fract((j−k)α) via integer-shift invariance of Int.fract; STEP B split index diff on sign → forwardGap = min(F_k,B_k) with forward-return min F_k and backward-return min B_k; STEP C subset-min bounds F_k≥a, B_k≥b and full-range attainment F_0=a, B_{N−1}=b (so a,b are attained gap lengths and forwardGap ≥ min a b); STEP D (sole hard, known-not-open crux) with p,q the least minimizers of a,b show min(F_k,B_k) ∈ {a,b,a+b}. STEPS A–C are routine/provable; STEP D is the genuine van Ravenstein content. Comments-only edit — sorry count unchanged (1), file stays build-verified.",
     "blockers": [
-      "Aristotle MCP still returns 404 'Resource not found' this session (tools load but backend down), so exists_gap_triple could not be submitted to prove_file. Docker works fine (warm lean-mathlib-cache volume, ~5-6 min)."
+      "Aristotle MCP returns 404 'Resource not found' (S4/S5/S6) — the right tool for this KNOWN-math sorry is offline.",
+      "Docker gated this cycle: 15 lean-build containers, ~5.7 GiB of a 7.65 GiB VM — a new build is OOM-unsafe (defer if >8 containers / >5 GiB). Cannot verify any manual Lean changes, so none were shipped.",
+      "exists_gap_triple (STEP D) now stuck across sessions 3–6 → BLOCKED on backend availability, not on mathematical insight."
     ],
-    "nextAction": "Discharge exists_gap_triple (sole remaining sorry). On Aristotle recovery: submit to prove_file (KNOWN math — Sós–Surányi–Świerczkowski classification). Otherwise formalize manually: define p (least 1≤p<N minimizing forward return {pα}) and q (least minimizing backward return 1-{qα}) via Finset.exists_min_image, prove the cyclic-successor map (neighbour of {iα} is {(i+p)α} if i+p<N else the wrap via q), and read off the three values {pα}, 1-{qα}, {pα}+(1-{qα}). Once sorry-free: flip status to verified (0 axioms) and add a gallery entry.",
+    "nextAction": "Backend-up turnkey plan: land STEPS A–C as named sorry-free lemmas (manual or per-lemma Aristotle prove), then submit STEP D / the whole file to Aristotle prove_file. Re-verify with docker-build Proofs.Erdos998ThreeGapOQ04 when ≤8 containers. Once exists_gap_triple is sorry-free: flip status to verified (0 axioms) and add a gallery entry.",
     "attemptCounts": {
-      "total": 5,
+      "total": 6,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "ATTACK → BUILD-VERIFIED. The three-gap theorem is reduced to a SINGLE isolated combinatorial core lemma exists_gap_triple; both headline theorems (≤3 distinct gap lengths; long = sum of two short) and all finite-cardinality scaffolding are sorry-free and depend only on it. File now compiles GREEN (⚠ [7743/7743] Built Proofs.Erdos998ThreeGapOQ04, v4.26.0) and is registered in proofs/Proofs.lean. 0 axioms, exactly 1 sorry (exists_gap_triple). Session 5 (researcher-5, 2026-06-16) corrected the false 4-session 'build-pending' state: the file had three real compile errors and never passed the kernel — a broken orbit def (type-ascription (i:ℝ) forced i:ℝ rather than coercing ℕ→ℝ, cascading 'uses sorry' everywhere) and two wrong lemma names (Irrational.int_mul → Irrational.intCast_mul; not_irrational_int → Int.not_irrational). Aristotle still 404 this session, so exists_gap_triple remains open.",
+    "progressSummary": "BUILD-VERIFIED scaffolding, 1 sorry (exists_gap_triple N≥2). Three-gap theorem reduced to a single combinatorial core; both headline theorems (≤3 distinct gap lengths; long = short+short) and all cardinality scaffolding are sorry-free and depend only on it (0 axioms). S6 (researcher-1, 2026-06-18) sharpened the proof-path into an explicit 4-step lemma scaffold (STEP A fract-of-index-difference rewrite; STEP B forward/backward split forwardGap = min(F_k,B_k); STEP C subset-min bounds F_k≥a,B_k≥b with F_0=a,B_{N−1}=b; STEP D the sole hard van-Ravenstein crux min(F_k,B_k) ∈ {a,b,a+b}). STEPS A–C are routine; STEP D is known-not-open. Both backends were down S6 (Aristotle 404; Docker OOM-gated) so no Lean shipped — documentation only. STEP D stuck S3–S6, BLOCKED on backend availability.",
     "builtItems": [
       {
         "file": "proofs/Proofs/Erdos998ThreeGapOQ04.lean",
@@ -65,6 +67,7 @@
       "Mathlib4 has no three-gap / three-distance / Steinhaus theorem (verified June 2026); only a Coq (van Ravenstein) formalization exists. The proof needs no new infrastructure — only Int.fract, Finset.image/erase/min'/inf'/exists_min_image, and Nat/range order arithmetic."
     ],
     "nextSteps": [
+      "Land STEPS A–C of the in-file scaffold as named sorry-free lemmas (manual or per-lemma Aristotle prove), then submit STEP D / the whole file to Aristotle prove_file once non-404.",
       "Backend up: submit exists_gap_triple to Aristotle prove_file (KNOWN math, ideal target), or manually define the Steinhaus first-return generators p, q via Finset.exists_min_image and prove the cyclic-successor neighbour map.",
       "Once exists_gap_triple compiles: docker-build Proofs.Erdos998ThreeGapOQ04 to verify the file (currently build-pending under the corrupt self-referential .lake symlink / OOM hazard).",
       "Register Erdos998ThreeGapOQ04 in proofs/Proofs.lean (currently unregistered, so not in CI) and add a gallery entry (status formalized/wip until a green build, then verified-modulo nothing since axioms=0)."
@@ -126,7 +129,7 @@
     ]
   },
   "started": "2026-06-15T00:00:00Z",
-  "lastUpdate": "2026-06-16T15:10:00Z",
+  "lastUpdate": "2026-06-18",
   "significance": 7,
   "tractability": 7
 }
