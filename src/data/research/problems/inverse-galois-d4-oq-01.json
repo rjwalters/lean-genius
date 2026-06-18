@@ -1,8 +1,8 @@
 {
   "slug": "inverse-galois-d4-oq-01",
   "title": "Semidirect-Product Structure ℤ/4 ⋊ ℤ/2 of the D₄ Galois Action",
-  "phase": "ACT",
-  "status": "available",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "Proofs/InverseGaloisD4OQ01.lean",
   "problemStatement": {
@@ -21,14 +21,9 @@
     ],
     "goal": "Promote the internal decomposition to the explicit external semidirect product and confirm a kernel build."
   },
-  "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-06-15T00:00:00Z",
-    "iteration": 1,
-    "focus": "Internal structure complete; external SemidirectProduct equivalence blueprinted (lift compatibility reduces to reflection_conj_rotation'). Build + Aristotle unavailable this session."
-  },
+  "currentState": {},
   "knowledge": {
-    "progressSummary": "ACT: external d4Equiv companion file written in full (no sorry), build-pending; SDP/MulAut/TypeTags API source-confirmed; only 3 tactic-level points remain to verify at build.",
+    "progressSummary": "RECONCILED (researcher-2, 2026-06-18): structured record was frozen at the stale \"build-pending\" snapshot while state.md and main moved on. Both files are merged + Docker-verified on main: InverseGaloisD4OQ01.lean (internal D4 = ZMod4 x| ZMod2, 13 thm, 0 sorry/0 axiom) and InverseGaloisD4OQ01External.lean (external MulEquiv SemidirectProduct(Mult(ZMod 4), Mult(ZMod 2), phi) =* DihedralGroup 4 via SemidirectProduct.lift, 8 thm, 0 sorry/0 axiom), both registered in Proofs.lean and shipped via PR #24876. Gallery meta.json already status=verified/badge=original/axiomCount=0. OQ-01 (explicit ZMod4 x| ZMod2 structure) is RESOLVED; the harder OQ-03 Gal(X^4-2/Q) =* D4 bridge is a separate problem, not folded here. --- PRIOR: ACT: external d4Equiv companion file written in full (no sorry), build-pending; SDP/MulAut/TypeTags API source-confirmed; only 3 tactic-level points remain to verify at build.",
     "builtItems": [
       "InverseGaloisD4OQ01.lean: rotations ≅ ℤ/4 (rHom, rHom_injective, rotationsEquiv, card_rotations)",
       "InverseGaloisD4OQ01.lean: rotations_normal, reflection_conj_rotation, reflection_conj_rotation'",
@@ -47,10 +42,7 @@
       "No DihedralGroup n ≃* SemidirectProduct ... result in Mathlib v4.26.0.",
       "Need to confirm exact SemidirectProduct.lift hypothesis form and MulAut.conj_apply at build time."
     ],
-    "nextSteps": [
-      "When Docker ≤2 containers or Aristotle back: copy staged InverseGaloisD4OQ01External.lean into proofs/Proofs/, build via docker-build.sh, fix any of 3 residual tactic points (ZMod-2 if-discharge; MulAut.mul_apply/one_apply names; lift_apply rfl), register in Proofs.lean.",
-      "Then flip gallery meta.json status and upgrade the internal file formalized → verified (0 sorry/0 axiom, under-claimed)."
-    ]
+    "nextSteps": []
   },
   "tags": [
     "galois-theory",
@@ -60,7 +52,7 @@
     "field-extensions"
   ],
   "started": "2026-06-15T00:00:00Z",
-  "lastUpdate": "2026-06-15T00:00:00Z",
+  "lastUpdate": "2026-06-18T00:00:00Z",
   "significance": 5,
   "tractability": 6
 }
