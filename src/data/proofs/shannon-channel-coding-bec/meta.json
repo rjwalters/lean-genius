@@ -2,7 +2,7 @@
     "id": "shannon-channel-coding-bec",
     "title": "BEC Capacity Proof (Binary Erasure Channel)",
     "slug": "shannon-channel-coding-bec",
-    "description": "Proves the binary erasure channel capacity formula C(BEC(p)) = (1 - p) · log 2 from first principles. The BEC has input Bool and output Option Bool (none = erasure); each bit is erased with probability p. The proof rests on the erasure identity H(X|Y) = p · H(X) for any input distribution, giving I(X;Y) = (1 - p) · H(X) by the chain rule, with the uniform input achieving H(X) = log 2. Introduces no new axioms or sorries; inherits 3 axioms from the parent ShannonChannelCoding import.",
+    "description": "Proves the binary erasure channel capacity formula C(BEC(p)) = (1 - p) · log 2 from first principles. The BEC has input Bool and output Option Bool (none = erasure); each bit is erased with probability p. The proof rests on the erasure identity H(X|Y) = p · H(X) for any input distribution, giving I(X;Y) = (1 - p) · H(X) by the chain rule, with the uniform input achieving H(X) = log 2. Introduces no new axioms or sorries; inherits 2 axioms from the parent ShannonChannelCoding import.",
     "meta": {
         "author": "Claude Shannon (1948), formalized in Lean 4",
         "sourceUrl": "https://en.wikipedia.org/wiki/Binary_erasure_channel",
@@ -38,9 +38,9 @@
             "Converse I(X;Y) ≤ (1 - p) · log 2 from H(X) ≤ log 2, and achievability via the uniform Bernoulli(1/2) input",
             "Capacity-in-bits corollary, non-negativity, and the ≤ log 2 (one-bit) ceiling"
         ],
-        "assumptions": "3 axioms inherited in scope from ShannonChannelCoding.lean: channel_coding_achievability, channel_coding_converse, bsc_capacity_eq. (The parent's fano_inequality is no longer an axiom -- it was discharged to a proven theorem via ShannonChannelCodingOQ02OQ01.fano_inequality_proved.) 0 sorries. The BEC capacity result itself is proved from first principles and does not invoke any of these axioms; they are carried in scope because the file imports the parent (and the BSC development in ShannonChannelCodingOQ02). Unlike the BSC, the BEC is not weakly symmetric (its erasure column sums to 2p, the others to 1 - p), so the parent's symmetric-channel machinery does not apply -- the H(X|Y) = p · H(X) identity is the engine instead.",
+        "assumptions": "2 axioms inherited in scope from ShannonChannelCoding.lean: channel_coding_achievability, channel_coding_converse. (The parent's fano_inequality was discharged to a proven theorem via ShannonChannelCodingOQ02OQ01.fano_inequality_proved, and its former bsc_capacity_eq axiom was removed -- the BSC capacity bounds now follow from general capacity theorems and the exact value is proved in ShannonChannelCodingOQ02.) 0 sorries. The BEC capacity result itself is proved from first principles and does not invoke any of these axioms; they are carried in scope because the file imports the parent (and the BSC development in ShannonChannelCodingOQ02). Unlike the BSC, the BEC is not weakly symmetric (its erasure column sums to 2p, the others to 1 - p), so the parent's symmetric-channel machinery does not apply -- the H(X|Y) = p · H(X) identity is the engine instead.",
         "dateAdded": "2026-06-18",
-        "axiomCount": 3,
+        "axiomCount": 2,
         "lineCount": 243,
         "prerequisites": [
             "Shannon entropy and mutual information (ShannonEntropy.lean)",
@@ -141,7 +141,7 @@
         }
     ],
     "conclusion": {
-        "summary": "This formalization proves the binary erasure channel capacity C(BEC(p)) = (1 - p)·log 2 nats (= 1 - p bits) entirely from first principles, introducing no new axioms and no sorries. The whole argument turns on a single identity, H(X|Y) = p·H(X), which holds for every input distribution; the chain rule then gives I(X;Y) = (1 - p)·H(X), the entropy bound H(X) ≤ log 2 supplies the converse, and the uniform Bernoulli(1/2) input meets it. Three axioms from the parent ShannonChannelCoding.lean (channel_coding_achievability, channel_coding_converse, bsc_capacity_eq) remain in scope via import but are not invoked by the BEC result.",
+        "summary": "This formalization proves the binary erasure channel capacity C(BEC(p)) = (1 - p)·log 2 nats (= 1 - p bits) entirely from first principles, introducing no new axioms and no sorries. The whole argument turns on a single identity, H(X|Y) = p·H(X), which holds for every input distribution; the chain rule then gives I(X;Y) = (1 - p)·H(X), the entropy bound H(X) ≤ log 2 supplies the converse, and the uniform Bernoulli(1/2) input meets it. Two axioms from the parent ShannonChannelCoding.lean (channel_coding_achievability, channel_coding_converse) remain in scope via import but are not invoked by the BEC result.",
         "implications": "The BEC is the canonical model of packet loss and the foundational channel for erasure coding: its capacity 1 - p bits is the benchmark that maximum-distance-separable, fountain (LT, Raptor), and random linear network codes approach. Because the BEC is not weakly symmetric, the parent's symmetric-channel machinery does not apply, so this entry demonstrates that the erasure identity is an independent route to a capacity formula. Paired with the BSC capacity proof, it completes the two textbook discrete memoryless channels from a single shared Mathlib-backed framework.",
         "openQuestions": [
             "Generalize the erasure identity and capacity to the q-ary erasure channel, where C = (1 - p)·log q.",

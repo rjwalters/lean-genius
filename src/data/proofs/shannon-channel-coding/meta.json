@@ -38,12 +38,12 @@
     "originalContributions": [
       "Real-valued definitions of channel mutual information and channel capacity (channelMI, channelCapacity) as a supremum over input distributions",
       "Proved capacity bounds (capacity_nonneg, channelMI_le_capacity, capacity_le_log_card) and a proved Fano inequality with single-letter converse lemmas",
-      "Capacity-achieving uniform input for weakly symmetric channels, and the binary symmetric channel with proved 0 ≤ C ≤ 1 bounds; achievability, converse, and the BSC capacity formula stated as the 3 axioms"
+      "Capacity-achieving uniform input for weakly symmetric channels, and the binary symmetric channel with proved 0 ≤ C ≤ 1 bounds; achievability and converse stated as the 2 axioms (the exact BSC capacity formula is proved axiom-free in ShannonChannelCodingOQ02)"
     ],
-    "assumptions": "3 axioms: channel_coding_achievability, channel_coding_converse, bsc_capacity_eq. 18 theorems proved (jointDist properties, channelMI_le_log_card, capacity_nonneg, channelMI_le_capacity, capacity_le_log_card, rate/BSC bounds, fano_inequality discharged via Proofs.ShannonChannelCodingOQ02OQ01, single-letter Fano-form converse fano_converse_step + fano_converse_capacity + Shannon-form/marginal converses, and weakly-symmetric uniform-output lemmas). 0 sorries.",
+    "assumptions": "2 axioms: channel_coding_achievability, channel_coding_converse. 18 theorems proved (jointDist properties, channelMI_le_log_card, capacity_nonneg, channelMI_le_capacity, capacity_le_log_card, rate/BSC bounds, fano_inequality discharged via Proofs.ShannonChannelCodingOQ02OQ01, single-letter Fano-form converse fano_converse_step + fano_converse_capacity + Shannon-form/marginal converses, and weakly-symmetric uniform-output lemmas). The former bsc_capacity_eq axiom was removed: bsc_capacity_le_one / bsc_capacity_nonneg now follow from the general capacity_le_log_card / capacity_nonneg, and the exact value C = log 2 - h(p) is proved in ShannonChannelCodingOQ02 (bsc_capacity_proved). 0 sorries.",
     "dateAdded": "2026-03-21",
-    "axiomCount": 3,
-    "lineCount": 609,
+    "axiomCount": 2,
+    "lineCount": 612,
     "prerequisites": [
       "Shannon entropy and mutual information",
       "Discrete memoryless channels and capacity",
@@ -143,10 +143,10 @@
     {
       "id": "bsc",
       "title": "Binary Symmetric Channel",
-      "startLine": 582,
-      "endLine": 609,
-      "summary": "Defines the binary symmetric channel `bsc p`, states its capacity `bsc_capacity_eq` (C = 1 − h(p)) as an axiom, and proves the bounds `bsc_capacity_le_one` (C ≤ 1) and `bsc_capacity_nonneg` (C ≥ 0).",
-      "mathContext": "BSC(p) capacity $C = 1 - h(p)$ bits (axiom), with the proved sanity bounds $0 \\le C \\le 1$ following from the general capacity inequalities."
+      "startLine": 586,
+      "endLine": 610,
+      "summary": "Defines the binary symmetric channel `bsc p` and proves the bounds `bsc_capacity_le_one` (C ≤ 1, from `capacity_le_log_card`) and `bsc_capacity_nonneg` (C ≥ 0, from `capacity_nonneg`). The exact capacity C = 1 − h(p) is proved axiom-free in `ShannonChannelCodingOQ02` (`bsc_capacity_proved`).",
+      "mathContext": "BSC(p) capacity $C = 1 - h(p)$ bits, with the proved sanity bounds $0 \\le C \\le 1$ following from the general capacity inequalities. The exact value is established in ShannonChannelCodingOQ02; this file states no BSC axiom."
     }
   ],
   "crossReferences": [
@@ -185,7 +185,7 @@
     "summary": "The noisy channel coding theorem establishes that reliable communication at rate R is possible if and only if R is below the channel capacity C = max I(X;Y). The achievability proof via random coding and joint typicality decoding is one of the most celebrated probabilistic existence arguments in mathematics. The converse via Fano's inequality provides the matching impossibility result.",
     "implications": "This formalization provides:\n\n**1. The Central Result of Information Theory**\nChannel capacity as the fundamental limit of reliable communication; achievability and converse are stated as axioms, while the supporting capacity bounds and Fano's inequality are machine-checked.\n\n**2. Random Coding as Probabilistic Method**\nThe random coding proof is historically one of the first and most influential uses of the probabilistic method, predating even Erdos's 1947 Ramsey bound.\n\n**3. Fano's Inequality**\nA reusable converse tool that converts entropy bounds into error probability bounds, applicable far beyond channel coding.\n\n**4. Foundation for Modern Coding Theory**\nThe gap between Shannon's existential proof and practical capacity-achieving codes (turbo codes, LDPC, polar codes) drove decades of engineering and mathematical research.\n\n**5. Connection to Computational Complexity**\nChannel coding has deep connections to computational complexity via list decoding and pseudorandomness.",
     "openQuestions": [
-      "Can specific channel capacities (BSC, BEC, AWGN) be derived formally, discharging the bsc_capacity_eq axiom (C = 1 - h(p)) rather than assuming it?",
+      "BSC capacity (C = 1 - h(p)) and BEC capacity (C = (1-p)·log 2) are now derived axiom-free in ShannonChannelCodingOQ02 and ShannonChannelCodingBEC; AWGN (continuous, measure-theoretic differential entropy) remains the only concrete channel not yet formalized.",
       "Formalize the random coding argument using Mathlib's probability theory — requires joint typicality and the AEP",
       "Can the achievability and converse axioms be discharged via a formalized random-coding / joint-typicality argument built on the proved Fano inequality?",
       "Formalize the binary entropy function h(p) = -p*log(p) - (1-p)*log(1-p) and its properties"
@@ -197,8 +197,8 @@
     ],
     "opens": [],
     "namespace": "InformationTheory.ChannelCoding",
-    "lineCount": 609,
-    "axiomCount": 3,
+    "lineCount": 612,
+    "axiomCount": 2,
     "theoremCount": 18,
     "definitionCount": 9,
     "path": "Proofs/ShannonChannelCoding.lean",
