@@ -81,6 +81,14 @@
   },
   "sections": [
     {
+      "id": "module-overview-and-setup",
+      "title": "Module Overview, Mathlib Backing, and Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "mathContext": "Goal: upgrade the one-shot Dirichlet bound $\\exists\\,p/q,\\ 1\\le q\\le Q,\\ |q\\xi - p| < 1/Q$ to infinitude $\\#\\{p/q : |\\xi - p/q| < 1/q^2\\} = \\infty$ for irrational $\\xi$.",
+      "summary": "The module docstring frames the open question as the infinitude upgrade of the parent `DirichletApproximation` one-shot bound, identifies the Mathlib backbone (`Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational` over the set `{q : ℚ | |ξ − q| < 1/q.den²}`), and states the original contribution: the bridge to the classical coprime integer-pair form via the injection q ↦ (q.num, q.den), justified by Rat.reduced (lowest terms), Rat.pos (positive denominator), and Rat.cast_def. Cites Hardy & Wright Thm 193. Followed by `import Mathlib`, `namespace DirichletApproximationOQ01`, `open Set`, and `variable {ξ : ℝ}` establishing the ambient irrational real."
+    },
+    {
       "id": "headline-infinitude",
       "title": "Headline: Infinitely Many Good Rational Approximations",
       "startLine": 45,
