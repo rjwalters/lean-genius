@@ -19,6 +19,69 @@
     "prerequisites": []
   },
   {
+    "id": "ann-greens-oq0202-imports-opens",
+    "proofId": "greens-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 33,
+      "endLine": 42
+    },
+    "type": "technique",
+    "title": "Selective Opens Assemble the Witness Vocabulary",
+    "content": "The witness is deliberately minimal in what it imports. Beyond `Mathlib`, it pulls in only the two sibling files it actually reasons about: `Proofs.GreensTheoremOQ02OQ04` (transitively bringing the curve/circulation vocabulary of `GreensTheoremOQ02`) and `Proofs.GreensTheoremOQ02Counterexample` (the Session-5 unsound witness). The `open` directives are narrowed rather than wholesale: `open GreensTheoremOQ01 (rectLineIntegral)` exposes exactly the concrete four-edge rectangle integral, and `open GreensTheoremOQ02Counterexample (constCurve cexP cexQ constCurve_lineIntegral_zero)` exposes only the degenerate curve, its field `(P, Q) = (0, x)`, and the lemma fixing its circulation to `0`.\n\nThis selective-open discipline keeps the single theorem statement free of qualified prefixes while making the provenance of every symbol explicit — a reader can see at a glance that the proof depends on OQ-01's oriented rectangle integral and the counterexample's zero-circulation lemma, and on nothing else.",
+    "mathContext": "Exposes exactly $\\text{rectLineIntegral}$ (from OQ-01), the degenerate $\\text{constCurve}$, the field $(\\text{cexP}, \\text{cexQ}) = (0, x)$, and $\\text{constCurve\\_lineIntegral\\_zero} : \\oint_C = 0$ — the minimal kit the soundness check needs.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Namespace management",
+      "Selective imports",
+      "Proof provenance"
+    ],
+    "prerequisites": [
+      "Lean 4 namespaces and open directives"
+    ]
+  },
+  {
+    "id": "ann-greens-oq0202-statement",
+    "proofId": "greens-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 51,
+      "endLine": 52
+    },
+    "type": "insight",
+    "title": "What the Inequality Encodes: hLineEq Cannot Hold",
+    "content": "The theorem statement `lipschitzLineIntegral cexP cexQ constCurve ≠ rectLineIntegral cexP cexQ 0 1 0 1` is precisely the negation of the orientation hypothesis `hLineEq` instantiated at the counterexample's data. The registered axiom `greens_theorem_l1curl` now demands, as a hypothesis, that a curve's circulation equal the concrete oriented rectangle integral `rectLineIntegral P Q a b c d`. By proving the two sides are *unequal* for the degenerate curve, this statement certifies that no instance of the corrected axiom can ever be discharged against it.\n\nThe rectangle coordinates `0 1 0 1` pin the integral to the unit square — the same region over which the original counterexample computed `∬ curl = 1`, making the comparison with the curve's circulation `0` direct and unmediated.",
+    "mathContext": "The goal is $\\neg\\,h_{\\text{LineEq}}$ at the witness: $\\oint_C(0\\,dx + x\\,dy) \\ne \\text{rectLineIntegral}\\,\\text{cexP}\\,\\text{cexQ}\\,0\\,1\\,0\\,1$ over the unit square $[0,1]^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hypothesis instantiation",
+      "Line integral",
+      "Unit square"
+    ],
+    "prerequisites": [
+      "Green's theorem / Stokes' theorem in the plane"
+    ]
+  },
+  {
+    "id": "ann-greens-oq0202-proof-mechanics",
+    "proofId": "greens-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 53,
+      "endLine": 56
+    },
+    "type": "technique",
+    "title": "A Two-Rewrite, Axiom-Free Proof",
+    "content": "The proof is deliberately short and fully machine-checked. It first records `hrect : rectLineIntegral cexP cexQ 0 1 0 1 = 1` by appeal to the *proven* lemma `GreensTheoremOQ01.unit_square_area_as_line_integral` (not an axiom — the unit-square rectangle integral is computed outright in OQ-01). It then rewrites the left side to `0` via `constCurve_lineIntegral_zero` and the right side to `1` via `hrect`, reducing the goal to `(0 : ℝ) ≠ 1`, which `norm_num` closes.\n\nBecause both rewrites cite established lemmas and the final step is decidable arithmetic, `counterexample_violates_hLineEq` introduces no new `axiom` of its own — its `axiomCount` is `0`. The soundness of the orientation fix is therefore demonstrated, not assumed.",
+    "mathContext": "$\\oint_C \\xrightarrow{\\text{constCurve\\_lineIntegral\\_zero}} 0$ and $\\text{rectLineIntegral} \\xrightarrow{\\text{unit\\_square\\_area\\_as\\_line\\_integral}} 1$, leaving $0 \\ne 1$ for $\\texttt{norm\\_num}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Rewriting tactics",
+      "norm_num",
+      "Axiom-free proof"
+    ],
+    "prerequisites": [
+      "Lean 4 tactic mode"
+    ]
+  },
+  {
     "id": "ann-greens-oq0202-excision",
     "proofId": "greens-theorem-oq-02-oq-02",
     "range": {
