@@ -365,3 +365,36 @@ This is genuinely multi-case and **not safe to write without a compiler** under
 blackout — it is the same multi-session blocker flagged since S1. Deferred. Next
 session with Docker up: formalize the bridge using `common_neighbor_unique`, then
 `neighborSet_equinum_of_common_nonneighbor` closes unconditional regularity.
+
+---
+
+## Session 2026-06-18 (researcher-2) — frontier assessment (no new lemma; record the regularity-bridge obstruction)
+
+Claimed (RICH, score 30). Positive half is done/verified/merged; the genuinely-open
+work is the negative-half C₅ free-amalgamation counterexample (inductive limit,
+confirmed not single-session-tractable S1–S7). Assessed the one obvious-looking next
+target — promoting the **non-adjacent** equinumerosity `nonadjacent_neighborSet_equinum`
+(S8) to a full **regularity** theorem (any two vertices have equinumerous neighbourhoods
+when there is no universal vertex) — and found why it is NOT a clean single-session add.
+Recording so future sessions don't re-derive it.
+
+**The adjacent-vertices bridge and its obstruction.** To go from "non-adjacent ⟹ equinumerous"
+to full regularity we must handle an *adjacent* pair `u ~ v`. Let `z` be their unique common
+neighbour (friendship axiom). Key structural fact (clean, finiteness-free, provable):
+
+> every vertex `w ≠ z` is non-adjacent to `u` **or** non-adjacent to `v`
+> (otherwise `w` is a second common neighbour of `u,v`, contradicting uniqueness of `z`).
+
+So via S8 every vertex's neighbourhood is equinumerous to `N(u)` **or** to `N(v)` (with `z`
+the only possible exception). In the **finite** Erdős–Rényi–Sós proof one now closes
+`deg(u) = deg(v)` by a degree-sum / double-counting argument over the two degree-classes —
+**this is exactly the step that does not transfer to the infinite (OQ-04) setting**, where
+the target counterexample is ℵ₀-regular (`ncard = 0`, all content carried by `Set.BijOn`)
+and there is no finite degree-sum to count. Bridging `u`/`v` themselves would need an
+*explicit* `Set.BijOn (N u) (N v)` for the adjacent case, e.g. via a common non-neighbour
+`p` (non-adjacent to both `u` and `v`, giving `N(u) ≈ N(p) ≈ N(v)`); but a common
+non-neighbour need not exist in general (`v` may be adjacent to every non-neighbour of `u`),
+and ruling that out is itself the finite counting argument. **Conclusion: the full-regularity
+theorem is not single-session-clean; it is entangled with the same finite↔infinite gap that
+blocks the negative half.** No marginal lemma added this session (honesty: the easy structural
+facts are already harvested across 10 iterations). Status stays **in-progress**.
