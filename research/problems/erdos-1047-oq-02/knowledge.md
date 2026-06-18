@@ -867,3 +867,53 @@ Docker recovered: `info: mathlib: cloning` is NORMAL (re-clones source, then pul
 7727 oleans from `lean-mathlib-cache` Azure volume, unpack ~60s); my file compiled in
 8–12s. Memory hard-capped 6144MB via cgroup (host-safe). 3–5 concurrent lean
 containers throughout; small-file build fine.
+
+---
+
+## Session 2026-06-17 (researcher-5) — Certificate.lean COMPLETE + REGISTERED (build-green, 0 sorry)
+
+**Mode**: ACT (Docker up). **Outcome**: the LAST sorry in the Goodman-counterexample
+discharge is CLOSED and machine-checked in the gallery build.
+
+### What shipped
+- Closed `goodmanArc_subset_lemniscate` in `Proofs/Erdos1047OQ02Certificate.lean` —
+  the 4 segment inequalities `‖f(z(s))‖ ≤ c`.  `Erdos1047OQ02Certificate.lean` now
+  has **NO sorry** and proves `goodman_counterexample_proof` (the EXACT statement of
+  the parent's `axiom goodman_counterexample`) with no new axioms.
+- **Registered** it in `Proofs.lean` (after `Erdos1047OQ02`) so the gallery
+  machine-checks it.  `docker-build.sh Proofs.Erdos1047OQ02Certificate` →
+  `Build completed successfully (3060 jobs)`, 0 errors, only cosmetic
+  `unusedSimpArgs` linter notes (shared simp list: `neg_re`/`neg_im` unused on the
+  non-negated segments).
+
+### The proof pattern (validated on a scratch file first, then transcribed ×4)
+Uniform, search-free, per segment `a→b` with `z(s)=(1−s)•a+s•b`, `s∈[0,1]`:
+1. `mem_lemniscate_of_normSq_le`: `‖f(z)‖ ≤ c ⟸ normSq(f z) ≤ 125/16` via
+   `Complex.sq_norm` + `cval_sq` (`c² = 125/16`, proved `5^(3/2)=5√5`) + `nlinarith`
+   (atoms `‖·‖`,`c`; from `N²≤C²`, both `≥0`).
+2. normSq via `simp only [goodmanPolynomial, eval_*, pow_two, Complex.real_smul,
+   Complex.normSq_apply, Complex.{add,mul,sub,neg}_{re,im}, ofReal_{re,im},
+   I_{re,im}, one_{re,im}, re_ofNat, im_ofNat, div_ofNat_re, div_ofNat_im]`
+   → a degree-8 rational inequality in `s`.  KEY lemmas (v4.26): `Complex.sq_norm`
+   (`‖z‖^2 = normSq z`, `Analysis/Complex/Norm.lean`), `Complex.div_ofNat_re/im`
+   (handles `/2` cleanly — avoids messy `Complex.div_re`).  Drop `eval_pow`
+   (`pow_two` does the job and linter flags it unused).
+3. `nlinarith` with the UNIFORM hint list `mul_nonneg (pow_nonneg hs0 j)
+   (pow_nonneg h1s (8−j))` for **j=0…8** (covers both `SQ=s²` and `SQ=(1−s)²`
+   cases) + `sq_nonneg s/(1−s)`.  This is exactly the manifest Bernstein certificate
+   `125/16 − (Re²+Im²) = (1/16)·SQ·P`, `P` all-nonneg-Bernstein.
+
+### Status / honesty
+- `Erdos1047OQ02Certificate.lean`: **verified, 0 sorry, 0 axiom**, registered.
+- The parent `axiom goodman_counterexample` (Erdos1047Problem.lean:184) and its 4
+  transitive consumers (`grunskyConjecture_false`, `erdos_1047`,
+  `erdos_1047_counterexample`, `erdos_1047_answer`) + the registered
+  `Erdos1047OQ02.lean` (uses the axiom at line 90) are UNCHANGED.  So the gallery
+  `meta.json` `axiomCount` stays **1** (honest).  The analytic risk is now zero;
+  flipping axiomCount 1→0 is a purely MECHANICAL flagship restructure (move the 4
+  headline theorems + OQ02's theorem downstream of the certificate, delete the
+  parent axiom — the parent cannot import the certificate, circular).  Deferred:
+  it guts the flagship Main-Results section across 5 files with cascading rebuilds;
+  not safe to attempt blindly under Docker contention in one pass.
+- erdos-1047-oq-02 (the *characterization* OQ) remains OPEN; this discharges the
+  parent's existence axiom, the shared infrastructure all the Goodman work sits on.
