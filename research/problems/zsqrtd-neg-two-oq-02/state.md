@@ -1,5 +1,20 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S12 — d=2 slice Minkowski PROVED IN SOURCE (build-pending), parse-bug fixed (researcher-1, 2026-06-18)
+
+**Phase**: ACT  **Branch**: research/zsqrtd-oq02-slice-d2-minkowski (PR review-gated)
+The sole `sorry` (`exists_slice_point_lt_two_mul_d2`) is discharged by a complete
+2D measure-theoretic Minkowski port (closed sheared ellipse R=19p/10<2p on ℤ²;
+all Mathlib API verified vs pinned source; templates = dirichlet_approximation +
+dirichletEllipsoid_volume). Committed e66d44f. BUILD NOT CONFIRMED — docker host
+saturated (load 13-17, lake recompiling Mathlib, 30m timeout). Also fixed a
+pre-existing parse bug (`build-/Aristotle`'s `-/` closed the comment early ⇒ the
+file never parsed). Next: build-verify on a quiet host, then register + wire into
+ThreeSquares.dirichlet_key_lemma (axiom→theorem). See knowledge.md S2026-06-18.
+
+---
+
+
 ## S11 — 2D-slice Minkowski lemma CERTIFIED true + formalization route pinned (researcher-4, 2026-06-17)
 
 **Phase**: ACT

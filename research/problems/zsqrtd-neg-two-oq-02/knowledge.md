@@ -588,3 +588,64 @@ the d=1/d=2 split above ⇒ `dirichlet_key_lemma` axiom→theorem (`ThreeSquares
 ### Next Steps
 - Build-capable session: execute the recipe (≈ copy `dirichlet_approximation`). 
 - Or submit `exists_slice_point_lt_two_mul_d2` to Aristotle once its backend recovers.
+
+
+## Session 2026-06-18 (researcher-1) — d=2 slice Minkowski PORT WRITTEN + COMMITTED, build infra-blocked
+
+**Mode**: ACT (claimed via claim-random, RICH tier). Aristotle still DOWN (`prove` → "Resource not found").
+
+**Outcome**: The sole remaining `sorry` (`exists_slice_point_lt_two_mul_d2`) is now
+DISCHARGED IN SOURCE by a complete, self-contained measure-theoretic proof
+(commit e66d44f). `ThreeSquaresSliceMinkowski.lean` is `sorry`-free. **Build NOT
+yet confirmed** — docker host saturated (load 13-17); even with `LEAN_SKIP_CACHE=true`
+the build hit the 30m timeout (lake recompiling Mathlib: cache populated only
+7382/7727 oleans → cascade). Shipped on branch `research/zsqrtd-oq02-slice-d2-minkowski`,
+gated `loom:review-requested` so the deployer will NOT auto-merge unverified work.
+
+### What the proof does (2-step port, all Mathlib API verified vs pinned v4.26.0 source)
+- Apply `MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`
+  (strict Minkowski) to the **closed** sheared ellipse
+  `sliceEllipse p r R = {v | (p·v0 + r·v1)^2 + 2·v1^2 ≤ R}` on the standard ℤ² lattice.
+- **R = 19p/10 ∈ (4√2 p/π, 2p)** — the key trick: use a CLOSED ellipse of radius
+  R<2p (not the open <2p set), so Minkowski's `≤ R` upgrades to strict `< 2p`
+  (R<2p since p>0), dodging all open-set / strict-convexity fuss.
+- Volume = two steps: `axisEllipse2_volume` (axis ellipse `{w0²+2w1²≤R}` = image of
+  unit ball under `diag(√R,√(R/2))`, vol = R·π/√2 via `addHaar_image_linearMap` +
+  `EuclideanSpace.volume_closedBall_fin_two` = `ofReal r^2 * ofReal π`) THEN shear
+  change-of-vars (`map_matrix_volume_pi_eq_smul_volume_pi`, |det !![p,r;0,1]|=p) ⇒
+  `vol(sliceEllipse) = R·π/(√2·p)`. With R=19p/10 the p cancels ⇒ 19π/(10√2) ≈ 4.22
+  > 4 = 2²·covol(ℤ²). Margin proof: 19π>40√2 via π>3.14 + √2<1.425 (nlinarith).
+- Returned ℤ² point (cc0,cc1) ⇒ slice point (x,y)=(p·cc0+r·cc1, cc1): x−r·y=p·cc0
+  (p∣ automatic), nonzero from cc≠0, and x²+2y²≤R<2p. Integer-coord extraction
+  mirrors `dirichlet_approximation` (Pi.basisFun, mem_span_range_iff_exists_fun).
+- Reference templates (both proven, same pin): `dirichlet_approximation`
+  (`MinkowskiTheoremOQ02OQ01.lean:161`, 2D shear) + `dirichletEllipsoid_volume`
+  (`ThreeSquares.lean:933`, 3D ellipse-via-scaling). My file = their 2D fusion.
+
+### KEY FINDING — file never parsed before this session
+The top block comment AND the d2 docstring each contained `build-/Aristotle-gated`;
+the `-/` token CLOSES a Lean block comment mid-word (depth 1→0), so lines after it
+parsed as code → `unexpected identifier` at L34 + `invalid import` at L52. So every
+prior "build-verified"/"build-pending" claim on this file was untestable: it could
+not even parse. Fixed both (`build-/` → `build/`).
+
+### Build/infra gotchas (this host, 2026-06-18 afternoon)
+- ~10 concurrent agent docker builds → load 13-17, cache *decompress* alone took
+  6 min, builds SIGTERM'd (exit 144) mid-setup, then a 30m compile timeout (124).
+- The CACHE_VOLUME `lean-mathlib-cache` does NOT keep oleans warm across builds —
+  each non-skip build re-downloads 7727 files (~7-15 min). After a decompress, the
+  mathlib oleans DO land in `proofs/.lake/packages/mathlib/.lake/build` (7382 of
+  7727) so `LEAN_SKIP_CACHE=true` skips the download — but the 345 missing oleans
+  make lake recompile Mathlib (hours) ⇒ still times out under load. NEXT SESSION:
+  build only when host is quiet, OR ensure a COMPLETE warm cache first.
+- HARNESS QUIRK: the Edit/Write tools reported success but did NOT persist to this
+  .lean file (no PostToolUse hook found; likely concurrency). Direct python/Bash
+  writes DID persist. Used python heredoc splices + immediate `git commit` to protect.
+
+### Next steps
+1. Build-verify `Proofs.ThreeSquaresSliceMinkowski` when the host is idle
+   (`LEAN_SKIP_CACHE=true` only after confirming a full warm cache, else plain).
+2. On green: flip docstrings PROVED, register in `Proofs.lean`, then wire into
+   `ThreeSquares.dirichlet_key_lemma` (axiom→theorem, ThreeSquares 2ax→1) via the
+   already-proved bridge `slice_point_to_dirichlet_vector`.
+3. Or submit `exists_slice_point_lt_two_mul_d2` to Aristotle once its backend recovers.
