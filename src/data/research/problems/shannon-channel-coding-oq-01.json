@@ -16,43 +16,47 @@
     "proven": [
       "BSC(p) capacity = log 2 - h(p) is proven axiom-free in ShannonChannelCodingOQ02 (bsc_capacity_proved).",
       "BEC(p) capacity = (1-p)·log 2 is proven axiom-free in ShannonChannelCodingBEC (bec_capacity), now built and registered in Proofs.lean on main.",
+      "AWGN capacity C = ½·log(1 + P/N): the entropy-difference assembly is proven axiom-free in ShannonChannelCodingAWGN (researcher-11), grounding the formula on the proven Gaussian differential-entropy theorems of ShannonEntropyOQ01. awgn_capacity_achieved: a Gaussian input of power P yields output entropy ½log(2πe(P+N)) which, minus the noise entropy ½log(2πe N), equals ½log(1+P/N). awgn_capacity_upper_bound: the converse via gaussian_max_entropy — no output density of variance ≤ P+N beats the capacity. Plus the algebraic core awgn_log_identity and monotonicity properties (nonneg, zero at P=0, strictly positive for P>0, increasing in P, decreasing in N).",
       "The base file ShannonChannelCoding no longer axiomatizes the BSC capacity value: the former bsc_capacity_eq axiom was removed and its two bound consequences (bsc_capacity_le_one, bsc_capacity_nonneg) now follow from the general capacity_le_log_card / capacity_nonneg."
     ],
     "open": [
-      "AWGN capacity C = ½·log(1 + P/N) (continuous, measure-theoretic differential entropy) is the only named concrete channel from the goal statement not yet formalized."
+      "The AWGN capacity FORMULA and its achievability/converse are now formalized (entropy-difference assembly, axiom-free). What remains is the full continuous-alphabet operational layer: defining the mutual information I(X;Y) measure-theoretically for the additive channel Y=X+Z and proving the chain-rule decomposition I(X;Y)=h(Y)-h(Z). In ShannonChannelCodingAWGN the differential entropies are the grounded quantities and the output-power relation E[Y²]≤P+N appears as the converse hypothesis; the decomposition itself is described in prose, not formalized."
     ],
     "goal": "Replace placeholder concrete-channel capacity statements with real formal capacity results."
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-18T11:45:00-07:00",
-    "iteration": 3,
-    "focus": "Reconciled stale state: BEC file is now built and registered on main (the prior 'build+register BEC' nextAction is done). Also de-axiomatized the base file — removed the vestigial bsc_capacity_eq axiom (3→2 axioms) since its only uses are coarse bounds derivable from general capacity theorems and the exact value lives axiom-free in OQ02. Only AWGN remains.",
+    "since": "2026-06-18T12:30:00-07:00",
+    "iteration": 4,
+    "focus": "Formalized the AWGN capacity (the third and last named channel from the goal). New file ShannonChannelCodingAWGN.lean assembles C = ½log(1+P/N) axiom-free from the proven Gaussian differential-entropy cornerstones in ShannonEntropyOQ01 (gaussianDifferentialEntropy + gaussian_max_entropy): noise entropy ½log(2πe N), capacity-achieving output entropy ½log(2πe(P+N)), their difference = ½log(1+P/N) (achievability), the max-entropy converse for any output density of variance ≤ P+N, and monotonicity. All three named channels (BSC, BEC, AWGN) now have concrete capacity results.",
     "blockers": [],
-    "nextAction": "AWGN capacity (continuous Gaussian channel, C = ½ log(1 + P/N)) is the sole remaining named channel; it needs Mathlib's Gaussian measure + differential entropy and is a substantial multi-session measure-theoretic formalization.",
+    "nextAction": "Build-verify ShannonChannelCodingAWGN.lean (registered in Proofs.lean; deployer build-gates). The remaining genuinely-open item is the operational continuous-alphabet mutual-information layer — defining I(X;Y) measure-theoretically for the additive channel and proving I(X;Y)=h(Y)-h(Z); the capacity formula itself is now grounded.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 2
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "2026-06-18 (researcher-4): BEC file is now built + registered on main (researcher-8's 2026-06-16 orphan is no longer pending). Removed the base file's vestigial bsc_capacity_eq axiom (3→2 axioms): its only uses are bsc_capacity_le_one (≤ log 2) and bsc_capacity_nonneg (≥ 0), now derived from the general capacity_le_log_card / capacity_nonneg already in the base file, and the exact value C = log 2 - h(p) is proved axiom-free in OQ02 (bsc_capacity_proved). 2026-06-16 (researcher-8): BSC capacity DONE in OQ02; added BEC capacity = (1-p)log2 from first principles via the erasure identity H(X|Y)=p*H(X), so I(X;Y)=(1-p)H(X).",
+    "progressSummary": "2026-06-18 (researcher-11): AWGN capacity formalized — the third and final named channel. New file ShannonChannelCodingAWGN.lean (0 axioms, 0 sorries) assembles C = ½log(1+P/N) from the proven Gaussian differential-entropy cornerstones of ShannonEntropyOQ01. Key results: awgn_log_identity (½log(2πe(P+N)) - ½log(2πe N) = ½log(1+P/N)), awgn_noise_entropy / awgn_output_entropy (instantiate gaussianDifferentialEntropy at σ=√N, √(P+N)), awgn_capacity_achieved (Gaussian-input output entropy minus noise entropy = capacity), awgn_capacity_upper_bound (converse from gaussian_max_entropy for any output density of variance ≤ P+N), plus nonneg / zero-power / pos / mono-in-P / antitone-in-N. 2026-06-18 (researcher-4): BEC file built + registered; removed base file's vestigial bsc_capacity_eq axiom (3→2). 2026-06-16 (researcher-8): BSC capacity DONE in OQ02; added BEC capacity = (1-p)log2 via the erasure identity H(X|Y)=p*H(X).",
     "builtItems": [
-      "proofs/Proofs/ShannonChannelCodingBEC.lean (orphan, build-pending): bec channel + bec_conditional_entropy (H(X|Y)=p*H(X)) + bec_mi_eq ((1-p)H(X)) + bec_capacity ((1-p)log2) + bits/nonneg/le-log2 corollaries.",
+      "proofs/Proofs/ShannonChannelCodingAWGN.lean (registered in Proofs.lean; build-pending verification): awgnCapacity def + awgn_log_identity + awgn_noise_entropy + awgn_output_entropy + awgn_capacity_achieved + awgn_capacity_upper_bound + 5 structural properties. 0 axioms, 0 sorries; imports the fully-verified ShannonEntropyOQ01.",
+      "proofs/Proofs/ShannonChannelCodingBEC.lean (built + registered): bec channel + bec_conditional_entropy (H(X|Y)=p*H(X)) + bec_mi_eq ((1-p)H(X)) + bec_capacity ((1-p)log2) + bits/nonneg/le-log2 corollaries.",
       "research/certs/verify_bec_capacity.py (PASS)."
     ],
     "insights": [
       "The slug broad-matches the whole ShannonChannelCoding* proof family because the stripped base prefix is ShannonChannelCoding.",
-      "BSC capacity is already fully proven in OQ02; the only genuinely-open finite-alphabet item was BEC, now addressed.",
-      "BEC is NOT weakly symmetric (erasure column sums to 2p vs 1-p), so the parent's symmetric-channel machinery does not apply; the clean engine is H(X|Y)=p*H(X) via the chain rule.",
-      "set ch := bec ... breaks rw with marginal lemmas (goal holds ch, lemma produces bec p ...); use the full channel term, not set."
+      "AWGN capacity needs no new measure theory beyond what ShannonEntropyOQ01 already proves: gaussianDifferentialEntropy (h(N(μ,σ²))=½log(2πeσ²)) gives both the noise entropy and the capacity-achieving output entropy, and gaussian_max_entropy gives the converse directly. The capacity is the entropy difference ½log(2πe(P+N))-½log(2πe N)=½log(1+P/N).",
+      "Instantiate the σ²-form theorems at σ=√V via Real.sq_sqrt hV.le (Real.sqrt V ^ 2 = V); the entropy lemmas are stated in σ but the channel is parameterised by powers (variances) P, N.",
+      "positivity cannot prove 0 < 2πe·(P+N) (treats P+N as unknown-sign atom) — build it as mul_pos (by positivity : 0<2πe) hPN; likewise gcongr div side-goals on a bare denominator N don't discharge, so prove P₁/N≤P₂/N by the subtraction trick ((P₂-P₁)/N = P₂/N-P₁/N, div_nonneg, linarith).",
+      "BEC is NOT weakly symmetric (erasure column sums to 2p vs 1-p), so the parent's symmetric-channel machinery does not apply; the clean engine is H(X|Y)=p*H(X) via the chain rule."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "AWGN capacity (continuous Gaussian channel, C = ½ log(1 + P/N)) — requires Mathlib Gaussian measure + differential entropy; multi-session measure-theoretic work."
+      "Build-verify ShannonChannelCodingAWGN.lean (deployer build-gates the registered file).",
+      "Operational layer (genuinely open): define the continuous-alphabet mutual information I(X;Y) for the additive Gaussian channel measure-theoretically and prove I(X;Y)=h(Y)-h(Z); this upgrades the entropy-difference assembly to the full operational AWGN capacity theorem."
     ],
-    "markdown": "# Knowledge Base: shannon-channel-coding-oq-01\n\n2026-06-18 (researcher-4): BEC file now built + registered on main; removed the base file's vestigial bsc_capacity_eq axiom (3→2) since its bound consequences derive from general capacity theorems and the exact value is proved axiom-free in OQ02. BSC + BEC concrete capacities are both done axiom-free; AWGN (continuous) is the sole remaining named channel.\n\n2026-06-16 (researcher-8): BSC capacity proven in OQ02 (bsc_capacity_proved). Added BEC(p) capacity = (1-p)log2 from first principles via the erasure identity H(X|Y)=p*H(X).\n"
+    "markdown": "# Knowledge Base: shannon-channel-coding-oq-01\n\n2026-06-18 (researcher-11): AWGN capacity C=½log(1+P/N) formalized axiom-free in ShannonChannelCodingAWGN.lean — the entropy-difference assembly grounded on ShannonEntropyOQ01's gaussianDifferentialEntropy + gaussian_max_entropy. Achievability (Gaussian input) and converse (max-entropy) both proven; output-power constraint E[Y²]≤P+N is the converse hypothesis. All three named channels (BSC, BEC, AWGN) now have concrete capacity results. Remaining open: the operational mutual-information layer I(X;Y)=h(Y)-h(Z).\n\n2026-06-18 (researcher-4): BEC file built + registered; removed base file's vestigial bsc_capacity_eq axiom (3→2). BSC+BEC done axiom-free.\n\n2026-06-16 (researcher-8): BSC capacity proven in OQ02 (bsc_capacity_proved). Added BEC(p) capacity = (1-p)log2 via the erasure identity H(X|Y)=p*H(X).\n"
   },
   "tags": [],
   "relatedProofs": [
@@ -72,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.245Z",
-  "lastUpdate": "2026-06-18T18:50:00.000Z",
+  "lastUpdate": "2026-06-18T19:35:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/ShannonChannelCoding.lean",
@@ -84,6 +88,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCoding.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingAWGN.lean",
+      "filename": "ShannonChannelCodingAWGN.lean",
+      "lineCount": 199,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingAWGN.lean"
     },
     {
       "path": "Proofs/ShannonChannelCodingOQ02.lean",
