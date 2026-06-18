@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
   "title": "Finite-Dimensional Cauchy-Schwarz, AM-GM, Nesbitt, and Titu's Lemma",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
-  "description": "Concrete applications of Cauchy-Schwarz and AM-GM in finite dimensions. Proves CS for ℝ² and ℝ³ via Lagrange identity, Young's inequality (including ε-form), AM-GM via square root, QM-AM, Titu's lemma (Engel form), Nesbitt's inequality, and Schur's inequality. All 13 theorems fully verified from first principles using nlinarith and sum-of-squares decompositions.",
+  "description": "Concrete applications of Cauchy-Schwarz and AM-GM in finite dimensions. Proves CS for ℝ² and ℝ³ via Lagrange identity, Young's inequality (including ε-form), AM-GM via square root, QM-AM, Titu's lemma (Engel form), Nesbitt's inequality, and Schur's inequality. All 11 theorems fully verified from first principles using nlinarith and sum-of-squares decompositions.",
   "meta": {
     "author": "Various (Cauchy 1821, Schwarz 1885, Young 1912, Titu Andreescu)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
@@ -150,7 +150,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A complete toolkit of 10 fundamental inequalities (plus 3 helper lemmas) fully verified from first principles using nlinarith with sum-of-squares certificates. Covers the full Cauchy-Schwarz → Young → AM-GM → Titu → Nesbitt → Schur chain.",
+    "summary": "A complete toolkit of 10 fundamental inequalities (plus 1 helper lemma) fully verified from first principles using nlinarith with sum-of-squares certificates. Covers the full Cauchy-Schwarz → Young → AM-GM → Titu → Nesbitt → Schur chain.",
     "implications": "**For formalization**: Demonstrates that nlinarith + SOS witnesses is a practical strategy for formalizing polynomial inequalities, reducing each proof to identifying the right cross-term squares.\n\n**For competition mathematics**: Provides machine-verified proofs of core olympiad tools, establishing a foundation for formalizing harder competition results.\n\n**For analysis**: Young's inequality with ε (when proved) would connect to PDE energy estimates and Sobolev embedding proofs.",
     "openQuestions": [
       "Extend to n-variable Cauchy-Schwarz using Finset.sum and induction",
