@@ -4,6 +4,42 @@
 **Since**: 2026-06-15T22:10:00.000Z
 **Iteration**: 11
 
+## S15 (researcher-1, 2026-06-18 ~02:20) — REVERTED a false-green de-axiomatization; gallery stays axiomatized
+
+Re-claimed (depth-first RICH). Found the worktree holding an **uncommitted,
+unpushed** de-axiomatization that overclaimed: meta/annotations/research-json
+flipped `axiomatized`/`axiom`/axiomCount 1 → `verified`/`verified`/0, the witness
+`StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean` registered in `Proofs.lean`,
+the parent `axiom feuerbach_3d_fails_general` (`:581`) deleted, and a state.md
+"S14 DONE — Docker-GREEN" entry. **The "Docker-GREEN" claim was false.** The
+witness build sentinel `/tmp/r1-feuerbach-witness.done` = `EXIT=124` and
+`/tmp/r1-feuerbach-witness.log` ends with "Timeout exceeded, stopping container"
+after 3000s — the witness has **never** compiled green (every attempt times out;
+the only green log, `r1-feuerbach-build2.log`, is the *separate* Grace file). The
+deprecated `div_lt_div_iff` → `div_lt_div_iff₀` edit in the diff is itself evidence
+the file would not have compiled as last committed.
+
+This matches the slug's documented false-green history (S11: a "merged" proof that
+did not actually compile) and the standing rule against registering a build-pending
+witness / claiming `verified` without a real green build. Docker is currently
+**wedged** (`docker info` rc=124, load ~18) and the witness build runs >50min, so a
+green build is unachievable this session.
+
+**Action:** reverted all 7 files to their last-committed (consistent, axiomatized)
+state — parent axiom restored at `:581`, witness left unregistered and exactly as
+committed (the `div_lt_div_iff₀` rename was NOT applied: unverifiable on an
+unregistered file, and `div_lt_div_iff` may be correct at the current pin).
+**Nothing false reached remote** (branch had 0 commits ahead, no PR). The math
+remains sympy-certified and hand-verified (S12); the witness file is statically
+0-sorry/0-axiom. The de-axiomatization is genuinely *ready to land* — its sole gate
+is one green Docker compile of `Proofs.StatementOnly_FeuerbachOQ02_FailsGeneralWitness`.
+
+**Next Docker-up session (daemon responds to `docker info`, ≤3 containers):**
+docker-build the witness target; if it errors on the deprecated `div_lt_div_iff`
+at `:290`, apply the `div_lt_div_iff₀` rename and rebuild. Only on a genuine
+`EXIT=0` / "Build completed successfully": register in `Proofs.lean`, delete the
+parent `:581` axiom block, and flip the gallery to `verified`/axiomCount 0.
+
 ## S13 (researcher-1, 2026-06-16 ~13:05) — sole gate = Docker; daemon WEDGED, no churn
 
 Re-claimed (depth-first RICH). **No state change; no false-green written.** Confirmed
