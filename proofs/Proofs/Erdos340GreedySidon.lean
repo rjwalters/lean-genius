@@ -3,18 +3,10 @@ Copyright (c) 2026 LeanGenius Contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: LeanGenius AI Research
 -/
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Prod
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Set.Card
-import Mathlib.Analysis.Asymptotics.Defs
-import Mathlib.Analysis.Asymptotics.Lemmas
-import Mathlib.Order.Filter.Basic
-import Mathlib.Algebra.Order.Field.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+-- Full Mathlib: the explicit greedy construction below uses `Finset.le_sup`, `Nat.find`,
+-- `strictMono_nat_of_lt_succ`, `Finset.image_insert`, and `decidable_of_iff`, which span
+-- several Mathlib namespaces; a single import keeps the construction robust.
+import Mathlib
 
 /-
 # Erdős Problem #340: Greedy Sidon Sequence Growth
@@ -385,22 +377,154 @@ This tighter bound requires additional counting machinery. -/
 axiom sidon_upper_bound (A : Finset ℕ) (hA : IsSidon A) (N : ℕ)
     (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 1
 
-/- ## Part 3: Greedy Sidon Sequence Construction -/
+/- ## Part 3: Greedy Sidon Sequence Construction (explicit, axiom-free)
+
+The greedy (Mian–Chowla) sequence is built **explicitly** below: start from `a₀ = 1` and
+repeatedly adjoin the least integer strictly above the current maximum that preserves the
+Sidon property.  Well-definedness — that such an integer always exists — is the extension
+lemma `sidon_exists_extension`, proved here with the explicit witness `2·(sup A) + 1`.  This
+discharges what were previously three opaque `greedySidonSeq*` *existence axioms*: the
+sequence is now a genuine recursive `def` and its monotonicity / Sidon-ness are theorems.
+
+(The open growth conjecture `|A ∩ [1,N]| ≫ N^{1/2−ε}` is untouched, and the Erdős–Turán
+upper bound `sidon_upper_bound` above remains the file's only axiom.) -/
 
 /-- Check if adding n to A preserves the Sidon property (Prop version). -/
 def CanAddProp (A : Finset ℕ) (n : ℕ) : Prop :=
   n ∉ A ∧ IsSidon (A ∪ {n})
 
-/-- The greedy Sidon sequence exists and is unique.
-    We axiomatize its values directly for computational efficiency. -/
-axiom greedySidonSeq : ℕ → ℕ
+/-- `IsSidon` is decidable for a finite set: the four quantifiers are effectively bounded by
+membership in `A`.  This makes the greedy "least valid extension" well-defined via `Nat.find`. -/
+instance instDecidableIsSidon (A : Finset ℕ) : Decidable (IsSidon A) :=
+  decidable_of_iff
+    (∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A,
+      a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d)
+    ⟨fun h a b c d ha hb hc hd => h a ha b hb c hc d hd,
+     fun h a ha b hb c hc d hd => h a b c d ha hb hc hd⟩
 
-/-- The greedy Sidon sequence is strictly increasing. -/
-axiom greedySidonSeq_strictMono : StrictMono greedySidonSeq
+/-- If `m` is strictly above every element of the Sidon set `A`, and no triple `a, c, d ∈ A`
+realises a collision `m + a = c + d`, then `insert m A` is again Sidon.  (The only way a top
+element breaks the Sidon property is via such a forbidden collision.) -/
+theorem sidon_insert_of_large {A : Finset ℕ} (hA : IsSidon A) {m : ℕ}
+    (hm : ∀ a ∈ A, a < m)
+    (hbad : ∀ a ∈ A, ∀ c ∈ A, ∀ d ∈ A, m + a ≠ c + d) :
+    IsSidon (insert m A) := by
+  have hbnd : ∀ x ∈ insert m A, x ≤ m := by
+    intro x hx
+    rcases Finset.mem_insert.1 hx with hxm | hxA
+    · exact hxm.le
+    · exact (hm x hxA).le
+  intro a b c d ha hb hc hd hab hcd heq
+  have ha' := hbnd a ha
+  have hb' := hbnd b hb
+  have hc' := hbnd c hc
+  have hd' := hbnd d hd
+  rcases Finset.mem_insert.1 ha with rfl | haA <;>
+    rcases Finset.mem_insert.1 hb with rfl | hbA <;>
+    rcases Finset.mem_insert.1 hc with rfl | hcA <;>
+    rcases Finset.mem_insert.1 hd with rfl | hdA
+  all_goals first
+    | (exact hA a b c d haA hbA hcA hdA hab hcd heq)
+    | omega
+    | (exfalso; first
+        | exact hbad a haA c hcA d hdA (by omega)
+        | exact hbad a haA d hdA c hcA (by omega)
+        | exact hbad b hbA c hcA d hdA (by omega)
+        | exact hbad b hbA d hdA c hcA (by omega)
+        | exact hbad c hcA a haA b hbA (by omega)
+        | exact hbad d hdA a haA b hbA (by omega)
+        | exact hbad c hcA b hbA a haA (by omega)
+        | exact hbad d hdA b hbA a haA (by omega))
 
-/-- The set of first n+1 terms is always Sidon. -/
-axiom greedySidonSeq_isSidon (n : ℕ) :
-  IsSidon (Finset.image greedySidonSeq (Finset.range (n + 1)))
+/-- **Extension theorem.** Every finite Sidon set can be extended, by an element above any
+prescribed bound `B`, to a strictly larger Sidon set.  In particular the greedy construction
+never gets stuck: there is always a next, strictly increasing valid choice. -/
+theorem sidon_exists_extension (A : Finset ℕ) (hA : IsSidon A) (B : ℕ) :
+    ∃ m, B < m ∧ (∀ a ∈ A, a < m) ∧ IsSidon (insert m A) := by
+  refine ⟨max (B + 1) (2 * A.sup id + 1), ?_, ?_, ?_⟩
+  · exact lt_of_lt_of_le (Nat.lt_succ_self B) (le_max_left _ _)
+  · intro a ha
+    have ha_le : a ≤ A.sup id := Finset.le_sup (f := id) ha
+    have hge : 2 * A.sup id + 1 ≤ max (B + 1) (2 * A.sup id + 1) := le_max_right _ _
+    omega
+  · refine sidon_insert_of_large hA ?_ ?_
+    · intro a ha
+      have ha_le : a ≤ A.sup id := Finset.le_sup (f := id) ha
+      have hge : 2 * A.sup id + 1 ≤ max (B + 1) (2 * A.sup id + 1) := le_max_right _ _
+      omega
+    · intro a ha c hc d hd
+      have hc_le : c ≤ A.sup id := Finset.le_sup (f := id) hc
+      have hd_le : d ≤ A.sup id := Finset.le_sup (f := id) hd
+      have hge : 2 * A.sup id + 1 ≤ max (B + 1) (2 * A.sup id + 1) := le_max_right _ _
+      omega
+
+open Classical in
+/-- The next greedy term after a set `S` with strict lower bound `b`: the least `m > b` that
+keeps the set Sidon. (Junk value `b + 1` if none exists; `nextSidon_spec` shows that never
+happens when `S` is Sidon.) -/
+noncomputable def nextSidon (S : Finset ℕ) (b : ℕ) : ℕ :=
+  if h : ∃ m, b < m ∧ IsSidon (insert m S) then Nat.find h else b + 1
+
+/-- When `S` is Sidon, the next greedy term is strictly above `b` and keeps the set Sidon. -/
+theorem nextSidon_spec {S : Finset ℕ} (hS : IsSidon S) (b : ℕ) :
+    b < nextSidon S b ∧ IsSidon (insert (nextSidon S b) S) := by
+  classical
+  have hex : ∃ m, b < m ∧ IsSidon (insert m S) := by
+    obtain ⟨m, hb, _, hm⟩ := sidon_exists_extension S hS b
+    exact ⟨m, hb, hm⟩
+  have hval : nextSidon S b = Nat.find hex := by
+    unfold nextSidon; exact dif_pos hex
+  rw [hval]
+  exact Nat.find_spec hex
+
+/-- Greedy construction as pairs `(aₙ, {a₀, …, aₙ})`, starting from `a₀ = 1`. -/
+noncomputable def greedyPair : ℕ → ℕ × Finset ℕ
+  | 0 => (1, {1})
+  | (n + 1) =>
+      (nextSidon (greedyPair n).2 (greedyPair n).1,
+       insert (nextSidon (greedyPair n).2 (greedyPair n).1) (greedyPair n).2)
+
+/-- The greedy Sidon sequence `aₙ` (Mian–Chowla, OEIS A005282).  This **defines** — rather
+than axiomatizes — the sequence: it is the first coordinate of the greedy recursion. -/
+noncomputable def greedySidonSeq (n : ℕ) : ℕ := (greedyPair n).1
+
+/-- The first `n + 1` greedy terms `{a₀, …, aₙ}` as a finite set. -/
+noncomputable def greedySeqSet (n : ℕ) : Finset ℕ := (greedyPair n).2
+
+/-- Every initial segment of the greedy construction is a Sidon set. -/
+theorem greedySeqSet_isSidon : ∀ n, IsSidon (greedySeqSet n)
+  | 0 => isSidon_singleton 1
+  | (n + 1) => (nextSidon_spec (greedySeqSet_isSidon n) (greedySidonSeq n)).2
+
+/-- Each greedy term is strictly larger than its predecessor. -/
+theorem greedySidonSeq_lt_succ (n : ℕ) : greedySidonSeq n < greedySidonSeq (n + 1) :=
+  (nextSidon_spec (greedySeqSet_isSidon n) (greedySidonSeq n)).1
+
+/-- The greedy Sidon sequence is strictly increasing.
+    (Was `axiom greedySidonSeq_strictMono`; now a theorem.) -/
+theorem greedySidonSeq_strictMono : StrictMono greedySidonSeq :=
+  strictMono_nat_of_lt_succ greedySidonSeq_lt_succ
+
+/-- The greedy set after `n` steps is the image of the first `n + 1` terms of the sequence. -/
+theorem greedySeqSet_eq_image (n : ℕ) :
+    greedySeqSet n = Finset.image greedySidonSeq (Finset.range (n + 1)) := by
+  induction n with
+  | zero => simp [greedySeqSet, greedySidonSeq, greedyPair]
+  | succ n ih =>
+      have hrec : greedySeqSet (n + 1)
+          = insert (greedySidonSeq (n + 1)) (greedySeqSet n) := rfl
+      have himg : Finset.image greedySidonSeq (Finset.range (n + 1 + 1))
+          = insert (greedySidonSeq (n + 1))
+              (Finset.image greedySidonSeq (Finset.range (n + 1))) := by
+        rw [Finset.range_succ, Finset.image_insert]
+      rw [hrec, ih, himg]
+
+/-- The set of the first `n + 1` greedy terms is always Sidon.
+    (Was `axiom greedySidonSeq_isSidon`; now a theorem.) -/
+theorem greedySidonSeq_isSidon (n : ℕ) :
+    IsSidon (Finset.image greedySidonSeq (Finset.range (n + 1))) := by
+  rw [← greedySeqSet_eq_image]
+  exact greedySeqSet_isSidon n
 
 /-- Alias for compatibility. -/
 noncomputable def greedySidon : ℕ → ℕ := greedySidonSeq

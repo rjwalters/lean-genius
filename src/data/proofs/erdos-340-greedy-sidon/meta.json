@@ -56,7 +56,7 @@
       "erdos_340: formal statement of Erdos's conjecture (OPEN)"
     ],
     "dateAdded": "2026-03-22",
-    "axiomCount": 4,
+    "axiomCount": 1,
     "lineCount": 507,
     "prerequisites": [
       "Additive combinatorics (Sidon sets, sum-free sets, difference sets)",
@@ -208,18 +208,7 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Data.Finset.Prod",
-      "Mathlib.Data.Finset.Powerset",
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Nat.Choose.Basic",
-      "Mathlib.Data.Set.Card",
-      "Mathlib.Analysis.Asymptotics.Defs",
-      "Mathlib.Analysis.Asymptotics.Lemmas",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Algebra.Order.Field.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      "Mathlib"
     ],
     "opens": [
       "Finset",
@@ -227,10 +216,10 @@
       "Set"
     ],
     "namespace": "Erdos340",
-    "lineCount": 507,
-    "axiomCount": 4,
-    "theoremCount": 16,
-    "definitionCount": 10,
+    "lineCount": 646,
+    "axiomCount": 1,
+    "theoremCount": 25,
+    "definitionCount": 15,
     "path": "Proofs/Erdos340GreedySidon.lean",
     "sorries": 0
   },
