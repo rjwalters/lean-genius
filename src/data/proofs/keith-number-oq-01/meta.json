@@ -92,5 +92,76 @@
       "summary": "`keith_fourteen : IsKeith 14` and `not_keith_below_fourteen : ∀ n < 14, ¬ IsKeith n` are proved by `decide`; `smallest_keith : IsLeast {n | IsKeith n} 14` combines membership with the lower bound.",
       "mathContext": "`IsLeast S 14` means 14 ∈ S and 14 is a lower bound for S — exactly 'smallest Keith number'."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "The Keith (repfigit) predicate is introduced in Lean — a notion Mathlib lacks — as a fuel-bounded sliding-window digit recurrence, equipped with a DecidablePred instance, and used to prove IsLeast {n | IsKeith n} 14: 14 is a Keith number (1,4,5,9,14) and no smaller number is. The entire result is machine-checked by kernel `decide` with 0 sorries and 0 axioms.",
+    "implications": "The entry is a case study in keeping a digit-based decision procedure inside the kernel's reach. The crucial design choice — replacing Mathlib's well-founded `Nat.digits` with a structurally-recursive fuel-bounded `lsdDigits` — is what lets `decide` (rather than `native_decide`) close both membership and the bounded-minimality quantifier, so the proof avoids the `Lean.ofReduceBool` axiom that `native_decide` would introduce and stays genuinely axiom-free. The same fuel-bounded-window pattern transfers to other self-referential digit families (repfigit variants in other bases, or higher-order analogues) where a kernel-reducible recurrence is needed.",
+    "openQuestions": [
+      "Extend the formalization beyond the minimal case: prove membership for the next Keith numbers (19, 28, 47, 61, 75, …) or characterize all Keith numbers below a fixed bound by a single `decide`.",
+      "Generalize `IsKeith` to an arbitrary base b and recover the base-10 predicate as a special case, then study which bases admit small Keith numbers.",
+      "Establish a clean monotonicity/termination lemma for `reaches` (the running window sum is eventually strictly increasing) to derive an a-priori fuel bound as a function of n, removing the hard-coded 40.",
+      "It is unknown whether there are infinitely many Keith numbers — a genuine open problem in recreational number theory that this decidable framework could help explore computationally."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "happy-number-oq-01",
+      "relationship": "related",
+      "description": "Another digit-defined integer family settled by a decidable predicate over ℕ: happy numbers iterate the sum-of-squared-digits map, Keith numbers iterate a digit-seeded linear recurrence. Both hinge on making a digit dynamics decidable so finite claims reduce automatically."
+    },
+    {
+      "targetId": "repunit-oq-01",
+      "relationship": "related",
+      "description": "A neighbouring entry on a number family defined by decimal-digit structure (repunits R_n = 11…1). Both sit in the digit/recurrence corner of elementary number theory and rely on the decimal representation as the primary object."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/KeithNumberOQ01.lean",
+    "namespace": "KeithNumberOQ01",
+    "imports": [
+      "Mathlib"
+    ],
+    "lineCount": 84,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 5
+  },
+  "mainTheorems": [
+    {
+      "name": "smallest_keith",
+      "type": "core",
+      "description": "IsLeast {n : ℕ | IsKeith n} 14 — 14 is a Keith number and a lower bound for the set of all Keith numbers, i.e. the smallest Keith number.",
+      "leanType": "IsLeast {n : ℕ | IsKeith n} 14"
+    },
+    {
+      "name": "keith_fourteen",
+      "type": "supporting",
+      "description": "IsKeith 14 — membership, witnessed by the recurrence 1,4,5,9,14; proved by kernel decide.",
+      "leanType": "IsKeith 14"
+    },
+    {
+      "name": "not_keith_below_fourteen",
+      "type": "supporting",
+      "description": "∀ n < 14, ¬ IsKeith n — the lower bound; a finite check over 10,11,12,13 (smaller numbers excluded by 10 ≤ n), proved by decide via Nat.decidableBallLT.",
+      "leanType": "∀ n < 14, ¬ IsKeith n"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Mike Keith",
+      "title": "Repfigit Numbers",
+      "year": "1987",
+      "venue": "Journal of Recreational Mathematics, 19(2), 41–42",
+      "note": "Introduces Keith (repetitive Fibonacci-like digit) numbers."
+    },
+    {
+      "authors": "OEIS Foundation",
+      "title": "A007629: Repfigit (REPetitive FIbonacci-like diGIT) numbers",
+      "year": "—",
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "note": "The sequence 14, 19, 28, 47, 61, 75, … of Keith numbers; 14 is the smallest."
+    }
+  ],
+  "sorries": 0
 }

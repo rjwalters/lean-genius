@@ -33,7 +33,7 @@
     "title": "Kernel-Reducible Decimal Digits",
     "content": "`lsdDigits fuel n` peels the least-significant decimal digits of `n` by **structural recursion on `fuel`**, and `msdDigits n = (lsdDigits n n).reverse` returns the digits most-significant first (so `msdDigits 14 = [1, 4]`). Fuel `n` always suffices, since a positive integer has at most `n` decimal digits.\n\nThe custom function is deliberate: Mathlib's `Nat.digits` is defined by **well-founded** recursion and does not reliably reduce under kernel `decide`. The fuel-bounded structural version keeps the whole decision procedure kernel-reducible, which is what makes the final result axiom-free.",
     "mathContext": "$\\mathrm{msdDigits}(N)$ is the seed window of the Keith recurrence. Choosing a kernel-reducible digit function is the design pivot that avoids `native_decide` (and hence the `Lean.ofReduceBool` axiom).",
-    "significance": "important",
+    "significance": "supporting",
     "prerequisites": [
       "structural vs well-founded recursion",
       "decimal expansions"
@@ -78,7 +78,7 @@
     "title": "The Keith Predicate, Made Decidable",
     "content": "`IsKeith n := 10 ≤ n ∧ reaches n 40 (msdDigits n) = true` packages the two-digit lower bound with the reachability condition. The accompanying `DecidablePred IsKeith` instance is assembled from the decidability of `10 ≤ n` and of the `Bool` equality `reaches … = true`.\n\nDecidability is the linchpin: it lets *both* membership (`IsKeith 14`) and the minimality quantifier (`∀ n < 14, ¬ IsKeith n`) be discharged by kernel `decide` with no hand-written case analysis.",
     "mathContext": "The `10 ≤ n` clause encodes 'at least two digits', excluding single-digit numbers from the Keith definition.",
-    "significance": "important",
+    "significance": "supporting",
     "prerequisites": [
       "DecidablePred",
       "decidability of bounded quantifiers"
