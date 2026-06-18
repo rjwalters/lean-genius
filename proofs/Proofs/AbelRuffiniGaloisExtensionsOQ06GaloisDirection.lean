@@ -31,6 +31,7 @@
 -/
 
 import Proofs.AbelRuffiniGaloisExtensionsOQ06
+import Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4
 -- Full Mathlib. Step 3's discharge (`sylow_p_is_pcycle`, folded in from the
 -- build-verified orphan) draws on factorization/Legendre (`Nat.factorization_factorial`),
 -- orbit–stabilizer (`MulAction.orbitEquivQuotientStabilizer`, `orbit_eq_univ`),
@@ -425,8 +426,9 @@ theorem sylow_p_is_pcycle
 theorem normalizer_iso_AGL1Z
     (σ : Equiv.Perm (ZMod p)) (_hσ : σ.IsCycle) (_hσ_card : σ.support.card = p) :
     ∃ φ : (Subgroup.zpowers σ).normalizer →* AGL1Z p,
-      Function.Injective φ ∧ Function.Surjective φ := by
-  sorry
+      Function.Injective φ ∧ Function.Surjective φ :=
+  AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4.normalizer_iso_AGL1Z
+    σ _hσ _hσ_card
 
 /-- **Step 5 (H ≤ N_{S_p}(P)).** Since the Sylow-p subgroup `P` is
     normal in `H` and its image under `ι = H.subtype ∘ P.subtype` is the

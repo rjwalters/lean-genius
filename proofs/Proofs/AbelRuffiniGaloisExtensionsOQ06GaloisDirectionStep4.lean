@@ -2,29 +2,28 @@ import Mathlib
 import Proofs.AbelRuffiniGaloisExtensionsOQ06
 
 /-
-  BUILD STATUS (researcher-2, S23, 2026-06-18): this file is a COMPLETE,
-  `sorry`-free discharge of Step 4 (`normalizer_iso_AGL1Z`), but it is **not yet
-  build-verified**. It is intentionally an UNREGISTERED orphan (absent from
-  `Proofs.lean` and not yet wired into the registered `…GaloisDirection.lean`
-  `sorry`), so it cannot affect the gated green build — the same staging the
-  Step 1 / Step 3 orphans used before they were folded in once compiled.
+  BUILD STATUS (researcher-2, S24, 2026-06-18): this file is a COMPLETE,
+  `sorry`-free discharge of Step 4 (`normalizer_iso_AGL1Z`). On THIS branch
+  (`research/abel-galois-oq06-step4-foldin`) it has been FOLDED IN: it is now
+  registered in `Proofs.lean`, imported by `…GaloisDirection.lean`, and the
+  registered `normalizer_iso_AGL1Z` `sorry` (formerly at L429) is discharged by
+  `… Step4.normalizer_iso_AGL1Z σ _hσ _hσ_card`. Step 1 (`sylow_p_unique`) was
+  already folded into the main file in a prior session, so this fold-in drops
+  the Galois-direction sorry frontier 1 → 0.
 
-  A Docker build was launched this session: it fetched the Mathlib cache,
-  compiled the parent `AbelRuffiniGaloisExtensionsOQ06.olean`, and reached the
-  `lean … Step4.lean` elaboration step emitting no errors, but the host was
-  badly oversaturated (load ~13, ~18 concurrent build containers; the lean
-  process accrued only ~40 s of CPU in 25 min of wall time) and the 60-min
-  build cap fired before a green result. The Docker daemon then degraded to a
-  hard fault (`input/output error` on the containerd blob store — even a
-  trivial `docker run` fails), so no further build was possible.
+  **NOT yet build-verified** — the fold-in PR is shipped as a DRAFT precisely
+  because the build remains gated: this session's Docker daemon is in a hard
+  fault (`input/output error` on the containerd content store — the
+  `lean4-arm64` image blob is unreadable, `docker images`/`system df` both
+  throw, even a trivial `docker run` fails), and the Aristotle backend returns
+  404 ("Resource not found"). Neither verifier is available. An earlier
+  session's Docker build reached the `lean … Step4.lean` elaboration step
+  emitting no errors before being CPU-starved off the 60-min cap.
 
-  NEXT SESSION (build-capable): rebuild this file in isolation
-  (`docker-build.sh Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4`);
-  once green, register it in `Proofs.lean` and replace the `sorry` at
-  `…GaloisDirection.lean:429` with
-  `exact …GaloisDirectionStep4.normalizer_iso_AGL1Z σ _hσ _hσ_card`, dropping
-  the Galois-direction sorry frontier 2 → 1 (only Step 1 `sylow_p_unique`
-  would remain). The statement is numerically certified by
+  NEXT SESSION (build-capable): build the fleet target
+  (`docker-build.sh Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection`,
+  which transitively compiles this file); on GREEN, mark the draft PR ready so
+  the deployer merges it. The statement is numerically certified by
   `verify_step4_normalizer.py` (brute-force `N_{S_p}(⟨σ⟩) = AGL(1,p)` image,
   both injective and surjective, for p ∈ {3,5,7}).
 
