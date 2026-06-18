@@ -64,7 +64,8 @@
       "**Kummer over Lucas.** The informal note appeals to Lucas' theorem; the formalization instead uses the cleaner p-adic valuation identity v_p(C(p^k,j)) = k − v_p(j), which Mathlib provides directly as `Nat.factorization_choose_prime_pow`. The whole obstruction is then a one-line valuation positivity argument.",
       "**Why j < p^k is the crux.** Divisibility fails exactly at the endpoints j = 0 and j = p^k, where C(p^k, j) = 1. The hypothesis 0 < j < p^k is what makes v_p(j) < k and hence the binomial valuation strictly positive.",
       "**From divisibility to non-existence of a Frobenius number.** A common prime factor of all generators confines the semigroup to multiples of p, so infinitely many residues are unrepresentable. The gcd ≠ 1 statement is the formal heart of 'the largest non-representable integer does not exist for prime powers'.",
-      "**Closing a prose gap.** The main erdos-435 entry formalizes the Hwang–Song formula but leaves the prime-power exclusion as docstring commentary. This companion supplies the missing machine-checked justification, with no new axioms."
+      "**Closing a prose gap.** The main erdos-435 entry formalizes the Hwang–Song formula but leaves the prime-power exclusion as docstring commentary. This companion supplies the missing machine-checked justification, with no new axioms.",
+      "**The gcd step is purely formal.** Once the core lemma gives `p ∣ C(p^k, j)` for every generator, the headline `generators_gcd_ne_one` needs no further number theory: `Finset.dvd_gcd` lifts the per-element divisibility to `p ∣ gcd`, and a single `Nat.dvd_one` contradiction with `p.one_lt` finishes. The arithmetic content is entirely concentrated in the valuation argument; the obstruction theorem is just plumbing on top of it."
     ],
     "prerequisites": [
       "Binomial coefficients and Kummer's / Lucas' theorem",
@@ -94,12 +95,20 @@
   ],
   "sections": [
     {
-      "id": "header",
-      "title": "Module Documentation and Imports",
+      "id": "docstring",
+      "title": "Module Documentation",
       "startLine": 1,
+      "endLine": 20,
+      "summary": "The module docstring states the prime-power obstruction behind Erdős #435: for n = p^k every middle C(n,j) (1 ≤ j < n) is divisible by p, so the gcd of the generators {C(n,1),…,C(n,n-1)} is divisible by p, the numerical semigroup is not cofinite, and no Frobenius number exists — exactly why the Hwang–Song formula is stated only for non-prime-powers. Notes the proof rests on Nat.factorization_choose_prime_pow and ordProj divisibility.",
+      "mathContext": "Prime powers are excluded from Erdős #435 because the generator gcd exceeds 1, making the semigroup complement infinite and the Frobenius number undefined."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports & Namespace",
+      "startLine": 21,
       "endLine": 26,
-      "summary": "Module docstring stating the prime-power obstruction behind Erdős #435 (for n = p^k every middle C(n,j) is divisible by p, so the generators' gcd ≠ 1 and no Frobenius number exists), and imports of Mathlib's binomial-coefficient factorization API.",
-      "mathContext": "Sets up the obstruction: prime powers are excluded from Erdős #435 because the generator gcd exceeds 1, making the semigroup complement infinite."
+      "summary": "Imports Mathlib's binomial-coefficient factorization API (Nat.Choose.Factorization, Factorization.Basic, Prime.Basic) and Tactic, then opens the Erdos435.PrimePowerObstruction namespace under which the three theorems live.",
+      "mathContext": "The decisive import is Nat.Choose.Factorization, which supplies the Kummer-type identity v_p(C(p^k,j)) = k − v_p(j) used in the core lemma."
     },
     {
       "id": "core-lemma",
