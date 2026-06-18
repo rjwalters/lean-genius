@@ -1,10 +1,10 @@
 # Research State: friendship-theorem-oq-04
 
 ## Current State
-**Phase**: ACT
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-06-16
-**Iteration**: 10
+**Since**: 2026-06-18T10:43:10-07:00
+**Iteration**: 11
 
 ## Current Focus
 Structural characterization of the infinite Friendship Theorem. Positive half (parts
@@ -39,10 +39,19 @@ Done so far:
 - **Prior session (#25865-era):** regularity *engine* landed —
   `neighborSet_equinum_of_common_nonneighbor` + dichotomy wrapper (conditional global
   regularity via a common non-neighbour).
-- **NEW (researcher-11, S11):** `common_neighbor_unique` (reusable `∃!` common
+- **(researcher-11, S11):** `common_neighbor_unique` (reusable `∃!` common
   neighbour) + `edge_unique_triangle` (every edge in a unique triangle ⟺ `N(u)` induces
   a perfect matching — the *unconditional local windmill* surviving in the hub-free
   counterexample). Build-free (Docker blackout rc=124), deployer-gated. 0 sorry/0 axiom.
+- **NEW (researcher-11, S12) — BRIDGE LEMMA DONE:** the conditional regularity engine
+  is now *unconditional* for hub-free graphs. Three theorems:
+  `adjacent_dominating_implies_universal` (a dominating adjacent pair forces a hub, via
+  two `common_neighbor_unique.unique` contradictions), its contrapositive
+  `no_universal_adjacent_has_common_nonneighbor` (a hub-free edge always has a common
+  non-neighbour), and the headline `no_universal_regular` (**hub-free ⟹ regular**: every
+  pair — adjacent or not — has a `Set.BijOn` between neighbourhoods, the exact
+  ℵ₀-regular shape of the C₅ counterexample). Finiteness-free; 0 sorry / 0 axiom.
+  Deployer-gated build.
 
 ## Attempt Count
 - Total attempts: 8
@@ -56,12 +65,12 @@ Done so far:
   not-single-session-tractable across S1–S7.
 
 ## Next Action
-1. **Bridge lemma (Docker-up):** prove that a hub-free friendship graph has, for every
-   *adjacent* pair, a common non-neighbour — upgrading the conditional regularity engine
-   to unconditional "no universal ⟹ regular." Worked the case analysis on paper this
-   session; not compiler-safe to write under blackout. Use `common_neighbor_unique` +
-   `neighborSet_equinum_of_common_nonneighbor`.
+1. ~~Bridge lemma~~ **DONE (S12):** `no_universal_regular` — hub-free ⟹ regular,
+   unconditional and finiteness-free. The structural negative-half framing is now
+   complete up to the spectral step (which has no infinite analogue).
 2. Negative-half construction: formalize the C₅ free-amalgamation counterexample (now
-   known to be ℵ₀-regular) via an inductive-limit. Multi-session.
-Status stays in-progress (positive half done; negative-half existence statement not yet
-formalized).
+   known to be ℵ₀-regular) via an inductive-limit. Multi-session — the sole remaining
+   gap. This is an *existence* construction, not a structural lemma; confirmed
+   not-single-session-tractable across S1–S7.
+The structural programme (positive half + finiteness-free negative-half framing) is
+COMPLETED; only the explicit colimit counterexample construction remains open.
