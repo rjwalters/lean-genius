@@ -52,6 +52,14 @@
   },
   "sections": [
     {
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 28,
+      "description": "import Mathlib, the module docstring stating Pompeiu's theorem (the distances PA, PB, PC from any point to the vertices of an equilateral triangle satisfy the triangle inequality) and the complex-number proof idea, and namespace PompeiuTheorem.",
+      "summary": "Imports and module docstring",
+      "id": "header"
+    },
+    {
       "title": "Pompeiu Identity",
       "startLine": 33,
       "endLine": 38,

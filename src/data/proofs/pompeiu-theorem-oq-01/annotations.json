@@ -19,7 +19,7 @@
     "title": "The Pompeiu Identity (Hypothesis-Free)",
     "content": "The algebraic engine: $(p-a)(b-c) + (p-b)(c-a) + (p-c)(a-b) = 0$ for *any* four complex numbers — a pure polynomial identity closed by `ring`, with no geometric hypothesis. This is the same Lagrange-style three-term identity underlying the complex-number proof of Ptolemy's inequality. Geometry enters only later, through the equilateral side-length equality.",
     "mathContext": "$(p-a)(b-c) + (p-b)(c-a) + (p-c)(a-b) = 0,\\qquad \\forall\\, a,b,c,p \\in \\mathbb{C}.$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Lagrange identity", "polynomial identity", "Ptolemy's inequality", "ring tactic"],
     "prerequisites": ["complex arithmetic"]
   },
@@ -31,7 +31,7 @@
     "title": "Core Inequality: dist p a ≤ dist p b + dist p c",
     "content": "Isolate the $a$-term as $-(p-b)(c-a) - (p-c)(a-b)$ (via `linear_combination` on the identity), then apply `norm_add_le` to get $|p-a||b-c| \\le |p-b||c-a| + |p-c||a-b|$. The equilateral hypothesis $|a-b| = |b-c| = |c-a|$ rewrites every side length to the common $|b-c|$, which factors out. When that common length is positive it cancels (`le_of_mul_le_mul_right`); when it is $0$ the triangle collapses to a point ($a=b=c$) and the inequality is trivial.",
     "mathContext": "$|p-a|\\,|b-c| \\le |p-b|\\,|c-a| + |p-c|\\,|a-b| \\ \\xrightarrow{\\ |a-b|=|b-c|=|c-a|\\ }\\ |p-a| \\le |p-b| + |p-c|.$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["triangle inequality for norms", "norm_mul", "side-length cancellation", "degenerate case"],
     "prerequisites": ["complex norm", "multiplicativity of norm"]
   },
