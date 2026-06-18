@@ -4,10 +4,10 @@ import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 /-!
 # Simson's line theorem (simson-line-theorem-oq-01)
 
-Let `A, B, C` be three points of a circle and `P` a fourth point on the **same** circle.
-Drop the perpendicular from `P` onto each of the three side-lines `AB`, `BC`, `CA`, obtaining
-the three feet `F_AB`, `F_BC`, `F_CA`. **Simson's theorem** states that these three feet are
-**collinear** (the line they span is the *Simson line* of `P`).
+Let `A, B, C` be three points of a circle and `P` a fourth point of the plane. Drop the
+perpendicular from `P` onto each of the three side-lines `AB`, `BC`, `CA`, obtaining the three feet
+`F_AB`, `F_BC`, `F_CA`. **Simson's theorem** states that these three feet are **collinear** if and
+only if `P` lies on the **same** circle (the line they span is then the *Simson line* of `P`).
 
 We model the points as complex numbers and normalise the circumcircle to the **unit circle**,
 encoded by `Complex.normSq A = 1` (i.e. `|A|² = 1`), and likewise for `B, C, P`. Any circle is
@@ -30,6 +30,12 @@ a pure `ring` fact, with the symmetric companion (`foot_diff'`). Writing
 complex criterion `w ∈ ℝ`, i.e. `w = conj w` (`simson_key`), equivalently the vanishing of the
 signed-area cross product `w.im = 0` (`simson_collinear`). Substituting `conj z = z⁻¹` (valid on
 the unit circle) turns `simson_key` into a rational-function identity closed by `field_simp; ring`.
+
+Keeping `conj p` **free** (i.e. not assuming `P` on the circle) upgrades this to the master identity
+`w - conj w = (c - a)(b - c)(a - b)(1 - p * conj p)/(4 a b c)` (`simson_area_identity`), whose
+right-hand side carries the deviation `1 - |P|²`. For a nondegenerate triangle this gives the full
+**biconditional** `simson_iff`: the feet are collinear iff `P` is concyclic with `A, B, C`. The new
+converse direction is `simson_converse`.
 
 The proof is fully machine-checked: no axioms, no `sorry`. Not a named Mathlib result.
 -/
@@ -132,6 +138,96 @@ theorem simson_collinear {a b c p : ℂ}
   apply im_eq_zero_of_conj_eq
   rw [map_mul, Complex.conj_conj]
   exact (simson_key ha hb hc hp).symm
+
+/-! ## The converse: collinearity forces `P` onto the circumcircle
+
+`simson_collinear` is the forward half of Simson's theorem: if `P` lies on the circumcircle then
+the three pedal feet are collinear. The **converse** completes the classical biconditional —
+collinearity of the feet *forces* `P` onto the circumcircle.
+
+The engine is a single **master identity** (`simson_area_identity`): for `A, B, C` on the unit
+circle and **any** `P`, the conjugate-difference of the collinearity quantity
+`w = (F_BC - F_AB) * conj (F_CA - F_AB)` factors as
+
+    w - conj w = (c - a) * (b - c) * (a - b) * (1 - p * conj p) / (4 * a * b * c).
+
+The numerator carries the deviation `1 - p * conj p = 1 - |P|²` of `P` from the unit circle, and
+for a nondegenerate triangle the prefactor `(c - a)(b - c)(a - b)/(4 a b c)` is nonzero. Hence `w`
+is real (the feet are collinear) **iff** `|P|² = 1`. This delivers both directions at once: the
+forward direction recovers `simson_key`, and the converse (`simson_converse`) is new. The complete
+biconditional is `simson_iff`. -/
+
+/-- **Master identity.** For `A, B, C` on the unit circle and **any** `P` (no constraint on `P`),
+the conjugate-difference of the collinearity quantity `w = (F_BC - F_AB) * conj (F_CA - F_AB)`
+equals `(c - a)(b - c)(a - b)(1 - p * conj p)/(4 a b c)`. The factor `1 - p * conj p` is `1 - |P|²`,
+the signed deviation of `P` from the unit circumcircle; it vanishes exactly when `P` is concyclic
+with `A, B, C`. Proved, like `simson_key`, by the `conj z = z⁻¹` substitution on `A, B, C` followed
+by `field_simp; ring` — but here `conj p` is left free, so the identity holds off the circle too. -/
+theorem simson_area_identity {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1) (hc : Complex.normSq c = 1) :
+    (foot b c p - foot a b p) * conj (foot c a p - foot a b p)
+      - conj ((foot b c p - foot a b p) * conj (foot c a p - foot a b p))
+      = (c - a) * (b - c) * (a - b) * (1 - p * conj p) / (4 * a * b * c) := by
+  rw [foot_diff, foot_diff']
+  simp only [map_mul, map_sub, map_div₀, map_one, map_ofNat, Complex.conj_conj]
+  rw [conj_eq_inv ha, conj_eq_inv hb, conj_eq_inv hc]
+  have ha0 := ne_zero_of_normSq_one ha
+  have hb0 := ne_zero_of_normSq_one hb
+  have hc0 := ne_zero_of_normSq_one hc
+  field_simp
+  ring
+
+/-- **Converse of Simson's theorem.** For a *nondegenerate* triangle `A, B, C` on the unit circle
+(distinct vertices), if the three pedal feet of `P` are collinear then `P` lies on the
+circumcircle: `|P|² = 1`. Extracted from the master identity `simson_area_identity`: collinearity
+makes its left-hand side vanish, and the nonzero triangle prefactor `(c - a)(b - c)(a - b)/(4 a b c)`
+forces the remaining factor `1 - p * conj p` to be `0`. -/
+theorem simson_converse {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1) (hc : Complex.normSq c = 1)
+    (hab : a ≠ b) (hbc : b ≠ c) (hca : c ≠ a)
+    (hcol : ((foot b c p - foot a b p) * conj (foot c a p - foot a b p)).im = 0) :
+    Complex.normSq p = 1 := by
+  have ha0 := ne_zero_of_normSq_one ha
+  have hb0 := ne_zero_of_normSq_one hb
+  have hc0 := ne_zero_of_normSq_one hc
+  -- The collinearity quantity is real, so it equals its own conjugate.
+  have hreal :
+      conj ((foot b c p - foot a b p) * conj (foot c a p - foot a b p))
+        = (foot b c p - foot a b p) * conj (foot c a p - foot a b p) := by
+    apply Complex.ext
+    · rw [Complex.conj_re]
+    · rw [Complex.conj_im, hcol, neg_zero]
+  have key := simson_area_identity (a := a) (b := b) (c := c) (p := p) ha hb hc
+  rw [hreal, sub_self] at key
+  -- key : 0 = (c - a) * (b - c) * (a - b) * (1 - p * conj p) / (4 * a * b * c)
+  have hden : (4 : ℂ) * a * b * c ≠ 0 :=
+    mul_ne_zero (mul_ne_zero (mul_ne_zero (by norm_num) ha0) hb0) hc0
+  rw [eq_comm, div_eq_zero_iff] at key
+  rcases key with hnum | hbad
+  · have hpp : (1 : ℂ) - p * conj p = 0 := by
+      rcases mul_eq_zero.mp hnum with h | h
+      · exfalso
+        rcases mul_eq_zero.mp h with h' | h'
+        · rcases mul_eq_zero.mp h' with h'' | h''
+          · exact (sub_ne_zero.mpr hca) h''
+          · exact (sub_ne_zero.mpr hbc) h''
+        · exact (sub_ne_zero.mpr hab) h''
+      · exact h
+    have h2 : p * conj p = 1 := by linear_combination -hpp
+    rw [Complex.mul_conj] at h2
+    exact_mod_cast h2
+  · exact absurd hbad hden
+
+/-- **Simson's theorem (biconditional).** For a nondegenerate triangle `A, B, C` on the unit circle,
+the three pedal feet of `P` are collinear **if and only if** `P` lies on the circumcircle. The
+forward direction is `simson_collinear`; the converse is `simson_converse`. This is the complete
+statement of Simson's (Wallace's) theorem. -/
+theorem simson_iff {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1) (hc : Complex.normSq c = 1)
+    (hab : a ≠ b) (hbc : b ≠ c) (hca : c ≠ a) :
+    ((foot b c p - foot a b p) * conj (foot c a p - foot a b p)).im = 0
+      ↔ Complex.normSq p = 1 :=
+  ⟨simson_converse ha hb hc hab hbc hca, fun hp => simson_collinear ha hb hc hp⟩
 
 /-! ## The Simson line bisects the segment to the orthocenter
 
