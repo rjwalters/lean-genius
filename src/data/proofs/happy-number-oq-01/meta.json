@@ -176,5 +176,21 @@
       "What is the analogous classification for digit-cube or higher-power digit maps, where additional cycles appear?"
     ]
   },
-  "crossReferences": []
+  "crossReferences": [
+    {
+      "targetId": "kaprekar-constant-oq-01",
+      "relationship": "sibling",
+      "description": "The companion digit-map dynamics entry, settled by the same proof architecture. Both take an elementary base-10 digit operation — here the digit-square-sum $S(n) = \\sum d_i^2$, there Kaprekar's descending-minus-ascending routine — and reduce an a-priori infinite orbit question to a finite check, then discharge that check by `native_decide` (so both are honestly `axiomatized` via `Lean.ofReduceBool`). The structural contrast is instructive: Kaprekar's state space is finite outright ($n < 10000$), whereas the happy-number map needs the quantitative descent lemma $S(n) < n$ for $n \\ge 1000$ to *create* a finite window. Their terminal structure also differs — Kaprekar has a single global attractor (6174), while $S$ has a fixed point (1) *and* a nontrivial 8-cycle, giving the happy/unhappy dichotomy."
+    },
+    {
+      "targetId": "divisibility-by-three-oq-01-oq-02",
+      "relationship": "complementary",
+      "description": "Digital-root iteration is a third iterated-digit map in the gallery, but its convergence is proved *structurally* (the digit sum strictly decreases for $n \\ge 10$ and $n \\bmod 9$ is invariant) rather than by enumeration. It is the kernel-`decide`/axiom-free analogue of the descent-plus-`native_decide` strategy used here, and a model for this entry's open question of removing `Lean.ofReduceBool`."
+    },
+    {
+      "targetId": "collatz-cycles",
+      "relationship": "related",
+      "description": "Another integer self-map studied as a discrete dynamical system, sharing the fixed-point-and-cycle structural vocabulary. Where the happy-number map is fully resolved into one fixed point (1) and one nontrivial cycle (the 4-cycle), Collatz convergence remains open and `collatz-cycles` can only exclude small cycles — illustrating how a contraction bound like $S(n) < n$ is exactly what the Collatz problem lacks."
+    }
+  ]
 }
