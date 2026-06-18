@@ -45,7 +45,7 @@ private theorem irred_X_sq_sub_two_int : Irreducible (X ^ 2 - C (2 : ℤ) : ℤ[
   apply Polynomial.irreducible_of_eisenstein_criterion (P := Ideal.span {(2 : ℤ)})
   · -- (2) is a prime ideal in ℤ
     rw [Ideal.span_singleton_prime (show (2 : ℤ) ≠ 0 from by norm_num)]
-    exact Int.prime_iff_natAbs_prime.mpr (by native_decide)
+    exact Int.prime_two
   · -- Leading coefficient 1 ∉ (2)
     rw [leadingCoeff_X_pow_sub_C (show (0 : ℕ) < 2 from by norm_num),
         Ideal.mem_span_singleton]
