@@ -71,7 +71,7 @@
         "relationship": "Bertrand's postulate: prime gaps ≤ n; bounded prime gaps is a stronger result about infinitely many small gaps"
       }
     ],
-    "axiomCount": 3,
+    "axiomCount": 5,
     "prerequisites": [
       "Analytic number theory: sieve methods and the Maynard-Tao GPY sieve",
       "Prime number theory: Bertrand's postulate, nthPrime, prime gaps",
@@ -82,7 +82,8 @@
       "maynard_tao_m_tuples: For any m ≥ 2, there are infinitely many bounded intervals containing m primes (Maynard-Tao 2015)",
       "maynard_tao_sieve: The Maynard-Tao sieve reduction — any admissible 50-tuple of diameter D gives infinitely many prime gaps ≤ D",
       "maynard_tao_sieve_eh: The EH-conditional sieve — under Elliott-Halberstam, any admissible 5-tuple of diameter D gives infinitely many prime gaps ≤ D",
-      "engelsma_lower_bound: No admissible 50-tuple has diameter < 246 (Engelsma 2013 computer search)"
+      "engelsma_lower_bound: No admissible 50-tuple has diameter < 246 (Engelsma 2013 computer search) — invoked by bound_246_is_sieve_optimal in the Sieve file",
+      "Lean.ofReduceBool: native_decide is used to verify the explicit admissible 50-tuple (polymath50Tuple_card = 50, polymath50Tuple_le_246, admissibility checks), so the concrete diameter-246 witness rests on the Lean compiler's kernel-reduction trust axiom"
     ],
     "lineCount": 2017,
     "mathlib_version": "4.26.0",
@@ -415,7 +416,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization covers the bounded prime gaps theorem and its surrounding infrastructure. Three sieve-theoretic results are axiomatized (Polymath 8b bound 246, Maynard-Tao m-tuples, Elliott-Halberstam conditional bound 12). All combinatorial infrastructure and elementary consequences are fully proved. Admissible tuples through 50-tuples are verified constructively.",
+    "summary": "This formalization covers the bounded prime gaps theorem and its surrounding infrastructure. Four results are axiomatized: three sieve-theoretic (Polymath 8b bound 246, Maynard-Tao m-tuples, Elliott-Halberstam conditional bound 12) plus the Engelsma 2013 lower bound (no admissible 50-tuple has diameter < 246, used in bound_246_is_sieve_optimal). All combinatorial infrastructure and elementary consequences are fully proved. The explicit admissible 50-tuple is verified constructively via native_decide, which adds a dependency on Lean's ofReduceBool kernel-reduction axiom (5 assumptions total).",
     "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **Zhang's Breakthrough (2013)**: After centuries of failed attempts, Zhang proved the first unconditional bound on prime gaps. The formalization captures why this matters: the admissible tuple framework converts the problem into a combinatorial question (can we find a 50-tuple with small diameter?) and a sieve theory question (does sieve theory find primes in such tuples?).\n\n2. **Polymath Collaboration**: The Polymath 8b optimization from 70M to 246 represents one of the most successful mathematical crowdsourcing efforts. The 246 bound comes from the largest admissible 50-tuple that fits in a diameter of 246.\n\n**3. Admissible Tuples as Abstraction**: The formal definition `IsAdmissible H ↔ ∀ p prime, (H.image (· % p)).card < p` is verifiable by computation for any specific set. This makes admissibility a Decidable property for finite sets.\n\n4. **Elementary vs. Sieve Theory**: The formalization cleanly separates what requires deep sieve theory (the three axioms) from what is elementary (gap bounds from axioms, gap oscillation, specific tuple admissibility). This clarifies the logical structure of the theorem.\n\n5. **Twin Prime Conjecture Landscape**: The Dickson conjecture formalization shows the precise logical gap between 'bounded gaps exist' (proved) and 'infinitely many twin primes' (still open): Dickson for {0,2} implies twin primes, but we don't have Dickson, just the existence of some bounded gap.",
     "openQuestions": [
       "Can the Polymath 8b axiom be reduced to a statement provable from Mathlib's sieve theory infrastructure?",
