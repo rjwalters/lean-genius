@@ -46,25 +46,44 @@
   },
   "sections": [
     {
-      "id": "sec-imports",
-      "title": "Imports and Namespace",
+      "id": "sec-docstring",
+      "title": "Module Docstring & Main Results",
       "startLine": 1,
-      "endLine": 32,
-      "summary": "Imports Mathlib and opens Real, intervalIntegral, and MeasureTheory. The file is self-contained — it depends only on Mathlib, not on the parent Buffon files."
+      "endLine": 28,
+      "summary": "States the open question and frames the Beta integral ∫_0^{π/2} cos θ · sin^{n-2} θ dθ = 1/(n-1) as the analytic core of the n-dimensional Cauchy–Crofton angular-averaging identity (the missing piece for n ≥ 3, the 2D case being proved in the parent file). Records the FTC/antiderivative strategy and lists the two main results.",
+      "mathContext": "The polar decomposition of the $S^{n-1}$ integral reduces the angular average to $\\int_0^{\\pi/2}\\cos\\theta\\,\\sin^{n-2}\\theta\\,d\\theta = \\tfrac{1}{n-1}$, supplying the $\\sigma_{n-2}/(n-1)$ proportionality factor."
     },
     {
-      "id": "sec-general-beta",
-      "title": "General Beta Integral via FTC",
+      "id": "sec-opens",
+      "title": "Opens & Namespace",
+      "startLine": 30,
+      "endLine": 32,
+      "summary": "Opens Real, intervalIntegral, and MeasureTheory for the trig functions and the interval-integral API, then opens the BuffonsNeedleOQ01OQ01OQ04OQ01Beta namespace. The file is self-contained: it depends only on Mathlib, not on the parent Buffon files.",
+      "mathContext": "`open intervalIntegral` exposes `integral_eq_sub_of_hasDerivAt`, the FTC bridge from the antiderivative to the definite integral."
+    },
+    {
+      "id": "sec-general-statement",
+      "title": "General Beta Integral: Statement & Antiderivative",
       "startLine": 34,
+      "endLine": 53,
+      "summary": "States integral_cos_mul_sin_pow: ∫_0^{π/2} cos θ · sinᵐ θ dθ = 1/(m+1) for all m : ℕ, and builds the key HasDerivAt witness: the antiderivative sin^{m+1}(θ)/(m+1) differentiates to cos θ · sinᵐ θ, via (hasDerivAt_sin).pow (m+1), div_const, and a field_simp/push_cast reconciliation of the (m+1) factor.",
+      "mathContext": "$F(\\theta) = \\dfrac{\\sin^{m+1}\\theta}{m+1}$ has $F'(\\theta) = \\cos\\theta\\,\\sin^{m}\\theta$ — the closed-form image of the substitution $u = \\sin\\theta$, $\\int_0^1 u^m\\,du = \\tfrac{1}{m+1}$."
+    },
+    {
+      "id": "sec-ftc-evaluation",
+      "title": "General Beta Integral: FTC Evaluation",
+      "startLine": 54,
       "endLine": 59,
-      "summary": "Proves integral_cos_mul_sin_pow: ∫_0^{π/2} cos θ · sinᵐ θ dθ = 1/(m+1) for all m : ℕ. Establishes HasDerivAt for the antiderivative sin^{m+1}(θ)/(m+1) on the interval, proves continuity of the integrand, applies intervalIntegral.integral_eq_sub_of_hasDerivAt, and evaluates at the endpoints with sin(π/2) = 1, sin(0) = 0."
+      "summary": "Completes integral_cos_mul_sin_pow: proves the integrand is continuous (hence interval-integrable), applies intervalIntegral.integral_eq_sub_of_hasDerivAt, and evaluates the antiderivative at the endpoints using sin(π/2) = 1 and sin(0) = 0, the latter killed by zero_pow.",
+      "mathContext": "$\\int_0^{\\pi/2}\\cos\\theta\\,\\sin^{m}\\theta\\,d\\theta = F(\\pi/2) - F(0) = \\tfrac{1^{m+1}}{m+1} - \\tfrac{0^{m+1}}{m+1} = \\tfrac{1}{m+1}$."
     },
     {
       "id": "sec-dimensional",
       "title": "Dimensional Specialization",
       "startLine": 61,
       "endLine": 74,
-      "summary": "Proves integral_cos_mul_sin_pow_dim: ∫_0^{π/2} cos θ · sin^{n-2} θ dθ = 1/(n-1) for n ≥ 2. Specializes the general lemma with m := n - 2 and rewrites the cast (n - 2 : ℕ) + 1 = (n : ℝ) - 1 via Nat.cast_sub."
+      "summary": "Proves integral_cos_mul_sin_pow_dim: ∫_0^{π/2} cos θ · sin^{n-2} θ dθ = 1/(n-1) for n ≥ 2. Specializes the general lemma with m := n - 2 and rewrites the cast (n - 2 : ℕ) + 1 = (n : ℝ) - 1 via Nat.cast_sub.",
+      "mathContext": "With $m = n-2$ the value $\\tfrac{1}{m+1}$ becomes $\\tfrac{1}{n-1}$; the hypothesis $n \\ge 2$ is needed for the ℕ-subtraction cast $((n-2:\\mathbb{N}):\\mathbb{R}) + 1 = (n:\\mathbb{R}) - 1$."
     }
   ],
   "conclusion": {
