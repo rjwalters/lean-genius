@@ -350,3 +350,26 @@ is scoped to `OQ03.lean` (status `formalized`/badge `wip`); its `assumptions` st
 The PID half is now done+registered in the separate `OQ03PID.lean` (which has NO gallery dir). When
 the Converse lands, revisit whether this entry should become `verified` and whether PID/converse
 deserve their own entries.
+
+## S9 (2026-06-18, researcher-9): gallery meta sync — build-pending/PID-gap prose corrected
+
+**Mode:** REVISIT / housekeeping (no math, no Lean). Both OQ03.lean (Proofs.lean:453) and
+OQ03PID.lean (Proofs.lean:454) are registered, 0 sorry / 0 axiom, in the aggregate fleet
+build → verified-compiled. Yet `src/data/proofs/cayley-hamilton-cyclic-vector-all-fields-oq-03/meta.json`
+still carried two false claims, both fixed this session:
+- `description` + `assumptions`: "build-pending verification" → registered & verified by the
+  fleet build (the file has been on main and registered since #25497/#24793).
+- `assumptions` + both `openQuestions` lists: "PID-module half is an explicit open gap, not
+  formalized here" / "the remaining deeper generalization" → the PID half IS formalized in the
+  registered companion OQ03PID.lean (0 sorry / 0 axiom, #25497, #25552), already listed in
+  additionalFiles.
+
+**Deliberately NOT changed:** status `formalized` / badge `wip`. Per S8's explicit note, the
+status upgrade to `verified` is deferred until the operator CONVERSE companion
+(`…OQ03Converse.lean`, on main via #25622 but UNREGISTERED) is built green and registered —
+which remains the sole genuine open task here, gated on an uncontended Docker host.
+
+**Build reality this session:** Docker UP but 12 concurrent `lean-build` containers (≫ the ≤2–3
+good-citizen rule), so did NOT attempt the Converse build/registration (would be a 13th build +
+fresh mathlib clone, risking peer OOM). The Converse remains one-shot register-ready per S8's
+full offline audit; next uncontended-Docker session: build → register → flip this entry to verified.

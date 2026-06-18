@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-cyclic-vector-all-fields-oq-03",
   "title": "Nonderogatory Operator Has a Cyclic Vector (coordinate-free)",
   "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-03",
-  "description": "Lifts the cyclic-vector theorem from concrete matrices to a basis-free linear operator T : V →ₗ[K] V on a finite-dimensional space: if (minpoly K T).natDegree = finrank K V then T has a cyclic vector. The proof reduces to the verified matrix theorem via the algebra isomorphism toMatrixAlgEquiv (minpoly transport) and a coordinate-transport lemma intertwining operator application with mulVec. 0 sorries, 0 axioms (build-pending verification).",
+  "description": "Lifts the cyclic-vector theorem from concrete matrices to a basis-free linear operator T : V →ₗ[K] V on a finite-dimensional space: if (minpoly K T).natDegree = finrank K V then T has a cyclic vector. The proof reduces to the verified matrix theorem via the algebra isomorphism toMatrixAlgEquiv (minpoly transport) and a coordinate-transport lemma intertwining operator application with mulVec. 0 sorries, 0 axioms; registered in Proofs.lean and verified by the aggregate fleet build.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-06-15",
@@ -32,7 +32,7 @@
     "lineCount": 310,
     "theoremCount": 6,
     "definitionCount": 2,
-    "assumptions": "No axioms or sorries. Uses Mathlib's LinearMap.toMatrix / toMatrixAlgEquiv, minpoly.algEquiv_eq, Matrix charpoly API, FiniteDimensional bases, and (for the Section V span bridge) basisOfLinearIndependentOfCardEqFinrank, Fintype.linearIndependent_iff, and the Polynomial natDegree API. The span bridge also imports the registered module-theoretic file CayleyHamiltonMinpolyOQ05OQ01OQ03 (NonderogatoryModule.cyclicSubspace / finiteSpan_le_cyclicSubspace). Build-pending verification under current Docker contention; all Mathlib bearers name-checked against the pinned rev (v4.26.0), and the Section V Krylov-independence argument mirrors the compiled matrix proof CyclicCommutant.krylov_linearIndependent. The PID-module half of OQ-03 is recorded as an explicit open gap, not formalized here.",
+    "assumptions": "No axioms or sorries. Uses Mathlib's LinearMap.toMatrix / toMatrixAlgEquiv, minpoly.algEquiv_eq, Matrix charpoly API, FiniteDimensional bases, and (for the Section V span bridge) basisOfLinearIndependentOfCardEqFinrank, Fintype.linearIndependent_iff, and the Polynomial natDegree API. The span bridge also imports the registered module-theoretic file CayleyHamiltonMinpolyOQ05OQ01OQ03 (NonderogatoryModule.cyclicSubspace / finiteSpan_le_cyclicSubspace). Registered in Proofs.lean and verified by the aggregate fleet build; all Mathlib bearers checked against the pinned rev (v4.26.0), and the Section V Krylov-independence argument mirrors the compiled matrix proof CyclicCommutant.krylov_linearIndependent. The PID-module half of OQ-03 is now formalized in the registered companion CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean (0 sorry / 0 axiom; PRs #25497, #25552), listed in additionalFiles.",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -69,7 +69,7 @@
     ],
     "openQuestions": [
       "Connect IsCyclicVectorOp (no nonzero low-degree polynomial annihilates v) to the span form (the powers {Tᵏ v} span V), using the operator infrastructure in cayley-hamilton-minpoly-oq-05-oq-01-oq-03.",
-      "Prove the PID-module generalization: a finitely generated torsion module over a PID with order ideal equal to its characteristic ideal is cyclic, via the structure theorem and coprime cyclic recombination (the deferred half of OQ-03).",
+      "Resolved: the PID-module generalization (a finitely generated torsion module over a PID is cyclic iff its order ideal equals its annihilator) is now formalized in the registered companion CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean (0 sorry / 0 axiom; PRs #25497, #25552). Remaining: specialize R := K[X], M := V to recover the operator nonderogatory ⟺ cyclic form in K[X]-module vocabulary (the operator↔K[X] bridge).",
       "Derive the operator centralizer statement (centralizer of a cyclic operator equals K[T]) as the coordinate-free analogue of cayley-hamilton-cyclic-vector-all-fields-oq-02."
     ]
   },
@@ -140,7 +140,7 @@
     "summary": "The cyclic-vector theorem now holds for a basis-free linear operator on a finite-dimensional vector space: a nonderogatory operator T (minpoly degree = dimension) has a cyclic vector. The proof is a clean basis reduction to the verified matrix theorem, with the minimal polynomial transported across the algebra isomorphism End K V ≃ₐ Matrix and cyclicity transported across the coordinate isomorphism.",
     "implications": "This lifts the gallery's matrix-level nonderogatory theory to the Module.End setting requested by the cayley-hamilton-cyclic-vector-all-fields-oq-02 conclusion, making the result composable with other operator-level developments. The reduction pattern (toMatrixAlgEquiv for minpoly transport, toMatrix_mulVec_repr for vector transport) is reusable for porting further matrix theorems to operators.",
     "openQuestions": [
-      "Formalize the PID-module half of OQ-03 (finitely generated torsion modules over a PID), the remaining deeper generalization.",
+      "Resolved: the PID-module half of OQ-03 is formalized in the registered companion CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean (0 sorry / 0 axiom; PRs #25497, #25552); the remaining step is the operator↔K[X] specialization recovering the nonderogatory ⟺ cyclic form.",
       "Bridge IsCyclicVectorOp to the span characterization cyclicSubspace T v = ⊤ using the existing operator infrastructure.",
       "Port the commutant characterization (centralizer = K[T]) to operators, mirroring oq-02."
     ]
