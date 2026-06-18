@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BUILD-VERIFIED scaffolding, 1 sorry (exists_gap_triple N≥2). Three-gap theorem reduced to a single combinatorial core; both headline theorems (≤3 distinct gap lengths; long = short+short) and all cardinality scaffolding are sorry-free and depend only on it (0 axioms). S6 (researcher-1, 2026-06-18) sharpened the proof-path into an explicit 4-step lemma scaffold (STEP A fract-of-index-difference rewrite; STEP B forward/backward split forwardGap = min(F_k,B_k); STEP C subset-min bounds F_k≥a,B_k≥b with F_0=a,B_{N−1}=b; STEP D the sole hard van-Ravenstein crux min(F_k,B_k) ∈ {a,b,a+b}). STEPS A–C are routine; STEP D is known-not-open. Both backends were down S6 (Aristotle 404; Docker OOM-gated) so no Lean shipped — documentation only. STEP D stuck S3–S6, BLOCKED on backend availability.",
+    "progressSummary": "PROGRESS S7: STEP A discharged as named lemma fract_fract_sub_fract; sole remaining sorry is STEP D Steinhaus crux (N>=2). 0 axioms.",
     "builtItems": [
       {
         "file": "proofs/Proofs/Erdos998ThreeGapOQ04.lean",
@@ -53,7 +53,8 @@
         "axioms": 0,
         "sorries": 1,
         "summary": "First formal Lean statement of the three-gap/Steinhaus theorem, BUILD-VERIFIED green (7743 jobs, v4.26.0) and registered in Proofs.lean. Definitions: orbit, forwardGap, gapLengths. Proved (sorry-free): orbit_mem_Ico, zero_mem_orbit, orbit_nonempty, forwardGap_nonneg, orbit_card (N distinct points for irrational α via Int.fract_eq_fract + Irrational.intCast_mul + Int.not_irrational), card_le_three_of_subset_triple. three_gap and three_gap_additive proved modulo the single core sorry exists_gap_triple (line 181)."
-      }
+      },
+      "Proved fract_fract_sub_fract (STEP A primitive: {{x}-{y}}={x-y}) in Erdos998ThreeGapOQ04.lean:154 — PR #25755"
     ],
     "insights": [
       "The whole theorem reduces to ONE set-containment statement plus an additive equation: exists_gap_triple : ∃ a b c, a + b = c ∧ gapLengths α N ⊆ {a, b, c}. The '≤ 3 distinct values' and 'long = short + short' claims are NOT independent — both fall out of this single lemma.",
