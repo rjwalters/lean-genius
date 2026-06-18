@@ -89,11 +89,20 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "`import Mathlib`, the module docstring, and `namespace SylvesterSequenceOQ01`. The docstring fixes Sylvester's sequence (a₀ = 2, a_{n+1} = aₙ² − aₙ + 1; 2, 3, 7, 43, 1807, …), states the two machine-checked results — the closed-form partial reciprocal sum and pairwise coprimality — and names the engine: the telescoping identity 1/aₙ = 1/(aₙ−1) − 1/(a_{n+1}−1), valid because a_{n+1} − 1 = aₙ(aₙ − 1).",
+      "mathContext": "$a_0=2,\\ a_{n+1}=a_n^2-a_n+1;\\quad a_{n+1}-1=a_n(a_n-1)$ drives the telescoping."
+    },
+    {
       "id": "definition",
       "title": "The Sequence and Basic Bounds",
       "startLine": 26,
       "endLine": 50,
-      "summary": "Defines syl by structural recursion (a₀ = 2, a_{n+1} = aₙ² - aₙ + 1), exposes the base case and recurrence as rewrite lemmas, proves two_le_syl (every term ≥ 2), and lifts the recurrence to ℤ via syl_cast_succ to avoid ℕ's truncated subtraction."
+      "summary": "Defines syl by structural recursion (a₀ = 2, a_{n+1} = aₙ² - aₙ + 1), exposes the base case and recurrence as rewrite lemmas, proves two_le_syl (every term ≥ 2), and lifts the recurrence to ℤ via syl_cast_succ to avoid ℕ's truncated subtraction.",
+      "mathContext": "$a_n \\ge 2$ for all $n$; the $\\mathbb{Z}$-lift $a_{n+1}=a_n^2-a_n+1$ removes $\\mathbb{N}$ truncated subtraction."
     },
     {
       "id": "telescoping-sum",
@@ -103,11 +112,20 @@
       "summary": "Proves the per-term telescoping identity syl_recip_term (1/aₙ = 1/(aₙ-1) - 1/(a_{n+1}-1)) from the factorization a_{n+1}-1 = aₙ(aₙ-1), then inducts to obtain the closed form syl_partial_sum: ∑_{k≤n} 1/aₖ = 1 - 1/(a_{n+1}-1), whence the infinite sum equals 1."
     },
     {
-      "id": "coprimality",
-      "title": "Euclid Product Formula and Pairwise Coprimality",
+      "id": "product-formula",
+      "title": "Euclid Product Formula and Divisibility Bridge",
       "startLine": 78,
+      "endLine": 91,
+      "summary": "Establishes the Euclid-style product formula syl_eq_prod_add_one (a_{n+1} = ∏_{k≤n} aₖ + 1) by induction using the recurrence, then derives the divisibility bridge syl_dvd_succ_sub_one: for i ≤ n, aᵢ divides a_{n+1} − 1, because aᵢ appears as a factor of the product ∏_{k≤n} aₖ = a_{n+1} − 1.",
+      "mathContext": "$a_{n+1} = \\Big(\\prod_{k\\le n} a_k\\Big) + 1 \\Rightarrow a_i \\mid a_{n+1}-1$ for $i \\le n$."
+    },
+    {
+      "id": "coprimality",
+      "title": "Pairwise Coprimality of Distinct Terms",
+      "startLine": 93,
       "endLine": 105,
-      "summary": "Establishes the Euclid-style product formula syl_eq_prod_add_one (a_{n+1} = ∏_{k≤n} aₖ + 1), derives the divisibility bridge syl_dvd_succ_sub_one (aᵢ ∣ a_{n+1}-1 for i ≤ n), and concludes syl_coprime: distinct terms are coprime, since a common divisor of aⱼ and aⱼ-1 must divide 1."
+      "summary": "Concludes syl_coprime: distinct terms aᵢ, aⱼ (i < j) are coprime. Writing j = i + n + 1, the divisibility bridge gives aᵢ ∣ aⱼ − 1; any common divisor d of aᵢ and aⱼ then divides both aⱼ and aⱼ − 1, hence divides their difference 1, so gcd(aᵢ, aⱼ) = 1.",
+      "mathContext": "$d \\mid a_j$ and $d \\mid a_j-1 \\Rightarrow d \\mid 1$, so $\\gcd(a_i,a_j)=1$ for $i<j$."
     }
   ],
   "references": [
