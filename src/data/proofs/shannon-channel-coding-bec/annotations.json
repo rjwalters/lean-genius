@@ -19,6 +19,25 @@
     "prerequisites": []
   },
   {
+    "id": "ann-bec-marginals",
+    "proofId": "shannon-channel-coding-bec",
+    "range": {
+      "startLine": 76,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Output Marginals",
+    "content": "Two lemmas compute the output distribution induced by an arbitrary input. bec_ymarg_none: summing the joint over inputs, every column at the erasure output contributes p, so the marginal is p · (∑ inp.p x) = p (using inp.sum_one). bec_ymarg_some: the symbol y is received un-erased only when y was sent (probability inp.p y) and not erased (probability 1 - p), giving marginal inp.p y · (1 - p). These marginals feed the conditional-probability denominators in the erasure identity.",
+    "mathContext": "$p_Y(?) = p,\\qquad p_Y(y) = p_X(y)\\,(1-p)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "marginal distribution",
+      "joint distribution",
+      "erasure channel"
+    ],
+    "prerequisites": []
+  },
+  {
     "id": "ann-bec-erasure-identity",
     "proofId": "shannon-channel-coding-bec",
     "range": {
@@ -111,6 +130,25 @@
     "relatedConcepts": [
       "channel capacity",
       "bits vs nats"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-bec-corollaries",
+    "proofId": "shannon-channel-coding-bec",
+    "range": {
+      "startLine": 230,
+      "endLine": 241
+    },
+    "type": "concept",
+    "title": "Non-negativity and the One-bit Ceiling",
+    "content": "Two corollaries bound the capacity. bec_capacity_nonneg: rewriting by bec_capacity reduces to 0 ≤ (1 - p)·log 2, immediate from 1 - p ≥ 0 and log 2 ≥ 0 (positivity). bec_capacity_le_log_two: the capacity (1 - p)·log 2 is at most log 2 (one bit), since p > 0 shaves off a strictly positive p·log 2; equality holds only in the noiseless limit p → 0. Together they pin the capacity to the interval [0, log 2].",
+    "mathContext": "$0 \\le C(\\mathrm{BEC}(p)) \\le \\log 2,\\quad C \\to \\log 2 \\text{ as } p \\to 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "channel capacity",
+      "noiseless limit",
+      "capacity bounds"
     ],
     "prerequisites": []
   }
