@@ -21,7 +21,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified: docker-build of Proofs.EulerTotientOQ01OQ03 completed successfully on 2026-06-15 (7744 jobs), confirming 0 axioms and 0 sorries against the pinned Mathlib (v4.26.0). The build first surfaced — and this session fixed — seven Mathlib-API mismatches in the imported Carmichael-function dependency Proofs/EulerTotientOQ01.lean (exponent_dvd / exp_eq_one_iff / exp_eq_one_of_subsingleton renames, IsCyclic.exponent_eq_card now returning Nat.card, Group.exponent_dvd_card, and invalid `▸` motives replaced by Eq.le), which had blocked the whole chain. Every arithmetic claim is additionally certified build-free by research/problems/euler-totient-oq-01-oq-03/verify_rsa_lambda.py (all-a correctness over 55 moduli, λ < φ strictly, and the explicit p² failure set — all pass).",
+    "assumptions": "None. Fully machine-verified: docker-build of Proofs.EulerTotientOQ01OQ03 completed successfully (7744 jobs) — first on 2026-06-15 and re-verified on 2026-06-18 after adding the constructive key-generation theorems (exists_inverse_exponent, exists_rsa_keypair) — confirming 0 axioms and 0 sorries against the pinned Mathlib (v4.26.0). The build first surfaced — and this session fixed — seven Mathlib-API mismatches in the imported Carmichael-function dependency Proofs/EulerTotientOQ01.lean (exponent_dvd / exp_eq_one_iff / exp_eq_one_of_subsingleton renames, IsCyclic.exponent_eq_card now returning Nat.card, Group.exponent_dvd_card, and invalid `▸` motives replaced by Eq.le), which had blocked the whole chain. Every arithmetic claim is additionally certified build-free by research/problems/euler-totient-oq-01-oq-03/verify_rsa_lambda.py (all-a correctness over 55 moduli, λ < φ strictly, and the explicit p² failure set — all pass).",
     "mathlibDependencies": [
       {
         "theorem": "ZMod.pow_card_sub_one_eq_one",
@@ -32,6 +32,11 @@
         "theorem": "ZMod.chineseRemainder",
         "description": "CRT ring isomorphism ZMod (p·q) ≃+* ZMod p × ZMod q for coprime p, q",
         "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.ModEq.pow_totient",
+        "description": "Euler's theorem: a^φ(n) ≡ 1 (mod n) when gcd(a, n) = 1 — used to build the explicit modular inverse d = e^(φ(λ) − 1) in key generation",
+        "module": "Mathlib.FieldTheory.Finite.Basic"
       }
     ],
     "originalContributions": [
@@ -43,14 +48,16 @@
       "carmichael_mul_coprime: identifies the concrete exponent lcm(p−1, q−1) with the parent's abstract λ(n) = Monoid.exponent (ZMod n)ˣ, by transporting the group exponent across the CRT-induced units isomorphism (Units.mapEquiv + MulEquiv.prodUnits) and evaluating Monoid.exponent_prod",
       "rsa_correct_carmichael: the open question's headline statement — RSA correctness stated directly against the minimal universal exponent λ(n) = carmichael(p·q), via the divisibility bridges (p−1) ∣ λ(n) and (q−1) ∣ λ(n)",
       "rsaEncrypt / rsaDecrypt and rsa_decrypt_encrypt: a literal end-to-end RSA implementation (encryption a ↦ aᵉ, decryption c ↦ cᵈ in ZMod n) with the verified round-trip rsaDecrypt d (rsaEncrypt e a) = a for every a, given the key-generation congruence e·d = 1 + k·λ(n) — encryption and decryption are proved mutual inverses against the Carmichael exponent",
-      "carmichael_dvd_iff_unit_rsa (companion file EulerTotientOQ01OQ03Minimal.lean): the matching CONVERSE/sharpness — λ(n) ∣ m ↔ (a^(m+1) = a for every unit a : (ZMod n)ˣ). Together with the sufficiency results above this pins λ(n) as the EXACT minimal universal RSA exponent — no smaller exponent works for all messages coprime to n — making precise the open question's 'minimal universal exponent λ(n)' claim. Proved via the parent's carmichael_minimal (Monoid.exponent is the least universal exponent of the unit group); restricting to units is essential since non-units (e.g. 0) satisfy a^(m+1) = a for every m and carry no information about the minimal exponent"
+      "carmichael_dvd_iff_unit_rsa (companion file EulerTotientOQ01OQ03Minimal.lean): the matching CONVERSE/sharpness — λ(n) ∣ m ↔ (a^(m+1) = a for every unit a : (ZMod n)ˣ). Together with the sufficiency results above this pins λ(n) as the EXACT minimal universal RSA exponent — no smaller exponent works for all messages coprime to n — making precise the open question's 'minimal universal exponent λ(n)' claim. Proved via the parent's carmichael_minimal (Monoid.exponent is the least universal exponent of the unit group); restricting to units is essential since non-units (e.g. 0) satisfy a^(m+1) = a for every m and carry no information about the minimal exponent",
+      "exists_inverse_exponent: discharges the key-generation congruence CONSTRUCTIVELY — for gcd(e, λ) = 1 (with e, λ ≥ 1) there exist d, k with e·d = 1 + k·λ, realising the private exponent explicitly as d = e^(φ(λ) − 1) via Euler's theorem (Nat.ModEq.pow_totient). This is the number-theoretic core of RSA key generation: e is invertible mod λ exactly when coprime to it",
+      "exists_rsa_keypair: turns the conditional round-trip rsa_decrypt_encrypt into an UNCONDITIONAL existence theorem — for n = p·q and any public exponent e ≥ 1 coprime to λ(n), there EXISTS a private exponent d for which rsaDecrypt d (rsaEncrypt e a) = a for every message a. The previously-assumed congruence e·d = 1 + k·λ(n) is now derived from gcd(e, λ(n)) = 1 rather than hypothesised, so a usable RSA key pair is proved to always exist"
     ],
     "additionalFiles": [
       "Proofs/EulerTotientOQ01OQ03Minimal.lean"
     ],
     "dateAdded": "2026-06-15",
-    "lineCount": 196,
-    "theoremCount": 8,
+    "lineCount": 239,
+    "theoremCount": 10,
     "definitionCount": 2,
     "prerequisites": [
       "Carmichael's function λ(n) = Monoid.exponent (ZMod n)ˣ (parent file euler-totient-oq-01)",
@@ -71,7 +78,8 @@
       "Squarefreeness is necessary, not incidental: for n = p² the all-a fixed point fails (a divisible by p stays ≡ 0 mod p but need not return mod p²), so RSA's n = p·q moduli are exactly the safe regime — the certificate exhibits the explicit failure set for n = 49",
       "The theorem is stated for any exponent m divisible by both p−1 and q−1, which is more general than 'a multiple of λ(n)' and makes the CRT reduction immediate",
       "The bridge λ(p·q) = lcm(λ(p), λ(q)) is proved abstractly — by transporting Monoid.exponent across the CRT-induced units isomorphism (Monoid.exponent_eq_of_mulEquiv + Monoid.exponent_prod) rather than by computing orders — so the final theorem speaks about the genuinely minimal exponent λ(n) = Monoid.exponent (ZMod n)ˣ, not merely a convenient common multiple",
-      "Sufficiency is matched by sharpness: the companion file proves the converse carmichael_dvd_iff_unit_rsa — over the units, a^(m+1) = a for all a IFF λ(n) ∣ m — so λ(n) is not just A working exponent but the MINIMAL one. The test must be on units: every non-unit (in particular 0) satisfies a^(m+1) = a for all m, so non-units cannot detect the threshold, and it is precisely the unit group whose exponent is λ(n)"
+      "Sufficiency is matched by sharpness: the companion file proves the converse carmichael_dvd_iff_unit_rsa — over the units, a^(m+1) = a for all a IFF λ(n) ∣ m — so λ(n) is not just A working exponent but the MINIMAL one. The test must be on units: every non-unit (in particular 0) satisfies a^(m+1) = a for all m, so non-units cannot detect the threshold, and it is precisely the unit group whose exponent is λ(n)",
+      "Key generation needs no extra cryptographic primitive: the private exponent is just the modular inverse of e mod λ(n), and Euler's theorem hands it over explicitly as d = e^(φ(λ(n)) − 1) — coprimality gcd(e, λ(n)) = 1 is exactly the condition that makes e invertible, so the conditional round-trip becomes an unconditional existence statement (exists_rsa_keypair) with no remaining hypothesis beyond coprimality"
     ]
   },
   "sections": [
@@ -124,6 +132,14 @@
       "mathContext": "$\\mathrm{rsaDecrypt}_d(\\mathrm{rsaEncrypt}_e(a)) = a^{ed} = a$ when $ed = 1 + k\\,\\lambda(n)$."
     },
     {
+      "id": "key-generation",
+      "title": "Constructive Key Generation",
+      "startLine": 197,
+      "endLine": 239,
+      "summary": "Discharges the key-generation congruence assumed by rsa_decrypt_encrypt. exists_inverse_exponent: for gcd(e, λ) = 1 (e, λ ≥ 1) there are d, k with e·d = 1 + k·λ — the private exponent is realised explicitly as d = e^(φ(λ) − 1), since by Euler's theorem (Nat.ModEq.pow_totient) e·d = e^φ(λ) ≡ 1 (mod λ), and Nat.modEq_iff_dvd' extracts the witness k. exists_rsa_keypair then feeds this d into rsa_decrypt_encrypt to obtain the unconditional ∃ d, ∀ a, rsaDecrypt d (rsaEncrypt e a) = a: a usable RSA key pair always exists once e is coprime to λ(n).",
+      "mathContext": "$\\gcd(e,\\lambda)=1 \\Rightarrow \\exists d,\\ e d \\equiv 1 \\pmod\\lambda$ with $d = e^{\\varphi(\\lambda)-1}$; hence $\\exists d,\\ \\forall a,\\ \\mathrm{rsaDecrypt}_d(\\mathrm{rsaEncrypt}_e(a))=a$."
+    },
+    {
       "id": "minimality-sharpness",
       "title": "Minimality of λ(n) (companion file)",
       "startLine": 37,
@@ -145,10 +161,10 @@
     }
   ],
   "conclusion": {
-    "summary": "RSA decryption correctness is formalized with the Carmichael exponent λ(n) = lcm(p−1, q−1): for n = p·q and any exponent divisible by both p−1 and q−1, a^(m+1) = a holds for every message a, giving the textbook a^(e·d) = a once e·d = 1 + k·λ. The proof reduces through CRT to a per-prime Fermat fixed point that explicitly covers the non-unit case. A bridge section then connects this to the parent's abstract λ(n) = Monoid.exponent (ZMod n)ˣ, proving λ(p·q) = lcm(λ(p), λ(q)) and stating correctness directly against the minimal universal exponent (rsa_correct_carmichael). A companion file (EulerTotientOQ01OQ03Minimal.lean) supplies the matching converse: λ(n) ∣ m ↔ a^(m+1) = a for every unit a, so λ(n) is verified to be the EXACT minimal universal exponent, not merely one that works. 0 axioms, 0 sorries.",
+    "summary": "RSA decryption correctness is formalized with the Carmichael exponent λ(n) = lcm(p−1, q−1): for n = p·q and any exponent divisible by both p−1 and q−1, a^(m+1) = a holds for every message a, giving the textbook a^(e·d) = a once e·d = 1 + k·λ. The proof reduces through CRT to a per-prime Fermat fixed point that explicitly covers the non-unit case. A bridge section then connects this to the parent's abstract λ(n) = Monoid.exponent (ZMod n)ˣ, proving λ(p·q) = lcm(λ(p), λ(q)) and stating correctness directly against the minimal universal exponent (rsa_correct_carmichael). A companion file (EulerTotientOQ01OQ03Minimal.lean) supplies the matching converse: λ(n) ∣ m ↔ a^(m+1) = a for every unit a, so λ(n) is verified to be the EXACT minimal universal exponent, not merely one that works. Finally, constructive key generation (exists_inverse_exponent, exists_rsa_keypair) discharges the key-generation congruence: from gcd(e, λ(n)) = 1 it builds the private exponent d = e^(φ(λ(n)) − 1) via Euler's theorem and proves that a working key pair (∃ d, ∀ a, rsaDecrypt d (rsaEncrypt e a) = a) always exists — so the round-trip is now unconditional. 0 axioms, 0 sorries.",
     "implications": "Provides the verified core of a textbook-correct RSA implementation keyed on the Carmichael function rather than φ(n), pins down why squarefree moduli n = p·q are necessary for all-message correctness, and identifies the concrete exponent lcm(p−1, q−1) with the abstract group-exponent definition λ(n) = Monoid.exponent (ZMod n)ˣ. Both directions are formalized — sufficiency (λ(n) works for all messages) and minimality (no smaller exponent works for every unit) — so correctness is stated against the genuinely minimal universal exponent, which divides φ(n) and yields a no-larger private key.",
     "openQuestions": [
-      "Complete the verified key-generation pipeline: the end-to-end round-trip rsaDecrypt d (rsaEncrypt e a) = a is now proved (rsa_decrypt_encrypt) assuming e·d = 1 + k·λ(n); what remains is to derive d constructively as a modular inverse of e mod λ(n) (requiring gcd(e, λ(n)) = 1) so the congruence hypothesis is discharged rather than assumed",
+      "RESOLVED (2026-06-18): the key-generation pipeline is now complete and unconditional — exists_inverse_exponent derives the private exponent d constructively as the modular inverse e^(φ(λ(n)) − 1) of e mod λ(n) from gcd(e, λ(n)) = 1 (Euler's theorem), and exists_rsa_keypair packages it as ∃ d, ∀ a, rsaDecrypt d (rsaEncrypt e a) = a, so the congruence hypothesis of rsa_decrypt_encrypt is discharged rather than assumed. Remaining refinement: produce d in the canonical reduced range 0 ≤ d < λ(n) (rather than e^(φ(λ)−1)) and expose a computable keygen function",
       "Generalize the all-message fixed point to arbitrary squarefree n = ∏ pᵢ via the multi-prime CRT",
       "Quantify the efficiency gain of λ(n) over φ(n): characterize the moduli where λ(n) ≪ φ(n) and the consequent reduction in the private exponent's size"
     ]
@@ -177,9 +193,9 @@
       "Classical"
     ],
     "namespace": "EulerTotientOQ01OQ03",
-    "lineCount": 196,
+    "lineCount": 239,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 2,
     "path": "Proofs/EulerTotientOQ01OQ03.lean",
     "sorries": 0
@@ -232,6 +248,18 @@
       "type": "supporting",
       "description": "Divisibility bridge: (q−1) ∣ λ(p·q), since q−1 = λ(q) divides lcm(λ(p), λ(q))",
       "leanType": "(q - 1) ∣ carmichael (p * q)"
+    },
+    {
+      "name": "exists_rsa_keypair",
+      "type": "core",
+      "description": "Key generation works: for n = p·q and a public exponent e ≥ 1 coprime to λ(n), there exists a private exponent d with rsaDecrypt d (rsaEncrypt e a) = a for every a — the round-trip's congruence hypothesis is discharged, not assumed",
+      "leanType": "∃ d : ℕ, ∀ a : ZMod (p * q), rsaDecrypt d (rsaEncrypt e a) = a"
+    },
+    {
+      "name": "exists_inverse_exponent",
+      "type": "supporting",
+      "description": "Constructive modular inverse: for gcd(e, λ) = 1 (e, λ ≥ 1) there exist d, k with e·d = 1 + k·λ, with d = e^(φ(λ) − 1) by Euler's theorem — the number-theoretic core of RSA key generation",
+      "leanType": "∃ d k : ℕ, e * d = 1 + k * lam"
     }
   ],
   "sorries": 0

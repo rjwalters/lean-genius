@@ -1,18 +1,18 @@
 {
   "slug": "euler-totient-oq-01-oq-03",
   "title": "Verified RSA with the Carmichael function lambda(n)",
-  "phase": "ORIENT",
-  "status": "active",
+  "phase": "DONE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": "Open question #2 of euler-totient-oq-01: can Carmichael's function lambda(n) be used for a Lean-verified RSA with correct decryption m^(e*d) = m (mod n) for all m, using the minimal universal exponent lambda(n) instead of Euler's phi(n)?",
   "knownResults": "Parent EulerTotientOQ01.lean defines carmichael n = Monoid.exponent (ZMod n)^x and proves a^lambda(n)=1 for units, lambda|phi, lambda(p)=p-1. Missing: all-m decryption correctness.",
-  "currentState": "ORIENT complete: theorem + CRT/Fermat proof + squarefree necessity + bearers; build-pending Lean.",
+  "currentState": "DONE: machine-verified (docker-build 7744 jobs, 0 ax / 0 sorry). All-m RSA correctness via CRT+Fermat (rsa_correct), Carmichael bridge lambda(p*q)=lcm(p-1,q-1) (carmichael_mul_coprime), end-to-end round-trip (rsa_decrypt_encrypt), minimality converse (companion), AND (2026-06-18) constructive key generation: exists_inverse_exponent builds d=e^(phi(lambda)-1) from gcd(e,lambda)=1 via Euler, exists_rsa_keypair makes the round-trip unconditional. gallery status verified/original.",
   "knowledge": {
-    "progressSummary": "ORIENT: RSA-lambda correctness for n=p*q (distinct primes): e*d == 1 (mod lambda(n)) ⟹ m^(e*d) == m (mod n) for ALL m. Proof = CRT ZMod(p*q)≃ZMod p×ZMod q + per-prime Fermat fixed point (a^(m+1)=a when (p-1)|m). Squarefree necessary (fails for p^2). No Mathlib gap. Verifier ALL PASS; sorry-free build-pending Lean (per-prime core proven, CRT assembly build-pending).",
+    "progressSummary": "DONE (machine-verified, 7744-job docker-build, 0 ax / 0 sorry): RSA-lambda correctness for n=p*q (distinct primes), e*d == 1 (mod lambda(n)) ⟹ m^(e*d) == m (mod n) for ALL m, via CRT ZMod(p*q)≃ZMod p×ZMod q + per-prime Fermat fixed point (a^(m+1)=a when (p-1)|m). Carmichael bridge lambda(p*q)=lcm(p-1,q-1), end-to-end round-trip, minimality converse (companion). 2026-06-18 ACT: constructive key generation closes openQuestion #1 — exists_inverse_exponent (d=e^(phi(lambda)-1) via Euler's theorem from gcd(e,lambda)=1) + exists_rsa_keypair (unconditional ∃ d, ∀ a, rsaDecrypt d (rsaEncrypt e a)=a). Squarefree necessary (fails for p^2).",
     "builtItems": [
       "research/problems/euler-totient-oq-01-oq-03/verify_rsa_lambda.py - exhaustive all-residue verifier (correctness, lambda<phi, squarefree necessity), ALL PASS",
-      "proofs/Proofs/EulerTotientOQ01OQ03.lean (build-pending, UNREGISTERED): zmod_pow_eq_self (per-prime fixed point, PROVEN), rsa_correct (n=p*q via ZMod.chineseRemainder), rsa_decrypt_correct (textbook e*d=1+k*lambda).",
+      "proofs/Proofs/EulerTotientOQ01OQ03.lean (VERIFIED, registered): zmod_pow_eq_self (per-prime fixed point), rsa_correct (n=p*q via ZMod.chineseRemainder), rsa_decrypt_correct, carmichael_mul_coprime + bridges, rsaEncrypt/rsaDecrypt + rsa_decrypt_encrypt round-trip, and exists_inverse_exponent/exists_rsa_keypair (constructive key generation, 2026-06-18).",
       "EulerTotientOQ01OQ03Minimal.lean: carmichael_dvd_iff_unit_rsa — sharp IFF carmichael n ∣ m ↔ ∀ unit a, a^(m+1)=a (minimality/converse of RSA correctness)"
     ],
     "insights": [
@@ -21,16 +21,15 @@
       "lambda(n) | phi(n) and is strictly smaller in all tested moduli, giving a no-larger private exponent with the same decryption map.",
       "Squarefree is NECESSARY: for n=p^2 the all-m fixed point fails on multiples of p (n=9→{3,6}, n=25→{5,10,15,20}).",
       "carmichael_pow_eq_one alone (units only) cannot prove the all-m statement; the CRT/per-prime route is essential.",
-      "The RSA round-trip a^(m+1)=a carries no exponent info on non-units (0^(m+1)=0 always); over (ZMod n)ˣ it holds for all units IFF λ(n)∣m, pinning λ(n) as the minimal universal exponent via carmichael_minimal (Monoid.exponent is least common exponent)"
+      "The RSA round-trip a^(m+1)=a carries no exponent info on non-units (0^(m+1)=0 always); over (ZMod n)ˣ it holds for all units IFF λ(n)∣m, pinning λ(n) as the minimal universal exponent via carmichael_minimal (Monoid.exponent is least common exponent)",
+      "Key generation needs no new machinery: the private exponent is the modular inverse of e mod λ(n), and Euler's theorem (Nat.ModEq.pow_totient) supplies it explicitly as d=e^(φ(λ(n))-1); coprimality gcd(e,λ(n))=1 is exactly the invertibility condition, turning the conditional round-trip into the unconditional exists_rsa_keypair"
     ],
     "mathlibGaps": [
       "None for the n=p*q theorem (ZMod.pow_card_sub_one_eq_one + ZMod.chineseRemainder suffice).",
       "For a carmichael-phrased corollary, need carmichael(p*q)=lcm(carmichael p, carmichael q) (exponent of product of coprime-order groups) - not yet in the parent file."
     ],
     "nextSteps": [
-      "ACT (live build): compile EulerTotientOQ01OQ03.lean, repair any CRT-assembly lemma names (Prod.ext_iff/Prod.fst_pow/ZMod.pow_card_sub_one_eq_one), register in Proofs/Proofs.lean.",
-      "Add bridge (p-1)|carmichael(p*q) and (q-1)|carmichael(p*q) so rsa_correct restates as carmichael(p*q)|m → a^(m+1)=a.",
-      "Optional: def rsaEncrypt/rsaDecrypt on ZMod n + round-trip corollary."
+      "COMPLETE. Optional future refinements: produce the canonical reduced private exponent 0 ≤ d < λ(n) and a computable keygen function; generalize all-message correctness to arbitrary squarefree n = ∏ pᵢ via multi-prime CRT; quantify the λ(n) ≪ φ(n) efficiency gain."
     ]
   },
   "tags": [
@@ -46,22 +45,22 @@
   ],
   "references": [],
   "started": "2026-06-15",
-  "lastUpdate": "2026-06-15",
+  "lastUpdate": "2026-06-18",
   "significance": 5,
   "tractability": 8,
   "leanFiles": [
     {
       "path": "Proofs/EulerTotientOQ01OQ03.lean",
       "filename": "EulerTotientOQ01OQ03.lean",
-      "lineCount": 108,
-      "theoremCount": 3,
+      "lineCount": 239,
+      "theoremCount": 10,
       "axiomCount": 0,
-      "defCount": 0,
+      "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01OQ03.lean",
-      "buildPending": true,
-      "registered": false
+      "buildPending": false,
+      "registered": true
     }
   ]
 }
