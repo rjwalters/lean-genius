@@ -822,6 +822,7 @@ import Proofs.Erdos1045Problem
 import Proofs.Erdos1046Problem
 import Proofs.Erdos1047Problem
 import Proofs.Erdos1047OQ02
+import Proofs.Erdos1047OQ02Certificate
 import Proofs.Erdos1047OQ02Reduction
 import Proofs.Erdos1048Aristotle
 import Proofs.Erdos1048Problem
