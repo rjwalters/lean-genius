@@ -917,3 +917,105 @@ Uniform, search-free, per segment `a→b` with `z(s)=(1−s)•a+s•b`, `s∈[0
   not safe to attempt blindly under Docker contention in one pass.
 - erdos-1047-oq-02 (the *characterization* OQ) remains OPEN; this discharges the
   parent's existence axiom, the shared infrastructure all the Goodman work sits on.
+
+---
+
+## Session 2026-06-18 (researcher-11) — NUMERICAL FRONTIER: isoceles knife-edge + a REFUTED dichotomy
+
+**Mode**: REVISIT (RICH, build-free). Docker heavily contended (≥10 concurrent
+`lean-build` containers, a prior r11 build stuck mid mathlib-cache restore);
+Aristotle backend previously 404. So no new Lean shipped this session — the
+flagship Goodman discharge is already complete + registered (Session 06-17, 0
+sorry). Work this session is on the **build-free numerical characterization
+frontier** for OQ-02, consolidating + git-persisting three previously-untracked
+mpmath probes and correcting two prior written claims. All results reproduced
+exactly this session (Python/mpmath, dps 25–40; convexity criterion = the
+validated `Re(u') ≥ 0` boundary test, `w = Σⱼ 1/(z−rⱼ)`, `u = 1/w`,
+`u' = −w'/w²`).
+
+### Finding 1 — Isoceles family: all-convex is a KNIFE-EDGE at the equilateral triple, window NON-monotone
+
+Conjugate-symmetric one-parameter family `f_a(z) = (z − a)(z² + 1)`, roots
+`{a, +i, −i}` (apex root `a ≥ 0` real, base = the pair `±i`): an isoceles
+triangle with apex angle `60° ⟺ a = √3` (equilateral). Merge threshold exact:
+`f'(z) = 3z² − 2az + 1`, conjugate saddles `z_crit = (a ± i√(3−a²))/3` for
+`a < √3`, `c*(a) = |f(z_crit)|` (apex↔base merge). Apex-component necking window
+`W(a) = (c* − c_nc)/c*`, `c_nc` = first level at which the apex component is
+non-convex (`min Re(u') < 0`, ray-cast boundary out from `r₀ = a`):
+
+| a | a/√3 | apex° | r_nc | W(a) | necks? |
+|---|---|---|---|---|---|
+| 0.000 | 0.000 | 180.00 | 0.99993 | 6.65e-5 | YES (collinear z³+z) |
+| 0.577 | 0.333 | 120.00 | 0.99951 | 4.86e-4 | YES |
+| 0.866 | 0.500 |  98.21 | 0.99865 | 1.35e-3 | YES |
+| 1.000 | 0.577 |  90.00 | 0.99787 | 2.13e-3 | YES |
+| 1.300 | 0.751 |  75.14 | 0.99517 | 4.83e-3 | YES |
+| **1.450** | **0.837** | **69.18** | 0.99425 | **5.75e-3 (peak)** | YES |
+| 1.550 | 0.895 |  65.66 | 0.99471 | 5.29e-3 | YES |
+| 1.660 | 0.958 |  62.13 | 0.99714 | 2.86e-3 | YES |
+| 1.710 | 0.987 |  60.64 | 0.99909 | 9.07e-4 | YES |
+| 1.728 | 0.998 |  60.12 | 0.99986 | 1.37e-4 | YES |
+| **√3 = 1.73205** | 1.000 | **60.00** | — | **0 (convex)** | **no** |
+
+**Reading**: `W(a) > 0` for every `0 < a < √3` — *any* isoceles deviation from
+equilateral produces a non-convex apex component in a window `(c_nc, c*)` just
+below merge — and `W(√3) = 0` exactly: the equilateral triple is the lone
+all-convex member on this slice. So on the family `(z−a)(z²+1)`,
+**all-components-convex ⟺ equilateral configuration** (a clean characterization
+on this 1-parameter conjugate-symmetric slice).
+
+**CORRECTION**: `isoceles_apex_transition.py`'s written READING claimed
+`W(a)` "shrinks **monotonically** toward 0 as `a → √3`". That is FALSE and was
+based on a run truncated at `a = 0.722` (still rising). The completed table
+(`isoceles_window_full.py`, ray-cast to `a → √3`) shows `W(a)` is **non-monotone**:
+it RISES from `6.6e-5` (collinear) to a peak `W_max ≈ 5.75e-3` at `a ≈ 1.45`
+(`a/√3 ≈ 0.837`, **apex angle ≈ 69°**), then FALLS back to 0 at the equilateral
+endpoint as the two conjugate saddles coalesce. (The `a = 0` endpoint reproduces
+the Session-1 collinear z³+z apex/middle-root width, the regime control.)
+
+### Finding 2 — The "interior ⇒ necks" dichotomy is REFUTED for collinear simple roots
+
+Sessions 1–N had asserted a working rule for real-rooted (collinear) polynomials:
+*a simple root's separated component necks before merge **iff** the root is
+INTERIOR (has roots on both sides); EXTREMAL end-roots stay convex.* This was the
+proposed core of the OQ-02 characterization for collinear configurations but had
+only ever been checked on the single middle root of `z(z−1)(z−2)`.
+`collinear_extremal_convex.py` certifies it tolerance-free across several families
+(`min Re(u')` pushed to `c/c_merge → 1`):
+
+| family | root | interior/extremal | min Re(u') @merge | verdict | matches "interior⇒necks"? |
+|---|---|---|---|---|---|
+| z(z−1)(z−2) | 0,2 | extremal | +0.704 | CONVEX | ✓ |
+| z(z−1)(z−2) | 1 | interior | −1.978 | NECKS | ✓ |
+| z(z−1)(z−3) | 1 | interior | −0.861 | NECKS | ✓ |
+| **z(z−1)(z−2)(z−3)** | **1, 2** | **interior** | **+0.615** | **CONVEX** | **✗ FAILS** |
+| (z+2)(z+1)(z−1)(z−2) | −1, 1 | interior | −2.330 | NECKS | ✓ |
+
+**The four equally-spaced collinear simple roots `z(z−1)(z−2)(z−3)` are a clean
+counterexample to the working hypothesis**: both interior components (around 1
+and 2) stay convex up to their own merge (`min Re(u') = +0.615 > 0`), even though
+each interior root has neighbours on both sides. By contrast the symmetric
+`(z+2)(z+1)(z−1)(z−2)` (gaps 1, **2**, 1) interior roots DO neck. So
+**interior-ness is NOT sufficient for necking**; the relevant variable is finer
+than the topological interior/extremal split — it is sensitive to the **gap
+geometry** (the equal-spacing case has no enlarged central gap to "pull" a dimple
+inward). The OQ-02 collinear characterization is therefore *not* the simple
+interior/extremal rule; it must account for relative root spacing. This refutes
+the structural shortcut several prior sessions leaned on in passing.
+
+### Persisted this session
+Three previously-untracked mpmath probes added to git (all Docker-independent,
+reproduced exactly this session):
+`isoceles_apex_transition.py` (r11, opens the isoceles family),
+`isoceles_window_full.py` (r9, completes `W(a)` to `a → √3`, corrects the
+monotone claim), `collinear_extremal_convex.py` (r9, refutes the
+interior/extremal dichotomy). No Lean changed; gallery `meta.json` unchanged
+(flagship axiomCount stays 1, honest).
+
+### Remaining work (unchanged, build-gated)
+The lone heavy items are still (a) the MECHANICAL flagship restructure to flip
+the parent `axiomCount` 1→0 (move 4 headline theorems + OQ02's theorem downstream
+of the registered certificate, delete the parent axiom — circular, so deferred
+until Docker is uncontended), and (b) a closed-form onset `c_nc(a)`/`c_nc(spacing)`
+for the necking window (the numerics above pin the *shape* but not an analytic
+formula). Neither is the bottleneck for the durable numerical characterization.
