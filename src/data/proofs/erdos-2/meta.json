@@ -46,7 +46,7 @@
     "historicalContext": "Covering systems were introduced by Erdős around 1950. He asked whether the minimum modulus of a covering system with distinct moduli can be made arbitrarily large, calling it 'perhaps my favourite problem' and offering a $1000 prize. Constructions pushed the minimum modulus steadily upward: 2 (Erdős 1950), 3 (Choi 1971), 20 (Krukenberg 1971), 36 (Gibson 2009), 40 (Nielsen 2009), and 42 (Owens 2014). Most experts expected the answer to be YES. In a stunning surprise, Hough (2015) proved the answer is NO — every covering system must contain a modulus $\\leq 10^{16}$ — using the Lovász Local Lemma and building on work of Filaseta, Ford, Konyagin, Pomerance, and Yu (2007). The bound was dramatically improved to $616{,}000$ by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (2022) using their novel 'distortion method', published in the Annals of Mathematics. The exact maximum possible minimum modulus remains unknown, lying between 42 and 616,000.",
     "problemStatement": "Can the smallest modulus of a covering system be arbitrarily large? A covering system is a finite collection of arithmetic progressions $\\{a_1 \\bmod n_1, \\ldots, a_k \\bmod n_k\\}$ with distinct moduli $n_i \\geq 2$ that cover all integers.",
     "text": "Can the smallest modulus of a covering system be arbitrarily large? SOLVED: NO (Hough 2015, Balister et al. 2022).",
-    "proofStrategy": "The formalization defines congruence classes, covering systems, and minimum modulus. The original (disproved) conjecture and its negation are both stated. Key results are axiomatized: Hough's bound ($10^{16}$), Balister et al.'s bound ($616{,}000$), and Owens' construction (minimum modulus 42). Proved theorems include the logical implication from the bound to the disproof, concrete examples (even/odd covering), and the density argument via reciprocal sums. The Erdős-Selfridge conjecture on odd moduli is stated as a related open problem.",
+    "proofStrategy": "The formalization defines congruence classes, covering systems, and minimum modulus. The original (disproved) conjecture and its negation are both stated. Three deep results are axiomatized: Balister et al.'s bound ($616{,}000$), Owens' construction (minimum modulus 42), and the density constraint (reciprocal sum $\\geq 1$). Hough's bound ($10^{16}$) is then *derived* as a theorem from Balister et al.'s stronger bound. Proved theorems include the logical implication from the bound to the disproof and concrete examples (even/odd covering). The Erdős-Selfridge conjecture on odd moduli is stated as a related open problem.",
     "keyInsights": [
       "**Answer: NO** — the minimum modulus of any covering system is bounded above by a universal constant",
       "**Hough (2015)**: Disproved the conjecture using the **Lovász Local Lemma** and random sieving, giving bound $\\leq 10^{16}$",
@@ -106,7 +106,7 @@
     {
       "id": "hough-theorem",
       "title": "Hough's Theorem (2015)",
-      "summary": "Axiomatizes **hough_bound** ($\\leq 10^{16}$) and proves **hough_implies_solution**: the existential witness $N = 10^{16}$ resolves the problem.",
+      "summary": "Derives **hough_bound** ($\\leq 10^{16}$) as a theorem from the stronger **balister_bound** axiom and proves **hough_implies_solution**: the existential witness $N = 10^{16}$ resolves the problem.",
       "startLine": 105,
       "endLine": 122,
       "mathContext": "Hough's theorem (2015): every covering system $C$ satisfies $\\mathrm{minModulus}(C) \\leq 10^{16}$. The proof uses the **Lovász Local Lemma** in a probabilistic sieving argument, building on Filaseta–Ford–Konyagin–Pomerance–Yu (2007). The theorem **hough_implies_solution** instantiates the main result with the explicit witness $N := 10^{16}$, confirming the universal bound exists."
@@ -161,7 +161,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #2, one of Erdős's favourite problems carrying a $1000 prize. The question — whether the minimum modulus of a covering system can be arbitrarily large — was answered NO by Hough (2015) and dramatically sharpened by Balister et al. (2022). The formalization includes proved theorems (logical implication, concrete examples) and axiomatized deep results (Hough, Balister, Owens, density bound).",
+    "summary": "We formalize Erdős Problem #2, one of Erdős's favourite problems carrying a $1000 prize. The question — whether the minimum modulus of a covering system can be arbitrarily large — was answered NO by Hough (2015) and dramatically sharpened by Balister et al. (2022). The formalization includes proved theorems (logical implication, concrete examples, Hough's bound derived from Balister's) and axiomatized deep results (Balister, Owens, density bound).",
     "implications": "**Theoretical Significance**: The resolution overturned decades of intuition: most experts expected the answer to be YES. The techniques introduced — particularly the distortion method of Balister et al.\n\n— have found applications in other areas of probabilistic combinatorics. The exact maximum minimum modulus (between 42 and 616,000) remains a major open problem, and the related Erdős-Selfridge conjecture on odd moduli is also wide open.",
     "openQuestions": [
       "What is the exact maximum possible minimum modulus M? (Currently 42 ≤ M ≤ 616,000)",
