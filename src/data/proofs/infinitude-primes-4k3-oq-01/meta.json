@@ -138,11 +138,19 @@
   "sections": [
     {
       "id": "module-header",
-      "title": "Module Header and Spectrum-Coverage Table",
+      "title": "Module Header and Contributions",
       "startLine": 5,
+      "endLine": 25,
+      "summary": "Imports DirichletsTheorem and ZMod.Basic. The docstring states the OQ-01 'S12 ACT R4 Route-B' deliverable — closing the PREP-gap rows q ∈ {12, 24} of the slug's spectrum table by specializing DirichletsTheorem.dirichlet_modEq at (a, q) ∈ {(11, 12), (23, 24)} — and enumerates the six contributions: two ZMod↔mod bridge lemmas plus four infinitude theorems (2 elementary % q = a form, 2 ZMod-cast form).",
+      "mathContext": "The p ≡ -1 (mod q) family. Unit groups: (ZMod 12)ˣ ≅ Klein-4, (ZMod 24)ˣ ≅ (ℤ/2ℤ)³; -1 is the distinguished involution in each, which is why a single residue class a ≡ -1 captures the construction."
+    },
+    {
+      "id": "spectrum-coverage-table",
+      "title": "Spectrum-Coverage Table and Provenance",
+      "startLine": 26,
       "endLine": 70,
-      "summary": "Imports DirichletsTheorem and ZMod.Basic. The docstring states the OQ-01 deliverable, lists the six contributions (2 bridges, 4 theorems), and gives the spectrum-coverage table showing which moduli q for the p ≡ -1 (mod q) family are handled elementarily (q = 3, 4, 6, with 8 pending) versus by Dirichlet specialization (q = 12, 24, this file).",
-      "mathContext": "The p ≡ -1 (mod q) family. Unit groups: (ZMod 12)ˣ ≅ Klein-4, (ZMod 24)ˣ ≅ (ℤ/2ℤ)³; -1 is the distinguished involution in each."
+      "summary": "The docstring's '## Why these specific q' table situates this file in the six-modulus family q ∈ {3, 4, 6, 8, 12, 24}, classifying each by unit-group structure (Klein-2 for q = 3, 4, 6; Klein-4 for q = 8, 12; abelian non-cyclic (ℤ/2ℤ)³ for q = 24) and Lean status: q ∈ {3, 4, 6} elementary-verified, q = 8 open (R3), q ∈ {12, 24} supplied here by Dirichlet specialization. The remaining '## Counts / ## Build / ## Why a sub-file' notes record 0 axioms / 0 sorries, the build-provenance of the DirichletsTheorem import, and the rationale for a slug-specific sub-file rather than polluting the parent gallery entry.",
+      "mathContext": "The two-route strategy: elementary Euclid-style arguments cover the Klein-2 moduli q ∈ {3, 4, 6, 8}, while q ∈ {12, 24} — whose unit groups are larger (Klein-4, (ℤ/2ℤ)³) — are reached by specializing Dirichlet's theorem on primes in arithmetic progressions. Both routes prove infinitely many primes p ≡ -1 (mod q)."
     },
     {
       "id": "zmod-bridges",
