@@ -1,0 +1,71 @@
+{
+  "slug": "dirichlet-approximation-theorem-oq-02",
+  "title": "Simultaneous (k-dimensional) Dirichlet Approximation Theorem",
+  "problemStatement": "Generalize the one-dimensional Dirichlet approximation theorem to several reals sharing one common denominator: given α : Fin k → ℝ and N ≥ 1, there exist integers p₁,…,p_k and a single q with 1 ≤ q ≤ Nᵏ such that |q·α_i − p_i| < 1/N for every coordinate i, equivalently |α_i − p_i/q| < 1/(qN). The case k = 1 is the classical parent theorem.",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 6,
+  "path": "full",
+  "started": "2026-06-18",
+  "lastUpdate": "2026-06-18",
+  "tags": [
+    "number-theory",
+    "diophantine-approximation",
+    "simultaneous-approximation",
+    "pigeonhole-principle",
+    "geometry-of-numbers"
+  ],
+  "currentState": {
+    "summary": "Formalized and self-contained: the simultaneous theorem proved by lifting Dirichlet's pigeonhole argument from the unit interval to the unit cube [0,1)ᵏ. 0 sorry / 0 axiom. Both the homogeneous form |q·α_i − p_i| < 1/N and the quotient form |α_i − p_i/q| < 1/(qN) are derived. Build verified via Docker (Proofs.DirichletApproximationOQ02).",
+    "leanFile": "proofs/Proofs/DirichletApproximationOQ02.lean",
+    "sorries": 0,
+    "axioms": 0
+  },
+  "knowledge": {
+    "insights": [
+      "The simultaneous statement is the same pigeonhole as the parent (k=1) with the unit interval [0,1) replaced by the unit cube [0,1)ᵏ partitioned into Nᵏ subcubes: Nᵏ+1 lattice points {(frac(j·α₁),…,frac(j·α_k))} must collide, and the collision supplies the single common denominator q = i − j.",
+      "Encoding the subcube index as a FUNCTION type Fin k → Fin N (rather than a tuple) is the key formalization choice: Fintype.card_pi gives its cardinality Nᵏ for the pigeonhole inequality, and congr_fun peels off the per-coordinate floor equality ⌊N·frac(i·α_l)⌋ = ⌊N·frac(j·α_l)⌋ from the single function-level collision.",
+      "No new analytic content beyond the parent: once the floor equality is extracted in coordinate l, the bound |q·α_l − p_l| < 1/N is the identical floor-bracketing argument applied uniformly under ∀ l. The interval_bound lemma (equal floors ⇒ |x−y| < 1) is reused coordinatewise.",
+      "The price of one common denominator is the enlarged range q ≤ Nᵏ (vs q ≤ N in one dimension), while the per-coordinate quality 1/(qN) is retained — exactly the trade-off seeding the geometry of numbers (Minkowski) and metric Diophantine approximation in several variables.",
+      "Mathlib needs nothing bespoke: Fintype.exists_ne_map_eq_of_card_lt (pigeonhole), Fintype.card_pi (Nᵏ), and the standard Int.floor/toNat bracketing lemmas suffice. The per-coordinate Fin N membership of the subcube index is discharged inline."
+    ],
+    "builtItems": [
+      "dirichlet_simultaneous (DirichletApproximationOQ02.lean:140) — headline k-dimensional theorem: ∃ p q, 1 ≤ q ≤ Nᵏ ∧ ∀ l, |q·α_l − p_l| < 1/N",
+      "dirichlet_simultaneous_div (DirichletApproximationOQ02.lean:157) — classical quotient form ∀ l, |α_l − p_l/q| < 1/(qN)",
+      "simultaneous_aux (DirichletApproximationOQ02.lean:81) — core step turning an ordered subcube collision into the common denominator q = i − j and numerators p_l = ⌊i·α_l⌋ − ⌊j·α_l⌋",
+      "intervalMapMulti (DirichletApproximationOQ02.lean:64) — product pigeonhole assignment Fin (Nᵏ+1) → (Fin k → Fin N) with inline Fin N membership proof",
+      "interval_bound / sub_lt_one_of_floor_eq (DirichletApproximationOQ02.lean:33-49) — one-dimensional floor-bracketing reused coordinatewise"
+    ],
+    "mathlibGaps": [
+      "Mathlib has no packaged simultaneous Dirichlet approximation theorem (only the one-dimensional Real.exists_int_int_abs_mul_sub_le family); this file supplies the k-dimensional pigeonhole form."
+    ],
+    "nextSteps": [
+      "Derive the same bound instead from Minkowski's convex-body theorem, connecting to lattice-point-count infrastructure (geometry-of-numbers proof).",
+      "Formalize the metric refinement: infinitely many q with max_i ‖q·α_i‖ < q^(−1/k) for badly-approximable or generic systems (simultaneous analogue of the 1/q² infinitude in oq-01)."
+    ],
+    "progressSummary": "COMPLETE: simultaneous k-dimensional Dirichlet approximation formalized (8 theorems/lemmas, 2 defs, 0 sorry, 0 axiom). Realizes the follow-up proposed by oq-01's nextSteps (one denominator for several reals)."
+  },
+  "approaches": [
+    {
+      "name": "Pigeonhole on the unit cube via a product-typed subcube index",
+      "outcome": "success",
+      "notes": "intervalMapMulti : Fin (Nᵏ+1) → (Fin k → Fin N); Fintype.card_pi gives Nᵏ < Nᵏ+1, Fintype.exists_ne_map_eq_of_card_lt forces the collision, congr_fun extracts coordinatewise floor equalities, interval_bound finishes each coordinate."
+    }
+  ],
+  "knownResults": [
+    "Dirichlet (1842): stated both the one-shot bound and its simultaneous form.",
+    "Minkowski: convex-body / linear-forms theorem giving a geometry-of-numbers proof and the systems-of-linear-forms generalization.",
+    "Schmidt: subspace theorem, the deep higher-dimensional successor in metric Diophantine approximation."
+  ],
+  "references": [
+    "https://en.wikipedia.org/wiki/Dirichlet%27s_approximation_theorem#Simultaneous_version",
+    "Cassels, An Introduction to Diophantine Approximation",
+    "Schmidt, Diophantine Approximation (LNM 785)"
+  ],
+  "relatedProofs": [
+    "dirichlet-approximation-theorem (parent, one-shot k=1 bound)",
+    "dirichlet-approximation-theorem-oq-01 (infinitude / coprime-pair iff; proposed this simultaneous follow-up)"
+  ]
+}

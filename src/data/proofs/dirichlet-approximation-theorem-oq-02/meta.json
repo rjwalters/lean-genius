@@ -1,0 +1,152 @@
+{
+  "id": "dirichlet-approximation-theorem-oq-02",
+  "title": "Simultaneous Dirichlet Approximation Theorem",
+  "slug": "dirichlet-approximation-theorem-oq-02",
+  "description": "The k-dimensional generalization of Dirichlet's approximation theorem: given reals α₁, …, α_k and an integer N ≥ 1, there is a single common denominator q with 1 ≤ q ≤ Nᵏ and integers p₁, …, p_k such that |q·α_i − p_i| < 1/N for every coordinate i, equivalently |α_i − p_i/q| < 1/(qN). The parent one-dimensional theorem is the case k = 1. The proof lifts Dirichlet's pigeonhole argument from the unit interval [0,1) to the unit cube [0,1)ᵏ: Nᵏ + 1 lattice points are distributed among Nᵏ subcubes, forcing a collision whose index difference supplies the common denominator.",
+  "meta": {
+    "author": "Peter Gustav Lejeune Dirichlet (1842); k-dimensional formalization in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_approximation_theorem#Simultaneous_version",
+    "date": "1842",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DirichletApproximationOQ02.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-approximation",
+      "pigeonhole-principle",
+      "simultaneous-approximation",
+      "geometry-of-numbers",
+      "floor-function"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.exists_ne_map_eq_of_card_lt",
+        "description": "The pigeonhole principle in finite-cardinality form, applied here to a map from Fin (Nᵏ+1) into the product type Fin k → Fin N (the Nᵏ subcubes).",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Fintype.card_pi",
+        "description": "The cardinality of a finite product/function type ∏ i, card (β i); used to compute card (Fin k → Fin N) = Nᵏ so the pigeonhole inequality Nᵏ < Nᵏ+1 holds.",
+        "module": "Mathlib.Data.Fintype.Pi"
+      },
+      {
+        "theorem": "Int.lt_floor_add_one / Int.floor_le / Int.floor_lt / Int.floor_nonneg / Int.toNat_of_nonneg",
+        "description": "Floor bracketing and toNat round-trip lemmas, used per coordinate to land each subcube index inside Fin N and to extract the floor equality from the collision.",
+        "module": "Mathlib.Algebra.Order.Floor"
+      }
+    ],
+    "originalContributions": [
+      "A self-contained Lean 4 formalization of the simultaneous (k-dimensional) Dirichlet approximation theorem, with the parent theorem as the case k = 1",
+      "A product interval-assignment map intervalMapMulti : Fin (Nᵏ+1) → (Fin k → Fin N) sending each lattice point to the index function of its subcube, with the per-coordinate Fin N membership proof discharged inline",
+      "Reduction of the higher-dimensional pigeonhole to the one-dimensional bracketing lemma applied coordinatewise: function equality of the subcube indices yields, via congr_fun, equal floors in every coordinate simultaneously sharing the single denominator q = i − j",
+      "Both the homogeneous form |q·α_i − p_i| < 1/N and the quotient form |α_i − p_i/q| < 1/(qN) matching the classical statement"
+    ],
+    "dateAdded": "2026-06-18",
+    "relatedProblems": [
+      {
+        "id": "dirichlet-approximation-theorem",
+        "relationship": "Parent: the one-dimensional Dirichlet approximation theorem, recovered as the k = 1 special case of this result."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 173,
+    "assumptions": "0 axioms, 0 sorries. The only hypothesis is N ≥ 1 (a positive bound on the per-coordinate fineness), an input to the statement rather than a standing assumption. Every lemma and both theorems are fully machine-checked.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Dirichlet's 1842 approximation theorem has a natural simultaneous form, stated by Dirichlet himself: several real numbers can be approximated by rationals sharing one common denominator. Whereas the one-dimensional theorem partitions the unit interval [0,1) into N pieces and pigeonholes N+1 fractional parts, the simultaneous version partitions the unit cube [0,1)ᵏ into Nᵏ subcubes and pigeonholes Nᵏ+1 lattice points. The cost of a common denominator is that q may grow to Nᵏ rather than N, but the per-coordinate approximation quality 1/(qN) is retained. This simultaneous statement is the entry point to the geometry of numbers: it is the elementary precursor of Minkowski's convex-body theorem, the Dirichlet/Minkowski theorem on systems of linear forms, lattice reduction, and the higher-dimensional theory underlying the subspace theorem.",
+    "problemStatement": "Let $\\alpha_1, \\dots, \\alpha_k \\in \\mathbb{R}$ (packaged as $\\alpha : \\mathrm{Fin}\\,k \\to \\mathbb{R}$) and let $N$ be a positive integer. Then there exist integers $p_1, \\dots, p_k$ and a common denominator $q$ with $1 \\le q \\le N^k$ such that\n\n$$|q\\,\\alpha_i - p_i| < \\frac{1}{N} \\qquad (1 \\le i \\le k),$$\n\nequivalently $\\left|\\alpha_i - \\dfrac{p_i}{q}\\right| < \\dfrac{1}{qN}$ for every $i$. The case $k = 1$ is the classical Dirichlet approximation theorem (with $Q = N$).",
+    "text": "One denominator q approximates all k of the reals at once: each α_i sits within 1/(qN) of p_i/q. The proof distributes Nᵏ+1 points (frac(j·α₁), …, frac(j·α_k)) over the Nᵏ subcubes of [0,1)ᵏ and lets the pigeonhole principle force two points into the same subcube; their index difference is the shared denominator.",
+    "proofStrategy": "The argument is Dirichlet's pigeonhole lifted to k dimensions. The map intervalMapMulti sends a lattice index j ∈ Fin (Nᵏ+1) to the function l ↦ ⌊N·frac(j·α_l)⌋ ∈ Fin N — the index of the subcube of [0,1)ᵏ containing (frac(j·α₁), …, frac(j·α_k)). The codomain Fin k → Fin N has cardinality Nᵏ (computed via Fintype.card_pi), strictly less than Nᵏ+1, so Fintype.exists_ne_map_eq_of_card_lt forces two distinct indices i ≠ j into the same subcube. After ordering j < i, the common denominator q = i − j satisfies 1 ≤ q ≤ Nᵏ, and the numerators are p_l = ⌊i·α_l⌋ − ⌊j·α_l⌋. Function equality of the subcube indices, restricted by congr_fun to each coordinate l, gives ⌊N·frac(i·α_l)⌋ = ⌊N·frac(j·α_l)⌋; the one-dimensional bracketing lemma interval_bound then yields |frac(i·α_l) − frac(j·α_l)| < 1/N, i.e. |q·α_l − p_l| < 1/N, for every l at once. Dividing by q gives the quotient form |α_l − p_l/q| < 1/(qN).",
+    "keyInsights": [
+      "**Pigeonhole on a cube**: Nᵏ+1 lattice points {(frac(j·α₁), …, frac(j·α_k))} cannot all occupy distinct members of the Nᵏ-subcube partition of [0,1)ᵏ, so two collide — this single counting fact is the whole theorem, exactly as in one dimension but with the product partition",
+      "**The collision gives one shared denominator**: the two colliding indices i, j produce q = i − j that works for every coordinate simultaneously, because the same i, j sit in the same subcube in all coordinates at once — this is precisely what 'simultaneous' means",
+      "**Product codomain encodes the subcube**: the subcube index is a function Fin k → Fin N, and Fintype.card_pi gives its cardinality Nᵏ; congr_fun then peels off the per-coordinate floor equality from the single function-level collision",
+      "**Coordinatewise reuse of the 1-D bracketing**: once the floor equality is extracted in coordinate l, the bound |q·α_l − p_l| < 1/N is the identical floor-arithmetic argument of the parent theorem, applied uniformly under ∀ l — no new analytic content beyond the higher-dimensional pigeonhole",
+      "**The price of a common denominator is q ≤ Nᵏ, not q ≤ N**: enlarging the denominator range from N to Nᵏ is exactly what buys simultaneity while preserving the per-coordinate quality 1/(qN); this trade-off is the seed of the geometry of numbers (Minkowski) and of metric Diophantine approximation in several variables"
+    ],
+    "prerequisites": [
+      "The floor function and fractional part of a real number",
+      "The pigeonhole principle in finite-cardinality form",
+      "Cardinality of finite function/product types (Fintype.card_pi)",
+      "Indexing with Fin n, function equality via congr_fun, and casting between ℕ, ℤ, ℝ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "floor-bracketing",
+      "title": "Floor Bracketing: Equal Floor ⇒ Difference < 1",
+      "startLine": 33,
+      "endLine": 49,
+      "mathContext": "If $\\lfloor x\\rfloor = \\lfloor y\\rfloor$ then $|x-y| < 1$, since both lie in $[\\lfloor x\\rfloor, \\lfloor x\\rfloor + 1)$.",
+      "summary": "`sub_lt_one_of_floor_eq` and `interval_bound`: two reals with the same floor differ by strictly less than 1. This one-dimensional fact is applied coordinatewise in the main proof."
+    },
+    {
+      "id": "fractional-part",
+      "title": "The Fractional Part",
+      "startLine": 50,
+      "endLine": 60,
+      "mathContext": "$\\operatorname{frac}(x) = x - \\lfloor x\\rfloor \\in [0,1)$.",
+      "summary": "`frac` with bounds `frac_nonneg`, `frac_lt_one`: the per-coordinate fractional parts that get distributed into the Nᵏ subcubes."
+    },
+    {
+      "id": "product-interval-map",
+      "title": "The Product Pigeonhole Assignment",
+      "startLine": 62,
+      "endLine": 79,
+      "mathContext": "$\\operatorname{intervalMapMulti}(j) = \\bigl(l \\mapsto \\lfloor N\\cdot\\operatorname{frac}(j\\alpha_l)\\rfloor\\bigr) \\in (\\mathrm{Fin}\\,k \\to \\mathrm{Fin}\\,N).$",
+      "summary": "`intervalMapMulti : Fin (Nᵏ+1) → (Fin k → Fin N)` sends a lattice index to the index function of the subcube containing its k fractional parts. The per-coordinate Fin N membership 0 ≤ N·frac(j·α_l) < N is discharged inline."
+    },
+    {
+      "id": "coordinatewise-core",
+      "title": "Core Step: Common Denominator and Coordinatewise Bound",
+      "startLine": 81,
+      "endLine": 138,
+      "mathContext": "From a collision with $j<i$: $q=i-j$, $p_l=\\lfloor i\\alpha_l\\rfloor-\\lfloor j\\alpha_l\\rfloor$, and per coordinate $q\\alpha_l-p_l=\\operatorname{frac}(i\\alpha_l)-\\operatorname{frac}(j\\alpha_l)$.",
+      "summary": "`simultaneous_aux`: given the ordered collision, sets q = i − j (so 1 ≤ q ≤ Nᵏ) and p_l = ⌊iα_l⌋ − ⌊jα_l⌋, extracts the per-coordinate floor equality via congr_fun + toNat round-trip, and applies interval_bound to conclude |qα_l − p_l| < 1/N for every l."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem and Quotient Form",
+      "startLine": 140,
+      "endLine": 171,
+      "mathContext": "$\\mathrm{card}(\\mathrm{Fin}\\,k\\to\\mathrm{Fin}\\,N)=N^k<N^k+1$ forces the collision; division by $q$ yields $|\\alpha_l-p_l/q|<1/(qN)$.",
+      "summary": "`dirichlet_simultaneous`: computes card (Fin k → Fin N) = Nᵏ via Fintype.card_pi, applies Fintype.exists_ne_map_eq_of_card_lt, orders the collision, and invokes simultaneous_aux. `dirichlet_simultaneous_div` divides through by q to obtain the classical quotient form |α_l − p_l/q| < 1/(qN)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The simultaneous Dirichlet approximation theorem is formalized in Lean 4 with zero sorries and zero axioms by lifting Dirichlet's 1842 pigeonhole argument to the unit cube: Nᵏ+1 lattice points are distributed over Nᵏ subcubes (indexed by the product type Fin k → Fin N), Fintype.exists_ne_map_eq_of_card_lt forces a collision, and the colliding indices yield a single common denominator q ≤ Nᵏ approximating all k reals to within 1/(qN). The per-coordinate bound reuses the parent's floor-bracketing lemma under congr_fun.",
+    "implications": "This is the base step of the geometry of numbers: the same common-denominator pigeonhole, sharpened by convex-body arguments, becomes Minkowski's theorem and the Dirichlet theorem on systems of linear forms, and underlies simultaneous Diophantine approximation, lattice reduction, and the subspace theorem. The Lean formalization makes the gallery's Dirichlet entry the k = 1 instance of a reusable multi-dimensional result.",
+    "openQuestions": [
+      "Can the denominator bound be improved (e.g. infinitely many q with max_i ‖qα_i‖ < q^(−1/k) for badly approximable or generic systems), formalizing the metric theory of simultaneous approximation?",
+      "Can this be derived instead from Minkowski's convex-body theorem, giving a geometry-of-numbers proof in Lean and connecting to the lattice-point-count infrastructure?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "dirichlet-approximation-theorem",
+      "relationship": "extends",
+      "description": "The one-dimensional Dirichlet approximation theorem, recovered as the case k = 1. This entry generalizes both the statement and the pigeonhole proof to k reals with one common denominator."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/DirichletApproximationOQ02.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Int",
+      "Finset"
+    ],
+    "namespace": "DirichletApproximationOQ02",
+    "lineCount": 173,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 2,
+    "theoremCount": 8
+  },
+  "sorries": 0
+}

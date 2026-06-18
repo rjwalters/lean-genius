@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-floor-bracketing",
+    "proofId": "dirichlet-approximation-theorem-oq-02",
+    "range": { "startLine": 33, "endLine": 49 },
+    "type": "lemma",
+    "title": "interval_bound — Equal Floor ⇒ Difference < 1",
+    "content": "The one-dimensional bracketing fact reused coordinatewise: two reals in [0,N) with the same floor differ by strictly less than 1, since both lie in [⌊x⌋, ⌊x⌋+1). Proved from ⌊x⌋ ≤ x < ⌊x⌋+1 by a sign case split and linarith. In the simultaneous proof this is applied separately in each coordinate l after the per-coordinate floor equality is extracted from the collision."
+  },
+  {
+    "id": "ann-product-interval-map",
+    "proofId": "dirichlet-approximation-theorem-oq-02",
+    "range": { "startLine": 62, "endLine": 79 },
+    "type": "definition",
+    "title": "intervalMapMulti — The Product Pigeonhole Assignment",
+    "content": "intervalMapMulti : Fin (Nᵏ+1) → (Fin k → Fin N) sends a lattice index j to the function l ↦ ⌊N·frac(j·α_l)⌋, i.e. the index of the subcube of [0,1)ᵏ containing the point (frac(j·α₁), …, frac(j·α_k)). The per-coordinate Fin N membership obligation is the bound 0 ≤ N·frac(j·α_l) < N, discharged inline via floor and toNat lemmas. Encoding the subcube as a function type is what lets the single function-level collision split into k coordinatewise floor equalities."
+  },
+  {
+    "id": "ann-coordinatewise-core",
+    "proofId": "dirichlet-approximation-theorem-oq-02",
+    "range": { "startLine": 81, "endLine": 138 },
+    "type": "lemma",
+    "title": "simultaneous_aux — One Common Denominator for All Coordinates",
+    "content": "Given an ordered collision j < i with intervalMapMulti i = intervalMapMulti j, sets the shared denominator q = i − j (so 1 ≤ q ≤ Nᵏ from the Fin bounds) and numerators p_l = ⌊i·α_l⌋ − ⌊j·α_l⌋. For each coordinate l, congr_fun on the function equality yields ⌊N·frac(i·α_l)⌋ = ⌊N·frac(j·α_l)⌋ (via a toNat round-trip); the identity q·α_l − p_l = frac(i·α_l) − frac(j·α_l) and interval_bound then give |q·α_l − p_l| < 1/N. The single q works for every l because the same indices i, j collide in all coordinates simultaneously."
+  },
+  {
+    "id": "ann-main-pigeonhole",
+    "proofId": "dirichlet-approximation-theorem-oq-02",
+    "range": { "startLine": 140, "endLine": 155 },
+    "type": "theorem",
+    "title": "dirichlet_simultaneous — k-Dimensional Pigeonhole",
+    "content": "The main theorem. Fintype.card_pi computes card (Fin k → Fin N) = Nᵏ < Nᵏ+1, so Fintype.exists_ne_map_eq_of_card_lt forces two distinct lattice indices into the same subcube. After ordering the pair, simultaneous_aux delivers the common denominator and the simultaneous bound |q·α_l − p_l| < 1/N. Specializing k = 1 recovers the parent one-dimensional theorem with Q = N."
+  },
+  {
+    "id": "ann-quotient-form",
+    "proofId": "dirichlet-approximation-theorem-oq-02",
+    "range": { "startLine": 157, "endLine": 171 },
+    "type": "theorem",
+    "title": "dirichlet_simultaneous_div — Classical Quotient Form",
+    "content": "Divides the homogeneous bound through by q to obtain the classical statement |α_l − p_l/q| < 1/(qN) for every coordinate l, the simultaneous analogue of |α − p/q| < 1/(qQ). Uses div_lt_iff₀ and field_simp to convert |q·α_l − p_l| < 1/N into the quotient inequality with denominator qN."
+  }
+]
