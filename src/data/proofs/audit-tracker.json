@@ -14111,9 +14111,10 @@
     "inclusion-exclusion-oq-01-oq-01": {
       "auditCount": 3,
       "issues": [
-        "badge was original but main theorem wraps Mathlib's Finset.inclusion_exclusion_card_biUnion; corrected to mathlib in PR #15263"
+        "badge was original but main theorem wraps Mathlib's Finset.inclusion_exclusion_card_biUnion; corrected to mathlib in PR #15263",
+        "re-audit clean (PR #25585, merged); tracker bump was clobbered by a concurrent merge and is restored here"
       ],
-      "lastAudited": "2026-06-18T09:51:28Z",
+      "lastAudited": "2026-06-18T09:57:00Z",
       "result": "clean"
     },
     "lebesgue-measure-oq-01-oq-01-oq-02": {
@@ -14163,10 +14164,12 @@
       "issues": []
     },
     "picks-theorem-oq-01-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-03T18:51:03Z",
-      "result": "clean",
-      "issues": []
+      "auditCount": 2,
+      "lastAudited": "2026-06-18T09:56:23Z",
+      "result": "issues-fixed",
+      "issues": [
+        "stale machine counts: lineCount 309->324, theoremCount 24->25; leanFile.axiomCount 4->2 (literal axiom count per convention; meta.axiomCount=4 total assumptions stays correct). Status axiomatized/axiom honest, 0 sorries, 0 native_decide, thorough disclosure."
+      ]
     },
     "chinese-remainder-constructive-oq-03-oq-03": {
       "auditCount": 1,
