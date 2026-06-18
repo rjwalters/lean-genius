@@ -79,12 +79,20 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Setup: Finite Group Action on a Polynomial Ring",
+      "id": "docstring",
+      "title": "Module Docstring: OQ-04 Scope and Bearer Plan",
       "startLine": 1,
+      "endLine": 31,
+      "summary": "`import Mathlib` and the module docstring. It clarifies that the headline OQ-04 (uniform effective algorithms for non-reductive invariants) is not formalizable as a single Lean theorem, and that this file instead scaffolds the qualitative sibling target — Hilbert finiteness for finite-group linear actions on MvPolynomial. It enumerates the five pinned Mathlib bearers the proof chains through (IsInvariant, IsInvariant.isIntegral, restrict-scalars finite type, IsIntegral.finite, and Artin-Tate fg_of_fg_of_fg) and records what is out of scope (Noether's degree bound, Weitzenböck, Nagata).",
+      "mathContext": "Target: $R^G$ finitely generated over $k$ for $R = k[x_1,\\dots,x_n]$ and finite $G$; OQ-04 proper (uniform algorithms) is not a single formalizable statement."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and Typeclass Setup",
+      "startLine": 33,
       "endLine": 40,
-      "summary": "Scope statement and typeclass setup: a finite group G acting by k-algebra automorphisms (MulSemiringAction + SMulCommClass) on R = MvPolynomial (Fin n) k. Clarifies that the headline OQ-04 (uniform effective algorithms) is not a single formalizable theorem and that this file targets qualitative Hilbert finiteness.",
-      "mathContext": "$R = k[x_1,\\dots,x_n]$, $G$ finite acting $k$-linearly; target is $R^G = \\mathrm{FixedPoints}(G)$ finitely generated over $k$."
+      "summary": "`namespace Hilbert14OQ04`, `open MvPolynomial`, and the variable block: a field k, arity n, and a finite group G acting on R = MvPolynomial (Fin n) k by k-algebra automorphisms. The action is expressed through `MulSemiringAction G R` together with `SMulCommClass G k R`, which together say each g acts as a k-linear ring automorphism.",
+      "mathContext": "$k$ a field, $G$ finite, $G \\curvearrowright R = k[x_1,\\dots,x_n]$ by $k$-algebra automorphisms (MulSemiringAction + SMulCommClass)."
     },
     {
       "id": "integrality",
@@ -95,12 +103,20 @@
       "mathContext": "Each $r \\in R$ is a root of $\\prod_{g \\in G}(X - g\\cdot r)$, monic of degree $|G|$ with coefficients in $R^G$, so $R$ is integral over $R^G$."
     },
     {
-      "id": "finiteness",
-      "title": "Hilbert Finiteness via Artin-Tate",
+      "id": "finiteness-statement",
+      "title": "Hilbert Finiteness: Statement",
       "startLine": 60,
+      "endLine": 77,
+      "summary": "The main theorem `hilbert_finiteness`: the invariant subring R^G is `Algebra.FiniteType` over k — the qualitative half of Emmy Noether's 1916 theorem (the quantitative degree bound generators ⊆ deg ≤ |G| is deferred). The docstring sketches the Artin-Tate route, and the proof opens by `set R` and `set B := FixedPoints.subalgebra k R G` to name the tower k → B → R.",
+      "mathContext": "$R^G = \\mathrm{FixedPoints}(G)$ is finitely generated as a $k$-algebra (Noether 1916, qualitative)."
+    },
+    {
+      "id": "artin-tate-chain",
+      "title": "The Artin-Tate Proof Chain",
+      "startLine": 78,
       "endLine": 99,
-      "summary": "The main theorem hilbert_finiteness: R^G is Algebra.FiniteType over k. Chains restrict-scalars finite type, integral⇒module-finite, and the Artin-Tate fg_of_fg_of_fg lemma on the tower k → R^G → R, then translates Subalgebra.FG back to Algebra.FiniteType. 0 sorries, 0 axioms.",
-      "mathContext": "Tower $k \\to R^G \\to R$: $k \\to R$ algebra-f.g. and $R$ a f.g. $R^G$-module $\\Rightarrow$ $k \\to R^G$ finitely generated (Artin-Tate)."
+      "summary": "The five-step bearer chain on the tower k → B → R. Restrict-scalars upgrades the automatic `Algebra.FiniteType k R` to `Algebra.FiniteType B R`; integrality then gives `Module.Finite B R`. The two Artin-Tate hypotheses are assembled — k → R algebra-f.g. (`h_kR_fg`) and R a f.g. B-module (`h_BR_fg`) — together with injectivity of B ↪ R, and `fg_of_fg_of_fg` concludes (⊤ : Subalgebra k B).FG, which `Subalgebra.fg_iff_finiteType` translates back to `Algebra.FiniteType k B`. 0 sorries, 0 axioms.",
+      "mathContext": "$k\\to R$ algebra-f.g. and $R$ a f.g. $B$-module $\\xRightarrow{\\text{Artin-Tate}} (\\top:\\mathrm{Subalgebra}\\,k\\,B).\\mathrm{FG} \\Rightarrow \\mathrm{FiniteType}\\,k\\,B.$"
     }
   ],
   "crossReferences": [
