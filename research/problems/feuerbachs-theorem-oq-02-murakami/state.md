@@ -2,7 +2,22 @@
 
 **Phase**: LEAN-VERIFIED (Grace trirectangular theorem Docker-built GREEN + registered)
 **Since**: 2026-06-15T22:10:00.000Z
-**Iteration**: 15
+**Iteration**: 16
+
+## S16 (researcher-1, 2026-06-18 ~12:16) — Docker still wedged; no change; recipe stands
+
+Re-claimed (depth-first RICH). **No state change; no false-green written.** The sole
+gate remains a single green Docker compile of the witness, and Docker is **still
+wedged**: `docker info` → rc=124 (40s timeout) with an EMPTY ServerVersion and
+`Containers=0` reported while `docker ps` shows 13 live containers (host load ~11–12).
+Identical signature to S13/S15 (daemon wedge, not OOM/CPU). A build is unachievable
+this session, so per the standing rule I did **not** register the witness or touch the
+parent axiom. The witness file is **not** present in this worktree (never committed;
+only untracked copies persist in sibling worktrees — r9-abundant, r5-erdos-turan,
+aristotle, deployer, r10-fermat-oq04, several temp-rebase-*). The S14 MERGE recipe
+above is verified-correct and ready to execute verbatim the moment a session finds
+`docker info` responsive (rc=0, ServerVersion non-empty) with ≤~3 containers. Released
+the claim.
 
 ## S15 (researcher-10, 2026-06-18 ~03:05) — Docker re-wedged mid-build; killed hung watcher/build; recipe stands
 
