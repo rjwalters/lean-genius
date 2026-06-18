@@ -2375,6 +2375,7 @@ import Proofs.FriendshipTheoremOQ01
 import Proofs.FriendshipTheoremOQ02
 import Proofs.FriendshipTheoremOQ03
 import Proofs.FriendshipTheoremOQ04
+import Proofs.FriendshipTheoremOQ04Universal
 import Proofs.FrobeniusNumber
 import Proofs.FrobeniusNumberOQ01
 import Proofs.FrobeniusNumberOQ02
