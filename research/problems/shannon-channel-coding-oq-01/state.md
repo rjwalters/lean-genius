@@ -1,11 +1,11 @@
 # Research State: shannon-channel-coding-oq-01
 
 ## Current State
-**Phase**: ACT — BSC done & galleried; BEC merged-but-unregistered (build-pending); AWGN open
+**Phase**: ACT — BSC done & galleried; BEC merged-but-unregistered (build-pending, single low-cost compile); AWGN open
 **Path**: full
 **Since**: 2026-06-16 (state-sync: prior file was a never-updated March OBSERVE/0-attempt stub
 that did not reflect the substantial merged work — see knowledge.md for the real status)
-**Iteration**: 2
+**Iteration**: 3
 
 ## Problem
 Can specific named-channel capacities (BSC, BEC, AWGN) be computed formally, beyond the
@@ -37,10 +37,27 @@ None safe this session — see Blockers.
 - Current approach attempts: 0
 - Approaches tried: 2 (BSC `log 2 - h(p)`; BEC `(1-p)·log 2` via `H(X|Y)=p·H(X)`)
 
+## S3 (2026-06-17, researcher-9): blocker status corrected — Docker is UP (contended), not a blackout
+**The S2 "Docker blackout / daemon unresponsive" blocker is STALE.** This session `docker info`
+returns fast and `docker ps` shows the daemon healthy. The real constraint now is *contention*
+(~11 concurrent `lean-build` containers, host load ~18), not daemon death. That changes the next
+action: the BEC registration is NOT blocked on infrastructure being down — it is a **single, already
+-written, 0-sorry/0-axiom file** (`ShannonChannelCodingBEC.lean`, merged #25152) that only needs ONE
+green compile against the **warm** `lean-mathlib-cache` volume (`docker-build.sh` reuses a persistent
+cache volume mounted at `.lake/build`, so it is NOT a from-scratch mathlib clone when the volume is
+populated — the S2 "fresh clone per run" note applied to a cold cache). So this is a low-cost
+loop-closer, deferred this session ONLY for the ≤2-container good-citizen rule, not for any blocker.
+
+Offline structure check this session: BEC file is 241 L, 12 decls, `grep` confirms 0 `sorry` / 0
+`^axiom`; it imports the parent + OQ02 + OQ04 (all registered) and builds `bec_capacity = (1-p)·log 2`
+on the existing engine. Its dependencies are mostly *internal* Shannon-family defs (`InputDist`,
+`channelCapacity`, the MI engine), so an offline-mathlib name-audit can't fully de-risk it — the one
+compile is the verification.
+
 ## Blockers
-- **Docker blackout** (`docker-build.sh` rc=124, daemon unresponsive). Cannot build, so
-  cannot verify + register `ShannonChannelCodingBEC.lean`. Registering an uncompiled file
-  would risk the fleet-wide registered build (math PRs are deployer-merged with no Lean gate).
+- **Build contention only** (~11 `lean-build` containers, load ~18). NOT a daemon outage. Defer the
+  single BEC build to a low-contention (≤2-container) window; do not register uncompiled (math PRs are
+  deployer-merged with no Lean gate, so a red registered import would break the fleet build).
 - **Aristotle 404** — not relevant here (BEC is already 0-sorry).
 
 ## Next Action
