@@ -64,10 +64,18 @@
     },
     {
       "id": "sec-bgp-oq01-lower-bound",
-      "title": "Part II: Lower Bound — Every Admissible 5-Tuple has Diameter ≥ 12",
+      "title": "Part II: Lower Bound — Same Parity Confines H to a 6-Set",
       "startLine": 46,
+      "endLine": 87,
+      "summary": "First half of admissible_5tuple_diam_ge_12. By contradiction from diameter < 12: p=2 admissibility forces all elements to share the minimum's parity, and parity plus the diameter bound confine H to the 6-element block {m, m+2, m+4, m+6, m+8, m+10} (interval_cases + omega)."
+    },
+    {
+      "id": "sec-bgp-oq01-mod3",
+      "title": "Part II (cont.): Mod-3 Pigeonhole Forces Diameter ≥ 12",
+      "startLine": 88,
       "endLine": 182,
-      "summary": "admissible_5tuple_diam_ge_12 by contradiction on diameter < 12: (1) p=2 admissibility forces every element to share min's parity; (2) parity + bounded span confines H to the 6-set {m,m+2,m+4,m+6,m+8,m+10} via interval_cases; (3) the two disjoint mod-3-complete triples {m,m+2,m+4} and {m+6,m+8,m+10} are each forbidden in full by p=3 admissibility; (4) hence ≥2 omissions from a 6-set of card 5 — impossible by an insert/card-7-in-a-6-set count."
+      "summary": "Second half: the 6-set splits into two disjoint mod-3-complete triples {m,m+2,m+4} and {m+6,m+8,m+10}; p=3 admissibility forbids H from containing either triple in full, so H omits ≥1 element from each — two omissions from a 6-set, impossible for |H|=5. The `key` lemma encodes the pigeonhole and a nested rcases closes all 9 cases.",
+      "mathContext": "Two disjoint mod-3-complete triples $\\Rightarrow \\ge 2$ omissions $\\Rightarrow |H| \\le 4$, contradicting $|H|=5$."
     },
     {
       "id": "sec-bgp-oq01-main-result",

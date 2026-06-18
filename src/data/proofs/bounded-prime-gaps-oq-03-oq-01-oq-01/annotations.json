@@ -49,24 +49,23 @@
     "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-01",
     "range": {
       "startLine": 46,
-      "endLine": 182
+      "endLine": 87
     },
     "type": "theorem",
-    "title": "Lower Bound: Every Admissible 5-Tuple has Diameter ≥ 12",
-    "content": "admissible_5tuple_diam_ge_12 is the mathematical heart of the file, a fully symbolic (native_decide-free) proof by contradiction. Assuming an admissible 5-tuple H with diameter < 12 and writing m = min H: (Step 1, hpar) p=2 admissibility gives |H mod 2| < 2 = 1, so every element shares m's parity — a mixed-parity pair would make the image {0,1} of card 2. (Step 2, hsub6) same parity plus diameter < 12 forces each element to be m + 2k with k ≤ 5, confining H to the 6-set {m,m+2,m+4,m+6,m+8,m+10} via interval_cases on x - m. (Steps 3a/3b, hnotT1/hnotT2) each of the two disjoint triples {m,m+2,m+4} and {m+6,m+8,m+10} is mod-3-complete, so p=3 admissibility (|H mod 3| < 3) forbids H from containing either in full. (Step 4, key) H therefore omits ≥1 element from each triple — two distinct omissions — but a card-5 subset of the 6-set omits exactly one; insert a (insert b H) would have card 7 inside a card-≤-6 set, a contradiction discharged by iterated Finset.card_insert_le and omega.",
-    "mathContext": "The window $\\{m, m+2, m+4, m+6, m+8, m+10\\}$ partitions into two blocks $\\{m,m+2,m+4\\}$ and $\\{m+6,m+8,m+10\\}$. Within each block the residues mod 3 are $\\{m, m+2, m+1\\} \\equiv \\{0,1,2\\}$ (since $4 \\equiv 1$ and $6 \\equiv 0$), i.e. each block is a complete residue system mod 3. Admissibility at $p=3$ means $H$ cannot realize all three residues, so $H$ misses at least one member of each block. Two missed members in a 6-element window leave at most 4 elements, contradicting $|H| = 5$.",
+    "title": "Reduction: Same Parity Confines H to a 6-Set",
+    "content": "The first half of admissible_5tuple_diam_ge_12 does the reduction. Assuming for contradiction that the diameter is < 12, p = 2 admissibility forces every element of H to share the minimum's parity (otherwise the image of H under (· % 2) would have card 2, exhausting the residues mod 2 and violating admissibility). Same parity together with diameter < 12 then pins H inside the 6-element arithmetic block {m, m+2, m+4, m+6, m+8, m+10}; the confinement is discharged by interval_cases on d = x − m (even, ≤ 11) followed by omega.",
+    "mathContext": "$p=2$ admissibility $\\Rightarrow$ all of $H$ has one parity; diameter $<12 \\Rightarrow H \\subseteq \\{m, m+2, \\dots, m+10\\}$.",
     "significance": "key",
     "relatedConcepts": [
-      "parity filtration",
-      "complete residue system",
-      "pigeonhole counting",
-      "admissibility at p=3"
+      "admissible tuples",
+      "parity argument",
+      "interval_cases",
+      "arithmetic progressions"
     ],
     "prerequisites": [
-      "IsAdmissible at p=2 and p=3",
-      "Finset.card_le_card, Finset.card_insert_le",
-      "Finset.card_eq_two, Finset.card_eq_three",
-      "interval_cases / omega"
+      "Finset.card_le_card",
+      "interval_cases",
+      "omega tactic"
     ]
   },
   {
@@ -91,6 +90,30 @@
       "csInf_le, le_csInf",
       "admissible_5tuple_diam_ge_12",
       "admissible_5tuple_0_2_6_8_12"
+    ]
+  },
+  {
+    "id": "ann-bgp-oq01-pigeonhole",
+    "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 182
+    },
+    "type": "insight",
+    "title": "Mod-3 Pigeonhole: Two Forced Omissions Beat a 5-Set",
+    "content": "The contradiction is combinatorial. The 6-set {m, …, m+10} splits into two disjoint triples {m, m+2, m+4} and {m+6, m+8, m+10}, and each triple is mod-3-complete (its residues are all of {0,1,2}). By p = 3 admissibility, H cannot contain an entire mod-3-complete triple — so H must omit at least one element from each triple. Those are two distinct omissions from a 6-set, leaving room for at most 4 elements; but |H| = 5. The `key` lemma packages this pigeonhole (inserting the two omitted points would force card 7 inside a card-≤-6 set), and the final nested rcases discharges all 3×3 = 9 omission cases. Membership facts e0…e10 are written as explicit Finset.mem_insert chains to avoid an omega blow-up on the 6-way disjunction.",
+    "mathContext": "Each of $\\{m,m{+}2,m{+}4\\},\\{m{+}6,m{+}8,m{+}10\\}$ is mod-3-complete $\\Rightarrow \\ge 2$ omissions $\\Rightarrow |H|\\le 4 < 5$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "residue classes mod 3",
+      "admissible tuples",
+      "prime k-tuples conjecture"
+    ],
+    "prerequisites": [
+      "Finset.card_eq_three",
+      "Finset.card_insert_le",
+      "rcases case analysis"
     ]
   }
 ]
