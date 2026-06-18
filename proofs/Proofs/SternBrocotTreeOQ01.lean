@@ -210,10 +210,10 @@ def T (s : SB) : SB := ⟨s.aL, s.aL + s.bL, s.aR, s.aR + s.bR⟩
 def T' (s : SB) : SB := ⟨s.aL + s.bL, s.bL, s.aR + s.bR, s.bR⟩
 
 theorem T_step (s : SB) (b : Bool) : (T s).step b = T (s.step b) := by
-  cases b <;> cases s <;> simp only [T, SB.step, SB.mk.injEq] <;> omega
+  cases b <;> cases s <;> simp only [T, SB.step] <;> congr 1 <;> ring
 
 theorem T'_step (s : SB) (b : Bool) : (T' s).step b = T' (s.step b) := by
-  cases b <;> cases s <;> simp only [T', SB.step, SB.mk.injEq] <;> omega
+  cases b <;> cases s <;> simp only [T', SB.step] <;> congr 1 <;> ring
 
 theorem T_sbFrom (s : SB) (q : List Bool) : sbFrom (T s) q = T (sbFrom s q) := by
   induction q generalizing s with
