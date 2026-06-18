@@ -74,6 +74,14 @@
       "mathContext": "Frames the duality: $\\sum_{i+j=n}\\binom{a+i}{a}\\binom{b+j}{b} = (-1)^n\\sum_{i+j=n}\\binom{-a-1}{i}\\binom{-b-1}{j} = (-1)^n\\binom{-a-b-2}{n} = \\binom{a+b+n+1}{n}$, equivalently $[x^n](1-x)^{-(a+1)}(1-x)^{-(b+1)}$."
     },
     {
+      "id": "setup",
+      "title": "Parent Import and Namespace Setup",
+      "startLine": 43,
+      "endLine": 54,
+      "summary": "`import Proofs.ArithmeticSeriesOQ02OQ02` to reuse the parent's parallel_vandermonde, `open Finset`, and `namespace ArithmeticSeriesOQ02OQ02OQ02` with `open ArithmeticSeriesOQ02OQ02` to bring the parent's results into scope. This establishes the dependency that lets the rising-form identity be derived against the standard form without re-proving the parent material.",
+      "mathContext": "Depends on the parent entry arithmetic-series-oq-02-oq-02 (the rising Vandermonde `parallel_vandermonde`), reused here rather than re-proved."
+    },
+    {
       "id": "standard-vandermonde",
       "title": "Standard Vandermonde (range form)",
       "startLine": 55,
