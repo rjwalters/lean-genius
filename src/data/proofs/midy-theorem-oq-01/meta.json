@@ -115,7 +115,23 @@
     "path": "Proofs/MidyTheorem.lean",
     "sorries": 0
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "primitive-roots-oq-02",
+      "relationship": "foundational",
+      "description": "Midy's hypothesis is a statement about the multiplicative order $\\mathrm{ord}_p(b)$: the period of $1/p$ in base $b$ equals $\\mathrm{ord}_p(b)$, and 'even period $2k$' is exactly $\\mathrm{ord}_p(b) = 2k$, which `period_even_dvd` converts to $p \\mid b^k + 1$. `primitive-roots-oq-02` studies the same multiplicative-order structure from the generator side — when $\\mathrm{ord}_p(g) = p-1$ (a primitive root) — and its prime-factor testing criterion ($g^{(p-1)/q} \\not\\equiv 1$) is the order-computation machinery that determines, for a given $b$, whether the period is even in the first place."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "The order-theoretic backbone of Midy's theorem: $\\mathrm{ord}_p(b) \\mid \\varphi(p) = p-1$ by Euler's generalization of Fermat's Little Theorem, so the period of $1/p$ always divides $p-1$ and Midy's 'even period' case is one half of that divisibility lattice. The square-root-of-unity argument in `pow_half_orderOf_eq_neg_one` (an element of order $2k$ in the field $\\mathbb{Z}/p$ satisfies $b^k = -1$) lives inside the cyclic group $(\\mathbb{Z}/p)^\\times$ whose order $\\varphi(p)$ this entry computes."
+    },
+    {
+      "targetId": "divisibility-by-three-oq-01",
+      "relationship": "related",
+      "description": "Shares the base-$b$ place-value viewpoint. Where Midy decomposes the repetend $N$ into its high and low base-$b^k$ halves via $N = (b^k - m) + (m-1)b^k$, `divisibility-by-three-oq-01` develops the general last-$k$-digit theory ($n \\bmod b^k$, powers of the base dividing $b^k$). Both reduce arithmetic facts to the structure of a number's base-$b$ digit blocks."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "midy_theorem",
