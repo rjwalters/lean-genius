@@ -3,8 +3,8 @@
     "id": "erdos-687-imports",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 29,
-      "endLine": 31
+      "startLine": 39,
+      "endLine": 42
     },
     "type": "concept",
     "title": "Imports: Primes, Lattices, Tactics",
@@ -19,14 +19,15 @@
     ],
     "prerequisites": [
       "Mathlib basics"
-    ]
+    ],
+    "line": 39
   },
   {
     "id": "erdos-687-primorial",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 37,
-      "endLine": 39
+      "startLine": 48,
+      "endLine": 50
     },
     "type": "definition",
     "title": "Primorial P(x)",
@@ -41,14 +42,15 @@
     "prerequisites": [
       "Nat.Prime",
       "Finset"
-    ]
+    ],
+    "line": 49
   },
   {
     "id": "erdos-687-covering",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 41,
-      "endLine": 45
+      "startLine": 52,
+      "endLine": 56
     },
     "type": "definition",
     "title": "Covering System",
@@ -63,14 +65,15 @@
     "prerequisites": [
       "Nat.Prime",
       "Int modular arithmetic"
-    ]
+    ],
+    "line": 54
   },
   {
     "id": "erdos-687-jacobsthalSet",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 48,
-      "endLine": 50
+      "startLine": 58,
+      "endLine": 61
     },
     "type": "definition",
     "title": "Jacobsthal Set",
@@ -84,14 +87,15 @@
     ],
     "prerequisites": [
       "IsCovered"
-    ]
+    ],
+    "line": 59
   },
   {
     "id": "erdos-687-Y",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 52,
-      "endLine": 54
+      "startLine": 63,
+      "endLine": 65
     },
     "type": "definition",
     "title": "Y(x) — Maximum Covering Length",
@@ -107,14 +111,15 @@
       "jacobsthalSet",
       "jacobsthalSet_nonempty",
       "jacobsthalSet_bddAbove"
-    ]
+    ],
+    "line": 64
   },
   {
     "id": "erdos-687-jacobsthal",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 58,
-      "endLine": 63
+      "startLine": 69,
+      "endLine": 74
     },
     "type": "definition",
     "title": "Jacobsthal Function g(n)",
@@ -130,14 +135,15 @@
     "prerequisites": [
       "Nat.Prime",
       "sSup"
-    ]
+    ],
+    "line": 72
   },
   {
     "id": "erdos-687-nonempty",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 68,
-      "endLine": 72
+      "startLine": 78,
+      "endLine": 83
     },
     "type": "concept",
     "title": "Jacobsthal Set Nonempty",
@@ -151,14 +157,41 @@
     ],
     "prerequisites": [
       "jacobsthalSet"
-    ]
+    ],
+    "line": 79
+  },
+  {
+    "id": "erdos-687-crt-induction",
+    "proofId": "erdos-687",
+    "line": 111,
+    "type": "insight",
+    "title": "CRT Induction: an Uncovered Integer Always Exists",
+    "content": "This private lemma is the technical heart of the boundedness proof. By induction on a Finset S of primes, it builds an integer n ∈ [1, ∏ₚ p] that avoids every residue class a(p) mod p. Empty case: n = 1 works vacuously. Inductive step (adding prime q): take the uncovered m from the smaller set; if m already avoids a(q) mod q use it, otherwise shift to m + P' where P' = ∏_{S'} p. Because gcd(P', q) = 1, adding P' changes the residue mod q (so it escapes a(q)), while P' ≡ 0 mod each p ∈ S' leaves the previously-avoided classes intact.",
+    "mathContext": "This is the Chinese Remainder Theorem in action: the shift $m \\mapsto m + P'$ is the identity modulo every $p \\in S'$ but a nontrivial translation modulo $q$ (since $q \\nmid P'$). Hence at least one of $m, m+P'$ avoids $a(q) \\bmod q$ while preserving avoidance over $S'$. Iterating over all primes $\\le x$ yields an uncovered integer in $[1, P(x)]$ — so no covering reaches beyond the primorial.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "Finset.induction",
+      "residue classes",
+      "coprimality",
+      "Int.add_mul_emod_self_left"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Finset induction",
+      "CRT"
+    ],
+    "range": {
+      "startLine": 104,
+      "endLine": 149
+    }
   },
   {
     "id": "erdos-687-bddAbove",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 78,
-      "endLine": 79
+      "startLine": 151,
+      "endLine": 176
     },
     "type": "concept",
     "title": "Jacobsthal Set Bounded Above",
@@ -173,14 +206,113 @@
     "prerequisites": [
       "jacobsthalSet",
       "primorial"
-    ]
+    ],
+    "line": 155
+  },
+  {
+    "id": "erdos-687-downward",
+    "proofId": "erdos-687",
+    "line": 181,
+    "type": "insight",
+    "title": "Downward Closure of the Jacobsthal Set",
+    "content": "jacobsthalSet x is downward closed: if y is achievable and y' ≤ y, then y' is achievable by the SAME covering. A covering of [1,y] automatically covers the shorter [1,y']. This closure is what lets sSup behave like a maximum and is reused repeatedly to deduce membership of small values from larger ones.",
+    "mathContext": "Downward closure means $\\text{jacobsthalSet}(x)$ is an initial segment of $\\mathbb{N}$ (an order ideal): $y \\in S \\wedge y' \\le y \\Rightarrow y' \\in S$. Combined with boundedness, this makes $\\text{jacobsthalSet}(x) = \\{0, 1, \\dots, Y(x)\\}$, so the supremum is attained and equals the maximum coverable length.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "order ideal",
+      "initial segment",
+      "downward closed set",
+      "covering restriction"
+    ],
+    "prerequisites": [
+      "jacobsthalSet",
+      "order theory"
+    ],
+    "range": {
+      "startLine": 180,
+      "endLine": 184
+    }
+  },
+  {
+    "id": "erdos-687-base-cases",
+    "proofId": "erdos-687",
+    "line": 187,
+    "type": "insight",
+    "title": "Base Cases: No Primes ⟹ Only y = 0",
+    "content": "When no prime is ≤ x, no integer can ever be covered, so jacobsthalSet x = {0} and Y(x) = 0. The general lemma jacobsthalSet_eq_zero_of_no_primes is specialized to x = 0 and x = 1 (the only such cases, since 2 is the smallest prime), yielding jacobsthalSet 0 = jacobsthalSet 1 = {0} and hence Y(0) = Y(1) = 0. These anchor the monotone sequence Y(0) ≤ Y(1) ≤ Y(2) ≤ ⋯.",
+    "mathContext": "If $\\{p : p \\text{ prime},\\ p \\le x\\} = \\emptyset$ then the covering condition $\\exists p \\le x,\\ n \\equiv a_p$ is unsatisfiable for any $n \\ge 1$, so only the vacuous interval $[1,0]$ is 'covered' and $Y(x) = 0$. Since the least prime is $2$, this happens exactly for $x \\in \\{0, 1\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "base case",
+      "empty prime set",
+      "vacuous covering",
+      "Y(0)=Y(1)=0"
+    ],
+    "prerequisites": [
+      "jacobsthalSet",
+      "Nat.Prime.two_le"
+    ],
+    "range": {
+      "startLine": 186,
+      "endLine": 215
+    }
+  },
+  {
+    "id": "erdos-687-set-two",
+    "proofId": "erdos-687",
+    "line": 246,
+    "type": "insight",
+    "title": "Computing jacobsthalSet 2 = {0, 1}",
+    "content": "The first nontrivial computation. With the single prime 2 available, one residue class mod 2 (a parity class) is selectable. The covering a₂ = 1 covers all odds, so 1 ∈ jacobsthalSet 2 (one_mem_jacobsthalSet_two). But 2 ∉ jacobsthalSet 2: any single parity class misses one of {1, 2} (two_not_mem_jacobsthalSet_two, since 1 and 2 have opposite parities). Downward closure then pins jacobsthalSet 2 = {0, 1}.",
+    "mathContext": "With prime set $\\{2\\}$, a covering picks one class mod $2$. Covering $1$ forces $a_2 \\equiv 1$, but then $2 \\equiv 0 \\not\\equiv a_2$, so $2$ is uncovered: $1 \\bmod 2 \\ne 2 \\bmod 2$ is the contradiction. Hence the coverable lengths are exactly $\\{0, 1\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "concrete computation",
+      "parity class",
+      "single prime covering",
+      "Set extensionality"
+    ],
+    "prerequisites": [
+      "jacobsthalSet",
+      "jacobsthalSet_downward",
+      "modular arithmetic"
+    ],
+    "range": {
+      "startLine": 219,
+      "endLine": 257
+    }
+  },
+  {
+    "id": "erdos-687-Y-two",
+    "proofId": "erdos-687",
+    "line": 260,
+    "type": "insight",
+    "title": "Y(2) = 1: First Nontrivial Value",
+    "content": "Y(2) = 1, obtained as sSup{0, 1}. The proof uses le_antisymm: csSup_le bounds the supremum above by 1 (every element of {0,1} is ≤ 1), and le_csSup shows 1 is attained (1 ∈ {0,1}, set bounded). This is the smallest case where a covering does nontrivial work, and it already refutes the false 'Y(x) ≥ x+1' bound (1 < 3).",
+    "mathContext": "$Y(2) = \\sup\\{0, 1\\} = 1$. The supremum of a finite, bounded, nonempty set of naturals is its maximum, computed here via `csSup_le` (upper bound) and `le_csSup` (attainment). This concrete value calibrates the whole hierarchy and is the base for monotonicity comparisons.",
+    "significance": "key",
+    "relatedConcepts": [
+      "supremum computation",
+      "csSup_le",
+      "le_csSup",
+      "Jacobsthal value"
+    ],
+    "prerequisites": [
+      "jacobsthalY",
+      "jacobsthalSet_two",
+      "conditionally complete order"
+    ],
+    "range": {
+      "startLine": 259,
+      "endLine": 265
+    }
   },
   {
     "id": "erdos-687-mono-set",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 86,
-      "endLine": 95
+      "startLine": 269,
+      "endLine": 281
     },
     "type": "concept",
     "title": "Jacobsthal Set Monotonicity",
@@ -195,14 +327,15 @@
     "prerequisites": [
       "jacobsthalSet",
       "IsCovered"
-    ]
+    ],
+    "line": 272
   },
   {
     "id": "erdos-687-mono-Y",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 99,
-      "endLine": 103
+      "startLine": 283,
+      "endLine": 289
     },
     "type": "concept",
     "title": "Y(x) Monotonicity",
@@ -218,20 +351,21 @@
       "jacobsthalSet_mono",
       "jacobsthalSet_nonempty",
       "jacobsthalSet_bddAbove"
-    ]
+    ],
+    "line": 285
   },
   {
     "id": "erdos-687-eq-jacobsthal",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 108,
-      "endLine": 109
+      "startLine": 293,
+      "endLine": 302
     },
     "type": "concept",
-    "title": "Y(x) = g(primorial(x))",
-    "content": "**Fundamental equivalence**: Y(x) equals the Jacobsthal function of the primorial. This connects covering systems (combinatorial) to gaps in coprime sequences (analytic).",
+    "title": "Y(x) = g(primorial(x)) − 1 (Off-by-One Correction)",
+    "content": "Fundamental equivalence connecting covering systems (combinatorial) to gaps in coprime sequences (analytic). NOTE the off-by-one: the relation is Y(x) = jacobsthal(primorial(x)) − 1, NOT Y(x) = jacobsthal(primorial(x)). The Jacobsthal function g(n) counts the largest gap length between consecutive integers coprime to n (so it spans d−1 interior non-coprime integers), while Y(x) counts the maximal y for which the whole interval [1,y] is coverable (y integers). The header documents this as a bug fix: Y(2) = 1 while g(2) = 2, and Y(3) = 3 while g(6) = 4 — confirming the −1. This identity is stated as an axiom (not proved in-file).",
     "significance": "key",
-    "mathContext": "The integers not coprime to $P(x)$ are exactly those divisible by some prime $p \\le x$. A covering system assigns residue classes to these primes. The maximum covered interval $Y(x)$ equals the maximum gap $g(P(x))$ between consecutive integers coprime to $P(x)$.",
+    "mathContext": "The integers not coprime to $P(x)$ are exactly the multiples of some prime $p \\le x$. A covering system assigns one residue class per such prime. The longest coverable initial interval has length $Y(x) = g(P(x)) - 1$, where $g(n)$ is the maximal gap between consecutive $n$-coprime integers. The $-1$ reconciles 'gap length' ($g$, counting endpoints) with 'covered count' ($Y$): $g(2)=2,\\,Y(2)=1$; $g(6)=4,\\,Y(3)=3$.",
     "relatedConcepts": [
       "Jacobsthal function",
       "primorial",
@@ -241,35 +375,15 @@
       "jacobsthalY",
       "jacobsthal",
       "primorial"
-    ]
-  },
-  {
-    "id": "erdos-687-conjecture",
-    "proofId": "erdos-687",
-    "range": {
-      "startLine": 115,
-      "endLine": 117
-    },
-    "type": "concept",
-    "title": "Erdős Problem #687 ($1,000 Prize)",
-    "content": "**Main Conjecture**: For all ε > 0, eventually Y(x) ≤ x^{1+ε}. This asks whether Y(x) = o(x²), formalized using Lean's `Filter.Eventually` and `Filter.atTop`.",
-    "significance": "key",
-    "mathContext": "The conjecture $Y(x) = o(x^2)$ is equivalent to: $\\forall \\varepsilon > 0, \\exists X, \\forall x \\ge X, Y(x) \\le x^{1+\\varepsilon}$. The stronger form $Y(x) \\le x^{1+o(1)}$ is formalized here. Even proving $Y(x) \\le x^{2-\\delta}$ for any fixed $\\delta > 0$ would be a major advance.",
-    "relatedConcepts": [
-      "Filter.atTop",
-      "Filter.Eventually",
-      "little-o notation"
     ],
-    "prerequisites": [
-      "jacobsthalY"
-    ]
+    "line": 301
   },
   {
     "id": "erdos-687-iwaniec",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 123,
-      "endLine": 125
+      "startLine": 306,
+      "endLine": 310
     },
     "type": "concept",
     "title": "Iwaniec Upper Bound (1978)",
@@ -283,14 +397,15 @@
     ],
     "prerequisites": [
       "jacobsthalY"
-    ]
+    ],
+    "line": 308
   },
   {
     "id": "erdos-687-fgkmt",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 130,
-      "endLine": 134
+      "startLine": 312,
+      "endLine": 319
     },
     "type": "concept",
     "title": "FGKMT Lower Bound (2018)",
@@ -305,14 +420,15 @@
     ],
     "prerequisites": [
       "jacobsthalY"
-    ]
+    ],
+    "line": 315
   },
   {
     "id": "erdos-687-mp",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 138,
-      "endLine": 140
+      "startLine": 321,
+      "endLine": 325
     },
     "type": "concept",
     "title": "Maier–Pomerance Conjecture",
@@ -326,27 +442,151 @@
     ],
     "prerequisites": [
       "jacobsthalY"
-    ]
+    ],
+    "line": 323
+  },
+  {
+    "id": "erdos-687-asymptotic",
+    "proofId": "erdos-687",
+    "line": 332,
+    "type": "insight",
+    "title": "Polynomial Growth Dominates Any Power of Log",
+    "content": "This analytic helper supplies the one nontrivial estimate behind the main theorem: for any C, k, ε > 0, eventually C·(log x)^k ≤ x^ε. It is derived from Mathlib's isLittleO_log_rpow_atTop (log x = o(x^δ) for any δ > 0) with the calibrated exponent δ = ε/k and constant c = C^(−1/k), then a calc chain raises the little-o bound to the k-th power so the constants cancel exactly to give x^ε.",
+    "mathContext": "Since $\\log x = o(x^{\\varepsilon/k})$, eventually $\\log x \\le C^{-1/k} x^{\\varepsilon/k}$; raising to the $k$-th power, $(\\log x)^k \\le C^{-1} x^{\\varepsilon}$, so $C(\\log x)^k \\le x^{\\varepsilon}$. The choice of constant $C^{-1/k}$ is what makes the final cancellation exact — polynomial growth eventually beats any fixed power of a logarithm.",
+    "significance": "key",
+    "relatedConcepts": [
+      "little-o asymptotics",
+      "isLittleO_log_rpow_atTop",
+      "rpow manipulation",
+      "Filter.eventually_atTop"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "Real.rpow",
+      "Filter.atTop"
+    ],
+    "range": {
+      "startLine": 329,
+      "endLine": 372
+    }
+  },
+  {
+    "id": "erdos-687-conjecture",
+    "proofId": "erdos-687",
+    "range": {
+      "startLine": 374,
+      "endLine": 401
+    },
+    "type": "concept",
+    "title": "Erdős Problem #687 ($1,000 Prize)",
+    "content": "**Main Conjecture**: For all ε > 0, eventually Y(x) ≤ x^{1+ε}. This asks whether Y(x) = o(x²), formalized using Lean's `Filter.Eventually` and `Filter.atTop`.",
+    "significance": "key",
+    "mathContext": "The conjecture $Y(x) = o(x^2)$ is equivalent to: $\\forall \\varepsilon > 0, \\exists X, \\forall x \\ge X, Y(x) \\le x^{1+\\varepsilon}$. The stronger form $Y(x) \\le x^{1+o(1)}$ is formalized here. Even proving $Y(x) \\le x^{2-\\delta}$ for any fixed $\\delta > 0$ would be a major advance.",
+    "relatedConcepts": [
+      "Filter.atTop",
+      "Filter.Eventually",
+      "little-o notation"
+    ],
+    "prerequisites": [
+      "jacobsthalY"
+    ],
+    "line": 380
   },
   {
     "id": "erdos-687-trivial",
     "proofId": "erdos-687",
     "range": {
-      "startLine": 147,
-      "endLine": 148
+      "startLine": 424,
+      "endLine": 442
     },
     "type": "concept",
-    "title": "Trivial Lower Bound: Y(x) ≥ x + 1",
-    "content": "For x ≥ 2, Y(x) ≥ x + 1. Every integer in [1, x] has a prime factor ≤ x, so taking aₚ = 0 for all primes p ≤ x covers at least [1, x].",
+    "title": "The Trivial Lower Bound Y(x) ≥ x+1 is FALSE",
+    "content": "A natural-looking 'trivial' lower bound Y(x) ≥ x+1 (originally an axiom) is in fact FALSE and was removed. The flawed argument claimed every n ∈ [1,x] has a prime factor ≤ x, so a₍ₚ₎ = 0 covers [1,x]. But a covering system selects ONE residue class per prime — not all multiples. With only the prime 2 (x=2) you can cover a single parity class, so Y(2) = 1 < 3 = x+1. Likewise Y(3) = 3 < 4. The bound may hold for large x once the primorial carries enough prime factors, but it does NOT follow universally from x ≥ 2. This block is retained as documentation of the corrected understanding.",
     "significance": "supporting",
-    "mathContext": "For any $n \\in [1, x]$, the smallest prime factor of $n$ is $\\le \\sqrt{n} \\le x$ (for $n \\ge 2$), and $1$ is covered vacuously. Taking $a_p = 0$ gives $n \\equiv 0 \\pmod{p}$ iff $p \\mid n$, covering all of $[1, x]$.",
+    "mathContext": "Choosing $a_p = 0$ for all primes $p \\le x$ covers $\\{n : \\exists p \\le x,\\ p \\mid n\\}$, which omits $1$ and every prime in $(x, \\infty)$ — and, crucially, leaves one residue class per prime uncovered. For $x=2$ the only available prime is $2$, covering one parity class; the opposite parity (containing either $1$ or $2$) is always missed, so $Y(2) = 1 < x+1$.",
     "relatedConcepts": [
-      "smallest prime factor",
-      "trivial covering",
-      "lower bound"
+      "false conjecture",
+      "covering system constraints",
+      "counterexample",
+      "single residue class per prime"
     ],
     "prerequisites": [
       "jacobsthalY"
-    ]
+    ],
+    "line": 424
+  },
+  {
+    "id": "erdos-687-cover-three",
+    "proofId": "erdos-687",
+    "line": 471,
+    "type": "insight",
+    "title": "A Covering Achieving Y(3) ≥ 3",
+    "content": "An explicit witness that 3 ∈ jacobsthalSet 3. With primes {2, 3}, the covering a(p) = p − 1 picks a₂ = 1 (odds) and a₃ = 2 (≡ 2 mod 3). interval_cases checks each n ∈ {1, 2, 3}: n = 1 and n = 3 are odd (covered by prime 2), and n = 2 ≡ 2 mod 3 (covered by prime 3). So the full interval [1, 3] is covered, giving the lower bound Y(3) ≥ 3.",
+    "mathContext": "Witness $a_2 = 1,\\ a_3 = 2$: the odd residue class mod $2$ covers $\\{1, 3\\}$ and the class $2 \\bmod 3$ covers $\\{2\\}$, so $[1,3] \\subseteq (1 + 2\\mathbb{Z}) \\cup (2 + 3\\mathbb{Z})$. This realizes the maximal covering for $x = 3$ and is the constructive half of $Y(3) = 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit covering",
+      "witness construction",
+      "interval_cases",
+      "covering system"
+    ],
+    "prerequisites": [
+      "jacobsthalSet",
+      "modular arithmetic"
+    ],
+    "range": {
+      "startLine": 469,
+      "endLine": 480
+    }
+  },
+  {
+    "id": "erdos-687-no-four",
+    "proofId": "erdos-687",
+    "line": 486,
+    "type": "insight",
+    "title": "No Covering Reaches y = 4 for x = 3",
+    "content": "The matching upper-bound: for y ≥ 4, y ∉ jacobsthalSet 3. With only primes {2, 3}, prime 2 covers one parity class and prime 3 one class mod 3; a careful case analysis over which prime covers 1, 2, 3, 4 shows at least one of these four integers is always uncovered. The proof branches on the covering prime of n = 1 (must be 2 or 3), then propagates constraints to n = 2 and n = 4, deriving a contradiction in every branch (e.g. 4 % 2 = 0 ≠ 1 = 1 % 2).",
+    "mathContext": "Among $\\{1,2,3,4\\}$, prime $2$ fixes one parity and prime $3$ fixes one class mod $3$; but the four integers occupy both parities and three distinct classes mod $3$, so two residue classes cannot cover all four. The exhaustive case split shows every assignment leaves a gap, hence $Y(3) \\le 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper bound",
+      "exhaustive case analysis",
+      "covering impossibility",
+      "pigeonhole on residues"
+    ],
+    "prerequisites": [
+      "jacobsthalSet",
+      "modular arithmetic",
+      "case analysis"
+    ],
+    "range": {
+      "startLine": 482,
+      "endLine": 525
+    }
+  },
+  {
+    "id": "erdos-687-Y-three",
+    "proofId": "erdos-687",
+    "line": 540,
+    "type": "insight",
+    "title": "Y(3) = 3: Second Nontrivial Value",
+    "content": "Combining the witness (3 ∈ jacobsthalSet 3) and the obstruction (y ≥ 4 ∉ jacobsthalSet 3) with downward closure gives jacobsthalSet 3 = {0, 1, 2, 3}, and hence Y(3) = sSup{0,1,2,3} = 3 (le_antisymm via csSup_le and le_csSup). Together with Y(2) = 1 this gives the first two data points Y(2)=1, Y(3)=3, which also pin down the −1 offset in the Jacobsthal-function identity (g(6) = 4).",
+    "mathContext": "$Y(3) = \\sup\\{0,1,2,3\\} = 3$. With $Y(2)=1$ this confirms the relation $Y(x) = g(P(x)) - 1$ on small cases: $P(3)=6$, $g(6)=4$, and $4 - 1 = 3$. These exact values validate both the formalization and the off-by-one correction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "supremum computation",
+      "exact Jacobsthal value",
+      "off-by-one verification",
+      "csSup"
+    ],
+    "prerequisites": [
+      "jacobsthalY",
+      "jacobsthalSet_three",
+      "conditionally complete order"
+    ],
+    "range": {
+      "startLine": 539,
+      "endLine": 547
+    }
   }
 ]
