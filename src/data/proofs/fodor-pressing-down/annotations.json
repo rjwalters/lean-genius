@@ -58,5 +58,109 @@
     "significance": "supporting",
     "relatedConcepts": ["ℵ₁", "ω₁", "Aronszajn trees", "regressive function", "countable cofinality"],
     "prerequisites": ["Cardinal.aleph_regularCard", "Cardinal.aleph_pos", "fodor"]
+  },
+  {
+    "id": "ann-fodor-solovay-step1-limit-club",
+    "proofId": "fodor-pressing-down",
+    "range": {
+      "startLine": 280,
+      "endLine": 340
+    },
+    "type": "insight",
+    "title": "Solovay Step 1: Limit Ordinals Below κ Form a Club",
+    "content": "`isLimitOrdinals_isClubBelow` proves the first preparatory step toward Solovay's splitting theorem: the set of limit ordinals below κ.ord is closed and unbounded (a club). **Closure** holds because an accumulation point of limit ordinals cannot be a successor — `IsAcc` forces an element strictly between any q < p and p, which a successor b+1 cannot accommodate (`IsSuccPrelimit`). **Unboundedness** uses that for any α < κ.ord, the ordinal α + ω₀ is again a limit (sum with a limit is a limit) and stays below κ.ord by regularity (`Cardinal.add_lt_of_lt` with ℵ₀ ≤ κ). The immediate corollary `nonLimitOrdinals_not_isStationaryBelow` states that the non-limit ordinals are NOT stationary: they miss this club, and the defining property of a stationary set is to meet every club. The payoff is the standard WLOG move — any stationary S may be intersected with this club to assume its members are all limit ordinals, which the cofinality machinery in Part IX requires.",
+    "mathContext": "A club $C \\subseteq \\kappa$ is closed (contains its sups below $\\kappa$) and unbounded. Regularity of $\\kappa$ is what keeps $\\alpha + \\omega_0 < \\kappa$, so an uncountable regular $\\kappa$ has the limit ordinals as a club. Since a stationary set meets every club, its complement-in-a-club (here the successor/non-limit ordinals) is automatically non-stationary.",
+    "significance": "key",
+    "relatedConcepts": [
+      "club set",
+      "stationary set",
+      "limit ordinal",
+      "regular cardinal",
+      "Solovay splitting",
+      "IsSuccLimit"
+    ],
+    "prerequisites": [
+      "IsClubBelow",
+      "Cardinal.add_lt_of_lt",
+      "Ordinal.isSuccLimit_add",
+      "IsAcc"
+    ]
+  },
+  {
+    "id": "ann-fodor-solovay-step2-club-intersection",
+    "proofId": "fodor-pressing-down",
+    "range": {
+      "startLine": 346,
+      "endLine": 452
+    },
+    "type": "technique",
+    "title": "Solovay Step 2 Companions: Club Intersection and the WLOG-Limits Reduction",
+    "content": "Three companion lemmas that make the Fodor application in Part IX usable on an arbitrary stationary set. `IsClubBelow.inter` shows the **binary intersection of two clubs is a club**: closure lifts because an accumulation point of C ∩ D is an accumulation point of each factor, and unboundedness is obtained by feeding the 2-element family {C, D} into the already-proved `diagInter_isUnboundedBelow` (the diagonal-intersection zipper) started above max α 1. From this, `IsStationaryBelow.inter_isClubBelow` proves **stationary ∩ club is stationary**: for any test club D, C ∩ D is a club that the stationary S must meet, and rearranging the membership gives a point of (S ∩ C) ∩ D. Specializing C to the limit-ordinals club of Step 1 yields `IsStationaryBelow.inter_isLimitOrdinals` — the packaged WLOG reduction that turns any stationary S into a stationary set of limit ordinals.",
+    "mathContext": "Two facts drive the whole Solovay reduction: (1) finite (here binary) intersections of clubs are clubs — the club filter is closed under finite intersection; (2) intersecting a stationary set with a club preserves stationarity. Together they justify replacing a stationary $S$ by $S \\cap \\{\\text{limits}\\}$ without loss, which is needed because the regressive map `cofHead` is only well-behaved on limit ordinals.",
+    "significance": "key",
+    "relatedConcepts": [
+      "club filter",
+      "finite intersection of clubs",
+      "stationary preservation",
+      "diagonal intersection",
+      "WLOG reduction"
+    ],
+    "prerequisites": [
+      "IsClubBelow.inter",
+      "diagInter_isUnboundedBelow",
+      "isLimitOrdinals_isClubBelow"
+    ]
+  },
+  {
+    "id": "ann-fodor-solovay-cofhead-regressive",
+    "proofId": "fodor-pressing-down",
+    "range": {
+      "startLine": 458,
+      "endLine": 534
+    },
+    "type": "insight",
+    "title": "Solovay Step 2 (S2-β): A Regressive Map from Cofinal Sequences, and Fodor's First Application",
+    "content": "This part builds the concrete regressive function Fodor is applied to. `cofHead α` picks (via `Classical.choose` on `Ordinal.exists_fundamental_sequence`) a fundamental sequence for α and returns its 0-th term, falling back to 0 when cofinality gating fails. `cofHead_lt` proves it is genuinely **regressive on limit ordinals**: every IsSuccLimit α has ℵ₀ ≤ cof α, hence 0 < cof α.ord, so a fundamental sequence exists and its 0-th term is < α (`IsFundamentalSequence.lt`). Then `exists_cofHead_constant_stationary` is **Fodor's first application**: on a stationary set of positive limit ordinals, the regressive cofHead must be constant on a stationary subset — exactly the pressing-down conclusion. `exists_cofHead_constant_stationary_of_stationary` composes this with the Part VIII WLOG-limits reduction into a one-shot statement that takes any stationary S and returns a stationary sub-subset on which cofHead is constant.",
+    "mathContext": "A fundamental sequence for a limit ordinal $\\alpha$ is a strictly increasing cofinal map $\\mathrm{cof}(\\alpha) \\to \\alpha$; its 0-th term is $< \\alpha$, making $\\mathrm{cofHead}$ regressive ($f(\\alpha) < \\alpha$). Fodor's lemma then forces $\\mathrm{cofHead}$ to be constant on a stationary set — the engine of Solovay's theorem, which iterates such constancy to split a stationary set into $\\kappa$-many disjoint stationary pieces.",
+    "significance": "key",
+    "relatedConcepts": [
+      "regressive function",
+      "fundamental sequence",
+      "cofinality",
+      "pressing-down lemma",
+      "Classical.choose",
+      "Solovay splitting"
+    ],
+    "prerequisites": [
+      "fodor",
+      "Ordinal.exists_fundamental_sequence",
+      "Ordinal.aleph0_le_cof",
+      "IsStationaryBelow.inter_isLimitOrdinals"
+    ]
+  },
+  {
+    "id": "ann-fodor-solovay-binary-split-packaging",
+    "proofId": "fodor-pressing-down",
+    "range": {
+      "startLine": 540,
+      "endLine": 599
+    },
+    "type": "context",
+    "title": "Binary Split Packaging — and an Honest Statement of What Remains Open",
+    "content": "Two packaging lemmas that turn complementary stationary pieces into a disjoint binary split of S. `stationary_splits_of_fiber_compl` takes a predicate P whose fiber {α ∈ S | P α} and co-fiber {α ∈ S | ¬P α} are both stationary and returns two disjoint stationary subsets (disjointness is immediate: no α satisfies both P and ¬P). `stationary_splits_of_two_fibers` does the same from a single function constant with two DISTINCT values c₁ ≠ c₂ on two stationary fibers. **Scope honesty (relevant to the verified/original status):** the file is genuinely 0-sorry and 0-axiom, but these lemmas only *package* a split once the two complementary stationary pieces are in hand — they do not *produce* them. The full `stationary_splits_binary` (every stationary set on a regular uncountable κ splits into two disjoint stationary sets) needs the index-of-first-disagreement counting argument, which is unavailable at the pinned Mathlib SHA and is recorded as the standing open next step. This is exactly why the entry carries genuine open questions despite being fully verified.",
+    "mathContext": "Solovay's theorem ($\\kappa$ regular uncountable $\\Rightarrow$ every stationary set splits into $\\kappa$ disjoint stationary sets) is approached here through its binary base case. The two fibers $S \\cap f^{-1}\\{c_1\\}$ and $S \\cap f^{-1}\\{c_2\\}$ are disjoint for $c_1 \\ne c_2$; the unresolved part is exhibiting a regressive $f$ with two stationary fibers, not assembling the split from them.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Solovay splitting theorem",
+      "disjoint stationary sets",
+      "scope honesty",
+      "open problem",
+      "proof architecture"
+    ],
+    "prerequisites": [
+      "IsStationaryBelow",
+      "Disjoint",
+      "exists_cofHead_constant_stationary"
+    ]
   }
 ]
