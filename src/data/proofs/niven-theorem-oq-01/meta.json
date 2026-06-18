@@ -62,7 +62,9 @@
     "keyInsights": [
       "**The number to track is 2·cos θ, not cos θ.** The normalized Chebyshev recurrence Cₙ(2cos θ) = 2cos(nθ) is monic with integer coefficients precisely for 2cos θ, so 2cos θ — not cos θ — is the algebraic integer. Halving at the very end is what produces the ±1/2 values.",
       "**Algebraic integer + rational ⇒ rational integer.** The whole difficulty is funneled through ℤ being integrally closed in ℚ: once 2cos θ is known to be an algebraic integer and rational, it must be an ordinary integer, collapsing a continuum of possibilities to five.",
-      "**The deep step and the elementary step are cleanly separated.** 'Why is 2cos θ an algebraic integer?' is delegated wholesale to Mathlib's roots-of-unity proof; 'which integers in [−2,2] can occur?' is an explicit five-way `interval_cases`. This boundary is what makes the presentation short and auditable."
+      "**The deep step and the elementary step are cleanly separated.** 'Why is 2cos θ an algebraic integer?' is delegated wholesale to Mathlib's roots-of-unity proof; 'which integers in [−2,2] can occur?' is an explicit five-way `interval_cases`. This boundary is what makes the presentation short and auditable.",
+      "**Sine and tangent companions come for free.** Since sin θ = cos(π/2 − θ) and π/2 − θ is again a rational multiple of π, the sine version is immediate: rational sin at a rational multiple of π also forces sin θ ∈ {0, ±1/2, ±1}. The tangent companion is sharper still — rational tan θ at a rational multiple of π forces tan θ ∈ {0, ±1}.",
+      "**The headline application: no small rational rotation is 'nice'.** Niven's theorem is the standard tool for showing a rotation by a rational number of degrees (e.g. 1°) has irrational matrix entries, since cos 1° is irrational; this underlies many impossibility results about exact rational rotations and crystallographic restrictions."
     ],
     "prerequisites": [
       "Algebraic integers and integral closure (ℤ integrally closed in ℚ)",
@@ -70,9 +72,53 @@
       "Elementary cosine bounds and finite case analysis"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports (Trigonometric.Basic/Bounds, NumberTheory.Niven, Tactic), the module docstring stating Niven's theorem and outlining the two-step delegate-then-enumerate strategy, and `namespace NivenTheorem` / `open Real`.",
+      "mathContext": "θ a rational multiple of π and cos θ ∈ ℚ ⇒ cos θ ∈ {0, ±1/2, ±1}."
+    },
+    {
+      "id": "core-lemma",
+      "title": "Algebraic-Integer Core: 2·cos θ ∈ ℤ",
+      "startLine": 54,
+      "endLine": 74,
+      "summary": "`two_cos_int_of_rational`: if θ = (m/n)·π and cos θ is rational then 2·cos θ is an integer. Rewrite θ = q·π (q = m/n : ℚ), invoke Mathlib's `Real.isIntegral_two_mul_cos_rat_mul_pi` to get that 2·cos θ is integral over ℤ, then `IsIntegral.exists_int_iff_exists_rat` (ℤ integrally closed in ℚ) upgrades the rational algebraic integer to an ordinary integer.",
+      "mathContext": "$2\\cos((m/n)\\pi)$ integral over $\\mathbb{Z}$ and rational $\\Rightarrow 2\\cos\\theta \\in \\mathbb{Z}$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Niven's Theorem: the Five-Way Enumeration",
+      "startLine": 76,
+      "endLine": 103,
+      "summary": "`niven`: obtain k = 2·cos θ ∈ ℤ from the core lemma; the bounds −1 ≤ cos θ ≤ 1 give −2 ≤ k ≤ 2; `interval_cases k` splits into k ∈ {−2,−1,0,1,2}, and each branch is closed by `linarith` from 2·cos θ = k, yielding cos θ ∈ {−1,−1/2,0,1/2,1}.",
+      "mathContext": "$-2 \\le 2\\cos\\theta \\le 2,\\ 2\\cos\\theta \\in \\mathbb{Z} \\Rightarrow \\cos\\theta \\in \\{-1,-\\tfrac12,0,\\tfrac12,1\\}.$"
+    }
+  ],
   "conclusion": {
-    "summary": "Niven's theorem is presented in Lean 4 with zero sorries and zero axioms. The algebraic-integer core — that 2·cos(q·π) is integral over ℤ — is delegated to Mathlib's `Real.isIntegral_two_mul_cos_rat_mul_pi`, and a rational algebraic integer is forced to be an ordinary integer by `IsIntegral.exists_int_iff_exists_rat`. The cosine bounds then confine 2·cos θ to {−2,−1,0,1,2}, and an explicit five-way `interval_cases` recovers cos θ ∈ {−1,−1/2,0,1/2,1}. This is Niven's 1956 argument, with the deep step imported and the enumeration kept explicit for clarity."
+    "summary": "Niven's theorem is presented in Lean 4 with zero sorries and zero axioms. The algebraic-integer core — that 2·cos(q·π) is integral over ℤ — is delegated to Mathlib's `Real.isIntegral_two_mul_cos_rat_mul_pi`, and a rational algebraic integer is forced to be an ordinary integer by `IsIntegral.exists_int_iff_exists_rat`. The cosine bounds then confine 2·cos θ to {−2,−1,0,1,2}, and an explicit five-way `interval_cases` recovers cos θ ∈ {−1,−1/2,0,1/2,1}. This is Niven's 1956 argument, with the deep step imported and the enumeration kept explicit for clarity.",
+    "implications": "The result is the canonical bridge from algebraic-number theory into elementary trigonometry: it explains why almost every 'nice' angle has an irrational cosine, and is the standard lemma behind the irrationality of rational-degree rotation matrices and related crystallographic impossibility results. The clean delegation boundary in this presentation — hard algebraic-integer fact imported, finite enumeration explicit — also serves as a template for other 'an algebraic integer in a bounded interval is one of finitely many values' classification proofs.",
+    "openQuestions": [
+      "Formalize the sine and tangent companions in the same file: sin θ ∈ {0, ±1/2, ±1} (via the π/2 shift) and the sharper tan θ ∈ {0, ±1} for rational multiples of π.",
+      "Unfold the delegated step `Real.isIntegral_two_mul_cos_rat_mul_pi` into the explicit monic Vieta–Lucas/Chebyshev recurrence 2cos(nθ) = Cₙ(2cos θ), giving a fully from-scratch presentation rather than a Mathlib citation.",
+      "State and prove the contrapositive classification used downstream — the precise set of n for which cos(2π/n) is irrational — and connect it to the sibling cyclotomic entry."
+    ]
   },
+  "crossReferences": [
+    {
+      "targetId": "nth-root-irrational-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling entry 'Cyclotomic Roots and Niven's Theorem on Rational Cosines'. Both rest on the same algebraic-integer machinery — that 2·cos(q·π) is integral over ℤ — and approach the rational-cosine question from the cyclotomic / roots-of-unity side."
+    },
+    {
+      "targetId": "sqrt2-minpoly-oq-01-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Another entry where integrality over ℤ and minimal polynomials constrain an algebraic number; Niven's theorem is the trigonometric instance of 'a rational algebraic integer is an ordinary integer'."
+    }
+  ],
   "leanFile": {
     "path": "Proofs/NivenTheorem.lean",
     "imports": ["Mathlib"],

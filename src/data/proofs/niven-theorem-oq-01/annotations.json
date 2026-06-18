@@ -27,7 +27,7 @@
     "title": "two_cos_int_of_rational — The Algebraic-Integer Core",
     "content": "The substantive step: if θ = (m/n)·π and cos θ is rational, then 2·cos θ is an integer. The proof rewrites θ as q·π with q = m/n : ℚ, applies Mathlib's `Real.isIntegral_two_mul_cos_rat_mul_pi` to learn that 2·cos θ is integral over ℤ, and then uses `IsIntegral.exists_int_iff_exists_rat` — the fact that ℤ is integrally closed in ℚ — to upgrade 'algebraic integer that is also rational' to 'ordinary integer'. The rational witness is 2r, supplied from the hypothesis cos θ = r. This three-line proof is where the classical monic-Chebyshev-recurrence argument is delegated to Mathlib's roots-of-unity proof of the same fact.",
     "mathContext": "$\\theta=\\tfrac{m}{n}\\pi,\\ \\cos\\theta=r\\in\\mathbb{Q}\\ \\Rightarrow\\ \\exists k\\in\\mathbb{Z},\\ 2\\cos\\theta=k$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "algebraic integer",
       "integral closure of ℤ in ℚ",
@@ -66,7 +66,7 @@
     "title": "niven — The Enumeration Tail and Main Theorem",
     "content": "The headline result: under the same hypotheses, cos θ ∈ {0, ±1/2, ±1}. Having obtained k with 2·cos θ = k from the core lemma, the cosine bounds −1 ≤ cos θ ≤ 1 are pushed through casts to give −2 ≤ k ≤ 2. Then `interval_cases k` enumerates the five integers k ∈ {−2,−1,0,1,2}; after `push_cast at hk` each branch is a linear identity (e.g. 2·cos θ = −1 ⇒ cos θ = −1/2) closed by `linarith`. The five cases correspond exactly to the five admissible cosine values, completing Niven's classification.",
     "mathContext": "$2\\cos\\theta=k\\in[-2,2]\\cap\\mathbb{Z}=\\{-2,-1,0,1,2\\}\\ \\Rightarrow\\ \\cos\\theta\\in\\{-1,-\\tfrac12,0,\\tfrac12,1\\}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "interval_cases enumeration",
       "cosine bounds",
