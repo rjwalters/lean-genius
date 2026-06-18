@@ -54,39 +54,39 @@
       "title": "Header and Overview",
       "summary": "Header for Erdős #10 OQ-02: the Granville–Soundararajan conjecture (odd part) asks whether every odd $n\\ge3$ is a prime plus at most $3$ powers of $2$. The conjecture is OPEN; the file formalizes the decidable reduction infrastructure beneath it, with the merge identity $2^a+2^a=2^{a+1}$ as the engine.",
       "startLine": 1,
-      "endLine": 54,
+      "endLine": 53,
       "mathContext": "OQ-02: every odd $n\\ge3$ is $p+\\sum_{i\\le3}2^{a_i}$, $p$ prime. Open (Granville–Soundararajan 1998)."
     },
     {
       "id": "part1-pow-sum",
       "title": "Part I: Sums of Powers of Two",
       "summary": "Defines `powSum s` $=\\sum_{a\\in s}2^a$ over a multiset of exponents, with `powSum_zero`, `powSum_cons`, `powSum_add`, and the keystone `powSum_merge`: $2^a+2^a=2^{a+1}$.",
-      "startLine": 55,
-      "endLine": 77,
+      "startLine": 54,
+      "endLine": 76,
       "mathContext": "$\\mathrm{powSum}(a::a::s)=\\mathrm{powSum}((a{+}1)::s)$ — the atomic reduction step."
     },
     {
       "id": "part2-representability",
       "title": "Part II: Representability as ≤ k Powers of Two",
       "summary": "Defines `RepWithAtMost k n` (sum of $\\le k$ powers, repeats allowed) and `RepDistinct k n` (pairwise-distinct exponents), with monotonicity `repWithAtMost_mono`.",
-      "startLine": 78,
-      "endLine": 94,
+      "startLine": 77,
+      "endLine": 93,
       "mathContext": "$\\mathrm{RepWithAtMost}(k,n)$ vs $\\mathrm{RepDistinct}(k,n)$: same sum, distinct vs repeated exponents."
     },
     {
       "id": "part3-reduction-lemma",
       "title": "Part III: The Reduction Lemma",
       "summary": "`exists_nodup_powSum` canonicalizes any exponent multiset to a `Nodup` one of no greater card and equal `powSum` (strong induction on card), giving `repWithAtMost_iff_repDistinct`: $\\le k$ powers $\\iff\\ \\le k$ distinct powers.",
-      "startLine": 95,
-      "endLine": 154,
+      "startLine": 94,
+      "endLine": 153,
       "mathContext": "$\\mathrm{RepWithAtMost}(k,n)\\iff\\mathrm{RepDistinct}(k,n)$ — repeats never reduce the count needed."
     },
     {
       "id": "part4-gs-statement",
       "title": "Part IV: The Granville–Soundararajan Statement (Odd Part)",
       "summary": "Defines `IsPrimePlusKPowers k n` and the open `GranvilleSoundararajanOdd` Prop, and proves `isPrimePlusKPowers_iff_distinct` — the prime-plus form transfers to the distinct representation, the shape a decision procedure consumes.",
-      "startLine": 155,
-      "endLine": 189,
+      "startLine": 154,
+      "endLine": 188,
       "mathContext": "$\\mathrm{IsPrimePlusKPowers}(k,n)\\iff\\exists\\,p\\ \\text{prime},\\ m\\ \\text{with}\\ \\mathrm{RepDistinct}(k,m),\\ n=p+m$."
     }
   ],
