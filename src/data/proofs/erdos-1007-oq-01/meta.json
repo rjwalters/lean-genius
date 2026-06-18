@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://erdosproblems.com/1007",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1007OQ01.lean",
     "tags": [
       "erdos",
@@ -18,7 +18,7 @@
       "extension",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -68,9 +68,9 @@
       "Under optimality conjecture, successive differences equal d+1",
       "Linear lower bound from rigidity and quadratic upper bound from complete graphs"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 1337,
-    "assumptions": "0 axioms. Fully verified.",
+    "assumptions": "The headline dimension-specific results — `dim4_beats_complete`, `dim5_matches_complete`, the deficiency values `deficiency_dim3/4/5`, `minEdges_upper_bound`, `optimal_implies_monotone`, and `small_dim_complete` — are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and therefore depends on the `Lean.ofReduceBool` axiom (visible via `#print axioms`). The entry is therefore axiomatized rather than axiom-free. No other assumptions; 0 sorries, 0 literal `axiom` declarations.",
     "mathlib_version": "4.26.0",
     "theoremCount": 89,
     "definitionCount": 14,
@@ -300,7 +300,7 @@
     ]
   },
   "conclusion": {
-    "summary": "We significantly extend the minEdges formalization with a constructive simplex embedding (K_n in ℝⁿ), prove the complete graph optimality conjecture implies monotonicity, introduce and analyze the deficiency function, and verify d=4 is the unique anomaly for d≤5. All theorems are fully proved (no sorries, 0 axioms): the minEdges function is a concrete computable definition, known values follow by `rfl`, and bounds are proved theorems.",
+    "summary": "We significantly extend the minEdges formalization with a constructive simplex embedding (K_n in ℝⁿ), prove the complete graph optimality conjecture implies monotonicity, introduce and analyze the deficiency function, and verify d=4 is the unique anomaly for d≤5. There are no sorries and no literal `axiom` declarations, but the dimension-specific verifications (e.g. `dim4_beats_complete`, `dim5_matches_complete`, the deficiency values) are discharged by `native_decide`, so the formalization depends on the `Lean.ofReduceBool` axiom (axiomatized, not axiom-free): the minEdges function is a concrete computable definition, known values follow by `rfl`, and the general bounds are proved theorems.",
     "implications": "The simplex embedding construction provides a concrete geometric witness for the upper bound minEdges(d) ≤ C(d+1,2), useful as a starting point for dimension computations\nThe conditional monotonicity theorem demonstrates that resolving the complete graph optimality conjecture would simultaneously resolve the monotonicity question\nThe deficiency reformulation (δ(d) = 0 iff K_{d+1} optimal) reduces an infinite family of graph-theoretic questions to a numerical condition checkable dimension by dimension\nThe d=4 anomaly analysis suggests that bipartite structures may provide more efficient dimension-achieving graphs in higher dimensions",
     "openQuestions": [
       "Is minEdges monotone in d?",
