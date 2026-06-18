@@ -29,7 +29,8 @@
       "Key modular arithmetic: squares mod 8 ∈ {0,1,4}, so three squares mod 8 ≠ 7",
       "Descent lemma: 4 | (x²+y²+z²) implies 2|x, 2|y, 2|z",
       "Full biconditional combining proved forward + axiomatized backward directions",
-      "Examples: 7, 15, 28, 112 are not sums of three squares"
+      "Examples: 7, 15, 28, 112 are not sums of three squares",
+      "Single-AP witness refinement (ThreeSquaresSingleAP.lean, sorry-free and axiom-free, Mathlib-only): the quadratic side-condition legendreSym p (−n) = 1 of dirichlet_key_lemma is satisfied uniformly by the single arithmetic progression p ≡ 1 (mod 4n), removing the rigid p = d·n − 1 tie and its Residue3 (n ≡ 3 mod 4) carve-out. Pure quadratic reciprocity plus Dirichlet's theorem on primes in AP; the Minkowski lattice key lemma itself remains the axiomatized component."
     ],
     "dateAdded": "2026-04-13",
     "lineCount": 226,
@@ -38,7 +39,8 @@
     "mathlibDependencies": [],
     "mathlib_version": "4.26.0",
     "additionalFiles": [
-      "Proofs/ThreeSquares.lean"
+      "Proofs/ThreeSquares.lean",
+      "Proofs/ThreeSquaresSingleAP.lean"
     ]
   },
   "overview": {
@@ -165,7 +167,8 @@
     "path": "Proofs/LagrangeFourSquaresOQ04.lean",
     "sorries": 0,
     "additionalFiles": [
-      "Proofs/ThreeSquares.lean"
+      "Proofs/ThreeSquares.lean",
+      "Proofs/ThreeSquaresSingleAP.lean"
     ]
   },
   "mainTheorems": [
