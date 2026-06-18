@@ -15773,8 +15773,66 @@
       "lastAudited": "2026-06-16T22:05:23Z",
       "result": "clean",
       "issues": []
+    },
+    "erdos-1-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-17T00:00:00Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-17T00:00:00Z",
+      "result": "issues-found",
+      "issues": [
+        "#25373: native_decide/ofReduceBool axiomCount convention"
+      ]
+    },
+    "feuerbachs-theorem-oq-02-murakami": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-17T00:00:00Z",
+      "result": "clean",
+      "issues": []
+    },
+    "happy-number-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-17T00:00:00Z",
+      "result": "clean",
+      "issues": []
+    },
+    "infinitude-primes-4k1-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-17T00:00:00Z",
+      "result": "clean",
+      "issues": []
+    },
+    "infinitude-primes-4k3-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-17T00:00:00Z",
+      "result": "clean",
+      "issues": []
+    },
+    "niven-theorem-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-17T00:00:00Z",
+      "result": "clean",
+      "issues": []
+    },
+    "pythagorean-theorem-oq-06": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-17T00:00:00Z",
+      "result": "clean",
+      "issues": []
+    },
+    "sqrt2-minpoly-oq-01-oq-02-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-17T00:00:00Z",
+      "result": "issues-found",
+      "issues": [
+        "#25373: Mathlib-bridge badged original"
+      ]
     }
   },
   "version": 1,
-  "lastUpdated": "2026-06-05T19:53:45Z"
+  "lastUpdated": "2026-06-17T00:00:00Z"
 }
