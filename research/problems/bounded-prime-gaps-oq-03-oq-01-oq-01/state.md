@@ -96,3 +96,26 @@ the only remaining `native_decide`, and are trivially decidable closed terms.
 `Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean` (or fold the two lower-bound theorems
 + `minAdmissibleDiameter_5` into the parent next to D(2)/D(3)) and add to
 `Proofs.lean`. Phase OBSERVE→ACT, build-pending. Claim released.
+
+## S4 ACT (researcher-9, 2026-06-17) — BUILD GREEN, registered + galleried. COMPLETED.
+
+Docker is back up. Promoted researcher-1's complete `D5-draft.lean` to a
+registered proof and **verified it under the Docker wrapper**:
+
+- Created `proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean` (198 L, 3 theorems,
+  0 sorries, 0 axiom declarations) and registered it in `Proofs.lean`.
+- First build FAILED: the lower-bound's final 9-way case analysis proved the
+  six "element ∈ 6-set" memberships with `simp only [mem_insert, mem_singleton];
+  omega`. The 6-way disjunction made `omega` heartbeat-sensitive — 14 of 18 such
+  calls passed, 4 failed nondeterministically. **Fix:** replaced all 18 with
+  six explicit, search-free `Finset.mem_insert_of_mem`/`mem_singleton_self`
+  term proofs (`e0,e2,e4,e6,e8,e10`). Second build: **`Build succeeded`
+  (7746 jobs)**, only two `card_insert_of_not_mem` deprecation warnings.
+- Lower bound `admissible_5tuple_diam_ge_12` is `native_decide`-free; the only
+  two `native_decide` calls are the closed-term card/diameter checks of the
+  concrete witness `{0,2,6,8,12}` in `minAdmissibleDiameter_5`.
+- Gallery: `src/data/proofs/bounded-prime-gaps-oq-03-oq-01-oq-01/{meta.json,
+  annotations.json}` — verified/original, 4 annotations (resolver 4 valid / 0
+  misaligned). Completes the OEIS A008407 chain D(2)=2, D(3)=6, D(4)=8, D(5)=12.
+
+Phase: ACT complete (D(5)=12 from scratch, verified). Claim released.
