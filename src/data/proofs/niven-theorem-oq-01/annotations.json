@@ -77,5 +77,25 @@
       "Real.cos_le_one, Real.neg_one_le_cos",
       "interval_cases and linarith"
     ]
+  },
+  {
+    "id": "ann-cast-and-enumerate",
+    "proofId": "niven-theorem-oq-01",
+    "range": { "startLine": 84, "endLine": 92 },
+    "type": "tactic",
+    "title": "From real bounds to a finite integer search",
+    "content": "This block is the bridge between analysis and arithmetic. The real-valued bounds `Real.cos_le_one` and `Real.neg_one_le_cos` give −1 ≤ cos θ ≤ 1; combined with 2·cos θ = (k : ℝ) they yield −2 ≤ (k : ℝ) ≤ 2, which `exact_mod_cast` transports to the integer inequalities −2 ≤ k ≤ 2. Once k is pinned to a bounded integer interval, `interval_cases k` performs an exhaustive split into exactly five goals (k = −2,−1,0,1,2). The `<;> push_cast at hk` then normalizes the integer cast in each branch so that `2 * cos θ = k` becomes a concrete linear equation, leaving `linarith` to read off the matching cosine value. The pattern — bound a real quantity, cast it to a finite integer range, enumerate — is the standard Lean idiom for turning a continuum classification into a finite case check.",
+    "mathContext": "$-1\\le\\cos\\theta\\le 1 \\;\\Rightarrow\\; -2\\le k\\le 2,\\ k\\in\\mathbb{Z} \\;\\Rightarrow\\; k\\in\\{-2,-1,0,1,2\\}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval_cases",
+      "exact_mod_cast and push_cast",
+      "linarith",
+      "bounding then enumerating"
+    ],
+    "prerequisites": [
+      "integer vs real casts in Lean",
+      "Real.cos_le_one, Real.neg_one_le_cos"
+    ]
   }
 ]
