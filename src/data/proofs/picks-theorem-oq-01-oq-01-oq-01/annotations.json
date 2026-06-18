@@ -2,85 +2,368 @@
   {
     "id": "ann-imports",
     "proofId": "picks-theorem-oq-01-oq-01-oq-01",
-    "range": { "startLine": 105, "endLine": 109 },
+    "range": {
+      "startLine": 105,
+      "endLine": 109
+    },
     "type": "context",
     "title": "Imports: Int.GCD, Int.Interval, Nat.GCD, Finset.Prod",
     "content": "Four Mathlib imports + `Tactic`. `Mathlib.Data.Int.GCD` supplies `Int.natAbs` and the integer-GCD lemmas used to define `edgeGCD`. `Mathlib.Data.Int.Interval` provides `Finset.Icc : ℤ → ℤ → Finset ℤ`, the decidable closed-interval `Finset` over `ℤ` that powers the `boundingBox` definition for the S2 strictly-interior count. `Mathlib.Data.Nat.GCD.Basic` is the workhorse for `Nat.gcd` semantics. `Mathlib.Data.Finset.Prod` exposes `×ˢ` (`Finset.product`), the Cartesian product of `Finset`s needed to lift the 1D bounding intervals into a 2D bounding rectangle. Notably absent: any of `Mathlib.LinearAlgebra` — this file works at the discrete-arithmetic level, never touching real-valued areas. Pick's formula is computed entirely in ℚ.",
     "mathContext": "Toolkit: $\\gcd : \\mathbb{N} \\times \\mathbb{N} \\to \\mathbb{N}$, $\\mathrm{Icc} : \\mathbb{Z}^2 \\to \\mathrm{Finset}\\, \\mathbb{Z}$, $\\times^{\\mathrm{s}} : \\mathrm{Finset}\\, \\alpha \\to \\mathrm{Finset}\\, \\beta \\to \\mathrm{Finset}(\\alpha \\times \\beta)$. No real-valued geometry — everything decidable.",
     "significance": "context",
-    "relatedConcepts": ["Int.natAbs", "Nat.gcd", "Finset.Icc on ℤ", "Finset.product", "decidability for native_decide"],
-    "prerequisites": ["Mathlib namespaces", "Lean 4 import resolution"]
+    "relatedConcepts": [
+      "Int.natAbs",
+      "Nat.gcd",
+      "Finset.Icc on ℤ",
+      "Finset.product",
+      "decidability for native_decide"
+    ],
+    "prerequisites": [
+      "Mathlib namespaces",
+      "Lean 4 import resolution"
+    ]
   },
   {
     "id": "ann-lattice-triangle-struct",
     "proofId": "picks-theorem-oq-01-oq-01-oq-01",
-    "range": { "startLine": 117, "endLine": 130 },
+    "range": {
+      "startLine": 117,
+      "endLine": 130
+    },
     "type": "definition",
     "title": "LatticeTriangle: three ℤ² vertices, with signed determinant",
     "content": "The mirror `LatticeTriangle` structure is **deliberately redeclared** rather than imported from `PicksTheoremOQ01OQ01`: keeping this file self-contained avoids the import cycle that would arise from depending on both companion files simultaneously. `LatticeTriangle.det` is the 2D cross product `(v2 − v1) × (v3 − v1)`, equal to the **signed** double area by the shoelace formula. The sign encodes orientation (positive ⇔ vertices in counter-clockwise order). The companion `NonDegenerate` predicate `T.det ≠ 0` rules out collinear vertices — necessary for a triangle to have an interior at all.",
     "mathContext": "$\\det T := (v_2{-}v_1) \\times (v_3{-}v_1) = (v_2.1 - v_1.1)(v_3.2 - v_1.2) - (v_3.1 - v_1.1)(v_2.2 - v_1.2) = \\pm 2\\, \\mathrm{Area}(T)$. NonDegenerate iff $\\det T \\neq 0$.",
     "significance": "key",
-    "relatedConcepts": ["shoelace formula", "signed area", "cross product in ℤ²", "lattice geometry", "import cycles in Lean"],
-    "prerequisites": ["2D cross product", "lattice polygons"]
+    "relatedConcepts": [
+      "shoelace formula",
+      "signed area",
+      "cross product in ℤ²",
+      "lattice geometry",
+      "import cycles in Lean"
+    ],
+    "prerequisites": [
+      "2D cross product",
+      "lattice polygons"
+    ]
   },
   {
     "id": "ann-bridge-data",
     "proofId": "picks-theorem-oq-01-oq-01-oq-01",
-    "range": { "startLine": 137, "endLine": 169 },
+    "range": {
+      "startLine": 137,
+      "endLine": 169
+    },
     "type": "definition",
     "title": "Bridge data: twiceArea / edgeDelta / edgeGCD / boundaryCount / pickInterior(Num)",
     "content": "Six definitions assemble the Pick-formula machinery without ever leaving the rationals. `twiceArea` is `|det|` (`Int.natAbs`), throwing away orientation. `edgeDelta i` returns `(|Δx_i|, |Δy_i|)` for the three cyclic edges 0:v1→v2, 1:v2→v3, 2:v3→v1; taking `natAbs` lets the GCD formula apply regardless of edge direction (`gcd` is symmetric under sign flips). `edgeGCD i = gcd(|Δx_i|, |Δy_i|)` is exactly the bare-lattice-point count of edge i (excluding the shared endpoint), by `PicksTheoremOQ02.card_segmentPoints`. `boundaryCount = Σ_{i=0}^2 edgeGCD i` totals the boundary lattice points: each edge contributes `gcd + 1` points, the three shared vertices are double-counted, so B = Σ(gcd + 1) − 3 = Σ gcd. Two equivalent forms of Pick's interior count: `pickInterior : ℚ = twiceArea/2 − boundaryCount/2 + 1` (rational, definitionally close to the classical statement) and `pickInteriorNum : ℤ = twiceArea − boundaryCount + 2` (cleared denominator, ideal for inductive proofs in ℤ).",
     "mathContext": "$\\mathrm{twiceArea}(T) = |\\det T|$. $\\mathrm{boundaryCount}(T) = \\sum_{i} \\gcd(|\\Delta x_i|, |\\Delta y_i|)$. $\\mathrm{pickInterior}(T) = \\frac{|\\det T|}{2} - \\frac{B(T)}{2} + 1 \\in \\mathbb{Q}$; $\\mathrm{pickInteriorNum}(T) = |\\det T| - B(T) + 2 \\in \\mathbb{Z}$. Identity: $2 \\cdot \\mathrm{pickInterior}(T) = \\mathrm{pickInteriorNum}(T)$.",
     "significance": "key",
-    "relatedConcepts": ["Pick's formula", "GCD lattice-point count", "endpoint-sharing accounting", "cleared-denominator form", "natAbs"],
-    "prerequisites": ["PicksTheoremOQ02.card_segmentPoints", "Int.natAbs basics", "Nat.gcd symmetry"]
+    "relatedConcepts": [
+      "Pick's formula",
+      "GCD lattice-point count",
+      "endpoint-sharing accounting",
+      "cleared-denominator form",
+      "natAbs"
+    ],
+    "prerequisites": [
+      "PicksTheoremOQ02.card_segmentPoints",
+      "Int.natAbs basics",
+      "Nat.gcd symmetry"
+    ]
   },
   {
     "id": "ann-bridge-identity",
     "proofId": "picks-theorem-oq-01-oq-01-oq-01",
-    "range": { "startLine": 175, "endLine": 192 },
+    "range": {
+      "startLine": 175,
+      "endLine": 192
+    },
     "type": "technique",
     "title": "Algebraic bridge identity: 2·pickInterior = pickInteriorNum",
     "content": "Two cleared-form identities, both proved by `unfold` + `push_cast` + `ring`. `two_mul_pickInterior` exhibits the bridge between rational and integer forms: doubling the rational `pickInterior` cancels the `/2` factors and produces the integer `pickInteriorNum`. `pick_formula_cleared` is the rearrangement that will drive every induction step: `2A = 2I + B − 2`. The proofs are mechanical — `push_cast` migrates the ℕ → ℚ casts inward, `ring` closes the polynomial identity. The mathematical content is zero (just algebra); the engineering content is huge (this is the move that lets S3+ stay in ℤ while reasoning about half-integer Pick statements).",
     "mathContext": "**Identity 1**: $2 \\cdot \\mathrm{pickInterior}(T) = \\mathrm{pickInteriorNum}(T)$ — cross-multiplying clears the $\\tfrac{1}{2}$ factors. **Identity 2** (Pick's formula in cleared form): $2A = 2I + B - 2$ where $A = |\\det|/2$, $I = \\mathrm{pickInterior}$, $B = \\mathrm{boundaryCount}$. Equivalently, $A = I + B/2 - 1$ after dividing by 2.",
     "significance": "key",
-    "relatedConcepts": ["push_cast", "ring tactic", "cleared-denominator identities", "Pick's formula"],
-    "prerequisites": ["Lean 4 push_cast / ring", "rational-vs-integer arithmetic"]
+    "relatedConcepts": [
+      "push_cast",
+      "ring tactic",
+      "cleared-denominator identities",
+      "Pick's formula"
+    ],
+    "prerequisites": [
+      "Lean 4 push_cast / ring",
+      "rational-vs-integer arithmetic"
+    ]
   },
   {
     "id": "ann-test-triangles-1-4",
     "proofId": "picks-theorem-oq-01-oq-01-oq-01",
-    "range": { "startLine": 206, "endLine": 281 },
+    "range": {
+      "startLine": 206,
+      "endLine": 281
+    },
     "type": "technique",
     "title": "Section IV: Pick's formula on three test triangles via native_decide",
     "content": "Three concrete LatticeTriangles (unit (0,0)-(1,0)-(0,1) → 2A=1, B=3, I=0; 2-by-1 right (0,0)-(2,0)-(0,1) → 2A=2, B=4, I=0; 3-by-3 right (0,0)-(3,0)-(0,3) → 2A=9, B=9, I=1) get hammered open by `native_decide` for the boundary/area numerals, then `norm_num` closes the rational `pickInterior` equalities. The 3-by-3 case is the most interesting: $B = 3 + 3 + 3 = 9$ (each leg has 4 lattice points, hypotenuse has 4, vertices double-counted), so I = 9/2 − 9/2 + 1 = 1 — and indeed (1,1) is the unique strictly-interior lattice point. The 2-by-1 case is the **diagnostic** showing that the midpoint (1,0) sits on the boundary, not the interior — so I = 0 even though the bounding box contains a non-vertex lattice point.",
     "mathContext": "$T_1 = \\langle(0,0),(1,0),(0,1)\\rangle \\Rightarrow (2A, B, I) = (1, 3, 0)$; $T_2 = \\langle(0,0),(2,0),(0,1)\\rangle \\Rightarrow (2, 4, 0)$; $T_3 = \\langle(0,0),(3,0),(0,3)\\rangle \\Rightarrow (9, 9, 1)$. All satisfy $A = I + B/2 - 1$.",
     "significance": "supporting",
-    "relatedConcepts": ["native_decide", "norm_num", "concrete verification", "unit primitive triangle", "interior vs boundary"],
-    "prerequisites": ["Lean 4 native_decide / norm_num tactics"]
+    "relatedConcepts": [
+      "native_decide",
+      "norm_num",
+      "concrete verification",
+      "unit primitive triangle",
+      "interior vs boundary"
+    ],
+    "prerequisites": [
+      "Lean 4 native_decide / norm_num tactics"
+    ]
   },
   {
     "id": "ann-strict-interior",
     "proofId": "picks-theorem-oq-01-oq-01-oq-01",
-    "range": { "startLine": 303, "endLine": 350 },
+    "range": {
+      "startLine": 303,
+      "endLine": 350
+    },
     "type": "definition",
     "title": "S2 Section VI: real strictly-interior count via decidable cross-product test",
     "content": "The S2 substance: a decidable definition of when a lattice point `p` is **strictly interior** to a triangle T. The trick is the **same-sign cross-product test**: for the cyclic edges (v1,v2,p), (v2,v3,p), (v3,v1,p), all three cross products `cross2 = (b-a) × (p-a)` share the same strict sign (all > 0 ⇔ counter-clockwise, all < 0 ⇔ clockwise). Vertices and edge points fail strict positivity on at least one cross product. The two disjuncts in `StrictInterior` handle both orientations of T — this is essential because `LatticeTriangle` doesn't require a canonical orientation. The `Decidable` instance fires from `infer_instance` (cross products are decidable, ∨ and ∧ are decidable, so the whole predicate is). `boundingBox = Icc xmin xmax ×ˢ Icc ymin ymax` (Finset of all lattice points in the axis-aligned bounding box) makes the interior-finding a finite filter problem, which `realInterior = boundingBox.filter StrictInterior` solves; `realInteriorCount = card` is the geometric quantity Pick's formula targets.",
     "mathContext": "$\\mathrm{StrictInterior}(T, p) := \\bigl(\\forall i,\\ (v_{i+1} - v_i) \\times (p - v_i) > 0\\bigr) \\vee \\bigl(\\forall i,\\ (v_{i+1} - v_i) \\times (p - v_i) < 0\\bigr)$. $\\mathrm{realInteriorCount}(T) = |\\{p \\in \\mathrm{boundingBox}(T) : \\mathrm{StrictInterior}(T, p)\\}|$. By the cross-product orientation theorem, this equals the geometric count of lattice points in the open interior of the triangle $T$.",
     "significance": "key",
-    "relatedConcepts": ["cross-product point-in-triangle test", "same-sign orientation", "Finset.filter", "bounding-box reduction", "decidable predicates"],
-    "prerequisites": ["2D cross product orientation", "Finset.Icc on ℤ", "Decidable typeclass"]
+    "relatedConcepts": [
+      "cross-product point-in-triangle test",
+      "same-sign orientation",
+      "Finset.filter",
+      "bounding-box reduction",
+      "decidable predicates"
+    ],
+    "prerequisites": [
+      "2D cross product orientation",
+      "Finset.Icc on ℤ",
+      "Decidable typeclass"
+    ]
   },
   {
     "id": "ann-base-case-agreement",
     "proofId": "picks-theorem-oq-01-oq-01-oq-01",
-    "range": { "startLine": 363, "endLine": 398 },
+    "range": {
+      "startLine": 363,
+      "endLine": 398
+    },
     "type": "insight",
     "title": "S2 Section VII: base-case agreement realInteriorCount = pickInterior",
     "content": "The S2 deliverable: three agreement theorems `unitTriangle_pick_agrees`, `triangle_2_1_pick_agrees`, `triangle_3_3_pick_agrees` showing the bounding-box-filter count exactly matches the Pick-formula rational on each test triangle. Each is closed by `native_decide` for the count + `norm_num` for the rational identity. The unit triangle is the **base case of the future Pick induction**: every primitive (|det| = 1) lattice triangle has `pickInterior = 0` (by the I + B/2 − 1 = 0 + 3/2 − 1 = 1/2 = A computation), and `realInteriorCount = 0` follows by direct enumeration. The 3-by-3 case is the first non-trivial agreement: the unique interior lattice point (1,1) satisfies all three cross-product positivity conditions, and no other point in [0,3]² does. Together these three witnesses bound the bridge: S3 must lift this agreement from concrete triangles to all primitive triangles, and S4 must propagate it across primitive-triangulation joins via an additivity lemma.",
     "mathContext": "**Base case**: $\\forall T$ with $|\\det T| = 1$, $\\mathrm{realInteriorCount}(T) = \\mathrm{pickInterior}(T) = 0$. **Inductive step (S3+ open)**: if $T$ triangulates into primitives $T_1, \\dots, T_k$ ($k = |\\det T|$) joined at shared edges, then $\\mathrm{realInteriorCount}(T) = \\sum_i \\mathrm{realInteriorCount}(T_i) + (\\text{shared-edge interior points})$, with the same identity for $\\mathrm{pickInterior}$ via `pick_formula_cleared`.",
     "significance": "key",
-    "relatedConcepts": ["base case of induction", "primitive triangulation", "additivity lemma (S3 deferred)", "interior-boundary classification"],
-    "prerequisites": ["Section VI definitions", "native_decide on Finset.card"]
+    "relatedConcepts": [
+      "base case of induction",
+      "primitive triangulation",
+      "additivity lemma (S3 deferred)",
+      "interior-boundary classification"
+    ],
+    "prerequisites": [
+      "Section VI definitions",
+      "native_decide on Finset.card"
+    ]
+  },
+  {
+    "id": "ann-partition-primitive-interior",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 437,
+      "endLine": 500
+    },
+    "type": "insight",
+    "title": "S3-prep: primitive triangles have no strictly-interior lattice point (general base case)",
+    "content": "This is the first genuine *generalisation* beyond the three `native_decide` witnesses of Section VII: it proves `realInteriorCount = 0` for **every** primitive triangle (`twiceArea = 1`), independent of orientation, vertex labelling, or position. The engine is the partition-sum identity `cross2_partition_sum`: the three signed cross-products of `T`'s cyclic edges against any test point `p` sum to `T.det`. Geometrically this is the discrete shoelace additivity — the three sub-triangles (vᵢ, vᵢ₊₁, p) tile T with signs, so twice their signed areas add to twice T's. The contradiction in `primitive_no_strict_interior` is purely arithmetic: `StrictInterior p` requires all three cross-products to share a strict sign, so each has absolute value ≥ 1 and their sum has absolute value ≥ 3; but `|sum| = |det| = twiceArea = 1`. `omega` closes both orientation disjuncts. Notably the conclusion holds at *every* lattice point with **no bounding-box enumeration** — a strictly stronger and cheaper argument than the S2 `native_decide` count. The `example` at line 499 recovers the unit-triangle base case as a uniform corollary, decoupling it from the concrete vertex coordinates.",
+    "mathContext": "**Partition-sum**: $\\sum_{i=0}^{2} (v_{i+1} - v_i) \\times (p - v_i) = \\det T$ for all $p$. **Primitive base case**: $|\\det T| = 1 \\Rightarrow \\nexists\\, p\\ \\mathrm{StrictInterior}(T, p)$, hence $\\mathrm{realInteriorCount}(T) = 0$. *Pigeonhole*: three same-sign integers each $\\geq 1$ in absolute value sum to $\\geq 3 > 1 = |\\det T|$, contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "signed-area additivity",
+      "shoelace tiling",
+      "omega arithmetic",
+      "orientation-independent base case",
+      "Finset.card_eq_zero"
+    ],
+    "prerequisites": [
+      "2D cross product",
+      "signed area of triangles",
+      "Lean omega tactic"
+    ]
+  },
+  {
+    "id": "ann-cyclic-det-factorisation",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 529,
+      "endLine": 598
+    },
+    "type": "technique",
+    "title": "S3a-plus: cyclic determinant factorisation ⇒ every edge GCD divides 2·Area",
+    "content": "The formula side of the primitive base case needs `edgeGCD i ∣ twiceArea`. The proof factors `T.det` through each edge uniformly. `signedDelta i` is the direction-preserving edge vector (the `Int.natAbs`-free version of `edgeDelta i`), and `crossDelta i` is its cofactor partner so that `det_eq_signedDelta_factor` expresses `T.det = signedDelta_i.1 · crossDelta_i.2 − crossDelta_i.1 · signedDelta_i.2` for *all three* `i`. This is the algebraic statement that the 2×2 determinant is invariant under cyclic permutation of vertices: for `i = 0` it is the literal definition of `det`; `fin_cases i <;> ring` checks the cyclically-shifted forms. Since `edgeGCD i = gcd(|signedDelta_i.1|, |signedDelta_i.2|)`, it divides both components (`Nat.gcd_dvd_left/right`), and divisibility is preserved by `ℤ`-linear combinations, so `edgeGCD i ∣ det` and hence `edgeGCD i ∣ twiceArea`. The cast plumbing (`Int.dvd_natAbs`, `Int.natCast_dvd_natCast`, `Int.natAbs_dvd_natAbs`) bridges the ℕ-valued GCD and ℤ-valued determinant — these exact API points were pinned in the S3a bearer audit #18950.",
+    "mathContext": "For each edge $i$: $\\det T = (\\delta_i)_1 (\\gamma_i)_2 - (\\gamma_i)_1 (\\delta_i)_2$ where $\\delta_i = \\mathrm{signedDelta}\\, i$, $\\gamma_i = \\mathrm{crossDelta}\\, i$. Since $\\gcd_i := \\gcd(|(\\delta_i)_1|, |(\\delta_i)_2|)$ divides both coordinates of $\\delta_i$, and the RHS is a $\\mathbb{Z}$-linear form in those coordinates, $\\gcd_i \\mid \\det T$ and therefore $\\gcd_i \\mid |\\det T| = \\mathrm{twiceArea}(T)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "determinant cyclic invariance",
+      "gcd divides linear combinations",
+      "Bézout-style divisibility",
+      "Int/Nat cast bridging",
+      "cofactor expansion"
+    ],
+    "prerequisites": [
+      "divisibility in ℤ",
+      "Nat.gcd_dvd_left/right",
+      "Int.natAbs cast lemmas"
+    ]
+  },
+  {
+    "id": "ann-primitive-pick-agrees",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 600,
+      "endLine": 644
+    },
+    "type": "insight",
+    "title": "S3a-plus: primitive ⇒ boundaryCount = 3 ⇒ pickInterior = 0, closing the base case both ways",
+    "content": "With `edgeGCD i ∣ twiceArea = 1` in hand, `Nat.eq_one_of_dvd_one` forces `edgeGCD i = 1` on every edge (`primitive_edgeGCD_eq_one`) — equivalently, each edge of a primitive triangle is itself primitive (no interior lattice points). Summing gives `boundaryCount = 1 + 1 + 1 = 3` (`primitive_boundaryCount_eq_three`), so Pick's formula evaluates to `pickInterior = 1/2 − 3/2 + 1 = 0` (`primitive_pickInterior_zero`). Combined with the geometric `realInteriorCount = 0` from S3-prep, `primitive_pick_agrees` establishes `(realInteriorCount : ℚ) = pickInterior` for **every** primitive triangle — promoting the agreement from the three concrete `native_decide` witnesses of Section VII to the entire infinite family of primitive triangles. This is the clean, fully-general base case of the eventual Pick induction: the inductive step (S4/S5) splits an arbitrary triangle into `|det|` primitive pieces, each of which now satisfies Pick's agreement unconditionally.",
+    "mathContext": "Primitive ($|\\det| = 1$) $\\Rightarrow \\forall i,\\ \\gcd_i = 1$ (only divisor of $1$) $\\Rightarrow B = \\sum_i \\gcd_i = 3 \\Rightarrow I_{\\mathrm{Pick}} = \\tfrac{1}{2} - \\tfrac{3}{2} + 1 = 0$. With $\\mathrm{realInteriorCount} = 0$ (S3-prep), $(\\mathrm{realInteriorCount} : \\mathbb{Q}) = \\mathrm{pickInterior} = 0$ for all primitive $T$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "primitive lattice triangle",
+      "Nat.eq_one_of_dvd_one",
+      "Pick's formula evaluation",
+      "base case generalisation",
+      "induction setup"
+    ],
+    "prerequisites": [
+      "divisor of 1 is 1",
+      "rational arithmetic",
+      "S3a-plus divisibility chain"
+    ]
+  },
+  {
+    "id": "ann-lattice-segment-points",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 652,
+      "endLine": 719
+    },
+    "type": "definition",
+    "title": "S3b-act-1: ℤ-anchored lattice segment points and their gcd+1 cardinality",
+    "content": "`latticeSegmentPoints v w` is the Finset of lattice points on the closed segment from `v` to `w`, parametrised as `v + k·(Δ/g)` for `k = 0, …, g` where `Δ = w − v` and `g = Int.gcd Δx Δy`. This generalises the companion `PicksTheoremOQ02.segmentPoints` (origin-anchored, ℕ-coordinates) to arbitrary ℤ-coordinate, vertex-anchored segments — necessary because triangle edges start at vertices anywhere in ℤ². The key combinatorial fact `card_latticeSegmentPoints` is that the segment carries exactly `gcd(Δx, Δy) + 1` lattice points. The proof needs the parametrisation to be injective on `range (g+1)` (`parametrisation_injOn_range`): when `g ≠ 0`, equal images force `(k₁ − k₂)·(Δ/g) = 0` in each coordinate, and since `Int.ne_zero_of_gcd` guarantees `Δx/g ≠ 0` or `Δy/g ≠ 0`, the integer `k₁ = k₂` follows by `mul_eq_zero`. Injectivity then gives `card = card(range (g+1)) = g + 1` via `Finset.card_image_of_injOn`. This is the lemma that makes `edgeGCD` a *bona fide* lattice-point count rather than a mere divisibility gadget.",
+    "mathContext": "$\\mathrm{latticeSegmentPoints}(v, w) = \\{\\, v + k \\cdot (\\Delta / g) : k \\in \\{0, \\dots, g\\} \\,\\}$, $\\Delta = w - v$, $g = \\gcd(\\Delta x, \\Delta y)$. **Cardinality**: $|\\mathrm{latticeSegmentPoints}(v, w)| = \\gcd(\\Delta x, \\Delta y) + 1$. The primitive direction vector $\\Delta / g$ has coprime coordinates, so the $g+1$ samples are distinct lattice points and no others lie on the segment.",
+    "significance": "key",
+    "relatedConcepts": [
+      "primitive direction vector",
+      "gcd lattice-point count",
+      "Finset.card_image_of_injOn",
+      "Int.ne_zero_of_gcd",
+      "segment parametrisation"
+    ],
+    "prerequisites": [
+      "Int.gcd and ediv_mul_cancel",
+      "Finset.image cardinality",
+      "injectivity on a Finset"
+    ]
+  },
+  {
+    "id": "ann-edge-interior-witness-ge-two",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 760,
+      "endLine": 856
+    },
+    "type": "technique",
+    "title": "S3b-act-2 Case (a): edgeGCD ≥ 2 produces an explicit edge-interior lattice point",
+    "content": "Half of the `exists_nonvertex_lattice_point` prerequisite for the full Pick induction: when an edge of `T` has `edgeGCD ≥ 2`, that edge has a lattice point strictly between its endpoints. The witness is fully explicit — the `k = 1` parametrisation point `vᵢ + Δ/g`. Membership in `latticeSegmentPoints` is the `k = 1` case of `Finset.mem_image`. The two distinctness obligations are where the arithmetic lives: `witness ≠ vᵢ` because `Δ/g = 0` (both coordinates) would force `Δ = 0` hence `g = Int.gcd 0 0 = 0`, contradicting `g ≥ 2`; `witness ≠ vᵢ₊₁` because `Δ/g = Δ` would (via `g ∣ Δ` and `Int.ediv_mul_cancel`) give `Δ·(g − 1) = 0`, forcing `Δ = 0` again since `g ≥ 2`. Both contradictions bottom out in `omega` against `g ≥ 2`. The convention `vEdgeStart i / vEdgeEnd i` mirrors `edgeDelta` (edge 0 = v1→v2, etc.), and `edgeGCD_eq_Int_gcd` certifies (by `rfl` after `fin_cases`) that the ℕ-valued `edgeGCD` agrees with the `Int.gcd` of the signed differences.",
+    "mathContext": "If $g_i := \\mathrm{edgeGCD}\\, i = \\gcd(\\Delta x_i, \\Delta y_i) \\geq 2$, then $p^\\star = v_i + \\Delta_i / g_i$ satisfies $p^\\star \\in \\mathrm{segment}(v_i, v_{i+1})$, $p^\\star \\neq v_i$, $p^\\star \\neq v_{i+1}$ — an interior lattice point. Distinctness: $\\Delta_i / g_i = 0 \\Rightarrow \\Delta_i = 0 \\Rightarrow g_i = 0$; and $\\Delta_i / g_i = \\Delta_i \\Rightarrow \\Delta_i (g_i - 1) = 0 \\Rightarrow \\Delta_i = 0$; both contradict $g_i \\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "explicit witness construction",
+      "Int.ediv_mul_cancel",
+      "mul_eq_zero case split",
+      "edge convention vEdgeStart/vEdgeEnd",
+      "non-primitive edge"
+    ],
+    "prerequisites": [
+      "integer division with exact divisibility",
+      "Finset.mem_image",
+      "Int.gcd zero characterisation"
+    ]
+  },
+  {
+    "id": "ann-edge-interior-characterisation",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 891,
+      "endLine": 1045
+    },
+    "type": "insight",
+    "title": "S3b-act-3: edgeGCD = 1 forbids edge-interior points — full ∃-witness ⇔ edgeGCD ≥ 2 characterisation",
+    "content": "The converse to Case (a), completing the edge-interior dichotomy. The endpoint-membership helpers `vStart_mem_latticeSegmentPoints` (`k = 0`) and `vEnd_mem_latticeSegmentPoints` (`k = g`, using `Int.ediv_mul_cancel` to recover `g·(Δ/g) = Δ`) show both vertices lie on the segment. When `edgeGCD i = 1`, `card_latticeSegmentPoints` gives the segment exactly 2 points; the two endpoints are distinct (else `Int.gcd 0 0 = 0 ≠ 1`), so by `Finset.eq_of_subset_of_card_le` the segment *equals* `{v, w}` — leaving no room for a strict-interior point (`no_strict_edge_interior_of_edgeGCD_eq_one`). The capstone `exists_strict_edge_interior_iff_edgeGCD_ge_two` packages both directions into a biconditional: an edge carries an interior lattice point **iff** its gcd is ≥ 2. The `edgeGCD = 0` corner (degenerate edge, segment card 1) is dispatched by a `card ≤ 1` pigeonhole. This `↔` is the precise lemma the future `exists_nonvertex_lattice_point` step consumes when it case-splits on whether any edge is non-primitive; combined with `primitive_edgeGCD_eq_one`, it shows a primitive triangle's only lattice points are its vertices and its (empty) strict interior.",
+    "mathContext": "$(\\exists p,\\ \\mathrm{OnStrictEdgeInterior}(T, i, p)) \\iff \\mathrm{edgeGCD}\\, i \\geq 2$. For $\\mathrm{edgeGCD}\\, i = 1$: $|\\mathrm{segment}| = \\gcd + 1 = 2 = |\\{v_i, v_{i+1}\\}|$ with $\\{v_i, v_{i+1}\\} \\subseteq \\mathrm{segment}$, so equality of Finsets forces $\\mathrm{segment} = \\{v_i, v_{i+1}\\}$; any segment point is an endpoint, contradicting strict-interiority.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.eq_of_subset_of_card_le",
+      "subset with equal cardinality",
+      "biconditional characterisation",
+      "primitive edge",
+      "pigeonhole on card"
+    ],
+    "prerequisites": [
+      "Finset cardinality bounds",
+      "card_latticeSegmentPoints",
+      "case analysis on gcd ∈ {0,1,≥2}"
+    ]
+  },
+  {
+    "id": "ann-translation-invariance-algebraic",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1076,
+      "endLine": 1136
+    },
+    "type": "technique",
+    "title": "S4-prep: every algebraic Pick datum is translation-invariant",
+    "content": "The Pick induction (S4/S5) repositions sub-triangles to a canonical anchor (e.g. a vertex at the origin); this section certifies that translating all three vertices by a fixed lattice vector `t` leaves every Pick quantity unchanged. The algebraic invariances are mechanical because a shift cancels in coordinate *differences*: `det_translate` (`simp [det, translate]; ring` — the `+t` terms cancel), and downstream `twiceArea_translate`, `signedDelta_translate`, `edgeDelta_translate`, `edgeGCD_translate`, `boundaryCount_translate`, and both Pick-formula forms `pickInterior_translate` / `pickInteriorNum_translate` follow by rewriting along the lower-level invariances. The lemma chain is deliberately layered so that each invariant is proved once and reused, mirroring the dependency order det → twiceArea, signedDelta → edgeDelta → edgeGCD → boundaryCount → pickInterior. Unlike the S2 `native_decide` agreements (about three concrete triangles), these hold for *every* triangle and *every* shift.",
+    "mathContext": "For all $t \\in \\mathbb{Z}^2$: $\\det(T + t) = \\det T$ (shift cancels in $v_j - v_i$), hence $\\mathrm{twiceArea}$, every $\\mathrm{edgeGCD}$, $\\mathrm{boundaryCount}$, $\\mathrm{pickInterior}$, and $\\mathrm{pickInteriorNum}$ are all invariant under $T \\mapsto T + t$ where $(T+t)$ shifts each vertex by $t$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "translation invariance",
+      "difference cancellation",
+      "layered lemma dependencies",
+      "ring tactic",
+      "canonical repositioning"
+    ],
+    "prerequisites": [
+      "affine translation in ℤ²",
+      "rewriting along equalities",
+      "Pick datum definitions"
+    ]
+  },
+  {
+    "id": "ann-realinterior-translate-capstone",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1140,
+      "endLine": 1247
+    },
+    "type": "insight",
+    "title": "S4-prep capstone: realInteriorCount is translation-invariant via an explicit Finset bijection",
+    "content": "The substantive geometric half of S4-prep: the *count* of strictly-interior lattice points survives translation. The key transport `cross2_translate_pt` shows shifting the two reference vertices by `t` equals back-shifting the test point by `−t`, so `strictInterior_translate` carries `StrictInterior` across the shift (both orientation disjuncts simultaneously). The bounding box transports too — each extreme coordinate shifts by `t` (`xmin/xmax/ymin/ymax_translate`, all `omega`), giving `mem_boundingBox_translate`. These combine in `realInterior_translate` into a clean Finset identity: the interior points of `T.translate t` are exactly the image of `T.realInterior` under `p ↦ p + t`. Since that shift map is injective (`add_right_cancel` componentwise), `Finset.card_image_of_injective` yields `realInteriorCount_translate`: the count is unchanged. The capstone `pick_agrees_translate_iff` records the payoff — Pick's agreement is a translation-invariant *property*, so proving it at one canonical position (e.g. a vertex at the origin) yields it everywhere. The closing `example` confirms consistency: any translate of a primitive triangle still satisfies Pick's agreement, since `twiceArea` is preserved at 1.",
+    "mathContext": "$\\mathrm{realInterior}(T + t) = (p \\mapsto p + t)\\big[\\mathrm{realInterior}(T)\\big]$; the shift is a bijection on $\\mathbb{Z}^2$, so $\\mathrm{realInteriorCount}(T + t) = \\mathrm{realInteriorCount}(T)$. Capstone: $\\big((\\mathrm{realInteriorCount}(T{+}t) : \\mathbb{Q}) = \\mathrm{pickInterior}(T{+}t)\\big) \\iff \\big((\\mathrm{realInteriorCount}(T) : \\mathbb{Q}) = \\mathrm{pickInterior}(T)\\big)$ — Pick's agreement is translation-invariant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset bijection",
+      "Finset.card_image_of_injective",
+      "translation transport of predicates",
+      "reduction to canonical position",
+      "orientation disjunct transport"
+    ],
+    "prerequisites": [
+      "injective image cardinality",
+      "cross-product translation identity",
+      "add_right_cancel"
+    ]
   }
 ]
