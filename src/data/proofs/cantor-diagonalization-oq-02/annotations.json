@@ -2,7 +2,7 @@
   {
     "id": "annotation-omega1-def",
     "proofId": "cantor-diagonalization-oq-02",
-    "line": 61,
+    "line": 69,
     "type": "insight",
     "title": "ω₁ as Initial Ordinal of ℵ₁",
     "content": "We define ω₁ = (Cardinal.aleph 1).ord — the initial ordinal of the first uncountable cardinal. This is the canonical first uncountable ordinal: the smallest ordinal α such that α.card = ℵ₁. The `ord` function maps a cardinal c to the smallest ordinal of cardinality c, guaranteeing ω₁.card = ℵ₁ by definition.",
@@ -21,14 +21,14 @@
       "Mathlib Cardinal.Ordinal"
     ],
     "range": {
-      "startLine": 61,
-      "endLine": 68
+      "startLine": 67,
+      "endLine": 69
     }
   },
   {
     "id": "annotation-card-ord",
     "proofId": "cantor-diagonalization-oq-02",
-    "line": 66,
+    "line": 74,
     "type": "insight",
     "title": "Cardinal.card_ord Closes omega1_card",
     "content": "The theorem `omega1_card : omega1.card = aleph 1` is a one-liner: `Cardinal.card_ord _`. This lemma states that for any cardinal c, the initial ordinal c.ord has cardinality c. It's the fundamental identity linking cardinals and ordinals via the `ord` function.",
@@ -46,14 +46,14 @@
       "Mathlib Cardinal.Ordinal API"
     ],
     "range": {
-      "startLine": 66,
-      "endLine": 68
+      "startLine": 71,
+      "endLine": 75
     }
   },
   {
     "id": "annotation-aleph-succ",
     "proofId": "cantor-diagonalization-oq-02",
-    "line": 75,
+    "line": 81,
     "type": "insight",
     "title": "Deriving aleph 1 = Order.succ ℵ₀ via aleph_succ",
     "content": "The key identity `aleph 1 = Order.succ ℵ₀` requires a small rewriting chain. First, `(1 : Ordinal) = Order.succ 0` (by simp). Then `Cardinal.aleph_succ` gives `aleph(succ α) = Order.succ(aleph α)`. Finally, `Cardinal.aleph_zero : aleph 0 = ℵ₀` converts to the final form. The `rwa` handles the substitution.",
@@ -71,14 +71,14 @@
       "Mathlib Cardinal.Aleph"
     ],
     "range": {
-      "startLine": 75,
-      "endLine": 80
+      "startLine": 79,
+      "endLine": 86
     }
   },
   {
     "id": "annotation-lt-aleph1-iff",
     "proofId": "cantor-diagonalization-oq-02",
-    "line": 82,
+    "line": 90,
     "type": "insight",
     "title": "κ < ℵ₁ ↔ κ ≤ ℵ₀: Characterizing ℵ₁",
     "content": "This is the fundamental characterization of ℵ₁ as the MINIMUM uncountable cardinal. Since aleph 1 = Order.succ ℵ₀, we use `Order.lt_succ_iff : a < Order.succ b ↔ a ≤ b` directly. This characterization drives most results about ℵ₁: uncountability, minimality, and the gap property all follow.",
@@ -97,14 +97,118 @@
       "aleph numbers"
     ],
     "range": {
-      "startLine": 82,
-      "endLine": 89
+      "startLine": 88,
+      "endLine": 93
+    }
+  },
+  {
+    "id": "annotation-aleph0-lt-aleph1",
+    "proofId": "cantor-diagonalization-oq-02",
+    "line": 98,
+    "type": "insight",
+    "title": "ω₁ is Uncountable: ℵ₀ < ℵ₁",
+    "content": "Three short theorems establish strict uncountability. `aleph0_lt_aleph1` derives ℵ₀ < ℵ₁ from `Cardinal.aleph_lt_aleph` (alephs are strictly monotone in their ordinal index) plus `Cardinal.aleph_zero`. `omega1_uncountable` then transports this through `omega1_card` to conclude ℵ₀ < ω₁.card, and `omega1_not_countable` restates it as ¬(ω₁.card ≤ ℵ₀) via `not_le.mpr`. Together they confirm ω₁ genuinely cannot be enumerated by ℕ.",
+    "mathContext": "Strict monotonicity of the aleph hierarchy, $\\aleph_\\alpha < \\aleph_\\beta \\iff \\alpha < \\beta$ (`Cardinal.aleph_lt_aleph`), gives $\\aleph_0 < \\aleph_1$. Since $\\omega_1.\\text{card} = \\aleph_1$, we get $\\aleph_0 < |\\omega_1|$, i.e. $\\omega_1$ admits no surjection from a countable set — the precise meaning of 'uncountable'.",
+    "significance": "key",
+    "relatedConcepts": [
+      "uncountability",
+      "aleph monotonicity",
+      "Cardinal.aleph_lt_aleph",
+      "not_le",
+      "first uncountable ordinal"
+    ],
+    "prerequisites": [
+      "aleph hierarchy",
+      "cardinal comparison",
+      "Mathlib Cardinal.Aleph"
+    ],
+    "range": {
+      "startLine": 97,
+      "endLine": 110
+    }
+  },
+  {
+    "id": "annotation-aleph1-minimum",
+    "proofId": "cantor-diagonalization-oq-02",
+    "line": 116,
+    "type": "insight",
+    "title": "ℵ₁ is the Minimum Uncountable Cardinal (No Gap)",
+    "content": "Two theorems pin ℵ₁ as the least uncountable cardinal. `aleph1_minimum_uncountable` shows any κ with ℵ₀ < κ satisfies ℵ₁ ≤ κ, via `Order.succ_le_of_lt` applied to the successor form aleph 1 = succ ℵ₀. `no_cardinal_between_aleph0_aleph1` then rules out any κ strictly between ℵ₀ and ℵ₁: from κ < ℵ₁ we get κ ≤ ℵ₀ (the characterization theorem), contradicting ℵ₀ < κ. This 'no gap' fact is exactly why ℵ₁ is called the successor of ℵ₀.",
+    "mathContext": "Because $\\aleph_1 = (\\aleph_0)^+$ is a successor cardinal, $\\text{succ\\_le\\_of\\_lt}$ gives $\\aleph_0 < \\kappa \\Rightarrow \\aleph_1 \\le \\kappa$; and $\\text{lt\\_succ\\_iff}$ gives $\\kappa < \\aleph_1 \\iff \\kappa \\le \\aleph_0$. The conjunction $\\aleph_0 < \\kappa < \\aleph_1$ is therefore contradictory — there is no cardinal in the open interval $(\\aleph_0, \\aleph_1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimum uncountable cardinal",
+      "successor cardinal",
+      "Order.succ_le_of_lt",
+      "cardinal gap",
+      "well-ordering of cardinals"
+    ],
+    "prerequisites": [
+      "successor cardinals",
+      "Order.succ API",
+      "cardinal arithmetic"
+    ],
+    "range": {
+      "startLine": 114,
+      "endLine": 126
+    }
+  },
+  {
+    "id": "annotation-iio-omega1",
+    "proofId": "cantor-diagonalization-oq-02",
+    "line": 138,
+    "type": "insight",
+    "title": "Countable Ordinals = Iio(ω₁)",
+    "content": "`lt_omega1_iff_countable` proves α < ω₁ ↔ IsCountableOrdinal α: unfolding the definitions and applying `Cardinal.lt_ord` (α < c.ord ↔ α.card < c) reduces to the cardinal characterization α.card ≤ ℵ₀. `countable_ordinals_eq_Iio` then upgrades this pointwise equivalence to a set equality {α | IsCountableOrdinal α} = Set.Iio ω₁ by `ext`. This is the structural heart of the answer: the collection of countable ordinals IS an initial segment of the ordinals, namely everything below ω₁.",
+    "mathContext": "`Cardinal.lt_ord` states $\\alpha < c.\\text{ord} \\iff \\alpha.\\text{card} < c$, the order-isomorphism between an initial segment of ordinals and the cardinals below $c$. At $c = \\aleph_1$ this becomes $\\alpha < \\omega_1 \\iff |\\alpha| \\le \\aleph_0$, identifying $\\{\\alpha : |\\alpha| \\le \\aleph_0\\}$ with $\\text{Iio}(\\omega_1)$. The set of countable ordinals is thus a genuine set (not a proper class) of cardinality $\\aleph_1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "initial segment",
+      "Cardinal.lt_ord",
+      "Set.Iio",
+      "countable ordinal",
+      "ordinal-cardinal correspondence"
+    ],
+    "prerequisites": [
+      "ordinal initial segments",
+      "Set.ext",
+      "Mathlib Cardinal.Ordinal"
+    ],
+    "range": {
+      "startLine": 133,
+      "endLine": 147
+    }
+  },
+  {
+    "id": "annotation-omega1-limit",
+    "proofId": "cantor-diagonalization-oq-02",
+    "line": 165,
+    "type": "insight",
+    "title": "ω₁ is a Limit Ordinal: Successor Closure",
+    "content": "`omega1_isLimit` proves that ω₁ is closed under successors: α < ω₁ → α + 1 < ω₁. The proof rewrites both sides via `lt_omega1_iff_countable`, turning the goal into card(α+1) ≤ ℵ₀. Using `Ordinal.add_one_eq_succ` and `Ordinal.card_succ` (card(succ α) = card α + 1), it then bounds card α + 1 ≤ ℵ₀ + 1 = ℵ₀ via `Cardinal.add_one_of_aleph0_le`. This closure is precisely what lets the diagonal witness sSup(range f) + 1 stay below ω₁.",
+    "mathContext": "An infinite cardinal absorbs finite addition: $\\aleph_0 + 1 = \\aleph_0$ (`Cardinal.add_one_of_aleph0_le`). Hence if $|\\alpha| \\le \\aleph_0$ then $|\\alpha + 1| = |\\alpha| + 1 \\le \\aleph_0$, so $\\alpha + 1 < \\omega_1$. Having no immediate predecessor and being closed under successors is the defining feature of a limit ordinal — and ω₁ is the limit ordinal that the diagonal argument cannot reach from below.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limit ordinal",
+      "successor closure",
+      "Cardinal.add_one_of_aleph0_le",
+      "Ordinal.card_succ",
+      "cardinal absorption"
+    ],
+    "prerequisites": [
+      "ordinal successor",
+      "limit ordinals",
+      "infinite cardinal arithmetic"
+    ],
+    "range": {
+      "startLine": 159,
+      "endLine": 171
     }
   },
   {
     "id": "annotation-diagonal-core",
     "proofId": "cantor-diagonalization-oq-02",
-    "line": 168,
+    "line": 180,
     "type": "insight",
     "title": "sSup Instead of iSup for Ordinals",
     "content": "Ordinal.{0} has `ConditionallyCompleteLinearOrder` but NOT `CompleteLattice` (since the sup of all ordinals would be a proper class). Therefore `iSup` (which requires `CompleteLattice`) is unavailable. Instead, we use `sSup (Set.range f)` with `BddAbove` hypothesis. The bound is `omega1` since all f(n) < omega1. The diagonal witness is sSup(range f) + 1.",
@@ -124,14 +228,42 @@
       "Mathlib Order"
     ],
     "range": {
-      "startLine": 168,
-      "endLine": 179
+      "startLine": 173,
+      "endLine": 193
+    }
+  },
+  {
+    "id": "annotation-diagonal-witness",
+    "proofId": "cantor-diagonalization-oq-02",
+    "line": 205,
+    "type": "insight",
+    "title": "The Diagonal Witness: sSup(range f) + 1",
+    "content": "`cantor_diagonal_countable_ordinals` is the headline result: for any sequence f : ℕ → Ordinal of countable ordinals (all f n < ω₁), there is a countable β with β > every f n. The witness is β = sSup(range f) + 1. The proof assembles three lemmas: `countable_sup_lt_omega1` keeps the supremum countable, `omega1_isLimit` keeps the +1 below ω₁, and `le_csSup` plus `lt_add_of_pos_right` give f n ≤ sSup < sSup + 1 = β. This is the ordinal incarnation of Cantor's diagonal step — every countable list of countable ordinals is 'escaped' by a countable ordinal above it.",
+    "mathContext": "Given $f:\\mathbb{N}\\to\\text{Ordinal}$ with $f(n) < \\omega_1$, set $\\beta = \\sup_n f(n) + 1$. Regularity of $\\aleph_1$ (cofinality $\\aleph_1 > \\aleph_0$) forces $\\sup_n f(n) < \\omega_1$, and the limit-ordinal property forces $\\beta < \\omega_1$; yet $f(n) \\le \\sup_n f(n) < \\beta$ for all $n$. Thus no countable family is cofinal in $\\omega_1$ — the diagonal escape that proves the countable ordinals are uncountable in aggregate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor diagonal argument",
+      "supremum + 1",
+      "cofinality",
+      "regular cardinal",
+      "diagonal escape",
+      "countable ordinals"
+    ],
+    "prerequisites": [
+      "ordinal supremum",
+      "regular cardinals",
+      "limit ordinals",
+      "Cantor's theorem"
+    ],
+    "range": {
+      "startLine": 195,
+      "endLine": 220
     }
   },
   {
     "id": "annotation-le-csSup",
     "proofId": "cantor-diagonalization-oq-02",
-    "line": 185,
+    "line": 217,
     "type": "insight",
     "title": "le_csSup: Members ≤ Conditional Supremum",
     "content": "The lemma `le_csSup (hbdd : BddAbove s) (hmem : x ∈ s) : x ≤ sSup s` gives f(n) ≤ sSup(range f). Here `BddAbove (Set.range f)` is witnessed by `omega1` (since all f(n) < omega1 ≤ omega1), and `Set.mem_range_self n : f n ∈ Set.range f` gives membership. Combining: f(n) ≤ sSup < sSup + 1, so the diagonal witness exceeds every f(n).",
@@ -150,14 +282,14 @@
       "Mathlib Order.ConditionallyCompleteLattice"
     ],
     "range": {
-      "startLine": 185,
-      "endLine": 204
+      "startLine": 195,
+      "endLine": 220
     }
   },
   {
     "id": "annotation-clipping",
     "proofId": "cantor-diagonalization-oq-02",
-    "line": 205,
+    "line": 225,
     "type": "insight",
     "title": "Clipping f to Countable Values",
     "content": "The surjection proof doesn't assume f : ℕ → Ordinal maps only to countable ordinals — f could map some n to ω₂. We handle this by 'clipping': define g n = if f n < omega1 then f n else 0. Now (1) all g(n) < omega1, and (2) g still surjects onto countable ordinals (if f(n) = α < omega1, then f(n) < omega1, so g(n) = f(n) = α). Apply diagonal to g to derive contradiction.",
@@ -176,8 +308,34 @@
       "conditional expression in Lean 4"
     ],
     "range": {
-      "startLine": 205,
-      "endLine": 224
+      "startLine": 222,
+      "endLine": 248
+    }
+  },
+  {
+    "id": "annotation-summary",
+    "proofId": "cantor-diagonalization-oq-02",
+    "line": 257,
+    "type": "insight",
+    "title": "Four-Part Summary: ℵ₁ as the Cardinality of the Countable Ordinals",
+    "content": "`cantor_diagonalization_summary` bundles the four pillars of the answer into one theorem: (1) ℵ₀ < ℵ₁ (strict uncountability), (2) ℵ₁ is the minimum uncountable cardinal (∀ κ, ℵ₀ < κ → ℵ₁ ≤ κ), (3) no surjection ℕ → countable ordinals exists (the diagonal argument), and (4) ω₁.card = ℵ₁. Each conjunct is discharged by the corresponding named theorem (`aleph0_lt_aleph1`, `aleph1_minimum_uncountable`, `no_surjection_onto_countable_ordinals`, `omega1_card`). The composite answers the research question: the set of all countable ordinals has cardinality exactly ℵ₁.",
+    "mathContext": "The four claims together characterize $\\aleph_1 = |\\{\\alpha : |\\alpha|\\le\\aleph_0\\}|$: it strictly exceeds $\\aleph_0$, is the least cardinal to do so, is unreachable by any countable enumeration (diagonalization), and equals $|\\omega_1|$. This is the full set-theoretic resolution — note ℵ₁'s relation to $2^{\\aleph_0}$ (the Continuum Hypothesis) remains independent of ZFC and is deliberately not asserted here.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summary theorem",
+      "aleph-1",
+      "cardinality of countable ordinals",
+      "Continuum Hypothesis",
+      "ZFC independence"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "ordinal theory",
+      "Cantor diagonalization"
+    ],
+    "range": {
+      "startLine": 252,
+      "endLine": 270
     }
   }
 ]
