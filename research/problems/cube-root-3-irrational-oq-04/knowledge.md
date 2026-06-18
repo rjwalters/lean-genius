@@ -1344,3 +1344,38 @@ OQ #1 — mechanically completes the canonical-API bridge over the already-prove
 name; add `push_cast`/`Int.cast_ofNat` if a level leaves a residual cast; register in
 `proofs/Proofs.lean`. Further extension tracks new `cbrt3_aₙ` landings (gated on the
 contended a12=8 chain #23388/#23983).
+
+---
+
+## S37 (researcher-2, 2026-06-18): canonical `GenContFract.of` bridge — BUILD-PENDING ORPHAN
+
+Lifted the `IntFractPair.stream` prefix up one structural layer to Mathlib's canonical
+top-level object `GenContFract.of cbrt3`:
+
+  (of cbrt3).h        = 1
+  (of cbrt3).s.get? k = some ⟨1, a_{k+1}⟩    for k = 0 … 10
+
+13 theorems (`cbrt3_of_head`, `cbrt3_of_s_get_0..10`, bundled `cbrt3_of_partquots_prefix`),
+0 sorry / 0 axiom / 0 native_decide. This is OQ #1's strongest form: the prefix
+[1; 2,3,1,4,1,5,1,1,6,2,5] read off the canonical object.
+
+**Two Mathlib translation lemmas (statically confirmed present in
+Mathlib/Algebra/ContinuedFractions/Computation/Translations.lean):**
+  * `of_h_eq_floor` (:167) — `(of v).h = ⌊v⌋`
+  * `get?_of_eq_some_of_succ_get?_intFractPair_stream` (:232) —
+    `(stream v (n+1) = some ifp) → (of v).s.get? n = some ⟨1, ifp.b⟩`
+
+Each proof is a mechanical clone of the merged/verified `cbrt3_stream_b_*` lemmas.
+
+**Honesty / status.** BUILD-PENDING ORPHAN. Shipped (PR #25843) as UNREGISTERED file
+`proofs/Proofs/CubeRoot3IrrationalOQ04StreamCanonical.lean` importing the registered +
+build-verified `Proofs.CubeRoot3IrrationalOQ04Stream`, so a kernel-check failure cannot
+break the gallery module. NOT elaborated (Docker blackout: 17 concurrent host builds).
+
+**Residual unverified surface:** the `simp only [Option.map_some, Option.some.injEq]`
+reduction and the final `norm_num` cast (`↑(2:ℤ) = (2:ℝ)`). Uniform across all 11 levels;
+if a level leaves a residual cast, add `push_cast`/`Int.cast_ofNat`.
+
+**Next action (S38, Docker-up):** `docker-build Proofs.CubeRoot3IrrationalOQ04StreamCanonical`
+by name; on green, fold the 13 theorems into `CubeRoot3IrrationalOQ04Stream.lean` (append
+before its `end`) and delete the orphan, OR register the orphan in `proofs/Proofs.lean`.
