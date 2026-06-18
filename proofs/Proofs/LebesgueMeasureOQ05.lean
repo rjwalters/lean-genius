@@ -32,6 +32,20 @@ Results 8–10 form an elementary *calculus of densities*: the chain rule is the
 multiplicative composition law for Radon–Nikodym derivatives, the self-derivative
 is its identity, and the reciprocal relation is the resulting inverse law.
 
+The package is rounded out by the basic pointwise regularity of the density and
+the probabilistic identification of the derivative:
+11. **finiteness** `dμ/dν < ∞` and `dμ/dν ≠ ∞` (`ν`-a.e.) for σ-finite `μ` — the
+    density is finite almost everywhere;
+12. **positivity** `0 < dμ/dν` (`μ`-a.e.) for `μ ≪ ν` — the density does not
+    vanish on the support of `μ`;
+13. **inverse law** `(dμ/dν)⁻¹ = dν/dμ` (`μ`-a.e.) for σ-finite `μ ≪ ν` — the
+    pointwise-inverse form of the reciprocal relation (10);
+14. **conditional expectation as a Radon–Nikodym derivative**: for a sub-σ-algebra
+    `m ≤ m₀` with `μ.trim` σ-finite and `f` integrable, the conditional expectation
+    `μ[f|m]` agrees `μ`-a.e. with the signed Radon–Nikodym derivative of the
+    `f`-weighted measure trimmed to `m`. This identifies `E[f|m]` as a density and
+    is the measure-theoretic foundation of conditioning.
+
 ## Honest scope
 
 This is a **formalization** entry: every result is obtained by assembling existing
@@ -128,5 +142,61 @@ inverse-function relation `(dx/dy)(dy/dx) = 1`. -/
 theorem rnDeriv_mul_symm_ae_one [SigmaFinite μ] [SigmaFinite ν] (h : μ ≪ ν) :
     μ.rnDeriv ν * ν.rnDeriv μ =ᵐ[μ] (fun _ ↦ 1 : α → ℝ≥0∞) :=
   (Measure.rnDeriv_mul_rnDeriv (κ := μ) h).trans (Measure.rnDeriv_self μ)
+
+/-! ### Pointwise regularity of the density
+
+Basic almost-everywhere properties of the Radon–Nikodym derivative as a function:
+it is finite, and (on the support of `μ`) strictly positive, with a pointwise
+inverse law refining the reciprocal relation above. -/
+
+/-- **Finiteness (`< ∞`).** The Radon–Nikodym derivative of a σ-finite measure is
+finite `ν`-almost everywhere. -/
+theorem rnDeriv_lt_top_ae [SigmaFinite μ] : ∀ᵐ x ∂ν, μ.rnDeriv ν x < ∞ :=
+  Measure.rnDeriv_lt_top μ ν
+
+/-- **Finiteness (`≠ ∞`).** Equivalent `≠ ∞` form of the finiteness statement. -/
+theorem rnDeriv_ne_top_ae [SigmaFinite μ] : ∀ᵐ x ∂ν, μ.rnDeriv ν x ≠ ∞ :=
+  Measure.rnDeriv_ne_top μ ν
+
+/-- **Positivity.** For σ-finite `μ ≪ ν`, the Radon–Nikodym derivative is strictly
+positive `μ`-almost everywhere — it does not vanish on the support of `μ`. -/
+theorem rnDeriv_pos_ae [SigmaFinite μ] [SigmaFinite ν] (h : μ ≪ ν) :
+    ∀ᵐ x ∂μ, 0 < μ.rnDeriv ν x :=
+  Measure.rnDeriv_pos h
+
+/-- **Inverse law (pointwise).** For σ-finite `μ ≪ ν`, the pointwise inverse of the
+forward density is the backward density, `μ`-almost everywhere: `(dμ/dν)⁻¹ = dν/dμ`.
+This is the inverse form of the reciprocal relation `rnDeriv_mul_symm_ae_one`. -/
+theorem inv_rnDeriv_ae [SigmaFinite μ] [SigmaFinite ν] (h : μ ≪ ν) :
+    (μ.rnDeriv ν)⁻¹ =ᵐ[μ] ν.rnDeriv μ :=
+  Measure.inv_rnDeriv h
+
+end LebesgueRadonNikodym
+
+/-! ### Conditional expectation as a Radon–Nikodym derivative
+
+The conditional expectation `μ[f|m]` onto a sub-σ-algebra `m ≤ m₀` is itself a
+density: it is the (signed) Radon–Nikodym derivative of the `f`-weighted measure
+`μ.withDensityᵥ f`, trimmed to `m`, with respect to `μ` trimmed to `m`. This places
+conditioning inside the Radon–Nikodym calculus of this file. -/
+
+namespace LebesgueRadonNikodym
+
+section ConditionalExpectation
+
+variable {β : Type*} {m m₀ : MeasurableSpace β} {ρ : Measure β}
+
+/-- **Conditional expectation as a Radon–Nikodym derivative.** For a sub-σ-algebra
+`m ≤ m₀` with `ρ.trim hm` σ-finite and `f` integrable, the conditional expectation
+`ρ[f|m]` equals, `ρ`-almost everywhere, the signed Radon–Nikodym derivative of the
+`f`-weighted measure trimmed to `m`. Thin wrapper over Mathlib's
+`MeasureTheory.rnDeriv_ae_eq_condExp`; recorded here as the probabilistic face of
+the σ-finite Radon–Nikodym package. -/
+theorem condExp_ae_eq_signed_rnDeriv {hm : m ≤ m₀} [SigmaFinite (ρ.trim hm)]
+    {f : β → ℝ} (hf : Integrable f ρ) :
+    SignedMeasure.rnDeriv ((ρ.withDensityᵥ f).trim hm) (ρ.trim hm) =ᵐ[ρ] ρ[f|m] :=
+  rnDeriv_ae_eq_condExp hf
+
+end ConditionalExpectation
 
 end LebesgueRadonNikodym

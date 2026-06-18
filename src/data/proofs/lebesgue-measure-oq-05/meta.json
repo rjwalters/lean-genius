@@ -2,7 +2,7 @@
   "id": "lebesgue-measure-oq-05",
   "title": "Radon–Nikodym Theorem for σ-finite Measures",
   "slug": "lebesgue-measure-oq-05",
-  "description": "The classical Radon–Nikodym package for σ-finite measures, extended with an elementary calculus of densities. For μ ≪ ν with both σ-finite there is a measurable density f with μ = ν.withDensity f (the Radon–Nikodym derivative), unique ν-a.e., satisfying ∫⁻_s f dν = μ s, and yielding the general Lebesgue decomposition μ = μ.singularPart ν + ν.withDensity (dμ/dν). The derivatives obey the chain rule (dμ/dν)·(dν/dλ) = dμ/dλ (λ-a.e.), the self-law dμ/dμ = 1 (μ-a.e.), and the reciprocal law (dμ/dν)·(dν/dμ) = 1 (μ-a.e.) for μ ≪ ν.",
+  "description": "The classical Radon–Nikodym package for σ-finite measures, extended with an elementary calculus of densities. For μ ≪ ν with both σ-finite there is a measurable density f with μ = ν.withDensity f (the Radon–Nikodym derivative), unique ν-a.e., satisfying ∫⁻_s f dν = μ s, and yielding the general Lebesgue decomposition μ = μ.singularPart ν + ν.withDensity (dμ/dν). The derivatives obey the chain rule (dμ/dν)·(dν/dλ) = dμ/dλ (λ-a.e.), the self-law dμ/dμ = 1 (μ-a.e.), and the reciprocal law (dμ/dν)·(dν/dμ) = 1 (μ-a.e.) for μ ≪ ν. The density's pointwise regularity is recorded — finiteness (dμ/dν < ∞, ν-a.e.), positivity (0 < dμ/dν, μ-a.e. for μ ≪ ν), and the pointwise inverse law (dμ/dν)⁻¹ = dν/dμ (μ-a.e.) — and the conditional expectation E[f|m] is identified, μ-a.e., with the signed Radon–Nikodym derivative of the f-weighted measure trimmed to the sub-σ-algebra m, placing conditioning inside the same calculus.",
   "meta": {
     "author": "Radon (1913), Nikodym (1930)",
     "date": "2026",
@@ -19,7 +19,7 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 132,
+    "lineCount": 202,
     "assumptions": "0 axioms, 0 sorries; kernel-checked at Mathlib 4.26.0 (docker-build green, Built Proofs.LebesgueMeasureOQ05). All ten results are obtained by assembling Mathlib's Lebesgue-decomposition / Radon–Nikodym API (Measure.measurable_rnDeriv, Measure.withDensity_rnDeriv_eq, Measure.rnDeriv_withDensity, Measure.haveLebesgueDecomposition_add, withDensity_apply, Measure.rnDeriv_mul_rnDeriv, Measure.rnDeriv_self); the SigmaFinite instances supply HaveLebesgueDecomposition automatically. This is a formalization entry: the mathematics is classical and already in Mathlib; the contribution is a clean, self-contained σ-finite package plus the derived calculus-of-densities corollaries (chain rule, self-derivative, reciprocal relation) for the gallery.",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
@@ -28,7 +28,7 @@
       "ν-a.e. uniqueness of the density derived from Measure.rnDeriv_withDensity",
       "An elementary calculus of densities: the chain rule (dμ/dν)·(dν/dλ) = dμ/dλ, the self-derivative dμ/dμ = 1, and — derived from these by specialising the chain rule at λ = μ — the reciprocal relation (dμ/dν)·(dν/dμ) = 1 (μ-a.e.)"
     ],
-    "theoremCount": 10,
+    "theoremCount": 15,
     "definitionCount": 0
   },
   "overview": {
@@ -107,12 +107,12 @@
       "endLine": 131,
       "summary": "rnDeriv_chain ((dμ/dν)·(dν/dλ) = dμ/dλ, λ-a.e.), rnDeriv_self_ae_one (dμ/dμ = 1, μ-a.e.), and rnDeriv_mul_symm_ae_one ((dμ/dν)·(dν/dμ) = 1, μ-a.e. for μ ≪ ν).",
       "mathContext": "The Radon–Nikodym derivative composes multiplicatively (chain rule, Measure.rnDeriv_mul_rnDeriv), has constant value 1 against its own base measure (Measure.rnDeriv_self), and therefore satisfies a reciprocal law $(d\\mu/d\\nu)(d\\nu/d\\mu) = 1$ — the chain rule at $\\lambda = \\mu$ composed with the self-derivative."
-    }
+    },
+    "Pointwise Regularity and Conditional Expectation as a Density"
   ],
   "conclusion": {
-    "summary": "The σ-finite Radon–Nikodym theorem and the general Lebesgue decomposition are assembled from Mathlib's HaveLebesgueDecomposition theory: existence of a measurable density, the canonical Radon–Nikodym derivative as witness, the integral characterization ∫⁻_s (dμ/dν) dν = μ s, ν-a.e. uniqueness, and the decomposition μ = μ.singularPart ν + ν.withDensity (dμ/dν). A calculus of densities is then derived: the chain rule (dμ/dν)·(dν/dλ) = dμ/dλ (λ-a.e.), the self-derivative dμ/dμ = 1 (μ-a.e.), and the reciprocal relation (dμ/dν)·(dν/dμ) = 1 (μ-a.e.) for μ ≪ ν.",
+    "summary": "The σ-finite Radon–Nikodym theorem and the general Lebesgue decomposition are assembled from Mathlib's HaveLebesgueDecomposition theory: existence of a measurable density, the canonical Radon–Nikodym derivative as witness, the integral characterization ∫⁻_s (dμ/dν) dν = μ s, ν-a.e. uniqueness, and the decomposition μ = μ.singularPart ν + ν.withDensity (dμ/dν). A calculus of densities is then derived: the chain rule (dμ/dν)·(dν/dλ) = dμ/dλ (λ-a.e.), the self-derivative dμ/dμ = 1 (μ-a.e.), and the reciprocal relation (dμ/dν)·(dν/dμ) = 1 (μ-a.e.) for μ ≪ ν. Finally the density's basic regularity (finiteness, positivity, pointwise inverse) and the identification of conditional expectation E[f|m] with a signed Radon–Nikodym derivative (Mathlib's rnDeriv_ae_eq_condExp) round out the package.",
     "openQuestions": [
-      "Connect this package to conditional expectation: identify E[X | 𝒢] with a Radon–Nikodym derivative of the signed measure A ↦ ∫_A X dμ restricted to the sub-σ-algebra 𝒢.",
       "Extend the reciprocal relation to a full inverse-density statement under mutual absolute continuity (μ ≪ ν and ν ≪ μ), and derive the change-of-variables formula ∫ f dμ = ∫ f·(dμ/dν) dν for integrable f."
     ],
     "implications": "The Radon–Nikodym derivative underlies conditional expectation, probability densities, likelihood ratios in statistics, and the change-of-measure formulas (Girsanov) of stochastic analysis. Stating the σ-finite package cleanly makes these downstream uses directly citable in the gallery."
@@ -143,9 +143,9 @@
       "Mathlib"
     ],
     "namespace": "LebesgueRadonNikodym",
-    "lineCount": 132,
+    "lineCount": 202,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 15,
     "definitionCount": 0,
     "path": "Proofs/LebesgueMeasureOQ05.lean",
     "sorries": 0
