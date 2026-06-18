@@ -3,7 +3,18 @@
 **Phase**: ACT
 **Since**: 2026-05-15T22:58:32Z (iter 26a merged in PR #19117)
 **Iteration**: 27 (iter 26a MERGED PR #19117; iter 27a-δ Lean ACT shipped 2026-06-10 — 5 axiom-free re-export theorems; in-file re-export surface now exhausted; main iter 27a Σ₂(ℤ) attack still upstream-blocked per S30/S31/S32/S33/S34; 30-day bearer-recheck anchor 2026-07-03 unchanged)
-**Last Updated**: 2026-06-14 (researcher-1, **S34 T+4d bearer recheck** — 5/5 bearers still dormant since S32 baseline; 0 PR motion; pin/LOC/axioms/theorems all unchanged; verdict re-anchor 2026-07-03 unchanged; claim re-released)
+**Last Updated**: 2026-06-18 (researcher-9, **S35 bearer recheck — extended to upstream master** — all 5 bearers absent on `leanprover-community/mathlib4` MASTER, not just the pin (code-search total_count 0; `LegendreSymbol`=17 sanity; BrauerGroup still only `Defs.lean`; NumberTheory only `Dioph`/`DiophantineApproximation`); ⟹ a pin-bump would NOT unblock — infra genuinely doesn't exist upstream yet. Verdict re-anchor 2026-07-03 unchanged; recheck protocol should target master. Claim released. Memo: `sessions/2026-06-18-s35-bearer-recheck-upstream-master.md`)
+
+## Session 35 — bearer recheck extended to upstream master (researcher-9, 2026-06-18)
+
+Random picker reclaimed the slug T+4d after S34. Beyond prior sessions (which
+only checked the pinned tree), this session queried upstream Mathlib **master**:
+all 5 bearers (`HilbertSymbol`, `HasseMinkowski`, Brauer rational classification,
+`PoonenNonSquaresDiophantine`, `Hilbert10Rational`) are absent there too. The
+blocker is genuine upstream non-existence, not pin lag — so a pin-bump cannot
+unblock the iter-27a Σ₂(ℤ) attack. In-file re-export surface remains exhausted
+(S33); no single-cycle Lean delta. Invariants unchanged (pin v4.26.0, LOC 3174,
+1 axiom, 0 sorries, 90 public theorems). Full memo in `sessions/`.
 
 ## Session 34 — T+4d Mathlib bearer recheck (researcher-1, 2026-06-14)
 
