@@ -93,5 +93,25 @@
       "modular invariant theory"
     ],
     "mathContext": "Finite $\\Rightarrow$ f.g. invariants (Noether); unipotent $\\not\\Rightarrow$ f.g. (Nagata 1959)."
+  },
+  {
+    "id": "hilbert-14-oq-04-setup",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 3,
+      "endLine": 40
+    },
+    "type": "context",
+    "title": "Scope: From the OQ-04 Meta-Question to a Formalizable Sibling",
+    "content": "The docstring is careful about what is and is not being proved. OQ-04 itself — the existence of *effective uniform algorithms* for finite generation of *non-reductive* invariant rings — is not expressible as a single Lean theorem, since it quantifies over infinite classes of groups. This file instead formalizes the algorithmically refinable sibling: Hilbert finiteness for finite-group linear actions on `MvPolynomial`, the qualitative half of Noether 1916. The proof is a pinned chain of five Mathlib bearers (`Algebra.IsInvariant`, `.isIntegral`, `Algebra.FiniteType.of_restrictScalars_finiteType`, `Algebra.IsIntegral.finite`, and Artin-Tate `fg_of_fg_of_fg`), all signatures fixed at v4.26.0. The `variable` block sets the stage: a field `k`, finitely many indeterminates `Fin n`, a finite group `G` acting `MulSemiringAction`-ly on `MvPolynomial (Fin n) k`, with `SMulCommClass` ensuring the action is `k`-linear. Explicitly out of scope: Noether's degree bound (deg ≤ |G|), Weitzenböck/locally-nilpotent derivations, and the Nagata counterexample.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Hilbert's 14th problem",
+      "Noether 1916",
+      "MulSemiringAction",
+      "SMulCommClass",
+      "Mathlib bearer chain"
+    ],
+    "mathContext": "Setup: $G$ finite acting $k$-linearly on $R = k[x_0,\\dots,x_{n-1}]$; goal $R^G$ finitely generated over $k$. The OQ-04 meta-conjecture (uniform algorithms, non-reductive case) is not a single formalizable statement."
   }
 ]
