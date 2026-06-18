@@ -34,12 +34,15 @@ The argument is elementary: the two centres have a unique common neighbour `x` (
 applied to `c ≠ c'`); any vertex other than `c`, `c'` is adjacent to both centres (universality),
 hence is a common neighbour of `c` and `c'`, hence equals `x`.
 
+* `universal_unique_of_infinite` — the OQ-04 specialization: an *infinite* friendship graph has at
+  most one universal vertex (since `Nat.card V = 0 ≠ 3`). Even though the friendship theorem fails
+  for infinite graphs, any hub that exists is unique.
+
 ## Status
 
-ORPHAN, build-pending: not registered in `Proofs.lean`, no gallery entry — so no false "green".
-Names checked against the offline Mathlib checkout at the pinned revision
-(`leanprover-community/mathlib4` @ `2df2f0150c`, Lean `v4.26.0`); a Docker build is still required
-to confirm it compiles. 0 sorries, 0 axioms by construction.
+Registered in `Proofs.lean` and Docker build-verified (2026-06-18, 7746 jobs green).
+0 sorries, 0 axioms by construction; `#print axioms` reports only Mathlib's standard
+`propext` / `Classical.choice` / `Quot.sound`.
 -/
 
 namespace FriendshipTheoremOQ04
@@ -109,5 +112,17 @@ theorem universal_unique_of_card_ne_three (hF : IsFriendshipGraph G)
     c = c' := by
   by_contra hne
   exact hcard (nat_card_eq_three_of_two_universal hF hc hc' hne)
+
+/-- **An infinite friendship graph has at most one universal vertex.** Specializing
+`universal_unique_of_card_ne_three` to the infinite case: when `V` is infinite, `Nat.card V = 0 ≠ 3`,
+so the windmill hub — if it exists — is unique. This is the on-topic OQ-04 takeaway: even though the
+friendship theorem itself *fails* for infinite graphs (no hub is forced), whenever a hub does exist
+in an infinite friendship graph it is the only one. -/
+theorem universal_unique_of_infinite [Infinite V] (hF : IsFriendshipGraph G)
+    {c c' : V} (hc : FriendshipTheorem.IsUniversalVertex G c)
+    (hc' : FriendshipTheorem.IsUniversalVertex G c') :
+    c = c' :=
+  universal_unique_of_card_ne_three hF
+    (by rw [Nat.card_eq_zero_of_infinite]; decide) hc hc'
 
 end FriendshipTheoremOQ04
