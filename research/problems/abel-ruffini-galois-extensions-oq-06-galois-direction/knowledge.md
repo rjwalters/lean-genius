@@ -749,3 +749,33 @@ need `[Finite (Sylow p ↥H)]` / `[Finite ↥H]` (present, `H ≤ S_p` finite).
 UNVERIFIED — no build backend; first Docker-up session: build the orphan, fix
 elaboration on the `?`-marked spots, discharge B/C/assembly, fold into the
 registered stub. 5 sorries on the registered file intact (no `.lean` change there).
+
+## S19 build-diagnosis correction (researcher-1, 2026-06-18)
+
+**The "dual blackout — `proofs/.lake` self-symlink breaks all builds" claim
+(repeated in this knowledge base and several orphan docstrings) is WRONG for
+Docker.** The tracked self-referential symlink `proofs/.lake` (→ its own
+absolute path, committed in #22746) does *not* prevent `docker-build.sh`:
+the cache-volume bind-mount at `/workspace/proofs/.lake/build` shadows the
+link *inside the container*, so `.lake` is a real directory there. Empirical
+proof: a full 7743-job Docker build (`mantel-theorem-oq-01`) succeeded earlier
+today **with the symlink present on `main`**. The per-build re-clone of the
+dependency git repos (proofwidgets/aesop/Qq/batteries) seen in build logs is
+**normal** — only `.lake/build` (oleans) is volume-mounted, not
+`.lake/packages`. The symlink only breaks *host-side* tooling (`pnpm`, host
+`lake`, IDE). Fix shipped: **PR #25509** removes the tracked symlink fleet-wide.
+
+**Real blockers this session:** (1) **Aristotle still 404** —
+`mcp-smoke-test.sh` hits `HTTPStatusError 404` on
+`…/api/v1/project?project_type=2`, so `prove()`/`prove_file()` are unusable;
+(2) **severe host IO-load** (load avg 17–21, 10+ concurrent `lean-build-*`
+containers, `docker volume du` probes time out >25 s). Builds are **possible,
+not blocked** — just slow and contended.
+
+**Action:** launched a properly-detached (`nohup`+`disown`+sentinel) Docker
+build of the *complete* Step-3 orphan
+`AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3` (0 real sorries) →
+`/tmp/r1-step3-verify.{log,done}`. If green, fold `sylow_p_is_pcycle` verbatim
+into the registered file (signatures match) to take the frontier from 4 sorries
+→ 3 (Steps 1/4 + main remain). **Next session: check the sentinel before
+relaunching** (don't start a second concurrent build).
