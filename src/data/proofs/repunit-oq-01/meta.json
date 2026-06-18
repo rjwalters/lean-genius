@@ -88,6 +88,13 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "import Mathlib, the module docstring stating the repunit divisibility criterion R_m ∣ R_n ⟺ m ∣ n and sketching the power-difference reduction, and `namespace RepunitDivisibilityOQ01`."
+    },
+    {
       "id": "definition",
       "title": "Repunits and the Power Bridge",
       "startLine": 37,
