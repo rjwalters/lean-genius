@@ -2,12 +2,12 @@
   "id": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
   "title": "Pólya Enumeration via Cyclic Group Actions",
   "slug": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
-  "description": "Formalizes Burnside's lemma and Pólya's enumeration theorem for cyclic groups acting on bead necklaces. Proves 6 binary necklaces of length 4 via Burnside, verifies the Pólya formula n·|Necklaces(n,2)| = Σ_{d|n} φ(d)·2^{n/d} for n=2,3,4,6, and explicitly computes necklace counts for n=1–6. Key insight: using ZMod n → Fin k colorings gives a clean axiom-free group action via ZMod subtraction. General Pólya theorem now fully proved (0 sorries).",
+  "description": "Formalizes Burnside's lemma and Pólya's enumeration theorem for cyclic groups acting on bead necklaces. Proves 6 binary necklaces of length 4 via Burnside, verifies the Pólya formula n·|Necklaces(n,2)| = Σ_{d|n} φ(d)·2^{n/d} for n=2,3,4,6, and explicitly computes necklace counts for n=1–6. Key insight: using ZMod n → Fin k colorings gives a clean axiom-free group action via ZMod subtraction. General Pólya theorem now fully proved (0 sorries); the concrete fixed-point/totient/necklace-count values are discharged by native_decide (relies on Lean.ofReduceBool).",
   "meta": {
     "author": "G. Pólya (1937); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/P%C3%B3lya_enumeration_theorem",
     "date": "1937",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean",
     "dateAdded": "2026-04-04",
     "tags": [
@@ -21,12 +21,13 @@
       "zmod",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "theoremCount": 30,
     "defCount": 5,
     "lineCount": 507,
+    "assumptions": "Lean.ofReduceBool. The advertised concrete deliverables — fixed-point cardinalities fix_1/2/3_card (Part II), the totient values totient_1..6 (Part IV), and the explicit necklace counts necklaces_2/3/5/6_2 (necklaceCount n 2 = value, derived via necklace_via_burnside with native_decide fixed-point arguments), plus necklaceSeq_matches — are discharged by native_decide, which trusts compiler kernel reduction and so depends on the Lean.ofReduceBool axiom (#print axioms lists it). No literal `axiom` declarations exist, so leanFile.axiomCount stays 0. The general Burnside reduction and the general polya_enumeration_theorem_CN are native_decide-free; the ZMod-subtraction group action is genuinely axiom-free as described.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -154,7 +155,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified formalization proving 30 theorems (0 sorries) from 0 axioms. Burnside's lemma is used to count necklaces; the Pólya divisor-sum formula is verified for small n and proved in general via Burnside + cycle structure (from BurnsideCountingOQ03) + totient grouping.",
+    "summary": "Formalization proving 30 theorems (0 sorries). Burnside's lemma is used to count necklaces; the Pólya divisor-sum formula is verified for small n and proved in general via Burnside + cycle structure (from BurnsideCountingOQ03) + totient grouping. The concrete fixed-point/totient/necklace-count values are discharged by native_decide (relies on Lean.ofReduceBool); the general theorems are native_decide-free.",
     "implications": "Pólya's enumeration theorem is the foundational tool for counting combinatorial objects up to symmetry. The formalization demonstrates that Burnside's lemma from Mathlib is powerful enough to count necklaces concretely, and that ZMod-indexed colorings provide a particularly clean Lean 4 approach. The cycle structure theorem (each rotation by r has gcd(r,n) orbits on n positions) is the key missing ingredient for the general theorem — it connects the abstract Burnside sum to the totient-weighted divisor sum. The sequence [2,3,4,6,8,14] (binary necklaces for n=1–6) appears in OEIS A000029 and has applications in chemistry (molecular isomers), music theory (necklace rhythms), and coding theory (cyclic codes).",
     "openQuestions": [
       "Extend to arbitrary finite groups: Pólya's theorem for non-cyclic groups (e.g., dihedral groups $D_n$ for unoriented necklaces) requires the full cycle index formalism beyond the cyclic case formalized here.",
