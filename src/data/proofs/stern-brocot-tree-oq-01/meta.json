@@ -161,7 +161,23 @@
       "Formalize the Stern diatomic sequence and the Calkin–Wilf tree, and prove the bijection identifying their orderings with the Stern–Brocot one."
     ]
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "proofId": "denumerability-rationals",
+      "relationship": "sharpens",
+      "description": "Denumerability of the Rationals (Wiedijk #3) establishes the *existence* of a bijection $\\mathbb{N} \\leftrightarrow \\mathbb{Q}$ abstractly, via Mathlib's `Denumerable` typeclass and Cantor's pairing — it answers \"are the rationals countable?\" but produces no canonical, computable enumeration. The Stern–Brocot bijection sharpens this: `sb_bijection` is an *explicit, constructive, order-theoretic* enumeration of $\\mathbb{Q}^{+}$ in which every positive rational appears exactly once, automatically in lowest terms (`sb_isCoprime`), addressed by a finite L/R path. Where `denumerability-rationals` proves a cardinality fact, this entry exhibits the witnessing function and proves it bijective from scratch (Mathlib has no Stern–Brocot, mediant, or Farey development). The two are complementary: the abstract countability result and its sharpest concrete realization on the positive rationals."
+    },
+    {
+      "proofId": "bezout-identity",
+      "relationship": "applies",
+      "description": "Bézout's Identity (Wiedijk #60) proves the coprimality characterization $\\gcd(a,b)=1 \\iff \\exists\\,x,y.\\ ax+by=1$. This entry's `sb_isCoprime` is a direct application of exactly that direction: the unimodular invariant `sb_det` ($a_L b_R - a_R b_L = -1$, preserved by both moves) hands an *explicit* Bézout witness $(-b_R)\\cdot\\mathrm{num} + a_R\\cdot\\mathrm{den} = 1$ for the label $\\mathrm{num}/\\mathrm{den}$, from which `IsCoprime (sbNum p) (sbDen p)` follows immediately. Lowest-terms-ness here is not checked after the fact but is built into the tree's algebraic structure, with the Bézout coefficients read straight off the boundary fractions — a concrete instance of the coprimality-via-linear-combination principle that `bezout-identity` formalizes in general."
+    },
+    {
+      "proofId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "The GCD Algorithm entry formalizes the Euclidean recurrence $\\gcd(a,b)=\\gcd(b,a\\bmod b)$. The Stern–Brocot tree is the same algorithm read off as a path: `sb_surjective` proves every reduced $a/b$ labels some node by strong induction on $a+b$ via *subtractive Euclidean descent* — each left move corresponds to subtracting the numerator from the denominator and each right move the reverse, so the L/R path addressing $a/b$ records the run of the subtractive Euclidean algorithm (and, blocked by runs, the continued-fraction partial quotients of $a/b$). Injectivity (`sb_injective`) then recovers each move from the sign of $\\mathrm{num}-\\mathrm{den}$, mirroring how the Euclidean step is determined by comparing the two arguments. The tree thus gives a bijective, geometric packaging of the descent that `gcd-algorithm` states arithmetically."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
