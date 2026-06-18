@@ -58,11 +58,11 @@ theorem even_of_sq_even (n : ℤ) (h : Even (n^2)) : Even n := by
   -- We prove by contradiction: assume n is odd
   by_contra h_not_even
   -- Since n is not even, n is odd
-  have h_odd : Odd n := Int.odd_iff_not_even.mpr h_not_even
+  have h_odd : Odd n := Int.not_even_iff_odd.mp h_not_even
   -- If n is odd, then n² is also odd
   have h_sq_odd : Odd (n^2) := Odd.pow h_odd
   -- But we assumed n² is even - contradiction!
-  exact absurd h (Int.odd_iff_not_even.mp h_sq_odd)
+  exact absurd h (Int.not_even_iff_odd.mpr h_sq_odd)
 
 /-- The square of an even number is divisible by 4 -/
 theorem sq_even_div_four (n : ℤ) (h : Even n) : 4 ∣ n^2 := by
@@ -176,12 +176,23 @@ theorem irrational_sqrt_five : Irrational (Real.sqrt 5) := by
   rw [h]
   exact Nat.Prime.irrational_sqrt (Nat.prime_five)
 
+/-- A perfect-square root of `n` cannot exceed `n` (for `n > 0`), so a non-square
+    is certified by checking the finitely many candidate roots `r ≤ n`.
+
+    This routes around `Nat.sqrt`: the bounded quantifier `∀ r < n + 1, n ≠ r * r`
+    reduces in the kernel via `Nat.decidableBallLT`, so `decide` discharges it
+    *without* `native_decide` and hence without the `Lean.ofReduceBool` axiom. -/
+private lemma not_isSquare_of_check {n : ℕ} (hn : 0 < n)
+    (h : ∀ r < n + 1, n ≠ r * r) : ¬ IsSquare n := by
+  rintro ⟨r, hr⟩
+  exact h r (Nat.lt_succ_of_le (Nat.le_of_dvd hn ⟨r, hr⟩)) hr
+
 /-- **Irrationality of √6**
 
     6 = 2 · 3. Both 2 and 3 appear to multiplicity 1 (odd).
     The same argument applies: √6 is irrational. -/
 theorem irrational_sqrt_six : Irrational (Real.sqrt 6) := by
-  have : ¬ IsSquare (6 : ℕ) := by native_decide
+  have : ¬ IsSquare (6 : ℕ) := not_isSquare_of_check (by norm_num) (by decide)
   exact irrational_sqrt_natCast_iff.mpr this
 
 /-- **Irrationality of √7**
@@ -207,11 +218,11 @@ theorem irrational_sqrt_of_not_square (n : ℕ) (hns : ¬ IsSquare n) :
   exact irrational_sqrt_natCast_iff.mpr hns
 
 /-- Not a perfect square: 2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, ... -/
-example : ¬ IsSquare (2 : ℕ) := by native_decide
-example : ¬ IsSquare (3 : ℕ) := by native_decide
-example : ¬ IsSquare (5 : ℕ) := by native_decide
-example : ¬ IsSquare (6 : ℕ) := by native_decide
-example : ¬ IsSquare (7 : ℕ) := by native_decide
+example : ¬ IsSquare (2 : ℕ) := not_isSquare_of_check (by norm_num) (by decide)
+example : ¬ IsSquare (3 : ℕ) := not_isSquare_of_check (by norm_num) (by decide)
+example : ¬ IsSquare (5 : ℕ) := not_isSquare_of_check (by norm_num) (by decide)
+example : ¬ IsSquare (6 : ℕ) := not_isSquare_of_check (by norm_num) (by decide)
+example : ¬ IsSquare (7 : ℕ) := not_isSquare_of_check (by norm_num) (by decide)
 
 /-- Perfect squares: 1, 4, 9, 16, 25, ... have rational square roots -/
 example : IsSquare (1 : ℕ) := ⟨1, by ring⟩
