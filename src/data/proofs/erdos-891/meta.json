@@ -7,7 +7,7 @@
     "author": "Erdős-Selfridge (1967 problem), Schinzel (partial result)",
     "sourceUrl": "https://erdosproblems.com/891",
     "date": "1967",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos891Problem.lean",
     "tags": [
       "erdos",
@@ -18,7 +18,7 @@
       "intervals",
       "open"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 891,
     "erdosUrl": "https://erdosproblems.com/891",
@@ -64,9 +64,9 @@
       "nthPrime_zero/one/two/three/four_val: concrete values nthPrime k for k=0..4",
       "primorial_eq_primorialComp: bridges noncomputable primorial to computable primorialComp for k≤5"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 439,
-    "assumptions": "",
+    "assumptions": "Relies on `Lean.ofReduceBool`: the concrete prime-factor-count deliverables (bigOmega_eight/twelve/eighteen/twenty/twentyfour/twentyseven/zero = Ω(8),Ω(12),Ω(18),Ω(20),Ω(24),Ω(27),Ω(0); k2_fails_small; k2_verified_range; example_interval_100; twelve_is_3smooth) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so depends on the `Lean.ofReduceBool` axiom rather than being fully kernel-checked. The remaining theorems are axiom-free. `leanFile.axiomCount` stays 0 since there are no literal `axiom` declarations; `meta.axiomCount` is 1 to disclose `Lean.ofReduceBool`.",
     "theoremCount": 30,
     "definitionCount": 11
   },
