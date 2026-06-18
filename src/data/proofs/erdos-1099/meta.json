@@ -80,7 +80,8 @@
       "**Bad Examples - Primes:** For prime p, h_α(p) = (p-1)^α → ∞. Primes have the worst divisor gaps.",
       "**Bad Examples - Powers of 2:** For 2^k, all k ratios equal 2, so h_α(2^k) = k → ∞ linearly.",
       "**Vose's Construction:** There exist n with τ(n) divisors all within ratio (1 + c/τ) of each other, giving h_α ≈ τ · (c/τ)^α → 0.",
-      "**Open Questions:** Whether n! or lcm{1,...,n} have bounded h_α remains unknown despite being natural candidates."
+      "**Open Questions:** Whether n! or lcm{1,...,n} have bounded h_α remains unknown despite being natural candidates.",
+      "**What is actually formalized:** The proved theorems (erdos_1099, vose_liminf_bounded) omit the ∀N quantifier and are satisfied by the trivial constant witness n=2 (h_α(2)=1), whose ratio is computed by native_decide — hence the single Lean.ofReduceBool axiom. The full-strength Vose statement (arbitrarily large n with bounded h_α) is stated honestly as the unproved def erdos_1099_strong_liminf, leaving the genuine construction as future work."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
