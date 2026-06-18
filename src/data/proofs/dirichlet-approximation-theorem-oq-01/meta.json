@@ -1,0 +1,153 @@
+{
+  "id": "dirichlet-approximation-theorem-oq-01",
+  "title": "Dirichlet's Approximation Theorem — Infinitude of Good Approximations",
+  "slug": "dirichlet-approximation-theorem-oq-01",
+  "description": "An open-question follow-up to Dirichlet's approximation theorem: upgrade the one-shot pigeonhole bound (for each Q there is a denominator q ≤ Q with |qα − p| < 1/Q) to the infinitude statement — every irrational α admits infinitely many rationals p/q with |α − p/q| < 1/q². The result is proved self-contained by bootstrapping the gallery's own from-scratch pigeonhole base theorem, not by wrapping Mathlib's infinitude theorem.",
+  "meta": {
+    "author": "Peter Gustav Lejeune Dirichlet (1842); Lean 4 formalization by Lean Genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_approximation_theorem",
+    "date": "1842",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DirichletApproximationOQ01.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-approximation",
+      "pigeonhole-principle",
+      "rational-approximation",
+      "irrational-numbers",
+      "infinitude",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Rat.den_dvd",
+        "description": "The reduced denominator of a quotient a/.b divides b. Used to show that reducing p/q to lowest terms only shrinks the denominator, so r.den ≤ q.",
+        "module": "Mathlib.Data.Rat.Lemmas"
+      },
+      {
+        "theorem": "Rat.intCast_div_eq_divInt",
+        "description": "Bridges the field quotient (↑p / ↑q : ℚ) with the constructor p /. q, letting Rat.den_dvd apply to our candidate rational p/q.",
+        "module": "Mathlib.Data.Rat.Defs"
+      },
+      {
+        "theorem": "Set.exists_min_image",
+        "description": "A finite nonempty set has an element minimising a given real-valued function. Supplies the closest approximation among a (hypothetically finite) set of good approximations, which the bootstrap then contradicts.",
+        "module": "Mathlib.Data.Set.Finite.Lemmas"
+      },
+      {
+        "theorem": "Set.finite_or_infinite",
+        "description": "Every set is finite or infinite; the proof resolves the infinitude goal by ruling out finiteness.",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Irrational.ne_rat",
+        "description": "An irrational real is unequal to every rational, so |α − q| > 0 for each rational q — the strict positivity that the Archimedean step amplifies.",
+        "module": "Mathlib.NumberTheory.Real.Irrational"
+      },
+      {
+        "theorem": "exists_nat_gt",
+        "description": "The Archimedean property: a natural number exceeds any given real. Chooses a denominator scale Q large enough to beat the current best approximation.",
+        "module": "Mathlib.Algebra.Order.Archimedean.Basic"
+      }
+    ],
+    "originalContributions": [
+      "A self-contained Lean derivation of the infinitude of good rational approximations directly from the gallery's own pigeonhole base theorem DirichletApproximation.dirichlet_approximation — not a wrapper around Mathlib's Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational",
+      "exists_rat_lt: a rational repackaging of the one-shot bound, turning the base theorem's integer witnesses (p, q) into a reduced fraction r = p/q with r.den ≤ n and |α − r| < 1/(n·r.den), the denominator bound obtained via Rat.den_dvd",
+      "exists_better: the classical bootstrap — for any current rational q and irrational α, the Archimedean property feeds a large scale n into exists_rat_lt to produce a strictly closer good approximation q' with |α − q'| < 1/q'.den² and |α − q'| < |α − q|",
+      "infinite_good_rational_approximations: the infinitude conclusion, obtained by ruling out finiteness — a finite set of good approximations would have a closest element, which exists_better strictly improves, a contradiction"
+    ],
+    "dateAdded": "2026-06-18",
+    "relatedProblems": [
+      {
+        "id": "dirichlet-approximation-theorem",
+        "relationship": "Direct parent: this entry answers the first open question of the base entry by upgrading its one-shot pigeonhole bound to the full Dirichlet infinitude statement."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 141,
+    "assumptions": "0 axioms, 0 sorries. The only hypothesis is that α is irrational (required: a rational ξ has only finitely many good approximations). The result itself is classical (Dirichlet, 1842) and also available in Mathlib as Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational; the contribution is the self-contained re-derivation from the gallery's pigeonhole base theorem rather than a citation of Mathlib's version. Every lemma and the main theorem are fully machine-checked.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Dirichlet's 1842 approximation theorem comes in two flavours. The one-shot form fixes a bound Q and guarantees a single good approximation with denominator at most Q. The infinitude form — the subject of this entry — drops the bound and asserts that every irrational number is approximated infinitely often to order 1/q². The infinitude form is what makes Diophantine approximation a theory rather than a single estimate: it is the input to the theory of continued fractions, to Liouville's transcendence criterion, and to Hurwitz's sharpening (the constant 1/√5). The classical derivation, reproduced here, is a two-line idea once the one-shot bound is available: if only finitely many good approximations existed, one of them would be closest, but the one-shot bound — applied at a fine enough scale — always manufactures a strictly closer one.",
+    "problemStatement": "Let $\\alpha$ be an irrational real number. Then the set of rationals $r$ with\n\n$$\\left|\\alpha - r\\right| < \\frac{1}{(\\operatorname{den} r)^2}$$\n\nis infinite. Equivalently, there are infinitely many fractions $p/q$ in lowest terms with $|\\alpha - p/q| < 1/q^2$.",
+    "text": "Starting from the gallery's from-scratch pigeonhole theorem (for every Q there is a denominator q ≤ Q with |qα − p| < 1/Q), we bootstrap to infinitude: every irrational α has infinitely many rationals approximating it to order 1/q². The engine is the observation that a closest good approximation cannot exist, because the one-shot bound at a large enough scale always produces a strictly closer one.",
+    "proofStrategy": "The argument re-runs Mathlib's classical chain but feeds it from our pigeonhole base theorem rather than Mathlib's own Dirichlet lemma.\n\n(1) `exists_rat_lt` converts the base theorem into rational form. Applying `DirichletApproximation.dirichlet_approximation` with Q = n yields p, q with 1 ≤ q ≤ n and |qα − p| < 1/n. Set r = p/q. Then |α − r| = |qα − p|/q < 1/(n·q), and since the reduced denominator r.den divides q (via `Rat.den_dvd`), we have r.den ≤ q ≤ n and 1/(n·q) ≤ 1/(n·r.den), giving |α − r| < 1/(n·r.den).\n\n(2) `exists_better` is the bootstrap. Given a current rational q and irrational α, |α − q| > 0 (`Irrational.ne_rat`). Pick a natural m exceeding 1/|α − q| (`exists_nat_gt`) and apply `exists_rat_lt` at scale m to get q' with q'.den ≤ m and |α − q'| < 1/(m·q'.den). Two consequences: 1/(m·q'.den) ≤ 1/q'.den² (since q'.den ≤ m), so q' is a good approximation; and 1/(m·q'.den) ≤ 1/m < |α − q|, so q' is strictly closer.\n\n(3) `infinite_good_rational_approximations` concludes. If the set of good approximations were finite, it would be nonempty (⌊α⌋ qualifies, with denominator 1 and error < 1) and would therefore have a closest element q (`Set.exists_min_image`). But `exists_better` produces a good approximation strictly closer than q — contradicting minimality. Hence the set is infinite.",
+    "keyInsights": [
+      "**Infinitude is a bootstrap, not a new idea**: once the one-shot bound is available at every scale, infinitude is automatic — a closest good approximation cannot exist because a finer scale always beats it. The entire content is packaged in the base theorem; this entry is the amplification step",
+      "**Reducing to lowest terms only helps**: the one-shot witness p/q has denominator q, but its reduced form has denominator r.den ≤ q (Rat.den_dvd), and a smaller denominator makes the target bound 1/r.den² *larger* — so the good-approximation inequality survives reduction for free",
+      "**The Archimedean property turns 'positive distance' into 'beatable distance'**: irrationality gives |α − q| > 0, and choosing the scale m > 1/|α − q| forces the next approximation's error below 1/m < |α − q| — converting a qualitative gap into a quantitative improvement",
+      "**Finiteness is refuted by a minimiser**: the clean way to prove a set infinite is to assume it finite, extract a closest element, and exhibit a strictly closer one — sidestepping any explicit enumeration or injection from ℕ",
+      "**Self-contained from the gallery base**: the derivation deliberately avoids Mathlib's Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational and exists_rat_abs_sub_le_and_den_le, instead routing through the gallery's own pigeonhole proof, so the entry exhibits the full one-shot ⟹ infinitude pipeline rather than citing a black box"
+    ],
+    "prerequisites": [
+      "Dirichlet's one-shot approximation theorem (the gallery base entry)",
+      "The reduced denominator of a rational and the fact that it divides any representing denominator",
+      "The Archimedean property of the reals",
+      "That an irrational is unequal to every rational, hence at positive distance",
+      "Proving a set infinite by refuting the existence of a closest element"
+    ]
+  },
+  "sections": [
+    {
+      "id": "rational-form",
+      "title": "Rational Form of the One-Shot Bound",
+      "startLine": 50,
+      "endLine": 86,
+      "mathContext": "From the base theorem at scale $n$: a reduced fraction $r=p/q$ with $\\operatorname{den} r \\le n$ and $|\\alpha - r| < 1/(n\\cdot\\operatorname{den} r)$.",
+      "summary": "`exists_rat_lt` repackages DirichletApproximation.dirichlet_approximation (with Q = n) as a statement about a reduced rational r = p/q. The identity |α − p/q| = |qα − p|/q and the denominator divisibility r.den ∣ q (Rat.den_dvd, bridged by Rat.intCast_div_eq_divInt) give r.den ≤ n and |α − r| < 1/(n·r.den)."
+    },
+    {
+      "id": "bootstrap",
+      "title": "The Bootstrap: a Strictly Better Approximation Always Exists",
+      "startLine": 88,
+      "endLine": 118,
+      "mathContext": "For irrational $\\alpha$ and any rational $q$, there is $q'$ with $|\\alpha-q'| < 1/(\\operatorname{den} q')^2$ and $|\\alpha-q'| < |\\alpha-q|$.",
+      "summary": "`exists_better`: irrationality gives |α − q| > 0; the Archimedean property (exists_nat_gt) picks a scale m > 1/|α − q|; applying exists_rat_lt at m yields q' with q'.den ≤ m. Then 1/(m·q'.den) ≤ 1/q'.den² makes q' a good approximation, and 1/(m·q'.den) ≤ 1/m < |α − q| makes it strictly closer."
+    },
+    {
+      "id": "infinitude",
+      "title": "Infinitude via No Closest Approximation",
+      "startLine": 120,
+      "endLine": 139,
+      "mathContext": "$\\{r : \\mathbb{Q} \\mid |\\alpha - r| < 1/(\\operatorname{den} r)^2\\}$ is infinite.",
+      "summary": "`infinite_good_rational_approximations`: ruling out finiteness via Set.finite_or_infinite. A finite set is nonempty (⌊α⌋ has denominator 1 and error < 1) so has a closest element q (Set.exists_min_image); exists_better produces a strictly closer good approximation, contradicting minimality."
+    }
+  ],
+  "conclusion": {
+    "summary": "The infinitude form of Dirichlet's approximation theorem is formalized in Lean 4 with zero sorries and zero axioms, derived self-contained from the gallery's own pigeonhole base theorem. The pipeline is: rationalise the one-shot bound (exists_rat_lt), amplify it to a strict improvement step using the Archimedean property (exists_better), and conclude infinitude by showing no closest good approximation can exist (infinite_good_rational_approximations).",
+    "implications": "This is the statement that launches Diophantine approximation as a theory: infinitely many rationals p/q approximate each irrational to order 1/q². It underlies continued fractions, Liouville's transcendence criterion, and Hurwitz's sharpening of the constant to 1/(√5 q²). The result is classical and also lives in Mathlib (Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational); the value of this entry is the explicit one-shot ⟹ infinitude derivation from the gallery base rather than a citation.",
+    "openQuestions": [
+      "Can the constant be sharpened in Lean to Hurwitz's 1/(√5 q²), and is the √5 shown optimal via the golden ratio?",
+      "Does the same bootstrap yield the simultaneous (multi-dimensional) infinitude statement from a higher-dimensional one-shot pigeonhole bound?",
+      "Can a constructive variant produce an explicit strictly-improving sequence q₀, q₁, … of approximations (an injection ℕ ↪ good approximations), strengthening the non-constructive finiteness-refutation used here?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "dirichlet-approximation-theorem",
+      "relationship": "extends",
+      "description": "Answers the first open question of the base entry: upgrading its one-shot pigeonhole bound to the full Dirichlet infinitude statement, reusing the base theorem as the sole non-elementary input."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/DirichletApproximationOQ01.lean",
+    "imports": [
+      "Proofs.DirichletApproximation"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "DirichletApproximationOQ01",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 3
+  },
+  "sorries": 0
+}
