@@ -25,6 +25,29 @@
     ]
   },
   {
+    "id": "ann-as-oq020202-imports",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-02",
+    "range": {
+      "startLine": 43,
+      "endLine": 50
+    },
+    "type": "technique",
+    "title": "A Single Import Carries the Parent's Induction",
+    "content": "The file's entire dependency footprint is one line: `import Proofs.ArithmeticSeriesOQ02OQ02`. That parent module transitively supplies Mathlib (hence `Nat.add_choose_eq` for the standard form) and, crucially, the inductively-proven `parallel_vandermonde` together with the `simplicial` abbreviation — the two ingredients the rising form is reduced to. `open Finset` brings `range` and the antidiagonal lemmas into scope unqualified, and `open ArithmeticSeriesOQ02OQ02` exposes `parallel_vandermonde`/`simplicial` directly.\n\nThe minimalism is deliberate: rather than re-deriving the rising convolution, this file is a thin connective layer that re-packages the parent's hard-won induction next to Mathlib's ready-made standard Vandermonde, making the open question's 'connect the two' answerable in under 60 lines of real content.",
+    "mathContext": "The import graph reduces the rising form to $\\texttt{parallel\\_vandermonde}$ (ℕ-native induction) and the standard form to $\\texttt{Nat.add\\_choose\\_eq}$ — the two convolutions assembled side by side.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "module imports",
+      "parallel_vandermonde",
+      "simplicial numbers",
+      "namespace opening"
+    ],
+    "prerequisites": [
+      "Lean 4 imports and namespaces",
+      "ArithmeticSeriesOQ02OQ02 parent file"
+    ]
+  },
+  {
     "id": "ann-as-oq020202-standard",
     "proofId": "arithmetic-series-oq-02-oq-02-oq-02",
     "range": {
