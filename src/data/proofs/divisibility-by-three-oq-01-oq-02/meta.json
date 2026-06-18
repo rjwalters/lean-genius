@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Digital_root#Properties",
     "date": "Classical result, formalized 2026",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "digital-root",
@@ -17,10 +17,10 @@
       "modular-arithmetic"
     ],
     "proofRepoPath": "Proofs/DivisibilityByThreeOQ01OQ02.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "0 sorries, 0 axioms. Fully machine-checked.",
+    "axiomCount": 1,
+    "assumptions": "0 sorries, 0 explicit axiom declarations. Several load-bearing lemmas (digitSum_le_self, digitSum_modEq_9, digitSum_single, digitSum_pos) are discharged by `native_decide`, so the headline theorem iterDigitSum_converges transitively depends on the `Lean.ofReduceBool` axiom (trusting compiler kernel reduction). #print axioms iterDigitSum_converges lists Lean.ofReduceBool alongside the standard propext/Classical.choice/Quot.sound.",
     "originalContributions": [
       "digitSum_le_self: (Nat.digits 10 n).sum \u2264 n for all n (manual proof via Nat.digits_def')",
       "digitSum_lt_of_ge_ten: digitSum n < n for n \u2265 10 (manual proof, avoids Nat.sum_digits_lt naming issue)",
