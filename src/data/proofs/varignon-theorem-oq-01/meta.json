@@ -99,6 +99,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "`import Mathlib.Tactic`, the module docstring, and `namespace VarignonTheorem`. The docstring states Varignon's theorem (the side midpoints of any quadrilateral form a parallelogram, in the strong form parallel to a diagonal at half its length), records the history (Pierre Varignon, 1654-1722, published posthumously 1731), stresses that it holds for any quadrilateral — convex, concave, self-intersecting, even non-planar (skew) — because the proof uses only the affine midpoint structure with no metric or convexity hypothesis, and sketches the key computation Q − P = R − S = (C − A)/2.",
+      "mathContext": "Side midpoints $P,Q,R,S$ of any $ABCD$ form a parallelogram; $Q-P = R-S = \\tfrac{C-A}{2}$, half diagonal $AC$. Affine only — no metric or convexity."
+    },
+    {
       "id": "setup",
       "title": "Points and the Midpoint Operation",
       "startLine": 31,
@@ -118,9 +126,17 @@
       "id": "main",
       "title": "Varignon's Theorem (Parallelogram)",
       "startLine": 56,
+      "endLine": 61,
+      "summary": "The main theorem `varignon`: the opposite side vectors of the midpoint quadrilateral are equal, Q − P = R − S componentwise — the defining property of a parallelogram. Each scalar identity unfolds midpoint2 and closes by `ring`.",
+      "mathContext": "$Q-P = R-S$ (both $= \\tfrac{C-A}{2}$): one pair of opposite sides of $PQRS$ is equal as vectors, so $PQRS$ is a parallelogram."
+    },
+    {
+      "id": "second-pair",
+      "title": "The Second Pair of Opposite Sides",
+      "startLine": 63,
       "endLine": 70,
-      "summary": "varignon equates the opposite side vectors Q − P = R − S; varignon_PS_eq_QR does the same for the second pair (= half diagonal BD), establishing the parallelogram from both pairs.",
-      "mathContext": "Since $Q-P=R-S$ (both $=\\tfrac{C-A}{2}$) and $P-S=Q-R$ (both $=\\tfrac{B-D}{2}$), the quadrilateral $PQRS$ has both pairs of opposite sides equal as vectors — it is a parallelogram. Each scalar identity is closed by `ring`."
+      "summary": "`varignon_PS_eq_QR` confirms the parallelogram from the other pair: P − S = Q − R componentwise, each equal to half the diagonal BD. This makes the parallelogram conclusion symmetric in the two diagonals — PQ∥SR at half AC, and PS∥QR at half BD.",
+      "mathContext": "$P-S = Q-R$ (both $= \\tfrac{B-D}{2}$): the second pair of opposite sides is also equal, half diagonal $BD$, completing the parallelogram from both pairs."
     }
   ],
   "crossReferences": [
