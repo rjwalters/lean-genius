@@ -47,15 +47,23 @@
     1. `grunskyConjecture` was redefined to the `∀ c > 0` faithful form (= this
        file's `grunskyConjectureFaithful`).
     2. `axiom grunskyConjecture_false` was converted to a `theorem`, proved from
-       `goodman_counterexample` (no standalone axiom).
-    3. `meta.json` axiomCount `2 → 1` (only `goodman_counterexample` remains).
+       `goodman_counterexample`.
 
-  Consequently `grunskyConjectureFaithful` is now definitionally equal to the
-  parent's `grunskyConjecture`; `faithful_imp_grunsky` below is the identity, and
-  this file stands as a redundant-but-consistent companion documenting the repair.
+  ── This entry is now axiom-free ──────────────────────────────────────────────
+
+  The last analytic assumption has been discharged.  The Goodman counterexample is
+  proved with no `sorry` and no axiom in `Proofs/Erdos1047OQ02Certificate.lean`
+  (`goodman_counterexample_proof`), so `grunsky_false_faithful` below now derives the
+  Erdős #1047 answer from that machine-checked certificate instead of the parent's
+  `goodman_counterexample` *axiom*.  Its `#print axioms` shows only Mathlib's
+  standard `propext`/`Classical.choice`/`Quot.sound`.  `meta.json` axiomCount `1 → 0`.
+
+  Consequently `grunskyConjectureFaithful` is definitionally equal to the parent's
+  `grunskyConjecture`; `faithful_imp_grunsky` below is the identity.
 -/
 
 import Proofs.Erdos1047Problem
+import Proofs.Erdos1047OQ02Certificate
 import Mathlib.Tactic
 
 open Polynomial Set Erdos1047
@@ -80,15 +88,23 @@ def grunskyConjectureFaithful : Prop :=
 theorem faithful_imp_grunsky : grunskyConjectureFaithful → grunskyConjecture :=
   fun h => h
 
-/-- **The corrected axiom, as a theorem.**  The faithful Grunsky statement is
-    false — proved directly from the parent's `goodman_counterexample`
-    (`f = (z²+1)(z−2)²` at `c = 5^{3/2}/4`).  No standalone axiom is needed for the
-    negation; only `goodman_counterexample` (the genuine analytic counterexample)
-    remains as an assumption. -/
+/-- **The corrected axiom, fully proved — no assumptions.**  The faithful Grunsky
+    statement is false (`f = (z²+1)(z−2)²` at `c = 5^{3/2}/4`).  The witness is now
+    `Erdos1047OQ02Cert.goodman_counterexample_proof`, a `sorry`-free, axiom-free
+    theorem (it replaces the parent's `goodman_counterexample` *axiom* with the
+    machine-checked Goodman certificate: a preconnected arc inside the lemniscate
+    whose chord midpoint escapes it, via the topological bridge
+    `componentContaining_lemniscate_not_convex_of_chord_exits`).  So this negation —
+    and hence the Erdős #1047 answer (NO) along this route — rests on **no** analytic
+    axiom. -/
 theorem grunsky_false_faithful : ¬grunskyConjectureFaithful := by
   intro h
-  obtain ⟨z₀, hz₀, hnc⟩ := goodman_counterexample
+  obtain ⟨z₀, hz₀, hnc⟩ := Erdos1047OQ02Cert.goodman_counterexample_proof
   exact hnc (h goodmanPolynomial goodmanPolynomial_monic goodmanPolynomial_degree_pos
     goodmanCriticalValue (by unfold goodmanCriticalValue; positivity) z₀ hz₀)
+
+/- Axiom audit (Docker-verified): `#print axioms grunsky_false_faithful` reports
+   exactly `[propext, Classical.choice, Quot.sound]` — Mathlib's standard axioms,
+   which do not count as assumptions.  No problem-specific axiom, no `sorry`. -/
 
 end Erdos1047OQ02

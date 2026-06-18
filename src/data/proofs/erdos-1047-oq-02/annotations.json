@@ -27,11 +27,11 @@
     "proofId": "erdos-1047-oq-02",
     "range": {
       "startLine": 43,
-      "endLine": 55
+      "endLine": 63
     },
     "type": "context",
-    "title": "Parent Patch Applied: Axiom Count 2 → 1",
-    "content": "The repair this companion proposed has **landed** in `Erdos1047Problem.lean` (Docker-verified, PR #24613): (1) `grunskyConjecture` was redefined to the faithful `∀ c > 0` form; (2) `axiom grunskyConjecture_false` was converted to a `theorem` proved from `goodman_counterexample`; (3) the flagship's `axiomCount` dropped `2 → 1`.\n\nConsequently `grunskyConjectureFaithful` is now *definitionally equal* to the flagship's `grunskyConjecture`, and this file stands as a redundant-but-consistent record documenting the repair. Only `goodman_counterexample` — the single genuine analytic input — remains as an assumption.",
+    "title": "Parent Patch Applied, then Axiom Fully Discharged (Count → 0)",
+    "content": "The parent soundness patch landed: `Erdos1047Problem.lean` redefined `grunskyConjecture` to the faithful `∀ c > 0` form and proved `grunskyConjecture_false` as a theorem, leaving `goodman_counterexample` as the sole axiom. **That last axiom is now discharged too**: `Erdos1047OQ02Certificate.lean` proves `goodman_counterexample_proof` — the exact statement — with no `sorry` and no axiom (a preconnected Goodman arc inside the lemniscate whose chord midpoint escapes it, via the topological reduction bridge). This entry now imports that certificate, so `grunsky_false_faithful` derives the Erdős #1047 answer from a fully machine-checked proof. `#print axioms` reports only `propext`/`Classical.choice`/`Quot.sound`; axiomCount **1 → 0**.",
     "mathContext": "Post-patch dependency chain has exactly one axiom, `goodman_counterexample`; `grunskyConjecture_false : ¬grunskyConjecture` is a theorem, not an axiom.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -45,8 +45,8 @@
     "id": "ann-e1047-oq02-faithful",
     "proofId": "erdos-1047-oq-02",
     "range": {
-      "startLine": 65,
-      "endLine": 72
+      "startLine": 73,
+      "endLine": 80
     },
     "type": "definition",
     "title": "Faithful Grunsky Question (∀ c > 0)",
@@ -66,8 +66,8 @@
     "id": "ann-e1047-oq02-coincides",
     "proofId": "erdos-1047-oq-02",
     "range": {
-      "startLine": 74,
-      "endLine": 81
+      "startLine": 82,
+      "endLine": 89
     },
     "type": "theorem",
     "title": "Faithful Coincides with the Flagship (the Implication is the Identity)",
@@ -85,12 +85,12 @@
     "id": "ann-e1047-oq02-negation-theorem",
     "proofId": "erdos-1047-oq-02",
     "range": {
-      "startLine": 83,
-      "endLine": 92
+      "startLine": 91,
+      "endLine": 104
     },
     "type": "theorem",
-    "title": "The Corrected Axiom, as a Theorem",
-    "content": "`grunsky_false_faithful : ¬grunskyConjectureFaithful` proves the faithful Grunsky statement is FALSE — directly from the parent's `goodman_counterexample` (f = (z²+1)(z-2)² at c = 5^{3/2}/4). It destructs the counterexample to exhibit a non-convex component, contradicting convexity for all c > 0.\n\nThe key point: the negation needs **no standalone axiom**. Only `goodman_counterexample` — the single genuine analytic input — remains as an assumption, which is exactly what drops the parent's axiom count from 2 to 1.",
+    "title": "The Corrected Axiom, Now a Fully-Proved Theorem",
+    "content": "`grunsky_false_faithful` destructs the Goodman counterexample to exhibit a non-convex lemniscate component at `f = (z²+1)(z−2)²`, `c = 5^{3/2}/4`, refuting convexity for all `c > 0`. The witness is `Erdos1047OQ02Cert.goodman_counterexample_proof`, an axiom-free, `sorry`-free theorem — so the negation (and the Erdős #1047 answer NO along this route) rests on **no** analytic axiom.",
     "mathContext": "From $\\exists z_0,\\ z_0 \\in$ Goodman component $\\wedge\\ \\neg\\text{convex}$, derive $\\neg\\mathrm{grunskyConjectureFaithful}$. The positivity side-goal for $c = 5^{3/2}/4 > 0$ is discharged by `positivity`. Negation is a deduction, not an axiom.",
     "significance": "key",
     "relatedConcepts": [
