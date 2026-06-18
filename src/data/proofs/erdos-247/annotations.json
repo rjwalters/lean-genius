@@ -1,230 +1,256 @@
 [
   {
-    "id": "ann-247-1",
+    "id": "ann-247-header",
     "proofId": "erdos-247",
     "range": {
-      "startLine": 36,
-      "endLine": 38
+      "startLine": 1,
+      "endLine": 25
     },
-    "type": "definition",
-    "title": "Lacunary Sum Definition",
-    "content": "**lacunarySum**: The infinite series Σ_{k=1}^∞ 1/2^{n_k} for a sequence n : ℕ → ℕ. In binary, this creates a number with 1s at positions n_k. The 'lacunary' (gappy) structure emerges when n_k grows quickly, making the 1s increasingly sparse.",
-    "mathContext": "$\\text{lacunarySum}(n) = \\sum_{k=1}^{\\infty} \\frac{1}{2^{n_k}} \\in (0, 1]$; converges since $\\sum 1/2^k < \\infty$ and $n_k \\geq k$ (strictly increasing).",
-    "significance": "key",
+    "type": "concept",
+    "title": "Erdős #247: Transcendence of Lacunary Base-2 Sums",
+    "content": "For a strictly increasing sequence $n_k$, consider the lacunary sum $\\sum_k 2^{-n_k}$. Erdős asked: which growth conditions on $n_k$ force this sum to be transcendental? The conjecture (OPEN) is that a *weak* growth condition suffices; Erdős proved transcendence under a *strong* growth condition (1975). This file formalizes both conditions, the gap between them (the quadratic sequence $n_k=k^2$), and — in Part VIII — a fully axiom-free Liouville-number proof that $\\sum 2^{-k!}$ is transcendental.",
+    "mathContext": "Lacunary sum $S = \\sum_{k=1}^\\infty 2^{-n_k}$ with $n_k \\uparrow$. Question: growth of $n_k$ $\\Rightarrow$ $S$ transcendental?",
+    "significance": "context",
     "relatedConcepts": [
-      "infinite series",
-      "binary representation",
-      "tsum"
+      "transcendental numbers",
+      "lacunary series",
+      "Liouville numbers",
+      "Erdos-problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "transcendence",
+      "infinite series",
+      "growth rate"
+    ]
   },
   {
-    "id": "ann-247-2",
+    "id": "ann-247-lacunary",
     "proofId": "erdos-247",
     "range": {
       "startLine": 42,
-      "endLine": 45
+      "endLine": 44
     },
     "type": "definition",
-    "title": "Weak Growth Condition",
-    "content": "**HasWeakGrowth**: For all C > 0, there exists k with n_k > C·k. This is equivalent to lim sup n_k/k = ∞, meaning the sequence eventually grows faster than any linear function. Example: k² satisfies this but k does not.",
-    "mathContext": "$\\text{HasWeakGrowth}(n) \\Leftrightarrow \\limsup_{k \\to \\infty} n_k/k = \\infty \\Leftrightarrow \\forall C > 0, \\exists k: n_k > Ck$; contrast: $n_k = k$ fails, $n_k = k^2$ passes.",
-    "significance": "key",
+    "title": "The Lacunary Sum",
+    "content": "`lacunarySum n` is $\\sum_{k=1}^\\infty 1/2^{n_k}$ for a sequence $n : \\mathbb{N}\\to\\mathbb{N}$, implemented as a `tsum`. The rapid (lacunary) decay of the terms when $n_k$ grows fast is exactly what makes the sum a candidate for a Liouville number.",
+    "mathContext": "$\\mathrm{lacunarySum}(n) = \\sum_{k} 2^{-n_k}$.",
+    "significance": "definition",
     "relatedConcepts": [
-      "limsup",
-      "growth rate",
-      "linear functions"
+      "lacunary series",
+      "tsum",
+      "geometric decay"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "tsum",
+      "Summable"
+    ]
   },
   {
-    "id": "ann-247-3",
+    "id": "ann-247-growth",
     "proofId": "erdos-247",
     "range": {
-      "startLine": 47,
-      "endLine": 50
+      "startLine": 48,
+      "endLine": 56
     },
     "type": "definition",
-    "title": "Strong Growth Condition",
-    "content": "**HasStrongGrowth**: For ALL exponents t ≥ 1 and all C > 0, there exists k with n_k > C·k^t. This means the sequence grows faster than ANY polynomial. Factorial and exponential functions satisfy this; polynomial functions do not.",
-    "mathContext": "$\\text{HasStrongGrowth}(n) \\Leftrightarrow \\forall t \\geq 1, \\limsup_{k \\to \\infty} n_k/k^t = \\infty$; implies $\\text{HasWeakGrowth}$ (take $t=1$); examples: $n_k = k!$, $n_k = 2^k$.",
+    "title": "Weak and Strong Growth Conditions",
+    "content": "`HasWeakGrowth` and `HasStrongGrowth` are the two competing hypotheses. Weak growth: $n_{k+1}/n_k \\to \\infty$ (superlinear gaps). Strong growth: for every power $t$, $n_{k+1}/n_k^t \\to \\infty$ (super-polynomial gaps). Strong growth is the stronger hypothesis (strong ⇒ weak, proved later). The whole problem is whether the weaker condition already forces transcendence.",
+    "mathContext": "Weak: $\\forall C>0,\\ \\exists k_0,\\ \\forall k\\ge k_0,\\ n_{k+1} > C\\,n_k$. Strong: $\\forall t\\ge1,\\forall C>0,\\ \\exists k_0,\\ n_{k+1} > C\\,n_k^t$ eventually.",
     "significance": "key",
     "relatedConcepts": [
-      "polynomial growth",
-      "superpolynomial",
-      "limsup"
+      "growth conditions",
+      "superlinear",
+      "super-polynomial",
+      "hypothesis strength"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limits",
+      "quantifier structure"
+    ]
   },
   {
-    "id": "ann-247-4",
+    "id": "ann-247-conjecture",
     "proofId": "erdos-247",
     "range": {
-      "startLine": 54,
-      "endLine": 62
-    },
-    "type": "definition",
-    "title": "The Open Conjecture",
-    "content": "**erdos_247_conjecture**: The full conjecture states that weak growth (faster than linear) suffices for transcendence. This remains OPEN - we only know that strong growth (faster than any polynomial) works. The gap between these conditions is where the difficulty lies.",
-    "mathContext": "Conjecture: $\\text{HasWeakGrowth}(n) \\Rightarrow \\text{Transcendental}(\\text{lacunarySum}(n))$; known: $\\text{HasStrongGrowth}(n) \\Rightarrow \\text{Transcendental}$; open: does $n_k = k^2$ (weak but not strong) give transcendental $\\sum 1/2^{k^2}$?",
-    "significance": "key",
-    "relatedConcepts": [
-      "open problems",
-      "transcendence",
-      "Erdős problems"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-247-5",
-    "proofId": "erdos-247",
-    "range": {
-      "startLine": 66,
-      "endLine": 79
-    },
-    "type": "definition",
-    "title": "Erdős's Theorem (1975)",
-    "content": "**erdos_transcendence_strong** (axiom): Under strong growth conditions, the lacunary sum is transcendental. The proof uses Liouville-type arguments: if α is algebraic of degree d, then |α - p/q| > c/q^d. But lacunary sums with superpolynomial growth can be approximated by their partial sums (rationals) with error smaller than any Liouville bound.",
-    "mathContext": "$\\text{HasStrongGrowth}(n) \\Rightarrow \\neg\\text{Algebraic}(\\sum 1/2^{n_k})$; key: $|\\sum_{k=1}^{\\infty} 1/2^{n_k} - \\sum_{k=1}^N 1/2^{n_k}| \\leq 2/2^{n_{N+1}}$, which beats Liouville's bound $c/2^{d \\cdot n_N}$ when $n_{N+1}/n_N \\to \\infty$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Liouville theorem",
-      "algebraic numbers",
-      "approximation theory"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-247-6",
-    "proofId": "erdos-247",
-    "range": {
-      "startLine": 83,
-      "endLine": 88
+      "startLine": 60,
+      "endLine": 68
     },
     "type": "concept",
-    "title": "Factorial Strict Monotonicity",
-    "content": "**factorial_strictMono**: The sequence k ↦ (k+1)! is strictly increasing. This is needed to apply Erdős's theorem, which requires the index sequence to be strictly increasing. Proof uses Nat.factorial_lt_of_lt.",
+    "title": "Erdős Problem #247: The Open Conjecture",
+    "content": "`erdos_247_conjecture` states the open problem as a Prop: every lacunary sum whose exponent sequence satisfies the *weak* growth condition is transcendental. This is unproven (the entry's `axiomatized`/open status); it is recorded as a definition (a Prop), not asserted as a theorem.",
+    "mathContext": "Conjecture: $\\mathrm{HasWeakGrowth}(n) \\Rightarrow \\mathrm{Transcendental}_\\mathbb{Q}\\big(\\sum_k 2^{-n_k}\\big)$. OPEN.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjecture",
+      "transcendence",
+      "weak growth"
+    ],
+    "prerequisites": [
+      "Transcendental",
+      "Prop"
+    ]
+  },
+  {
+    "id": "ann-247-erdos-axiom",
+    "proofId": "erdos-247",
+    "range": {
+      "startLine": 72,
+      "endLine": 85
+    },
+    "type": "axiom",
+    "title": "Erdős's Theorem (1975): Strong Growth ⇒ Transcendental (axiom)",
+    "content": "`erdos_transcendence_strong` axiomatizes Erdős's 1975 partial result: the *strong* growth condition suffices for transcendence. This is the known theorem (the conjecture weakens its hypothesis); it is taken as an axiom here since the general Mahler/Erdős transcendence machinery is not in Mathlib. Note Part VIII later re-proves the special case $n_k=k!$ axiom-free via Liouville theory, not relying on this axiom.",
+    "mathContext": "Axiom: $\\mathrm{HasStrongGrowth}(n) \\Rightarrow \\mathrm{Transcendental}_\\mathbb{Q}\\big(\\sum_k 2^{-n_k}\\big)$ (Erdős 1975).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos 1975",
+      "Mahler method",
+      "transcendence theorem",
+      "axiomatization"
+    ],
+    "prerequisites": [
+      "HasStrongGrowth",
+      "Transcendental"
+    ]
+  },
+  {
+    "id": "ann-247-examples",
+    "proofId": "erdos-247",
+    "range": {
+      "startLine": 89,
+      "endLine": 159
+    },
+    "type": "technique",
+    "title": "Worked Examples: Factorial and Doubly-Exponential Sequences",
+    "content": "Part V instantiates the strong-growth machinery. Monotonicity helpers (`factorial_strictMono`, `pow2_strictMono`) and growth inequalities (`pow2_ge_succ`, `factorial_ge_pow2`) lead to `pow2_strong_growth` and `factorial_strong_growth`, which verify the strong growth condition for $n_k = 2^k$ and $n_k = k!$. Feeding these into the Erdős axiom yields `factorial_sum_transcendental` (Σ1/2^{k!}) and `pow2_sum_transcendental` (Σ1/2^{2^k}) — both transcendental.",
+    "mathContext": "$2^k$ and $k!$ both satisfy strong growth (they beat every polynomial), so $\\sum 2^{-k!}$ and $\\sum 2^{-2^k}$ are transcendental by the axiom.",
     "significance": "supporting",
     "relatedConcepts": [
       "factorial",
-      "StrictMono",
-      "prerequisites"
+      "doubly-exponential",
+      "strict monotonicity",
+      "induction"
     ],
-    "mathContext": "See annotation content for formal details of factorial strict monotonicity",
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.factorial",
+      "pow",
+      "strong growth"
+    ]
   },
   {
-    "id": "ann-247-7",
+    "id": "ann-247-gap",
     "proofId": "erdos-247",
     "range": {
-      "startLine": 90,
-      "endLine": 93
+      "startLine": 163,
+      "endLine": 207
     },
     "type": "concept",
-    "title": "Powers of 2 Strict Monotonicity",
-    "content": "**pow2_strictMono**: The sequence k ↦ 2^k is strictly increasing. Another example of a sequence with strong growth that can serve as the index for a transcendental lacunary sum.",
+    "title": "The Gap: The Quadratic Sequence n_k = k²",
+    "content": "Part VI exhibits why the conjecture is hard. `strong_implies_weak` confirms strong ⇒ weak. The sequence `squareSeq` ($n_k=k^2$) is the canonical witness *between* the conditions: `squareSeq_has_weak_growth` shows $k^2$ satisfies weak growth ($(k+1)^2/k\\to\\infty$), while `squareSeq_not_strong_growth` shows it FAILS strong growth (at $t=2$, $(k+1)^2 \\le C\\,(k^2)^2$). So $\\sum 1/2^{k^2}$ (`square_sum`) is exactly a case the Erdős axiom cannot reach — its transcendence is OPEN, embodying the gap the conjecture would close.",
+    "mathContext": "$k^2$: weak-growth YES, strong-growth NO (fails at $t=2$). Transcendence of $\\sum 2^{-k^2}$ is open — the theta-constant $\\sum q^{k^2}$ regime.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic sequence",
+      "theta function",
+      "gap between hypotheses",
+      "open case"
+    ],
+    "prerequisites": [
+      "squareSeq",
+      "HasWeakGrowth",
+      "HasStrongGrowth"
+    ]
+  },
+  {
+    "id": "ann-247-summary",
+    "proofId": "erdos-247",
+    "range": {
+      "startLine": 211,
+      "endLine": 220
+    },
+    "type": "concept",
+    "title": "Summary of Known Results",
+    "content": "`problem_247_summary` collects the status: strong growth ⇒ transcendental (Erdős, axiom); the factorial and doubly-exponential sums are transcendental; the quadratic sum is open; and the weak-growth conjecture remains unproven. A single theorem packaging the landscape of what is and isn't known.",
+    "mathContext": "Known: strong⇒transc (Erdős); $k!$, $2^k$ transc; $k^2$ open; weak⇒transc conjectural.",
+    "significance": "context",
+    "relatedConcepts": [
+      "status summary",
+      "known vs open"
+    ],
+    "prerequisites": [
+      "problem landscape"
+    ]
+  },
+  {
+    "id": "ann-247-infrastructure",
+    "proofId": "erdos-247",
+    "range": {
+      "startLine": 235,
+      "endLine": 332
+    },
+    "type": "technique",
+    "title": "Part VIII Infrastructure: Summability, Tails, and Partial Sums",
+    "content": "The axiom-free development for $\\sum 2^{-k!}$ begins with analytic infrastructure. `factorial_lacunary_summable` and `liouville_summable` establish convergence. `factorialTail`/`factorial_tail_summable` isolate the tail from index $N{+}1$, and `lacunarySum_factorial_split` decomposes the sum into a finite partial sum plus tail. `factorialPartialSum_eq_div` shows the partial sum is an integer over $2^{N!}$ — the crucial rationality structure that makes the Liouville inequality bite.",
+    "mathContext": "$S = \\sum_{k\\le N} 2^{-k!} + \\mathrm{tail}_N$, with $\\sum_{k\\le N}2^{-k!} = p_N/2^{N!}$ for an integer $p_N$ (good rational approximations with denominator $2^{N!}$).",
     "significance": "supporting",
     "relatedConcepts": [
-      "exponential function",
-      "StrictMono",
-      "Nat.pow_lt_pow_right"
+      "summability",
+      "tail estimate",
+      "rational approximation",
+      "partial sums"
     ],
-    "mathContext": "See annotation content for formal details of powers of 2 strict monotonicity",
-    "prerequisites": []
+    "prerequisites": [
+      "Summable",
+      "tsum",
+      "Finset.sum"
+    ]
   },
   {
-    "id": "ann-247-8",
+    "id": "ann-247-pathA",
     "proofId": "erdos-247",
     "range": {
-      "startLine": 95,
-      "endLine": 99
+      "startLine": 336,
+      "endLine": 385
     },
-    "type": "definition",
-    "title": "Growth Axioms",
-    "content": "**factorial_strong_growth** and **pow2_strong_growth** (axioms): Both k! and 2^k grow faster than any polynomial. These facts are axiomatized here; proving them formally would require analysis of growth rates. Both k!/k^t → ∞ and 2^k/k^t → ∞ for any fixed t.",
+    "type": "theorem",
+    "title": "Path A: Transcendence via the Liouville Number Connection",
+    "content": "The first axiom-free proof. `transcendental_int_to_rat` upgrades transcendence over ℤ to over ℚ; `Transcendental.sub_rat` shows subtracting a rational preserves transcendence. `factorial_sum_eq_liouville_sub` proves the key identity: $\\sum 2^{-k!}$ differs from Mathlib's `liouvilleNumber 2` by exactly the rational $1/2$. Combining these, `factorial_sum_transcendental_axiom_free` concludes transcendence of $\\sum 2^{-k!}$ over ℚ — reusing Mathlib's `liouville_base_2_transcendental` instead of the Erdős axiom.",
+    "mathContext": "$\\sum_k 2^{-k!} = \\mathrm{liouvilleNumber}(2) - \\tfrac12$; transcendental − rational ⇒ transcendental.",
     "significance": "key",
     "relatedConcepts": [
-      "asymptotic analysis",
-      "factorial growth",
-      "exponential growth"
+      "Liouville number",
+      "transcendence preservation",
+      "Mathlib reuse",
+      "axiom-free"
     ],
-    "mathContext": "See annotation content for formal details of growth axioms",
-    "prerequisites": []
+    "prerequisites": [
+      "liouvilleNumber",
+      "Transcendental.sub_rat",
+      "liouville_base_2_transcendental"
+    ]
   },
   {
-    "id": "ann-247-9",
+    "id": "ann-247-pathB",
     "proofId": "erdos-247",
     "range": {
-      "startLine": 101,
-      "endLine": 109
+      "startLine": 389,
+      "endLine": 504
     },
-    "type": "concept",
-    "title": "Transcendental Lacunary Sums",
-    "content": "**factorial_sum_transcendental** and **pow2_sum_transcendental**: As corollaries of Erdős's theorem, both Σ 1/2^{k!} and Σ 1/2^{2^k} are transcendental. These are famous examples of explicit transcendental numbers.",
+    "type": "theorem",
+    "title": "Path B: Direct Liouville Proof from First Principles",
+    "content": "An independent axiom-free proof that builds the Liouville property directly. `factorial_mul_add_one_lt` supplies the key factorial inequality, `factorialTail_pos`/`factorialTail_le` bound the tail (≤ $2/2^{(N+2)!}$), and `factorial_sum_liouville` assembles these into a proof that $\\sum 2^{-k!}$ is a Liouville number — for every $m$ there is a rational $p/q$ with $0<|S-p/q|<1/q^m$. `factorial_sum_transcendental_liouville` then applies Liouville's theorem (Liouville numbers are transcendental). Two genuinely different routes (A and B) to the same axiom-free conclusion.",
+    "mathContext": "$S=\\sum 2^{-k!}$ is Liouville: $\\forall m,\\ \\exists p/q\\ (q=2^{N!}),\\ 0<|S-p/q|<q^{-m}$, using the super-fast factorial gaps. Liouville ⇒ transcendental.",
     "significance": "key",
     "relatedConcepts": [
-      "Liouville constant",
-      "explicit transcendentals",
-      "applications"
+      "Liouville's theorem",
+      "Liouville number",
+      "direct proof",
+      "factorial gaps"
     ],
-    "mathContext": "See annotation content for formal details of transcendental lacunary sums",
-    "prerequisites": []
-  },
-  {
-    "id": "ann-247-10",
-    "proofId": "erdos-247",
-    "range": {
-      "startLine": 113,
-      "endLine": 124
-    },
-    "type": "concept",
-    "title": "The Gap: Quadratic Sequence",
-    "content": "**squareSeq** and **square_sum**: The sequence n_k = k² is the simplest example in the 'gap' between weak and strong growth. It grows faster than linear (satisfies weak growth) but NOT faster than quadratic (fails strong growth). Whether Σ 1/2^{k²} is transcendental remains OPEN.",
-    "significance": "key",
-    "relatedConcepts": [
-      "open problems",
-      "polynomial growth",
-      "boundary cases"
-    ],
-    "mathContext": "See annotation content for formal details of the gap: quadratic sequence",
-    "prerequisites": []
-  },
-  {
-    "id": "ann-247-11",
-    "proofId": "erdos-247",
-    "range": {
-      "startLine": 117,
-      "endLine": 121
-    },
-    "type": "concept",
-    "title": "Square Sequence Monotonicity",
-    "content": "**square_strictMono**: The sequence k ↦ (k+1)² is strictly increasing. This shows the square sequence is a valid index sequence for Erdős's problem, even though we can't prove transcendence of the resulting sum.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "StrictMono",
-      "Nat.pow_lt_pow_left",
-      "quadratic growth"
-    ],
-    "mathContext": "See annotation content for formal details of square sequence monotonicity",
-    "prerequisites": []
-  },
-  {
-    "id": "ann-247-12",
-    "proofId": "erdos-247",
-    "range": {
-      "startLine": 128,
-      "endLine": 137
-    },
-    "type": "concept",
-    "title": "Summary Theorem",
-    "content": "**problem_247_summary**: Packages the main results: (1) Erdős's theorem for strong growth, (2) transcendence of the factorial sum, (3) transcendence of the double-exponential sum. This provides a clean interface to the file's main contributions.",
-    "significance": "key",
-    "relatedConcepts": [
-      "API design",
-      "theorem packaging",
-      "main results"
-    ],
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "Liouville",
+      "factorialTail_le",
+      "tsum estimate"
+    ]
   }
 ]
