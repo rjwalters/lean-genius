@@ -45,6 +45,9 @@ the probabilistic identification of the derivative:
     `μ[f|m]` agrees `μ`-a.e. with the signed Radon–Nikodym derivative of the
     `f`-weighted measure trimmed to `m`. This identifies `E[f|m]` as a density and
     is the measure-theoretic foundation of conditioning.
+15. **change of variables** `∫⁻ g dμ = ∫⁻ (dμ/dν)·g dν` for σ-finite `μ ≪ ν`, with
+    its set-restricted form `∫_s g dμ = ∫_s (dμ/dν)·g dν` — the defining property of a
+    density and the principal *use* of the theorem (item 4 is the case `g = 1`).
 
 ## Honest scope
 
@@ -170,6 +173,29 @@ This is the inverse form of the reciprocal relation `rnDeriv_mul_symm_ae_one`. -
 theorem inv_rnDeriv_ae [SigmaFinite μ] [SigmaFinite ν] (h : μ ≪ ν) :
     (μ.rnDeriv ν)⁻¹ =ᵐ[μ] ν.rnDeriv μ :=
   Measure.inv_rnDeriv h
+
+/-! ### Change of variables: integration against the density
+
+The defining purpose of a density: integrating a function against `μ` is the same as
+integrating it weighted by `dμ/dν` against `ν`. This is the principal *use* of the
+Radon–Nikodym theorem and the integral that the chain rule above is built to transport.
+The measure-of-a-set characterization `rnDeriv_setLIntegral` is the special case `g = 1`. -/
+
+/-- **Change of variables (integration against the density).** For σ-finite `μ ≪ ν`,
+integrating `g` against `μ` equals integrating it weighted by the Radon–Nikodym
+derivative against `ν`: `∫⁻ g dμ = ∫⁻ (dμ/dν)·g dν`. -/
+theorem lintegral_density [SigmaFinite μ] [SigmaFinite ν] (h : μ ≪ ν)
+    {g : α → ℝ≥0∞} (hg : AEMeasurable g ν) :
+    ∫⁻ x, μ.rnDeriv ν x * g x ∂ν = ∫⁻ x, g x ∂μ :=
+  lintegral_rnDeriv_mul h hg
+
+/-- **Change of variables on a set.** The set-restricted form of `lintegral_density`:
+for σ-finite `μ ≪ ν` and measurable `s`, `∫_s g dμ = ∫_s (dμ/dν)·g dν`. Taking `g = 1`
+recovers `rnDeriv_setLIntegral`. -/
+theorem setLIntegral_density [SigmaFinite μ] [SigmaFinite ν] (h : μ ≪ ν)
+    {g : α → ℝ≥0∞} (hg : AEMeasurable g ν) {s : Set α} (hs : MeasurableSet s) :
+    ∫⁻ x in s, μ.rnDeriv ν x * g x ∂ν = ∫⁻ x in s, g x ∂μ :=
+  setLIntegral_rnDeriv_mul h hg hs
 
 end LebesgueRadonNikodym
 

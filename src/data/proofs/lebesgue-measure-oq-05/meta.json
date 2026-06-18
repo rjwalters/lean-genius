@@ -19,7 +19,7 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 202,
+    "lineCount": 228,
     "assumptions": "0 axioms, 0 sorries; kernel-checked at Mathlib 4.26.0 (docker-build green, Built Proofs.LebesgueMeasureOQ05). All ten results are obtained by assembling Mathlib's Lebesgue-decomposition / Radon–Nikodym API (Measure.measurable_rnDeriv, Measure.withDensity_rnDeriv_eq, Measure.rnDeriv_withDensity, Measure.haveLebesgueDecomposition_add, withDensity_apply, Measure.rnDeriv_mul_rnDeriv, Measure.rnDeriv_self); the SigmaFinite instances supply HaveLebesgueDecomposition automatically. This is a formalization entry: the mathematics is classical and already in Mathlib; the contribution is a clean, self-contained σ-finite package plus the derived calculus-of-densities corollaries (chain rule, self-derivative, reciprocal relation) for the gallery.",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
@@ -28,7 +28,7 @@
       "ν-a.e. uniqueness of the density derived from Measure.rnDeriv_withDensity",
       "An elementary calculus of densities: the chain rule (dμ/dν)·(dν/dλ) = dμ/dλ, the self-derivative dμ/dμ = 1, and — derived from these by specialising the chain rule at λ = μ — the reciprocal relation (dμ/dν)·(dν/dμ) = 1 (μ-a.e.)"
     ],
-    "theoremCount": 15,
+    "theoremCount": 17,
     "definitionCount": 0
   },
   "overview": {
@@ -155,9 +155,9 @@
       "Mathlib"
     ],
     "namespace": "LebesgueRadonNikodym",
-    "lineCount": 202,
+    "lineCount": 228,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 17,
     "definitionCount": 0,
     "path": "Proofs/LebesgueMeasureOQ05.lean",
     "sorries": 0
