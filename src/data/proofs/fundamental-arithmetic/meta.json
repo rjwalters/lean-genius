@@ -7,7 +7,7 @@
     "author": "Euclid, Gauss (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic",
     "date": "~300 BCE (Euclid), 1801 (Gauss)",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "primes",
@@ -16,7 +16,7 @@
       "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/FundamentalArithmetic.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -48,9 +48,9 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 80,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 224,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Depends on Lean.ofReduceBool. The advertised concrete computational examples (originalContribution: 'Concrete computational examples via native_decide') are discharged solely by native_decide (e.g. (12).primeFactorsList = [2,2,3], factor counts at lines 155-216), which trusts the Lean compiler's kernel reduction via the Lean.ofReduceBool axiom rather than producing an axiom-free kernel proof. The symbolic deliverables (unified FTA statement, coprime disjoint prime factors corollary, pedagogical bridge theorems) are axiom-free Mathlib wrappers. No literal axiom declarations and 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 11,
     "definitionCount": 0
