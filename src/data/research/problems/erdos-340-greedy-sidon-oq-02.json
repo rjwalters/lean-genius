@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-340-greedy-sidon-oq-02",
+  "title": "Erdős #340 OQ-02: Erdős–Turán sharp upper bound for Sidon sets",
+  "status": "in-progress",
+  "phase": "ACT",
+  "tier": "B",
+  "path": "research/problems/erdos-340-greedy-sidon-oq-02",
+  "started": "2026-06-17",
+  "lastUpdate": "2026-06-18",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "sidon-sets",
+    "extremal",
+    "cauchy-schwarz"
+  ],
+  "relatedProofs": [
+    "erdos-340-greedy-sidon"
+  ],
+  "problemStatement": "Remove the lone axiom `sidon_upper_bound` of the parent gallery entry by formalizing the sharp Erdős–Turán upper bound |A| ≤ √N + √√N + 1 for a Sidon set A ⊆ {1,…,N}, via the sliding-window / Cauchy–Schwarz argument.",
+  "leanFiles": [
+    "proofs/Proofs/Erdos340GreedySidonOQ02.lean"
+  ],
+  "tractability": "medium — the Cauchy–Schwarz assembly (`sidon_window_key`) and window-sum identity are proved; one HARD finite-combinatorics sorry (`window_pair_bound`) remains, plus a separate ℓ≈√N optimisation to discharge the parent axiom.",
+  "knowledge": {
+    "insights": [
+      "OQ-02 file proves the Erdős–Turán key inequality ℓ·|A|² ≤ (N+ℓ)·(ℓ-1+|A|) (`sidon_window_key`) unconditionally except for one counting lemma.",
+      "The only open obligation is `window_pair_bound` (line 123): ∑_x wc(x)(wc(x)-1) ≤ ℓ(ℓ-1) — known finite double-counting, classified HARD (not OPEN).",
+      "The Sidon crux (distinct differences) is ALREADY formalized in the parent: `IsSidon.diff_injective` and `sidon_pairDiff_injective` (InjOn pairDiff on orderedPairsLt). OQ-02 only needs to plug these into a Fubini + Gauss-sum assembly.",
+      "Complete Step 1–5 proof of `window_pair_bound` recorded in knowledge.md: offDiag pairs (`Finset.offDiag_card`) → filter pushthrough → Fubini (`Finset.sum_comm`) → cov(a,b)=ℓ-|a-b| via `Finset.Ico`/`Nat.card_Ico` → Sidon-injective regrouping (`Finset.sum_image`) → triangular/Gauss sum ℓ(ℓ-1).",
+      "Closing the sorry yields a 0-sorry OQ-02 file but does NOT alone remove the parent axiom; the ℓ≈√N optimisation of `sidon_window_key` into √N+√√N+1 is a separate elementary ℕ-arithmetic step."
+    ],
+    "builtItems": [
+      "Erdos340GreedySidonOQ02.lean: isSidon_image_add, card_image_add (translation invariance) — PROVED",
+      "Erdos340GreedySidonOQ02.lean: window_sum_identity (counting fact A, ∑ wc = ℓ|B|) — PROVED",
+      "Erdos340GreedySidonOQ02.lean: sidon_window_key (Cauchy–Schwarz key inequality) — PROVED modulo window_pair_bound"
+    ],
+    "mathlibGaps": [
+      "No gap blocking the proof — the Sidon injectivity crux is supplied by the parent file (IsSidon.diff_injective / sidon_pairDiff_injective).",
+      "Only orientation-handling piece without a ready-made lemma is the factor-2 swap (B.offDiag = orderedPairsLt ⊎ orderedPairsGt); handled by Finset.sum_bij on (a,b)↦(b,a) or a single φ:B.offDiag↪Ico 1 ℓ × Bool injection."
+    ],
+    "nextSteps": [
+      "Submit Erdos340GreedySidonOQ02.lean to Aristotle prove_file when the MCP backend recovers (currently returns 'Resource not found').",
+      "Or hand-formalize Steps 1–5 from knowledge.md (~120–180 lines) in a warm-cache low-load window; build via docker-build.sh Proofs.Erdos340GreedySidonOQ02.",
+      "After 0-sorry: add ℓ≈√N optimisation to discharge axiom sidon_upper_bound and flip parent meta axiomatized/axiom → verified (axiomCount 1→0)."
+    ],
+    "progressSummary": "PROGRESS: complete formalization roadmap for the single remaining sorry (window_pair_bound) recorded, reusing existing parent Sidon-injectivity infra; verification blocked this session by Aristotle outage + saturated Docker host."
+  },
+  "references": [
+    "P. Erdős and P. Turán, On a problem of Sidon in additive number theory, J. London Math. Soc. 16 (1941), 212–215.",
+    "H. Halberstam and K. F. Roth, Sequences, Ch. II.",
+    "https://www.erdosproblems.com/340"
+  ]
+}
