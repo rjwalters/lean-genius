@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "assumptions": "0 axiom declarations, 0 sorries. All 3 previously sorry'd theorems proved: cyclic_when_coprime via commutator argument + order calculation, nonabelian_sylow_p_count by contradiction, pq_cyclic_classification by universal instantiation.",
     "lineCount": 387,
-    "theoremCount": 13,
+    "theoremCount": 21,
     "definitionCount": 3
   },
   "overview": {
@@ -108,6 +108,36 @@
       "targetId": "sylow-theorem",
       "relationship": "extends",
       "description": "Applies Sylow theorems to classify groups of order pq"
+    },
+    {
+      "targetId": "sylow-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "A parallel Lean formalization of the same order-pq classification, also driven by Sylow's third theorem (n_q = 1, n_p ∈ {1, q}); a useful cross-check of the cyclic-vs-semidirect dichotomy."
+    },
+    {
+      "targetId": "lagrange-theorem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Reaches the same classification of groups of order pq through the Lagrange's Theorem development line, offering an alternate route to the n_p, n_q counting arguments."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's Theorem (|H| divides |G|) is the foundation that Sylow's theorems refine: they supply the partial converse guaranteeing subgroups of prime-power order, which this proof exploits to force |P| = p and |Q| = q."
+    },
+    {
+      "targetId": "lagrange-theorem-oq-01-oq-02",
+      "relationship": "complementary",
+      "description": "A₄ has no subgroup of order 6 — the converse of Lagrange fails in general; this complements the pq case, where the Sylow subgroups of each prime order are guaranteed to exist."
+    },
+    {
+      "targetId": "lagrange-theorem-oq-02-oq-02",
+      "relationship": "foundational",
+      "description": "The class equation for finite groups is the orbit-counting identity underlying the proof of Sylow's third theorem, the n_p ≡ 1 (mod p) congruence used throughout this classification."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Every group of order pq < 60 is solvable; this situates the cyclic and semidirect-product pq-groups within the broader solvable hierarchy classified there."
     }
   ],
   "conclusion": {
@@ -126,7 +156,7 @@
     "namespace": "SylowPQ",
     "lineCount": 387,
     "axiomCount": 0,
-    "theoremCount": 13,
+    "theoremCount": 21,
     "sorryTheorems": 0,
     "definitionCount": 3,
     "path": "Proofs/SylowTheoremOQ01.lean",
