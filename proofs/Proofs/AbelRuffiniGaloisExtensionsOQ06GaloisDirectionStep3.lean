@@ -103,16 +103,19 @@ theorem sylow_p_is_pcycle
   -- Step A:  p ∣ Nat.card H   (primitivity ⇒ transitivity on a p-point set).
   ----------------------------------------------------------------
   haveI : MulAction.IsPretransitive H (ZMod p) := _hPrim.toIsPretransitive  -- ★
-  have horbit : Nat.card (MulAction.orbit H (0 : ZMod p)) = p := by
+  -- p ∣ |H| via the orbit–stabilizer EQUIV (Nat.card / index form), avoiding the
+  -- Fintype-typed `card_orbit_mul_card_stabilizer_eq_card_group`.
+  have hpH : p ∣ Nat.card H := by
     have huniv : MulAction.orbit H (0 : ZMod p) = Set.univ :=
       MulAction.orbit_eq_univ (0 : ZMod p)                                -- ★
-    rw [huniv, Nat.card_congr (Equiv.Set.univ (ZMod p)),
-        Nat.card_eq_fintype_card, ZMod.card]                             -- ★
-  have hpH : p ∣ Nat.card H := by
-    -- ? bearer (Nat.card form): orbit–stabilizer
-    have hos := MulAction.card_orbit_mul_card_stabilizer_eq_card_group
-      H (0 : ZMod p)
-    exact ⟨Nat.card (MulAction.stabilizer H (0 : ZMod p)), by rw [← hos, horbit]⟩
+    have e : ZMod p ≃ H ⧸ MulAction.stabilizer H (0 : ZMod p) :=
+      ((Equiv.Set.univ (ZMod p)).symm.trans (Equiv.setCongr huniv.symm)).trans
+        (MulAction.orbitEquivQuotientStabilizer H (0 : ZMod p))          -- ★
+    have hidx : (MulAction.stabilizer H (0 : ZMod p)).index = p := by
+      rw [Subgroup.index_eq_card, ← Nat.card_congr e, Nat.card_zmod]     -- ★
+    have hdvd := Subgroup.index_dvd_card
+      (H := MulAction.stabilizer H (0 : ZMod p))                         -- ★
+    rwa [hidx] at hdvd
   ----------------------------------------------------------------
   -- Step B:  Nat.card ↥P = p.
   ----------------------------------------------------------------
@@ -136,8 +139,6 @@ theorem sylow_p_is_pcycle
   have hcardP : Nat.card (P : Subgroup H) = p := by
     have hk1 : (Nat.card H).factorization p = 1 := le_antisymm hvpH hkpos
     rw [P.card_eq_multiplicity, hk1, pow_one]                            -- ★
-  have hcardP_ft : Fintype.card (P : Subgroup H) = p := by
-    rw [← Nat.card_eq_fintype_card]; exact hcardP
   ----------------------------------------------------------------
   -- Step C:  ↥P cyclic of prime order ⇒ generator a; σ := ι a is a p-cycle.
   ----------------------------------------------------------------
@@ -146,17 +147,18 @@ theorem sylow_p_is_pcycle
   haveI hcyc : IsCyclic (P : Subgroup H) := isCyclic_of_prime_card hcardP
   obtain ⟨a, ha⟩ := hcyc.exists_generator                                 -- ★ (∀ x, x ∈ zpowers a)
   have horda : orderOf a = p := by
-    rw [orderOf_eq_card_of_forall_mem_zpowers ha, hcardP_ft]              -- ?
+    rw [orderOf_eq_card_of_forall_mem_zpowers ha, hcardP]                 -- Nat.card form
   have hords : orderOf (ι a) = p := by
     rw [orderOf_injective ι hι_inj a, horda]                             -- ★
   have hcycσ : (ι a).IsCycle := by
     -- ★ `Equiv.Perm.isCycle_of_prime_order (h1 : (orderOf σ).Prime)`
     --   `(h2 : #σ.support < 2 * orderOf σ) : σ.IsCycle`  — TWO args, stated over `orderOf σ`.
-    have hprime : (orderOf (ι a)).Prime := hords ▸ hp
+    have hprime : (orderOf (ι a)).Prime := hords.symm ▸ hp
     have hsupp_lt : (ι a).support.card < 2 * orderOf (ι a) := by
       have hle : (ι a).support.card ≤ Fintype.card (ZMod p) :=
         Finset.card_le_univ _
       rw [ZMod.card] at hle
+      have hp1 : 0 < p := hp.pos
       rw [hords]; omega
     exact Equiv.Perm.isCycle_of_prime_order hprime hsupp_lt
   refine ⟨ι a, hcycσ, ?_, ?_, ?_⟩

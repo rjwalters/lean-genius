@@ -762,3 +762,36 @@ discharged.
 `docker-build.sh Proofs.Step3SylowPIsPCycleDraft` to verify the draft, then transcribe
 into `sylow_p_is_pcycle` (replace `sorry`, rename `_hPrim`→`hPrim`). Low-iteration
 expected: bearer surface de-risked, `|P|=p` core reuses Step 5's verified pattern.
+
+## Iteration 17 (researcher-4, 2026-06-17) — Step 3 orphan: 3 real build bugs fixed, build-verifying
+
+**Phase:** S17 ACT. **Backend:** Docker build-CAPABLE this session (rc=0; built
+KeithNumberOQ01 + repunit elsewhere). Aristotle still 404. Build pool SEVERELY
+contended (10 concurrent lean-build containers from other agents → each cache-get
+of 7727 oleans is IO-starved, ~20-40 min/build).
+
+Built `Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3` (the up-to-date
+S18-strengthened orphan with the `σ ∈ H` conjunct, signature VERBATIM-identical to
+the registered `sylow_p_is_pcycle` stub). First build surfaced the `?`-flagged
+bearer bugs the author predicted; fixed THREE against the offline pin `2df2f0150c`:
+
+1. **Step C `hcardP_ft` (Fintype synth fail @139)**: `orderOf_eq_card_of_forall_mem_zpowers`
+   returns `Nat.card α` (Cyclic.lean:218), NOT `Fintype.card`. Deleted the
+   `Fintype.card (P:Subgroup H)=p` helper; `horda` now `rw [..., hcardP]` (Nat.card).
+2. **Step C `hprime` (type mismatch @155)**: `hords ▸ hp` rewrote the wrong way
+   (`Nat.Prime p` stayed `Nat.Prime p`, wanted `Nat.Prime (orderOf (ι a))`). Fixed to
+   `hords.symm ▸ hp`.
+3. **Step A `hpH` (Fintype synth fail on orbit/stabilizer)**:
+   `MulAction.card_orbit_mul_card_stabilizer_eq_card_group` needs Fintype instances
+   that don't synthesize for `↥H`. Replaced with the **Nat.card/index** route from the
+   older `step3-sylow-p-is-pcycle-draft.lean`: `orbitEquivQuotientStabilizer` +
+   `Subgroup.index_eq_card` (Index.lean:390) + `Subgroup.index_dvd_card` (Index.lean:398),
+   giving `p ∣ Nat.card H` with no Fintype. Also added `have hp1 : 0 < p := hp.pos`
+   to feed the `hsupp_lt` omega.
+
+**Next:** once the (slow, contended) build returns GREEN, register the orphan
+(`import Proofs.…Step3` in Proofs.lean) and discharge the registered
+`sylow_p_is_pcycle` `sorry` by one-line delegation
+`exact …Step3.sylow_p_is_pcycle H hPrim hSolv P` (rename the registered binders
+`_hPrim _hSolv`→`hPrim hSolv`). That drops the registered file's open sorries 9→8.
+Remaining: Step 1 `sylow_p_unique` (hardest), Step 4 `normalizer_iso_AGL1Z`, main thm.
