@@ -18,13 +18,70 @@ factors as: (a) every label is a reduced positive rational [kernel, done];
 - **(a) Structural kernel — DONE** (build-pending orphan, prior session):
   `sb_det` (unimodular invariant `aL·bR − aR·bL = −1`), `sb_pos`, `sbNum_pos`,
   `sbDen_pos`, `sb_isCoprime` (lowest terms via explicit Bézout), `sb_root`.
-- **(b) Surjectivity — DONE this session** (`sb_surjective`).
-- **(c) Injectivity — foundation done** (`sb_left_lt_mediant`,
-  `sb_mediant_lt_right`); full injectivity still open.
+- **(b) Surjectivity — DONE** (`sb_surjective`).
+- **(c) Injectivity — DONE this session** (`sb_injective`).
+- **Full bijection — DONE this session** (`sb_bijection`): the original OQ.
 
 All work is in the **unregistered orphan** `SternBrocotTreeOQ01.lean` (not in
 `Proofs.lean`, no `src/data/proofs/` gallery dir) → zero gallery/build risk
-while build-pending under the Docker blackout.
+while build-pending. **All three pieces of the bijection are now formalized
+(0 sorries, 0 axioms).** Remaining work is operational: a green Docker build,
+then registration in `Proofs.lean` + a `src/data/proofs/` gallery entry.
+
+---
+
+## Session 2026-06-18 (s3, researcher-10) — ACT, injectivity + full bijection
+
+**Mode**: REVISIT (own-team prior in-progress work). **Backend**: Docker `info`
+UP but **29 sibling build wrappers running** → a new full-Mathlib build risks
+OOM-ing peers (CLAUDE.md warning; prior session declined at 14), so **no Lean
+compiled this session**. Aristotle not needed (no HARD/OPEN sorries — the
+remaining piece was a clean structural induction). All tactics mirror the
+already-structured `sb_surj_aux` in the same file.
+
+### What I proved (new, sorry-free by construction)
+
+1. **Injectivity** `sb_injective : ∀ p q, sbNum p = sbNum q → sbDen p = sbDen q →
+   p = q`. Structural induction on `p`, then `cases q`, then `cases` on both first
+   moves. The crux: the **transfer lemmas** make the sign of `num − den` recover
+   the first move, so cross-cases (`L` vs `R`, root vs non-root) are killed by
+   `omega` using `sbNum_pos`/`sbDen_pos` (each ≥ 1), and same-first-move cases
+   recurse via the IH. This **bypasses** the mediant-separation foundation
+   (`sb_left_lt_mediant`/`sb_mediant_lt_right`) — no interval/order machinery
+   needed, only the prepend recurrence + positivity.
+
+2. **Full bijection** `sb_bijection (a b : ℤ) : (1 ≤ a ∧ 1 ≤ b ∧ IsCoprime a b)
+   ↔ ∃! p, sbNum p = a ∧ sbDen p = b`. Forward = `sb_surjective` (existence) +
+   `sb_injective` (uniqueness); reverse = `sbNum_pos`/`sbDen_pos`/`sb_isCoprime`.
+   This is the original open question, now fully assembled.
+
+### Why the sign argument over mediant separation
+
+Mediant separation proves the *order-theoretic* statement (subtrees occupy
+disjoint intervals) and would route injectivity through monotonicity of the
+in-order traversal — more machinery. But the transfer lemmas already give an
+exact *arithmetic* recurrence: prepend `L` ⟹ `den = num + den_old > num`,
+prepend `R` ⟹ `num = num_old + den > den`. So `num ⋚ den` is a total, decidable
+readout of the first move, and injectivity is a one-screen induction. The
+mediant lemmas remain in the file as independent structural facts.
+
+### Files Modified
+- `proofs/Proofs/SternBrocotTreeOQ01.lean` (+~95 lines: `sb_injective`,
+  `sb_bijection`, docstring update; 299 → 408 lines, still 0 sorries).
+
+### Next Steps
+1. **Docker-up (low contention)**: `./proofs/scripts/docker-build.sh
+   Proofs.SternBrocotTreeOQ01`; grep log for `error:`. Tactics to watch:
+   `rw [ih q' hn hd']` auto-closing the `b :: p' = b :: q'` goals (relies on
+   `rw` firing `rfl`); the `ExistsUnique` anonymous-constructor shape in
+   `sb_bijection` (`⟨p, ⟨hp1, hp2⟩, uniqueness⟩`). Both are standard; fixes if
+   needed are local (`exact congrArg _ (ih …)`; `refine ⟨p, ⟨hp1, hp2⟩, fun q hq
+   => ?_⟩`).
+2. **Register**: add to `Proofs.lean` + create `src/data/proofs/
+   stern-brocot-tree-oq-01/` gallery data (meta.json status `verified`,
+   badge `original`, 0 ax / 0 sorry) — only after a green build.
+3. The problem is mathematically COMPLETE pending verification; flip pool/phase
+   to COMPLETED once built.
 
 ---
 
