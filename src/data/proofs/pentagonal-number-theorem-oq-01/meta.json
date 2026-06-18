@@ -48,7 +48,7 @@
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
     "lineCount": 179,
-    "assumptions": "None claimed in the file: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. NOTE: machine verification is PENDING — the file was hand-audited and its algebra numerically checked, but the docker Lean build could not complete this cycle (Aristotle MCP returned 404; the shared .lake cache was contended by 10+ concurrent builds with a deterministic ProofWidgets prune error). The PR is gated loom:review-requested until a build confirms compilation.",
+    "assumptions": "None: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. Machine-verified — the file compiles cleanly under the docker Lean build against Mathlib (Built Proofs.PentagonalNumberTheoremOQ01, 7743 jobs, exit 0; only a single harmless `le_or_lt` deprecation warning).",
     "theoremCount": 16,
     "definitionCount": 2
   },
