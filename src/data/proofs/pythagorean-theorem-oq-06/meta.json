@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 48,
+      "mathContext": "Area(ABC)² = Area(OAB)² + Area(OBC)² + Area(OCA)² when the edges at O are mutually orthogonal.",
+      "summary": "The module docstring stating de Gua's theorem — the 3D Pythagorean analogue for a trirectangular tetrahedron — together with `import Mathlib.Tactic` and `namespace DeGuaTheorem`."
+    },
+    {
       "id": "definitions",
       "title": "Vector Primitives: Dot, Cross-Norm, and Squared Area",
       "startLine": 49,

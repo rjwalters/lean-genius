@@ -67,7 +67,7 @@
     "title": "de_gua_core — The Core Identity (Edge-Vector Form)",
     "content": "The mathematical heart of the proof. For three vectors u, v, w issuing from a common vertex that are mutually orthogonal (`dot u v = dot v w = dot w u = 0`), the squared cross-product norm of the opposite face equals the sum of the three right-angle faces: `crossSq (v - u) (w - u) = crossSq u v + crossSq v w + crossSq w u`. After `simp` unfolds `crossSq` and `dot`, the goal is a polynomial identity in nine coordinates, discharged by a single `linear_combination`. The three multipliers in the certificate are exactly the orthogonality hypotheses huv, hvw, hwu — algebraically, this is the statement that the Binet–Cauchy cross terms (each a multiple of u·v, v·w, or w·u) cancel. The coefficients were verified numerically over 10⁵ random samples before formalizing.",
     "mathContext": "$u\\cdot v=v\\cdot w=w\\cdot u=0 \\;\\Rightarrow\\; \\operatorname{crossSq}(v-u,\\,w-u)=\\operatorname{crossSq}(u,v)+\\operatorname{crossSq}(v,w)+\\operatorname{crossSq}(w,u)$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Binet–Cauchy identity",
       "cross product bilinearity",
@@ -88,7 +88,7 @@
     "title": "de_gua — De Gua's Theorem (Vertex Form)",
     "content": "The headline geometric theorem. For a trirectangular tetrahedron O A B C whose three edges at O are mutually perpendicular, the squared area of the face ABC opposite O equals the sum of the squared areas of the three faces OAB, OBC, OCA meeting at O. The proof rewrites the hypotenuse-face edges B−A and C−A as differences of the corner edges, (B−O)−(A−O) and (C−O)−(A−O), so that `de_gua_core` applied to the corner edges A−O, B−O, C−O discharges the cross-product content; a final `ring` reconciles the ¼ factors. This is the precise three-dimensional analogue of a² + b² = c².",
     "mathContext": "$(A{-}O)\\!\\cdot\\!(B{-}O)=(B{-}O)\\!\\cdot\\!(C{-}O)=(C{-}O)\\!\\cdot\\!(A{-}O)=0 \\Rightarrow \\operatorname{areaSq}(A,B,C)=\\operatorname{areaSq}(O,A,B)+\\operatorname{areaSq}(O,B,C)+\\operatorname{areaSq}(O,C,A)$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "trirectangular tetrahedron",
       "Pythagorean theorem in 3D",
