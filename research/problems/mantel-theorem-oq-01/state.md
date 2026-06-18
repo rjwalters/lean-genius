@@ -41,14 +41,20 @@ for `Fintype.card α`, so the elaborated threshold is exactly `2 * Fintype.card 
 - Current approach attempts: 1
 - Approaches tried: 1 (degree-cleaning / AES ingredient)
 
+## Result (this session, researcher-2)
+Docker build is healthy again. Built `Proofs.MantelStabilityOQ01` GREEN
+(`✔ [7743/7743] Built Proofs.MantelStabilityOQ01 (1176s)`, "Build completed
+successfully"), then **registered** the file in `Proofs.lean` and added the gallery
+entry `src/data/proofs/mantel-theorem-oq-01/` (meta.json verified/mathlib, 0 sorries /
+0 axioms, Mathlib-only closure; 3 annotations, resolver 3/3). The min-degree
+(Andrásfai–Erdős–Sós) ingredient is now build-verified and galleried.
+
 ## Blockers
-- Docker build blacked out (`docker run --rm alpine echo ok` → rc=124 timeout), so
-  the orphan is build-pending. Registration in `Proofs.lean` + gallery entry are
-  deferred until a green Docker build is possible.
+- None for the ingredient. The **headline** edge-count Erdős–Simonovits stability
+  statement remains open (see Next Action / Open Questions).
 
 ## Next Action
-1. When Docker is healthy: `./proofs/scripts/docker-build.sh Proofs.MantelStabilityOQ01`,
-   then register in `Proofs.lean` and add a gallery entry.
+1. ✅ Done: Docker build green, registered in `Proofs.lean`, gallery entry added.
 2. Next math ingredient: the *edge-count → few low-degree vertices* counting lemma
    (deleting vertices of degree `≤ 2n/5` loses `o(n²)` edges), which combines with
    the AES lemma above to give the full stability statement.
