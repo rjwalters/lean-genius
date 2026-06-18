@@ -53,7 +53,8 @@
       "The hard structural content of triangle-free stability is already in Mathlib: Brandt's colorable_of_cliqueFree_lt_minDegree gives the Andrásfai–Erdős–Sós theorem in full generality, so the min-degree → bipartite step costs only a threshold specialization.",
       "At r = 2 the AES threshold (3r−4)·n/(3r−1) is literally 2n/5; because r is a numeral, omega evaluates the arithmetic and discharges the side condition with no manual rewriting.",
       "Phrasing the result contrapositively — non-bipartite triangle-free ⇒ minimum degree ≤ 2n/5 — produces the 'sparse-at-some-vertex' lemma that the degree-cleaning argument plugs in directly, making the remaining work purely a counting/accounting problem.",
-      "Min-degree stability (high δ forces exact bipartiteness) is logically distinct from edge-count stability (near-maximal edge count forces approximate bipartiteness); the former is the engine inside the proof of the latter, not the latter itself."
+      "Min-degree stability (high δ forces exact bipartiteness) is logically distinct from edge-count stability (near-maximal edge count forces approximate bipartiteness); the former is the engine inside the proof of the latter, not the latter itself.",
+      "The 2n/5 threshold is sharp, and the balanced blow-up of the 5-cycle C₅ is the single example that certifies it: it is triangle-free, non-bipartite, and 2n/5-regular, so it simultaneously shows the AES hypothesis cannot be relaxed below 2n/5 and pins down the exact constant the degree-cleaning step must clear before invoking the lemma."
     ]
   },
   "conclusion": {
@@ -81,6 +82,14 @@
       "endLine": 42,
       "summary": "Module docstring locating the result: the exact extremal form of Mantel's theorem (mantel-theorem, mantel-theorem-uniqueness) is settled, while edge-count stability is open. This file packages the degree-cleaning route's min-degree ingredient — the r = 2 case of Mathlib's colorable_of_cliqueFree_lt_minDegree — and is explicit that this is min-degree stability, distinct from the open edge-count statement.",
       "mathContext": "AES (triangle-free case): K₃-free with δ(G) > 2n/5 ⇒ G is bipartite."
+    },
+    {
+      "id": "setup",
+      "title": "Ambient Setup",
+      "startLine": 44,
+      "endLine": 48,
+      "summary": "Opens Finset, Fintype, and SimpleGraph, enters namespace MantelStability, and fixes the working context: a finite vertex type V with a graph G whose adjacency is decidable ([Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj]). These are the minimal typeclass assumptions that make minDegree and CliqueFree 3 well-defined finite quantities, and stating the lemmas at this generality keeps them reusable on any survivor subgraph.",
+      "mathContext": "δ(G) = min over v of deg(v), defined for finite V with decidable adjacency."
     },
     {
       "id": "aes-specialization",
