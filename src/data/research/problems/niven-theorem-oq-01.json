@@ -1,15 +1,22 @@
 {
   "slug": "niven-theorem-oq-01",
   "title": "Niven's Theorem: the only rational cosines at rational multiples of π are 0, ±1/2, ±1",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "DONE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "significance": 6,
   "tractability": 5,
   "started": "2026-06-16T00:00:00Z",
-  "lastUpdate": "2026-06-16T18:50:00Z",
-  "tags": ["seeker-selected", "analysis", "number-theory", "trigonometry", "algebraic-number-theory", "research"],
+  "lastUpdate": "2026-06-18T06:45:00Z",
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "number-theory",
+    "trigonometry",
+    "algebraic-number-theory",
+    "research"
+  ],
   "problemStatement": {
     "formal": "\\forall \\theta = (m/n)\\pi \\ (m,n\\in\\mathbb{Z}, n\\neq 0),\\ \\cos\\theta\\in\\mathbb{Q} \\implies \\cos\\theta\\in\\{0,\\pm 1/2,\\pm 1\\}",
     "plain": "Niven's theorem (1956): if θ is a rational multiple of π and cos θ is rational, then cos θ ∈ {0, ±1/2, ±1}. Equivalently, the only rational multiples of π whose cosine is rational are the multiples of 90° and 60°.",
@@ -39,7 +46,11 @@
       "Aristotle moot: the core is already a Mathlib lemma, so delegation is unnecessary."
     ],
     "nextAction": "When Docker drains: ./proofs/scripts/docker-build.sh Proofs.NivenTheorem; grep error:. If green, register in Proofs.lean, add gallery entry src/data/proofs/niven-theorem-oq-01/ (framed as a presentation of the Mathlib result), flip status to verified, mark COMPLETED.",
-    "attemptCounts": { "total": 2, "currentApproach": 2, "approachesTried": 2 }
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 2
+    }
   },
   "knowledge": {
     "progressSummary": "RESOLVED (build-pending). Session 2 found Mathlib v4.26.0 already has the full Niven theorem (Mathlib/NumberTheory/Niven.lean) and discharged our last sorry by delegating to Real.isIntegral_two_mul_cos_rat_mul_pi + IsIntegral.exists_int_iff_exists_rat. proofs/Proofs/NivenTheorem.lean: 0 sorry, 0 axioms; names verified vs the exact offline pin. NOT YET BUILT (Docker saturated) and UNREGISTERED in Proofs.lean. Redundant from-scratch NivenTheoremCore.lean deleted. No open mathematics remains — only a build-verify + gallery-presentation step.",
