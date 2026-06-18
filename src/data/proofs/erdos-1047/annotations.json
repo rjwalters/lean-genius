@@ -3,8 +3,8 @@
     "id": "ann-e1047-lemniscate",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 56,
-      "endLine": 58
+      "startLine": 57,
+      "endLine": 59
     },
     "type": "definition",
     "title": "Polynomial Lemniscate",
@@ -22,10 +22,10 @@
     "id": "ann-e1047-strict",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 60,
-      "endLine": 62
+      "startLine": 61,
+      "endLine": 63
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "Strict Lemniscate",
     "content": "The **strict lemniscate** uses < instead of ≤:\n\n{z : |f(z)| < c}\n\nThis is the interior of the lemniscate. The distinction matters for topological properties like connectedness.",
     "significance": "supporting",
@@ -44,8 +44,8 @@
     "id": "ann-e1047-boundary",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 64,
-      "endLine": 66
+      "startLine": 65,
+      "endLine": 67
     },
     "type": "definition",
     "title": "Lemniscate Boundary",
@@ -65,8 +65,8 @@
     "id": "ann-e1047-closed",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 74,
-      "endLine": 75
+      "startLine": 75,
+      "endLine": 81
     },
     "type": "concept",
     "title": "Lemniscates are Closed",
@@ -87,8 +87,8 @@
     "id": "ann-e1047-compact",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 82,
-      "endLine": 83
+      "startLine": 72,
+      "endLine": 73
     },
     "type": "concept",
     "title": "Lemniscates are Compact",
@@ -109,8 +109,8 @@
     "id": "ann-e1047-components",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 91,
-      "endLine": 101
+      "startLine": 89,
+      "endLine": 91
     },
     "type": "concept",
     "title": "Component Counting",
@@ -130,8 +130,8 @@
     "id": "ann-e1047-convex-def",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 110,
-      "endLine": 114
+      "startLine": 99,
+      "endLine": 102
     },
     "type": "definition",
     "title": "Convexity in ℂ",
@@ -149,7 +149,7 @@
     "id": "ann-e1047-grunsky",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 126,
+      "startLine": 116,
       "endLine": 131
     },
     "type": "definition",
@@ -167,8 +167,8 @@
     "id": "ann-e1047-grunsky-false",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 132,
-      "endLine": 133
+      "startLine": 110,
+      "endLine": 114
     },
     "type": "concept",
     "title": "Grunsky Conjecture is FALSE",
@@ -189,8 +189,8 @@
     "id": "ann-e1047-pommerenke-poly",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 141,
-      "endLine": 143
+      "startLine": 139,
+      "endLine": 141
     },
     "type": "definition",
     "title": "Pommerenke's Polynomial",
@@ -207,8 +207,8 @@
     "id": "ann-e1047-pommerenke-param",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 163,
-      "endLine": 168
+      "startLine": 133,
+      "endLine": 137
     },
     "type": "concept",
     "title": "Pommerenke's Parameter Choice",
@@ -228,8 +228,8 @@
     "id": "ann-e1047-goodman-poly",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 174,
-      "endLine": 178
+      "startLine": 164,
+      "endLine": 166
     },
     "type": "definition",
     "title": "Goodman's Polynomial",
@@ -249,8 +249,8 @@
     "id": "ann-e1047-goodman-critical",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 181,
-      "endLine": 184
+      "startLine": 179,
+      "endLine": 181
     },
     "type": "definition",
     "title": "Goodman's Critical Value",
@@ -269,8 +269,8 @@
     "id": "ann-e1047-goodman-thm",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 185,
-      "endLine": 194
+      "startLine": 183,
+      "endLine": 193
     },
     "type": "concept",
     "title": "Goodman's Counterexample",
@@ -290,8 +290,8 @@
     "id": "ann-e1047-referee",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 204,
-      "endLine": 219
+      "startLine": 201,
+      "endLine": 203
     },
     "type": "concept",
     "title": "Referee's Example",
@@ -311,8 +311,8 @@
     "id": "ann-e1047-goodman-question",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 238,
-      "endLine": 249
+      "startLine": 242,
+      "endLine": 244
     },
     "type": "definition",
     "title": "Goodman's Open Question",
@@ -331,8 +331,8 @@
     "id": "ann-e1047-single-root",
     "proofId": "erdos-1047",
     "range": {
-      "startLine": 227,
-      "endLine": 230
+      "startLine": 219,
+      "endLine": 223
     },
     "type": "concept",
     "title": "Single Root is Convex",
