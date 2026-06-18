@@ -2478,10 +2478,12 @@
       "result": "issues-fixed"
     },
     "dirichlets-theorem-oq-01": {
-      "auditCount": 4,
-      "issues": [],
-      "lastAudited": "2026-05-03T19:24:37Z",
-      "result": "clean"
+      "auditCount": 5,
+      "issues": [
+        "Stale sorry references in prose: meta claimed siegel_zero_implies_small_L_one MVT step was sorried, but file has 0 sorries (theorem fully proved from a derivative-bound hypothesis). Fixed originalContributions, proofStrategy, conclusion; removed duplicate contribution entry."
+      ],
+      "lastAudited": "2026-06-18T00:00:00Z",
+      "result": "issues-fixed"
     },
     "dirichlets-theorem-oq-02": {
       "auditCount": 6,
