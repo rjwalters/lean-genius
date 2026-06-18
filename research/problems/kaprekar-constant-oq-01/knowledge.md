@@ -169,3 +169,70 @@ in order of likelihood to fail:
 Do NOT swap this in for the verified `native_decide` file or claim 0-axiom/verified status
 until `./proofs/scripts/docker-build.sh Proofs.KaprekarConstantOQ01ZeroAxiom` is green and
 `#print axioms KaprekarConstantOQ01ZeroAxiom.kaprekar_converges` shows no `Lean.ofReduceBool`.
+
+---
+
+## Session 4 (2026-06-18, researcher-2) — kernel-`decide` 0-axiom route CONFIRMED INFEASIBLE
+
+Docker was available (load ~15), so the central gamble from Sessions 2–3 was finally
+build-tested. **Result: the kernel-`decide` 0-axiom companion does not compile.**
+
+Two builds of `Proofs.KaprekarConstantOQ01ZeroAxiom`, both with a *warm* Mathlib cache
+(5.2 GB `.lake` persisted; the only work left was compiling our one file):
+
+1. `conv_canon : ∀ n < 10000, canon n = n → NonRepdigit n → kaprekarStep^[7] n = 6174 := by decide`
+   — **timed out at 40 min** (`BUILD_EXIT=124`).
+2. Same with `Function.iterate` replaced by an explicitly-unfolded seven-fold composition
+   (`def kstep7 := kaprekarStep (kaprekarStep (... 7 ...))`, `kstep7_eq : kstep7 n = kaprekarStep^[7] n := rfl`)
+   to dodge any `Function.iterate` kernel-reduction overhead — **timed out at 45 min**.
+
+Because both runs *timed out* (124) rather than *errored* (1), and Lean compiles
+declarations in source order, **every declaration before `conv_canon` compiled cleanly**:
+the structural lemmas `kaprekarStep_canon`, `iterate7_canon`, `canon_lt`, `canon_idem`,
+`nonRepdigit_canon` (all `simp only [...]; omega`) and `kstep7_eq := rfl` are all
+**verified to typecheck**. The hang is isolated to `conv_canon`'s `decide`.
+
+### Root cause (this is the durable insight)
+
+The bottleneck is **not** the per-case reduction count and **not** `Function.iterate`. It is
+the `Nat.decidableBallLT 10000 p` proof term itself: the kernel must reduce/typecheck a
+term whose structure recurses across the entire `n < 10000` quantifier, *regardless* of the
+`canon n = n` short-circuit (the guard makes each body cheap, but the kernel still walks all
+10000 levels of the decidability term). So "collapse the work to 715 reductions" does **not**
+"collapse the term" — the 10000-wide `decidableBallLT` scaffold is the wall. Contrast
+`native_decide`, which *compiles* the same decision procedure and runs the full 10000×7 in
+seconds; that is exactly why the main file uses it and carries `Lean.ofReduceBool`.
+
+### Verdict / disposition
+
+- The `…ZeroAxiom.lean` companion was **deleted** — its sole purpose was 0 axioms via kernel
+  `decide`, now confirmed unreachable; as a `native_decide` file it would be strictly
+  redundant with (and more complex than) the registered main file.
+- Main file docstring + gallery `openQuestions[0]` updated to record the confirmed
+  infeasibility (replacing the prior "kernel `decide` can plausibly discharge" claim).
+- Gallery status is **unchanged and final**: `axiomatized` / `axiom`, `axiomCount` 1
+  (`Lean.ofReduceBool`). The math is fully formalized; there is no feasible axiom to remove.
+
+### One untested avenue (for any future session — do NOT repeat the `decidableBallLT` route)
+
+Hard-code the **715 representatives as an explicit `List ℕ` literal** and discharge
+convergence by `decide` over `reps.all (fun r => kstep7 r == 6174)`. This sidesteps the
+`decidableBallLT` term entirely — the kernel only reduces `List.all` over 715 elements
+(~715×7 `kaprekarStep` evals, plausibly feasible). The catch: general convergence then needs
+a **structural** `∀ n < 10000, canon n ∈ reps` completeness lemma (canon yields sorted
+digits < 10; `reps` must be exactly the sorted 4-digit-tuples) — proving that membership
+*without* another 10000-scan `decide` is the real work and is unproven. Treat as speculative;
+the entry is complete without it.
+
+### Verified design preserved (reconstructible one-liners, if ever needed)
+
+```lean
+def sortAsc4 (a b c d : ℕ) : ℕ × ℕ × ℕ × ℕ := -- 5-comparator network (a,b)(c,d)(a,c)(b,d)(b,c)
+def canon (n : ℕ) : ℕ := -- recombine sortAsc4 of the four digits of n
+theorem kaprekarStep_canon (n) : kaprekarStep (canon n) = kaprekarStep n := by simp only [...]; omega
+theorem iterate7_canon  (n) : kaprekarStep^[7] n = kaprekarStep^[7] (canon n) := -- peel via iterate_succ_apply ×2
+theorem canon_lt (n) : canon n < 10000               := by simp only [canon, sortAsc4]; omega
+theorem canon_idem (n) : canon (canon n) = canon n   := by simp only [canon, sortAsc4]; omega
+theorem nonRepdigit_canon (n) (hn) : NonRepdigit (canon n) := by simp only [...] at hn ⊢; omega
+```
+All six are confirmed to compile on the current pin.

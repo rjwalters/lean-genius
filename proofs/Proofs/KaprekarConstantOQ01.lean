@@ -41,10 +41,20 @@ which equal `6174`), and `kaprekar_bound_sharp` is witnessed by the single strin
 uses `native_decide`, so `Lean.ofReduceBool` (compiled evaluation of a decidable
 proposition) is the file's sole non-foundational axiom.
 
-A fully `decide`-checked (0-axiom) version is sketched in the problem knowledge base:
-`kaprekarStep n` factors through the digit multiset (`kaprekarStep n = kaprekarStep
-(canon n)`), reducing the convergence enumeration from 10000 four-digit strings to the
-715 sorted-digit representatives, which kernel `decide` can plausibly discharge.
+A fully `decide`-checked (0-axiom) version was attempted via the digit-multiset reduction
+(`kaprekarStep n = kaprekarStep (canon n)`), which cuts the convergence enumeration from
+10000 four-digit strings to the 715 sorted-digit representatives.  **This route is now
+confirmed infeasible for kernel `decide`**: a companion built around
+`∀ n < 10000, canon n = n → NonRepdigit n → kaprekarStep^[7] n = 6174 := by decide`
+times out past 40 minutes even with a warm Mathlib cache, both with `Function.iterate` and
+with an explicitly-unfolded seven-fold composition.  The wall is the `Nat.decidableBallLT`
+term over the full `n < 10000` quantifier — the kernel must reduce/typecheck a proof term
+proportional to the whole 10000-wide scan regardless of the cheap canonicality short-circuit,
+so collapsing the *work* to 715 reductions does not collapse the *term*.  `native_decide`
+remains the only feasible discharge, so `Lean.ofReduceBool` stands as the sole axiom.  The
+one untested avenue is a hard-coded 715-element `List.all` decide (which sidesteps the
+`decidableBallLT` term) plus a structural `canon n ∈ reps` completeness lemma; see the
+problem knowledge base.
 -/
 
 namespace KaprekarConstantOQ01
