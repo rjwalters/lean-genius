@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-17",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean",
     "tags": [
       "number-theory",
@@ -15,11 +15,11 @@
       "combinatorics",
       "prime-constellations"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-06-17",
-    "axiomCount": 0,
-    "assumptions": "None beyond Mathlib. Fully machine-verified, 0 sorries, 0 axiom declarations. The witness card/diameter checks in minAdmissibleDiameter_5 use native_decide (closed-term Lean.ofReduceBool kernel reduction); the load-bearing lower bound admissible_5tuple_diam_ge_12 is native_decide-free and fully symbolic. Reuses the verified admissible_quintuple_0_2_6_8_12 witness from BoundedPrimeGaps.lean.",
+    "axiomCount": 1,
+    "assumptions": "Relies on Lean.ofReduceBool: the headline theorem minAdmissibleDiameter_5 (D(5)=12) discharges the witness card/diameter checks for {0,2,6,8,12} with native_decide, which trusts the compiler's kernel reduction and so depends on the Lean.ofReduceBool axiom — its #print axioms is not axiom-free. There are 0 sorries and 0 literal axiom declarations (leanFile.axiomCount = 0). The load-bearing lower bound admissible_5tuple_diam_ge_12 is native_decide-free and fully symbolic, but the main D(5)=12 result as assembled is not. Reuses the verified admissible_quintuple_0_2_6_8_12 witness from BoundedPrimeGaps.lean.",
     "lineCount": 198,
     "theoremCount": 3,
     "definitionCount": 0,
@@ -78,7 +78,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Proved $D(5)=12$: every admissible 5-tuple has diameter $\\geq 12$, witnessed by $\\{0,2,6,8,12\\}$. The lower bound is fully symbolic (native_decide-free), interrogating only $p \\in \\{2,3\\}$ via a parity filter plus a two-mod-3-complete-triple counting argument. 198 lines, 3 theorems, 0 sorries, 0 axioms.",
+    "summary": "Proved $D(5)=12$: every admissible 5-tuple has diameter $\\geq 12$, witnessed by $\\{0,2,6,8,12\\}$. The lower bound is fully symbolic (native_decide-free), interrogating only $p \\in \\{2,3\\}$ via a parity filter plus a two-mod-3-complete-triple counting argument. 198 lines, 3 theorems, 0 sorries, 0 axiom declarations. The headline D(5)=12 assembly verifies the concrete witness diameter with native_decide, so it depends on the Lean.ofReduceBool axiom (badge: axiom).",
     "implications": "With $D(2)=2$, $D(3)=6$, $D(4)=8$, and now $D(5)=12$ all machine-verified, the smallest five prime-constellation diameters are formally established in Lean 4. The two-triple counting argument is the natural successor to the single-AP obstruction used for $D(4)$ and extends the reusable proof infrastructure (parity filtration, residue-complete-block counting) toward $D(6)=16$ and beyond. Under the Elliott–Halberstam conjecture, $D(5)=12$ is the exact predicted span for prime quintuples $n, n+2, n+6, n+8, n+12$.",
     "openQuestions": [
       "Prove $D(6)=16$ by extending the block-counting argument: the candidate window widens and the mod-5 obstruction must be combined with the mod-2 and mod-3 ones used here.",
