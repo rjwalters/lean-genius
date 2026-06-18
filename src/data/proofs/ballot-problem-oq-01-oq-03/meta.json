@@ -62,7 +62,8 @@
       "The reflection form catalan n = C(2n, n) − C(2n, n+1) is the count the ballot argument actually produces — 'all monotone paths minus reflected bad paths' — and it never divides, unlike the standard closed form centralBinom n / (n+1).",
       "C(2n, n) = (n+1)·catalan n and C(2n, n+1) = n·catalan n: the total path count is (n+1) copies of catalan n and the bad path count is n copies, so their difference is exactly one copy — the cleanest possible witness that reflection removes precisely n/(n+1) of the paths.",
       "The bad-path identity comes for free from the adjacent-binomial recurrence Nat.choose_succ_right_eq together with the Catalan recurrence; no explicit reflection bijection on path sets is needed to certify the count.",
-      "Working over ℕ, the subtraction C(2n, n) − C(2n, n+1) is genuine truncated subtraction, but because C(2n, n) ≥ C(2n, n+1) the identity holds on the nose and is dispatched by omega once both terms are expressed through catalan n."
+      "Working over ℕ, the subtraction C(2n, n) − C(2n, n+1) is genuine truncated subtraction, but because C(2n, n) ≥ C(2n, n+1) the identity holds on the nose and is dispatched by omega once both terms are expressed through catalan n.",
+      "Integrality of the Catalan number falls out as a byproduct: since C(2n, n) = (n+1)·catalan n, the central binomial coefficient centralBinom n is visibly (n+1) times an integer, so (n+1) ∣ centralBinom n. The divisibility that makes the division form centralBinom n / (n+1) well-defined — normally the delicate point of the closed form — is here a free consequence of the path-counting decomposition rather than a separately invoked fact."
     ]
   },
   "sections": [
