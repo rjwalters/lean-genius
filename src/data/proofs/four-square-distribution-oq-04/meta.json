@@ -131,7 +131,18 @@
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 22,
-    "theoremCount": 25
+    "theoremCount": 25,
+    "additionalFiles": [
+      {
+        "path": "Proofs/FourSquareDistributionOQ04Sign.lean",
+        "lineCount": 97,
+        "theorems": 2,
+        "definitions": 1,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "Verified sign-count half of the orbit-size lemma for the general B_m = S_m ⋉ (ℤ/2)^m route to OQ-04. Defines signFiber g (tuples agreeing with g coordinatewise up to sign) and proves signFiber_card: its cardinality is 2^(#nonzero coordinates) (signFiber_card), via the single-coordinate count {c,-c}.card = if c=0 then 1 else 2 (card_pair_neg). This is the sign factor 2^(#nonzero) appearing throughout the parent's type-contribution formula (6!/∏mᵢ!)·2^(#nonzero); the file also records the decomposition blueprint reducing the keystone fiber_card_eq_contribution to the single remaining open arrangement-count (multinomial) lemma. 2 theorems, 1 definition, 0 axioms, 0 sorries; Mathlib-only, fully kernel-checked (no decide/native_decide). Registered Proofs.lean:2355 (PR #24885). Namespace FourSquareDistributionOQ04Sign. Standalone reusable infrastructure — does not by itself close OQ-04 (the arrangement-count residue remains open)."
+      }
+    ]
   },
   "references": [
     {
