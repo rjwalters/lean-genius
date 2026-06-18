@@ -43,12 +43,17 @@ count, with no hard-coded Jacobi values:
    `Finset.card_eq_sum_card_fiberwise`. It replaces the parent's per-`n`
    hand-summation of literals by one partition theorem about the real count.
 4. The whole open question is then reduced to a **single isolated lemma**,
-   `fiber_card_eq_contribution` : each shape-fiber has size `(★)`. That is the
-   orbit-size statement `orbit(s) = 2^{#nonzero}·m!/∏mᵢ!` — the one piece of real
-   orbit/stabilizer content. It is the sole `sorry` here and the natural
-   target for a focused proof (the `MulAction` orbit–stabilizer route sketched
-   in the knowledge base, or an Aristotle job once the backend returns).
-   `reps_card_eq_sum_contribution` then assembles the full formula from it.
+   the orbit-size statement `FiberFormula m n` : each shape-fiber has size `(★)`
+   `= 2^{#nonzero}·m!/∏mᵢ!`. This file states it as a hypothesis and assembles the
+   full formula from it in `reps_card_eq_sum_contribution`; this file is now
+   **`sorry`-free**. The hypothesis is **discharged** for every attained shape in
+   `FourSquareDistributionOQ04Bridge.lean` (`fiber_card_eq_shapeContribution`),
+   which combines the sign-count half (`FourSquareDistributionOQ04Sign`) with the
+   discharged multiset-arrangement count
+   (`FourSquareDistributionOQ04ArrangeProof.arrangement_card`); the fully
+   instantiated headline is
+   `FourSquareDistributionOQ04Bridge.reps_card_eq_sum_shapeContribution`. It lives
+   downstream only because of the import order, not because anything is left open.
 
 ## Why this is progress, honestly
 
@@ -146,24 +151,31 @@ def shapeContribution (m : ℕ) (s : Multiset ℤ) : ℕ :=
   (Nat.factorial m / (s.toFinset.prod (fun v => Nat.factorial (s.count v))))
     * 2 ^ (Multiset.card (s.filter (fun v => v ≠ 0)))
 
-/-- **The single remaining ingredient (OPEN / proof target).** Each shape-fiber
-has size given by the orbit formula `(★)`. This is the orbit-size statement of the
-hyperoctahedral action `B_m = S_m ⋉ (ℤ/2)^m`; everything else in this file is
-unconditional. A focused `MulAction` orbit–stabilizer argument (or an Aristotle
-job) discharges it. -/
-theorem fiber_card_eq_contribution {m n : ℕ} (s : Multiset ℤ)
-    (hs : s ∈ (reps m n).image shape) :
-    ((reps m n).filter (fun f => shape f = s)).card = shapeContribution m s := by
-  sorry
+/-- The orbit-size statement of the hyperoctahedral action `B_m = S_m ⋉ (ℤ/2)^m`:
+each shape-fiber has size given by the orbit formula `(★)`. Stated here as the
+single hypothesis that `reps_card_eq_sum_contribution` consumes; everything else
+in this file is unconditional. This formula is **proved** for every attained
+shape in `FourSquareDistributionOQ04Bridge.lean`
+(`fiber_card_eq_shapeContribution`), built from the sign-count half
+(`FourSquareDistributionOQ04Sign`) and the discharged arrangement count
+(`FourSquareDistributionOQ04ArrangeProof.arrangement_card`). It is phrased as a
+hypothesis rather than re-proved here only because Bridge is downstream of this
+file in the import graph. -/
+abbrev FiberFormula (m n : ℕ) : Prop :=
+  ∀ s ∈ (reps m n).image shape,
+    ((reps m n).filter (fun f => shape f = s)).card = shapeContribution m s
 
 /-- Assembling Parts 3 and 4: the full type decomposition of the genuine
-representation count, for every `m` and `n`, modulo the single orbit-size lemma.
-For `m = 2k` this is the open question's `r_{2k}(n) = Σ contributions`. -/
-theorem reps_card_eq_sum_contribution (m n : ℕ) :
+representation count, for every `m` and `n`, given the orbit-size lemma
+`FiberFormula m n` (proved as `FourSquareDistributionOQ04Bridge.fiber_card_eq_shapeContribution`).
+For `m = 2k` this is the open question's `r_{2k}(n) = Σ contributions`; see
+`FourSquareDistributionOQ04Bridge.reps_card_eq_sum_shapeContribution` for the
+fully discharged headline. -/
+theorem reps_card_eq_sum_contribution (m n : ℕ) (hfiber : FiberFormula m n) :
     (reps m n).card
       = ∑ s ∈ (reps m n).image shape, shapeContribution m s := by
   rw [reps_card_eq_sum_fiber]
-  exact Finset.sum_congr rfl (fun s hs => fiber_card_eq_contribution s hs)
+  exact Finset.sum_congr rfl (fun s hs => hfiber s hs)
 
 #check @mem_reps_iff
 #check @reps_card_eq_sum_fiber
