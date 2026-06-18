@@ -75,6 +75,7 @@ re-verified there, but only a Docker build confirms the routine glue.
 namespace FourSquareDistributionOQ04ArrangeProof
 
 open Finset
+open scoped Nat List   -- `(n)!` factorial (`Nat`) and `l₁ ~ l₂` list-permutation (`List`)
 
 /-- The canonical `Finset` of multiset-arrangements (verbatim from the parent file). -/
 def arrangements {m : ℕ} (s : Multiset ℤ) : Finset (Fin m → ℤ) :=

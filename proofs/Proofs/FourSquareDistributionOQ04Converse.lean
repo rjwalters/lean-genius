@@ -52,6 +52,7 @@ carriers, collapsing the remaining orbit–stabilizer card assembly to instance 
 namespace FourSquareDistributionOQ04Converse
 
 open Finset
+open scoped List   -- `l₁ ~ l₂` list-permutation notation (scoped under `List`)
 
 /-- **Forward direction (recorded for completeness).** Precomposition by a
 permutation preserves the value-multiset of a tuple. Mathlib has the list-level
