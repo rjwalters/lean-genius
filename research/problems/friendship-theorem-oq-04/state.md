@@ -4,7 +4,7 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-16
-**Iteration**: 9
+**Iteration**: 10
 
 ## Current Focus
 Structural characterization of the infinite Friendship Theorem. Positive half (parts
@@ -23,13 +23,19 @@ Done so far:
 - **(S8):** `nonadjacent_neighborSet_equinum` — regularity (finiteness-free):
   non-adjacent vertices have a `Set.BijOn` between neighbour sets. ⟹ any friendship
   graph without a universal vertex is regular (C₅ counterexample is ℵ₀-regular).
-- **NEW (S9):** hub-uniqueness, in orphan file `proofs/Proofs/FriendshipTheoremOQ04Universal.lean`
-  (0 sorry / 0 axiom, UNREGISTERED build-pending — Docker blacked out, rc=124):
+- **S9 (now VERIFIED & REGISTERED):** hub-uniqueness in
+  `proofs/Proofs/FriendshipTheoremOQ04Universal.lean` (0 sorry / 0 axiom, registered in
+  `Proofs.lean`, Docker-GREEN 7746 jobs 2026-06-18):
   `two_universal_cover` (two distinct universal vertices `c,c'` force `V = {c,c',x}`,
   x = their unique common neighbour — i.e. only `K₃` has two centres),
   `nat_card_eq_three_of_two_universal` (`Nat.card V = 3`), `finite_of_two_universal`,
   and `universal_unique_of_card_ne_three` (away from the 3-vertex triangle the windmill
-  centre is unique). Finiteness-free; Mathlib names verified offline @ pin 2df2f0150c.
+  centre is unique). The earlier "UNREGISTERED build-pending, rc=124" note was stale —
+  the file was registered and now builds green.
+- **NEW (S10):** `universal_unique_of_infinite` — the on-theme OQ-04 specialization: an
+  *infinite* friendship graph has at most one universal vertex (`Nat.card V = 0 ≠ 3`).
+  Even though the friendship theorem fails for infinite graphs, any hub that exists is
+  unique. Same file, Docker-GREEN 7746 jobs.
 
 ## Attempt Count
 - Total attempts: 8
