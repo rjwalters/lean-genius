@@ -46,5 +46,17 @@
     "significance": "supporting",
     "relatedConcepts": ["OEIS A001318", "pentagonal numbers"],
     "prerequisites": []
+  },
+  {
+    "id": "ann-open-core",
+    "proofId": "pentagonal-number-theorem-oq-01",
+    "range": { "startLine": 161, "endLine": 177 },
+    "type": "context",
+    "title": "The Open Core: Franklin's Involution and the Generating Identity",
+    "content": "Documents what this file deliberately does *not* prove: the analytic/combinatorial heart of the theorem.\n\n**The identity.** In the ring of formal power series $\\mathbb{Z}[\\![X]\\!]$, Euler's theorem asserts $\\prod_{n\\ge1}(1-X^n) = \\sum_{k\\in\\mathbb{Z}}(-1)^k X^{g(k)}$. Equivalently, letting $p_{\\mathrm{even}}(n)$ and $p_{\\mathrm{odd}}(n)$ count partitions of $n$ into an even/odd number of *distinct* parts, $p_{\\mathrm{even}}(n)-p_{\\mathrm{odd}}(n)$ equals $(-1)^k$ when $n=g(k)$ and $0$ otherwise.\n\n**Franklin's involution (1881).** The bijective proof builds a sign-reversing involution on partitions into distinct parts using the two statistics $s$ (smallest part) and $\\sigma$ (length of the longest 'staircase' run ending at the largest part). Either the smallest part moves up or the staircase moves down, pairing each partition with one of opposite parity — *except* the staircase partitions $j{+}(j{+}1){+}\\cdots{+}(2j{-}1)$ and their variants, the unmatched fixed points, which sit exactly at $n=g(\\pm j)$ and contribute the surviving $(-1)^k$ term.\n\n**Why it is out of scope.** Mathlib has `Nat.Partition` but not distinct-part partitions with a parity sign, not Franklin's involution, and not the formal-power-series infinite product. This entry supplies the index-set theory (`isGenPent_iff_isSquare`, `genPent_injective`) that any such formalization would consume to locate the surviving exponents.",
+    "mathContext": "$\\prod_{n\\ge1}(1-X^n)=\\sum_{k\\in\\mathbb{Z}}(-1)^k X^{g(k)}$; fixed points of Franklin's involution occur precisely at $n=g(k)$.",
+    "significance": "context",
+    "relatedConcepts": ["Franklin's involution", "partitions into distinct parts", "formal power series", "generating functions", "sign-reversing involution"],
+    "prerequisites": ["integer partitions", "generating functions", "involutions and bijective combinatorics"]
   }
 ]
