@@ -41,17 +41,24 @@
       {
         "name": "witness_n_eq_4_bounded_50",
         "kind": "bounded-search",
-        "attackVectors": ["witness-search"]
+        "attackVectors": [
+          "witness-search"
+        ]
       },
       {
         "name": "witness_n_eq_5_bounded_50",
         "kind": "bounded-search",
-        "attackVectors": ["witness-search"]
+        "attackVectors": [
+          "witness-search"
+        ]
       },
       {
         "name": "no_witness_n_eq_4_below_20",
         "kind": "bounded-search",
-        "attackVectors": ["witness-search", "structural-lemma"]
+        "attackVectors": [
+          "witness-search",
+          "structural-lemma"
+        ]
       }
     ],
     "originalContributions": [
@@ -246,7 +253,27 @@
     "theoremCount": 6,
     "definitionCount": 4,
     "path": "Proofs/FermatDefectOne.lean",
-    "sorries": 1
+    "sorries": 1,
+    "additionalFiles": [
+      {
+        "path": "Proofs/FermatDefectOneFamilies.lean",
+        "lineCount": 185,
+        "theorems": 9,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "Mahler polynomial families for the defect-one equation a^n+b^n-c^n=±1 at n=3. Proves the positive-defect family produces infinitely many primitive witnesses (defect_pos_witnesses_infinite), with pos_family_gcd and defect_pos_witness_ge_two supplying primitivity and ordering, plus single-witness existence for both signs (defect_exists_three_pos/neg). 9 theorems, 0 axioms, 0 sorries; the defect identities are discharged by native_decide (11×), which introduces Lean.ofReduceBool. Namespace FermatDefectOne; imports parent Proofs.FermatDefectOne."
+      },
+      {
+        "path": "Proofs/FermatDefectOneNegInfinitude.lean",
+        "lineCount": 118,
+        "theorems": 4,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "Negative-defect infinitude at n=3: the family (9t^3-1, 9t^4-3t, 9t^4) yields infinitely many primitive witnesses of a^3+b^3-c^3=-1 (defect_neg_witnesses_infinite), with neg_family_coprime (primitivity) and defect_neg_data (defect identity). Combined with defect_pos_witnesses_infinite (Families.lean) this settles the sign-symmetry of open question OQ-02 at n=3 in its strongest form — each sign of the defect occurs infinitely often along an explicit polynomial family. 4 theorems, 0 axioms, 0 sorries, no native_decide (fully kernel-checked). Namespace FermatDefectOne; imports parent Proofs.FermatDefectOne."
+      }
+    ]
   },
   "mainTheorems": [
     {
