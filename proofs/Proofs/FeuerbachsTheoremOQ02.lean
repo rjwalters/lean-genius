@@ -45,6 +45,7 @@ the false candidate; no positive tangency theorem is asserted.
 -/
 
 set_option linter.unusedVariables false
+set_option maxHeartbeats 4000000
 
 noncomputable section
 
@@ -73,9 +74,8 @@ lemma dist3_nonneg (P Q : Point3) : 0 ≤ dist3 P Q := by
 
 /-- dist3² = dist3_sq -/
 lemma dist3_sq_eq (P Q : Point3) : dist3 P Q ^ 2 = dist3_sq P Q := by
-  unfold dist3
-  rw [Real.sq_sqrt (by positivity : 0 ≤ (Q.1 - P.1)^2 + (Q.2.1 - P.2.1)^2 + (Q.2.2 - P.2.2)^2)]
-  unfold dist3_sq
+  unfold dist3 dist3_sq
+  rw [Real.sq_sqrt (by positivity)]
 
 /-- Midpoint of two points in ℝ³ -/
 def midpoint3 (P Q : Point3) : Point3 :=
@@ -277,10 +277,25 @@ private lemma circumcenter_dot_eq (T : Tetrahedron) :
     let det := dot3 u (cross3 v w)
     let P := vec3 T.A T.circumcenter
     2 * dot3 u P = dot3 u u := by
-  simp only [Tetrahedron.circumcenter, vec3, dot3, cross3]
+  show 2 * dot3 (vec3 T.A T.B) (vec3 T.A T.circumcenter)
+      = dot3 (vec3 T.A T.B) (vec3 T.A T.B)
   have hdet : dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D)) ≠ 0 :=
     T.nondegenerate
-  field_simp [vec3, dot3, cross3] at hdet ⊢
+  -- Expand the displacement P = O − A via Cramer's rule, keeping the determinant
+  -- folded as an atom so the closing `field_simp` matches `hdet` syntactically.
+  have hexp : dot3 (vec3 T.A T.B) (vec3 T.A T.circumcenter)
+      = (dot3 (vec3 T.A T.B) (vec3 T.A T.B)
+            * dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D))
+          + dot3 (vec3 T.A T.C) (vec3 T.A T.C)
+            * dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.D) (vec3 T.A T.B))
+          + dot3 (vec3 T.A T.D) (vec3 T.A T.D)
+            * dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.B) (vec3 T.A T.C)))
+        / (2 * dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D))) := by
+    simp only [Tetrahedron.circumcenter, vec3, dot3, cross3]
+    ring
+  rw [hexp, dot3_cross3_self_right (vec3 T.A T.B) (vec3 T.A T.D),
+    dot3_cross3_self_left (vec3 T.A T.B) (vec3 T.A T.C)]
+  field_simp [hdet]
   ring
 
 /-- Helper: similar for v = C-A -/
@@ -290,10 +305,27 @@ private lemma circumcenter_dot_eq_v (T : Tetrahedron) :
     let w := vec3 T.A T.D
     let P := vec3 T.A T.circumcenter
     2 * dot3 v P = dot3 v v := by
-  simp only [Tetrahedron.circumcenter, vec3, dot3, cross3]
+  show 2 * dot3 (vec3 T.A T.C) (vec3 T.A T.circumcenter)
+      = dot3 (vec3 T.A T.C) (vec3 T.A T.C)
   have hdet : dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D)) ≠ 0 :=
     T.nondegenerate
-  field_simp [vec3, dot3, cross3] at hdet ⊢
+  -- v · (w × u) = det by cyclic invariance of the scalar triple product.
+  have hcyc : dot3 (vec3 T.A T.C) (cross3 (vec3 T.A T.D) (vec3 T.A T.B))
+      = dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D)) := by
+    simp only [vec3, dot3, cross3]; ring
+  have hexp : dot3 (vec3 T.A T.C) (vec3 T.A T.circumcenter)
+      = (dot3 (vec3 T.A T.B) (vec3 T.A T.B)
+            * dot3 (vec3 T.A T.C) (cross3 (vec3 T.A T.C) (vec3 T.A T.D))
+          + dot3 (vec3 T.A T.C) (vec3 T.A T.C)
+            * dot3 (vec3 T.A T.C) (cross3 (vec3 T.A T.D) (vec3 T.A T.B))
+          + dot3 (vec3 T.A T.D) (vec3 T.A T.D)
+            * dot3 (vec3 T.A T.C) (cross3 (vec3 T.A T.B) (vec3 T.A T.C)))
+        / (2 * dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D))) := by
+    simp only [Tetrahedron.circumcenter, vec3, dot3, cross3]
+    ring
+  rw [hexp, dot3_cross3_self_left (vec3 T.A T.C) (vec3 T.A T.D),
+    dot3_cross3_self_right (vec3 T.A T.C) (vec3 T.A T.B), hcyc]
+  field_simp [hdet]
   ring
 
 /-- Helper: similar for w = D-A -/
@@ -303,10 +335,27 @@ private lemma circumcenter_dot_eq_w (T : Tetrahedron) :
     let w := vec3 T.A T.D
     let P := vec3 T.A T.circumcenter
     2 * dot3 w P = dot3 w w := by
-  simp only [Tetrahedron.circumcenter, vec3, dot3, cross3]
+  show 2 * dot3 (vec3 T.A T.D) (vec3 T.A T.circumcenter)
+      = dot3 (vec3 T.A T.D) (vec3 T.A T.D)
   have hdet : dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D)) ≠ 0 :=
     T.nondegenerate
-  field_simp [vec3, dot3, cross3] at hdet ⊢
+  -- w · (u × v) = det by cyclic invariance of the scalar triple product.
+  have hcyc : dot3 (vec3 T.A T.D) (cross3 (vec3 T.A T.B) (vec3 T.A T.C))
+      = dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D)) := by
+    simp only [vec3, dot3, cross3]; ring
+  have hexp : dot3 (vec3 T.A T.D) (vec3 T.A T.circumcenter)
+      = (dot3 (vec3 T.A T.B) (vec3 T.A T.B)
+            * dot3 (vec3 T.A T.D) (cross3 (vec3 T.A T.C) (vec3 T.A T.D))
+          + dot3 (vec3 T.A T.C) (vec3 T.A T.C)
+            * dot3 (vec3 T.A T.D) (cross3 (vec3 T.A T.D) (vec3 T.A T.B))
+          + dot3 (vec3 T.A T.D) (vec3 T.A T.D)
+            * dot3 (vec3 T.A T.D) (cross3 (vec3 T.A T.B) (vec3 T.A T.C)))
+        / (2 * dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D))) := by
+    simp only [Tetrahedron.circumcenter, vec3, dot3, cross3]
+    ring
+  rw [hexp, dot3_cross3_self_right (vec3 T.A T.D) (vec3 T.A T.C),
+    dot3_cross3_self_left (vec3 T.A T.D) (vec3 T.A T.B), hcyc]
+  field_simp [hdet]
   ring
 
 /-- The circumcenter is equidistant from all four vertices.
@@ -319,14 +368,16 @@ theorem Tetrahedron.circumcenter_equidist (T : Tetrahedron) :
   -- Strategy: dist3_sq O X = ∑(Xi - Oi)². For X ∈ {B,C,D}, express Xi - Oi = (Xi - Ai) - Pi
   -- Then dist3_sq O X - dist3_sq O A = |u|² - 2(u·P) where u = X - A, P = O - A
   -- By the circumcenter_dot_eq lemmas, 2(u·P) = |u|², so the difference is 0.
-  refine ⟨?_, ?_, ?_⟩ <;> {
-    simp only [dist3_sq, Tetrahedron.circumcenter, vec3, dot3, cross3]
-    have hdet : dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D)) ≠ 0 :=
-      T.nondegenerate
-    simp only [vec3, dot3, cross3] at hdet
-    field_simp
-    ring
-  }
+  -- We invoke the proved Cramer-rule identities rather than re-deriving them inline
+  -- (the inline `field_simp; ring` over the full determinant ratios times out).
+  have hu := circumcenter_dot_eq T
+  have hv := circumcenter_dot_eq_v T
+  have hw := circumcenter_dot_eq_w T
+  simp only [dist3_sq, vec3, dot3] at hu hv hw ⊢
+  refine ⟨?_, ?_, ?_⟩
+  · linear_combination hu
+  · linear_combination hv
+  · linear_combination hw
 
 /-- Circumradius: distance from circumcenter to any vertex -/
 def Tetrahedron.circumradius (T : Tetrahedron) : ℝ :=
@@ -541,9 +592,8 @@ theorem centroid_on_euler_line (T : Tetrahedron) :
     T.centroid = ((3 * T.circumcenter.1 + T.mongePoint.1) / 4,
                   (3 * T.circumcenter.2.1 + T.mongePoint.2.1) / 4,
                   (3 * T.circumcenter.2.2 + T.mongePoint.2.2) / 4) := by
-  unfold Tetrahedron.centroid Tetrahedron.mongePoint
-  simp only
-  constructor <;> [skip; constructor] <;> ring
+  simp only [Tetrahedron.centroid, Tetrahedron.mongePoint, Prod.mk.injEq]
+  refine ⟨?_, ?_, ?_⟩ <;> ring
 
 /-- The twenty-four-point center N₂₄ equals 2G - O, the reflection of the circumcenter
     through the centroid. Proof: N₂₄ = midpoint(O, M) = (O + 4G - 3O)/2 = 2G - O.
@@ -554,8 +604,8 @@ theorem twentyFourPointCenter_is_2G_minus_O (T : Tetrahedron) :
        2 * T.centroid.2.1 - T.circumcenter.2.1,
        2 * T.centroid.2.2 - T.circumcenter.2.2) := by
   unfold Tetrahedron.twentyFourPointCenter midpoint3 Tetrahedron.mongePoint
-  simp only
-  constructor <;> [skip; constructor] <;> ring
+  simp only [Prod.mk.injEq]
+  refine ⟨?_, ?_, ?_⟩ <;> ring
 
 -- ============================================================
 -- PART 12: Volume-Inradius Relation (Proved)
@@ -571,19 +621,250 @@ theorem volume_eq_inradius_surfaceArea (T : Tetrahedron) (hS : T.surfaceArea > 0
 -- PART 13: Counterexample — General Tetrahedra
 -- ============================================================
 
-/-- The orthocentric condition is NECESSARY for the 3D Feuerbach theorem.
+/- The orthocentric condition is NECESSARY for the 3D Feuerbach theorem.
     For a general (non-orthocentric) tetrahedron, the twenty-four-point sphere
     need NOT be tangent to the insphere.
 
     This is a fundamental difference from the 2D case, where Feuerbach's theorem
     holds for ALL triangles. The 3D analogue requires the additional hypothesis
     that opposite edges are perpendicular. -/
-axiom feuerbach_3d_fails_general :
+-- ============================================================
+-- Explicit non-orthocentric witness (T1) discharging the former axiom.
+-- Merged in from StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean
+-- (sympy-certified in verify_feuerbach3d_fails_witness_exact.py); 0 sorry / 0 axiom.
+-- ============================================================
+
+/-- The explicit non-orthocentric witness tetrahedron T1. -/
+def witnessT1 : Tetrahedron where
+  A := (0, 0, 0)
+  B := (1, 0, 0)
+  C := (0, 1, 0)
+  D := (1, 1, 1)
+  nondegenerate := by norm_num [vec3, dot3, cross3]
+
+/-- The squared-separation core: the genuinely hard content of the discharge,
+isolated as a self-contained three-surd inequality (see the file header for
+the reduction).  `Δ = 1+√3+2√2 > 0`, so this is equivalent to
+`dist(N₂₄,I)² ≠ (R/3 − r)²`. -/
+theorem witnessT1_surd_separation :
+    (72 : ℝ) - 30 * Real.sqrt 3 - 12 * Real.sqrt 2 + 12 * Real.sqrt 6 ≠ 0 := by
+  -- The expression is in fact strictly positive (≈ 32.4618), so it is ≠ 0.
+  -- Rational separating bounds (each verified by the squared identity + nonneg):
+  --   √3 < 1.7321   (1.7321² = 3.00017… > 3)
+  --   √2 < 1.41422  (1.41422² = 2.00002… > 2)
+  --   √6 > 2.4494   (2.4494² = 5.99956… < 6)
+  -- giving 72 − 30√3 − 12√2 + 12√6 > 72 − 51.963 − 16.97064 + 29.3928 ≈ 32.459 > 0.
+  have h3 : Real.sqrt 3 < 1.7321 := by
+    nlinarith [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 3), Real.sqrt_nonneg 3]
+  have h2 : Real.sqrt 2 < 1.41422 := by
+    nlinarith [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2), Real.sqrt_nonneg 2]
+  have h6 : (2.4494 : ℝ) < Real.sqrt 6 := by
+    nlinarith [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 6), Real.sqrt_nonneg 6]
+  have hpos : (0 : ℝ) < 72 - 30 * Real.sqrt 3 - 12 * Real.sqrt 2 + 12 * Real.sqrt 6 := by
+    linarith
+  exact ne_of_gt hpos
+
+/-- The non-orthocentric conjunct of the witness, discharged outright.
+`vec3 A B = (1,0,0)`, `vec3 C D = (1,0,1)`, so `dot3 = 1 ≠ 0` — a pure rational
+computation (same `norm_num [vec3, dot3, …]` pattern as `witnessT1.nondegenerate`),
+needing none of the surd-laden tangency definitions. This is the easy half of
+`witnessT1_fails`; the non-tangency half is now also discharged (S11), so the
+whole file is sorry-free. -/
+theorem witnessT1_nonorthocentric :
+    dot3 (vec3 witnessT1.A witnessT1.B) (vec3 witnessT1.C witnessT1.D) ≠ 0 := by
+  norm_num [witnessT1, vec3, dot3]
+
+-- ============================================================
+-- Closed forms of the surd-laden invariants at T1 (S11).
+-- Each is sympy-certified in verify_feuerbach3d_fails_witness_exact.py.
+-- ============================================================
+
+/-- Face areas of T1: (√3/2, √2/2, √2/2, 1/2). -/
+theorem witnessT1_faceArea_A : witnessT1.faceArea_A = Real.sqrt 3 / 2 := by
+  norm_num [Tetrahedron.faceArea_A, witnessT1, vec3, cross3, dot3]
+
+theorem witnessT1_faceArea_B : witnessT1.faceArea_B = Real.sqrt 2 / 2 := by
+  norm_num [Tetrahedron.faceArea_B, witnessT1, vec3, cross3, dot3]
+
+theorem witnessT1_faceArea_C : witnessT1.faceArea_C = Real.sqrt 2 / 2 := by
+  norm_num [Tetrahedron.faceArea_C, witnessT1, vec3, cross3, dot3]
+
+theorem witnessT1_faceArea_D : witnessT1.faceArea_D = 1 / 2 := by
+  norm_num [Tetrahedron.faceArea_D, witnessT1, vec3, cross3, dot3]
+
+/-- Volume of T1 is 1/6 (signed volume 6 = 1). -/
+theorem witnessT1_volume : witnessT1.volume = 1 / 6 := by
+  norm_num [Tetrahedron.volume, Tetrahedron.signedVolume6, witnessT1, vec3, dot3, cross3]
+
+/-- Surface area S = (1 + √3 + 2√2)/2. -/
+theorem witnessT1_surfaceArea :
+    witnessT1.surfaceArea = (1 + Real.sqrt 3 + 2 * Real.sqrt 2) / 2 := by
+  rw [Tetrahedron.surfaceArea, witnessT1_faceArea_A, witnessT1_faceArea_B,
+    witnessT1_faceArea_C, witnessT1_faceArea_D]
+  ring
+
+/-- Inradius r = 3V/S = 1/(1+√3+2√2). -/
+theorem witnessT1_inradius :
+    witnessT1.inradius = 1 / (1 + Real.sqrt 3 + 2 * Real.sqrt 2) := by
+  have hpos : (0 : ℝ) < 1 + Real.sqrt 3 + 2 * Real.sqrt 2 := by positivity
+  rw [Tetrahedron.inradius, witnessT1_volume, witnessT1_surfaceArea]
+  field_simp
+  ring
+
+/-- Circumcenter O = (1/2, 1/2, 1/2) (rational; via Cramer with det = 1). -/
+theorem witnessT1_circumcenter : witnessT1.circumcenter = (1 / 2, 1 / 2, 1 / 2) := by
+  simp only [Tetrahedron.circumcenter, witnessT1, vec3, dot3, cross3, Prod.mk.injEq]
+  norm_num
+
+/-- Circumradius R = √3/2 = dist(O, A). -/
+theorem witnessT1_circumradius : witnessT1.circumradius = Real.sqrt 3 / 2 := by
+  rw [Tetrahedron.circumradius, witnessT1_circumcenter]
+  simp only [dist3, witnessT1]
+  rw [show ((0 : ℝ) - 1 / 2) ^ 2 + ((0 : ℝ) - 1 / 2) ^ 2 + ((0 : ℝ) - 1 / 2) ^ 2
+        = 3 * (1 / 2) ^ 2 by norm_num,
+    Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 3), Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 1 / 2)]
+  ring
+
+/-- twentyFourPointRadius R/3 = √3/6. -/
+theorem witnessT1_twentyFourPointRadius :
+    witnessT1.twentyFourPointRadius = Real.sqrt 3 / 6 := by
+  rw [Tetrahedron.twentyFourPointRadius, witnessT1_circumradius]
+  ring
+
+/-- twentyFourPointCenter N₂₄ = (1/2, 1/2, 0) (rational; = midpoint(O, 4G−3O)). -/
+theorem witnessT1_twentyFourPointCenter :
+    witnessT1.twentyFourPointCenter = (1 / 2, 1 / 2, 0) := by
+  rw [Tetrahedron.twentyFourPointCenter, Tetrahedron.mongePoint, witnessT1_circumcenter]
+  simp only [midpoint3, Tetrahedron.centroid, witnessT1, Prod.mk.injEq]
+  norm_num
+
+/-- Incenter I = ((1+√2)/Δ, (1+√2)/Δ, 1/Δ), Δ = 1+√3+2√2. -/
+theorem witnessT1_incenter :
+    witnessT1.incenter =
+      ((1 + Real.sqrt 2) / (1 + Real.sqrt 3 + 2 * Real.sqrt 2),
+       (1 + Real.sqrt 2) / (1 + Real.sqrt 3 + 2 * Real.sqrt 2),
+       1 / (1 + Real.sqrt 3 + 2 * Real.sqrt 2)) := by
+  have hpos : (0 : ℝ) < 1 + Real.sqrt 3 + 2 * Real.sqrt 2 := by positivity
+  have htot : (Real.sqrt 3 / 2 + Real.sqrt 2 / 2 + Real.sqrt 2 / 2 + 1 / 2) ≠ 0 := by positivity
+  simp only [Tetrahedron.incenter]
+  rw [witnessT1_faceArea_A, witnessT1_faceArea_B, witnessT1_faceArea_C, witnessT1_faceArea_D]
+  simp only [witnessT1, Prod.mk.injEq]
+  refine ⟨?_, ?_, ?_⟩ <;>
+    · rw [div_eq_div_iff htot hpos.ne']
+      ring
+
+/-- The witness T1 is non-orthocentric AND its twenty-four-point sphere is NOT
+internally tangent to its insphere.  This is exactly the body of the parent
+axiom `feuerbach_3d_fails_general`, specialised to T1.
+
+Both conjuncts are proved (S11): the non-orthocentric conjunct is
+`witnessT1_nonorthocentric`, and the non-tangency follows by substituting the
+closed forms of `twentyFourPointCenter`/`incenter`/`inradius`/
+`twentyFourPointRadius` at T1, squaring, and invoking the surd separation kernel
+(all sympy-certified in `verify_feuerbach3d_fails_witness_exact.py`). -/
+theorem witnessT1_fails :
+    (dot3 (vec3 witnessT1.A witnessT1.B) (vec3 witnessT1.C witnessT1.D) ≠ 0) ∧
+    ¬ spheresInternallyTangent
+        witnessT1.twentyFourPointCenter witnessT1.incenter
+        witnessT1.twentyFourPointRadius witnessT1.inradius := by
+  refine ⟨witnessT1_nonorthocentric, ?_⟩
+  -- Unfold tangency and substitute the closed forms of all four invariants at T1.
+  simp only [spheresInternallyTangent, witnessT1_twentyFourPointCenter, witnessT1_incenter,
+    witnessT1_twentyFourPointRadius, witnessT1_inradius]
+  -- Goal: ¬ (dist3 N₂₄ I = |√3/6 − 1/Δ|), with N₂₄, I, R/3, r all explicit.
+  intro h
+  -- Square the tangency equation: dist3_sq N₂₄ I = (√3/6 − 1/Δ)².
+  have h2 :
+      dist3_sq (1 / 2, 1 / 2, 0)
+        ((1 + Real.sqrt 2) / (1 + Real.sqrt 3 + 2 * Real.sqrt 2),
+         (1 + Real.sqrt 2) / (1 + Real.sqrt 3 + 2 * Real.sqrt 2),
+         1 / (1 + Real.sqrt 3 + 2 * Real.sqrt 2))
+        = (Real.sqrt 3 / 6 - 1 / (1 + Real.sqrt 3 + 2 * Real.sqrt 2)) ^ 2 := by
+    rw [← dist3_sq_eq, h, sq_abs]
+  -- The strict separation dist3_sq N₂₄ I > (√3/6 − 1/Δ)², contradicting h2.
+  have hgt :
+      (Real.sqrt 3 / 6 - 1 / (1 + Real.sqrt 3 + 2 * Real.sqrt 2)) ^ 2 <
+        dist3_sq (1 / 2, 1 / 2, 0)
+          ((1 + Real.sqrt 2) / (1 + Real.sqrt 3 + 2 * Real.sqrt 2),
+           (1 + Real.sqrt 2) / (1 + Real.sqrt 3 + 2 * Real.sqrt 2),
+           1 / (1 + Real.sqrt 3 + 2 * Real.sqrt 2)) := by
+    set a : ℝ := Real.sqrt 2 with ha
+    set b : ℝ := Real.sqrt 3 with hb
+    have ha0 : 0 ≤ a := by rw [ha]; exact Real.sqrt_nonneg 2
+    have hb0 : 0 ≤ b := by rw [hb]; exact Real.sqrt_nonneg 3
+    have ha2 : a ^ 2 = 2 := by rw [ha]; exact Real.sq_sqrt (by norm_num)
+    have hb2 : b ^ 2 = 3 := by rw [hb]; exact Real.sq_sqrt (by norm_num)
+    have hΔpos : (0 : ℝ) < 1 + b + 2 * a := by positivity
+    -- rational closed forms of both sides (no surd-square needed)
+    have hd :
+        dist3_sq (1 / 2, 1 / 2, 0)
+          ((1 + a) / (1 + b + 2 * a), (1 + a) / (1 + b + 2 * a), 1 / (1 + b + 2 * a))
+          = ((1 - b) ^ 2 + 2) / (2 * (1 + b + 2 * a) ^ 2) := by
+      simp only [dist3_sq]
+      field_simp [hΔpos.ne']
+      ring
+    have he :
+        (b / 6 - 1 / (1 + b + 2 * a)) ^ 2
+          = (b * (1 + b + 2 * a) - 6) ^ 2 / (36 * (1 + b + 2 * a) ^ 2) := by
+      field_simp [hΔpos.ne']
+      ring
+    rw [hd, he]
+    -- numeric separating bounds on the surds
+    have ha_ub : a < 1.41422 := by nlinarith [ha2, ha0]
+    have hb_ub : b < 1.7321 := by nlinarith [hb2, hb0]
+    have hab_lb : (2.4494 : ℝ) < a * b := by
+      have hab : a * b = Real.sqrt 6 := by
+        rw [ha, hb, ← Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 2)]; norm_num
+      rw [hab]
+      nlinarith [Real.sq_sqrt (show (0 : ℝ) ≤ 6 by norm_num), Real.sqrt_nonneg 6]
+    -- the sharp three-surd kernel, as an exact polynomial identity mod a²=2, b²=3
+    have hid :
+        18 * ((1 - b) ^ 2 + 2) - (b * (1 + b + 2 * a) - 6) ^ 2
+          = 72 - 30 * b - 12 * a + 12 * (a * b) := by
+      linear_combination (-4 * b ^ 2) * ha2
+        + (-4 * a * b - 4 * a - b ^ 2 - 2 * b + 18) * hb2
+    have hpos : (0 : ℝ) < 72 - 30 * b - 12 * a + 12 * (a * b) := by
+      linarith [ha_ub, hb_ub, hab_lb]
+    have hkey : (b * (1 + b + 2 * a) - 6) ^ 2 < 18 * ((1 - b) ^ 2 + 2) := by
+      linarith [hid, hpos]
+    -- transport across the common positive denominator: show RHS − LHS > 0 directly,
+    -- avoiding any version-sensitive `div_lt_div_iff` lemma name.
+    have hnum : (0 : ℝ) < 18 * ((1 - b) ^ 2 + 2) - (b * (1 + b + 2 * a) - 6) ^ 2 := by
+      linarith [hkey]
+    have hdiff :
+        ((1 - b) ^ 2 + 2) / (2 * (1 + b + 2 * a) ^ 2)
+          - (b * (1 + b + 2 * a) - 6) ^ 2 / (36 * (1 + b + 2 * a) ^ 2)
+          = (18 * ((1 - b) ^ 2 + 2) - (b * (1 + b + 2 * a) - 6) ^ 2)
+              / (36 * (1 + b + 2 * a) ^ 2) := by
+      field_simp [hΔpos.ne']
+      ring
+    have hpos2 :
+        (0 : ℝ) < ((1 - b) ^ 2 + 2) / (2 * (1 + b + 2 * a) ^ 2)
+          - (b * (1 + b + 2 * a) - 6) ^ 2 / (36 * (1 + b + 2 * a) ^ 2) := by
+      rw [hdiff]
+      exact div_pos hnum (by positivity)
+    linarith [hpos2]
+  linarith [h2, hgt]
+
+/-- Discharge of the parent existence axiom from the explicit witness. -/
+theorem feuerbach_3d_fails_general_proved :
     ∃ T : Tetrahedron,
       (dot3 (vec3 T.A T.B) (vec3 T.C T.D) ≠ 0) ∧
       ¬ spheresInternallyTangent
           T.twentyFourPointCenter T.incenter
-          T.twentyFourPointRadius T.inradius
+          T.twentyFourPointRadius T.inradius :=
+  ⟨witnessT1, witnessT1_fails⟩
+
+/-- The orthocentric condition is NECESSARY: a non-orthocentric tetrahedron (T1)
+    whose twenty-four-point sphere is NOT tangent to its insphere.  Formerly an
+    axiom; now discharged by the explicit witness above. -/
+theorem feuerbach_3d_fails_general :
+    ∃ T : Tetrahedron,
+      (dot3 (vec3 T.A T.B) (vec3 T.C T.D) ≠ 0) ∧
+      ¬ spheresInternallyTangent
+          T.twentyFourPointCenter T.incenter
+          T.twentyFourPointRadius T.inradius :=
+  feuerbach_3d_fails_general_proved
 
 -- ============================================================
 -- PART 14: Edge Midpoints on the Twenty-Four-Point Sphere
