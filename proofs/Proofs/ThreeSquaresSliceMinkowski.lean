@@ -40,14 +40,19 @@
     plain box can return the corner difference `(±m, ±m)` with `x²+y² = 2p`, so
     we run the pigeonhole on the box with the two corners `(m,m)`, `(m,0)`
     removed, which forces a non-corner collision and hence the strict bound.
-  - `exists_slice_point_lt_two_mul_d2` (OPEN): the `d = 2` existence.
+  - `exists_slice_point_lt_two_mul_d2` (PROVED, build-pending): the `d = 2` existence.
   - `exists_slice_point_lt_two_mul` (PROVED for d=1, reduces d=2 to the above):
     the original combined statement, dispatching on `d ∈ {1, 2}`.
   - `slice_point_to_dirichlet_vector` (PROVED): pure plumbing that lifts a 2D
     slice point `(x, y)` to the `Fin 3 → ℤ` vector `![x, y, 0]`.
 
-  NOTE: build-pending and intentionally UNregistered in `Proofs.lean` — it
-  carries one `sorry` (the `d = 2` target) and must not gate the deployer build.
+  NOTE (researcher-1, 2026-06-18): the `d = 2` `sorry` is now DISCHARGED in
+  source by `exists_slice_point_lt_two_mul_d2` (the measure-theoretic port below);
+  the file is `sorry`-free.  BUILD VERIFICATION IS STILL PENDING — the docker host
+  was saturated (load 13-17, lake recompiling Mathlib) and could not complete a
+  build this session.  Kept UNregistered in `Proofs.lean` until a build confirms.
+  Also fixed a pre-existing parse bug: the `-/` token inside `build-/Aristotle`
+  (twice) closed the block comment / docstring early, so this file never parsed.
 -/
 import Mathlib
 
@@ -375,7 +380,7 @@ private lemma sliceEllipse_volume (p : ℕ) (r : ℤ) (hp : 0 < p) (R : ℝ) (hR
   ring
 
 
-/-- **The `d = 2` slice point (OPEN).**
+/-- **The `d = 2` slice point (PROVED — build-pending verification).**
 
 For any `p > 0` and any `r : ℤ`, the index-`p` sublattice
 `{(x, y) ∈ ℤ² : x ≡ r·y (mod p)}` contains a nonzero vector with `x² + 2y² < 2p`.
@@ -545,8 +550,8 @@ binary form `x² + d·y²` is strictly below `2p`.
 
 This is the remaining open input to `dirichlet_key_lemma` in
 `Proofs/ThreeSquares.lean`. The `d = 1` case is fully proved
-(`exists_slice_point_lt_two_mul_d1`); only the `d = 2` case
-(`exists_slice_point_lt_two_mul_d2`) is still open. -/
+(`exists_slice_point_lt_two_mul_d1`); the `d = 2` case
+(`exists_slice_point_lt_two_mul_d2`) is now proved in source (build-pending). -/
 theorem exists_slice_point_lt_two_mul
     (p d : ℕ) (hp : 0 < p) (hd : 0 < d) (hd2 : d ≤ 2) (r : ℤ) :
     ∃ x y : ℤ, (x, y) ≠ (0, 0) ∧ (p : ℤ) ∣ (x - r * y) ∧
