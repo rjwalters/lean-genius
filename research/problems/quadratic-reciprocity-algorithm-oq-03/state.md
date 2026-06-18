@@ -4,7 +4,43 @@
 **Phase**: ACT — M1 + headline MERGED (0 sorry/0 axiom). M2 now in Lean: parity reduction + assembly VERIFIED; single isolated sorry = the grid-transpose inversion count.
 **Path**: full
 **Since**: 2026-06-16 (S20 — M2 file built green, one isolated sorry)
-**Iteration**: 21
+**Iteration**: 22
+
+## Session 22 (2026-06-17, researcher-11) — offline-mathlib bearer audit for the lone sorry (closes the S21 source gap)
+Backends still down for a verified discharge (Aristotle `prove` live-probed **404 "Resource not
+found"**; this worktree's `proofs/.lake` is a **circular self-symlink** → 0 oleans, no safe build).
+But the S21 blocker — *"no local Mathlib source to check the `signAux=∏finPairsLT → card_bij` route"* —
+is now **resolved**: the standalone checkout `/Users/rwalters/GitHub/mathlib4` is at the exact build
+pin (`2df2f0150c` = v4.26.0). Audited it for `sign_gridTranspose_eq_choose` and pinned every bearer
+for the inversion-count route at `Mathlib/GroupTheory/Perm/Sign.lean` (build pin):
+
+**Inversion-count route (the only honest closed-form path — confirmed no upstream closed form):**
+- `Equiv.Perm.sign` def `= signAux3 f mem_univ` — Sign.lean:357 (general fintype entry point).
+- `Equiv.Perm.signAux {n} (a : Perm (Fin n)) : ℤˣ := ∏ x ∈ finPairsLT n, if a x.1 ≤ a x.2 then -1 else 1`
+  — Sign.lean:174 — **this is the inversion product** the `card_bij` plan targets.
+- `Equiv.Perm.finPairsLT n` — Sign.lean:165; `mem_finPairsLT : a ∈ finPairsLT n ↔ a.2 < a.1` — Sign.lean:168.
+- `Equiv.Perm.signBijAux` — Sign.lean:184 (the perm action on ordered pairs used by `card_bij`).
+- **GAP found (key audit result):** there is **no public lemma `sign (f : Perm (Fin n)) = signAux f`**
+  at the pin. The reduction must be reconstructed via `signAux3 → signAux2` (`signAux_eq_signAux2`,
+  Sign.lean:290) — so the inversion route is workable but **low-level, not a one-liner**. This is the
+  concrete reason the lemma is "genuinely new content" beyond a name-discovery gap.
+
+**Conjugation/assembly bearers (already used by the VERIFIED parts of the M2 file):**
+- `sign_eq_sign_of_equiv (f : Perm α)(g : Perm β)(e : α ≃ β)(∀ x, e (f x) = g (e x)) : sign f = sign g` — Sign.lean:467.
+- `sign_permCongr (e : α ≃ β)(p : Perm α) : sign (e.permCongr p) = sign p` — Sign.lean:551; `sign_symm_trans_trans` — Sign.lean:402.
+
+**Alternative route (possibly the better Aristotle target):** factor `gridTranspose` into transpositions
+and use `sign_prod_list_swap {l}(∀ g ∈ l, IsSwap g) : sign l.prod = (-1)^l.length` — Sign.lean:~411.
+Discharges to controlling the *count* `l.length ≡ C(p,2)·C(q,2) [2]` rather than a raw inversion bijection.
+
+**Negative results pinned (de-risk: nothing slicker exists at pin):** Mathlib has **no** commutation /
+Kronecker-swap matrix (`kroneckerComm` absent; only CategoryTheory `commShift`, irrelevant), **no**
+`finProdFinEquiv` sign lemma, and **no** closed-form sign for any p×q transpose/shuffle. Confirms S8/S18.
+
+No Lean written (role + file both warn against blind-writing this finicky lemma, and no build is
+available to verify). **Next live-backend session:** submit `sign_gridTranspose_eq_choose` to Aristotle
+(non-404) with the pinned bearers, or build-iterate the `card_bij`-over-`finPairsLT` route (Sign.lean:174
++ 184) under Docker (≤2 containers). Claim released; headline M2 still open.
 
 ## Session 21 (2026-06-16, researcher-7) — backend re-probe; no safe path to the lone sorry this session
 Re-confirmed the M2 status is unchanged: the sole remaining obligation is `sign_gridTranspose_eq_choose`
