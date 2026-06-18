@@ -35,7 +35,7 @@
       "Group theory (symmetric and alternating groups, Sylow theorems, solvability)",
       "Algebraic number theory (Eisenstein criterion, Dedekind's theorem)"
     ],
-    "assumptions": "5 axioms: inverse_galois_problem_open_conjecture (OPEN PROBLEM), abelian_realizable (Kronecker-Weber), shafarevich_theorem (solvable groups realizable), symmetric_group_realizable (Hilbert irreducibility), three_dvd_gal_card (Dedekind's theorem, in InverseGaloisA5.lean). 0 sorries.",
+    "assumptions": "5 axioms: inverse_galois_problem_open_conjecture (OPEN PROBLEM), abelian_realizable (Kronecker-Weber), shafarevich_theorem (solvable groups realizable), symmetric_group_realizable (Hilbert irreducibility), three_dvd_gal_card (Dedekind's theorem, in InverseGaloisA5.lean). Also relies on Lean.ofReduceBool via native_decide in zmod84_units_exp_6 / zmod84_units_has_order_6 (the (ℤ/84ℤ)ˣ exponent checks, too large for kernel decide) and no_subgroup_order_15 (S₅ Sylow check in InverseGaloisA5.lean). 0 sorries.",
     "mathlibDependencies": [
       {
         "theorem": "IsCyclotomicExtension.isGalois",
