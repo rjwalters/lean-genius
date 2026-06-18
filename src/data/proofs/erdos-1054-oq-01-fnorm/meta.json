@@ -2,10 +2,10 @@
   "id": "erdos-1054-oq-01-fnorm",
   "title": "Erdős #1054 OQ-01: f(n) = o(n) via Sigma Bound",
   "slug": "erdos-1054-oq-01-fnorm",
-  "description": "Partial progress on Erdős problem #1054 OQ-01: f(n) is the minimal m whose k smallest divisors sum to n. Proves the sigma bound f(σ(m)) ≤ m, showing f(n) = o(n) along the subsequence of σ-values of superabundant numbers. Includes prime divisor structure, computational evidence for n ≤ 50, and density results. 49 theorems, 0 sorries, 0 axioms.",
+  "description": "Partial progress on Erdős problem #1054 OQ-01: f(n) is the minimal m whose k smallest divisors sum to n. Proves the sigma bound f(σ(m)) ≤ m, showing f(n) = o(n) along the subsequence of σ-values of superabundant numbers. Includes prime divisor structure, computational evidence for n ≤ 50, and density results. 49 theorems, 0 sorries; the computational verification theorems are discharged by native_decide (depends on Lean.ofReduceBool).",
   "meta": {
     "author": "Lean Genius Erdos1054OQ01",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1054OQ01.lean",
     "tags": [
       "number-theory",
@@ -15,12 +15,12 @@
       "density",
       "open-problem"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 521,
     "theoremCount": 49,
-    "assumptions": "None. All 49 theorems proved (partial progress on open problem).",
+    "assumptions": "Lean.ofReduceBool — the computational verification theorems (f_3_eq … f_32_eq, sigma_6 … sigma_120, f_ratio_sigma_*, sigma_values_representable, even/odd_representable_small, etc.) are discharged by native_decide, which trusts the Lean compiler's kernel reduction. No literal axiom declarations and no sorries; the sigma bound and structural results are otherwise proved. Partial progress on an open problem.",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -89,7 +89,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős #1054 OQ-01 partial progress: 49 theorems, 0 sorries, 0 axioms. The sigma bound f(σ(m)) ≤ m is proved, establishing f(n) = o(n) along σ-values of superabundant numbers.",
+    "summary": "Erdős #1054 OQ-01 partial progress: 49 theorems, 0 sorries, 0 literal axiom declarations; the computational verification theorems are discharged by native_decide (depends on Lean.ofReduceBool). The sigma bound f(σ(m)) ≤ m is proved, establishing f(n) = o(n) along σ-values of superabundant numbers.",
     "implications": "The sigma bound is a significant structural result: it shows f(n) can be much smaller than n whenever n is a highly composite sum-of-divisors value. Full resolution of OQ-01 (f(n) = o(n) for almost all n) would require showing representable numbers have density 1.",
     "openQuestions": [
       "Is f(n)/n → 0 for almost all n? (Open — Erdős #1054 OQ-01)",
