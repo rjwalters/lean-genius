@@ -56,8 +56,17 @@
   },
   "sections": [
     {
+      "title": "Imports, Docstring, and Namespace",
+      "startLine": 1,
+      "endLine": 27,
+      "description": "Imports Mathlib and states the Descartes Circle Theorem in prose: for four mutually tangent circles with signed curvatures, (k₁+k₂+k₃+k₄)² = 2(k₁²+k₂²+k₃²+k₄²). Explains the Soddy-circle solutions, scopes the file to the curvature-arithmetic core (not the planar tangency geometry), and distinguishes it from Mathlib's unrelated Descartes' Rule of Signs.",
+      "summary": "Imports and module docstring",
+      "id": "imports-docstring-and-namespace",
+      "mathContext": "Signed curvature $k = \\pm 1/r$; the relation $(k_1+k_2+k_3+k_4)^2 = 2(k_1^2+k_2^2+k_3^2+k_4^2)$ is equivalent to the Soddy pair $k_4 = (k_1+k_2+k_3) \\pm 2\\sqrt{k_1k_2+k_2k_3+k_3k_1}$."
+    },
+    {
       "title": "The Descartes Relation",
-      "startLine": 29,
+      "startLine": 28,
       "endLine": 34,
       "description": "Definition of descartesRel: (k₁+k₂+k₃+k₄)² = 2(k₁²+k₂²+k₃²+k₄²) for four signed curvatures.",
       "summary": "descartesRel definition",
