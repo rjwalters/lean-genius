@@ -95,11 +95,19 @@
   "sections": [
     {
       "id": "section-header",
-      "title": "Header: Statement, Subtlety, and Strategy",
+      "title": "Header: Statement and Proof Strategy",
       "startLine": 1,
-      "endLine": 64,
-      "summary": "Block comment stating the prime-power generalization minpoly ℚ (a^(1/pⁿ)) = X^(pⁿ) − a, the 'subtle point' that the obstruction ∀ b, b^p ≠ a is independent of n (X⁹ − 2 irreducible because 2 is not a cube), the composite-exponent failure (X⁴ − 4 factors), and the three-step monic+irreducible+root proof outline.",
+      "endLine": 31,
+      "summary": "Block comment stating the prime-power generalization minpoly ℚ (a^(1/pⁿ)) = X^(pⁿ) − a for an odd prime p, exponent n ≥ 1, and a nonnegative rational a that is not a p-th power, together with the degree (= pⁿ) and field-extension corollaries. Obtained by pushing Mathlib's Kummer criterion X_pow_sub_C_irreducible_iff_of_prime_pow to general n; setting n = 1 recovers the odd-prime companion.",
       "mathContext": "minpoly ℚ (a^(1/pⁿ)) = X^(pⁿ) − a for odd prime p, n ≥ 1, a ≥ 0 not a p-th power."
+    },
+    {
+      "id": "the-subtle-point",
+      "title": "The Subtle Point: the obstruction is n-independent",
+      "startLine": 33,
+      "endLine": 63,
+      "summary": "The irreducibility hypothesis is ∀ b : ℚ, b^p ≠ a — 'a is not a p-th power' — and is independent of n, not the weaker 'a is not a pⁿ-th power'. X⁹ − 2 is irreducible because 2 is not a cube (p = 3); whether 2 is a 9-th power is never tested. Being a non-p-th-power is the single Diophantine obstruction for the whole tower of prime-power exponents, in sharp contrast to composite exponents where early collapse occurs (minpoly ℚ (4^(1/4)) = X² − 2, since X⁴ − 4 = (X² − 2)(X² + 2)). The section closes with the three-step monic + irreducible + root proof outline and build status.",
+      "mathContext": "Prime-power exponents pⁿ admit no intermediate field collapse: [ℚ(a^(1/pⁿ)) : ℚ] = pⁿ as soon as ∀ b, b^p ≠ a, unlike composite exponents."
     },
     {
       "id": "section-root",
