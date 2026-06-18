@@ -1,0 +1,96 @@
+{
+  "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-03",
+  "title": "Minimal Polynomial of √2 + √3 + √5 over ℚ",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "m(X) = \\prod_{\\varepsilon \\in \\{\\pm1\\}^3}\\big(X - \\varepsilon_1\\sqrt2 - \\varepsilon_2\\sqrt3 - \\varepsilon_3\\sqrt5\\big) \\in \\mathbb{Q}[X],",
+    "plain": "$\\sqrt2 + \\sqrt3 + \\sqrt5$ is irrational; this asks *how* irrational — what is the smallest-degree",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-18T13:35:51-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS (build-gated): goal (i) annihilation m(θ)=0 and (ii) integer coeffs COMPLETE and sympy-verified; θ integral, [Q(θ):Q]≤8. Goal (iii) irreducibility/degree-8 OPEN. File written but NOT yet Lean-compiled (fleet-wide Docker outage + Aristotle 404).",
+    "builtItems": [
+      "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ03.lean: theorem key (abstract identity, any s,t,u with the three squares) — staged linear_combination chain h1,h2,h3,hA,hB,hC",
+      "theorem theta_root: m(√2+√3+√5)=0 as a real equation (instantiates key via Real.sq_sqrt)",
+      "theorem aeval_theta: aeval θ m = 0 (Polynomial framing); def m : Q[X]",
+      "theorem m_natDegree (=8, compute_degree!), m_monic (monicity!), theta_isIntegral",
+      "theorem theta_finrank_le: [Q(θ):Q] ≤ 8"
+    ],
+    "insights": [
+      "The radical-elimination identity m(θ)=0 for m=X^8-40X^6+352X^4-960X^2+576 reduces to a 4-step polynomial tower over s^2=2,t^2=3,u^2=5: a^2=10+2P, P^2=31+2(stu)a, (stu)^2=30, then two squarings give ((a^2-10)^2-124)^2=1920a^2, and m(a)=((a^2-10)^2-124)^2-1920a^2 is a pure ring identity (a=s+t+u, P=st+tu+us).",
+      "Every linear_combination cofactor was computed by Groebner reduction and verified exactly in sympy: h1 [1,1,1]; h2 [t^2+u^2, u^2+2, 5]; h3 [t^2u^2, 2u^2, 6]; chain steps hA/hB/hC/final all ring-confirmed.",
+      "Coefficient origin: with b=a^2, ((b-10)^2-124)^2 = b^4-40b^3+352b^2+960b+576; subtracting 1920b flips the +960 to -960, giving exactly (-40,352,-960,576).",
+      "The annihilator already yields [Q(θ):Q] ≤ 8 via minpoly.min + IntermediateField.adjoin.finrank; equality (=8) needs irreducibility of m."
+    ],
+    "mathlibGaps": [
+      "No single-tactic irreducibility for degree-8 multiquadratic minimal polynomials; needs either brute ℤ[X] factor analysis (1+7,2+6,3+5,4+4 cases) or the field-tower argument [Q(√2,√3,√5):Q]=8.",
+      "Mathlib lacks a packaged 'minpoly of a sum of independent square roots' lemma (multiquadratic primitive element)."
+    ],
+    "nextSteps": [
+      "BUILD-VERIFY this file once Docker/Aristotle recover: docker-build Proofs.Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ03 then #print axioms to confirm 0-axiom.",
+      "Prove irreducibility of m: prefer the field-tower route — show Q(θ)=Q(√2,√3,√5) and the tower Q⊂Q(√2)⊂Q(√2,√3)⊂Q(√2,√3,√5) is degree 2 at each step, giving [Q(θ):Q]=8, hence m=minpoly and irreducible.",
+      "On completion register in Proofs.lean and add gallery meta.json (status verified/original if 0-axiom)."
+    ],
+    "markdown": "# Knowledge Base: sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "field-theory",
+    "number-theory",
+    "minimal-polynomial"
+  ],
+  "relatedProofs": [
+    "sqrt2-plus-sqrt3-plus-sqrt5-irrational"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-18T21:27:48.945Z",
+  "lastUpdate": "2026-06-18T21:27:48.977Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
+      "lineCount": 145,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean",
+      "lineCount": 151,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean"
+    }
+  ]
+}
