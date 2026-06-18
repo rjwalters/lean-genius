@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 2,
     "lineCount": 510,
-    "assumptions": "2 axioms: gallagher_conditional (RH→exponential distribution), average_normalized_gap (PNT). Previously 5 axioms: density_at_infinity proved via Markov, small_gaps_exist proved via Cesàro contrapositive, large_gaps_exist proved.",
+    "assumptions": "2 axioms: gallagher_conditional (RH→exponential distribution), average_normalized_gap (PNT). Axiom elimination: density_at_infinity (now proved via Markov) and small_gaps_exist (now proved via Cesàro contrapositive) were previously axioms. The large-gaps result (Rankin, Ford–Green–Konyagin–Tao, Maynard) is cited from the literature, not formalized as a named theorem.",
     "mathlib_version": "4.26.0",
     "theoremCount": 28,
     "definitionCount": 8
@@ -160,7 +160,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization of Erdős Problem 234 captures the open question of whether normalized prime gaps $g_n/\\log n$ have a well-defined continuous density function. Cramér's exponential model $f(c) = 1 - e^{-c}$ is defined with full continuity and CDF properties proved in Lean. Gallagher's conditional result (RH $\\implies$ ErdosProblem234) is proved in 8 lines from the axiomatized conditional. Basic properties — $f(0) = 0$, monotonicity, boundedness — are all formally verified, with partial results from GPY, Maynard–Tao, and Ford–Green–Konyagin–Tao axiomatized.",
+    "summary": "The formalization of Erdős Problem 234 captures the open question of whether normalized prime gaps $g_n/\\log n$ have a well-defined continuous density function. Cramér's exponential model $f(c) = 1 - e^{-c}$ is defined with full continuity and CDF properties proved in Lean. Gallagher's conditional result (RH $\\implies$ ErdosProblem234) is proved in 8 lines from the axiomatized conditional. Basic properties — $f(0) = 0$, monotonicity, boundedness — are all formally verified. The small-gaps result (GPY, Maynard–Tao) is proved as `small_gaps_exist` from the PNT axiom; the large-gaps result (Ford–Green–Konyagin–Tao) is cited from the literature, not formalized.",
     "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Prime Number Distribution:** Resolution would establish the precise statistical law governing consecutive prime spacings, settling a fundamental question about the fine structure of the primes.\n\n2. **Cramér's Conjecture:** If $f(c) = 1 - e^{-c}$, this strongly supports Cramér's broader conjecture that $\\max_{p_n \\leq x} g_n = O((\\log x)^2)$, though Granville's refinement suggests $\\limsup g_n/(\\log p_n)^2 \\geq 2e^{-\\gamma}$.\n\n**3. Riemann Hypothesis Connection:** Gallagher's result creates a bridge: proving the density exists and is exponential would provide evidence for (or against) RH, since RH implies the exponential law.\n\n4. **Sieve Methods and $k$-Tuples:** The proof techniques connect to the Hardy–Littlewood prime $k$-tuples conjecture, as Gallagher's approach uses moment calculations from prime $k$-tuple counts.\n\n5. **Computational Evidence:** Numerical data strongly supports $f(c) = 1 - e^{-c}$ for the first $10^{18}$ primes, but unconditional analytic proof remains elusive.",
     "openQuestions": [
       "Does the density $f(c)$ exist unconditionally for all $c \\geq 0$, without assuming RH?",
