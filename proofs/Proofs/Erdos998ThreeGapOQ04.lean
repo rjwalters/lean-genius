@@ -37,6 +37,10 @@
     * `orbit_card`        — for irrational `α` the orbit has exactly `N` points
                             (injectivity of `i ↦ {iα}` via `Int.fract_eq_fract`
                             and `Irrational.int_mul`)
+    * `fract_fract_sub_fract` — STEP A primitive: `{ {x} − {y} } = { x − y }`,
+                            so the cyclic distance between two orbit points
+                            depends only on their index difference (the engine
+                            of STEP A in `exists_gap_triple`)
 
   PROVED (reductions — fully discharged modulo the isolated core):
     * `three_gap`         — at most three distinct gap lengths, reduced to
@@ -135,6 +139,24 @@ theorem orbit_card {α : ℝ} (hα : Irrational α) (N : ℕ) :
     exact (Int.not_irrational z) hirr
   rw [orbit, Finset.card_image_of_injOn hinj, Finset.card_range]
 
+/-- **STEP A primitive — cyclic distance depends only on the index difference.**
+    For any two reals `x, y`, the fractional part of the difference of their
+    fractional parts equals the fractional part of their difference:
+        `{ {x} − {y} } = { x − y }`.
+    Specialised to `x = jα`, `y = kα` this is exactly the identity
+        `Int.fract (P_j − P_k) = Int.fract ((j − k)·α)`
+    invoked in STEP A of the `exists_gap_triple` proof path: the cyclic distance
+    between two orbit points depends only on their index difference, because
+    `{x} − {y}` differs from `x − y` by the integer `⌊y⌋ − ⌊x⌋`, and `Int.fract`
+    is invariant under integer shifts (`Int.fract_sub_int`).  This is the
+    mechanical engine that lets the forward gap at `P_k` be rewritten as a
+    minimum of `Int.fract ((j − k)·α)` over the remaining indices. -/
+theorem fract_fract_sub_fract (x y : ℝ) :
+    Int.fract (Int.fract x - Int.fract y) = Int.fract (x - y) := by
+  have h : Int.fract x - Int.fract y = (x - y) - (((⌊x⌋ - ⌊y⌋ : ℤ)) : ℝ) := by
+    simp only [Int.fract]; push_cast; ring
+  rw [h, Int.fract_sub_int]
+
 /-
     PROOF PATH for the core classification `exists_gap_triple`
     (van Ravenstein / Sós, elementary).  Session 6 (researcher-1, 2026-06-18)
@@ -158,7 +180,11 @@ theorem orbit_card {α : ℝ} (hα : Irrational α) (N : ℕ) :
        integer, and `Int.fract` is invariant under integer shifts
        (`Int.fract_int_add` / `Int.fract_add_int`).  Hence
           forwardGap α N P_k = min_{j∈[0,N), j≠k} Int.fract ((j − k)·α).
-       Mathlib: `Int.fract_int_add`, `Int.fract_add_int`, `Finset.inf'_congr`.
+       The per-pair identity `Int.fract (P_j − P_k) = Int.fract ((j − k)·α)` is
+       now DISCHARGED as the named lemma `fract_fract_sub_fract` (above); what
+       remains of STEP A is the routine `Finset.inf'_congr` transport of that
+       identity across the erased orbit.
+       Mathlib: `fract_fract_sub_fract`, `Finset.inf'_congr`.
 
     ── STEP B  (split the index difference into forward/backward; ROUTINE).
        Writing `d = j − k`, the index `d` ranges over `[−k, N−1−k] \ {0}`.
