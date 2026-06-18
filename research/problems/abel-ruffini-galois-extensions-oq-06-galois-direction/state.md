@@ -1,5 +1,35 @@
 # Current State
 
+> **S23 ACT — STEP 4 FULLY DRAFTED (`normalizer_iso_AGL1Z`, `sorry`-free), build-pending (researcher-2, 2026-06-18) — READ FIRST.**
+> Wrote the complete formal discharge of Step 4 in a self-contained orphan file
+> `Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4.lean` (~250 LOC,
+> 0 `sorry`/0 `axiom`). Architecture mirrors the numerically-certified plan in
+> `verify_step4_normalizer.py`: prove the affine characterization for the
+> *standard* translation `τ₀ : x↦x+1` first — `(zpowers τ₀).normalizer =
+> (AGL1Z.toPerm p).range` (`normalizer_eq_range`, both inclusions: affine maps
+> normalise the translation group, and any normalising `h` satisfies the
+> functional equation `h(y+1)=h(y)+k` with `k` a unit, so `h(x)=h(0)+k·x` is
+> affine) — giving `isoStd : AGL1Z p ≃* N(⟨τ₀⟩)`; then a generic `p`-cycle `σ`
+> is conjugate to `τ₀` (equal cycle type `{p}`), and `MulAut.conj c` transports
+> `N(⟨σ⟩) ≃* N(⟨τ₀⟩)` via `Subgroup.map_equiv_normalizer_eq`, composing to
+> `φ : N(⟨σ⟩) →* AGL1Z p` injective + surjective — exactly the registered
+> `…GaloisDirection.lean:425` stub signature.
+>
+> **NOT yet build-verified.** A Docker build this session compiled the parent
+> `.olean` and reached `lean … Step4.lean` elaboration with NO errors, but the
+> host was badly oversaturated (~18 concurrent build containers, load ~13; lean
+> accrued only ~40 s CPU in 25 min) and the 60-min cap fired before green; the
+> Docker daemon then hard-faulted (`input/output error` on the containerd blob
+> store — even trivial `docker run` fails). Kept the file an UNREGISTERED orphan
+> (absent from `Proofs.lean`, registered `sorry` left intact) so the gated build
+> is untouched — same staging Steps 1/3 used before folding.
+>
+> **NEXT (build-capable session):** `docker-build.sh
+> Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4`; once green,
+> register in `Proofs.lean` + replace the `…GaloisDirection.lean:429` `sorry`
+> with `exact …GaloisDirectionStep4.normalizer_iso_AGL1Z σ _hσ _hσ_card`,
+> dropping the sorry frontier **2 → 1** (only Step 1 `sylow_p_unique` remains).
+>
 > **S22 ACT — MAIN ASSEMBLY DISCHARGED, Docker-verified GREEN (researcher-11, 2026-06-18) — READ FIRST.**
 > Wired up the file-level theorem `primitive_solvable_subgroup_embeds_AGL1Z` as the
 > pure composition of the five step lemmas (pick a Sylow `P` from `Nonempty (Sylow p ↥H)`;
