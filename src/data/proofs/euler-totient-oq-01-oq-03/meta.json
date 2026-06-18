@@ -42,7 +42,11 @@
       "Documents (and the certificate exhibits) that squarefreeness is necessary: for n = p² the all-a fixed point fails, so RSA's n = p·q moduli are exactly the safe case",
       "carmichael_mul_coprime: identifies the concrete exponent lcm(p−1, q−1) with the parent's abstract λ(n) = Monoid.exponent (ZMod n)ˣ, by transporting the group exponent across the CRT-induced units isomorphism (Units.mapEquiv + MulEquiv.prodUnits) and evaluating Monoid.exponent_prod",
       "rsa_correct_carmichael: the open question's headline statement — RSA correctness stated directly against the minimal universal exponent λ(n) = carmichael(p·q), via the divisibility bridges (p−1) ∣ λ(n) and (q−1) ∣ λ(n)",
-      "rsaEncrypt / rsaDecrypt and rsa_decrypt_encrypt: a literal end-to-end RSA implementation (encryption a ↦ aᵉ, decryption c ↦ cᵈ in ZMod n) with the verified round-trip rsaDecrypt d (rsaEncrypt e a) = a for every a, given the key-generation congruence e·d = 1 + k·λ(n) — encryption and decryption are proved mutual inverses against the Carmichael exponent"
+      "rsaEncrypt / rsaDecrypt and rsa_decrypt_encrypt: a literal end-to-end RSA implementation (encryption a ↦ aᵉ, decryption c ↦ cᵈ in ZMod n) with the verified round-trip rsaDecrypt d (rsaEncrypt e a) = a for every a, given the key-generation congruence e·d = 1 + k·λ(n) — encryption and decryption are proved mutual inverses against the Carmichael exponent",
+      "carmichael_dvd_iff_unit_rsa (companion file EulerTotientOQ01OQ03Minimal.lean): the matching CONVERSE/sharpness — λ(n) ∣ m ↔ (a^(m+1) = a for every unit a : (ZMod n)ˣ). Together with the sufficiency results above this pins λ(n) as the EXACT minimal universal RSA exponent — no smaller exponent works for all messages coprime to n — making precise the open question's 'minimal universal exponent λ(n)' claim. Proved via the parent's carmichael_minimal (Monoid.exponent is the least universal exponent of the unit group); restricting to units is essential since non-units (e.g. 0) satisfy a^(m+1) = a for every m and carry no information about the minimal exponent"
+    ],
+    "additionalFiles": [
+      "Proofs/EulerTotientOQ01OQ03Minimal.lean"
     ],
     "dateAdded": "2026-06-15",
     "lineCount": 196,
@@ -66,7 +70,8 @@
       "CRT turns a statement about ZMod(p·q) into two independent prime-power-free statements about ZMod p and ZMod q, each closed by Fermat — the cleanest route to all-message correctness",
       "Squarefreeness is necessary, not incidental: for n = p² the all-a fixed point fails (a divisible by p stays ≡ 0 mod p but need not return mod p²), so RSA's n = p·q moduli are exactly the safe regime — the certificate exhibits the explicit failure set for n = 49",
       "The theorem is stated for any exponent m divisible by both p−1 and q−1, which is more general than 'a multiple of λ(n)' and makes the CRT reduction immediate",
-      "The bridge λ(p·q) = lcm(λ(p), λ(q)) is proved abstractly — by transporting Monoid.exponent across the CRT-induced units isomorphism (Monoid.exponent_eq_of_mulEquiv + Monoid.exponent_prod) rather than by computing orders — so the final theorem speaks about the genuinely minimal exponent λ(n) = Monoid.exponent (ZMod n)ˣ, not merely a convenient common multiple"
+      "The bridge λ(p·q) = lcm(λ(p), λ(q)) is proved abstractly — by transporting Monoid.exponent across the CRT-induced units isomorphism (Monoid.exponent_eq_of_mulEquiv + Monoid.exponent_prod) rather than by computing orders — so the final theorem speaks about the genuinely minimal exponent λ(n) = Monoid.exponent (ZMod n)ˣ, not merely a convenient common multiple",
+      "Sufficiency is matched by sharpness: the companion file proves the converse carmichael_dvd_iff_unit_rsa — over the units, a^(m+1) = a for all a IFF λ(n) ∣ m — so λ(n) is not just A working exponent but the MINIMAL one. The test must be on units: every non-unit (in particular 0) satisfies a^(m+1) = a for all m, so non-units cannot detect the threshold, and it is precisely the unit group whose exponent is λ(n)"
     ]
   },
   "sections": [
@@ -117,6 +122,14 @@
       "endLine": 196,
       "summary": "rsaEncrypt e (a ↦ aᵉ) and rsaDecrypt d (c ↦ cᵈ) are the literal RSA operations in ZMod n. rsa_decrypt_encrypt proves they are mutual inverses — rsaDecrypt d (rsaEncrypt e a) = a for every a — given the key-generation congruence e·d = 1 + k·λ(n): (aᵉ)ᵈ = a^(e·d) = a^(k·λ(n)+1), discharged by rsa_correct_carmichael. This packages the preceding lemmas into a verified end-to-end RSA implementation against the Carmichael exponent.",
       "mathContext": "$\\mathrm{rsaDecrypt}_d(\\mathrm{rsaEncrypt}_e(a)) = a^{ed} = a$ when $ed = 1 + k\\,\\lambda(n)$."
+    },
+    {
+      "id": "minimality-sharpness",
+      "title": "Minimality of λ(n) (companion file)",
+      "startLine": 37,
+      "endLine": 53,
+      "summary": "Companion file EulerTotientOQ01OQ03Minimal.lean proves the converse to sufficiency. carmichael_dvd_of_unit_rsa: if a^(m+1) = a holds for every unit a : (ZMod n)ˣ then λ(n) ∣ m (via the parent's carmichael_minimal — Monoid.exponent is the least universal exponent of the unit group, applied through a·aᵐ = a ⇒ aᵐ = 1). carmichael_dvd_iff_unit_rsa packages this with the forward direction into the sharp characterisation λ(n) ∣ m ↔ ∀ a : (ZMod n)ˣ, a^(m+1) = a. Restricting to units is essential: non-units satisfy a^(m+1) = a for every m. 0 axioms, 0 sorries.",
+      "mathContext": "$\\lambda(n)\\mid m \\iff \\forall a\\in(\\mathbb{Z}/n)^\\times,\\ a^{m+1}=a$ — so $\\lambda(n)$ is the minimal universal RSA exponent."
     }
   ],
   "crossReferences": [
@@ -132,8 +145,8 @@
     }
   ],
   "conclusion": {
-    "summary": "RSA decryption correctness is formalized with the Carmichael exponent λ(n) = lcm(p−1, q−1): for n = p·q and any exponent divisible by both p−1 and q−1, a^(m+1) = a holds for every message a, giving the textbook a^(e·d) = a once e·d = 1 + k·λ. The proof reduces through CRT to a per-prime Fermat fixed point that explicitly covers the non-unit case. A bridge section then connects this to the parent's abstract λ(n) = Monoid.exponent (ZMod n)ˣ, proving λ(p·q) = lcm(λ(p), λ(q)) and stating correctness directly against the minimal universal exponent (rsa_correct_carmichael). 0 axioms, 0 sorries.",
-    "implications": "Provides the verified core of a textbook-correct RSA implementation keyed on the Carmichael function rather than φ(n), pins down why squarefree moduli n = p·q are necessary for all-message correctness, and identifies the concrete exponent lcm(p−1, q−1) with the abstract group-exponent definition λ(n) = Monoid.exponent (ZMod n)ˣ — so correctness is stated against the genuinely minimal universal exponent, which divides φ(n) and yields a no-larger private key.",
+    "summary": "RSA decryption correctness is formalized with the Carmichael exponent λ(n) = lcm(p−1, q−1): for n = p·q and any exponent divisible by both p−1 and q−1, a^(m+1) = a holds for every message a, giving the textbook a^(e·d) = a once e·d = 1 + k·λ. The proof reduces through CRT to a per-prime Fermat fixed point that explicitly covers the non-unit case. A bridge section then connects this to the parent's abstract λ(n) = Monoid.exponent (ZMod n)ˣ, proving λ(p·q) = lcm(λ(p), λ(q)) and stating correctness directly against the minimal universal exponent (rsa_correct_carmichael). A companion file (EulerTotientOQ01OQ03Minimal.lean) supplies the matching converse: λ(n) ∣ m ↔ a^(m+1) = a for every unit a, so λ(n) is verified to be the EXACT minimal universal exponent, not merely one that works. 0 axioms, 0 sorries.",
+    "implications": "Provides the verified core of a textbook-correct RSA implementation keyed on the Carmichael function rather than φ(n), pins down why squarefree moduli n = p·q are necessary for all-message correctness, and identifies the concrete exponent lcm(p−1, q−1) with the abstract group-exponent definition λ(n) = Monoid.exponent (ZMod n)ˣ. Both directions are formalized — sufficiency (λ(n) works for all messages) and minimality (no smaller exponent works for every unit) — so correctness is stated against the genuinely minimal universal exponent, which divides φ(n) and yields a no-larger private key.",
     "openQuestions": [
       "Complete the verified key-generation pipeline: the end-to-end round-trip rsaDecrypt d (rsaEncrypt e a) = a is now proved (rsa_decrypt_encrypt) assuming e·d = 1 + k·λ(n); what remains is to derive d constructively as a modular inverse of e mod λ(n) (requiring gcd(e, λ(n)) = 1) so the congruence hypothesis is discharged rather than assumed",
       "Generalize the all-message fixed point to arbitrary squarefree n = ∏ pᵢ via the multi-prime CRT",
@@ -195,6 +208,12 @@
       "type": "core",
       "description": "RSA correctness against the minimal universal exponent: if λ(n) = carmichael(p·q) divides m, then a^(m+1) = a for every a : ZMod (p·q)",
       "leanType": "a ^ (m + 1) = a"
+    },
+    {
+      "name": "carmichael_dvd_iff_unit_rsa",
+      "type": "core",
+      "description": "Minimality/sharpness (companion file): λ(n) ∣ m ↔ a^(m+1) = a for every unit a : (ZMod n)ˣ — so λ(n) is the exact minimal universal RSA exponent",
+      "leanType": "carmichael n ∣ m ↔ ∀ a : (ZMod n)ˣ, a ^ (m + 1) = a"
     },
     {
       "name": "carmichael_mul_coprime",
