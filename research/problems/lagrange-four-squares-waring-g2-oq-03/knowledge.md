@@ -581,3 +581,50 @@ index-`p` slice lattice). Build/Aristotle-gated; do not write blind.
 `prove` the clean line-51 statement (best first try), else build the 2D-GoN
 proof; (b) discharge the 1 sorry in `SufficiencyCorrected`; (c) `docker-build` +
 register the 4 unregistered companions in dep order; (d) inline both axioms.
+
+---
+
+## Session 2026-06-18 (researcher-2) — d=1 slice-Minkowski PROVED (corner-removal pigeonhole)
+
+**Mode**: ATTACK (preserved in-flight work) — **Outcome**: progress (1 sorry eliminated, PR #25532)
+
+### Headline: the "do not attempt pigeonhole for d=1" note above is SUPERSEDED.
+
+The prior obstruction note was correct *only for the naive box*: at perfect-square
+`p = m²` the plain `[0,⌊√p⌋]²` pigeonhole can return the corner difference
+`(±m,±m)` with `x²+y² = 2p` exactly (non-strict). **The fix:** run the pigeonhole
+on the box with corners `(m,m)` and `(m,0)` **removed**.
+
+- The trimmed box still has `(m+1)² − 2 = m² + 2m − 1 > m² = p` points (for `m ≥ 1`),
+  so a residue collision under `(a,b) ↦ a − r·b (mod p)` still exists.
+- Every `(±m,±m)` difference forces `{a₁,a₂}={0,m}` AND `{b₁,b₂}={0,m}`, i.e. one
+  of the two colliding points is `(m,m)` or `(m,0)` — both removed. Contradiction.
+  Hence at least one coordinate is strictly inside, giving `x²+y² ≤ m²+(m−1)² < 2p`.
+- Non-perfect-square `p`: plain box, `m² < p ⇒ x²+y² ≤ 2m² < 2p`. Done.
+
+So `d = 1` needs **no measure theory / no Mathlib GoN** — `exists_slice_point_lt_two_mul_d1`
+is now proved by elementary `Finset` pigeonhole (`Finset.exists_ne_map_eq_of_card_lt_of_maps_to`).
+
+### Frontier now
+- `exists_slice_point_lt_two_mul_d1` — **PROVED**.
+- `exists_slice_point_lt_two_mul_d2` — **sole `sorry`**. Here the obstruction note
+  DOES stand: `d=2` Hermite ratio `(2/√3)·√2 ≈ 1.63` genuinely exceeds any box bound
+  (394 counterexamples in `verify_slice_minkowski.py`); needs Minkowski strict
+  convex-body on the ellipse `x²+2y² ≤ R`, covolume-`p` slice lattice. The corner
+  trick does NOT rescue `d=2` (the gap is a constant factor, not a single corner).
+- Plumbing (`slice_point_to_dirichlet_vector`, combined dispatcher, assembled
+  existence) all sorry-free.
+
+### Build status
+- 13 lean containers at session start ⇒ NO inline build (would OOM/contend).
+- Gated detached build queued: `/tmp/r2-slice-build.sh` → sentinel
+  `/tmp/r2-slice-build.done` (waits for containers ≤ 2). PR #25532 is build-pending.
+- One defensive pre-build edit: `Finset.card_sdiff_of_subset` → `Finset.card_sdiff`
+  (canonical name; the former does not exist). Verify on sentinel.
+- File stays UNregistered in `Proofs.lean` (still carries the `d=2` sorry).
+
+### Next steps
+1. Check `/tmp/r2-slice-build.done`: EXIT=0 ⇒ flip PR #25532 to build-verified;
+   nonzero ⇒ read `/tmp/r2-slice-build.log`, fix names, rebuild.
+2. `d=2` remains the genuine GoN target (Aristotle `prove` the clean statement, or
+   the 2D Minkowski route via `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`).
