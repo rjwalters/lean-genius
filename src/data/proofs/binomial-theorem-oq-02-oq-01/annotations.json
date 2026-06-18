@@ -6,11 +6,11 @@
       "startLine": 6,
       "endLine": 46
     },
-    "type": "context",
+    "type": "concept",
     "title": "Open Question: Formalizing the Multinomial Distribution from the Multinomial Theorem",
     "content": "The header poses the open question inherited from `binomial-theorem-oq-02`: can the multinomial distribution and its moment-generating function be formalized purely from the multinomial theorem? The file answers YES by exhibiting the PMF, its normalization, and the MGF as three readings of the single Mathlib lemma `Finset.sum_pow_eq_sum_piAntidiag`. The four imports are deliberately minimal — only the multinomial-coefficient and big-operators machinery — underscoring that no measure-theoretic apparatus is needed for the algebraic core.",
     "mathContext": "The multinomial distribution models $n$ independent trials each landing in one of the categories $i \\in s$ with probability $p_i$ (where $\\sum_{i \\in s} p_i = 1$). The joint law of the category counts $(X_i)_{i \\in s}$ is $P(X = k) = \\binom{n}{k}\\prod_{i \\in s} p_i^{k_i}$ supported on $\\{k : \\sum_i k_i = n\\}$. Its MGF is $M(t) = \\bigl(\\sum_{i\\in s} p_i e^{t_i}\\bigr)^n$. Both are specializations of $(\\sum_i x_i)^n = \\sum_{k} \\binom{n}{k}\\prod_i x_i^{k_i}$, the identity Mathlib packages as `sum_pow_eq_sum_piAntidiag`.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "multinomial distribution",
       "moment-generating function",
@@ -100,7 +100,7 @@
       "startLine": 123,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Specialization to ℝ and the Uniform Distribution",
     "content": "`multinomial_mgf_real` (lines 126–131) re-expresses the `CommSemiring` MGF identity over $\\mathbb{R}$ so that the coefficient $\\binom{n}{k}\\prod p_i^{k_i}$ is literally `multinomialProb s p n k` — the proof closes with `rfl`, confirming the abstract and probabilistic forms are definitionally equal. `multinomialProb_uniform_sum` (lines 136–141) then instantiates normalization at the uniform law $p_i = 1/k$ over `Fin k`: the hypothesis $\\sum_i p_i = 1$ reduces to $k \\cdot \\tfrac1k = 1$, discharged by `field_simp` after `Finset.card_fin`.",
     "mathContext": "The uniform multinomial corresponds to rolling a fair $k$-sided die $n$ times: every category has probability $1/k$, so $\\sum_{i \\in \\mathrm{Fin}\\,k} \\tfrac1k = k\\cdot\\tfrac1k = 1$ and normalization follows from `multinomialProb_sum_eq_one`. The positivity hypothesis $0 < k$ is needed so that $1/k$ is well defined and the cardinality cancels. This is the discrete-uniform base case from which entropy and typical-set arguments in information theory are built.",
@@ -147,11 +147,11 @@
       "startLine": 164,
       "endLine": 258
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Sanity Check and the Coordinate Mean",
     "content": "`fair_coin_three_flips` is a closed numerical instance: three flips of a $1/2$-coin sum to $1$ over the four outcomes $(3,0),(2,1),(1,2),(0,3)$ with probabilities $\\tfrac18,\\tfrac38,\\tfrac38,\\tfrac18$, closed by `norm_num` after expanding the pair sum. The former `rfl` placeholder `multinomial_expectation` (which restated the tautology $\\sum_k P(k)\\,w(k) = \\sum_k P(k)\\,w(k)$) has been replaced by `multinomial_mean`, a genuine moment formula: $\\sum_k P(k)\\,k_i = n\\,p_i$, i.e. $E[X_i] = n p_i$.",
     "mathContext": "`multinomial_mean` is proved by differentiating the MGF. Specializing the weight $g_j = e^t$ for $j=i$ and $g_j = 1$ otherwise reduces `multinomial_mgf_real` to the one-variable identity $(p_i e^t + (1-p_i))^n = \\sum_k P(k)\\,e^{t k_i}$ for all $t$; differentiating both sides at $t=0$ and applying uniqueness of the derivative ($\\partial_t\\,\\text{LHS}|_0 = n p_i$, $\\partial_t\\,\\text{RHS}|_0 = \\sum_k P(k)\\,k_i$) yields $E[X_i] = n p_i$. Differentiating the same identity a *second* time at $t=0$ now also yields the variance $\\mathrm{Var}(X_i) = n p_i(1-p_i)$ (`multinomial_variance`, via `multinomial_second_moment`); the covariance $\\mathrm{Cov}(X_i,X_j) = -n p_i p_j$ for $i\\neq j$ remains a follow-up.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "norm_num",
       "expected value",

@@ -52,7 +52,7 @@
       "startLine": 67,
       "endLine": 72
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Forward direction via Mathlib's Nat.Prime.sq_add_sq",
     "content": "The hard direction is delegated to Mathlib. After supplying the `Fact p.Prime` instance, p % 4 = 1 is rewritten to p % 4 ≠ 3 by `omega`, which is exactly the hypothesis of `Nat.Prime.sq_add_sq`. That theorem then produces a, b with a² + b² = p, and `.symm` flips it to p = a² + b². All the genuine number-theoretic depth — that −1 is a quadratic residue mod p ≡ 1 (mod 4) and the ensuing descent / Gaussian-integer factorization — lives inside the Mathlib lemma; this file consumes it as a black box.",
     "mathContext": "$p \\bmod 4 = 1 \\Rightarrow p \\bmod 4 \\ne 3 \\xRightarrow{\\text{Mathlib}} \\exists a\\,b,\\ a^2 + b^2 = p$",
@@ -75,7 +75,7 @@
       "startLine": 73,
       "endLine": 91
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Backward direction: oddness + squares-mod-4 force p ≡ 1 (mod 4)",
     "content": "The elementary converse. From p = a² + b² the proof reduces p mod 4 and p mod 2 to the corresponding residues of a² + b². The lemma `sq_mod_four` pins a² % 4, b² % 4 ∈ {0,1}; the parity reductions a² % 2 = (a % 2)² % 2 and the same for b (via `Nat.pow_mod`) pin the mod-2 picture. Crucially, p is odd (`Nat.Prime.eq_two_or_odd` with p ≠ 2 gives p % 2 = 1), which rules out the sum being 0 or 2 mod 4. `omega` assembles these constraints and concludes p % 4 = 1 — no quadratic reciprocity required.",
     "mathContext": "$p = a^2 + b^2,\\ p\\ \\text{odd} \\Rightarrow p \\bmod 4 = 1$",
@@ -98,11 +98,11 @@
       "startLine": 64,
       "endLine": 65
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why both halves are needed for the sharp statement",
     "content": "Mathlib states Fermat's two-squares result asymmetrically: Nat.Prime.sq_add_sq gives only the existence direction (p % 4 ≠ 3 ⇒ p is a sum of two squares). On its own that does not characterize which primes are sums of two squares — it would also (vacuously) cover any non-3-residue. Pairing it with the elementary converse proved here (a sum of two squares can be 0, 1, or 2 mod 4, and oddness selects 1) upgrades the one-way implication to the biconditional p % 4 = 1 ↔ representable. This is the local representability fact that, summed over primes, drives the infinitude of primes ≡ 1 (mod 4).",
     "mathContext": "Mathlib gives $\\Rightarrow$; this file adds $\\Leftarrow$ to obtain $\\iff$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "biconditional vs one-directional lemmas",
       "infinitude of primes ≡ 1 (mod 4)",

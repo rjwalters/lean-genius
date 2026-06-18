@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 52
     },
-    "type": "context",
+    "type": "concept",
     "title": "File Header: Mixed-Dimension Sperner",
     "content": "The module docstring (lines 8-48) names the structural payoff explicitly: *door dimensions are graded*. A codimension-1 face of a `(d+1)`-simplex has cardinality `d`, so faces of different cardinalities cannot pair as doors. The classical pseudomanifold condition therefore decomposes stratum by stratum.\n\nThe single `import` (line 6, `Proofs.SpernerSimplicialBridge`) is the entirety of the dependency surface — no new Mathlib modules are imported beyond what the parent already brings. The `namespace Sperner.SimplicialComplex` opening (line 50) places every new declaration in the parent's namespace, so unqualified references to `vertexEnum`, `exists_panchromatic`, `IsDoor`, `IsPanchromatic`, and `adjFn` resolve against the parent without qualification.\n\nThe `open Finset` directive (line 52) is essential: every use of `filter`, `mem_filter`, `filter_eq_self`, `filter_eq_empty_iff`, and `filter_empty` resolves to the `Finset` namespace without explicit prefixes, keeping the proof bodies compact.",
     "mathContext": "The mathematical content of the file is concentrated in three predicate-level observations, summarised in the *Main definitions* and *Main results* sections of the docstring: (i) the dimension-graded stratification `topCellsOfDim`; (ii) the per-stratum pseudomanifold predicate `MixedPseudomanifold`; (iii) the pure-to-mixed coercion `MixedPseudomanifold.of_pure` witnessing that the new framework subsumes the parent. The headline theorem `sperner_mixed_panchromatic_at_dim` is then a *bookkeeping* application of the parent's `exists_panchromatic` to the chosen stratum.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "module-level docstring conventions",
       "namespace inheritance",

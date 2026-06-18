@@ -68,7 +68,7 @@
     "type": "theorem",
     "title": "Consecutive pairs differ; value at powers of two",
     "content": "```lean\ntheorem thueMorse_ne_succ_two_mul (n : ℕ) : thueMorse (2 * n) ≠ thueMorse (2 * n + 1)\ntheorem thueMorse_two_pow (k : ℕ) : thueMorse (2 ^ k) = 1\n```\n\nSince $t(2n+1) = t(2n) + 1$ and $1 \\neq 0$ in $\\mathbb{Z}/2\\mathbb{Z}$, every adjacent even/odd pair takes both values - the sequence never repeats a value across such a pair.\n\nFor powers of two, $2^k$ has exactly one $1$ bit, so $t(2^k) = 1$. The proof inducts on $k$: $t(2^{k+1}) = t(2 \\cdot 2^k) = t(2^k)$ by the even recurrence, with base case $t(2^0) = t(1) = 1$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "ZMod 2",
       "induction",

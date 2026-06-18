@@ -27,7 +27,7 @@
     "id": "ann-algebraic-core",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01-oq-01",
     "range": { "startLine": 62, "endLine": 74 },
-    "type": "technique",
+    "type": "insight",
     "title": "Function-agnostic algebraic core",
     "content": "ratioProduct_eq_neg_one_iff is the heart of every Menelaus theorem, and it assumes nothing about the values beyond nonzero denominators: (a/b)(c/d)(e/g) = -1 iff a·c·e = -(b·d·g). The proof clears denominators with div_mul_div_comm and div_eq_iff, then finishes by linarith. Because it is purely formal, the same lemma serves the plane, the sphere, and the hyperbolic plane — only the inputs (id-, sin-, or sinh-values) change.",
     "mathContext": "With $D = bdg \\neq 0$, the equation $\\frac{ace}{bdg} = -1$ is equivalent to $ace = -bdg$ via `div_eq_iff`. The companion `ratioProduct_eq_one_iff` gives the Ceva condition $ace = bdg$.",
@@ -63,11 +63,11 @@
     "id": "ann-instances",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01-oq-01",
     "range": { "startLine": 169, "endLine": 173 },
-    "type": "technique",
+    "type": "insight",
     "title": "Recovering the three classical theorems",
     "content": "With the unified theorem in hand, each classical Menelaus theorem is a one-line instance. euclidean_menelaus applies unified_menelaus to idMeasure, spherical_menelaus to sinMeasure, hyperbolic_menelaus to sinhMeasure. The only per-geometry input is the oddness witness (rfl for id, Real.sin_neg for sin, Real.sinh_neg for sinh) and the domain condition on denominators (sin excludes multiples of π; id and sinh exclude only 0).",
     "mathContext": "`euclidean_menelaus ... := unified_menelaus idMeasure ...`; likewise `sinMeasure` and `sinhMeasure`. The hypotheses specialize to $dc, ea, fb \\neq 0$ (Euclidean) and $\\sin/\\sinh$ of those nonzero (spherical/hyperbolic).",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["instantiation", "Euclidean/spherical/hyperbolic Menelaus", "Real.sin_neg", "Real.sinh_neg"],
     "prerequisites": ["unified_menelaus", "SignedMeasure instances"]
   }

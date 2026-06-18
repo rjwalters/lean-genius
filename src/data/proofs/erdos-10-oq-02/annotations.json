@@ -30,7 +30,7 @@
       "startLine": 54,
       "endLine": 76
     },
-    "type": "technique",
+    "type": "insight",
     "title": "powSum and the Merge Identity 2^a + 2^a = 2^{a+1}",
     "content": "`powSum s` is the sum of 2^a over a multiset s of exponents (repeats allowed). The keystone `powSum_merge` proves that replacing a duplicated exponent pair (a, a) by the single exponent (a+1) preserves the sum: 2^a + 2^a = 2^{a+1}. This single identity is the atomic step of the whole reduction — collapsing a repeat strictly shrinks the multiset while preserving the value, so any representation can be driven to one with no repeats and no more terms.",
     "mathContext": "$\\mathrm{powSum}(a ::_m a ::_m s) = \\mathrm{powSum}((a{+}1) ::_m s)$, proved by `simp [powSum_cons, pow_succ]; ring`.",

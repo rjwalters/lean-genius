@@ -88,7 +88,7 @@
   {
     "id": "ann-1005-longestrun",
     "proofId": "erdos-1005",
-    "type": "axiom",
+    "type": "warning",
     "title": "longestSimilarRun (the function f(n)) and known bounds",
     "content": "f(n), the length of the longest run of consecutive similarly ordered Farey fractions in F_n, is axiomatized since a precise definition of 'similarly ordered' requires the full ordered Farey sequence construction. Historical context: Mayer (1942) first showed f(n) → ∞; Erdős (1943) strengthened this to f(n) ≥ cn for an absolute constant c > 0, fixing the linear order of magnitude. The best explicit bounds give (1/12 - o(1))n ≤ f(n) ≤ n/4 + O(1) — a factor-3 gap. Whether f(n)/n converges to a constant c ∈ [1/12, 1/4] is the OPEN question of Erdős #1005.",
     "mathContext": "$f(n) = \\sup\\{k : \\exists\\text{ a run of } k \\text{ consecutive similarly ordered fractions in } F_n\\}$. Known: $(1/12 - o(1))n \\leq f(n) \\leq n/4 + O(1)$. Open: does $\\lim_{n\\to\\infty} f(n)/n$ exist, and if so what is its value?",

@@ -2,7 +2,7 @@
   {
     "id": "ann-mvt02oq04-imports",
     "proofId": "mean-value-theorem-oq-02-oq-04",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 1,
       "endLine": 2
@@ -10,7 +10,7 @@
     "title": "Imports: Mathlib and the Parent Lagrange-Remainder File",
     "content": "Two imports establish the file's *historical* dependency surface: `Mathlib` (broad — the S1 axiom referenced `AnalyticOn ℝ`, `Set.Ioo`, `Set.Icc`, and `iteratedDeriv`) and `Proofs.MeanValueTheoremOQ02` (the parent file providing `taylorPolynomial` and `taylorPolynomial_zero`, plus the still-active `taylor_lagrange_remainder` qualitative axiom). The import of `Proofs.MeanValueTheoremOQ02` is retained even after retraction so that downstream consumers re-importing this file continue to transitively access the parent's verified API without a chain break — but no symbol from either import is actually used in the (post-retraction) body. Removing the imports would also be valid; they are kept to make the retraction stub a *drop-in replacement* for the S1 file at the import level.",
     "mathContext": "No active mathematical content. The parent file's `taylorPolynomial` is defined as $T_n f(a)(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k$ via `iteratedDeriv`; the S1 axiom statement consumed this and the post-retraction file no longer does.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "transitive imports",
       "import-stability under retraction",
@@ -76,7 +76,7 @@
   {
     "id": "ann-mvt02oq04-action-taken",
     "proofId": "mean-value-theorem-oq-02-oq-04",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 41,
       "endLine": 67
@@ -102,7 +102,7 @@
   {
     "id": "ann-mvt02oq04-bookkeeping-and-siblings",
     "proofId": "mean-value-theorem-oq-02-oq-04",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 69,
       "endLine": 112
@@ -127,7 +127,7 @@
   {
     "id": "ann-mvt02oq04-empty-namespace",
     "proofId": "mean-value-theorem-oq-02-oq-04",
-    "type": "convention",
+    "type": "concept",
     "range": {
       "startLine": 114,
       "endLine": 128

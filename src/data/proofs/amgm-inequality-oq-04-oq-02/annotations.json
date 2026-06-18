@@ -54,7 +54,7 @@
       "startLine": 90,
       "endLine": 126
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Integrand Properties: Continuity, Integrability, and the √(1-k²) Lower Bound",
     "content": "Six lemmas establishing the basic analytic properties of `ellipticIntegrandE`. The most important is `integrandE_lower_bound`: for $k^2 < 1$ and any $\\theta$, $\\sqrt{1-k^2} \\leq \\sqrt{1 - k^2 \\sin^2 \\theta}$. **Proof technique**: apply `Real.sqrt_le_sqrt` to $1 - k^2 \\leq 1 - k^2 \\sin^2 \\theta$, which reduces to $k^2 \\sin^2 \\theta \\leq k^2$ via `Real.sin_sq_le_one`. Combined with `intervalIntegral.integral_mono_on` against the constant `√(1-k²)`, this gives `√(1-k²) · (π/2) ≤ E(k)`. **Continuity** is the composition `Real.continuous_sqrt.comp (continuous_const.sub (continuous_const.mul (continuous_sin.pow 2)))`; **integrability** then follows from `Continuous.intervalIntegrable`.",
     "mathContext": "The lower bound $\\sqrt{1-k^2}$ is sharp (achieved at $\\theta = \\pi/2$). For the integral $\\int_0^{\\pi/2} \\sqrt{1 - k^2 \\sin^2\\theta} \\, d\\theta \\geq \\sqrt{1-k^2} \\cdot \\frac{\\pi}{2}$, which is positive iff $k^2 < 1$ — a *constructive* positivity bound for $E(k)$. At $k = 1/\\sqrt{2}$ the lower bound gives $E \\geq \\sqrt{1/2}\\cdot\\pi/2 \\approx 1.111$ versus the true value $\\approx 1.351$.",
@@ -147,7 +147,7 @@
       "startLine": 305,
       "endLine": 311
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "axiom legendre_relation: The General Legendre Identity (Axiomatized)",
     "content": "**This is the file's only axiom** (axiomCount = 1). States: for $0 < k < 1$, $$E(k)\\,K'(k) + E'(k)\\,K(k) - K(k)\\,K'(k) = \\pi/2.$$ The standard proof differentiates $f(k) = EK' + E'K - KK'$ and shows $f' \\equiv 0$, so $f$ is constant, then pins the constant at a boundary. The two derivative ingredients this requires — $\\frac{dE}{dk} = \\frac{E-K}{k}$ and $\\frac{dK}{dk} = \\frac{E-(1-k^2)K}{k(1-k^2)}$ — are **no longer hypothetical**: they are proved below in §8 (`integral_dIntegrandE_eq`) and §17 (`dK_dk`) respectively. What remains to discharge the axiom is to assemble these into the $f' = 0$ computation and evaluate the constant. Eliminating this axiom would bring the file to 0 assumptions.",
     "mathContext": "Whittaker–Watson 1927 §22.41: with $\\frac{dK}{dk} = \\frac{E - (k')^2 K}{k (k')^2}$ (from the Legendre ODE) and $\\frac{dE}{dk} = \\frac{E - K}{k}$ (differentiation under the integral), substituting into $\\frac{df}{dk}$ and collecting terms gives $\\frac{df}{dk} = 0$ on $(0,1)$. The constant is fixed at $k = 1/\\sqrt{2}$ (where $f = 2EK - K^2$) or in the limit $k \\to 0^+$, yielding $\\pi/2$. The Lean axiom honestly encodes the as-yet-unassembled Wronskian argument.",

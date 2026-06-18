@@ -257,7 +257,7 @@
       "startLine": 452,
       "endLine": 508
     },
-    "type": "technique",
+    "type": "insight",
     "title": "L₁ is Surjective: Every Polynomial Integrand × eˣ is Elementary",
     "content": "Part VIb sharpens the contrast from \"L₁ hits the constants\" to \"L₁ hits everything.\" The operator L₁[Q] = Q' + Q (the Risch ODE for ∫R(x)eˣdx) is proved surjective onto all of ℝ[X], so ∫p(x)eˣdx is elementary for EVERY polynomial p — the exact opposite of L₂, which misses every nonzero constant.\n\n- **risch_linear_surjective_monomial**: for each n there is a Q with Q' + Q = Xⁿ, built by the recurrence Q₀ = 1, Q_{n+1} = X^{n+1} − C(n+1)·Qₙ. The induction step verifies Q_{n+1}' + Q_{n+1} = X^{n+1} using the hypothesis Qₙ' + Qₙ = Xⁿ (closed via linear_combination).\n- **risch_linear_surjective_all**: extends from monomials to all polynomials by Polynomial.induction_on'. Linearity of L₁ (additivity, plus L₁[C(a)·Q] = C(a)·L₁[Q]) reduces every polynomial to a sum of scaled monomials.\n\nThe recurrence is exactly the finite integration-by-parts expansion: ∫p(x)eˣdx = (Σₖ (−1)ᵏ p^(k)(x))·eˣ. Degree-preservation of L₁ is what makes this terminating closed form possible — and its absence for L₂ is what makes the Gaussian non-elementary.",
     "mathContext": "Surjectivity of $L_1[Q] = Q' + Q$: solve $Q' + Q = X^n$ by $Q_n = \\sum_{k=0}^{n} (-1)^k \\frac{n!}{(n-k)!} X^{n-k}$, equivalently the recurrence $Q_{n+1} = X^{n+1} - (n+1)Q_n$. By linearity this covers all $p \\in \\mathbb{R}[X]$, so $\\int p(x)e^x\\,dx = \\left(\\sum_k (-1)^k p^{(k)}(x)\\right)e^x$ is always elementary.",

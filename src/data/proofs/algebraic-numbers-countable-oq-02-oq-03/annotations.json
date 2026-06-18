@@ -31,7 +31,7 @@
       "startLine": 61,
       "endLine": 76
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Partition via Classical.em",
     "content": "The algebraic_trans_partition theorem establishes ℝ = algebraic ∪ transcendental at the Set level. The proof is a single `Classical.em`: every real x satisfies `IsAlgebraic ℚ x ∨ ¬IsAlgebraic ℚ x`. This is non-constructive — we cannot decide algebraicity for arbitrary reals — but classically it partitions ℝ into two complementary sets.\n\nThe disjointness (algebraic_trans_disjoint) follows immediately from the definition: transcendentalReals = {x | ¬IsAlgebraic ℚ x}, so algebraic ∩ transcendental = ∅.",
     "mathContext": "Set.disjoint_left: Disjoint A B ↔ ∀ x ∈ A, x ∉ B. Since transcendentalReals = {x | ¬IsAlgebraic ℚ x}, any x ∈ algebraic satisfies IsAlgebraic ℚ x, so x ∉ transcendentalReals.",
@@ -54,7 +54,7 @@
       "startLine": 78,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Bridging Set.Countable to Cardinal Bounds",
     "content": "The lemma `card_algebraic_le_aleph0` converts the parent's `algebraic_reals_countable : Set.Countable {x : ℝ | IsAlgebraic ℚ x}` into the cardinal statement `(#(↑{x : ℝ | IsAlgebraic ℚ x} : Set ℝ) : Cardinal) ≤ ℵ₀`.\n\nThe bridge is `le_aleph0_iff_set_countable.mpr`: it says Set.Countable S → #S ≤ ℵ₀. This is a one-line proof that would otherwise require unfolding the definition of Set.Countable (existence of an injection S ↪ ℕ) and converting it to a cardinal inequality.",
     "mathContext": "`le_aleph0_iff_set_countable : #S ≤ ℵ₀ ↔ Set.Countable S`. The .mpr direction converts countability to cardinality bounds. Used identically in LebesgueMeasureOQ06 and other gallery proofs — it's the standard bridge lemma.",
@@ -77,7 +77,7 @@
       "startLine": 102,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Proving Infinite Cardinal Absorption: ℵ₀ + κ = κ",
     "content": "The `aleph0_add_of_ge` lemma proves ℵ₀ + κ = κ for any κ ≥ ℵ₀. This is proved via le_antisymm:\n- **Upper bound** (ℵ₀ + κ ≤ κ): We have ℵ₀ ≤ κ (hypothesis), so ℵ₀ + κ ≤ κ + κ = κ. The last equality is `Cardinal.add_eq_self h` where h : ℵ₀ ≤ κ.\n- **Lower bound** (κ ≤ ℵ₀ + κ): Trivially, le_add_left κ ℵ₀.\n\nThis absorption law is the core of the lower bound proof. Without it, the calculation ℵ₀ + 𝔠 → 𝔠 would need separate justification.",
     "mathContext": "`Cardinal.add_eq_self {κ : Cardinal} (h : ℵ₀ ≤ κ) : κ + κ = κ` is Mathlib's version of the infinite cardinal self-absorption. The lemma here bootstraps from it: ℵ₀ + κ ≤ κ + κ (by adding ℵ₀ ≤ κ to both sides) = κ.",
@@ -100,7 +100,7 @@
       "startLine": 111,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "insight",
     "title": "The Lower Bound Chain: 𝔠 ≤ #transcendentals",
     "content": "The lower bound `continuum_le_card_transcendentals` is the mathematical heart of the proof. The calc chain is:\n```\n𝔠 = #ℝ ≤ #(algebraics ∪ transcendentals) ≤ #algebraics + #transcendentals ≤ ℵ₀ + #transcendentals = #transcendentals\n```\n\nEach step:\n1. `𝔠 = #ℝ`: Cardinal.mk_real.symm\n2. `#ℝ = #(algebraics ∪ transcendentals)`: rewriting with algebraic_trans_partition (union = univ) and Cardinal.mk_univ\n3. `#(A ∪ B) ≤ #A + #B`: Cardinal.mk_union_le\n4. `#algebraics + #transcendentals ≤ ℵ₀ + #transcendentals`: add_le_add_right with card_algebraic_le_aleph0\n5. `ℵ₀ + #transcendentals = #transcendentals`: aleph0_add_of_ge (absorption)\n\nThis is a showcase of chained cardinal inequalities where each step uses a single Mathlib lemma.",
     "mathContext": "Cardinal.mk_union_le: `#(↑(A ∪ B) : Set α) ≤ #↑A + #↑B` for any sets A, B. After rw [algebraic_trans_partition, Cardinal.mk_univ], the left side of h1 becomes #ℝ (since #Set.univ = #ℝ).",
@@ -167,7 +167,7 @@
       "startLine": 171,
       "endLine": 178
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Corollary: #algebraics = ℵ₀ via Subtype Rewrite",
     "content": "The `card_algebraics_eq_aleph0` corollary proves (#algebraics : Cardinal) = ℵ₀. The parent file (AlgebraicNumbersCountable) provides `card_algebraic_reals_eq_aleph0 : #{x : ℝ // IsAlgebraic ℚ x} = ℵ₀`, which uses the *subtype* cardinality (#{x : ℝ // P x}), while this entry uses *set* cardinality (#(↑{x : ℝ | P x} : Set ℝ)).\n\nThe key step is `rfl` after rewriting: the two forms are definitionally equal in Lean 4 because the coercion of the set {x | P x} to a type is the subtype {x // P x}.",
     "mathContext": "In Lean 4, `{x : ℝ // IsAlgebraic ℚ x}` (subtype) and `↑{x : ℝ | IsAlgebraic ℚ x}` (set coerced to type) are definitionally equal as types. The `rfl` closes the goal after the rewrite.",

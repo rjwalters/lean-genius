@@ -7,7 +7,7 @@
     "title": "Negative Exponents by Reciprocal Duality",
     "content": "The docstring frames the strategy: rather than re-running the strict-Jensen convexity argument below zero, the negative-exponent equality case is obtained as a corollary of the already-proved positive case via the duality M_p(z,w) = M_{-p}(z⁻¹,w)⁻¹. The file mirrors the compiled template power_mean_monotone_neg line-for-line for the duality bookkeeping, and is registered + build-verified (0 sorry / 0 axiom). The cross-zero regime r < 0 < t is explicitly left as separate follow-up because it must pass through the geometric mean M₀, outside weightedPowerMean's p ≠ 0 domain.",
     "mathContext": "$M_p(z,w) = M_{-p}(z^{-1},w)^{-1}$; the harmonic mean ($p=-1$) sits at the bottom of the power-mean hierarchy.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["power means", "reciprocal duality", "harmonic mean", "Hardy–Littlewood–Pólya"],
     "prerequisites": ["power-mean inequality", "mean hierarchy"]
   },

@@ -8,9 +8,9 @@
     },
     "type": "concept",
     "title": "Setup: Admissible Tuples and the D(k) Series",
-    "content": "The header documents D(6) = 16 and its place in the OEIS A008407 chain D(2)=2, D(3)=6, D(4)=8, D(5)=12, D(6)=16. The file imports Mathlib plus the sibling modules BoundedPrimeGaps (defining IsAdmissible) and BoundedPrimeGapsOQ03OQ01 (defining fsDiameter, minAdmissibleDiameter, and the parity-argument template). The strategy block highlights the genuinely new mod-5 obstruction and notes that only the primes p ∈ {2,3,5} are interrogated, so no Decidable IsAdmissible instance is required.",
+    "content": "The header documents D(6) = 16 and its place in the OEIS A008407 chain D(2)=2, D(3)=6, D(4)=8, D(5)=12, D(6)=16. The file imports Mathlib plus the sibling modules BoundedPrimeGaps (defining IsAdmissible) and BoundedPrimeGapsOQ03OQ01 (defining fsDiameter, minAdmissibleDiameter, and the parity-argument template). The strategy block highlights the genuinely new mod-5 obstruction and notes that only the primes p ∈ {2,3,5} are interrogated, so no Decidable IsAdmissible instance is required.\n\n**Significance:** D(6)=16 is the first rung whose lower bound provably needs three residue layers (p = 2, 3, 5), making it the natural successor to the two-layer D(5)=12 proof.",
     "mathContext": "A finite $H \\subset \\mathbb{N}$ is **admissible** if for every prime $p$ the image $H \\bmod p$ misses some residue class: $|\\{h \\bmod p : h \\in H\\}| < p$. The minimum admissible diameter is $D(k) = \\min\\{\\max H - \\min H : H \\text{ admissible}, |H| = k\\}$. OEIS A008407 gives $D(1)=0, D(2)=2, D(3)=6, D(4)=8, D(5)=12, D(6)=16, \\ldots$",
-    "significance": "D(6)=16 is the first rung whose lower bound provably needs three residue layers (p = 2, 3, 5), making it the natural successor to the two-layer D(5)=12 proof.",
+    "significance": "supporting",
     "relatedConcepts": [
       "admissible tuples",
       "prime constellations",
@@ -31,11 +31,11 @@
       "startLine": 45,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Witness Admissibility {0,4,6,10,12,16}",
-    "content": "admissible_6tuple_0_4_6_10_12_16 proves the upper-bound witness admissible from scratch. For p ∈ {2,3,5} the residues are checked by decide (mod 2 → {0}; mod 3 → {0,1}; mod 5 → {0,1,2,4}, each missing a class). For p ≥ 7 the bound |H| = 6 < 7 ≤ p makes admissibility automatic, since the image can have at most 6 elements.",
+    "content": "admissible_6tuple_0_4_6_10_12_16 proves the upper-bound witness admissible from scratch. For p ∈ {2,3,5} the residues are checked by decide (mod 2 → {0}; mod 3 → {0,1}; mod 5 → {0,1,2,4}, each missing a class). For p ≥ 7 the bound |H| = 6 < 7 ≤ p makes admissibility automatic, since the image can have at most 6 elements.\n\n**Significance:** Establishes that an admissible 6-tuple of diameter 16 exists, the upper-bound half of D(6) ≤ 16.",
     "mathContext": "Admissibility need only be checked at primes $p \\le k$: for $p > k$ the image mod $p$ has at most $k < p$ elements, so it cannot cover all residues.",
-    "significance": "Establishes that an admissible 6-tuple of diameter 16 exists, the upper-bound half of D(6) ≤ 16.",
+    "significance": "key",
     "relatedConcepts": [
       "explicit witness construction",
       "Finset.card_image_le",
@@ -55,10 +55,10 @@
       "startLine": 68,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Witness Diameter Without native_decide",
-    "content": "diam_witness proves fsDiameter {0,4,6,10,12,16} = 16 entirely in the kernel. The minimum is 0 (Finset.min'_le for membership of 0, plus Nat.zero_le) and the maximum is 16 (Finset.max'_le over the explicit elements via omega, plus Finset.le_max' for membership of 16), both by antisymmetry. The dite in fsDiameter is then reduced by dif_pos. This avoids the Lean.ofReduceBool dependency that a native_decide diameter check would introduce.",
-    "significance": "Removing native_decide keeps the entire D(6) entry axiom-free (status verified, axiomCount 0) — a strict axiom-integrity improvement over the sibling D(5)=12 entry, whose headline depends on a native_decide diameter check.",
+    "content": "diam_witness proves fsDiameter {0,4,6,10,12,16} = 16 entirely in the kernel. The minimum is 0 (Finset.min'_le for membership of 0, plus Nat.zero_le) and the maximum is 16 (Finset.max'_le over the explicit elements via omega, plus Finset.le_max' for membership of 16), both by antisymmetry. The dite in fsDiameter is then reduced by dif_pos. This avoids the Lean.ofReduceBool dependency that a native_decide diameter check would introduce.\n\n**Significance:** Removing native_decide keeps the entire D(6) entry axiom-free (status verified, axiomCount 0) — a strict axiom-integrity improvement over the sibling D(5)=12 entry, whose headline depends on a native_decide diameter check.",
+    "significance": "key",
     "mathContext": "$\\mathrm{fsDiameter}\\,H = \\max' H - \\min' H$ on a nonempty $H$; both extrema are pinned by antisymmetry ($\\min' \\le 0$ and $0 \\le \\min'$; $\\max' \\le 16$ and $16 \\le \\max'$), so the value is forced without evaluating the compiler.",
     "relatedConcepts": [
       "Finset.min'/max' antisymmetry",
@@ -79,11 +79,11 @@
       "startLine": 86,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Lower Bound Stage 1: Parity Confinement",
-    "content": "admissible_6tuple_diam_ge_16 argues by contradiction from diameter < 16. Admissibility at p=2 means the image mod 2 has card < 2 = 1, so every element shares the minimum m's parity (a mixed pair would give image {0,1} of card 2). Combined with diameter < 16, this confines H to the eight even-offset slots {m,m+2,m+4,m+6,m+8,m+10,m+12,m+14}, established by interval_cases on x − m followed by omega.",
+    "content": "admissible_6tuple_diam_ge_16 argues by contradiction from diameter < 16. Admissibility at p=2 means the image mod 2 has card < 2 = 1, so every element shares the minimum m's parity (a mixed pair would give image {0,1} of card 2). Combined with diameter < 16, this confines H to the eight even-offset slots {m,m+2,m+4,m+6,m+8,m+10,m+12,m+14}, established by interval_cases on x − m followed by omega.\n\n**Significance:** Reduces an infinite search to eight explicit candidate positions — the same opening move as the D(3), D(4), D(5) lower bounds.",
     "mathContext": "Parity is the $p=2$ admissibility filter: an admissible set is monochromatic mod 2, so its elements lie in an arithmetic progression of step 2.",
-    "significance": "Reduces an infinite search to eight explicit candidate positions — the same opening move as the D(3), D(4), D(5) lower bounds.",
+    "significance": "supporting",
     "relatedConcepts": [
       "proof by contradiction",
       "parity classes mod 2",
@@ -103,11 +103,11 @@
       "startLine": 125,
       "endLine": 215
     },
-    "type": "key-insight",
+    "type": "insight",
     "title": "Lower Bound Stage 2: Mod-3 Grouping Pins H",
-    "content": "The eight slots split by residue mod 3 into A = {m,m+6,m+12}, B = {m+2,m+8,m+14}, C = {m+4,m+10}. The three group-residues m, m+2, m+4 (mod 3) are distinct, so if H met all three groups the image mod 3 would have card ≥ 3, violating p=3 admissibility (hPA, hPB establish that A and B must be met; hnPC derives that C is not). Missing the 3-element groups A or B would leave ≤ 5 slots for a 6-set (cardinality contradiction via iterated Finset.card_insert_le), so H must miss C entirely. Since H ⊆ {m,m+2,m+6,m+8,m+12,m+14} (card 6) and |H| = 6, Finset.eq_of_subset_of_card_le pins H to exactly that set.",
+    "content": "The eight slots split by residue mod 3 into A = {m,m+6,m+12}, B = {m+2,m+8,m+14}, C = {m+4,m+10}. The three group-residues m, m+2, m+4 (mod 3) are distinct, so if H met all three groups the image mod 3 would have card ≥ 3, violating p=3 admissibility (hPA, hPB establish that A and B must be met; hnPC derives that C is not). Missing the 3-element groups A or B would leave ≤ 5 slots for a 6-set (cardinality contradiction via iterated Finset.card_insert_le), so H must miss C entirely. Since H ⊆ {m,m+2,m+6,m+8,m+12,m+14} (card 6) and |H| = 6, Finset.eq_of_subset_of_card_le pins H to exactly that set.\n\n**Significance:** This sharpens the D(5) two-triple count into a pinning argument: instead of bounding the omissions it determines H completely, setting up the final mod-5 contradiction.",
     "mathContext": "Groups of sizes $3,3,2$; a 6-subset of an 8-set omits exactly 2 elements, and only the size-2 group is small enough to empty — so $p=3$ admissibility forces a *unique* candidate rather than merely a bound.",
-    "significance": "This sharpens the D(5) two-triple count into a pinning argument: instead of bounding the omissions it determines H completely, setting up the final mod-5 contradiction.",
+    "significance": "key",
     "relatedConcepts": [
       "residue classes mod 3",
       "pigeonhole / cardinality counting",
@@ -127,11 +127,11 @@
       "startLine": 216,
       "endLine": 238
     },
-    "type": "key-insight",
+    "type": "insight",
     "title": "Lower Bound Stage 3: The Mod-5 Obstruction",
-    "content": "The pinned set {m,m+2,m+6,m+8,m+12,m+14} has offsets {0,2,6,8,12,14}, which reduce mod 5 to {0,2,1,3,2,4} — covering all of {0,1,2,3,4}. Concretely the residues {m,m+1,m+2,m+3,m+4} mod 5 are all realized (m+6→m+1, m+8→m+3, m+14→m+4), and five consecutive residues exhaust ℤ/5ℤ (an omega-checkable equality with {0,1,2,3,4}). Hence the image mod 5 has card ≥ 5, contradicting p=5 admissibility.",
+    "content": "The pinned set {m,m+2,m+6,m+8,m+12,m+14} has offsets {0,2,6,8,12,14}, which reduce mod 5 to {0,2,1,3,2,4} — covering all of {0,1,2,3,4}. Concretely the residues {m,m+1,m+2,m+3,m+4} mod 5 are all realized (m+6→m+1, m+8→m+3, m+14→m+4), and five consecutive residues exhaust ℤ/5ℤ (an omega-checkable equality with {0,1,2,3,4}). Hence the image mod 5 has card ≥ 5, contradicting p=5 admissibility.\n\n**Significance:** Completes the lower bound D(6) ≥ 16. It is the first appearance of a third interrogated prime in the D(k) series, the structural novelty of this entry.",
     "mathContext": "This is the step that has no analogue in D(2)–D(5): the unique diameter-14 candidate survives $p=2$ and $p=3$ and is eliminated only modulo 5.",
-    "significance": "Completes the lower bound D(6) ≥ 16. It is the first appearance of a third interrogated prime in the D(k) series, the structural novelty of this entry.",
+    "significance": "critical",
     "relatedConcepts": [
       "residue classes mod 5",
       "complete residue system (covering ℤ/5ℤ)",
@@ -153,8 +153,8 @@
     },
     "type": "concept",
     "title": "Main Result D(6) = 16",
-    "content": "minAdmissibleDiameter_6 = 16 by le_antisymm, mirroring minAdmissibleDiameter_5. The upper bound uses csInf_le with the admissible witness {0,4,6,10,12,16} and its diameter 16 (diam_witness); the lower bound uses le_csInf with admissible_6tuple_diam_ge_16, which bounds every admissible 6-tuple's diameter from below.",
-    "significance": "Completes the verified chain D(2)=2, D(3)=6, D(4)=8, D(5)=12, D(6)=16, formally establishing the smallest six prime-constellation diameters in Lean 4.",
+    "content": "minAdmissibleDiameter_6 = 16 by le_antisymm, mirroring minAdmissibleDiameter_5. The upper bound uses csInf_le with the admissible witness {0,4,6,10,12,16} and its diameter 16 (diam_witness); the lower bound uses le_csInf with admissible_6tuple_diam_ge_16, which bounds every admissible 6-tuple's diameter from below.\n\n**Significance:** Completes the verified chain D(2)=2, D(3)=6, D(4)=8, D(5)=12, D(6)=16, formally establishing the smallest six prime-constellation diameters in Lean 4.",
+    "significance": "critical",
     "mathContext": "$D(k) = \\inf\\{d : \\exists H,\\ |H|=k,\\ H \\text{ admissible},\\ \\mathrm{fsDiameter}\\,H = d\\}$; an infimum over ℕ is pinned by $\\le$ both ways — `csInf_le` (a witness achieves 16) and `le_csInf` (every member is ≥ 16).",
     "relatedConcepts": [
       "infimum over a set of naturals",

@@ -417,7 +417,7 @@
       "startLine": 1050,
       "endLine": 1058
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "Erdős's Conjecture (axiomatized): min I = 2 − (1+o(1))/n",
     "content": "The central open conjecture, stated as the `axiom erdos_1131_conjecture`: for every $\\varepsilon > 0$ there is $N_0$ with $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for all $n \\ge N_0$, i.e. $\\min I = 2 - (1+o(1))/n$. It is the single assumption in the file (`axiomCount = 1`) and is **not** proved — only the lower bound $I \\ge 2/n$ and the exact Chebyshev value are established unconditionally.",
     "significance": "key",

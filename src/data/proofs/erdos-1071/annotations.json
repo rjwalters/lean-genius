@@ -226,7 +226,7 @@
   {
     "id": "zorn-existence",
     "proofId": "erdos-1071",
-    "type": "technique",
+    "type": "insight",
     "title": "Existence of a Maximal Packing via Zorn's Lemma",
     "content": "Part 5 proves — unconditionally, no axiom — that a maximal packing exists. `IsExtendable S` says some in-square unit segment can be inserted while staying disjoint, and `maximal_iff_not_extendable` proves maximality is exactly non-extendability. The crux is `packing_chain_union`: the union of a ⊆-chain of packings is again a packing (pairwise disjointness is checked by comparing the two members' source sets along the chain). With this chain-condition in hand, `exists_maximal_packing` applies `zorn_subset` to the set of all packings; the Zorn-maximal element `m` is then shown maximal by contradiction — if some segment were disjoint from all of `m`, `insert s m` would be a strictly larger packing, violating Zorn-maximality. This is the abstract counterpart to Danzer's axiom: existence is free, but Zorn gives no control over cardinality, which is why Danzer's *finite* construction is still needed.",
     "mathContext": "`zorn_subset {S | IsPacking S}` with upper bound $\\bigcup \\text{chain}$ (a packing by `packing_chain_union`). Maximal element blocks every insertable segment ⇒ `IsMaximalPacking`.",

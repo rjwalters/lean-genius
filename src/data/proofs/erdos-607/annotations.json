@@ -157,7 +157,7 @@
       "startLine": 82,
       "endLine": 82
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "incidenceSignature",
     "content": "**incidenceSignature config**: the `Multiset ℕ` of incidence counts for all determined lines.\n$$A = \\{|\\ell_1 \\cap P|, |\\ell_2 \\cap P|, \\ldots, |\\ell_m \\cap P|\\}$$\n\nThis captures the full collinearity structure of the configuration.",
     "mathContext": "The multiset retains multiplicities: if 5 lines each contain 3 points, the count 3 appears 5 times. The SET form `incidenceSet` ignores multiplicities. The problem asks about the set form $A$ (which values appear), not the multiset (how often each value appears).",
@@ -180,7 +180,7 @@
       "startLine": 109,
       "endLine": 109
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "F(n)",
     "content": "**F n**: the number of distinct incidence signatures achievable by $n$-point configurations in $\\mathbb{R}^2$.\n\n$F(n) = |\\{\\text{incidenceSignature}(P) : P \\text{ is an } n\\text{-point configuration}\\}|$\n\nDespite infinitely many configurations, $F(n)$ is finite (and surprisingly small).",
     "mathContext": "The finiteness of $F(n)$ is non-obvious: there are uncountably many $n$-point configurations, but the incidence signature can only take finitely many values because each count is in $\\{2, \\ldots, n\\}$ and there are at most $\\binom{n}{2}$ lines.",

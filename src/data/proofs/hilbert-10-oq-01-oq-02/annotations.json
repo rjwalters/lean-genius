@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 60
     },
-    "type": "context",
+    "type": "concept",
     "title": "Σ₁ vs Π₂: The Precise Refinement of OQ-01",
     "content": "The header positions this file as the model-theoretic refinement of OQ-01. The OPEN question asks whether $\\mathbb{Z} \\subseteq \\mathbb{Q}$ admits a $\\Sigma_1$ (purely existential, Diophantine) definition. Koenigsmann (Annals 2016) settled the $\\Pi_2$ ($\\forall\\exists$) version by exhibiting an explicit polynomial built from Hilbert symbols and quaternion algebras over $\\mathbb{Q}$. The $\\Sigma_1$/$\\Pi_2$ gap is precisely the mathematical content separating the open problem from Koenigsmann's theorem — and it matters because only the $\\Sigma_1$ version implies H10/$\\mathbb{Q}$ undecidability via MRDP.",
     "mathContext": "$\\Sigma_1$: $\\exists P \\in \\mathbb{Q}[t,x_1,\\ldots,x_k] : (t \\in \\mathbb{Z} \\iff \\exists x \\in \\mathbb{Q}^k, P(t,x) = 0)$ — OPEN.\n$\\Pi_2$: $\\exists P : (t \\in \\mathbb{Z} \\iff \\forall y \\in \\mathbb{Q}^n, \\exists z \\in \\mathbb{Q}^m, P(t,y,z) = 0)$ — PROVED (Koenigsmann 2016).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Hilbert's 10th problem",
       "MRDP theorem",
@@ -31,11 +31,11 @@
       "startLine": 89,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Import Companion + Namespace",
     "content": "Imports `Proofs.Hilbert10OQ01` to reuse the OQ-01 infrastructure: `RatDiophantinePoly`, `hasRationalSolution`, `IntegersDiophantineOverQ`, `H10_Rational_Decidable`, and the existing reduction axiom `integers_diophantine_implies_undecidable`. The namespace `Hilbert10Rationals` is shared with the parent file — both files contribute to the same model-theoretic vocabulary.",
     "mathContext": "The companion design avoids redefining shared concepts: the OQ-02 file is a refinement layer on top of OQ-01, not a fork.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lean module system",
       "Hilbert10OQ01.lean"
@@ -304,11 +304,11 @@
       "startLine": 2866,
       "endLine": 3174
     },
-    "type": "context",
+    "type": "concept",
     "title": "Part IX: the sharpened Σ₁/Π₁/Σ₂/Π₂ landscape",
     "content": "The closing narrative (Part IX, prose docstring) that synthesizes the whole file into the precise state of knowledge for ℤ ⊂ ℚ across the bottom of the arithmetic hierarchy: Σ₁ (ℤ Diophantine over ℚ) — OPEN, THIS PROBLEM; Π₁ (ℚ\\ℤ co-Diophantine) — OPEN, equivalent to Σ₁ via duality; Σ₂ (ℚ\\ℤ existential-universal) — PROVED as a corollary of Koenigsmann via duality (`koenigsmann_implies_complement_existentialUniversal`); Π₂ (ℤ universal-existential) — PROVED (Koenigsmann 2016). The non-trivial open gap is Σ₁ vs Π₂ (equivalently Π₁(complement) vs Σ₂(complement)). Why the distinction matters: the implication chain Σ₁ → ¬(H10/ℚ decidable) (from MRDP) is PRECISELY Σ₁ — Π₂ does not transfer H10/ℤ undecidability to H10/ℚ; Mazur's conjecture refutes Σ₁ but is consistent with Π₂; a positive Σ₁ answer would be a constructive polynomial witness, a negative one likely a structural theorem on the Brauer–Manin geometry of ℚ-points. This section carries no new theorems — it is the interpretive map tying the proved closure grid and the lone Koenigsmann axiom to the open frontier.",
     "mathContext": "Status table on $\\mathbb{Z}\\subset\\mathbb{Q}$: $\\Sigma_1$ OPEN, $\\Pi_1$ OPEN (≡$\\Sigma_1$), $\\Sigma_2(\\mathbb{Q}\\setminus\\mathbb{Z})$ PROVED, $\\Pi_2(\\mathbb{Z})$ PROVED (Koenigsmann 2016). Open gap: $\\Sigma_1$ vs $\\Pi_2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "arithmetic hierarchy over ℚ",
       "MRDP and H10/ℚ undecidability transfer",

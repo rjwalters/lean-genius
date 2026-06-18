@@ -30,11 +30,11 @@
       "startLine": 94,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Imports, Options & the ArithmeticFunction Namespace",
     "content": "The setup block pulls in all of Mathlib (`import Mathlib`) — appropriate for a gallery proof that needs the `ArithmeticFunction` convolution API — and raises two resource limits: `maxHeartbeats 1000000` and `maxRecDepth 4000`, anticipating the heavier elaboration of the divisor-sum rewrites. `autoImplicit false` enforces explicit binders (a correctness-hygiene choice), and `linter.all false` silences style lints on this batch-derived file.\n\nThe three `open`s are what make the proof readable: `open scoped BigOperators` for the `∑` notation, `open ArithmeticFunction` to use `coe_mul_zeta_apply`, `moebius_mul_coe_zeta`, and `one_apply` unqualified, and `open scoped ArithmeticFunction.Moebius` to write `μ` for `ArithmeticFunction.moebius`. Without the Moebius scope the theorem statement could not use the bare `μ`.",
     "mathContext": "`open scoped ArithmeticFunction.Moebius` binds `μ = ` `ArithmeticFunction.moebius : ArithmeticFunction ℤ`; the convolution lemmas live in the `ArithmeticFunction` namespace.",
-    "significance": "technical",
+    "significance": "supporting",
     "prerequisites": [
       "Lean 4 imports, set_option, and scoped notation",
       "ArithmeticFunction namespace"
@@ -119,11 +119,11 @@
       "startLine": 94,
       "endLine": 106
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports, Options, and the Möbius/Zeta Namespace",
     "content": "The preamble wires up the four Mathlib hooks the proof relies on:\n\n- `import Mathlib` pulls in the entire library — in particular `ArithmeticFunction.moebius`, `ArithmeticFunction.zeta`, `Nat.Ioc_filter_dvd_card_eq_div`, and the Dirichlet-convolution lemma `moebius_mul_coe_zeta`.\n- `open ArithmeticFunction` and `open scoped ArithmeticFunction.Moebius` bring the notations `μ` (Möbius) and `ζ` (the constant-1 arithmetic function) into scope, so the statement can be written `∑ d, μ d * …` rather than spelled out.\n- `set_option maxHeartbeats 1000000` and `maxRecDepth 4000` give the elaborator headroom for the `simp`/`omega` discharges in the divisor-set equality; `autoImplicit false` enforces explicit binders (the recommended hygiene for gallery proofs).\n\nThe single hypothesis is `N ≥ 1`; nothing here imports the parent `ChebyshevBoundsOQ04.lean`, so the two deep PNT axioms it carries (`chebyshevPsi_asymptotic`, `pnt_equivalence`) do not leak into this file — keeping it genuinely 0-axiom.",
     "mathContext": "The proof's entire arithmetic input is the Dirichlet identity μ ∗ ζ = δ, supplied by `ArithmeticFunction.moebius_mul_coe_zeta`; everything else is `Finset` bookkeeping.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "Lean 4 imports and set_option configuration",
       "ArithmeticFunction.moebius and zeta notation"

@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 56
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Keller-Gehrig Algorithm: Three-Layer Decomposition",
     "content": "The opening docstring frames the entire file as Layers 1, 2, and 2.5 of the Keller-Gehrig (1985) $O(n^\\omega)$ characteristic-polynomial algorithm, with Layer 3 (the actual operation count) deferred. The asymptotic gain replaces the naive Krylov method's $n$ matrix-vector products ($O(n^2)$ each, so $O(n^3)$ total) with $\\lceil \\log_2 n \\rceil$ matrix-matrix products ($O(n^\\omega)$ each, so $O(n^\\omega \\log n)$ total). The structural insight is that the squared-Krylov sequence $T_k := M^{2^k}$ — computed by *repeated squaring* — and the binary expansion of any exponent $j$ together let any Krylov power $M^j$ be reassembled from at most $\\mathrm{popcount}(j)$ multiplications of the $T_k$. Layer 3 is blocked on Mathlib having no complexity-monad and no fast (Strassen-style) matrix multiplication — any quantitative claim is necessarily axiomatic in current Mathlib.",
     "mathContext": "Keller-Gehrig (1985): produce $M^j$ for any $j < n$ using $\\lceil \\log_2 n \\rceil + \\mathrm{popcount}(j) - 1$ matrix-matrix multiplications, replacing $n$ matrix-vector products of naive Krylov. Asymptotic: $O(n^\\omega \\log n)$ vs $O(n^3)$, beneficial when $\\omega < 3$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Keller-Gehrig 1985",
       "repeated squaring",
@@ -106,7 +106,7 @@
       "startLine": 105,
       "endLine": 112
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Helper: Powers of a Single Matrix Collapse Across List.prod",
     "content": "`prod_pow_of_list` is the only commutativity used in the entire Layer 2 proof: powers of a *single* matrix $M$ commute pairwise (since $M^a \\cdot M^b = M^{a+b} = M^b \\cdot M^a$), so the list product $\\prod_i M^{f(i)}$ collapses to $M^{\\sum_i f(i)}$. The proof is a textbook list induction: empty list gives $1 = M^0 = M^{\\sum \\emptyset}$; cons step rewrites via `pow_add` and the induction hypothesis. Importantly this avoids needing full commutativity of the matrix ring — matrices over a field do *not* commute in general, but powers of a fixed matrix always do.",
     "mathContext": "$\\prod_{i \\in L} M^{f(i)} = M^{\\sum_{i \\in L} f(i)}$. The only commutativity required: $M^a \\cdot M^b = M^b \\cdot M^a$ for any $a, b$ (true in any monoid). This is the structural reason the Layer 2 bridge factors so cleanly — Keller-Gehrig never needs matrix-ring commutativity.",
@@ -204,11 +204,11 @@
       "startLine": 268,
       "endLine": 307
     },
-    "type": "context",
+    "type": "concept",
     "title": "Layer 3 Axiomatized: The Matrix-Multiplication Exponent ω",
     "content": "Layer 3 commits to the bare minimum honest formalisation of the matrix-multiplication exponent: three axioms declare $\\omega$ and its known bounds. `omegaMM : ℝ` is the exponent itself — a major open problem in computational complexity, currently bounded $2 \\leq \\omega < 2.371552$ (Williams-Xu-Xu-Zhou 2024). `omegaMM_two_le` ($2 \\leq \\omega$) is folklore: one must read all $n^2$ input entries. `omegaMM_lt_three` ($\\omega < 3$) is Strassen (1969): $\\omega \\leq \\log_2 7 \\approx 2.807$. The convenience corollary `omegaMM_mem_Ico` packages the two-sided bound. The full $O(n^\\omega)$ operation-count theorem is deferred — it requires both a complexity monad and a fast-matmul oracle, neither of which Mathlib provides. A future Mathlib PR adding a complexity-monad would slot in here without changing the axioms, only by defining the operation-count predicate against `omegaMM`.",
     "mathContext": "$\\omega := \\inf \\{\\alpha \\mid \\text{two } n \\times n \\text{ matrices over a field multiply in } O(n^\\alpha) \\text{ field operations}\\}$. Known: $2 \\leq \\omega < 2.371552$ (Williams-Xu-Xu-Zhou 2024). Whether $\\omega = 2$ is unknown. Strassen 1969: $\\omega \\leq \\log_2 7$. The three axioms here are the minimal honest commitment Layer 3 admits today.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Strassen's algorithm",
       "Coppersmith-Winograd",
@@ -231,11 +231,11 @@
       "startLine": 309,
       "endLine": 383
     },
-    "type": "context",
+    "type": "concept",
     "title": "Closing Summary: 12 Theorems, 0 Sorries, 3 Axioms",
     "content": "The closing docstring inventories the file's contents: 12 theorems (3 Layer 1 + 4 Layer 2 matrix + 2 Layer 2 vector + 2 Layer 2.5 + 1 Layer 3 sanity), 0 sorries, 3 axioms (the Layer 3 $\\omega$ block). The structural / quantitative split is explicit: Layers 1, 2, 2.5 are unconditionally proved; the operation count is deferred. The end-of-file commentary also gives the Layer 2 proof sketch in plain English — `squareKrylov_eq_pow_two`, `prod_pow_of_list`, `Nat.twoPowSum_bitIndices` — which a reader can map onto the proof of `squareKrylovProd_eq_pow` to see how the three rewrites compose. This separation cleanly delineates Lean-formalisable structural mathematics (Layers 1+2), Lean-formalisable elementary quantitative bounds (Layer 2.5), and genuinely axiomatic mathematical constants (Layer 3 ω).",
     "mathContext": "Inventory: $12$ theorems, $0$ sorries, $3$ axioms. The three axioms are all in the Layer 3 placeholder block; Layers 1, 2, and 2.5 are unconditional. The asymptotic Keller-Gehrig claim ($O(n^\\omega)$ field operations) is *deferred*, not asserted — the file ships only what current Mathlib infrastructure supports.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "axiom integrity",
       "structural vs quantitative proofs",

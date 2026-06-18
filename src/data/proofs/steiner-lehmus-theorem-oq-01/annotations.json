@@ -34,7 +34,7 @@
     "title": "Squared Bisector Length",
     "content": "`bisectorSq a b c = a*c*(1 - (b/(a+c))^2)` encodes the classical formula for the squared length of the internal angle bisector drawn from the vertex opposite side $b$ (i.e. from $B$, meeting side $CA$).\n\nThe symmetry $b \\leftrightarrow c$ gives the bisector from $C$: `bisectorSq a c b`. Equality of these two expressions is exactly the hypothesis of the theorem.",
     "mathContext": "$w_b^2 = a c\\left(1 - (b/(a+c))^2\\right)$. The factor $a c$ and the correction $(b/(a+c))^2$ come from the standard derivation of the internal-bisector length in terms of the side lengths.",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": [
       "internal angle-bisector length formula"
     ],
@@ -54,7 +54,7 @@
     "title": "Clearing the Denominator",
     "content": "`bisectorSq_clear` rewrites the rational bisector expression as a polynomial:\n$$w_b^2\\,(a+c)^2 = a c\\,((a+c)^2 - b^2).$$\nThe proof is a single `field_simp` after unfolding `bisectorSq`, using $a + c \\ne 0$. This step is what lets the later argument work with `linear_combination`/`ring` instead of fighting denominators.",
     "mathContext": "Multiplying by $(a+c)^2$ removes the only denominator, so the equality of bisector lengths becomes a genuine polynomial identity in $a, b, c$.",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": [
       "field_simp",
       "nonzero denominators"

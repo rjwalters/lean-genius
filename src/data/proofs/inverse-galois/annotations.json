@@ -269,11 +269,11 @@
       "startLine": 481,
       "endLine": 543
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary and Open Questions",
     "content": "A ledger of exactly what this formalization establishes and what it assumes. **Proven, sorry-free**: cyclotomic fields are Galois with group (ℤ/nℤ)ˣ of order φ(n); every cyclic group C_n is realizable (Part XIV); S₃ is realizable via X³−2 with the Galois group computed to have exactly 6 elements (Parts X–XII); and a concrete census of abelian groups realized as cyclotomic unit groups.\n\n**Axiomatized** (2 deep theorems not yet in Mathlib): `abelian_realizable` (Kronecker–Weber) and `shafarevich_theorem` (every solvable group is a Galois group over ℚ). The general Inverse Galois Problem itself remains a `sorry` — honestly so, since no proof exists.\n\nThe honesty of this ledger is the point: the file separates the genuinely machine-checked results from the two named black boxes, so a reader can see precisely where the trusted boundary lies.",
     "mathContext": "The two standing assumptions are $\\textbf{Kronecker–Weber}$ (every finite abelian extension of $\\mathbb{Q}$ lies in some $\\mathbb{Q}(\\zeta_n)$) and $\\textbf{Shafarevich}$ (every finite solvable $G$ equals $\\text{Gal}(K/\\mathbb{Q})$ for some $K$). Everything else descends from the single proven engine $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^\\times$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Kronecker-Weber theorem",
       "Shafarevich's theorem",
@@ -293,7 +293,7 @@
       "startLine": 545,
       "endLine": 797
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Eliminating the S₃ Axiom: |Gal(X³−2/ℚ)| = 6",
     "content": "This is the technical heart that turns an axiom into a theorem. To prove S₃ is realizable, one must pin down |Gal(X³−2/ℚ)| exactly, and the proof is an arithmetic squeeze from three divisibility facts:\n\n1. **3 ∣ |Gal|** — X³−2 is irreducible of prime degree 3, so 3 divides the Galois group order (`three_dvd_gal_card`).\n2. **|Gal| ∣ 6** — the group acts faithfully on the 3 roots, embedding into S₃ = Perm(Fin 3) of order 6 (`gal_card_dvd_six`).\n3. **2 ∣ |Gal|** — the ratio of any two distinct cube roots of 2 is a primitive cube root of unity, a root of the irreducible degree-2 polynomial X²+X+1 = Φ₃; its presence forces 2 ∣ [E:ℚ] (`two_dvd_splitting_field_finrank`).\n\nThe key lemma `no_root_of_irreducible_degree_ndvd` packages the tower law: an irreducible polynomial of degree d has no root in an extension whose degree d does not divide. Combining 2∣n, 3∣n, n∣6 yields n = 6.",
     "mathContext": "From the tower law, if $\\alpha \\in K$ is algebraic then $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\deg(\\text{minpoly}\\,\\alpha)$ divides $[K:\\mathbb{Q}]$. The cube-difference identity $a^3 - b^3 = (a-b)(a^2+ab+b^2)$ shows that for distinct roots $a \\ne b$ with $a^3=b^3$, the ratio $\\omega = a/b$ satisfies $\\omega^2+\\omega+1=0$. Then $2 \\mid n$, $3 \\mid n$, $n \\mid 6$ with $\\gcd(2,3)=1$ give $6 \\mid n$ and $n \\mid 6$, hence $n = 6$. Since $X^3-2$ is separable in characteristic 0, $|\\text{Gal}| = [\\,\\mathbb{Q}(\\sqrt[3]{2},\\zeta_3):\\mathbb{Q}\\,] = 6$.",
@@ -366,7 +366,7 @@
       "startLine": 895,
       "endLine": 1062
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Every Cyclic Group is Realizable (Dirichlet + Galois Correspondence)",
     "content": "The most substantial sorry-free result in the file: `cyclic_group_realizable` proves that for every n > 0 there is a Galois extension K/ℚ with Gal(K/ℚ) cyclic of order exactly n. The 11-step construction:\n\n1. By **Dirichlet's theorem** on primes in arithmetic progressions, choose a prime p ≡ 1 (mod n), so n ∣ (p−1) (`exists_prime_dvd_pred`).\n2. The p-th cyclotomic field E = ℚ(ζ_p) has cyclic Galois group of order p−1 ≅ (ℤ/pℤ)ˣ.\n3. With generator g, the subgroup H = ⟨g^n⟩ has order (p−1)/n and is normal (Gal is abelian).\n4. The fixed field K = E^H is Galois over ℚ with [K:ℚ] = n (Artin's lemma + tower law).\n5. Gal(K/ℚ) ≅ Gal(E/ℚ)/H is a quotient of a cyclic group, hence cyclic of order n.\n\nThis is genuine constructive content — not an appeal to Kronecker–Weber — and it is what powers the cyclic part of the entire census.",
     "mathContext": "Key order arithmetic: $\\text{ord}(g^n) = \\text{ord}(g)/\\gcd(\\text{ord}(g), n)$, and since $\\text{ord}(g) = p-1$ with $n \\mid (p-1)$ we get $\\gcd(p-1, n) = n$, so $|H| = (p-1)/n$. Artin's lemma gives $[E:K] = |H|$, and the tower law $[K:\\mathbb{Q}]\\,[E:K] = [E:\\mathbb{Q}] = p-1$ forces $[K:\\mathbb{Q}] = n$. Finally $\\text{Gal}(K/\\mathbb{Q}) \\cong \\text{Gal}(E/\\mathbb{Q})/H$ (the normal-subgroup quotient), and a quotient of a cyclic group is cyclic.",
@@ -439,7 +439,7 @@
       "startLine": 1532,
       "endLine": 1667
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Order 16 Abelian Groups via Exponent Invariants",
     "content": "Two abelian groups of order 16 are realized by the same recipe — compute totient, bound the exponent to prove non-cyclicity, then exhibit an order witness to fix the isomorphism type:\n\n- **C₂×C₈** via (ℤ/32ℤ)ˣ. For n ≥ 3, (ℤ/2ⁿℤ)ˣ ≅ C₂ × C_{2^{n−2}}, so (ℤ/32ℤ)ˣ ≅ C₂ × C₈ with exponent 8 — and the element 3 mod 32 has order 8, distinguishing it from C₂²×C₄.\n- **C₂²×C₄** via (ℤ/40ℤ)ˣ ≅ (ℤ/8ℤ)ˣ × (ℤ/5ℤ)ˣ ≅ (C₂×C₂)×C₄, exponent 4.\n\nThe exponent invariant alone separates these two order-16 groups: exponent 8 versus exponent 4.",
     "mathContext": "The 2-adic unit structure $(\\mathbb{Z}/2^n\\mathbb{Z})^\\times \\cong C_2 \\times C_{2^{n-2}}$ for $n \\ge 3$ is the source of the non-cyclicity of every $(\\mathbb{Z}/2^n\\mathbb{Z})^\\times$ beyond $n=2$. Thus $(\\mathbb{Z}/32\\mathbb{Z})^\\times \\cong C_2 \\times C_8$ ($\\exp 8$) and, via CRT, $(\\mathbb{Z}/40\\mathbb{Z})^\\times \\cong C_2^2 \\times C_4$ ($\\exp 4$). Both have order $\\varphi(32) = \\varphi(40) = 16$ but are non-isomorphic, witnessed by their differing exponents.",
@@ -463,7 +463,7 @@
       "startLine": 1673,
       "endLine": 1876
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Order 20 & 24 Abelian Realizations",
     "content": "The census reaches orders 20 and 24, again via cyclotomic unit groups identified by exponent:\n\n- **C₂×C₁₀** via (ℤ/33ℤ)ˣ ≅ (ℤ/3ℤ)ˣ × (ℤ/11ℤ)ˣ (order 20, exponent 10)\n- **C₄×C₆** via (ℤ/35ℤ)ˣ ≅ (ℤ/5ℤ)ˣ × (ℤ/7ℤ)ˣ (order 24, exponent 12)\n- **C₂×C₂×C₆** via (ℤ/84ℤ)ˣ ≅ (ℤ/4ℤ)ˣ × (ℤ/3ℤ)ˣ × (ℤ/7ℤ)ˣ (order 24, exponent 6)\n\n**Axiom-integrity note**: the two facts about (ℤ/84ℤ)ˣ — `zmod84_units_exp_6` and `zmod84_units_has_order_6` — are discharged with `native_decide` rather than `decide`, because the order-32 unit group is too large for kernel reduction. `native_decide` trusts the compiler and so depends on the `Lean.ofReduceBool` axiom. This is one reason the entry as a whole is honestly marked **axiomatized** rather than fully verified.",
     "mathContext": "By CRT the unit groups factor as $(\\mathbb{Z}/33\\mathbb{Z})^\\times \\cong C_2 \\times C_{10}$, $(\\mathbb{Z}/35\\mathbb{Z})^\\times \\cong C_4 \\times C_6$, and $(\\mathbb{Z}/84\\mathbb{Z})^\\times \\cong C_2 \\times C_2 \\times C_6$, with exponents $\\text{lcm}(2,10)=10$, $\\text{lcm}(4,6)=12$, and $\\text{lcm}(2,2,6)=6$ respectively. Each exponent is strictly less than the group order, certifying non-cyclicity; $84 = 4 \\cdot 3 \\cdot 7$ has $\\varphi(84) = 2 \\cdot 2 \\cdot 6 = 24$.",

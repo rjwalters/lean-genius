@@ -265,11 +265,11 @@
       "startLine": 715,
       "endLine": 744
     },
-    "type": "context",
+    "type": "concept",
     "title": "Verification Roster: #check Confirms All Named Results Typecheck",
     "content": "A closing block of `#check` commands grouped by part (II t-intersecting, III Hilton-Milner, IV cross-intersecting, V permutations, VI sunflower). Each `#check` forces Lean to elaborate the named declaration's type, serving as a lightweight regression guard: if any earlier definition, axiom, or theorem were renamed or its signature changed, this block would fail to compile. It documents the file's public surface — one_intersecting_iff_intersecting, frankl_t_intersecting, hiltonMilnerBound, hilton_milner, bollobas_set_pairs, pyber_cross_intersecting, ekr_for_permutations, and the four sunflower results — in a single auditable place.",
     "mathContext": "`#check name` elaborates and prints the type of `name` without proving anything new; it fails iff `name` is unbound or ill-typed. The roster covers the 5 extension parts beyond the core Katona proof.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "typechecking",
       "regression testing",

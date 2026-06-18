@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 46
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Setup: Fixed-Point Count Converges to Poisson(1)",
     "content": "The header docstring states the open question and its full resolution. For a uniformly random permutation of Fin n, X_n counts fixed points. The probability of exactly k fixed points factors as P(X_n=k) = C(n,k)·D(n-k)/n! = (1/k!)·D(n-k)/(n-k)!, where D(m) = numDerangements m. Because D(m)/m! → e⁻¹ (Mathlib's numDerangements_tendsto_inv_e), each marginal converges to the Poisson(1) mass e⁻¹/k!. The file also proves the finite-n rate bound |P(X_n=k) - e⁻¹/k!| ≤ 1/(k!·(n-k+1)!); the underlying alternating-series estimate |D(m)/m! - e⁻¹| ≤ 1/(m+1)! is supplied by derangements_convergence_rate imported from the parent DerangementsConvergence module, so the result is fully machine-checked with no sorries or axioms.",
     "mathContext": "$P(X_n=k)=\\binom{n}{k}D(n-k)/n!=\\tfrac{1}{k!}\\cdot D(n-k)/(n-k)! \\xrightarrow{n\\to\\infty} e^{-1}/k! = \\mathrm{Pois}(1)(k)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Poisson approximation",
       "derangements",

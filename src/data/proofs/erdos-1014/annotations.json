@@ -317,7 +317,7 @@
     "type": "concept",
     "title": "Helper Lemma: ((n+1)/n)^a → 1",
     "content": "The first of two convergence helpers feeding the asymptotic argument. The polynomial part of the conjectured growth law $c\\,l^{a}/(\\log l)^{b}$ contributes a factor $((l+1)/l)^a$ to the ratio $g(l+1)/g(l)$, and this lemma shows it tends to $1$. The proof rewrites $(n+1)/n = 1 + n^{-1}$, invokes `tendsto_inv_atTop_zero` so that $1 + n^{-1} \\to 1$, and lifts through the fixed power $a$ with `Tendsto.pow` (continuity of $x \\mapsto x^a$). The trailing `congr` discharges the algebraic identity $(n+1)/n = 1 + 1/n$, valid once $n \\ge 1$.",
-    "significance": "technical",
+    "significance": "supporting",
     "mathContext": "Polynomial growth factor: $\\left(\\dfrac{n+1}{n}\\right)^{a} = (1 + n^{-1})^{a} \\longrightarrow 1^{a} = 1$ as $n \\to \\infty$, because $n^{-1} \\to 0$ and $x \\mapsto x^{a}$ is continuous at $x = 1$.",
     "relatedConcepts": [
       "Filter.Tendsto",
@@ -340,7 +340,7 @@
     "type": "concept",
     "title": "Helper Lemma: (log n / log(n+1))^b → 1 via Squeeze",
     "content": "The logarithmic part of the growth law contributes the factor $(\\log l / \\log(l+1))^b$, shown here to tend to $1$ by the squeeze (sandwich) theorem `tendsto_of_tendsto_of_tendsto_of_le_of_le`. The upper bound is the constant $1$ (logarithm is increasing). The lower bound $1 - \\tfrac{1}{n\\log 2}$ comes from the identity $\\tfrac{\\log n}{\\log(n+1)} = 1 - \\tfrac{\\log(n+1)-\\log n}{\\log(n+1)}$ together with the increment estimate $\\log(n+1)-\\log n = \\log(1 + 1/n) \\le 1/n$ (instance of $\\log x \\le x - 1$) and the floor $\\log(n+1) \\ge \\log 2$. Both bounds converge to $1$, so the squeezed quantity does too.",
-    "significance": "technical",
+    "significance": "supporting",
     "mathContext": "Logarithmic growth factor: writing $\\dfrac{\\log n}{\\log(n+1)} = 1 - \\dfrac{\\log(1+1/n)}{\\log(n+1)}$ and using $0 \\le \\log(1+1/n) \\le 1/n$, $\\log(n+1) \\ge \\log 2$, the deviation is at most $\\dfrac{1}{n\\log 2} \\to 0$, hence $\\left(\\dfrac{\\log n}{\\log(n+1)}\\right)^{b} \\to 1$.",
     "relatedConcepts": [
       "squeeze theorem",

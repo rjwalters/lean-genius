@@ -2,14 +2,14 @@
   {
     "id": "cb04oq01-roadmap",
     "proofId": "chebyshev-bounds-oq-04-oq-01",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 1,
       "endLine": 66
     },
     "title": "Module Docstring: The Elementary-PNT Roadmap and Mathlib Gap Inventory",
     "content": "The 66-line module docstring frames the open question, lays out the four-stage Selberg-Erdős strategy, and inventories the three Mathlib gaps that future iterations must fill.\n\n**Open question (L4–8)**: Discharge `chebyshevPsi_asymptotic` from the parent file `ChebyshevBoundsOQ04.lean` *elementarily* — i.e., without complex analysis of $\\zeta(s)$.\n\n**Four-stage strategy (L25–47)**:\n1. Selberg symmetry formula $S_2(N) = 2N \\log N + O(N)$, where $S_2(N) := \\sum_{n \\leq N} \\Lambda_2(n)$.\n2. Reduction to oscillation control: $V(x) := |\\psi(x) - x| / x$ satisfies a Tauberian inequality $V(x) \\log x \\leq (2/x) \\sum_{n \\leq x} V(x/n) \\Lambda(n) + O(1)$.\n3. Erdős's combinatorial lemma: any $V$ satisfying the Tauberian inequality must have $\\limsup V(x) = 0$.\n4. Conclusion: $\\psi(x)/x \\to 1$.\n\n**Mathlib gaps (L49–53)**: at Mathlib v4.26.0, the library lacks (i) Selberg's symmetry formula, (ii) the Möbius–log identity $\\sum_{d \\mid n} \\mu(d) \\log^2(n/d) = \\Lambda_2(n)$, and (iii) any partial-summation framework specialised to $\\Lambda_2$-type sums. This iteration is positioned to be the upstream contribution that fills gap (iii) and prepares (i)–(ii).\n\nThe references at L57–65 (Selberg PNAS 1949, Erdős PNAS 1949, Tenenbaum 2015, Iwaniec-Kowalski 2004) give the canonical literature trail.",
-    "significance": "context",
+    "significance": "supporting",
     "mathContext": "Selberg's identity (the conjectured next-iteration deliverable) is\n$$\\sum_{d \\mid n} \\mu(d) \\log^2(n/d) = \\Lambda(n) \\log n + (\\Lambda * \\Lambda)(n) = \\Lambda_2(n), \\quad n \\geq 1.$$\nIt follows from $\\Lambda = \\mu * \\log$ (the standard expansion via Möbius inversion of $\\log = \\Lambda * 1$) combined with Dirichlet-convolution distributivity. The corresponding symmetry formula\n$$\\sum_{n \\leq N} \\Lambda_2(n) = 2N \\log N + O(N)$$\nis the dimensional-reduction step that bypasses complex analysis: it reduces PNT to oscillation control of $\\psi(x)/x - 1$ via Erdős's combinatorial finishing.",
     "relatedConcepts": [
       "Selberg's symmetry formula",
@@ -121,14 +121,14 @@
   {
     "id": "cb04oq01-future-work",
     "proofId": "chebyshev-bounds-oq-04-oq-01",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 179,
       "endLine": 204
     },
     "title": "Future-Work Block: Concrete Next-Iteration Targets",
     "content": "A 25-line docstring sequencing the five concrete deliverables for subsequent iterations, in increasing difficulty.\n\n1. **`vonMangoldtConv_prime`** — at a prime $p$, the divisor set is $\\{1, p\\}$ and both terms involve $\\Lambda(1) = 0$, so $(\\Lambda * \\Lambda)(p) = 0$. Routine `Nat.Prime.divisors` calculation.\n2. **`selbergLambda2_prime`** — immediate from (1) and `vonMangoldt_apply_prime` ($\\Lambda(p) = \\log p$), giving $\\Lambda_2(p) = \\log^2 p$.\n3. **`selbergLambda2_eq_moebius_log_sq`** — the Möbius–log identity $\\Lambda_2(n) = \\sum_{d \\mid n} \\mu(d) \\log^2(n/d)$. The Mathlib path is `moebius_mul_coe_zeta` (giving $\\mu * 1 = \\delta_1$, the Kronecker delta at 1) plus the standard expansion $\\Lambda = \\mu * \\log$.\n4. **`selbergSum2_eq_two_n_log_n_plus_O`** — Selberg's symmetry formula $S_2(N) = 2N \\log N + O(N)$. Requires (3) plus the $\\log^2$ partial-sum estimate $\\sum_{n \\leq N} \\log^2 n = N \\log^2 N - 2N \\log N + O(\\log^2 N)$ and the bound $\\sum_{d \\leq x} \\mu(d) = O(x)$ (trivially $|\\mu| \\leq 1$).\n5. **Tauberian + Erdős finishing** — the longest piece, several hundred lines of combinatorial measure theory. Discharges `chebyshevPsi_asymptotic`.\n\nThe estimate \"several thousand lines\" in L203 is consistent with similar formalizations: the Tao-Polymath partial PNT formalization (in Isabelle) used ~5000 lines, and Eberl's Mathlib4 work on the prime-counting function suggests Mathlib's version would be roughly comparable.",
-    "significance": "context",
+    "significance": "supporting",
     "mathContext": "Step 4's $\\sum_{d \\leq x} \\mu(d) = O(x)$ bound is *not* the strong Mertens-style $\\sum_{d \\leq x} \\mu(d) = o(x)$ (which is equivalent to PNT and thus circular); the elementary proof uses only the trivial $|\\mu| \\leq 1$ bound, illustrating how the symmetry formula extracts strong arithmetic content from weak inputs.",
     "relatedConcepts": [
       "Selberg's symmetry formula",

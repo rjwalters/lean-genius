@@ -6,7 +6,7 @@
     "title": "Problem Documentation and Imports",
     "content": "The header documents Erdős Problem #1022. Property B asks: given a family $\\mathcal{F}$ of finite sets, can the ground set be 2-colored so that no member of $\\mathcal{F}$ is monochromatic? The problem imposes a *local density* (sparsity) condition—for every set $X$, at most $c(t)\\cdot|X|$ members of $\\mathcal{F}$ are subsets of $X$—and asks whether the threshold $c(t)$ can be taken to diverge with the minimum set size $t$. The file imports Mathlib's `Finset`, `Finset.Powerset`, `Fintype`, and `Tactic` modules.",
     "mathContext": "$\\exists c:\\mathbb{N}\\to\\mathbb{N},\\ c(t)\\to\\infty:\\ \\text{AllSizeAtLeast}(\\mathcal{F},t)\\wedge\\text{IsSparse}(\\mathcal{F},c(t))\\Rightarrow\\text{HasPropertyB}(\\mathcal{F})$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "property B",
       "hypergraph 2-coloring",
@@ -69,7 +69,7 @@
   {
     "id": "ann-1022-conjecture",
     "proofId": "erdos-1022",
-    "type": "axiom",
+    "type": "warning",
     "title": "The Main Conjecture (Axiomatized)",
     "content": "`erdos_1022_conjecture` is the sole axiom and the only assumption in the file. It asserts the existence of a threshold $c:\\mathbb{N}\\to\\mathbb{N}$ that tends to infinity—formalized as $\\forall M,\\exists t_0,\\forall t\\ge t_0,\\ c(t)\\ge M$—such that every $c(t)$-sparse family of sets of size $\\ge t$ has Property B. The divergence clause is the mathematical heart of the problem: larger minimum size $t$ should permit progressively denser families to remain 2-colorable. The status is OPEN, so this is honestly carried as an axiom rather than a theorem.",
     "mathContext": "$\\exists c:\\mathbb{N}\\to\\mathbb{N},\\ (\\forall M,\\exists t_0,\\forall t\\ge t_0,\\,c(t)\\ge M)\\wedge(\\forall \\mathcal{F},t,\\ \\text{AllSizeAtLeast}(\\mathcal{F},t)\\wedge\\text{IsSparse}(\\mathcal{F},c(t))\\Rightarrow\\text{HasPropertyB}(\\mathcal{F}))$",

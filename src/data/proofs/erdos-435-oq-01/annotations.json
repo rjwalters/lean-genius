@@ -47,7 +47,7 @@
     "title": "Every Generator Is Divisible by p",
     "content": "`prime_dvd_all_generators` specializes the core lemma to the exact index range of the semigroup generators: for $1 \\le j \\le p^k - 1$, $p \\mid \\binom{p^k}{j}$. This is the per-generator statement that feeds the gcd computation; the only bookkeeping is converting the bound $j \\le p^k - 1$ into the strict $j < p^k$ required by `prime_pow_dvd_choose`, using $1 \\le p^k$.",
     "mathContext": "The generators of $S_n$ for $n = p^k$ are $\\binom{p^k}{1}, \\ldots, \\binom{p^k}{p^k-1}$, and each is a multiple of $p$.",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": [
       "the core obstruction lemma"
     ],
@@ -82,7 +82,7 @@
     "title": "From a gcd to the Non-Existence of a Frobenius Number",
     "content": "The chain `prime_pow_dvd_choose → prime_dvd_all_generators → generators_gcd_ne_one` converts a p-adic valuation fact into a structural statement about the numerical semigroup $S_{p^k}$. Because the generators have gcd $> 1$, $S_{p^k} \\subseteq p\\mathbb{N}$: no number coprime to $p$ is ever representable, so the complement $\\mathbb{N} \\setminus S_{p^k}$ is infinite and the 'largest non-representable integer' simply does not exist. This is the formal counterpart to the Hwang–Song dichotomy: the closed-form Frobenius number (formalized in `erdos-435`) is available exactly for non-prime-powers, and this companion certifies the other branch.",
     "mathContext": "Finite complement $\\iff$ gcd of generators $= 1$. The obstruction realizes the $\\ne 1$ side for prime powers.",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": [
       "numerical semigroup theory"
     ],

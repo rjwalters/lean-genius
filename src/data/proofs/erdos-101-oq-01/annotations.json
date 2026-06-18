@@ -69,7 +69,7 @@
       "startLine": 116,
       "endLine": 173
     },
-    "type": "proof-step",
+    "type": "tactic",
     "title": "Small-case lemmas the conjecture subsumes",
     "content": "Three unconditional lemmas witness the regime in which OQ-01 is meaningful:\n\n1. `fourPointLineCount_zero_of_small`: for every `P` with $|P| < 4$, `fourPointLineCount P = 0`. Restatement of `fourPointLineCount_lt_four` from the parent file (no 4-element subset exists).\n2. `fourPointLineCount_o_n_squared_holds_below_four`: the OQ-01 ε–N statement holds vacuously for every $|P| \\leq 3$. Pure positivity (`0 < ε \\cdot n^2` whenever $n \\geq 1$).\n3. `fourPointLineCount_le_quadratic`: the real-valued $\\text{fourPointLineCount}(P) \\leq |P|^2$ trivial upper bound. Lifted from `improved_upper_bound`'s ℕ statement via `Nat.div_le_self` and $n(n-1) \\leq n^2$.\n\nTogether, these show that OQ-01's content is genuinely in the regime $|P| \\to \\infty$ with a sub-quadratic refinement of an already-known $O(n^2)$ bound.",
     "mathContext": "Trivially $|P| < 4 \\Rightarrow \\text{count} = 0$, and the elementary bound $\\text{count} \\leq |P|(|P|-1)/12 \\leq |P|^2/12 \\leq |P|^2$ holds. The gap between $|P|^2$ and $\\varepsilon |P|^2$ for *every* $\\varepsilon > 0$ is the open content.",
@@ -92,7 +92,7 @@
       "startLine": 174,
       "endLine": 208
     },
-    "type": "proof-step",
+    "type": "tactic",
     "title": "Known rates as `BoundsAtRate` instances",
     "content": "Two unconditional rate witnesses:\n\n- `bounds_at_rate_quadratic_unconditional`: rate $n^2$. Immediate from `fourPointLineCount_le_quadratic`.\n- `bounds_at_rate_quadratic_over_twelve`: rate $n^2/12$. The ℕ-valued `improved_upper_bound` gives $\\lfloor n(n-1)/12 \\rfloor$, which is bounded by $\\lfloor n \\cdot n / 12 \\rfloor \\leq n^2/12$ after the cast. The intermediate step weakens $n(n-1)$ to $n \\cdot n$ to avoid the ℕ subtraction-cast subtlety (Nat.sub truncates at 0, while ℝ does not); for $|P| \\geq 1$ the two are equivalent, but the weakened form is unconditional.\n\nNeither rate is $o(n^2)$ — both are $\\Theta(n^2)$. The OPEN content is precisely a sub-quadratic refinement. Future iterations may add weaker but provable rates such as $n^2 / \\log\\log n$.",
     "mathContext": "$\\text{fourPointLineCount}(P) \\leq \\lfloor |P|(|P|-1)/12 \\rfloor \\leq |P|^2/12$ as a real-valued statement, for any `NoFiveCollinear P`. The factor $1/12$ comes from each 4-collinear subset using 6 of the $|P|(|P|-1)/2$ unordered pairs with overlap $\\leq 1$ between distinct subsets.",
@@ -162,7 +162,7 @@
       "startLine": 399,
       "endLine": 496
     },
-    "type": "proof-step",
+    "type": "tactic",
     "title": "Surrogate ↔ true-sup unification; the derived OPEN main theorem",
     "content": "Unifies the elementary surrogate `maxFourPointLines = n(n-1)/12` with the genuine sup `maxCountAtSize` and assembles the equivalence chain:\n\n1. `maxCountAtSize_le_maxFourPointLines`: a uniform lift of `improved_upper_bound` — every size-`n` candidate is bounded by the same surrogate value, so their supremum is too (empty case via `sSup ∅ = 0`).\n2. `maxCountAtSize_isBigO_n_squared`: the true sup inherits the surrogate's `O(n²)` certificate through that pointwise bound, with no duplicated cast bookkeeping.\n3. `erdos_101_oq_01_conjecture_iff_rate_form`: the missing link; `→` takes the `maxCountAtSize` witness, `←` reads the `o(n²)` decay directly.\n4. `erdos_101_oq_01_isLittleO`: the Mathlib-idiom OPEN main theorem, now **derived** from `erdos_101_oq_01` via `conjecture ↔ rate_form ↔ isLittleO_form` rather than carried as an independent `sorry`.",
     "mathContext": "Because $\\text{maxCountAtSize}(n) \\le \\text{maxFourPointLines}(n)$ pointwise and the surrogate is $O(n^2)$, the genuine extremal function is $O(n^2)$ too. Chaining the two equivalences collapses the file's open content to the single primary conjecture (plus the deferred Solymosi–Stojaković construction).",
@@ -208,7 +208,7 @@
       "startLine": 558,
       "endLine": 674
     },
-    "type": "proof-step",
+    "type": "tactic",
     "title": "Solymosi–Stojaković lower bound and refutation of $\\Theta(n^{3/2})$",
     "content": "Two theorems:\n\n1. `solymosi_stojakovic_lower_bound`: for every $C > 0$, all sufficiently large $n$ admit a no-five-collinear set of size $n$ with at least $n^{2 - C/\\sqrt{\\log n}}$ four-point lines. Recorded as `theorem ... := by sorry` (the algebraic-geometry construction over finite fields is deferred), keeping the file axiom-free — a deferred *proof obligation*, not a permanent `axiom`.\n2. `erdos_three_halves_conjecture_refuted`: there is no global $O(n^{3/2})$ upper bound. **Fully discharged** (no sorry) from the lower bound: specialise $C = 1/2$; for $m \\geq 3$, $\\exp 1 < 3 \\le m$ gives $\\log m > 1$, hence $\\sqrt{\\log m} > 1$, hence $2 - \\tfrac{1/2}{\\sqrt{\\log m}} > 3/2$; then `Real.rpow_lt_rpow_of_exponent_lt` yields $m^{2-1/(2\\sqrt{\\log m})} > m^{3/2}$, contradicting the hypothesised bound.",
     "mathContext": "$\\Omega(n^{2-O(1/\\sqrt{\\log n})}) > \\Omega(n^{3/2})$ for large $n$. The lower bound is recorded as a deferred `sorry`; the refutation corollary is proved unconditionally from it by elementary real-analysis arithmetic (`Real.exp_one_lt_d9`, `Real.rpow_lt_rpow_of_exponent_lt`).",
@@ -231,7 +231,7 @@
       "startLine": 675,
       "endLine": 762
     },
-    "type": "proof-step",
+    "type": "tactic",
     "title": "Constructive refutation of the $\\Theta(n^{3/2})$ conjecture",
     "content": "`erdos_three_halves_conjecture_refuted_constructive` is the positive form of the S3 negated-existence refutation: for every threshold `N` there exists a no-five-collinear planar point set `P` with `|P| ≥ N` and *strictly more* than $|P|^{3/2}$ four-point lines. The proof reuses the same chain verbatim through `Real.rpow_lt_rpow_of_exponent_lt` (specialise `solymosi_stojakovic_lower_bound` at $C = 1/2$, then $m \\geq 3 \\Rightarrow \\log m > 1 \\Rightarrow \\sqrt{\\log m} > 1 \\Rightarrow 2 - \\tfrac{1/2}{\\sqrt{\\log m}} > 3/2$); only the final assembly changes — it delivers the witness directly instead of deriving a contradiction. Sorry-free and axiom-free; depends only on the deferred `solymosi_stojakovic_lower_bound`.",
     "mathContext": "The constructive form is more useful downstream than the negated-existence S3 refutation: it produces explicit witnesses rather than contradicting a hypothetical bound. Both forms share the single deferred proof obligation; the file's sorry count stays 2 and axiom count stays 0.",

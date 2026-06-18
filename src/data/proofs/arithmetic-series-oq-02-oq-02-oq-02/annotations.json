@@ -31,11 +31,11 @@
       "startLine": 43,
       "endLine": 50
     },
-    "type": "technique",
+    "type": "insight",
     "title": "A Single Import Carries the Parent's Induction",
     "content": "The file's entire dependency footprint is one line: `import Proofs.ArithmeticSeriesOQ02OQ02`. That parent module transitively supplies Mathlib (hence `Nat.add_choose_eq` for the standard form) and, crucially, the inductively-proven `parallel_vandermonde` together with the `simplicial` abbreviation — the two ingredients the rising form is reduced to. `open Finset` brings `range` and the antidiagonal lemmas into scope unqualified, and `open ArithmeticSeriesOQ02OQ02` exposes `parallel_vandermonde`/`simplicial` directly.\n\nThe minimalism is deliberate: rather than re-deriving the rising convolution, this file is a thin connective layer that re-packages the parent's hard-won induction next to Mathlib's ready-made standard Vandermonde, making the open question's 'connect the two' answerable in under 60 lines of real content.",
     "mathContext": "The import graph reduces the rising form to $\\texttt{parallel\\_vandermonde}$ (ℕ-native induction) and the standard form to $\\texttt{Nat.add\\_choose\\_eq}$ — the two convolutions assembled side by side.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "module imports",
       "parallel_vandermonde",
@@ -146,11 +146,11 @@
       "startLine": 43,
       "endLine": 54
     },
-    "type": "context",
+    "type": "concept",
     "title": "Importing the Parent and Its parallel_vandermonde",
     "content": "The file imports only `Proofs.ArithmeticSeriesOQ02OQ02` — the parent entry — and `open ArithmeticSeriesOQ02OQ02` brings the parent's inductively-proven `parallel_vandermonde` and the `simplicial k n = (n+k).choose k` abbreviation into scope. This is the single non-Mathlib dependency: the rising form is *not* re-proved here, it is reduced to the parent result, so this entry inherits the parent's 0-axiom, 0-sorry status for its rising half. The standard half needs nothing beyond Mathlib (`Nat.add_choose_eq`, transitively available through the parent's `import Mathlib`). `open Finset` shortens `Finset.range`/`Finset.sum` notation. Both headline theorems are genuinely axiom-free; only the three trailing `example` cross-checks invoke `native_decide` (which pulls in `Lean.ofReduceBool`), and those do not feed the theorems.",
     "mathContext": "Dependency graph: rising_vandermonde ⟸ parallel_vandermonde (parent, by induction); standard_vandermonde ⟸ Nat.add_choose_eq (Mathlib). No new axioms on either headline path.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "module imports",
       "parallel_vandermonde",
