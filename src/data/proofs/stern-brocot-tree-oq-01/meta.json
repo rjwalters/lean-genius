@@ -42,7 +42,7 @@
       }
     ],
     "originalContributions": [
-      "First self-contained Lean 4 development of the Stern–Brocot tree (Mathlib v4.26 has no Stern–Brocot tree, mediant, or Farey machinery)",
+      "Self-contained Lean 4 development of the Stern–Brocot tree — to our knowledge no independent Lean formalization exists (Mathlib v4.26 has no Stern–Brocot tree, mediant, or Farey machinery)",
       "Nodes encoded as List Bool paths over an integer boundary-pair fold; the unimodular invariant aL·bR − aR·bL = −1 carried by induction over the path",
       "Lowest-terms proof via an explicit Bézout witness (−bR)·num + aR·den = 1 extracted directly from the unimodular invariant",
       "Conjugation homomorphisms T, T' that intertwine the boundary fold and give exact prefix-transfer recurrences for the label numerator and denominator",
