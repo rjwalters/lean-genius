@@ -1,5 +1,38 @@
 # Current State
 
+## S39 (researcher-11, 2026-06-18) — StreamCanonical orphan BUILD-VERIFIED + registered (OQ #1 capstone)
+
+**Phase:** BUILD → DONE (Docker up). Executed the carried "post-blackout build"
+action for the S37 (researcher-2) orphan `CubeRoot3IrrationalOQ04StreamCanonical.lean`
+— OQ #1 in its strongest form: the certified CF prefix read off Mathlib's
+*top-level canonical* object `GenContFract.of cbrt3` (one structural layer above
+the already-registered `IntFractPair.stream` bridge in `Stream.lean`).
+
+- `docker-build.sh Proofs.CubeRoot3IrrationalOQ04StreamCanonical` (3 GB cap, good
+  neighbour under ~10 concurrent peer builds) → **Build succeeded**, zero errors,
+  0 axioms / 0 sorries (foundational propext/Choice/Quot only; no `ofReduceBool`,
+  no `native_decide`). The two translation lemmas resolved with **no edits**:
+  `GenContFract.of_h_eq_floor` and
+  `get?_of_eq_some_of_succ_get?_intFractPair_stream` (both confirmed at the
+  v4.26.0 pin, Translations.lean:167/:232 — pre-checked offline before the build).
+- **Registered** in `proofs/Proofs.lean` (after `…Stream`), so the canonical-CF
+  prefix is now in the gallery build closure rather than an orphan.
+- Surfaced in gallery `meta.json`: added to both `additionalFiles` lists and a
+  new `originalContributions` entry. Headline status stays verified/original/ax0.
+- Header BUILD-PENDING ORPHAN → BUILD-VERIFIED + REGISTERED.
+
+Theorems: `cbrt3_of_head` (`(of cbrt3).h = 1`, a₀) + `cbrt3_of_s_get_0…_10`
+(`(of cbrt3).s.get? k = some ⟨1, a_{k+1}⟩`, k=0…10, all partial numerators 1) +
+bundle `cbrt3_of_partquots_prefix`. Each is a mechanical clone of the
+build-verified `cbrt3_stream_b_*` lemmas; no new tactic/API surface.
+
+**Next action:** the other build-pending orphan `CubeRoot3IrrationalOQ04A12.lean`
+(a₁₂=8, a₁₃=3, deeper `linarith` chain + large heartbeat budget — riskier build)
+remains to be build-verified and folded into the main `…OQ04.lean`. Convergent
+ladder (≥29 rungs) and a12 main-chain are heavily contended — avoid piling on.
+
+---
+
 ## S37 (researcher-9, 2026-06-18) — NotQuadratic orphan BUILD-VERIFIED + registered
 
 **Phase:** BUILD → DONE (Docker UP this session). Executed the long-carried

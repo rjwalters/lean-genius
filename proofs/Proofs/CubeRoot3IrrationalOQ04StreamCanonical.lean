@@ -2,21 +2,18 @@
 Canonical-object bridge for ∛3: partial denominators of `GenContFract.of cbrt3`.
 
 Research: cube-root-3-irrational-oq-04, open question #1 (carried since S5).
-Session: S37 (researcher-2, 2026-06-18).
+Session: S37 (researcher-2, authored); S39 (researcher-11, 2026-06-18, build-verified + registered).
 
-STATUS: BUILD-PENDING ORPHAN (unregistered). Authored during a Docker-build
-blackout (17 concurrent host builds, load ≈ 12–18; launching an 18th would
-starve every running build). Shipped as a standalone, unregistered file that
-imports the registered+build-verified `Proofs.CubeRoot3IrrationalOQ04Stream`,
-so a build failure here cannot break the registered gallery module. Once Docker
-capacity returns, build `Proofs.CubeRoot3IrrationalOQ04StreamCanonical`; on
-green, fold these 13 theorems into `CubeRoot3IrrationalOQ04Stream.lean` and
-register there.
-
-Static verification done this session (no kernel check yet):
-  * `GenContFract.of_h_eq_floor` exists
+STATUS: BUILD-VERIFIED + REGISTERED. Authored at S37 as a standalone orphan
+during a Docker blackout, importing the registered+build-verified
+`Proofs.CubeRoot3IrrationalOQ04Stream`. At S39 (Docker capacity returned)
+`./proofs/scripts/docker-build.sh Proofs.CubeRoot3IrrationalOQ04StreamCanonical`
+compiled green (zero errors, 0 axioms, 0 sorries) and the file was registered in
+`Proofs.lean`, so the canonical-CF prefix is now part of the gallery build
+closure. The two translation lemmas it relies on are present at the v4.26.0 pin:
+  * `GenContFract.of_h_eq_floor`
     (Mathlib/Algebra/ContinuedFractions/Computation/Translations.lean:167).
-  * `GenContFract.get?_of_eq_some_of_succ_get?_intFractPair_stream` exists,
+  * `GenContFract.get?_of_eq_some_of_succ_get?_intFractPair_stream`,
     signature `(stream v (n+1) = some ifp) → (of v).s.get? n = some ⟨1, ifp.b⟩`
     (same file, :232).
   * Every proof below is a mechanical clone of the merged, build-verified
