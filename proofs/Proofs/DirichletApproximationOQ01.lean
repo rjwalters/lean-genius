@@ -90,6 +90,57 @@ theorem infinite_approx_iff_irrational (ξ : ℝ) :
     {q : ℚ | |ξ - (q : ℝ)| < 1 / (q.den : ℝ) ^ 2}.Infinite ↔ Irrational ξ :=
   Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational ξ
 
+/-- **Full coprime integer-pair characterization (converse of
+`infinite_coprime_approx`).** A real number admits infinitely many coprime good
+approximations `|ξ − p/q| < 1/q²` (with `q > 0`, `gcd(|p|, q) = 1`) *iff* it is
+irrational. This upgrades `infinite_coprime_approx` from a one-way implication to
+the full equivalence, matching Hardy & Wright Thm 193: rationals admit only
+finitely many such pairs.
+
+The converse transports the infinitude back through the map `(p, q) ↦ p/q : ℚ`.
+That map is injective on the coprime set (reduced fractions are unique,
+`Rat.div_int_inj`) and lands in the good-rational-approximation set, because for
+coprime `(p, q)` the reduced denominator of `p/q` is exactly `q`
+(`Rat.den_div_eq_of_coprime`). Infinitude then transports to
+`infinite_approx_iff_irrational`. -/
+theorem infinite_coprime_approx_iff_irrational (ξ : ℝ) :
+    {pq : ℤ × ℕ | 0 < pq.2 ∧ Nat.Coprime pq.1.natAbs pq.2 ∧
+        |ξ - (pq.1 : ℝ) / (pq.2 : ℝ)| < 1 / (pq.2 : ℝ) ^ 2}.Infinite ↔ Irrational ξ := by
+  refine ⟨fun hInf => ?_, infinite_coprime_approx⟩
+  rw [← infinite_approx_iff_irrational ξ]
+  set C := {pq : ℤ × ℕ | 0 < pq.2 ∧ Nat.Coprime pq.1.natAbs pq.2 ∧
+      |ξ - (pq.1 : ℝ) / (pq.2 : ℝ)| < 1 / (pq.2 : ℝ) ^ 2} with hC
+  -- The map `(p, q) ↦ p/q : ℚ` is injective on the coprime set.
+  have hginj : Set.InjOn (fun pq : ℤ × ℕ => (pq.1 : ℚ) / (pq.2 : ℚ)) C := by
+    rintro ⟨a, b⟩ ⟨hb, hcop, -⟩ ⟨c, d⟩ ⟨hd, hcop', -⟩ heq
+    simp only at heq
+    have hb' : (0 : ℤ) < (b : ℤ) := by exact_mod_cast hb
+    have hd' : (0 : ℤ) < (d : ℤ) := by exact_mod_cast hd
+    have h1 : Nat.Coprime a.natAbs (b : ℤ).natAbs := by simpa using hcop
+    have h2 : Nat.Coprime c.natAbs (d : ℤ).natAbs := by simpa using hcop'
+    have heq' : (a : ℚ) / ((b : ℤ) : ℚ) = (c : ℚ) / ((d : ℤ) : ℚ) := by
+      push_cast; exact heq
+    obtain ⟨hac, hbd⟩ := Rat.div_int_inj hb' hd' h1 h2 heq'
+    have hbd' : b = d := by exact_mod_cast hbd
+    simp [hac, hbd']
+  -- Its image lands in the good-rational-approximation set.
+  have hsub : (fun pq : ℤ × ℕ => (pq.1 : ℚ) / (pq.2 : ℚ)) '' C ⊆
+      {q : ℚ | |ξ - (q : ℝ)| < 1 / (q.den : ℝ) ^ 2} := by
+    rintro _ ⟨⟨a, b⟩, ⟨hb, hcop, happ⟩, rfl⟩
+    have hb' : (0 : ℤ) < (b : ℤ) := by exact_mod_cast hb
+    have h1 : Nat.Coprime a.natAbs (b : ℤ).natAbs := by simpa using hcop
+    -- The reduced denominator of `p/q` is exactly `q`.
+    have hden : ((a : ℚ) / (b : ℚ)).den = b := by
+      have h := Rat.den_div_eq_of_coprime hb' h1
+      push_cast at h
+      exact_mod_cast h
+    show |ξ - (((a : ℚ) / (b : ℚ) : ℚ) : ℝ)| < 1 / (((a : ℚ) / (b : ℚ)).den : ℝ) ^ 2
+    rw [hden]
+    have hcast : (((a : ℚ) / (b : ℚ) : ℚ) : ℝ) = (a : ℝ) / (b : ℝ) := by push_cast; ring
+    rw [hcast]
+    exact happ
+  exact ((infinite_image_iff hginj).mpr hInf).mono hsub
+
 /-- **Existence corollary.** Every irrational has at least one good rational
 approximation `|ξ − q| < 1/q.den²` (the one-shot Dirichlet bound, recovered as a
 consequence of infinitude). -/
