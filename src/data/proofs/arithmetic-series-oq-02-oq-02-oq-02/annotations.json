@@ -93,5 +93,28 @@
       "Nat.choose",
       "Finset.range"
     ]
+  },
+  {
+    "id": "ann-as-oq020202-setup",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-02",
+    "range": {
+      "startLine": 43,
+      "endLine": 54
+    },
+    "type": "context",
+    "title": "Importing the Parent and Its parallel_vandermonde",
+    "content": "The file imports only `Proofs.ArithmeticSeriesOQ02OQ02` — the parent entry — and `open ArithmeticSeriesOQ02OQ02` brings the parent's inductively-proven `parallel_vandermonde` and the `simplicial k n = (n+k).choose k` abbreviation into scope. This is the single non-Mathlib dependency: the rising form is *not* re-proved here, it is reduced to the parent result, so this entry inherits the parent's 0-axiom, 0-sorry status for its rising half. The standard half needs nothing beyond Mathlib (`Nat.add_choose_eq`, transitively available through the parent's `import Mathlib`). `open Finset` shortens `Finset.range`/`Finset.sum` notation. Both headline theorems are genuinely axiom-free; only the three trailing `example` cross-checks invoke `native_decide` (which pulls in `Lean.ofReduceBool`), and those do not feed the theorems.",
+    "mathContext": "Dependency graph: rising_vandermonde ⟸ parallel_vandermonde (parent, by induction); standard_vandermonde ⟸ Nat.add_choose_eq (Mathlib). No new axioms on either headline path.",
+    "significance": "context",
+    "relatedConcepts": [
+      "module imports",
+      "parallel_vandermonde",
+      "axiom hygiene",
+      "simplicial numbers"
+    ],
+    "prerequisites": [
+      "Lean 4 import / open / namespace",
+      "the parent ArithmeticSeriesOQ02OQ02 entry"
+    ]
   }
 ]
