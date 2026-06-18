@@ -595,6 +595,7 @@ import Proofs.CubeRoot3IrrationalOQ04
 import Proofs.CubeRoot3IrrationalOQ04Helpers
 import Proofs.CubeRoot3IrrationalOQ04NotQuadratic
 import Proofs.CubeRoot3IrrationalOQ04Stream
+import Proofs.CubeRoot3IrrationalOQ04StreamCanonical
 import Proofs.CubeRoot5Irrational
 import Proofs.CubeRoot6Irrational
 import Proofs.CubeRoot7Irrational
