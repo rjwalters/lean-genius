@@ -7,7 +7,7 @@
     "author": "Extension of Divisibility by 3 (Wiedijk #85)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Divisibility_rule",
     "date": "2026-02-10",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "divisibility",
@@ -16,7 +16,7 @@
       "comprehensive"
     ],
     "proofRepoPath": "Proofs/DivisibilityByThreeOQ01.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -50,15 +50,15 @@
       "Digit-sum rules in 10+ bases (hex, octal, base 7, base 1000)"
     ],
     "dateAdded": "2026-02-10",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 550,
-    "assumptions": "0 axioms, 0 sorries. Core digit-sum congruence from Mathlib's Nat.modEq_digits_sum and Nat.dvd_iff_dvd_digits_sum.",
+    "assumptions": "1 axiom (Lean.ofReduceBool), 0 sorries. Numerous named theorems (e.g. thirtyseven_dvd_base1000, ninetynine_dvd_base100, casting_out_nines, casting_out_threes, three_dvd_hex, six_dvd_iff … ninety_dvd_iff, and the master divisibility_rules_summary) discharge their side hypotheses (b % d = 1, Nat.Coprime d₁ d₂) via `by native_decide`, which depends on Lean.ofReduceBool, so the file is not axiom-free. Core digit-sum congruence from Mathlib's Nat.modEq_digits_sum and Nat.dvd_iff_dvd_digits_sum. (Each native_decide side condition is decidable and could be discharged by kernel `decide` to restore an axiom-free proof.) Note: leanFile.axiomCount reflects literal `axiom` declarations (0).",
     "mathlib_version": "4.26.0",
     "theoremCount": 56,
     "definitionCount": 1
   },
   "overview": {
-    "historicalContext": "Divisibility rules are among the oldest mathematical algorithms, with origins in ancient Babylonian, Indian, and Chinese mathematics. The digit-sum rule for 9 ('casting out nines') was known to Arab mathematicians by the 9th century and was described by al-Khwārizmī. The digit-sum rule for 3 follows from the same principle: $10 \\equiv 1 \\pmod{3}$, so $n \\equiv$ digit sum $\\pmod{3}$.\n\nThe truncation methods have a more recent history. The rule for 7 (subtract 2 times the last digit) and for 13 (add 4 times the last digit) appeared in recreational mathematics texts of the 19th and 20th centuries. Martin Gardner popularized many such rules in his *Scientific American* columns. The underlying principle is uniform: if $d \\mid (10c \\pm 1)$, then $d \\mid n \\iff d \\mid (\\lfloor n/10 \\rfloor \\pm c \\cdot (n \\bmod 10))$, since $n = 10q + r$ gives $10(q \\pm cr) = n \\pm (10c \\mp 1)r$.\n\nThe beautiful factorization $1001 = 7 \\times 11 \\times 13$ connects three truncation rules to a single fact: $1000 \\equiv -1$ modulo each of 7, 11, and 13, giving alternating 3-digit group tests for all three. Digital root theory (repeatedly summing digits until a single digit remains) provides a complete characterization: $\\text{dr}(n) = 1 + ((n-1) \\bmod 9)$ for $n > 0$, connecting elementary arithmetic to modular algebra.\n\nThis formalization verifies 56 theorems covering all three families, with 0 sorries and 0 axioms, building on Mathlib's `Nat.modEq_digits_sum` for the digit-sum foundation.",
+    "historicalContext": "Divisibility rules are among the oldest mathematical algorithms, with origins in ancient Babylonian, Indian, and Chinese mathematics. The digit-sum rule for 9 ('casting out nines') was known to Arab mathematicians by the 9th century and was described by al-Khwārizmī. The digit-sum rule for 3 follows from the same principle: $10 \\equiv 1 \\pmod{3}$, so $n \\equiv$ digit sum $\\pmod{3}$.\n\nThe truncation methods have a more recent history. The rule for 7 (subtract 2 times the last digit) and for 13 (add 4 times the last digit) appeared in recreational mathematics texts of the 19th and 20th centuries. Martin Gardner popularized many such rules in his *Scientific American* columns. The underlying principle is uniform: if $d \\mid (10c \\pm 1)$, then $d \\mid n \\iff d \\mid (\\lfloor n/10 \\rfloor \\pm c \\cdot (n \\bmod 10))$, since $n = 10q + r$ gives $10(q \\pm cr) = n \\pm (10c \\mp 1)r$.\n\nThe beautiful factorization $1001 = 7 \\times 11 \\times 13$ connects three truncation rules to a single fact: $1000 \\equiv -1$ modulo each of 7, 11, and 13, giving alternating 3-digit group tests for all three. Digital root theory (repeatedly summing digits until a single digit remains) provides a complete characterization: $\\text{dr}(n) = 1 + ((n-1) \\bmod 9)$ for $n > 0$, connecting elementary arithmetic to modular algebra.\n\nThis formalization verifies 56 theorems covering all three families, with 0 sorries, building on Mathlib's `Nat.modEq_digits_sum` for the digit-sum foundation. Numeric side conditions are discharged with `native_decide`, which relies on the Lean.ofReduceBool axiom (the file is therefore not axiom-free, though those conditions are decidable and reducible to kernel `decide`).",
     "problemStatement": "Formalize a comprehensive collection of divisibility rules:\n\n**Last-k-digits (general)**: If $d | M$, then $d | n \\iff d | (n \\bmod M)$\n\n**Digit-sum (general)**: If $b \\equiv 1 \\pmod{d}$, then $d | n \\iff d | \\text{(digits sum in base }b\\text{)}$\n\n**Truncation for 13**: $13 | n \\iff 13 | (\\lfloor n/10 \\rfloor + 4 \\cdot (n \\bmod 10))$\n\n**Coprime factorization**: If $\\gcd(d_1, d_2) = 1$, then $d_1 d_2 | n \\iff d_1 | n \\wedge d_2 | n$\n\n**Digital root**: $\\text{dr}(n) = 9 \\iff 9 | n$ (for $n > 0$); $3 | n \\iff 3 | \\text{dr}(n)$",
     "text": "A comprehensive collection of formally verified divisibility rules: general last-k-digits framework, power-of-2/5 generalizations, truncation methods for 7, 11, 13, 17, and 19, casting out nines/threes, digital root theory, and coprime factorization rules.",
     "proofStrategy": "The proofs use three main techniques:\n\n1. **Modular arithmetic**: The general last-k-digits theorem follows from n = M·q + r, so if d|M then d|n iff d|r.\n\n2. **Mathlib's digit infrastructure**: Nat.modEq_digits_sum provides digit-sum congruences for any base-divisor pair where base ≡ 1 (mod d).\n\n3. **Integer lifting for truncation**: The divisibility-by-13 proof works in ℤ, using the identity 10(q + 4r) = n + 39r, then extracting divisibility via coprimality of 13 and 10.",
@@ -166,7 +166,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This extension provides a comprehensive, formally verified collection of divisibility rules covering three major families: last-k-digits, digit-sum, and truncation methods. Truncation rules are proved for all primes up to 19 coprime to 10 (7, 11, 13, 17, 19). All 50+ theorems are proved without sorry or axiom, building on Mathlib's digit and modular arithmetic infrastructure.",
+    "summary": "This extension provides a comprehensive, formally verified collection of divisibility rules covering three major families: last-k-digits, digit-sum, and truncation methods. Truncation rules are proved for all primes up to 19 coprime to 10 (7, 11, 13, 17, 19). All 50+ theorems are proved without sorry, building on Mathlib's digit and modular arithmetic infrastructure. Note: many theorems discharge their numeric side conditions (b % d = 1, coprimality) via `native_decide`, which depends on the Lean.ofReduceBool axiom, so the file is not axiom-free (these conditions are decidable and could be reduced to kernel `decide`).",
     "implications": "The proof demonstrates the power of unifying theorems:\n\n**1. One theorem, many rules**: The general last-k-digits theorem (d|M → d|n ↔ d|(n%M)) instantly gives all power-of-2 and power-of-5 rules.\n\n**2. Base-agnostic digit sums**: The digit-sum framework works in any base, giving rules for divisibility by 37, 99, 999, and more via base 1000/100.\n\n**3. Digital root theory**: The complete characterization of digital root connects elementary arithmetic to modular algebra.\n\n**4. Practical checking**: Casting out nines and coprime factorization provide verified foundations for mental arithmetic techniques.",
     "openQuestions": [
       "Can the truncation method be generalized to a single parametric theorem for arbitrary primes?",
