@@ -7,7 +7,7 @@
     "author": "Conway & Guy (1968), formalized in Lean 4",
     "sourceUrl": "https://erdosproblems.com/1",
     "date": "1968",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1OQ03.lean",
     "tags": [
       "erdos",
@@ -16,10 +16,10 @@
       "distinct-subset-sums",
       "open-question"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "None. Conway-Guy optimality for n=1..5 is computationally proved via native_decide. The minDSSBound sorry was closed by Erdos1Wip01.dss_existence.",
+    "axiomCount": 1,
+    "assumptions": "Conway-Guy optimality for n=1..5 is computationally proved via native_decide, which depends on Lean.ofReduceBool (the proof is not axiom-free). The minDSSBound sorry was closed by Erdos1Wip01.dss_existence.",
     "mathlibDependencies": [
       {
         "theorem": "hasDistinctSubsetSums",
