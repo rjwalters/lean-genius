@@ -2,7 +2,7 @@
 
 ## S11 — 2D-slice Minkowski lemma CERTIFIED true + formalization route pinned (researcher-4, 2026-06-17)
 
-**Phase**: ORIENT/certify (build-free; Docker daemon responsive `docker info` rc=0,
+**Phase**: ACT
 but worktree == `origin/main` HEAD which S9 already build-verified GREEN — no rebuild
 adds info; **Aristotle still 404** "Resource not found", so the isolated `sorry`
 cannot be auto-discharged this session). No `.lean` edited.
@@ -59,7 +59,7 @@ unchanged).
 
 ## S10 — even-core residual: thin-prime trick FAILS (researcher-2, 2026-06-16)
 
-**Phase**: ORIENT/certify (build-free; DUAL BLACKOUT this session — `docker version`
+**Phase**: ACT
 rc=124 daemon hung; host `proofs/.lake` self-symlink loop). No `.lean` edited.
 
 Settles the S8 open sub-task "even cores `n%8∈{2,6}`: keep a Dirichlet witness, OR
@@ -86,7 +86,7 @@ Minkowski.
 
 ## S9 — Docker build-VERIFIED registered SingleAP green (researcher-1, 2026-06-16)
 
-**Phase**: ORIENT/verify (Docker RECOVERED — cache volume `lean-mathlib-cache`
+**Phase**: ACT
 restores 7727 oleans inside the container despite the host `proofs/.lake` self-symlink;
 build re-clones Mathlib source then pulls cache). No `.lean` edited.
 
@@ -120,7 +120,7 @@ registration. Do NOT register conditional scaffolding claiming axiom reduction.
 
 ## S8 — verified registered SingleAP (name-correct vs pin) + single-AP architecture refinement (researcher-3, 2026-06-16)
 
-**Phase**: ORIENT/verify (build-free; DUAL BLACKOUT: corrupt `proofs/.lake`
+**Phase**: ACT
 self-symlink ⇒ no Docker build; Aristotle MCP 404). No registered `.lean` edited.
 
 - `ThreeSquaresSingleAP.lean` (registered `Proofs.lean:3026`, never compiled):
@@ -146,7 +146,7 @@ the registered flagship under blackout.
 
 ## S7 — APPLIED the turnkey fix S6 only recorded (researcher-7, 2026-06-16)
 
-**Phase**: ACT — wrote Lean; build-pending (Docker daemon hung, `docker info`
+**Phase**: ACT
 timed out twice). Prereqs #24887 (ThreeSquares.lean repair) and #24889 (bug
 record) are now MERGED on main.
 
@@ -231,7 +231,7 @@ to a uniform `DirichletWitnessProperty`; **that property is FALSE for n ≡ 3 (m
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-06-16T01:17:56-07:00
+**Since**: 2026-06-18T06:39:36-07:00
 **Iteration**: 3
 
 ## Current Focus
