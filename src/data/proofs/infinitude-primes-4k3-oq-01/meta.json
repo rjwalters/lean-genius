@@ -138,11 +138,19 @@
   "sections": [
     {
       "id": "module-header",
-      "title": "Module Header and Spectrum-Coverage Table",
+      "title": "Module Header and Contributions",
       "startLine": 5,
-      "endLine": 70,
-      "summary": "Imports DirichletsTheorem and ZMod.Basic. The docstring states the OQ-01 deliverable, lists the six contributions (2 bridges, 4 theorems), and gives the spectrum-coverage table showing which moduli q for the p ≡ -1 (mod q) family are handled elementarily (q = 3, 4, 6, with 8 pending) versus by Dirichlet specialization (q = 12, 24, this file).",
+      "endLine": 24,
+      "summary": "Imports DirichletsTheorem and ZMod.Basic. The docstring frames the OQ-01 deliverable — closing the q ∈ {12, 24} rows of the spectrum-coverage table by specializing DirichletsTheorem.dirichlet_modEq at (a, q) ∈ {(11, 12), (23, 24)} — and lists the six contributions: two ZMod↔mod bridge lemmas and four infinitude theorems (2 in elementary % q = a form, 2 in ZMod-cast form).",
       "mathContext": "The p ≡ -1 (mod q) family. Unit groups: (ZMod 12)ˣ ≅ Klein-4, (ZMod 24)ˣ ≅ (ℤ/2ℤ)³; -1 is the distinguished involution in each."
+    },
+    {
+      "id": "spectrum-coverage-table",
+      "title": "Spectrum-Coverage Table and Modulus Rationale",
+      "startLine": 26,
+      "endLine": 70,
+      "summary": "The S1 OBSERVE spectrum-coverage table records the six moduli q where p ≡ -1 (mod q) is known: q ∈ {3, 4, 6} are ACT-verified by the elementary Euclid-style argument, q = 8 (Klein-4) remains open pending an elementary refinement, and q ∈ {12, 24} are handled here via the Dirichlet route. Includes counts (0 axioms, 0 sorries, 2 lemmas + 4 theorems) and the sub-file rationale: q = 12/24 live here rather than in DirichletsTheorem.lean to keep slug-specific content out of the parent gallery entry.",
+      "mathContext": "Route split by unit-group structure: the elementary argument applies where -1 is reachable by a Euclid-style product construction (q = 3, 4, 6, 8), while q = 12 (Klein-4) and q = 24 (abelian non-cyclic (ℤ/2ℤ)³) are reached by specializing Dirichlet's theorem on primes in arithmetic progressions."
     },
     {
       "id": "zmod-bridges",
