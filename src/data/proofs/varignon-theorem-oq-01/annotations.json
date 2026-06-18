@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Statement, Points, and the Midpoint Operation",
     "content": "Varignon's theorem (Pierre Varignon, 1654-1722; published posthumously in 1731) states that the midpoints of the sides of any quadrilateral ABCD form a parallelogram. Remarkably, no hypotheses on the quadrilateral are needed — it may be convex, concave, or self-intersecting — because the argument is purely affine.\n\nThe formalization models a point as a pair of real coordinates ℝ × ℝ and defines midpoint2 X Y as the componentwise average ((X.1+Y.1)/2, (X.2+Y.2)/2). The four side midpoints are P = mid(A,B), Q = mid(B,C), R = mid(C,D), S = mid(D,A). Everything that follows is an exact computation in these coordinates.",
-    "mathContext": "A point is $X\\in\\mathbb{R}\\times\\mathbb{R}$; the midpoint of $X,Y$ is $\\bigl(\\tfrac{X_1+Y_1}{2},\\tfrac{X_2+Y_2}{2}\\bigr)$. Midpoints: $P=\\operatorname{mid}(A,B)$, $Q=\\operatorname{mid}(B,C)$, $R=\\operatorname{mid}(C,D)$, $S=\\operatorname{mid}(D,A)$.",
+    "mathContext": "A point is $X\\in\\mathbb{R}\\times\\mathbb{R}$; the midpoint of $X,Y$ is $\\bigl(\\tfrac{X_1+Y_1}{2},\\tfrac{X_2+Y_2}{2}\\bigr)$. Midpoints: $P=\\operatorname{mid}(A,B)$, $Q=\\operatorname{mid}(B,C)$, $R=\\operatorname{mid}(C,D)$, $S=\\operatorname{mid}(D,A)$. Writing the midpoint as the affine combination $\\operatorname{mid}(X,Y)=\\tfrac12 X+\\tfrac12 Y$ makes the affine nature explicit: it is a convex combination with weights $(\\tfrac12,\\tfrac12)$, so it commutes with every affine map. This is precisely why no metric or convexity hypothesis ever enters — the only operation used, the midpoint, is affine-equivariant.",
     "significance": "key",
     "relatedConcepts": [
       "quadrilateral",
@@ -33,7 +33,7 @@
     "type": "definition",
     "title": "Point and Midpoint Operations",
     "content": "Point is an abbreviation for ℝ × ℝ, and midpoint2 X Y is defined as the componentwise average ((X.1+Y.1)/2, (X.2+Y.2)/2). midpoint2 is marked noncomputable only because real-number division is noncomputable in Lean; mathematically it is the ordinary midpoint. Because the whole development is phrased in these explicit coordinates, every later claim reduces to an algebraic identity that ring can verify after unfolding midpoint2.",
-    "mathContext": "$\\operatorname{midpoint2}(X,Y) = \\bigl(\\tfrac{X_1+Y_1}{2}, \\tfrac{X_2+Y_2}{2}\\bigr) \\in \\mathbb{R}\\times\\mathbb{R}.$",
+    "mathContext": "$\\operatorname{midpoint2}(X,Y) = \\bigl(\\tfrac{X_1+Y_1}{2}, \\tfrac{X_2+Y_2}{2}\\bigr) \\in \\mathbb{R}\\times\\mathbb{R}.$ The structural fact behind the whole theorem is affine equivariance: for any affine map $T(x)=Mx+b$ one has $T\\bigl(\\operatorname{mid}(X,Y)\\bigr)=\\operatorname{mid}\\bigl(T(X),T(Y)\\bigr)$, since $M\\tfrac{X+Y}{2}+b=\\tfrac{(MX+b)+(MY+b)}{2}$. Hence the Varignon construction commutes with affine transformations, and any single non-degenerate example forces the general result.",
     "significance": "supporting",
     "relatedConcepts": [
       "midpoint",
@@ -56,7 +56,7 @@
     "type": "theorem",
     "title": "Each Varignon Side Equals Half a Diagonal",
     "content": "The two strong-form lemmas compute the opposite sides PQ and SR of the midpoint quadrilateral. Both come out equal to (C − A)/2: for PQ, Q − P = (B+C)/2 − (A+B)/2 = (C − A)/2; for SR, R − S = (C+D)/2 − (D+A)/2 = (C − A)/2. So each of these sides is parallel to the diagonal AC and exactly half its length — the strong form of Varignon's theorem. Each coordinate identity is discharged by `dsimp only [midpoint2]` (to reduce the pair projections) followed by `ring`.",
-    "mathContext": "$Q-P=\\tfrac{B+C}{2}-\\tfrac{A+B}{2}=\\tfrac{C-A}{2}$ and $R-S=\\tfrac{C+D}{2}-\\tfrac{D+A}{2}=\\tfrac{C-A}{2}$.",
+    "mathContext": "$Q-P=\\tfrac{B+C}{2}-\\tfrac{A+B}{2}=\\tfrac{C-A}{2}$ and $R-S=\\tfrac{C+D}{2}-\\tfrac{D+A}{2}=\\tfrac{C-A}{2}$. Geometrically this is the *strong form*: $\\vec{PQ}=\\tfrac12\\vec{AC}$ and $\\vec{SR}=\\tfrac12\\vec{AC}$, so both sides are parallel to the diagonal $AC$ and have length $\\tfrac12|AC|$. It is the exact quadrilateral analogue of the triangle midsegment theorem, where the segment joining two side midpoints is parallel to the third side and half its length.",
     "significance": "key",
     "relatedConcepts": [
       "diagonal",
@@ -79,7 +79,7 @@
     "type": "theorem",
     "title": "The Parallelogram Conclusion",
     "content": "The theorem varignon states the parallelogram property directly: Q − P = R − S, componentwise. This follows because both differences equal (C − A)/2, as established by the strong-form lemmas. With this pair of opposite side vectors equal, PQRS is a parallelogram. The proof invokes no Mathlib geometry — only `ring` on the coordinate identities — and uses no non-degeneracy hypothesis, so it covers arbitrary (including self-intersecting and skew) quadrilaterals.",
-    "mathContext": "$Q-P=R-S=\\tfrac{C-A}{2}$, so the opposite sides $PQ$ and $SR$ are equal as vectors and $PQRS$ is a parallelogram.",
+    "mathContext": "$Q-P=R-S=\\tfrac{C-A}{2}$, so the opposite sides $PQ$ and $SR$ are equal as vectors and $PQRS$ is a parallelogram. Two corollaries follow immediately: the diagonals of $PQRS$ meet at the vertex centroid $\\tfrac{A+B+C+D}{4}$, and the (signed) area satisfies $\\operatorname{area}(PQRS)=\\tfrac12\\,\\operatorname{area}(ABCD)$. The parallelogram is a rectangle iff $AC\\perp BD$ and a rhombus iff $|AC|=|BD|$, since adjacent sides are parallel to the two diagonals.",
     "significance": "key",
     "relatedConcepts": [
       "parallelogram",
@@ -101,7 +101,7 @@
     "type": "theorem",
     "title": "The Second Pair of Opposite Sides",
     "content": "varignon_PS_eq_QR confirms the parallelogram from the other pair of sides: P − S = Q − R componentwise, both equal to half the diagonal BD. Establishing both pairs of opposite sides as equal vectors gives the full parallelogram characterization rather than relying on a single pair, and exposes the symmetric role of the two diagonals AC and BD — each Varignon side is half of one of them.",
-    "mathContext": "$P-S=Q-R=\\tfrac{B-D}{2}$; together with $Q-P=R-S=\\tfrac{C-A}{2}$ the four midpoints form a parallelogram whose sides are half the diagonals of $ABCD$.",
+    "mathContext": "$P-S=Q-R=\\tfrac{B-D}{2}$; together with $Q-P=R-S=\\tfrac{C-A}{2}$ the four midpoints form a parallelogram whose sides are half the diagonals of $ABCD$. Consequently the perimeter of $PQRS$ is $2\\cdot\\tfrac{|AC|}{2}+2\\cdot\\tfrac{|BD|}{2}=|AC|+|BD|$, the sum of the diagonals of $ABCD$, independent of the side lengths. The symmetric appearance of $\\tfrac{C-A}{2}$ and $\\tfrac{B-D}{2}$ shows the two diagonals play interchangeable roles in the construction.",
     "significance": "supporting",
     "relatedConcepts": [
       "diagonal BD",
