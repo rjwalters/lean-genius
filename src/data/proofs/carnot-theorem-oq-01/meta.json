@@ -77,12 +77,20 @@
       "id": "double-angle-helper"
     },
     {
-      "title": "Carnot's Theorem — angle form",
+      "title": "Carnot's Theorem — statement and the half-angle identity for sin(C/2)",
       "startLine": 38,
+      "endLine": 52,
+      "description": "States the main identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2) for A + B + C = π, with the docstring recording the geometric form 1 + r/R. The proof opens by eliminating the third angle: from A + B + C = π we get C/2 = π/2 - (A/2 + B/2), so sin(C/2) = cos(A/2)cos(B/2) - sin(A/2)sin(B/2) via Real.sin_pi_div_two_sub and Real.cos_add. This is the only place the angle-sum hypothesis is used.",
+      "summary": "Statement of Carnot's angle form and the half-angle expansion of sin(C/2)",
+      "id": "carnot-theorem-statement-half-angle"
+    },
+    {
+      "title": "Reducing to Pythagoras: 1 − 2sin² rewrites and linear_combination closure",
+      "startLine": 53,
       "endLine": 62,
-      "description": "The main identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2). Express sin(C/2) via A/2, B/2 using C/2 = π/2 - (A/2 + B/2); rewrite each cosine in 1 - 2 sin² form; close by linear_combination modulo the Pythagorean identities.",
-      "summary": "Carnot's Theorem — angle form",
-      "id": "carnot-theorem-angle-form"
+      "description": "Each cosine is rewritten in the half-angle form cos θ = 1 - 2 sin²(θ/2) via the cos_two_mul_sin helper, and sin(C/2) is replaced by the expression from the previous step. What remains is a polynomial identity in sin(A/2), cos(A/2), sin(B/2), cos(B/2), which linear_combination discharges modulo the two Pythagorean identities sin²+cos² = 1 for A/2 and B/2 — no trigonometric reasoning beyond those two relations is needed.",
+      "summary": "Half-angle cosine rewrites and the linear_combination closure modulo sin²+cos²=1",
+      "id": "carnot-theorem-pythagorean-closure"
     },
     {
       "title": "Fundamental triangle cosine identity",
