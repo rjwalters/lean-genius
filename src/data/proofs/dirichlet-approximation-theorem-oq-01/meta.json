@@ -62,10 +62,10 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 178,
+    "lineCount": 229,
     "assumptions": "0 axioms, 0 sorries. The sole hypothesis is Irrational ξ, which the converse (infinite_approx_iff_irrational) shows is exactly necessary and sufficient. The headline infinitude and the converse delegate to Mathlib's DiophantineApproximation development; the coprime-pair reformulation, the InjOn argument, the existence corollary, the image-subset computation, the bounded-denominator finiteness lemma (finite_bounded_den), and the unbounded-denominator strengthening (infinite_good_approx_large_den) are proved in-file. Badge is 'mathlib' because the core infinitude result is a Mathlib theorem; the strengthening to unbounded denominators is original in-file content built only on elementary Mathlib finiteness facts.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 0
   },
   "overview": {
@@ -120,24 +120,32 @@
       "summary": "`infinite_approx_iff_irrational`: delegation to Mathlib's iff, exhibiting that Irrational ξ is exactly the necessary-and-sufficient hypothesis (rationals admit only finitely many good approximations)."
     },
     {
+      "id": "coprime-iff",
+      "title": "Full Coprime-Pair Characterization: Iff Converse",
+      "startLine": 93,
+      "endLine": 142,
+      "mathContext": "$\\{(p,q)\\in\\mathbb{Z}\\times\\mathbb{N} : q>0,\\ \\gcd(|p|,q)=1,\\ |\\xi-p/q|<1/q^2\\}$ is infinite $\\iff$ $\\xi$ irrational.",
+      "summary": "`infinite_coprime_approx_iff_irrational`: upgrades the one-way `infinite_coprime_approx` to the full equivalence (Hardy & Wright Thm 193). The converse transports infinitude of the coprime integer-pair set back to Mathlib's rational form along (p,q) ↦ p/q, which is injective on the coprime set (`Rat.div_int_inj`) and preserves the reduced denominator q = p/q.den (`Rat.den_div_eq_of_coprime`)."
+    },
+    {
       "id": "existence-corollary",
       "title": "Existence Corollary",
-      "startLine": 93,
-      "endLine": 99,
+      "startLine": 144,
+      "endLine": 150,
       "mathContext": "Every irrational has at least one good approximation $|\\xi - q| < 1/q.\\mathrm{den}^2$.",
       "summary": "`exists_good_approx`: the one-shot existence statement recovered from infinitude via Set.Infinite.nonempty."
     },
     {
       "id": "unbounded-denominators",
       "title": "Strengthening: Unbounded Denominators",
-      "startLine": 101,
-      "endLine": 178,
+      "startLine": 152,
+      "endLine": 229,
       "mathContext": "For every irrational $\\xi$ and every $N$, infinitely many good approximations satisfy $q.\\mathrm{den} \\ge N$; equivalently the convergent denominators are unbounded.",
       "summary": "`finite_bounded_den`: rationals in a bounded real interval [a,b] with denominator ≤ N form a finite set, proved by embedding q ↦ (q.num, q.den) into the finite integer box Finset.Icc(-M,M) ×ˢ Finset.Icc 1 N with M ≥ max|a||b|·N (numerator bound |q.num| = |q|·q.den ≤ max|a||b|·N), and injectivity via Rat.num_div_den. `infinite_good_approx_large_den`: the full good-approximation set is infinite while its low-denominator part {q.den < N} is finite — each such q has |ξ − q| < 1/q.den² ≤ 1 so lies in [ξ−1, ξ+1] with den ≤ N, a finite_bounded_den set — and an infinite set minus a finite set is infinite. `exists_good_approx_large_den`: the existence corollary. Answers the entry's first open question and shows the denominators of good approximations are genuinely unbounded, strictly stronger than bare infinitude."
     }
   ],
   "conclusion": {
-    "summary": "The parent's one-shot Dirichlet bound is upgraded to the infinitude statement: for every irrational ξ there are infinitely many fractions in lowest terms with |ξ − p/q| < 1/q². The infinitude and its sharp converse delegate to Mathlib's DiophantineApproximation development; the original work is the bridge from Mathlib's set-of-rationals form to the classical coprime integer-pair statement (transporting infinitude along the injective map q ↦ (q.num, q.den)) and a strengthening to unbounded denominators: for every N infinitely many good approximations have q.den ≥ N, via a self-contained finiteness lemma (finite_bounded_den) for rationals of bounded height in a bounded real interval. Zero sorries, zero axioms.",
+    "summary": "The parent's one-shot Dirichlet bound is upgraded to the infinitude statement: for every irrational ξ there are infinitely many fractions in lowest terms with |ξ − p/q| < 1/q². The infinitude and its sharp converse delegate to Mathlib's DiophantineApproximation development; the original work is (i) the bridge from Mathlib's set-of-rationals form to the classical coprime integer-pair statement (transporting infinitude along the injective map q ↦ (q.num, q.den)), (ii) the full coprime-pair iff converse infinite_coprime_approx_iff_irrational, which upgrades the one-way coprime reformulation to an equivalence by transporting infinitude back along (p,q) ↦ p/q (injective on the coprime set via Rat.div_int_inj, denominator-preserving via Rat.den_div_eq_of_coprime), and (iii) a strengthening to unbounded denominators: for every N infinitely many good approximations have q.den ≥ N, via a self-contained finiteness lemma (finite_bounded_den) for rationals of bounded height in a bounded real interval. Zero sorries, zero axioms.",
     "implications": "Re-expressing the infinitude in the (p,q)-coprime form is the version used downstream: it is the launching point for continued fractions, Hurwitz's sharp constant 1/(√5 q²), and Liouville's transcendence criterion. The unbounded-denominators strengthening makes explicit that there is no finite stage past which good approximations stop — the convergent denominators tend to infinity — which is the qualitative input to continued-fraction convergence. The converse direction pins down that good rational approximability of exponent 2 characterizes irrationality exactly.",
     "openQuestions": [
       "Can the constant be improved in Lean to Hurwitz's 1/(√5 q²), and is the √5 shown to be optimal via the golden ratio?",
@@ -171,11 +179,11 @@
       "Set"
     ],
     "namespace": "DirichletApproximationOQ01",
-    "lineCount": 178,
+    "lineCount": 229,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 7
+    "theoremCount": 8
   },
   "sorries": 0
 }
