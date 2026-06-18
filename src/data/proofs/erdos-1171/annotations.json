@@ -89,7 +89,7 @@
       "startLine": 98,
       "endLine": 109
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Conjecture: Universal Multicolor Partition",
     "content": "The problem statement is formalized as:\n\n  erdos_1171_statement : Prop :=\n    ∀ k : ℕ, ordinalPartitionRelMulti omega1Sq omega1TimesOmega 3 (k + 1)\n\nThis says: for every natural number k, the partition relation ω₁² → (ω₁·ω, 3, …, 3)²_{k+1} holds. The quantification over k makes this a family of increasingly strong statements — as k grows, more colors are allowed, and the partition must still produce either a large monochromatic-0 set or a triangle in some other color.\n\nThe formulation uses k+1 colors (not k) to avoid the degenerate 0-color case, matching the mathematical convention where the k=1 case corresponds to 2 colors.",
     "mathContext": "$$\\text{erdos\\_1171\\_statement} \\equiv \\forall k \\in \\mathbb{N},\\; \\omega_1^2 \\to (\\omega_1 \\cdot \\omega, \\underbrace{3, \\ldots, 3}_k)^2_{k+1}$$",

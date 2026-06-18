@@ -120,7 +120,7 @@
       "startLine": 103,
       "endLine": 129
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Main Conjecture (OPEN)",
     "content": "**Erdős Problem #141**: For every k >= 3, do there exist k consecutive primes in arithmetic progression? This is OPEN. We state `Erdos141Conjecture` as a definition, with computational verification for k <= 10 as an axiom.",
     "mathContext": "The status quo: k = 3-10 are verified computationally. k >= 11 is unknown. We state `small_cases_verified` as an axiom since the verification is computational (too large for formal proof).",

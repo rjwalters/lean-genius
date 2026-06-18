@@ -143,7 +143,7 @@
       "startLine": 131,
       "endLine": 132
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Counting Function f(n)",
     "content": "**f(n):**\n\nThe number of incongruent n-point extremal configurations.\n\nFormally, f(n) is the number of equivalence classes in extremalConfigs(n) under congruence.\n\n**The main questions:**\n1. Does f(n) -> infinity?\n2. Is f(n) > 1 for n > 3?",
     "mathContext": "$f(n) = |\\{S \\in \\text{extremalConfigs}(n)\\} / {\\sim}|$ where $\\sim$ is congruence",

@@ -312,7 +312,7 @@
       "startLine": 199,
       "endLine": 218
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "k-term AP Generalization",
     "content": "**IsAPk k vals**: k values form an arithmetic progression\n  vals(i) = a + i·d for some a, d with d ≠ 0\n\n**FinsetkAPFree k A**: No k elements of A form a k-AP\n\n**rk k N**: Maximum size of k-AP-free subset of {0,...,N}\n\n**ErdosAPConjecture**: For all k ≥ 3, C > 0:\n  r_k(N) = O(N / (log N)^C)\n\nThis is OPEN for k ≥ 4!",
     "mathContext": "Szemerédi's theorem (1975) proves $r_k(N) = o(N)$ for all $k$, but the quantitative bounds deteriorate rapidly: for $k = 4$, the best bound is $O(N/(\\log N)^{c_4})$ for a small constant $c_4$ (Green–Tao, 2017), far from the conjectured $O(N/(\\log N)^C)$ for all $C$. For general $k$, only Ackermann-type bounds are known from Gowers’ proof (2001) via higher-order Fourier analysis.",

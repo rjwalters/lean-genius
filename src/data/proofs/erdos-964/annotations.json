@@ -215,7 +215,7 @@
       "startLine": 201,
       "endLine": 216
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Prime k-Tuple Conjecture",
     "content": "**PrimeKTupleConjecture:**\n\nFor any admissible k-tuple, there are infinitely many n where all n + h_i are prime.\n\n```lean\ndef PrimeKTupleConjecture : Prop :=\n  forall k, forall h : Fin k -> N,\n    (admissible h) -> exists^f n, forall i, Prime (n + h i)\n```\n\n**Connection:** This conjecture would imply density, but Eberhard's proof is unconditional.",
     "mathContext": "A major open problem in number theory.",

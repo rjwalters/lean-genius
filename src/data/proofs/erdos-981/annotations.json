@@ -101,7 +101,7 @@
       "startLine": 141,
       "endLine": 151
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Quadratic Residues and Complete Sums",
     "content": "isQuadraticResidue a p: ∃ x, x² ≡ a (mod p). Exactly (p-1)/2 residues and (p-1)/2 non-residues exist among nonzero classes mod p. complete_sum_zero: ∑_{n=0}^{p-1} (n/p) = 0, since QRs and NQRs cancel perfectly over a full period. This periodicity constrains the growth of partial character sums.",
     "significance": "key",

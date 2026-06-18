@@ -135,7 +135,7 @@
       "startLine": 93,
       "endLine": 98
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Fourier Partial Sums",
     "content": "The Nth Fourier partial sum fₙ(x) uses frequencies from -N to N. It's the best L² approximation of f using trigonometric polynomials of degree N.",
     "mathContext": "The Nth partial sum is $f_N(x) = \\sum_{n=-N}^{N} \\hat{f}(n) e^{2\\pi i n x}$ where $\\hat{f}(n) = \\int_0^1 f(t) e^{-2\\pi i n t}\\,dt$ are the Fourier coefficients. By Bessel's inequality, $\\|f_N\\|_2 \\leq \\|f\\|_2$, and by Parseval, $\\|f - f_N\\|_2^2 = \\sum_{|n|>N} |\\hat{f}(n)|^2 \\to 0$.",
@@ -159,7 +159,7 @@
       "startLine": 100,
       "endLine": 102
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Fourier Error",
     "content": "The L² error ‖f - fₙ‖₂ measures how well the partial sum approximates f. Smoother functions have faster-decaying error. This decay rate is central to Problem #996.",
     "mathContext": "The error $\\|f - f_N\\|_2 = \\left(\\int_0^1 |f(x) - f_N(x)|^2\\,dx\\right)^{1/2} = \\left(\\sum_{|n|>N} |\\hat{f}(n)|^2\\right)^{1/2}$ by Parseval. For $f$ with $k$ derivatives in $L^2$, $|\\hat{f}(n)| = O(|n|^{-k})$, giving $\\|f - f_N\\|_2 = O(N^{-k+1/2})$. The problem concerns functions with much slower decay.",

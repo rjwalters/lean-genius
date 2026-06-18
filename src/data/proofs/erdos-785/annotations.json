@@ -226,7 +226,7 @@
       "startLine": 188,
       "endLine": 193
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Representation Function",
     "content": "**representationFunction A B n:**\n\nThe number of ways to write n as a + b with a ∈ A, b ∈ B:\n\nr(n) = |{(a,b) : a ∈ A, b ∈ B, a + b = n}|\n\n**Definition:**\n```lean\nnoncomputable def representationFunction (A B : Set ℕ) (n : ℕ) : ℕ :=\n  {(a, b) : ℕ × ℕ | a ∈ A ∧ b ∈ B ∧ a + b = n}.ncard\n```\n\nFor exact complements, the average r(n) is close to 1.",
     "mathContext": "The representation function is central to the variance argument in the proof. Its distribution determines the behavior of A(x)B(x).",

@@ -21,7 +21,7 @@
       "startLine": 52,
       "endLine": 64
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "volume_Icc_sdiff_Ioo: The Boundary Icc \\ Ioo Has Measure Zero",
     "content": "The difference Icc a b \\ Ioo a b (the two endpoints {a, b}) has Lebesgue measure zero. Proved by containment in {a} ∪ {b} and countability of singletons.",
     "mathContext": "$[a,b] \\setminus (a,b) = \\{a,b\\}$, which has measure zero since Lebesgue measure is atomless: $\\text{vol}(\\{x\\}) = 0$ for all $x \\in \\mathbb{R}$ (proved via countability: $\\{x\\}$ is countable, and countable sets have Lebesgue measure zero).",

@@ -30,7 +30,7 @@
       "startLine": 81,
       "endLine": 84
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Stabilizer Equals Normalizer: stab G P = N_G(P)",
     "content": "`stabilizer_eq_normalizer` wraps `Sylow.stabilizer_eq_normalizer P`. The stabilizer of $P$ under the conjugation action is $\\{g \\in G \\mid g \\cdot P = P\\} = \\{g \\in G \\mid gPg^{-1} = P\\}$, which is exactly the normalizer $N_G(P)$. This is the key bridge: the abstract orbit-stabilizer theorem works with stabilizers, while the counting formula involves normalizers. Identifying them converts orbit-stabilizer into the n_p formula.",
     "mathContext": "For the conjugation action $g \\cdot P = gPg^{-1}$ on Sylow subgroups: $\\text{stab}_G(P) = \\{g \\mid gPg^{-1} = P\\} = N_G(P)$. In Lean, `stabilizer G P : Subgroup G` and `P.normalizer : Subgroup G` are equal.",

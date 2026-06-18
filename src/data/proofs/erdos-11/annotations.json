@@ -163,7 +163,7 @@
       "startLine": 76,
       "endLine": 78
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Infinitely Many Non-Wieferich Primes",
     "content": "The statement `InfinitelyManyNonWieferich`: for every $N$, there exists a prime $p > N$ that is **not** a Wieferich prime.\n\nThis is widely believed — if Wieferich primes have density $\\sim \\ln \\ln N / N$, there should be infinitely many non-Wieferich primes. But it remains unproven unconditionally. The Granville-Soundararajan result shows Erdős #11 would imply it.",
     "mathContext": "$\\forall N, \\exists p > N: \\text{Prime}(p) \\wedge \\neg \\text{IsWieferichPrime}(p)$",
@@ -185,7 +185,7 @@
       "startLine": 82,
       "endLine": 84
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Erdős Problem #11 (OPEN)",
     "content": "**Main Conjecture**: Every odd integer $n > 1$ can be written as $n = s + 2^k$ where $s$ is squarefree.\n\n`Erdos11Conjecture : Prop := ∀ n : ℕ, Odd n → n > 1 → IsSquarefreePlusPow2 n`\n\n**Status**: OPEN despite verification up to $2^{50}$, density-1 result, and the Granville-Soundararajan connection. No theoretical approach has succeeded in proving the full conjecture.",
     "mathContext": "$\\forall n$ odd, $n > 1 \\Rightarrow \\exists s, k: \\text{Squarefree}(s) \\wedge n = s + 2^k$",

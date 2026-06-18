@@ -195,7 +195,7 @@
       "startLine": 134,
       "endLine": 153
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Limit Question (Open)",
     "content": "**productRatio N:** The normalized ratio $\\max |A||B| \\cdot \\log N / N^2$, which Szemerédi's theorem shows is bounded.\n\n**LimitQuestion:** Does $\\lim_{N \\to \\infty} \\text{productRatio}(N)$ exist?\n\n**van_doorn_observation (axiom):** If the limit exists, it must be $\\geq 1$, since the optimal construction achieves ratio $\\sim 1/4$ and improved constructions push this higher.\n\nThis limit question remains **OPEN** — one of the refined questions Erdős posed even after Szemerédi resolved the main bound.",
     "mathContext": "The ratio $r(N) = \\max_{A,B} |A||B| \\cdot \\log N / N^2$ is bounded above (Szemerédi) and bounded below by $\\sim 1/4$ (the prime construction). The question is whether $r(N)$ converges. This is analogous to asking whether the constant in the prime number theorem \"stabilizes\" when applied to the distinct products problem. The answer depends on subtle oscillations in the distribution of primes and smooth numbers.",

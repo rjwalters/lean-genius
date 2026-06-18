@@ -148,7 +148,7 @@
   {
     "id": "ann-220-conjecture",
     "proofId": "erdos-220",
-    "type": "definition",
+    "type": "axiom",
     "title": "Erdős Conjecture",
     "content": "**erdos_220_conjecture:**\n\n∃C > 0: ∀n ≥ 1, ∑(gap)² ≤ C · n²/φ(n)\n\nThe squared gaps sum is at most a constant times the \"all-equal\" bound.",
     "significance": "key",
@@ -166,7 +166,7 @@
   {
     "id": "ann-220-general",
     "proofId": "erdos-220",
-    "type": "definition",
+    "type": "axiom",
     "title": "General γ-Power Bound",
     "content": "**erdos_220_general:**\n\nFor any γ ≥ 1: ∑(gap)^γ ≪ n^γ/φ(n)^{γ-1}\n\nThis generalizes from squares to arbitrary powers.",
     "mathContext": "Erdős posed this general version in 1973.",

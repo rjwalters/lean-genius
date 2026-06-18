@@ -60,7 +60,7 @@
       "startLine": 52,
       "endLine": 70
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "The Function m(n)",
     "content": "**Definition:**\nm(n) = minimal m ≥ n such that 1/n + ... + 1/m ≥ 1\n\n**Properties:**\n1. m(n) exists (axiom `m_of_n_exists`)\n2. m(n) is minimal: sum to m(n)-1 is < 1 (axiom `m_of_n_minimal`)\n3. m(n) achieves: sum to m(n) is ≥ 1 (axiom `m_of_n_achieves`)\n\n**Intuition:**\nSince the sum from n to m grows like log(m/n), reaching 1 requires:\nlog(m/n) ≈ 1 → m/n ≈ e\n\nSo m(n) ≈ e·n ≈ 2.718n",
     "mathContext": "Since $\\sum_{k=n}^{m} \\frac{1}{k} \\approx \\ln(m/n)$, the condition $\\sum \\geq 1$ requires $m/n \\geq e \\approx 2.718$. More precisely, $m(n) = \\lfloor en \\rfloor$ or $\\lfloor en \\rfloor + 1$ for most $n$.",
@@ -139,7 +139,7 @@
       "startLine": 105,
       "endLine": 113
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "The Erdős Conjecture",
     "content": "**Main Question:**\n```lean\ndef erdos_conjecture : Prop :=\n  ∀ δ > 0, ∃ᶠ n in Filter.atTop, (n : ℝ)^2 * epsilon n < δ\n```\n\nIs lim inf n²ε(n) = 0?\n\nIn words: Can we find infinitely many n where ε(n) is as small as c/n² for arbitrarily small c?\n\nSince ε(n) ≤ 1/n always, the question is whether we can do MUCH better (n² instead of n).",
     "mathContext": "The quantifier `∃ᶠ n in Filter.atTop` means 'for infinitely many n'. The condition $n^2 \\varepsilon(n) < \\delta$ for all $\\delta > 0$ is equivalent to $\\liminf_{n\\to\\infty} n^2 \\varepsilon(n) = 0$.",

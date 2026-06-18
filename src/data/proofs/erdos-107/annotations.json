@@ -166,7 +166,7 @@
       "startLine": 137,
       "endLine": 138
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Happy Ending Conjecture (OPEN)",
     "content": "**Conjecture (Erdos-Szekeres)**: $f(n) = 2^{n-2}+1$ for all $n \\geq 3$. This is defined as a `Prop` without asserting truth, since it remains **OPEN**. Erdos offered **$500** for a proof and **$100** for a counterexample. The conjecture is supported by the three known values ($f(3)=3, f(4)=5, f(5)=9$, all matching $2^{n-2}+1$) and by the tightening upper bounds. The name 'Happy Ending' comes from George Szekeres and Esther Klein's marriage, prompted by their collaboration on this problem.",
     "mathContext": "$\\text{HappyEndingConjecture} :\\Leftrightarrow \\forall\\, n \\geq 3,\\; f(n) = 2^{n-2} + 1$. Stated as def (a Prop) rather than axiom, correctly reflecting its open status. The value $f(6)$ is unknown: the conjecture predicts $f(6) = 17$.",

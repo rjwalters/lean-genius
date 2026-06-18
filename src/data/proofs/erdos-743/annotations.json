@@ -64,7 +64,7 @@
       "startLine": 89,
       "endLine": 95
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Tree Packing Conjecture",
     "content": "**treePackingConjecture**\n\nThe formal statement: for any n ≥ 2 and any tree collection T₂,...,Tₙ where Tₖ has k vertices, the collection can be packed edge-disjointly into Kₙ.\n\n```lean\ndef treePackingConjecture : Prop :=\n  ∀ n : ℕ, n ≥ 2 → ∀ tc : TreeCollection n, canPack n tc\n```\n\nThis is defined as a `Prop` (not asserted as an axiom or theorem) since the conjecture is OPEN.",
     "mathContext": "The universal quantifier over ALL tree collections is what makes this hard. Any specific collection can potentially be packed, but proving it for every possible combination of tree shapes simultaneously is the challenge.",

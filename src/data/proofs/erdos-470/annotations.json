@@ -235,7 +235,7 @@
       "startLine": 195,
       "endLine": 204
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Open Question 2: Infinitely Many Primitive Weirds",
     "content": "**Erdos Problem #470 (Part 2)**: Are there infinitely many primitive weird numbers?\n\n```lean\ndef erdos_470_part2 : Prop := PrimitiveWeirdSet.Infinite\n```\n\nwhere `PrimitiveWeirdSet = { n | IsPrimitiveWeird n }`.\n\nThis question also remains OPEN.",
     "mathContext": "If only finitely many primitive weirds existed, all large weird numbers would be 'generated' from a finite set of primitives. This seems unlikely given the apparent randomness of the weird sequence.",

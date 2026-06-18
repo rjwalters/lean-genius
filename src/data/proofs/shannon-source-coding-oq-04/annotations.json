@@ -49,7 +49,7 @@
       "startLine": 97,
       "endLine": 103
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Empirical Entropy",
     "content": "The Shannon entropy of the empirical distribution $Q = f/n$. This equals $H(Q) = -\\sum_i Q_i \\log Q_i$ where $Q_i = f_i/n$.",
     "mathContext": "$H(f/n) = -\\sum_{i=1}^k \\frac{f_i}{n} \\log \\frac{f_i}{n}$",
@@ -70,7 +70,7 @@
       "startLine": 114,
       "endLine": 116
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Type Class Probability Weight",
     "content": "The probability of any single sequence in $T_f$ under the i.i.d. distribution $Q = f/n$. All sequences in the same type class have identical probability under their own empirical distribution.",
     "mathContext": "$Q^n(x) = \\prod_{i=1}^k Q_i^{f_i} = \\exp(-n H(Q))$ for $x \\in T_f$",

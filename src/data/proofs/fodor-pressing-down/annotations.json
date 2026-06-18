@@ -15,7 +15,7 @@
     "id": "ann-diag-inter",
     "proofId": "fodor-pressing-down",
     "range": { "startLine": 82, "endLine": 96 },
-    "type": "definition",
+    "type": "theorem",
     "title": "Diagonal Intersection: The Key Tool",
     "content": "diagInter f o = {γ ∈ Iio o | ∀ α < γ, γ ∈ f α}. Unlike ordinary intersection which requires γ ∈ f(α) for ALL α, the diagonal intersection only requires γ ∈ f(α) for those α BELOW γ — this respects the ordinal order. Intuitively, γ 'knows' about f(α) only for α that came before it. The iff characterization mem_diagInter and the subset lemma diagInter_subset_Iio are proved first.",
     "mathContext": "$\\Delta_{\\alpha < o}(f(\\alpha)) = \\{\\gamma < o \\mid \\forall \\alpha < \\gamma,\\ \\gamma \\in f(\\alpha)\\}$. Compare: $\\bigcap_{\\alpha < o} f(\\alpha) = \\{\\gamma \\mid \\forall \\alpha,\\ \\gamma \\in f(\\alpha)\\}$ (ordinary intersection, stronger).",

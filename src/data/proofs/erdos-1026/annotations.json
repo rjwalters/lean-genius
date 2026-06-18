@@ -178,7 +178,7 @@
       "startLine": 114,
       "endLine": 121
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Monotonic Decomposition",
     "content": "A **monotonic decomposition** partitions [1,n] into disjoint monotonic subsequences.\n\nThe structure tracks:\n- Number of parts (numParts)\n- Each part is a monotonic subsequence (Σ m, Subsequence n m)\n- Parts are disjoint (distinct indices across parts)\n- Parts cover all indices (every k : Fin n appears in some part)",
     "mathContext": "A partition $\\{S_1, \\ldots, S_p\\}$ of $\\{0, \\ldots, n-1\\}$ where each $S_i$ is a monotonic subsequence. The `parts` field uses a dependent sigma type `Σ m, Subsequence n m` to allow parts of varying lengths. Disjointness: $i \\neq j \\implies \\forall k_1\\, k_2,\\; \\sigma_i(k_1) \\neq \\sigma_j(k_2)$. Covering: $\\forall k \\in \\text{Fin}\\, n,\\; \\exists i\\, m\\, h_m,\\; \\sigma_i(\\langle m, h_m \\rangle) = k$.",

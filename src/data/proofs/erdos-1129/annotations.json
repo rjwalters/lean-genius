@@ -300,7 +300,7 @@
       "startLine": 274,
       "endLine": 282
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Complex Lebesgue Constant",
     "content": "**ComplexLebesgueConstant:**\n\nFor nodes z_1,...,z_n on the unit circle |z| = 1, the complex Lebesgue constant is:\n$$\\Lambda = \\max_{|z|=1} \\sum_k |l_k(z)|$$\n\nThis is the natural extension of the real problem to the complex setting.",
     "mathContext": "Erdos posed this variant in 1967, suggesting that uniformly spaced nodes (roots of unity) should be optimal.",
@@ -318,7 +318,7 @@
       "startLine": 283,
       "endLine": 289
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Roots of Unity",
     "content": "**RootsOfUnity:**\n\nThe n-th roots of unity: omega_k = e^(2*pi*i*k/n) for k = 0, ..., n-1.\n\nThese are uniformly spaced on the unit circle, separated by angle 2*pi/n.\n\n```lean\ndef RootsOfUnity (n : N) (hn : n > 0) (k : Fin n) : C :=\n  Complex.exp (2 * pi * I * k / n)\n```",
     "significance": "key",

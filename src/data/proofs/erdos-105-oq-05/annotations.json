@@ -51,7 +51,7 @@
       "startLine": 107,
       "endLine": 143
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "2-Flat Structure and Rich 2-Flat Conjecture",
     "content": "A TwoFlat in R^d is parameterized by a base point and two linearly independent directions (dir1, dir2). A point p lies on it if p = base + s*dir1 + t*dir2. A 2-flat is rich if it contains 3 non-collinear points of A. The richTwoFlatConjecture asks whether obstacles can block all rich 2-flats.",
     "mathContext": "TwoFlat: {base + s*dir1 + t*dir2 : s,t in R} where a*dir1 + b*dir2 = 0 implies a=b=0. Rich: contains 3 non-collinear points of A (not all on a single line within the flat).",

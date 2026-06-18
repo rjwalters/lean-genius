@@ -45,7 +45,7 @@
       "startLine": 75,
       "endLine": 81
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Maximum Sidon Size f(N)",
     "content": "**maxSidonSize N:**\n\nf(N) = max{|S| : S ⊆ {1,...,N} is Sidon}\n\nThe largest possible Sidon set within {1,...,N}.",
     "mathContext": "It is known that f(N) ~ √N. The exact behavior of f(N) - √N is still studied.",
@@ -63,7 +63,7 @@
       "startLine": 83,
       "endLine": 89
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Count of Sidon Sets A(N)",
     "content": "**countSidonSets N:**\n\nA(N) = |{S : S ⊆ {1,...,N} is Sidon}|\n\nThe total number of Sidon subsets of {1,...,N}.",
     "mathContext": "This counting function is the main object of study. The Cameron-Erdős questions ask about its growth rate relative to 2^{f(N)}.",

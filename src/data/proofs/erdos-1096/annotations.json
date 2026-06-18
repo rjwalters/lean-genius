@@ -115,7 +115,7 @@
       "startLine": 123,
       "endLine": 134
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Gap Property and EJK Results",
     "content": "**HasGapProperty q:**\n\nA value q has the **gap property** if:\n\n`lim_{k→∞} gap(q, k) = 0`\n\nFormalized as `Filter.Tendsto (gap q) Filter.atTop (nhds 0)`.\n\n**Key EJK Results (1990):**\n- `pisot_no_gap_property`: Pisot numbers do NOT have the gap property\n- `gap_universal_bound`: For 1 < q ≤ 2, all gaps ≤ 1\n\nPisot numbers create 'holes' in q-expansion structure that persist at all scales.",
     "mathContext": "$\\text{HasGapProperty}(q) :\\Leftrightarrow \\lim_{k \\to \\infty} g_q(k) = 0$, formalized as `Filter.Tendsto (gap q) atTop (nhds 0)`. EJK (1990): $\\theta$ Pisot $\\Rightarrow \\neg\\text{HasGapProperty}(\\theta)$. Also: $\\forall q \\in (1, 2],\\, g_q(k) \\leq 1$.",
@@ -138,7 +138,7 @@
       "startLine": 140,
       "endLine": 151
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Erdős-Joó Conjecture",
     "content": "**ErdosJooConjecture:**\n\nThe conjecture has two parts:\n\n1. **Open:** For all 1 < q < q₀, we have HasGapProperty(q)\n2. **Known:** ¬HasGapProperty(q₀)\n\nPart 2 follows immediately from q₀ being Pisot combined with `pisot_no_gap_property`.\n\n**conjecture_second_part** proves Part 2 as a direct application.",
     "mathContext": "The Erdős-Joó conjecture: $\\text{HasGapProperty}(q) \\iff q < q_0$ (the smallest Pisot number). Part 2 ($\\neg\\text{HasGapProperty}(q_0)$) follows from $q_0$ being Pisot. Part 1 ($q < q_0 \\Rightarrow$ gaps $\\to 0$) remains open.",

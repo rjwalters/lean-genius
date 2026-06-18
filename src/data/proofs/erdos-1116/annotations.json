@@ -64,7 +64,7 @@
       "startLine": 113,
       "endLine": 123
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Unbounded Ratio Property",
     "content": "**HasUnboundedRatio f a b:**\n\nThe ratio n(r, a)/n(r, b) is unbounded as r → ∞.\n\n**Definition:**\n```lean\ndef HasUnboundedRatio (f : ℂ → ℂ) (a b : ℂ) : Prop :=\n  ∀ M : ℝ, M > 0 → ∀ R : ℝ, R > 0 →\n    ∃ r > R, n(f, r, a) > M * n(f, r, b)\n```\n\nThis means: for any M, there exist arbitrarily large r with n(r,a)/n(r,b) > M.",
     "mathContext": "This captures lim sup = ∞ in a constructive way: we can always find r making the ratio arbitrarily large.",
@@ -177,7 +177,7 @@
       "startLine": 244,
       "endLine": 257
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Lacunary Series",
     "content": "**IsLacunarySeries:**\n\nA power series with large gaps between nonzero terms:\nf(z) = Σ_{n ∈ S} a_n z^n where n_{k+1}/n_k → ∞.\n\n**Definition:**\n```lean\ndef IsLacunarySeries (coeffs : ℕ → ℂ) (support : Set ℕ) : Prop :=\n  (∀ n ∉ support, coeffs n = 0) ∧\n  (∀ m n ∈ support, m < n → gaps grow)\n```\n\nLacunary series have special properties that make them useful for constructions.",
     "mathContext": "Lacunary series (like Σz^(2^n)) have gaps that grow geometrically, giving better control over value distribution.",

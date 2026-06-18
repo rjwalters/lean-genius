@@ -81,7 +81,7 @@
       "startLine": 56,
       "endLine": 74
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "α-Balanced Colourings",
     "content": "**IsBalancedOn c S α** — a colouring c is α-balanced on vertex set S if each colour has more than α · C(|S|,2) edges.\n\n**IsKBalanced c k α** — c is (k, α)-balanced if every induced subgraph on ≥k vertices is α-balanced.\n\n**balanced_requires_le_half** — if α > 1/2, no colouring can be α-balanced on any set with ≥2 vertices. This is because both colours would need more than half the edges, which is impossible.\n\nThe parameter α ∈ (0, 1/2] controls how strict the balance requirement is:\n- α near 0: almost any colouring works\n- α = 1/2: each colour must have almost exactly half the edges",
     "mathContext": "The balance condition captures discrepancy: a balanced colouring distributes edges evenly between colours. This is dual to Ramsey theory, where we seek monochromatic substructures.",
@@ -100,7 +100,7 @@
       "startLine": 76,
       "endLine": 102
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Function F(n, α)",
     "content": "**discrepancyF n α** — axiomatised as the largest k such that some 2-colouring of K_n is (k, α)-balanced.\n\n**Key properties (axiomatised):**\n- **Characterisation:** F(n, α) = k iff there exists a (k, α)-balanced colouring but no (k+1, α)-balanced one\n- **Monotonicity:** F(n, α) ≤ F(n, β) when α ≥ β (stricter balance → smaller F)\n- **Trivial case:** F(n, 0) = n (every colouring is 0-balanced)\n- **Upper bound:** F(n, α) ≤ n (can't exceed total vertices)\n\nAxiomatised because computing F exactly requires exhaustive search over all 2^C(n,2) colourings.",
     "mathContext": "F(n, α) is well-defined by finiteness of the set of 2-colourings. It captures the extremal question: how well can we balance a colouring across all large induced subgraphs?",

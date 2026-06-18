@@ -134,7 +134,7 @@
     "id": "ann-mcpoq03-emptychain",
     "proofId": "minpoly-charpoly-oq-03",
     "range": { "startLine": 177, "endLine": 192 },
-    "type": "lemma",
+    "type": "definition",
     "title": "prodFactors_empty: Unconditional Sanity Check",
     "content": "A trivial sanity lemma: when the invariant-factor list is empty, the product is `1`. The proof is one `simp`. This is the only unconditional theorem in the S1 scaffold; its purpose is to verify that the `InvariantFactorChain` type and `prodFactors` definition are internally consistent, before any sub-OQ work begins.\n\nIn the full RCF, the empty chain corresponds to the zero-dimensional matrix (`n = Fin 0`), whose `charpoly` is indeed `1`. The empty case is degenerate but worth handling explicitly so that the OQ-03-OQ-02 sub-OQ proof of `rational_canonical_form_exists` need not special-case it: the structure-theorem decomposition of the trivial `F[X]`-module `K^0 = 0` returns the empty list of summands, with `prodFactors = 1` matching `charpoly (0 : Matrix (Fin 0) (Fin 0) F) = 1`.",
     "mathContext": "$\\mathrm{prodFactors}(\\emptyset) = 1$, matching $\\mathrm{charpoly}(\\mathrm{Mat}_0(F)) = 1$ for the degenerate $0 \\times 0$ matrix.",

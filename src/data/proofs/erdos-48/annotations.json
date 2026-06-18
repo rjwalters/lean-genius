@@ -317,7 +317,7 @@
       "startLine": 317,
       "endLine": 322
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Sophie Germain Primes",
     "content": "**isSophieGermain:**\n\nA Sophie Germain prime p has 2p + 1 also prime.\n\nFor such p: phi(2p+1) = 2p, and we seek m with sigma(m) = 2p.\n\nExamples: 2, 3, 5, 11, 23, 29, ...",
     "significance": "supporting",
@@ -339,7 +339,7 @@
       "startLine": 324,
       "endLine": 334
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Perfect Numbers",
     "content": "**isPerfect:**\n\nA perfect number n satisfies sigma(n) = 2n.\n\n**Examples:** 6, 28, 496, 8128, ...\n\nIf we find m with phi(m) = 2n, then (m, n) is a totient-sigma pair.\n\n**Theorem:** six_is_perfect proves sigma(6) = 12 = 2 * 6.",
     "significance": "supporting",

@@ -118,7 +118,7 @@
       "startLine": 101,
       "endLine": 106
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "IsProportionatelyDissociated",
     "content": "**Proportionately Dissociated:**\n\nAn infinite set A is proportionately dissociated if there exists c > 0 such that every finite B ⊆ A contains a dissociated subset D with |D| ≥ c|B|.\n\n**Definition:**\n```lean\ndef IsProportionatelyDissociated (A : Set ℕ) : Prop :=\n  ∃ c : ℝ, c > 0 ∧ ∀ B : Finset ℕ, ↑B ⊆ A →\n    ∃ D : Finset ℕ, D ⊆ B ∧ IsDissociated D ∧\n      (D.card : ℝ) ≥ c * B.card\n```\n\nThis is weaker than being dissociated: we only require proportional-size dissociated subsets, not the whole set.",
     "mathContext": "The proportional constant c measures how 'locally dissociated' the set is. Pisier showed this equals being a Sidon set in harmonic analysis.",

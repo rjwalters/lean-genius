@@ -170,7 +170,7 @@
       "startLine": 117,
       "endLine": 137
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Equivalent Formulations",
     "content": "Presents two equivalent formulations of the Burr-Erdős Conjecture. `BurrErdosForests`: if $H$ is a union of $c$ forests, then $R(H) \\le C_c \\cdot n$ (since unions of $c$ forests are $c$-degenerate). `BurrErdosAverageDegree`: if every subgraph of $H$ has average degree $\\le 2d$, then $R(H) \\le C_d \\cdot n$. The equivalence follows from the Nash-Williams forest decomposition theorem.",
     "mathContext": "The equivalence uses: (1) $d$-degenerate $\\Leftrightarrow$ arboricity $\\le d$ (Nash-Williams, 1964), where arboricity is the minimum number of forests covering all edges; (2) average degree $\\le 2d$ in all subgraphs $\\Leftrightarrow$ $d$-degenerate. Thus: $d$-degenerate $\\Leftrightarrow$ union of $d$ forests $\\Leftrightarrow$ max average subgraph degree $\\le 2d$.",
@@ -239,7 +239,7 @@
       "startLine": 183,
       "endLine": 198
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Conjectured Optimal Bound (Open)",
     "content": "Defines `OptimalBurrErdos`: the conjecture that $R(H) \\le 2^{O(d)} \\cdot n$ (singly exponential in $d$). Lee's proven bound is $2^{2^{O(d)}} \\cdot n$ (doubly exponential). The gap is enormous — for $d = 10$, the difference is between $2^{10} = 1024$ and $2^{1024} \\approx 10^{308}$. This remains the main open problem following Lee's work.",
     "mathContext": "$\\text{OptimalBurrErdos}: \\forall d \\ge 1, \\exists c, C > 0: C = 2^{cd} \\land \\forall H \\text{ $d$-degenerate on $n$ vertices}: R(H) \\le C \\cdot n$. Evidence for the singly exponential bound includes: Lee's chromatic refinement achieves it for bounded $\\chi$; specific classes (trees, bounded pathwidth) have even better constants; and the lower bound $R(H) \\ge 2^{\\Omega(d)} \\cdot n$ for some families shows the exponential dependence on $d$ is necessary.",

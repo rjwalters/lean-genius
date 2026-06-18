@@ -67,7 +67,7 @@
       "startLine": 99,
       "endLine": 116
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "The Diophantine Equation",
     "content": "Finding common products reduces to the Diophantine equation $k(m-k) = l(n-l)$, formalized as sameProduct. Two equivalent reformulations are axiomatized:\n\n1. same_product_equiv: $k(m-k) = l(n-l) \\Leftrightarrow km - k^2 = ln - l^2$ (expanding the products).\n2. product_as_squares: over $\\mathbb{Z}$, $k(m-k) = l(n-l) \\Leftrightarrow m^2 - (2k-m)^2 = n^2 - (2l-n)^2$ (completing the square on both sides).\n\nThe second form reveals the geometric structure: common products correspond to common representable integers as differences of squares from two different moduli.",
     "mathContext": "The equation $m^2 - a^2 = n^2 - b^2$ rearranges to $(m-n)(m+n) = (a-b)(a+b)$, a factorization problem. The number of solutions is controlled by the divisor function $d(m^2 - n^2)$, which connects the intersection count to multiplicative number theory. Hegyvári exploits this via the bound $d(N) \\le N^{O(1/\\log\\log N)}$, the well-known estimate for the maximal order of the divisor function.",

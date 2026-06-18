@@ -211,7 +211,7 @@
       "startLine": 175,
       "endLine": 178
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Euler's Conjecture",
     "content": "**Euler (1769)** conjectured that the sum of k-1 k-th powers is never a k-th power.\n\nThis would generalize Fermat's Last Theorem: for k=3, Euler's conjecture says a³ + b³ ≠ c³ (FLT for n=3).\n\nThe conjecture held for over 200 years before being disproved.",
     "mathContext": "EulerConjecture: ∀k≥4, ∀S with |S|=k-1, ¬∃q, Σ_{s∈S} s^k = q^k.",

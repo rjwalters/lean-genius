@@ -138,7 +138,7 @@
       "startLine": 165,
       "endLine": 170
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Binary Entropy Function",
     "content": "The binary entropy function $h(p) = -p \\log p - (1-p) \\log(1-p)$ is the entropy of a Bernoulli($p$) random variable. It appears in the binary rate-distortion function $R(D) = h(p) - h(D)$ for $0 \\leq D \\leq \\min(p, 1-p)$. The definition uses the convention $0 \\log 0 = 0$ via conditional branches.\n\n**Key properties** (proved in this file):\n- $h(p) \\geq 0$ for $p \\in [0,1]$: entropy is non-negative\n- $h(p) = h(1-p)$: symmetric around $p = 1/2$\n- $h(0) = h(1) = 0$: no uncertainty for certain outcomes\n- $h(1/2) = \\log 2$: maximum entropy at uniform distribution\n\n**Concavity** (not proved here): $h''(p) = -1/(p(1-p)) < 0$, so $h$ is strictly concave. This concavity drives the convexity of the rate-distortion function: $R(D) = h(p) - h(D)$ inherits convexity from the convexity of $-h(D)$.",
     "mathContext": "$h(p) = -p\\log p - (1-p)\\log(1-p) = H(\\text{Bernoulli}(p))$. Binary rate-distortion: $R(D) = h(p) - h(D)$ for Bernoulli($p$) source with Hamming distortion, achieved by BSC($D$): $W(1|0) = W(0|1) = D$. The mutual information of BSC($D$): $I(X;\\hat{X}) = h(p) - h(p * D)$ where $*$ denotes binary convolution; at the optimum $p * D = h^{-1}(h(D))$... the formula simplifies to $h(p) - h(D)$. $h(1/2) = \\log 2$: `binaryEntropy_half` uses $1 - (2)^{-1} = (2)^{-1}$ and $\\log((2)^{-1}) = -\\log 2$.",

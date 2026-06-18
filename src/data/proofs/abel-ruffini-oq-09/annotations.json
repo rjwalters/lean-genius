@@ -29,7 +29,7 @@
       "startLine": 79,
       "endLine": 88
     },
-    "type": "definition",
+    "type": "concept",
     "title": "DiffField Typeclass",
     "content": "A **differential field** is a field F equipped with a derivation D : F → F satisfying:\n1. **Additivity**: D(f + g) = D(f) + D(g)\n2. **Leibniz rule**: D(f·g) = D(f)·g + f·D(g)\n\nThis abstracts the familiar derivative on ℝ(x). In Lean 4, this is encoded as a typeclass extending `Field F`, with `deriv` as the derivation. The constants of F are {f : D(f) = 0} — this forms a subfield (proved in `constants_add`, `constants_mul`).\n\n**Why this structure?** Liouville's theorem characterizes when f ∈ F has an elementary antiderivative in terms of the differential field structure. The theorem holds for arbitrary differential fields, not just ℝ(x).",
     "mathContext": "A derivation $D$ on a ring satisfies $D(f+g) = D(f) + D(g)$ and $D(fg) = D(f)g + fD(g)$. The constants $C = \\ker D$ form a subfield of $F$.",

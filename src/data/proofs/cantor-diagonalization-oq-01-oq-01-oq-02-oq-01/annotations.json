@@ -77,7 +77,7 @@
       "startLine": 83,
       "endLine": 90
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "permitted_satisfies_konig: Cofinality Constraint Free of Charge",
     "content": "The theorem `permitted_satisfies_konig` shows the König constraint cf(κ) > ℵ₀ falls out of the two-clause definition. The proof is two lines: rewrite cf(κ) = κ via `IsRegular.cof_eq` (regularity), then the second clause ℵ₀ < κ is the goal. This is the structural justification for the minimal definition: it correctly sits underneath the König constraint without redundancy. The lemma is itself a useful interface theorem for downstream proofs that need cf-bounds rather than regularity directly.",
     "mathContext": "$\\mathsf{IsPermittedValue}(\\kappa) \\Rightarrow \\mathrm{cf}(\\kappa) > \\aleph_0$. Proof: $\\mathrm{cf}(\\kappa) = \\kappa$ since $\\kappa$ is regular, and $\\kappa > \\aleph_0$ by hypothesis.",
@@ -171,7 +171,7 @@
       "startLine": 140,
       "endLine": 159
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "IsEastonFunction: Three Constraints in a Lean Structure",
     "content": "The structure `IsEastonFunction F` packages the three Easton constraints as fields: `succ_le` (F(κ) ≥ κ⁺, the Cantor-style strict bound), `monotone` (κ ≤ ν ⇒ F(κ) ≤ F(ν), monotonicity restricted to regular infinite cardinals), and `konig_pointwise` (κ < cf(F κ), the König constraint). All three are quantified over regular κ ≥ ℵ₀ — exactly the domain on which Easton's theorem governs the continuum function. Using a `structure` rather than a Π-type bundle gives named fields and dot-notation access (`hF.succ_le`, `hF.monotone`), which the downstream witness theorem exploits.",
     "mathContext": "$\\mathsf{IsEastonFunction}(F) \\iff $ for all regular $\\kappa, \\nu \\geq \\aleph_0$: (E1) $F(\\kappa) \\geq \\kappa^+$, (E2) $\\kappa \\leq \\nu \\Rightarrow F(\\kappa) \\leq F(\\nu)$, (E3) $\\mathrm{cf}(F(\\kappa)) > \\kappa$. Easton 1970: these conditions are exactly the necessary AND sufficient constraints for $F$ to be realizable as $\\kappa \\mapsto 2^\\kappa$ on regular cardinals in some forcing extension.",
@@ -195,7 +195,7 @@
       "startLine": 168,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "isEastonFunction_continuum: 2^· is the Canonical Witness",
     "content": "The actual continuum function κ ↦ 2^κ satisfies all three Easton constraints axiom-free, so the constraint set is non-vacuous. `succ_le` is `Order.succ_le_of_lt (Cardinal.cantor κ)` — Cantor's strict inequality 2^κ > κ becomes succ(κ) ≤ 2^κ. `konig_pointwise` is `Cardinal.lt_cof_power` applied with base 2 — directly König's theorem cf(2^κ) > κ. The `monotone` field is `Cardinal.power_le_power_left` (note the Mathlib naming convention: `power_le_power_left` varies the EXPONENT, while `power_le_power_right` varies the BASE — the opposite of what the names suggest), with the base-nonzero side condition `(2 : Cardinal) ≠ 0` discharged by `norm_num`. The witness theorem is structurally important: it confirms the constraint set is the right one (forced by the actual continuum function), making the realizability axioms in Phase3b non-vacuous. Companion theorem `isEastonFunction_nonempty` packages this as ∃ F, IsEastonFunction F.",
     "mathContext": "Witness: $F(\\kappa) = 2^\\kappa$. Cantor: $\\kappa < 2^\\kappa \\Rightarrow \\mathrm{succ}(\\kappa) \\leq 2^\\kappa$. König: $\\mathrm{cf}(2^\\kappa) > \\kappa$. Monotonicity: $\\kappa \\leq \\nu \\Rightarrow 2^\\kappa \\leq 2^\\nu$ via `power_le_power_left`. All three constraints discharged from Mathlib without forcing infrastructure.",

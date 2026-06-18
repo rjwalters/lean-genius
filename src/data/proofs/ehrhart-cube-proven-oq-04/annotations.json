@@ -75,7 +75,7 @@
     "id": "ann-hstar-def",
     "proofId": "ehrhart-cube-proven-oq-04",
     "range": { "startLine": 225, "endLine": 250 },
-    "type": "definition",
+    "type": "theorem",
     "title": "Cube h*-Polynomial: cubeHStarPoly d : Polynomial ℕ",
     "content": "Defines `cubeHStarPoly d : Polynomial ℕ` as the Eulerian generating polynomial $A_d(t) = \\sum_{k=0}^{d-1} A(d, k) t^k$ (with the convention $A_0(t) = 1$ for the degenerate 0-cube). The Lean implementation uses `Finset.sum` over `Finset.range d`, with each term `eulerianNumber d k • X^k` (scalar-multiplication of the indeterminate power by the corresponding Eulerian number, lifted from ℕ). The theorem `cube_h_star_eulerian` asserts the coefficient extraction `(cubeHStarPoly d).coeff k = eulerianNumber d k` for k < d — automatic by the construction, but stated for documentation. The *substantive* content (deferred) is connecting `cubeHStarPoly` to the Ehrhart polynomial via Worpitzky.",
     "mathContext": "$\\text{cubeHStarPoly}(d) = \\sum_{k=0}^{d-1} A(d, k) X^k \\in \\mathbb{N}[X]$. Coefficient: $[X^k] \\text{cubeHStarPoly}(d) = A(d, k)$ for $0 \\leq k < d$.",

@@ -39,7 +39,7 @@
     "id": "ann-normalize3",
     "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
     "range": { "startLine": 91, "endLine": 113 },
-    "type": "definition",
+    "type": "theorem",
     "title": "normalize3 — Unit Vector Construction",
     "content": "Defines $\\mathrm{normalize3}(v) = v / \\sqrt{\\|v\\|^2}$. The companion `dot_normalize3` shows $\\langle \\hat u, \\hat v\\rangle = \\langle u, v\\rangle / (\\|u\\| \\|v\\|)$, and `isUnit3_normalize3` proves the result is genuinely unit-length when $\\|v\\|^2 > 0$. The use of `Real.sq_sqrt` carefully respects the squaring/square-root cancellation, since `Real.sqrt` is total in Lean (sqrt of a negative is 0) and would otherwise need careful side-conditions.",
     "mathContext": "$\\hat v := v / \\sqrt{\\langle v, v\\rangle}$; $\\|\\hat v\\| = 1$ when $v \\neq 0$",

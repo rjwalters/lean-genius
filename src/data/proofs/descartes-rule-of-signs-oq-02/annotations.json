@@ -145,7 +145,7 @@
       "startLine": 173,
       "endLine": 195
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Root Count in Half-Open Intervals",
     "content": "`rootsInInterval p a b` counts roots of $p$ in $(a, b]$ with multiplicity, using Mathlib's `Polynomial.roots` multiset. For $p = 0$, it returns 0 (convention). For $p \\neq 0$, it filters `p.roots` to elements in $(a, b]$ and takes the cardinality.\n\nThe `rootsInInterval_C` theorem proves constants have no roots: if $c \\neq 0$, then `C c` has no roots (since `eval c = c \u2260 0`), so the filtered multiset is empty. The proof uses `Multiset.filter_eq_nil` and `Polynomial.IsRoot` to derive a contradiction from any supposed root.",
     "mathContext": "For $p \\neq 0$ of degree $n$, $p$ has at most $n$ roots in $\\mathbb{C}$ (counted with multiplicity), hence at most $n$ real roots. `rootsInInterval p a b = |\\{r \\in \\text{roots}(p) : a < r \\leq b\\}|$ where roots are counted with multiplicity. The half-open convention $(a, b]$ avoids double-counting when splitting intervals.",

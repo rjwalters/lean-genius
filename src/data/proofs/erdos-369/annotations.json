@@ -99,7 +99,7 @@
       "startLine": 49,
       "endLine": 56
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Consecutive Smooth Run",
     "content": "**ConsecutiveSmoothRun m k B**: the $k$ consecutive integers $m, m+1, \\ldots, m+k-1$ are each $B$-smooth, with $k \\geq 2$.",
     "significance": "key",
@@ -121,7 +121,7 @@
       "startLine": 57,
       "endLine": 67
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Has Consecutive Smooth Run in {1,...,n}",
     "content": "**HasConsecutiveSmoothRun n k B**: there exists $m \\geq 1$ with $m + k - 1 \\leq n$ such that $m, m+1, \\ldots, m+k-1$ are each $B$-smooth. This wraps `ConsecutiveSmoothRun` with an existential quantifier and a range constraint, transforming the local smoothness property into a global question about the interval $\\{1, \\ldots, n\\}$.\n\nThe docstring in the Lean file (lines 58-65) labels this as 'the main conjecture' and describes the $n^\\varepsilon$ approximation via requiring $B^{1/\\varepsilon} \\geq n$, though the actual formalization uses the parametrized `smoothBound` approach in `ErdosConjecture369` instead.",
     "significance": "key",

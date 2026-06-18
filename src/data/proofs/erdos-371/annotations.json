@@ -390,7 +390,7 @@
       "startLine": 249,
       "endLine": 274
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Small Examples and Set Membership",
     "content": "Computes $P(2)=2$, $P(3)=3$, $P(4)=2$, $P(5)=5$, $P(6)=3$ (all sorry). Then proves set membership: $2 \\in S^+$ (since $P(2)=2 < P(3)=3$), $4 \\in S^+$ (since $P(4)=2 < P(5)=5$), $5 \\in S^-$ (since $P(5)=5 > P(6)=3$). These concrete examples ground the abstract definitions.",
     "mathContext": "$P(2)=2, P(3)=3, P(4)=2, P(5)=5, P(6)=3$. So $2,4 \\in S^+$ and $5 \\in S^-$. The OEIS sequence A070089 begins $2, 4, 6, 8, 10, 12, \\ldots$",

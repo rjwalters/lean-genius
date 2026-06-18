@@ -222,7 +222,7 @@
       "startLine": 104,
       "endLine": 106
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Natural Density Product",
     "content": "**naturalDensity m₁ m₂** = $\\prod_{n=m_1}^{m_2}(1-1/n)$. This is the best achievable uncovered density by the averaging (random residue) argument.",
     "mathContext": "$\\prod_{n=N}^{CN}(1-1/n) = \\frac{(N-1)!/(CN)!}{\\text{(scaling)}} \\approx \\frac{N-1}{CN} \\approx 1/C$. For fixed $C$, this is bounded below by $1/C > 0$, proving that the uncovered density cannot vanish.",
@@ -287,7 +287,7 @@
       "startLine": 140,
       "endLine": 142
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Critical Exponent",
     "content": "**criticalExponent N** = $\\frac{\\log\\log\\log N}{4\\log\\log N}$. For $C \\leq N^{\\alpha(N)}$, almost-covering provably fails.",
     "mathContext": "$\\alpha(N) = \\frac{\\log\\log\\log N}{4\\log\\log N} \\to 0$ as $N \\to \\infty$, but extremely slowly. For $N = 10^{100}$, $\\alpha(N) \\approx 0.045$, so $N^{\\alpha(N)} \\approx 10^{4.5}$.",

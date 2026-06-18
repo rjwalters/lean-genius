@@ -313,7 +313,7 @@
       "startLine": 235,
       "endLine": 254
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Stanley Sequence",
     "content": "**isStanleySequence:**\n\nThe Stanley Sequence S(0,1) is the 3-AP-free sequence starting with 0, 1 and greedily adding the smallest number that doesn't create a 3-AP.\n\n**Begins:** 0, 1, 3, 5, 9, 11, 13, 15, 25, 27, ...\n\nBy construction, this sequence avoids all 3-APs.",
     "mathContext": "Stanley sequences are important in combinatorial number theory. Their density and structure are actively studied.",

@@ -115,7 +115,7 @@
       "startLine": 193,
       "endLine": 194
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Multiplicative Functional Equation (Cauchy Exponential)",
     "content": "The multiplicative Cauchy equation $f(xy) = f(x)f(y)$ for $x, y \\neq 0$. Continuous solutions on $(0, \\infty)$ are power functions $f(x) = x^c$. The logarithmic reduction $g = \\log \\circ f \\circ \\exp$ converts this to the additive equation, enabling transfer of de Bruijn-Jurkat results.",
     "mathContext": "$\\text{IsMultiplicative}(f) \\iff \\forall x, y \\neq 0,\\; f(xy) = f(x)f(y)$. If $f > 0$: setting $g = \\log f$, $g(xy) = g(x) + g(y)$.",
@@ -158,7 +158,7 @@
       "startLine": 279,
       "endLine": 280
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Derivation (Leibniz Rule) Functional Equation",
     "content": "The Leibniz rule $d(xy) = xd(y) + yd(x)$ defines a derivation on $\\mathbb{R}$. This generalizes the familiar product rule from calculus. Unlike additive and multiplicative functions, the only continuous derivation on $\\mathbb{R}$ is identically zero (because $\\mathbb{R}$ is a complete valued field). Discontinuous derivations exist via AC.",
     "mathContext": "$\\text{IsDerivation}(d) \\iff \\forall x, y,\\; d(xy) = xd(y) + yd(x)$. The product rule for differentiation is the prototypical example.",

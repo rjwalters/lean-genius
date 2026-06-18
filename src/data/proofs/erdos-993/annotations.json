@@ -159,7 +159,7 @@
       "startLine": 154,
       "endLine": 164
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Independence Number and Peak Location",
     "content": "**independenceNumber G**: The independence number α(G) is the maximum size of an independent set. Computed as the supremum of card(S) over all independent sets S.\n\n**no_large_indep_sets**: For k > α(G), there are no independent sets of size k, so i_k(G) = 0. This means the sequence is eventually zero.\n\n**peak_at_most_alpha**: For trees, the peak of the unimodal sequence occurs at some position m ≤ α(G). Since i_k = 0 for k > α(G), the sequence must start decreasing by position α(G) at the latest.\n\nFor a path P_n, α = ⌈n/2⌉ and the peak is typically near n/3, well below the independence number.",
     "mathContext": "Computing the independence number is NP-hard for general graphs but polynomial for trees (via dynamic programming). For a tree on n vertices, α(T) ≥ ⌈n/2⌉ always holds. The relationship between the peak location and α(T) is an active area of study.",

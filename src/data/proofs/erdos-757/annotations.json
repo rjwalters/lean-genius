@@ -226,7 +226,7 @@
       "startLine": 215,
       "endLine": 224
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "B₂ Sequences and Sidon Constant",
     "content": "**IsB2Sequence**: A B₂ sequence is just a Sidon set (alternate terminology from additive combinatorics).\n\n**sidon_constant**: Any finite set A ⊂ ℝ contains a Sidon subset of size ≥ C√|A| for some universal C > 0.\n\nThis is the general Sidon extraction problem. The almost-Sidon condition gives a *linear* guarantee instead of √n.",
     "mathContext": "The √n bound is optimal in general—some sets have no larger Sidon subsets.",

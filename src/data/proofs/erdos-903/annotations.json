@@ -288,7 +288,7 @@
       "startLine": 128,
       "endLine": 129
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "achievableBlocks",
     "content": "The set of values t that can be achieved by some block design on p² + p + 1 points: achievableBlocks(p) = { t | ∃ D : BlockDesign(p²+p+1), D.numBlocks = t }.",
     "mathContext": "Characterizing achievableBlocks(p) is an open problem in design theory. Known elements include: n (via projective planes), n + p (via broken projective planes), and larger values constructible by further 'breaking' or extending designs. The gap theorem says (n, n+p) ∩ achievableBlocks(p) = ∅. For q = 2 (n = 7), the achievable values are known to be {7, 9, 10, 11, 13, 15, 21} (all designs on 7 points have been classified).",

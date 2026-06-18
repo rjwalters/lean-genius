@@ -45,7 +45,7 @@
       "startLine": 54,
       "endLine": 69
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Inverse Goldbach Conjecture",
     "content": "**Formal Statement**\n\nInverseGoldbachPair A B holds when A and B are both infinite and Sumset A B agrees with Primes up to finitely many exceptions. The conjecture (InverseGoldbachConjecture) asserts that no such pair exists.\n\nThe requirement that A and B are infinite is essential — without it, trivial solutions exist (e.g., A = {2} and B = {p - 2 : p prime, p > 2} gives a finite-exception agreement). The axiom inverse_goldbach_conjectured records the widely-held belief that the conjecture is true.",
     "mathContext": "InverseGoldbachConjecture := ¬∃ A B, A.Infinite ∧ B.Infinite ∧ (A + B) =_{fin} Primes",

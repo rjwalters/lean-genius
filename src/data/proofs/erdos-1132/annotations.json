@@ -45,7 +45,7 @@
       "startLine": 69,
       "endLine": 93
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Lebesgue Function and Constant",
     "content": "**lebesgueFunction** computes Lₙ(x) = Σₖ |lₖ(x)| as a sum of absolute values of all Lagrange basis polynomials. **lebesgueConstant** is Λₙ = sup_{x ∈ [-1,1]} Lₙ(x), using iSup over Set.Icc. **lebesgueFunction_ge_one** axiomatizes that Lₙ(x) ≥ 1 for all x when nodes are distinct — at any node xₖ, the term |lₖ(xₖ)| = 1 and all others are non-negative. The Lebesgue function controls interpolation error: |f(x) - Pₙ(x)| ≤ (1 + Lₙ(x)) · Eₙ(f) where Eₙ(f) is the best polynomial approximation error.",
     "mathContext": "lebesgueFunction nodes x := Σₖ |lagrangeBasis nodes k x|. lebesgueConstant nodes := ⨆ x ∈ Icc(-1,1), Lₙ(x). lebesgueFunction_ge_one: Lₙ ≥ 1.",
@@ -83,7 +83,7 @@
       "startLine": 126,
       "endLine": 160
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "The Two Open Questions",
     "content": "**InfiniteNodeSequence** is a subtype of ℕ → ℝ satisfying ∀ n, f(n) ∈ [-1,1]. **lebesgueFunctionN** computes Lₙ for the first n nodes of a sequence (returns 1 for n=0). **existsGoodPoint** (Question 1): ∃ x ∈ (-1,1), ∃ C, ∀ N, ∃ n > N, Lₙ(x) > (2/π)log(n) - C. This asks for a single witness point that works infinitely often. **almostEverywhereGrowth** (Question 2): ∀ᵐ x ∂(volume.restrict Ioo(-1,1)), limsup Lₙ(x)/log(n) ≥ 2/π. This uses Mathlib's measure-theoretic 'almost everywhere' quantifier. The distinction is crucial: Erdős's max theorem gives witnesses for each n, but they may differ between n values.",
     "mathContext": "existsGoodPoint: ∃ x ∈ Ioo(-1,1), ∃ C, Lₙ(x) > (2/π)log n - C i.o. almostEverywhereGrowth: ∀ᵐ x, limsup Lₙ(x)/log n ≥ 2/π. Both OPEN.",
