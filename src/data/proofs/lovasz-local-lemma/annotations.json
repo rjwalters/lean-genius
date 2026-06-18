@@ -3,7 +3,7 @@
     "id": "ann-lll-symmetric-core",
     "proofId": "lovasz-local-lemma",
     "range": {
-      "startLine": 21,
+      "startLine": 25,
       "endLine": 34
     },
     "type": "insight",
@@ -29,7 +29,7 @@
     "id": "ann-lll-general-positivity",
     "proofId": "lovasz-local-lemma",
     "range": {
-      "startLine": 36,
+      "startLine": 40,
       "endLine": 75
     },
     "type": "insight",
@@ -55,7 +55,7 @@
     "id": "ann-lll-ksat",
     "proofId": "lovasz-local-lemma",
     "range": {
-      "startLine": 77,
+      "startLine": 81,
       "endLine": 113
     },
     "type": "insight",
@@ -82,7 +82,7 @@
     "id": "ann-lll-moser-tardos",
     "proofId": "lovasz-local-lemma",
     "range": {
-      "startLine": 115,
+      "startLine": 119,
       "endLine": 168
     },
     "type": "concept",
@@ -103,10 +103,35 @@
     ]
   },
   {
+    "id": "ann-lll-threshold-values",
+    "proofId": "lovasz-local-lemma",
+    "range": {
+      "startLine": 177,
+      "endLine": 225
+    },
+    "type": "concept",
+    "title": "Part VII: LLL Threshold Function and Dependency Graph",
+    "content": "lllThreshold(d) is defined as d^d/(d+1)^{d+1} for d ≥ 1, with T(0) = 1 as a degenerate case. Computed values: T(1)=1/4, T(2)=4/27, T(3)=27/256 (by norm_num). The IsValidDepGraph structure encodes an irreflexive, symmetric dependency relation. HasMaxDegree bounds the degree of each vertex. symmetric_lll_avoidance uses symmetric_product_eq and symmetric_avoidance_pos to confirm the avoidance product is positive.",
+    "mathContext": "The **LLL threshold** $T(d) = d^d/(d+1)^{d+1}$ is the maximum event probability compatible with the symmetric LLL for dependency degree $d$. At $d=1$: $T(1) = 1/4$ (two dependent events, each with probability $\\leq 1/4$, can be simultaneously avoided). The limit $\\lim_{d \\to \\infty} T(d) = 1/e$ recovers the asymptotic threshold from the original Erdős-Lovász bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "lllThreshold",
+      "IsValidDepGraph",
+      "HasMaxDegree",
+      "LLL threshold convergence to 1/e"
+    ],
+    "prerequisites": [
+      "noncomputable def",
+      "if/then/else in definitions",
+      "Finset.prod_const",
+      "Finset.card_univ"
+    ]
+  },
+  {
     "id": "ann-lll-bernoulli",
     "proofId": "lovasz-local-lemma",
     "range": {
-      "startLine": 227,
+      "startLine": 231,
       "endLine": 294
     },
     "type": "concept",
@@ -132,7 +157,7 @@
     "id": "ann-lll-threshold-bridge",
     "proofId": "lovasz-local-lemma",
     "range": {
-      "startLine": 308,
+      "startLine": 303,
       "endLine": 363
     },
     "type": "insight",
@@ -150,31 +175,6 @@
       "lllThreshold_eq_product",
       "succ_pow_ge_two_mul",
       "Finset.prod_const"
-    ]
-  },
-  {
-    "id": "ann-lll-threshold-values",
-    "proofId": "lovasz-local-lemma",
-    "range": {
-      "startLine": 173,
-      "endLine": 225
-    },
-    "type": "concept",
-    "title": "Part VII: LLL Threshold Function and Dependency Graph",
-    "content": "lllThreshold(d) is defined as d^d/(d+1)^{d+1} for d ≥ 1, with T(0) = 1 as a degenerate case. Computed values: T(1)=1/4, T(2)=4/27, T(3)=27/256 (by norm_num). The IsValidDepGraph structure encodes an irreflexive, symmetric dependency relation. HasMaxDegree bounds the degree of each vertex. symmetric_lll_avoidance uses symmetric_product_eq and symmetric_avoidance_pos to confirm the avoidance product is positive.",
-    "mathContext": "The **LLL threshold** $T(d) = d^d/(d+1)^{d+1}$ is the maximum event probability compatible with the symmetric LLL for dependency degree $d$. At $d=1$: $T(1) = 1/4$ (two dependent events, each with probability $\\leq 1/4$, can be simultaneously avoided). The limit $\\lim_{d \\to \\infty} T(d) = 1/e$ recovers the asymptotic threshold from the original Erdős-Lovász bound.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "lllThreshold",
-      "IsValidDepGraph",
-      "HasMaxDegree",
-      "LLL threshold convergence to 1/e"
-    ],
-    "prerequisites": [
-      "noncomputable def",
-      "if/then/else in definitions",
-      "Finset.prod_const",
-      "Finset.card_univ"
     ]
   }
 ]
