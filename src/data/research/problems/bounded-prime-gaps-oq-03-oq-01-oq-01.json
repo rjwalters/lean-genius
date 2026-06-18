@@ -2,15 +2,24 @@
   "slug": "bounded-prime-gaps-oq-03-oq-01-oq-01",
   "title": "Prove D(5)=12 from Scratch",
   "problemStatement": "Prove from scratch (no new axioms) that the minimal diameter of an admissible 5-tuple is exactly 12: minAdmissibleDiameter 5 = 12. Witness {0,2,6,8,12} (diameter 12, admissible); lower bound D(5) >= 12 is the k=5 entry of OEIS A008407 and is a finite, decidable check.",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "path": "full",
   "tier": "MODERATE",
   "status": "active",
   "started": "2026-06-16T04:40:01.683Z",
   "lastUpdate": "2026-06-16T00:00:00.000Z",
   "leanFiles": [],
-  "relatedProofs": ["bounded-prime-gaps-oq-03-oq-01", "bounded-prime-gaps-oq-03-oq-01-oq-04"],
-  "tags": ["prime-gaps", "admissible-tuples", "maynard-tao", "combinatorics", "decidable"],
+  "relatedProofs": [
+    "bounded-prime-gaps-oq-03-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-04"
+  ],
+  "tags": [
+    "prime-gaps",
+    "admissible-tuples",
+    "maynard-tao",
+    "combinatorics",
+    "decidable"
+  ],
   "knownResults": [
     "Parent BoundedPrimeGapsOQ03OQ01.lean proves minAdmissibleDiameter_2 = 2 and minAdmissibleDiameter_3 = 6 from scratch.",
     "D(50)=246 is an axiom (Engelsma 2013). D(5)=12 is OEIS A008407(5)."
@@ -21,25 +30,27 @@
   ],
   "currentState": "OBSERVE complete; D5-draft.lean skeleton parked (UNVERIFIED, not registered). Build-pending under dual blackout.",
   "knowledge": {
-    "progressSummary": "OBSERVE (researcher-1 2026-06-16 S1): materialized this previously-unstated auto-seeded slug as 'D(5)=12 from scratch' (next rung after the parent's proved D(2)=2, D(3)=6 and the D(4) sibling). Wrote problem.md (statement, witness {0,2,6,8,12}, proof plan, bearer audit) + D5-draft.lean (UNVERIFIED skeleton mirroring minAdmissibleDiameter_3; 2 sorries: easy witness admissibility + load-bearing lower bound admissible_5tuple_diam_ge_12). Build-gated, not math-gated: D(5)=12 is finite/decidable, NOT the open Maynard-Tao/Engelsma-246 barrier. Dual blackout (Docker hangs exit 124; Aristotle 404) so no verification.",
+    "progressSummary": "COMPLETED (researcher-4 2026-06-18 S1): VERIFIED & MERGED. D(5)=12 was completed and merged via PR #25419 (initial) + #25641 (de-axiomatized: the native_decide witness-diameter was replaced by a symbolic max'/min' proof, flipping the entry to verified/original/axiomCount 0 — fully kernel-verified, no Lean.ofReduceBool). Gallery meta confirms verified / 0-axiom / 0-sorry. The merged lower bound admissible_5tuple_diam_ge_12 is a clean native_decide-FREE argument; reviewed for soundness this session and confirmed correct. Independent Docker re-verification this session was blocked by a worktree mathlib-clone infra failure (missing lean-toolchain), NOT a proof issue.",
     "insights": [
       "This slug had NO materialized statement in the registry; interpreted as the D(5)=12 rung by analogy to proved D(2)/D(3) and the D(4)=8 sibling.",
       "D(5)=12 is finite/decidable (OEIS A008407), distinct from the parent's open '246 barrier' — buildable, just build-gated this session.",
       "Lower bound D(5)>=12 reduces to: shift to min=0 (translation-invariance of IsAdmissible) + native_decide over the 5-subsets of {0,...,11}, each inadmissible mod 2 or mod 3 (only p in {2,3,5} can cover a 5-set of width <=11; p=2,3 suffice).",
-      "Witness {0,2,6,8,12}: admissible since mod 2 -> {0}, mod 3 -> {0,2}, mod 5 -> {0,1,2,3}, each missing a class; p>=7 cannot cover 5 points."
+      "Witness {0,2,6,8,12}: admissible since mod 2 -> {0}, mod 3 -> {0,2}, mod 5 -> {0,1,2,3}, each missing a class; p>=7 cannot cover 5 points.",
+      "MERGED lower bound is native_decide-FREE: p=2 admissibility forces all elements to share min's parity; diameter<12 then confines H to the 6-set {m,m+2,m+4,m+6,m+8,m+10}; its two disjoint mod-3-complete triples {m,m+2,m+4} and {m+6,m+8,m+10} each must omit >=1 element (else H covers all residues mod 3), forcing >=2 omissions from a 6-set — impossible for card 5. Only primes p in {2,3} are interrogated, so no Decidable IsAdmissible instance is needed.",
+      "The merged proof is strictly cleaner than the S1 draft plan (which anticipated native_decide over the 5-subsets of {0..11}): the symbolic parity + mod-3-triple-covering argument needs no closed-term reduction, so the headline carries no Lean.ofReduceBool axiom."
     ],
     "builtItems": [
       "research/problems/bounded-prime-gaps-oq-03-oq-01-oq-01/problem.md (OBSERVE writeup)",
       "research/problems/bounded-prime-gaps-oq-03-oq-01-oq-01/D5-draft.lean (UNVERIFIED skeleton, not registered)",
-      "research/problems/bounded-prime-gaps-oq-03-oq-01-oq-01/state.md"
+      "research/problems/bounded-prime-gaps-oq-03-oq-01-oq-01/state.md",
+      "proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean — REGISTERED & verified (0 sorry / 0 axiom): minAdmissibleDiameter_5 = 12, merged via PR #25641; registered in proofs/Proofs.lean:322"
     ],
     "mathlibGaps": [
       "Translation/shift lemma for IsAdmissible (IsAdmissible (H + c) <-> IsAdmissible H) not located in a no-build grep; ~10 LOC, reusable for the whole D(k) series."
     ],
     "nextSteps": [
-      "On a Docker-up worktree, build D5-draft.lean; the two native_decide reductions (witness + lower-bound finite check) are the only real risk.",
-      "If green, register as Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean or fold minAdmissibleDiameter_5 into the parent beside D(2)/D(3).",
-      "Confirm/build the IsAdmissible shift lemma for the WLOG min=0 step."
+      "SOLVED — no further work on D(5)=12. Frontier follow-up: D(6)=16 (OEIS A008407 a(6)). Unlike D(5), the lower bound needs the prime p=5 interrogated as well — parity(mod 2)+mod-3 alone cannot confine a 6-element admissible window, so a new residue-covering case split is required.",
+      "If Docker re-verification is desired on a clean worktree: rm the partial proofs/.lake/packages/mathlib (missing lean-toolchain from this session's interrupted clone) and rebuild Proofs.BoundedPrimeGapsOQ03OQ01OQ01."
     ],
     "markdown": "See research/problems/bounded-prime-gaps-oq-03-oq-01-oq-01/problem.md"
   }
