@@ -258,10 +258,16 @@
   ],
   "mainTheorems": [
     {
-      "name": "dehn_invariant",
+      "name": "dissection_of_cubes",
       "type": "core",
-      "description": "Dehn's theorem: polyhedra with different Dehn invariants are not scissors-congruent",
-      "leanType": "dehnInvariant P != dehnInvariant Q -> not (scissors_congruent P Q)"
+      "description": "Wiedijk #82 (Littlewood): no dissection of a cube into finitely many smaller cubes can have all different sizes. Proved by infinite descent (chain_length_bounded + omega), modulo two geometric covering axioms.",
+      "leanType": "(d : CubeDissection) -> d.cubes.Nonempty -> ¬ d.allDifferentSizes"
+    },
+    {
+      "name": "two_cubes_same_size",
+      "type": "core",
+      "description": "Equivalent reformulation: any dissection of a cube into smaller cubes must contain at least two distinct cubes of the same size.",
+      "leanType": "(d : CubeDissection) -> d.cubes.Nonempty -> ∃ c₁ ∈ d.cubes, ∃ c₂ ∈ d.cubes, c₁ ≠ c₂ ∧ c₁.size = c₂.size"
     }
   ],
   "sorries": 0
