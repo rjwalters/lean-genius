@@ -315,4 +315,65 @@ theorem nonadjacent_neighborSet_equinum (hF : IsFriendshipGraph G)
     rw [ha, Set.mem_singleton_iff] at hy_mem hfw_mem
     rw [hfw_mem, hy_mem]
 
+/-- **Partnership is symmetric (the windmill is a perfect matching off the centre).**
+In a friendship graph with universal vertex `c`, if a non-centre vertex `u` has
+`N(u) = {c, w}` then its partner `w` satisfies `N(w) = {c, u}` in turn. So the
+"partner" relation on non-centre vertices is an involution: the graph with the
+centre deleted is a disjoint union of edges (the windmill spokes), each triangle
+`{c, u, w}` meeting the others only at the hub `c`. This sharpens
+`universal_noncentral_neighborSet`, which gives each vertex a partner but does not
+say the pairing is mutual. No `[Fintype V]` assumption is used. -/
+theorem universal_partner_symm (hF : IsFriendshipGraph G)
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c) (u : V) (hu : u ≠ c) :
+    ∃ w, w ≠ c ∧ G.neighborSet u = {c, w} ∧ G.neighborSet w = {c, u} := by
+  obtain ⟨w, hwc, _, hadj_uw, hset_u⟩ := universal_noncentral_neighborSet hF c hc u hu
+  obtain ⟨u', _, _, _, hset_w⟩ := universal_noncentral_neighborSet hF c hc w hwc
+  -- `u` is a neighbour of `w` and is not the centre, so it is `w`'s unique partner `u'`.
+  have hu_mem : u ∈ G.neighborSet w := (G.mem_neighborSet w u).mpr hadj_uw.symm
+  rw [hset_w] at hu_mem
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hu_mem
+  rcases hu_mem with h | h
+  · exact absurd h hu
+  · rw [← h] at hset_w
+    exact ⟨w, hwc, hset_u, hset_w⟩
+
+/-- **Each non-centre vertex has a unique partner.** In a friendship graph with a
+universal vertex `c`, every vertex `u ≠ c` is adjacent to *exactly one* non-centre
+vertex. Combined with `universal_partner_symm` this is the perfect-matching
+description of the windmill spokes. -/
+theorem universal_noncentral_unique_partner (hF : IsFriendshipGraph G)
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c) (u : V) (hu : u ≠ c) :
+    ∃! w, w ≠ c ∧ G.Adj u w := by
+  obtain ⟨w, hwc, _, hadj_uw, hset_u⟩ := universal_noncentral_neighborSet hF c hc u hu
+  refine ⟨w, ⟨hwc, hadj_uw⟩, ?_⟩
+  rintro w' ⟨hw'c, hadj_uw'⟩
+  have hmem : w' ∈ G.neighborSet u := (G.mem_neighborSet u w').mpr hadj_uw'
+  rw [hset_u] at hmem
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hmem
+  rcases hmem with h | h
+  · exact absurd h hw'c
+  · exact h
+
+/-- **Off-centre adjacency is partnership.** For two non-centre vertices `u`, `u'`
+of a friendship graph with universal vertex `c`, they are adjacent iff they are each
+other's partners (`N(u) = {c, u'}`). This pins down the entire edge set: the hub `c`
+is joined to everything, and the only other edges pair partners — exactly the
+windmill. No `[Fintype V]` assumption is used. -/
+theorem universal_noncentral_adj_iff (hF : IsFriendshipGraph G)
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c)
+    {u u' : V} (hu : u ≠ c) (hu' : u' ≠ c) :
+    G.Adj u u' ↔ G.neighborSet u = {c, u'} := by
+  obtain ⟨w, _, _, _, hset_u⟩ := universal_noncentral_neighborSet hF c hc u hu
+  constructor
+  · intro hadj
+    have hmem : u' ∈ G.neighborSet u := (G.mem_neighborSet u u').mpr hadj
+    rw [hset_u] at hmem
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hmem
+    rcases hmem with h | h
+    · exact absurd h hu'
+    · rw [h]; exact hset_u
+  · intro hset
+    have hmem : u' ∈ G.neighborSet u := by rw [hset]; simp
+    exact (G.mem_neighborSet u u').mp hmem
+
 end FriendshipTheoremOQ04
