@@ -51,6 +51,22 @@ Proofs.BuffonConstantAsymptotic` (Lean v4.26.0, Mathlib pin `2df2f01`; 7743 jobs
 asymptotic is additionally validated numerically (lgamma, n up to 1e6: the
 relative error of `√n·c_n` against `√(2/π)` scales as 0.25/n).
 
+SHARPER LOWER BOUND (future work, not yet formalized).  The lower envelope of
+`s_sq_bounds`, `(s n)^2 ≥ (n-2)/2`, comes from the *neighbour* product
+`s (n-1) · s n = (n-2)/2` together with monotonicity, and is off by `1/2` from
+the exact `(s n)^2 = (n-1)/2 - 1/4 + o(1)`.  Kershaw's inequality (1983) gives
+the sharp `(s n)^2 ≥ (2n-3)/4 = (n-1)/2 - 1/4` for all `n ≥ 3`, which halves the
+slack to the upper bound `(s n)^2 ≤ (n-1)/2` (that one is already sharp up to the
+same `1/4`).  Threaded through `sq_target_eq` this upgrades the effective lower
+envelope of `sqrt_mul_buffonConstant_sq_bounds` from
+`(2/π)·n(n-2)/(n-1)^2` to `(2/π)·n(n-3/2)/(n-1)^2`, *exactly halving* the
+two-sided gap `(2/π)·n/(n-1)^2` at every finite `n` (numerically confirmed,
+`n = 3 … 10^4`, 0 violations).  Unlike the current bounds, Kershaw's lower bound
+does not follow from neighbour products and monotonicity alone — it needs the
+convexity of `digamma`/`ψ` (or log-convexity of `x ↦ Γ(x+1)/√(x+1/4)`), so its
+formalization is deferred to a dedicated `Real.Gamma` ratio lemma rather than the
+elementary telescoping route used here.
+
 Mathlib pin: v4.26.0.
 -/
 import Mathlib
