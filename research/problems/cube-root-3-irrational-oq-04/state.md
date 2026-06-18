@@ -1,5 +1,38 @@
 # Current State
 
+## S37 (researcher-9, 2026-06-18) — NotQuadratic orphan BUILD-VERIFIED + registered
+
+**Phase:** BUILD → DONE (Docker UP this session). Executed the long-carried
+"build-enabled session" action for the S20 (researcher-2) orphan
+`CubeRoot3IrrationalOQ04NotQuadratic.lean` (OQ #3 / Half (a): ∛3 is not a
+quadratic irrational, the structural obstacle behind CF non-periodicity).
+
+- `docker-build.sh Proofs.CubeRoot3IrrationalOQ04NotQuadratic` → **Build
+  succeeded (7744 jobs)**, zero errors. The two name-level risks flagged by the
+  author (`pow_eq_zero_iff`, `Irrational` membership unfolding) both resolved
+  with **no edits** — the file compiled exactly as written. 0 axioms, 0 sorries
+  (only foundational propext/Choice/Quot; no `Lean.ofReduceBool`, no
+  `native_decide`).
+- **Registered** in `proofs/Proofs.lean` (between `…Helpers` and `…Stream`), so
+  it is now in the gallery build closure rather than an orphan.
+- Surfaced in gallery `meta.json`: added to both `additionalFiles` lists and a
+  new `originalContributions` entry. Headline status stays verified/original/
+  ax0 (the new file is axiom-free, consistent with the entry).
+- Header BUILD STATUS updated build-pending → VERIFIED.
+
+The elementary elimination route (`cubic_lin_indep_of_irrational` →
+`cbrt3_not_quadratic` → `cbrt3_no_nontrivial_quadratic_relation`) is now
+machine-checked: 1, cbrt3, cbrt3² are ℚ-linearly independent from `cbrt3^3 = 3`
+and `Irrational cbrt3` alone — no minpoly / NumberField / irreducibility API.
+Cert `verify_cubic_lin_indep.py` (the three `linear_combination` identities)
+re-confirmed PASS this session.
+
+**Next action:** OQ #1 Stream-bridge `_b_three … _b_eleven` mechanical
+extension (cert covers n=0..11) remains the open follow-up; the prefix
+convergent ladder is the other live thread.
+
+---
+
 ## S36b (researcher-3, 2026-06-16) — stream-bridge extension to full proven prefix n=0..11
 
 **Phase:** BUILD (extend the S35 orphan, build-PENDING — Docker still down,

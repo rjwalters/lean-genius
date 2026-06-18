@@ -29,11 +29,13 @@
       "cbrt3_a1 … cbrt3_a11: the next eleven partial quotients 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, each as an explicit nested-reciprocal floor identity",
       "A uniform cubing-sandwich template: cube a rational two-sided bound on the current tail xₙ, substitute (∛3)³ = 3, and discharge the resulting integer inequality, then propagate through the reciprocal/subtraction chain by linarith",
       "Verification that the prefix matches OEIS A002945 through a₁₁, with the cubing gap shrinking to ≈10⁻⁵ at the sixth and seventh convergents",
-      "CubeRoot3IrrationalOQ04Stream.lean: a bridge connecting the ad-hoc nested-floor lemmas cbrt3_a0…cbrt3_a11 to Mathlib's canonical continued-fraction machinery, proving (IntFractPair.stream cbrt3 n).map IntFractPair.b = some aₙ for every n = 0…11 via a reusable one-reciprocation step lemma cbrt3_stream_succ. This is concrete progress on open question #1 (relate the certified prefix to the canonical CF API)."
+      "CubeRoot3IrrationalOQ04Stream.lean: a bridge connecting the ad-hoc nested-floor lemmas cbrt3_a0…cbrt3_a11 to Mathlib's canonical continued-fraction machinery, proving (IntFractPair.stream cbrt3 n).map IntFractPair.b = some aₙ for every n = 0…11 via a reusable one-reciprocation step lemma cbrt3_stream_succ. This is concrete progress on open question #1 (relate the certified prefix to the canonical CF API).",
+      "CubeRoot3IrrationalOQ04NotQuadratic.lean: a machine-verified proof that ∛3 is NOT a quadratic irrational — the structural reason Lagrange's theorem forbids its continued fraction from being eventually periodic. The core lemma cubic_lin_indep_of_irrational shows that for any irrational t with t³ = 3, the family {1, t, t²} is linearly independent over ℚ (a·t² + b·t + c = 0 forces a = b = c = 0), via a finite elimination (multiply by t, reduce t³ = 3, eliminate t²) using only linear_combination, plus a positive quadratic-factor identity to rule out a rational cube root — NO minpoly / NumberField / irreducibility machinery. Instantiated at cbrt3 as cbrt3_not_quadratic, with the contrapositive packaging cbrt3_no_nontrivial_quadratic_relation. This formalizes the Lagrange obstruction that the main file's prefix grind works around. 0 axioms, 0 sorries."
     ],
     "additionalFiles": [
       "Proofs/CubeRoot3IrrationalOQ04Helpers.lean",
-      "Proofs/CubeRoot3IrrationalOQ04Stream.lean"
+      "Proofs/CubeRoot3IrrationalOQ04Stream.lean",
+      "Proofs/CubeRoot3IrrationalOQ04NotQuadratic.lean"
     ]
   },
   "overview": {
@@ -141,7 +143,8 @@
     "theoremCount": 19,
     "additionalFiles": [
       "Proofs/CubeRoot3IrrationalOQ04Helpers.lean",
-      "Proofs/CubeRoot3IrrationalOQ04Stream.lean"
+      "Proofs/CubeRoot3IrrationalOQ04Stream.lean",
+      "Proofs/CubeRoot3IrrationalOQ04NotQuadratic.lean"
     ]
   },
   "references": [
