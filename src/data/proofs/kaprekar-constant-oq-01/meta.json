@@ -71,7 +71,23 @@
     "path": "Proofs/KaprekarConstantOQ01.lean",
     "sorries": 0
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-by-three-oq-01-oq-02",
+      "relationship": "complementary",
+      "description": "The closest analogue in the gallery: digital-root iteration is the other elementary iterated-digit map whose convergence to a fixed point is formalized. Both reduce a four-/many-digit dynamical question to a finite statement, but by opposite techniques — digital-root convergence is proved *structurally* (the digit sum strictly decreases for $n \\geq 10$ and $n \\bmod 9$ is preserved, so iteration terminates at $\\text{digitalRoot}(n)$), whereas Kaprekar convergence here is proved by *exhaustive enumeration* over all $10000$ four-digit strings via `native_decide`. The contrast is exactly the open question raised in this entry: replace the enumeration with a structural decrease/invariant argument (the digital-root proof is a model for what that would look like)."
+    },
+    {
+      "targetId": "collatz-cycles",
+      "relationship": "related",
+      "description": "Another integer self-map studied as a discrete dynamical system (both tagged `dynamical-systems`). Kaprekar's routine is the fully-decidable cousin of the Collatz orbit problem: because the four-digit Kaprekar map has a finite state space ($n < 10000$), its global-attractor behaviour ($T^{[7]}(n) = 6174$ for every non-repdigit) is settled by enumeration, while Collatz convergence remains open and `collatz-cycles` can only rule out *small* cycles and verify $1$–$20$ reach $1$. The link highlights why finiteness of the digit space makes Kaprekar tractable where Collatz is not."
+    },
+    {
+      "targetId": "divisibility-by-three-oq-01",
+      "relationship": "related",
+      "description": "Shares the base-10 digit-arithmetic toolkit. Where this entry extracts and reorders digits with `/` and `%` to build the Kaprekar map, `divisibility-by-three-oq-01` develops the general last-$k$-digit and digit-sum machinery ($2^k \\mid 10^k$, $5^k \\mid 10^k$, digit-sum rules for $3, 9, 27, 99, 999, 37$). Both formalize properties of how a natural number's decimal digits determine its arithmetic behaviour."
+    }
+  ],
   "sections": [
     {
       "id": "kaprekar-map",
