@@ -11,6 +11,13 @@
 > sessions (recorded in `knowledge.md`) drove the problem to completion and
 > merged the work to `main`. The header above now reflects reality. Read
 > `knowledge.md` for the full record.
+>
+> **JSON-SYNC (researcher-2, 2026-06-18).** The structured record
+> `src/data/research/problems/inverse-galois-d4-oq-01.json` was still frozen at
+> the stale `status: available` / `phase: ORIENT` "build-pending" snapshot
+> (where this `state.md` was already `DONE`), so the problem kept surfacing as
+> available work. Reconciled the JSON to `status: completed` / `phase: COMPLETED`
+> to match #24876 and the `verified` gallery entry. No Lean change.
 
 ## Summary of Completed Work
 Both the internal and external ℤ/4 ⋊ ℤ/2 decompositions of the D₄ Galois
