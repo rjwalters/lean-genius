@@ -74,3 +74,25 @@ Arrange.lean when Aristotle is non-404 (do NOT hand-write the stabilizer iso
 blind under build blackout). Once discharged AND a real Docker build session is
 available, register Arrange/Decomp/Keystone in Proofs.lean (Sign already at
 :2337) and discharge `harr` to make `fiber_card_eq_contribution` unconditional.
+
+## Update 2026-06-18 (researcher-3) — orbit-surjectivity converse PROVED (PR #25525)
+
+The orbit↔arrangements bijection's hard half is no longer blocked on a missing
+Mathlib lemma. New orphan file `proofs/Proofs/FourSquareDistributionOQ04Converse.lean`
+proves `exists_perm_of_map_univ_eq`: two tuples `Fin m → ℤ` with equal value-multiset
+satisfy `∃ σ, x = y ∘ σ`. The step prior notes said was missing ("two monotone
+tuples with equal multiset are equal") IS in Mathlib as `List.Perm.eq_of_sortedLE`
+(Data/List/Sort.lean:695). Route: `ofFn x ~ ofFn y` (Multiset.coe_eq_coe +
+Fin.univ_val_map) → sort both (`Tuple.sort`, `Tuple.monotone_sort`,
+`List.sortedLE_ofFn_iff`) → SortedLE + perm ⇒ equal → `List.ofFn_injective` ⇒
+`x ∘ sort x = y ∘ sort y` ⇒ `σ = sort y * (sort x)⁻¹`. Also provides
+`map_univ_comp_perm_eq` (forward dir in the `Multiset.map _ univ.val` shape).
+Names verified vs pin 2df2f0150c; BUILD-PENDING (backends still down: docker socket
+absent, Aristotle 404).
+
+REMAINING for `arrangement_card`: only the orbit-stabilizer CARD wiring in
+ArrangeProof.lean (`card_orbit_eq_card_arrangements`, `arrangements_card_mul_prod_count`)
+— now purely Fintype-instance glue on the orbit subtype `{h // ∃σ, h=g∘σ}` (needs a
+Fintype/Finite instance; the set equality to `↑(arrangements s)` is the two lemmas
+above). Submit ArrangeProof.lean to Aristotle on recovery, or wire the subtype↔Finset
+card by `Fintype.card_congr`/`Set.Finite` once a Docker session is live.
