@@ -87,7 +87,7 @@
       "title": "Necessity via Ruzsa's Counterexample",
       "startLine": 190,
       "endLine": 619,
-      "summary": "**Proved** (from axiomatized Ruzsa properties): The ratio condition $a_n/b_n \\to 1$ is **necessary**. Ruzsa's binary digit construction gives $A, B$ with $A+B = \\mathbb{N}$ but $r_{A,B}(n) = 1$ for all $n \\geq 1$, and $a_n/b_n \\to 1/2 \\neq 1$. The $n = 0$ case requires a separate argument bounding the pair set by a singleton.",
+      "summary": "**Proved** (from in-file Ruzsa lemmas, no axioms): The ratio condition $a_n/b_n \\to 1$ is **necessary**. Ruzsa's binary digit construction gives $A, B$ with $A+B = \\mathbb{N}$ but $r_{A,B}(n) = 1$ for all $n \\geq 1$, and $a_n/b_n \\to 1/2 \\neq 1$. The Ruzsa properties (uniqueness of representation, infinitude) were previously axiomatized but are now fully derived in-file via `ruzsa_unique_rep`. The $n = 0$ case requires a separate argument bounding the pair set by a singleton.",
       "mathContext": "Ruzsa: $A$ = even binary positions, $B$ = odd positions. Unique representations, bounded $r = 1$, $a_n/b_n \\to 1/2$."
     },
     {
@@ -103,8 +103,8 @@
       "title": "Partial Results (Grekos et al.)",
       "startLine": 692,
       "endLine": 696,
-      "summary": "Axiomatized partial result of Grekos, Haddad, Helou, and Pihko: under the full hypotheses, $r_{A,B}(n) \\geq 6$ infinitely often. This is the best known unconditional bound but far from the conjectured unboundedness.",
-      "mathContext": "$\\forall M,\\, \\exists n > M,\\, r_{A,B}(n) \\geq 6$ (Grekos et al.)."
+      "summary": "Background (not formalized): the best known unconditional partial result of Grekos, Haddad, Helou, and Pihko is $r_{A,B}(n) \\geq 6$ infinitely often under the full hypotheses — far from the conjectured unboundedness. This file records the result only as a docstring (Part IX); it is neither axiomatized nor proved here.",
+      "mathContext": "$\\forall M,\\, \\exists n > M,\\, r_{A,B}(n) \\geq 6$ (Grekos et al.) — literature result, recorded as a docstring, not a Lean declaration."
     },
     {
       "id": "structural-results",
