@@ -119,9 +119,9 @@
       "description": "Both are structural/extremal results constraining simple graphs; the friendship theorem forbids a local configuration while Mantel forbids triangles globally."
     },
     {
-      "targetId": "erdos-565-incomplete-01",
+      "targetId": "erdos-565",
       "relationship": "related",
-      "description": "Both sit in extremal/Ramsey graph theory and reason about edge counts under forbidden substructures."
+      "description": "Both belong to extremal/Ramsey graph theory, where global graph parameters are controlled by local structural constraints. Mantel bounds the edge count of triangle-free graphs ($\\le \\lfloor n^2/4 \\rfloor$); Erdős #565 bounds the induced Ramsey number $R^*(G)$ of an $n$-vertex graph (shown to be $2^{O(n)}$). Both quantify how forbidding or forcing substructures constrains a graph's size."
     }
   ],
   "leanFile": {
