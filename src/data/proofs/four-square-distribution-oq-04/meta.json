@@ -6,7 +6,7 @@
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "date": "2026-06-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/FourSquareDistributionOQ04.lean",
     "tags": [
       "number-theory",
@@ -16,11 +16,11 @@
       "jacobi-formula",
       "combinatorics"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-06-16",
-    "axiomCount": 0,
-    "assumptions": "No `sorry`, no `axiom` declarations. The 16 per-type contribution equalities are discharged by `native_decide` (16 of the 19 native_decide invocations), which the kernel accepts via `Lean.ofReduceBool` — the standard compiler-trust dependency, identical to the parent `four-square-distribution`. The Jacobi values r₆(n) and the completeness of each type enumeration are independently cross-checked by `verify_hyperoctahedral_2k.py` in the problem's research directory.",
+    "axiomCount": 1,
+    "assumptions": "One assumption: `Lean.ofReduceBool` (no `sorry`, no `axiom` declarations). The 16 per-type contribution equalities are discharged by `native_decide` (16 of the 19 native_decide invocations), which the kernel accepts via `Lean.ofReduceBool` — the standard compiler-trust dependency, identical to the parent `four-square-distribution`. Because these are substantive verified equalities, under the gallery convention the entry is `axiomatized` (axiomCount 1), not axiom-free. The Jacobi values r₆(n) and the completeness of each type enumeration are independently cross-checked by `verify_hyperoctahedral_2k.py` in the problem's research directory.",
     "lineCount": 207,
     "theoremCount": 25,
     "definitionCount": 22,
