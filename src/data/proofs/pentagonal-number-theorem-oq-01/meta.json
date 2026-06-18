@@ -101,6 +101,14 @@
       "endLine": 159,
       "summary": "The first generalized pentagonal numbers g(0..±4) = 0,1,2,5,7,12,15,22,26, and a sanity check that 12 = g(3) is recognized via 24·12+1 = 289 = 17².",
       "mathContext": "Indexing k = 0,1,-1,2,-2,… enumerates the pentagonal numbers in increasing order, matching OEIS A001318."
+    },
+    {
+      "id": "open-core",
+      "title": "Open Core: Franklin's Involution (Not Formalized)",
+      "startLine": 161,
+      "endLine": 177,
+      "summary": "Documents the deep generating-function identity ∏(1-Xⁿ)=∑(-1)ᵏX^{g(k)} and its bijective proof via Franklin's sign-reversing involution on partitions into distinct parts, explaining why it is out of scope: Mathlib lacks distinct-partition parity machinery and formal-power-series infinite products. The index theory this entry supplies is exactly what such a development would consume.",
+      "mathContext": "Equivalently p_even(n)-p_odd(n) = [n=g(k)]·(-1)ᵏ, where p_even/p_odd count partitions into an even/odd number of distinct parts; Franklin's involution's only fixed points are the staircase partitions of the generalized pentagonal numbers g(k)."
     }
   ],
   "openQuestions": [
@@ -126,6 +134,11 @@
       "proofId": "partition-theorem-oq-01",
       "relationship": "related",
       "description": "Rogers-Ramanujan and Schur partition identities, proved via gap conditions and modular arithmetic. Like the pentagonal exponents characterized here, they identify partition families by residue/square criteria and inhabit the same generating-function landscape."
+    },
+    {
+      "proofId": "partition-theorem-oq-03",
+      "relationship": "related",
+      "description": "Euler partition identities for overpartitions. Overpartition generating functions are built from the same ∏(1-Xⁿ)-type Euler products whose expansion the pentagonal number theorem governs; both sit in the generating-function calculus of integer partitions that this entry's index theory underpins."
     }
   ]
 }
