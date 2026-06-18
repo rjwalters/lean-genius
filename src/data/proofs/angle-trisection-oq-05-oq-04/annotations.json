@@ -3,7 +3,7 @@
     "id": "ann-curved-crease-structure",
     "proofId": "angle-trisection-oq-05-oq-04",
     "range": {
-      "startLine": 80,
+      "startLine": 84,
       "endLine": 137
     },
     "type": "definition",
@@ -28,8 +28,8 @@
     "id": "ann-normal-curvature-zero",
     "proofId": "angle-trisection-oq-05-oq-04",
     "range": {
-      "startLine": 138,
-      "endLine": 162
+      "startLine": 142,
+      "endLine": 167
     },
     "type": "lemma",
     "title": "normal_curvature_zero_of_straight: κ_g ≡ 0 ⇒ κ_n ≡ 0",
@@ -51,8 +51,8 @@
     "id": "ann-straight-fold-recovers-hh",
     "proofId": "angle-trisection-oq-05-oq-04",
     "range": {
-      "startLine": 164,
-      "endLine": 211
+      "startLine": 168,
+      "endLine": 218
     },
     "type": "theorem",
     "title": "straight_fold_recovers_HH: Conservativity over HHAxioms (S3 sorry)",
@@ -75,8 +75,8 @@
     "id": "ann-curve-algebraic",
     "proofId": "angle-trisection-oq-05-oq-04",
     "range": {
-      "startLine": 213,
-      "endLine": 263
+      "startLine": 303,
+      "endLine": 352
     },
     "type": "theorem",
     "title": "curved_fold_algebraic_implies_origami: Algebraic Sharpness (S4 sorry)",
@@ -99,8 +99,8 @@
     "id": "ann-k-curved-eq-k-origami",
     "proofId": "angle-trisection-oq-05-oq-04",
     "range": {
-      "startLine": 266,
-      "endLine": 317
+      "startLine": 356,
+      "endLine": 404
     },
     "type": "theorem",
     "title": "K_curved_eq_K_origami: OQ-A Open Conjecture (S5 PERMANENT sorry)",
@@ -123,7 +123,7 @@
     "id": "ann-axiom-integrity",
     "proofId": "angle-trisection-oq-05-oq-04",
     "range": {
-      "startLine": 80,
+      "startLine": 84,
       "endLine": 137
     },
     "type": "note",
@@ -138,6 +138,173 @@
     ],
     "prerequisites": [
       "Axiom Integrity Policy (CLAUDE.md)"
+    ]
+  },
+  {
+    "id": "ann-hh1-construct",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 222,
+      "endLine": 299
+    },
+    "type": "definition",
+    "title": "Constructive HH-1: Line Through Two Points (S3)",
+    "content": "The first of the seven Huzita–Hatori origami axioms, made fully constructive. `lineThrough p₁ p₂ h` builds the unique fold line through two distinct points directly from their coordinates (a = p₂.2 − p₁.2, b = p₁.1 − p₂.1, c = −(a·p₁.1 + b·p₁.2)), with non-degeneracy following from p₁ ≠ p₂. The lemmas `lineThrough_contains_left/right` confirm both points lie on it, and `hh1_existence` packages this as the standalone existence statement matching the `hh1` field of `HHAxioms` — no longer requiring a witnessing axiom instance. `straight_fold_endpoints_collinear` then supplies the geometric core of the S3 conservativity target.",
+    "mathContext": "A line is encoded as $\\{(x,y) : ax + by + c = 0\\}$ with non-degeneracy $(a,b) \\ne (0,0)$. Through $p_1 \\ne p_2$ the direction is $p_2 - p_1$, so the normal is its $90°$ rotation $(p_2.2 - p_1.2,\\; p_1.1 - p_2.1)$ and $c$ is fixed by requiring $p_1$ on the line. This is the origami analogue of Euclid's first postulate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Huzita-Hatori axioms",
+      "origami construction",
+      "line through two points",
+      "constructive existence"
+    ],
+    "prerequisites": [
+      "analytic geometry of lines",
+      "non-degeneracy conditions",
+      "origami axioms"
+    ]
+  },
+  {
+    "id": "ann-summary-roadmap",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 409,
+      "endLine": 439
+    },
+    "type": "context",
+    "title": "Roadmap: Proved Results, Three Sorries, and the Open Conjecture",
+    "content": "A status ledger for the file. **Proved (0 sorries)**: `normal_curvature_zero_of_straight` (κ_g ≡ 0 ⇒ κ_n ≡ 0) and the entire constructive Huzita–Hatori battery in Parts 6–10 below (HH-1, HH-2, HH-4, HH-7, HH-3). **Three intentional `sorry` markers**: `straight_fold_recovers_HH` (S3 conservativity target), `curved_fold_algebraic_implies_origami` (S4 sharpness target), and `K_curved_eq_K_origami` (S5) — the last is a **permanent** placeholder for the Huffman 1976 / Demaine–DHPT 2011 open conjecture, not a gap to be filled here. The single assumption counted in `axiomCount` is the structure field `ftCompatible` (Fuchs–Tabachnikov compatibility), correctly disclosed rather than hidden as a literal axiom.",
+    "mathContext": "The honest separation: $3$ `sorry`s, $1$ structure-encoded assumption ($\\texttt{ftCompatible}$), and a growing body of $0$-sorry constructive lemmas. The S5 conjecture asks whether the curved-crease constructible field $K_{\\text{curved}}$ equals the classical origami field $K_{\\text{origami}}$ — open since Huffman (1976).",
+    "significance": "context",
+    "relatedConcepts": [
+      "axiom integrity",
+      "open conjecture",
+      "curved-crease origami",
+      "Demaine-Demaine-Hart-Price"
+    ],
+    "prerequisites": [
+      "proof status conventions",
+      "structure-encoded assumptions"
+    ]
+  },
+  {
+    "id": "ann-hh2-perpbisector",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 443,
+      "endLine": 533
+    },
+    "type": "definition",
+    "title": "Constructive HH-2: Perpendicular Bisector (S4)",
+    "content": "HH-2 — folding one point exactly onto another — made constructive. `perpBisector p₁ p₂ h` is the locus of points equidistant from p₁ and p₂, with normal vector p₂ − p₁ and constant term −½((p₂.1²−p₁.1²)+(p₂.2²−p₁.2²)). The key theorem `reflectAcross_perpBisector` proves reflection across this fold sends p₁ exactly to p₂ (the reflection parameter evaluates to t = −1, giving p₁ + (p₂ − p₁) = p₂). `perpBisector_dirSq_pos` discharges the non-vanishing denominator, and `hh2_existence` is the standalone existence form. Two of the seven HH ingredients are now constructive.",
+    "mathContext": "Reflection of a point $q$ across $\\{ax+by+c=0\\}$ is $q - t(a,b)$ with $t = \\frac{2(a q_1 + b q_2 + c)}{a^2+b^2}$. For the perpendicular bisector the squared direction length $(p_2.1-p_1.1)^2 + (p_2.2-p_1.2)^2 > 0$ (strict, since $p_1 \\ne p_2$) makes $t$ well-defined; plugging $p_1$ gives $t = -1$, hence $p_1 \\mapsto p_2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "perpendicular bisector",
+      "reflection",
+      "Huzita-Hatori axioms",
+      "equidistant locus"
+    ],
+    "prerequisites": [
+      "reflection across a line",
+      "perpendicular bisector",
+      "analytic geometry"
+    ]
+  },
+  {
+    "id": "ann-hh4-perpthroughpoint",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 539,
+      "endLine": 657
+    },
+    "type": "definition",
+    "title": "Constructive HH-4: Perpendicular Through a Point (S5)",
+    "content": "HH-4 — folding through a point P perpendicular to a line ℓ — made constructive. `perpThroughPoint p ℓ` takes the fold's normal to be (−ℓ.b, ℓ.a), a 90° rotation of ℓ's normal (so the fold is perpendicular to ℓ), with constant term ℓ.b·P.1 − ℓ.a·P.2 forcing it through P. `perpThroughPoint_contains` confirms it passes through P, and `reflectAcross_perpThroughPoint_preserves` proves the fold maps ℓ to itself setwise — because the reflection's cross-term ℓ.a·ℓ.b − ℓ.b·ℓ.a vanishes, so a point satisfies ℓ's equation after reflection iff it did before. `hh4_existence` packages it; three of seven HH ingredients are now constructive.",
+    "mathContext": "Perpendicularity is encoded by the orthogonal normal: $\\ell$ has normal $(\\ell.a, \\ell.b)$, the fold has normal $(-\\ell.b, \\ell.a)$, and $(\\ell.a)(-\\ell.b) + (\\ell.b)(\\ell.a) = 0$. Under reflection, every $q \\in \\ell$ maps to $q'$ with $\\ell.a\\,q'_1 + \\ell.b\\,q'_2 + \\ell.c = (\\ell.a q_1 + \\ell.b q_2 + \\ell.c) + t(\\ell.a\\ell.b - \\ell.b\\ell.a) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "perpendicular fold",
+      "orthogonal normal vector",
+      "setwise invariance",
+      "Huzita-Hatori axioms"
+    ],
+    "prerequisites": [
+      "reflection across a line",
+      "orthogonality in ℝ²",
+      "line preservation"
+    ]
+  },
+  {
+    "id": "ann-hh7-nonparallel",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 664,
+      "endLine": 816
+    },
+    "type": "technique",
+    "title": "Constructive HH-7: Hatori Fold, Non-Parallel Case (S6)",
+    "content": "HH-7 (the Hatori fold) — given a point P and two lines ℓ₁, ℓ₂, fold P onto ℓ₁ while keeping the fold perpendicular to ℓ₂. This S6 section handles the non-degenerate case where the normals are not parallel (crossDet ℓ₁ ℓ₂ = ℓ₁.b·ℓ₂.a − ℓ₁.a·ℓ₂.b ≠ 0). `hatoriFold p ℓ₁ ℓ₂ h_nonpar` is built explicitly perpendicular to ℓ₂, with `reflectAcross_hatoriFold_preserves_ℓ₂` (preserves ℓ₂ setwise) and `reflectAcross_hatoriFold_to_ℓ₁` (sends P onto ℓ₁). The crossDet ≠ 0 hypothesis is exactly what makes the linear system solvable without a square root.",
+    "mathContext": "$\\mathrm{crossDet}(\\ell_1,\\ell_2) = \\ell_1.b\\,\\ell_2.a - \\ell_1.a\\,\\ell_2.b$ is (up to sign) the determinant of the two normal vectors; it is nonzero iff the lines are not parallel. Non-vanishing guarantees a unique intersection and a rational (square-root-free) fold placing $P$ on $\\ell_1$ perpendicular to $\\ell_2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hatori fold",
+      "crossDet / determinant of normals",
+      "Huzita-Hatori axioms",
+      "non-parallel lines"
+    ],
+    "prerequisites": [
+      "reflection across a line",
+      "determinants in ℝ²",
+      "parallelism criterion"
+    ]
+  },
+  {
+    "id": "ann-hh7-ponl1",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 821,
+      "endLine": 924
+    },
+    "type": "technique",
+    "title": "Constructive HH-7: P-on-ℓ₁ Case (S7)",
+    "content": "Completes HH-7 in the remaining solvable case: when P already lies on ℓ₁. The generic lemma `reflectAcross_self_of_contains` proves a point on a line is fixed by reflection across it (the reflection parameter's numerator vanishes, so t = 0). The witness for `hh7_existence_p_on_ℓ₁` is then `perpThroughPoint P ℓ₂` (reused from S5): it fixes P (which stays on ℓ₁) and preserves ℓ₂ setwise — unconditionally in ℓ₁, ℓ₂. Combined with the non-parallel case (S6), the only HH-7 configuration left open is crossDet = 0 ∧ P ∉ ℓ₁, which the file argues is genuinely unsolvable (a fold perpendicular to ℓ₂ in the parallel case preserves perpendicular distance to ℓ₁).",
+    "mathContext": "If $p \\in \\ell$ then $\\ell.a\\,p_1 + \\ell.b\\,p_2 + \\ell.c = 0$, so the reflection parameter $t = \\frac{2 \\cdot 0}{a^2+b^2} = 0$ and $\\mathrm{reflect}_\\ell(p) = p$. The unsolvable sliver $\\ell_1 \\parallel \\ell_2,\\, P \\notin \\ell_1$ is a true impossibility, not a missing proof — matching the classical incompleteness of single-fold axioms.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "reflection fixed points",
+      "Huzita-Hatori axioms",
+      "case analysis",
+      "unsolvable configuration"
+    ],
+    "prerequisites": [
+      "reflection across a line",
+      "incidence of point and line",
+      "parallel lines"
+    ]
+  },
+  {
+    "id": "ann-hh3-parallel",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 930,
+      "endLine": 1148
+    },
+    "type": "technique",
+    "title": "Constructive HH-3: Translate-Bisector, Parallel Case (S8)",
+    "content": "HH-3 — folding one line onto another — made constructive in the parallel case (crossDet ℓ₁ ℓ₂ = 0). When ℓ₁ ∥ ℓ₂, the unique fold mapping ℓ₁ setwise onto ℓ₂ is the *translate-bisector*: the line parallel to both whose perpendicular distance from each is half the gap. `parallelBisector` is built with ℓ₁'s normal and an algebraically chosen constant term, deliberately avoiding the square roots that the intersecting (angle-bisector) case would require. `parallelBisector_dot_ne_zero` handles the denominator, `parallelNormal_left_id`/`parallelNormal_right_id` the normal-vector bookkeeping, `reflectAcross_parallelBisector_to_ℓ₂` the placement law, and `hh3_existence_parallel` the standalone existence form. This brings six of the seven HH operations to constructive coverage (HH-5 Beloch-light and HH-6 Beloch remain).",
+    "mathContext": "For parallel lines $\\ell_1: ax+by+c_1=0$ and $\\ell_2: ax+by+c_2=0$ (shared normal $(a,b)$), the translate-bisector is $ax+by+\\tfrac{c_1+c_2}{2}=0$. Its reflection swaps the two lines because each is the mirror image of the other across the midline. Keeping the shared normal makes the construction purely rational — no square root, unlike the angle bisector of intersecting lines.",
+    "significance": "key",
+    "relatedConcepts": [
+      "angle/translate bisector",
+      "parallel lines",
+      "Huzita-Hatori axioms",
+      "square-root-free construction"
+    ],
+    "prerequisites": [
+      "reflection across a line",
+      "parallel lines in ℝ²",
+      "midline / bisector"
     ]
   }
 ]
