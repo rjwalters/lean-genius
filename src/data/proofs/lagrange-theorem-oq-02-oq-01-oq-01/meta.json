@@ -1,0 +1,108 @@
+{
+  "id": "lagrange-theorem-oq-02-oq-01-oq-01",
+  "slug": "lagrange-theorem-oq-02-oq-01-oq-01",
+  "title": "Burnside's Lemma with No Burnside Intermediate",
+  "description": "Removes the hidden dependency on Mathlib's Burnside lemma from the parent's orbit-stabilizer derivation. The parent (lagrange-theorem-oq-02-oq-01) proves its per-orbit contribution lemma (each orbit contributes |G| to the stabilizer sum) but then borrows Mathlib's MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group to assemble the global identity Σ_x |Stab(x)| = |X/G|·|G|. Here that global orbit-partition stabilizer sum is assembled directly from the per-orbit lemma and the orbit-partition decomposition MulAction.selfEquivSigmaOrbits, with no appeal to Mathlib's Burnside. Burnside's counting lemma Σ_g |Fix(g)| = |X/G|·|G| then follows from this together with the parent's double-counting bijection, giving a fully self-contained route from orbit-stabilizer.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ02OQ01OQ01.lean",
+    "tags": [
+      "group-theory",
+      "algebra",
+      "combinatorics",
+      "burnside-lemma",
+      "orbit-stabilizer",
+      "orbit-partition",
+      "double-counting",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 137,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "dateAdded": "2026-06-18",
+    "mathlibDependencies": [
+      {
+        "theorem": "MulAction.selfEquivSigmaOrbits",
+        "description": "Decomposition of X as the disjoint union of its orbits, indexed by the orbit quotient X/G",
+        "module": "Mathlib.GroupTheory.GroupAction.Defs"
+      },
+      {
+        "theorem": "MulAction.card_orbit_mul_card_stabilizer_eq_card_group",
+        "description": "Orbit-stabilizer theorem (used by the parent's per-orbit lemma)",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "Finset.sum_sigma",
+        "description": "Splits a sum over a sigma type into a double sum",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sum_card_stabilizer_eq_card_orbits_mul_card_group: the global orbit-partition stabilizer sum Σ_x |Stab(x)| = |X/G|·|G|, assembled from the per-orbit lemma and the orbit-partition equivalence selfEquivSigmaOrbits, WITHOUT Mathlib's Burnside lemma — the new content that closes the gap left open by the parent",
+      "burnside_no_intermediate: Burnside's counting lemma Σ_g |Fix(g)| = |X/G|·|G| derived from the global stabilizer sum and the parent's double-counting bijection, a fully self-contained derivation from orbit-stabilizer",
+      "burnside_divides_no_intermediate: |G| divides Σ_g |Fix(g)| via the self-contained route"
+    ],
+    "assumptions": "0 sorries, 0 axioms. Distinguishing point: the derivation never uses MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group (Mathlib's Burnside lemma); the global orbit-partition stabilizer sum is built from the per-orbit contribution lemma (parent: sum_card_stabilizer_orbit) and the orbit-partition decomposition selfEquivSigmaOrbits. Relies on the orbit-stabilizer theorem (via the parent's per-orbit lemma) and the parent's double-counting bijection."
+  },
+  "leanFile": {
+    "path": "Proofs/LagrangeTheoremOQ02OQ01OQ01.lean",
+    "namespace": "LagrangeTheoremOQ02OQ01OQ01",
+    "imports": [
+      "Mathlib",
+      "Proofs.LagrangeTheoremOQ02OQ01"
+    ],
+    "opens": [
+      "MulAction",
+      "Finset",
+      "BigOperators"
+    ],
+    "lineCount": 137,
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "sum_card_stabilizer_eq_card_orbits_mul_card_group",
+      "statement": "Global orbit-partition stabilizer sum: Σ_{x ∈ X} |Stab(x)| = |X/G| × |G|, assembled directly from the orbit-partition decomposition and the per-orbit contribution lemma, with no appeal to Mathlib's Burnside lemma.",
+      "leanType": "∑ x : X, Fintype.card ↥(MulAction.stabilizer G x) = Fintype.card (MulAction.orbitRel.Quotient G X) * Fintype.card G"
+    },
+    {
+      "name": "burnside_no_intermediate",
+      "statement": "Burnside's counting lemma: Σ_{g ∈ G} |Fix(g)| = |X/G| × |G|, derived self-containedly from the global stabilizer sum and the parent's double-counting bijection.",
+      "leanType": "∑ g : G, Fintype.card (MulAction.fixedBy X g) = Fintype.card (MulAction.orbitRel.Quotient G X) * Fintype.card G"
+    }
+  ],
+  "sorries": [],
+  "overview": {
+    "text": "Burnside's counting lemma states that for a finite group G acting on a finite set X, the total number of fixed points Σ_{g ∈ G} |Fix(g)| equals |X/G| × |G|, where |X/G| is the number of orbits. The standard derivation has two steps: a double-counting bijection identifying Σ_g |Fix(g)| with Σ_x |Stab(x)|, and an orbit-partition argument computing Σ_x |Stab(x)| = |X/G| × |G|.\n\nThe parent entry lagrange-theorem-oq-02-oq-01 makes the double-counting step explicit but quietly outsources the orbit-partition step to Mathlib's own Burnside lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group). Its per-orbit contribution lemma — each orbit contributes exactly |G| to the stabilizer sum, a genuine orbit-stabilizer consequence — is proved but never assembled into the global sum.\n\nThis entry removes that intermediate. Using the orbit-partition equivalence MulAction.selfEquivSigmaOrbits, which exhibits X as the disjoint union of its orbits indexed by the quotient X/G, we reindex Σ_x |Stab(x)| as a double sum Σ_ω Σ_{y ∈ Orb(ω)} |Stab(y)|, apply the parent's per-orbit lemma to collapse each inner sum to |G|, and sum the constant over the |X/G| orbits. No step invokes Mathlib's Burnside. Burnside's counting lemma then follows by composing with the parent's double-counting bijection, yielding a fully self-contained derivation from orbit-stabilizer."
+  },
+  "sections": [
+    {
+      "title": "The global orbit-partition stabilizer sum",
+      "startLine": 60,
+      "endLine": 97,
+      "text": "sum_card_stabilizer_eq_card_orbits_mul_card_group proves Σ_x |Stab(x)| = |X/G| × |G| directly. The orbit-partition equivalence selfEquivSigmaOrbits reindexes the sum over the disjoint union of orbits (the underlying point is preserved, so the summand transports by rfl); Finset.sum_sigma splits it into an outer sum over orbits and an inner sum over each orbit; the parent's sum_card_stabilizer_orbit collapses each inner sum to |G|; and Finset.sum_const sums the constant over the |X/G| orbits. Mathlib's Burnside lemma is never used."
+    },
+    {
+      "title": "Burnside's counting lemma, self-contained",
+      "startLine": 99,
+      "endLine": 137,
+      "text": "burnside_no_intermediate composes the global stabilizer sum with the parent's double-counting bijection (sum_card_fixedBy_eq_sum_card_stabilizer) to obtain Σ_g |Fix(g)| = |X/G| × |G|, a derivation that routes entirely through orbit-stabilizer. burnside_divides_no_intermediate records the consequence |G| ∣ Σ_g |Fix(g)|."
+    }
+  ],
+  "conclusion": {
+    "summary": "The orbit-partition stabilizer sum Σ_x |Stab(x)| = |X/G| × |G| can be assembled directly from the per-orbit contribution of orbit-stabilizer and the disjoint-union decomposition of X into orbits, without borrowing Mathlib's Burnside lemma. Composing with the parent's double-counting bijection gives a fully self-contained derivation of Burnside's counting lemma from orbit-stabilizer."
+  },
+  "crossReferences": [
+    "lagrange-theorem-oq-02-oq-01",
+    "lagrange-theorem-oq-02",
+    "lagrange-theorem"
+  ],
+  "references": []
+}
