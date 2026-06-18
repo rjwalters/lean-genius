@@ -68,12 +68,20 @@
       "id": "pompeiu-identity"
     },
     {
-      "title": "Core Inequality",
+      "title": "Core Inequality: Norm Setup",
       "startLine": 40,
+      "endLine": 52,
+      "description": "Statement of pompeiu_dist (dist p a ≤ dist p b + dist p c) and the first half of its proof: rewrite (p-a)(b-c) as the negative of the other two products via the Pompeiu identity, apply norm_add_le to obtain ‖p-a‖‖b-c‖ ≤ ‖p-b‖‖c-a‖ + ‖p-c‖‖a-b‖, split the products with norm_mul, rewrite every side length to the common ‖b-c‖ using the equilateral hypotheses, and convert the goal to norms with dist_eq_norm.",
+      "summary": "Norm triangle inequality on the three products, reduced to the common side length",
+      "id": "core-inequality-setup"
+    },
+    {
+      "title": "Cancelling the Common Side Length",
+      "startLine": 53,
       "endLine": 68,
-      "description": "dist p a ≤ dist p b + dist p c. Take absolute values in the identity, apply the triangle inequality to the three complex products, and cancel the common equilateral side length (with the degenerate zero-length case handled separately).",
-      "summary": "Core Inequality",
-      "id": "core-inequality"
+      "description": "The second half of pompeiu_dist: a case split on whether the common side length ‖b-c‖ is zero or positive. In the degenerate branch (‖b-c‖ = 0) the equilateral triangle collapses, forcing b = c and a = b, and the inequality follows from norm_nonneg. In the nondegenerate branch the positive side length is cancelled with le_of_mul_le_mul_right to give dist p a ≤ dist p b + dist p c.",
+      "summary": "Degenerate (zero-length) and nondegenerate cancellation of the common side",
+      "id": "core-inequality-cancel"
     },
     {
       "title": "Pompeiu's Theorem",
