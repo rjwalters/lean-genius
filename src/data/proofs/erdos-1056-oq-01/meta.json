@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős (1979); Makowski (1983); Lean Genius OQ-01",
     "sourceUrl": "https://erdosproblems.com/1056",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1056OQ01.lean",
     "tags": [
       "erdos",
@@ -16,16 +16,16 @@
       "computational",
       "primes"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1056,
     "erdosUrl": "https://erdosproblems.com/1056",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 446,
     "theoremCount": 65,
     "definitionCount": 10,
-    "assumptions": "None. All 65 theorems are fully proved. Computational verification via native_decide.",
+    "assumptions": "All 65 theorems are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and therefore depends on the `Lean.ofReduceBool` axiom (visible via `#print axioms`). The headline results — the new k=4..9 solutions erdos_k4…erdos_k9 and their existence corollaries — rely on this axiom, so the entry is axiomatized rather than axiom-free. No other assumptions; 0 sorries, 0 literal `axiom` declarations.",
     "mathlibDependencies": [
       {
         "theorem": "Finset.prod",
@@ -123,7 +123,7 @@
     }
   ],
   "conclusion": {
-    "summary": "OQ-01 computationally verifies new solutions to Erdős Problem #1056 for k=4 through k=9, with 65 theorems, 0 sorries, 0 axioms. The k=4 solution uses p=23, k=5,6 use p=71 with the same boundary points, k=7 uses p=673, k=8 uses p=599 (the smallest prime giving k=8), and k=9 uses p=3011.",
+    "summary": "OQ-01 computationally verifies new solutions to Erdős Problem #1056 for k=4 through k=9, with 65 theorems and 0 sorries. The verification is via `native_decide`, so the proofs depend on the `Lean.ofReduceBool` axiom (axiomatized, not axiom-free). The k=4 solution uses p=23, k=5,6 use p=71 with the same boundary points, k=7 uses p=673, k=8 uses p=599 (the smallest prime giving k=8), and k=9 uses p=3011.",
     "implications": "The existence of solutions for k up to 9 strongly suggests (but does not prove) solutions exist for all k. The smallest-prime sequence (k → p_min(k)) so far reads 11, 17, 23, 71, 71, 673, 599, 3011 — non-monotonic at k=8 because going from k=7 to k=8 admits a smaller prime. Finding such 'reversals' empirically is unusual and may suggest structure in the distribution of factorial residue classes mod p.",
     "openQuestions": [
       "Do solutions exist for all k ≥ 2?",
