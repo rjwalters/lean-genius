@@ -66,6 +66,13 @@ that has no infinite analogue:
   `Set.BijOn` so it carries content on infinite neighbourhoods (where `ncard = 0`),
   with no finiteness used.
 
+* `edge_unique_triangle` — **every edge lies in a unique triangle (local windmill,
+  unconditional).** For any adjacent pair the apex of their triangle is the unique
+  common neighbour, so `N(u)` induces a *perfect matching*: each neighbour of `u` has
+  exactly one neighbour inside `N(u)`. This holds with or without a universal vertex,
+  so it is the residual windmill trace surviving in the hub-free C₅ counterexample.
+  A corollary of the reusable `∃!` form `common_neighbor_unique`. No finiteness used.
+
 Where the finite proof breaks: the spectral step
 `FriendshipTheorem.friendship_regular_implies_universal` is entirely finite-matrix
 algebra (trace, finite eigenvalue multiplicities, integrality) and has no infinite
@@ -410,5 +417,36 @@ theorem neighborSet_equinum_of_nonadj_or_common_nonneighbor (hF : IsFriendshipGr
   rcases h with hnadj | ⟨z, hzu, hzv⟩
   · exact nonadjacent_neighborSet_equinum hF hnadj
   · exact neighborSet_equinum_of_common_nonneighbor hF hzu hzv
+
+/-- **Common neighbours are unique (finiteness-free `∃!`).** Every two *distinct*
+vertices of a friendship graph have *exactly one* common neighbour. This upgrades
+`exists_common_neighbor` (which only gives existence) to the full unique-existence
+statement directly from `ncard = 1`, packaging the defining property in the
+reusable `∃!` form. No `[Fintype V]` assumption is used. -/
+theorem common_neighbor_unique (hF : IsFriendshipGraph G) {a b : V} (hab : a ≠ b) :
+    ∃! x, G.Adj a x ∧ G.Adj b x := by
+  obtain ⟨x, hx⟩ := Set.ncard_eq_one.mp (hF a b hab)
+  refine ⟨x, ?_, ?_⟩
+  · have hmem : x ∈ G.commonNeighbors a b := by
+      rw [hx]; exact Set.mem_singleton_iff.mpr rfl
+    rwa [SimpleGraph.mem_commonNeighbors] at hmem
+  · intro y hy
+    have hymem : y ∈ G.commonNeighbors a b :=
+      (SimpleGraph.mem_commonNeighbors G).mpr hy
+    rw [hx, Set.mem_singleton_iff] at hymem
+    exact hymem
+
+/-- **Every edge lies in a unique triangle (the local windmill, finiteness-free).**
+For an adjacent pair `u`, `v`, there is a *unique* vertex `w` adjacent to both — the
+apex of the one triangle on the edge `{u, v}`. Equivalently, the subgraph induced on
+`N(u)` is a **perfect matching**: each neighbour `v` of `u` has exactly one neighbour
+inside `N(u)`, namely that apex. This local triangle structure holds *unconditionally*
+— with or without a universal vertex — so it persists in the hub-free C₅
+free-amalgamation counterexample, where it is the residual "every edge in one
+triangle" trace of the windmill shape. A direct corollary of `common_neighbor_unique`
+(`u ≠ v` from `G.Adj u v`); no `[Fintype V]` assumption is used. -/
+theorem edge_unique_triangle (hF : IsFriendshipGraph G) {u v : V} (huv : G.Adj u v) :
+    ∃! w, G.Adj u w ∧ G.Adj v w :=
+  common_neighbor_unique hF huv.ne
 
 end FriendshipTheoremOQ04

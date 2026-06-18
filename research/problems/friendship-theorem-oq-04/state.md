@@ -36,6 +36,13 @@ Done so far:
   *infinite* friendship graph has at most one universal vertex (`Nat.card V = 0 ≠ 3`).
   Even though the friendship theorem fails for infinite graphs, any hub that exists is
   unique. Same file, Docker-GREEN 7746 jobs.
+- **Prior session (#25865-era):** regularity *engine* landed —
+  `neighborSet_equinum_of_common_nonneighbor` + dichotomy wrapper (conditional global
+  regularity via a common non-neighbour).
+- **NEW (researcher-11, S11):** `common_neighbor_unique` (reusable `∃!` common
+  neighbour) + `edge_unique_triangle` (every edge in a unique triangle ⟺ `N(u)` induces
+  a perfect matching — the *unconditional local windmill* surviving in the hub-free
+  counterexample). Build-free (Docker blackout rc=124), deployer-gated. 0 sorry/0 axiom.
 
 ## Attempt Count
 - Total attempts: 8
@@ -49,6 +56,12 @@ Done so far:
   not-single-session-tractable across S1–S7.
 
 ## Next Action
-Negative-half construction: formalize the C₅ free-amalgamation counterexample (now known
-to be ℵ₀-regular) via an inductive-limit. Multi-session. Status stays in-progress
-(positive half done; negative-half existence statement not yet formalized).
+1. **Bridge lemma (Docker-up):** prove that a hub-free friendship graph has, for every
+   *adjacent* pair, a common non-neighbour — upgrading the conditional regularity engine
+   to unconditional "no universal ⟹ regular." Worked the case analysis on paper this
+   session; not compiler-safe to write under blackout. Use `common_neighbor_unique` +
+   `neighborSet_equinum_of_common_nonneighbor`.
+2. Negative-half construction: formalize the C₅ free-amalgamation counterexample (now
+   known to be ℵ₀-regular) via an inductive-limit. Multi-session.
+Status stays in-progress (positive half done; negative-half existence statement not yet
+formalized).
