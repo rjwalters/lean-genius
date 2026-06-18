@@ -64,21 +64,21 @@
       "title": "The Excess Function",
       "startLine": 36,
       "endLine": 46,
-      "summary": "Axiomatizes `excessF` and the Edwards bound validity ($f(m) \\ge 0$)."
+      "summary": "Axiomatizes `excessF` as the excess function $f : \\mathbb{N} \\to \\mathbb{R}$. The Edwards bound validity $f(m) \\ge 0$ is noted in comments, not formalized."
     },
     {
       "id": "complete-graph",
       "title": "Complete Graph Tightness",
       "startLine": 47,
       "endLine": 55,
-      "summary": "For complete graphs $K_n$, the Edwards bound is tight: $f(\\binom{n}{2}) = 0$."
+      "summary": "Comment-only: records that for complete graphs $K_n$ the Edwards bound is tight, $f(\\binom{n}{2}) = 0$. Not formalized."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture and Alon's Solution",
       "startLine": 56,
       "endLine": 74,
-      "summary": "States `ErdosProblem127` and Alon's affirmative solution via $f(n^2/2) \\ge c\\sqrt{n}$."
+      "summary": "Defines `ErdosProblem127` (the divergence question) as a `Prop`. Alon's affirmative solution $f(n^2/2) \\ge c\\sqrt{n}$ is recorded in comments, not formalized as a theorem."
     },
     {
       "id": "upper-bound",
@@ -89,7 +89,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 127 is SOLVED: the excess $f(m)$ beyond Edwards' bipartite subgraph bound diverges along the sequence $m = n^2/2$, where $f \\ge c\\sqrt{n}$ (Alon 1996). The upper bound $f(m) = O(m^{1/4})$ shows the excess grows slowly. The formalization captures both bounds, the complete graph tightness, and structural properties of $f$.",
+    "summary": "Erdős Problem 127 is SOLVED externally: the excess $f(m)$ beyond Edwards' bipartite subgraph bound diverges along the sequence $m = n^2/2$, where $f \\ge c\\sqrt{n}$ (Alon 1996), with a matching upper bound $f(m) = O(m^{1/4})$. The Lean file scopes to the *statement* level: it defines `edwardsBound`, axiomatizes the excess function `excessF`, and defines the divergence question `ErdosProblem127` and the optimal-constant question `OptimalConstantQuestion` as `Prop`s. The two bounds, the complete-graph tightness $f(\\binom{n}{2}) = 0$, and structural properties of $f$ are recorded as external results in source comments and references — they are not formalized as theorems (the file contains 0 theorems).",
     "implications": "**Theoretical Significance**: The result reveals that Edwards' bound, while tight for complete graphs, is systematically suboptimal for other graph densities.\n\nThis connects to the broader MAX-CUT problem in computer science: Alon's probabilistic methods prefigured the semidefinite programming approach of Goemans and Williamson (1995), which achieves a 0.878-approximation for MAX-CUT. Understanding the excess function helps quantify the gap between extremal bounds and algorithmic guarantees.",
     "openQuestions": [
       "What is the optimal constant $C$ in $f(m) \\le C \\cdot m^{1/4}$?",
