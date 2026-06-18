@@ -122,5 +122,107 @@
       "Finset.prod_univ_eq_prod_range",
       "Fin.prod_univ_succ"
     ]
+  },
+  {
+    "id": "ann-nash-self-map-continuity",
+    "proofId": "brouwer-fixed-point-oq-04-oq-02",
+    "range": {
+      "startLine": 261,
+      "endLine": 330
+    },
+    "type": "technique",
+    "title": "φ Is a Continuous Self-Map of the Product Simplex (Parts 5–6)",
+    "content": "Brouwer's theorem needs two hypotheses on the map φ = nashMap, and these two sections supply them.\n\n**Self-mapping** (`nashMap_maps_simplex`): each component φᵢ(σ)(k) = (σᵢ(k) + excessᵢₖ) / nashDenomᵢ is (a) non-negative — numerator and denominator are both ≥ 0 with the denominator strictly positive — and (b) sums to 1 over k. The summing-to-1 step (`nashMapComp_sum_one`) is the whole point of the denominator: Σₖ(σᵢ(k) + excessᵢₖ) = 1 + Σₖ excessᵢₖ = nashDenomᵢ exactly, so dividing by nashDenomᵢ renormalizes the shifted weights back onto the simplex. Thus φ(σ) ∈ ∏ᵢΔᵢ whenever σ ∈ ∏ᵢΔᵢ.\n\n**Continuity** (`nashMap_continuous`): φ is built from `Continuous.div`, which requires the denominator to never vanish — guaranteed by `nashDenom_pos` (nashDenom = 1 + Σ(nonneg) ≥ 1 > 0). The numerator combines a coordinate projection with the continuous `nashExcess` (continuous because `max 0 (·)` and the multilinear utilities are continuous). The pointwise non-vanishing denominator is exactly what lets a quotient of continuous functions stay continuous everywhere.",
+    "mathContext": "The denominator $1 + \\sum_\\ell \\mathrm{excess}_{i\\ell}(\\sigma) \\ge 1$ is bounded away from 0, so $\\varphi_i(\\sigma)(k) = \\dfrac{\\sigma_i(k) + \\mathrm{excess}_{ik}(\\sigma)}{1 + \\sum_\\ell \\mathrm{excess}_{i\\ell}(\\sigma)}$ is continuous and, summed over $k$, equals 1. This is why Nash added the $+1$: it makes the renormalization total positive even when every excess is 0 (i.e. at an equilibrium).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Continuous.div",
+      "renormalization",
+      "simplex invariance",
+      "nashDenom_pos",
+      "Tychonoff product topology"
+    ],
+    "prerequisites": [
+      "nashMapComp_sum_one",
+      "nashDenom_pos",
+      "nashExcess_continuous"
+    ]
+  },
+  {
+    "id": "ann-nash-fixed-point-theorem",
+    "proofId": "brouwer-fixed-point-oq-04-oq-02",
+    "range": {
+      "startLine": 342,
+      "endLine": 436
+    },
+    "type": "insight",
+    "title": "fixed_point_is_nash: The Contradiction-by-Linearity Core (the theorem itself)",
+    "content": "This is the actual `fixed_point_is_nash` theorem (the earlier annotation sketches the idea; here is where it is proved). From φ(σ*) = σ* the fixed-point equation gives, for every player i and strategy k, **excessᵢₖ = σ*ᵢ(k)·Cᵢ** where Cᵢ = Σₗ excessᵢₗ ≥ 0.\n\nThe goal is to show every excess is 0 (no profitable deviation). Suppose not: some excessᵢₖ > 0. Then Cᵢ > 0 and σ*ᵢ(k) > 0 (since their product is positive and both are non-negative). Now **every** strategy ℓ actually played (σ*ᵢ(ℓ) > 0) has excessᵢₗ = σ*ᵢ(ℓ)·Cᵢ > 0, meaning the pure deviation eₗ strictly beats σ*ᵢ: EU_i(eₗ, σ*) > EU_i(σ*). But the multilinearity lemma `mixedUtility_linear_in_i` expands EU_i(σ*) = Σₗ σ*ᵢ(ℓ)·EU_i(eₗ, σ*), a weighted average of the very quantities that each strictly exceed EU_i(σ*). An average cannot exceed itself, so EU_i(σ*) < EU_i(σ*) — contradiction. Hence Cᵢ = 0, every excess is 0, and σ* is a Nash equilibrium. The Lean proof realizes the average-beats-itself step with `Finset.sum_lt_sum` (strict at the witness k, non-strict elsewhere).",
+    "mathContext": "The crux is that a convex combination of numbers all strictly greater than $m$ is itself strictly greater than $m$, applied with $m = EU_i(\\sigma^*)$: $EU_i(\\sigma^*) = \\sum_\\ell \\sigma^*_i(\\ell)\\,EU_i(e_\\ell,\\sigma^*) > \\sum_\\ell \\sigma^*_i(\\ell)\\,EU_i(\\sigma^*) = EU_i(\\sigma^*)$. The self-contradiction forces $C_i = 0$, i.e. $\\max(0, EU_i(e_k,\\sigma^*) - EU_i(\\sigma^*)) = 0$ for all $k$, which is precisely the Nash best-response condition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nash equilibrium",
+      "best-response condition",
+      "Finset.sum_lt_sum",
+      "convex combination",
+      "proof by contradiction",
+      "multilinearity"
+    ],
+    "prerequisites": [
+      "mixedUtility_linear_in_i",
+      "mul_pos_iff",
+      "nashExcess"
+    ]
+  },
+  {
+    "id": "ann-nash-brouwer-product-simplex",
+    "proofId": "brouwer-fixed-point-oq-04-oq-02",
+    "range": {
+      "startLine": 441,
+      "endLine": 475
+    },
+    "type": "context",
+    "title": "brouwer_product_simplex: The Sole Axiom Dependency, Made Honest",
+    "content": "This section is where the entry's single assumption enters, and it is worth reading alongside the axiom-integrity status (badge `axiom`, status `axiomatized`, axiomCount 1). `brouwer_product_simplex` is a *theorem*, not an axiom: it derives the existence of a fixed point on ∏ᵢΔᵢ from the general `brouwer_pi_compact_convex` (declared in `BrouwerFixedPointOQ04.lean`) by supplying the three structural facts about each mixed-strategy simplex — nonempty (`mixed_strategy_nonempty`, using strategies_pos), compact (`mixed_strategy_compact`), and convex (`mixed_strategy_convex`). So the file has 0 local axioms; the lone assumption it rests on is the topological core of Brouwer's theorem for products of compact convex bodies. This is an honest reduction: OQ-04-OQ-01 needed 2 axioms (Berge's maximum theorem + a Kakutani embedding); replacing the set-valued best-response correspondence with Nash's single-valued continuous map removes one of them, leaving only Brouwer.",
+    "mathContext": "A product $\\prod_i \\Delta_i$ of compact convex subsets of finite-dimensional Euclidean spaces is itself compact (Tychonoff) and convex, hence homeomorphic to a closed ball — the hypothesis under which `brouwer_pi_compact_convex` yields a fixed point. The axiomCount of 1 reflects this single topological dependency; it is disclosed in the meta `assumptions` field rather than hidden in a structure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Brouwer fixed point theorem",
+      "compact convex set",
+      "axiom integrity",
+      "mixed_strategy_compact",
+      "Tychonoff theorem"
+    ],
+    "prerequisites": [
+      "brouwer_pi_compact_convex",
+      "mixed_strategy_nonempty",
+      "mixed_strategy_convex"
+    ]
+  },
+  {
+    "id": "ann-nash-existence",
+    "proofId": "brouwer-fixed-point-oq-04-oq-02",
+    "range": {
+      "startLine": 480,
+      "endLine": 519
+    },
+    "type": "insight",
+    "title": "nash_existence_multilinear: Assembling Nash's 1950 Theorem",
+    "content": "The capstone theorem composes the four prior ingredients in exactly the order of Nash's one-paragraph argument: (1) φ = nashMap maps the product simplex to itself (`nashMap_maps_simplex`); (2) φ is continuous (`nashMap_continuous`); (3) therefore Brouwer (`brouwer_product_simplex`) yields a fixed point σ* ∈ ∏ᵢΔᵢ; (4) every fixed point is a Nash equilibrium (`fixed_point_is_nash`). The `progress_summary` corollary restates the result and records the methodological payoff: existence is obtained with a single-valued continuous map and Brouwer alone, with no Berge maximum theorem, no upper hemicontinuity of best-response correspondences, and no direct appeal to Kakutani. This answers OQ-04-OQ-02 in the affirmative — Nash's original Brouwer route is fully formalizable — and isolates the irreducible topological input to the one Brouwer axiom.",
+    "mathContext": "The existence statement is $\\exists\\,\\sigma \\in \\prod_i \\Delta_i,\\ \\mathrm{IsNashEq}\\,G\\,\\sigma$. Structurally it is the schema Brouwer fixed point $\\Rightarrow$ equilibrium: build a continuous self-map of a compact convex set whose fixed points encode the desired solution concept, then read off existence. The same template underlies general-equilibrium and matching-market existence proofs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existence theorem",
+      "Nash 1950",
+      "Brouwer-to-equilibrium template",
+      "Kakutani avoidance",
+      "game theory"
+    ],
+    "prerequisites": [
+      "nashMap_maps_simplex",
+      "nashMap_continuous",
+      "brouwer_product_simplex",
+      "fixed_point_is_nash"
+    ]
   }
 ]
