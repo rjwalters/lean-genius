@@ -306,5 +306,303 @@
       "ramseyNumber",
       "Nat.choose"
     ]
+  },
+  {
+    "id": "ann-erdos1014-tendsto-succ-div",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 105,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Helper Lemma: ((n+1)/n)^a → 1",
+    "content": "The first of two convergence helpers feeding the asymptotic argument. The polynomial part of the conjectured growth law $c\\,l^{a}/(\\log l)^{b}$ contributes a factor $((l+1)/l)^a$ to the ratio $g(l+1)/g(l)$, and this lemma shows it tends to $1$. The proof rewrites $(n+1)/n = 1 + n^{-1}$, invokes `tendsto_inv_atTop_zero` so that $1 + n^{-1} \\to 1$, and lifts through the fixed power $a$ with `Tendsto.pow` (continuity of $x \\mapsto x^a$). The trailing `congr` discharges the algebraic identity $(n+1)/n = 1 + 1/n$, valid once $n \\ge 1$.",
+    "significance": "technical",
+    "mathContext": "Polynomial growth factor: $\\left(\\dfrac{n+1}{n}\\right)^{a} = (1 + n^{-1})^{a} \\longrightarrow 1^{a} = 1$ as $n \\to \\infty$, because $n^{-1} \\to 0$ and $x \\mapsto x^{a}$ is continuous at $x = 1$.",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "limits of sequences",
+      "continuity of power maps",
+      "atTop filter"
+    ],
+    "prerequisites": [
+      "real analysis: sequential limits",
+      "Mathlib Filter/Topology API"
+    ]
+  },
+  {
+    "id": "ann-erdos1014-tendsto-log-ratio",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 116,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Helper Lemma: (log n / log(n+1))^b → 1 via Squeeze",
+    "content": "The logarithmic part of the growth law contributes the factor $(\\log l / \\log(l+1))^b$, shown here to tend to $1$ by the squeeze (sandwich) theorem `tendsto_of_tendsto_of_tendsto_of_le_of_le`. The upper bound is the constant $1$ (logarithm is increasing). The lower bound $1 - \\tfrac{1}{n\\log 2}$ comes from the identity $\\tfrac{\\log n}{\\log(n+1)} = 1 - \\tfrac{\\log(n+1)-\\log n}{\\log(n+1)}$ together with the increment estimate $\\log(n+1)-\\log n = \\log(1 + 1/n) \\le 1/n$ (instance of $\\log x \\le x - 1$) and the floor $\\log(n+1) \\ge \\log 2$. Both bounds converge to $1$, so the squeezed quantity does too.",
+    "significance": "technical",
+    "mathContext": "Logarithmic growth factor: writing $\\dfrac{\\log n}{\\log(n+1)} = 1 - \\dfrac{\\log(1+1/n)}{\\log(n+1)}$ and using $0 \\le \\log(1+1/n) \\le 1/n$, $\\log(n+1) \\ge \\log 2$, the deviation is at most $\\dfrac{1}{n\\log 2} \\to 0$, hence $\\left(\\dfrac{\\log n}{\\log(n+1)}\\right)^{b} \\to 1$.",
+    "relatedConcepts": [
+      "squeeze theorem",
+      "logarithm increment bound log(1+x) ≤ x",
+      "Filter.Tendsto",
+      "monotonicity of log"
+    ],
+    "prerequisites": [
+      "real analysis: limits and inequalities",
+      "properties of the natural logarithm"
+    ]
+  },
+  {
+    "id": "ann-erdos1014-growth-ratio-close",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 164,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "Helper Lemma: Combined Growth Ratio g(l+1)/g(l) → 1",
+    "content": "Combines the two preceding limits into the statement actually consumed by the main theorem. For the conjectured profile $g(l) = c\\,l^{k-1}/(\\log l)^{k-2}$, the successive ratio factorizes as $g(l+1)/g(l) = ((l+1)/l)^{k-1} \\cdot (\\log l/\\log(l+1))^{k-2}$, a product of the two factors just shown to tend to $1$; `Tendsto.mul` gives the product limit $1\\cdot 1 = 1$. The lemma then repackages this filter statement into the explicit $\\varepsilon$–$N$ form ($\\exists L,\\ \\forall l > L,\\ |\\cdots - 1| < \\delta$) via `Metric.tendsto_atTop`, the shape the sandwich argument downstream needs.",
+    "significance": "supporting",
+    "mathContext": "Successive-ratio convergence: $\\dfrac{g(l+1)}{g(l)} = \\left(\\dfrac{l+1}{l}\\right)^{k-1}\\left(\\dfrac{\\log l}{\\log(l+1)}\\right)^{k-2} \\longrightarrow 1$, so for every $\\delta>0$ there is $L$ with $|g(l+1)/g(l) - 1| < \\delta$ for $l > L$.",
+    "relatedConcepts": [
+      "product of limits",
+      "Metric.tendsto_atTop",
+      "ε–N characterization of convergence"
+    ],
+    "prerequisites": [
+      "real analysis: limits",
+      "translating filter limits to ε–N form"
+    ]
+  },
+  {
+    "id": "ann-erdos1014-ratio-from-asymptotics",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 181,
+      "endLine": 282
+    },
+    "type": "insight",
+    "title": "Conditional Main Theorem: Power-Law Asymptotics ⟹ Ratio → 1",
+    "content": "The central conditional reduction of the file: IF $R(k,l)$ obeys the conjectured asymptotics $R(k,l) \\sim c_k\\, l^{k-1}/(\\log l)^{k-2}$, THEN $R(k,l+1)/R(k,l) \\to 1$. The proof is a three-factor telescoping: with $g(l)$ the model profile, $\\dfrac{R(l+1)}{R(l)} = \\underbrace{\\dfrac{R(l+1)}{g(l+1)}}_{\\alpha}\\cdot \\underbrace{\\dfrac{g(l+1)}{g(l)}}_{\\beta}\\cdot \\underbrace{\\dfrac{g(l)}{R(l)}}_{\\gamma}$, where $\\alpha,1/\\gamma$ are close to $1$ by the asymptotic hypothesis and $\\beta$ is close to $1$ by `growth_ratio_close`. The error is controlled through the algebraic identity $\\alpha\\beta\\gamma - 1 = \\alpha\\beta(\\gamma-1) + \\alpha(\\beta-1) + (\\alpha-1)$, with each factor bounded by $1+\\delta$ and $\\delta = \\min(\\varepsilon/6, 1/4)$ chosen so the assembled bound $13\\delta/3 < \\varepsilon$. This isolates *why* the conjecture should hold: any polynomial-times-polylog growth law forces neighbouring values to agree asymptotically.",
+    "significance": "key",
+    "mathContext": "Telescoping decomposition: $\\dfrac{R(k,l+1)}{R(k,l)} = \\dfrac{R(l+1)}{g(l+1)}\\cdot\\dfrac{g(l+1)}{g(l)}\\cdot\\dfrac{g(l)}{R(l)}$. With each factor within $\\delta$ of $1$ and $\\delta=\\min(\\varepsilon/6,1/4)$, the triangle/product estimate yields $\\left|\\dfrac{R(k,l+1)}{R(k,l)} - 1\\right| \\le \\tfrac{13}{3}\\delta < \\varepsilon$.",
+    "relatedConcepts": [
+      "asymptotic equivalence",
+      "telescoping product",
+      "triangle inequality",
+      "ε–δ estimation",
+      "from-asymptotics"
+    ],
+    "prerequisites": [
+      "real analysis: asymptotic notation",
+      "careful ε management",
+      "Ramsey number growth conjectures"
+    ]
+  },
+  {
+    "id": "ann-erdos1014-ratio-equiv-diff",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 284,
+      "endLine": 316
+    },
+    "type": "concept",
+    "title": "Equivalence: Ratio → 1 ⟺ Increment is o(R(k,l))",
+    "content": "Recasts the conjecture in additive form. Because $R(k,l)$ is monotone in its second argument ($R(k,l+1) \\ge R(k,l)$) and positive ($R(k,l) \\ge 1$), the absolute value in the ratio statement is unnecessary: $\\left|\\tfrac{R(k,l+1)}{R(k,l)} - 1\\right| = \\tfrac{R(k,l+1) - R(k,l)}{R(k,l)}$ exactly. The biconditional therefore states that the ratio tends to $1$ iff the *increment* $R(k,l+1) - R(k,l)$ is $o(R(k,l))$ — i.e. consecutive Ramsey numbers grow sub-proportionally. This is the form most useful in practice, since increments are bounded directly by the recurrence (used in the $k=3$ proof below).",
+    "significance": "key",
+    "mathContext": "Monotonicity + positivity collapse the absolute value: $\\left|\\dfrac{R(k,l+1)}{R(k,l)} - 1\\right| = \\dfrac{R(k,l+1) - R(k,l)}{R(k,l)}$, so $\\dfrac{R(k,l+1)}{R(k,l)}\\to 1 \\iff R(k,l+1) - R(k,l) = o\\!\\big(R(k,l)\\big)$.",
+    "relatedConcepts": [
+      "little-o asymptotics",
+      "monotonicity of Ramsey numbers",
+      "reformulation of conjectures",
+      "ann-erdos1014-diff-equiv"
+    ],
+    "prerequisites": [
+      "asymptotic notation o(·)",
+      "elementary inequality manipulation"
+    ]
+  },
+  {
+    "id": "ann-erdos1014-small-values",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 318,
+      "endLine": 323
+    },
+    "type": "definition",
+    "title": "Classical Small Ramsey Values: R(3,3)=6, R(3,4)=9, R(3,5)=14",
+    "content": "The handful of exactly known off-diagonal Ramsey numbers in the $k=3$ row, recorded as axioms (their determination is by combinatorial case analysis / computer search, not reproved here). $R(3,3)=6$ is the classic \"party problem\" (among 6 people, 3 are mutual acquaintances or 3 mutual strangers). These anchor the strict-monotonicity sanity checks that follow and illustrate how sparse exact knowledge of Ramsey numbers is — even $R(5,5)$ is unknown, famously bracketed only as $43 \\le R(5,5) \\le 48$.",
+    "significance": "supporting",
+    "mathContext": "Known exact values: $R(3,3)=6,\\ R(3,4)=9,\\ R(3,5)=14$. By contrast $R(5,5)$ remains open with $43 \\le R(5,5) \\le 48$, dramatizing the difficulty of exact Ramsey computation.",
+    "relatedConcepts": [
+      "party problem",
+      "small Ramsey numbers",
+      "ann-erdos1014-known-values"
+    ],
+    "prerequisites": [
+      "Ramsey theory basics",
+      "two-colorings of complete graphs"
+    ]
+  },
+  {
+    "id": "ann-erdos1014-diagonal-upper",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 325,
+      "endLine": 332
+    },
+    "type": "concept",
+    "title": "Diagonal Upper Bound: R(k,k) ≤ C(2k-2, k-1)",
+    "content": "Specializes the general Erdős–Szekeres bound $R(k,l) \\le \\binom{k+l-2}{k-1}$ to the diagonal $l=k$, after the small index rewrite $k+k-2 = 2k-2$. The resulting central binomial coefficient grows like $4^{k-1}/\\sqrt{\\pi(k-1)}$, the classical exponential upper bound on diagonal Ramsey numbers. This sits opposite the probabilistic lower bound $R(k,k) \\ge (1+o(1))\\tfrac{k}{e\\sqrt 2}2^{k/2}$ (Erdős 1947); closing the base of the exponent ($\\sqrt 2$ vs $4$) is a major open problem only recently dented by Campos–Griffiths–Morris–Sahasrabudhe (2023).",
+    "significance": "supporting",
+    "mathContext": "Diagonal bound: $R(k,k) \\le \\binom{2k-2}{k-1} \\sim \\dfrac{4^{\\,k-1}}{\\sqrt{\\pi(k-1)}}$. The matching probabilistic lower bound is $R(k,k) \\ge (1+o(1))\\dfrac{k}{e\\sqrt 2}\\,2^{k/2}$.",
+    "relatedConcepts": [
+      "Erdős–Szekeres bound",
+      "central binomial coefficient",
+      "diagonal Ramsey numbers",
+      "erdos-szekeres"
+    ],
+    "prerequisites": [
+      "binomial coefficient asymptotics",
+      "Ramsey upper bounds"
+    ]
+  },
+  {
+    "id": "ann-erdos1014-derived-monotone",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 334,
+      "endLine": 347
+    },
+    "type": "concept",
+    "title": "Derived Symmetric and Left-Monotonicity Properties",
+    "content": "Two structural consequences obtained purely from the symmetry and right-monotonicity axioms. `ramsey_2k` gives the symmetric trivial value $R(l,2) = l$ by transporting $R(2,l)=l$ across `ramsey_symm`. `ramsey_monotone_left` establishes monotonicity in the *first* argument, $R(k,l) \\le R(k+1,l)$, by sandwiching it between two applications of symmetry and one of right-monotonicity. Together they let later arguments treat either coordinate uniformly.",
+    "significance": "supporting",
+    "mathContext": "From symmetry $R(k,l)=R(l,k)$ and right-monotonicity: $R(l,2)=l$ and $R(k,l) \\le R(k+1,l)$. Monotonicity holds in both arguments.",
+    "relatedConcepts": [
+      "symmetry of Ramsey numbers",
+      "monotonicity",
+      "ramsey-symmetry",
+      "ramsey-monotone"
+    ],
+    "prerequisites": [
+      "Ramsey number axioms",
+      "transitivity of ≤"
+    ]
+  },
+  {
+    "id": "ann-erdos1014-consistency-checks",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 349,
+      "endLine": 361
+    },
+    "type": "concept",
+    "title": "Strict-Monotonicity Witnesses and R(2,2)=2",
+    "content": "Concrete sanity checks discharged by `norm_num` on the known values: $R(3,3) < R(3,4) < R(3,5)$ confirms strict growth along the $k=3$ row, $R(3,3)=R(3,3)$ is a definitional `rfl` consistency check, and $R(2,2)=2$ (instance of $R(2,l)=l$) is the smallest nontrivial Ramsey number. These ground the abstract monotonicity results in verifiable numerics.",
+    "significance": "supporting",
+    "mathContext": "Numeric witnesses: $6 = R(3,3) < R(3,4) = 9 < R(3,5) = 14$, and $R(2,2)=2$ is the least nontrivial value.",
+    "relatedConcepts": [
+      "strict monotonicity",
+      "small Ramsey numbers",
+      "sanity checks"
+    ],
+    "prerequisites": [
+      "Ramsey theory basics"
+    ]
+  },
+  {
+    "id": "ann-erdos1014-diagonal-lower",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 363,
+      "endLine": 380
+    },
+    "type": "concept",
+    "title": "Elementary Diagonal Lower Bound: R(k,k) ≥ k",
+    "content": "A simple lower bound proved by induction: since $R(2,k)=k$ and left-monotonicity gives $R(2,k) \\le R(k,k)$, we get $R(k,k) \\ge k$. The induction climbs from $R(2,n+1)$ to $R(n+1,n+1)$ via symmetry and right-monotonicity, with small cases ($n<2$) closed by `interval_cases` on the known values. This is deliberately elementary — far weaker than the exponential probabilistic bound $R(k,k) \\ge 2^{k/2}$ (Erdős 1947), which the file does not formalize.",
+    "significance": "supporting",
+    "mathContext": "Linear lower bound: $R(k,k) \\ge R(2,k) = k$. The far stronger Erdős probabilistic bound $R(k,k) \\ge (1+o(1))\\tfrac{k}{e\\sqrt2}2^{k/2}$ is not formalized here.",
+    "relatedConcepts": [
+      "induction on Ramsey numbers",
+      "probabilistic method (contrast)",
+      "diagonal lower bounds"
+    ],
+    "prerequisites": [
+      "mathematical induction",
+      "Ramsey monotonicity"
+    ]
+  },
+  {
+    "id": "ann-erdos1014-increment-bounds",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 382,
+      "endLine": 396
+    },
+    "type": "concept",
+    "title": "Increment Bounds from the Recurrence",
+    "content": "The additive engine behind the $k=3$ result. `increment_bound_general` reads the Erdős–Szekeres recurrence directly as $R(k,l+1) - R(k,l) \\le R(k-1,l+1)$. `increment_bound_k3` specializes to $k=3$: substituting $R(2,l+1)=l+1$ gives the linear increment $R(3,l+1) \\le R(3,l) + (l+1)$. Because the increment grows only linearly in $l$ while $R(3,l)$ grows quadratically (up to logs), the relative increment vanishes — exactly what the equivalence lemma needs.",
+    "significance": "key",
+    "mathContext": "Recurrence increment: $R(k,l+1) - R(k,l) \\le R(k-1,l+1)$; for $k=3$, $R(3,l+1) \\le R(3,l) + (l+1)$ since $R(2,l+1)=l+1$. Linear increment vs. quadratic size is the crux.",
+    "relatedConcepts": [
+      "Ramsey recurrence",
+      "finite differences",
+      "ann-erdos1014-recurrence"
+    ],
+    "prerequisites": [
+      "recurrence relations",
+      "Ramsey number bounds"
+    ]
+  },
+  {
+    "id": "ann-erdos1014-r3-theta",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 398,
+      "endLine": 409
+    },
+    "type": "concept",
+    "title": "R(3,l) = Θ(l²/log l): the Kim–AKS Tight Bounds",
+    "content": "Packages the two deep one-sided results — the Shearer/Kim lower bound $R(3,l) \\ge c_1 l^2/\\log l$ (Kim 1995, Fields-medal-adjacent work using the triangle-free process) and the Ajtai–Komlós–Szemerédi upper bound $R(3,l) \\le c_2 l^2/\\log l$ (1980) — into a single two-sided $\\Theta$ statement. This is the *only* Ramsey number whose growth order is pinned down exactly, and it is precisely what makes the $k=3$ case of Erdős #1014 provable while the general case stays open.",
+    "significance": "key",
+    "mathContext": "Tight order: $R(3,l) = \\Theta\\!\\big(l^2/\\log l\\big)$, i.e. $c_1\\,l^2/\\log l \\le R(3,l) \\le c_2\\,l^2/\\log l$ for large $l$. No other nontrivial Ramsey growth order is known exactly.",
+    "relatedConcepts": [
+      "triangle-free process",
+      "Ajtai–Komlós–Szemerédi bound",
+      "Kim lower bound",
+      "r3-tight-bounds",
+      "Θ asymptotics"
+    ],
+    "prerequisites": [
+      "probabilistic combinatorics",
+      "asymptotic order notation"
+    ]
+  },
+  {
+    "id": "ann-erdos1014-r3-convergence",
+    "proofId": "erdos-1014",
+    "range": {
+      "startLine": 411,
+      "endLine": 483
+    },
+    "type": "insight",
+    "title": "Theorem (Unconditional): R(3,l+1)/R(3,l) → 1 — Erdős #1014 for k=3",
+    "content": "The headline result, proved *unconditionally* (not assuming the asymptotic profile). It combines the two facts established above: the linear increment $R(3,l+1) - R(3,l) \\le l+1$ and the quadratic lower bound $R(3,l) \\ge c\\,l^2/\\log l$. Hence the relative increment satisfies $\\dfrac{R(3,l+1)-R(3,l)}{R(3,l)} \\le \\dfrac{(l+1)\\log l}{c\\,l^2} = O\\!\\left(\\dfrac{\\log l}{l}\\right) \\to 0$, where the decay uses $\\log l = o(l)$ via Mathlib's `Real.isLittleO_log_rpow_atTop`. So $R(3,l+1)/R(3,l) \\to 1$. This settles Erdős Problem #1014 for $k=3$, even though the general $k \\ge 4$ case remains open (it would follow from, but does not require, the conjectured power-law asymptotics handled conditionally above).",
+    "significance": "key",
+    "mathContext": "Unconditional $k=3$ convergence: $\\dfrac{R(3,l+1)}{R(3,l)} - 1 = \\dfrac{R(3,l+1)-R(3,l)}{R(3,l)} \\le \\dfrac{(l+1)\\log l}{c\\,l^2} = O\\!\\left(\\dfrac{\\log l}{l}\\right) \\longrightarrow 0$, since $\\log l = o(l)$. Therefore $R(3,l+1)/R(3,l) \\to 1$.",
+    "relatedConcepts": [
+      "little-o: log l = o(l)",
+      "Real.isLittleO_log_rpow_atTop",
+      "Ramsey ratio convergence",
+      "r3-tight-bounds",
+      "main-conjecture"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "combining upper and lower bounds",
+      "Erdős Ramsey problems"
+    ]
   }
 ]
