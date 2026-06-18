@@ -61,7 +61,8 @@
       "Casting the digit sum into ZMod 2 turns the informal 'flip the bit' rule into a literal ring identity t(2n+1) = t(n) + 1",
       "The entire sequence is governed by one Mathlib fact: the base-2 digit recursion digits 2 m = m % 2 :: digits 2 (m/2)",
       "The four-term block identities are not extra hypotheses but immediate consequences of applying the two base recurrences twice, with 1 + 1 = 0 doing the cancellation",
-      "The blocks t(4n..4n+3) = a (a+1) (a+1) a are exactly Prouhet's pairing that equalises power sums up to degree one"
+      "The blocks t(4n..4n+3) = a (a+1) (a+1) a are exactly Prouhet's pairing that equalises power sums up to degree one",
+      "The same 0110/1001 block self-similarity that the recurrences encode is what makes the Thue-Morse word overlap-free and cube-free (Thue 1906/1912): no block XX with X starting and ending the same way ever appears, the property that founded combinatorics on words and yields the first explicit square-free word over three letters by counting consecutive equal pairs"
     ],
     "prerequisites": [
       "Binary (base-2) expansions of natural numbers",
@@ -70,6 +71,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports (Nat.Digits, ZMod.Basic, Tactic), the module docstring, and `namespace ThueMorse` / `open scoped BigOperators`. The docstring defines t : ℕ → ZMod 2 as the parity of the binary digit sum, lists the three defining recurrences (t 0 = 0, t(2n) = t n, t(2n+1) = t n + 1), previews the powers-of-two values and the four-term Prouhet-Tarry-Escott block identities, and records the history (Prouhet 1851, Thue 1906/1912, Morse 1921) and the 0-sorry / 0-axiom status.",
+      "mathContext": "$t(n) = (\\#\\{1\\text{ bits of }n\\}) \\bmod 2$; $t(0)=0,\\ t(2n)=t(n),\\ t(2n+1)=t(n)+1$."
+    },
     {
       "id": "definition",
       "title": "Definition",
