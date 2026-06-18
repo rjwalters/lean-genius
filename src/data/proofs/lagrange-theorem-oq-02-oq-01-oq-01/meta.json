@@ -130,5 +130,27 @@
       "relationship": "Root of the chain Lagrange → orbit-stabilizer → Burnside. Lagrange's theorem (|H| ∣ |G|), applied to the stabilizer subgroup, is what makes orbit-stabilizer hold."
     }
   ],
-  "references": []
+  "references": [
+    {
+      "authors": "Augustin-Louis Cauchy",
+      "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
+      "year": "1845",
+      "venue": "Exercices d'analyse et de physique mathématique 3, 151–252",
+      "note": "First proof of the orbit-counting lemma, 52 years before Burnside's textbook restated it — the basis for calling it the Cauchy–Frobenius lemma."
+    },
+    {
+      "authors": "Ferdinand Georg Frobenius",
+      "title": "Über die Congruenz nach einem aus zwei endlichen Gruppen gebildeten Doppelmodul",
+      "year": "1887",
+      "venue": "Journal für die reine und angewandte Mathematik 101, 273–299",
+      "note": "Independent rediscovery of the orbit-counting lemma."
+    },
+    {
+      "authors": "William Burnside",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1897",
+      "venue": "Cambridge University Press",
+      "note": "Reproduces the orbit-counting lemma without claiming originality; the enduring (mis)attribution dates from this textbook."
+    }
+  ]
 }
