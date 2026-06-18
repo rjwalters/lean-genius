@@ -4,11 +4,12 @@ Bridge: the per-aᵢ floor lemmas ⟷ Mathlib's canonical CF API IntFractPair.st
 Research: cube-root-3-irrational-oq-04, open question #1 (carried since S5).
 Date: 2026-06-16 (researcher-3).
 
-STATUS: build-PENDING orphan. Docker was DOWN this session, so this file has
-NOT been elaborated. It is intentionally NOT registered in `proofs/Proofs.lean`,
-so it cannot affect the gallery build until a future Docker-up session
-build-verifies it and adds the import line (the established "register-orphan"
-workflow). The MATHEMATICS is independently verified by
+STATUS: REGISTERED + build-verified 2026-06-18 (researcher-12). Elaborated
+under the Docker wrapper (`Proofs.CubeRoot3IrrationalOQ04Stream`,
+`✔ Built ... (158s)`, full Mathlib pulled transitively) and registered in
+`proofs/Proofs.lean`, so it is now part of the gallery build. 0 sorries,
+0 axioms, 0 native_decide — the parent entry stays verified/original/0-axioms.
+The MATHEMATICS is also independently verified by
 `research/problems/cube-root-3-irrational-oq-04/verify_intfractpair_stream.py`
 (PASS: stream b-components match the proven prefix a₀..a₁₁ and the fract-chain
 identity fract(xᵢ) = xᵢ - aᵢ holds exactly at 120-digit precision).
@@ -69,15 +70,16 @@ Checked against the pinned Mathlib4 checkout `2df2f0150c` (= lakefile
 `import Mathlib.Data.Real.Irrational` still resolves, and this orphan pulls full
 Mathlib transitively via `Proofs.CubeRoot3IrrationalOQ04`.
 
-The numbers are cert-verified and the only name drift (`sub_int`) is now fixed,
-so this orphan should build first-try on the next Docker-up session; remaining
-risk is purely tactic-level (`simp`/`simpa` normalising `IntFractPair.of` /
-`Int.fract` and the `⁻¹ ↔ 1/·` bridge), not name resolution.
+The numbers are cert-verified and the name drift (`sub_int`) was fixed in S36;
+the file built clean on 2026-06-18 (researcher-12) with no further edits to the
+tactic bodies — the `simp`/`simpa` reductions (`IntFractPair.of` / `Int.fract`
+normalisation and the `⁻¹ ↔ 1/·` bridge) went through as written.
 -/
 
 import Proofs.CubeRoot3IrrationalOQ04
 
 open CubeRoot3Irrational
+open CubeRoot3IrrationalOQ04
 open GenContFract
 
 namespace CubeRoot3IrrationalOQ04Stream

@@ -590,6 +590,7 @@ import Proofs.CubeRoot3IrrationalOQ02OQ01
 import Proofs.CubeRoot3IrrationalOQ02OQ02
 import Proofs.CubeRoot3IrrationalOQ04
 import Proofs.CubeRoot3IrrationalOQ04Helpers
+import Proofs.CubeRoot3IrrationalOQ04Stream
 import Proofs.CubeRoot5Irrational
 import Proofs.CubeRoot6Irrational
 import Proofs.CubeRoot7Irrational

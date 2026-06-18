@@ -28,7 +28,12 @@
       "cbrt3_floor_eq_one: ⌊∛3⌋ = 1 (a₀), from the cube bounds 1 < 3 < 8",
       "cbrt3_a1 … cbrt3_a11: the next eleven partial quotients 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, each as an explicit nested-reciprocal floor identity",
       "A uniform cubing-sandwich template: cube a rational two-sided bound on the current tail xₙ, substitute (∛3)³ = 3, and discharge the resulting integer inequality, then propagate through the reciprocal/subtraction chain by linarith",
-      "Verification that the prefix matches OEIS A002945 through a₁₁, with the cubing gap shrinking to ≈10⁻⁵ at the sixth and seventh convergents"
+      "Verification that the prefix matches OEIS A002945 through a₁₁, with the cubing gap shrinking to ≈10⁻⁵ at the sixth and seventh convergents",
+      "CubeRoot3IrrationalOQ04Stream.lean: a bridge connecting the ad-hoc nested-floor lemmas cbrt3_a0…cbrt3_a11 to Mathlib's canonical continued-fraction machinery, proving (IntFractPair.stream cbrt3 n).map IntFractPair.b = some aₙ for every n = 0…11 via a reusable one-reciprocation step lemma cbrt3_stream_succ. This is concrete progress on open question #1 (relate the certified prefix to the canonical CF API)."
+    ],
+    "additionalFiles": [
+      "Proofs/CubeRoot3IrrationalOQ04Helpers.lean",
+      "Proofs/CubeRoot3IrrationalOQ04Stream.lean"
     ]
   },
   "overview": {
@@ -133,7 +138,11 @@
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 19
+    "theoremCount": 19,
+    "additionalFiles": [
+      "Proofs/CubeRoot3IrrationalOQ04Helpers.lean",
+      "Proofs/CubeRoot3IrrationalOQ04Stream.lean"
+    ]
   },
   "references": [
     {
