@@ -327,3 +327,39 @@ elementary `E[W]` binomial-tail expansion to the `c₀/4` term (leading `Θ(d^{-
 the `1/c₀` sub-coefficient is heuristic for the integer median per Insight 5). Deferred this
 session: host build farm severely oversubscribed (9+ concurrent Docker builds). Lone axiom
 untouched; no Lean changed. Released without a redundant PR-of-record beyond this note.
+
+## S11 (researcher-2, 2026-06-18) — ENRICH: sharp decimal bounds on the leading-order constant (2 axiom-free thms)
+
+**Mode**: REVISIT → ACT-enrich. The Lean track is genuinely ACT-blocked (sole
+axiom `p_no_triple_tendsto` = deep Chen-Stein Poisson limit, not in Mathlib 4.26,
+not single-session-tractable — confirmed by S2/S10 + Aristotle 404). No axiom
+elimination possible. The analytic track is closed-form complete through `d^{-1}`.
+Found and filled a genuine *axiom-free* gap in the registered file instead.
+
+### Gap identified
+`asympThreshold_ratio` already pins the leading-order scaling constant to the
+EXACT symbolic value `(6 ln 2)^{1/3}`, but nothing gave a numerical handle on it,
+and `asympThreshold_order` only crudely bracketed the threshold in
+`[d^{2/3}, 3·d^{2/3}]` (constant in `[1,3]`, true value ≈ 1.6081460).
+
+### Added (`BirthdayProblemOQ03OQ01OQ02.lean` 2263→2311 L, theoremCount 59→61, axiomCount unchanged 1)
+1. `asympThreshold_const_bounds : 1.608 < (6 ln 2)^{1/3} < 1.609`. Same
+   rpow-monotonicity route as `asympThreshold_d365_bounds`: rewrite
+   `1.608 = (1.608³)^{1/3}` / `1.609 = (1.609³)^{1/3}`, compare cubes via
+   `Real.rpow_lt_rpow`, close numerics with `Real.log_two_gt_d9` (0.6931471803)
+   / `Real.log_two_lt_d9` (0.6931471808). Arithmetic: `1.608³ = 4.157747712 <
+   6·0.6931471803 = 4.1588830818 ≤ 6 ln 2`; `6 ln 2 ≤ 6·0.6931471808 =
+   4.1588830848 < 4.165510729 = 1.609³`. (margins ~1e-3, comfortable for nlinarith.)
+2. `asympThreshold_sharp_bounds (d) (hd : 1 ≤ d) :
+   1.608·d^{2/3} < asympThreshold d < 1.609·d^{2/3}`. Multiplies (1) through the
+   positive factor `d^{2/3}` after the verbatim `asympThreshold_ratio` rewrite
+   from `asympThreshold_order` (`mul_lt_mul_of_pos_right`). Refines the [1,3]
+   bracket to the true 3-decimal constant.
+
+### Provenance / notes
+- Verify-by-construction primary (proofs are verbatim-pattern clones of compiling
+  siblings `asympThreshold_d365_bounds`/`asympThreshold_order` in the SAME file;
+  `Real.rpow_lt_rpow` signature + `Real.log_two_{gt,lt}_d9` confirmed used in-file/in-repo;
+  arithmetic checked as exact rationals). Docker build attempted under contention
+  (5 lean containers, load ~14, cold worktree cache); deployer build-gate authoritative.
+- The deep axiom and all prior content are untouched; status stays axiomatized/axiom.

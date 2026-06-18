@@ -224,6 +224,54 @@ theorem asympThreshold_order (d : ℕ) (hd : 1 ≤ d) :
         _ = 3 := h27
     nlinarith
 
+/-- **Sharp decimal bounds on the leading-order threshold constant.**
+
+`asympThreshold_ratio` pins the scaling constant to the exact symbolic
+value `(6 ln 2)^{1/3}`; this localizes it to three decimals:
+
+  `1.608 < (6 ln 2)^{1/3} < 1.609`   (true value `≈ 1.6081460`).
+
+Same `rpow`-monotonicity route as `asympThreshold_d365_bounds`: write
+`1.608 = (1.608³)^{1/3}`, `1.609 = (1.609³)^{1/3}`, then compare cubes
+using the Mathlib bounds `Real.log_two_gt_d9` / `Real.log_two_lt_d9`
+(`1.608³ = 4.15774… < 6·0.6931471803 = 4.15888… ≤ 6 ln 2`, and
+`6 ln 2 ≤ 6·0.6931471808 = 4.15888… < 4.16551… = 1.609³`). No new axioms. -/
+theorem asympThreshold_const_bounds :
+    (1.608 : ℝ) < (6 * Real.log 2) ^ ((1 : ℝ) / 3) ∧
+    (6 * Real.log 2) ^ ((1 : ℝ) / 3) < 1.609 := by
+  have hlb : (0.6931471803 : ℝ) < Real.log 2 := Real.log_two_gt_d9
+  have hub : Real.log 2 < 0.6931471808 := Real.log_two_lt_d9
+  have hpos : (0 : ℝ) ≤ 6 * Real.log 2 := by linarith
+  constructor
+  · rw [show (1.608 : ℝ) = ((1.608 : ℝ) ^ 3) ^ ((1 : ℝ) / 3) by
+        rw [← Real.rpow_natCast, ← Real.rpow_mul (by norm_num)]; norm_num]
+    exact Real.rpow_lt_rpow (by norm_num) (by nlinarith) (by norm_num)
+  · rw [show (1.609 : ℝ) = ((1.609 : ℝ) ^ 3) ^ ((1 : ℝ) / 3) by
+        rw [← Real.rpow_natCast, ← Real.rpow_mul (by norm_num)]; norm_num]
+    exact Real.rpow_lt_rpow hpos (by nlinarith) (by norm_num)
+
+/-- **Sharp constant-factor sandwich for the threshold itself.**
+
+Refines `asympThreshold_order`'s crude bracket `[d^{2/3}, 3·d^{2/3}]`
+to the true three-decimal scaling, for every `d ≥ 1`:
+
+  `1.608 · d^{2/3} < asympThreshold d < 1.609 · d^{2/3}`.
+
+Multiply `asympThreshold_const_bounds` through by the positive factor
+`d^{2/3}` after rewriting `asympThreshold d = (6 ln 2)^{1/3} · d^{2/3}`
+via `asympThreshold_ratio`. No new axioms. -/
+theorem asympThreshold_sharp_bounds (d : ℕ) (hd : 1 ≤ d) :
+    (1.608 : ℝ) * (d : ℝ) ^ ((2 : ℝ) / 3) < asympThreshold d ∧
+    asympThreshold d < 1.609 * (d : ℝ) ^ ((2 : ℝ) / 3) := by
+  have hd_pos : (0 : ℝ) < d := by exact_mod_cast Nat.pos_of_ne_zero (by omega)
+  have hd23 : (0 : ℝ) < (d : ℝ) ^ ((2 : ℝ) / 3) := Real.rpow_pos_of_pos hd_pos _
+  have hconst := asympThreshold_const_bounds
+  rw [show asympThreshold d =
+      (6 * Real.log 2) ^ ((1 : ℝ) / 3) * (d : ℝ) ^ ((2 : ℝ) / 3) by
+    rw [← asympThreshold_ratio d hd]; field_simp]
+  exact ⟨mul_lt_mul_of_pos_right hconst.1 hd23,
+         mul_lt_mul_of_pos_right hconst.2 hd23⟩
+
 -- ============================================================
 -- §4. NUMERICAL VERIFICATION FOR d = 365
 -- ============================================================
