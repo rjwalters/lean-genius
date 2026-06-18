@@ -112,3 +112,60 @@ and 12 has proper-divisor sum 16 > 12. So 12 is the first abundant number.
 #### Next Steps
 - (Follow-ups) positive natural density (Davenport ≈ 0.2476); smallest ODD
   abundant = 945; every integer > 20161 is a sum of two abundant numbers.
+
+### Session 2026-06-18 (Session 3) — REVISIT / extend (researcher-1)
+
+**Mode**: REVISIT (slug already COMPLETE/verified via #25690) · **Outcome**:
+progress (3 new theorems), **BUILD-PENDING** (Docker blackout this session —
+`docker info` hangs >60s, `docker-build.sh` stalls at the header).
+
+#### What I Did
+- Added the **perfect-number boundary** to `AbundantMultiplesOQ01.lean`, which the
+  gallery `meta.json` previously asserted only in *prose* (keyInsight #5, the
+  `perfect-numbers` crossReference): "every proper multiple of a perfect number is
+  abundant." Now an actual theorem.
+- `abundant_of_perfect_mul {a} (ha : a.Perfect) {t} (ht : 2 ≤ t) : (a*t).Abundant`.
+  Key difference from `abundant_mul_right`: a perfect `a` only *meets* `σ(a)=2a`,
+  so strictness can't come from `a`. It comes from the divisor `1` of `a*t`, which
+  is **outside** the scaled image `{t·d : d ∣ a}` whenever `t ≥ 2` (`t·d = 1 ⇒
+  t = 1`). `Finset.sum_lt_sum_of_subset hsub h1mem h1not` then makes
+  `σ(a*t) > t·σ(a) = 2(a*t)`. Reuses the proven `hsub`/`hinj`/`himg` block
+  verbatim from `abundant_mul_right` (already built green in #25690).
+- `perfect_six : Nat.Perfect 6` — `Nat.Perfect` is a bare `def` with **no
+  Decidable instance and not reducible**, so `by decide` alone fails to synthesize
+  `Decidable (Nat.Perfect 6)`. Proof: `unfold Nat.Perfect; decide` (kernel decide
+  over the unfolded `(∑ properDivisors 6 = 6) ∧ 0 < 6`).
+- `abundant_of_six_mul {t} (ht : 2 ≤ t) : (6*t).Abundant` — concrete family
+  12, 18, 24, … = proper multiples of 6.
+- Synced gallery `meta.json`: theoremCount 10→13, lineCount 167→236, nested
+  leanFile 128→197 / 7→10, new originalContribution + mainTheorem + `perfect-boundary`
+  section, keyInsight #5 and the perfect crossReference updated from "is the same
+  argument (prose)" to "now formalized".
+
+#### API name-checks (pinned Mathlib v4.26, `/Users/rwalters/GitHub/mathlib4`)
+- `Nat.perfect_iff_sum_divisors_eq_two_mul (h : 0 < n) : Perfect n ↔ ∑ i ∈ divisors n, i = 2*n`
+  (`NumberTheory/Divisors.lean:405`). `Perfect n := (∑ properDivisors = n) ∧ 0 < n`
+  (`:399`) ⇒ `ha.2 : 0 < a`.
+- `Finset.sum_lt_sum_of_subset` (additive of `prod_lt_prod_of_subset'`,
+  `Algebra/Order/BigOperators/Group/Finset.lean:472`):
+  `(h : s ⊆ t) (ht : i ∈ t) (hs : i ∉ s) (hlt : 0 < f i) (hle : ∀ j ∈ t, j ∉ s → 0 ≤ f j)`.
+- `Nat.le_of_dvd` (Lean core / Batteries; not under `Mathlib/`).
+- `Finset.sum_image`, `Finset.mul_sum`, `Nat.mem_divisors`, `mul_dvd_mul_left`,
+  `Nat.eq_of_mul_eq_mul_left` — all already in the proven `abundant_mul_right`.
+
+#### Build status / honesty
+- **NOT machine-checked this session** (Docker blackout). The proof reuses a
+  byte-identical injection block from already-green code; the only genuinely new
+  tactics are `Finset.sum_lt_sum_of_subset` (signature confirmed) and
+  `unfold Nat.Perfect; decide` (decidability gap explicitly handled — heeding S2's
+  LESSON about `decide` instance gaps).
+- Path is **deployer-gated**: the file is already registered in `Proofs.lean`, so
+  the deployer recompiles it before merge; a compile error blocks the PR rather
+  than breaking `main`. The meta's "machine-checked" claim becomes true exactly at
+  the green-build merge.
+
+#### Next Steps (unchanged)
+- Re-run `docker-build.sh Proofs.AbundantMultiplesOQ01` when Docker returns to
+  confirm green before/at merge.
+- Follow-ups: positive natural density (Davenport ≈ 0.2476); smallest ODD abundant
+  = 945; every integer > 20161 is a sum of two abundant numbers.
