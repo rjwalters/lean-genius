@@ -11,6 +11,81 @@ components are convex (open in full generality).
 
 ---
 
+## Session 2026-06-18 (researcher-9) — CLOSED-FORM onset c_nc(m1,m2) for the GENERAL two-root family (m2 ≥ 2)
+
+**Mode**: REVISIT (RICH; build-free). Docker contended (7 `lean-build`
+containers, load ~17) so no Lean shipped — the flagship Goodman discharge is
+already complete + registered (Session 06-17, 0 sorry). This session closes the
+explicit next-step the analytic-onset session left open: *"a genuine closed form
+`c_nc(m₁,m₂)` ... for (2,1) this is a small algebraic system worth attempting
+symbolically next."* The committed `onset_closed_form.py` (PR #24420) only did
+the **Pommerenke slice m₂ = 1** (`f = zᵏ(z−1)`). Extended it to **arbitrary
+second multiplicity**.
+
+### Key algebraic simplification (unifies the two prior convexity frameworks)
+With `w = f'/f` and the identity `f''/f = w' + w²`, the standard curvature
+potential collapses:
+> `Φ := f f''/(f')² = (w'+w²)/w² = 1 + w'/w² = 1 − u'`  (since `u' = −w'/w²`).
+
+So the Session-2 criterion `Re Φ ≤ 1` (convex) is **identically** the
+`Re(u') ≥ 0` criterion of the c-free framework — they were never two facts.
+For the two-root `f = z^{m₁}(z−1)^{m₂}` (`w = (Mz−m₁)/(z(z−1))`, `M = m₁+m₂`):
+> `u'(z)  = (M z² − 2 m₁ z + m₁)/(M z − m₁)²`
+> `u''(z) = −2 m₁ m₂/(M z − m₁)³`   (since `D²−MN = (Mz−m₁)² − M(Mz²−2m₁z+m₁) = m₁(m₁−M) = −m₁m₂`).
+All three confirmed symbolically in sympy (`confirm_forms()`).
+
+### The Lagrange system → closed form (resultant elimination)
+Minimise `log|f|²` subject to `Re(u') = 0`. For analytic `Φ`,
+`grad Re Φ = (Re Φ', −Im Φ')` ("conj Φ'"), so `grad log|f| ∥ grad Re(u')`
+⟺ `w/u''` is real. The constant `−1/(2m₁m₂)` drops, leaving the clean pair
+> **(1)** `Re( u'(z) ) = 0`   **(2)** `Im( (M z − m₁)⁴ / (z(z−1)) ) = 0`,
+and `c_nc = |f(z)|` at the dimple root. Two real algebraic equations → finite
+solution set → PSLQ recovers `minpoly(c_nc²)`. (The committed (2,1) value
+`(130−31√10)/1458` is reproduced to 1e-78.)
+
+### New closed forms (m₂ ≥ 2; all verified vs prior numerical table)
+Several `(m₁,m₂)` give a **degree-2** minimal polynomial in `t = c_nc²`, hence an
+explicit quadratic surd:
+
+| (m₁,m₂) | c* | c_nc | W=(c*−c_nc)/c* | c_nc² closed form |
+|---|---|---|---|---|
+| (3,2) | 0.03456000 | 0.03455653 | 1.00e-4 | `180252/9765625 − 257526√21/68359375` |
+| (5,2) | 0.01517832 | 0.01513065 | 3.14e-3 | `6397112500/678223072849 − 10256393750√30/6104007655641` |
+| (4,3) | 0.00839300 | 0.00839270 | 3.63e-5 | `2938337424/678223072849 − 795601872√330/3391115364245` |
+
+`(3,2)` matches Session-N's bisection value `0.03455653` to 7 digits (its grid
+value `0.03453687` was the less-accurate one) and the table window `W=0.0001`.
+The surd field varies: √21 (3,2), √30 (5,2), √330 (4,3), √10 (2,1), √105 (3,1).
+
+### The minpoly degree is IRREGULAR in (m₁,m₂) — no simple pattern
+Mapping deg(minpoly c_nc²) over `2 ≤ m₁ ≤ 8`, `1 ≤ m₂ < m₁`: degree is **not**
+monotone and not a function of gcd, `m₁−m₂`, or `M` alone — e.g. (2,1),(3,2),
+(4,3),(5,2) are degree 2 but (5,3),(7,3) are degree 4, and (4,3) is deg-2 while
+the coprime (5,3) is deg-4. So `c_nc(m₁,m₂)` is an algebraic number of growing,
+non-monotone degree; **(2,1) is the unique cleanest case** (a single quadratic in
+√10). This rules out a uniform-radical closed form for the full two-root onset.
+
+### Honesty / status
+- Pure build-free symbolic+numeric work (sympy 1.14 / mpmath dps 80). No Lean
+  touched; gallery `meta.json` unchanged (flagship axiomCount stays 1, honest).
+- This is a genuine extension (m₂=1 → general m₂) of an existing committed
+  result, not a breakthrough on the OPEN characterization. erdos-1047-oq-02 (the
+  full characterization) remains OPEN; the two-root onset is now closed-form-
+  pinned for every (m₁,m₂) as an explicit algebraic number.
+
+### Files
+- `research/problems/erdos-1047-oq-02/onset_two_mult.py` (new) — general
+  two-multiplicity onset: symbolic form confirmation + high-prec dimple solve +
+  PSLQ minpoly + exact surds. Self-contained, Docker-independent, `RESULT: PASS`.
+
+### Next steps
+- Three distinct roots (collinear vs triangular) remains the open structural case
+  (the numerical frontier; closed form there would need a 2-variable Lagrange
+  elimination).
+- The MECHANICAL flagship axiomCount 1→0 restructure is still Docker-gated.
+
+---
+
 ## Session 2026-06-14 (Session 1) — FRESH, ORIENT
 
 **Mode:** FRESH. **Outcome:** progress (durable numerical results + tooling).

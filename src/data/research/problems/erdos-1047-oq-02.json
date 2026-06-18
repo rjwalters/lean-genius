@@ -48,7 +48,10 @@
       "Certified (mpmath dps=40): for z(z-1)(z-2), min Re(u') on the middle (z=1) component boundary = +0.083 at c/c*=0.9999 but -0.064 at 0.99995, -0.57 at 0.99999, -1.98 at 0.999999; min Re(u') -> -infinity as c -> c* (off-axis shoulder concavity unbounded near merge). c*=|f(1-1/sqrt3)|=0.3849.",
       "Validation gate: the IDENTICAL tracer on z(z-1) returns min Re(u')=0.7500->3/4 convex up to merge, matching Session-3's PROVEN closed-form 8c^2-6c+1 classification => the three-root necking is real, not a near-saddle numerical artifact.",
       "CORRECTED discriminator: separated non-convexity is governed by INTERIOR (neighbours on opposite sides => sharp tip each way) vs EXTREMAL (neighbours clustered one side), NOT by multiplicity imbalance. Two roots: each extremal => convex (proven). Collinear middle: interior => necks even simple. Equilateral simple: triple simultaneous confluence => all convex (min Re(u')~+0.667 flat). Multiplicity imbalance only lowers the threshold; sufficient (Pommerenke (k,1)) but not necessary.",
-      "Consistency: necking is a near-MERGE (large-c) effect; small-c gives vanishing near-circles (convex). So the prior session's flag that registered axiom grunskyConjecture_false is the wrong '∀ small c' statement still stands."
+      "Consistency: necking is a near-MERGE (large-c) effect; small-c gives vanishing near-circles (convex). So the prior session's flag that registered axiom grunskyConjecture_false is the wrong '∀ small c' statement still stands.",
+      "Φ=f·f″/(f′)²=1−u′ identically (via f″/f=w′+w²), unifying the Session-2 \"Re Φ≤1\" and the c-free \"Re u′≥0\" convexity frameworks — they were never two facts.",
+      "Closed-form necking onset extended from the m₂=1 Pommerenke slice to GENERAL two-root f=z^m1(z−1)^m2: Lagrange system Re(u′)=0 & Im((Mz−m1)⁴/(z(z−1)))=0, c_nc=|f| at the dimple root; PSLQ gives minpoly(c_nc²).",
+      "deg(minpoly c_nc²) is IRREGULAR in (m1,m2) — not a function of gcd, m1−m2, or M; (2,1),(3,2),(4,3),(5,2) deg-2 surds but (5,3),(7,3) deg-4. (2,1) is the unique cleanest case (single √10). No uniform-radical closed form for the full two-root onset."
     ],
     "builtItems": [
       "research/problems/erdos-1047-oq-02/curvature_closed_form.py — [S2] derives & numerically certifies the closed-form complex curvature κ=|f'/f|(1−Re(f f''/f'²)) and its log-derivative reduction κ=−|w|Re(w'/w²); asserts agreement with the S1 real Hessian to <1e-3, single-root Re(w'/w²)≡−1/m to 1e-9, and both Pommerenke on-axis tips convex for all c.",
@@ -62,7 +65,8 @@
       "research/problems/erdos-1047-oq-02/three_root_scan.py (equal/unequal multiplicity component-boundary scan)",
       "research/problems/erdos-1047-oq-02/three_root_certify.py (mpmath certificates; exposed equal-mult near-merge window)",
       "research/problems/erdos-1047-oq-02/three_collinear_simple.py (decisive z(z-1)(z-2) middle-component non-convexity certificate)",
-      "research/problems/erdos-1047-oq-02/two_root_control.py (validation: tracer reproduces proven two-root convexity)"
+      "research/problems/erdos-1047-oq-02/two_root_control.py (validation: tracer reproduces proven two-root convexity)",
+      "onset_two_mult.py: general two-multiplicity closed-form onset — exact surds c_nc(3,2)²=180252/9765625−257526√21/68359375, c_nc(5,2)²=…−10256393750√30/6104007655641, c_nc(4,3)²=…−795601872√330/3391115364245; sympy form-confirm + mpmath dps-80 dimple solve + PSLQ. RESULT: PASS."
     ],
     "mathlibGaps": [
       "Convexity of polynomial level sets / lemniscate components is heavy real analysis (curvature of implicit curves); no direct Mathlib support. A Lean formalization is deferred — the checkable artifact here is the numerical curvature certificate, not a Lean proof."
@@ -70,8 +74,9 @@
     "nextSteps": [
       "Attempt a closed-form c_nc(2,1) by eliminating z from the Lagrange system (resultant of Re(u^prime)=0 and grad|f| parallel grad Re(u^prime)).",
       "Higher-resolution grid + mpmath polish to drive the (A grid)-(B bisect) agreement to full precision (current gap is discretization only).",
-      "Three distinct roots: the open structural case (collinear vs triangular configurations)."
+      "Three distinct roots: the open structural case (collinear vs triangular configurations).",
+      "Three distinct roots (collinear vs triangular): closed-form onset would need a 2-variable Lagrange elimination — the open structural frontier."
     ],
-    "progressSummary": "PROGRESS (researcher-1 2026-06-15): Three-root frontier opened. NEW certified result: three collinear SIMPLE roots z(z-1)(z-2) have a non-convex MIDDLE component just below merge (no multiplicity needed), refuting the multi-session 'multiplicity imbalance drives necking' hypothesis. True discriminator is interior (opposite-side neighbours) vs extremal roots; equilateral simple roots stay convex (triple confluence). Validated against the PROVEN two-root convexity with the identical tracer."
+    "progressSummary": "PROGRESS (researcher-9 2026-06-18): closed-form necking onset c_nc(m1,m2) extended from the committed m2=1 Pommerenke slice to the GENERAL two-root family — explicit quadratic surds for (3,2),(5,2),(4,3) (verified vs prior numerics), via the unifying identity Φ=1−u′ and a clean 2-eqn Lagrange system. minpoly degree shown irregular in (m1,m2); (2,1) uniquely cleanest. Build-free; OQ-02 characterization remains OPEN."
   }
 }
