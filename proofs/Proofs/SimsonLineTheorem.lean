@@ -199,4 +199,38 @@ theorem simson_bisects_orthocenter_segment {a b c p : ℂ}
   rw [map_mul, Complex.conj_conj]
   exact (simson_bisects_key ha hb hc hp).symm
 
+/-! ## Simson lines of antipodal points are perpendicular
+
+A second classical strengthening of Simson's theorem: if `P` and its **antipode** `-P` (the
+diametrically opposite point on the circumcircle, centre `0`) both lie on the unit circle, then
+the Simson line of `P` and the Simson line of `-P` are **perpendicular**.
+
+The Simson line of a point `q` is spanned by the edge-vector `F_BC - F_AB` of its triangle of
+feet, which `foot_diff` puts in the closed form `(c - a) * (1 - b * conj q) / 2`. For the two
+antipodal points the `conj q` factors are `conj p` and `conj (-p) = -conj p`, and the Hermitian
+product `(F_BC - F_AB)(P) * conj ((F_BC - F_AB)(-P))` reduces — via `conj z = z⁻¹` on the unit
+circle — to `|c - a|² / 4 * (conj b * p - b * conj p)`, a purely imaginary number (it is `z - conj z`
+for `z = conj b * p`). Its vanishing real part is exactly perpendicularity of the two direction
+vectors, hence of the two Simson lines. -/
+
+/-- **Antipodal Simson lines are perpendicular.** For `A, B, C, P` on the unit circle, the Simson
+line of `P` and the Simson line of the antipode `-P` are orthogonal: the real part of
+`(F_BC(P) - F_AB(P)) * conj (F_BC(-P) - F_AB(-P))` vanishes. Each factor is a direction vector of
+the respective Simson line (`foot_diff`, `simson_collinear`), so the vanishing real part of their
+Hermitian product is precisely perpendicularity of the two lines. -/
+theorem antipodal_simson_perp {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1)
+    (hc : Complex.normSq c = 1) (hp : Complex.normSq p = 1) :
+    ((foot b c p - foot a b p) * conj (foot b c (-p) - foot a b (-p))).re = 0 := by
+  apply re_eq_zero_of_conj_eq_neg
+  rw [foot_diff, foot_diff]
+  simp only [map_mul, map_sub, map_add, map_neg, map_div₀, map_one, map_ofNat, Complex.conj_conj]
+  rw [conj_eq_inv ha, conj_eq_inv hb, conj_eq_inv hc, conj_eq_inv hp]
+  have ha0 := ne_zero_of_normSq_one ha
+  have hb0 := ne_zero_of_normSq_one hb
+  have hc0 := ne_zero_of_normSq_one hc
+  have hp0 := ne_zero_of_normSq_one hp
+  field_simp
+  ring
+
 end SimsonLineTheorem
