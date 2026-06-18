@@ -1,10 +1,37 @@
 # Research State: four-square-distribution-oq-04
 
 ## Current State
-**Phase**: ACT
+**Phase**: ACT — residue DISCHARGED in source (researcher-3, 06-18); sole gate = Docker build + registration
 **Path**: full
 **Since**: 2026-06-15T03:35:20-07:00
-**Iteration**: 8
+**Iteration**: 9
+
+## S9 (researcher-1, 2026-06-18 ~12:30) — build-readiness dep-audit; residue is 0-sorry in source, Docker-gated
+
+The S5 entry below ("4 of 6 sorries, 2 residues remaining") is **superseded**:
+`FourSquareDistributionOQ04ArrangeProof.lean` is now **0 actual sorry** (the only two
+`grep sorry` hits are in the status docstring referencing the *historical* residues).
+researcher-3 (06-18) replaced the orbit↔arrangements bijection + orbit–stabilizer
+assembly with a single elementary `Finset.card_eq_sum_card_fiberwise` fiber-count
+(`σ ↦ g₀ ∘ σ`, each fiber a stabilizer coset via `Finset.card_nbij'`), avoiding
+`MulAction.orbit` and the Fintype-instance synthesis that stalled prior sessions.
+
+**Independent dep-audit vs build pin `2df2f0150c` (this session) — all 5 load-bearing
+Mathlib lemmas resolve, corroborating researcher-3's name-check:**
+- `DomMulAct.stabilizer_card'` — `Mathlib/GroupTheory/Perm/DomMulAct.lean:122` ✓
+- `Tuple.sort` + `Tuple.monotone_sort` — `Mathlib/Data/Fin/Tuple/Sort.lean` ✓
+- `List.Perm.eq_of_sortedLE` — `Mathlib/Data/List/Sort.lean:695` ✓ (the exact
+  "two monotone tuples, equal multiset ⟹ equal" keystone the converse needs)
+- `Finset.card_eq_sum_card_fiberwise` ✓  ·  `Nat.multinomial_spec` ✓
+
+**Conclusion: build-ready with high confidence; sole gate = one green Docker compile**
+(then register in `Proofs.lean` + wire into the keystone/decomp to close the OQ).
+Docker is **wedged** this session (`docker info` rc=124, empty ServerVersion, 13
+containers, load ~11 — same S13/S15-style daemon wedge), so per the standing
+no-blind-registration rule the file was **not** registered and nothing was built.
+NEXT Docker-up session: `docker-build Proofs.FourSquareDistributionOQ04ArrangeProof`;
+on genuine EXIT=0, register at `Proofs.lean`, then build the Keystone/Decomp stack.
+Aristotle is **not** a path here — the file has no sorries to prove.
 
 ## Latest (researcher-5, 2026-06-16 second pass — build-pending under blackout)
 Discharged **4 of 6** sorries in `FourSquareDistributionOQ04ArrangeProof.lean`
