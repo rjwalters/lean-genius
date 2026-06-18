@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-no-burnside-intermediate",
+    "proofId": "lagrange-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 64, "endLine": 80 },
+    "type": "insight",
+    "title": "What \"No Burnside Intermediate\" Means",
+    "content": "The parent entry proved its per-orbit contribution lemma (each orbit contributes |G| to the stabilizer sum) but then called Mathlib's own packaged Burnside lemma MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group to assemble the global sum Σ_x |Stab(x)| = |X/G|·|G|. That makes the parent's claimed \"derivation of Burnside from orbit-stabilizer\" circular at the library level — it borrows the very result it claims to derive. The gap is one of *assembly*, not of mathematics: the hard ingredient (the per-orbit lemma) was already owned; only the gluing was outsourced. This entry glues the per-orbit contributions together directly via the orbit-partition decomposition, so no step touches Mathlib's Burnside.",
+    "mathContext": "The borrowed step is precisely the orbit-partition sum $\\sum_{x} |\\mathrm{Stab}(x)| = |X/G|\\cdot|G|$, not orbit-stabilizer $|\\mathrm{Orb}(x)|\\cdot|\\mathrm{Stab}(x)| = |G|$, which the parent already has.",
+    "significance": "critical",
+    "relatedConcepts": ["Burnside's lemma", "orbit-stabilizer theorem", "self-contained proof", "Cauchy–Frobenius lemma"],
+    "prerequisites": ["group actions", "orbits and stabilizers"]
+  },
+  {
+    "id": "ann-reindex-selfEquivSigmaOrbits",
+    "proofId": "lagrange-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 85, "endLine": 91 },
+    "type": "technique",
+    "title": "Reindexing the Sum by the Orbit Partition",
+    "content": "MulAction.selfEquivSigmaOrbits G X is the equivalence exhibiting X as the disjoint union of its orbits, indexed by the orbit quotient X/G: X ≃ Σ ω : X/G, Orb(ω.out). Fintype.sum_equiv transports the summand |Stab(·)| across this equivalence. The crucial point is that the equivalence preserves the *underlying point* — the image of x is a pair whose X-component is x itself — so the summand transports definitionally and the side condition (fun x => rfl) discharges by reflexivity rather than a substantive computation.",
+    "mathContext": "$\\sum_{x \\in X} |\\mathrm{Stab}(x)| = \\sum_{p \\in \\Sigma_{\\omega} \\mathrm{Orb}(\\omega)} |\\mathrm{Stab}(p_2)|$, where the equality of summands at corresponding indices holds by $\\texttt{rfl}$ because $\\texttt{selfEquivSigmaOrbits}$ keeps the action point fixed.",
+    "significance": "critical",
+    "relatedConcepts": ["orbit partition", "sigma types", "Fintype.sum_equiv", "definitional equality"],
+    "prerequisites": ["group actions", "Lean 4 equivalences", "dependent sums"]
+  },
+  {
+    "id": "ann-sum-sigma-split",
+    "proofId": "lagrange-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 92, "endLine": 93 },
+    "type": "tactic",
+    "title": "Splitting the Σ-Sum into a Double Sum",
+    "content": "Finset.univ_sigma_univ rewrites the universal finset of the sigma type as Finset.univ.sigma (fun _ => Finset.univ), and Finset.sum_sigma then splits the single sum over the sigma type into an outer sum over orbits ω and an inner sum over the points of Orb(ω). This is the formal counterpart of writing a sum over a partitioned set as a sum-of-sums over the blocks.",
+    "mathContext": "$\\sum_{p \\in \\Sigma_{\\omega} \\mathrm{Orb}(\\omega)} f(p) = \\sum_{\\omega \\in X/G}\\ \\sum_{y \\in \\mathrm{Orb}(\\omega)} f(\\omega, y)$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_sigma", "iterated sums", "partition of a sum"],
+    "prerequisites": ["finite sums", "sigma types"]
+  },
+  {
+    "id": "ann-per-orbit-collapse",
+    "proofId": "lagrange-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 94, "endLine": 97 },
+    "type": "technique",
+    "title": "Collapsing Each Orbit to |G|, Then Summing the Constant",
+    "content": "simp_rw [LagrangeTheoremOQ02OQ01.sum_card_stabilizer_orbit] applies the parent's per-orbit lemma to every inner sum, replacing Σ_{y ∈ Orb(ω)} |Stab(y)| by the constant |G|. This lemma is the genuine orbit-stabilizer content: all points of an orbit have conjugate (hence equicardinal) stabilizers, and |Orb|·|Stab| = |G|, so the orbit's contribution is exactly |G| regardless of its size. Finset.sum_const, Finset.card_univ, and smul_eq_mul then evaluate the remaining sum of the constant |G| over the |X/G| orbits as the product |X/G|·|G|.",
+    "mathContext": "$\\sum_{\\omega \\in X/G} \\Big(\\sum_{y \\in \\mathrm{Orb}(\\omega)} |\\mathrm{Stab}(y)|\\Big) = \\sum_{\\omega \\in X/G} |G| = |X/G|\\cdot|G|$",
+    "significance": "critical",
+    "relatedConcepts": ["orbit-stabilizer theorem", "conjugate stabilizers", "Finset.sum_const", "sum of a constant over a partition"],
+    "prerequisites": ["orbit-stabilizer theorem", "finite sums"]
+  },
+  {
+    "id": "ann-burnside-compose-double-count",
+    "proofId": "lagrange-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 117, "endLine": 126 },
+    "type": "theorem",
+    "title": "Burnside via the Double-Counting Bijection",
+    "content": "burnside_no_intermediate obtains Σ_g |Fix(g)| = |X/G|·|G| in two independent moves. A single rw through the parent's double-counting bijection sum_card_fixedBy_eq_sum_card_stabilizer replaces Σ_g |Fix(g)| by Σ_x |Stab(x)| — this is the incidence count of the relation {(g,x) : g·x = x} read two ways. The goal then closes by exact application of the self-contained global stabilizer sum proved above. Because neither move references Mathlib's Burnside lemma, the whole derivation traces back to orbit-stabilizer and partition bookkeeping.",
+    "mathContext": "$\\sum_{g \\in G} |\\mathrm{Fix}(g)| \\overset{\\text{double count}}{=} \\sum_{x \\in X} |\\mathrm{Stab}(x)| = |X/G|\\cdot|G|$",
+    "significance": "key",
+    "relatedConcepts": ["double counting", "Burnside's lemma", "fixed points", "incidence counting"],
+    "prerequisites": ["group actions", "bijective proofs"]
+  },
+  {
+    "id": "ann-burnside-divisibility",
+    "proofId": "lagrange-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 128, "endLine": 135 },
+    "type": "theorem",
+    "title": "Divisibility: |G| Divides the Fixed-Point Total",
+    "content": "burnside_divides_no_intermediate rewrites the fixed-point total as the product |X/G|·|G| via burnside_no_intermediate and then closes with dvd_mul_left, which states |G| divides any product with |G| as the right factor. This makes structurally explicit that the orbit count (1/|G|)·Σ_g |Fix(g)| is an integer — the form in which Burnside's lemma is actually applied in enumeration.",
+    "mathContext": "$\\sum_{g \\in G} |\\mathrm{Fix}(g)| = |X/G|\\cdot|G| \\;\\Longrightarrow\\; |G| \\,\\big|\\, \\sum_{g \\in G} |\\mathrm{Fix}(g)|$",
+    "significance": "supporting",
+    "relatedConcepts": ["divisibility", "orbit counting", "Pólya enumeration", "dvd_mul_left"],
+    "prerequisites": ["divisibility", "Burnside's lemma"]
+  }
+]

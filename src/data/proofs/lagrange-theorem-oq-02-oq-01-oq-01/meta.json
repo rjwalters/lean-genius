@@ -76,33 +76,94 @@
       "name": "burnside_no_intermediate",
       "statement": "Burnside's counting lemma: Σ_{g ∈ G} |Fix(g)| = |X/G| × |G|, derived self-containedly from the global stabilizer sum and the parent's double-counting bijection.",
       "leanType": "∑ g : G, Fintype.card (MulAction.fixedBy X g) = Fintype.card (MulAction.orbitRel.Quotient G X) * Fintype.card G"
+    },
+    {
+      "name": "burnside_divides_no_intermediate",
+      "statement": "Burnside divisibility, via the self-contained route: |G| ∣ Σ_{g ∈ G} |Fix(g)|.",
+      "leanType": "Fintype.card G ∣ ∑ g : G, Fintype.card (MulAction.fixedBy X g)"
     }
   ],
   "sorries": [],
   "overview": {
-    "text": "Burnside's counting lemma states that for a finite group G acting on a finite set X, the total number of fixed points Σ_{g ∈ G} |Fix(g)| equals |X/G| × |G|, where |X/G| is the number of orbits. The standard derivation has two steps: a double-counting bijection identifying Σ_g |Fix(g)| with Σ_x |Stab(x)|, and an orbit-partition argument computing Σ_x |Stab(x)| = |X/G| × |G|.\n\nThe parent entry lagrange-theorem-oq-02-oq-01 makes the double-counting step explicit but quietly outsources the orbit-partition step to Mathlib's own Burnside lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group). Its per-orbit contribution lemma — each orbit contributes exactly |G| to the stabilizer sum, a genuine orbit-stabilizer consequence — is proved but never assembled into the global sum.\n\nThis entry removes that intermediate. Using the orbit-partition equivalence MulAction.selfEquivSigmaOrbits, which exhibits X as the disjoint union of its orbits indexed by the quotient X/G, we reindex Σ_x |Stab(x)| as a double sum Σ_ω Σ_{y ∈ Orb(ω)} |Stab(y)|, apply the parent's per-orbit lemma to collapse each inner sum to |G|, and sum the constant over the |X/G| orbits. No step invokes Mathlib's Burnside. Burnside's counting lemma then follows by composing with the parent's double-counting bijection, yielding a fully self-contained derivation from orbit-stabilizer."
+    "historicalContext": "The orbit-counting theorem — \"$\\frac{1}{|G|}\\sum_{g} |\\mathrm{Fix}(g)|$ equals the number of orbits\" — is one of the most-misattributed results in algebra. It is universally called *Burnside's lemma*, yet William Burnside merely reproduced it (without claiming it) in his 1897 textbook *Theory of Groups of Finite Order*; it was already proved by Augustin-Louis Cauchy in 1845 and independently by Georg Frobenius in 1887. For this reason it is sometimes called the *Cauchy–Frobenius lemma* or, drily, \"the lemma that is not Burnside's.\" The standard modern proof is a two-step double count: first equate $\\sum_g |\\mathrm{Fix}(g)|$ with $\\sum_x |\\mathrm{Stab}(x)|$ by counting the incidence relation $\\{(g,x) : g\\cdot x = x\\}$ two ways, then evaluate $\\sum_x |\\mathrm{Stab}(x)| = |X/G|\\cdot|G|$ by partitioning $X$ into orbits and applying orbit-stabilizer. This entry sits at the end of a chain of Lagrange/orbit-stabilizer formalizations and concerns a subtle point of *self-containedness*: the parent entry proved the per-orbit ingredient but quietly delegated the second step to Mathlib's own packaged Burnside lemma, making its \"derivation from orbit-stabilizer\" circular at the library level. The contribution here is to close that gap honestly.",
+    "problemStatement": "Let a finite group $G$ act on a finite set $X$, write $X/G$ for the set of orbits, $\\mathrm{Stab}(x) = \\{g \\in G : g\\cdot x = x\\}$ for the stabilizer of $x$, and $\\mathrm{Fix}(g) = \\{x \\in X : g\\cdot x = x\\}$ for the fixed-point set of $g$. The goal is to prove the global orbit-partition stabilizer sum\n$$\\sum_{x \\in X} |\\mathrm{Stab}(x)| = |X/G|\\cdot|G|$$\n*without invoking Mathlib's pre-packaged Burnside lemma* `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group`, building it instead from the per-orbit contribution (each orbit contributes exactly $|G|$ to the sum) and the orbit-partition decomposition of $X$. Composing with the parent's double-counting bijection then yields Burnside's counting lemma\n$$\\sum_{g \\in G} |\\mathrm{Fix}(g)| = |X/G|\\cdot|G|$$\nas a genuinely self-contained consequence of orbit-stabilizer.",
+    "proofStrategy": "The proof realizes the chain $X \\;\\simeq\\; \\Sigma_{\\omega \\in X/G}\\,\\mathrm{Orb}(\\omega) \\;\\rightsquigarrow\\; \\sum_x |\\mathrm{Stab}(x)| = \\sum_\\omega |G| = |X/G|\\cdot|G|$ in four moves. (1) **Reindex by the orbit partition.** `MulAction.selfEquivSigmaOrbits G X` is the equivalence exhibiting $X$ as the disjoint union of its orbits indexed by $X/G$; because it preserves the underlying point, `Fintype.sum_equiv` transports the summand $|\\mathrm{Stab}(\\cdot)|$ across it with a `rfl` proof obligation. (2) **Split the $\\Sigma$-sum.** `Finset.univ_sigma_univ` followed by `Finset.sum_sigma` rewrites the sum over the sigma type as an outer sum over orbits $\\omega$ and an inner sum over the points of $\\mathrm{Orb}(\\omega)$. (3) **Collapse each orbit.** `simp_rw [LagrangeTheoremOQ02OQ01.sum_card_stabilizer_orbit]` applies the parent's per-orbit lemma — the real orbit-stabilizer content, since all points of an orbit have conjugate (equicardinal) stabilizers and $|\\mathrm{Orb}|\\cdot|\\mathrm{Stab}| = |G|$ — collapsing every inner sum to the constant $|G|$. (4) **Sum the constant.** `Finset.sum_const`, `Finset.card_univ`, and `smul_eq_mul` turn $\\sum_\\omega |G|$ into $|X/G|\\cdot|G|$. Burnside then follows by a single `rw` through the parent's double-counting bijection `sum_card_fixedBy_eq_sum_card_stabilizer`, and the divisibility corollary by `dvd_mul_left`.",
+    "keyInsights": [
+      "**The borrowed step is exactly the orbit-partition sum, not orbit-stabilizer itself.** The parent already owned the genuinely hard ingredient — the per-orbit lemma \"each orbit contributes $|G|$\" — but used Mathlib's Burnside to glue copies of it together. The gap was assembly, not mathematics, and closing it makes the chain $\\text{orbit-stabilizer} \\Rightarrow \\text{Burnside}$ non-circular at the library level.",
+      "**`selfEquivSigmaOrbits` preserves the underlying point, so the reindexing is free.** Because the equivalence $X \\simeq \\Sigma_\\omega \\mathrm{Orb}(\\omega)$ sends $x$ to a pair whose second component *is* $x$, the summand $|\\mathrm{Stab}(\\cdot)|$ transports across it definitionally — the `Fintype.sum_equiv` side condition discharges by `rfl` rather than a substantive computation.",
+      "**A global cardinality identity is recovered from a local (per-orbit) one purely by partition bookkeeping.** `sum_sigma` + `sum_const` is the formal embodiment of \"sum a constant over a partition = constant × number of parts,\" turning $|\\mathrm{Orb}|$-independent local data into a clean product $|X/G|\\cdot|G|$.",
+      "**Double counting and orbit partition are independent inputs.** Burnside's lemma factors as (incidence double-count) ∘ (orbit-partition stabilizer sum); the parent supplied the first factor as an explicit `rfl`-bijection, this entry supplies the second, and neither references Mathlib's packaged lemma — so the two halves can be audited separately.",
+      "**The divisibility corollary $|G| \\mid \\sum_g |\\mathrm{Fix}(g)|$ falls out for free** once the sum is exhibited as a product with $|G|$ as a factor — a reminder that the *number of orbits* $\\frac{1}{|G|}\\sum_g|\\mathrm{Fix}(g)|$ is an integer is a structural consequence, not a separate theorem."
+    ]
   },
   "sections": [
     {
+      "id": "global-stabilizer-sum",
       "title": "The global orbit-partition stabilizer sum",
       "startLine": 60,
       "endLine": 97,
-      "text": "sum_card_stabilizer_eq_card_orbits_mul_card_group proves Σ_x |Stab(x)| = |X/G| × |G| directly. The orbit-partition equivalence selfEquivSigmaOrbits reindexes the sum over the disjoint union of orbits (the underlying point is preserved, so the summand transports by rfl); Finset.sum_sigma splits it into an outer sum over orbits and an inner sum over each orbit; the parent's sum_card_stabilizer_orbit collapses each inner sum to |G|; and Finset.sum_const sums the constant over the |X/G| orbits. Mathlib's Burnside lemma is never used."
+      "summary": "sum_card_stabilizer_eq_card_orbits_mul_card_group proves Σ_x |Stab(x)| = |X/G| × |G| directly. The orbit-partition equivalence selfEquivSigmaOrbits reindexes the sum over the disjoint union of orbits (the underlying point is preserved, so the summand transports by rfl); Finset.univ_sigma_univ and Finset.sum_sigma split it into an outer sum over orbits and an inner sum over each orbit; the parent's sum_card_stabilizer_orbit collapses each inner sum to |G|; and Finset.sum_const sums the constant over the |X/G| orbits. Mathlib's Burnside lemma is never used.",
+      "mathContext": "$\\sum_{x} |\\mathrm{Stab}(x)| \\;\\overset{\\text{reindex}}{=}\\; \\sum_{\\omega \\in X/G}\\sum_{y \\in \\mathrm{Orb}(\\omega)} |\\mathrm{Stab}(y)| \\;\\overset{\\text{per-orbit}}{=}\\; \\sum_{\\omega \\in X/G} |G| \\;=\\; |X/G|\\cdot|G|$"
     },
     {
+      "id": "burnside-self-contained",
       "title": "Burnside's counting lemma, self-contained",
       "startLine": 99,
       "endLine": 137,
-      "text": "burnside_no_intermediate composes the global stabilizer sum with the parent's double-counting bijection (sum_card_fixedBy_eq_sum_card_stabilizer) to obtain Σ_g |Fix(g)| = |X/G| × |G|, a derivation that routes entirely through orbit-stabilizer. burnside_divides_no_intermediate records the consequence |G| ∣ Σ_g |Fix(g)|."
+      "summary": "burnside_no_intermediate composes the global stabilizer sum with the parent's double-counting bijection (sum_card_fixedBy_eq_sum_card_stabilizer) to obtain Σ_g |Fix(g)| = |X/G| × |G|, a derivation that routes entirely through orbit-stabilizer. burnside_divides_no_intermediate records the consequence |G| ∣ Σ_g |Fix(g)| via dvd_mul_left.",
+      "mathContext": "$\\sum_{g} |\\mathrm{Fix}(g)| \\;\\overset{\\text{double count}}{=}\\; \\sum_{x} |\\mathrm{Stab}(x)| \\;=\\; |X/G|\\cdot|G| \\quad\\Longrightarrow\\quad |G| \\,\\big|\\, \\sum_{g} |\\mathrm{Fix}(g)|$"
     }
   ],
   "conclusion": {
-    "summary": "The orbit-partition stabilizer sum Σ_x |Stab(x)| = |X/G| × |G| can be assembled directly from the per-orbit contribution of orbit-stabilizer and the disjoint-union decomposition of X into orbits, without borrowing Mathlib's Burnside lemma. Composing with the parent's double-counting bijection gives a fully self-contained derivation of Burnside's counting lemma from orbit-stabilizer."
+    "summary": "The orbit-partition stabilizer sum Σ_x |Stab(x)| = |X/G| × |G| can be assembled directly from the per-orbit contribution of orbit-stabilizer and the disjoint-union decomposition of X into orbits, without borrowing Mathlib's Burnside lemma. Composing with the parent's double-counting bijection gives a fully self-contained derivation of Burnside's counting lemma from orbit-stabilizer.",
+    "implications": "Closing the assembly gap makes the implication \"orbit-stabilizer ⟹ Burnside\" non-circular at the library level: the gallery now contains a Burnside proof whose every step traces back to orbit-stabilizer and partition bookkeeping rather than to a pre-packaged counting lemma. The two structural inputs — the incidence double count (parent) and the orbit-partition stabilizer sum (here) — are cleanly separated, so each can be inspected and reused independently; the per-orbit-to-global pattern (sum_sigma + sum_const over selfEquivSigmaOrbits) is a reusable template for any orbit-indexed cardinality identity. The divisibility corollary makes explicit that the orbit count (1/|G|)Σ_g |Fix(g)| is an integer for structural reasons, exactly the fact that powers the Pólya/Redfield enumeration of objects up to symmetry.",
+    "openQuestions": [
+      "Can the per-orbit-to-global assembly be packaged as a standalone reusable lemma (sum of a partition-constant function over selfEquivSigmaOrbits) and offered upstream, so other gallery entries can avoid Mathlib's Burnside the same way?",
+      "Does the same self-contained route specialize cleanly to the classical applications — counting necklaces, colorings of the cube, and other Pólya-enumeration instances — without re-introducing a packaged orbit-counting lemma?",
+      "Can the finiteness hypotheses be relaxed to the natural cofiniteness conditions (finite group, possibly infinite X with finitely many non-trivial orbits) while preserving the orbit-partition argument?"
+    ]
   },
   "crossReferences": [
-    "lagrange-theorem-oq-02-oq-01",
-    "lagrange-theorem-oq-02",
-    "lagrange-theorem"
+    {
+      "proofId": "lagrange-theorem-oq-02-oq-01",
+      "title": "Burnside's Lemma from Orbit-Stabilizer (double counting)",
+      "relationship": "Direct parent.",
+      "description": "Direct parent. Supplies the two reused ingredients: the per-orbit contribution lemma sum_card_stabilizer_orbit (each orbit contributes |G|) and the double-counting bijection sum_card_fixedBy_eq_sum_card_stabilizer. This entry removes the parent's hidden appeal to Mathlib's Burnside lemma when assembling the global stabilizer sum."
+    },
+    {
+      "proofId": "lagrange-theorem-oq-02",
+      "title": "Lagrange's Theorem: Orbit-Stabilizer Consequences",
+      "relationship": "Grandparent.",
+      "description": "Grandparent entry providing the orbit-stabilizer theorem |Orb|·|Stab| = |G| that underpins the per-orbit contribution lemma used here."
+    },
+    {
+      "proofId": "lagrange-theorem",
+      "title": "Lagrange's Theorem",
+      "relationship": "Root of the chain.",
+      "description": "The foundational coset-counting result |H| divides |G| at the root of this orbit-stabilizer/Burnside chain; orbit-stabilizer is its action-theoretic refinement."
+    }
   ],
-  "references": []
+  "references": [
+    {
+      "authors": "Augustin-Louis Cauchy",
+      "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
+      "year": "1845",
+      "venue": "Exercices d'analyse et de physique mathématique 3, 151–252",
+      "note": "First proof of the orbit-counting lemma, 52 years before Burnside's textbook restated it."
+    },
+    {
+      "authors": "Ferdinand Georg Frobenius",
+      "title": "Über die Congruenz nach einem aus zwei endlichen Gruppen gebildeten Doppelmodul",
+      "year": "1887",
+      "venue": "Journal für die reine und angewandte Mathematik 101, 273–299",
+      "note": "Independent rediscovery of the orbit-counting lemma; the result is also called the Cauchy–Frobenius lemma."
+    },
+    {
+      "authors": "William Burnside",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1897",
+      "venue": "Cambridge University Press",
+      "note": "Reproduces the orbit-counting lemma without claiming originality; the enduring (mis)attribution dates from this textbook."
+    }
+  ]
 }
