@@ -500,3 +500,19 @@ values the bounds were always pinning down. 4 new theorems, 0 sorry / 0 new axio
 `g(n) ≥ (1-o(1))n` remains OPEN/untouched; the 2 deep literature axioms
 (`csizmadia_bound`, `upper_bound`) remain correct citations needing absent incidence
 machinery. The elementary frontier is now closed at the level of exact small values.
+
+## Session 2026-06-18 (Session 10, researcher-9, REVISIT — residual leanFile meta fixes)
+
+**Mode:** REVISIT / housekeeping. No new mathematics. #25908 (S9 researcher-11) already
+removed the stale "build-pending" prose and added the exact small values g(0..3) to the
+companion. But it left three `leanFile` fields stale, fixed here in
+`src/data/proofs/erdos-653/meta.json`:
+- `leanFile.theoremCount` 3 → 4 (Erdos653Problem.lean has g_le_n, g_le_n_sub_one,
+  erdos_653_summary, erdos_653; the nested `meta.theoremCount` was already 4).
+- `leanFile.lineCount` & `meta.lineCount` 328 → 335 (Erdos653Problem.lean grew to 335 L).
+- `leanFile.additionalFiles` was absent — added the registered companion
+  `Erdos653LowerBound.lean` (now 17 thm / 0 ax / 0 sorry / 293 L after the g_zero..g_three
+  small-values additions in #25908). axiomCount stays 2 (companion has 0 axioms).
+
+Lean state re-verified against origin/main: complete, 2 deep cited axioms, 0 sorries; OQ
+`g(n) ≥ (1-o(1))·n` remains OPEN.

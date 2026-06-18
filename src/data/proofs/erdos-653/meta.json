@@ -66,7 +66,7 @@
       "g_zero / g_one / g_two / g_three theorems (companion Erdos653LowerBound.lean): the exact small values g(0)=0, g(1)=1, g(2)=1, g(3)=2 — one-line omega corollaries where the merged upper bounds (g_le_n, g_le_n_sub_one) meet the lower bounds (g_ge_one, g_ge_half); the first formalized exact values of g"
     ],
     "axiomCount": 2,
-    "lineCount": 328,
+    "lineCount": 335,
     "assumptions": "2 axioms, both deep literature citations requiring incidence-geometry machinery (Guth–Katz / Szemerédi–Trotter) absent from Mathlib: csizmadia_bound (g(n) > 7n/10) and upper_bound (g(n) < n - cn^{2/3}). 0 sorries. The elementary frontier is complete and verified on main: g_le_n (g(n) ≤ n, discharged from axiom in #24417), the sharper g_le_n_sub_one (g(n) ≤ n-1 for n ≥ 2), and the lower bound g_ge_half (g(n) ≥ ⌈n/2⌉, #24680) via the explicit collinear construction. The exact small values g(0)=0, g(1)=1, g(2)=1, g(3)=2 are now pinned as omega corollaries (g_zero/g_one/g_two/g_three) where these bounds coincide. The open conjecture g(n) ≥ (1-o(1))·n remains OPEN.",
     "theoremCount": 4,
     "definitionCount": 13
@@ -204,12 +204,23 @@
       "Real"
     ],
     "namespace": "Erdos653",
-    "lineCount": 328,
+    "lineCount": 335,
     "axiomCount": 2,
-    "theoremCount": 3,
+    "theoremCount": 4,
     "definitionCount": 13,
     "path": "Proofs/Erdos653Problem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/Erdos653LowerBound.lean",
+        "lineCount": 293,
+        "axioms": 0,
+        "definitions": 2,
+        "theorems": 17,
+        "sorries": 0,
+        "description": "Elementary lower-bound companion: the equally-spaced collinear construction collinearConfig n and the proved chain g_ge_one (g(n) ≥ 1) → g_ge_half (g(n) ≥ ⌈n/2⌉, #24680), plus the exact small values g_zero/g_one/g_two/g_three (g(0)=0, g(1)=1, g(2)=1, g(3)=2, #25908). 0 axioms, 0 sorries. Namespace Erdos653LowerBound."
+      }
+    ]
   },
   "crossReferences": [
     {
