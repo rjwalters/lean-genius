@@ -2,12 +2,12 @@
   "id": "divisibility-by-3-oq-04",
   "title": "Casting Out Nines: Practical Arithmetic Verification",
   "slug": "divisibility-by-3-oq-04",
-  "description": "Formalizes casting out nines and its generalizations: digit sums respect addition and multiplication mod 9 (and mod d for any d with b % d = 1), enabling error detection in arithmetic. All 17 theorems fully verified with 0 axioms.",
+  "description": "Formalizes casting out nines and its generalizations: digit sums respect addition and multiplication mod 9 (and mod d for any d with b % d = 1), enabling error detection in arithmetic. 17 theorems, 0 sorries; the base-specific specializations discharge their b % d = 1 side-condition via native_decide, so they depend on Lean.ofReduceBool (the compiler-reduction axiom).",
   "meta": {
     "author": "Ancient arithmetic methods (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Casting_out_nines",
     "date": "Ancient",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "modular-arithmetic",
@@ -16,7 +16,7 @@
       "open-problem"
     ],
     "proofRepoPath": "Proofs/DivisibilityBy3OQ04.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "prerequisites": [
       "modular arithmetic",
@@ -48,7 +48,7 @@
       "Concrete examples: verified arithmetic and detected errors via native_decide"
     ],
     "dateAdded": "2026-03-23",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 229,
     "theoremCount": 17,
     "relatedProblems": [
@@ -61,14 +61,14 @@
         "relationship": "Sibling OQ generalizing to arbitrary bases; this OQ-04 uses the same generalization for casting-out applications"
       }
     ],
-    "assumptions": "0 axioms, 0 sorries. All theorems derived from Mathlib's Nat.modEq_digits_sum and standard modular arithmetic properties.",
+    "assumptions": "0 sorries, 0 literal axiom declarations. Theorems derived from Mathlib's Nat.modEq_digits_sum and standard modular arithmetic properties. The base-specific theorems (digit_sum_add, digit_sum_mul, detect_add_error, detect_mul_error, octal/hex/threes specializations, consistent_with_parent_div9/div3 — and casting_nines_add/mul transitively) discharge their `b % d = 1` hypothesis with `by native_decide`, so #print axioms lists Lean.ofReduceBool (trust in the compiler's kernel reduction). The four `_general` theorems and the four anonymous example blocks are the only declarations not so tainted; meta.axiomCount=1 reflects Lean.ofReduceBool, while leanFile.axiomCount=0 counts literal `axiom` declarations.",
     "mathlib_version": "4.26.0",
     "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Casting out nines is one of the oldest known methods for checking arithmetic. Al-Khwārizmī described the technique in his *Kitāb al-Jabr* (c. 825 CE) for verifying multiplication results. The method spread to medieval Europe via Fibonacci's *Liber Abaci* (1202) and remained the standard way to check hand calculations for over a millennium — well into the 20th century, when electronic calculators finally made it obsolete.\n\nThe algebraic principle is simple: since $10 \\equiv 1 \\pmod{9}$, every digit's positional weight disappears modulo 9, so $n \\equiv \\mathrm{digitsum}(n) \\pmod{9}$. This means arithmetic operations on the original numbers are mirrored by the same operations on digit sums. Any discrepancy proves the original computation was wrong — though the method cannot catch errors that happen to be multiples of 9.\n\nThis formalization generalizes the principle to arbitrary bases and moduli: for any $b$ and $d$ with $b \\equiv 1 \\pmod{d}$, digit sums in base $b$ respect both addition and multiplication modulo $d$. This subsumes casting out nines ($b{=}10, d{=}9$), casting out sevens in octal ($b{=}8, d{=}7$), casting out fifteens in hexadecimal ($b{=}16, d{=}15$), and all similar methods.",
     "problemStatement": "**Casting Out Nines and Generalizations:**\n\nFor any base $b$ and modulus $d$ with $b \\bmod d = 1$:\n$$\\mathrm{digitsum}_b(a) + \\mathrm{digitsum}_b(c) \\equiv \\mathrm{digitsum}_b(a + c) \\pmod{d}$$\n$$\\mathrm{digitsum}_b(a) \\cdot \\mathrm{digitsum}_b(c) \\equiv \\mathrm{digitsum}_b(a \\cdot c) \\pmod{d}$$\n\n**Error Detection (Contrapositive):** If the digit-sum check fails, the claimed result is wrong.",
-    "text": "A 229-line formalization proving 17 theorems with 0 axioms and 0 sorries. The core insight is that the digit-sum congruence $n \\equiv \\mathrm{digitsum}_b(n) \\pmod{d}$ (from Mathlib's `Nat.modEq_digits_sum`) transfers through addition and multiplication: we use `Nat.add_mod` and `Nat.mul_mod` to show that digit sums in any base $b$ respect arithmetic modulo any $d$ satisfying $b \\bmod d = 1$. The error-detection theorems are the contrapositives: if `digitsum(a) + digitsum(b) \\not\\equiv digitsum(c) \\pmod{9}`, then $a + b \\neq c$. Concrete examples verify 123+456=579 and detect the error in 123+456=580, both by `native_decide`. The limitation theorem shows that errors which are multiples of 9 escape detection (579 and 588 have the same digit sum mod 9).",
+    "text": "A 229-line formalization proving 17 theorems with 0 sorries (the base-specific theorems discharge their `b % d = 1` side-condition via `native_decide`, so they depend on the `Lean.ofReduceBool` compiler-reduction axiom). The core insight is that the digit-sum congruence $n \\equiv \\mathrm{digitsum}_b(n) \\pmod{d}$ (from Mathlib's `Nat.modEq_digits_sum`) transfers through addition and multiplication: we use `Nat.add_mod` and `Nat.mul_mod` to show that digit sums in any base $b$ respect arithmetic modulo any $d$ satisfying $b \\bmod d = 1$. The error-detection theorems are the contrapositives: if `digitsum(a) + digitsum(b) \\not\\equiv digitsum(c) \\pmod{9}`, then $a + b \\neq c$. Concrete examples verify 123+456=579 and detect the error in 123+456=580, both by `native_decide`. The limitation theorem shows that errors which are multiples of 9 escape detection (579 and 588 have the same digit sum mod 9).",
     "proofStrategy": "The proof unfolds Nat.ModEq to percentage-equality and applies Nat.add_mod/Nat.mul_mod to decompose the digit-sum arithmetic. Two rewrites using the digit-sum congruence (backward direction) replace digit sums with the original numbers, then the forward congruence closes the goal. Error detection is a direct contrapositive application.",
     "keyInsights": [
       "Casting out nines reduces to: n ≡ digit_sum(n) (mod 9) transfers through + and × because modular arithmetic is a ring homomorphism",
@@ -134,7 +134,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Complete formalization of casting out nines and its generalizations, with 0 axioms and 0 sorries. The universal principle — digit sums respect arithmetic modulo d when b % d = 1 — is proved once and specialized to all classical applications.",
+    "summary": "Complete formalization of casting out nines and its generalizations, with 0 sorries and no literal axiom declarations. The base-specific specializations discharge their `b % d = 1` side-condition via `native_decide`, so they carry the `Lean.ofReduceBool` axiom (replaceable by plain `decide` to restore an axiom-free status). The universal principle — digit sums respect arithmetic modulo d when b % d = 1 — is proved once and specialized to all classical applications.",
     "implications": "Provides a formally verified foundation for arithmetic checking methods used for over a millennium. The error detection theorems can serve as a machine-checked correctness guarantee: any arithmetic result that fails the digit-sum test is provably wrong.",
     "openQuestions": [
       "Can the alternating digit-sum rule (for divisibility by b+1, e.g., 11 in base 10) be formalized as a similar application?",
