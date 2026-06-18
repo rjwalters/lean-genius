@@ -1,0 +1,218 @@
+{
+  "id": "napoleons-theorem-oq-03",
+  "title": "Napoleon's Theorem: Toward Petr–Douglas–Neumann",
+  "slug": "napoleons-theorem-oq-03",
+  "description": "The Petr–Douglas–Neumann (PDN) generalization of Napoleon's theorem is fundamentally spectral: each 'erect similar triangles on the sides' construction is a circulant operator, diagonalized by the discrete Fourier basis. This entry formalizes that mechanism for all n — regular components are eigenvectors of the apex operator with eigenvalue a+bζ, and tuning a+bζ=0 annihilates a Fourier mode — then works the two smallest cases in full: Napoleon (n=3) as an instance of the apex operator, and Van Aubel's theorem (n=4), where squares on a quadrilateral's sides have equal, perpendicular center-diagonals.",
+  "meta": {
+    "author": "Lean Genius Researcher (2026)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Petr%E2%80%93Douglas%E2%80%93Neumann_theorem",
+    "date": "2026-06-18",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NapoleonsTheoremOQ03.lean",
+    "tags": [
+      "geometry",
+      "napoleon",
+      "petr-douglas-neumann",
+      "van-aubel",
+      "discrete-fourier-transform",
+      "circulant-operator",
+      "roots-of-unity",
+      "complex-analysis"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex",
+        "description": "Complex number field ℂ and arithmetic operations",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_natCast_iff",
+        "description": "Cyclic index arithmetic: natural casts to ZMod n agree iff congruent mod n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "isPrimitiveRoot_exp",
+        "description": "e^{2πi/n} is a primitive n-th root of unity (used to instantiate ζⁿ=1)",
+        "module": "Mathlib.RingTheory.RootsOfUnity.Complex"
+      },
+      {
+        "theorem": "Complex.mul_conj",
+        "description": "z·conj z = normSq z, used for the Van Aubel perpendicularity computation",
+        "module": "Mathlib.Data.Complex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "apexOp: the circulant 'apex' operator on cyclic n-gons (ZMod n → ℂ), wⱼ = a·zⱼ + b·z_{j+1}, abstracting every PDN-style 'erect similar triangles on the sides' construction",
+      "pow_eq_pow_of_modEq: if ζⁿ=1 then ζ^· depends only on the exponent mod n — the arithmetic that makes cyclic Fourier exponents well-defined",
+      "apexOp_regular: regular components j ↦ ζ^(val j) (with ζⁿ=1) are eigenvectors of apexOp a b with eigenvalue a+b·ζ — the spectral heart of PDN, fully verified for all n",
+      "apexOp_mode: the m-th Fourier mode regular(ζ^m) has eigenvalue a+b·ζ^m",
+      "apexOp_regular_eq_zero: tuning the apex parameters so a+b·ζ=0 makes the operator annihilate that Fourier mode — the step PDN iterates to delete non-regular frequencies",
+      "napoleonCentroid_eq_apex: the Napoleon centroid formula (x+y)/2 + i√3/6·(y-x) (the parent entry's napoleonCenter) is exactly apexOp with a=1/2-i√3/6, b=1/2+i√3/6, embedding the n=3 case in the general framework",
+      "vanAubel_identity (n=4): for square centers P₁..P₄ on a quadrilateral's sides, P₃-P₁ = i·(P₄-P₂), via linear_combination over Complex.I_sq",
+      "vanAubel_equal_length: the two center-diagonals are equal in length (|i|=1)",
+      "vanAubel_perpendicular: the two center-diagonals are perpendicular (Re of their Hermitian product vanishes)"
+    ],
+    "dateAdded": "2026-06-18",
+    "axiomCount": 0,
+    "lineCount": 221,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. Fully machine-checked. SCOPE: this entry proves the spectral mechanism that underlies the Petr–Douglas–Neumann theorem (regular components are eigenvectors of the circulant apex operator; mode annihilation) together with the two smallest fully-worked cases (Napoleon n=3 as an apex operator; Van Aubel n=4 with equal & perpendicular center-diagonals). It does NOT formalize the full PDN composition over all n−2 modes (which additionally needs Fourier completeness / Vandermonde invertibility over ZMod n); that global step remains open and is documented as such in the Lean file and the open questions below.",
+    "mathlib_version": "4.26.0",
+    "parentProof": "napoleons-theorem",
+    "theoremCount": 10,
+    "definitionCount": 4,
+    "sorryCount": 0
+  },
+  "sections": [
+    {
+      "title": "The Circulant Apex Operator",
+      "startLine": 69,
+      "endLine": 91,
+      "description": "Define cyclic n-gons as ZMod n → ℂ, the apex operator apexOp a b z j = a·z j + b·z(j+1), and the regular component regular ζ j = ζ^(val j). The apex operator abstracts every 'erect similar isosceles triangles on the sides' construction in PDN.",
+      "summary": "Ngon, apexOp, regular definitions",
+      "id": "apex-operator",
+      "mathContext": "A cyclic $n$-gon is a function $z : \\mathbb{Z}/n\\mathbb{Z} \\to \\mathbb{C}$. The **apex operator** $\\mathrm{apexOp}\\,a\\,b$ sends $z$ to $w$ with $w_j = a z_j + b z_{j+1}$. With $a = \\tfrac12 - ic$, $b = \\tfrac12 + ic$ (so $a+b=1$), $w_j$ is the apex of the isosceles triangle erected on the directed side $[z_j, z_{j+1}]$, the apex height set by $c$. This is a *circulant* linear map: each output is the same affine combination of a vertex and its cyclic successor."
+    },
+    {
+      "title": "Arithmetic of Cyclic Exponents",
+      "startLine": 92,
+      "endLine": 110,
+      "description": "Two supporting lemmas: pow_eq_pow_of_modEq (if ζⁿ=1 then ζ^· depends only on the exponent mod n) and val_add_one_modEq (the cyclic successor shifts the ZMod n value by one, modulo n).",
+      "summary": "ζ-power periodicity and ZMod successor arithmetic",
+      "id": "cyclic-exponents",
+      "mathContext": "To diagonalize a circulant operator we need $\\zeta^{(j+1).\\mathrm{val}} = \\zeta \\cdot \\zeta^{j.\\mathrm{val}}$ even at the wrap-around $j = n-1 \\mapsto 0$. This follows from two facts: $(j+1).\\mathrm{val} \\equiv j.\\mathrm{val} + 1 \\pmod n$ (`val_add_one_modEq`, via `ZMod.natCast_eq_natCast_iff`), and — when $\\zeta^n = 1$ — equal-mod-$n$ exponents give equal powers (`pow_eq_pow_of_modEq`, by writing $k = n\\lfloor k/n\\rfloor + (k \\bmod n)$)."
+    },
+    {
+      "title": "Spectral Diagonalization (general n)",
+      "startLine": 111,
+      "endLine": 147,
+      "description": "The core: apexOp_regular proves regular components are eigenvectors with eigenvalue a+b·ζ; apexOp_mode gives the m-th Fourier mode eigenvalue a+b·ζ^m; apexOp_regular_eq_zero shows tuning a+b·ζ=0 annihilates a mode. This is the mechanism PDN iterates.",
+      "summary": "Regular components are eigenvectors; mode annihilation",
+      "id": "spectral",
+      "mathContext": "For any $\\zeta$ with $\\zeta^n = 1$, $\\mathrm{apexOp}\\,a\\,b\\,(\\mathrm{regular}\\,\\zeta) = (a + b\\zeta)\\cdot \\mathrm{regular}\\,\\zeta$ — the regular component is an eigenvector with eigenvalue $a + b\\zeta$. Taking $\\zeta = \\zeta_0^m$ (powers of a primitive root) gives the $m$-th Fourier mode with eigenvalue $a + b\\zeta_0^m$. Choosing the apex parameters so that $a + b\\zeta_0^m = 0$ deletes that mode entirely. The Petr–Douglas–Neumann theorem is exactly the iteration of these annihilations: applying $n-2$ apex steps tuned to kill modes $2, \\dots, n-1$ leaves only the regular mode, forcing the result to be a regular $n$-gon."
+    },
+    {
+      "title": "n = 3 — Napoleon as an Apex Operator",
+      "startLine": 148,
+      "endLine": 163,
+      "description": "napoleonCentroid_eq_apex shows the Napoleon centroid formula (x+y)/2 + i√3/6·(y-x) (the parent entry's napoleonCenter) is exactly apexOp with a=1/2-i√3/6, b=1/2+i√3/6, embedding Napoleon's theorem as the smallest instance of the PDN spectral framework.",
+      "summary": "Napoleon centroid = apexOp with apex angle 60°",
+      "id": "napoleon-n3",
+      "mathContext": "The parent proof's $\\mathrm{napoleonCenter}(b,c) = \\tfrac{b+c}{2} + \\tfrac{i\\sqrt3}{6}(c-b)$ equals $a\\,b + b'\\,c$ with $a = \\tfrac12 - \\tfrac{i\\sqrt3}{6}$ and $b' = \\tfrac12 + \\tfrac{i\\sqrt3}{6}$ — precisely the apex operator with the 60° apex parameter. So Napoleon's theorem (n=3, the parent entry and its DFT refinement OQ-02) is the smallest case of the spectral framework formalized here."
+    },
+    {
+      "title": "n = 4 — Van Aubel's Theorem",
+      "startLine": 164,
+      "endLine": 198,
+      "description": "Fully verified quadrilateral analogue: squareCenter erects a square on a directed side; vanAubel_identity proves P₃-P₁ = i·(P₄-P₂); vanAubel_equal_length and vanAubel_perpendicular derive that the two center-diagonals are equal in length and perpendicular.",
+      "summary": "Van Aubel: equal & perpendicular center-diagonals",
+      "id": "vanaubel-n4",
+      "mathContext": "Van Aubel's theorem is the canonical quadrilateral analogue of Napoleon's theorem. The center of the square on directed side $[a,b]$ is $\\mathrm{sc}(a,b) = \\tfrac{a+b}{2} + \\tfrac{i}{2}(b-a)$. For square centers $P_1 = \\mathrm{sc}(z_1,z_2),\\dots,P_4 = \\mathrm{sc}(z_4,z_1)$, the identity $P_3 - P_1 = i\\,(P_4 - P_2)$ holds by a one-line `linear_combination` over $i^2 = -1$. Multiplication by $i$ is a $90°$ rotation of equal magnitude, so the two segments joining opposite square centers are equal in length and perpendicular. This is the $n=4$ companion to the $n=3$ Napoleon construction, sharing the same circulant/spectral structure."
+    },
+    {
+      "title": "A Concrete Primitive Root",
+      "startLine": 199,
+      "endLine": 207,
+      "description": "primitiveRoot_pow records that e^{2πi/n} satisfies ζⁿ=1 (via Mathlib's isPrimitiveRoot_exp), so the standard primitive root may be fed to the spectral lemmas.",
+      "summary": "e^{2πi/n} satisfies ζⁿ=1",
+      "id": "primitive-root",
+      "mathContext": "The spectral lemmas are stated for an abstract $\\zeta$ with $\\zeta^n = 1$, so they apply to any root of unity. `primitiveRoot_pow` instantiates the standard primitive $n$-th root $e^{2\\pi i/n}$ from `Mathlib.RingTheory.RootsOfUnity.Complex`, confirming the framework is non-vacuous and connects to the Fourier basis."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Napoleon's theorem — equilateral triangles erected on the sides of any triangle have centroids forming an equilateral triangle — was known by the early 19th century. Its natural generalization to polygons was discovered independently several times. Karel Petr proved it in 1908; Jesse Douglas rediscovered it in 1940 in his work on the geometry of polygons (the same Douglas who won the first Fields Medal for solving Plateau's problem), and Bernhard Neumann gave another treatment in 1941. The resulting Petr–Douglas–Neumann (PDN) theorem states: starting from an arbitrary planar n-gon, if one successively erects similar isosceles triangles with apex angles kπ/n (for k = 1, …, n−2) on the sides and takes the apexes as a new polygon, the final polygon is regular.\n\nThe modern understanding of PDN is spectral. A polygon z = (z_0, …, z_{n−1}) is decomposed in the discrete Fourier basis into 'regular component' polygons ζ^{mj} (regular n-gons traversed m times), where ζ = e^{2πi/n}. Each 'erect similar triangles' construction is a circulant linear operator — every output vertex is the same affine combination of a vertex and its cyclic successor — and circulant operators are simultaneously diagonalized by the DFT, acting on the m-th component by a scalar eigenvalue. Choosing the apex angle so that one eigenvalue vanishes deletes the corresponding Fourier component; iterating over k = 1, …, n−2 strips away every component except the regular one, leaving a regular n-gon. This is exactly the n-dimensional generalization of the 3-point DFT filter picture proved in the OQ-02 companion entry, whose own open questions explicitly asked whether the DFT filter interpretation could yield a proof of the Douglas–Neumann theorem.\n\nThis entry formalizes the spectral engine of PDN for all n — the eigenvector property of regular components under the circulant apex operator, and the mode-annihilation criterion — and works the two smallest cases completely: Napoleon (n=3) is shown to be an instance of the apex operator, and Van Aubel's theorem (n=4, the quadrilateral analogue: squares on a quadrilateral's sides have equal and perpendicular center-diagonals) is proved from scratch.",
+    "problemStatement": "**Petr–Douglas–Neumann generalization of Napoleon's theorem.** Represent a planar n-gon as z : ZMod n → ℂ. The 'apex' construction wⱼ = a·zⱼ + b·z_{j+1} (with a = ½ − ic, b = ½ + ic) erects a similar isosceles triangle on each side and takes the apexes. PDN asserts that suitable iterates of such constructions turn any n-gon into a regular one. This entry establishes the spectral mechanism: regular components ζ^(j) (ζⁿ=1) are eigenvectors with eigenvalue a+bζ, and tuning a+bζ=0 annihilates a Fourier mode; and it verifies the n=3 (Napoleon) and n=4 (Van Aubel) cases in full.",
+    "text": "Each PDN 'erect similar triangles' step is a circulant operator, diagonal in the Fourier basis. Regular components are its eigenvectors (eigenvalue a+bζ), so tuning the apex angle to make an eigenvalue vanish deletes a Fourier mode. Iterating deletes every non-regular mode — the spectral reason PDN produces a regular polygon. The mechanism (general n) plus the n=3 (Napoleon) and n=4 (Van Aubel) cases are machine-verified here; the full composition over all modes remains open.",
+    "proofStrategy": "1. **Model n-gons cyclically**: z : ZMod n → ℂ, so the successor z_{j+1} wraps automatically. The apex operator apexOp a b z j = a·z j + b·z(j+1) is circulant by construction.\n\n2. **Cyclic exponent arithmetic**: prove pow_eq_pow_of_modEq (ζⁿ=1 ⟹ ζ^a=ζ^b when a≡b mod n) and val_add_one_modEq ((j+1).val ≡ j.val+1 mod n). Together these give ζ^((j+1).val) = ζ·ζ^(j.val).\n\n3. **Eigenvector property (general n)**: apexOp a b (regular ζ) j = a·ζ^(j.val) + b·ζ^((j+1).val) = (a+bζ)·ζ^(j.val), proved per-coordinate by funext + the exponent lemmas + ring (apexOp_regular).\n\n4. **Modes and annihilation**: (ζ^m)ⁿ = 1 so apexOp_mode follows; if a+bζ=0 then the eigenvalue is 0 and the component is killed (apexOp_regular_eq_zero).\n\n5. **n=3 embedding**: napoleonCentroid_eq_apex by ring — Napoleon's centroid formula is apexOp with the 60° parameter.\n\n6. **n=4 (Van Aubel)**: define squareCenter; prove P₃−P₁ = i·(P₄−P₂) with a single linear_combination over Complex.I_sq; derive equal length (norm_mul, norm_I) and perpendicularity (mul_conj, then the real part vanishes).",
+    "keyInsights": [
+      "**PDN is spectral**: the 'erect similar triangles' construction is a circulant operator, and circulant operators are diagonalized by the discrete Fourier basis — so the whole theorem reduces to scalar eigenvalues a+bζ^m on each Fourier mode",
+      "**Eigenvalue = a + b·ζ**: the regular component j ↦ ζ^(j.val) is an exact eigenvector of apexOp a b whenever ζⁿ=1; this single algebraic fact (apexOp_regular) is the engine behind every PDN-type result",
+      "**Annihilation tunes geometry to algebra**: choosing the apex angle so a+b·ζ^m = 0 deletes the m-th Fourier mode — iterating over the n−2 non-regular modes is the mechanism that forces regularity",
+      "**Napoleon and Van Aubel are siblings**: both are instances of the same circulant apex operator (n=3 with apex 60°, n=4 with squares); napoleonCentroid_eq_apex makes the n=3 embedding explicit and Van Aubel realises the n=4 case",
+      "**Van Aubel via one i²=−1 step**: the entire quadrilateral theorem P₃−P₁ = i(P₄−P₂) collapses to a single linear_combination over Complex.I_sq, and equal-length + perpendicular follow from |i|=1 and i·(real) being purely imaginary",
+      "**ZMod n makes cyclicity free**: indexing vertices by ZMod n means the successor wraps automatically; the only arithmetic cost is the exponent-periodicity lemma pow_eq_pow_of_modEq, which encapsulates ζⁿ=1"
+    ],
+    "prerequisites": [
+      "Complex numbers and arithmetic in ℂ",
+      "Roots of unity: ζ = e^{2πi/n}, ζⁿ = 1",
+      "Circulant matrices and their diagonalization by the discrete Fourier transform",
+      "Napoleon's theorem (parent proof) and its DFT characterization (OQ-02)",
+      "Cyclic groups ZMod n and modular arithmetic"
+    ],
+    "openQuestions": [
+      "Full PDN: formalize the composition of n−2 apex steps and prove that annihilating every Fourier mode except the regular one yields a regular n-gon (requires Fourier completeness / Vandermonde invertibility over ZMod n)",
+      "Characterize, for each n and apex angle, exactly which Fourier mode is annihilated as a function of the apex parameter a+bζ^m",
+      "Does the spectral framework extend to the inner/outer and self-similar variants, and to non-isosceles 'erect similar triangle' constructions?"
+    ]
+  },
+  "conclusion": {
+    "summary": "The Petr–Douglas–Neumann generalization of Napoleon's theorem is recast spectrally. Each 'erect similar triangles on the sides' construction is a circulant operator apexOp a b on cyclic n-gons, and its regular Fourier components are eigenvectors with eigenvalue a+b·ζ. Tuning the apex angle so this eigenvalue vanishes annihilates a Fourier mode — the mechanism PDN iterates. This entry verifies that mechanism for all n, embeds Napoleon (n=3) as an apex operator, and proves Van Aubel's theorem (n=4): the centers of squares on a quadrilateral's sides have equal, perpendicular center-diagonals.",
+    "implications": "The spectral viewpoint unifies a family of classical 'hidden regular polygon' theorems (Napoleon, Van Aubel, Thébault, and the general PDN) as eigenvalue computations for a single circulant operator, and ties planar polygon geometry to signal processing and the discrete Fourier transform. It reduces the still-open full PDN theorem to a Fourier-completeness statement over ZMod n.",
+    "openQuestions": [
+      "Formalize the full PDN composition over all n−2 modes and the resulting regularity (Fourier completeness over ZMod n)",
+      "Extend the circulant/spectral framework to other side-construction theorems (Thébault, Petr's variants)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "napoleons-theorem-oq-02",
+      "relationship": "parent",
+      "description": "OQ-02 established the 3-point DFT filter picture of Napoleon's theorem (outer maps (X₀,X₁,X₂) ↦ (X₀,−X₁,0)) and explicitly asked in its open questions whether the n-point DFT filter interpretation could prove the Douglas–Neumann theorem. This entry answers the structural part of that question for all n: the apex operator is circulant and regular components are its eigenvectors, with napoleonCentroid_eq_apex showing the n=3 case is literally an instance of apexOp."
+    },
+    {
+      "targetId": "napoleons-theorem",
+      "relationship": "related",
+      "description": "The base Napoleon theorem uses the centroid napoleonCenter (b+c)/2 + i√3/6·(c−b), which napoleonCentroid_eq_apex re-expresses (for the same formula) as the apex operator apexOp with a=1/2−i√3/6, b=1/2+i√3/6. Napoleon's equilateral conclusion is the n=3 shadow of the spectral diagonalization proved here."
+    },
+    {
+      "targetId": "morleys-theorem",
+      "relationship": "related",
+      "description": "Morley's theorem is Napoleon's sibling — another hidden equilateral triangle in an arbitrary triangle, proved via complex numbers and roots of unity. The PDN spectral framework here suggests the broader theme: many classical 'regular polygon from arbitrary polygon' constructions are eigenvalue phenomena for circulant operators."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Petr, Karel",
+      "title": "Ein Satz über Vielecke",
+      "year": "1908",
+      "venue": "Archiv der Mathematik und Physik, vol. 13, pp. 29–31",
+      "note": "The original statement and proof of what is now the Petr–Douglas–Neumann theorem, generalizing Napoleon's theorem to arbitrary n-gons via iterated erection of similar isosceles triangles."
+    },
+    {
+      "authors": "Douglas, Jesse",
+      "title": "Geometry of polygons in the complex plane",
+      "year": "1940",
+      "venue": "Journal of Mathematics and Physics, vol. 19, pp. 93–130",
+      "note": "Douglas's independent rediscovery, framing polygon constructions in the complex plane and the discrete Fourier / circulant structure that underlies the spectral proof formalized here."
+    },
+    {
+      "authors": "van Aubel, Henricus Hubertus",
+      "title": "Note concernant les centres des carrés construits sur les côtés d'un polygone quelconque",
+      "year": "1878",
+      "venue": "Nouvelle Correspondance Mathématique, vol. 4, pp. 40–44",
+      "note": "The original source for Van Aubel's theorem: the centers of squares erected on the sides of a quadrilateral form a configuration whose two center-joining segments are equal and perpendicular — the n=4 case verified in this entry."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Analysis.Complex.Norm",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.RingTheory.RootsOfUnity.Complex",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": "NapoleonsTheoremOQ03",
+    "lineCount": 221,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "sorries": 0,
+    "path": "Proofs/NapoleonsTheoremOQ03.lean",
+    "definitionCount": 4
+  }
+}

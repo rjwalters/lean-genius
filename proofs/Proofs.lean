@@ -2702,6 +2702,7 @@ import Proofs.MotivicFlagMapsPartialFlags
 import Proofs.MotivicFlagMapsProvable
 import Proofs.NapoleonsTheorem
 import Proofs.NapoleonsTheoremOQ02
+import Proofs.NapoleonsTheoremOQ03
 import Proofs.NavierStokes
 import Proofs.NewtonIndStep2
 import Proofs.NewtonInductiveStep
