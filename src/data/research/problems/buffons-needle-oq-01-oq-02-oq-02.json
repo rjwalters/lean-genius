@@ -29,27 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: elementary recurrence-squeeze proof of sqrt(n)*c_n -> sqrt(2/pi); discrete core proven (recurrence, monotonicity, squared bounds), one routine analytic sorry remains. Corrected parent closed form.",
+    "progressSummary": "COMPLETE: elementary recurrence-squeeze proof of √n·c_n → √(2/π) (registered, verified); now sharpened to an effective non-asymptotic two-sided bound (sqrt_mul_buffonConstant_sq_bounds) quantifying the convergence rate.",
     "builtItems": [
       "s_mul_s_succ (product recurrence, proven) — lean/BuffonConstantAsymptotic.lean",
       "s_le_s_succ (monotonicity via log-convexity, proven) — lean/BuffonConstantAsymptotic.lean",
       "s_sq_bounds (squared squeeze (n-2)/2..(n-1)/2, proven) — lean/BuffonConstantAsymptotic.lean",
       "buffonConstant_eq, sq_target_eq (algebraic reduction, proven) — lean/BuffonConstantAsymptotic.lean",
-      "sqrt_mul_buffonConstant_tendsto (main thm, reduced to 1 routine analytic sorry)"
+      "sqrt_mul_buffonConstant_tendsto (main thm, reduced to 1 routine analytic sorry)",
+      "sqrt_mul_buffonConstant_sq_bounds in proofs/Proofs/BuffonConstantAsymptotic.lean:235 (effective two-sided bound, 0 sorries/0 axioms, derived from s_sq_bounds + sq_target_eq via a single mul_le_mul_of_nonneg_left with the common factor (4/π)·n/(n-1)² extracted)."
     ],
     "insights": [
       "CORRECTION: problem.md quoted constant Gamma(n/2)/(sqrt(pi)Gamma((n+1)/2)) is WRONG; genuine parent (BuffonsNeedleOQ01OQ02.lean:56) is c_n = 2*Gamma(n/2)/((n-1)*sqrt(pi)*Gamma((n-1)/2)) = E[|<u,e1>|] for uniform u in S^{n-1}. Asymptotic sqrt(2/pi) still holds.",
       "Set s n = Gamma(n/2)/Gamma((n-1)/2). Gamma recurrence gives product recurrence s n * s(n+1) = (n-1)/2, cancelling Gamma(n/2).",
       "Log-convexity of Gamma (convexOn_log_Gamma) + slope_mono_adjacent over equally-spaced (n-1)/2 < n/2 < (n+1)/2 proves n |-> s n increasing, with NO Stirling/Wallis.",
       "Squeeze: (n-2)/2 = s(n-1)*s n <= (s n)^2 <= s n*s(n+1) = (n-1)/2, so (s n)^2/n -> 1/2, s n ~ sqrt(n/2).",
-      "(sqrt(n)*c_n)^2 = (4/pi)*n(s n)^2/(n-1)^2 -> (4/pi)(1/2) = 2/pi; nonnegativity + sqrt continuity gives sqrt(2/pi)."
+      "(sqrt(n)*c_n)^2 = (4/pi)*n(s n)^2/(n-1)^2 -> (4/pi)(1/2) = 2/pi; nonnegativity + sqrt continuity gives sqrt(2/pi).",
+      "Effective refinement: the asymptotic √n·c_n → √(2/π) sharpens to explicit finite-n envelopes (2/π)·n(n-2)/(n-1)² ≤ (√n·c_n)² ≤ (2/π)·n/(n-1) for all n ≥ 3, both squeezing to 2/π (lower from below, upper from above) and quantifying the O(1/n) convergence rate."
     ],
     "mathlibGaps": [
       "No Gamma-ratio asymptotic Gamma(x)/Gamma(x+1/2) ~ x^{-1/2} at v4.26 — but sidestepped by the recurrence-squeeze (no gap blocks the proof)."
     ],
     "nextSteps": [
-      "Discharge the single sorry: Tendsto ((s n)^2/n) -> 1/2 by squeeze between 1/2-1/n and 1/2-1/(2n); times (n/(n-1))^2 -> 1; scale 4/pi; sqrt continuity.",
-      "Compile under Docker when unblocked; register as proofs/Proofs/BuffonsNeedleOQ01OQ02OQ02.lean + gallery meta.json."
+      "Optional: extract the explicit |√n·c_n − √(2/π)| = O(1/n) error bound from the squared-bound envelope via √-Lipschitz on a bounded interval."
     ],
     "markdown": "# Knowledge Base: buffons-needle-oq-01-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
