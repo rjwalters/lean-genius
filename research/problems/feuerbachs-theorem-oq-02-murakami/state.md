@@ -2,7 +2,75 @@
 
 **Phase**: LEAN-VERIFIED (Grace trirectangular theorem Docker-built GREEN + registered)
 **Since**: 2026-06-15T22:10:00.000Z
-**Iteration**: 11
+**Iteration**: 15
+
+## S15 (researcher-10, 2026-06-18 ~03:05) — Docker re-wedged mid-build; killed hung watcher/build; recipe stands
+
+Re-entered same session. The S14 witness build (`docker run … lean-build-53588`)
+**never launched a container**: `docker info` now returns an EMPTY ServerVersion and
+`docker ps`=0 containers while ~14 sibling `docker-build.sh` wrappers sit stalled at
+the daemon-info gate — the S13-style daemon **wedge has returned**. The S14 build/watcher
+were therefore hung with zero progress (log stuck at "[810s] Building…", no container).
+**Killed** the memory-gated watcher (`/tmp/r10-feuerbach-witness-build.sh`) and the
+hung `docker run` client; nothing reached remote. The de-axiomatization is **still
+purely Docker-gated** — the S14 MERGE recipe below is verified-correct and ready to
+execute as soon as a session finds `docker info` responsive with ≤~3 containers.
+Re-verified this session against source: witness `import Proofs.FeuerbachsTheoremOQ02`
+(:86) → circular-import confirmed; parent imports only partial Mathlib (Real.Sqrt +
+InnerProductSpace.Basic + Tactic, NOT `import Mathlib`); axiom `:581` has no callers
+(only docstring `:721`); witness block = lines 95–301; gallery `feuerbachs-theorem-oq-02`
+= axiomatized/axiom/1, murakami = verified/original/0. **Disregard S14's "watcher is
+running" — it is killed.**
+
+## S14 (researcher-10, 2026-06-18 ~02:45) — CORRECTED the de-axiomatization recipe (S11–S13 prescribed a circular import); Docker host saturated
+
+Re-claimed (depth-first RICH). **No false-green.** Daemon is RESPONSIVE this session
+(`docker info` rc=0, ServerVersion 29.5.3) — the S13 wedge has cleared. But the host
+is **saturated**: 14–18 concurrent `lean-build-*` containers, ~4.5–5.3 GiB used of a
+7.65 GiB VM (≤~3 GiB headroom). Launched a memory-gated background watcher
+(`/tmp/r10-feuerbach-witness-build.sh`) that fires a 3 GB-capped
+`docker-build Proofs.StatementOnly_FeuerbachOQ02_FailsGeneralWitness` only when total
+container memory drops ≤4500 MiB.
+
+**CORRECTION to the S11/S12/S13 "Next Action" — the prescribed swap is a CIRCULAR
+IMPORT and cannot work as written.** The witness file does
+`import Proofs.FeuerbachsTheoremOQ02` (line 86), so the parent **cannot** import the
+witness back to write `axiom :581 → := feuerbach_3d_fails_general_proved`. Lake/Lean
+would reject the cycle. All three prior sessions repeated this impossible one-liner.
+
+**The correct de-axiomatization is an in-parent MERGE** (verified prerequisites this
+session):
+1. The parent has **no name collisions** — `witnessT1` / `feuerbach_3d_fails_general_proved`
+   are not defined in it; the witness file is imported nowhere else.
+2. The axiom `feuerbach_3d_fails_general` has **no internal callers** — it appears only
+   at its declaration (`:581`) and in a docstring list (`:721`). Converting it to a
+   theorem breaks nothing downstream.
+3. All witness external deps exist in the parent (S12 confirmed: `dist3_sq`/`dist3_sq_eq`/
+   `spheresInternallyTangent`/`twentyFourPointCenter`/`mongePoint`/`incenter`/`circumcenter`/
+   `faceArea_*`/`midpoint3`/`cross3`/`twentyFourPointRadius`).
+
+   **Merge recipe** (apply ONLY after the standalone witness builds GREEN under full Mathlib):
+   a. Add `import Mathlib` and `set_option maxHeartbeats 1000000` to the parent preamble.
+      **Required**: the parent currently imports only `Mathlib.Data.Real.Sqrt` +
+      `InnerProductSpace.Basic` + `Mathlib.Tactic`, but the witness was authored against
+      full `import Mathlib` and its nlinarith/linear_combination need the raised heartbeat.
+      This is the new import-availability risk the standalone build does NOT cover, which
+      is why the standalone build (full Mathlib) must pass first to isolate math-correctness.
+   b. Insert the witness declaration block (witness file lines 95–301: `def witnessT1`
+      through `theorem feuerbach_3d_fails_general_proved`) into the parent, inside
+      `namespace FeuerbachsTheoremOQ02`, immediately BEFORE the axiom at `:581`.
+   c. Replace `axiom feuerbach_3d_fails_general : <stmt>` with
+      `theorem feuerbach_3d_fails_general : <stmt> := feuerbach_3d_fails_general_proved`
+      (same statement; the inserted `_proved` discharges it). The standalone witness file
+      then becomes redundant (delete it, or leave it — it still builds).
+   d. Docker-build `Proofs.FeuerbachsTheoremOQ02`; on GREEN, parent axiomCount 1→0.
+4. **Gallery bookkeeping on success**: parent slug `feuerbachs-theorem-oq-02` is currently
+   `status: axiomatized` / `badge: axiom` / `axiomCount: 1` — flip to `verified` / `original`
+   (or `verified`) / `axiomCount: 0` once the axiom is a theorem. (The murakami slug itself
+   is already `verified`/`original`/0 — the Grace theorem; unaffected.)
+   NOTE: S11's "research-only, no gallery dir" claim is **stale** — both
+   `src/data/proofs/feuerbachs-theorem-oq-02-murakami/` and `.../feuerbachs-theorem-oq-02/`
+   exist with meta.json + annotations.json.
 
 ## S15 (researcher-1, 2026-06-18 ~02:20) — REVERTED a false-green de-axiomatization; gallery stays axiomatized
 
