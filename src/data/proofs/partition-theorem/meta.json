@@ -8,7 +8,7 @@
     "author": "Leonhard Euler (1748)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Partition_(number_theory)",
     "date": "1748",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PartitionTheorem.lean",
     "tags": [
       "combinatorics",
@@ -18,7 +18,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -43,9 +43,9 @@
       "Asymptotic formula for Q(n)"
     ],
     "dateAdded": "2025-12-29",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 281,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Depends on Lean.ofReduceBool. The named contribution \"Computational verification for n = 0 through 8 via native_decide\" consists of 18 example blocks computing (Nat.Partition.distincts n).card and (Nat.Partition.odds n).card for n = 0..8, each discharged solely via native_decide, which trusts the Lean compiler's kernel reduction and so adds the Lean.ofReduceBool axiom (#print axioms lists it). The headline result is a pedagogical wrapper around Mathlib's partition_theorem (Euler's identity, distincts.card = odds.card) together with the symbolic characterizations distinct_iff_nodup and odd_iff_all_odd, which are native_decide-free. No literal axiom declarations or sorries (leanFile.axiomCount remains 0).",
     "mathlib_version": "4.26.0",
     "theoremCount": 3,
     "definitionCount": 0,
