@@ -14201,13 +14201,13 @@
       "notes": "Re-audited 2026-05-04: 0 sorries, 4 axioms, all metadata consistent. Empty issues array was auditor artifact."
     },
     "bezout-identity-oq-01-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [
         "section-overlap-properties-bezout",
         "oq-id-prefix-mismatch"
       ],
-      "lastAudited": "2026-05-03T22:42:46Z",
-      "result": "issues-fixed",
+      "lastAudited": "2026-06-18T13:02:37Z",
+      "result": "clean",
       "notes": "Issues fixed in PR #15376 (merged 2026-05-03T23:13:29Z). Section properties endLine corrected, OQ IDs updated to correct bezout-identity-oq-01-oq-01 prefix.",
       "lastFixed": "2026-05-04T00:00:00Z"
     },
