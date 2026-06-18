@@ -1,0 +1,32 @@
+{
+  "id": "pentagonal-number-theorem-oq-01",
+  "title": "Pentagonal Number Theorem OQ-01: generalized pentagonal numbers and the square-discriminant criterion",
+  "status": "active",
+  "phase": "ACT",
+  "knowledge": {
+    "insights": [
+      "Euler's pentagonal number theorem's exponents g(k)=k(3k-1)/2 form an index set whose recognition criterion is purely number-theoretic: m is generalized pentagonal iff 24m+1 is a perfect square, because 24·g(k)+1 = (6k-1)².",
+      "The converse rests on a modular fact decidable in ZMod 6: a square s² = 24m+1 satisfies s² ≡ 1 (mod 6), which holds only for s ≡ ±1 (mod 6); each residue class yields an explicit index k with 6k-1 = ±s.",
+      "Working with the doubling relation 2m = k(3k-1) as the membership predicate (instead of g(k)=k(3k-1)/2) sidesteps integer division entirely; exactness of the division is a one-line even/odd case split.",
+      "Mathlib has Nat.Partition but neither Franklin's involution, distinct-part partitions with a parity sign, nor the formal power-series infinite product, so the deep identity has no Mathlib bearer; the index-set theory is the tractable, self-contained piece."
+    ],
+    "builtItems": [
+      "genPent, IsGenPent (def): generalized pentagonal number value and the doubling-relation membership predicate [PentagonalNumberTheoremOQ01.lean]",
+      "isGenPent_iff_isSquare: HEADLINE — m generalized pentagonal ⟺ 24m+1 a perfect square [PentagonalNumberTheoremOQ01.lean]",
+      "two_dvd_index_mul, two_mul_genPent: k(3k-1) even; exact doubling 2·g(k)=k(3k-1) [PentagonalNumberTheoremOQ01.lean]",
+      "genPent_injective: distinct indices give distinct pentagonal numbers, via (a-b)(3(a+b)-1)=0 and 3(a+b)≠1 over ℤ [PentagonalNumberTheoremOQ01.lean]",
+      "isGenPent_nonneg + concrete values g(0..±4)=0,1,2,5,7,12,15,22,26 (OEIS A001318) [PentagonalNumberTheoremOQ01.lean]"
+    ],
+    "mathlibGaps": [
+      "No Franklin sign-reversing involution on partitions into distinct parts.",
+      "No notion of partitions into distinct parts carrying a parity-of-part-count sign.",
+      "No formal-power-series manipulation of the infinite product ∏(1-Xⁿ) needed for the pentagonal identity itself."
+    ],
+    "nextSteps": [
+      "Confirm the file compiles: re-run the docker build when concurrent load drops, or submit to Aristotle when the MCP recovers (both backends were down this cycle).",
+      "If a tactic fails, suspect exact lemma names (Int.cast_pow, ZMod.intCast_zmod_eq_zero_iff_dvd, Int.mul_ediv_cancel') and the ZMod 6 decide / push_cast plumbing in isGenPent_iff_isSquare.",
+      "Mathematical frontier: build Franklin's involution to reach the deep identity p_even(n)-p_odd(n) = [n=g(k)]·(-1)ᵏ."
+    ],
+    "progressSummary": "PROGRESS (build-pending): formalized the generalized-pentagonal-number foundation with the headline 24m+1-square recognition criterion (16 thms, 0 ax, 0 sorry). Hand-audited; not yet machine-checked (Aristotle 404 + docker build contention). Deep identity (Franklin's involution) documented as open core."
+  }
+}
