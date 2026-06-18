@@ -22,7 +22,7 @@
     "dateAdded": "2026-06-16",
     "axiomCount": 1,
     "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The single enumeration `kaprekar_converges_all` — every non-repdigit `n < 10000` satisfies `T^[7] n = 6174` — is discharged by `native_decide` over `Finset.range 10000`. The other three results are native_decide-free: `kaprekar_fixed` (T(6174) = 6174) and `kaprekar_bound_sharp` (the witness 0014 still differs from 6174 after six steps) are kernel-checked by `decide`, and `kaprekar_unique_fixed` (6174 is the unique non-repdigit fixed point below 10000) is derived symbolically from `kaprekar_converges_all` via `Function.iterate_fixed` with no separate enumeration. Under the gallery convention (CLAUDE.md), the presented convergence result depends on `native_decide` and hence on `Lean.ofReduceBool` (the kernel trusts the compiler's reduction), so the entry is `axiomatized` with `axiomCount` 1; `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
-    "lineCount": 110,
+    "lineCount": 120,
     "theoremCount": 6,
     "definitionCount": 3,
     "originalContributions": [
@@ -57,14 +57,14 @@
     "summary": "Kaprekar's routine on four-digit strings is fully formalized: every non-repdigit n < 10000 reaches 6174 within seven steps (kaprekar_converges), 6174 is the unique non-repdigit fixed point (kaprekar_unique_fixed), and the seven-step bound is sharp (kaprekar_bound_sharp), with T(6174)=6174 kernel-checked. 6 theorems, 3 definitions, 0 sorries, 0 axiom declarations; the convergence enumeration depends on Lean.ofReduceBool via native_decide.",
     "implications": "The entry gives a clean, machine-checked statement of a classic recreational-mathematics fact as a finite dynamical-systems theorem. The arithmetic-only encoding of a digit-sort map — extraction by `/`/`%`, ordering by a fixed sorting network, recombination by place value — is a reusable template for formalizing other digit-manipulation maps (e.g. the three-digit constant 495, happy numbers, or narcissistic-number checks) where keeping the step cheap to reduce is what makes exhaustive verification tractable.",
     "openQuestions": [
-      "Produce a 0-axiom (kernel `decide`) version by quotienting to the ≤715 sorted-digit multiset representatives — T factors through the digit multiset — together with a multiset-invariance lemma, avoiding native_decide entirely.",
+      "Produce a 0-axiom (kernel `decide`) version avoiding native_decide. The natural route — quotient to the ≤715 sorted-digit multiset representatives (T factors through the digit multiset) and guard the enumeration by canonicality — is now confirmed infeasible: a companion stating `∀ n < 10000, canon n = n → NonRepdigit n → T^[7] n = 6174 := by decide` times out past 40 min even with a warm cache (both with Function.iterate and an explicit seven-fold composition). The wall is the `Nat.decidableBallLT` proof term over the full `n < 10000` quantifier, which the kernel must reduce regardless of the cheap canonicality short-circuit, so collapsing the work to 715 reductions does not collapse the term. The one untested avenue is a hard-coded 715-element `List.all` decide (sidestepping `decidableBallLT`) together with a structural `canon n ∈ reps` completeness lemma.",
       "Characterize the Kaprekar dynamics for ≥5 digits, where there is no single constant: classify the cycles (e.g. the five-digit cycles) and their basins.",
       "Prove a structural (non-enumerative) reason for the seven-step bound and for uniqueness of 6174, rather than verifying them by exhaustion."
     ]
   },
   "leanFile": {
     "namespace": "KaprekarConstantOQ01",
-    "lineCount": 110,
+    "lineCount": 120,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 3,
