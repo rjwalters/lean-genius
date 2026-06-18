@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "The Exact Error Formula: One Ring Step from Series Decomposition",
-    "content": "The main theorem is a one-liner after the rewrites:\n\n```lean\ntheorem derangements_error_exact (n : \u2115) :\n    (numDerangements n : \u211d) / (n.factorial : \u211d) - rexp (-1) =\n    -(\u2211' k, altFactTerm (n + 1 + k)) := by\n  rw [derangements_div_factorial, exp_neg_one_eq_tsum_alt, tsum_eq_partial_sum_add_tail n]\n  ring\n```\n\nThe three rewrites substitute:\n1. `derangements_div_factorial`: LHS numerator becomes `\u2211_{k=0}^{n} altFactTerm k`\n2. `exp_neg_one_eq_tsum_alt`: `rexp(-1)` becomes `\u2211' k, altFactTerm k`\n3. `tsum_eq_partial_sum_add_tail n`: the full tsum splits as `(\u2211_{k=0}^{n}) + (\u2211' k, tail k)`\n\nAfter these, the goal reduces to `(partial_sum) - (partial_sum + tail) = -(tail)`, which is pure arithmetic.",
+    "content": "The main theorem is a one-liner after the rewrites:\n\n```lean\ntheorem derangements_error_exact (n : ℕ) :\n    (numDerangements n : ℝ) / (n.factorial : ℝ) - rexp (-1) =\n    -(∑' k, altFactTerm (n + 1 + k)) := by\n  rw [derangements_div_factorial, exp_neg_one_eq_tsum_alt, tsum_eq_partial_sum_add_tail n]\n  ring\n```\n\nThe three rewrites substitute:\n1. `derangements_div_factorial`: LHS numerator becomes `∑_{k=0}^{n} altFactTerm k`\n2. `exp_neg_one_eq_tsum_alt`: `rexp(-1)` becomes `∑' k, altFactTerm k`\n3. `tsum_eq_partial_sum_add_tail n`: the full tsum splits as `(∑_{k=0}^{n}) + (∑' k, tail k)`\n\nAfter these, the goal reduces to `(partial_sum) - (partial_sum + tail) = -(tail)`, which is pure arithmetic.",
     "mathContext": "$\\frac{D(n)}{n!} - e^{-1} = -\\sum_{k=0}^{\\infty} \\frac{(-1)^{n+1+k}}{(n+1+k)!}$. Three rewrites: $D(n)/n! = \\sum_{k=0}^{n} (-1)^k/k!$, $e^{-1} = \\sum_{k=0}^{\\infty} (-1)^k/k!$, and splitting the series gives the tail.",
     "significance": "key",
     "relatedConcepts": [
@@ -30,7 +30,7 @@
     },
     "type": "insight",
     "title": "The Classical Bound is a Corollary of the Exact Formula",
-    "content": "Once the exact formula is established, the classical bound |D(n)/n! - 1/e| \u2264 1/(n+1)! requires just two steps:\n\n```lean\ntheorem derangements_error_bound_via_exact (n : \u2115) :\n    |(numDerangements n : \u211d) / (n.factorial : \u211d) - rexp (-1)| \u2264\n    1 / ((n + 1).factorial : \u211d) := by\n  rw [derangements_error_exact, abs_neg]\n  exact alternating_tail_bound n\n```\n\n`abs_neg` reduces `|-(tail)|` to `|tail|`, then `alternating_tail_bound n` closes the goal.\n\nThis establishes the conceptual hierarchy:\n- **Exact formula** (OQ-03-OQ-01-OQ-02): error = -(alternating tail)\n- **Bound** (OQ-03): |error| \u2264 1/(n+1)! follows from |tail| \u2264 1/(n+1)!\n\nNot the other way around.",
+    "content": "Once the exact formula is established, the classical bound |D(n)/n! - 1/e| ≤ 1/(n+1)! requires just two steps:\n\n```lean\ntheorem derangements_error_bound_via_exact (n : ℕ) :\n    |(numDerangements n : ℝ) / (n.factorial : ℝ) - rexp (-1)| ≤\n    1 / ((n + 1).factorial : ℝ) := by\n  rw [derangements_error_exact, abs_neg]\n  exact alternating_tail_bound n\n```\n\n`abs_neg` reduces `|-(tail)|` to `|tail|`, then `alternating_tail_bound n` closes the goal.\n\nThis establishes the conceptual hierarchy:\n- **Exact formula** (OQ-03-OQ-01-OQ-02): error = -(alternating tail)\n- **Bound** (OQ-03): |error| ≤ 1/(n+1)! follows from |tail| ≤ 1/(n+1)!\n\nNot the other way around.",
     "mathContext": "$|D(n)/n! - e^{-1}| = |\\text{tail}| \\leq 1/(n+1)!$ by the alternating series estimation theorem",
     "significance": "key",
     "relatedConcepts": [
@@ -50,7 +50,7 @@
     },
     "type": "concept",
     "title": "Leading-Term Decomposition via Delegation",
-    "content": "The second-order bound from OQ-03-OQ-01 is recovered by direct delegation:\n\n```lean\ntheorem derangements_error_leading_term (n : \u2115) :\n    |(numDerangements n : \u211d) / (n.factorial : \u211d) - rexp (-1) -\n     ((-1 : \u211d) ^ n / ((n + 1).factorial : \u211d))| \u2264\n    1 / ((n + 2).factorial : \u211d) :=\n  second_order_convergence_rate n\n```\n\nThe sign in the correction term is `(-1)^n/(n+1)!`, not `(-1)^(n+1)/(n+1)!`. The reason: the first tail term is `altFactTerm(n+1) = (-1)^(n+1)/(n+1)!`, and the error is the *negation* of the tail, so the leading correction is `-(-1)^(n+1)/(n+1)! = (-1)^n/(n+1)!`.\n\nThis is confirmed by `derangements_error_first_term_sign`: `-altFactTerm(n+1) = (-1)^n/(n+1)!`.",
+    "content": "The second-order bound from OQ-03-OQ-01 is recovered by direct delegation:\n\n```lean\ntheorem derangements_error_leading_term (n : ℕ) :\n    |(numDerangements n : ℝ) / (n.factorial : ℝ) - rexp (-1) -\n     ((-1 : ℝ) ^ n / ((n + 1).factorial : ℝ))| ≤\n    1 / ((n + 2).factorial : ℝ) :=\n  second_order_convergence_rate n\n```\n\nThe sign in the correction term is `(-1)^n/(n+1)!`, not `(-1)^(n+1)/(n+1)!`. The reason: the first tail term is `altFactTerm(n+1) = (-1)^(n+1)/(n+1)!`, and the error is the *negation* of the tail, so the leading correction is `-(-1)^(n+1)/(n+1)! = (-1)^n/(n+1)!`.\n\nThis is confirmed by `derangements_error_first_term_sign`: `-altFactTerm(n+1) = (-1)^n/(n+1)!`.",
     "mathContext": "$|D(n)/n! - e^{-1} - (-1)^n/(n+1)!| \\leq 1/(n+2)!$. The leading correction $(-1)^n/(n+1)!$ arises from negating the first tail term $(-1)^{n+1}/(n+1)!$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -71,7 +71,7 @@
     },
     "type": "insight",
     "title": "Sign Determination: Error Alternates +, -, +, -, ...",
-    "content": "The sign theorems are direct delegations to OQ-03-OQ-01's results:\n\n```lean\n-- Even n: D(2m)/2m! \u2265 1/e\ntheorem derangements_error_nonneg_even (n : \u2115) :\n    rexp (-1) \u2264 (numDerangements (2 * n) : \u211d) / ((2 * n).factorial : \u211d) :=\n  derangements_alternating_even n\n\n-- Odd n: D(2m+1)/(2m+1)! \u2264 1/e\ntheorem derangements_error_nonpos_odd (n : \u2115) :\n    (numDerangements (2 * n + 1) : \u211d) / ((2 * n + 1).factorial : \u211d) \u2264 rexp (-1) :=\n  derangements_alternating_odd n\n```\n\nThe sign pattern is consistent with the exact formula: the leading tail term has sign `(-1)^(n+1)`, so the error has sign `(-1)^n`. For even n, `(-1)^n = +1` (overshoot); for odd n, `(-1)^n = -1` (undershoot).",
+    "content": "The sign theorems are direct delegations to OQ-03-OQ-01's results:\n\n```lean\n-- Even n: D(2m)/2m! ≥ 1/e\ntheorem derangements_error_nonneg_even (n : ℕ) :\n    rexp (-1) ≤ (numDerangements (2 * n) : ℝ) / ((2 * n).factorial : ℝ) :=\n  derangements_alternating_even n\n\n-- Odd n: D(2m+1)/(2m+1)! ≤ 1/e\ntheorem derangements_error_nonpos_odd (n : ℕ) :\n    (numDerangements (2 * n + 1) : ℝ) / ((2 * n + 1).factorial : ℝ) ≤ rexp (-1) :=\n  derangements_alternating_odd n\n```\n\nThe sign pattern is consistent with the exact formula: the leading tail term has sign `(-1)^(n+1)`, so the error has sign `(-1)^n`. For even n, `(-1)^n = +1` (overshoot); for odd n, `(-1)^n = -1` (undershoot).",
     "mathContext": "Even $n$: $D(2m)/(2m)! \\geq e^{-1}$ (overshoot). Odd $n$: $D(2m+1)/(2m+1)! \\leq e^{-1}$ (undershoot). Sign $= (-1)^n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -91,7 +91,7 @@
     },
     "type": "insight",
     "title": "Open Namespace Pattern: Reusing OQ-03 Infrastructure",
-    "content": "The entire proof lives in `namespace DerangementsOQ03` (same as the parent proof), which gives direct access to all OQ-03 and OQ-03-OQ-01 lemmas without qualification:\n\n```lean\nnamespace DerangementsOQ03\nopen Finset Nat Real BigOperators Filter Topology\n```\n\nKey lemmas inherited:\n- `altFactTerm`: `(-1)^k/k!`\n- `derangements_div_factorial`: D(n)/n! = partial sum\n- `exp_neg_one_eq_tsum_alt`: 1/e = full alternating series\n- `tsum_eq_partial_sum_add_tail`: series split\n- `alternating_tail_bound`: |tail| \u2264 1/(n+1)!\n- `second_order_convergence_rate`: second-order asymptotic\n- `derangements_alternating_even/odd`: sign characterization\n\nThis pattern \u2014 import and open the parent namespace \u2014 is the standard approach for hierarchical OQ proofs in this gallery.",
+    "content": "The entire proof lives in `namespace DerangementsOQ03` (same as the parent proof), which gives direct access to all OQ-03 and OQ-03-OQ-01 lemmas without qualification:\n\n```lean\nnamespace DerangementsOQ03\nopen Finset Nat Real BigOperators Filter Topology\n```\n\nKey lemmas inherited:\n- `altFactTerm`: `(-1)^k/k!`\n- `derangements_div_factorial`: D(n)/n! = partial sum\n- `exp_neg_one_eq_tsum_alt`: 1/e = full alternating series\n- `tsum_eq_partial_sum_add_tail`: series split\n- `alternating_tail_bound`: |tail| ≤ 1/(n+1)!\n- `second_order_convergence_rate`: second-order asymptotic\n- `derangements_alternating_even/odd`: sign characterization\n\nThis pattern — import and open the parent namespace — is the standard approach for hierarchical OQ proofs in this gallery.",
     "significance": "supporting",
     "relatedConcepts": [
       "namespace",
@@ -103,5 +103,220 @@
       "derangements-oq-03-oq-01"
     ],
     "mathContext": "Lean 4 namespace reuse pattern: `namespace DerangementsOQ03` grants access to `altFactTerm`, `altFact_recursive`, `derangement_count_eq_altFact`, and other OQ-03/OQ-01 lemmas without qualification. `open Finset Nat Real BigOperators Filter Topology` brings standard combinatorial and analytic notation into scope. This pattern avoids duplication of 200+ lines of supporting machinery."
+  },
+  {
+    "id": "derangements-oq-03-oq-01-oq-02-foundations",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "type": "technique",
+    "range": {
+      "startLine": 49,
+      "endLine": 69
+    },
+    "title": "Foundational Definitions and $e^{-1}$ as an Alternating Series",
+    "content": "Self-contained scaffolding. `altFactTerm k = (-1)^k/k!` is the general term of the exponential series for $e^{-1}$, and `altFactPartialSum n` its partial sum through index $n$. `summable_altFactTerm` (from `summable_pow_div_factorial`) and the factorial-positivity helpers `fpos`/`fne` set up the analysis. The key bridge is `exp_neg_one_eq_tsum_alt`: $e^{-1}=\\sum_k(-1)^k/k!$, obtained by unfolding Mathlib's `NormedSpace.exp_eq_tsum`. This identity is what ties the combinatorial derangement count to the transcendental constant $1/e$.",
+    "significance": "supporting",
+    "mathContext": "$a_k=(-1)^k/k!$; $S_n=\\sum_{k=0}^{n}a_k$; $e^{-1}=\\sum_{k=0}^\\infty(-1)^k/k!$ (`NormedSpace.exp_eq_tsum`).",
+    "relatedConcepts": [
+      "exponential series",
+      "summability",
+      "tsum",
+      "e^{-1}"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "Real.exp",
+      "summable_pow_div_factorial"
+    ]
+  },
+  {
+    "id": "derangements-oq-03-oq-01-oq-02-core-identity",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "type": "technique",
+    "range": {
+      "startLine": 75,
+      "endLine": 90
+    },
+    "title": "Core Identity $D(n)=n!\\cdot S_n$",
+    "content": "`numDerangements_eq_factorial_mul_altSum` proves the exact combinatorial identity $D(n)=n!\\sum_{k=0}^n(-1)^k/k!$ by strong induction, using Mathlib's two-step derangement recurrence `numDerangements_add_two`. Dividing through gives `derangements_div_factorial`: $D(n)/n!=S_n$. This converts the derangement probability into a truncation of the $e^{-1}$ series, so the error $D(n)/n!-1/e$ is exactly the series remainder.",
+    "significance": "key",
+    "mathContext": "$D(n)=n!\\sum_{k=0}^{n}\\frac{(-1)^k}{k!}$, hence $D(n)/n!=S_n$, the $n$-th partial sum of the $e^{-1}$ series.",
+    "relatedConcepts": [
+      "derangement formula",
+      "strong induction",
+      "numDerangements_add_two",
+      "partial sum"
+    ],
+    "prerequisites": [
+      "derangement recurrence",
+      "strong induction",
+      "field_simp"
+    ]
+  },
+  {
+    "id": "derangements-oq-03-oq-01-oq-02-tail-split",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "type": "technique",
+    "range": {
+      "startLine": 96,
+      "endLine": 106
+    },
+    "title": "Tail-Splitting of the Series",
+    "content": "`tsum_split N` decomposes the full sum into a finite head plus an index-shifted tail: $\\sum_k a_k=\\sum_{k<N}a_k+\\sum_k a_{N+k}$. Proved by induction, peeling one term per step via `Summable.tsum_eq_zero_add` and re-indexing. This is the analytic move that isolates the error $D(n)/n!-1/e$ as a pure tail $\\sum_k a_{n+1+k}$, the object whose sign and magnitude the rest of the file controls.",
+    "significance": "supporting",
+    "mathContext": "$\\sum_{k=0}^\\infty a_k=\\sum_{k=0}^{N-1}a_k+\\sum_{k=0}^\\infty a_{N+k}$, with the shifted family summable by injective recomposition.",
+    "relatedConcepts": [
+      "series remainder",
+      "index shift",
+      "tsum_eq_zero_add",
+      "head-tail split"
+    ],
+    "prerequisites": [
+      "tsum",
+      "Summable.comp_injective",
+      "induction"
+    ]
+  },
+  {
+    "id": "derangements-oq-03-oq-01-oq-02-alt-bounds",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "type": "technique",
+    "range": {
+      "startLine": 112,
+      "endLine": 187
+    },
+    "title": "Alternating-Series Bounds (Leibniz, Pairwise)",
+    "content": "The two technical lemmas powering every later inequality. `alt_partial_sum_nonneg` shows every partial sum $\\sum_{k<N}(-1)^k/(m+k)!\\geq0$, and `alt_partial_sum_le_first` bounds it above by the first term $1/m!$. Both are proved by strong induction on $N$ in steps of two, grouping consecutive terms into nonnegative (resp. nonpositive) pairs using factorial monotonicity $((m+j)!\\leq(m+j+1)!)$. This is a hands-on, Mathlib-free realization of the Leibniz alternating-series estimate, tailored to the factorial-decay terms.",
+    "significance": "key",
+    "mathContext": "$0\\leq\\sum_{k=0}^{N-1}\\frac{(-1)^k}{(m+k)!}\\leq\\frac1{m!}$. Pairing: $\\frac1{(m+2j)!}-\\frac1{(m+2j+1)!}\\geq0$ since $(m+2j)!\\leq(m+2j+1)!$.",
+    "relatedConcepts": [
+      "Leibniz criterion",
+      "alternating series",
+      "pairwise grouping",
+      "factorial monotonicity"
+    ],
+    "prerequisites": [
+      "strong induction",
+      "Nat.factorial_le",
+      "sum_range_succ"
+    ]
+  },
+  {
+    "id": "derangements-oq-03-oq-01-oq-02-errortailsum",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "type": "technique",
+    "range": {
+      "startLine": 193,
+      "endLine": 271
+    },
+    "title": "The Error Tail Sum: Definition, Recurrence, Strict Positivity",
+    "content": "`errorTailSum m = \\sum_k(-1)^k/(m+k)!` is the (sign-stripped) magnitude of the error. Passing the partial-sum bounds to the limit gives `errorTailSum_nonneg` ($\\geq0$) and `errorTailSum_le` ($\\leq1/m!$). `errorTailSum_recurrence` proves the elegant relation $T(m)=1/m!-T(m+1)$ by splitting off the first term. From it, `errorTailSum_pos` establishes strict positivity (for $m=0$ via the double recurrence $T(0)=T(2)$), and `errorTailSum_ge` gives the tight lower bound $T(m)\\geq1/m!-1/(m+1)!$. Strict positivity is exactly what forces the strict sign alternation of the derangement error.",
+    "significance": "key",
+    "mathContext": "$T(m)=\\sum_{k\\geq0}\\frac{(-1)^k}{(m+k)!}$; $0<T(m)\\leq\\frac1{m!}$; recurrence $T(m)=\\frac1{m!}-T(m+1)$; lower bound $T(m)\\geq\\frac1{m!}-\\frac1{(m+1)!}$.",
+    "relatedConcepts": [
+      "series tail",
+      "telescoping recurrence",
+      "strict positivity",
+      "squeeze bounds"
+    ],
+    "prerequisites": [
+      "hasSum.tendsto_sum_nat",
+      "alternating bounds",
+      "one_div_lt_one_div"
+    ]
+  },
+  {
+    "id": "derangements-oq-03-oq-01-oq-02-closed-form",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "type": "insight",
+    "range": {
+      "startLine": 277,
+      "endLine": 317
+    },
+    "title": "Closed-Form Error Identity and Recurrence",
+    "content": "The headline results. `tail_eq_signed` factors the global sign out of the tail ($\\sum_k a_{m+k}=(-1)^m T(m)$ via `tsum_mul_left`), and `error_closed_form` assembles everything into the exact identity $D(n)/n!-1/e=(-1)^n\\,T(n+1)$ -- the derangement error equals a known sign times a strictly positive tail. `error_recurrence` records the additive step $e(n+1)=e(n)+(-1)^{n+1}/(n+1)!$, showing each increment of $n$ appends exactly one more term of the $e^{-1}$ series. These are the file's central original contributions.",
+    "significance": "key",
+    "mathContext": "$\\dfrac{D(n)}{n!}-\\dfrac1e=(-1)^n\\sum_{k\\geq0}\\dfrac{(-1)^k}{(n+1+k)!}=(-1)^n T(n+1)$; $e(n+1)=e(n)+\\dfrac{(-1)^{n+1}}{(n+1)!}$.",
+    "relatedConcepts": [
+      "closed-form remainder",
+      "sign factoring",
+      "tsum_mul_left",
+      "additive recurrence"
+    ],
+    "prerequisites": [
+      "tail_eq_signed",
+      "tsum_split",
+      "derangements_div_factorial"
+    ]
+  },
+  {
+    "id": "derangements-oq-03-oq-01-oq-02-sign-alternation",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "type": "insight",
+    "range": {
+      "startLine": 323,
+      "endLine": 335
+    },
+    "title": "Strict Sign Alternation $D(n)/n!\\gtrless 1/e$",
+    "content": "Immediate consequences of the closed form together with $T>0$: `error_strict_pos_even` shows $D(2n)/(2n)!>1/e$ (the sign $(-1)^{2n}=+1$), while `error_strict_neg_odd` shows $D(2n{+}1)/(2n{+}1)!<1/e$ (sign $-1$). So the derangement probability oscillates strictly around $1/e$, lying above for even $n$ and below for odd $n$ -- a sharp, non-asymptotic statement that the classical bound $|D(n)/n!-1/e|\\leq1/(n+1)!$ alone does not give.",
+    "significance": "key",
+    "mathContext": "$n$ even: $D(n)/n!>1/e$; $n$ odd: $D(n)/n!<1/e$. From $(-1)^n T(n+1)$ with $T(n+1)>0$.",
+    "relatedConcepts": [
+      "sign alternation",
+      "oscillation about 1/e",
+      "strict inequality",
+      "errorTailSum_pos"
+    ],
+    "prerequisites": [
+      "error_closed_form",
+      "errorTailSum_pos",
+      "parity of (-1)^n"
+    ]
+  },
+  {
+    "id": "derangements-oq-03-oq-01-oq-02-normalized-limit",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "type": "insight",
+    "range": {
+      "startLine": 341,
+      "endLine": 396
+    },
+    "title": "Normalized Error Limit: Asymptotic Precision",
+    "content": "`normalized_error_tendsto` proves $(-1)^n\\,(D(n)/n!-1/e)\\,(n+1)!\\to1$, pinning the error's exact leading asymptotics: $D(n)/n!-1/e\\sim(-1)^n/(n+1)!$. After reducing to $T(n+1)\\cdot(n+1)!$ via the closed form, the proof is a squeeze: the upper bound $T(m)\\leq1/m!$ gives $\\leq1$, the tight lower bound $T(m)\\geq1/m!-1/(m+1)!$ gives $\\geq1-1/(n+2)$, and $1/(n+2)\\to0$ forces convergence to $1$. This upgrades the qualitative $D(n)/n!\\to1/e$ to a precise first-order error term.",
+    "significance": "key",
+    "mathContext": "$(-1)^n\\big(\\tfrac{D(n)}{n!}-\\tfrac1e\\big)(n+1)!\\to1$; squeeze $1-\\tfrac1{n+2}\\leq T(n{+}1)(n{+}1)!\\leq1$.",
+    "relatedConcepts": [
+      "asymptotic expansion",
+      "squeeze theorem",
+      "leading-order error",
+      "Tendsto atTop"
+    ],
+    "prerequisites": [
+      "error_closed_form",
+      "errorTailSum_le",
+      "errorTailSum_ge",
+      "Metric.tendsto_atTop"
+    ]
+  },
+  {
+    "id": "derangements-oq-03-oq-01-oq-02-concrete",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "type": "context",
+    "range": {
+      "startLine": 402,
+      "endLine": 408
+    },
+    "title": "Concrete Base Values $n=0,1$",
+    "content": "Sanity-check instances of the alternation theorems: `error_n0_pos` gives $D(0)/0!-1/e=1-1/e>0$ (even case) and `error_n1_neg` gives $D(1)/1!-1/e=0-1/e<0$ (odd case). They confirm the abstract sign results against the smallest hand-computable derangement counts $D(0)=1$, $D(1)=0$.",
+    "significance": "supporting",
+    "mathContext": "$D(0)=1\\Rightarrow1-1/e>0$; $D(1)=0\\Rightarrow-1/e<0$.",
+    "relatedConcepts": [
+      "base cases",
+      "sanity check",
+      "small derangements"
+    ],
+    "prerequisites": [
+      "error_strict_pos_even",
+      "error_strict_neg_odd"
+    ]
   }
 ]
