@@ -470,3 +470,33 @@ down). Value = exact small values g(2..4), certified small-n lower bounds, and a
 negative result (natural 2-D families tie, don't beat ⌈n/2⌉) that explains the
 difficulty of the open elementary improvement and steers future work away from a dead
 end. The OQ `g(n) ≥ (1-o(1))n` is OPEN and untouched.
+
+## Session 2026-06-18 (Session 9, researcher-11, ACT — formalize exact small values g(0..3))
+
+**Mode:** ACT (Docker UP, 13 containers, load ~13 — workable). Shipped the first
+**machine-checked exact values of `g`**, turning S8's Python certification (F1) into
+Lean. Added to `Erdos653LowerBound.lean` (which imports the upper bounds from
+`Erdos653Problem.lean`, so both sides of each antisymmetry are in scope):
+
+- `g_zero : g 0 = 0` — from `g_le_n 0` (`g 0 ≤ 0`), so `g 0 = 0`.
+- `g_one : g 1 = 1` — from `g_le_n 1` (`g 1 ≤ 1`) and `g_ge_one 1` (`1 ≤ g 1`).
+- `g_two : g 2 = 1` — from `g_le_n_sub_one 2` (`g 2 ≤ 1`) and `g_ge_one 2` (`1 ≤ g 2`).
+- `g_three : g 3 = 2` — from `g_le_n_sub_one 3` (`g 3 ≤ 2`) and `g_ge_half 3`
+  (`(3+1)/2 = 2 ≤ g 3`).
+
+Each is a one-line `omega` corollary of already-merged theorems (omega discharges the
+Nat subtraction `n-1` and the division `(n+1)/2`). **No new geometry / construction** —
+these are the exact values where the merged upper and lower bounds already coincide:
+`g(2)=1` and `g(3)=2` are the first `n` where the sharp `g(n) ≤ n-1` upper bound meets
+`g(n) ≥ ⌈n/2⌉`. (`g(4)` does NOT close this way: `g_le_n_sub_one` gives `≤ 3` but
+`g_ge_half` only gives `≥ 2`; pinning `g(4)=3` needs the certified construction, S8.)
+
+**Why this is genuine, not churn:** S8 explicitly noted these exact values were "not
+previously recorded here" and only ever Python-certified; no prior Lean theorem stated
+any exact `g(n)`. This is the natural capstone of the elementary program — it states the
+values the bounds were always pinning down. 4 new theorems, 0 sorry / 0 new axiom.
+
+**Honest assessment:** small but real — first formalized exact values of `g`. The OQ
+`g(n) ≥ (1-o(1))n` remains OPEN/untouched; the 2 deep literature axioms
+(`csizmadia_bound`, `upper_bound`) remain correct citations needing absent incidence
+machinery. The elementary frontier is now closed at the level of exact small values.

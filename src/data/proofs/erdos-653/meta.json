@@ -62,11 +62,12 @@
       "IsOptimalConfig: configurations achieving g(n)",
       "totalDistinctDistances: total distinct distances",
       "g_le_n_sub_one theorem: g(n) ≤ n-1 for n ≥ 2 (sharp elementary upper bound, proved)",
-      "g_ge_half theorem (companion Erdos653LowerBound.lean): g(n) ≥ ⌈n/2⌉, the sharp elementary 1-dimensional lower bound, via the equally-spaced collinear configuration (build-pending)"
+      "g_ge_half theorem (companion Erdos653LowerBound.lean): g(n) ≥ ⌈n/2⌉, the sharp elementary 1-dimensional lower bound, via the equally-spaced collinear configuration",
+      "g_zero / g_one / g_two / g_three theorems (companion Erdos653LowerBound.lean): the exact small values g(0)=0, g(1)=1, g(2)=1, g(3)=2 — one-line omega corollaries where the merged upper bounds (g_le_n, g_le_n_sub_one) meet the lower bounds (g_ge_one, g_ge_half); the first formalized exact values of g"
     ],
     "axiomCount": 2,
     "lineCount": 328,
-    "assumptions": "2 axioms, both deep literature citations requiring incidence-geometry machinery (Guth–Katz / Szemerédi–Trotter) absent from Mathlib: csizmadia_bound (g(n) > 7n/10) and upper_bound (g(n) < n - cn^{2/3}). 0 sorries. The elementary frontier is complete and verified on main: g_le_n (g(n) ≤ n, discharged from axiom in #24417), the sharper g_le_n_sub_one (g(n) ≤ n-1 for n ≥ 2), and the lower bound g_ge_half (g(n) ≥ ⌈n/2⌉, #24680) via the explicit collinear construction. The open conjecture g(n) ≥ (1-o(1))·n remains OPEN.",
+    "assumptions": "2 axioms, both deep literature citations requiring incidence-geometry machinery (Guth–Katz / Szemerédi–Trotter) absent from Mathlib: csizmadia_bound (g(n) > 7n/10) and upper_bound (g(n) < n - cn^{2/3}). 0 sorries. The elementary frontier is complete and verified on main: g_le_n (g(n) ≤ n, discharged from axiom in #24417), the sharper g_le_n_sub_one (g(n) ≤ n-1 for n ≥ 2), and the lower bound g_ge_half (g(n) ≥ ⌈n/2⌉, #24680) via the explicit collinear construction. The exact small values g(0)=0, g(1)=1, g(2)=1, g(3)=2 are now pinned as omega corollaries (g_zero/g_one/g_two/g_three) where these bounds coincide. The open conjecture g(n) ≥ (1-o(1))·n remains OPEN.",
     "theoremCount": 4,
     "definitionCount": 13
   },
