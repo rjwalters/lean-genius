@@ -43,3 +43,15 @@ fold `cbrt3_a12` into `CubeRoot3IrrationalOQ04.lean` immediately after
 `cbrt3_a11`, drop the orphan, and bump the verified prefix a₁₁ → a₁₂. The S15a
 bounds for `a₁₃ = 3` (`6193523/4294349 < ∛3 < 1865358/1293367`) are already in
 `Cbrt3Helpers`, so `cbrt3_a13` is the natural follow-on by the same recipe.
+
+## S38 addendum — also added a₁₃ = 3 (fourteenth partial quotient)
+
+Same recipe extended one more level in the same orphan file
+`CubeRoot3IrrationalOQ04A12.lean`: `cbrt3_a13 = 3` from the tighter sandwich
+`6193523/4294349 < ∛3 < 1865358/1293367` (14th/13th convergents, both already
+in `Cbrt3Helpers`) propagated through `a₀..a₁₂ = [1,2,3,1,4,1,5,1,1,6,2,5,8]`,
+landing `x₁₃ ∈ (3/10, 1/3)`, `1/x₁₃ ∈ (3, 10/3) ⊂ (3, 4)`, floor `3`. This
+matches the prediction in the `Cbrt3Helpers` S15a docstring exactly. Cert
+`verify_a13_floor.py` PASSes. The verified prefix now reaches
+`a₀..a₁₃ = [1,2,3,1,4,1,5,1,1,6,2,5,8,3]` once the orphan is Docker-built and
+folded into the main file.
