@@ -22,8 +22,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 379,
-    "assumptions": "0 axioms, 0 sorries. Machine-checked: `./proofs/scripts/docker-build.sh Proofs.FriendshipTheoremOQ04` builds green (Lean v4.26.0, Mathlib pin 2df2f01, 7745 jobs); registered in Proofs.lean. The diameter-2 bound uses no finiteness; the finite-case conclusion is imported from the gallery proof FriendshipTheorem.friendship_theorem. Verified green 2026-06-15 (researcher-4) after repairing three Mathlib v4.26.0 errors (Set.mem_biUnion implicit index, a redundant Set.not_infinite.mp after push_neg already normalized to Finite, and a stale `c` identifier after `rintro rfl` substituted it to `w`). Companion file Proofs/FriendshipTheoremOQ04Universal.lean (113 lines, 4 theorems, 0 sorries / 0 axioms) adds the finiteness-free hub-uniqueness results (merged via #25260) and is registered in Proofs.lean; aggregate compilation via `./proofs/scripts/docker-build.sh Proofs.FriendshipTheoremOQ04Universal` builds green (7746 jobs, Lean v4.26.0, Mathlib pin 2df2f01) — confirmed 2026-06-18 (researcher-8). The hub-uniqueness companion Proofs/FriendshipTheoremOQ04Universal.lean (two_universal_cover, nat_card_eq_three_of_two_universal, finite_of_two_universal, universal_unique_of_card_ne_three, universal_unique_of_infinite) is also registered and Docker build-verified (2026-06-18, 7746 jobs green), 0 axioms / 0 sorries, #print axioms reporting only propext / Classical.choice / Quot.sound.",
+    "lineCount": 414,
+    "assumptions": "0 axioms, 0 sorries. Machine-checked: `./proofs/scripts/docker-build.sh Proofs.FriendshipTheoremOQ04` builds green (Lean v4.26.0, Mathlib pin 2df2f01, 7745 jobs); registered in Proofs.lean. The diameter-2 bound uses no finiteness; the finite-case conclusion is imported from the gallery proof FriendshipTheorem.friendship_theorem. Verified green 2026-06-15 (researcher-4) after repairing three Mathlib v4.26.0 errors (Set.mem_biUnion implicit index, a redundant Set.not_infinite.mp after push_neg already normalized to Finite, and a stale `c` identifier after `rintro rfl` substituted it to `w`). Companion file Proofs/FriendshipTheoremOQ04Universal.lean (113 lines, 4 theorems, 0 sorries / 0 axioms) adds the finiteness-free hub-uniqueness results (merged via #25260) and is registered in Proofs.lean; aggregate compilation via `./proofs/scripts/docker-build.sh Proofs.FriendshipTheoremOQ04Universal` builds green (7746 jobs, Lean v4.26.0, Mathlib pin 2df2f01) — confirmed 2026-06-18 (researcher-8). The hub-uniqueness companion Proofs/FriendshipTheoremOQ04Universal.lean (two_universal_cover, nat_card_eq_three_of_two_universal, finite_of_two_universal, universal_unique_of_card_ne_three, universal_unique_of_infinite) is also registered and Docker build-verified (2026-06-18, 7746 jobs green), 0 axioms / 0 sorries, #print axioms reporting only propext / Classical.choice / Quot.sound. Extended 2026-06-18 (researcher-10) with the adjacent-pair regularity step (neighborSet_equinum_of_common_nonneighbor, neighborSet_equinum_of_nonadj_or_common_nonneighbor) — Docker build-verified green (`./proofs/scripts/docker-build.sh Proofs.FriendshipTheoremOQ04`, 7745 jobs, Lean v4.26.0, Mathlib pin 2df2f01), 0 axioms / 0 sorries; the new theorems compose the existing nonadjacent_neighborSet_equinum bijections and use no finiteness.",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -36,9 +36,11 @@
       "universal_unique_of_card_ne_three (FriendshipTheoremOQ04Universal.lean): away from the three-vertex triangle the universal vertex (windmill centre) is unique — the recovered conclusion has a single well-defined hub; corollaries nat_card_eq_three_of_two_universal and finite_of_two_universal also derived",
       "universal_unique_of_infinite: an infinite friendship graph has at most one universal vertex (Nat.card V = 0 ≠ 3 ⟹ the K₃ two-centre case is excluded) — so even though the friendship theorem fails for infinite graphs, any hub that exists is unique",
       "universal_partner_symm: the partner relation on non-centre vertices is symmetric — N(u) = {c, w} forces N(w) = {c, u} in turn — so with the hub deleted the windmill is a disjoint union of edges (its spokes); finiteness-free. This closes a gap in universal_noncentral_neighborSet, which assigns each vertex a partner without showing the pairing is mutual.",
-      "universal_noncentral_unique_partner / universal_noncentral_adj_iff: each non-centre vertex has exactly one non-centre neighbour (ExistsUnique), and two non-centre vertices are adjacent iff they are partners (N(u) = {c, u'}) — together the perfect-matching characterisation of the entire windmill edge set, with no [Fintype V]."
+      "universal_noncentral_unique_partner / universal_noncentral_adj_iff: each non-centre vertex has exactly one non-centre neighbour (ExistsUnique), and two non-centre vertices are adjacent iff they are partners (N(u) = {c, u'}) — together the perfect-matching characterisation of the entire windmill edge set, with no [Fintype V].",
+      "neighborSet_equinum_of_common_nonneighbor: two vertices u, v sharing a common non-neighbour z have equinumerous neighbourhoods — composing the two non-adjacent bijections N(u) ≃ N(z) ≃ N(v) of nonadjacent_neighborSet_equinum bridges the *adjacent* case that lemma cannot reach directly (it requires u, v themselves non-adjacent). This is the missing step toward full regularity of a hub-free friendship graph; finiteness-free (the conclusion is a Set.BijOn, retaining content on infinite neighbourhoods).",
+      "neighborSet_equinum_of_nonadj_or_common_nonneighbor: unified regularity dichotomy — any two vertices that are non-adjacent OR share a common non-neighbour have equinumerous neighbourhoods, framing the windmill-vs-regular split behind OQ-04 (a graph with a hub is a windmill; one without is regular on every pair admitting a common non-neighbour, exactly the ℵ₀-regular C₅ free-amalgamation counterexample)."
     ],
-    "theoremCount": 16,
+    "theoremCount": 18,
     "definitionCount": 1
   },
   "overview": {
@@ -104,6 +106,14 @@
       "endLine": 196,
       "summary": "universal_noncentral_neighborSet: in any friendship graph (finite or infinite) with a universal vertex c, every non-centre vertex u has N(u) = {c, w} for a unique partner w — a windmill of triangles sharing the centre, proved with no [Fintype V]. universal_noncentral_ncard_two reads off (N(u)).ncard = 2, the finiteness-free analogue of the finite gallery's friendship_noncentral_degree (G.degree u = 2).",
       "mathContext": "$N(u) = \\{c, w\\}$ with $w$ the unique common neighbour of $u$ and $c$; hence $|N(u)| = 2$ even on infinite vertex types."
+    },
+    {
+      "id": "part7-adjacent-regularity",
+      "title": "Part VII: Regularity Across an Adjacent Pair",
+      "startLine": 380,
+      "endLine": 413,
+      "summary": "neighborSet_equinum_of_common_nonneighbor composes the two non-adjacent bijections N(u) ≃ N(z) ≃ N(v) so that two vertices sharing a common non-neighbour z have equinumerous neighbourhoods — bridging the adjacent case that nonadjacent_neighborSet_equinum cannot reach. neighborSet_equinum_of_nonadj_or_common_nonneighbor packages the dichotomy: any pair that is non-adjacent or has a common non-neighbour is equinumerous, the structure of the ℵ₀-regular hub-free counterexample. Finiteness-free.",
+      "mathContext": "The classical finite proof shows a hub-free friendship graph is regular before applying the spectral step; the adjacent-pair equality is obtained by routing through a common non-neighbour. This file supplies that routing finiteness-freely, leaving only the existence of a common non-neighbour (finite-counting in the classical proof) as the open ingredient on the infinite side."
     },
     {
       "id": "part6-perfect-matching",

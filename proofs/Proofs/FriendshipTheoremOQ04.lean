@@ -376,4 +376,39 @@ theorem universal_noncentral_adj_iff (hF : IsFriendshipGraph G)
     have hmem : u' ∈ G.neighborSet u := by rw [hset]; simp
     exact (G.mem_neighborSet u u').mp hmem
 
+/-- **Regularity across an adjacent pair (finiteness-free, conditional).** If two
+vertices `u`, `v` of a friendship graph share a common *non-neighbour* `z` — a vertex
+adjacent to neither — then their neighbourhoods are equinumerous. The proof composes
+the two non-adjacent bijections `N(u) ≃ N(z) ≃ N(v)` supplied by
+`nonadjacent_neighborSet_equinum`, bridging the *adjacent* case that lemma cannot
+reach on its own (`nonadjacent_neighborSet_equinum` needs `u`, `v` themselves
+non-adjacent). This is the missing step toward full regularity of a hub-free
+friendship graph: in the C₅ free-amalgamation counterexample every pair of vertices —
+adjacent or not — admits a common non-neighbour, so the graph is ℵ₀-regular. No
+finiteness is used; the conclusion is a `Set.BijOn`, carrying content even on infinite
+neighbourhoods. -/
+theorem neighborSet_equinum_of_common_nonneighbor (hF : IsFriendshipGraph G)
+    {u v z : V} (hzu : ¬ G.Adj u z) (hzv : ¬ G.Adj v z) :
+    ∃ f : V → V, Set.BijOn f (G.neighborSet u) (G.neighborSet v) := by
+  -- `N(u) ≃ N(z)` since `u` and `z` are non-adjacent.
+  obtain ⟨f, hf⟩ := nonadjacent_neighborSet_equinum hF hzu
+  -- `N(z) ≃ N(v)` since `z` and `v` are non-adjacent.
+  obtain ⟨g, hg⟩ := nonadjacent_neighborSet_equinum hF (fun h => hzv h.symm)
+  exact ⟨g ∘ f, hg.comp hf⟩
+
+/-- **Regularity dichotomy of a friendship graph (conditional, finiteness-free).** Any
+two vertices `u`, `v` have equinumerous neighbourhoods whenever they are *either*
+non-adjacent *or* share a common non-neighbour. Combined with the windmill structure
+(`universal_noncentral_neighborSet`), this frames the structural dichotomy behind
+OQ-04: a friendship graph *with* a universal vertex is a windmill (every off-hub vertex
+has degree two), while one *without* a hub is regular on every pair admitting a common
+non-neighbour — precisely the ℵ₀-regular shape of the C₅ free-amalgamation
+counterexample. No finiteness is used. -/
+theorem neighborSet_equinum_of_nonadj_or_common_nonneighbor (hF : IsFriendshipGraph G)
+    {u v : V} (h : ¬ G.Adj u v ∨ ∃ z, ¬ G.Adj u z ∧ ¬ G.Adj v z) :
+    ∃ f : V → V, Set.BijOn f (G.neighborSet u) (G.neighborSet v) := by
+  rcases h with hnadj | ⟨z, hzu, hzv⟩
+  · exact nonadjacent_neighborSet_equinum hF hnadj
+  · exact neighborSet_equinum_of_common_nonneighbor hF hzu hzv
+
 end FriendshipTheoremOQ04
