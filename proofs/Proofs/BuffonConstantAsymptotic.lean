@@ -222,6 +222,46 @@ lemma sq_target_eq (n : ℕ) (hn : 2 ≤ n) :
   field_simp
   ring
 
+/-- **Effective (non-asymptotic) two-sided bound on the squared target.**
+For every `n ≥ 3`,
+`(2/π) · n(n-2)/(n-1)^2 ≤ (√n · buffonConstant n)^2 ≤ (2/π) · n/(n-1)`.
+This sharpens the limit `√n · buffonConstant n → √(2/π)`
+(`sqrt_mul_buffonConstant_tendsto`) to explicit bounds valid at every finite `n`;
+both envelopes themselves tend to `2/π` (the lower one from below, the upper from
+above), so the squeeze re-derives the limit value while quantifying the rate. It
+follows directly from the Gamma-ratio squeeze `s_sq_bounds` plugged into the exact
+identity `sq_target_eq`, with the common positive factor `(4/π)·n/(n-1)^2`
+factored out so the monotonicity is a single `mul_le_mul_of_nonneg_left`. -/
+lemma sqrt_mul_buffonConstant_sq_bounds (n : ℕ) (hn : 3 ≤ n) :
+    (2 / π) * ((n : ℝ) * ((n : ℝ) - 2) / ((n : ℝ) - 1) ^ 2)
+        ≤ (Real.sqrt (n : ℝ) * buffonConstant n) ^ 2
+      ∧ (Real.sqrt (n : ℝ) * buffonConstant n) ^ 2
+        ≤ (2 / π) * ((n : ℝ) / ((n : ℝ) - 1)) := by
+  have hn2 : 2 ≤ n := by omega
+  have hncast : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have hn1 : (0 : ℝ) < (n : ℝ) - 1 := by linarith
+  have hn1ne : ((n : ℝ) - 1) ≠ 0 := ne_of_gt hn1
+  have hn0 : (0 : ℝ) < (n : ℝ) := by linarith
+  have hpine : (π : ℝ) ≠ 0 := ne_of_gt pi_pos
+  have hbounds := s_sq_bounds n hn
+  have heq := sq_target_eq n hn2
+  -- common nonnegative multiplier
+  have hc : (0 : ℝ) ≤ (4 / π) * ((n : ℝ) / ((n : ℝ) - 1) ^ 2) := by positivity
+  refine ⟨?_, ?_⟩
+  · -- lower bound: replace `(s n)^2` by its lower bound `(n-2)/2`
+    calc (2 / π) * ((n : ℝ) * ((n : ℝ) - 2) / ((n : ℝ) - 1) ^ 2)
+        = (4 / π) * ((n : ℝ) / ((n : ℝ) - 1) ^ 2) * (((n : ℝ) - 2) / 2) := by
+          field_simp; ring
+      _ ≤ (4 / π) * ((n : ℝ) / ((n : ℝ) - 1) ^ 2) * (s n) ^ 2 :=
+          mul_le_mul_of_nonneg_left hbounds.1 hc
+      _ = (Real.sqrt (n : ℝ) * buffonConstant n) ^ 2 := by rw [heq]; ring
+  · -- upper bound: replace `(s n)^2` by its upper bound `(n-1)/2`
+    calc (Real.sqrt (n : ℝ) * buffonConstant n) ^ 2
+        = (4 / π) * ((n : ℝ) / ((n : ℝ) - 1) ^ 2) * (s n) ^ 2 := by rw [heq]; ring
+      _ ≤ (4 / π) * ((n : ℝ) / ((n : ℝ) - 1) ^ 2) * (((n : ℝ) - 1) / 2) :=
+          mul_le_mul_of_nonneg_left hbounds.2 hc
+      _ = (2 / π) * ((n : ℝ) / ((n : ℝ) - 1)) := by field_simp; ring
+
 /-- `(s n)^2 / n → 1/2`, by squeezing `s_sq_bounds` (divided by `n`) between
 `((n-2)/2)/n = 1/2 - 1/n` and `((n-1)/2)/n = 1/2 - 1/(2n)`, both `→ 1/2`. -/
 lemma s_sq_div_tendsto :
