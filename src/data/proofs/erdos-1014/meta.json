@@ -179,7 +179,9 @@
       "**Tight bounds insufficient**: For k=3, the bounds $R(3,l) = \\Theta(l^2/\\log l)$ are tight up to constants, but the ratio convergence needs finer information about the multiplicative constant",
       "**Power-law reduction**: The conjecture follows from any asymptotic of the form $R(k,l) \\sim c_k l^{k-1}/(\\log l)^{k-2}$, making it strictly weaker than the full asymptotic problem",
       "**Difference reformulation**: Equivalently, the discrete increment $R(k,l+1) - R(k,l)$ is $o(R(k,l))$, connecting to finite difference methods in number theory",
-      "**Monotonicity constraint**: Since $R(k,l) \\leq R(k,l+1)$, the ratio is always $\\geq 1$, so convergence to 1 means the ratio decreases toward 1 from above"
+      "**Monotonicity constraint**: Since $R(k,l) \\leq R(k,l+1)$, the ratio is always $\\geq 1$, so convergence to 1 means the ratio decreases toward 1 from above",
+      "**The k=3 case is proved**: While the conjecture is open for general $k$, `R3_ratio_convergence` settles it unconditionally for $k=3$ — the recurrence gives a *linear* increment $R(3,l+1)-R(3,l)\\leq l+1$, negligible against the *superlinear* lower bound $R(3,l)\\geq c\\,l^2/\\log l$, so the relative increment is $O(\\log l/l)\\to 0$. Only the lower bound (not the matching upper bound) is needed",
+      "**Why k≥4 resists this argument**: The k=3 proof hinges on the increment $R(2,l+1)=l+1$ being far smaller than $R(3,l)$. For $k\\geq 4$ the increment $R(k-1,l+1)$ is itself superlinear and of comparable order to $R(k,l)$, so no analogous gap is available and the conjecture remains open"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
