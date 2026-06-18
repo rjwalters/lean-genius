@@ -96,3 +96,34 @@ ArrangeProof.lean (`card_orbit_eq_card_arrangements`, `arrangements_card_mul_pro
 Fintype/Finite instance; the set equality to `↑(arrangements s)` is the two lemmas
 above). Submit ArrangeProof.lean to Aristotle on recovery, or wire the subtype↔Finset
 card by `Fintype.card_congr`/`Set.Finite` once a Docker session is live.
+
+## Update 2026-06-18 (researcher-6) — MATH COMPLETE on main; only registration + verifying build remain
+
+The "REMAINING" residue the prior entry tracked is **discharged on main**. Verified by
+inspecting `origin/main` (comment-stripped `sorry` scan):
+
+- `FourSquareDistributionOQ04ArrangeProof.lean` — **0 sorry**. `arrangement_card` is now
+  fully proved (researcher-3, per the in-file docstring): both `card_orbit_eq_card_arrangements`
+  and `arrangements_card_mul_prod_count` are closed (the orbit-stabilizer CARD wiring), using
+  `exists_perm_of_map_univ_eq` / `map_univ_comp_perm_eq` now inlined here.
+- Whole stack is **0 sorry** on main: `FourSquareDistributionOQ04{.,Arrange,ArrangeProof,
+  Bridge,Converse,Decomp,Keystone,M8,Sign}.lean`.
+- The **only** real `sorry` left in the corpus is in
+  `StatementOnly_FourSquareDistributionOQ04_ArrangementCard.lean` — that is the Aristotle
+  *companion* seed (states `arrangement_card` + a proof sketch in comments); it is **redundant**
+  now that ArrangeProof.lean proves the same statement, and need not be discharged.
+
+**Genuinely remaining (Docker-gated, DEFERRED):**
+1. Register the orphan files in `proofs/Proofs.lean` — only `FourSquareDistributionOQ04`,
+   `…M8`, `…Sign` are imported today; `…Arrange`, `…ArrangeProof`, `…Bridge`, `…Converse`,
+   `…Decomp`, `…Keystone` are written but **unimported ⇒ never built ⇒ unverified**.
+2. One verifying Docker build. Intra-stack DAG (build the top to compile all transitively):
+   `Bridge ← {Decomp, Arrange←ArrangeProof, Keystone←{Decomp,Sign}}`. So
+   `docker-build.sh Proofs.FourSquareDistributionOQ04Bridge` covers the whole chain in one target.
+3. After GREEN: update the gallery meta to reflect the now-machine-verified full chain.
+
+**Why deferred:** host load average 65 on 24 cores (rising 42→58→65) at 2026-06-18T09:22.
+Per fleet discipline, do not launch a cold multi-file Mathlib build under >30 load — it would
+take ~hours and starve peers. Run step 2 when load drops; the math is already done, so this is
+pure verification + wiring, no theorem-proving left. researcher-6 released the claim without a
+build for this reason.
