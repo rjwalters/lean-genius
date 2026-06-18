@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdos (question via Guy's collection)",
     "sourceUrl": "https://erdosproblems.com/1061",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1061Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "asymptotic-analysis",
       "open-problem"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1061,
     "erdosUrl": "https://erdosproblems.com/1061",
@@ -56,9 +56,9 @@
       "hasLinearGrowth formulation of the open problem",
       "Bounds: S(x) >= 2 for x >= 3, S(x) <= x^2/4"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 380,
-    "assumptions": "No axioms. 0 sorries. The main open conjecture (asymptotic count ~ cx) is not asserted — the file proves structural results: the infinite sigma(a)+sigma(2a)=sigma(3a) family for a coprime to 6, and consequences.",
+    "assumptions": "Depends on Lean.ofReduceBool: 33 named deliverable theorems (sigma_val_*, solution_*, not_solution_*, *_in_A110177) are discharged by native_decide, which trusts the Lean compiler's kernel reduction rather than producing a fully kernel-checked proof (#print axioms lists Lean.ofReduceBool). No literal axiom declarations and 0 sorries. The main open conjecture (asymptotic count ~ cx) is not asserted — the file proves structural results: the infinite sigma(a)+sigma(2a)=sigma(3a) family for a coprime to 6, and consequences.",
     "theoremCount": 48,
     "definitionCount": 5
   },
@@ -66,7 +66,7 @@
     "historicalContext": "**Erdos Problem #1061**\n\nThis problem appears as Problem B15 in Richard Guy's celebrated collection \"Unsolved Problems in Number Theory\" (2004 edition), attributed to Erdos.\n\n**The Question:**\nThe sum of divisors function sigma(n) is one of the most studied arithmetic functions. This problem explores when the additive equation sigma(a) + sigma(b) = sigma(a + b) holds.\n\n**Mathematical Context:**\nUnlike many arithmetic functions, sigma is neither subadditive nor superadditive in general. The equation sigma(a) + sigma(b) = sigma(a + b) represents a delicate balance where the divisor structure of a + b relates precisely to the divisors of a and b.\n\n**Current Status:**\nThis problem remains OPEN. The question of whether the count of solutions grows linearly (with density c > 0) or has some other asymptotic behavior has not been resolved.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet S(x) count the number of ordered pairs (a, b) of positive integers with:\n1. a + b <= x\n2. sigma(a) + sigma(b) = sigma(a + b)\n\nwhere sigma is the sum of divisors function.\n\n**Question:** Is S(x) ~ c * x for some constant c > 0?\n\nIn other words, does the number of solutions grow linearly with x, suggesting a positive density of solutions among all pairs?\n\n**Known Solutions:**\n- (1, 2): sigma(1) + sigma(2) = 1 + 3 = 4 = sigma(3)\n- (2, 1): by symmetry\n\n**Related OEIS:** A110177 lists n for which such a decomposition exists.",
     "text": "How many ordered pairs (a,b) satisfy sigma(a)+sigma(b)=sigma(a+b) with a+b<=x? Is this count asymptotic to cx for some c>0?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Arithmetic Functions:** Define sigma(n) as the sum over n.divisors\n\n2. **Solution Predicate:** isAdditiveDivisorPair a b captures when the equation holds\n\n3. **Counting Function:** S(x) counts pairs via Finset.filter\n\n4. **Verified Examples:** Use native_decide to check small cases\n\n5. **Asymptotic Question:** Formalize hasLinearGrowth using Filter.Tendsto\n\n6. **Open Problem:** State the asymptotic dichotomy hasLinearGrowth via excluded middle (linear_growth_or_not); the conjecture itself is left unresolved.\n\nSince this is an open problem, we cannot prove the asymptotic conjecture, but we establish the framework, prove the coprime-to-6 and prime solution families, and verify known facts -- with 0 axioms and 0 sorries.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Arithmetic Functions:** Define sigma(n) as the sum over n.divisors\n\n2. **Solution Predicate:** isAdditiveDivisorPair a b captures when the equation holds\n\n3. **Counting Function:** S(x) counts pairs via Finset.filter\n\n4. **Verified Examples:** Use native_decide to check small cases\n\n5. **Asymptotic Question:** Formalize hasLinearGrowth using Filter.Tendsto\n\n6. **Open Problem:** State the asymptotic dichotomy hasLinearGrowth via excluded middle (linear_growth_or_not); the conjecture itself is left unresolved.\n\nSince this is an open problem, we cannot prove the asymptotic conjecture, but we establish the framework, prove the coprime-to-6 and prime solution families, and verify known facts -- with 0 sorries. The concrete numeric checks (sigma values, example/non-example pairs, A110177 membership) are discharged by native_decide, so they depend on Lean.ofReduceBool rather than being fully kernel-checked.",
     "keyInsights": [
       "**Solution Structure:** The equation sigma(a) + sigma(b) = sigma(a + b) probes how divisibility interacts with addition",
       "**Known Solutions:** (1, 2) and (2, 1) give S(x) >= 2 for x >= 3",
@@ -86,7 +86,7 @@
       "summary": "Problem statement: how many ordered solutions to σ(a)+σ(b)=σ(a+b) with a+b≤x, and is the count asymptotic to c·x? Lists the key results proved in the file (general coprime-to-6 family, prime specialization, infinitude, symmetry, non-solution criterion) and the unformalized computational data.",
       "startLine": 1,
       "endLine": 43,
-      "mathContext": "Problem context: Erdős #1061 (Guy B15), status OPEN; file proves several structural facts with 0 axioms, 0 sorries."
+      "mathContext": "Problem context: Erdős #1061 (Guy B15), status OPEN; file proves several structural facts with 0 sorries (numeric checks use native_decide, depending on Lean.ofReduceBool)."
     },
     {
       "id": "part-i-sigma",
