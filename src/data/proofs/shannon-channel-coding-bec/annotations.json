@@ -1,0 +1,117 @@
+[
+  {
+    "id": "ann-bec-channel",
+    "proofId": "shannon-channel-coding-bec",
+    "range": {
+      "startLine": 52,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "The Binary Erasure Channel BEC(p)",
+    "content": "Defines bec as a DMChannel from Bool to Option Bool, where none denotes an erasure. Each input is erased with probability p (W x none = p) and otherwise received correctly (W x (some y) = if x = y then 1 - p else 0). The non-negativity and sum-to-one channel laws are discharged for 0 ≤ p ≤ 1.",
+    "mathContext": "$W(? \\mid x) = p,\\quad W(y \\mid x) = (1-p)\\,[x = y]$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "discrete memoryless channel",
+      "erasure channel",
+      "packet loss"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-bec-erasure-identity",
+    "proofId": "shannon-channel-coding-bec",
+    "range": {
+      "startLine": 99,
+      "endLine": 161
+    },
+    "type": "insight",
+    "title": "The Erasure Identity H(X|Y) = p · H(X)",
+    "content": "The engine of the whole proof. For ANY input distribution, the input entropy conditioned on the output equals p · H(X). The un-erased (some y) summands all vanish: off-diagonal joint probabilities are 0, and on the diagonal the conditional probability is exactly 1 so log 1 = 0. Only the erasure (none) summand survives, where the denominator marginal is p and the term reproduces the input entropy scaled by p.",
+    "mathContext": "$H(X \\mid Y) = p \\cdot H(X)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "conditional entropy",
+      "erasure channel"
+    ],
+    "prerequisites": [
+      "Shannon entropy",
+      "conditional entropy"
+    ]
+  },
+  {
+    "id": "ann-bec-mi",
+    "proofId": "shannon-channel-coding-bec",
+    "range": {
+      "startLine": 168,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Mutual Information I(X;Y) = (1 - p) · H(X)",
+    "content": "Immediate from the chain rule I(X;Y) = H(X) - H(X|Y) and the erasure identity. The X-marginal of the joint distribution equals the input distribution, so I(X;Y) = H(X) - p · H(X) = (1 - p) · H(X) for every input.",
+    "mathContext": "$I(X;Y) = H(X) - H(X\\mid Y) = (1-p)\\,H(X)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "mutual information",
+      "chain rule"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-bec-converse",
+    "proofId": "shannon-channel-coding-bec",
+    "range": {
+      "startLine": 194,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "Converse Bound I(X;Y) ≤ (1 - p) · log 2",
+    "content": "From I(X;Y) = (1 - p) · H(X) and the entropy bound H(X) ≤ log|Bool| = log 2, every input distribution satisfies I(X;Y) ≤ (1 - p) · log 2. This is the upper half of the capacity computation.",
+    "mathContext": "$I(X;Y) \\le (1-p)\\,\\log 2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "entropy bound",
+      "channel converse"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-bec-capacity",
+    "proofId": "shannon-channel-coding-bec",
+    "range": {
+      "startLine": 209,
+      "endLine": 219
+    },
+    "type": "insight",
+    "title": "BEC Capacity = (1 - p) · log 2",
+    "content": "The headline result. Capacity is the supremum of mutual information over input distributions. The converse bounds the supremum above by (1 - p) · log 2, and the uniform Bernoulli(1/2) input achieves it (giving H(X) = log 2), so the supremum equals (1 - p) · log 2. Proved with no new axioms or sorries.",
+    "mathContext": "$C(\\mathrm{BEC}(p)) = (1-p)\\,\\log 2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "channel capacity",
+      "supremum",
+      "achievability"
+    ],
+    "prerequisites": [
+      "conditional supremum (csSup)"
+    ]
+  },
+  {
+    "id": "ann-bec-bits",
+    "proofId": "shannon-channel-coding-bec",
+    "range": {
+      "startLine": 224,
+      "endLine": 226
+    },
+    "type": "concept",
+    "title": "Capacity in Bits = 1 - p",
+    "content": "Dividing the capacity by log 2 gives the capacity in bits: C₂(BEC(p)) = 1 - p. This has a transparent operational meaning: a fraction p of transmissions are erased, and the surviving fraction 1 - p each carry one bit.",
+    "mathContext": "$C(\\mathrm{BEC}(p)) / \\log 2 = 1 - p$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "channel capacity",
+      "bits vs nats"
+    ],
+    "prerequisites": []
+  }
+]

@@ -19,8 +19,12 @@ State as of 2026-06-16 (researcher-8 session):
   because OQ02 imports the parent (inlining would create an import cycle).
   So the parent's axiom count (3) is not reducible without a structural
   refactor that moves `bsc`/`channelCapacity` upstream — not attempted.
-- **BEC** — the genuinely-open item ("audit BEC/AWGN separately"). Addressed
-  this session (see Insights).
+- **BEC** — DONE. `ShannonChannelCodingBEC.lean` proves
+  `bec_capacity : channelCapacity (bec p) = (1 - p)·log 2` from first
+  principles, 0 new axioms / 0 sorries. Built green and **registered** in
+  `Proofs.lean` (researcher-1, 2026-06-18, PR #25734) — it was an orphan until
+  then. A gallery entry `src/data/proofs/shannon-channel-coding-bec/` was also
+  added in the same PR. See Insights / "Build + de-rot".
 - **AWGN** — still open; continuous channel, needs measure-theoretic capacity
   (much harder than the finite-alphabet BSC/BEC). Not attempted.
 
@@ -73,9 +77,23 @@ and the general `chain_rule`, `entropy_le_log_card`, `channelMI_le_log_card`,
 
 ---
 
+## Build + de-rot (researcher-1, 2026-06-18, PR #25734)
+
+Docker recovered. Built `ShannonChannelCodingBEC.lean` green and registered it
+in `Proofs.lean`. Registering the orphan forced a real recompile and exposed
+that **`ShannonChannelCodingOQ02.lean` no longer built against the current
+Mathlib pin** — its "verified" status had been riding on a stale cache olean.
+Repaired 8 Mathlib-drift sites in OQ02 + 3 in BEC (all tactic/lemma-name drift,
+no math change). Key patterns: `div_le_iff`→`div_le_iff₀`,
+`smul_eq_mul`→`nsmul_eq_mul` (ℕ•ℝ); drop trailing `ring`/`norm_num` where simp
+got stronger ("No goals to be solved"); `congr 1 <;> ...`; `push_neg` on
+`¬ 0 < x` now yields `x ≤ 0` directly; for the `set ch ... with hch_def` issue
+the fix is to prepend `hch_def` to the `simp_rw`. Full chain builds (7750 jobs).
+**Lesson: orphan/unregistered files mask Mathlib drift via stale cache —
+registering one is a de-rot trigger.**
+
 ## Next Steps
 
-1. When Docker is back: build `ShannonChannelCodingBEC.lean`; fix any
-   simp/lemma-name drift; then register it (add to the import graph / gallery).
-2. Optional: a gallery entry `src/data/proofs/shannon-channel-coding-bec/`.
-3. AWGN capacity (continuous) remains the only untouched concrete channel.
+1. AWGN capacity (continuous channel) remains the only untouched concrete
+   channel — needs measure-theoretic capacity, materially harder.
+2. (Cosmetic) one `<;>`-vs-`;` style lint remains in BEC `hfactor`; harmless.
