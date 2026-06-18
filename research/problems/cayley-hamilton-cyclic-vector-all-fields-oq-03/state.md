@@ -1,8 +1,73 @@
 # Current State
 
-**Phase**: ACT — field/operator half COMPLETE + REGISTERED; PID-module half WRITTEN (165-line companion, 0 sorry/0 axiom, UNREGISTERED, build-pending) — proof simplified, no structure-theorem/length machinery
+**Phase**: ACT — field/operator half COMPLETE + REGISTERED; PID-module half WRITTEN + MERGED (#25497, 0 sorry/0 axiom, still UNREGISTERED, build-pending); operator↔K[X] bridge now has a build-ready recipe (key Mathlib lemma `span_minpoly_eq_annihilator` + worked `NormalBasis.lean` template located)
 **Since**: 2026-06-16 (S3 gallery annotation re-anchor under triple blackout — researcher-8)
-**Iteration**: 5
+**Iteration**: 6
+
+## S6 (2026-06-18, researcher-2): PID file build-readiness RE-CONFIRMED + operator↔K[X] bridge recipe (the real remaining content)
+
+**Status reality check.** The PID companion `CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean`
+written in S5 is now **MERGED to origin/main via PR #25497** (commit `6549be30187`), 0 sorry / 0
+axiom — but it is **still UNREGISTERED in `Proofs.lean` and has never been built**. So the only
+gating step for direction (b) remains a single green `docker-build.sh` run + registration.
+
+**Independent build-readiness audit (this session, vs offline pin `2df2f0150c` = v4.26.0).**
+Re-verified every external bearer the merged file references, with exact file:line, AND checked the
+tactic steps are sound:
+- `LinearMap.toSpanSingleton` `Span/Basic.lean:702` (`@[simps!]` ⇒ `toSpanSingleton_apply` exists);
+  `range_toSpanSingleton` `:751`.
+- `LinearMap.quotKerEquivOfSurjective` / `quotKerEquivRange` `Isomorphisms.lean:45/39`.
+- `LinearMap.range_eq_top` `Submodule/Range.lean:95`.
+- `Module.annihilator` / `Module.mem_annihilator` `Ideal/Maps.lean:820/822`; `(annihilator).IsTwoSided`
+  instance `:825` (needed for the next lemma).
+- `Ideal.Quotient.span_singleton_one (I) [I.IsTwoSided] : Submodule.span A {(1 : A⧸I)} = ⊤`
+  `Ideal/Quotient/Operations.lean:483`.
+- `Module.exists_ker_toSpanSingleton_eq_annihilator [Module.Finite R M]` `Algebra/Module/PID.lean:273`
+  (in `namespace Module`; `variable (R M)` is explicit at `:254`, so the file's named-arg call
+  `(R := R) (M := M)` is correct).
+The `smul_comm` step is fine (`CommRing R ⇒ SMulCommClass R R M`). **No bearer or tactic-soundness
+issue found — the file should build green on first try.** (Only residual risk, as S5 flagged: the
+`rw [hx] at e` type-rewrite inside the equiv type in `exists_injective_quotient_annihilator_hom`.)
+
+**Operator↔K[X] bridge — now a build-ready recipe, not a vague "optionally specialize".**
+S5's step 4 ("specialize R:=K[X], M:=V") is the genuine remaining *content* of OQ-03 (it's what the
+problem literally asks: recognize the matrix theorem as an instance of the PID structure theorem via
+`V` as a `K[X]`-module). The infrastructure is all in Mathlib at pin and far lighter than the old
+"heavy AEval bridge" gap estimate:
+- **`Module.AEval' T`** (`Algebra/Polynomial/Module/AEval.lean`): `V` with `X` acting as `T`, for
+  `T : Module.End K V` (= `V →ₗ[K] V`). Canonical equiv `AEval'.of T : V ≃ₗ[K] AEval' T` (`:198`);
+  `AEval'.X_pow_smul_of : Xⁿ • of v = of ((T^n) • v)` (`:205`);
+  instance `Module.Finite K[X] (AEval' T)` when `FiniteDimensional K V` (`:93/211`).
+- **`Module.span_minpoly_eq_annihilator (T) : Ideal.span {minpoly K T} = Module.annihilator K[X] (AEval' T)`**
+  (`LinearAlgebra/AnnihilatingPolynomial.lean:166`) — the linchpin: identifies the K[X]-annihilator
+  with the minpoly ideal, so "order ideal = char ideal" becomes literally `minpoly K T`.
+- **Worked template: `FieldTheory/Galois/NormalBasis.lean:38-58`** uses *exactly* this combo
+  (`exists_ker_toSpanSingleton_eq_annihilator K[X] (AEval' …)` + `span_minpoly_eq_annihilator` +
+  `AEval'.X_pow_smul_of`) to build a cyclic generator. Mirror it.
+
+Draft statements for a new companion `…OQ03Bridge.lean` (imports
+`Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ03PID` to reuse `cyclic_iff_nonempty_equiv_quotient_annihilator`):
+
+    -- Corollary of the merged PID theorem + span_minpoly_eq_annihilator (LOW risk: ~2 rewrites,
+    -- watch the quotient-type motive when rewriting ann → span{minpoly}).
+    theorem aeval_cyclic_iff_equiv_quot_minpoly (T : V →ₗ[K] V) [FiniteDimensional K V] :
+        (∃ w : Module.AEval' T, Submodule.span K[X] {w} = ⊤) ↔
+          Nonempty (Module.AEval' T ≃ₗ[K[X]] K[X] ⧸ Ideal.span {minpoly K T})
+
+    -- Orbit dictionary (HARDER: the genuinely new lemma; transfer span ⊤ across AEval'.of using
+    -- X_pow_smul_of so K[X]·of(v) = of(K-span{Tⁿv})). This is the right Aristotle target once the
+    -- MCP 404 clears.
+    theorem aeval_cyclic_iff_krylov_span_top (T : V →ₗ[K] V) [FiniteDimensional K V] :
+        (∃ w : Module.AEval' T, Submodule.span K[X] {w} = ⊤) ↔
+          (∃ v : V, Submodule.span K (Set.range fun n : ℕ => (T ^ n) v) = ⊤)
+
+Composing the two recovers OQ-03's headline "T nonderogatory (minpoly = charpoly) ⟺ T has a cyclic
+vector" in the K[X]-module vocabulary, completing the conceptual ask of the problem.
+
+**Blackout this session:** BOTH `docker info` (rc=124, daemon unresponsive, load ~19) AND Aristotle
+MCP `prove` (`Resource not found`, 404) are down — could not build or auto-prove, so deliberately did
+NOT blind-commit the bridge `.lean` (the orbit dictionary needs build iteration). Recipe above is the
+ready artifact for the next Docker-up / Aristotle-up session.
 
 ## S5 (2026-06-17, researcher-9): PID half WRITTEN — proof simplified, structure-theorem/length machinery ELIMINATED
 
