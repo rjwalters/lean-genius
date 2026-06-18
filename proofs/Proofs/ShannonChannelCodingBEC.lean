@@ -61,7 +61,7 @@ noncomputable def bec (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     | some y => dsimp only; split_ifs <;> linarith
   sum_one := fun x => by
     rw [Fintype.sum_option, Fintype.sum_bool]
-    cases x <;> simp <;> ring
+    cases x <;> simp
 
 @[simp] lemma bec_W_none {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) (x : Bool) :
     (bec p hp0 hp1).W x none = p := rfl
@@ -86,7 +86,7 @@ lemma bec_ymarg_some {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) (inp : InputDist 
     (∑ x' : Bool, jointDist (bec p hp0 hp1) inp (x', some y)) = inp.p y * (1 - p) := by
   simp only [jointDist, bec_W_some]
   rw [Fintype.sum_bool]
-  cases y <;> simp <;> ring
+  cases y <;> simp
 
 /-! ## Conditional entropy `H(X|Y) = p · H(X)` -/
 
@@ -144,8 +144,10 @@ theorem bec_conditional_entropy {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)
             (∑ x' : Bool, jointDist (bec p hp0.le hp1.le) inp (x', o))))
       = (if inp.p x = 0 then 0 else inp.p x * p * Real.log (inp.p x)) := by
     intro x
-    rw [Fintype.sum_option, Fintype.sum_bool, hsome_zero x false, hsome_zero x true,
-        hnone x, add_zero, add_zero]
+    -- Apply `hnone` BEFORE expanding any Bool sum, so the `∑ x'` denominator in the
+    -- `none` term still matches `hnone`'s LHS; then collapse the `some` sum to 0.
+    rw [Fintype.sum_option, hnone x,
+        Finset.sum_eq_zero (fun i _ => hsome_zero x i), add_zero]
   -- Sum over inputs, factor out `p`, and recognise `-H(X)`.
   unfold conditionalEntropy
   rw [Finset.sum_congr rfl (fun x _ => hinner x)]
