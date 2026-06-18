@@ -1,0 +1,78 @@
+[
+  {
+    "id": "abundant-ann-intro",
+    "proofId": "abundant-number-oq-01",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "concept",
+    "title": "Abundant Numbers: Minimality, Closure, Infinitude",
+    "content": "A natural number $n$ is **abundant** when the sum of its proper divisors exceeds $n$, equivalently $\\sigma(n) > 2n$ where $\\sigma(n) = \\sum_{d \\mid n} d$. The abundant numbers begin $12, 18, 20, 24, 30, 36, \\dots$ (OEIS A005101).\n\nThis entry pins three facts using Mathlib's canonical `Nat.Abundant` predicate. **Minimality:** $12$ is the smallest abundant number (its proper divisors $1+2+3+4+6 = 16 > 12$), proved axiom-free by kernel `decide` in the companion file `AbundantNumberOQ01.lean`. **Closure:** every positive multiple of an abundant number is again abundant. **Infinitude:** the abundant numbers form an infinite set — the multiples $12, 24, 36, \\dots$ alone give an explicit infinite family.",
+    "mathContext": "`Nat.Abundant n := n < ∑_{d ∈ properDivisors n} d`. Mathlib records `Nat.abundant_twelve` but neither minimality, closure, nor infinitude.",
+    "significance": "key",
+    "prerequisites": [
+      "sum-of-divisors function σ",
+      "deficient / perfect / abundant classification"
+    ],
+    "relatedConcepts": [
+      "abundant number",
+      "abundancy index",
+      "OEIS A005101",
+      "divisor sum"
+    ]
+  },
+  {
+    "id": "abundant-ann-bridge",
+    "proofId": "abundant-number-oq-01",
+    "range": { "startLine": 38, "endLine": 53 },
+    "type": "technique",
+    "title": "From Proper Divisors to the Full Divisor Sum",
+    "content": "Mathlib defines abundance with *proper* divisors, but the multiplicative argument is cleanest with the *full* divisor sum. `abundant_iff_two_mul_lt_sigma` bridges the two: for any $n$,\n$$ n.\\mathrm{Abundant} \\iff 2n < \\sum_{d \\mid n} d. $$\nThe proof rewrites the full divisor sum as proper-divisor sum plus $n$ (`Nat.sum_divisors_eq_sum_properDivisors_add_self`) and finishes with `omega`. `pos_of_abundant` records the easy fact that an abundant number is positive (zero has no proper divisors).",
+    "mathContext": "Two equivalent forms of abundance: proper divisors exceed $n$, or the full divisor sum exceeds $2n$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Finset divisor sums",
+      "`Nat.sum_divisors_eq_sum_properDivisors_add_self`"
+    ],
+    "relatedConcepts": [
+      "σ(n)",
+      "proper divisors"
+    ]
+  },
+  {
+    "id": "abundant-ann-closure",
+    "proofId": "abundant-number-oq-01",
+    "range": { "startLine": 55, "endLine": 99 },
+    "type": "technique",
+    "title": "Abundance Is Closed Under Taking Multiples",
+    "content": "The structural heart of the entry: if $a$ is abundant and $t > 0$, then $a \\cdot t$ is abundant (`abundant_mul_right`). The proof injects the **scaled divisors** $d \\mapsto t \\cdot d$ of $a$ into the divisors of $a \\cdot t$. Since this map is injective (as $t > 0$) and its image is a subset of $\\mathrm{divisors}(a \\cdot t)$,\n$$ \\sigma(a \\cdot t) \\;\\ge\\; \\sum_{d \\mid a} t\\,d \\;=\\; t\\,\\sigma(a) \\;>\\; t \\cdot 2a \\;=\\; 2(a \\cdot t), $$\nso $a \\cdot t$ is abundant. `abundant_of_abundant_dvd` restates this via divisibility ($a \\mid m$, $m > 0$). Conceptually this says the abundancy index $\\sigma(n)/n$ is non-decreasing along divisibility.",
+    "mathContext": "An explicit injection of divisor finsets realizes monotonicity of σ(n)/n under multiplication.",
+    "significance": "key",
+    "prerequisites": [
+      "injections between Finsets",
+      "`Finset.sum_le_sum_of_subset`, `Finset.sum_image`"
+    ],
+    "relatedConcepts": [
+      "abundancy index",
+      "divisor injection",
+      "multiplicativity"
+    ]
+  },
+  {
+    "id": "abundant-ann-infinitude",
+    "proofId": "abundant-number-oq-01",
+    "range": { "startLine": 101, "endLine": 128 },
+    "type": "concept",
+    "title": "Infinitely Many Abundant Numbers",
+    "content": "Closure immediately yields infinitude. Instantiating `abundant_mul_right` at the abundant number $12$ gives `abundant_twelve_mul k : (12 \\cdot (k+1)).\\mathrm{Abundant}$ — every term of $12, 24, 36, \\dots$ is abundant. The family $k \\mapsto 12(k+1)$ is injective (`twelve_mul_succ_injective`, by cancelling the nonzero factor $12$), so `Set.infinite_of_injective_forall_mem` delivers\n$$ \\{\\, n : \\mathbb{N} \\mid n.\\mathrm{Abundant} \\,\\}\\ \\text{is infinite}. $$\nThis is the **structural complement to minimality**: not only does a smallest abundant number exist (it is $12$), the abundant numbers go on forever. Note infinitude is elementary — no analytic input — in contrast to the much deeper natural-density statement (density $\\approx 0.2476$).",
+    "mathContext": "An injective family of abundant numbers proves the set is infinite; `Set.infinite_of_injective_forall_mem`.",
+    "significance": "key",
+    "prerequisites": [
+      "`Set.Infinite`",
+      "injective families into a set"
+    ],
+    "relatedConcepts": [
+      "infinitude",
+      "natural density (Davenport)",
+      "multiples of 12"
+    ]
+  }
+]
