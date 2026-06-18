@@ -14,7 +14,10 @@
   Engelsma-246 barrier.
 
   Upper bound `D(5) ≤ 12`: the admissible witness {0,2,6,8,12} (reusing the
-  verified `BoundedPrimeGaps.admissible_quintuple_0_2_6_8_12`).
+  verified `BoundedPrimeGaps.admissible_quintuple_0_2_6_8_12`); its diameter is
+  computed symbolically by `fsDiameter_0_2_6_8_12` (`max' = 12`, `min' = 0`), so
+  the headline `D(5) = 12` is now `native_decide`-free and carries **no**
+  `Lean.ofReduceBool` axiom — the whole result is fully kernel-verified.
 
   Lower bound `D(5) ≥ 12` (`admissible_5tuple_diam_ge_12`): a self-contained,
   `native_decide`-free parity argument mirroring the verified parent lemma
@@ -42,6 +45,33 @@ open Nat Finset BoundedPrimeGaps BoundedPrimeGapsOQ03OQ01
 theorem admissible_5tuple_0_2_6_8_12 :
     IsAdmissible ({0, 2, 6, 8, 12} : Finset ℕ) :=
   admissible_quintuple_0_2_6_8_12
+
+/-- `fsDiameter {0,2,6,8,12} = 12`, proved symbolically (`max' = 12`,
+    `min' = 0`) so that the headline `D(5) = 12` carries **no**
+    `Lean.ofReduceBool` axiom. This replaces the previous `native_decide`
+    closed-term reductions of the witness diameter, leaving the whole entry
+    fully kernel-verified. -/
+theorem fsDiameter_0_2_6_8_12 :
+    fsDiameter ({0, 2, 6, 8, 12} : Finset ℕ) = 12 := by
+  have hne : ({0, 2, 6, 8, 12} : Finset ℕ).Nonempty := ⟨0, by decide⟩
+  have hmax : ({0, 2, 6, 8, 12} : Finset ℕ).max' hne = 12 := by
+    apply le_antisymm
+    · apply Finset.max'_le
+      intro y hy
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hy
+      omega
+    · apply Finset.le_max'
+      decide
+  have hmin : ({0, 2, 6, 8, 12} : Finset ℕ).min' hne = 0 := by
+    apply le_antisymm
+    · apply Finset.min'_le
+      decide
+    · apply Finset.le_min'
+      intro y hy
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hy
+      omega
+  unfold fsDiameter
+  rw [dif_pos hne, hmax, hmin]
 
 /-- **Lower bound — the real content.** Every admissible 5-tuple has diameter
     ≥ 12. Parity (mod 2) forces same parity; then diameter < 12 confines the set
@@ -186,13 +216,17 @@ theorem minAdmissibleDiameter_5 : minAdmissibleDiameter 5 = 12 := by
   apply le_antisymm
   · -- Upper: {0,2,6,8,12} witnesses D(5) ≤ 12
     apply csInf_le ⟨0, fun _ _ => Nat.zero_le _⟩
-    exact ⟨{0, 2, 6, 8, 12}, by decide, admissible_5tuple_0_2_6_8_12, by native_decide⟩
+    exact ⟨{0, 2, 6, 8, 12}, by decide, admissible_5tuple_0_2_6_8_12, fsDiameter_0_2_6_8_12⟩
   · -- Lower: every admissible 5-tuple has diameter ≥ 12
     have hne : Set.Nonempty
         {d | ∃ H : Finset ℕ, H.card = 5 ∧ IsAdmissible H ∧ fsDiameter H = d} :=
-      ⟨12, {0, 2, 6, 8, 12}, by decide, admissible_5tuple_0_2_6_8_12, by native_decide⟩
+      ⟨12, {0, 2, 6, 8, 12}, by decide, admissible_5tuple_0_2_6_8_12, fsDiameter_0_2_6_8_12⟩
     apply le_csInf hne
     rintro d ⟨H, hcard, hadm, rfl⟩
     exact admissible_5tuple_diam_ge_12 H hcard hadm
+
+-- Axiom-integrity check: must list only propext / Classical.choice / Quot.sound
+-- (no Lean.ofReduceBool), confirming the de-axiomatized headline is kernel-verified.
+#print axioms minAdmissibleDiameter_5
 
 end BoundedPrimeGapsOQ03OQ01OQ01
