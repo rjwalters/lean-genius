@@ -2,7 +2,7 @@
   "id": "erdos-340-greedy-sidon",
   "title": "Greedy Sidon Sequence Infrastructure (Erdos Problem #340)",
   "slug": "erdos-340-greedy-sidon",
-  "description": "Comprehensive Sidon set library for Erdos Problem #340: defines Sidon sets, proves closure under subsets, difference injectivity, counting arguments (|diffSet| = n(n-1)/2), the pigeonhole upper bound max(A) >= n(n-1)/2, and the weak upper bound |A| <= sqrt(2N) + 1. Axiomatizes the greedy Sidon sequence and Erdos's conjecture that its growth is N^(1/2-epsilon). Imported by Erdos44Problem and Erdos44SidonLowerBound.",
+  "description": "Comprehensive Sidon set library for Erdos Problem #340: defines Sidon sets, proves closure under subsets, difference injectivity, counting arguments (|diffSet| = n(n-1)/2), the pigeonhole upper bound max(A) >= n(n-1)/2, and the weak upper bound |A| <= sqrt(2N) + 1. Constructs the greedy (Mian-Chowla) Sidon sequence EXPLICITLY as a Nat.find recursion and proves it strictly increasing with every initial segment Sidon (previously three existence axioms, now theorems). The Erdos-Turan upper bound is the file's only remaining axiom; Erdos's growth conjecture N^(1/2-epsilon) stays open and is recorded for reference. Imported by Erdos44Problem and Erdos44SidonLowerBound.",
   "meta": {
     "author": "Erdos, Mian-Chowla, Sidon, formalized in Lean 4",
     "sourceUrl": "https://www.erdosproblems.com/340",
@@ -52,11 +52,14 @@
       "card_diffSet_eq: |diffSet(A)| = n(n-1)/2 for Sidon set A with n elements",
       "sidon_lower_bound: max(A) >= n(n-1)/2 by pigeonhole on the difference set",
       "sidon_upper_bound_weak: |A| <= sqrt(2N) + 1 for Sidon A in [1,N] (fully proved)",
-      "Greedy Sidon sequence axiomatization with strict monotonicity and the Sidon property",
+      "instDecidableIsSidon: decidability of the Sidon predicate, enabling the greedy least-valid-extension via Nat.find",
+      "sidon_insert_of_large + sidon_exists_extension: every finite Sidon set extends by a strictly larger element (explicit witness 2*sup(A)+1); the greedy rule never gets stuck",
+      "greedyPair / greedySidonSeq: explicit recursive construction of the greedy Sidon sequence (replaces axiom greedySidonSeq)",
+      "greedySidonSeq_strictMono, greedySidonSeq_isSidon: now THEOREMS (previously axioms) derived from the explicit construction",
       "erdos_340: formal statement of Erdos's conjecture (OPEN)"
     ],
     "dateAdded": "2026-03-22",
-    "axiomCount": 4,
+    "axiomCount": 1,
     "lineCount": 507,
     "prerequisites": [
       "Additive combinatorics (Sidon sets, sum-free sets, difference sets)",
@@ -208,18 +211,7 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Data.Finset.Prod",
-      "Mathlib.Data.Finset.Powerset",
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Nat.Choose.Basic",
-      "Mathlib.Data.Set.Card",
-      "Mathlib.Analysis.Asymptotics.Defs",
-      "Mathlib.Analysis.Asymptotics.Lemmas",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Algebra.Order.Field.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      "Mathlib"
     ],
     "opens": [
       "Finset",
@@ -227,10 +219,10 @@
       "Set"
     ],
     "namespace": "Erdos340",
-    "lineCount": 507,
-    "axiomCount": 4,
-    "theoremCount": 16,
-    "definitionCount": 10,
+    "lineCount": 646,
+    "axiomCount": 1,
+    "theoremCount": 25,
+    "definitionCount": 15,
     "path": "Proofs/Erdos340GreedySidon.lean",
     "sorries": 0
   },
