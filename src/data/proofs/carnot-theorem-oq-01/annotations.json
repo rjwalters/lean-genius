@@ -31,7 +31,7 @@
     "title": "Carnot's Theorem (Angle Form)",
     "content": "The headline theorem carnot_cos_sum: for any reals A, B, C summing to π, cos A + cos B + cos C = 1 + 4 sin(A/2)sin(B/2)sin(C/2). Stated for arbitrary reals (not just triangle angles), so the result is a clean trigonometric identity rather than a geometric one.",
     "mathContext": "$A + B + C = \\pi \\implies \\cos A + \\cos B + \\cos C = 1 + 4\\sin\\tfrac{A}{2}\\sin\\tfrac{B}{2}\\sin\\tfrac{C}{2}.$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Carnot's theorem", "half-angle identities", "angle sum constraint"],
     "prerequisites": ["trigonometry", "real analysis"]
   },
@@ -67,7 +67,7 @@
     "title": "Companion: Fundamental Cosine Identity",
     "content": "carnot_cos_sq_sum proves the polynomial companion cos²A + cos²B + cos²C + 2cosA cosB cosC = 1. Writing C = π − A − B gives cos C = −cos(A+B) = −(cosA cosB − sinA sinB) via Real.cos_pi_sub and Real.cos_add; substituting and applying linear_combination against the Pythagorean identities for A and B finishes it. This degree-2 form is the algebraic twin of the angle form.",
     "mathContext": "$\\cos^2 A + \\cos^2 B + \\cos^2 C + 2\\cos A\\cos B\\cos C = 1.$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["cosine addition formula", "supplementary angle", "Pythagorean identity"],
     "prerequisites": ["trigonometric identities", "polynomial algebra"]
   }
