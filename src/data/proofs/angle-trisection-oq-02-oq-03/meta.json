@@ -7,7 +7,7 @@
     "author": "Gauss (1796), Wantzel (1837), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_polygon",
     "date": "1837",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ03.lean",
     "tags": [
       "geometry",
@@ -21,7 +21,7 @@
       "extension",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -55,7 +55,7 @@
       "Connection to OQ02: Galois group order = φ(n) → 2-group criterion"
     ],
     "dateAdded": "2026-02-24",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 1799,
     "prerequisites": [
       "Euler's totient function and its basic properties",
@@ -63,7 +63,7 @@
       "Galois theory (cyclotomic extensions, 2-groups)",
       "Compass-and-straightedge constructibility criteria (from OQ-01, OQ-02)"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 158,
     "definitionCount": 5

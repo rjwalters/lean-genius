@@ -5,7 +5,7 @@
   "description": "Every natural number is a sum of at most 4 perfect squares (Lagrange 1770), and 7 is not a sum of 3 squares — hence g(2) = 4. Includes the general exclusion theorem (4^a(8b+7) is never a sum of 3 squares), computable classification, and infinitely many numbers requiring exactly 4 squares.",
   "meta": {
     "author": "Lagrange (1770), Legendre (1798)",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LagrangeFourSquaresWaringG2.lean",
     "tags": [
       "number-theory",
@@ -15,12 +15,12 @@
       "combinatorics",
       "modular-arithmetic"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 442,
     "theoremCount": 69,
-    "assumptions": "None. All 69 theorems proved. Upper bound uses Mathlib's Nat.sq_add_sq (Lagrange); lower bound is self-contained via mod 8 analysis.",
+    "assumptions": "None. All 69 theorems proved. Upper bound uses Mathlib's Nat.sq_add_sq (Lagrange); lower bound is self-contained via mod 8 analysis. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlibDependencies": [
       {
         "theorem": "Nat.sq_add_sq",

@@ -7,7 +7,7 @@
     "author": "G. Pólya (1937); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/P%C3%B3lya_enumeration_theorem",
     "date": "1937",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean",
     "dateAdded": "2026-04-04",
     "tags": [
@@ -21,9 +21,9 @@
       "zmod",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "theoremCount": 30,
     "defCount": 5,
     "lineCount": 507,
@@ -52,7 +52,8 @@
       "Explicit necklace counts necklaceCount n 2 for n=1,...,6 via Burnside helper",
       "Key proof technique: use Eq.trans to avoid binder-name mismatch in Burnside sum"
     ],
-    "definitionCount": 5
+    "definitionCount": 5,
+    "assumptions": "This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations)."
   },
   "overview": {
     "historicalContext": "Pólya's enumeration theorem was published by George Pólya in 1937 ('Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen', Acta Mathematica 68). It gave a systematic method for counting combinatorial objects up to symmetry, with applications ranging from necklace counting to chemical isomer enumeration. The theorem generalizes Burnside's lemma (1897, also called the Cauchy-Frobenius lemma) from counting orbits to counting orbits weighted by color frequencies. Pólya's insight was the 'cycle index' of a group action: Z(G; x₁,...,xₖ) = (1/|G|) Σ_{g∈G} ∏_j xⱼ^{cⱼ(g)}, where cⱼ(g) counts j-cycles in the permutation g. Setting all variables to k gives the number of distinct k-colorings.",

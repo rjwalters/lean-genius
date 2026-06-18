@@ -5,7 +5,7 @@
   "description": "Partial progress on Erdős problem #1054 OQ-01: f(n) is the minimal m whose k smallest divisors sum to n. Proves the sigma bound f(σ(m)) ≤ m, showing f(n) = o(n) along the subsequence of σ-values of superabundant numbers. Includes prime divisor structure, computational evidence for n ≤ 50, and density results. 49 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Erdos1054OQ01",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1054OQ01.lean",
     "tags": [
       "number-theory",
@@ -15,12 +15,12 @@
       "density",
       "open-problem"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 521,
     "theoremCount": 49,
-    "assumptions": "None. All 49 theorems proved (partial progress on open problem).",
+    "assumptions": "None. All 49 theorems proved (partial progress on open problem). This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",

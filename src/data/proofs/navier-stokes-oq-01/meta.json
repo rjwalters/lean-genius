@@ -7,7 +7,7 @@
     "author": "Ladyzhenskaya (1969)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_equations",
     "date": "1969",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/NavierStokes.lean",
     "tags": [
       "pde",
@@ -20,9 +20,9 @@
       "analysis",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "mathlibDependencies": [
       {
         "theorem": "intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le",
@@ -61,7 +61,7 @@
     ],
     "dateAdded": "2026-02-26",
     "lineCount": 21110,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries remain.",
+    "assumptions": "None. Formalized with 0 axioms and 0 sorries remain. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "relatedProblems": [
       {
         "id": "navier-stokes",

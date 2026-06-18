@@ -4,7 +4,7 @@
   "slug": "euler-totient-oq-02",
   "description": "The multiplicative property of Euler's totient: φ(mn) = φ(m)·φ(n) when gcd(m,n) = 1. Proves multiplicativity via CRT, the prime power formula φ(p^k) = p^(k-1)(p-1), three-factor products, φ(2m)=φ(m) for odd m, and native_decide verifications including non-coprime counterexamples. 0 sorries, 0 axioms.",
   "meta": {
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "multiplicative-functions",
@@ -12,10 +12,10 @@
       "totient"
     ],
     "proofRepoPath": "Proofs/EulerTotientOQ02.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. All results from Mathlib's Nat.totient API, ZMod, and CRT.",
+    "axiomCount": 1,
+    "assumptions": "0 axioms, 0 sorries. All results from Mathlib's Nat.totient API, ZMod, and CRT. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "lineCount": 172,
     "theoremCount": 16,
     "definitionCount": 0,

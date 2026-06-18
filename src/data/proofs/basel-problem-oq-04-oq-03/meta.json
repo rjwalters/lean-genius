@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-26",
-    "status": "verified",
+    "status": "axiomatized",
     "note": "all axioms eliminated: moebius_dirichlet_series_at_two proved 2026-05-03; coprime_pair_density_limit proved via tendsto_tsum_of_dominated_convergence (2026-05-03)",
     "proofRepoPath": "Proofs/BaselProblemOQ04OQ03.lean",
     "tags": [
@@ -18,7 +18,7 @@
       "coprimality",
       "basel-problem"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-26",
     "mathlibDependencies": [
@@ -51,9 +51,9 @@
       "Numerical verification for N=1,2,3,4,5,10 via native_decide",
       "Density bounds: 3/8 < 6/π² < 2/3 (from π > 3 and π < 4)"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 558,
-    "assumptions": "No remaining assumptions — fully verified.",
+    "assumptions": "No remaining assumptions — fully verified. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "theoremCount": 24,
     "definitionCount": 1
   },

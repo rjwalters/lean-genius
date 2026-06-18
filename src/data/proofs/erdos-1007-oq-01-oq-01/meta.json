@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://erdosproblems.com/1007",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1007OQ01OQ01.lean",
     "tags": [
       "erdos",
@@ -18,7 +18,7 @@
       "monotonicity",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -55,9 +55,9 @@
       "Verified: known deficiency values all satisfy δ(d) ≤ d",
       "Growth classification: d ≤ f(d) ≤ d(d+1)/2 for all d ≥ 1"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 388,
-    "assumptions": "0 axioms, 0 sorries. All 32 theorems fully proved.",
+    "assumptions": "0 axioms, 0 sorries. All 32 theorems fully proved. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 32,
     "definitionCount": 4

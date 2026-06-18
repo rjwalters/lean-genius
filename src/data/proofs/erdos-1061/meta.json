@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdos (question via Guy's collection)",
     "sourceUrl": "https://erdosproblems.com/1061",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1061Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "asymptotic-analysis",
       "open-problem"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1061,
     "erdosUrl": "https://erdosproblems.com/1061",
@@ -56,9 +56,9 @@
       "hasLinearGrowth formulation of the open problem",
       "Bounds: S(x) >= 2 for x >= 3, S(x) <= x^2/4"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 380,
-    "assumptions": "No axioms. 0 sorries. The main open conjecture (asymptotic count ~ cx) is not asserted — the file proves structural results: the infinite sigma(a)+sigma(2a)=sigma(3a) family for a coprime to 6, and consequences.",
+    "assumptions": "No axioms. 0 sorries. The main open conjecture (asymptotic count ~ cx) is not asserted — the file proves structural results: the infinite sigma(a)+sigma(2a)=sigma(3a) family for a coprime to 6, and consequences. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "theoremCount": 48,
     "definitionCount": 5
   },

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős (1979); Makowski (1983); Lean Genius OQ-01",
     "sourceUrl": "https://erdosproblems.com/1056",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1056OQ01.lean",
     "tags": [
       "erdos",
@@ -16,16 +16,16 @@
       "computational",
       "primes"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1056,
     "erdosUrl": "https://erdosproblems.com/1056",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 446,
     "theoremCount": 65,
     "definitionCount": 10,
-    "assumptions": "None. All 65 theorems are fully proved. Computational verification via native_decide.",
+    "assumptions": "None. All 65 theorems are fully proved. Computational verification via native_decide. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlibDependencies": [
       {
         "theorem": "Finset.prod",

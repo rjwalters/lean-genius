@@ -5,7 +5,7 @@
   "description": "A regular n-gon is constructible by compass and marked ruler (neusis) iff n = 2^a · 3^b · p₁ · ... · pₖ where each pᵢ is a Pierpont prime (p-1 = 2^u · 3^v). Verifies 12 Pierpont primes and 4 non-examples, plus neusis constructibility for specific polygons.",
   "meta": {
     "author": "Lean Genius OQ04-OQ03",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AngleTrisectionOQ04OQ03.lean",
     "additionalFiles": [
       "Proofs/AngleTrisectionOQ04.lean"
@@ -18,12 +18,12 @@
       "number-theory",
       "galois-theory"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 328,
     "theoremCount": 54,
-    "assumptions": "None. All 54 theorems proved. Pierpont prime verification via native_decide.",
+    "assumptions": "None. All 54 theorems proved. Pierpont prime verification via native_decide. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",

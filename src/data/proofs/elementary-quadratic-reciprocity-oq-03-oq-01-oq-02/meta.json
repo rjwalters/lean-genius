@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Jacobi_symbol",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean",
     "tags": [
       "number-theory",
@@ -17,11 +17,11 @@
       "certified-computation",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 189,
-    "assumptions": "None.",
+    "assumptions": "None. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "dateAdded": "2026-03-30",
     "originalContributions": [
       "Reusable reduce_step, extract_two_step, reciprocity_step lemmas",

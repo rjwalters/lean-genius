@@ -8,7 +8,7 @@
     "author": "Johann Faulhaber / Nicomachus (formalized)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Faulhaber%27s_formulas",
     "date": "c. 100 CE",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/SumOfKthPowers.lean",
     "tags": [
       "algebra",
@@ -17,7 +17,7 @@
       "wiedijk-100",
       "induction"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -39,9 +39,9 @@
       "Closed-form formula for sum of fifth powers: n²(n+1)²(2n²+2n-1)/12"
     ],
     "dateAdded": "2025-12-27",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 600,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 55,
     "definitionCount": 0

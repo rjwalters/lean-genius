@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-05",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LagrangeTheoremOQ02OQ02.lean",
     "tags": [
       "group-theory",
@@ -17,9 +17,9 @@
       "orbit-stabilizer",
       "research"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 262,
     "theoremCount": 13,
     "definitionCount": 1,
@@ -72,7 +72,7 @@
       "card_conjClass_eq_one_iff_mem_center: |[x]| = 1 ↔ x ∈ Z(G) proved from orbit uniqueness and commutativity",
       "A₄ class equation verification: 4 conjugacy classes of sizes 1+3+4+4=12 via native_decide"
     ],
-    "assumptions": "0 sorries. 0 axiom declarations. All theorems fully machine-checked. card_conjClass_eq_centralizer_index proved via Subgroup.index_comap_of_surjective applied to the ConjAct.toConjAct isomorphism.",
+    "assumptions": "0 sorries. 0 axiom declarations. All theorems fully machine-checked. card_conjClass_eq_centralizer_index proved via Subgroup.index_comap_of_surjective applied to the ConjAct.toConjAct isomorphism. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "additionalFiles": []
   },
   "overview": {

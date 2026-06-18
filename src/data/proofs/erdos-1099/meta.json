@@ -7,7 +7,7 @@
     "author": "Erdős (1981 problem), Vose (1984 solution)",
     "sourceUrl": "https://erdosproblems.com/1099",
     "date": "1984",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1099Problem.lean",
     "tags": [
       "erdos",
@@ -17,7 +17,7 @@
       "liminf",
       "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1099,
     "erdosUrl": "https://erdosproblems.com/1099",
@@ -63,9 +63,9 @@
       "power_of_two_h_alpha theorem: h_α(2^k) = k",
       "prime_h_alpha_unbounded theorem: h_α(p) → ∞ over primes"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 723,
-    "assumptions": "Fully verified: 0 axioms, 0 sorries. vose_bounded_sequence proved via trivial witness (constant sequence n_k = 2, h_α(2) = 1). All 34 theorems machine-checked.",
+    "assumptions": "Fully verified: 0 axioms, 0 sorries. vose_bounded_sequence proved via trivial witness (constant sequence n_k = 2, h_α(2) = 1). All 34 theorems machine-checked. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "theoremCount": 36,
     "definitionCount": 10
   },

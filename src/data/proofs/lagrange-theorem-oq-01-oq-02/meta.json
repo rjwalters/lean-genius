@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-05-05",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LagrangeTheoremOQ01OQ02.lean",
     "tags": [
       "group-theory",
@@ -16,11 +16,11 @@
       "finite-groups",
       "subgroup-theory"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-05-05",
-    "axiomCount": 0,
-    "assumptions": "None — fully verified by finite enumeration via native_decide.",
+    "axiomCount": 1,
+    "assumptions": "None — fully verified by finite enumeration via native_decide. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "lineCount": 121,
     "theoremCount": 8,
     "definitionCount": 1,
@@ -34,8 +34,13 @@
   "leanFile": {
     "path": "Proofs/LagrangeTheoremOQ01OQ02.lean",
     "namespace": "LagrangeOQ01OQ02",
-    "imports": ["Mathlib"],
-    "opens": ["Subgroup", "Fintype"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Subgroup",
+      "Fintype"
+    ],
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 121,

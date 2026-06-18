@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AngleTrisectionOQ01.lean",
     "tags": [
       "galois-theory",
@@ -16,11 +16,11 @@
       "fermat-primes",
       "regular-polygons"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "axiomCount": 1,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "lineCount": 366,
     "theoremCount": 44,
     "definitionCount": 3,

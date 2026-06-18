@@ -5,7 +5,7 @@
   "description": "The expected number of shared birthday pairs among n people with d equally likely birthdays is C(n,2)/d = n(n-1)/(2d). Proved: formula, monotonicity, variance bounds, threshold computations (n=28 first exceeds 1 pair for d=365), and general threshold criterion.",
   "meta": {
     "author": "Lean Genius OQ-01",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BirthdayProblemOQ01.lean",
     "tags": [
       "probability",
@@ -14,12 +14,12 @@
       "expected-value",
       "variance"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 513,
     "theoremCount": 53,
-    "assumptions": "None. All 53 theorems fully proved using Mathlib combinatorics.",
+    "assumptions": "None. All 53 theorems fully proved using Mathlib combinatorics. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",

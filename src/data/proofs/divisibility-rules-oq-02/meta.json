@@ -6,7 +6,7 @@
   "meta": {
     "author": "Classical number theory, formalized in Lean 4",
     "date": "",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "modular-arithmetic",
@@ -14,9 +14,9 @@
       "algorithms"
     ],
     "proofRepoPath": "Proofs/DivisibilityRulesOQ02.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 142,
     "originalContributions": [
       "dvd_iff_dvd_altDigitSum: general alternating block divisibility rule",
@@ -25,7 +25,7 @@
       "eleven_dvd_iff_altDigitSum: classical div-by-11 as instance of general rule",
       "hundredone_dvd_iff_altDigitSum: div-by-101 via 2-digit blocks"
     ],
-    "assumptions": "0 axiom(s) and 0 sorry(s). Fully verified.",
+    "assumptions": "0 axiom(s) and 0 sorry(s). Fully verified. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "dateAdded": "2026-04-12",
     "theoremCount": 9,
     "definitionCount": 0

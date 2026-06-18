@@ -7,7 +7,7 @@
     "author": "Füredi (1991), Alon-Krivelevich-Sudakov (2003)",
     "sourceUrl": "https://erdosproblems.com/926",
     "date": "1991",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos926Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "turan-number",
       "probabilistic-method"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 926,
     "erdosUrl": "https://erdosproblems.com/926",
     "erdosProblemStatus": "solved",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 235,
-    "assumptions": "None. 3 theorems fully verified with 0 axioms and 0 sorries (numerical examples via native_decide). Main result (ex(n; H_k) ≪ n^(3/2)) documented as a comment; full formalization requires probabilistic method not in Mathlib.",
+    "assumptions": "None. 3 theorems fully verified with 0 axioms and 0 sorries (numerical examples via native_decide). Main result (ex(n; H_k) ≪ n^(3/2)) documented as a comment; full formalization requires probabilistic method not in Mathlib. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 3,
     "definitionCount": 3

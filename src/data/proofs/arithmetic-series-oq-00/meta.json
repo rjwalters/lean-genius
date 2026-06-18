@@ -6,7 +6,7 @@
   "meta": {
     "author": "Nicomachus of Gerasa (c. 100 CE); formalized in Lean 4",
     "date": "c. 100 CE",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ00.lean",
     "tags": [
       "number-theory",
@@ -17,11 +17,11 @@
       "power-sums",
       "classical-identity"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 160,
-    "assumptions": "0 axioms, 0 sorries. Elementary induction proof: no deep Mathlib dependencies beyond basic Finset sum lemmas and ring arithmetic.",
+    "assumptions": "0 axioms, 0 sorries. Elementary induction proof: no deep Mathlib dependencies beyond basic Finset sum lemmas and ring arithmetic. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {

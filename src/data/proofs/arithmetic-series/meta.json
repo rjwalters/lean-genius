@@ -7,7 +7,7 @@
     "author": "Carl Friedrich Gauss (formalized via Mathlib)",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/BigOperators/Intervals.html",
     "date": "~1785",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ArithmeticSeries.lean",
     "tags": [
       "number-theory",
@@ -17,7 +17,7 @@
       "classic",
       "gauss"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -40,7 +40,7 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 68,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 180,
     "relatedProblems": [
       {
@@ -52,7 +52,7 @@
         "relationship": "Further extensions of simplicial number theory"
       }
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 11,
     "definitionCount": 1

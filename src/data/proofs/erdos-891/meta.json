@@ -7,7 +7,7 @@
     "author": "Erdős-Selfridge (1967 problem), Schinzel (partial result)",
     "sourceUrl": "https://erdosproblems.com/891",
     "date": "1967",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos891Problem.lean",
     "tags": [
       "erdos",
@@ -18,7 +18,7 @@
       "intervals",
       "open"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 891,
     "erdosUrl": "https://erdosproblems.com/891",
@@ -64,9 +64,9 @@
       "nthPrime_zero/one/two/three/four_val: concrete values nthPrime k for k=0..4",
       "primorial_eq_primorialComp: bridges noncomputable primorial to computable primorialComp for k≤5"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 439,
-    "assumptions": "",
+    "assumptions": "This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "theoremCount": 30,
     "definitionCount": 11
   },

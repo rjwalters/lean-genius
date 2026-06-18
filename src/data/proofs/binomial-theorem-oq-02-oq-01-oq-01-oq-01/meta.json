@@ -6,7 +6,7 @@
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "date": "2026-04-26",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "combinatorics",
       "multinomial",
@@ -19,12 +19,12 @@
     "additionalFiles": [
       "Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-26",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 185,
-    "assumptions": "No axioms, no sorries. Uses native_decide for computational verifications.",
+    "assumptions": "No axioms, no sorries. Uses native_decide for computational verifications. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "originalContributions": [
       "Composition.ext_counts: extensionality via counts field using proof irrelevance",
       "compositionEquiv: explicit bijection Composition α s n ≃ ↥(s.piAntidiag n)",

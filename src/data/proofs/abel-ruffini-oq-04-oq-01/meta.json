@@ -7,7 +7,7 @@
     "author": "Abel (1824), Galois (1832)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
     "date": "1824",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ01.lean",
     "tags": [
       "algebra",
@@ -18,10 +18,10 @@
       "eisenstein-criterion",
       "wiedijk-100"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries after PR #6856 eliminated all remaining assumptions. Former axioms B1 (disc_p_neg) and B2 (vandermonde_sq_eq_disc_p) are now proved. Axiom A (three_dvd_gal_card) was proved via complex conjugation. All Galois group order exclusions (|Gal|≠10, ≠20, ≠40) are now proved via Sylow theory.",
+    "axiomCount": 1,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries after PR #6856 eliminated all remaining assumptions. Former axioms B1 (disc_p_neg) and B2 (vandermonde_sq_eq_disc_p) are now proved. Axiom A (three_dvd_gal_card) was proved via complex conjugation. All Galois group order exclusions (|Gal|≠10, ≠20, ≠40) are now proved via Sylow theory. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "wiedijkNumber": 16,
     "dateAdded": "2026-03-25",
     "mathlibDependencies": [

@@ -32,7 +32,7 @@
     "author": "Jacobi / Eisenstein (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Jacobi_symbol",
     "date": "1837",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "quadratic-reciprocity",
@@ -41,7 +41,7 @@
       "intermediate"
     ],
     "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ03.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -75,10 +75,10 @@
       "Residuacity for primes: J(a,p) = 1 implies QR for prime p (proved)"
     ],
     "dateAdded": "2026-03-22",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 199,
     "mathlib_version": "4.26.0",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "theoremCount": 10,
     "definitionCount": 0
   },

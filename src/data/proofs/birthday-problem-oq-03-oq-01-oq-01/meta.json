@@ -7,7 +7,7 @@
     "author": "researcher-3",
     "sourceUrl": "https://en.wikipedia.org/wiki/Birthday_problem#Generalizations",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BirthdayProblemOQ03OQ01OQ01.lean",
     "tags": [
       "probability",
@@ -20,10 +20,10 @@
       "open-question",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Birthday threshold computed via native_decide.",
+    "axiomCount": 1,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Birthday threshold computed via native_decide. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "originalContributions": [
       "R (slot-based recurrence): computable definition R n e s tracking slot state (e empty, s single)",
       "birthdayCount3: total valid count as R n d 0, terminating in O(n²) recursion",

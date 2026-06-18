@@ -4,7 +4,7 @@
   "slug": "subset-count-oq-02-oq-01",
   "description": "Proves that a multiset s has exactly ∏ a ∈ s.toFinset, (s.count a + 1) distinct submultisets, directly from Mathlib's Multiset.card_Iic. Includes the set case (nodup → 2^n), concrete verifications, and a multiplicativity theorem for disjoint supports. 0 sorries, 0 axioms.",
   "meta": {
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "combinatorics",
       "multiset",
@@ -12,10 +12,10 @@
       "open-question"
     ],
     "proofRepoPath": "Proofs/SubsetCountOQ02OQ01.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Uses Multiset.card_Iic (Mathlib.Data.Multiset.Interval), Multiset.nodup_iff_count_le_one, Multiset.count_pos, Multiset.toFinset_card_of_nodup, Finset.disjoint_left, Multiset.count_eq_zero.",
+    "axiomCount": 1,
+    "assumptions": "0 axioms, 0 sorries. Uses Multiset.card_Iic (Mathlib.Data.Multiset.Interval), Multiset.nodup_iff_count_le_one, Multiset.count_pos, Multiset.toFinset_card_of_nodup, Finset.disjoint_left, Multiset.count_eq_zero. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "lineCount": 159,
     "theoremCount": 10,
     "definitionCount": 0,

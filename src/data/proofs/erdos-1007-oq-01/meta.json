@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://erdosproblems.com/1007",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1007OQ01.lean",
     "tags": [
       "erdos",
@@ -18,7 +18,7 @@
       "extension",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -68,9 +68,9 @@
       "Under optimality conjecture, successive differences equal d+1",
       "Linear lower bound from rigidity and quadratic upper bound from complete graphs"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 1337,
-    "assumptions": "0 axioms. Fully verified.",
+    "assumptions": "0 axioms. Fully verified. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 89,
     "definitionCount": 14,

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean",
     "tags": [
       "combinatorics",
@@ -16,14 +16,14 @@
       "permutations",
       "arithmetic-series"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 169,
     "theoremCount": 12,
     "definitionCount": 0,
-    "assumptions": "None. Fully machine-verified. Imports ArithmeticSeriesOQ02OQ04.lean (0 axioms).",
+    "assumptions": "None. Fully machine-verified. Imports ArithmeticSeriesOQ02OQ04.lean (0 axioms). This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "originalContributions": [
       "choose_descFactorial: C(n,k) * k! = n.descFactorial(k) — the ordered selection identity",
       "choose_product: explicit product form C(n,k) * k! = ∏ i in range k, (n - i)",

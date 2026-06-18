@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-12",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
     "tags": [
       "irrationality",
@@ -16,11 +16,11 @@
       "research",
       "open-problem"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-05-12",
-    "axiomCount": 0,
-    "assumptions": "None. Uses Mathlib's irrational_sqrt_natCast_iff with native_decide on ¬IsSquare 30, Real.sq_sqrt, Real.sqrt_mul, sqrt_pos, sqrt_nonneg, plus the parent gallery proof's exported identity sqrt2_plus_sqrt3_sq : (√2 + √3)² = 5 + 2√6.",
+    "axiomCount": 1,
+    "assumptions": "None. Uses Mathlib's irrational_sqrt_natCast_iff with native_decide on ¬IsSquare 30, Real.sq_sqrt, Real.sqrt_mul, sqrt_pos, sqrt_nonneg, plus the parent gallery proof's exported identity sqrt2_plus_sqrt3_sq : (√2 + √3)² = 5 + 2√6. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "lineCount": 144,
     "theoremCount": 5,
     "definitionCount": 0,

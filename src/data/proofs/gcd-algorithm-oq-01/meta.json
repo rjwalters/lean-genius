@@ -6,7 +6,7 @@
   "meta": {
     "author": "Gabriel Lame (1844), formalized in Lean 4",
     "date": "1844",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/GCDAlgorithmOQ01.lean",
     "tags": [
       "number-theory",
@@ -15,7 +15,7 @@
       "fibonacci",
       "classic"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -49,9 +49,9 @@
       "Finite average computation infrastructure"
     ],
     "dateAdded": "2026-02-10",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 460,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 28,
     "definitionCount": 4

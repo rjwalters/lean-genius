@@ -27,7 +27,7 @@
     "author": "Formalized in Lean 4 (researcher-4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_polygon",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AngleTrisectionOQ03OQ01.lean",
     "tags": [
       "geometry",
@@ -40,12 +40,12 @@
       "enumeration",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "theoremCount": 12,
     "lineCount": 150,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The import chain includes AngleTrisection.lean (1 axiom for π transcendence, used only for the circle-squaring result) but none of the theorems in this file depend on that axiom.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The import chain includes AngleTrisection.lean (1 axiom for π transcendence, used only for the circle-squaring result) but none of the theorems in this file depend on that axiom. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [

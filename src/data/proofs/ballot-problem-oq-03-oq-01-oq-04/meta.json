@@ -7,7 +7,7 @@
     "author": "Bertrand (1887), Catalan (1838); formalized by researcher-10",
     "sourceUrl": "https://en.wikipedia.org/wiki/Catalan_number#First_proof",
     "date": "1887",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BallotProblemOQ03OQ01OQ04.lean",
     "tags": [
       "combinatorics",
@@ -17,7 +17,7 @@
       "recurrence",
       "convolution"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "originalContributions": [
       "Bridge cn_eq_catalan: LatticePathLGV.Cn n = catalan n (Mathlib root namespace) via centralBinom characterization",
@@ -26,9 +26,9 @@
       "Verification: small cases n=0,1,2,3,4 via native_decide"
     ],
     "dateAdded": "2026-04-23",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 182,
-    "assumptions": "0 sorries. All proofs are complete. Uses Mathlib's catalan_succ' and catalan_eq_centralBinom_div as infrastructure.",
+    "assumptions": "0 sorries. All proofs are complete. Uses Mathlib's catalan_succ' and catalan_eq_centralBinom_div as infrastructure. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 11,
     "definitionCount": 1

@@ -4,7 +4,7 @@
   "slug": "sqrt2-minpoly",
   "description": "A complete Lean 4 proof that the minimal polynomial of √2 over ℚ is X² - 2, with corollaries on algebraic degree and field extension structure.",
   "meta": {
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "algebraic-number-theory",
       "minimal-polynomial",
@@ -15,12 +15,12 @@
     ],
     "mathlib_version": "4.26.0",
     "proofRepoPath": "Proofs/Sqrt2Minpoly.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 140,
     "dateAdded": "2026-04-22",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.irreducible_of_eisenstein_criterion",

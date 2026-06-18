@@ -6,7 +6,7 @@
   "meta": {
     "author": "Kronecker (definition), formalized in Lean 4",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01.lean",
     "tags": [
       "number-theory",
@@ -16,9 +16,9 @@
       "multiplicative-functions",
       "open-question"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 164,
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -35,7 +35,7 @@
       "Proof that χ(1,n) = 1 for all n",
       "Value characterizations at n = 0, ±1, 2"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "theoremCount": 9,
     "definitionCount": 5,
     "additionalFiles": [

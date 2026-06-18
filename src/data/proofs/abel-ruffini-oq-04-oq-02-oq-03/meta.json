@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ02OQ03.lean",
     "tags": [
       "group-theory",
@@ -15,11 +15,11 @@
       "burnside-theorem",
       "abel-ruffini"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Core results obtained via Mathlib bridge: pGroup_isSolvable chains hG.isNilpotent + inferInstance; s5_not_solvable aliases Equiv.Perm.fin_5_not_solvable directly; abelian_isSolvable is inferInstance.",
+    "axiomCount": 1,
+    "assumptions": "0 axioms, 0 sorries. Core results obtained via Mathlib bridge: pGroup_isSolvable chains hG.isNilpotent + inferInstance; s5_not_solvable aliases Equiv.Perm.fin_5_not_solvable directly; abelian_isSolvable is inferInstance. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "lineCount": 104,
     "theoremCount": 4,
     "definitionCount": 0,
@@ -155,21 +155,27 @@
   ],
   "references": [
     {
-      "authors": ["W. Burnside"],
+      "authors": [
+        "W. Burnside"
+      ],
       "title": "On groups of order p^α q^β",
       "year": "1904",
       "venue": "Proceedings of the London Mathematical Society, 2(1), pp. 388–392",
       "note": "Proved that every group of order p^a q^b (two primes) is solvable. A₅ (order 60 = 2²·3·5, three primes) is the smallest group escaping this criterion. This result is axiomatized in the formalization for the two-prime orders."
     },
     {
-      "authors": ["P. Hall"],
+      "authors": [
+        "P. Hall"
+      ],
       "title": "A note on soluble groups",
       "year": "1928",
       "venue": "Journal of the London Mathematical Society, 3(2), pp. 98–105",
       "note": "Hall's theorem characterizes solvable groups via the existence of Hall subgroups of every coprime order. Provides the positive structural test complementing Burnside's sufficient condition."
     },
     {
-      "authors": ["J. J. Rotman"],
+      "authors": [
+        "J. J. Rotman"
+      ],
       "title": "An Introduction to the Theory of Groups",
       "year": "1995",
       "venue": "Springer GTM 148, 4th edition",

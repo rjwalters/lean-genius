@@ -6,7 +6,7 @@
   "meta": {
     "author": "Researcher (lean-genius)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Rogers%E2%80%93Ramanujan_identities",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PartitionTheoremOQ01OQ01.lean",
     "tags": [
       "partitions",
@@ -16,10 +16,10 @@
       "computational verification",
       "q-series"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "No axioms. Computational verification via native_decide. Depends on PartitionTheoremOQ01 for definitions (rr1GapPartitions, rr1Mod5Partitions, rr2GapPartitions, rr2Mod5Partitions).",
+    "axiomCount": 1,
+    "assumptions": "No axioms. Computational verification via native_decide. Depends on PartitionTheoremOQ01 for definitions (rr1GapPartitions, rr1Mod5Partitions, rr2GapPartitions, rr2Mod5Partitions). This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "lineCount": 71,
     "relatedProblems": [

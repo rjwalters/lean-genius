@@ -7,7 +7,7 @@
     "author": "Detection probability analysis (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Casting_out_nines",
     "date": "Classical",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "modular-arithmetic",
@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "proofRepoPath": "Proofs/DivisibilityBy3OQ04OQ02.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "prerequisites": [
       "modular arithmetic",
@@ -58,7 +58,7 @@
       "casting_out_base_cong: b ≡ 1 (mod b-1) for any base b ≥ 3"
     ],
     "dateAdded": "2026-03-29",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 228,
     "theoremCount": 22,
     "relatedProblems": [
@@ -71,7 +71,7 @@
         "relationship": "Grandparent proof: the digit-sum divisibility rule (Wiedijk #85)"
       }
     ],
-    "assumptions": "0 axioms, 0 sorries. All theorems derived from Mathlib primitives and verified by native_decide for concrete cases.",
+    "assumptions": "0 axioms, 0 sorries. All theorems derived from Mathlib primitives and verified by native_decide for concrete cases. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "definitionCount": 0
   },

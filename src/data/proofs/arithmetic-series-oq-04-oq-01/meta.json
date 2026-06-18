@@ -6,7 +6,7 @@
   "meta": {
     "author": "Johann Faulhaber (1631); formalized in Lean 4",
     "date": "1631",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ04OQ01.lean",
     "tags": [
       "number-theory",
@@ -17,11 +17,11 @@
       "combinatorics",
       "induction"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 305,
-    "assumptions": "0 axioms, 0 sorries. All theorems proved by induction with push_cast + linarith. Uses Mathlib only for Finset.sum_Ico_succ_top and push_cast.",
+    "assumptions": "0 axioms, 0 sorries. All theorems proved by induction with push_cast + linarith. Uses Mathlib only for Finset.sum_Ico_succ_top and push_cast. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {

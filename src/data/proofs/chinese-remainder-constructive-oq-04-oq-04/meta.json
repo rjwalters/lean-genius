@@ -7,7 +7,7 @@
     "author": "Classical (Sunzi / CRT), formalized via Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem",
     "date": "3rd century",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ChineseRemainderConstructiveOQ04OQ04.lean",
     "tags": [
       "number-theory",
@@ -16,13 +16,13 @@
       "uniqueness",
       "canonical-form"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "dateAdded": "2026-04-02",
     "mathlib_version": "4.26.0",
     "lineCount": 122,
-    "assumptions": "None. All theorems fully proved with 0 sorries and 0 axioms.",
+    "assumptions": "None. All theorems fully proved with 0 sorries and 0 axioms. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlibDependencies": [
       {
         "theorem": "Nat.mod_mod_of_dvd",

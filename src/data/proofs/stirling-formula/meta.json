@@ -8,7 +8,7 @@
     "author": "James Stirling / Abraham de Moivre (formalized via Mathlib)",
     "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/Analysis/SpecialFunctions/Stirling.lean",
     "date": "1730",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/StirlingFormula.lean",
     "tags": [
       "analysis",
@@ -17,7 +17,7 @@
       "wiedijk-100",
       "approximation"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -42,7 +42,7 @@
       "Connection to log-factorial approximation for entropy calculations"
     ],
     "dateAdded": "2025-12-27",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 640,
     "prerequisites": [
       "Real analysis: limits, asymptotic equivalence (~), sequences",
@@ -50,7 +50,7 @@
       "The Wallis product: π/2 = ∏(4n²)/(4n²-1)",
       "Logarithmic approximation: log(n!) ≈ n log n - n + (1/2)log(2πn)"
     ],
-    "assumptions": "0 axioms. The error bound stirling_error_bound_ge_2 is now fully proved via telescoping log bounds from Mathlib.",
+    "assumptions": "0 axioms. The error bound stirling_error_bound_ge_2 is now fully proved via telescoping log bounds from Mathlib. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 18,
     "definitionCount": 1

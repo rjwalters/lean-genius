@@ -7,7 +7,7 @@
     "author": "Schlaefli (1852), Coxeter (1973); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Regular_polytope",
     "date": "1852",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PlatonicSolidsOQ01.lean",
     "tags": [
       "geometry",
@@ -18,9 +18,9 @@
       "research",
       "open-question"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "theoremCount": 53,
     "defCount": 28,
     "lineCount": 628,
@@ -46,7 +46,7 @@
       "Duality relationships: 5-cell and 24-cell are self-dual, 8-cell/16-cell and 120-cell/600-cell form dual pairs"
     ],
     "dateAdded": "2026-03-28",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The Schlaefli determinant computation uses exact arithmetic in Z[sqrt(5)] to determine the sign of sin^2(pi/p)*sin^2(pi/r) - cos^2(pi/q) for all candidate symbols.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The Schlaefli determinant computation uses exact arithmetic in Z[sqrt(5)] to determine the sign of sin^2(pi/p)*sin^2(pi/r) - cos^2(pi/q) for all candidate symbols. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "prerequisites": [
       "Platonic solids classification (parent proof)",
       "Euler's formula for polytopes",

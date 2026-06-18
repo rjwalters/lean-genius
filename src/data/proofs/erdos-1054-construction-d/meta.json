@@ -5,7 +5,7 @@
   "description": "For Erdős #1054, proves that 1+p+p² is representable for every prime p (divisors of p² are {1,p,p²}, partial sum = 1+p+p²). Verifies constructions for p=2,3,5,7,11,13. Also proves p+1 is representable via p² witness and Mersenne number representability. 26 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Erdos1054ConstructionD",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1054ConstructionD.lean",
     "tags": [
       "number-theory",
@@ -14,12 +14,12 @@
       "prime-powers",
       "representability"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 250,
     "theoremCount": 26,
-    "assumptions": "None. All 26 theorems proved.",
+    "assumptions": "None. All 26 theorems proved. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",

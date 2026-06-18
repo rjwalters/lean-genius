@@ -7,7 +7,7 @@
     "author": "Ancient arithmetic methods (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Casting_out_nines",
     "date": "Ancient",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "modular-arithmetic",
@@ -16,7 +16,7 @@
       "open-problem"
     ],
     "proofRepoPath": "Proofs/DivisibilityBy3OQ04.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "prerequisites": [
       "modular arithmetic",
@@ -48,7 +48,7 @@
       "Concrete examples: verified arithmetic and detected errors via native_decide"
     ],
     "dateAdded": "2026-03-23",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 229,
     "theoremCount": 17,
     "relatedProblems": [
@@ -61,7 +61,7 @@
         "relationship": "Sibling OQ generalizing to arbitrary bases; this OQ-04 uses the same generalization for casting-out applications"
       }
     ],
-    "assumptions": "0 axioms, 0 sorries. All theorems derived from Mathlib's Nat.modEq_digits_sum and standard modular arithmetic properties.",
+    "assumptions": "0 axioms, 0 sorries. All theorems derived from Mathlib's Nat.modEq_digits_sum and standard modular arithmetic properties. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "definitionCount": 0
   },

@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_integer#Gaussian_primes",
     "date": "Gauss 1832; formalized 2026",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "algebra",
       "number-theory",
@@ -16,10 +16,10 @@
       "prime-classification"
     ],
     "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ01OQ02OQ02.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Uses native_decide for concrete norm primality checks (standard Lean 4 kernel verification). All structural results follow from Mathlib's GaussianInt and Zsqrtd APIs.",
+    "axiomCount": 1,
+    "assumptions": "0 axioms, 0 sorries. Uses native_decide for concrete norm primality checks (standard Lean 4 kernel verification). All structural results follow from Mathlib's GaussianInt and Zsqrtd APIs. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "lineCount": 193,
     "theoremCount": 14,
     "definitionCount": 0,

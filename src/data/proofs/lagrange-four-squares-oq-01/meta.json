@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LagrangeFourSquaresOQ01.lean",
     "tags": [
       "number-theory",
@@ -15,10 +15,10 @@
       "quadratic-forms",
       "sums-of-squares"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "mathlibDependencies": [
       {
         "theorem": "Nat.sum_four_squares",
@@ -26,7 +26,7 @@
         "module": "Mathlib.NumberTheory.SumFourSquares"
       }
     ],
-    "assumptions": "Core existential result (four_square_exists_bounded) uses Mathlib's Nat.sum_four_squares. Algorithm, bounds, and verification proofs are independently proved.",
+    "assumptions": "Core existential result (four_square_exists_bounded) uses Mathlib's Nat.sum_four_squares. Algorithm, bounds, and verification proofs are independently proved. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "lineCount": 395,
     "theoremCount": 71,
     "definitionCount": 9,

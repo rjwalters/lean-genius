@@ -7,7 +7,7 @@
     "author": "Classical setup; counterexample formalization new",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ballot_problem",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BallotProblemOQ01OQ02OQ04.lean",
     "tags": [
       "combinatorics",
@@ -17,7 +17,7 @@
       "counterexample",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -33,9 +33,9 @@
       "Scaled ballot formula: (ap-bq)/(ap+bq) for uniform weight scaling"
     ],
     "dateAdded": "2026-04-05",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 311,
-    "assumptions": "0 sorries, 0 axioms. Counterexample verified by native_decide and norm_num. Structural theorems proved directly.",
+    "assumptions": "0 sorries, 0 axioms. Counterexample verified by native_decide and norm_num. Structural theorems proved directly. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 24,
     "definitionCount": 4

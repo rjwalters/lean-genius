@@ -5,7 +5,7 @@
   "description": "Proves structural representability results for Erdős #1054 using prime products qp. The divisors of qp (distinct primes q < p) are {1,q,p,qp}, so 1+q+p is representable. Proves Goldbach connection: every even n ≥ 4 representable if Goldbach holds. Concrete witnesses for n ∈ [6,20]. 17 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Erdos1054OQ02",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1054OQ02.lean",
     "tags": [
       "number-theory",
@@ -15,12 +15,12 @@
       "prime-products",
       "representability"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 307,
     "theoremCount": 17,
-    "assumptions": "None. All 17 theorems proved (including conditional Goldbach result).",
+    "assumptions": "None. All 17 theorems proved (including conditional Goldbach result). This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",

@@ -7,7 +7,7 @@
     "author": "Classical (Galois, Jordan)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Alternating_group#Alternating_groups_and_the_Feit%E2%80%93Thompson_theorem",
     "date": "1832",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ02OQ02.lean",
     "tags": [
       "algebra",
@@ -18,7 +18,7 @@
       "research",
       "extension"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -59,9 +59,9 @@
       "alternating_solvable_iff: Complete bidirectional classification A_n solvable ↔ n ≤ 4"
     ],
     "dateAdded": "2026-04-05",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 167,
-    "assumptions": "0 axioms, 0 sorries. Small cases via inferInstance and isSolvable_of_comm. Large cases via exact sequence: if A_n solvable then S_n solvable, but Mathlib's Equiv.Perm.not_solvable gives contradiction.",
+    "assumptions": "0 axioms, 0 sorries. Small cases via inferInstance and isSolvable_of_comm. Large cases via exact sequence: if A_n solvable then S_n solvable, but Mathlib's Equiv.Perm.not_solvable gives contradiction. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 12,
     "definitionCount": 0,

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Johann Faulhaber (1580–1635); Jacob Bernoulli (1713); formalized in Lean 4",
     "date": "1713",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ04.lean",
     "tags": [
       "number-theory",
@@ -16,11 +16,11 @@
       "arithmetic-series",
       "induction"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 197,
-    "assumptions": "0 axioms, 0 sorries. Core result relies on Mathlib's sum_Ico_pow (Faulhaber's formula) and sum_range_pow. The main theorem faulhaber_formula is a direct alias of sum_Ico_pow. Corollaries (p=1,2,3) and Bernoulli number values are derived from Mathlib.",
+    "assumptions": "0 axioms, 0 sorries. Core result relies on Mathlib's sum_Ico_pow (Faulhaber's formula) and sum_range_pow. The main theorem faulhaber_formula is a direct alias of sum_Ico_pow. Corollaries (p=1,2,3) and Bernoulli number values are derived from Mathlib. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {

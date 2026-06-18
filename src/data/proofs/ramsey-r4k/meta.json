@@ -5,7 +5,7 @@
   "description": "Formalizes structural results for the off-diagonal Ramsey numbers R(4,k): upper bound R(4,k) ≤ C(k+2,3) via the classical Erdős-Szekeres binomial bound, the fundamental Pascal recursion R(r,s) ≤ R(r-1,s) + R(r,s-1) proved via vertex neighborhood splitting, concrete upper bound values for k=3..10, strict monotonicity, cubic growth rate R(4,k) ≤ (k+2)³, and a probabilistic lower bound counting framework. 30 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius RamseyR4k",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/RamseyR4k.lean",
     "tags": [
       "combinatorics",
@@ -15,12 +15,12 @@
       "number-theory",
       "upper-bounds"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 587,
     "theoremCount": 30,
-    "assumptions": "None. All 30 theorems proved. Concrete values via native_decide. The formalized bounds are classical upper bounds (C(k+2,3)), not exact Ramsey numbers.",
+    "assumptions": "None. All 30 theorems proved. Concrete values via native_decide. The formalized bounds are classical upper bounds (C(k+2,3)), not exact Ramsey numbers. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",

@@ -7,7 +7,7 @@
     "author": "Extension of Divisibility by 3 (Wiedijk #85)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Divisibility_rule",
     "date": "2026-02-10",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "divisibility",
@@ -16,7 +16,7 @@
       "comprehensive"
     ],
     "proofRepoPath": "Proofs/DivisibilityByThreeOQ01.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -50,9 +50,9 @@
       "Digit-sum rules in 10+ bases (hex, octal, base 7, base 1000)"
     ],
     "dateAdded": "2026-02-10",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 550,
-    "assumptions": "0 axioms, 0 sorries. Core digit-sum congruence from Mathlib's Nat.modEq_digits_sum and Nat.dvd_iff_dvd_digits_sum.",
+    "assumptions": "0 axioms, 0 sorries. Core digit-sum congruence from Mathlib's Nat.modEq_digits_sum and Nat.dvd_iff_dvd_digits_sum. This entry uses `native_decide` to discharge one or more presented theorems/lemmas, so the proof depends on `Lean.ofReduceBool` (the Lean compiler kernel-reduction axiom) and is not axiom-free. Per the Axiom Integrity Policy (CLAUDE.md), meta.axiomCount reflects this assumption (leanFile.axiomCount still counts only literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 56,
     "definitionCount": 1
