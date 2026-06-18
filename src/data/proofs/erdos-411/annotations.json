@@ -315,5 +315,293 @@
       "totientStep",
       "natural number arithmetic"
     ]
+  },
+  {
+    "id": "erdos-411-totient-double",
+    "proofId": "erdos-411",
+    "type": "technique",
+    "range": {
+      "startLine": 59,
+      "endLine": 71
+    },
+    "title": "Self-Similar Doubling Identity $\\varphi(2m)=2\\varphi(m)$",
+    "content": "The structural keystone of the entire file. For even $m>0$, `totient_double_even` proves $\\varphi(2m)=2\\varphi(m)$ as a one-line consequence of Mathlib's `Nat.totient_mul_of_prime_of_dvd` (with prime $p=2$ and $2\\mid m$). Adding $2m$ to both sides yields `totientStep_double_even`: $g(2m)=2m+\\varphi(2m)=2m+2\\varphi(m)=2\\,g(m)$. This self-similarity -- $g$ commutes with multiplication by 2 on the even numbers -- is precisely what lets a single doubling step perpetuate forever.",
+    "significance": "key",
+    "mathContext": "For $2\\mid m$, $m>0$: $\\varphi(2m)=2\\varphi(m)$ (since $\\varphi(2^{a+1}k)=2\\varphi(2^a k)$ when $2\\mid m$). Hence $g(2m)=2m+\\varphi(2m)=2(m+\\varphi(m))=2\\,g(m)$.",
+    "relatedConcepts": [
+      "totient multiplicativity",
+      "Nat.totient_mul_of_prime_of_dvd",
+      "self-similarity",
+      "prime power decomposition"
+    ],
+    "prerequisites": [
+      "Euler's totient function",
+      "divisibility",
+      "totientStep"
+    ]
+  },
+  {
+    "id": "erdos-411-totient-triple",
+    "proofId": "erdos-411",
+    "type": "technique",
+    "range": {
+      "startLine": 73,
+      "endLine": 78
+    },
+    "title": "Tripling Identity $g(3m)=3g(m)$",
+    "content": "The exact analogue of the doubling identity for the prime 3: when $3\\mid m$ and $m>0$, `totientStep_triple` gives $g(3m)=3\\,g(m)$, again via `Nat.totient_mul_of_prime_of_dvd` (now with $p=3$). This is the engine behind Cambie's ratio-3 solution $n=738$: because every iterate of 738 stays divisible by 3, multiplying the argument by 3 multiplies $g$ by 3, producing a ratio-3 (rather than ratio-2) doubling tower.",
+    "significance": "supporting",
+    "mathContext": "For $3\\mid m$, $m>0$: $\\varphi(3m)=3\\varphi(m)$, so $g(3m)=3m+\\varphi(3m)=3(m+\\varphi(m))=3\\,g(m)$. Generalizes to $g(pm)=p\\,g(m)$ whenever $p\\mid m$ for prime $p$.",
+    "relatedConcepts": [
+      "totient multiplicativity",
+      "ratio-3 solutions",
+      "Cambie's discoveries",
+      "prime scaling"
+    ],
+    "prerequisites": [
+      "Euler's totient function",
+      "divisibility by 3",
+      "totientStep"
+    ]
+  },
+  {
+    "id": "erdos-411-orbit-invariants",
+    "proofId": "erdos-411",
+    "type": "technique",
+    "range": {
+      "startLine": 80,
+      "endLine": 99
+    },
+    "title": "Orbit Invariants: Monotonicity and Even-Preservation",
+    "content": "Two invariants make the induction work. `iteratedTotientStep_ge_start` shows $g^k(n)\\geq n$ for all $k$ (the orbit never decreases, so positivity is preserved). `iteratedTotientStep_even` shows that starting from even $n>2$, every iterate $g^k(n)$ stays even -- proved by induction using `totientStep_even_of_even` together with the lower bound (each iterate exceeds 2). Even-ness is exactly the hypothesis needed to apply the doubling identity $g(2m)=2g(m)$ at every step.",
+    "significance": "supporting",
+    "mathContext": "$g^k(n)\\geq n$ (monotone orbit). If $2\\mid n$ and $n>2$ then $2\\mid g^k(n)$ for all $k$: induction step needs $g^k(n)>2$, supplied by $g^k(n)\\geq n>2$.",
+    "relatedConcepts": [
+      "loop invariants",
+      "parity preservation",
+      "monotone iteration",
+      "Nat.totient_even"
+    ],
+    "prerequisites": [
+      "induction on natural numbers",
+      "totientStep",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "erdos-411-propagation",
+    "proofId": "erdos-411",
+    "type": "technique",
+    "range": {
+      "startLine": 101,
+      "endLine": 118
+    },
+    "title": "Doubling Propagation Engine",
+    "content": "`doubling_propagation` is the induction that turns one verified doubling into infinitely many. Given even $n>2$ with the base case $g^2(n)=2n$, it proves $g^{k+2}(n)=2\\,g^k(n)$ for every $k$. The inductive step is a four-line `calc`: $g^{k+3}(n)=g(g^{k+2}(n))=g(2\\,g^k(n))=2\\,g(g^k(n))=2\\,g^{k+1}(n)$, where the middle equality is `totientStep_double_even` applied to the (even, positive) iterate $g^k(n)$. This is why Steinerberger's single finite equation suffices to certify an entire infinite doubling pattern.",
+    "significance": "key",
+    "mathContext": "Base $g^2(n)=2n$ $\\Rightarrow$ $\\forall k,\\ g^{k+2}(n)=2\\,g^k(n)$. Step: $g^{k+3}(n)=g(2\\,g^k(n))=2\\,g^{k+1}(n)$ by $g(2m)=2g(m)$ with $m=g^k(n)$ even.",
+    "relatedConcepts": [
+      "mathematical induction",
+      "doubling relation",
+      "self-perpetuating recurrence",
+      "calc proofs"
+    ],
+    "prerequisites": [
+      "totientStep_double_even",
+      "induction",
+      "DoublingRelation"
+    ]
+  },
+  {
+    "id": "erdos-411-base-solutions",
+    "proofId": "erdos-411",
+    "type": "insight",
+    "range": {
+      "startLine": 123,
+      "endLine": 132
+    },
+    "title": "Base Doubling Solutions $n=10$ and $n=94$ (Proved)",
+    "content": "`doubling_r2_n10` and `doubling_r2_n94` are the first fully proved instances of the doubling relation. Each combines a `native_decide` check of the base case $g^2(n)=2n$ ($g^2(10)=20$, $g^2(94)=188$) with `doubling_propagation` to extend it to all $k$. These were the two solutions known classically; here they become machine-checked theorems rather than conjectural data points. (The `native_decide` on the base case means these carry the `Lean.ofReduceBool` assumption.)",
+    "significance": "key",
+    "mathContext": "$g^2(10)=20=2\\cdot10$ and $g^2(94)=188=2\\cdot94$, each extended by `doubling_propagation` to $\\text{DoublingRelation}(n,2)$ with $K=0$.",
+    "relatedConcepts": [
+      "native_decide",
+      "doubling propagation",
+      "known solutions",
+      "computational base case"
+    ],
+    "prerequisites": [
+      "doubling_propagation",
+      "DoublingRelation",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "erdos-411-ratio3-proof",
+    "proofId": "erdos-411",
+    "type": "technique",
+    "range": {
+      "startLine": 134,
+      "endLine": 184
+    },
+    "title": "Cambie's Ratio-3 Solution $n=738$ (Proved)",
+    "content": "`cambie_ratio3` proves $g^{k+4}(738)=3\\,g^k(738)$ for all $k$, the first non-doubling ratio in the file. The work is in `ratio3_738_aux`, a strong induction simultaneously proving two statements: (i) $3\\mid g^k(738)$ for all $k$, and (ii) the ratio-3 relation. Base cases $k<4$ are discharged by `native_decide`; the step chains $g^{k+4}=g(3\\,g^{k-1})=3\\,g(g^{k-1})=3\\,g^k$ using `totientStep_triple`. Bundling the divisibility invariant with the ratio is essential -- the triple identity only fires when the argument is divisible by 3.",
+    "significance": "key",
+    "mathContext": "$738=2\\cdot3^2\\cdot41$. `GeneralRatioRelation 738 4 3`: $g^{k+4}(738)=3\\,g^k(738)$. Strong-induction invariant $3\\mid g^k(738)$ lets `totientStep_triple` apply at each step.",
+    "relatedConcepts": [
+      "strong induction",
+      "GeneralRatioRelation",
+      "invariant strengthening",
+      "ratio-3 solutions"
+    ],
+    "prerequisites": [
+      "totientStep_triple",
+      "Nat.strongRecOn",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "erdos-411-quadruple",
+    "proofId": "erdos-411",
+    "type": "technique",
+    "range": {
+      "startLine": 186,
+      "endLine": 234
+    },
+    "title": "Quadrupling Identity and Ratio-4 Solution $n=148646$",
+    "content": "`totientStep_quadruple` proves $g(4m)=4\\,g(m)$ for $4\\mid m$ by applying the $p=2$ totient identity twice: $\\varphi(4m)=2\\varphi(2m)=4\\varphi(m)$. `ratio4_148646_aux` then mirrors the ratio-3 argument: a strong induction carrying the invariant $4\\mid g^k(148646)$ (valid from $k\\geq1$) alongside the ratio-4 relation, yielding `cambie_ratio4_148646`: $g^{k+4}(148646)=4\\,g^k(148646)$. The threshold $k\\geq1$ reflects that 4-divisibility only kicks in after the first iterate.",
+    "significance": "key",
+    "mathContext": "$\\varphi(4m)=\\varphi(2\\cdot2m)=2\\varphi(2m)=4\\varphi(m)$ for $4\\mid m$, so $g(4m)=4g(m)$. `GeneralRatioRelation 148646 4 4` with $K=1$.",
+    "relatedConcepts": [
+      "iterated totient identity",
+      "ratio-4 solutions",
+      "strong induction",
+      "invariant threshold"
+    ],
+    "prerequisites": [
+      "totient_double_even",
+      "Nat.strongRecOn",
+      "GeneralRatioRelation"
+    ]
+  },
+  {
+    "id": "erdos-411-ratio4-second",
+    "proofId": "erdos-411",
+    "type": "insight",
+    "range": {
+      "startLine": 236,
+      "endLine": 272
+    },
+    "title": "Second Ratio-4 Solution $n=4325798$",
+    "content": "`cambie_ratio4_4325798` proves $g^{k+4}(4325798)=4\\,g^k(4325798)$ for $k\\geq1$ via `ratio4_4325798_aux`, structurally identical to the $148646$ proof: same quadrupling identity, same $4\\mid g^k(n)$ invariant, same strong induction with `native_decide` base cases for $k<5$. Having two independent ratio-4 examples confirms that the ratio-4 phenomenon is not an isolated accident, reinforcing Cambie's picture that arbitrarily many growth ratios may occur in the dynamics of $g$.",
+    "significance": "supporting",
+    "mathContext": "`GeneralRatioRelation 4325798 4 4` with $K=1$. Proof template identical to `cambie_ratio4_148646`, demonstrating ratio-4 is reproducible.",
+    "relatedConcepts": [
+      "ratio-4 solutions",
+      "proof reuse",
+      "Cambie's discoveries",
+      "arithmetic dynamics"
+    ],
+    "prerequisites": [
+      "totientStep_quadruple",
+      "Nat.strongRecOn",
+      "GeneralRatioRelation"
+    ]
+  },
+  {
+    "id": "erdos-411-steinerberger-iff",
+    "proofId": "erdos-411",
+    "type": "technique",
+    "range": {
+      "startLine": 286,
+      "endLine": 307
+    },
+    "title": "Steinerberger's Reduction (Sufficient Direction, Proved)",
+    "content": "This formalizes the workhorse of Steinerberger's 2025 reduction. `iteratedTotientStep_two` expands $g^2(n)=(n+\\varphi(n))+\\varphi(n+\\varphi(n))$ by `rfl`; `steinerberger_iff` then turns $g^2(n)=2n$ into the elementary equation $\\varphi(n)+\\varphi(n+\\varphi(n))=n$ via `omega`. The headline `steinerberger_r2_sufficient` packages it: any even $n>2$ satisfying that finite equation is an $r=2$ doubling solution. The converse (orbit-backward reasoning) is deliberately left unformalized.",
+    "significance": "key",
+    "mathContext": "$g^2(n)=2n\\iff\\varphi(n)+\\varphi(n+\\varphi(n))=n$. Combined with `doubling_propagation`: even $n>2$ + equation $\\Rightarrow\\text{DoublingRelation}(n,2)$, $K=0$.",
+    "relatedConcepts": [
+      "Steinerberger's theorem",
+      "finite certification",
+      "omega tactic",
+      "reduction to an identity"
+    ],
+    "prerequisites": [
+      "iteratedTotientStep",
+      "doubling_propagation",
+      "Euler's totient function"
+    ]
+  },
+  {
+    "id": "erdos-411-l1-layer",
+    "proofId": "erdos-411",
+    "type": "insight",
+    "range": {
+      "startLine": 309,
+      "endLine": 372
+    },
+    "title": "Cambie's $l=1$ Layer via Steinerberger",
+    "content": "Using `steinerberger_r2_sufficient`, each member of the $l=1$ layer of Cambie's conjectured family is proved a doubling solution by a single `native_decide` check of the Steinerberger equation. The six base cases $n\\in\\{4,6,10,14,70,94\\}$ correspond to $2p$ for $p\\in\\{2,3,5,7,35,47\\}$: e.g. $\\varphi(4)+\\varphi(6)=2+2=4$, $\\varphi(70)+\\varphi(94)=24+46=70$. Theorems `doubling_r2_n4/n6/n14/n70` join the earlier $n=10,94$ to exhaust this layer -- exactly the predicted base of Cambie's family.",
+    "significance": "key",
+    "mathContext": "$l=1$ family $\\{2p:p\\in\\{2,3,5,7,35,47\\}\\}=\\{4,6,10,14,70,94\\}$. Each verified by $\\varphi(n)+\\varphi(n+\\varphi(n))=n$ then `steinerberger_r2_sufficient`.",
+    "relatedConcepts": [
+      "Cambie's conjecture",
+      "Steinerberger reduction",
+      "native_decide",
+      "family enumeration"
+    ],
+    "prerequisites": [
+      "steinerberger_r2_sufficient",
+      "native_decide",
+      "DoublingRelation"
+    ]
+  },
+  {
+    "id": "erdos-411-structural",
+    "proofId": "erdos-411",
+    "type": "concept",
+    "range": {
+      "startLine": 378,
+      "endLine": 397
+    },
+    "title": "Structural Properties and the Conjecture Statement",
+    "content": "This section records the structural facts and states Cambie's conjecture formally. `totientStep_even_of_even` proves $g$ preserves evenness for $n>2$ (so all known even solutions stay even). `CambieConjecture` is stated as a `Prop`: every $r=2$ solution has the form $2^l\\cdot p$ with $l\\geq1$, $p\\in\\{2,3,5,7,35,47\\}$ -- this is an open assertion, used only as a target, never assumed, so it contributes no axiom. `totientStep_ge` restates monotonicity $g(n)\\geq n$.",
+    "significance": "supporting",
+    "mathContext": "$\\text{CambieConjecture}:\\ \\forall n,\\ \\text{DoublingRelation}(n,2)\\Rightarrow\\exists l\\geq1,\\ \\exists p\\in\\{2,3,5,7,35,47\\},\\ n=2^l p$. Stated as a `Prop`, not asserted.",
+    "relatedConcepts": [
+      "Cambie's conjecture",
+      "parity invariants",
+      "open problem framing",
+      "proposition vs theorem"
+    ],
+    "prerequisites": [
+      "DoublingRelation",
+      "Nat.totient_even",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "erdos-411-tower",
+    "proofId": "erdos-411",
+    "type": "insight",
+    "range": {
+      "startLine": 399,
+      "endLine": 491
+    },
+    "title": "Cambie Family Doubling Tower (Sufficient Direction Complete)",
+    "content": "The closing section lifts the $l=1$ base cases to infinite towers. `steinerberger_eq_lift` shows the equation $\\varphi(n)+\\varphi(n+\\varphi(n))=n$ is preserved by $n\\mapsto2n$ (using $\\varphi(2n)=2\\varphi(n)$ twice); `steinerberger_eq_pow_two` iterates this to $2^l n$; and `cambie_family_doubling` concludes $\\text{DoublingRelation}(2^l n,2)$ for every $l$. Applied to the six base cases, this proves the *entire* sufficient direction of Cambie's conjecture: every predicted $2^l\\cdot p$ is unconditionally a doubling solution (illustrated by the explicit $l=2$ instances $n\\in\\{8,12,20,28,140,188\\}$). Only the converse -- that no other $n$ works -- remains open.",
+    "significance": "key",
+    "mathContext": "If $2\\mid n$, $n>2$, $\\varphi(n)+\\varphi(n+\\varphi(n))=n$, then same holds for $2n$ and inductively for $2^l n$; hence $\\text{DoublingRelation}(2^l n,2)$ for all $l$. Whole family $\\{2^l p:l\\geq1,p\\in\\{2,3,5,7,35,47\\}\\}$ certified.",
+    "relatedConcepts": [
+      "geometric tower",
+      "invariance under doubling",
+      "Cambie's conjecture",
+      "sufficient direction"
+    ],
+    "prerequisites": [
+      "steinerberger_r2_sufficient",
+      "totient_double_even",
+      "induction on exponent"
+    ]
   }
 ]
