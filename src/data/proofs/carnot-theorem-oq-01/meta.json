@@ -61,26 +61,34 @@
   },
   "sections": [
     {
+      "title": "Module header",
+      "startLine": 3,
+      "endLine": 27,
+      "description": "Docstring reducing the geometric Carnot theorem (sum of signed circumcenter-to-side distances = R + r) to the trigonometric core cos A + cos B + cos C = 1 + r/R, and via Euler's inradius formula r/R = 4 sin(A/2)sin(B/2)sin(C/2) to the identity proved axiom-free below.",
+      "summary": "Module header",
+      "id": "module-header"
+    },
+    {
       "title": "Double-angle helper",
-      "startLine": 39,
-      "endLine": 43,
-      "description": "The sin-form double-angle identity cos(2x) = 1 - 2 sin²x, derived from Mathlib's cos_two_mul' and the Pythagorean identity.",
+      "startLine": 33,
+      "endLine": 36,
+      "description": "The sin-form double-angle identity cos(2x) = 1 - 2 sin²x, derived from Mathlib's cos_two_mul' and the Pythagorean identity via linear_combination.",
       "summary": "Double-angle helper",
       "id": "double-angle-helper"
     },
     {
       "title": "Carnot's Theorem — angle form",
-      "startLine": 45,
-      "endLine": 72,
+      "startLine": 38,
+      "endLine": 62,
       "description": "The main identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2). Express sin(C/2) via A/2, B/2 using C/2 = π/2 - (A/2 + B/2); rewrite each cosine in 1 - 2 sin² form; close by linear_combination modulo the Pythagorean identities.",
       "summary": "Carnot's Theorem — angle form",
       "id": "carnot-theorem-angle-form"
     },
     {
       "title": "Fundamental triangle cosine identity",
-      "startLine": 74,
-      "endLine": 81,
-      "description": "The companion polynomial identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1, via cos C = -cos(A+B) and a linear_combination.",
+      "startLine": 64,
+      "endLine": 79,
+      "description": "The companion polynomial identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1, via cos C = -cos(A+B) and a linear_combination of the Pythagorean identities for A and B.",
       "summary": "Fundamental triangle cosine identity",
       "id": "fundamental-triangle-cosine-identity"
     }
@@ -94,7 +102,8 @@
       "**Half-angle linearization**: writing c = π/2 - (a + b) turns sin(C/2) into a polynomial in the sines and cosines of A/2 and B/2, removing the third angle entirely",
       "**cos(2x) = 1 - 2 sin²x**: the sin-form double angle matches the half-angle products on the right-hand side, so both sides become polynomials in the same four quantities",
       "**One linear_combination closes it**: modulo the two Pythagorean identities the whole theorem is a single algebraic identity — no case analysis on acute/obtuse is needed because the angle form is sign-agnostic",
-      "**r/R = 4 sin(A/2) sin(B/2) sin(C/2)**: Euler's inradius formula is what connects the proved trigonometric identity to the geometric R + r statement"
+      "**r/R = 4 sin(A/2) sin(B/2) sin(C/2)**: Euler's inradius formula is what connects the proved trigonometric identity to the geometric R + r statement",
+      "**Two algebraic faces of one hypothesis**: the angle form (linear in the half-angle sine products) and the companion cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1 (quadratic in the full-angle cosines) are both polynomial consequences of the single relation A + B + C = π, each closed by a `linear_combination` of two Pythagorean identities in a different coordinate system"
     ],
     "prerequisites": [
       "Real trigonometric functions sin and cos",
