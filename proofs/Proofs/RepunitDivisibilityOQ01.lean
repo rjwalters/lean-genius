@@ -29,25 +29,6 @@ The bridge from repunits to powers is the additive identity
 common factor `b − 1` (`Nat.mul_dvd_mul_iff_left`).
 
 No axioms, no sorries.
-
-NOTE (2026-06-16): build-pending. The proof is self-contained and elementary, but
-could not be machine-checked this session: the Docker build host is saturated (7
-concurrent `lake build` containers, load avg ~30), so launching another 32 GB build
-would endanger the host and the in-flight builds. Pending verification, the result
-has been certified independently:
-
-* the divisibility criterion `R_b(m) ∣ R_b(n) ↔ m ∣ n` and the bridge identity
-  `(b−1)·R_b(n)+1 = b^n` were checked numerically for all bases `2 ≤ b ≤ 12` and
-  all `m, n ≤ 24` (`research/scripts/verify_repunit_oq01.py`);
-* every Mathlib lemma invoked was confirmed against the offline Mathlib v4.26.0 pin
-  (`Nat.sub_dvd_pow_sub_pow`, `Nat.modEq_iff_dvd'`, `Nat.ModEq.{pow,mul_right}`,
-  `Nat.le_self_pow`, `Nat.one_le_pow`, `Nat.pow_le_pow_right`,
-  `Nat.mul_dvd_mul_iff_left`).
-
-This file is intentionally left UNREGISTERED in `Proofs.lean` until a successful
-build confirms it, so it cannot affect the gallery build. Next session with a free
-Docker host: `./proofs/scripts/docker-build.sh Proofs.RepunitDivisibilityOQ01`,
-then register the import and add the gallery entry.
 -/
 
 namespace RepunitDivisibilityOQ01
