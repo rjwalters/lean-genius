@@ -84,54 +84,54 @@
       "id": "algebraic-inequality",
       "title": "Algebraic Gap Lemma",
       "startLine": 62,
-      "endLine": 72,
+      "endLine": 98,
       "summary": "Key inequality derived from the reciprocal sum condition.",
       "mathContext": "Bound: Key inequality derived from the reciprocal sum condition."
     },
     {
       "id": "browns-criterion",
       "title": "Brown's Criterion",
-      "startLine": 73,
-      "endLine": 110,
+      "startLine": 100,
+      "endLine": 128,
       "summary": "The central insight: sequences with small gaps allow all integers as subset sums.",
       "mathContext": "Mathematical content: The central insight: sequences with small gaps allow all integers as subset sums."
     },
     {
       "id": "sequence-construction",
       "title": "Greedy Sequence Construction",
-      "startLine": 111,
-      "endLine": 137,
+      "startLine": 130,
+      "endLine": 154,
       "summary": "Definitions of min_index, next_e, e_seq, and u_seq for the greedy algorithm.",
       "mathContext": "Formal definition: Definitions of min_index, next_e, e_seq, and u_seq for the greedy algorithm."
     },
     {
       "id": "sequence-properties",
       "title": "Sequence Properties",
-      "startLine": 138,
-      "endLine": 171,
+      "startLine": 156,
+      "endLine": 350,
       "summary": "Proofs that u_seq is monotone and has bounded gaps.",
       "mathContext": "Verified: Proofs that u_seq is monotone and has bounded gaps."
     },
     {
       "id": "digit-decomposition",
       "title": "Digit Decomposition",
-      "startLine": 172,
-      "endLine": 188,
+      "startLine": 352,
+      "endLine": 406,
       "summary": "Converting subset sums back to 0/1 digit representations in each base.",
       "mathContext": "Mathematical content: Converting subset sums back to 0/1 digit representations in each base."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "startLine": 189,
-      "endLine": 231,
+      "startLine": 408,
+      "endLine": 456,
       "summary": "The complete proof combining all components.",
       "mathContext": "Verified: The complete proof combining all components."
     },
     {
       "id": "formal-conjectures",
       "title": "Formal Conjectures Compatibility",
-      "startLine": 232,
+      "startLine": 458,
       "endLine": 507,
       "summary": "Versions matching Google DeepMind's Formal Conjectures project statements.",
       "mathContext": "Mathematical content: Versions matching Google DeepMind's Formal Conjectures project statements."
