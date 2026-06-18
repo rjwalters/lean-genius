@@ -2,11 +2,11 @@
   "id": "lagrange-four-squares-oq-01",
   "title": "Computational Complexity of Four-Square Representations (OQ-01)",
   "slug": "lagrange-four-squares-oq-01",
-  "description": "Addresses the computational aspects of Lagrange's four-square theorem: given n, how efficiently can one find integers a, b, c, d with a² + b² + c² + d² = n? The formalization establishes component bounds (each ≤ √n), implements a computable greedy search algorithm, verifies correctness for all n ≤ 100 via native_decide, analyzes uniqueness of sorted representations, identifies numbers of the excluded form 4^a(8b+7) that require all four nonzero squares, and proves the bounds on the search space. All results are 0 sorry and 0 axioms, with computational proofs using Mathlib's Nat.sum_four_squares.",
+  "description": "Addresses the computational aspects of Lagrange's four-square theorem: given n, how efficiently can one find integers a, b, c, d with a² + b² + c² + d² = n? The formalization establishes component bounds (each ≤ √n), implements a computable greedy search algorithm, verifies correctness for all n ≤ 100 via native_decide, analyzes uniqueness of sorted representations, identifies numbers of the excluded form 4^a(8b+7) that require all four nonzero squares, and proves the bounds on the search space. All results are 0 sorry, with the computational verification theorems (check_all_50, check_all_100, the find_* / unique_rep_* / *_needs_* batch checks) discharged by native_decide, which relies on the Lean.ofReduceBool axiom; the core existence result uses Mathlib's Nat.sum_four_squares.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LagrangeFourSquaresOQ01.lean",
     "tags": [
       "number-theory",
@@ -15,10 +15,10 @@
       "quadratic-forms",
       "sums-of-squares"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "mathlibDependencies": [
       {
         "theorem": "Nat.sum_four_squares",
@@ -26,7 +26,7 @@
         "module": "Mathlib.NumberTheory.SumFourSquares"
       }
     ],
-    "assumptions": "Core existential result (four_square_exists_bounded) uses Mathlib's Nat.sum_four_squares. Algorithm, bounds, and verification proofs are independently proved.",
+    "assumptions": "Core existential result (four_square_exists_bounded) uses Mathlib's Nat.sum_four_squares. The computational verification theorems (check_all_50, check_all_100, and the find_*, *_val, unique_rep_*, *_needs_*, *_reps_* concrete checks) are discharged by native_decide, which trusts the Lean compiler's kernel reduction and depends on the Lean.ofReduceBool axiom (hence axiomCount 1, status axiomatized). The algorithm, component bounds, and excluded-form analysis are otherwise independently proved. (leanFile.axiomCount counts only literal `axiom` declarations and remains 0.)",
     "lineCount": 395,
     "theoremCount": 71,
     "definitionCount": 9,
@@ -124,7 +124,7 @@
       "title": "Summary",
       "startLine": 367,
       "endLine": 395,
-      "summary": "Closing summary docstring: a results table tallying the proved declarations (0 axioms, 0 sorries) — component bounds, greedy algorithm, algorithm correctness for n = 0..10/30/50/99/100, batch verification for n ≤ 100, uniqueness counts, excluded-form detection, structural bounds, finite search, and Lagrange-with-bounds — plus the key insights (the √n component bound makes search polynomial; the greedy algorithm always succeeds by Lagrange; 4^a(8b+7) needs all four squares nonzero; the decision problem is trivially YES while finding a representation is nontrivial).",
+      "summary": "Closing summary docstring: a results table tallying the proved declarations (0 sorries; the native_decide-based verification theorems depend on Lean.ofReduceBool, so the entry is axiomatized) — component bounds, greedy algorithm, algorithm correctness for n = 0..10/30/50/99/100, batch verification for n ≤ 100, uniqueness counts, excluded-form detection, structural bounds, finite search, and Lagrange-with-bounds — plus the key insights (the √n component bound makes search polynomial; the greedy algorithm always succeeds by Lagrange; 4^a(8b+7) needs all four squares nonzero; the decision problem is trivially YES while finding a representation is nontrivial).",
       "mathContext": "Recap of the entry: existence of a four-square representation is guaranteed (Lagrange), and this file adds the computable greedy witness together with simultaneous component bounds (each ≤ √n) and the Legendre excluded-form characterization."
     }
   ],
