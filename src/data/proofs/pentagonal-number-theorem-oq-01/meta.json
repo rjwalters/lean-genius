@@ -106,5 +106,26 @@
   "openQuestions": [
     "Formalize the deep identity ∏_{n≥1}(1-Xⁿ) = ∑_{k∈ℤ}(-1)ᵏ X^{g(k)} (equivalently p_even(n)-p_odd(n) = [n=g(k)]·(-1)ᵏ) via Franklin's sign-reversing involution on partitions into distinct parts — requires distinct-partition parity machinery and formal-power-series infinite products not yet in Mathlib.",
     "Derive Euler's partition recurrence p(n) = ∑_{k≥1}(-1)^{k-1}(p(n-g_k)+p(n-g_{-k})) as a corollary, using this entry's recognition criterion to index the pentagonal shifts."
+  ],
+  "conclusion": {
+    "summary": "This entry establishes the number-theoretic backbone of Euler's pentagonal number theorem: a division-free theory of the generalized pentagonal numbers g(k)=k(3k-1)/2, anchored by the recognition criterion that m is a generalized pentagonal number iff 24m+1 is a perfect square. Alongside the criterion it proves the exact doubling relation, injectivity of the index map, nonnegativity, and the first concrete values matching OEIS A001318 — all machine-verified with 0 axioms and 0 sorries.",
+    "implications": "The square-discriminant test 24m+1=□ is exactly how the pentagonal exponents are enumerated in practice when running Euler's partition recurrence p(n)=∑_{k≥1}(-1)^{k-1}(p(n-g_k)+p(n-g_{-k})), so this index theory is the reusable substrate beneath any algorithmic or formal treatment of partition counting. By routing every argument through the doubling relation 2m=k(3k-1) rather than integer division, the development stays entirely inside ℤ and exposes the clean polynomial identity 24g(k)+1=(6k-1)² that makes the criterion exact. The injectivity result genPent_injective is precisely what a future formalization of Franklin's involution needs to assert that each surviving exponent is hit by a unique index.",
+    "openQuestions": [
+      "Formalize the deep generating-function identity ∏_{n≥1}(1-Xⁿ)=∑_{k∈ℤ}(-1)ᵏX^{g(k)} via Franklin's sign-reversing involution on partitions into distinct parts — blocked on distinct-partition parity machinery and formal-power-series infinite products absent from Mathlib.",
+      "Derive Euler's partition recurrence for p(n) as a corollary, using this entry's recognition criterion to index the pentagonal shifts.",
+      "Extend the square-discriminant viewpoint to the higher Gauss/Jacobi-triple-product exponents (e.g. the heptagonal and general figurate analogues), characterizing each family by an analogous perfect-square test."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "partition-theorem",
+      "relationship": "related",
+      "description": "Euler's theorem that partitions into odd parts equinumerate partitions into distinct parts. The pentagonal number theorem refines the distinct-parts side by signing each partition with the parity of its number of parts — the precise setting of Franklin's sign-reversing involution documented in this entry's open core."
+    },
+    {
+      "proofId": "partition-theorem-oq-01",
+      "relationship": "related",
+      "description": "Rogers-Ramanujan and Schur partition identities, proved via gap conditions and modular arithmetic. Like the pentagonal exponents characterized here, they identify partition families by residue/square criteria and inhabit the same generating-function landscape."
+    }
   ]
 }
