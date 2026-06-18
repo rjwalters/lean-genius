@@ -2,7 +2,36 @@
 
 **Phase**: ACT — field/operator half COMPLETE + REGISTERED; PID-module half scoped with a build-ready recipe (estimate revised DOWN from >500 to ~150–250 lines)
 **Since**: 2026-06-16 (S3 gallery annotation re-anchor under triple blackout — researcher-8)
-**Iteration**: 3
+**Iteration**: 4
+
+## S4 (2026-06-17, researcher-11): PID recipe bearer RE-CONFIRM + crux risk pinpointed (offline source now available)
+**Corrects S3's "no usable offline mathlib source".** The standalone checkout
+`/Users/rwalters/GitHub/mathlib4` is at the exact pin (`2df2f0150c` = v4.26.0). Re-audited the
+S2 build-ready recipe against it — **every bearer still resolves**, with exact file:line:
+- `Module.exists_ker_toSpanSingleton_eq_annihilator` — `Mathlib/Algebra/Module/PID.lean:273` (the
+  linchpin: produces the cyclic-generator candidate `x` with `ker(toSpanSingleton x) = ann(M)`).
+- `LinearMap.toSpanSingleton` `Span/Basic.lean:702`, `range_toSpanSingleton` `:751`,
+  `ker_toSpanSingleton` `:816`, range≃`R∙x` equiv `:854`.
+- `Module.length_eq_add_of_exact` `RingTheory/Length.lean:153`, `Module.length_eq_zero_iff` `:49`,
+  `Module.length_ne_top [IsArtinian][IsNoetherian]` `:106`.
+- `Module.mem_annihilator` `RingTheory/Ideal/Maps.lean:822`.
+
+**CRUX RISK SHARPENED (the real remaining work, not a freebie).** The (←) length argument needs
+`[IsArtinian R M]`, and **Mathlib has NO direct lemma `f.g. torsion over a PID ⟹ IsArtinian /
+IsFiniteLength`** at pin. The only route is `isFiniteLength_iff_isNoetherian_isArtinian`
+(`RingTheory/FiniteLength.lean:73`), so `IsArtinian R M` must itself be CONSTRUCTED (via the
+structure theorem `Module.equiv_directSum_of_isTorsion` → each `R ⧸ (pⁱ)` summand is Artinian →
+`isArtinian_of_quotient_of_artinian` `Artinian/Module.lean:256` + `isArtinian_prod`/`pi`). This is
+the genuine ≥30-LOC sub-obligation hidden inside the recipe's "discharge the IsArtinian/length
+sub-obligations" bullet — it needs build iteration, not a one-citation close.
+
+**Build reality this session:** Docker daemon UP, but host **heavily contended** (load avg ~29,
+8 concurrent `lean-build` containers). docker-build.sh does a fresh mathlib clone per run (~minutes);
+the PID file needs multiple such cycles. Per the ≤2-container good-citizen rule, did NOT run the
+multi-cycle iteration into a load-29 host racing 8 peers, and did NOT blind-write the finicky
+IsArtinian-dependent proof (role + file both warn). Aristotle `prove` still **404**. Released.
+**Next clean Docker-up (≤2 containers) session:** write the PID file, building the `IsArtinian R M`
+instance FIRST (the structure-theorem route above), then the length close — budget for ~5+ build cycles.
 
 ## S3 (2026-06-16, researcher-8): gallery annotation re-anchor (verifiable, blackout-safe)
 Resolver `validate` reported 1/6 misaligned: `chcv-oq03-ann-main` ("Main Theorem:
