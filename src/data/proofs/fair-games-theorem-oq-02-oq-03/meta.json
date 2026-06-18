@@ -59,11 +59,19 @@
   "sections": [
     {
       "id": "preamble",
-      "title": "Problem Statement and Strategy",
+      "title": "Problem statement and the quartic martingale",
       "startLine": 1,
+      "endLine": 20,
+      "summary": "Sets up the variance computation for the simple symmetric random walk Gambler's Ruin stopping time τ. The mean E[τ] = k(N−k) is already proven in FairGamesTheoremOQ02 via the quadratic martingale Sₙ²−n; the variance needs the quartic martingale Mₙ = Sₙ⁴ − 6nSₙ² + 3n² + 2n. The algebraic prerequisite is the symmetric step-mean equality ½·Q(n+1,s+1) + ½·Q(n+1,s−1) = Q(n,s), the pointwise form of the martingale identity E[M_{n+1} | Sₙ=s] = Mₙ for increments uniform on {+1,−1}.",
+      "mathContext": "Mₙ = Sₙ⁴ − 6nSₙ² + 3n² + 2n; step-mean identity ½Q(n+1,s+1)+½Q(n+1,s−1)=Q(n,s) ⇔ E[M_{n+1}|Sₙ=s]=Mₙ; baseline E[τ]=k(N−k) from the quadratic martingale."
+    },
+    {
+      "id": "strategy",
+      "title": "Strategy: two-martingale optional stopping for Var(τ)",
+      "startLine": 21,
       "endLine": 51,
-      "summary": "Module docstring laying out the variance computation: the quartic martingale M_n = S_n⁴ − 6nS_n² + 3n² + 2n, the cubic martingale used to compute the hitting weight W, the two optional-stopping equations, and the resulting closed form Var(τ) = (1/3)·k(N−k)(N²−2Nk+2k²−2).",
-      "mathContext": "Establishes that the variance requires a quartic martingale and an auxiliary cubic martingale to compute W = E[τ·𝟙_{S_τ=N}]. The two optional-stopping equations k³ = N²k − 3NW and k⁴ = N³k − 6N²W + 3E[τ²] + 2E[τ] are flagged as the only measure-theoretic inputs awaiting derivation."
+      "summary": "The derivation roadmap. Doob optional stopping on the quartic martingale gives k⁴ = E[Sτ⁴] − 6E[τ·Sτ²] + 3E[τ²] + 2E[τ], whose only unknown beyond E[τ²] is the weighted hitting time W = E[τ·𝟙_{Sτ=N}]. W is pinned by an auxiliary cubic martingale Yₙ = Sₙ³ − 3nSₙ: optional stopping yields k³ = N²k − 3NW, so W = k(N−k)(N+k)/(3N). Substituting back eliminates W and gives the closed form Var(τ) = (1/3)·k(N−k)(N²−2Nk+2k²−2) (sanity-checked at k=1,N=2 ⇒ 0). The two optional-stopping equations are flagged as the only measure-theoretic inputs still awaiting a faithful lift into the random-walk filtration.",
+      "mathContext": "Quartic OST: k⁴ = N³k − 6N²W + 3E[τ²] + 2E[τ]; cubic martingale Yₙ=Sₙ³−3nSₙ gives k³ = N²k − 3NW ⇒ W = k(N−k)(N+k)/(3N); closed form Var(τ) = (1/3)·k(N−k)(N²−2Nk+2k²−2)."
     },
     {
       "id": "quartic-martingale",
