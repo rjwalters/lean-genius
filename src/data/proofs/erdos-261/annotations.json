@@ -163,5 +163,220 @@
       "startLine": 77,
       "endLine": 94
     }
+  },
+  {
+    "id": "erdos-261-weight-identities",
+    "proofId": "erdos-261",
+    "type": "technique",
+    "range": {
+      "startLine": 43,
+      "endLine": 62
+    },
+    "title": "Weight Identities and the $w(1)=w(2)$ Coincidence",
+    "content": "Basic values of the weight $w(k)=k/2^k$: $w(0)=0$, $w(1)=1/2$, $w(2)=2/4=1/2$, $w(3)=3/8$, and positivity for $k\\geq1$. The key fact is `recipPow2Weight_one_eq_two`: $w(1)=w(2)=1/2$. This single coincidence drives the whole 'transfer' mechanism -- because $n/2^n$ and $m/2^m$ are equal exactly when their weights agree, any representation of one value immediately yields a representation of every other integer with the same weight.",
+    "significance": "supporting",
+    "mathContext": "$w(k)=k/2^k$. $w(1)=1/2=2/4=w(2)$. For $k\\geq1$, $w(k)>0$ by `div_pos`/`positivity`.",
+    "relatedConcepts": [
+      "weight function",
+      "value coincidence",
+      "positivity",
+      "rational arithmetic"
+    ],
+    "prerequisites": [
+      "rational numbers",
+      "division",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "erdos-261-sum-algebra",
+    "proofId": "erdos-261",
+    "type": "technique",
+    "range": {
+      "startLine": 64,
+      "endLine": 107
+    },
+    "title": "Algebra of Finite Weight Sums",
+    "content": "The bookkeeping lemmas for $\\sum_{k\\in S} w(k)$: empty sum is $0$, singleton sum is the weight, the pair sum splits into two weights, inserting a fresh element adds its weight (`Finset.sum_insert`), the sum of positive weights is non-negative, and the sum is monotone under set inclusion (`Finset.sum_le_sum_of_subset_of_nonneg`). These are the elementary tools used to verify every explicit representation by reducing a `Finset.sum` to a finite `norm_num` computation.",
+    "significance": "supporting",
+    "mathContext": "$\\sum_{k\\in\\emptyset}w(k)=0$; $\\sum_{k\\in\\{a\\}}=w(a)$; $\\sum_{insert\\,k\\,S}=w(k)+\\sum_S$ (for $k\\notin S$); $S\\subseteq T\\Rightarrow\\sum_S\\leq\\sum_T$ when weights $\\geq0$.",
+    "relatedConcepts": [
+      "Finset.sum",
+      "monotonicity",
+      "sum over insert",
+      "finite sums"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "Finset.sum_insert",
+      "nonnegativity"
+    ]
+  },
+  {
+    "id": "erdos-261-partial-sum",
+    "proofId": "erdos-261",
+    "type": "technique",
+    "range": {
+      "startLine": 109,
+      "endLine": 125
+    },
+    "title": "Telescoping Partial-Sum Formula",
+    "content": "The closed form $\\sum_{k=1}^{n} k/2^k = 2-(n+2)/2^n$, proved by induction with `Finset.sum_range_succ` and `field_simp`/`ring`. This is the analytic backbone of the Borwein-Loring construction: shifting the index range turns the geometric-arithmetic tail into a clean difference of two terms, so a block $\\{a+1,\\dots,a+m\\}$ contributes $(a+2)/2^a-(a+m+2)/2^{a+m}$. The whole representability of the Borwein-Loring family reduces to choosing $a,m$ so this difference equals $n/2^n$.",
+    "significance": "key",
+    "mathContext": "$\\sum_{k=1}^{n}\\frac{k}{2^k}=2-\\frac{n+2}{2^n}$. Consequence (`icc_recipPow2_sum`): $\\sum_{k=a+1}^{a+m}\\frac{k}{2^k}=\\frac{a+2}{2^a}-\\frac{a+m+2}{2^{a+m}}$.",
+    "relatedConcepts": [
+      "telescoping sum",
+      "arithmetico-geometric series",
+      "induction",
+      "closed form"
+    ],
+    "prerequisites": [
+      "Finset.sum_range_succ",
+      "induction",
+      "field_simp"
+    ]
+  },
+  {
+    "id": "erdos-261-small-cases",
+    "proofId": "erdos-261",
+    "type": "insight",
+    "range": {
+      "startLine": 128,
+      "endLine": 170
+    },
+    "title": "Base Cases and the Weight-Transfer Lemma",
+    "content": "Concrete representations are certified by exhibiting a witness set and evaluating the finite sum: e.g. $w(1)=1/2=w(4)+w(5)+w(6)$ gives `representable_one`, and $w(3)=3/8=w(4)+w(6)+w(8)$ gives `representable_three`. The pivotal `representable_of_eq_weight` lemma transfers a representation along any weight equality, so `representable_two` is obtained for free from `representable_one` via $w(2)=w(1)$. This is the formal payoff of the $w(1)=w(2)$ coincidence.",
+    "significance": "key",
+    "mathContext": "$1/2=w(4)+w(5)+w(6)=\\tfrac{4}{16}+\\tfrac{5}{32}+\\tfrac{6}{64}$. Transfer: $w(n)=w(m)$ and $m$ representable $\\Rightarrow$ $n$ representable (reuse the same witness set).",
+    "relatedConcepts": [
+      "explicit witnesses",
+      "weight transfer",
+      "representability",
+      "decide"
+    ],
+    "prerequisites": [
+      "IsRecipPow2Rep",
+      "Finset.sum evaluation",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "erdos-261-borwein-loring",
+    "proofId": "erdos-261",
+    "type": "technique",
+    "range": {
+      "startLine": 172,
+      "endLine": 226
+    },
+    "title": "The Borwein–Loring Family (Proved)",
+    "content": "The infinite family: for $m\\geq1$, $n=2^{m+1}-m-2$ is representable by the consecutive block $\\{n+1,\\dots,n+m\\}$. The proof telescopes via `icc_recipPow2_sum` and turns on the arithmetic identity $n+m+2=2^{m+1}$, which makes the block sum collapse exactly to $n/2^n$. The card-$\\geq2$ requirement forces the $m=1$ case ($n=1$) to fall back on `representable_one`, while $m\\geq2$ is handled uniformly. This is the file's central original construction.",
+    "significance": "key",
+    "mathContext": "$n=2^{m+1}-m-2$. Then $\\sum_{k=n+1}^{n+m}w(k)=\\frac{n+2}{2^n}-\\frac{n+m+2}{2^{n+m}}=\\frac{n+2}{2^n}-\\frac{2^{m+1}}{2^{n+m}}=\\frac{n+2-2}{2^n}=\\frac{n}{2^n}$, using $n+m+2=2^{m+1}$.",
+    "relatedConcepts": [
+      "Borwein–Loring construction",
+      "telescoping block",
+      "explicit family",
+      "consecutive integers"
+    ],
+    "prerequisites": [
+      "icc_recipPow2_sum",
+      "Finset.Icc",
+      "exponential identities"
+    ]
+  },
+  {
+    "id": "erdos-261-cusick",
+    "proofId": "erdos-261",
+    "type": "insight",
+    "range": {
+      "startLine": 228,
+      "endLine": 248
+    },
+    "title": "Cusick's Infinitude Theorem (Proved)",
+    "content": "Part 1 of Erdős #261 -- that infinitely many $n$ are representable -- is proved here unconditionally. The lemma `borwein_loring_value_ge` shows $n=2^{m+1}-m-2\\geq m$ (exponential dominates linear), so taking $m=\\max(N,1)$ produces a representable $n\\geq N$ for every threshold $N$. This realizes Cusick's result as a corollary of the explicit Borwein-Loring family rather than an abstract existence argument.",
+    "significance": "key",
+    "mathContext": "$\\forall N,\\ \\exists n\\geq N$ representable. Witness $n=2^{m+1}-m-2$ with $m=\\max(N,1)$; bound $N\\leq m\\leq 2^{m+1}-m-2$ from $2(m+1)\\leq2^{m+1}$.",
+    "relatedConcepts": [
+      "Cusick's theorem",
+      "infinitude",
+      "exponential growth",
+      "unbounded witnesses"
+    ],
+    "prerequisites": [
+      "borwein_loring_family",
+      "Nat.lt_two_pow_self",
+      "omega"
+    ]
+  },
+  {
+    "id": "erdos-261-explicit-reps",
+    "proofId": "erdos-261",
+    "type": "context",
+    "range": {
+      "startLine": 250,
+      "endLine": 347
+    },
+    "title": "Explicit Representatives $n=4,5,6,7,9,11,26,57,120$",
+    "content": "A catalogue of individually certified representations. Some come directly from the Borwein-Loring family ($n=4,11,26,57,120$ for $m=2,3,4,5,6$); others ($n=5,6,7,9$) are ad-hoc witness sets verified by `norm_num`. `representable_le_7` bundles $1\\leq n\\leq7$ via `interval_cases`. Together they confirm the Tengely–Ulas–Zygadło computational evidence (Part 2, all $n\\leq10000$ representable) at the small end, even though the universal statement remains open.",
+    "significance": "supporting",
+    "mathContext": "Borwein–Loring instances $n=2^{m+1}-m-2$: $m{=}2{\\to}4$, $3{\\to}11$, $4{\\to}26$, $5{\\to}57$, $6{\\to}120$. Ad-hoc: $w(5)=w(6)+w(7)+w(11)+w(13)+w(14)$, etc.",
+    "relatedConcepts": [
+      "explicit examples",
+      "interval_cases",
+      "computational verification",
+      "Tengely–Ulas–Zygadło"
+    ],
+    "prerequisites": [
+      "borwein_loring_family",
+      "norm_num",
+      "IsRepresentable"
+    ]
+  },
+  {
+    "id": "erdos-261-conjectures",
+    "proofId": "erdos-261",
+    "type": "concept",
+    "range": {
+      "startLine": 349,
+      "endLine": 357
+    },
+    "title": "The Erdős Conjectures (Parts 1–2)",
+    "content": "`ErdosProblem261_infinitely_many` records the resolved Part 1 (= Cusick). Part 2 -- that *every* $n\\geq1$ is representable -- is stated only as a docstring conjecture, not a theorem: it remains genuinely open, verified computationally only up to $n\\leq10000$. The file is careful not to assert it, keeping the formalization honest about what is proved versus conjectured.",
+    "significance": "key",
+    "mathContext": "Part 1 (proved): $\\forall N,\\exists n\\geq N$ representable. Part 2 (open): $\\forall n\\geq1$, $n$ representable -- only checked for $n\\leq10000$.",
+    "relatedConcepts": [
+      "open problem",
+      "resolved vs conjectured",
+      "honest formalization",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "cusick_infinitely_many",
+      "IsRepresentable"
+    ]
+  },
+  {
+    "id": "erdos-261-continuum-caveat",
+    "proofId": "erdos-261",
+    "type": "context",
+    "range": {
+      "startLine": 358,
+      "endLine": 388
+    },
+    "title": "Continuum Part: Honest Incompleteness Caveat",
+    "content": "Part 3 asks whether some rational admits continuum-many infinite representations. The definition `IsInfiniteRep` here records only distinctness/positivity of the sequence -- it deliberately omits the convergence condition $\\sum a(k)/2^{a(k)}=x$, which would need `tsum`/`Filter.Tendsto` from Mathlib's topology. The docstrings state plainly that the resulting `ErdosProblem261_continuum` and `..._two_reps` theorems are therefore *trivially satisfiable* and do not capture the intended content. This is a model of integrity: the placeholder is flagged rather than passed off as a genuine resolution.",
+    "significance": "supporting",
+    "mathContext": "Intended: $\\exists x,\\ |\\{(a_k):\\sum a_k/2^{a_k}=x\\}|\\geq 2^{\\aleph_0}$. Formalized `IsInfiniteRep` drops the convergence clause, so the existence statements are vacuous placeholders, not proofs of Part 3.",
+    "relatedConcepts": [
+      "convergence of series",
+      "tsum",
+      "placeholder definitions",
+      "formalization integrity"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "cardinality",
+      "Filter.Tendsto"
+    ]
   }
 ]
