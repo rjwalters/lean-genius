@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DivisibilityByThreeOQ02.lean",
     "tags": [
       "number-theory",
@@ -15,11 +15,11 @@
       "modular-arithmetic",
       "extensions"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "axiomCount": 1,
+    "assumptions": "The named divisibility-rule theorems (seven_dvd_alt_three_digit, eleven/thirteen/thousand_one_dvd_alt_three_digit and the dependent seven_dvd_alt_blocks_nat) discharge the framework side condition B % d = d - 1 via native_decide, which trusts the Lean compiler and depends on the Lean.ofReduceBool axiom. The general framework theorem dvd_iff_altSum and the structural results are otherwise machine-verified.",
     "lineCount": 432,
     "theoremCount": 31,
     "definitionCount": 5,
