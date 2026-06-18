@@ -7,7 +7,7 @@
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hockey-stick_identity",
     "date": "2026-02-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean",
     "tags": [
       "combinatorics",
@@ -18,11 +18,11 @@
       "Pascal's triangle",
       "generating functions"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified. Depends on ArithmeticSeriesOQ02OQ02 (parallel Vandermonde).",
+    "axiomCount": 1,
+    "assumptions": "Relies on `Lean.ofReduceBool`: the named verification theorems `check_3d_zeros` (C(5,3)=10) and `check_2d_a1b0` (C(6,3)=20) are discharged solely by `native_decide`, which trusts the compiler's kernel reduction. The symbolic headline results — `multi_hockey_stick` (the k-dimensional identity, by list induction on `parallel_vandermonde`), the 1D/2D/3D special-case rewrites, and `multiHockeySum_mono`/`multiHockeySum_pos` — are native_decide-free and fully machine-checked. No literal `axiom` declarations (leanFile.axiomCount 0). Depends on ArithmeticSeriesOQ02OQ02 (parallel Vandermonde).",
     "lineCount": 165,
     "theoremCount": 8,
     "definitionCount": 1,
