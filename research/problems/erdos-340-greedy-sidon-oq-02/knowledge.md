@@ -160,3 +160,38 @@ orientation bit, bounding the sum by `∑_{Ico 1 ℓ × Bool}(ℓ-d) = ℓ(ℓ-1
 3. After 0-sorry: add the `ℓ ≈ √N` optimisation to derive the sharp bound and
    discharge `axiom sidon_upper_bound` in the parent; flip parent meta
    `axiomatized/axiom → verified` (axiomCount 1 → 0).
+
+---
+
+## RESOLUTION (iter 3, 2026-06-18) — file complete; axiom NOT removable this way
+
+`window_pair_bound` was closed and the companion landed on `main` (#25945, commit
+`cdc8c8ceefc`): `Erdos340GreedySidonOQ02.lean` is now **0-sorry / 0-axiom**, proving
+`sidon_window_key : ℓ·|A|² ≤ (N+ℓ)(ℓ-1+|A|)` for all `ℓ ≥ 1`.
+
+### The step-3 plan above (discharge `sidon_upper_bound` via `ℓ ≈ √N`) is INVALID
+Numerically optimising the proved key inequality over all integer `ℓ ≥ 1` (checked
+N ≤ 3·10⁵) gives a best `|A|`-bound of ≈ **1.13·√N** asymptotically — correct order
+`O(√N)` but a strictly larger lower-order term than the parent axiom's
+`⌊√N⌋ + ⌊√⌊√N⌋⌋ + 1 ≈ √N + N^{1/4}`. Concretely:
+
+| N      | key-inequality best `|A|` UB | axiom floor bound | optimal ℓ |
+|--------|------------------------------|-------------------|-----------|
+| 15     | 6                            | 5                 | 4         |
+| 100    | 13                           | 14                | 21        |
+| 1 000  | 38                           | 37                | 99        |
+| 10⁴    | 115                          | 110               | 390       |
+| 10⁶    | 1135                         | 1032              | 3978      |
+
+The optimal `ℓ` is ≈ `4√N`, *not* `√N`, and even there the bound overshoots the floor
+constant (gap grows to 105 by N ≈ 1.9·10⁵). The `∑ wc(wc-1) ≤ ℓ(ℓ-1)` bound in
+`window_pair_bound` is itself **sharp** for Sidon sets (each difference `d < ℓ` occurs
+≤ once ⇒ `2∑_{d<ℓ}(ℓ-d) = ℓ(ℓ-1)`), so the looseness is intrinsic to this Cauchy–Schwarz
+route, not a slack to be tightened. Reaching `√N + N^{1/4}` needs the sharper Lindström
+weighting — a different counting argument — so **`sidon_upper_bound` cannot be discharged
+by optimising `sidon_window_key` over ℓ.** Treat parent axiom removal as a separate,
+harder research line (or leave the entry honestly `axiomatized`).
+
+Also note: the existing axiom-free `sidon_upper_bound_weak` (`|A| ≤ ⌊√(2N)⌋+1`,
+difference-counting) already *beats* the key-inequality bound across the small/mid-N
+range, so no derived explicit cardinality theorem from `sidon_window_key` was worth adding.
