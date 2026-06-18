@@ -85,6 +85,16 @@ that has no infinite analogue:
   free-amalgamation counterexample. Finiteness-free throughout; the spectral step the
   finite proof would invoke next has no infinite analogue.
 
+* `no_universal_infinite_aleph0_regular` — **the counterexample shape, assembled.** An
+  *infinite* hub-free friendship graph is **ℵ₀-regular**: every neighbourhood is infinite
+  *and* all neighbourhoods are pairwise equinumerous. Combines
+  `infinite_friendship_has_infinite_degree` (some infinite-degree vertex) with
+  `no_universal_regular` (all neighbourhoods equinumerous) to push infiniteness onto
+  *every* vertex. Together with `unique_infinite_degree_vertex` (with a hub: exactly one
+  infinite-degree vertex) this completes the structural dichotomy — a friendship graph is
+  either a windmill with a single hub, or hub-free and ℵ₀-regular — entirely without the
+  spectral argument.
+
 Where the finite proof breaks: the spectral step
 `FriendshipTheorem.friendship_regular_implies_universal` is entirely finite-matrix
 algebra (trace, finite eigenvalue multiplicities, integrality) and has no infinite
@@ -539,5 +549,33 @@ theorem no_universal_regular (hF : IsFriendshipGraph G)
   · obtain ⟨z, hzu, hzv⟩ := no_universal_adjacent_has_common_nonneighbor hF hnouniv hadj
     exact neighborSet_equinum_of_common_nonneighbor hF hzu hzv
   · exact nonadjacent_neighborSet_equinum hF hadj
+
+/-- **Infinite + hub-free ⟹ ℵ₀-regular (the counterexample shape).** An *infinite*
+friendship graph with *no universal vertex* is ℵ₀-regular: **every** neighbourhood is
+infinite, and all neighbourhoods are pairwise equinumerous (`Set.BijOn`). This is the
+precise structural shape of the C₅ free-amalgamation counterexample described in the
+file header ("every vertex there has infinite degree"), assembled here as a single
+theorem. The proof combines the two existing pillars: `no_universal_regular` (hub-free
+⟹ regular) supplies, for any vertex `w`, a `Set.BijOn` from the neighbourhood of some
+infinite-degree vertex `w₀` (furnished by `infinite_friendship_has_infinite_degree`)
+onto `N(w)`; the injective image of an infinite set is infinite and sits inside `N(w)`,
+forcing `N(w)` infinite too. Contrast `unique_infinite_degree_vertex`: *with* a hub
+exactly one vertex is infinite-degree, *without* a hub every vertex is. The dichotomy
+"a friendship graph is either a (possibly infinite) windmill with a single hub, or
+hub-free and ℵ₀-regular" is thus complete on the structural (non-spectral) side. No
+`[Fintype V]` is used; finiteness enters only through the ambient `[Infinite V]`. -/
+theorem no_universal_infinite_aleph0_regular (hF : IsFriendshipGraph G) [Infinite V]
+    (hnouniv : ∀ c : V, ¬ FriendshipTheorem.IsUniversalVertex G c) :
+    (∀ w : V, (G.neighborSet w).Infinite) ∧
+      ∀ u v : V, ∃ f : V → V, Set.BijOn f (G.neighborSet u) (G.neighborSet v) := by
+  refine ⟨fun w => ?_, no_universal_regular hF hnouniv⟩
+  obtain ⟨w₀, hw₀⟩ := infinite_friendship_has_infinite_degree hF
+  obtain ⟨f, hf⟩ := no_universal_regular hF hnouniv w₀ w
+  -- `f` maps `N(w₀)` into `N(w)`, injectively; the image is infinite and `⊆ N(w)`.
+  have hsub : f '' (G.neighborSet w₀) ⊆ G.neighborSet w := Set.mapsTo'.mp hf.mapsTo
+  have himg : (f '' (G.neighborSet w₀)).Infinite :=
+    fun hfin => hw₀ (Set.Finite.of_finite_image hfin hf.injOn)
+  intro hwfin
+  exact himg (hwfin.subset hsub)
 
 end FriendshipTheoremOQ04
