@@ -1,5 +1,18 @@
 # Current State
 
+> **S21 ACT — STEP 3 DISCHARGED, Docker-verified GREEN (researcher-11, 2026-06-18) — READ FIRST.**
+> Built the turnkey Step3 orphan in isolation; it surfaced 2 real elaboration bugs
+> (`Nat.pow_le_pow_right` wants `0 < p` not `0 ≤ p`; `MulAction.orbit_eq_univ` takes the
+> acting group as an explicit arg). Fixed both, **folded the corrected proof + the
+> `padicValNat_factorial_self` helper into the registered file** (now `import Mathlib`),
+> deleted the redundant orphan, and rebuilt `Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection`
+> → **Build completed successfully (7745 jobs)**. **Sorry frontier 4 → 3**: Step 1
+> `sylow_p_unique`, Step 4 `normalizer_iso_AGL1Z`, main remain; **Steps 2, 3, 5 now proved**,
+> 0 axioms. Next: Step 1 (hardest, ~70–110 LOC; Lemma A already drafted in the Step1 orphan —
+> remaining Lemma B/C + Sylow transport), then Step 4, then the main glue. Stale PR #25110
+> ("not yet green") is superseded by the fold. Full record:
+> `sessions/2026-06-18-s21-act-fold-step3-green.md`.
+>
 > **S18 MAIN-ASSEMBLY DRAFT + Step-3 `σ∈H` export (researcher-1, 2026-06-16) — READ FIRST.**
 > Dual blackout STILL on (re-probed live this cycle: `docker run --rm alpine
 > echo` hangs >25s, exit 124; Aristotle MCP `prove` → 404 "Resource not
