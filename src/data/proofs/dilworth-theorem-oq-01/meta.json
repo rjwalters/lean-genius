@@ -60,6 +60,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring, Imports, and Setup",
+      "summary": "The module docstring, `import Mathlib`, `namespace DilworthTheoremOQ01`, and the `variable {α} [PartialOrder α]` context. The docstring defines chains and antichains, states Dilworth's theorem (1950: min chain cover = max antichain) and Mirsky's theorem (1971: min antichain cover = max chain), and scopes the file precisely to the EASY (pigeonhole) directions of both — the ≤ inequalities — built on the single fact that a chain and an antichain meet in at most one point. It explicitly disclaims the hard attainment directions and records 0 sorries / 0 axioms over an arbitrary PartialOrder.",
+      "startLine": 1,
+      "endLine": 48,
+      "mathContext": "Dilworth: $\\min(\\text{chain cover}) = \\max(\\text{antichain})$; Mirsky: $\\min(\\text{antichain cover}) = \\max(\\text{chain})$. This file proves the $\\le$ (easy) directions of both."
+    },
+    {
       "id": "definitions",
       "title": "Chains and Antichains on Finsets",
       "summary": "Defines IsChainOn (pairwise comparable members) and IsAntichainOn (comparable members are equal) over an arbitrary PartialOrder.",
