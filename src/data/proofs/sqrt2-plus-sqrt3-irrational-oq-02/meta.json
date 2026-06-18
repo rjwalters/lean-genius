@@ -2,7 +2,7 @@
   "id": "sqrt2-plus-sqrt3-irrational-oq-02",
   "title": "Besicovitch (n = 2): ℚ-Linear Independence of {1, √2, √3, √6}",
   "slug": "sqrt2-plus-sqrt3-irrational-oq-02",
-  "description": "Answers the open question 'Formalize Besicovitch's theorem (1940): √a₁, …, √aₙ are ℚ-linearly independent for distinct squarefree aᵢ' for the smallest non-trivial case n = 2 (radicands {1, 2, 3, 6}). Proves {1, √2, √3, √6} is ℚ-linearly independent: a + b√2 + c√3 + d√6 = 0 with a,b,c,d ∈ ℚ forces a = b = c = d = 0. The technical heart is sqrt3_not_in_Qsqrt2 (√3 ∉ ℚ(√2)), the degree-doubling step of the multiquadratic tower. Fully verified, axiom-free: the irrationality inputs ¬IsSquare 3 and ¬IsSquare 6 are proved by an elementary divisor bound plus a finite case split (no kernel decide, which gets stuck on Nat.sqrt, and no native_decide), hence no Lean.ofReduceBool. 6 theorems, 0 definitions, 0 axioms, 0 sorries.",
+  "description": "Answers the open question 'Formalize Besicovitch's theorem (1940): √a₁, …, √aₙ are ℚ-linearly independent for distinct squarefree aᵢ' for the smallest non-trivial case n = 2 (radicands {1, 2, 3, 6}). Proves {1, √2, √3, √6} is ℚ-linearly independent: a + b√2 + c√3 + d√6 = 0 with a,b,c,d ∈ ℚ forces a = b = c = d = 0. The technical heart is sqrt3_not_in_Qsqrt2 (√3 ∉ ℚ(√2)), the degree-doubling step of the multiquadratic tower. Fully verified, axiom-free: the irrationality inputs ¬IsSquare 3 and ¬IsSquare 6 are proved by an elementary divisor bound plus a finite case split (no kernel decide, which gets stuck on Nat.sqrt, and no native_decide), hence no Lean.ofReduceBool. 6 theorems, 0 definitions, 0 axioms, 0 sorries. The file now also proves the uniform generalization linearIndependent_one_sqrt_sqrt_sqrt: for ANY coprime squarefree a, b > 1, {1, √a, √b, √(ab)} is ℚ-linearly independent — covering infinitely many biquadratic fields with a single axiom-free proof, with the {2,3} case recovered as a corollary.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-18",
@@ -22,15 +22,14 @@
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
     "assumptions": "None. Fully proved: 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. The irrationality inputs (¬IsSquare 3, ¬IsSquare 6) are discharged by an elementary divisor bound (r ∣ n → r ≤ n) plus a finite case split (interval_cases/omega), NOT by kernel `decide` (which gets stuck on Nat.sqrt) and NOT by `native_decide`, so the file does not depend on Lean.ofReduceBool. Standard foundational axioms (propext, Classical.choice, Quot.sound) only.",
-    "lineCount": 203,
-    "theoremCount": 6,
+    "lineCount": 393,
+    "theoremCount": 11,
     "definitionCount": 0,
     "originalContributions": [
-      "linearIndependent_one_sqrt2_sqrt3_sqrt6: {1, √2, √3, √6} is ℚ-linearly independent (the complete n = 2 Besicovitch characterization, equivalently [ℚ(√2,√3):ℚ] = 4)",
-      "sqrt3_not_in_Qsqrt2: √3 is not of the form e + f√2 with e,f ∈ ℚ — the n = 2 induction heart (degree-doubling step) that the general sorry-based reduction (sibling Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02) lacks",
-      "linearIndependent_one_sqrt2: {1, √2} is ℚ-linearly independent (base of the tower)",
-      "rat_sq_ne_two: no rational squares to 2 (√2 irrationality restated over ℚ)",
-      "irrational_sqrt_three, irrational_sqrt_six: √3, √6 irrational, with ¬IsSquare 3 / ¬IsSquare 6 proved by an elementary divisor bound + finite case split (axiom-free; avoids kernel decide, which gets stuck on Nat.sqrt, and avoids native_decide)"
+      "linearIndependent_one_sqrt_sqrt_sqrt: for ANY coprime squarefree a,b > 1, {1, √a, √b, √(ab)} is ℚ-linearly independent (equivalently [ℚ(√a,√b):ℚ] = 4) — a uniform generalization covering infinitely many biquadratic fields with one proof; the radicand-specific irrationality inputs are replaced by irrational_sqrt_natCast_iff + not_isSquare_of_squarefree",
+      "sqrtb_not_in_Qsqrta: general induction heart — √b ∉ ℚ(√a) for coprime squarefree a,b, the degree-doubling step proved uniformly in both radicands",
+      "not_isSquare_of_squarefree, irrational_sqrt_of_squarefree: squarefree n > 1 ⟹ ¬IsSquare n ⟹ Irrational √n (clean, reusable; Mathlib-contribution candidates)",
+      "linearIndependent_one_sqrt2_sqrt3_sqrt6' / linearIndependent_one_sqrt2_sqrt3_sqrt6: the concrete {1, √2, √3, √6} n = 2 Besicovitch case (recovered as the a=2,b=3 instance of the general theorem, confirming non-vacuity)"
     ]
   },
   "overview": {
@@ -64,9 +63,9 @@
   },
   "leanFile": {
     "namespace": "Sqrt2PlusSqrt3IrrationalOQ02",
-    "lineCount": 203,
+    "lineCount": 393,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/Sqrt2PlusSqrt3IrrationalOQ02.lean",
     "sorries": 0
@@ -133,6 +132,12 @@
       "startLine": 125,
       "endLine": 190,
       "mathContext": "a+b√2+c√3+d√6 = 0 ⟹ a=b=c=d=0 — the complete n = 2 Besicovitch characterization."
+    },
+    {
+      "title": "General Biquadratic Case: {1, √a, √b, √(ab)} for Coprime Squarefree a, b",
+      "startLine": 218,
+      "endLine": 393,
+      "description": "Uniform generalization of the n = 2 result: not_isSquare_of_squarefree and irrational_sqrt_of_squarefree supply the irrationality inputs from the squarefree hypothesis; sqrtb_not_in_Qsqrta is the general degree-doubling heart (√b ∉ ℚ(√a)); linearIndependent_one_sqrt_sqrt_sqrt proves ℚ-linear independence of {1, √a, √b, √(ab)} for any coprime squarefree a, b > 1; and linearIndependent_one_sqrt2_sqrt3_sqrt6' recovers the {2,3} instance."
     }
   ],
   "sorries": 0
