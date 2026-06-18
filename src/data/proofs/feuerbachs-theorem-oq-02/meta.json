@@ -6,7 +6,7 @@
   "meta": {
     "author": "Murakami (1952), Court (1934)",
     "date": "2026-03-30",
-    "status": "axiomatized",
+    "status": "verified",
     "tags": [
       "geometry",
       "solid-geometry",
@@ -18,7 +18,7 @@
       "incircle-excircle"
     ],
     "proofRepoPath": "Proofs/FeuerbachsTheoremOQ02.lean",
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -28,19 +28,20 @@
       }
     ],
     "dateAdded": "2026-03-30",
-    "axiomCount": 1,
-    "lineCount": 769,
-    "assumptions": "1 axiom: feuerbach_3d_fails_general (existence of a non-orthocentric tetrahedron for which the (N₂₄, R/3)-sphere is not tangent to the insphere). Note: per the 2026-05-02 refutation, tangency also fails for many orthocentric tetrahedra, so the orthocentric hypothesis does not save the conjecture as originally stated. Two former axioms REMOVED as mathematically false (edge_midpoints_on_sphere, face_centroids_on_sphere). Five tangency theorems (feuerbach_3d_insphere, feuerbach_3d_exsphere_{A,B,C,D}) and the bundled feuerbach_3d_theorem REMOVED on 2026-05-02 after a closed-form counterexample at T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) showed dist(N₂₄, I)² = 3r² ≠ (R/3 − r)². Net delta: 5 sorries → 0.",
+    "axiomCount": 0,
+    "lineCount": 1050,
+    "assumptions": "None. The file is fully machine-checked with 0 axioms and 0 sorries (verified under Mathlib, Lean v4.26.0). The former axiom feuerbach_3d_fails_general — the existence of a non-orthocentric tetrahedron whose twenty-four-point sphere is not internally tangent to its insphere — is now PROVED from an explicit witness T1 = ((0,0,0),(1,0,0),(0,1,0),(1,1,1)): witnessT1_fails establishes non-orthocentricity (dot3 (B−A) (D−C) = 1 ≠ 0) and non-tangency (dist(N₂₄,I)² > (R/3 − r)² via a three-surd separation kernel, sympy-certified in verify_feuerbach3d_fails_witness_exact.py). Uses only Mathlib's Real.sqrt and standard order/field lemmas with norm_num/nlinarith/field_simp/ring/positivity/linear_combination — no native_decide, no structure-encoded assumptions about the open problem. The correct positive 3D analogue (Murakami's face-circumcircle sphere) remains unformalized (neither proved nor axiomatized here). Two former axioms were earlier removed as mathematically false (edge_midpoints_on_sphere, face_centroids_on_sphere); five sorry-stated tangency theorems were removed on 2026-05-02 after the closed-form refutation at T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)).",
     "originalContributions": [
       "Complete 3D coordinate geometry infrastructure for tetrahedra in Lean 4",
       "Formalization of orthocentric tetrahedra with proof that third perpendicularity follows from first two",
       "Definitions of the twenty-four-point sphere (center, radius) preserved for downstream work, with documentation that they are NOT the correct Feuerbach sphere",
       "Closed-form refutation of the candidate '3D Feuerbach theorem' (the (N₂₄, R/3)-sphere is not tangent to the insphere of every orthocentric tetrahedron); explicit symbolic counterexample at T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0))",
       "Proof of the 3D Euler line relation: centroid divides circumcenter-Monge point segment in ratio 3:1",
-      "Proof that the six edge midpoints of an orthocentric tetrahedron are equidistant from the centroid (the midedge-sphere result; also shown not to be Feuerbach-tangent at T₀)"
+      "Proof that the six edge midpoints of an orthocentric tetrahedron are equidistant from the centroid (the midedge-sphere result; also shown not to be Feuerbach-tangent at T₀)",
+      "De-axiomatization (2026-06-18): the necessity counterexample (formerly axiom feuerbach_3d_fails_general) is now fully proved from the explicit non-orthocentric witness T1, with closed-form witness invariants (face areas √3/2, √2/2, √2/2, 1/2; volume 1/6; inradius 1/(1+√3+2√2); circumcenter (½,½,½); circumradius √3/2; incenter; twenty-four-point center (½,½,0) and radius √3/6) and a self-contained three-surd separation lemma. The parent file is now axiom-free and machine-verified. The pre-existing circumcenter Cramer-rule helpers were also reproved (scalar-triple-product cancellation keeping the determinant folded) to compile under current Mathlib."
     ],
-    "theoremCount": 13,
-    "definitionCount": 50,
+    "theoremCount": 35,
+    "definitionCount": 51,
     "additionalFiles": [
       "Proofs/FeuerbachsTheoremOQ02Aristotle.lean"
     ]
@@ -49,7 +50,7 @@
     "historicalContext": "Feuerbach's theorem (1822) that the nine-point circle is tangent to the incircle and all three excircles is considered one of the most beautiful results in classical triangle geometry. The natural question of its 3D analogue was studied by Court (1934) and Murakami (1952): for orthocentric tetrahedra, a sphere related to the circumcenter and Monge point should play the role of the nine-point circle. This formalization began with the candidate `(N₂₄, R/3)`-sphere (center = midpoint of circumcenter and Monge point, radius R/3 vs R/2 for the nine-point circle). Numerical experiments (sessions 1–2, April 2026) flagged the candidate as suspect; on 2026-05-02 a closed-form symbolic computation at the orthocentric tetrahedron T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) refuted the candidate outright, and the previously sorry-stated tangency theorems were removed. Identifying and formalizing the correct 3D Feuerbach sphere — Murakami's construction uses face circumcircles — remains open.",
     "problemStatement": "What is the 3D analogue of Feuerbach's theorem for tetrahedra? Specifically: is there a natural sphere that is tangent to the insphere and all exspheres of a tetrahedron?",
     "text": "Working hypothesis investigated: for an orthocentric tetrahedron, the (N₂₄, R/3)-sphere is internally tangent to the insphere and externally tangent to all four exspheres. This formalization REFUTES that hypothesis at T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) and therefore states no positive 3D Feuerbach theorem.",
-    "proofStrategy": "Coordinate geometry in R^3. Build the tetrahedron / orthocentric / circumcenter / Monge point / insphere / exsphere infrastructure (done). Use that infrastructure to (a) prove the surviving structural results (Euler line, edge-midpoint equidistance, V = rS/3) and (b) refute the (N₂₄, R/3)-Feuerbach candidate by closed-form computation at an explicit orthocentric tetrahedron. The correct 3D analogue (Murakami's face-circumcircle sphere, or a still-to-be-determined alternative) is not formalized here.",
+    "proofStrategy": "Coordinate geometry in R^3. Build the tetrahedron / orthocentric / circumcenter / Monge point / insphere / exsphere infrastructure (done). Use that infrastructure to (a) prove the surviving structural results (Euler line, edge-midpoint equidistance, V = rS/3) and (b) refute the (N₂₄, R/3)-Feuerbach candidate by closed-form computation at an explicit orthocentric tetrahedron. The correct 3D analogue (Murakami's face-circumcircle sphere, or a still-to-be-determined alternative) is not formalized here. The necessity counterexample (a non-orthocentric tetrahedron for which tangency fails) is discharged by an explicit witness T1, all of whose surd-laden invariants are computed in closed form and whose non-tangency reduces to a three-surd separation inequality — so the file is axiom-free and fully machine-verified.",
     "keyInsights": [
       "The (N₂₄, R/3)-sphere is NOT the 3D Feuerbach sphere: at the orthocentric tetrahedron T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) one has dist(N₂₄, I)² = 3r² but (R/3 − r)² = (7/6 − r)², which are unequal in closed form",
       "The orthocentric hypothesis alone does NOT salvage the candidate sphere: T₀ is orthocentric and the tangency still fails",
@@ -111,80 +112,80 @@
       "id": "part6-circumsphere-monge",
       "title": "PART 6: Circumsphere and Monge Point",
       "startLine": 245,
-      "endLine": 350,
+      "endLine": 401,
       "summary": "The circumcenter via Cramer's rule, three helper lemmas (circumcenter_dot_eq{,_v,_w}) establishing the defining dot-product equations, the theorem circumcenter_equidist (equidistant from all four vertices), the circumradius, and the Monge point M = 4G − 3O.",
       "mathContext": "The circumcenter displacement P = O − A solves 2(u·P) = |u|² for each edge vector u; this gives |OX|² − |OA|² = 0 for X ∈ {B,C,D}. The Monge point lies on the Euler line; for an orthocentric tetrahedron O, G, H, M sit at parameter ratios 0:1:2:4 and H = midpoint(O, M)."
     },
     {
       "id": "part7-insphere-exspheres",
       "title": "PART 7: Insphere and Exspheres",
-      "startLine": 351,
-      "endLine": 426,
+      "startLine": 402,
+      "endLine": 477,
       "summary": "Definitions of the incenter, inradius r = 3V/S, the four excenters (excenter_A … excenter_D), and the four exradii (exradius_A … exradius_D), all via face-area-weighted vertex coordinates.",
       "mathContext": "The incenter is the face-area-weighted average of vertices: I = (S_A·A + S_B·B + S_C·C + S_D·D) / S. Each excenter negates one face's weight; the corresponding exradius divides 3V by the signed face-area sum."
     },
     {
       "id": "part8-twenty-four-point-sphere",
       "title": "PART 8: The Twenty-Four-Point Sphere",
-      "startLine": 427,
-      "endLine": 445,
+      "startLine": 478,
+      "endLine": 496,
       "summary": "Definition of the twenty-four-point sphere center N₂₄ = midpoint(O, M) and its radius R/3, with documentation flagging that R/3 does not correspond to the midedge sphere (center G, radius R/2).",
       "mathContext": "Proposed as the 3D analogue of the nine-point circle (radius R/2 in 2D). The accompanying docstrings warn that this radius does not match the edge-midpoint sphere and may not be a classical geometric sphere."
     },
     {
       "id": "part9-tangency-defs",
       "title": "PART 9: Tangency Definitions for Spheres",
-      "startLine": 446,
-      "endLine": 459,
+      "startLine": 497,
+      "endLine": 510,
       "summary": "Predicates spheresInternallyTangent (dist = |r₁ − r₂|) and spheresExternallyTangent (dist = r₁ + r₂).",
       "mathContext": "Standard sphere-tangency conditions used to state (and refute) the candidate 3D Feuerbach tangency claims."
     },
     {
       "id": "part10-feuerbach-3d-refutation",
       "title": "PART 10: The 3D Feuerbach Conjecture — Refuted as Stated",
-      "startLine": 460,
-      "endLine": 514,
+      "startLine": 511,
+      "endLine": 565,
       "summary": "Closed-form symbolic counterexample showing that for the orthocentric tetrahedron T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) the (N₂₄, R/3)-sphere is NOT internally tangent to the insphere; the five previously sorry-stated tangency theorems and the bundled feuerbach_3d_theorem were removed, with literature pointers to Murakami (1952) and Court (1934).",
       "mathContext": "At T₀: O = (1, 3/2, 3), R = 7/2, N₂₄ = (0, 0, 0), face areas (S_A, S_B, S_C, S_D) = (9, 6, 3, 3√14), V = 6, r = 6/(6 + √14), I = (r, r, r). Hence dist(N₂₄, I) = r√3 and |R/3 − r| = 7/6 − r, which differ in closed form (squaring: 3r² ≠ (7/6 − r)²). The midedge-sphere variant (center G, radius R/2) is also refuted at T₀."
     },
     {
       "id": "part11-twenty-four-point-properties",
       "title": "PART 11: Twenty-Four-Point Sphere Properties (Proved)",
-      "startLine": 515,
-      "endLine": 559,
+      "startLine": 566,
+      "endLine": 609,
       "summary": "Four proved identities: monge_point_euler_line (M = 4G − 3O), twentyFourPointCenter_midpoint, twentyFourPointRadius_eq, centroid_on_euler_line (G = (3O + M)/4), and twentyFourPointCenter_is_2G_minus_O (N₂₄ = 2G − O).",
       "mathContext": "These establish the 3D Euler line relations: the centroid divides the O–M segment in ratio 3:1, and N₂₄ = 2G − O equals the orthocenter H for orthocentric tetrahedra."
     },
     {
       "id": "part12-volume-inradius",
       "title": "PART 12: Volume-Inradius Relation (Proved)",
-      "startLine": 560,
-      "endLine": 569,
+      "startLine": 610,
+      "endLine": 619,
       "summary": "Theorem volume_eq_inradius_surfaceArea: V = r·S/3 (equivalently r = 3V/S) for any tetrahedron with positive surface area.",
       "mathContext": "The 3D analogue of the triangle relation Area = r·s; follows directly from the inradius definition by field_simp."
     },
     {
       "id": "part13-general-counterexample",
-      "title": "PART 13: Counterexample — General Tetrahedra",
-      "startLine": 570,
-      "endLine": 587,
-      "summary": "Axiom feuerbach_3d_fails_general: there exists a non-orthocentric tetrahedron for which the (N₂₄, R/3)-sphere is not internally tangent to the insphere, showing the orthocentric hypothesis is necessary.",
+      "title": "PART 13: Counterexample — General Tetrahedra (Proved)",
+      "startLine": 620,
+      "endLine": 868,
+      "summary": "Proves feuerbach_3d_fails_general: there EXISTS a non-orthocentric tetrahedron whose twenty-four-point sphere is not internally tangent to its insphere, so the orthocentric hypothesis is necessary. Formerly an axiom; now discharged by the explicit witness T1 = ((0,0,0),(1,0,0),(0,1,0),(1,1,1)) (merged from the former StatementOnly companion). Includes closed forms of every surd-laden invariant of T1 (witnessT1_faceArea_*, _volume, _surfaceArea, _inradius, _circumcenter, _circumradius, _twentyFourPointCenter, _twentyFourPointRadius, _incenter), the surd-separation kernel witnessT1_surd_separation, and witnessT1_fails / feuerbach_3d_fails_general_proved.",
       "mathContext": "Unlike the 2D Feuerbach theorem (which holds for all triangles), the 3D analogue requires extra hypotheses. This is the file's single axiom; per PART 10 the orthocentric hypothesis alone is still insufficient with this sphere."
     },
     {
       "id": "part14-edge-midpoints",
       "title": "PART 14: Edge Midpoints on the Twenty-Four-Point Sphere",
-      "startLine": 588,
-      "endLine": 690,
+      "startLine": 869,
+      "endLine": 971,
       "summary": "Corrects two former false axioms and proves the true results: edge_midpoints_equidist_from_centroid (all six midpoints equidistant from G, orthocentric case), edge_midpoints_paired_equidist_from_centroid (opposite-edge pairs equidistant for any tetrahedron), and edge_midpoints_dist_sq_formula (exact squared distances (|AC|²+|BD|²)/16 and (|AB|²+|CD|²)/16).",
       "mathContext": "The edge midpoints lie on a sphere centered at the centroid G, not at N₂₄. The three opposite-pair equalities hold universally; the orthocentric conditions bridge across pairs to give full equidistance. Former axioms edge_midpoints_on_sphere and face_centroids_on_sphere were removed as mathematically false."
     },
     {
       "id": "part15-summary",
       "title": "PART 15: Summary",
-      "startLine": 691,
-      "endLine": 769,
-      "summary": "Closing docstring inventory: the 11 proved results (0 sorries), the single axiom feuerbach_3d_fails_general, the corrections applied across the 2026-04-27 / 05-02 / 05-03 revisions, and the key insights on the tetrahedron Euler line and the still-open Murakami formulation.",
+      "startLine": 972,
+      "endLine": 1050,
+      "summary": "Closing docstring inventory: the proved structural results (Euler line, edge-midpoint equidistance, V = rS/3), the closed-form refutation of the (N₂₄, R/3)-candidate at T₀, the now-proved necessity counterexample at T1 (the file is axiom-free, 0 sorries), the corrections applied across the 2026-04-27 / 05-02 / 05-03 / 06-18 revisions, and the still-open Murakami formulation of the correct 3D Feuerbach sphere.",
       "mathContext": "Records that all five tangency sorries were removed after the PART 10 refutation, and that identifying the correct 3D Feuerbach sphere (Murakami's face-circumcircle construction) remains an open formalization target."
     }
   ],
@@ -211,7 +212,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The natural candidate '3D Feuerbach theorem' — the (N₂₄, R/3)-sphere is tangent to the insphere/exspheres of every orthocentric tetrahedron — is FALSE with the standard definitions, refuted in closed form at the orthocentric tetrahedron T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)). The orthocentric hypothesis does not save the candidate. What survives is the coordinate-geometry infrastructure plus several structural results (Euler line, edge-midpoint equidistance, V = rS/3, etc.).",
+    "summary": "The natural candidate '3D Feuerbach theorem' — the (N₂₄, R/3)-sphere is tangent to the insphere/exspheres of every orthocentric tetrahedron — is FALSE with the standard definitions, refuted in closed form at the orthocentric tetrahedron T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)). The orthocentric hypothesis does not save the candidate. What survives is the coordinate-geometry infrastructure plus several structural results (Euler line, edge-midpoint equidistance, V = rS/3, etc.). As of 2026-06-18 the file is fully machine-verified and axiom-free: the necessity counterexample (formerly the sole axiom) is now proved from an explicit non-orthocentric witness, leaving only the correct positive Murakami analogue as future work.",
     "implications": "The 2D-to-3D generalization is more subtle than the surface analogy suggests: neither (N₂₄, R/3) nor (G, R/2) is tangent to the insphere, even on the orthocentric class. A correct 3D Feuerbach sphere — Murakami's face-circumcircle construction is one candidate, Court's isodynamic version another — must be identified and formalized separately. The closed-form refutation also illustrates the value of returning to candidate theorems with symbolic, rather than purely numerical, scrutiny.",
     "openQuestions": [
       "Identify the correct 3D Feuerbach sphere (e.g. via Murakami's face circumcircles) and formalize the corresponding tangency result for orthocentric tetrahedra.",
@@ -230,12 +231,12 @@
       "Real"
     ],
     "namespace": "FeuerbachsTheoremOQ02",
-    "lineCount": 769,
-    "axiomCount": 1,
-    "theoremCount": 13,
-    "substantiveTheoremCount": 8,
+    "lineCount": 1050,
+    "axiomCount": 0,
+    "theoremCount": 35,
+    "substantiveTheoremCount": 20,
     "duplicateTheorems": 0,
-    "definitionCount": 50,
+    "definitionCount": 51,
     "path": "Proofs/FeuerbachsTheoremOQ02.lean",
     "sorries": 0,
     "additionalFiles": [
@@ -248,6 +249,12 @@
       "type": "core",
       "description": "Third orthogonality condition (AD ⊥ BC) follows algebraically from the first two (AB ⊥ CD ∧ AC ⊥ BD), proved by nlinarith",
       "leanType": "(T : OrthocentricTetrahedron) → dot3 (vec3 T.A T.D) (vec3 T.B T.C) = 0"
+    },
+    {
+      "name": "feuerbach_3d_fails_general",
+      "type": "core",
+      "description": "The orthocentric hypothesis is NECESSARY: there exists a non-orthocentric tetrahedron whose twenty-four-point sphere is not internally tangent to its insphere. Formerly an axiom, now PROVED via the explicit witness T1 = ((0,0,0),(1,0,0),(0,1,0),(1,1,1)) (witnessT1_fails + surd-separation kernel).",
+      "leanType": "∃ T : Tetrahedron, (dot3 (vec3 T.A T.B) (vec3 T.A T.D) ≠ 0) ∧ ¬ spheresInternallyTangent T.twentyFourPointCenter T.incenter T.twentyFourPointRadius T.inradius"
     },
     {
       "name": "edge_midpoints_equidist_from_centroid",
