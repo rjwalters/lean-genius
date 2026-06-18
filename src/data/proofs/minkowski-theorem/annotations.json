@@ -218,7 +218,7 @@
       "startLine": 400,
       "endLine": 405
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Blichfeldt's Generalization",
     "content": "**Blichfeldt's Theorem (1914)**: If $\\text{vol}(S) > k \\cdot 2^n \\cdot \\text{covol}(L)$, then $S$ contains at least $k+1$ lattice points.\n\nThis generalizes Minkowski's theorem (which is the $k = 1$ case). Stated here as a `def` proposition — not proved.\n\nBlichfeldt's proof uses the same pigeonhole principle but counts overlapping translates more carefully.",
     "mathContext": "Stated as `blichfeldt_statement : ℕ → Prop` using `Finset` to assert the existence of $k+1$ lattice points in $S$. The $k=1$ case recovers Minkowski's fundamental theorem.",

@@ -238,7 +238,7 @@
       "startLine": 124,
       "endLine": 126
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Secondary Term",
     "content": "The secondary term F(n) - π(n) measures the 'extra' elements beyond primes in an optimal set. These are composites (or small primes) that can coexist with the large primes without violating the product-divisibility condition.",
     "mathContext": "$\\text{secondaryTerm}(n) = F(n) - \\pi(n) = \\Theta(n^{2/3}(\\log n)^{-2})$. This counts the non-large-prime elements in an optimal set.",
@@ -403,7 +403,7 @@
       "startLine": 173,
       "endLine": 176
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Generalized r-Product Condition",
     "content": "For r ≥ 2: no element a divides any product of r distinct other elements of A. The original problem is r = 2. Formalized using Finset.prod over a subset B of cardinality r with a ∉ B.",
     "mathContext": "$\\text{satisfiesConditionR}(A, r) \\equiv \\forall a \\in A,\\, \\forall B \\subseteq A,\\, |B| = r \\land a \\notin B \\Rightarrow a \\nmid \\prod_{b \\in B} b$.",

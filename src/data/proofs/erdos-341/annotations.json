@@ -77,7 +77,7 @@
       "startLine": 51,
       "endLine": 53
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Eventual Periodicity",
     "content": "IsEventuallyPeriodic f p N holds when f(n+p) = f(n) for all n >= N with p >= 1. This captures the notion of 'periodic after a transient phase'.",
     "mathContext": "Eventual periodicity means $\\exists p \\ge 1,\\ \\exists N,\\ \\forall n \\ge N,\\ f(n+p) = f(n)$. The Lean predicate `IsEventuallyPeriodic f p N` requires $p \\ge 1$ (excluding the trivial $p = 0$ case) and universal agreement from index $N$ onward. This is equivalent to saying the sequence $f$ is ultimately a periodic function, or that $f$ is an element of the eventual image of the shift operator. Eventually periodic sequences are automatic sequences of a special type, connecting to the theory of finite automata and regular languages.",

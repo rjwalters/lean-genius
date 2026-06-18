@@ -51,7 +51,7 @@
       "startLine": 87,
       "endLine": 95
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Erdős Conjecture",
     "content": "**ErdosConjecture649 (DISPROVED):**\n\nFor any two primes p, q, there exists n > 0 such that:\n- P(n) = p\n- P(n+1) = q\n\nErdős called this 'probably hopelessly difficult' — but it turned out to be false, disproved by a simple modular arithmetic argument.",
     "mathContext": "$\\forall p, q$ prime, $\\exists n > 0$ with $P(n) = p$ and $P(n+1) = q$. Equivalently: every pair of primes is realized as $(P(n), P(n+1))$ for some $n$.",

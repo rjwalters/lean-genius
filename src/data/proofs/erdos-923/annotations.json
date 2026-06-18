@@ -258,7 +258,7 @@
       "startLine": 154,
       "endLine": 163
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "erdos_923_true",
     "content": "The corollary `erdos_923_true` directly restates Rödl's theorem as the affirmative answer to Problem #923. The proof is `:= rodl_1977`, a definitional equality since the type signatures are identical.",
     "mathContext": "This theorem serves as the human-readable formal answer: Problem #923 is TRUE. The proof is trivial (identity on the axiom) because the statement of `erdos_923_true` is literally the same as `rodl_1977`. The separation into axiom + corollary is a stylistic choice to distinguish the mathematical result from its problem-answer packaging.",

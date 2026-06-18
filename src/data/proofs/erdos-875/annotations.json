@@ -172,7 +172,7 @@
   {
     "id": "ann-e875-hasRatioOne",
     "proofId": "erdos-875",
-    "type": "definition",
+    "type": "theorem",
     "title": "Ratio-One Property",
     "content": "a(n+1)/a(n) → 1 as n → ∞, meaning the sequence grows subexponentially.",
     "mathContext": "The **ratio-one** property $a(n+1)/a(n) \\to 1$ means the sequence grows subexponentially: for any $\\varepsilon > 0$, eventually $a(n+1) < (1+\\varepsilon) \\cdot a(n)$. This is formalized using `Filter.Tendsto ... Filter.atTop (nhds 1)`. Powers of 2 have ratio 2 (not ratio 1), so the question asks whether a much more slowly growing admissible sequence exists. Erdős noted this is 'not completely trivial.'",

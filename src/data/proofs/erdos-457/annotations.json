@@ -176,7 +176,7 @@
       "startLine": 179,
       "endLine": 181
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Smooth Numbers Connection",
     "content": "**IsSmooth(m, y): m is y-smooth ⟺ all prime factors of m are ≤ y**\n\n**Definition:**\n```lean\ndef IsSmooth (m y : ℕ) : Prop :=\n  ∀ p : ℕ, p.Prime → p ∣ m → p ≤ y\n```\n\n**Connection to the problem:** The consecutive product being divisible by all primes up to X is equivalent to saying its 'smooth part' (with respect to threshold X) equals the product itself.\n\n**Smooth number theory** studies how many integers up to N are y-smooth. The Erdős problem asks a related question: when is a structured product (consecutive integers) smoother than expected?",
     "mathContext": "Smooth numbers are fundamental in computational number theory (factoring algorithms, the quadratic sieve) and analytic number theory (Dickman's function, saddle-point methods).",

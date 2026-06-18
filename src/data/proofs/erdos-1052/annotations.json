@@ -184,7 +184,7 @@
       "startLine": 127,
       "endLine": 129
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Unitary Divisor Sum Function",
     "content": "**unitaryDivisorSum (n : ℕ) : ℕ** sums all unitary divisors of n (including n itself), using `Finset.Ico 1 (n + 1)` to include n. For unitary perfect n, σ*(n) = n + n = 2n since the proper unitary divisors sum to n.",
     "significance": "key",
@@ -299,7 +299,7 @@
       "startLine": 187,
       "endLine": 194
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "The Open Finiteness Conjecture",
     "content": "**erdos_1052_conjecture** (OPEN): The set {n : ℕ | IsUnitaryPerfect n} is finite. Despite extensive computational searches, only 5 unitary perfect numbers are known. The conjecture has been open since Wall's work in the 1970s and is one of the most accessible unsolved problems in number theory.",
     "significance": "key",

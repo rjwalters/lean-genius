@@ -63,7 +63,7 @@
       "startLine": 76,
       "endLine": 101
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Ramsey Number Definition",
     "content": "**R(T, G)** is the smallest N such that every red-blue coloring of K_N contains either a red copy of T or a blue copy of G. The existence axiom **ramsey_exists** captures Ramsey's theorem, and **ramseyNumber** uses Nat.find to extract the minimum such N. The **ramseyNumber_achieves** axiom confirms R(T,G) itself satisfies the Ramsey property.",
     "mathContext": "Ramsey's theorem guarantees that for any finite graphs, such an N exists. The formalization encodes a blue copy of a multipartite graph via disjoint vertex parts with all inter-part edges colored blue, which is more faithful than a simplified True placeholder.",

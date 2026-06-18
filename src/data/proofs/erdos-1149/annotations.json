@@ -179,7 +179,7 @@
       "startLine": 168,
       "endLine": 182
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Coprime Pair Counting via Finset",
     "content": "`countCoprimePairs N` counts coprime pairs $(a,b) \\in \\{1,\\ldots,N\\}^2$ using `Finset.filter` with `Nat.Coprime` — a computable alternative to the `Set.ncard`-based `countCoprime`. The symmetry `coprime_pair_symm` wraps `Nat.Coprime.symm`. `countCoprimePairs_one = 1` is verified by `native_decide`.\n\nThis infrastructure supports the path toward proving `random_coprime_density`: the coprime pair density $C(N)/N^2 \\to 6/\\pi^2$ as $N \\to \\infty$.",
     "mathContext": "The coprime pair count $C(N) = |\\{(a,b) \\in [1,N]^2 : \\gcd(a,b) = 1\\}|$ satisfies $C(N) = \\sum_{d=1}^{N} \\mu(d) \\lfloor N/d \\rfloor^2$ by Möbius inversion. The asymptotic $C(N)/N^2 \\to 6/\\pi^2$ follows from $\\sum_{d=1}^{\\infty} \\mu(d)/d^2 = 1/\\zeta(2)$.",

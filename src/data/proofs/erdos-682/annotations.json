@@ -304,7 +304,7 @@
       "startLine": 215,
       "endLine": 215
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "erdos682Question",
     "content": "**erdos682Question** = `holdsForAlmostAll hasRoughNumberInGap`\n\nThe formal statement of Problem #682: for almost all $n$, the gap $(p_n, p_{n+1})$ contains a $g_n$-rough number.",
     "mathContext": "This definition composes `holdsForAlmostAll` with `hasRoughNumberInGap` to give a clean, single-line formal statement. The answer is affirmative by `gafni_tao_main_theorem`.",

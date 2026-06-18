@@ -131,7 +131,7 @@
       "startLine": 248,
       "endLine": 273
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "agm: The AGM as the Infimum of the a-Sequence",
     "content": "agm a b = \u2a05 n, agmA a b n defines the AGM as the infimum (greatest lower bound) of the decreasing a-sequence. Since agm_common_limit proves this infimum equals the supremum of the b-sequence, either choice would work; the infimum is used because the a-sequence is the more natural 'envelope.' agm_eq_limit_A and agm_eq_limit_B confirm the AGM is indeed the limit of both sequences. agm_bounds proves b \u2264 agm a b \u2264 a: the lower bound uses b = b\u2080 \u2264 b\u2081 \u2264 ... \u2264 a\u2099, so b is a lower bound for the a\u2099 (via ciInf_le); the upper bound uses agm \u2264 a\u2080 = a (also via ciInf_le).",
     "mathContext": "$M(a,b) = \\inf_n a_n = \\lim_{n\\to\\infty} a_n = \\lim_{n\\to\\infty} b_n$, with $b \\leq M(a,b) \\leq a$.",

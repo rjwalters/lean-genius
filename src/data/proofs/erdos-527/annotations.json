@@ -121,7 +121,7 @@
       "startLine": 114,
       "endLine": 131
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Concrete Examples",
     "content": "**Three illustrative sequences:**\n\n1. **example_seq**: aₙ = 1/(√n log n) — satisfies both conditions (canonical example)\n2. **boundary_example**: aₙ = 1/√n — fails littleO_sqrt (is Θ, not o)\n3. **summable_example**: aₙ = 1/n — Σ|aₙ|² < ∞, so divergentSquares fails\n\nThese examples clarify exactly where the hypotheses lie.",
     "mathContext": "The sequence 1/(√n log n) is the simplest example satisfying both conditions. It decays just fast enough (o(1/√n)) while having divergent sum of squares (since Σ1/(n(log n)²) = ∞).",

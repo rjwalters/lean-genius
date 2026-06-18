@@ -153,7 +153,7 @@
       "startLine": 232,
       "endLine": 308
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "PrimeGapConjecture: Formal Definition, Monotonicity, and Summary",
     "content": "`PrimeGapConjecture θ` is defined as: for all x ≥ 2, there exists a prime p with x ≤ p ≤ x + x^θ. Three results follow: `prime_gap_conjecture_bhp` proves PrimeGapConjecture 0.525 from the BHP axiom. `prime_gap_conjecture_monotone` proves that if PrimeGapConjecture θ₁ holds and θ₂ ≥ θ₁, then PrimeGapConjecture θ₂ holds — using `Real.rpow_le_rpow_of_exponent_le`. `density_question_status` proves three simultaneous goals: BHP (θ=0.525), Bertrand (θ=1), and existence of θ < 1 with PrimeGapConjecture. The Bertrand proof applies PrimeGapBounds.bertrand_postulate to ⌊x⌋₊, then uses floor bounds to convert between real and natural number arithmetic. `prime_density_summary` gives a clean four-way conjunction of the main proved results.",
     "mathContext": "$\\text{PrimeGapConjecture}(\\theta) \\iff \\forall x \\geq 2, \\exists p \\text{ prime}, x \\leq p \\leq x + x^\\theta$. The infimum $\\theta^* = \\inf\\{\\theta : \\text{PrimeGapConjecture}(\\theta)\\}$ satisfies $\\theta^* \\leq 0.525$ (BHP) and is conjectured to equal 0.",

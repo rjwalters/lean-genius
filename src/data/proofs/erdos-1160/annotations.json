@@ -140,7 +140,7 @@
       "startLine": 83,
       "endLine": 95
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Equivalence of Two Formulations",
     "content": "The proof establishes that the universally quantified form ($\\forall m\\, n,\\; n \\leq 2^m \\to g(n) \\leq g(2^m)$) is equivalent to the Finset-based form ($\\forall m,\\; \\forall n \\in \\texttt{range}(2^m+1),\\; g(n) \\leq g(2^m)$). This is straightforward via `Finset.mem_range` and `omega`, but establishes that the conjecture can be checked computationally for any fixed $m$.",
     "mathContext": "$\\texttt{erdos\\_1160} \\iff \\texttt{erdos\\_1160\\_alt}$, proved by converting between $n \\leq 2^m$ and $n \\in \\{0, \\ldots, 2^m\\}$",
@@ -184,7 +184,7 @@
       "startLine": 108,
       "endLine": 114
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Stronger Conjecture Implies Original",
     "content": "The proof that the BNV stronger conjecture implies the original uses `Finset.single_le_sum`: if all summands are nonneg and $n$ is in the range, then $g(n) \\leq \\sum_{i < 2^m} g(i) \\leq g(2^m)$. This is a clean application of summation monotonicity, and illustrates how aggregate dominance (the sum is small) implies pointwise dominance (each term is small).",
     "mathContext": "$g(n) \\leq \\sum_{i < 2^m} g(i) \\leq g(2^m)$ via $\\texttt{Finset.single\\_le\\_sum}$ and the BNV hypothesis",

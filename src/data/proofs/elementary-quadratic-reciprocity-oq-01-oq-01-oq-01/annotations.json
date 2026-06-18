@@ -39,7 +39,7 @@
     "id": "ann-classical-gauss-sum",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
     "range": { "startLine": 90, "endLine": 97 },
-    "type": "definition",
+    "type": "theorem",
     "title": "Assembling the Classical Gauss Sum",
     "content": "`classicalGaussSum` assembles the two ingredients: the **multiplicative character** `quadCharC` (Legendre symbol in ℂ) and the **additive character** `ZMod.stdAddChar` (which maps a ↦ exp(2πia/p)). Mathlib's bilinear `gaussSum` combines them as Σ_{a} χ(a)·ψ(a).\n\nThe key fact consumed in the main theorem is `ZMod.isPrimitive_stdAddChar`: the standard additive character of ZMod p is **primitive** — it does not factor through any proper subgroup. This is a non-trivial result from the theory of exponential sums; it is what prevents the Gauss sum from vanishing due to character orthogonality, and it is a required hypothesis of `gaussSum_sq`.",
     "mathContext": "$\\tau_p = \\text{classicalGaussSum}(p) = \\sum_{a \\in \\mathbb{Z}/p\\mathbb{Z}} \\left(\\frac{a}{p}\\right) e^{2\\pi i a/p} \\in \\mathbb{C}$",

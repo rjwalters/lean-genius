@@ -43,7 +43,7 @@
       "startLine": 59,
       "endLine": 64
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Binomial Smooth Part",
     "content": "binomialSmoothPart(n, k) := smoothPart(k, C(n,k)). The k-smooth component of the binomial coefficient.",
     "mathContext": "For C(n,k), primes in (k,n] divide numerator but not denominator.",
@@ -61,7 +61,7 @@
       "startLine": 72,
       "endLine": 82
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Function f(n)",
     "content": "f(n) := min {k : binomialSmoothPart(n, k) > n²}. f_property: at k = f(n), smooth part exceeds n².",
     "mathContext": "The central function of the problem - how small can k be with large smooth part?",

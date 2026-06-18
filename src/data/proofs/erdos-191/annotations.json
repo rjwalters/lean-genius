@@ -452,7 +452,7 @@
       "startLine": 288,
       "endLine": 296
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "r-Coloring Generalization",
     "content": "**erdos191GeneralizedConjecture:**\n\nThe problem extends to r colors:\n```lean\ndef erdos191GeneralizedConjecture (r : ℕ) : Prop :=\n  ∀ C : ℝ, C > 0 → ∃ N : ℕ, ∀ n ≥ N, ∀ c : (ℕ → ℕ → Fin r),\n    ∃ X, X ⊆ IntegerSet n ∧ ... ∧ logInverseSum X ≥ C\n```\n\nWith more colors, the threshold should increase but still be Θ(log log log n).",
     "significance": "supporting",
@@ -474,7 +474,7 @@
       "startLine": 298,
       "endLine": 304
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "General Weight Functions",
     "content": "**weightedSum:**\n\nGeneral weighted sum with arbitrary weight function:\n```lean\nnoncomputable def weightedSum (X : Finset ℕ) (w : ℕ → ℝ) : ℝ :=\n  X.sum w\n```\n\nThe choice w(x) = 1/log x is special - it creates the triple-log threshold. Other weights (1/x, 1/x², etc.) give different thresholds.",
     "significance": "supporting",

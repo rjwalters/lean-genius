@@ -6,7 +6,7 @@
       "startLine": 42,
       "endLine": 46
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "intervalIntegral_swap: Fubini for Rectangles",
     "content": "This theorem establishes that iterated interval integrals over a rectangle can be swapped, provided the integrand is measurable and integrable on the product region. The hypotheses encode the non-degeneracy of the rectangle (a ≤ b, c ≤ d) and the integrability conditions required for Fubini's theorem. This is the core technical engine behind the analytic content of Green's theorem in this formalization.",
     "mathContext": "For $f : [a,b] \\times [c,d] \\to \\mathbb{R}$, the theorem establishes $\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$ under measurability of $(x,y) \\mapsto f(x,y)$ and integrability on $[a,b] \\times [c,d]$ with the product of restricted Lebesgue measures.",

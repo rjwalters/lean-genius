@@ -73,7 +73,7 @@
       "startLine": 71,
       "endLine": 80
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "σ-Pairs and Converging Sequences",
     "content": "Defines `IsSigmaPair n m` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo α`: existence of sequences $n_k, m_k \\geq 1$ with $\\sigma(n_k) = \\sigma(m_k)$ and $n_k/m_k \\to \\alpha$. The convergence uses Lean's `Tendsto` with `atTop` and neighborhood filter $\\mathcal{N}(\\alpha)$. The condition $\\alpha \\geq 1$ is WLOG: if $\\alpha < 1$, swap $n$ and $m$.",
     "mathContext": "$\\text{IsSigmaPair}(n, m) \\iff \\sigma(n) = \\sigma(m)$. $\\text{SigmaSequenceConvergingTo}(\\alpha) \\iff \\exists (n_k), (m_k),\\; \\sigma(n_k) = \\sigma(m_k) \\wedge n_k/m_k \\to \\alpha$.",

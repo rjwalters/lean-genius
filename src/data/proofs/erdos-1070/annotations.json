@@ -186,7 +186,7 @@
       "startLine": 125,
       "endLine": 129
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Moser Spindle",
     "content": "The Moser spindle is a specific 7-vertex unit distance graph with independence number exactly 2. It was discovered by Leo Moser and William Moser (1961) as the smallest known unit distance graph with chromatic number 4. The 7 vertices can be placed in $\\mathbb{R}^2$ with 11 edges, all at unit distance, such that any subset of 3 or more vertices contains a unit distance pair. The constants `moserSpindleVertices = 7` and `moserSpindleIndependence = 2` are defined, with existence axiomatized.",
     "mathContext": "$\\exists G \\in \\text{UDG}(7) : \\alpha(G) = 2$, giving $f(n) \\leq \\lfloor 2n/7 \\rfloor$",

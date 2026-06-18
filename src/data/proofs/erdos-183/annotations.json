@@ -196,7 +196,7 @@
       "startLine": 161,
       "endLine": 171
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Main Question",
     "content": "ErdosProblem183 asks: does the limit lim_{k→∞} R(3;k)^{1/k} exist? If so, what is it? The problem is open in both directions - we don't know if the limit exists, or if it's finite.",
     "mathContext": "Using Filter.Tendsto, we express convergence to a finite limit L or divergence to infinity. The dichotomy LimitIsFinite ∨ LimitIsInfinite covers all cases.",

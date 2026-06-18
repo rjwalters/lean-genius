@@ -39,7 +39,7 @@
     "id": "mantel-ann-turangraph-trianglefree",
     "proofId": "mantel-theorem",
     "range": { "startLine": 66, "endLine": 67 },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Turán Graph is Triangle-Free",
     "content": "turanGraph_two_cliqueFree records that turanGraph n 2 — the balanced complete bipartite graph on n vertices — is K₃-free, obtained directly from Mathlib's turanGraph_cliqueFree. This is the qualifying property the extremal witness must satisfy before its edge count can certify sharpness.",
     "mathContext": "$\\mathrm{turanGraph}\\,n\\,2$ is $(2{+}1)$-clique-free, i.e. triangle-free.",

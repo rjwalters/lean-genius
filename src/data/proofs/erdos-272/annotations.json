@@ -101,7 +101,7 @@
       "startLine": 112,
       "endLine": 125
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Simonovits-Sós Construction",
     "content": "**smallSetsThroughElement N k** constructs all subsets of {1,...,N} of size ≤ 3 that contain element k. **small_sets_count** gives the exact count: C(N-1,2) + 1 (choose 2 more elements from the remaining N-1, plus the singleton {k}). **small_sets_has_AP** confirms this family satisfies the AP-intersection property: any two such sets share at least k, and {k} is a singleton AP.",
     "mathContext": "The count C(N-1,2) + 1 = (N-1)(N-2)/2 + 1 ~ N²/2 is asymptotically larger than π²N²/24 ~ N²/2.4, which is why this construction disproves Erdős-Graham.",

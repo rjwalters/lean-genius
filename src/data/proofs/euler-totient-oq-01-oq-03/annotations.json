@@ -148,7 +148,7 @@
     "id": "ann-sub-one-dvd-carmichael",
     "proofId": "euler-totient-oq-01-oq-03",
     "range": { "startLine": 141, "endLine": 153 },
-    "type": "definition",
+    "type": "theorem",
     "title": "Divisibility Bridge: (p−1) ∣ λ(p·q) and (q−1) ∣ λ(p·q)",
     "content": "`sub_one_dvd_carmichael_mul_left` and its right-hand twin establish that p−1 and q−1 each divide the genuine Carmichael exponent of the product. The key is the parent lemma `carmichael_prime hp : carmichael p = p − 1` (the Carmichael function of a prime is p−1, since (ZMod p)ˣ is cyclic of order p−1). Rewriting p−1 back as carmichael p and then applying `carmichael_mul_coprime`, the claim becomes carmichael p ∣ lcm(carmichael p, carmichael q), which is exactly `Nat.dvd_lcm_left` (resp. `Nat.dvd_lcm_right`). These two lemmas are the divisibility hypotheses `rsa_correct_carmichael` feeds into `rsa_correct`.",
     "mathContext": "For prime $p$, $\\lambda(p) = p - 1$. Then $p - 1 = \\lambda(p) \\mid \\mathrm{lcm}(\\lambda(p), \\lambda(q)) = \\lambda(pq)$, and symmetrically for $q - 1$.",

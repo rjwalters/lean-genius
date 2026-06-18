@@ -299,7 +299,7 @@
       "startLine": 256,
       "endLine": 260
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Open Problem and Gap Analysis",
     "content": "Formalizes the open problem: does there exist a unique c_k such that f_k(N) = (log N)^{c_k ± o(1)}? The gap analysis for k = 3 shows exponents between 0.438 and 0.889 — the true value is unknown.",
     "mathContext": "Open: $\\exists! c_k: \\forall \\varepsilon > 0,\\, (\\log N)^{c_k - \\varepsilon} \\leq f_k(N) \\leq (\\log N)^{c_k + \\varepsilon}$ eventually. For $k = 3$: $0.438 \\leq c_3 \\leq 0.889$.",

@@ -260,7 +260,7 @@
       "startLine": 234,
       "endLine": 242
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Orchard Problem Connection",
     "content": "**orchardConfiguration:**\n\nErdos #104 studies point-line configurations, asking about the maximum number of 3-point lines.\n\nThe circle-radius problem has similar extremal flavor:\n- #104: minimize lines with >= 3 points\n- #831: minimize distinct circumradii\n\nBoth are geometric optimization over point configurations.",
     "significance": "supporting",
@@ -278,7 +278,7 @@
       "startLine": 244,
       "endLine": 250
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Unit Distance Connection",
     "content": "**unitDistanceProblem:**\n\nErdos #506 studies repeated distances: how many pairs can have the same distance?\n\nThe circle-radius problem is analogous:\n- #506: repeated pairwise distances\n- #831: repeated circumradii (triple-wise)\n\nBoth ask about geometric multiplicity.",
     "significance": "supporting",

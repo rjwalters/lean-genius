@@ -290,7 +290,7 @@
       "startLine": 173,
       "endLine": 174
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "3-AP-Free Sets",
     "content": "A set $A \\subset \\mathbb{R}$ is **3-AP-free** if it contains no three-term arithmetic progression: no $a < b < c$ in $A$ with $2b = a + c$.",
     "mathContext": "$\\texttt{Is3APFree}(A)$: $\\forall a, b, c \\in A,\\; a < b < c \\implies 2b \\ne a + c$. The maximum size of a 3-AP-free subset of $\\{1, \\ldots, N\\}$ is denoted $r_3(N)$. Roth (1953) proved $r_3(N) = o(N)$; Kelley-Meka (2023) proved $r_3(N) \\le N/2^{c(\\log N)^{1/9}}$.",

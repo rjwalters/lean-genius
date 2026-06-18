@@ -127,7 +127,7 @@
       "startLine": 217,
       "endLine": 230
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Morley Side Length Formula",
     "content": "The `MorleyTriangle t` structure holds three complex points $M_1, M_2, M_3$ (the trisector intersections near sides $BC$, $CA$, $AB$ respectively). The remarkable **Morley side length formula** $s = 8R \\cdot \\sin(\\alpha/3) \\cdot \\sin(\\beta/3) \\cdot \\sin(\\gamma/3)$ (where $R$ is the circumradius) shows equilaterality immediately: the formula is **symmetric** in the three trisected angles, so all three sides are equal.",
     "mathContext": "The formula $s = 8R \\sin(\\alpha_3) \\sin(\\beta_3) \\sin(\\gamma_3)$ can be derived from the law of sines applied to the sub-triangles formed by the Morley points and the original vertices. Since $\\sin(\\alpha_3)$, $\\sin(\\beta_3)$, $\\sin(\\gamma_3)$ appear symmetrically as a product, the formula yields the same value regardless of which pair of Morley points we measure — hence equilateral. For an equilateral original triangle ($\\alpha = \\beta = \\gamma = \\pi/3$), this gives $s = 8R \\sin^3(\\pi/9)$.",

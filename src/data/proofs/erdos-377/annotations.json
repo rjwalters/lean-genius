@@ -196,7 +196,7 @@
       "startLine": 122,
       "endLine": 127
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Complementary Sum",
     "content": "**sumInvPrimesDividingCentralBinom** — the sum over primes that DO divide C(2n,n). This is the 'complement' of f(n).",
     "mathContext": "The two functions partition ∑_{p≤n} 1/p. If f(n) is bounded, then the dividing primes contribute (1-o(1))log(log n).",

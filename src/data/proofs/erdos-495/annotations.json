@@ -44,7 +44,7 @@
       "startLine": 58,
       "endLine": 71
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Littlewood Product",
     "content": "**littlewoodProduct n α β** is the quantity n · ‖nα‖ · ‖nβ‖. This measures how well both α and β can be simultaneously approximated by rationals with denominator n. The Littlewood conjecture asserts this product can be made arbitrarily small.",
     "mathContext": "L(n, α, β) = n · ‖nα‖ · ‖nβ‖. The multiplicative structure (product of three terms) is what makes this conjecture so much harder than the additive Dirichlet theorem, which gives ‖nα‖ < 1/n for infinitely many n.",

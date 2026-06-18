@@ -65,7 +65,7 @@
       "startLine": 107,
       "endLine": 113
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Main Open Conjecture",
     "content": "**Erdős Problem #366**: Does there exist n > 0 such that n is 2-full and n+1 is 3-full?\n\n```lean\ndef erdos_366_conjecture : Prop :=\n  ∃ n > 0, IsPowerful n ∧ IsCubeful (n + 1)\n\naxiom erdos_366_open :\n  ¬(erdos_366_conjecture ↔ True) ∧ ¬(erdos_366_conjecture ↔ False)\n```\n\n**Status**: OPEN as of 2024\n\n**Computational Search**: No examples found below 10²².\n\n**Heuristic Argument**: The expected number of such pairs is finite (possibly zero) based on density arguments.",
     "mathContext": "The axiom erdos_366_open formally captures that the problem is neither proved nor disproved.",
@@ -103,7 +103,7 @@
       "startLine": 147,
       "endLine": 154
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Weaker Question: Consecutive Cubefuls",
     "content": "**Erdős (1976)**: Are there consecutive 3-full integers?\n\n```lean\ndef ConsecutiveCubefuls : Set ℕ := { n | IsCubeful n ∧ IsCubeful (n + 1) }\n\ndef erdos_366_weaker : Prop := ∃ n > 0, IsCubeful n ∧ IsCubeful (n + 1)\n\naxiom erdos_366_weaker_open :\n  ¬(erdos_366_weaker ↔ True) ∧ ¬(erdos_366_weaker ↔ False)\n```\n\n**Status**: ALSO OPEN - no known examples!\n\nThis is strictly weaker than the main question (if n is powerful and n+1 is cubeful, then certainly n+1 is cubeful), yet even this is unsolved.",
     "mathContext": "The fact that even consecutive cubefuls are unknown shows how restrictive the 3-full condition is.",

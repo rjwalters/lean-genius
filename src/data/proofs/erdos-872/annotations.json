@@ -102,7 +102,7 @@
       "startLine": 115,
       "endLine": 121
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Maximal Antichain",
     "content": "**IsMaximalAntichain** $A$ $\\text{board}$:\n\nAn antichain $A$ is maximal when no element from the board can be legally added.\n\n```lean\ndef IsMaximalAntichain (A : Set ℕ) (board : Set ℕ) : Prop :=\n  A ⊆ board ∧ IsDivisibilityAntichain A ∧\n  ∀ k ∈ board, k ∉ A → ¬IsDivisibilityAntichain (A ∪ {k})\n```\n\nThis is the **terminal condition** of the game — the game ends when $A$ is maximal.",
     "mathContext": "Maximal antichains are the terminal states of the saturation game. Note that 'maximal' means no element can be added (saturation), not 'maximum' (largest possible). Different maximal antichains can have different sizes, which is what makes the game non-trivial.",
@@ -292,7 +292,7 @@
       "startLine": 236,
       "endLine": 253
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "First Player Advantage",
     "content": "**firstPlayerAdvantage:**\n\nErdős notes the answer may depend on which player moves first.\n\n**Formalization:** Different maximal antichains can have different sizes.\n\n**Example:** In $\\{2,\\ldots,6\\}$:\n- $\\{2, 3, 5\\}$ is a maximal antichain with 3 elements\n- $\\{5, 6\\}$ is a maximal antichain with 2 elements\n\nSince maximal antichains vary in size, the first player's choice can steer toward larger or smaller terminal sets.",
     "mathContext": "The first-player effect is a subtle game-theoretic issue. In many combinatorial games, the first player has a small advantage. Here, the question is whether the first move significantly affects the terminal antichain size.",

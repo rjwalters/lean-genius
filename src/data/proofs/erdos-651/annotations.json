@@ -102,7 +102,7 @@
       "startLine": 158,
       "endLine": 159
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "The Erdős Conjecture",
     "content": "**ErdosConjecture** formalizes: for each k ≥ 2, there exists c_k > 0 such that f_k(n) > (1 + c_k)^n.\n\nThis would mean exponential lower bounds in ALL dimensions. Since k=2 has exponential growth, Erdős conjectured the pattern continues.",
     "mathContext": "The conjecture was natural given the k=2 case, but turned out to be false. The dimension jump from 2 to 3 fundamentally changes the problem.",

@@ -196,7 +196,7 @@
       "startLine": 129,
       "endLine": 141
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Classical Examples",
     "content": "Three canonical additive functions:\n\n- **omega(n)**: Count of distinct prime divisors via `n.primeFactors.card`\n- **bigOmega(n)**: Total prime factors via `n.primeFactorsList.length`\n- **logN(n)**: Natural logarithm via `Real.log n`\n\nWe axiomatize that omega is strongly additive, while bigOmega and log are completely additive.",
     "mathContext": "For n = 12 = 2²·3: ω(12) = 2, Ω(12) = 3, log(12) ≈ 2.48.",

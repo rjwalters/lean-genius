@@ -163,7 +163,7 @@
       "startLine": 72,
       "endLine": 89
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Growth Rate Hierarchy",
     "content": "Three noncomputable growth measures form a hierarchy of increasing sensitivity:\n\n1. **singleExpGrowth**: $a_n^{1/n}$ — detects exponential vs polynomial growth. Polynomial sequences give limit 1, exponential sequences give a finite constant $c > 1$.\n2. **doubleExpGrowth**: $a_n^{1/2^n}$ — detects doubly exponential growth. If $a_n = c^{2^n}$, this equals $c$.\n3. **genExpGrowth**: $a_n^{1/\\beta^n}$ for parameter $\\beta > 1$ — interpolates between single and double exponential.\n\nThe Kovač-Tao result shows genExpGrowth can tend to $\\infty$ for some $\\beta > 1$. Erdős's open question asks whether $\\beta = 2$ is achievable.",
     "mathContext": "The hierarchy: $a_n^{1/n} \\to \\infty \\implies a_n^{1/\\beta^n} \\to \\infty$ for small $\\beta$, but $a_n^{1/2^n} \\to 1$ can hold even when $a_n^{1/n} \\to \\infty$. Example: $a_n = n^n$ has $a_n^{1/n} = n \\to \\infty$ but $a_n^{1/2^n} = n^{n/2^n} \\to 1$.",
@@ -260,7 +260,7 @@
       "startLine": 146,
       "endLine": 159
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Valid Sequence Set and Maximum Growth Rate",
     "content": "Defines `validSequences` as the set $\\{a \\mid \\text{IsPositiveIntSeq}(a) \\land \\text{IsStrictlyIncreasing}(a) \\land \\text{hasBothRationalSums}(a)\\}$ and `maxGrowthRate` as the supremum of $\\limsup a_n^{1/n}$ over all valid $a$. The supremum uses Mathlib's `⨆` (indexed supremum). The Kovač-Tao result shows $\\text{maxGrowthRate} = +\\infty$ (since $a_n^{1/n} \\to \\infty$ is achievable).",
     "mathContext": "$\\mathcal{V} = \\{a : \\mathbb{N} \\to \\mathbb{N} \\mid a_n \\geq 1,\\; a_n < a_{n+1},\\; \\sum 1/a_n \\in \\mathbb{Q},\\; \\sum 1/(a_n-1) \\in \\mathbb{Q}\\}$. By Kovač-Tao, $\\sup_{a \\in \\mathcal{V}} \\limsup a_n^{1/n} = +\\infty$.",

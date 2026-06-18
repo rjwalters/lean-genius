@@ -62,7 +62,7 @@
       "startLine": 110,
       "endLine": 115
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Primitive Sets",
     "content": "**IsPrimitive:**\n\nA set A is primitive if no element divides another (except itself).\n\n```lean\ndef IsPrimitive (A : Finset ℕ) : Prop :=\n  ∀ a b : ℕ, a ∈ A → b ∈ A → a ∣ b → a = b\n```\n\nPrimitive sets automatically satisfy the multiplicative condition.",
     "significance": "key",

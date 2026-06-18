@@ -139,7 +139,7 @@
       "startLine": 132,
       "endLine": 137
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Bollobás-Erdős Conjecture",
     "content": "**BollobasErdosConjecture**: For all ε > 0 and large n:\n\nrt(n; 4, εn) ≥ n²/8\n\nThis asks: can we keep n²/8 edges (edge density 1/4) in a K₄-free graph while forcing the independence number to be sublinear?",
     "mathContext": "The bound n²/8 is exactly half of what Turán's theorem gives (n²/4 for the Turán graph). We sacrifice half the edges to get sublinear independence.",

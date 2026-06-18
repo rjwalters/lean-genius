@@ -119,7 +119,7 @@
       "startLine": 208,
       "endLine": 234
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Lambie-Hanson Graph Structure",
     "content": "**LambieHansonGraph:** A structure capturing the three key properties:\n1. χ(G) = ℵ₁ exactly\n2. Defeats all proposed bounds F\n3. Still has n-chromatic subgraphs (by de Bruijn-Erdős)\n\n**lambie_hanson_graph_exists:** Proved from the counterexample axiom and de Bruijn-Erdős.",
     "mathContext": "The existence proof combines Lambie-Hanson's counterexample with de Bruijn-Erdős to show all three properties hold simultaneously.",

@@ -318,7 +318,7 @@
       "startLine": 150,
       "endLine": 152
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "IsNormal",
     "content": "An entire function is 'normal' if $\\mu(r)/M(r) \\to 0$ as $r \\to \\infty$. Most classical entire functions (exp, sin, cos, Airy functions) are normal. The Clunie-Hayman result shows that non-normal functions with well-defined limits form a rich family parametrized by $\\lambda \\in (0, 1/2]$.",
     "mathContext": "$\\text{IsNormal}(f) \\iff \\lim_{r \\to \\infty} \\frac{\\mu(r)}{M(r)} = 0$",

@@ -95,7 +95,7 @@
       "startLine": 93,
       "endLine": 109
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Balls and Area",
     "content": "**ballR:**\n\nThe closed ball of radius R centered at the origin, using Mathlib's `closedBall` from metric space theory.\n\n**Area:** The axiom `lebesgue_ball_area` states lambda(B_R) = pi * R^2, the classical area formula for discs in R^2.",
     "mathContext": "The Lebesgue measure of the closed ball $B_R = \\{x \\in \\mathbb{R}^2 : \\|x\\| \\leq R\\}$ is $\\lambda(B_R) = \\pi R^2$. This follows from the change-of-variables formula in polar coordinates: $\\lambda(B_R) = \\int_0^{2\\pi} \\int_0^R r \\, dr \\, d\\theta = \\pi R^2$.",
@@ -117,7 +117,7 @@
       "startLine": 111,
       "endLine": 135
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Upper Density",
     "content": "**upperDensity:**\n\nThe asymptotic density of a set A as R tends to infinity.\n\n$$\\overline{\\delta}(A) = \\limsup_{R \\to \\infty} \\frac{\\lambda(A \\cap B_R)}{\\lambda(B_R)}$$\n\nThis measures what fraction of the plane A occupies 'on average' at large scales. The axioms `upperDensity_bounds` and `upperDensity_mono` establish that density lies in [0, 1] and is monotone with respect to set inclusion.",
     "mathContext": "The lim sup is essential here rather than lim because the ratio $\\lambda(A \\cap B_R) / \\lambda(B_R)$ may oscillate as $R \\to \\infty$. For periodic or quasiperiodic sets the limit exists, but for general measurable sets the lim sup captures the worst-case asymptotic proportion. The monotonicity $A \\subseteq B \\implies \\overline{\\delta}(A) \\leq \\overline{\\delta}(B)$ is a straightforward consequence of measure monotonicity.",

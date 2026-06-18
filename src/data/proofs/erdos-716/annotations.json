@@ -159,7 +159,7 @@
       "startLine": 124,
       "endLine": 125
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Unique Triangle Property",
     "content": "**edgeInUniqueTriangle** means an edge uv has exactly one common neighbor w forming triangle uvw. This is the graph-theoretic reformulation of the (6,3) problem.",
     "significance": "key",
@@ -177,7 +177,7 @@
       "startLine": 131,
       "endLine": 132
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "RS Graph",
     "content": "**isRSGraph G** means every edge belongs to exactly one triangle. These 'Ruzsa-Szemerédi graphs' are central to the problem. Maximum edges in an RS graph is 3·ex63(n).",
     "significance": "key",

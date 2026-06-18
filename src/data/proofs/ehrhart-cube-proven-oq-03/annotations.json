@@ -51,7 +51,7 @@
     "id": "ann-k-one-target",
     "proofId": "ehrhart-cube-proven-oq-03",
     "range": { "startLine": 66, "endLine": 78 },
-    "type": "theorem",
+    "type": "definition",
     "title": "S2 Target: `hypersimplex_count_k_one`",
     "content": "States `hypersimplexLatticeCount d 1 n = (n + d - 1).choose (d - 1)`. The `sorry` placeholder for the S2 iteration. Proof strategy: lattice points are weak compositions of $n$ into $d$ nonneg parts each $\\le n$ — but with $k = 1$ the upper bound $n$ is non-binding (a single coordinate carries the whole sum unless distributed), so this collapses to the unrestricted multiset bijection $\\mathrm{Sym}\\,(\\mathrm{Fin}\\,d)\\,n$ used in `EhrhartSimplexProven.simplex_lattice_count` (giving $\\binom{n + d - 1}{d - 1}$). The hypothesis `1 ≤ d` is required because `d - 1` is `Nat`-subtraction: without it, $d = 0$ would make the RHS `(n - 1).choose 0 = 1` while the LHS is $0$ (no lattice point in $\\Delta(0, 1)$, which is empty).",
     "mathContext": "$L(\\Delta(d, 1), n) = \\binom{n + d - 1}{d - 1}$ — same as the count for a $(d - 1)$-simplex scaled by $n$. Equivalently the number of weak compositions of $n$ into exactly $d$ parts, which is the classical stars-and-bars formula $\\binom{n + d - 1}{d - 1}$.",

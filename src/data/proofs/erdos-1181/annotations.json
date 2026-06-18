@@ -119,7 +119,7 @@
       "startLine": 153,
       "endLine": 156
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Chebyshev Theta Function",
     "content": "**\u03b8(x) = \u2211_{p \u2264 x, p prime} log p**\n\nThe Chebyshev theta function sums log p over all primes up to x. By the Prime Number Theorem, \u03b8(x)/x \u2192 1 as x \u2192 \u221e.\n\nThis function connects primorials to the consecutive product: log(primorial(q)) = \u03b8(q), and \u03b8(q) ~ q by PNT.",
     "mathContext": "Defined using Finset.Icc 2 \u230ax\u230b\u208a filtered by primality, summing Real.log.",

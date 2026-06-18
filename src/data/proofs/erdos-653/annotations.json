@@ -102,7 +102,7 @@
       "startLine": 160,
       "endLine": 187
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Special Configurations: Collinear and Regular Polygon",
     "content": "**IsCollinear(S):** Points lying on a single line. Equally spaced collinear points give varying R-values since endpoints see different distance sets than interior points.\n\n**IsRegularPolygon(S):** Points on a circle at equal spacing. By rotational symmetry, every vertex has the same R-value, giving only g = 1 distinct R-value regardless of n — the worst case.\n\n**regular_polygon_r_value** (axiom): In a regular n-gon (n ≥ 3), all points have the same distinctDistCount. This formalizes the symmetry argument.",
     "mathContext": "Regular polygons demonstrate that symmetric configurations are bad for R-diversity. Configurations maximizing g(n) must break symmetry to create varied local distance structures.",

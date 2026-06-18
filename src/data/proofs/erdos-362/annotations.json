@@ -143,7 +143,7 @@
       "startLine": 91,
       "endLine": 97
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Fixed Cardinality Definitions",
     "content": "**subsetsWithSumAndCard $A$ $t$ $l$:** All subsets $S \\subseteq A$ with $\\sum S = t$ and $|S| = l$.\n\n**countSubsetsWithSumAndCard $A$ $t$ $l$:** The count $|\\{S \\subseteq A : \\sum S = t, |S| = l\\}|$.\n\nAdding the cardinality constraint $|S| = l$ partitions the subset sum problem into $N+1$ layers.",
     "mathContext": "The fixed-cardinality variant is naturally motivated by the binomial coefficient structure: the $l$-th layer of the powerset has $\\binom{N}{l}$ elements, and sums within each layer are more tightly concentrated. The extra factor of $N^{-1/2}$ in Halász's bound (from $N^{3/2}$ to $N^2$) comes from fixing the layer, which removes one degree of freedom in the Gaussian approximation.",

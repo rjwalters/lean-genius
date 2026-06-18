@@ -176,7 +176,7 @@
       "startLine": 210,
       "endLine": 217
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Turan Connection",
     "content": "turan(n, k, H) := max edges in H-free graph. ar_turan_lower: AR(n, H) >= ex(n, H) + 1.",
     "mathContext": "Key connection to extremal graph theory. Give H-free subgraph rainbow coloring, one color for complement.",
@@ -213,7 +213,7 @@
       "startLine": 243,
       "endLine": 273
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Problem Status",
     "content": "The problem is OPEN. Cycle formula open for general k. Path formula: proven for n >= ck^2, announced for all n >= k >= 5.",
     "mathContext": "Open problem in extremal graph theory. Connects Ramsey theory with Turan-type questions.",
