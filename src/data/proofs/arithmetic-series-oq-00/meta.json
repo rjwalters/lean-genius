@@ -6,7 +6,7 @@
   "meta": {
     "author": "Nicomachus of Gerasa (c. 100 CE); formalized in Lean 4",
     "date": "c. 100 CE",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ00.lean",
     "tags": [
       "number-theory",
@@ -17,11 +17,11 @@
       "power-sums",
       "classical-identity"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 160,
-    "assumptions": "0 axioms, 0 sorries. Elementary induction proof: no deep Mathlib dependencies beyond basic Finset sum lemmas and ring arithmetic.",
+    "assumptions": "Relies on `Lean.ofReduceBool`. The general Nicomachus identity (Σ k³ = (Σ k)²) and the step lemma are proved by induction/`ring` and are kernel-checked and axiom-free. However, the concrete numerical instances presented as named theorems — `sum_cubes_1`…`sum_cubes_4`, `sum_cubes_10`, and `triangular_squares` — are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so depends on the `Lean.ofReduceBool` axiom (it appears under `#print axioms` for those theorems). `leanFile.axiomCount` remains 0 because there are no literal `axiom` declarations.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -106,7 +106,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Nicomachus's theorem — that the sum of the first n cubes equals the square of the n-th triangular number — is proved here in three equivalent forms by induction. The proof is elementary: only Finset sum splitting and ring arithmetic are needed. 0 sorries, 0 axioms.",
+    "summary": "Nicomachus's theorem — that the sum of the first n cubes equals the square of the n-th triangular number — is proved here in three equivalent forms by induction. The proof is elementary: only Finset sum splitting and ring arithmetic are needed. 0 sorries, 0 literal axiom declarations (the concrete numerical instances use native_decide, which depends on Lean.ofReduceBool).",
     "implications": "Nicomachus's theorem bridges figurate numbers (triangular) and power sums (cubes). It is a special case of Faulhaber's formula for p=3, but its elementary induction proof needs no Bernoulli numbers. The identity ∑k³ = (∑k)² is one of the most visually striking in elementary number theory, with a beautiful geometric proof via gnomon decomposition.",
     "openQuestions": [
       "Is there a bijective proof in Lean? (Construct an explicit bijection between n³ objects and the 'staircase square' region of area T_n².)",
