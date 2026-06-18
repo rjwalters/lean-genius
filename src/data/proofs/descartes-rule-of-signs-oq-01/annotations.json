@@ -3,8 +3,8 @@
     "id": "ann-descartes-oq01-01-preamble",
     "proofId": "descartes-rule-of-signs-oq-01",
     "range": {
-      "startLine": 7,
-      "endLine": 51
+      "startLine": 10,
+      "endLine": 50
     },
     "type": "concept",
     "title": "Descartes' Rule: From Classical Theorem to Mathlib API",
@@ -132,52 +132,138 @@
     "id": "ann-descartes-oq01-06-parity",
     "proofId": "descartes-rule-of-signs-oq-01",
     "range": {
-      "startLine": 359,
-      "endLine": 445
+      "startLine": 365,
+      "endLine": 372
     },
-    "type": "concept",
-    "title": "Parity Result: Open Challenge with Classical Proof Sketch",
-    "content": "descartes_parity is axiomatized: for p≠0, ∃k, countP(0<·, roots p) + 2k = sv(p). The parity result says the difference between sign variations and positive root count is always even. The file includes a detailed proof sketch: (1) factor p over ℂ via FTA, (2) conjugate pairs (a±bi) contribute even amounts to sv and 0 to positive roots, (3) negative-root linear factors (X+r) contribute 0 to both (since nonneg coefficients give sv=0), (4) positive-root factors (X-r) contribute +1 to both. Using descartes_parity, the file derives one_sign_variation_one_positive_root (sv=1 → exactly 1 positive root via omega on parity + upper bound), descartes_mul_bound (roots(p*q).countP ≤ sv(p)+sv(q) via roots_mul + Nat.add_le_add), and other consequences.",
-    "mathContext": "Parity axiom: `∃k, p.roots.countP(0<·) + 2k = p.signVariations`. Consequence via omega: `sv=1 → countP=1` (from `countP + 2k = 1 → countP=1, k=0`). Strategy: FTA factoring shows sv ≡ (# pos real roots) [MOD 2], needing ~200 lines of new Mathlib infrastructure.",
+    "type": "insight",
+    "title": "Parity Result: From Axiom to Proved Theorem",
+    "content": "The parity half of Descartes' Rule — that sv(p) and the positive-root count have the same parity, i.e. their difference is always even — was historically the harder half and was once an **axiom** in this gallery entry. **It is now fully proved in this file** (`descartes_parity`, Part X, discharged by `descartes_parity_proved`, Part IX); the file is axiom-free. The classical strategy: factor p over ℂ via the Fundamental Theorem of Algebra; complex-conjugate root pairs (X²−2aX+b, b > a²) contribute an even amount to sv and 0 positive roots; negative-root factors (X+r, r > 0) contribute 0 to both (non-negative coefficients ⇒ sv = 0); positive-root factors (X−r) contribute +1 to both. The Lean proof realizes an equivalent eraseLead sign-recursion + IVT argument rather than the FTA factoring.",
+    "mathContext": "Parity: $\\mathrm{sv}(p) \\equiv \\#\\{\\text{positive roots}\\} \\pmod 2$, equivalently $\\exists k,\\ \\mathrm{countP}(0 < \\cdot) + 2k = \\mathrm{sv}(p)$. Both parities are pinned by $\\mathrm{sign}(p(0)) = \\mathrm{sign}(p.\\mathrm{coeff}\\,0)$ versus $\\mathrm{sign}(p(+\\infty)) = \\mathrm{sign}(\\mathrm{leadingCoeff})$, which is why they agree.",
     "significance": "key",
     "relatedConcepts": [
-      "descartes_parity",
-      "descartes_rule_combined",
-      "one_sign_variation_one_positive_root",
-      "descartes_mul_bound",
-      "omega tactic"
+      "parity of roots",
+      "Fundamental Theorem of Algebra",
+      "sign variations",
+      "intermediate value theorem"
     ],
     "prerequisites": [
-      "axiom declaration",
-      "FTA (informal)",
-      "omega tactic",
-      "roots_mul"
+      "sign variations",
+      "complex conjugate roots",
+      "polynomial factoring"
     ]
   },
   {
     "id": "ann-descartes-oq01-07-part8-infra",
     "proofId": "descartes-rule-of-signs-oq-01",
     "range": {
-      "startLine": 370,
-      "endLine": 445
+      "startLine": 373,
+      "endLine": 388
     },
-    "type": "concept",
-    "title": "Consequences Section: omega-Powered Corollaries from Parity + Bound",
-    "content": "The consequences section (Part VII) demonstrates how combining the Descartes upper bound with the parity axiom via omega yields clean exact-count theorems. one_sign_variation_one_positive_root: from ∃k, countP + 2k = 1 and countP ≤ 1, omega deduces countP = 1, k = 0. zero_sv_no_positive_roots: from countP ≤ sv = 0, omega gives countP = 0. descartes_mul_bound: uses roots_mul (roots of product = union of roots multisets) then Multiset.countP_add + Nat.add_le_add to compose the individual Descartes bounds. positive_root_count_from_sv: packages the parity result for given sv value n. All proofs are 1-5 lines, demonstrating the payoff of the axiomatic parity framework.",
-    "mathContext": "omega chain: `countP + 2k = sv(=1)` ∧ `countP ≤ 1` → `countP = 1`. Product bound: `(p*q).roots.countP(0<·) = p.roots.countP(0<·) + q.roots.countP(0<·)` via `roots_mul` (for p*q≠0). Lean: `Multiset.countP_add` then `Nat.add_le_add (descartes_upper_bound p) (descartes_upper_bound q)`.",
+    "type": "technique",
+    "title": "Part VII Consequences: Product Bound and Zero-SV Certificate",
+    "content": "Two corollaries of the upper bound that need no parity. `descartes_mul_bound` proves countP(p·q) ≤ sv(p) + sv(q) via `roots_mul` (roots of a product are the multiset union) plus `Multiset.countP_add`. `zero_sv_no_positive_roots` proves sv(p) = 0 ⇒ no positive roots, by `omega` from countP ≤ sv. The stronger exact-count corollaries that DO use parity (`one_sign_variation_one_positive_root`, `positive_root_count_from_sv`) live in Part X, after the parity theorem they depend on.",
+    "mathContext": "$\\mathrm{countP}_{>0}(pq) \\le \\mathrm{sv}(p) + \\mathrm{sv}(q)$ from $\\mathrm{roots}(pq) = \\mathrm{roots}(p) \\uplus \\mathrm{roots}(q)$. Combined with parity, $\\mathrm{sv} = 1 \\Rightarrow \\mathrm{countP} = 1$ exactly (omega closes $\\mathrm{countP} + 2k = 1,\\ \\mathrm{countP} \\le 1$).",
     "significance": "supporting",
     "relatedConcepts": [
-      "one_sign_variation_one_positive_root",
-      "zero_sv_no_positive_roots",
-      "descartes_mul_bound",
-      "positive_root_count_from_sv",
-      "Multiset.countP_add"
+      "roots_mul",
+      "Multiset.countP",
+      "omega tactic",
+      "exact root count"
     ],
     "prerequisites": [
+      "multiset of roots",
+      "Descartes upper bound"
+    ]
+  },
+  {
+    "id": "ann-descartes-oq01-08-summary",
+    "proofId": "descartes-rule-of-signs-oq-01",
+    "range": {
+      "startLine": 389,
+      "endLine": 448
+    },
+    "type": "context",
+    "title": "Summary: 33 Theorems, Zero Axioms, Zero Sorries",
+    "content": "The file's ledger: 33 theorems, all proved with 0 axioms and 0 sorries. The headline `descartes_upper_bound` is a direct call to Mathlib's `roots_countP_pos_le_signVariations`; everything else is original infrastructure — sign-variation arithmetic, the `negSubst` negative-root framework (p.comp(−X)), exact linear-factor bounds — culminating in the formerly-axiomatized parity result. The note here explicitly records that the previous `axiom descartes_parity` was removed and replaced by a genuine theorem, so the entry is now fully axiom-free.",
+    "mathContext": "$\\mathrm{countP}_{>0}(p) \\le \\mathrm{sv}(p)$ (Mathlib) together with $\\mathrm{sv}(p) - \\mathrm{countP}_{>0}(p) \\in 2\\mathbb{Z}$ (proved here) give the complete classical Descartes' Rule of Signs over $\\mathbb{R}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "axiom-free formalization",
+      "Mathlib API",
+      "Descartes' rule of signs"
+    ],
+    "prerequisites": [
+      "proof status conventions"
+    ]
+  },
+  {
+    "id": "ann-descartes-oq01-09-part8",
+    "proofId": "descartes-rule-of-signs-oq-01",
+    "range": {
+      "startLine": 450,
+      "endLine": 559
+    },
+    "type": "technique",
+    "title": "Part VIII: Parity Infrastructure — Verified Special Cases",
+    "content": "Eight lemmas establishing parity on base cases and building toward the full proof. `signVariations_X_add_C_nonneg` / `_X_sub_C_nonpos`: negative-root linear factors have non-negative coefficients, hence sv = 0. `descartes_parity_X_sub_C_pos` / `_X_add_C_pos` / `_constant` / `_monomial`: parity confirmed (with k = 0) for positive/negative-root linear factors, constants, and monomials. `descartes_parity_when_tight`: trivial when the bound is tight (sv = countP). `descartes_parity_mod2`: reformulates parity as equality of sv and countP modulo 2. The strategy docstring lays out the two-stage plan — combinatorial sign-sequence parity + IVT root parity — executed in Part IX.",
+    "mathContext": "For $r \\ge 0$, $X + r$ has all-non-negative coefficients so $\\mathrm{sv} = 0$; with $0$ positive roots, parity holds with $k = 0$. The reformulation $\\mathrm{countP}\\,\\%\\,2 = \\mathrm{sv}\\,\\%\\,2$ follows from $\\exists k,\\ \\mathrm{countP} + 2k = \\mathrm{sv}$ by omega.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sign variations",
+      "linear factors",
+      "parity base cases",
+      "destutter"
+    ],
+    "prerequisites": [
+      "polynomial coefficients",
+      "sign of coefficients"
+    ]
+  },
+  {
+    "id": "ann-descartes-oq01-10-part9",
+    "proofId": "descartes-rule-of-signs-oq-01",
+    "range": {
+      "startLine": 560,
+      "endLine": 1026
+    },
+    "type": "technique",
+    "title": "Part IX: The Full Parity Proof (Combinatorial + IVT)",
+    "content": "The ~460-line axiom-free proof of parity, in two stages. **Stage A (combinatorial)**: sv(p) mod 2 equals whether sign(p.coeff 0) ≠ sign(p.leadingCoeff) — proved by induction on the destuttered alternating sign list (sv = length − 1 is even iff first sign = last sign). **Stage B (IVT)**: countP(0 < ·) mod 2 equals the same sign-mismatch — when p(0) and p(+∞) have opposite signs the Intermediate Value Theorem forces an odd number of positive roots. Combining, sv ≡ countP (mod 2), so the difference is even (`descartes_parity_proved`). The zero-constant-term case factors out Xᵐ (`signVariations_X_mul_eq`: multiplying by X preserves sv) and reduces to the nonzero case (`parity_equiv_nonzero_const`, `descartes_parity_nonzero_const`).",
+    "mathContext": "Both parities are governed by the single sign comparison $\\mathrm{sign}(p(0)) \\ne \\mathrm{sign}(\\mathrm{leadingCoeff})$: Stage A reads it off the coefficient sign list, Stage B off the IVT. Equality of the two mod-2 quantities yields $2 \\mid (\\mathrm{sv} - \\mathrm{countP})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "destutter / alternating sequences",
+      "sign of endpoints",
+      "induction on roots"
+    ],
+    "prerequisites": [
+      "IVT for polynomials",
+      "List.destutter",
+      "parity arguments"
+    ]
+  },
+  {
+    "id": "ann-descartes-oq01-11-part10",
+    "proofId": "descartes-rule-of-signs-oq-01",
+    "range": {
+      "startLine": 1060,
+      "endLine": 1099
+    },
+    "type": "corollary",
+    "title": "Part X: Parity Theorem and Exact-Count Corollaries",
+    "content": "The payoff section, placed after the proof it depends on. `descartes_parity` is the public parity theorem, discharged by `descartes_parity_proved`. `descartes_rule_combined` packages the upper bound and parity together. `one_sign_variation_one_positive_root`: when sv = 1, omega from countP + 2k = 1 and countP ≤ 1 forces exactly one positive root — the sharp form most often cited in applications. `positive_root_count_from_sv` extracts the root count from sv via parity. The header notes these were 'formerly axiomatized'; they are now genuine theorems, completing the axiom-free formalization.",
+    "mathContext": "From $\\exists k,\\ \\mathrm{countP} + 2k = \\mathrm{sv}$ with $\\mathrm{sv} = 1$ and $\\mathrm{countP} \\le 1$, omega gives $\\mathrm{countP} = 1,\\ k = 0$ — the classical corollary 'one sign change $\\Rightarrow$ exactly one positive root.'",
+    "significance": "key",
+    "relatedConcepts": [
+      "exact root count",
       "omega tactic",
-      "Multiset.countP_add",
-      "Polynomial.roots_mul",
-      "Nat.add_le_add"
+      "Descartes' rule corollaries",
+      "combined rule"
+    ],
+    "prerequisites": [
+      "parity theorem",
+      "Descartes upper bound"
     ]
   }
 ]
