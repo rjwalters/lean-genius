@@ -65,7 +65,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 234,
-    "assumptions": "4 axioms: konieczny_disproof, konieczny_generalized, sqrt2_not_basis, and 1 more. See Lean source for complete statements.",
+    "assumptions": "4 axioms: konieczny_disproof (a.e. α: A not a basis), konieczny_generalized (extends to any ε(n)→0), sqrt2_not_basis (√2 counterexample), and diophantine_set_infinite (A infinite via Dirichlet). The disproof theorem erdos_1147_false is derived from the sqrt2_not_basis axiom. See Lean source for complete statements.",
     "theoremCount": 8,
     "definitionCount": 6
   },
