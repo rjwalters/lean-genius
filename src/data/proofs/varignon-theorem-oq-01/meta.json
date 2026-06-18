@@ -54,7 +54,7 @@
     "definitionCount": 1
   },
   "overview": {
-    "historicalContext": "Pierre Varignon (1654-1722) was a French mathematician, an early proponent of the Leibnizian calculus and a member of the Académie des Sciences. The midpoint theorem that bears his name was published posthumously in his *Éléments de mathématique* (1731). Its enduring appeal is its generality: the conclusion holds for any quadrilateral whatsoever — convex, concave, or even self-intersecting — and the same affine argument works for skew (non-planar) quadrilaterals, because no metric or convexity information is used.",
+    "historicalContext": "Pierre Varignon (1654–1722) was a French mathematician and priest, educated by the Jesuits at Caen, who became professor of mathematics at the Collège Mazarin and the Collège Royal and was elected to the Académie Royale des Sciences in 1688. He was one of the earliest and most influential French proponents of the Leibnizian differential calculus, corresponding with Leibniz, Newton, and the Bernoullis. Varignon's name is in fact attached to two distinct results: the better-known *Varignon's theorem of mechanics* (the moment of a force about a point equals the sum of the moments of its components — the basis of the parallelogram and funicular-polygon methods in statics), and the elementary geometry theorem formalized here, which was published posthumously in his *Éléments de mathématique* (Paris, 1731). The midpoint theorem is the quadrilateral counterpart of the older triangle *midsegment* (mid-line) theorem known since antiquity. Its enduring appeal is its generality: the conclusion holds for any quadrilateral whatsoever — convex, concave, or even self-intersecting — and the identical affine argument works for skew (non-planar) quadrilaterals, because no metric, convexity, or planarity information is used anywhere in the proof.",
     "problemStatement": "**Varignon's Theorem**: Let ABCD be a quadrilateral and let P, Q, R, S be the midpoints of sides AB, BC, CD, DA respectively. Then PQRS is a parallelogram. Moreover each side of PQRS is parallel to a diagonal of ABCD and half its length: PQ ∥ SR ∥ AC with |PQ| = |AC|/2, and QR ∥ PS ∥ BD with |QR| = |BD|/2.",
     "text": "The midpoints of the sides of any quadrilateral form a parallelogram.",
     "proofStrategy": "Model points as pairs of real coordinates ℝ × ℝ and write the midpoint as the componentwise average midpoint2 X Y = ((X.1+Y.1)/2, (X.2+Y.2)/2). The four side midpoints are P = mid(A,B), Q = mid(B,C), R = mid(C,D), S = mid(D,A). The proof is a single algebraic observation: Q − P = (B+C)/2 − (A+B)/2 = (C − A)/2 and R − S = (C+D)/2 − (D+A)/2 = (C − A)/2, so the opposite side vectors PQ and SR coincide — the parallelogram condition. The common value (C − A)/2 is half the diagonal AC, giving the strong form. The other pair satisfies P − S = Q − R = (B − D)/2 = half the diagonal BD. Each coordinate identity is closed by `ring` after `dsimp only [midpoint2]` reduces the pair projections; no Mathlib geometry lemmas are required.",
@@ -63,7 +63,11 @@
       "The parallelogram property reduces to a single vector equation Q − P = R − S, which over ℝ × ℝ is just two scalar identities discharged by `ring`",
       "The common difference Q − P = (C − A)/2 exhibits the strong form for free: the Varignon side is parallel to diagonal AC and exactly half its length",
       "Because no non-degeneracy hypothesis is used, the result also covers degenerate, concave, and self-intersecting quadrilaterals — and, verbatim, skew quadrilaterals in higher dimensions",
-      "Working componentwise with explicit projections (rather than Prod subtraction or EuclideanSpace) keeps `ring` directly applicable"
+      "Working componentwise with explicit projections (rather than Prod subtraction or EuclideanSpace) keeps `ring` directly applicable",
+      "Area and perimeter corollaries fall out of the half-diagonal description. The four sides of PQRS are AC/2, BD/2, AC/2, BD/2, so its perimeter equals |AC| + |BD| — the sum of the quadrilateral's diagonals — independent of the side lengths of ABCD. For a convex ABCD the Varignon parallelogram has exactly half the area of ABCD; interpreted with signed (oriented) area the identity area(PQRS) = ½·area(ABCD) holds verbatim in the concave and self-intersecting cases as well, which is the affine reason the theorem is insensitive to convexity.",
+      "The center of the Varignon parallelogram is the centroid of the four vertices. The diagonals PR and QS of PQRS bisect each other at (A+B+C+D)/4 — the vertex centroid of ABCD — which also equals the midpoint of the segment joining the midpoints of the two diagonals AC and BD. This single point is the natural affine center of any quadrilateral and the meeting point of the three 'bimedians', tying Varignon to the Newton–Gauss configuration of a complete quadrilateral.",
+      "The *shape* of the Varignon parallelogram diagnoses the diagonals of ABCD. Since adjacent Varignon sides are parallel to the diagonals AC and BD, PQRS is a rectangle exactly when the diagonals are perpendicular (AC ⟂ BD), a rhombus exactly when the diagonals are equal in length (|AC| = |BD|), and a square exactly when both hold. Thus orthodiagonal quadrilaterals (kites, for instance) are characterized by a rectangular Varignon parallelogram — a metric refinement that sits on top of the purely affine parallelogram theorem.",
+      "Varignon is the quadrilateral analogue of the triangle's medial triangle, and the midpoint construction can be iterated. Taking midpoints repeatedly produces a sequence of nested quadrilaterals that shrinks toward the common centroid (A+B+C+D)/4; each iterate is the Varignon parallelogram of the previous one, so from the first step onward every quadrilateral in the sequence is a parallelogram, and the successive parallelograms converge in shape to an affine image of a fixed parallelogram determined by the initial vertices."
     ],
     "prerequisites": [
       "Coordinate geometry of the plane (points as ordered pairs)",
@@ -144,6 +148,16 @@
       "targetId": "napoleons-theorem",
       "relationship": "related",
       "description": "Both are coordinate/affine results about figures built on the sides of a polygon; Varignon uses midpoints, Napoleon uses external equilateral-triangle centroids"
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Another classical theorem relating the sides and diagonals of a quadrilateral. Ptolemy is metric (it constrains side and diagonal lengths of a cyclic quadrilateral), whereas Varignon is affine (it describes the midpoint quadrilateral and holds for every quadrilateral); together they illustrate the metric/affine divide in quadrilateral geometry."
+    },
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "related",
+      "description": "Varignon's midpoint quadrilateral is the four-sided analogue of a triangle's medial triangle (the midpoints of a triangle's sides). Both are affine midpoint constructions; Ceva's theorem is the companion result about cevians and concurrence in the triangle setting."
     }
   ],
   "references": [
@@ -164,7 +178,7 @@
   ],
   "conclusion": {
     "summary": "Varignon's theorem is formalized by a direct coordinate computation over ℝ × ℝ: the opposite sides of the midpoint quadrilateral satisfy Q − P = R − S = (C − A)/2 and P − S = Q − R = (B − D)/2, so PQRS is a parallelogram whose sides are half the diagonals of ABCD. The formalization is fully verified — 0 axioms, 0 sorries — and uses only the `ring` tactic.",
-    "implications": "Because the proof is purely affine, the statement extends verbatim to degenerate, concave, self-intersecting, and skew (non-planar) quadrilaterals. The area of the Varignon parallelogram is exactly half that of the original convex quadrilateral, a standard corollary of the half-diagonal description.",
+    "implications": "Because the proof is purely affine, the statement extends verbatim to degenerate, concave, self-intersecting, and skew (non-planar) quadrilaterals. The half-diagonal description yields two immediate corollaries: the perimeter of the Varignon parallelogram equals the sum |AC| + |BD| of the quadrilateral's diagonals, and its (signed) area is exactly half that of ABCD. Its center is the vertex centroid (A+B+C+D)/4, so iterating the midpoint construction produces quadrilaterals that converge to that centroid while stabilizing in shape — a concrete answer to the iteration question below. The metric refinements (rectangle ⟺ perpendicular diagonals, rhombus ⟺ equal diagonals, square ⟺ both) recover classical characterizations of orthodiagonal and equidiagonal quadrilaterals from the same coordinate computation.",
     "openQuestions": [
       "What is the relationship between the Varignon parallelogram's area and the original quadrilateral's area in the self-intersecting case?",
       "How does the construction iterate — what is the limit of repeatedly taking midpoint quadrilaterals?"
