@@ -48,7 +48,8 @@
       "The reciprocal duality M_p(z) = M_{-p}(z⁻¹)⁻¹ makes the negative-exponent equality case a corollary of the positive case — no separate strict-convexity / Jensen argument is needed.",
       "Inverting the exponent flips the order: r < t < 0 becomes 0 < -t < -r, so the SMALLER positive exponent is -t. The eq_comm step lines up the goal with power_mean_eq_iff_all_eq_pos's r < t convention.",
       "inv_inj does double duty: once on the means themselves (M_r = M_t ↔ M_{-r}(z⁻¹) = M_{-t}(z⁻¹)) and once on the values (z_j⁻¹ = z_k⁻¹ ↔ z_j = z_k).",
-      "The bookkeeping mirrors the already-compiled template power_mean_monotone_neg (AmgmInequalityOQ03.lean:292), which derives negative-exponent monotonicity from the positive case by the same duality opening."
+      "The bookkeeping mirrors the already-compiled template power_mean_monotone_neg (AmgmInequalityOQ03.lean:292), which derives negative-exponent monotonicity from the positive case by the same duality opening.",
+      "The reduction is total, not partial: every hypothesis of the negative-case theorem (positive weights summing to 1, positive values, r < t < 0) maps cleanly onto a hypothesis of the positive case under z ↦ z⁻¹ and p ↦ -p, so no residual side-goal survives — the entire content of the equality characterization below zero is carried by the duality, leaving only the two mechanical inv_inj transports."
     ],
     "prerequisites": [
       "CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01 (Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01.lean): power_mean_eq_iff_all_eq_pos (positive-exponent equality case)",
@@ -60,6 +61,48 @@
       "Contribute the full real-exponent equality case to Mathlib's MeanInequalitiesPow.lean as the A = B ↔ _ counterpart of the existing inequalities."
     ]
   },
+  "sections": [
+    {
+      "id": "strategy-docstring",
+      "title": "Strategy & Verification Status",
+      "summary": "The opening docstring states the plan — extend the positive-exponent equality case to r < t < 0 via the reciprocal duality M_p(z,w) = M_{-p}(z⁻¹,w)⁻¹ rather than re-running strict Jensen — and records that the file is build-verified (0 sorry / 0 axiom), registered in Proofs.lean, with all cited lemmas confirmed present on Mathlib v4.26.0. The cross-zero case r < 0 < t is explicitly deferred.",
+      "startLine": 1,
+      "endLine": 23,
+      "mathContext": "Reduction blueprint: $M_p(z,w) = M_{-p}(z^{-1},w)^{-1}$ transfers the positive-exponent theorem to the negative regime; harmonic mean ($p=-1$) anchors the bottom of the hierarchy."
+    },
+    {
+      "id": "imports-context",
+      "title": "Imports, Namespace & Variables",
+      "summary": "Imports Mathlib.Tactic and the sibling positive-case file, opens the PowerMeanEqualityNegCase namespace with Real and Finset, and fixes the ambient data: an index type ι, a finite set s, and weight/value functions w, z : ι → ℝ.",
+      "startLine": 24,
+      "endLine": 29,
+      "mathContext": "Working over a weighted finite family $(w_i, z_i)_{i \\in s}$ with $w, z : \\iota \\to \\mathbb{R}$; the positive-case theorem is imported, not re-proved."
+    },
+    {
+      "id": "theorem-statement",
+      "title": "The Negative-Exponent Equality Theorem",
+      "summary": "power_mean_eq_iff_all_eq_neg states that for positive weights summing to 1, positive values, and r < t < 0 (with r, t ≠ 0 so weightedPowerMean is defined), the means at r and t are equal iff all values coincide.",
+      "startLine": 31,
+      "endLine": 35,
+      "mathContext": "$M_r(z,w) = M_t(z,w) \\iff \\forall j,k \\in s,\\ z_j = z_k$ for $r < t < 0$, where $M_p(z,w) = \\left(\\sum_i w_i z_i^p\\right)^{1/p}$."
+    },
+    {
+      "id": "duality-opening",
+      "title": "Sign Flips & Inverting the Means",
+      "summary": "Establishes positivity of the inverted values (inv_pos) and the order-reversing sign flips 0 < -t < -r from r < t < 0 (neg_pos, neg_lt_neg), then rewrites both means by power_mean_neg_inv and strips the outer inversions with inv_inj, leaving an equality of power means at the positive exponents -r, -t on the inverted data z⁻¹.",
+      "startLine": 36,
+      "endLine": 41,
+      "mathContext": "$r < t < 0 \\Rightarrow 0 < -t < -r$; \\ $M_r(z) = M_t(z) \\iff M_{-r}(z^{-1}) = M_{-t}(z^{-1})$ via $\\mathrm{inv\\_inj}$."
+    },
+    {
+      "id": "reduction-transport",
+      "title": "Reduce to Positive Case & Transport Back",
+      "summary": "eq_comm reorders the goal so the smaller positive exponent -t leads, matching the r < t convention of power_mean_eq_iff_all_eq_pos; that theorem rewrites means-equality into ∀ j k, (z_j)⁻¹ = (z_k)⁻¹, and the closing constructor uses inv_inj in both directions to transport the all-equal condition back to z_j = z_k.",
+      "startLine": 42,
+      "endLine": 49,
+      "mathContext": "$M_{-t}(z^{-1}) = M_{-r}(z^{-1}) \\iff \\forall j,k,\\ (z_j)^{-1} = (z_k)^{-1} \\iff \\forall j,k,\\ z_j = z_k$ (second $\\mathrm{inv\\_inj}$)."
+    }
+  ],
   "annotations": [],
   "openQuestions": [],
   "sorries": 0,
