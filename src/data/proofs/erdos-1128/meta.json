@@ -52,7 +52,6 @@
       "erdos_hajnal_conjecture formalization",
       "prikry_mills_disproof axiom",
       "exists_bad_coloring theorem derived from disproof",
-      "two_dim_negative axiom for ℵ₁² ↛ (ℵ₀)²₂",
       "erdos_1128_summary combining disproof and bad coloring existence"
     ],
     "axiomCount": 4,
@@ -65,7 +64,7 @@
     "historicalContext": "This problem was posed by Erdős and Hajnal as part of their extensive program in infinite combinatorics and partition calculus. It asks whether the cardinal Ramsey property ℵ₁³ → (ℵ₀)³₂ holds: must every 2-coloring of the product of three sets of cardinality ℵ₁ contain a countably infinite monochromatic sub-cube?\n\nPrikry and Mills disproved the conjecture in 1978 by constructing a 2-coloring of ω₁ × ω₁ × ω₁ such that no countably infinite monochromatic cube exists. Their proof exploits the ordinal structure of ω₁ to encode enough information that any ℵ₀-cube must contain both colors. The result was never formally published but was preserved through Todorčević's systematic study of partition relations [To94] and later by Komjáth in the Erdős-Hajnal Problem List [Ko25b].\n\nThe problem illustrates a striking contrast between finite and infinite Ramsey theory. In the finite case, analogous results hold by classical Ramsey theory. But at the level of uncountable cardinals, the combinatorial landscape changes fundamentally — the gap between ℵ₀ and ℵ₁ allows constructions that defeat all countable sub-structures.",
     "problemStatement": "Let $A$, $B$, $C$ be three sets of cardinality $\\aleph_1$. Is it true that in any 2-coloring of $A \\times B \\times C$, there must exist $A_1 \\subset A$, $B_1 \\subset B$, $C_1 \\subset C$, all of cardinality $\\aleph_0$, such that $A_1 \\times B_1 \\times C_1$ is monochromatic?\n\n**Answer:** NO.\n\n**Theorem (Prikry-Mills, 1978):** $\\aleph_1^3 \\not\\to (\\aleph_0)^3_2$. There exists a 2-coloring of $\\aleph_1 \\times \\aleph_1 \\times \\aleph_1$ with no countably infinite monochromatic cube.\n\n**Prize:** $50",
     "text": "Must every 2-coloring of ℵ₁ × ℵ₁ × ℵ₁ contain a countably infinite monochromatic cube? NO — disproved by Prikry-Mills (1978).",
-    "proofStrategy": "We formalize the partition problem using Mathlib's cardinal arithmetic. The sets A, B, C are axiomatized as types with Cardinal.mk equal to Cardinal.aleph 1. The 2-coloring and monochromatic cube conditions are defined directly.\n\nThe Prikry-Mills disproof is axiomatized as ¬erdos_hajnal_conjecture, since the counterexample construction uses ordinal combinatorics (well-orderings of ω₁, stepping-up lemmas) not yet available in Mathlib. From this axiom we derive the existence of a bad coloring via classical logic (by_contra + push_neg).\n\nWe also axiomatize the 2D analogue ℵ₁² ↛ (ℵ₀)²₂ to show this failure extends across dimensions.",
+    "proofStrategy": "We formalize the partition problem using Mathlib's cardinal arithmetic. The sets A, B, C are introduced as opaque axiomatized types (`axiom A : Type*` etc.); their intended cardinality ℵ₁ is documented but not enforced as a constraint in the formalization, so the conjecture is stated over these abstract carriers. The cardinals ℵ₁ and ℵ₀ are defined via `Cardinal.aleph 1` / `Cardinal.aleph0`, and the 2-coloring and monochromatic cube conditions are defined directly.\n\nThe Prikry-Mills disproof is axiomatized as ¬erdos_hajnal_conjecture, since the counterexample construction uses ordinal combinatorics (well-orderings of ω₁, stepping-up lemmas) not yet available in Mathlib. From this axiom we derive the existence of a bad coloring via classical logic (by_contra + push_neg).\n\nThe 2D analogue ℵ₁² ↛ (ℵ₀)²₂ is mentioned only as background context in the source comments; it is not declared as an axiom or formalized in this file.",
     "keyInsights": [
       "**Partition Calculus Notation:** ℵ₁³ → (ℵ₀)³₂ asks whether every 2-coloring of the 3D product has a countably infinite monochromatic cube. The answer is NO.",
       "**Ordinal Structure:** The counterexample exploits the well-ordering of ω₁ to encode information that breaks all ℵ₀-cubes. Uncountability is essential.",
@@ -115,10 +114,10 @@
     {
       "id": "two-dim",
       "title": "Two-Dimensional Analogue",
-      "summary": "The 2D negative result ℵ₁² ↛ (ℵ₀)²₂ axiomatized for comparison.",
-      "startLine": 124,
-      "endLine": 139,
-      "mathContext": "The 2D negative result ℵ₁² ↛ (ℵ₀)²₂ axiomatized for comparison."
+      "summary": "The 2D negative result ℵ₁² ↛ (ℵ₀)²₂ noted as background context in comments (not formalized).",
+      "startLine": 120,
+      "endLine": 128,
+      "mathContext": "The 2D negative result ℵ₁² ↛ (ℵ₀)²₂ noted as background context in comments (not formalized)."
     },
     {
       "id": "main-theorem",
