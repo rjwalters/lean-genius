@@ -48,6 +48,64 @@
       "Mathlib floor API: Int.le_floor, Int.floor_lt, and the ordered-field reciprocal lemmas lt_div_iff₀, div_lt_iff₀, le_div_iff₀"
     ]
   },
+  "sections": [
+    {
+      "id": "header-strategy",
+      "title": "Header, Imports, and the Cubing-Sandwich Strategy",
+      "startLine": 1,
+      "endLine": 73,
+      "summary": "Provenance docstring (the prefix was built incrementally across research steps S2–S8), imports of CubeRoot3IrrationalOQ04Helpers and Mathlib, and the module docstring fixing cbrt3 = (3:ℝ)^(1/3) and explaining the method: each partial-quotient identity reduces to two real bounds k ≤ xₙ < k+1, each bound is proved by cubing both sides and substituting cbrt3^3 = 3 (cbrt3_cubed), and the floor identities assemble by le_antisymm via Int.le_floor / Int.floor_lt. Notes that Lagrange (1770) forbids periodicity for the cubic irrational ∛3, so only a finite prefix can be certified."
+    },
+    {
+      "id": "base-bounds",
+      "title": "Sign and Base Bounds: 0 ≤ ∛3 and 1 ≤ ∛3 < 2",
+      "startLine": 74,
+      "endLine": 111,
+      "summary": "The three foundational bounds: cbrt3_nonneg (0 ≤ ∛3, from the rpow definition), one_le_cbrt3 (1 ≤ ∛3, by contradiction with the cube 3 ≥ 1), and cbrt3_lt_two (∛3 < 2, by contradiction with the cube 8 > 3). These establish the sign needed to invert reciprocals later and pin the integer part to a₀ = 1."
+    },
+    {
+      "id": "a0",
+      "title": "a₀ = 1: First Partial Quotient ⌊∛3⌋ = 1",
+      "startLine": 112,
+      "endLine": 142,
+      "summary": "cbrt3_floor_eq_one assembles ⌊∛3⌋ = 1 from 1 ≤ ∛3 < 2 by le_antisymm through Int.le_floor and Int.floor_lt — the base case of the continued-fraction algorithm x₀ = ∛3."
+    },
+    {
+      "id": "a1",
+      "title": "a₁ = 2: ⌊1/(∛3 − 1)⌋ = 2 via 4/3 < ∛3 < 3/2",
+      "startLine": 143,
+      "endLine": 229,
+      "summary": "The first reciprocal tail x₁ = 1/(∛3 − 1). Bounds four_thirds_lt_cbrt3 (cube target 64/27 < 3) and cbrt3_lt_three_halves (cube target 27/8 > 3) sandwich ∛3, then cbrt3_a1 inverts the strictly-positive denominator ∛3 − 1 with div_lt_iff₀ / le_div_iff₀ to obtain the floor 2."
+    },
+    {
+      "id": "a2",
+      "title": "a₂ = 3: Tighter Sandwich 10/7 < ∛3 < 13/9",
+      "startLine": 230,
+      "endLine": 345,
+      "summary": "Second reciprocal layer. ten_sevenths_lt_cbrt3 (1000/343 < 3) and cbrt3_lt_thirteen_ninths (2197/729 > 3) — the convergent endpoints 10/7 and 13/9 — bracket ∛3, and cbrt3_a2 propagates through the nested reciprocal 1/(1/(∛3 − 1) − 2) by linear arithmetic to obtain the floor 3."
+    },
+    {
+      "id": "a3-a4",
+      "title": "a₃ = 1, a₄ = 4: The Reciprocal Chain Deepens",
+      "startLine": 346,
+      "endLine": 575,
+      "summary": "cbrt3_a3 and cbrt3_a4 add two more reciprocal layers. The proofs are structurally identical chains of lt_div_iff₀ / div_lt_iff₀ / le_div_iff₀ rewrites; the new content is bookkeeping the deeper nested expression, not new mathematics. The convergent bounds tighten geometrically."
+    },
+    {
+      "id": "a5-a6",
+      "title": "a₅ = 1, a₆ = 5: Cubing Gap Reaches ≈10⁻⁵",
+      "startLine": 576,
+      "endLine": 892,
+      "summary": "cbrt3_a5 and cbrt3_a6 use the convergent bounds 437/303 and 512/355, where the cube gap (p³ vs 3q³) has shrunk to ≈3.3·10⁻⁵ — the sandwich is now extremely tight yet still decided in exact rational arithmetic by norm_num/nlinarith."
+    },
+    {
+      "id": "a7-a11",
+      "title": "a₇..a₁₁ = 1, 1, 6, 2, 5: Completing the OEIS A002945 Prefix",
+      "startLine": 893,
+      "endLine": 1999,
+      "summary": "cbrt3_a7 through cbrt3_a11 finish the verified prefix [1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5]. The later quotients require raising the heartbeat budget (set_option maxHeartbeats 400000) as the nested expressions grow, but each remains one application of the fixed cubing-sandwich template. This matches OEIS A002945 through a₁₁."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "cube-root-3-irrational",
