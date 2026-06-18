@@ -1,49 +1,38 @@
 # Research State: niven-theorem-oq-01
 
 ## Current State
-**Phase**: DONE (build-pending verification)
+**Phase**: DONE (merged & live)
 **Path**: full
-**Since**: 2026-06-16T04:17:04-07:00
-**Iteration**: 2
+**Since**: 2026-06-18T06:45:00Z
+**Iteration**: 3
 
-## Current Focus
-Proof is COMPLETE. Niven's theorem is already in Mathlib v4.26
-(`Mathlib/NumberTheory/Niven.lean`, Meiburg/Broshi 2025). The gallery entry
-`proofs/Proofs/NivenTheorem.lean` keeps the explicit `interval_cases`
-enumeration tail and discharges the deep algebraic-integer core by delegating
-to Mathlib. **PR #25163 (branch `feature/researcher-8-niven-mathlib`) carries
-the full discharge — OPEN, build-pending.**
+## Outcome — COMPLETE
+Niven's theorem is formalized, machine-checked, and live in the gallery.
 
-## Active Approach
-Mathlib delegation (no from-scratch formalization needed):
-- Core lemma `two_cos_int_of_rational`: `2·cos θ ∈ ℤ` when `θ = (m/n)π` and
-  `cos θ ∈ ℚ`. Proved via
-  `Real.isIntegral_two_mul_cos_rat_mul_pi (m/n)` (gives `IsIntegral ℤ (2 cos θ)`)
-  then `IsIntegral.exists_int_iff_exists_rat` (a rational algebraic integer is an
-  integer). The from-scratch orphan `NivenTheoremCore.lean` was DELETED.
+- **PR #25163** (`feature/researcher-8-niven-mathlib`) — **MERGED 2026-06-16T20:34Z**.
+- `proofs/Proofs/NivenTheorem.lean` — **registered** at `proofs/Proofs.lean:2702`
+  (`import Proofs.NivenTheorem`), **0 sorry / 0 axiom / no native_decide**.
+- Gallery entry `src/data/proofs/niven-theorem-oq-01/` — `status: verified`,
+  `badge: mathlib`, `axiomCount: 0`, `sorries: 0`.
 
-## Name-check verification (offline Mathlib, blackout substitute for Docker build)
-Confirmed both names exist at the exact build pin
-(`/Users/rwalters/GitHub/mathlib4` @ 2df2f0150c = v4.26.0):
-- `Mathlib/NumberTheory/Niven.lean:72/98` `isIntegral_two_mul_cos_rat_mul_pi`
-  (aliased to `_root_.isIntegral_two_mul_cos_rat_mul_pi`; `Real.` via open).
-- `Mathlib/NumberTheory/Niven.lean:32` `exists_int_iff_exists_rat`.
-- Mathlib's own `niven` proof (line 130) uses the identical
-  `(...).exists_int_iff_exists_rat` pattern, so the PR's
-  `hint.exists_int_iff_exists_rat.mp ⟨2*r, …⟩` is API-sound.
+## What the proof does
+A *presentation* (not original formalization — Niven is already in Mathlib v4.26,
+`Mathlib/NumberTheory/Niven.lean`, Meiburg–Broshi 2025):
 
-## Attempt Count
-- Total attempts: 1 (succeeded, build-pending)
-- Current approach attempts: 1
-- Approaches tried: 1 (Mathlib delegation)
+1. **`two_cos_int_of_rational`** — for `θ = (m/n)·π` with `cos θ ∈ ℚ`, `2·cos θ ∈ ℤ`.
+   Delegates the deep algebraic-integer step to
+   `Real.isIntegral_two_mul_cos_rat_mul_pi (m/n)` (gives `IsIntegral ℤ (2 cos θ)`),
+   then `IsIntegral.exists_int_iff_exists_rat` (a rational algebraic integer is an
+   integer, i.e. `ℤ` integrally closed in `ℚ`).
+2. **`niven`** — enumeration tail kept explicit for pedagogy:
+   `|cos θ| ≤ 1` forces `2 cos θ ∈ {-2,-1,0,1,2}` via `interval_cases`, giving
+   `cos θ ∈ {0, ±1/2, ±1}`.
 
 ## Blockers
-**Dual infra blackout (2026-06-16)** — cannot machine-verify:
-- Docker daemon hangs: `docker info` rc=124 (timeout). `lake build` impossible.
-- Aristotle MCP `prove`: 404 "Resource not found".
-Name-check above is the strongest available verification under blackout.
+None. (The original 2026-06-16 attempt logged a "Docker blackout / build-pending"
+blocker; that was resolved by the fleet build that merged PR #25163. The prior
+state.md text claiming the PR was still open was stale.)
 
 ## Next Action
-When Docker is back: `./proofs/scripts/docker-build.sh Proofs.NivenTheorem`,
-grep the log for `error:`. If green, merge PR #25163. Do NOT re-derive — the
-proof is written and name-checked; only the build remains.
+None — problem complete. Tracker synced to `completed`; the claim pool should no
+longer serve this slug.
