@@ -49,6 +49,56 @@
       "Mathlib list/multiset arithmetic (List.dedup, List.count, Nat.factorial) and native_decide"
     ]
   },
+  "sections": [
+    {
+      "id": "header-open-question",
+      "title": "Header: Parent, Open Question & Answer",
+      "summary": "The opening docstring recalls the parent r₄(n) type-decomposition (orbit count (4!/∏mᵢ!)·2^#nonzero under the hyperoctahedral group B₄), poses oq-04 — does it generalize to r_{2k}(n) under B_{2k} = S_{2k} ⋉ (ℤ/2)^{2k} — and answers 'yes, verbatim' for 2k = 6, noting the computational (native_decide) approach, the Python certificate validation, and that the file is not yet registered in Proofs.lean (authored under a Docker blackout).",
+      "startLine": 1,
+      "endLine": 57,
+      "mathContext": "$|B_{2k}| = (2k)!\\,2^{2k}$; contribution$(\\text{type}) = \\dfrac{6!}{\\prod_i m_i!}\\cdot 2^{\\#\\text{nonzero}}$ and $\\sum_{\\text{types of }n}\\text{contribution} = r_6(n)$."
+    },
+    {
+      "id": "part1-rep-types",
+      "title": "Part 1: Representation Types for Six Squares",
+      "summary": "Defines RepType6 n — a sorted six-tuple (a₁ ≤ … ≤ a₆) whose squares sum to n, capturing the unordered multiset of absolute values — with DecidableEq, plus helpers toList and nonzeroCount (the number of nonzero coordinates).",
+      "startLine": 63,
+      "endLine": 88,
+      "mathContext": "A type is a sorted solution of $a_1^2 + \\cdots + a_6^2 = n$ with $a_1 \\le \\cdots \\le a_6$; nonzeroCount $= \\#\\{i : a_i \\ne 0\\}$."
+    },
+    {
+      "id": "part2-multiplier",
+      "title": "Part 2: The Symmetry Multiplier (★)",
+      "summary": "Encodes the orbit-size formula (★): permutations = 6!/∏(multiplicity v)! via List.dedup/List.count/Nat.factorial, signFactor = 2^nonzeroCount, and contribution = permutations · signFactor, together with the private constructor mk6 carrying the sortedness and sum obligations.",
+      "startLine": 90,
+      "endLine": 110,
+      "mathContext": "contribution$(t) = \\dfrac{720}{\\prod_v (\\text{count}_t v)!} \\cdot 2^{\\#\\text{nonzero}(t)}$, the six-coordinate instance of (★)."
+    },
+    {
+      "id": "part3-enumeration",
+      "title": "Part 3: Enumeration of Types for Small n",
+      "summary": "Lists the complete set of sorted six-square shapes for n ∈ {1,2,3,5,6,12,30} (each verified exhaustively in the Python certificate), discharging the sortedness with `decide` and the sum with `norm_num`; n = 30 has six shapes including the all-distinct (0,0,1,2,3,4) and all-nonzero (1,1,2,2,2,4).",
+      "startLine": 112,
+      "endLine": 139,
+      "mathContext": "e.g. $0^2+0^2+0^2+0^2+1^2+2^2 = 5$ and $0^2+1^2+1^2+1^2+1^2+1^2 = 5$ are the two shapes of $n = 5$."
+    },
+    {
+      "id": "part4-5-contributions-totals",
+      "title": "Parts 4–5: Contributions and ∑ = r₆(n)",
+      "summary": "Computes each shape's contribution by (★) via native_decide, then proves the type contributions sum to Jacobi's r₆(n) for each tested n: r₆(5)=312, r₆(6)=544, r₆(12)=2080, r₆(30)=14144 — the r₆ values reproduced exactly by the orbit bookkeeping.",
+      "startLine": 141,
+      "endLine": 187,
+      "mathContext": "$r_6(30) = \\sum \\text{contribution} = 960+5760+1920+384+1280+3840 = 14144$, matching Jacobi's $r_6$."
+    },
+    {
+      "id": "part6-structural",
+      "title": "Part 6: Structural Properties",
+      "summary": "Proves the two uniform bounds on the multiplier ingredients: nonzeroCount ≤ 6 (split_ifs + omega) and signFactor = 2^nonzeroCount ≤ 2⁶ = 64 (Nat.pow_le_pow_right), confirming the sign degeneracy never exceeds the full 2^6 of the hyperoctahedral group.",
+      "startLine": 189,
+      "endLine": 207,
+      "mathContext": "$\\#\\text{nonzero}(t) \\le 6$ so $\\text{signFactor}(t) = 2^{\\#\\text{nonzero}} \\le 2^6 = 64$."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "four-square-distribution",
