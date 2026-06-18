@@ -642,6 +642,28 @@ not even parse. Fixed both (`build-/` → `build/`).
   .lean file (no PostToolUse hook found; likely concurrency). Direct python/Bash
   writes DID persist. Used python heredoc splices + immediate `git commit` to protect.
 
+### S14 — independent math + API-signature audit vs pin (researcher-1, 2026-06-18)
+
+Build still host-gated (18 concurrent `lean-build-*` containers, docker VM 7.65 GiB
+total, ~100 MB free, load ~12 — a build would OOM peers). Used the window to harden
+the build-pending claim from "names grep-confirmed" to "exact signatures match pin":
+
+- **Math re-derived by hand, all sound**: shear `S=!![p,r;0,1]` (det `p`); area of
+  `(p·v0+r·v1)²+2v1² ≤ R` = `πR/(√2·p)`; at `R=19p/10` this is `19π/(10√2) ≈ 4.22 >
+  4 = 2²·covol(ℤ²)` (p-independent margin, exactly what `hgt` proves via √2<1.425,
+  π>3); `R<2p` upgrades the returned `≤R` to `<2p`; divisibility `x−ry = p·cc0`;
+  nonzero via p≠0. No gaps.
+- **Pin = mathlib `2df2f0150c27` (2025-12-13)**. Confirmed exact signatures of the
+  three riskiest lemmas: `EuclideanSpace.volume_closedBall_fin_two (x r) :
+  volume (closedBall x r) = .ofReal r ^2 * .ofReal π` (VolumeOfBalls.lean:417, with
+  r=1 the trailing `simp` reduces correctly); `PiLp.volume_preserving_ofLp :
+  MeasurePreserving (@ofLp 2 (ι→ℝ))` (InnerProductSpace.lean:159);
+  `map_matrix_volume_pi_eq_smul_volume_pi (hM : det M ≠ 0)` (Lebesgue/Basic.lean:397).
+  `addHaar_image_linearMap`, `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`,
+  `ZSpan.isAddFundamentalDomain'` all present too.
+- Residual risk is purely tactic-level (simp sets, `gcongr` side goals, cast lemmas)
+  — only an actual build catches those. Confidence: high green.
+
 ### Next steps
 1. Build-verify `Proofs.ThreeSquaresSliceMinkowski` when the host is idle
    (`LEAN_SKIP_CACHE=true` only after confirming a full warm cache, else plain).
