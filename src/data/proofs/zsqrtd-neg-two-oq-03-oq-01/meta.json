@@ -113,6 +113,50 @@
       "Establish the converse direction `p = a² + 3b² ∧ p prime ⟹ p ≡ 1 mod 3` (a short modular check: squares are 0,1 mod 3, so a² + 3b² ≡ a² ∈ {0,1}, and primality rules out 0), giving the full iff characterisation."
     ]
   },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Overview, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring framing the goal — complete the parent's deferred n=3 case by proving every prime p ≡ 1 (mod 3) has the form x² + 3y² — together with the imports (parent ZsqrtdNegTwo file supplying the Eisenstein ℤ[ω] EuclideanDomain and the Legendre-symbol lemma legendreSym_neg_three_eq_one_iff) and the namespace declaration."
+    },
+    {
+      "id": "part1-form-conversion",
+      "title": "Part I — Form Conversion a² − ab + b² = x² + 3y² (pure ℤ)",
+      "startLine": 65,
+      "endLine": 89,
+      "summary": "eisenstein_form_to_x_sq_add_three_y_sq: the Eisenstein norm form a² − ab + b² represents exactly the same integers as x² + 3y². A purely algebraic ℤ-identity (complete the square: 4(a²−ab+b²) = (2a−b)² + 3b²) that lets results about the lattice norm be restated in the classical binary quadratic form."
+    },
+    {
+      "id": "part2-eisenstein-sqrt",
+      "title": "Part II.a — The Eisenstein √−3 and the Difference-of-Squares Factorisation",
+      "startLine": 90,
+      "endLine": 137,
+      "summary": "Defines eisensteinSqrtNegThree θ = 1 + 2ω = ⟨1,2⟩ and proves eisensteinSqrtNegThree_sq (θ² = −3 in ℤ[ω], by coordinate computation), then ofInt_sub_sqrt_mul_add_sqrt: (ofInt c − θ)(ofInt c + θ) = ofInt(c² + 3). These are the two algebraic identities the splitting argument needs to turn p ∣ c² + 3 into a factorisation in ℤ[ω]."
+    },
+    {
+      "id": "part2-norm-units",
+      "title": "Part II.b — Norm of Integers and the Unit Characterisation",
+      "startLine": 138,
+      "endLine": 162,
+      "summary": "norm_ofInt (N(ofInt n) = n²) and isUnit_iff_norm_eq_one (z is a unit iff N(z) = 1). Together they identify which Eisenstein integers are units and let p (as an Eisenstein integer) be shown a non-unit since N(p) = p² ≠ 1 — a prerequisite for invoking irreducible ↔ prime."
+    },
+    {
+      "id": "part2-splitting",
+      "title": "Part II.c — The Splitting Argument: an Eisenstein Integer of Norm p",
+      "startLine": 163,
+      "endLine": 324,
+      "summary": "exists_eisenstein_norm_eq_prime: for prime p ≡ 1 (mod 3) there is z ∈ ℤ[ω] with N(z) = p. Reciprocity gives legendreSym p (−3) = 1, so p ∣ c² + 3 = (c − θ)(c + θ); p divides neither factor (their ω-coordinates are ∓2 and p is odd), so p is not prime in ℤ[ω]. Since ℤ[ω] is a EuclideanDomain (hence UFD where irreducible ↔ prime), p factors as α·β with both nonunits; norm_mul gives p² = N(α)·N(β) with each > 1, forcing N(α) = N(β) = p."
+    },
+    {
+      "id": "part3-main",
+      "title": "Part III — Main Theorem: p ≡ 1 (mod 3) ⟹ p = x² + 3y²",
+      "startLine": 325,
+      "endLine": 341,
+      "summary": "sq_add_three_sq_of_prime_one_mod_three assembles the pieces: the norm-p Eisenstein integer from Part II.c has norm a² − ab + b² = p in coordinates, and Part I's form conversion rewrites this as p = x² + 3y². Completes Fermat's three-square theorem for primes, the n = 3 Heegner case the parent deferred."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "zsqrtd-neg-two-oq-03",
