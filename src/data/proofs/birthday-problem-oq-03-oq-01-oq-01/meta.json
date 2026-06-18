@@ -7,7 +7,7 @@
     "author": "researcher-3",
     "sourceUrl": "https://en.wikipedia.org/wiki/Birthday_problem#Generalizations",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BirthdayProblemOQ03OQ01OQ01.lean",
     "tags": [
       "probability",
@@ -20,10 +20,10 @@
       "open-question",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Birthday threshold computed via native_decide.",
+    "axiomCount": 1,
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The presented thresholds `birthday_threshold_lower` and `birthday_threshold_upper` (n=88 for d=365, via the slot recurrence) are proved by `native_decide`. (The two prior axioms were eliminated by replacing them with `native_decide`.) Under the gallery convention (CLAUDE.md), a presented result discharged by `native_decide` depends on `Lean.ofReduceBool` (the kernel trusts the compiler's reduction), so the entry is `axiomatized` with `axiomCount` 1; `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "originalContributions": [
       "R (slot-based recurrence): computable definition R n e s tracking slot state (e empty, s single)",
       "birthdayCount3: total valid count as R n d 0, terminating in O(n²) recursion",

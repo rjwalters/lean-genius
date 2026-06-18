@@ -7,7 +7,7 @@
     "author": "Classical (Lagrange, Galois)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Symmetric_group#Solvable_and_perfect_groups",
     "date": "1832",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ02.lean",
     "tags": [
       "algebra",
@@ -19,7 +19,7 @@
       "extension",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -40,9 +40,9 @@
       "solvable_iff_le_four: Complete bidirectional classification Sₙ solvable ↔ n ≤ 4"
     ],
     "dateAdded": "2026-03-27",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 154,
-    "assumptions": "0 axioms, 0 sorries. S₂ via CommGroup instance, S₃ via decide on derived series, S₄ via native_decide. Classification theorem combines with Mathlib's Equiv.Perm.not_solvable.",
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. S₂/S₃ are discharged by `decide`, but the presented theorem `s4_solvable` (derivedSeries 3 = ⊥ over the 24-element group, consumed by the headline `solvable_iff_le_four`) is proved by `native_decide`. Under the gallery convention (CLAUDE.md), a presented result discharged by `native_decide` depends on `Lean.ofReduceBool` (the kernel trusts the compiler's reduction), so the entry is `axiomatized` with `axiomCount` 1; `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 6,
     "definitionCount": 0
