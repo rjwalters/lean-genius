@@ -217,6 +217,54 @@ theorem tetrahedronDimerDensity_gt_fccDensity :
   -- LHS < 4671 * 3.15 = 14_713.65;  RHS > 12000 * 1.4 = 16800.
   nlinarith [hπ_pos, hπ_ub, hs2_lb]
 
+/--
+**Rational upper bound on the FCC sphere density.**
+
+`fccDensity = π / (3 √ 2)` lies strictly below the rational
+`35329 / 46710 ≈ 0.75634`. This is a sharper, division-cleared
+restatement of `Real.pi_lt_d2` / `Real.lt_sqrt` tailored to the
+margin certificate below (`35329 / 46710` is chosen so that
+`35329 / 46710 + 1/10 = 4000 / 4671 = tetrahedronDimerDensity`).
+
+Same linear chain as `tetrahedronDimerDensity_gt_fccDensity`:
+cross-multiply, then `π · 46710 < 35329 · 3 · √2`, closed by
+`nlinarith` from `π < 3.15` and `√2 > 1.4`
+(`46710 · 3.15 = 147 136.5 < 148 381.8 = 105 987 · 1.4`). No new axioms.
+-/
+theorem fccDensity_lt_35329_div_46710 :
+    fccDensity < 35329 / 46710 := by
+  unfold fccDensity
+  have hπ_pos : (0 : ℝ) < Real.pi := Real.pi_pos
+  have hπ_ub : Real.pi < 3.15 := Real.pi_lt_d2
+  have hs2_lb : (1.4 : ℝ) < Real.sqrt 2 :=
+    (Real.lt_sqrt (by norm_num : (0 : ℝ) ≤ 1.4)).mpr (by norm_num : (1.4 : ℝ) ^ 2 < 2)
+  have h3s_pos : (0 : ℝ) < 3 * Real.sqrt 2 := by positivity
+  rw [div_lt_div_iff₀ h3s_pos (by norm_num : (0 : ℝ) < 46710)]
+  -- Goal: Real.pi * 46710 < 35329 * (3 * Real.sqrt 2)
+  nlinarith [hπ_pos, hπ_ub, hs2_lb]
+
+/--
+**Quantitative margin of the shape-universality refutation.**
+
+Strengthens `tetrahedronDimerDensity_gt_fccDensity` from a bare strict
+inequality to an explicit numerical separation: the tetrahedral dimer
+density exceeds the FCC sphere density by **more than `1/10`**, i.e.
+
+  `fccDensity + 1/10 < tetrahedronDimerDensity`.
+
+This certifies the refutation is robust, not razor-thin — the
+≈ 11.6-percentage-point gap (`4000/4671 − π/(3√2) ≈ 0.1159`) is
+bounded below by a clean rational `1/10`. The rational anchor
+`35329 / 46710` is exactly `4000/4671 − 1/10`, so the result follows
+from `fccDensity_lt_35329_div_46710` by `linarith`. No new axioms.
+-/
+theorem tetrahedronDimerDensity_gt_fccDensity_margin :
+    fccDensity + 1 / 10 < tetrahedronDimerDensity := by
+  have h := fccDensity_lt_35329_div_46710
+  unfold tetrahedronDimerDensity
+  -- 35329/46710 + 1/10 = 40000/46710 = 4000/4671.
+  linarith [h]
+
 /-!
 ## S4 — `PackingDensity` instance + corollary
 
@@ -362,6 +410,31 @@ theorem ellipsoid_lattice_le_fccPacking
     (e : EllipsoidLatticePacking) :
     e.density ≤ fccPacking.density :=
   bezdek_kuperberg_ellipsoid_lattice_upper_bound e
+
+/--
+**Cross-shape domination: ellipsoid lattice packings are strictly less
+dense than the tetrahedral dimer packing.**
+
+Combines the two opposite arms of the OQ-04 hierarchy into a single
+shape-vs-shape comparison: every ellipsoid *lattice* packing `e`
+satisfies `e.density ≤ fccDensity` (Bezdek–Kuperberg, S5), while the
+tetrahedral *non-lattice* dimer strictly exceeds `fccDensity` (S3,
+axiom-free). Transitivity through `fccDensity` therefore gives
+
+  `e.density < tetrahedronDimerDensity`.
+
+i.e. the FCC density acts as a strict separator: no ellipsoid lattice
+packing can match the tetrahedral dimer. Adds **no new axiom** — it is
+a direct consequence of the existing
+`bezdek_kuperberg_ellipsoid_lattice_upper_bound` axiom and the
+axiom-free `tetrahedronDimerDensity_gt_fccDensity`.
+-/
+theorem ellipsoid_lattice_lt_tetrahedronDimer
+    (e : EllipsoidLatticePacking) :
+    e.density < tetrahedronDimerDensity :=
+  lt_of_le_of_lt
+    (bezdek_kuperberg_ellipsoid_lattice_upper_bound e)
+    tetrahedronDimerDensity_gt_fccDensity
 
 /--
 **Uninterpreted shape predicate: "this density arises from a centrally
