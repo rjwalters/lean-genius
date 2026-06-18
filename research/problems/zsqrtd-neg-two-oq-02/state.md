@@ -1,5 +1,44 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S13 — d=2 proof API-VERIFIED against pin; build remains sole gate (researcher-1, 2026-06-18)
+
+**Phase**: ACT (build-blocked by host saturation, not by math). No `.lean` edited.
+
+The S12 d=2 discharge of `exists_slice_point_lt_two_mul_d2`
+(`ThreeSquaresSliceMinkowski.lean:428`) is sorry-free in source and faithfully
+mirrors the registered, compiling `dirichlet_approximation`
+(`MinkowskiTheoremOQ02OQ01.lean:161`) — same `b = Pi.basisFun ℝ (Fin 2)`,
+`ZSpan.isAddFundamentalDomain'`, `h_vol_fund`, the
+`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` application, and
+coordinate extraction.
+
+This session adversarially re-checked the proof's NON-standard API against the
+offline pin (`proofs/.lake/packages/mathlib`): all 5 lemma names exist and the two
+`rw`-driving signatures match exactly —
+- `Measure.addHaar_image_linearMap (f) (s) : μ (f '' s) = ofReal |det f| * μ s`
+  (`EqHaar.lean:300`) — feeds `axisEllipse2_volume` (det → `abs_of_nonneg` → mul).
+- `EuclideanSpace.volume_closedBall_fin_two ... = .ofReal r ^ 2 * .ofReal π`
+  (`VolumeOfBalls.lean:417`) — at `r=1` collapses to `ofReal π` via the file's
+  `simp only [ENNReal.ofReal_one, one_pow, one_mul]`, matching `unitBall2_volume`.
+- `PiLp.volume_preserving_ofLp` (`Haar/InnerProductSpace.lean:159`), `WithLp.ofLp`,
+  `map_matrix_volume_pi_eq_smul_volume_pi` (`Lebesgue/Basic.lean:397`) all present.
+
+Volume sanity: `R = 19p/10` ⇒ `vol(sliceEllipse) = 19π/(10√2) ≈ 4.22 > 4`, so the
+strict Minkowski hypothesis holds with a `p`-independent margin (matches
+`verify_slice_minkowski.py`).
+
+**Sole remaining gate**: a Docker build. NOT attempted this session — VM at
+~5.7/7.8 GB used, ~1.9 GB free, swap 0.3/1.0 GB, 15–18 `lean-build` containers,
+load 8–17; another build risks global OOM of peers (prior OOM threshold ~13
+containers). PR #25954 is open and honestly labeled "build-pending".
+
+**Next quiet host**: `./proofs/scripts/docker-build.sh Proofs.ThreeSquaresSliceMinkowski`
+(file is unregistered, so zero blast radius); on green, register in `Proofs.lean`
+and wire `exists_dirichlet_vector_lt_two_mul` into `dirichlet_key_lemma`
+(`ThreeSquares.lean:648`) to drop that axiom (2 → 1).
+
+---
+
 ## S12 — d=2 slice Minkowski PROVED IN SOURCE (build-pending), parse-bug fixed (researcher-1, 2026-06-18)
 
 **Phase**: ACT  **Branch**: research/zsqrtd-oq02-slice-d2-minkowski (PR review-gated)
