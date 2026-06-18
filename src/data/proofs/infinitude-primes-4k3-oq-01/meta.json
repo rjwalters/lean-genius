@@ -153,6 +153,14 @@
       "mathContext": "Route split by unit-group structure: the elementary argument applies where -1 is reachable by a Euclid-style product construction (q = 3, 4, 6, 8), while q = 12 (Klein-4) and q = 24 (abelian non-cyclic (ℤ/2ℤ)³) are reached by specializing Dirichlet's theorem on primes in arithmetic progressions."
     },
     {
+      "id": "spectrum-coverage-table",
+      "title": "Spectrum-Coverage Table and Modulus Rationale",
+      "startLine": 26,
+      "endLine": 70,
+      "summary": "The S1 OBSERVE spectrum-coverage table records the six moduli q where p ≡ -1 (mod q) is known: q ∈ {3, 4, 6} are ACT-verified by the elementary Euclid-style argument, q = 8 (Klein-4) remains open pending an elementary refinement, and q ∈ {12, 24} are handled here via the Dirichlet route. Includes counts (0 axioms, 0 sorries, 2 lemmas + 4 theorems) and the sub-file rationale: q = 12/24 live here rather than in DirichletsTheorem.lean to keep slug-specific content out of the parent gallery entry.",
+      "mathContext": "Route split by unit-group structure: the elementary argument applies where -1 is reachable by a Euclid-style product construction (q = 3, 4, 6, 8), while q = 12 (Klein-4) and q = 24 (abelian non-cyclic (ℤ/2ℤ)³) are reached by specializing Dirichlet's theorem on primes in arithmetic progressions."
+    },
+    {
       "id": "zmod-bridges",
       "title": "ZMod ↔ mod Bridge Lemmas",
       "startLine": 76,
