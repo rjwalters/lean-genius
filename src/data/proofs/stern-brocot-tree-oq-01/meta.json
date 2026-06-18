@@ -1,0 +1,242 @@
+{
+  "id": "stern-brocot-tree-oq-01",
+  "title": "Stern–Brocot Tree: Every Positive Rational Appears Once in Lowest Terms",
+  "slug": "stern-brocot-tree-oq-01",
+  "description": "A self-contained Lean 4 formalization that the Stern–Brocot tree enumerates every positive rational exactly once, in lowest terms. The labelling map from finite L/R paths to fractions is proved to be a bijection onto the reduced positive rationals — injective, surjective, with every label coprime and positive.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "continued-fractions",
+      "rational-numbers",
+      "stern-brocot",
+      "bijection",
+      "euclidean-algorithm"
+    ],
+    "proofRepoPath": "Proofs/SternBrocotTreeOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsCoprime",
+        "description": "Bézout-style coprimality predicate over a commutative ring",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "IsCoprime.of_add_mul_left_left",
+        "description": "Coprimality is preserved under the subtractive Euclidean descent step",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "Int.isUnit_iff",
+        "description": "An integer is a unit iff it equals 1 or -1",
+        "module": "Mathlib.Algebra.Order.Ring.Int"
+      },
+      {
+        "theorem": "Nat.strong_induction_on",
+        "description": "Strong induction on the natural number num + den driving surjectivity",
+        "module": "Mathlib.Init.Data.Nat.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "First self-contained Lean 4 development of the Stern–Brocot tree (Mathlib v4.26 has no Stern–Brocot tree, mediant, or Farey machinery)",
+      "Nodes encoded as List Bool paths over an integer boundary-pair fold; the unimodular invariant aL·bR − aR·bL = −1 carried by induction over the path",
+      "Lowest-terms proof via an explicit Bézout witness (−bR)·num + aR·den = 1 extracted directly from the unimodular invariant",
+      "Conjugation homomorphisms T, T' that intertwine the boundary fold and give exact prefix-transfer recurrences for the label numerator and denominator",
+      "Surjectivity by strong induction on num + den along the subtractive Euclidean descent",
+      "Injectivity by a sign-of-(num − den) argument that forces the head move, bypassing any interval/order machinery",
+      "Capstone bijection sb_bijection — an iff characterization with ∃! — between finite L/R paths and reduced positive rationals"
+    ],
+    "dateAdded": "2026-06-18",
+    "axiomCount": 0,
+    "lineCount": 408,
+    "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries; all arithmetic is over ℤ.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 30,
+    "definitionCount": 10,
+    "structureCount": 1
+  },
+  "overview": {
+    "historicalContext": "The Stern–Brocot tree was discovered independently by Moritz Stern (1858) and Achille Brocot (1861) — Stern as a number theorist, Brocot as a clockmaker seeking gear ratios. It is an infinite binary tree whose nodes are labelled by the positive rationals, built from the mediant operation a/b ⊕ c/d = (a+c)/(b+d). Closely related to the Farey sequences and to continued fractions, it gives a strikingly clean bijection between finite binary strings and the positive rationals in lowest terms — a fact with no counterpart in Mathlib's current library.",
+    "problemStatement": "**Open Question (stern-brocot-tree-oq-01).** The Stern–Brocot tree enumerates every positive rational exactly once, in lowest terms. Formally: the map sending a finite path p : List Bool of left/right moves to the fraction sbNum p / sbDen p is a bijection onto the reduced positive rationals.",
+    "text": "A self-contained formalization that the Stern–Brocot labelling is a bijection between finite L/R paths and the reduced positive rationals.",
+    "proofStrategy": "A node is addressed by a path p : List Bool (false = L, true = R). Following the path maintains the boundary fractions aL/bL < aR/bR of the current interval, starting from the super-interval 0/1 < 1/0; a left move replaces the right boundary by the mediant, a right move replaces the left boundary by it, and the label is the mediant of the boundaries.\n\nThe **unimodular invariant** aL·bR − aR·bL = −1 (sb_det) is preserved by every move, proved by induction over the path. From it, two corollaries follow immediately: a **positivity invariant** (sb_pos) giving 1 ≤ sbNum, 1 ≤ sbDen, and **lowest terms** (sb_isCoprime) via the explicit Bézout witness (−bR)·num + aR·den = 1.\n\nThe key engine is a pair of **conjugation homomorphisms** T, T' (left-multiplication by the generators [[1,0],[1,1]] and [[1,1],[0,1]]) that commute with the boundary fold. Prepending a move therefore conjugates the state, yielding the exact label recurrences L :: q ↦ (num, num+den) and R :: q ↦ (num+den, den).\n\n**Surjectivity** (sb_surjective) is strong induction on num + den following the subtractive Euclidean descent: a < b descends via L to (a, b−a), b < a via R to (a−b, b), and a = b forces a = b = 1 (the root) by coprimality. **Injectivity** (sb_injective) observes that the transfer lemmas make the sign of num − den a total decidable readout of the head move (L gives value < 1, R gives value > 1, the root is the unique node with num = den), so two paths with equal labels share a head and, by induction, a tail.",
+    "keyInsights": [
+      "The unimodular invariant aL·bR − aR·bL = −1 is the single algebraic fact behind positivity, lowest terms, and mediant separation — everything reduces to it.",
+      "Lowest terms is not a gcd computation: the determinant −1 *is* a Bézout certificate, so IsCoprime follows with an explicit witness and no Euclidean algorithm on the label.",
+      "Prepending a move (not removing the last one) is the right recurrence: it corresponds to a *fixed* left-multiplication T / T' that commutes with the fold, turning the global label map into the Euclidean descent.",
+      "Injectivity needs no interval/order theory: the transfer lemmas make num ⋚ den an exact, decidable indicator of the head move, collapsing the cross-cases to positivity contradictions via omega.",
+      "The whole development is pure integer arithmetic over List Bool — no rationals, matrices, or analytic machinery — which is why it stays self-contained and Mathlib-light."
+    ],
+    "prerequisites": [
+      "The mediant operation a/b ⊕ c/d = (a+c)/(b+d) and its unimodular (determinant −1) relation",
+      "The subtractive Euclidean algorithm and coprimality (Bézout's identity)",
+      "Structural and strong induction over lists and natural numbers in Lean 4",
+      "Basic 2×2 integer matrix intuition (the SL₂(ℤ)/GL₂(ℤ) action) — used informally to motivate T, T'"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 86,
+      "summary": "Module docstring and the core data: the SB boundary-pair state, the start super-interval 0/1 < 1/0, the single move SB.step, the path fold sbFrom/sb, and the label numerator/denominator sbNum/sbDen.",
+      "mathContext": "A node is a path $p : \\mathrm{List}\\,\\mathrm{Bool}$. The state carries boundaries $a_L/b_L < a_R/b_R$; a left move sends $a_R/b_R \\mapsto (a_L{+}a_R)/(b_L{+}b_R)$, a right move sends $a_L/b_L$ to the mediant. The label is the mediant $\\mathrm{sbNum}\\,p / \\mathrm{sbDen}\\,p = (a_L{+}a_R)/(b_L{+}b_R)$."
+    },
+    {
+      "id": "unimodular",
+      "title": "The Unimodular Invariant",
+      "startLine": 87,
+      "endLine": 112,
+      "summary": "The invariant aL·bR − aR·bL = −1 holds at the root and is preserved by each move, hence at every node (sb_det).",
+      "mathContext": "$\\mathrm{Unimod}(s) :\\!\\!\\iff a_L b_R - a_R b_L = -1$. It holds at $\\mathrm{start} = (0,1,1,0)$ and is preserved by both moves (each is a determinant-1 column operation), so $a_L b_R - a_R b_L = -1$ at every Stern–Brocot node."
+    },
+    {
+      "id": "positivity",
+      "title": "The Positivity Invariant",
+      "startLine": 113,
+      "endLine": 146,
+      "summary": "The invariant 0 ≤ aL, 1 ≤ aR, 1 ≤ bL, 0 ≤ bR is preserved by each move, yielding 1 ≤ sbNum and 1 ≤ sbDen.",
+      "mathContext": "$\\mathrm{Pos}(s) :\\!\\!\\iff 0 \\le a_L \\land 1 \\le a_R \\land 1 \\le b_L \\land 0 \\le b_R$. Preserved by both moves, so the label is a genuine positive fraction: $1 \\le \\mathrm{sbNum}\\,p$ and $1 \\le \\mathrm{sbDen}\\,p$."
+    },
+    {
+      "id": "lowest-terms",
+      "title": "Lowest Terms",
+      "startLine": 147,
+      "endLine": 160,
+      "summary": "Coprimality of the label via the Bézout witness (−bR)·num + aR·den = 1 read off the unimodular invariant, plus the root label 1/1.",
+      "mathContext": "From $a_L b_R - a_R b_L = -1$ one reads the Bézout identity $(-b_R)\\,\\mathrm{num} + a_R\\,\\mathrm{den} = 1$, so $\\gcd(\\mathrm{num}, \\mathrm{den}) = 1$: the label is in lowest terms. The root (empty path) is labelled $1/1$."
+    },
+    {
+      "id": "mediant-separation",
+      "title": "Mediant Separation",
+      "startLine": 161,
+      "endLine": 187,
+      "summary": "Division-free integer form that the label lies strictly between its two boundary fractions; both inequalities reduce to the unimodular invariant.",
+      "mathContext": "$a_L\\,\\mathrm{den} < \\mathrm{num}\\,b_L$ and $\\mathrm{num}\\,b_R < a_R\\,\\mathrm{den}$ — i.e. $a_L/b_L < \\mathrm{num}/\\mathrm{den} < a_R/b_R$ — both following from $a_L b_R - a_R b_L = -1 < 0$. Distinct subtrees occupy disjoint open intervals."
+    },
+    {
+      "id": "transfer",
+      "title": "Conjugation Homomorphisms and Prefix Transfer",
+      "startLine": 188,
+      "endLine": 254,
+      "summary": "The maps T, T' commute with SB.step and hence with the whole fold; prepending a move conjugates the state, giving the label recurrences for L :: q and R :: q.",
+      "mathContext": "$T,\\,T'$ are left-multiplication by $\\begin{psmallmatrix}1&0\\\\1&1\\end{psmallmatrix}$, $\\begin{psmallmatrix}1&1\\\\0&1\\end{psmallmatrix}$; they commute with the fold. Since $\\mathrm{start.step}\\,L = T(\\mathrm{start})$ and $\\mathrm{start.step}\\,R = T'(\\mathrm{start})$, prepending gives $\\mathrm{sb}(L{::}q) = T(\\mathrm{sb}\\,q)$, $\\mathrm{sb}(R{::}q) = T'(\\mathrm{sb}\\,q)$, hence $L{::}q \\mapsto (\\mathrm{num},\\,\\mathrm{num}{+}\\mathrm{den})$ and $R{::}q \\mapsto (\\mathrm{num}{+}\\mathrm{den},\\,\\mathrm{den})$."
+    },
+    {
+      "id": "surjectivity",
+      "title": "Surjectivity",
+      "startLine": 255,
+      "endLine": 297,
+      "summary": "Every reduced positive rational a/b is some label, by strong induction on num + den along the subtractive Euclidean descent.",
+      "mathContext": "Strong induction on $(a+b)$: if $a < b$ recurse on $(a, b-a)$ and prepend $L$; if $b < a$ recurse on $(a-b, b)$ and prepend $R$; if $a = b$ then coprimality forces $a = b = 1$, the root. Coprimality is preserved by $\\mathrm{IsCoprime.of\\_add\\_mul\\_left\\_left}$."
+    },
+    {
+      "id": "injectivity",
+      "title": "Injectivity",
+      "startLine": 298,
+      "endLine": 385,
+      "summary": "Distinct paths carry distinct labels: the sign of num − den forces the head move, and the transfer lemmas peel it for a structural induction.",
+      "mathContext": "$L{::}q$ has $\\mathrm{den} = \\mathrm{num} + \\mathrm{den}(q) > \\mathrm{num}$ (value $< 1$); $R{::}q$ has $\\mathrm{num} > \\mathrm{den}$ (value $> 1$); the root is the unique node with $\\mathrm{num} = \\mathrm{den}$. So equal labels force equal heads; cross-cases die by positivity ($\\mathrm{omega}$), matching heads recurse."
+    },
+    {
+      "id": "capstone",
+      "title": "Capstone: the Labelling is a Bijection",
+      "startLine": 386,
+      "endLine": 408,
+      "summary": "sb_bijection settles the open question: a pair (a,b) is a reduced positive rational iff it is the label of a unique Stern–Brocot path. The forward direction packages surjectivity with injectivity; the reverse repackages positivity and lowest terms.",
+      "mathContext": "The map $p \\mapsto \\mathrm{sbNum}\\,p / \\mathrm{sbDen}\\,p$ is a bijection between finite $L/R$ paths and reduced positive rationals — the exact content of stern-brocot-tree-oq-01."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file builds the Stern–Brocot tree from scratch over List Bool paths and integer boundary pairs, and proves the classical theorem that its labelling is a bijection onto the reduced positive rationals. The proof is organized around a single algebraic invariant — the unimodular determinant aL·bR − aR·bL = −1 — from which positivity, lowest terms, and mediant separation all follow, while a pair of conjugation homomorphisms gives the prefix-transfer recurrences that drive both surjectivity (Euclidean descent) and injectivity (sign of num − den).",
+    "implications": "Mathlib v4.26 has no Stern–Brocot, mediant, or Farey development, so this is a genuinely new self-contained contribution. The reusable recipe — determinant = −1 ⟹ lowest terms via Bézout, plus conjugation-homomorphism transfer lemmas for prepend recurrences on fold-based tree encodings — should transfer to Farey sequences, continued-fraction convergents, and other SL₂(ℤ)-orbit enumerations.",
+    "openQuestions": [
+      "Package the bijection as a Lean Equiv between List Bool and the reduced positive rationals (a Subtype of ℚ), and connect sbNum/sbDen to Rat.num / Rat.den.",
+      "Relate the path of a/b to the continued-fraction expansion of a/b (run lengths of L/R blocks = partial quotients).",
+      "Formalize the Stern diatomic sequence and the Calkin–Wilf tree, and prove the bijection identifying their orderings with the Stern–Brocot one."
+    ]
+  },
+  "crossReferences": [],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "SternBrocot",
+    "lineCount": 408,
+    "axiomCount": 0,
+    "theoremCount": 30,
+    "definitionCount": 10,
+    "structureCount": 1,
+    "path": "Proofs/SternBrocotTreeOQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Stern, Moritz A.",
+      "title": "Über eine zahlentheoretische Funktion",
+      "year": "1858",
+      "venue": "Journal für die reine und angewandte Mathematik 55, 193–220",
+      "note": "Stern's original study of the diatomic sequence underlying the tree"
+    },
+    {
+      "authors": "Brocot, Achille",
+      "title": "Calcul des rouages par approximation, nouvelle méthode",
+      "year": "1861",
+      "venue": "Revue Chronométrique 3, 186–194",
+      "note": "Brocot's independent discovery, motivated by designing clock gear ratios"
+    },
+    {
+      "authors": "Graham, Ronald L.; Knuth, Donald E.; Patashnik, Oren",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "venue": "Addison-Wesley, 2nd edition, §4.5",
+      "note": "Standard textbook treatment of the Stern–Brocot tree, mediants, and the L/R representation of rationals"
+    },
+    {
+      "authors": "Calkin, Neil; Wilf, Herbert S.",
+      "title": "Recounting the Rationals",
+      "year": "2000",
+      "venue": "American Mathematical Monthly 107(4), 360–363",
+      "note": "A closely related binary tree enumerating the positive rationals exactly once"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sb_bijection",
+      "type": "core",
+      "description": "The Stern–Brocot labelling is a bijection onto the reduced positive rationals: (a,b) is a reduced positive rational if and only if it is the label of a unique L/R path.",
+      "leanType": "(a b : ℤ) : (1 ≤ a ∧ 1 ≤ b ∧ IsCoprime a b) ↔ ∃! p : List Bool, sbNum p = a ∧ sbDen p = b"
+    },
+    {
+      "name": "sb_det",
+      "type": "core",
+      "description": "The unimodular invariant aL·bR − aR·bL = −1 holds at every Stern–Brocot node.",
+      "leanType": "(p : List Bool) : (sb p).aL * (sb p).bR - (sb p).aR * (sb p).bL = -1"
+    },
+    {
+      "name": "sb_isCoprime",
+      "type": "core",
+      "description": "Every node's label is in lowest terms, via the explicit Bézout witness from the unimodular invariant.",
+      "leanType": "(p : List Bool) : IsCoprime (sbNum p) (sbDen p)"
+    },
+    {
+      "name": "sb_surjective",
+      "type": "core",
+      "description": "Every reduced positive rational a/b is the label of some Stern–Brocot node.",
+      "leanType": "(a b : ℤ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hcop : IsCoprime a b) : ∃ p : List Bool, sbNum p = a ∧ sbDen p = b"
+    },
+    {
+      "name": "sb_injective",
+      "type": "core",
+      "description": "Distinct paths carry distinct labels.",
+      "leanType": "(p q : List Bool) : sbNum p = sbNum q → sbDen p = sbDen q → p = q"
+    }
+  ],
+  "sorries": 0
+}
