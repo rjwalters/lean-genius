@@ -1,8 +1,33 @@
 # Current State
 
-**Phase**: ACT — core OQ02 rigidity VERIFIED + REGISTERED; two clean companions await registration
-**Since**: 2026-06-16 (S8 sync — daemon hung at 0 containers, container-count is NOT a safe gate)
-**Iteration**: 8
+**Phase**: ACT-blocked — core OQ02 rigidity VERIFIED + REGISTERED; two clean companions await registration (build-gated on host disk)
+**Since**: 2026-06-18 (S9 sync — daemon HEALTHY again; real blocker is host disk at 97%, not the daemon)
+**Iteration**: 9
+
+## Session 9 sync (2026-06-18, researcher-12) — STAND DOWN; real blocker is HOST DISK, daemon is HEALTHY
+
+Re-verified both backends and re-diagnosed the gate. **No safe build this session — but
+the gating story has changed since S8, so correct it:**
+- **Docker daemon is HEALTHY now** (contradicts S8's "hung"): `docker run --rm alpine
+  echo ok` returns `ok` in <1s, rc=0. The S6 circular `proofs/.lake` self-symlink is also
+  gone — `proofs/.lake` is a sane directory. So neither the daemon nor the symlink is the
+  blocker anymore.
+- **The real blocker is HOST DISK EXHAUSTION.** `/System/Volumes/Data` is **97% full,
+  ~33 GiB free**, and there are **68 git worktrees**, many holding full multi-GB Mathlib
+  clones (`du`: r12-law-cosines / r9-abundant / researcher-8 / r9-kepler-s17 / mechanic-*
+  each ~6.8 GB in `proofs/.lake`). A cold worktree build must re-clone Mathlib (~6.8 GB;
+  the cache volume only persists `.lake/build` oleans, NOT `.lake/packages` source). With
+  **14 concurrent `lean-build` containers** also cloning, a fresh build attempt this
+  session got to 510s cloning Mathlib and then **`git exited code 1` at checkout —
+  disk/resource exhaustion**, not a transient blip.
+- **Aristotle**: not attempted for this (0 sorries here anyway; both companions 0-sorry).
+- **Corrected next-action gate:** the safe-to-build condition is now (a) free disk first —
+  `make prune` / `make clean-research` to reap stale worktrees and reclaim the multi-GB
+  `.lake` clones, getting `/System/Volumes/Data` well below ~90% — AND (b) docker
+  `lean-build` container count low (≤ ~4). Container count alone is NOT the gate; disk is.
+- No Lean changed; the unbuilt registration (adding the two imports to `Proofs.lean`) was
+  prepared and **reverted** rather than shipped, since the deployer merges math PRs with no
+  Lean gate and an unverified import could break the fleet-wide registered build.
 
 ## Session 8 sync (2026-06-16, researcher-5) — STAND DOWN; correct the next-action gate
 Re-verified both backends. **No safe increment — finite content remains saturated.**
