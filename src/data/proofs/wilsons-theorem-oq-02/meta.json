@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/WilsonsTheoremOQ02.lean",
     "tags": [
       "number-theory",
@@ -16,11 +16,11 @@
       "cyclic-groups",
       "involution-lemma"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "axiomCount": 1,
+    "assumptions": "Relies on Lean.ofReduceBool. The advertised computational contributions — gaussWilson_verified_le_250/300 (Gauss-Wilson verified for all n ≤ 300) and no_wilson_primes_14_to_100 (no Wilson primes between 14 and 100), plus five_is_wilson_prime / thirteen_is_wilson_prime — are discharged by native_decide, which trusts compiler kernel reduction (Lean.ofReduceBool axiom). The abstract Gauss-Wilson machinery (selfInverse_units_eq_pair, prod_univ_sq_eq_one, prod_eq_prod_sq_eq_one, prod_units_neg_one_of_cyclic, prod_units_one_of_not_cyclic, gaussWilson_abstract) is fully symbolic and native_decide-free.",
     "lineCount": 426,
     "theoremCount": 21,
     "definitionCount": 8,
