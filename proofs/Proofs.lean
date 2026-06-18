@@ -2920,6 +2920,7 @@ import Proofs.Sqrt2MinpolyOQ02
 import Proofs.Sqrt2MinpolyOQ03
 import Proofs.Sqrt2OQ01
 import Proofs.Sqrt2PlusSqrt3Irrational
+import Proofs.Sqrt2PlusSqrt3IrrationalOQ02
 import Proofs.Sqrt2PlusSqrt3IrrationalOQ03
 import Proofs.Sqrt2PlusSqrt3IrrationalOQ03Aristotle
 import Proofs.Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01
