@@ -90,6 +90,28 @@
     ]
   },
   {
+    "id": "keith-ann-decide-facts",
+    "proofId": "keith-number-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 73
+    },
+    "type": "theorem",
+    "content": "The two facts that the headline theorem rests on are each closed by a bare `decide`. `keith_fourteen : IsKeith 14` evaluates the decidable predicate at a single point — the kernel reduces `reaches 14 40 (msdDigits 14)` along the window $1,4 \\to 5 \\to 9 \\to 14$ and confirms the hit. `not_keith_below_fourteen : ∀ n < 14, ¬ IsKeith n` is a *bounded* universal, decidable through Mathlib's `Nat.decidableBallLT`, so `decide` checks all of $n = 0,\\dots,13$ at once: $n < 10$ fail the `10 ≤ n` clause, and $10,11,12,13$ each overshoot. Because this is kernel `decide` (not `native_decide`), the evaluation happens in the trusted kernel and introduces no `Lean.ofReduceBool` axiom — the two lemmas, and everything built on them, stay axiom-free.",
+    "title": "Membership and the Lower Bound, by `decide`",
+    "mathContext": "$\\texttt{IsKeith}\\,14$ and $\\forall n<14,\\ \\neg\\,\\texttt{IsKeith}\\,n$ — a point evaluation and a bounded $\\forall$, both decidable and kernel-reduced.",
+    "significance": "supporting",
+    "prerequisites": [
+      "kernel decide vs native_decide",
+      "Nat.decidableBallLT (bounded ∀ decidability)"
+    ],
+    "relatedConcepts": [
+      "decide tactic",
+      "bounded quantifier",
+      "axiom-free decision procedure"
+    ]
+  },
+  {
     "id": "keith-ann-smallest",
     "proofId": "keith-number-oq-01",
     "range": {
