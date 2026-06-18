@@ -83,6 +83,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "`import Mathlib.Tactic` and the module docstring. The docstring states the British Flag identity |PA|² + |PC|² = |PB|² + |PD|², explains the deliberate choice to measure squared Euclidean distance explicitly (the ambient ℝ×ℝ `Prod` metric is the sup metric, not Euclidean), records how a rectangle is encoded (perpendicularity `hperp` plus the parallelogram closing condition), and sketches the proof idea: with u = B−A, v = D−A the difference of the two corner-sums collapses to |u+v|² − |u|² − |v|² = 2(u·v) = 0.",
+      "mathContext": "$|PA|^2 + |PC|^2 = |PB|^2 + |PD|^2$, reduced to $2(u\\cdot v)=0$ with $u=B-A,\\ v=D-A$."
+    },
+    {
       "id": "setup",
       "title": "Coordinate Setup and Squared Distance",
       "startLine": 39,
@@ -91,12 +99,28 @@
       "mathContext": "$\\operatorname{sqDist}(P,Q) = (P_x - Q_x)^2 + (P_y - Q_y)^2$."
     },
     {
-      "id": "main",
-      "title": "The British Flag Identity",
+      "id": "statement",
+      "title": "Theorem Statement: Encoding the Rectangle",
       "startLine": 45,
-      "endLine": 59,
-      "summary": "State the theorem with the rectangle encoded by perpendicularity (hperp) and the parallelogram closing condition (hpar1, hpar2); substitute C and close the goal with linear_combination 2·hperp.",
-      "mathContext": "With $u=B-A$, $v=D-A$, the difference of the two sums equals $|u+v|^2 - |u|^2 - |v|^2 = 2(u\\cdot v) = 0$."
+      "endLine": 55,
+      "summary": "The signature of `british_flag` for arbitrary points A, B, C, D, P. The rectangle is encoded by three coordinatewise hypotheses: `hperp` makes sides AB and AD perpendicular ((B−A)·(D−A) = 0, a right angle at A), while `hpar1` and `hpar2` impose the parallelogram closing condition C = B + D − A. No nondegeneracy assumption is needed and P is fully arbitrary.",
+      "mathContext": "$(B_x-A_x)(D_x-A_x)+(B_y-A_y)(D_y-A_y)=0,\\quad C = B + D - A.$"
+    },
+    {
+      "id": "substitution",
+      "title": "Unfolding sqDist and Eliminating C",
+      "startLine": 56,
+      "endLine": 58,
+      "summary": "`simp only [sqDist]` unfolds every distance to its coordinate polynomial, and `rw [hpar1, hpar2]` substitutes C = B + D − A so the goal is a polynomial identity in the coordinates of A, B, D, P alone. The vertex C is thereby removed and the claim becomes purely algebraic.",
+      "mathContext": "After substitution the goal is a polynomial identity in $A,B,D,P$ with $C$ eliminated."
+    },
+    {
+      "id": "closing",
+      "title": "The Polynomial Certificate: linear_combination 2·hperp",
+      "startLine": 59,
+      "endLine": 61,
+      "summary": "`linear_combination 2 * hperp` closes the goal: the entire identity is the single polynomial consequence obtained by adding twice the perpendicularity hypothesis to the (otherwise identically-true) expansion. This makes explicit that the British Flag theorem is exactly the vanishing of the cross term 2(u·v), certified in one line.",
+      "mathContext": "$\\big(|p-u-v|^2+|p|^2\\big)-\\big(|p-u|^2+|p-v|^2\\big) = 2(u\\cdot v) = 2\\,\\mathtt{hperp} = 0.$"
     }
   ],
   "crossReferences": [
