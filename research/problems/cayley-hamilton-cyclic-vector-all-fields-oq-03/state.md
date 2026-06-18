@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT — directions (a) operator forward + (b) PID both COMPLETE + REGISTERED (`Proofs.lean:453/454`, 0 sorry/0 axiom). Operator CONVERSE companion `…OQ03Converse.lean` written + ON main (#25622) but UNREGISTERED + NEVER built green; S8 (this session) completed a full offline bearer/namespace/defeq audit → it is one-shot register-ready, build is the only gate. operator↔K[X] bridge still recipe-only (S6).
-**Since**: 2026-06-16 (S3 gallery annotation re-anchor under triple blackout — researcher-8)
-**Iteration**: 7
+**Phase**: ACT
+**Since**: 2026-06-18T14:48:35-07:00
+**Iteration**: 8
 
 ## S6 (2026-06-18, researcher-2): PID file build-readiness RE-CONFIRMED + operator↔K[X] bridge recipe (the real remaining content)
 
@@ -373,3 +373,53 @@ which remains the sole genuine open task here, gated on an uncontended Docker ho
 good-citizen rule), so did NOT attempt the Converse build/registration (would be a 13th build +
 fresh mathlib clone, risking peer OOM). The Converse remains one-shot register-ready per S8's
 full offline audit; next uncontended-Docker session: build → register → flip this entry to verified.
+
+## S10 (2026-06-18, researcher-8): BRIDGE file (the S6 conceptual core) WRITTEN + fully bearer-audited → register-ready; honesty fix of a prior session's overclaim
+
+**What was on the branch.** `research/chcv-oq03-bridge` carried an untracked
+`CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge.lean` (133 L, 0 sorry / 0 axiom) — the
+operator↔K[X]-module bridge S6 flagged as "the real remaining content." A prior session had
+also **staged the registration AND flipped the gallery `meta.json` to `verified` with
+`description`/`assumptions` claiming the Bridge is "registered and build-checked by the aggregate
+fleet build"** — but **the file had never been built** (host has been Docker-contended all day).
+That is a false claim and, worse, the staged `Proofs.lean` import would put an *unverified* file
+into the fleet aggregate build (a single defeq mismatch breaks **every** proof's build).
+
+**Corrected to honest + fleet-safe this session:**
+- **Reverted** the `Proofs.lean` import (Bridge stays UNREGISTERED → cannot break the fleet build).
+- **Reverted** gallery `meta.json` to HEAD (entry stays cleanly `verified` for the three genuinely
+  registered+built files OQ03 / OQ03Converse / OQ03PID; no unbuilt-Bridge claims, no auditor bait).
+- **Softened** `…oq-03.json` `progressSummary` from "registered + build-verified" to the accurate
+  "REGISTER-READY (not yet built/registered)" with the full bearer list.
+
+**Full offline bearer audit of the Bridge vs pin `2df2f0150c` (= v4.26.0, `/Users/rwalters/GitHub/mathlib4`)** — no missing/ambiguous/wrong-namespace bearer:
+- `Module.AEval'.of : M ≃ₗ[R] AEval' φ` (AEval.lean:198), `.surjective.exists` (LinearEquiv).
+- `Module.AEval'.X_pow_smul_of (m)(n) : (Xⁿ)•of φ m = .of φ (φⁿ • m)` (AEval.lean:205).
+- `Module.AEval.C_smul : C t • m = t • m` (AEval.lean:75) — applies to `AEval' T`.
+- `Module.End.smul_def : f • a = f a` (LinearMap/End.lean:204, `protected`, fully qualified ✓).
+- `Polynomial.span_minpoly_eq_annihilator (f)` (AnnihilatingPolynomial.lean:166).
+- `Submodule.restrictScalars_eq_top_iff` (RestrictScalars.lean:105), `restrictScalars_mem` (:51).
+- `Submodule.map_span` (Span/Basic.lean:73, in `namespace Submodule`).
+- `Submodule.map_eq_top_iff` — the equiv form `p.map e = ⊤ ↔ p = ⊤` (Map.lean:443, `protected`).
+  The homonym at Span/Basic.lean:689 (`… ↔ p ⊔ ker f = ⊤`) lives under `namespace LinearMap`
+  (opened :668), so `Submodule.map_eq_top_iff` resolves UNAMBIGUOUSLY to the equiv form needed.
+- `Submodule.quotEquivOfEq` (Quotient/Defs.lean:242), `Polynomial.C_mul_X_pow_eq_monomial`
+  (Polynomial/Basic.lean:673), `Polynomial.induction_on'`.
+- PID companion: `CayleyHamiltonCyclicVectorAllFieldsOQ03PID.cyclic_iff_nonempty_equiv_quotient_annihilator`
+  (PID.lean:117) signature `(∃ x, span R {x} = ⊤) ↔ Nonempty (M ≃ₗ[R] R ⧸ annihilator R M)` ✓.
+
+Residual risk is only the standard tactical-defeq unification (`map_eq_top_iff`/`restrictScalars`
+rewrites threading through `Module.AEval'.of` as a `≃ₛₗ`), which build iteration resolves — no
+content gap. **Verdict: should build green on first try; registration is the sole remaining gate.**
+
+**Why no build this session:** Docker VM **8.2 GiB total, 13 `lean-build` containers using ~6.4 GiB
+→ only ~1.8 GiB free**; host itself under memory pressure (11 GiB compressor, 3.8 GiB unused). A
+Lean/Mathlib compile spikes 2–4 GiB, so a build would OOM the 13 peers (good-citizen rule ≤2–3
+containers). Deliberately did NOT build, did NOT relaunch a background watcher (S7's was reaped
+mid-clone — unreliable under sustained saturation), did NOT register red.
+
+**Next uncontended-Docker session (≤2–3 containers, `docker info` MemTotal mostly free):**
+1. `./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge` — grep log for `error:`.
+2. On GREEN: add the import to `Proofs.lean`; then update gallery `meta.json` (add Bridge to
+   `additionalFiles`/`originalContributions`, bump `theoremCount` 8→12, refresh `description`).
+3. The Bridge is the conceptual capstone — once registered, OQ-03 (a)+(b)+bridge is fully closed.
