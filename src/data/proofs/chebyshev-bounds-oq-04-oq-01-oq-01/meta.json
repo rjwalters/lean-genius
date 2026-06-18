@@ -63,6 +63,14 @@
       "mathContext": "The identity is the integer-valued keystone of Iter 5a-β-2 (weak Mertens M₁ estimate) on the parent file's Selberg–Erdős road to ψ(x)/x → 1."
     },
     {
+      "id": "setup",
+      "title": "Imports, Options, and Namespace",
+      "startLine": 93,
+      "endLine": 106,
+      "summary": "`import Mathlib` plus `open ArithmeticFunction` / `open scoped ArithmeticFunction.Moebius` bring the `μ` and `ζ` notations and the four confirmed hooks into scope; `set_option maxHeartbeats 1000000` / `maxRecDepth 4000` give the elaborator headroom for the divisor-set `simp`/`omega` discharges, and `autoImplicit false` enforces explicit binders. No parent file is imported, so the two deep PNT axioms stay out of this proof's closure.",
+      "mathContext": "The only arithmetic input is μ ∗ ζ = δ (`moebius_mul_coe_zeta`); the rest is Finset bookkeeping."
+    },
+    {
       "id": "theorem",
       "title": "moebius_mul_floor_sum_eq_one",
       "startLine": 107,

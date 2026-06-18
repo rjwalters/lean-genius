@@ -79,6 +79,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Imports, Module Docstring, and Provenance",
+      "startLine": 1,
+      "endLine": 52,
+      "mathContext": "$p\\ \\text{odd prime} \\Rightarrow \\big(p \\equiv 1 \\pmod 4 \\iff \\exists a\\,b,\\ p = a^2 + b^2\\big)$",
+      "summary": "Imports (Nat.Prime.Basic, ZMod.Basic, NumberTheory.SumTwoSquares, Tactic), the module docstring, and provenance. The docstring is explicit that this odd-prime-only result is a pedagogical wrapper superseded by Proofs/FermatTwoSquares.lean, which proves the strictly stronger biconditional (∃ a b, a²+b² = p) ↔ p % 4 ≠ 3 (also covering p = 2) plus the full classification corollaries under the gallery slug fermat-two-squares. Both files share the Mathlib bearer Nat.Prime.sq_add_sq and the interval_cases (n % 4) + Nat.pow_mod squares-mod-4 step. The namespace opens Nat."
+    },
+    {
       "id": "squares-mod-four",
       "title": "Squares Are 0 or 1 mod 4",
       "startLine": 54,
