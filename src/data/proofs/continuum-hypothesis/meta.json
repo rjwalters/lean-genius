@@ -244,16 +244,16 @@
   ],
   "mainTheorems": [
     {
-      "name": "ch_independent",
+      "name": "continuum_hypothesis_independent",
       "type": "core",
-      "description": "The continuum hypothesis is independent of ZFC (Godel + Cohen)",
-      "leanType": "Consistent ZFC -> not (Provable ZFC CH) and not (Provable ZFC (not CH))"
+      "description": "Independence of CH, in the scaffolded model-existence form: there is a ZFC model where CH holds and a ZFC model where CH fails. Derived from the Gödel/Cohen axioms (L_exists, L_satisfies_CH, forcing_extension_exists, forcing_violates_CH); the model predicates holds_CH / holds_notCH are placeholders standing in for the deep metamathematical constructions.",
+      "leanType": "(∃ M : ZFCModel, holds_CH M) ∧ (∃ M : ZFCModel, holds_notCH M)"
     },
     {
-      "name": "ch_statement",
+      "name": "ch_equiv_ch_alt",
       "type": "key",
-      "description": "CH: there is no cardinal strictly between aleph_0 and 2^aleph_0",
-      "leanType": "not (exists kappa, aleph_0 < kappa and kappa < 2^aleph_0)"
+      "description": "Genuinely proved (from Mathlib cardinal arithmetic, no axioms): CH (𝔠 = ℵ₁) is equivalent to the no-intermediate-cardinal formulation CH_alt (no κ with ℵ₀ < κ < 𝔠).",
+      "leanType": "CH ↔ CH_alt"
     }
   ],
   "sorries": 0
