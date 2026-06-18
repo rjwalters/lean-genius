@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 26
     },
-    "type": "context",
+    "type": "concept",
     "title": "Closing the Loop: The Converse to the Cyclic Vector Theorem",
     "content": "The parent file `CayleyHamiltonCyclicVectorAllFields.lean` proved the *forward* direction: every nonderogatory matrix has a cyclic vector. That direction is the difficult one — its proof uses primary decomposition over an arbitrary field and is essentially the heart of rational canonical form. This file proves the *converse*, which is structurally simpler but logically essential: if M has a cyclic vector, M must be nonderogatory. Combined, the two directions yield the biconditional `IsNonderogatory M ↔ ∃ v, IsCyclicVector M v`, completing the cyclic-vector characterization of nonderogatory matrices over any field. The header docstring lays out the four-step proof skeleton: (1) divisibility gives deg(minpoly) ≤ n, (2) cyclicity gives deg(minpoly) ≥ n, (3) both monic of degree n with one dividing the other, hence equal.",
     "mathContext": "Statement: $\\text{IsCyclicVector}(M, v) \\Rightarrow \\text{IsNonderogatory}(M)$, where IsNonderogatory means $\\mu_M = \\chi_M$. Combined with parent: $\\text{IsNonderogatory}(M) \\iff \\exists v,\\, \\text{IsCyclicVector}(M, v)$ over any field $K$.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "minimal polynomial μ_M",
       "characteristic polynomial χ_M",
@@ -31,7 +31,7 @@
       "startLine": 50,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Step 1: Cayley–Hamilton Gives deg(μ) ≤ n",
     "content": "The first half of the degree squeeze comes from Cayley–Hamilton via Mathlib's `Matrix.aeval_self_charpoly` (which states $\\chi_M(M) = 0$ in matrix form). Feeding this into `minpoly.dvd K M` produces `hdvd : minpoly K M ∣ M.charpoly`. Then `Polynomial.natDegree_le_of_dvd hdvd hchar_ne` gives `(minpoly K M).natDegree ≤ M.charpoly.natDegree`. Combined with `Matrix.charpoly_natDegree_eq_dim` (degree of charpoly is the matrix dimension n) and `Fintype.card_fin`, this yields `(minpoly K M).natDegree ≤ n`. This step uses *only* Cayley–Hamilton — no cyclicity needed yet.",
     "mathContext": "$\\chi_M(M) = 0$ (Cayley–Hamilton) $\\Rightarrow \\mu_M \\mid \\chi_M$ (universal property of minimal polynomial). Since $\\deg \\chi_M = n$ and $\\chi_M$ is nonzero, $\\deg \\mu_M \\leq n$.",
@@ -79,7 +79,7 @@
       "startLine": 74,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Step 3: Two Monics, Same Degree, One Divides the Other → Equal",
     "content": "Once `(minpoly K M).natDegree = n` and `M.charpoly.natDegree = n`, we have two monic polynomials of the same degree where one divides the other. The proof writes `M.charpoly = minpoly K M * r` (extracting the quotient `r` from `hdvd`), then uses three Polynomial lemmas to nail down `r = 1`: (1) `Polynomial.Monic.of_mul_monic_left` shows r is monic (the product is monic and the left factor is monic, so the right factor is monic); (2) `Polynomial.natDegree_mul` gives `deg(minpoly · r) = deg(minpoly) + deg(r)`; combined with the n + 0 = n arithmetic, `deg(r) = 0`; (3) `Polynomial.eq_C_of_natDegree_eq_zero` shows `r = C(r.coeff 0)`, and since r is monic, `r.coeff 0 = 1`, so `r = C(1) = 1` via `map_one`. Final rewrite: `M.charpoly = minpoly K M * 1 = minpoly K M`, which after `mul_one` gives `IsNonderogatory M`.",
     "mathContext": "Two monic polynomials $p, q \\in K[X]$ with $p \\mid q$ and $\\deg p = \\deg q$ satisfy $p = q$. Proof: write $q = p \\cdot r$. Since $q$ is monic and $p$ is monic, $r$ is monic. Degree arithmetic: $\\deg p + \\deg r = \\deg q$, so $\\deg r = 0$. A monic polynomial of degree 0 is $1$.",
@@ -125,7 +125,7 @@
       "startLine": 114,
       "endLine": 121
     },
-    "type": "context",
+    "type": "concept",
     "title": "Contrapositive: Derogatory Matrices Have No Cyclic Vector",
     "content": "`derogatory_has_no_cyclic_vector` is the contrapositive of `cyclic_implies_nonderogatory` and follows in two lines. If M has *any* cyclic vector, M is nonderogatory. Equivalently: if M is *not* nonderogatory (i.e., $\\mu_M \\neq \\chi_M$, called 'derogatory'), then *no* vector is cyclic for M. This is a useful 'no-go' result — it tells us that for derogatory matrices, the K[X]-module $K^n = K[X] \\cdot v$ for any single v is impossible, and one needs at least two generators (the rational canonical form has multiple companion blocks). The classic example is the $n \\times n$ identity matrix $I_n$: $\\mu_I = X - 1$, $\\chi_I = (X-1)^n$, derogatory for $n \\geq 2$, and indeed $K[I] = K \\cdot I$ is 1-dimensional, so no single vector can generate $K^n$.",
     "mathContext": "Contrapositive: $\\neg \\text{IsNonderogatory}(M) \\Rightarrow \\forall v,\\, \\neg \\text{IsCyclicVector}(M, v)$. Example: $I_n$ for $n \\geq 2$: $\\mu = X - 1$, $\\chi = (X-1)^n$, $\\mu \\neq \\chi$, no cyclic vector. Indeed $K[I] = \\langle I \\rangle$ has dimension 1, but generating $K^n$ via a single vector requires $\\dim K[M] \\geq n$.",

@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 37
     },
-    "type": "context",
+    "type": "concept",
     "title": "Four-Part Roadmap: m-Jump IVTs + Alphabet Sharpening to x ≤ 1",
     "content": "The opening docstring orients the entire 626-line file around two complementary strands. **Strand 1 (Parts I–II, the m-jump IVTs).** The parent file `BallotProblemOQ01OQ01OQ02` proved a unit-decrement (`step ≥ -1`) downward IVT via the leftmost-crossing Finset.min' argument. This file generalises that argument to `step ≥ -m` (Part I) and its symmetric upward dual `step ≤ m` (Part II). The conclusion window widens from {v} to a width-m closed integer interval; at m = 1, the window collapses and the parent's theorem is recovered verbatim (the `_unit_recovery` lemmas). **Strand 2 (Parts III–V, the alphabet sharpening).** S1 OBSERVE refuted the naive `⌈l.sum / m⌉ ≤ |goodRotations|` bound on the broad `step ≥ -m` family with the witness `l = [-m, m + S]`. Parts III, IV, V then trace four progressively broader alphabets on which the *strict equality* `|goodRotations l| = l.sum.toNat` survives: {+1, -m} (Conjecture E), {-m, …, -1, +1} (Path B, S7), {-m, …, 0, 1} (Option C, S11), and finally `x ≤ 1` with no lower bound on negative steps (S12, this file's headline). The end-state `step_le_one_card_eq` is the maximal clean alphabet for the equality.",
     "mathContext": "**Naive bound (REFUTED on `step ≥ -m`)**: $\\lceil \\sum l / m \\rceil \\leq |gR(l)|$.\n**S1 refutation**: $l = [-m, m+S] \\Rightarrow |gR| = 1 < \\lceil S/m \\rceil$ for $m \\geq 2$, $S = m+1$.\n**S12 sharpest equality**: $\\forall x \\in l,\\ x \\leq 1\\ \\wedge\\ 0 < \\sum l\\ \\Rightarrow\\ |gR(l)| = (\\sum l).\\text{toNat}.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Dvoretzky–Motzkin cycle lemma",
       "leftmost-crossing argument",
@@ -31,7 +31,7 @@
       "startLine": 38,
       "endLine": 46
     },
-    "type": "key-lemma",
+    "type": "lemma",
     "title": "The Per-Step Bound that Drives the m-Jump IVT",
     "content": "`m_jump_step_bound` is the file's most-elementary technical atom: for any list with all steps ≥ -m, the prefix sum at position `j+1` is at least `prefixSum l j - m`. The proof is three lines — unfold `prefixSum`, apply `List.sum_take_succ`, and `linarith` with the hypothesised per-element bound. The lemma is the input the leftmost-crossing argument feeds on; widening from the parent's `-1` to `-(m:ℤ)` is the single change that propagates the entire IVT generalisation.",
     "mathContext": "$l_j \\geq -m \\Rightarrow \\text{PS}(j+1) = \\text{PS}(j) + l_j \\geq \\text{PS}(j) - m.$",
@@ -52,7 +52,7 @@
       "startLine": 48,
       "endLine": 111
     },
-    "type": "core-theorem",
+    "type": "theorem",
     "title": "Conjecture D: m-Jump Downward IVT via Leftmost Crossing",
     "content": "`m_jump_downward_ivt` is the discharge of the parent's openQuestions[0]. The proof template transfers verbatim from the parent's `unit_decrement_downward_ivt`: define `S := Finset.Ico (i + 1) (j + 1) ∩ {k : PS(k) ≤ v}`, take `kstar := S.min'`, derive `PS(kstar - 1) > v` by minimality (case-splitting on `kstar = i + 1` to handle the boundary), invoke `m_jump_step_bound` at position `kstar - 1` to bound `PS(kstar) ≥ PS(kstar - 1) - m > v - m`, and combine with `PS(kstar) ≤ v` from membership. The conclusion `PS(kstar) ∈ [v - m + 1, v]` follows by `linarith`. At m = 1, the window collapses to {v} — the parent's exact-level IVT.",
     "mathContext": "Define $S := \\{k \\in (i, j] : \\text{PS}(k) \\leq v\\}$, $k^* := \\min' S$. By minimality $\\text{PS}(k^*-1) > v$; by the one-step bound $\\text{PS}(k^*) \\geq \\text{PS}(k^*-1) - m > v - m$. Combined with $\\text{PS}(k^*) \\leq v$: $\\text{PS}(k^*) \\in [v - m + 1, v]$.",
@@ -75,7 +75,7 @@
       "startLine": 290,
       "endLine": 316
     },
-    "type": "core-theorem",
+    "type": "theorem",
     "title": "Conjecture E: Cycle-Lemma Bound on {+1, -m}",
     "content": "`step_in_one_neg_m_count` is the cleanest application of the parent's `cycle_lemma`. The bridge is one line: `l ∈ kCountedSequence m (l.count 1) (l.count (-m))` is true by definition unfolding (the membership predicate is `⟨rfl, rfl, h_step⟩`). Then `kCountedSequence_sum` rewrites `l.sum = a - m·b` (where `a = l.count 1`, `b = l.count (-m)`); positivity of the sum forces `m·b < a`; and `cycle_lemma` delivers the *exact* count `|gR(l)| = a - m·b = l.sum.toNat`. The residual `Int.toNat ⌈l.sum / m⌉ ≤ l.sum.toNat` follows from the elementary `ceil_div_le_toNat` arithmetic atom (`⌈S/m⌉ ≤ S` for `m ≥ 1`, `S > 0`). The theorem is presented in the fractional `⌈S/m⌉` form to match the parent's openQuestions language, but the actual count is the much sharper `l.sum.toNat`.",
     "mathContext": "Restricted to $\\Sigma = \\{+1, -m\\}$: $|gR(l)| = l.\\text{count}(1) - m \\cdot l.\\text{count}(-m) = (\\sum l).\\text{toNat}.$\n\n**Refutation contrast**: the S1 witness $l = [-m, m+S]$ uses an uncapped positive step $+(m+S)$ that this alphabet excludes ($+1$ is the only allowed positive value).",
@@ -122,7 +122,7 @@
       "startLine": 462,
       "endLine": 476
     },
-    "type": "core-theorem",
+    "type": "theorem",
     "title": "Path B Strict Equality on Mixed-Down Alphabet",
     "content": "`step_in_one_pos_mixed_neg_card_eq` glues the upper bound `goodRotations_card_le` (alphabet-agnostic, from the parent) with the lower bound `goodRotations_card_ge_pathB` (`levelPosB` injection of `Finset.range l.sum.toNat`) via `le_antisymm`. The slack form `step_in_one_pos_mixed_neg_card_bound` recovers B′'s `l.sum ≤ m·|gR| + (m-1)·l.length` from the strict equality through `Int.toNat_of_nonneg` and `nlinarith`. The 'mixed-down' qualifier refers to the alphabet `x = 1 ∨ ∃ k ∈ {1..m}, x = -k`, i.e. `{+1} ∪ {-1, …, -m}` — the missing element relative to Option C is 0.",
     "mathContext": "$\\forall x \\in l,\\ (x = 1 \\vee \\exists k \\in \\{1, \\ldots, m\\}, x = -k)\\ \\wedge\\ 0 < \\sum l\\ \\Rightarrow\\ |gR(l)| = (\\sum l).\\text{toNat}.$\n\n**Slack form**: $\\sum l \\leq m \\cdot |gR(l)| + (m - 1) \\cdot |l|.$ Equality at $m = 1$; non-negative slack for $m \\geq 2$.",
@@ -145,7 +145,7 @@
       "startLine": 596,
       "endLine": 609
     },
-    "type": "core-theorem",
+    "type": "theorem",
     "title": "S12 Headline: x ≤ 1 is the Maximal Clean Alphabet for the Equality",
     "content": "`step_le_one_card_eq` is the file's headline theorem and the end-point of the four-step alphabet refinement (Conjecture E → Path B → Option C → S12). The path from Option C to S12 is the discovery, not the rewrite: S11 ACT noted in-line that the lower bound `-(m:ℤ) ≤ x` was never consumed by the `omega` discharge in `levelPosB_eq`; S12 acted on that observation by dropping the lower bound entirely. The proof obligations shrink in lock-step: `levelPosB_eq_capOne` consumes only `hxle : l[idx] ≤ 1`; `goodRotations_card_ge_capOne` routes through the strengthened identity; `step_le_one_card_eq` glues with the alphabet-agnostic upper bound `goodRotations_card_le`. The Option C public API (`step_in_one_pos_pm_card_eq` and `_card_bound`) is preserved byte-identically as one-line `.2`-projection corollaries — backwards-compatible despite the underlying simplification. **Mathematical sharpness**: the cap `x ≤ 1` cannot be relaxed (S1's `[-m, m + S]` refutation uses an uncapped positive step), and no lower bound on negative steps is needed (S12 strengthening). This is the maximal clean alphabet.",
     "mathContext": "$\\forall x \\in l,\\ x \\leq 1\\ \\wedge\\ 0 < \\sum l\\ \\Rightarrow\\ |gR(l)| = (\\sum l).\\text{toNat}.$\n\n**Sharpness (upper boundary)**: any relaxation $x \\leq C$ for $C \\geq 2$ admits the S1 family $l = [-m, m+S]$ with $|gR| = 1 < (\\sum l).\\text{toNat} = S$.\n**Sharpness (lower boundary)**: every proof step (level identity, count lower bound, count upper bound) consumes only $x \\leq 1$, never any lower bound on $x$.",

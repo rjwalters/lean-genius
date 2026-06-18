@@ -10,7 +10,7 @@
     "title": "Erdős #247: Transcendence of Lacunary Base-2 Sums",
     "content": "For a strictly increasing sequence $n_k$, consider the lacunary sum $\\sum_k 2^{-n_k}$. Erdős asked: which growth conditions on $n_k$ force this sum to be transcendental? The conjecture (OPEN) is that a *weak* growth condition suffices; Erdős proved transcendence under a *strong* growth condition (1975). This file formalizes both conditions, the gap between them (the quadratic sequence $n_k=k^2$), and — in Part VIII — a fully axiom-free Liouville-number proof that $\\sum 2^{-k!}$ is transcendental.",
     "mathContext": "Lacunary sum $S = \\sum_{k=1}^\\infty 2^{-n_k}$ with $n_k \\uparrow$. Question: growth of $n_k$ $\\Rightarrow$ $S$ transcendental?",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "transcendental numbers",
       "lacunary series",
@@ -34,7 +34,7 @@
     "title": "The Lacunary Sum",
     "content": "`lacunarySum n` is $\\sum_{k=1}^\\infty 1/2^{n_k}$ for a sequence $n : \\mathbb{N}\\to\\mathbb{N}$, implemented as a `tsum`. The rapid (lacunary) decay of the terms when $n_k$ grows fast is exactly what makes the sum a candidate for a Liouville number.",
     "mathContext": "$\\mathrm{lacunarySum}(n) = \\sum_{k} 2^{-n_k}$.",
-    "significance": "definition",
+    "significance": "supporting",
     "relatedConcepts": [
       "lacunary series",
       "tsum",
@@ -97,7 +97,7 @@
       "startLine": 72,
       "endLine": 85
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "Erdős's Theorem (1975): Strong Growth ⇒ Transcendental (axiom)",
     "content": "`erdos_transcendence_strong` axiomatizes Erdős's 1975 partial result: the *strong* growth condition suffices for transcendence. This is the known theorem (the conjecture weakens its hypothesis); it is taken as an axiom here since the general Mahler/Erdős transcendence machinery is not in Mathlib. Note Part VIII later re-proves the special case $n_k=k!$ axiom-free via Liouville theory, not relying on this axiom.",
     "mathContext": "Axiom: $\\mathrm{HasStrongGrowth}(n) \\Rightarrow \\mathrm{Transcendental}_\\mathbb{Q}\\big(\\sum_k 2^{-n_k}\\big)$ (Erdős 1975).",
@@ -120,7 +120,7 @@
       "startLine": 89,
       "endLine": 159
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Worked Examples: Factorial and Doubly-Exponential Sequences",
     "content": "Part V instantiates the strong-growth machinery. Monotonicity helpers (`factorial_strictMono`, `pow2_strictMono`) and growth inequalities (`pow2_ge_succ`, `factorial_ge_pow2`) lead to `pow2_strong_growth` and `factorial_strong_growth`, which verify the strong growth condition for $n_k = 2^k$ and $n_k = k!$. Feeding these into the Erdős axiom yields `factorial_sum_transcendental` (Σ1/2^{k!}) and `pow2_sum_transcendental` (Σ1/2^{2^k}) — both transcendental.",
     "mathContext": "$2^k$ and $k!$ both satisfy strong growth (they beat every polynomial), so $\\sum 2^{-k!}$ and $\\sum 2^{-2^k}$ are transcendental by the axiom.",
@@ -172,7 +172,7 @@
     "title": "Summary of Known Results",
     "content": "`problem_247_summary` collects the status: strong growth ⇒ transcendental (Erdős, axiom); the factorial and doubly-exponential sums are transcendental; the quadratic sum is open; and the weak-growth conjecture remains unproven. A single theorem packaging the landscape of what is and isn't known.",
     "mathContext": "Known: strong⇒transc (Erdős); $k!$, $2^k$ transc; $k^2$ open; weak⇒transc conjectural.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "status summary",
       "known vs open"
@@ -188,7 +188,7 @@
       "startLine": 235,
       "endLine": 332
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Part VIII Infrastructure: Summability, Tails, and Partial Sums",
     "content": "The axiom-free development for $\\sum 2^{-k!}$ begins with analytic infrastructure. `factorial_lacunary_summable` and `liouville_summable` establish convergence. `factorialTail`/`factorial_tail_summable` isolate the tail from index $N{+}1$, and `lacunarySum_factorial_split` decomposes the sum into a finite partial sum plus tail. `factorialPartialSum_eq_div` shows the partial sum is an integer over $2^{N!}$ — the crucial rationality structure that makes the Liouville inequality bite.",
     "mathContext": "$S = \\sum_{k\\le N} 2^{-k!} + \\mathrm{tail}_N$, with $\\sum_{k\\le N}2^{-k!} = p_N/2^{N!}$ for an integer $p_N$ (good rational approximations with denominator $2^{N!}$).",

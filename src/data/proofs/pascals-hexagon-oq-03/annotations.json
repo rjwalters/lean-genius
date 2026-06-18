@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 10
     },
-    "type": "context",
+    "type": "concept",
     "title": "Import Stack: Group Theory + Fintype + Parent File",
     "content": "Nine imports stage the four ingredients of the Hexagrammum Mysticum scaffold:\n\n* **Fintype.Card / Fintype.Perm**: for `card_sym6 = 720` via `native_decide`. Mathlib's `Fintype.card_perm` gives `|Equiv.Perm α| = (Fintype.card α)!`.\n* **Fin.Basic**: for `Fin.rev` and `Fin.rev_rev` — the involutive reversal used to construct `hexRev`.\n* **QuotientGroup.Basic**: for the `Sym(6) ⧸ hexagonalGroup` quotient and Lagrange's theorem `Subgroup.card_eq_card_quotient_mul_card_subgroup`.\n* **SpecificGroups.Dihedral**: for `DihedralGroup 6` — reference target for the OQ-03-OQ-01 isomorphism strategy.\n* **Subgroup.Basic**: for `Subgroup.closure` and the generator-membership lemmas.\n* **Logic.Equiv.Fin**: for `finRotate 6` — the canonical cyclic-rotation `Equiv.Perm (Fin 6)`.\n* **Proofs.PascalsHexagon**: the parent file providing `Conic`, `InscribedHexagon`, `ProjPoint`, `ProjLine`, `pointOnLine`, `lineThrough`, `lineIntersection`, `pascalP/Q/R`, and `pascal_hexagon_theorem`.",
     "mathContext": "Backbone identity: $\\mathrm{Sym}(6) \\cong S_6$ with $|S_6| = 6! = 720$, $D_6 \\le S_6$ with $|D_6| = 12$, and $|S_6 / D_6| = 720 / 12 = 60$ by Lagrange's theorem $|G| = |G/H| \\cdot |H|$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "symmetric group",
       "dihedral group",
@@ -431,7 +431,7 @@
     "type": "concept",
     "title": "Sanity-Check Lemmas",
     "content": "Two basic non-triviality checks closing the file: `hexRot_ne_one` (cyclic rotation by 1 is not the identity, since it moves $0$ to $1$) and `hexRev_ne_one` (reversal is not the identity, since it swaps $0$ and $5$). These confirm the generators are genuinely non-trivial, consistent with the computed orders 6 and 2.",
-    "significance": "technical",
+    "significance": "supporting",
     "mathContext": "Non-triviality: $r \\ne 1$ (moves $0\\mapsto 1$) and $s \\ne 1$ (swaps $0\\leftrightarrow 5$), consistent with $\\mathrm{ord}(r)=6$, $\\mathrm{ord}(s)=2$.",
     "relatedConcepts": [
       "non-triviality checks",

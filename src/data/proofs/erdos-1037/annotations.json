@@ -325,7 +325,7 @@
       "startLine": 109,
       "endLine": 110
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "chenErdos_false",
     "content": "Axiomatizes that the Chen-Erdős conjecture is false, as proved by Cambie-Chan-Hunter. This is a stated assumption: the file records the mathematical result rather than re-deriving the full construction in Lean.",
     "mathContext": "$\\neg$ chenErdosConjecture: the conjecture fails. Degree diversity does not improve Ramsey bounds.",
@@ -425,7 +425,7 @@
       "startLine": 160,
       "endLine": 162
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "ramseyNumber",
     "content": "The diagonal Ramsey number R(k,k): the minimum n such that every graph on n vertices contains a clique or independent set of size k. Axiomatized since exact values are unknown. Two classical facts frame the problem: Ramsey's theorem guarantees every graph on ≥ R(k,k) vertices has a trivial set of size k, while Erdős's 1947 probabilistic lower bound R(k,k) ≥ 2^{k/2} shows that graphs on n vertices need only have trivial sets of size O(log n) — exactly the baseline that the Chen-Erdős conjecture hoped degree diversity could beat.",
     "mathContext": "$R(k,k) = \\min\\{n : \\forall G \\text{ on } n \\text{ vertices},\\; \\text{maxTrivial}(G) \\geq k\\}$. Bounds $2^{k/2} \\leq R(k,k) \\leq 4^k$ (lower bound: Erdős 1947, probabilistic method). Equivalently, every $G$ on $n$ vertices satisfies $\\text{maxTrivial}(G) \\geq \\tfrac{1}{2}\\log_2 n$.",

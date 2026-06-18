@@ -10,7 +10,7 @@
     "title": "Triangle: Squared Distance, Area, and Cayley–Menger Determinant",
     "content": "The n=2 case fixes the ingredients of Heron's formula. `sqDist2 p q = (p.1−q.1)² + (p.2−q.2)²` is the squared planar distance, `area2 P₀ P₁ P₂` is twice the signed area (the 2!·Area scalar, a 2×2 determinant of edge vectors), and `cmDet3 d01 d02 d12` is the 4×4 Cayley–Menger determinant written as an explicit polynomial in the three squared edge lengths. The bordered matrix has a row/column of ones around the squared-distance matrix; expanding it gives the six-term symmetric polynomial d01²+d02²+d12²−2d01d02−2d01d12−2d02d12.",
     "mathContext": "$\\mathrm{cmDet3} = d_{01}^2 + d_{02}^2 + d_{12}^2 - 2d_{01}d_{02} - 2d_{01}d_{12} - 2d_{02}d_{12}$, $d_{ij} = \\lVert P_i-P_j\\rVert^2$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "squared distance",
       "signed area",
@@ -62,7 +62,7 @@
     "title": "Tetrahedron: Squared Distance, Volume, and Cayley–Menger Determinant",
     "content": "The n=3 case mirrors the triangle. `sqDist3` is the squared spatial distance on ℝ×ℝ×ℝ (coordinates accessed as .1, .2.1, .2.2). `vol6 P₀ P₁ P₂ P₃` is the scalar triple product (P₁−P₀)·((P₂−P₀)×(P₃−P₀)), which equals 6·V (the 3!·V content scalar). `cmDet4` is the 5×5 Cayley–Menger determinant of the bordered squared-distance matrix, expanded as a 22-term polynomial in the six squared edge lengths d01,…,d23. Working with the triple product directly keeps everything inside `ring`, avoiding any matrix-determinant API.",
     "mathContext": "$\\mathrm{vol6} = (P_1-P_0)\\cdot\\big((P_2-P_0)\\times(P_3-P_0)\\big) = 6V$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "scalar triple product",
       "tetrahedron volume",
@@ -108,7 +108,7 @@
     "title": "Realizability and Degeneracy",
     "content": "Two corollaries of the squared form. `cmDet4_nonneg` observes that 288·V² = cmDet4 ≥ 0 for any four points (proved by `positivity` after rewriting with cmDet4_eq) — the realizability sign condition. `cmDet4_eq_zero_iff_coplanar` is the degeneracy criterion: the determinant vanishes iff vol6 = 0, i.e. the four points are coplanar; the forward direction uses `pow_eq_zero_iff` to extract vol6 = 0 from 8·vol6² = 0.",
     "mathContext": "$\\mathrm{cmDet4} \\geq 0$, and $\\mathrm{cmDet4} = 0 \\iff \\mathrm{vol6} = 0$ (the four points are coplanar).",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "realizability",
       "coplanarity",

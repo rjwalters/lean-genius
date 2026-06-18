@@ -60,7 +60,7 @@
     "id": "ann-bridge",
     "proofId": "pascals-hexagon-oq-02",
     "range": { "startLine": 129, "endLine": 162 },
-    "type": "technique",
+    "type": "insight",
     "title": "Duality Bridge: Sides as Inscribed Points",
     "content": "`toInscribed` reads the six tangent sides of a circumscribed hexagon as six points inscribed in the line-conic $D$. The lemmas `pascalP_toInscribed`, `pascalQ_toInscribed`, `pascalR_toInscribed` then prove — by `rfl` — that the Pascal opposite-side points of this inscribed reading are *literally* the three main diagonals of the circumscribed hexagon.",
     "mathContext": "Both $\\mathrm{pascalP}$ and $\\mathrm{diagAD}$ reduce to $\\mathrm{cross}(\\mathrm{cross}(a,b),\\,\\mathrm{cross}(d,e))$, because `lineThrough` and `lineIntersection` are the same function (`crossProduct`). The proofs are definitional equalities, the technical heart of the duality argument: there is nothing to compute, only to recognize.",

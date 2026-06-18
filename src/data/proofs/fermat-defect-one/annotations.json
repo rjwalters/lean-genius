@@ -169,11 +169,11 @@
       "startLine": 87,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Tactic Pattern: refine + native_decide on Conjunctions",
     "content": "Each benchmark's proof obligation is a 5-fold conjunction `2 ≤ a ∧ a ≤ b ∧ b < c ∧ gcd_condition ∧ disjunct`. The proof uses `refine ⟨?_, ?_, ?_, ?_, ?_⟩` to introduce five named goals (one per conjunct), then discharges each with `native_decide`. The disjunct goal is handled with `left; native_decide` (negative defect, $a^n + b^n + 1 = c^n$) or `right; native_decide` (positive defect, $a^n + b^n = c^n + 1$) to pick the correct branch before reducing. This pattern is the canonical Lean 4 idiom for closing concrete-witness goals over decidable predicates: structurally decompose the conjunction, computationally close each leaf. `native_decide` reduces to native-code evaluation (faster than the kernel-level `decide`) and is appropriate here because the arithmetic involves $9^3 = 729$ and $12^3 = 1728$ — large enough that kernel reduction would be slow.",
     "mathContext": "Decomposition: $P_1 \\land P_2 \\land P_3 \\land P_4 \\land (Q_- \\lor Q_+) \\;\\Leftarrow\\; (P_1, P_2, P_3, P_4, Q_\\pm)$ with $\\pm$ picked by `left`/`right`. All five components are decidable on `Nat`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "refine tactic and anonymous constructor",
       "native_decide vs decide",
@@ -194,11 +194,11 @@
       "startLine": 42,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Namespace",
     "content": "`import Mathlib` pulls in the full Mathlib library — needed for `Nat.gcd`, the `decide`/`native_decide` infrastructure, and standard arithmetic lemmas. The whole file lives in `namespace FermatDefectOne`, so the four predicates and six theorems are exposed as `FermatDefectOne.FermatDefectWitness`, `FermatDefectOne.fermat_defect_three_neg`, etc. Gallery convention: a single `import Mathlib` is preferred over piecemeal imports for self-contained gallery entries; this is distinct from Mathlib-bound files (`mathlib-contribution` skill), which are required to use targeted imports.",
     "mathContext": "Namespace prefix: `FermatDefectOne.*` for all exported names. Mathlib provides `Nat.gcd` and decidability instances.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib import conventions",
       "namespace conventions in Lean 4",
@@ -217,11 +217,11 @@
       "startLine": 60,
       "endLine": 60
     },
-    "type": "technique",
+    "type": "insight",
     "title": "GCD-Tower Idiom for Triple Coprimality",
     "content": "The primitivity condition `Nat.gcd (Nat.gcd a b) c = 1` encodes coprimality of three naturals via a tower of the binary `Nat.gcd`. Since `Nat.gcd` is binary, the three-argument 'common divisor of $a, b, c$' must be built by composition. Associativity $\\gcd(\\gcd(a,b),c) = \\gcd(a,\\gcd(b,c))$ makes the bracketing mathematically irrelevant, but Lean fixes the left-associated form because it matches how the kernel peels the computation: first reduce $\\gcd(a,b)$, then reduce against $c$. Concretely: $\\gcd(\\gcd(6,8),9) = \\gcd(2,9) = 1$ and $\\gcd(\\gcd(9,10),12) = \\gcd(1,12) = 1$ — both benchmarks are coprime at the strongest level (the triple shares no common prime factor, not merely no pairwise common factor). Note the distinction: pairwise coprimality is strictly stronger than triple coprimality (e.g., $(6, 10, 15)$ has $\\gcd = 1$ overall but $\\gcd(6,10) = 2$), so this form admits 'almost-primitive' triples a pairwise condition would reject.",
     "mathContext": "$\\gcd(\\gcd(a, b), c) = 1 \\iff \\gcd(a, b, c) = 1 \\iff a, b, c$ share no common prime factor. Strictly weaker than pairwise coprimality $\\gcd(a,b) = \\gcd(b,c) = \\gcd(a,c) = 1$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.gcd associativity",
       "triple vs pairwise coprimality",
@@ -267,7 +267,7 @@
       "startLine": 35,
       "endLine": 39
     },
-    "type": "context",
+    "type": "concept",
     "title": "Mihailescu / Catalan as the Proved Single-Term Defect-One",
     "content": "The defect-one equation $a^n + b^n = c^n \\pm 1$ has a proved one-term analogue: Catalan's conjecture (1844), now Mihailescu's theorem (2002), states that $x^p - y^q = 1$ with $p, q \\ge 2$ has *only* the solution $3^2 - 2^3 = 1$ (i.e., $9 - 8 = 1$). Mihailescu's proof uses cyclotomic-field machinery — primary cyclotomic units, Wieferich-style obstructions on $(p, q)$, Bugeaud-Hanrot annihilator techniques. This is the closest *proved* relative of the present open conjecture, and the toolkit is the modern playbook for perfect-power gap problems. The structural difference is decisive: Catalan-Mihailescu has *one* solution (finitely many), defect-one is conjectured to have at least one solution at *every* $n \\ge 3$. A natural research question: do Mihailescu-style cyclotomic obstructions transfer to the two-term diagonal equation $a^n + b^n = c^n \\pm 1$?",
     "mathContext": "Catalan-Mihailescu: $x^p - y^q = 1$, $p, q \\ge 2 \\Rightarrow (x, y, p, q) = (3, 2, 2, 3)$. Defect-one: $|a^n + b^n - c^n| = 1$ conjecturally has at least one primitive solution at each $n \\ge 3$ — the same '$\\pm 1$' on the right-hand side, with two like powers on the left instead of one.",

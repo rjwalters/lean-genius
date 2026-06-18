@@ -295,7 +295,7 @@
     "title": "Average Gap and Cramér's Conjecture (Part VI)",
     "content": "Two pieces of context. `averageGap n = log(p_n)` records the prime number theorem's prediction that gaps near $p_n$ average $\\sim \\log p_n$ — the exact quantity by which gaps are normalized. `cramer_conjecture` formalizes Cramér's 1936 prediction that the *largest* gap near $p_n$ is $O((\\log p_n)^2)$. Cramér's conjecture is far stronger than anything Erdős #5 needs, but it frames the scale of fluctuations the normalized sequence can exhibit.",
     "mathContext": "By the prime number theorem $p_n \\sim n \\log n$, so $\\log p_n \\sim \\log n$ and the average gap is $\\sim \\log p_n$. Normalizing $g(n) = (p_{n+1}-p_n)/\\log p_n$ thus has 'expected value' $\\approx 1$. Cramér's heuristic models primes as independent events of density $1/\\log x$, predicting $\\limsup (p_{n+1}-p_n)/(\\log p_n)^2 = 1$; the conjecture here states the one-sided bound $p_{n+1}-p_n \\leq C(\\log p_n)^2$. Whether the normalized gaps are *dense* in $[0,\\infty)$ — the Erdős question — is orthogonal to and untouched by Cramér.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "prime number theorem",
       "Cramér's random model",

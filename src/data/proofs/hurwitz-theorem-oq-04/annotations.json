@@ -202,7 +202,7 @@
       "startLine": 395,
       "endLine": 421
     },
-    "type": "inductive",
+    "type": "insight",
     "title": "ExceptionalType: Formalizing the Five Exceptional Lie Algebras",
     "content": "The `ExceptionalType` inductive enumerates the five exceptional compact simple Lie algebras as constructors G2, F4, E6, E7, E8. Two computable functions assign their Cartan invariants: `ExceptionalType.dim` (14, 52, 78, 133, 248) and `ExceptionalType.rank` (2, 4, 6, 7, 8), matching the classification exactly. The surrounding docstring records *why* G₂ has dimension 14: any octonion automorphism fixes the unit e₀ and preserves the norm, so Aut(𝕆) ⊆ SO(7) (which has dimension 21); preserving the octonion cross product on Im(𝕆) ≅ ℝ⁷ imposes 7 further constraints, cutting the dimension to 21 − 7 = 14. The identifications G₂ ≅ Aut(𝕆) (E. Cartan, 1914) and 𝔤₂ ≅ Der(𝕆) are the deeper geometric content — these are *not* asserted as Lean axioms in this file (there are no axioms here); instead the concrete dimension fact is **proved** as `G2_der_dimension` (PART IV-c.3) via an explicit basis of 14 derivations.",
     "mathContext": "$\\mathrm{ExceptionalType} = \\{G_2, F_4, E_6, E_7, E_8\\}$ with $\\dim = (14, 52, 78, 133, 248)$ and $\\mathrm{rank} = (2, 4, 6, 7, 8)$. Heuristic for $G_2$: $\\dim G_2 = \\dim SO(7) - 7 = 21 - 7 = 14$.",
@@ -252,7 +252,7 @@
       "startLine": 603,
       "endLine": 718
     },
-    "type": "technique",
+    "type": "insight",
     "title": "PART IV-c.2: 14 explicit Baez derivations as a basis for Der(𝕆)",
     "content": "The 14 generators `d12, d13, …, d47` are the explicit derivations of the octonions from Baez's *The Octonions* (§4.1), each given as a concrete 8×8 matrix acting on ℝ⁸. They arise from the formula D_{ij}(x) = [[eᵢ, eⱼ], x] − 3·assoc(eᵢ, eⱼ, x) for imaginary basis pairs (eᵢ, eⱼ); of the 21 such maps the 14 index pairs (1,2),…,(4,7) form a basis. Each `dᵢⱼ` is built as a bundled `LinearMap` whose `map_add'` / `map_smul'` obligations are discharged uniformly by `funext; fin_cases; simp; ring`. The membership lemmas `d12_mem … d47_mem` certify (via the `simp_der_mem` macro) that every generator satisfies the Leibniz rule — i.e. lies in `OctonionDerSubmodule` — and `derBasis14 : Fin 14 → OctonionDerSubmodule` assembles them into the candidate basis whose linear independence pins the dimension at 14.",
     "mathContext": "$D_{ij}(x) = [[e_i, e_j], x] - 3\\,\\mathrm{assoc}(e_i, e_j, x)$ with $[a,b] = ab - ba$ and $\\mathrm{assoc}(a,b,c) = (ab)c - a(bc)$. Basis index pairs: $(1,2),(1,3),\\dots,(4,7)$ — 14 of the 21 imaginary pairs, spanning $\\mathrm{Der}(\\mathbb{O}) \\cong \\mathfrak{g}_2$.",
@@ -302,7 +302,7 @@
       "startLine": 1436,
       "endLine": 1463
     },
-    "type": "technique",
+    "type": "insight",
     "title": "PART IV-d: structural properties of octonion derivations",
     "content": "Four corollaries record the defining structural features of derivations once the dimension is fixed. `der_maps_unit_to_zero` (D(e₀) = 0) and `der_maps_real_part_to_zero` (D(r·e₀) = 0) express that every derivation annihilates the real axis — a derivation has no effect on scalars, consistent with D being a Lie-algebra (tangent) object rather than an automorphism. `OctonionDer.toLinearMap`, `OctonionDer.mem_der_submodule`, and `OctonionDer.toSubmoduleMem` provide the bridge between the bespoke `OctonionDer` structure (convenient for the algebraic lemmas) and the `OctonionDerSubmodule` submodule (needed for the finrank computation), confirming the two presentations of Der(𝕆) agree.",
     "mathContext": "$D(e_0) = 0$ and $D(r\\,e_0) = 0$ for every $D \\in \\mathrm{Der}(\\mathbb{O})$ — derivations vanish on $\\mathbb{R}\\cdot e_0$. Bridge of presentations: `OctonionDer` $\\leftrightarrow$ `OctonionDerSubmodule`.",

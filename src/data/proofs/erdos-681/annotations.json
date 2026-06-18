@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Problem Overview",
     "content": "Erdős Problem 681 (posed by Erdős, Eggleton, and Selfridge) asks whether, for all sufficiently large $n$, there exists a positive integer $k$ such that $n+k$ is composite and its least prime factor exceeds $k^2$. It probes the interplay between additive shifts and multiplicative structure near a given integer.",
-    "significance": "context",
+    "significance": "supporting",
     "mathContext": "Near any large $n$ most composite shifts $n+k$ have small prime factors (of order $\\sqrt{n+k}$). The conjecture asserts that some shifted composite has an unusually large least prime factor relative to the shift $k$.",
     "relatedConcepts": [
       "least prime factor",
@@ -93,7 +93,7 @@
       "startLine": 32,
       "endLine": 42
     },
-    "type": "technique",
+    "type": "insight",
     "title": "minFac Is the Least Prime Factor",
     "content": "`minFac_is_lpf` proves `Nat.minFac m` satisfies `IsLeastPrimeFactor` for $m \\ge 2$, bundling `Nat.minFac_prime`, `Nat.minFac_dvd`, and `Nat.minFac_le_of_dvd`. `composite_has_lpf` then gives *existence* of a least prime factor for composite $m$ — a fully proved theorem (not axiomatized), with `m.minFac` as the explicit witness.",
     "significance": "supporting",
@@ -158,7 +158,7 @@
       "startLine": 63,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Uniqueness of the LPF",
     "content": "`lpf_unique`: if both $p$ and $q$ are least prime factors of $m$, then $p=q$, by mutual minimality ($p \\le q$ and $q \\le p$). This makes the predicate-style formulation behave like a function, so the universally-quantified conjecture condition can be discharged via the single witness `m.minFac`.",
     "significance": "supporting",
@@ -180,7 +180,7 @@
       "startLine": 71,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Bridging leastPrimeFactor and minFac",
     "content": "A block of API lemmas connecting the total `leastPrimeFactor` to `Nat.minFac` and the predicate: `leastPrimeFactor_eq_minFac` ($=$ for $m \\ge 2$), `leastPrimeFactor_is_lpf`, `leastPrimeFactor_prime` ($p(p)=p$ for primes), `lpf_dvd`, and `lpf_prime`. Together they give the rewriting infrastructure used throughout the structural results.",
     "significance": "supporting",
@@ -286,7 +286,7 @@
       "startLine": 137,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "insight",
     "title": "The Composite Constraint: k⁴ < n+k",
     "content": "`composite_constraint`: if $n+k$ is composite and $k^2 < p(n+k)$, then $k^4 < n+k$. The proof chains $k^4 = (k^2)^2 < p(n+k)^2 \\le n+k$ using `lpf_le_sqrt`. This bounds the usable shift to $k \\ll n^{1/4}$ — the quantitative heart of why the problem is delicate.",
     "significance": "key",
@@ -374,7 +374,7 @@
       "startLine": 232,
       "endLine": 249
     },
-    "type": "technique",
+    "type": "insight",
     "title": "The Hard Case: n+1 Prime, k≥2",
     "content": "`hard_case_constraint`: in the remaining regime ($n+1$ prime, so $k=1$ excluded), any composite witness with $k \\ge 2$ and $k^d < p(n+k)$ must satisfy $k^{2d} < n+k$. The proof mirrors `composite_constraint` but for general $d$: $k^{2d}=(k^d)^2 < p^2 \\le n+k$. This bounds the search to $k \\lesssim n^{1/(2d)}$.",
     "significance": "key",
@@ -396,7 +396,7 @@
       "startLine": 253,
       "endLine": 298
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Witness Parity: k Must Be Odd",
     "content": "A parity-obstruction chain. `minFac_of_even`: even $m \\ge 4$ has $p(m)=2$. `even_of_prime_succ`: if $n+1 \\ge 3$ is prime then $n$ is even. `even_offset_excluded`: for even $n$ and even $k \\ge 2$, the even composite $n+k$ has $p=2 < k^d$, so it cannot witness. `witness_must_be_odd` combines these: when $n+1$ is an odd prime, every witness $k \\ge 2$ must be **odd**. This prunes half the search space in the hard case.",
     "significance": "supporting",
@@ -418,7 +418,7 @@
       "startLine": 300,
       "endLine": 315
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Search-Range Bound: k^(2d) < n+k",
     "content": "`general_constraint` strengthens `hard_case_constraint` to the weaker hypothesis $k \\ge 1$: every valid triple $(n,k,d)$ with $n+k$ composite satisfies $k^{2d} < n+k$. The proof rewrites $k^{2d} = k^d \\cdot k^d$ via `pow_add` and chains through $p^2 \\le n+k$, bounding any witness search to $O(n^{1/(2d)})$.",
     "significance": "supporting",

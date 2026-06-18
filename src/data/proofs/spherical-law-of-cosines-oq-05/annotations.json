@@ -75,7 +75,7 @@
       "startLine": 150,
       "endLine": 204
     },
-    "type": "proof",
+    "type": "insight",
     "title": "Algebraic haversine formula (proved unconditionally)",
     "content": "`haversine_formula_algebraic`: given the spherical law of cosines as a real-number hypothesis `cos c = cos a · cos b + sin a · sin b · cos C`, the haversine identity `hav c = hav(a-b) + sin a · sin b · hav C` follows by linear arithmetic from `Real.cos_sub a b : cos(a-b) = cos a · cos b + sin a · sin b` and the half-angle identity. The converse `cos_form_of_haversine_formula` shows the two forms are equivalent. Both are pure-algebra restatements; no spherical geometry enters.",
     "mathContext": "The identity is algebraically equivalent to SLC; conversion is a half-angle calculation: $(1 - \\cos c)/2 = (1 - \\cos(a-b))/2 + \\sin a \\sin b (1 - \\cos C)/2$, which after expansion via $\\cos(a-b) = \\cos a \\cos b + \\sin a \\sin b$ gives $\\cos c = \\cos a \\cos b + \\sin a \\sin b \\cos C$.",
@@ -97,7 +97,7 @@
       "startLine": 205,
       "endLine": 353
     },
-    "type": "proof",
+    "type": "insight",
     "title": "Haversine formula for SphericalTriangle (closed at S2)",
     "content": "`haversine_formula` proves $\\text{hav}(t.\\text{sideC}) = \\text{hav}(t.\\text{sideB} - t.\\text{sideA}) + \\sin(t.\\text{sideB}) \\cdot \\sin(t.\\text{sideA}) \\cdot \\text{hav}(t.\\text{angleC})$ for a parent-file `SphericalTriangle`. Closed at S2: the bridge to `haversine_formula_algebraic` converts the parent's `⟨projectPerp t.A t.C, projectPerp t.B t.C⟩` (from `spherical_law_of_cosines_trig`) into the trigonometric form `sin(t.sideB) · sin(t.sideA) · cos(t.angleC)` via `inner_projectPerp_eq_sin_sin_cos_angleC`. On the non-degenerate branch (both projections nonzero) this follows from `norm_projectPerp_eq_sin` (parent file) plus the `cos = ⟨·,·⟩/(‖·‖·‖·‖)` identity; the degenerate branch coincides with $\\sin(t.\\text{sideA}) \\cdot \\sin(t.\\text{sideB}) = 0$, so the cross-term vanishes uniformly.",
     "mathContext": "The part deferred past S1 was *only* the projection-to-trigonometric-angle conversion; the algebraic identity was already proved unconditionally. Both are now closed, so the SphericalTriangle form holds with no hypothesis.",
@@ -120,7 +120,7 @@
       "startLine": 354,
       "endLine": 377
     },
-    "type": "proof",
+    "type": "insight",
     "title": "Specialised corollaries",
     "content": "`haversine_formula_holds_when_sin_sideA_zero`: the haversine formula holds at parameter values where $\\sin a = 0$ (i.e. $a \\in \\pi\\mathbb{Z}$) — both sides reduce to the same algebraic identity, which is precisely `haversine_formula_algebraic` (the hypothesis already covers degeneracy). `haversine_sub_comm`: $\\text{hav}(a-b) = \\text{hav}(b-a)$, justified by `haversine_neg` (the haversine is even).",
     "mathContext": "Together with `haversine_neg`, these record the algebraic symmetries that make the haversine identity invariant under swapping the roles of sides A and B.",
@@ -215,11 +215,11 @@
       "startLine": 640,
       "endLine": 689
     },
-    "type": "context",
+    "type": "concept",
     "title": "Status Summary: 37 proved, 0 sorries, 0 axioms (verified)",
     "content": "Part XI is a tabular accounting of the file's contents, mirrored in `meta.json`'s `theoremCount: 37`, `definitionCount: 1`, `sorries: 0`, `axiomCount: 0`. The proved results span: the half-angle bridge; range/sign/parity of `haversine`; the algebraic identity in both directions; the `SphericalTriangle` form (S2 bridge); the inverse formula and great-circle corollaries (S3); strict monotonicity / injectivity / navigation-uniqueness (S4); and the `[0, π] ≃ [0, 1]` bijection (S5). The table makes the S1→S5 development explicit for downstream automation (Aristotle/Mechanic) and for human auditors checking axiom-integrity claims — every row is PROVED, with no remaining `sorry`.",
     "mathContext": "Status field semantics (per axiom-integrity policy): $\\texttt{status: verified}$, $\\texttt{sorries: 0}$, $\\texttt{axiomCount: 0}$, $\\texttt{badge: original}$. The lone S1 `sorry` (the SphericalTriangle conversion) was discharged at S2, and the file is Docker-verified end-to-end.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "gallery status taxonomy (verified vs axiomatized vs formalized)",
       "axiom-integrity audit",

@@ -6,11 +6,11 @@
       "startLine": 46,
       "endLine": 48
     },
-    "type": "technique",
+    "type": "insight",
     "title": "volume_singleton_zero: Atomlessness via Countability",
     "content": "Private one-liner showing that any singleton {a} has Lebesgue measure zero. Rather than invoking the standard atomless-measure lemma directly, this proof routes through countability — singletons are countable, and Mathlib's `Set.Countable.measure_zero` gives the conclusion uniformly for any sigma-finite measure. This phrasing generalizes seamlessly to finite/countable subsets of the boundary.",
     "mathContext": "For Lebesgue measure $\\text{vol}$ on $\\mathbb{R}$: $\\text{vol}(\\{a\\}) = 0$. Proved as $\\text{vol}(\\{a\\}) = \\text{vol}(\\text{(countable set)}) = 0$ via $\\text{Set.Countable.measure\\_zero}$ rather than the more direct $\\text{volume\\_singleton}$. The choice matters when boundaries can have $\\geq 2$ points — a uniform countable-union argument applies.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["atomless measure", "countable null sets", "Lebesgue measure", "singletons"],
     "prerequisites": ["Set.Countable.measure_zero", "Set.countable_singleton"]
   },
@@ -66,7 +66,7 @@
       "startLine": 106,
       "endLine": 125
     },
-    "type": "technique",
+    "type": "insight",
     "title": "fubini_core: Inlined Icc Fubini Step",
     "content": "Private theorem proving Fubini for ordered intervals under the standard Icc-integrability hypothesis. The proof rewrites both interval integrals as set integrals over Ioc via `integral_of_le`, monotonically transfers integrability from `Icc` to `Ioc` (using `Measure.prod_mono` with `Ioc ⊆ Icc`), then invokes Mathlib's abstract `integral_integral_swap`. Inlined here for self-containedness rather than depending on the OQ-01-OQ-01 module.",
     "mathContext": "Given $f$ measurable and integrable on $[a,b] \\times [c,d]$ (product of Icc-restricted Lebesgue measures), Fubini swap holds: $\\int_c^d \\int_a^b f\\,dx\\,dy = \\int_a^b \\int_c^d f\\,dy\\,dx$. The bridge from interval integrals to Mathlib's product-integral form is `intervalIntegral.integral_of_le`, which rewrites $\\int_a^b$ as $\\int_{(a,b]}$ for $a \\leq b$.",
@@ -111,11 +111,11 @@
       "startLine": 163,
       "endLine": 175
     },
-    "type": "context",
+    "type": "concept",
     "title": "greens_fubini_open_rectangle: Application to Green's Theorem Pipeline",
     "content": "Specializes the main Fubini result to the uncurried form `dPdy : ℝ × ℝ → ℝ` that arises in Green's theorem (where `dPdy` is the partial derivative of `P` with respect to `y`). The proof is one line: `dPdy (x, y)` and `fun p => dPdy (p.1, p.2)` are definitionally equal, so `intervalIntegral_swap_of_Ioo_integrable` applies directly. This closes the open question by demonstrating drop-in usability in the Green's theorem proof.",
     "mathContext": "For the standard Green's theorem $\\oint_{\\partial R} P\\,dx + Q\\,dy = \\iint_R (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA$ on a rectangle $R = [a,b] \\times [c,d]$, the iterated integral swap is needed for the $\\partial P/\\partial y$ term. The hypothesis $\\partial P/\\partial y$ integrable on $(a,b) \\times (c,d)$ suffices, matching how continuous partial derivatives are typically established only on open neighborhoods.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Green's theorem", "uncurried functions", "iterated integrals", "open neighborhood"],
     "prerequisites": ["intervalIntegral_swap_of_Ioo_integrable", "function uncurrying"]
   }

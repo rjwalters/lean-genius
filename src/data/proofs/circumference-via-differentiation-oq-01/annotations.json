@@ -76,7 +76,7 @@
       "startLine": 97,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Power Rule Drives the Main Theorem",
     "content": "`nBallVolumeFn_hasDerivAt` is a five-line proof: unfold the three definitions, apply `(hasDerivAt_pow n r).const_mul (unitBallVolume n)` (giving $\\frac{d}{dr}(\\omega_n r^n) = \\omega_n \\cdot n r^{n-1}$), then a single `ring` rewrite reorders to $n \\omega_n \\cdot r^{n-1}$. The entire geometric content of the theorem is encoded in the constant $\\omega_n$; differentiation is pure calculus. Two corollaries follow immediately: `nBallVolumeFn_differentiable` (via `HasDerivAt.differentiableAt`) and `deriv_nBallVolume` (the unique-derivative bridge from the proposition `HasDerivAt` to the function `deriv`). This third form is what's needed for `deriv` rewriting in downstream computations like the final example `deriv (nBallVolumeFn 2) 1 = 2π`.",
     "mathContext": "Power rule: $\\frac{d}{dx} x^n = n x^{n-1}$. `HasDerivAt.const_mul`: if $f$ has derivative $f'$ at $x$, then $cf$ has derivative $cf'$. Composition: $\\frac{d}{dr}(\\omega_n r^n) = \\omega_n \\cdot n r^{n-1} = n \\omega_n r^{n-1} = S_{n-1}(r)$.",
@@ -99,7 +99,7 @@
       "startLine": 118,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Gamma Recursion Closes the Loop",
     "content": "`nSphereSurfaceConst_eq_gamma` proves $C_n = n \\omega_n = 2\\pi^{n/2}/\\Gamma(n/2)$ for $n \\ge 1$ — the identity that lets the surface formula be written without referring back to the volume formula. The key step is `Gamma_add_one hn2ne` rewriting $\\Gamma(n/2+1) = (n/2)\\Gamma(n/2)$ in the denominator of the unfolded $\\omega_n$. After `field_simp [hGne, hn_pos.ne', hn2ne]` clears the cascade of denominators (using non-vanishing of $\\Gamma(n/2)$, $n$, and $n/2$), `ring` finishes by recognizing $n / (n/2) = 2$. The hypothesis $n \\ge 1$ is necessary because $\\Gamma(0)$ has a simple pole; for $n = 0$ the surface formula $2 \\pi^0 / \\Gamma(0)$ is meaningless, which matches geometric intuition (a 0-ball is a point, no surface). This is also why the file's `nSphereSurfaceConst_eq_gamma` is the only step requiring a positivity hypothesis on $n$ — every other theorem holds vacuously or with both sides zero at $n = 0$.",
     "mathContext": "Gamma recursion: $\\Gamma(x+1) = x\\Gamma(x)$ for $x > 0$. Applied at $x = n/2$: $\\Gamma(n/2+1) = (n/2)\\Gamma(n/2)$, hence $\\frac{n}{\\Gamma(n/2+1)} = \\frac{n}{(n/2)\\Gamma(n/2)} = \\frac{2}{\\Gamma(n/2)}$. Surface form: $C_n = n \\omega_n = \\frac{2\\pi^{n/2}}{\\Gamma(n/2)}$.",
@@ -150,7 +150,7 @@
     "title": "Parent Theorem as the n=2 Instance, and Closure Properties",
     "content": "Part 5 closes the loop with the parent file `Proofs.CircumferenceViaDifferentiation`. `nBallVolumeFn_two_eq_areaFn` shows pointwise that the n=2 specialization equals the parent's `areaFn`; `disk_area_matches_parent` upgrades this to function equality (via `funext`) and rewrites to recover the parent's circumference theorem from the general $n$-dimensional one. This is a *generalization-by-extension* relationship: the parent file proved the 2D case directly, and this OQ-01 file shows the proof was already implicit in the general framework. Part 6 collects three closure properties: `nSphereSurface_unit` (surface at $r=1$ equals the constant $C_n$), `unitBallVolume_from_surface` (the constant inversion $\\omega_n = C_n / n$), and `nBallVolumeFn_nonneg` (volume is non-negative for non-negative radius). The closing examples reduce $V_2(r) = \\pi r^2$, $V_3(r) = \\frac{4\\pi}{3} r^3$, and $\\frac{d V_2}{d r}\\bigg|_{r=1} = 2\\pi$ — direct sanity checks against high-school formulas.",
     "mathContext": "Parent's circumference theorem $C(r) = dA/dr$ as the $n=2$ specialization of $S_{n-1}(r) = dV_n/dr$. Closure: $V_n(0) = 0$, $V_n(r) \\ge 0$ for $r \\ge 0$, $S_{n-1}(1) = C_n$, $\\omega_n = C_n / n$ for $n \\ge 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "funext",
       "convert tactic",
@@ -169,11 +169,11 @@
       "startLine": 222,
       "endLine": 240
     },
-    "type": "context",
+    "type": "concept",
     "title": "Examples: Sanity Checks Against Textbook Formulas",
     "content": "The closing `example` block reduces the abstract framework to concrete textbook expressions, serving both as documentation and as a runtime check that the namespace exports are usable. The first two examples eliminate `unitBallVolume` from the volume function: `nBallVolumeFn 2 r = π r²` and `nBallVolumeFn 3 r = (4π/3) r³`, recovering the high-school formulas. The third example computes the deriv at $r=1$: `deriv (nBallVolumeFn 2) 1 = 2π`, exercising the full pipeline `deriv_nBallVolume → nSphereSurfaceFn → nSphereSurfaceConst_two`. The two trailing `example`s confirm the named surface constants. The closing `#check` echoes the main theorem signature for IDE inspection. These are the *only* `example` declarations in the file — they don't add theorems but they verify, at the type-checker level, that the standard derivation `d(πr²)/dr = 2π·1 = 2π` runs end-to-end through the abstraction chain. Without them, a reader could believe the framework is correct yet miss that the bookkeeping (Nat.cast, rpow_one, pow_succ) actually composes.",
     "mathContext": "Concrete substitution checks: $V_2(r) = \\pi r^2$, $V_3(r) = (4\\pi/3) r^3$, and $\\frac{d V_2}{dr}(1) = 2\\pi$. These are the formulas every calculus student knows; the file proves they are theorems of the general framework rather than separate constructions.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "example declarations as sanity checks",
       "deriv_nBallVolume composition",

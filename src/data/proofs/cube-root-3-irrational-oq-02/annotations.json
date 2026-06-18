@@ -28,11 +28,11 @@
       "startLine": 29,
       "endLine": 34
     },
-    "type": "context",
+    "type": "concept",
     "title": "Eisenstein \u2192 Gauss's Lemma \u2192 \u211a-Irreducibility",
     "content": "The import `Proofs.CubeRoot2IrrationalOQ03` brings in `eisenstein_X_pow_sub_of_sqfree_factor`, which already bundles **Gauss's Lemma** internally. Eisenstein proves irreducibility over \u2124; Gauss's Lemma (Disquisitiones Arithmeticae \u00a742, 1801) bridges to \u211a-irreducibility by showing that a primitive integer polynomial factors over \u211a iff it factors over \u2124. Without Gauss's Lemma, Eisenstein alone would only give \u2124-irreducibility, which is *weaker* than what we need: a \u211a[X] factorization (X\u2212Cq)\u00b7R could come from coefficient denominators clearing. The Mathlib helper handles this bookkeeping under the hood, so the user-facing API gives \u211a-irreducibility directly.",
     "mathContext": "**Gauss's Lemma**: If $f \\in \\mathbb{Z}[X]$ is primitive (content = 1) and $f = g \\cdot h$ with $g, h \\in \\mathbb{Q}[X]$, then $\\exists$ rational $\\lambda \\neq 0$ with $\\lambda g, \\lambda^{-1} h \\in \\mathbb{Z}[X]$. Equivalently: primitive $f$ is $\\mathbb{Q}$-reducible $\\Leftrightarrow$ $\\mathbb{Z}$-reducible. Combined with Eisenstein (which establishes $\\mathbb{Z}$-irreducibility), this yields $\\mathbb{Q}$-irreducibility.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Gauss's lemma",
       "content of a polynomial",

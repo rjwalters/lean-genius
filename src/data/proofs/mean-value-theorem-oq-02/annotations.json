@@ -2,7 +2,7 @@
   {
     "id": "ann-mvt02-setup",
     "proofId": "mean-value-theorem-oq-02",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 1,
       "endLine": 51
@@ -10,7 +10,7 @@
     "title": "Imports, Setup, and the Open Question Being Resolved",
     "content": "The file imports `Mathlib.Analysis.Calculus.Taylor` (which provides `taylor_mean_remainder` in integral form), `Mathlib.Analysis.Calculus.MeanValue`, and the iterated-derivative infrastructure from `Deriv.Basic`. The open question, inherited from the base `MeanValueTheorem.lean`, asks whether the higher-order MVT (Taylor's theorem with Lagrange remainder) admits a Mathlib-compatible formalization. The answer is yes: Mathlib supplies the integral remainder, and this file repackages it in the classical pedagogical Lagrange form. The `noncomputable section` is required because `iteratedDeriv` is built on the Fréchet derivative, which uses `Classical.choice`; `open Real MeasureTheory Set` brings `Set.Ioo` and integral notation into scope.",
     "mathContext": "Target identity: $f(b) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(b-a)^k + R_n(a,b)$ with Lagrange remainder $R_n(a,b) = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$ for some $c \\in (a,b)$. Mathlib's native `taylor_mean_remainder` instead expresses $R_n$ in the Cauchy/integral form $\\int_a^b \\frac{(b-t)^n}{n!}f^{(n+1)}(t)\\,dt$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Taylor's theorem",
       "Lagrange remainder",
@@ -159,7 +159,7 @@
   {
     "id": "ann-mvt02-formalization-mechanics",
     "proofId": "mean-value-theorem-oq-02",
-    "type": "technique",
+    "type": "insight",
     "range": {
       "startLine": 116,
       "endLine": 151
@@ -167,7 +167,7 @@
     "title": "Formalization Mechanics: ℕ∞ Smoothness Coercion and Factorial Simp",
     "content": "Both corollary derivations (`mvt_is_first_order_taylor` and `taylor_second_order`) share an identical three-move proof skeleton worth isolating from the mathematics. **(1) Smoothness-order coercion.** The axiom is stated with hypothesis `ContDiff ℝ (n+1) f` where `n : ℕ`, but in Mathlib the smoothness order lives in `ℕ∞` (`WithTop ℕ∞` in current versions, to admit `⊤` and analytic `ω`). The numeral in the user-facing hypotheses `ContDiff ℝ 1 f` / `ContDiff ℝ 2 f` is the coerced numeral, whereas instantiating the axiom at `n=0` / `n=1` produces the *unevaluated* expression `ContDiff ℝ (↑(0+1)) f` / `ContDiff ℝ (↑(1+1)) f`. The line `have hf1 : ContDiff ℝ (↑(0 + 1)) f := by simpa using hf` bridges the two by letting `simp` normalize `↑(0+1)` to the numeral `1`. **(2) Factorial discharge.** `simp [Nat.factorial]` evaluates `(0+1)! = 1` and `(1+1)! = 2` and pushes the `ℕ → ℝ` cast through, turning the symbolic remainder denominator into a concrete constant. **(3) Linear close.** After `taylorPolynomial_zero`/`taylorPolynomial_one` rewrite the polynomial and `iteratedDeriv_one` rewrites `f^{(1)} = deriv f`, the residual goal is linear in the hypothesis `heq`, so `linarith` finishes. This skeleton — *coerce the order, evaluate the factorial, rewrite the polynomial, linarith* — is the reusable template for extracting any fixed-order Taylor corollary from the general remainder.",
     "mathContext": "The coercion is purely a Lean bookkeeping artifact, not mathematics: `↑(0+1) = (1 : \\mathbb{N}_\\infty)` and `↑(1+1) = (2 : \\mathbb{N}_\\infty)`. The factorial step realizes $\\frac{f^{(1)}(c)}{1!} = f'(c)$ and $\\frac{f^{(2)}(c)}{2!} = \\frac{f''(c)}{2}$. The reason the order must be an *extended* natural ($\\mathbb{N}_\\infty$, not $\\mathbb{N}$) is that `ContDiff ℝ ⊤ f` ($C^\\infty$) and `ContDiff ℝ ω f` (real-analytic) are first-class smoothness classes in the same predicate, so finite orders enter by coercion.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "ContDiff smoothness order",
       "ℕ∞ / WithTop coercion",

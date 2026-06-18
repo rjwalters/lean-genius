@@ -63,7 +63,7 @@
     "id": "ann-axiom-cleanliness",
     "proofId": "lagrange-theorem-oq-02-oq-02-oq-01",
     "range": { "startLine": 41, "endLine": 50 },
-    "type": "note",
+    "type": "concept",
     "title": "Axiom-Cleanliness Inheritance",
     "content": "The file introduces no new axioms. The Mathlib API closure (`MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` and its transitive imports) inherits only the standard Mathlib triple: `Classical.choice`, `propext`, `Quot.sound`. This triple is the same one shared by the parent file `LagrangeTheoremOQ02OQ02.lean`, so the OQ-01 resolution does not enlarge the axiomatic footprint of the gallery's class-equation infrastructure. The status `verified` (badge `verified`) is justified.",
     "mathContext": "**Standard Mathlib triple**: $\\{\\mathrm{Classical.choice}, \\mathrm{propext}, \\mathrm{Quot.sound}\\}$ — the foundational axioms underpinning Mathlib's classical logic, propositional extensionality, and quotient construction. Mathlib treats these as primitive, not as user-introduced axioms.",

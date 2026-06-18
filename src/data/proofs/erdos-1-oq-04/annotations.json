@@ -10,7 +10,7 @@
     "title": "Distinct Subset Sums and Its Decidability",
     "content": "`hasDistinctSubsetSums A` says that whenever two subsets S, T ⊆ A have the same sum, they are equal — i.e. all 2^|A| subset sums are distinct. The accompanying `Decidable` instance reduces this universally-quantified statement over subsets to a finite check: quantify S and T over `A.powerset` instead of over arbitrary finsets. This is what makes the small-case witnesses below provable by `native_decide`: the predicate is computable by enumerating the powerset and comparing all pairwise sums.",
     "mathContext": "For A with |A| = n there are 2^n subsets; `hasDistinctSubsetSums` asks the sum map 2^A → ℕ to be injective. The powerset reformulation has the same truth value but is `Decidable`.",
-    "significance": "foundational",
+    "significance": "key",
     "relatedConcepts": [
       "distinct subset sums",
       "decidability",

@@ -126,7 +126,7 @@
       "startLine": 84,
       "endLine": 137
     },
-    "type": "note",
+    "type": "concept",
     "title": "Axiom Integrity: ftCompatible counts as +1 axiomCount",
     "content": "Per the project's axiom-integrity policy, structure-encoded hypotheses are counted as assumptions in the meta `axiomCount`, even when no `axiom` declaration appears. The `ftCompatible` field of `CurvedCrease` is the Fuchs-Tabachnikov compatibility identity κ_n(s) = κ_g(s) · cot(θ(s)/2), which is a genuine differential-geometric constraint and not a tautology. Counting it as +1 toward axiomCount means: this file has 0 `axiom` declarations + 1 structure-encoded assumption = axiomCount 1. Status is `axiomatized` (badge `axiom`), not `verified`. This honest accounting is required by the project's `Axiom Integrity Policy` (see `CLAUDE.md`).",
     "mathContext": "The Fuchs-Tabachnikov identity is provable in principle from the Darboux frame on γ (Fuchs-Tabachnikov 1999, Theorem 1) but requires ~350 lines of curve-on-surface differential geometry absent from Mathlib at the pinned revision v4.26.0. Encoding it as a structure field is an axiom-integrity tradeoff: it makes the S2 deliverable tractable today, but the meta `axiomCount` honestly reflects the assumption.",
@@ -171,11 +171,11 @@
       "startLine": 409,
       "endLine": 439
     },
-    "type": "context",
+    "type": "concept",
     "title": "Roadmap: Proved Results, Three Sorries, and the Open Conjecture",
     "content": "A status ledger for the file. **Proved (0 sorries)**: `normal_curvature_zero_of_straight` (κ_g ≡ 0 ⇒ κ_n ≡ 0) and the entire constructive Huzita–Hatori battery in Parts 6–10 below (HH-1, HH-2, HH-4, HH-7, HH-3). **Three intentional `sorry` markers**: `straight_fold_recovers_HH` (S3 conservativity target), `curved_fold_algebraic_implies_origami` (S4 sharpness target), and `K_curved_eq_K_origami` (S5) — the last is a **permanent** placeholder for the Huffman 1976 / Demaine–DHPT 2011 open conjecture, not a gap to be filled here. The single assumption counted in `axiomCount` is the structure field `ftCompatible` (Fuchs–Tabachnikov compatibility), correctly disclosed rather than hidden as a literal axiom.",
     "mathContext": "The honest separation: $3$ `sorry`s, $1$ structure-encoded assumption ($\\texttt{ftCompatible}$), and a growing body of $0$-sorry constructive lemmas. The S5 conjecture asks whether the curved-crease constructible field $K_{\\text{curved}}$ equals the classical origami field $K_{\\text{origami}}$ — open since Huffman (1976).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "axiom integrity",
       "open conjecture",
@@ -242,7 +242,7 @@
       "startLine": 664,
       "endLine": 816
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Constructive HH-7: Hatori Fold, Non-Parallel Case (S6)",
     "content": "HH-7 (the Hatori fold) — given a point P and two lines ℓ₁, ℓ₂, fold P onto ℓ₁ while keeping the fold perpendicular to ℓ₂. This S6 section handles the non-degenerate case where the normals are not parallel (crossDet ℓ₁ ℓ₂ = ℓ₁.b·ℓ₂.a − ℓ₁.a·ℓ₂.b ≠ 0). `hatoriFold p ℓ₁ ℓ₂ h_nonpar` is built explicitly perpendicular to ℓ₂, with `reflectAcross_hatoriFold_preserves_ℓ₂` (preserves ℓ₂ setwise) and `reflectAcross_hatoriFold_to_ℓ₁` (sends P onto ℓ₁). The crossDet ≠ 0 hypothesis is exactly what makes the linear system solvable without a square root.",
     "mathContext": "$\\mathrm{crossDet}(\\ell_1,\\ell_2) = \\ell_1.b\\,\\ell_2.a - \\ell_1.a\\,\\ell_2.b$ is (up to sign) the determinant of the two normal vectors; it is nonzero iff the lines are not parallel. Non-vanishing guarantees a unique intersection and a rational (square-root-free) fold placing $P$ on $\\ell_1$ perpendicular to $\\ell_2$.",
@@ -266,7 +266,7 @@
       "startLine": 821,
       "endLine": 924
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Constructive HH-7: P-on-ℓ₁ Case (S7)",
     "content": "Completes HH-7 in the remaining solvable case: when P already lies on ℓ₁. The generic lemma `reflectAcross_self_of_contains` proves a point on a line is fixed by reflection across it (the reflection parameter's numerator vanishes, so t = 0). The witness for `hh7_existence_p_on_ℓ₁` is then `perpThroughPoint P ℓ₂` (reused from S5): it fixes P (which stays on ℓ₁) and preserves ℓ₂ setwise — unconditionally in ℓ₁, ℓ₂. Combined with the non-parallel case (S6), the only HH-7 configuration left open is crossDet = 0 ∧ P ∉ ℓ₁, which the file argues is genuinely unsolvable (a fold perpendicular to ℓ₂ in the parallel case preserves perpendicular distance to ℓ₁).",
     "mathContext": "If $p \\in \\ell$ then $\\ell.a\\,p_1 + \\ell.b\\,p_2 + \\ell.c = 0$, so the reflection parameter $t = \\frac{2 \\cdot 0}{a^2+b^2} = 0$ and $\\mathrm{reflect}_\\ell(p) = p$. The unsolvable sliver $\\ell_1 \\parallel \\ell_2,\\, P \\notin \\ell_1$ is a true impossibility, not a missing proof — matching the classical incompleteness of single-fold axioms.",
@@ -290,7 +290,7 @@
       "startLine": 930,
       "endLine": 1148
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Constructive HH-3: Translate-Bisector, Parallel Case (S8)",
     "content": "HH-3 — folding one line onto another — made constructive in the parallel case (crossDet ℓ₁ ℓ₂ = 0). When ℓ₁ ∥ ℓ₂, the unique fold mapping ℓ₁ setwise onto ℓ₂ is the *translate-bisector*: the line parallel to both whose perpendicular distance from each is half the gap. `parallelBisector` is built with ℓ₁'s normal and an algebraically chosen constant term, deliberately avoiding the square roots that the intersecting (angle-bisector) case would require. `parallelBisector_dot_ne_zero` handles the denominator, `parallelNormal_left_id`/`parallelNormal_right_id` the normal-vector bookkeeping, `reflectAcross_parallelBisector_to_ℓ₂` the placement law, and `hh3_existence_parallel` the standalone existence form. This brings six of the seven HH operations to constructive coverage (HH-5 Beloch-light and HH-6 Beloch remain).",
     "mathContext": "For parallel lines $\\ell_1: ax+by+c_1=0$ and $\\ell_2: ax+by+c_2=0$ (shared normal $(a,b)$), the translate-bisector is $ax+by+\\tfrac{c_1+c_2}{2}=0$. Its reflection swaps the two lines because each is the mirror image of the other across the midline. Keeping the shared normal makes the construction purely rational — no square root, unlike the angle bisector of intersecting lines.",

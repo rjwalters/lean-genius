@@ -75,7 +75,7 @@
     "id": "ann-known-bounds",
     "proofId": "erdos-1-oq-01",
     "range": { "startLine": 111, "endLine": 129 },
-    "type": "context",
+    "type": "concept",
     "title": "Known Bounds as Prop Statements (DFX, Conway–Guy)",
     "content": "`dubroff_fox_xu_bound` and `conway_guy_upper` are `Prop`-valued definitions — statements, not theorems. The former packages the DFX 2021 lower bound $N \\geq \\sqrt{2/\\pi}\\cdot 2^n/\\sqrt{n}$ as an existential over a positive rational constant; the latter packages the conjectured-optimal upper bound: for every $n \\geq 1$ there exists a distinct-subset-sums set with $N \\leq 0.22009\\cdot 2^n$. Recording them as definitions makes the open frontier explicit without introducing any axiom — no theorem in the file depends on them.",
     "mathContext": "These two Props bound the optimal constant from below (DFX, ≈0.798) and above (Conway–Guy, ≈0.220); Erdős conjectured the truth is $1/\\sqrt 2 \\approx 0.707$. They are formalized as goals: dubroff_fox_xu_bound is worked toward in erdos-1-oq-02, conway_guy_upper in erdos-1-oq-03.",

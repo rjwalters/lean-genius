@@ -3,11 +3,11 @@
     "id": "friendship-oq04-ann-overview",
     "proofId": "friendship-theorem-oq-04",
     "range": { "startLine": 8, "endLine": 43 },
-    "type": "context",
+    "type": "concept",
     "title": "The Friendship Theorem in the Infinite Case",
     "content": "The finite Friendship Theorem (Erdős–Rényi–Sós, 1966): if every two distinct vertices of a finite graph have exactly one common neighbour, some vertex is adjacent to all others (a windmill). It is false for infinite graphs — the C₅ free-amalgamation construction (Chvátal–Kotzig–Rosenberg–Davies, 1976) gives a countable friendship graph with no universal vertex, in which every vertex has infinite degree. This file pins down the sharp restoring hypothesis without the spectral argument (which has no infinite analogue): every friendship graph has diameter ≤ 2 (purely local), so a locally finite one is finite and hence has a universal vertex. Local finiteness is therefore exactly the restoring condition — the sole obstruction to finiteness is an infinite-degree vertex.",
     "mathContext": "Finite friendship $\\Rightarrow$ universal vertex; infinite counterexample exists $\\Rightarrow$ extra hypothesis needed. Sharp condition: local finiteness.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Friendship theorem", "windmill graph", "infinite graphs", "spectral graph theory", "free amalgamation"],
     "prerequisites": ["graph theory", "common neighbours", "finiteness of sets"]
   },

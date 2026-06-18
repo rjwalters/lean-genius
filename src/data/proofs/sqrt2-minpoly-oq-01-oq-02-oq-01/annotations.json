@@ -6,7 +6,7 @@
       "startLine": 7,
       "endLine": 57
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why Prime Degree: the Kummer Criterion and the Composite Counterexample",
     "content": "The docstring frames the open question precisely. The parent file proves minpoly ℚ (√r) = X² − r (degree 2); the natural generalization minpoly ℚ (a^(1/k)) = X^k − a is **false for composite k**: X⁴ − 4 = (X² − 2)(X² + 2) is reducible, so minpoly ℚ (4^(1/4)) = minpoly ℚ (√2) = X² − 2, not X⁴ − 4. The clean statement survives exactly at **prime** degree, where Kummer theory supplies the sharp criterion: for an odd prime p, X^p − C a is irreducible over a field K iff a is not a p-th power in K (`X_pow_sub_C_irreducible_iff_of_prime_pow` at exponent n = 1). This file applies that criterion over ℚ; the remaining prime p = 2 is the parent's square-root theorem, proved there by an elementary irrationality argument because the Kummer lemma explicitly excludes p = 2. Together the two files cover every prime degree, and the hypothesis ∀ b : ℚ, bᵖ ≠ a is precisely 'a is not a p-th power in ℚ', the odd-prime analogue of the parent's ¬ IsSquare a.",
     "mathContext": "$p$ odd prime, $a \\ge 0$ rational, $\\forall b\\in\\mathbb{Q}\\ b^p \\ne a \\Rightarrow \\mathrm{minpoly}_{\\mathbb{Q}}(a^{1/p}) = X^p - a$. Composite $k$ fails: $X^4-4=(X^2-2)(X^2+2)$.",

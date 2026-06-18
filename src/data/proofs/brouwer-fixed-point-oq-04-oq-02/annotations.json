@@ -130,7 +130,7 @@
       "startLine": 261,
       "endLine": 330
     },
-    "type": "technique",
+    "type": "insight",
     "title": "φ Is a Continuous Self-Map of the Product Simplex (Parts 5–6)",
     "content": "Brouwer's theorem needs two hypotheses on the map φ = nashMap, and these two sections supply them.\n\n**Self-mapping** (`nashMap_maps_simplex`): each component φᵢ(σ)(k) = (σᵢ(k) + excessᵢₖ) / nashDenomᵢ is (a) non-negative — numerator and denominator are both ≥ 0 with the denominator strictly positive — and (b) sums to 1 over k. The summing-to-1 step (`nashMapComp_sum_one`) is the whole point of the denominator: Σₖ(σᵢ(k) + excessᵢₖ) = 1 + Σₖ excessᵢₖ = nashDenomᵢ exactly, so dividing by nashDenomᵢ renormalizes the shifted weights back onto the simplex. Thus φ(σ) ∈ ∏ᵢΔᵢ whenever σ ∈ ∏ᵢΔᵢ.\n\n**Continuity** (`nashMap_continuous`): φ is built from `Continuous.div`, which requires the denominator to never vanish — guaranteed by `nashDenom_pos` (nashDenom = 1 + Σ(nonneg) ≥ 1 > 0). The numerator combines a coordinate projection with the continuous `nashExcess` (continuous because `max 0 (·)` and the multilinear utilities are continuous). The pointwise non-vanishing denominator is exactly what lets a quotient of continuous functions stay continuous everywhere.",
     "mathContext": "The denominator $1 + \\sum_\\ell \\mathrm{excess}_{i\\ell}(\\sigma) \\ge 1$ is bounded away from 0, so $\\varphi_i(\\sigma)(k) = \\dfrac{\\sigma_i(k) + \\mathrm{excess}_{ik}(\\sigma)}{1 + \\sum_\\ell \\mathrm{excess}_{i\\ell}(\\sigma)}$ is continuous and, summed over $k$, equals 1. This is why Nash added the $+1$: it makes the renormalization total positive even when every excess is 0 (i.e. at an equilibrium).",
@@ -181,7 +181,7 @@
       "startLine": 441,
       "endLine": 475
     },
-    "type": "context",
+    "type": "concept",
     "title": "brouwer_product_simplex: The Sole Axiom Dependency, Made Honest",
     "content": "This section is where the entry's single assumption enters, and it is worth reading alongside the axiom-integrity status (badge `axiom`, status `axiomatized`, axiomCount 1). `brouwer_product_simplex` is a *theorem*, not an axiom: it derives the existence of a fixed point on ∏ᵢΔᵢ from the general `brouwer_pi_compact_convex` (declared in `BrouwerFixedPointOQ04.lean`) by supplying the three structural facts about each mixed-strategy simplex — nonempty (`mixed_strategy_nonempty`, using strategies_pos), compact (`mixed_strategy_compact`), and convex (`mixed_strategy_convex`). So the file has 0 local axioms; the lone assumption it rests on is the topological core of Brouwer's theorem for products of compact convex bodies. This is an honest reduction: OQ-04-OQ-01 needed 2 axioms (Berge's maximum theorem + a Kakutani embedding); replacing the set-valued best-response correspondence with Nash's single-valued continuous map removes one of them, leaving only Brouwer.",
     "mathContext": "A product $\\prod_i \\Delta_i$ of compact convex subsets of finite-dimensional Euclidean spaces is itself compact (Tychonoff) and convex, hence homeomorphic to a closed ball — the hypothesis under which `brouwer_pi_compact_convex` yields a fixed point. The axiomCount of 1 reflects this single topological dependency; it is disclosed in the meta `assumptions` field rather than hidden in a structure.",

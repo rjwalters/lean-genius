@@ -174,7 +174,7 @@
       "startLine": 122,
       "endLine": 134
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "Lower Bound Axiom: Spencer–Szemerédi–Trotter",
     "content": "`fd2_lower_bound` axiomatizes the $\\Omega(n^{1/3})$ lower bound: every $n$-point set in $\\mathbb{R}^2$ contains a distance-Sidon subset of size $\\ge C\\,n^{1/3}$. It is stated as an axiom because its proof rests on the Spencer–Szemerédi–Trotter unit-distance bound (1984) — at most $O(n^{4/3})$ unit distances among $n$ planar points — which is not yet in Mathlib. The intended proof is a greedy extraction: averaging $\\binom{n}{2}$ pairs against $O(n^{4/3})$ repetitions per distance lets a 'add a point with all-new distances' construction run for $\\Omega(n^{1/3})$ steps.",
     "mathContext": "$\\exists C>0,\\ \\forall n,\\ \\forall P \\subset \\mathbb{R}^2,\\ |P|=n \\Rightarrow \\exists Q \\subseteq P$ distance-Sidon with $|Q| \\ge C\\,n^{1/3}$. The unit-distance bound $u(n) = O(n^{4/3})$ is the key external input.",
@@ -198,7 +198,7 @@
       "startLine": 136,
       "endLine": 147
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "Upper Bound Axiom: The Integer Grid and Gauss Circle Problem",
     "content": "`fd2_upper_bound` axiomatizes the $O(n^{1/2})$ upper bound: there exist $n$-point configurations (the integer grid $\\{1,\\dots,N\\}^2$) in which every distance-Sidon subset has size $\\le C\\,n^{1/2}$. The grid has only $O(N^2)$ distinct distances (the number of integers below $N^2$ expressible as a sum of two squares — the Gauss circle problem), so by the in-file `distance_sidon_size_bound`, $\\binom{k}{2} \\le O(N^2)$ forces $k \\le O(N) = O(n^{1/2})$. The axiom packages the distinct-distance count for the grid, which Mathlib does not yet provide.",
     "mathContext": "$\\exists C>0,\\ \\forall n,\\ \\exists P,\\ |P|=n$ with every distance-Sidon $Q \\subseteq P$ obeying $|Q| \\le C\\,n^{1/2}$. The grid $\\{1,\\dots,N\\}^2$ ($n=N^2$) has $\\Theta(N^2/\\sqrt{\\log N})$ distinct distances by Landau's refinement of Gauss's count.",

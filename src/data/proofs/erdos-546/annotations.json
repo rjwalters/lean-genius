@@ -94,7 +94,7 @@
       "startLine": 60,
       "endLine": 65
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "Ramsey Number R(H)",
     "content": "The graph Ramsey number $R(H)$ is the minimum $N$ such that any 2-coloring of $K_N$ contains a monochromatic copy of $H$. Formalized as the infimum of the set of $N$ guaranteeing a monochromatic injective embedding of $H$ into either $G$ or $\\overline{G}$.",
     "mathContext": "$R(H) = \\min\\{N : \\forall G \\text{ on } N \\text{ vertices}, \\exists f : V(H) \\hookrightarrow V(K_N) \\text{ s.t. } f(H) \\subseteq G \\text{ or } f(H) \\subseteq \\overline{G}\\}$. The classical Ramsey theorem guarantees $R(H) < \\infty$ for all finite $H$. For complete graphs, $R(K_r, K_s) \\leq \\binom{r+s-2}{r-1}$ (Erdős-Szekeres).",
@@ -230,7 +230,7 @@
       "startLine": 67,
       "endLine": 70
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "r-Color Ramsey Number",
     "content": "The $r$-color Ramsey number $R_r(H)$: minimum $N$ such that any $r$-coloring of $K_N$ contains a monochromatic copy of $H$. Formalized via a coloring function $c : V \\times V \\to \\mathrm{Fin}\\, r$.",
     "mathContext": "$R_r(H) = \\min\\{N : \\forall c : E(K_N) \\to [r], \\exists i \\in [r], \\exists f : V(H) \\hookrightarrow [N]$ with $c(f(u), f(v)) = i$ for all $\\{u,v\\} \\in E(H)\\}$. For $r \\geq 3$, extending Sudakov's bound remains open.",

@@ -6,11 +6,11 @@
       "startLine": 105,
       "endLine": 109
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports: Int.GCD, Int.Interval, Nat.GCD, Finset.Prod",
     "content": "Four Mathlib imports + `Tactic`. `Mathlib.Data.Int.GCD` supplies `Int.natAbs` and the integer-GCD lemmas used to define `edgeGCD`. `Mathlib.Data.Int.Interval` provides `Finset.Icc : ℤ → ℤ → Finset ℤ`, the decidable closed-interval `Finset` over `ℤ` that powers the `boundingBox` definition for the S2 strictly-interior count. `Mathlib.Data.Nat.GCD.Basic` is the workhorse for `Nat.gcd` semantics. `Mathlib.Data.Finset.Prod` exposes `×ˢ` (`Finset.product`), the Cartesian product of `Finset`s needed to lift the 1D bounding intervals into a 2D bounding rectangle. Notably absent: any of `Mathlib.LinearAlgebra` — this file works at the discrete-arithmetic level, never touching real-valued areas. Pick's formula is computed entirely in ℚ.",
     "mathContext": "Toolkit: $\\gcd : \\mathbb{N} \\times \\mathbb{N} \\to \\mathbb{N}$, $\\mathrm{Icc} : \\mathbb{Z}^2 \\to \\mathrm{Finset}\\, \\mathbb{Z}$, $\\times^{\\mathrm{s}} : \\mathrm{Finset}\\, \\alpha \\to \\mathrm{Finset}\\, \\beta \\to \\mathrm{Finset}(\\alpha \\times \\beta)$. No real-valued geometry — everything decidable.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Int.natAbs",
       "Nat.gcd",
@@ -79,7 +79,7 @@
       "startLine": 175,
       "endLine": 192
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Algebraic bridge identity: 2·pickInterior = pickInteriorNum",
     "content": "Two cleared-form identities, both proved by `unfold` + `push_cast` + `ring`. `two_mul_pickInterior` exhibits the bridge between rational and integer forms: doubling the rational `pickInterior` cancels the `/2` factors and produces the integer `pickInteriorNum`. `pick_formula_cleared` is the rearrangement that will drive every induction step: `2A = 2I + B − 2`. The proofs are mechanical — `push_cast` migrates the ℕ → ℚ casts inward, `ring` closes the polynomial identity. The mathematical content is zero (just algebra); the engineering content is huge (this is the move that lets S3+ stay in ℤ while reasoning about half-integer Pick statements).",
     "mathContext": "**Identity 1**: $2 \\cdot \\mathrm{pickInterior}(T) = \\mathrm{pickInteriorNum}(T)$ — cross-multiplying clears the $\\tfrac{1}{2}$ factors. **Identity 2** (Pick's formula in cleared form): $2A = 2I + B - 2$ where $A = |\\det|/2$, $I = \\mathrm{pickInterior}$, $B = \\mathrm{boundaryCount}$. Equivalently, $A = I + B/2 - 1$ after dividing by 2.",
@@ -102,7 +102,7 @@
       "startLine": 206,
       "endLine": 281
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Section IV: Pick's formula on three test triangles via native_decide",
     "content": "Three concrete LatticeTriangles (unit (0,0)-(1,0)-(0,1) → 2A=1, B=3, I=0; 2-by-1 right (0,0)-(2,0)-(0,1) → 2A=2, B=4, I=0; 3-by-3 right (0,0)-(3,0)-(0,3) → 2A=9, B=9, I=1) get hammered open by `native_decide` for the boundary/area numerals, then `norm_num` closes the rational `pickInterior` equalities. The 3-by-3 case is the most interesting: $B = 3 + 3 + 3 = 9$ (each leg has 4 lattice points, hypotenuse has 4, vertices double-counted), so I = 9/2 − 9/2 + 1 = 1 — and indeed (1,1) is the unique strictly-interior lattice point. The 2-by-1 case is the **diagnostic** showing that the midpoint (1,0) sits on the boundary, not the interior — so I = 0 even though the bounding box contains a non-vertex lattice point.",
     "mathContext": "$T_1 = \\langle(0,0),(1,0),(0,1)\\rangle \\Rightarrow (2A, B, I) = (1, 3, 0)$; $T_2 = \\langle(0,0),(2,0),(0,1)\\rangle \\Rightarrow (2, 4, 0)$; $T_3 = \\langle(0,0),(3,0),(0,3)\\rangle \\Rightarrow (9, 9, 1)$. All satisfy $A = I + B/2 - 1$.",
@@ -198,7 +198,7 @@
       "startLine": 529,
       "endLine": 598
     },
-    "type": "technique",
+    "type": "insight",
     "title": "S3a-plus: cyclic determinant factorisation ⇒ every edge GCD divides 2·Area",
     "content": "The formula side of the primitive base case needs `edgeGCD i ∣ twiceArea`. The proof factors `T.det` through each edge uniformly. `signedDelta i` is the direction-preserving edge vector (the `Int.natAbs`-free version of `edgeDelta i`), and `crossDelta i` is its cofactor partner so that `det_eq_signedDelta_factor` expresses `T.det = signedDelta_i.1 · crossDelta_i.2 − crossDelta_i.1 · signedDelta_i.2` for *all three* `i`. This is the algebraic statement that the 2×2 determinant is invariant under cyclic permutation of vertices: for `i = 0` it is the literal definition of `det`; `fin_cases i <;> ring` checks the cyclically-shifted forms. Since `edgeGCD i = gcd(|signedDelta_i.1|, |signedDelta_i.2|)`, it divides both components (`Nat.gcd_dvd_left/right`), and divisibility is preserved by `ℤ`-linear combinations, so `edgeGCD i ∣ det` and hence `edgeGCD i ∣ twiceArea`. The cast plumbing (`Int.dvd_natAbs`, `Int.natCast_dvd_natCast`, `Int.natAbs_dvd_natAbs`) bridges the ℕ-valued GCD and ℤ-valued determinant — these exact API points were pinned in the S3a bearer audit #18950.",
     "mathContext": "For each edge $i$: $\\det T = (\\delta_i)_1 (\\gamma_i)_2 - (\\gamma_i)_1 (\\delta_i)_2$ where $\\delta_i = \\mathrm{signedDelta}\\, i$, $\\gamma_i = \\mathrm{crossDelta}\\, i$. Since $\\gcd_i := \\gcd(|(\\delta_i)_1|, |(\\delta_i)_2|)$ divides both coordinates of $\\delta_i$, and the RHS is a $\\mathbb{Z}$-linear form in those coordinates, $\\gcd_i \\mid \\det T$ and therefore $\\gcd_i \\mid |\\det T| = \\mathrm{twiceArea}(T)$.",
@@ -273,7 +273,7 @@
       "startLine": 760,
       "endLine": 856
     },
-    "type": "technique",
+    "type": "insight",
     "title": "S3b-act-2 Case (a): edgeGCD ≥ 2 produces an explicit edge-interior lattice point",
     "content": "Half of the `exists_nonvertex_lattice_point` prerequisite for the full Pick induction: when an edge of `T` has `edgeGCD ≥ 2`, that edge has a lattice point strictly between its endpoints. The witness is fully explicit — the `k = 1` parametrisation point `vᵢ + Δ/g`. Membership in `latticeSegmentPoints` is the `k = 1` case of `Finset.mem_image`. The two distinctness obligations are where the arithmetic lives: `witness ≠ vᵢ` because `Δ/g = 0` (both coordinates) would force `Δ = 0` hence `g = Int.gcd 0 0 = 0`, contradicting `g ≥ 2`; `witness ≠ vᵢ₊₁` because `Δ/g = Δ` would (via `g ∣ Δ` and `Int.ediv_mul_cancel`) give `Δ·(g − 1) = 0`, forcing `Δ = 0` again since `g ≥ 2`. Both contradictions bottom out in `omega` against `g ≥ 2`. The convention `vEdgeStart i / vEdgeEnd i` mirrors `edgeDelta` (edge 0 = v1→v2, etc.), and `edgeGCD_eq_Int_gcd` certifies (by `rfl` after `fin_cases`) that the ℕ-valued `edgeGCD` agrees with the `Int.gcd` of the signed differences.",
     "mathContext": "If $g_i := \\mathrm{edgeGCD}\\, i = \\gcd(\\Delta x_i, \\Delta y_i) \\geq 2$, then $p^\\star = v_i + \\Delta_i / g_i$ satisfies $p^\\star \\in \\mathrm{segment}(v_i, v_{i+1})$, $p^\\star \\neq v_i$, $p^\\star \\neq v_{i+1}$ — an interior lattice point. Distinctness: $\\Delta_i / g_i = 0 \\Rightarrow \\Delta_i = 0 \\Rightarrow g_i = 0$; and $\\Delta_i / g_i = \\Delta_i \\Rightarrow \\Delta_i (g_i - 1) = 0 \\Rightarrow \\Delta_i = 0$; both contradict $g_i \\geq 2$.",
@@ -323,7 +323,7 @@
       "startLine": 1076,
       "endLine": 1136
     },
-    "type": "technique",
+    "type": "insight",
     "title": "S4-prep: every algebraic Pick datum is translation-invariant",
     "content": "The Pick induction (S4/S5) repositions sub-triangles to a canonical anchor (e.g. a vertex at the origin); this section certifies that translating all three vertices by a fixed lattice vector `t` leaves every Pick quantity unchanged. The algebraic invariances are mechanical because a shift cancels in coordinate *differences*: `det_translate` (`simp [det, translate]; ring` — the `+t` terms cancel), and downstream `twiceArea_translate`, `signedDelta_translate`, `edgeDelta_translate`, `edgeGCD_translate`, `boundaryCount_translate`, and both Pick-formula forms `pickInterior_translate` / `pickInteriorNum_translate` follow by rewriting along the lower-level invariances. The lemma chain is deliberately layered so that each invariant is proved once and reused, mirroring the dependency order det → twiceArea, signedDelta → edgeDelta → edgeGCD → boundaryCount → pickInterior. Unlike the S2 `native_decide` agreements (about three concrete triangles), these hold for *every* triangle and *every* shift.",
     "mathContext": "For all $t \\in \\mathbb{Z}^2$: $\\det(T + t) = \\det T$ (shift cancels in $v_j - v_i$), hence $\\mathrm{twiceArea}$, every $\\mathrm{edgeGCD}$, $\\mathrm{boundaryCount}$, $\\mathrm{pickInterior}$, and $\\mathrm{pickInteriorNum}$ are all invariant under $T \\mapsto T + t$ where $(T+t)$ shifts each vertex by $t$.",

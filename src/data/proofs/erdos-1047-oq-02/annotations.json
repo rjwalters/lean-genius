@@ -29,7 +29,7 @@
       "startLine": 43,
       "endLine": 63
     },
-    "type": "context",
+    "type": "concept",
     "title": "Parent Patch Applied, then Axiom Fully Discharged (Count → 0)",
     "content": "The parent soundness patch landed: `Erdos1047Problem.lean` redefined `grunskyConjecture` to the faithful `∀ c > 0` form and proved `grunskyConjecture_false` as a theorem, leaving `goodman_counterexample` as the sole axiom. **That last axiom is now discharged too**: `Erdos1047OQ02Certificate.lean` proves `goodman_counterexample_proof` — the exact statement — with no `sorry` and no axiom (a preconnected Goodman arc inside the lemniscate whose chord midpoint escapes it, via the topological reduction bridge). This entry now imports that certificate, so `grunsky_false_faithful` derives the Erdős #1047 answer from a fully machine-checked proof. `#print axioms` reports only `propext`/`Classical.choice`/`Quot.sound`; axiomCount **1 → 0**.",
     "mathContext": "Post-patch dependency chain has exactly one axiom, `goodman_counterexample`; `grunskyConjecture_false : ¬grunskyConjecture` is a theorem, not an axiom.",

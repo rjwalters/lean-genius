@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 32
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why This File Remains: A Soundness Witness",
     "content": "The orientation correction this file originally prototyped has **landed in the registered files**: `GreensTheoremOQ02.greens_theorem_l1curl` and its consumers (in both `GreensTheoremOQ02.lean` and `GreensTheoremOQ02OQ04.lean`) now carry the extra orientation hypothesis `hLineEq : lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d`, tying the curve's circulation to the concrete counterclockwise four-edge rectangle integral `GreensTheoremOQ01.rectLineIntegral`. The previously separate `…_oriented` re-proofs that once lived here have therefore been deleted — they are now identical to the registered declarations.\n\nWhat remains is a single soundness witness. It opens exactly the siblings it needs: `GreensTheoremOQ01 (rectLineIntegral)` for the correctly-oriented rectangle integral, `GreensTheoremOQ02` for the curve/circulation vocabulary, and `GreensTheoremOQ02Counterexample` for the Session-5 unsound witness (`constCurve`, `cexP`, `cexQ`). This is the converse-facing check that the registered fix actually excludes the known counterexample.",
     "mathContext": "Registered fix adds $\\oint_C(P\\,dx+Q\\,dy) = \\text{rectLineIntegral}\\,P\\,Q\\,a\\,b\\,c\\,d$ to the minimal-regularity Green's identity; this file only verifies that hypothesis genuinely excises the counterexample.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Axiom integrity",
       "Boundary orientation",
@@ -25,11 +25,11 @@
       "startLine": 33,
       "endLine": 42
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Selective Opens Assemble the Witness Vocabulary",
     "content": "The witness is deliberately minimal in what it imports. Beyond `Mathlib`, it pulls in only the two sibling files it actually reasons about: `Proofs.GreensTheoremOQ02OQ04` (transitively bringing the curve/circulation vocabulary of `GreensTheoremOQ02`) and `Proofs.GreensTheoremOQ02Counterexample` (the Session-5 unsound witness). The `open` directives are narrowed rather than wholesale: `open GreensTheoremOQ01 (rectLineIntegral)` exposes exactly the concrete four-edge rectangle integral, and `open GreensTheoremOQ02Counterexample (constCurve cexP cexQ constCurve_lineIntegral_zero)` exposes only the degenerate curve, its field `(P, Q) = (0, x)`, and the lemma fixing its circulation to `0`.\n\nThis selective-open discipline keeps the single theorem statement free of qualified prefixes while making the provenance of every symbol explicit — a reader can see at a glance that the proof depends on OQ-01's oriented rectangle integral and the counterexample's zero-circulation lemma, and on nothing else.",
     "mathContext": "Exposes exactly $\\text{rectLineIntegral}$ (from OQ-01), the degenerate $\\text{constCurve}$, the field $(\\text{cexP}, \\text{cexQ}) = (0, x)$, and $\\text{constCurve\\_lineIntegral\\_zero} : \\oint_C = 0$ — the minimal kit the soundness check needs.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Namespace management",
       "Selective imports",
@@ -67,7 +67,7 @@
       "startLine": 53,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "insight",
     "title": "A Two-Rewrite, Axiom-Free Proof",
     "content": "The proof is deliberately short and fully machine-checked. It first records `hrect : rectLineIntegral cexP cexQ 0 1 0 1 = 1` by appeal to the *proven* lemma `GreensTheoremOQ01.unit_square_area_as_line_integral` (not an axiom — the unit-square rectangle integral is computed outright in OQ-01). It then rewrites the left side to `0` via `constCurve_lineIntegral_zero` and the right side to `1` via `hrect`, reducing the goal to `(0 : ℝ) ≠ 1`, which `norm_num` closes.\n\nBecause both rewrites cite established lemmas and the final step is decidable arithmetic, `counterexample_violates_hLineEq` introduces no new `axiom` of its own — its `axiomCount` is `0`. The soundness of the orientation fix is therefore demonstrated, not assumed.",
     "mathContext": "$\\oint_C \\xrightarrow{\\text{constCurve\\_lineIntegral\\_zero}} 0$ and $\\text{rectLineIntegral} \\xrightarrow{\\text{unit\\_square\\_area\\_as\\_line\\_integral}} 1$, leaving $0 \\ne 1$ for $\\texttt{norm\\_num}$.",
