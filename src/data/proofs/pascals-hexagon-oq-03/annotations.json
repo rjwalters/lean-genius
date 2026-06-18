@@ -228,5 +228,219 @@
       "$S_6$ exceptional outer automorphism (or direct enumeration)",
       "combinatorial design theory"
     ]
+  },
+  {
+    "id": "ann-phex-oq03-overview",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 12,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Hexagrammum Mysticum: Open Question and S1 Scaffold",
+    "content": "The module docstring frames the problem and this file’s contribution. Pascal’s theorem says the three pairs of opposite sides of a hexagon inscribed in a conic meet in three collinear points — the Pascal line. The \"mystic hexagram\" (Hexagrammum Mysticum) is the deeper configuration: the 60 distinct ways of cyclically ordering the six points give 60 Pascal lines, which intersect in 20 Steiner points (3 lines each) and 60 Kirkman points, with further Plücker/Cayley/Salmon incidences. This entry is the **S1 scaffold**: it rigorously establishes the group-theoretic skeleton — why the count is exactly 60 — and states (defers to later sub-OQs) the geometric incidence theorems. The sub-OQ decomposition (OQ-03-OQ-01 … OQ-03-OQ-04) is laid out here.",
+    "significance": "key",
+    "mathContext": "A hexagon inscribed in a conic has $6!/(2\\cdot 6) = 720/12 = 60$ distinct labelings up to the dihedral symmetry $D_6$ of cyclic relabeling, hence 60 Pascal lines. These meet in 20 Steiner points and 60 Kirkman points — the Hexagrammum Mysticum.",
+    "relatedConcepts": [
+      "Pascal's theorem",
+      "Hexagrammum Mysticum",
+      "conic sections",
+      "projective geometry",
+      "Steiner and Kirkman points"
+    ],
+    "prerequisites": [
+      "projective geometry",
+      "conics",
+      "group actions",
+      "Pascal's theorem"
+    ]
+  },
+  {
+    "id": "ann-phex-oq03-dihedral-relations",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 149,
+      "endLine": 197
+    },
+    "type": "concept",
+    "title": "Dihedral Generators in Sym(6) and Their Defining Relations",
+    "content": "Establishes that the cyclic rotation `hexRot` ($r$) and reversal `hexRev` ($s$) lie in `hexagonalGroup` and satisfy the three defining relations of the dihedral group $D_6$: $r^6 = 1$ (`hexRot_pow_six`), $s^2 = 1$ (`hexRev_mul_self`, $s$ is an involution), and $s r s = r^{-1}$ (`hexRev_hexRot_hexRev`, reflection inverts rotation). These are the abstract presentation $\\langle r, s \\mid r^6, s^2, srs r\\rangle$ realized concretely inside $\\mathrm{Sym}(6)$, the foundation for identifying the symmetry group of a hexagon labeling.",
+    "significance": "key",
+    "mathContext": "Dihedral presentation: $D_6 = \\langle r, s \\mid r^6 = s^2 = 1,\\ srs = r^{-1}\\rangle$, realized in $\\mathrm{Sym}(6)$ by $r = $ cyclic rotation of $\\mathrm{Fin}\\,6$ and $s = $ reversal $i\\mapsto 5-i$.",
+    "relatedConcepts": [
+      "dihedral group D₆",
+      "group presentation",
+      "generators and relations",
+      "symmetric group Sym(6)"
+    ],
+    "prerequisites": [
+      "group theory: dihedral groups",
+      "permutation groups",
+      "generators and relations"
+    ]
+  },
+  {
+    "id": "ann-phex-oq03-orders",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 199,
+      "endLine": 245
+    },
+    "type": "concept",
+    "title": "Exact Orders of the Generators",
+    "content": "Computes the precise orders $\\mathrm{ord}(r) = 6$ (`orderOf_hexRot`) and $\\mathrm{ord}(s) = 2$ (`orderOf_hexRev`), upgrading the \"order divides\" relations to equalities. `hexRot_pow_lt_six_ne_one` checks that no smaller power of the rotation is the identity, and `hexRev_inv` records $s^{-1} = s$. Exact orders are needed to guarantee the 12 dihedral elements are genuinely distinct rather than collapsing.",
+    "significance": "supporting",
+    "mathContext": "Exact orders: $\\mathrm{ord}(r) = 6$ and $\\mathrm{ord}(s) = 2$. Combined with $srs = r^{-1}$, the elements $\\{r^i, sr^i : 0\\le i < 6\\}$ are 12 distinct group elements.",
+    "relatedConcepts": [
+      "order of a group element",
+      "dihedral group",
+      "involution"
+    ],
+    "prerequisites": [
+      "group theory: element orders",
+      "dihedral groups"
+    ]
+  },
+  {
+    "id": "ann-phex-oq03-semiconj",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 246,
+      "endLine": 386
+    },
+    "type": "concept",
+    "title": "Semiconjugacy and Commutation Calculus",
+    "content": "A toolkit of powered forms of the dihedral relation $srs = r^{-1}$, extended from exponent 1 to all exponents: `hexRev_semiconj_hexRot` and `hexRev_semiconj_hexRot_pow` ($s\\,r^n = r^{-n} s$), `hexRev_hexRot_pow_hexRev` ($s r^n s = r^{-n}$), plus additive/negation/subtractive forms in $\\mathbb{Z}/6$ and the \"anti-push\" $r^n s = s\\,r^{-n}$. `hexRev` is shown distinct from every rotation power (rotation/reflection disjointness). These mechanical rewrite lemmas are exactly what the four `map_mul'` cases of the dihedral homomorphism need.",
+    "significance": "supporting",
+    "mathContext": "Powered semiconjugacy: $s\\,r^n = r^{-n}\\,s$ for all $n$, equivalently $s\\,r^n\\,s = r^{-n}$. Reflections $s r^i$ and rotations $r^j$ are disjoint, so $|D_6| = 12$.",
+    "relatedConcepts": [
+      "semiconjugacy",
+      "SemiconjBy",
+      "dihedral commutation relations",
+      "ZMod 6"
+    ],
+    "prerequisites": [
+      "group theory: conjugation",
+      "dihedral groups",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-phex-oq03-dihedral-iso",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 387,
+      "endLine": 496
+    },
+    "type": "insight",
+    "title": "The Isomorphism D₆ ≅ hexagonalGroup",
+    "content": "Constructs the monoid homomorphism `dihedralHomToSym6 : DihedralGroup 6 →* Sym(6)` (the four `map_mul'` cases discharged by the semiconjugacy calculus above), proves it injective (`dihedralHomToSym6_injective`), and identifies its image exactly with `hexagonalGroup` (`dihedralHomToSym6_range`). Together these realize the abstract $D_6$ as the concrete hexagonal symmetry subgroup of $\\mathrm{Sym}(6)$ — the key structural fact that pins the order of the symmetry group to 12.",
+    "significance": "key",
+    "mathContext": "There is an injective homomorphism $D_6 \\hookrightarrow \\mathrm{Sym}(6)$ whose image is exactly `hexagonalGroup`; hence $\\mathrm{hexagonalGroup} \\cong D_6$ and $|\\mathrm{hexagonalGroup}| = |D_6| = 12$.",
+    "relatedConcepts": [
+      "group isomorphism",
+      "dihedral group",
+      "injective homomorphism",
+      "subgroup image"
+    ],
+    "prerequisites": [
+      "group theory: homomorphisms and isomorphisms",
+      "dihedral groups"
+    ]
+  },
+  {
+    "id": "ann-phex-oq03-counts",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 510,
+      "endLine": 557
+    },
+    "type": "insight",
+    "title": "The Counts: |hexagonalGroup| = 12 and 60 Pascal Lines",
+    "content": "The headline counting results. `card_hexagonalGroup` derives $|\\mathrm{hexagonalGroup}| = 12$ from the isomorphism with $D_6$ via `DihedralGroup.nat_card`. Then `card_hexagon_labelings` applies Lagrange’s theorem (`Subgroup.card_eq_card_quotient_mul_card_subgroup`) to the count $|\\mathrm{Sym}(6)| = 720$: the labelings form the coset space $\\mathrm{Sym}(6)/D_6$, so there are $720/12 = 60$ of them — exactly the 60 Pascal lines of the Hexagrammum Mysticum. This is OQ-03-OQ-01, fully proved.",
+    "significance": "key",
+    "mathContext": "Lagrange count: $|\\mathrm{HexagonLabeling}| = |\\mathrm{Sym}(6)/D_6| = \\dfrac{|\\mathrm{Sym}(6)|}{|D_6|} = \\dfrac{720}{12} = 60$. Six points on a conic yield 60 Pascal lines.",
+    "relatedConcepts": [
+      "Lagrange's theorem",
+      "coset space",
+      "quotient group",
+      "Hexagrammum Mysticum",
+      "60 Pascal lines"
+    ],
+    "prerequisites": [
+      "group theory: Lagrange's theorem",
+      "cosets and quotients",
+      "counting"
+    ]
+  },
+  {
+    "id": "ann-phex-oq03-relabeling",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 558,
+      "endLine": 622
+    },
+    "type": "definition",
+    "title": "Hexagon Relabeling Action (Geometric Scaffold)",
+    "content": "Sets up the action of $\\mathrm{Sym}(6)$ on inscribed hexagons used to define Pascal lines geometrically. `hexVertex` indexes the six conic points as a function $\\mathrm{Fin}\\,6 \\to \\mathrm{ProjPoint}$, with `hexVertex_onConic` and `hexVertex_valid` bundling the conic-membership and projective-validity proofs; `permuteHexagon` relabels a hexagon by a permutation $\\pi$, transporting all proofs so the result is again an `InscribedHexagon`. This is the workhorse for OQ-03-OQ-02, where the Pascal line of a labeling is defined as the Pascal line of a representative permuted hexagon.",
+    "significance": "supporting",
+    "mathContext": "Relabeling action: a permutation $\\pi\\in\\mathrm{Sym}(6)$ sends an inscribed hexagon to the hexagon with vertices reindexed by $\\pi$; the Pascal line depends only on the $D_6$-orbit of $\\pi$, i.e. on the `HexagonLabeling`.",
+    "relatedConcepts": [
+      "group action",
+      "inscribed hexagon",
+      "projective points",
+      "relabeling"
+    ],
+    "prerequisites": [
+      "projective geometry",
+      "group actions",
+      "conics"
+    ]
+  },
+  {
+    "id": "ann-phex-oq03-existence",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 634,
+      "endLine": 651
+    },
+    "type": "concept",
+    "title": "Hexagrammum Mysticum Existence Statement (Scaffold, Deferred)",
+    "content": "States that the assignment `HexagonLabeling → ProjLine` from a labeling to its Pascal line is total: six points on a conic determine 60 Pascal lines indexed by `HexagonLabeling`. Honestly, the underlying `pascalLine` definition is a deferred `sorry` placeholder at this S1 stage — the full geometric well-definedness (that the opposite-side intersections are genuinely collinear, and the lines distinct in general position) is the content of OQ-03-OQ-02 and is not yet formalized here. The existence statement is therefore structural, recording the indexing rather than the geometry.",
+    "significance": "supporting",
+    "mathContext": "Existence (scaffold): there is a total map $\\mathrm{HexagonLabeling} \\to \\mathrm{ProjLine}$, $\\mathrm{lbl}\\mapsto \\mathrm{pascalLine}(C,\\mathrm{hex},\\mathrm{lbl})$. The geometric content (collinearity, distinctness) is deferred; `pascalLine` is currently a `sorry`.",
+    "relatedConcepts": [
+      "Pascal line",
+      "projective line",
+      "scaffold / deferred definition",
+      "Hexagrammum Mysticum"
+    ],
+    "prerequisites": [
+      "projective geometry",
+      "Pascal's theorem",
+      "honest formalization scope"
+    ]
+  },
+  {
+    "id": "ann-phex-oq03-sanity",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 700,
+      "endLine": 718
+    },
+    "type": "concept",
+    "title": "Sanity-Check Lemmas",
+    "content": "Two basic non-triviality checks closing the file: `hexRot_ne_one` (cyclic rotation by 1 is not the identity, since it moves $0$ to $1$) and `hexRev_ne_one` (reversal is not the identity, since it swaps $0$ and $5$). These confirm the generators are genuinely non-trivial, consistent with the computed orders 6 and 2.",
+    "significance": "technical",
+    "mathContext": "Non-triviality: $r \\ne 1$ (moves $0\\mapsto 1$) and $s \\ne 1$ (swaps $0\\leftrightarrow 5$), consistent with $\\mathrm{ord}(r)=6$, $\\mathrm{ord}(s)=2$.",
+    "relatedConcepts": [
+      "non-triviality checks",
+      "permutation",
+      "dihedral generators"
+    ],
+    "prerequisites": [
+      "permutation groups",
+      "group element orders"
+    ]
   }
 ]
