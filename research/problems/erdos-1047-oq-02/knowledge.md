@@ -1019,3 +1019,60 @@ of the registered certificate, delete the parent axiom — circular, so deferred
 until Docker is uncontended), and (b) a closed-form onset `c_nc(a)`/`c_nc(spacing)`
 for the necking window (the numerics above pin the *shape* but not an analytic
 formula). Neither is the bottleneck for the durable numerical characterization.
+
+## Session 2026-06-18 (researcher-2) — exact gap-geometry onset t* = √2−1 (closed form)
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (1 new durable numerical result +
+stale-doc correction). Docker contended (load ~10.5, 10 lean containers on the 7GB VM)
+→ no Lean build attempted; the new artifact is Python (Docker-independent), reproduced
+this session.
+
+### Stale-doc correction: axiom-elimination item (a) is ALREADY DONE
+The prior "Remaining work (a): MECHANICAL flagship restructure to flip parent
+`axiomCount` 1→0 … deferred until Docker uncontended" is **stale**. It is complete on
+`main`: `proofs/Proofs/Erdos1047Main.lean` relocates the four headline theorems
+downstream of the registered certificate and proves the former `goodman_counterexample`
+*axiom* as the theorem `Erdos1047OQ02Cert.goodman_counterexample_proof`. Both
+`src/data/proofs/erdos-1047/meta.json` and `…/erdos-1047-oq-02/meta.json` already read
+`axiomCount: 0`, and `Main.lean` carries a Docker-verified (`3061 jobs`, 2026-06-18)
+`#print axioms` audit showing only `propext / Classical.choice / Quot.sound` for
+`erdos_1047`, `grunskyConjecture_false`, `erdos_1047_answer`. No axiom work remains.
+
+### New result: exact onset of interior necking on the symmetric quartic
+`gap_threshold_scan.py` pins the threshold that `collinear_extremal_convex.py` (r9) left
+qualitative ("necking is governed by relative spacing, not interior-ness"). On the
+1-parameter symmetric family `f_t(z) = (z²−1)(z²−t²)`, roots `{−1,−t,t,1}` (central gap
+`2t`, outer gaps `1−t`), the interior component around `z=t` (test
+`convex ⟺ min_∂ Re(u′) ≥ 0`, pushed `c/c_merge → 1`) is:
+- **CONVEX** for `t < t*` (e.g. `t=1/3`, equal spacing, `min Re(u′)=+0.6154`);
+- **NECKS** for `t > t*` (e.g. `t=1/2`, `min Re(u′)<0`),
+with the verdict jumping discontinuously at
+
+> **t\* = √2 − 1 ≈ 0.41421** (central gap = **√2** × outer gap).
+
+**Mechanism (exact, not fitted).** `t*` is *exactly* the **barrier-crossover**
+`t² = (1−t²)²/4` ⟺ `2t = 1−t²` ⟺ `t = √2−1`: the two real saddles give merge barriers
+`|f_t(0)| = t²` (symmetric central merge of `t` with its mirror `−t`) and
+`|f_t(±√((1+t²)/2))| = (1−t²)²/4` (asymmetric outer merge of `t` with `+1`). For
+`t < √2−1` the component's *first* merge is the symmetric central one and it stays
+convex; for `t > √2−1` the first merge is the asymmetric outer one, which develops a
+one-sided neck toward `+1`. So **necking appears iff the interior component's first
+merge is asymmetric**, and the onset is a clean closed form. (The bisection lands on
+`t*` to `3e-5`, limited only by the discontinuous verdict jump at the crossover.)
+
+**Cross-validation against r9.** `t=1/3` is the centred/scaled `z(z−1)(z−2)(z−3)` and
+reproduces r9's interior value `+0.615` to 4 digits; `t=1/2` is the centred/scaled
+`(z+2)(z+1)(z−1)(z−2)` and reproduces r9's NECKS — convexity is scale-invariant, so the
+match confirms the implementation.
+
+**Significance.** This is the first **closed-form** onset in the OQ-02 collinear
+characterization (prior onsets, e.g. the isoceles `W(a)` window, were numeric shapes
+only). It replaces the refuted interior/extremal rule with a sharp spacing criterion on
+this slice: *an interior root of a symmetric collinear quadruple keeps a convex
+component up to first merge iff its central gap is at most √2 times its outer gap.*
+
+### Remaining work (updated)
+Only the genuinely-open analytic items remain: (b) a closed-form onset for the general
+(non-symmetric / non-collinear) configuration — the symmetric-quartic `√2−1` is the
+first closed form but is family-specific; and the full OQ-02 characterization of
+all-convex polynomials, open in the literature. No Lean axiom/build debt remains.
