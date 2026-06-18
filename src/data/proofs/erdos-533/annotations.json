@@ -18,7 +18,7 @@
     ],
     "range": {
       "startLine": 17,
-      "endLine": 20
+      "endLine": 18
     }
   },
   {
@@ -39,8 +39,8 @@
       "Prop"
     ],
     "range": {
-      "startLine": 25,
-      "endLine": 28
+      "startLine": 21,
+      "endLine": 26
     }
   },
   {
@@ -61,8 +61,8 @@
       "Finset membership"
     ],
     "range": {
-      "startLine": 31,
-      "endLine": 32
+      "startLine": 27,
+      "endLine": 30
     }
   },
   {
@@ -83,8 +83,8 @@
       "Finset.card"
     ],
     "range": {
-      "startLine": 35,
-      "endLine": 36
+      "startLine": 31,
+      "endLine": 34
     }
   },
   {
@@ -104,8 +104,8 @@
       "Finset membership"
     ],
     "range": {
-      "startLine": 39,
-      "endLine": 41
+      "startLine": 35,
+      "endLine": 39
     }
   },
   {
@@ -126,8 +126,8 @@
       "Finset membership"
     ],
     "range": {
-      "startLine": 44,
-      "endLine": 46
+      "startLine": 40,
+      "endLine": 44
     }
   },
   {
@@ -149,8 +149,148 @@
       "Finset.filter"
     ],
     "range": {
-      "startLine": 49,
-      "endLine": 51
+      "startLine": 45,
+      "endLine": 49
+    }
+  },
+  {
+    "id": "ann-e533-bridge",
+    "proofId": "erdos-533",
+    "type": "definition",
+    "title": "SimpleGraph Bridge",
+    "content": "SGraph.toSimpleGraph converts the bespoke SGraph into Mathlib's SimpleGraph, and the @[simp] lemma toSimpleGraph_adj certifies the two adjacency relations agree definitionally.",
+    "mathContext": "Mathlib's `SimpleGraph V` carries a large library (`SimpleGraph.CliqueFree`, independence number, Ramsey-type results). The bridge reuses `G.adj` for `Adj` and discharges `symm`/`loopless` straight from the structure fields, so any Mathlib theorem about `G.toSimpleGraph` transfers back to `G` through `toSimpleGraph_adj : G.toSimpleGraph.Adj\\ i\\ j \\leftrightarrow G.adj\\ i\\ j`, which holds by `Iff.rfl` (the map is the *identity on adjacency*). This keeps the file self-contained while leaving the door open to Mathlib's extremal-graph API.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib SimpleGraph",
+      "API interoperability",
+      "definitional equality"
+    ],
+    "prerequisites": [
+      "SGraph",
+      "SimpleGraph"
+    ],
+    "range": {
+      "startLine": 50,
+      "endLine": 63
+    }
+  },
+  {
+    "id": "ann-e533-edge-bounds",
+    "proofId": "erdos-533",
+    "type": "theorem",
+    "title": "Tight Edge Bound: |E(G)| ≤ n(n−1)/2",
+    "content": "edgeCount_le_sq gives the crude bound |E(G)| ≤ n²; edgeCount_le sharpens it to the exact maximum n(n−1)/2 using the helper card_strict_upper_tri, which counts strictly-ordered pairs via the swap bijection.",
+    "mathContext": "The exact bound $|E(G)| \\le \\binom{n}{2} = n(n-1)/2$ comes from counting strictly-ordered pairs. The helper `card_strict_upper_tri` proves $|\\{(i,j) : i<j\\}| = n(n-1)/2$ by (i) identifying the off-diagonal with `Finset.offDiag` of cardinality $n(n-1)$, (ii) splitting it as the disjoint union $\\{i<j\\}\\sqcup\\{i>j\\}$, and (iii) exhibiting the swap $(i,j)\\mapsto(j,i)$ as a `Finset.card_bij`, so the two halves are equinumerous and each has $n(n-1)/2$ elements. This is the denominator behind density normalization: unconditionally $\\delta = |E(G)|/n^2 \\le 1/2$, tightened to $3/8$ under $K_5$-freeness.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge counting",
+      "complete graph K_n",
+      "Finset.card_bij",
+      "off-diagonal"
+    ],
+    "prerequisites": [
+      "edgeCount",
+      "Finset.card_offDiag",
+      "Finset.filter"
+    ],
+    "range": {
+      "startLine": 146,
+      "endLine": 200
+    }
+  },
+  {
+    "id": "ann-e533-erdos-rogers",
+    "proofId": "erdos-533",
+    "type": "concept",
+    "title": "Erdős-Rogers Counterexample for K₇",
+    "content": "There exist K₇-free graphs with ≥ n²/4 edges where every triangle-free subset has o(n) vertices, disproving the conjecture for K₇. The in-file theorem k5_free_implies_k7_free explains why this does not refute Problem 533.",
+    "mathContext": "The **Erdős-Rogers construction** (1962) builds $K_7$-free graphs of density $1/4$ where all triangle-free subsets are sublinear. The construction uses iterated Ramsey-type blow-ups: start with a dense graph, replace each vertex by a clique, and iterate. After enough iterations, the graph is $K_7$-free but every large subset contains a triangle. The threshold between \"always works\" ($K_4$) and \"fails\" ($K_7$) makes $K_5$ and $K_6$ the **critical boundary cases**. The formal lemma `k5_free_implies_k7_free` (contrapositive of `hasClique_mono`) shows every $K_5$-free graph is also $K_7$-free, so the Erdős-Rogers graphs live in a *strictly larger* class and cannot obstruct the $K_5$ statement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Rogers construction",
+      "Ramsey blow-ups",
+      "counterexamples",
+      "monotonicity of clique-freeness"
+    ],
+    "prerequisites": [
+      "SGraph",
+      "HasClique",
+      "IsTriangleFree",
+      "edgeCount"
+    ],
+    "range": {
+      "startLine": 205,
+      "endLine": 211
+    }
+  },
+  {
+    "id": "ann-e533-neighborhood",
+    "proofId": "erdos-533",
+    "type": "definition",
+    "title": "Neighborhood and Degree",
+    "content": "neighborhood G v collects the vertices adjacent to v, and degree G v is its cardinality. These power the local 'pass to a neighborhood' strategy.",
+    "mathContext": "The open neighborhood $N(v) = \\{u : v \\sim u\\}$ and degree $\\deg(v) = |N(v)|$ are the workhorses of the proposed attack on the open range. A dense graph with $\\ge \\delta n^2$ edges has average degree $\\ge 2\\delta n$, so by averaging some vertex satisfies $\\deg(v) \\ge 2\\delta n$ — a large neighborhood to recurse into. Both are `noncomputable` because the membership test `G.adj v u` is `Prop`-valued. The simp lemma `mem_neighborhood` and `not_mem_neighborhood_self` (no self-loops) make $N(v)$ usable in clique arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open neighborhood",
+      "vertex degree",
+      "average degree argument"
+    ],
+    "prerequisites": [
+      "SGraph",
+      "Finset.filter",
+      "Finset.card"
+    ],
+    "range": {
+      "startLine": 213,
+      "endLine": 221
+    }
+  },
+  {
+    "id": "ann-e533-neighborhood-k4",
+    "proofId": "erdos-533",
+    "type": "theorem",
+    "title": "Neighborhood K₄-Freeness (Key Structural Lemma)",
+    "content": "clique_in_neighborhood_extends shows that a clique inside N(v) together with v is again a clique; neighborhood_k4_free deduces that in a K₅-free graph every neighborhood is K₄-free.",
+    "mathContext": "This is the bridge from the *open* $K_5$ case to the *solved* $K_4$ case. If $S \\subseteq N(v)$ is a clique of size 4, then $S \\cup \\{v\\}$ is a clique of size 5: every $s \\in S$ is adjacent to $v$ because $s \\in N(v)$, and $S$ is already complete. This contradicts $K_5$-freeness, so each neighborhood $N(v)$ is necessarily $K_4$-free — precisely the regime where the all-$\\delta$ result `k4_free_triangle_free_subset` applies. The remaining obstruction is purely quantitative: $|N(v)|$ being large does not by itself guarantee that $N(v)$ carries $\\sim |N(v)|^2$ edges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "local-to-global reduction",
+      "clique extension",
+      "K₄-free reduction"
+    ],
+    "prerequisites": [
+      "neighborhood",
+      "IsClique",
+      "HasClique"
+    ],
+    "range": {
+      "startLine": 232,
+      "endLine": 261
+    }
+  },
+  {
+    "id": "ann-e533-turan",
+    "proofId": "erdos-533",
+    "type": "theorem",
+    "title": "Turán's Bound for K₅-Free Graphs",
+    "content": "turan_k5_free axiomatizes Turán's theorem (a K₅-free graph has ≤ (3/8)n² edges); density_bound_k5_free uses it to confine the density parameter to δ ≤ 3/8.",
+    "mathContext": "Turán's theorem gives the extremal edge count for $K_{r+1}$-free graphs: $(1 - 1/r)\\,n^2/2$, attained by the balanced complete $r$-partite Turán graph $T(n,r)$. For $r=4$ (i.e. $K_5$-free) this is $(1-1/4)n^2/2 = 3n^2/8$. It is axiomatized here because a kernel-level proof requires Zykov symmetrization or vertex-deletion induction, which are out of scope for this file. The consequence `density_bound_k5_free` is immediate: $\\delta n^2 \\le |E(G)| \\le \\tfrac38 n^2$ forces $\\delta \\le 3/8$, so Problem 533 only ever concerns $\\delta \\in (0, 3/8]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "extremal graph theory",
+      "Zykov symmetrization",
+      "complete multipartite graph"
+    ],
+    "prerequisites": [
+      "edgeCount",
+      "HasClique"
+    ],
+    "range": {
+      "startLine": 269,
+      "endLine": 287
     }
   },
   {
@@ -173,8 +313,8 @@
       "edgeCount"
     ],
     "range": {
-      "startLine": 57,
-      "endLine": 62
+      "startLine": 288,
+      "endLine": 298
     }
   },
   {
@@ -196,32 +336,52 @@
       "IsTriangleFree"
     ],
     "range": {
-      "startLine": 65,
-      "endLine": 70
+      "startLine": 299,
+      "endLine": 306
     }
   },
   {
-    "id": "ann-e533-erdos-rogers",
+    "id": "ann-e533-partial",
     "proofId": "erdos-533",
-    "type": "concept",
-    "title": "Erdős-Rogers Counterexample for K₇",
-    "content": "There exist K₇-free graphs with ≥ n²/4 edges where every triangle-free subset has o(n) vertices, disproving the conjecture for K₇.",
-    "mathContext": "The **Erdős-Rogers construction** (1962) builds $K_7$-free graphs of density $1/4$ where all triangle-free subsets are sublinear. The construction uses iterated Ramsey-type blow-ups: start with a dense graph, replace each vertex by a clique, and iterate. After enough iterations, the graph is $K_7$-free but every large subset contains a triangle. The threshold between \"always works\" ($K_4$) and \"fails\" ($K_7$) makes $K_5$ and $K_6$ the **critical boundary cases**.",
+    "type": "theorem",
+    "title": "Partial Resolution: δ > 1/16 and K₄-Free",
+    "content": "erdos_533_for_large_delta derives the conjecture's conclusion for δ > 1/16 from the EHSSS axiom (with constant c = δ/2); erdos_533_for_k4_free derives it for all δ > 0 when G is K₄-free.",
+    "mathContext": "These two theorems are the formally-proved fragments of the problem. `erdos_533_for_large_delta` instantiates the EHSSS axiom with constant $c = \\delta/2$ in the range $\\delta > 1/16$; `erdos_533_for_k4_free` simply peels the existential off the $K_4$-free axiom. Together they pin the genuinely open region precisely: $0 < \\delta \\le 1/16$ for graphs that are $K_5$-free but **not** $K_4$-free. Everything outside that window is reduced to two clearly named axioms.",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős-Rogers construction",
-      "Ramsey blow-ups",
-      "counterexamples"
+      "conditional results",
+      "reduction to known theorems",
+      "open region"
     ],
     "prerequisites": [
-      "SGraph",
-      "HasClique",
-      "IsTriangleFree",
-      "edgeCount"
+      "ehsss_result",
+      "k4_free_triangle_free_subset"
     ],
     "range": {
-      "startLine": 74,
-      "endLine": 79
+      "startLine": 307,
+      "endLine": 331
+    }
+  },
+  {
+    "id": "ann-e533-strategy",
+    "proofId": "erdos-533",
+    "type": "concept",
+    "title": "Proof Strategy: The Neighborhood Approach",
+    "content": "The roadmap: K₅-free ⟹ each N(v) is K₄-free ⟹ apply the all-δ K₄-free result inside a high-degree vertex's neighborhood. The unresolved step is controlling the edge density within N(v).",
+    "mathContext": "The candidate proof chains the in-file lemmas: (1) `neighborhood_k4_free` makes every $N(v)$ a $K_4$-free graph; (2) `k4_free_triangle_free_subset` then yields a linear-size triangle-free set *inside* a dense $N(v)$; (3) an averaging argument produces a vertex with $\\deg(v) \\ge 2\\delta n$. The gap is step (4): a neighborhood having many *vertices* does not guarantee it has $\\sim |N(v)|^2$ *edges* — the induced density on $N(v)$ can collapse, which is exactly why the range $0 < \\delta \\le 1/16$ remains open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof roadmap",
+      "density regularization",
+      "open problem frontier"
+    ],
+    "prerequisites": [
+      "neighborhood_k4_free",
+      "k4_free_triangle_free_subset"
+    ],
+    "range": {
+      "startLine": 332,
+      "endLine": 343
     }
   },
   {
@@ -229,8 +389,8 @@
     "proofId": "erdos-533",
     "type": "concept",
     "title": "Erdős Problem 533: Full Conjecture",
-    "content": "For every δ > 0, any K₅-free graph on n vertices with ≥ δn² edges contains a triangle-free subset of size ≥ c(δ)·n.",
-    "mathContext": "The conjecture extends EHSSS from $\\delta > 1/16$ to all $\\delta > 0$. The quantifier structure is $\\forall \\delta > 0, \\exists c > 0, \\forall n, \\forall G$ $K_5$-free with $\\geq \\delta n^2$ edges, $\\exists S$ triangle-free with $|S| \\geq cn$. The constant $c = c(\\delta)$ may depend on $\\delta$. The problem is at the frontier of **extremal graph theory**: it tests whether $K_5$-freeness is strong enough to force structured subgraphs at all densities, or whether there is a phase transition between $K_4$ (always works) and $K_7$ (fails).",
+    "content": "For every δ > 0, any K₅-free graph on n vertices with ≥ δn² edges contains a triangle-free subset of size ≥ c(δ)·n. Stated as a Prop (not an axiom) so the file does not assume the open conjecture.",
+    "mathContext": "The conjecture extends EHSSS from $\\delta > 1/16$ to all $\\delta > 0$. The quantifier structure is $\\forall \\delta > 0, \\exists c > 0, \\forall n, \\forall G$ $K_5$-free with $\\geq \\delta n^2$ edges, $\\exists S$ triangle-free with $|S| \\geq cn$. The constant $c = c(\\delta)$ may depend on $\\delta$. Crucially it is encoded as a `def ... : Prop`, never an `axiom`: asserting it by `axiom` would silently assume an open problem. The conjecture sits at the frontier of **extremal graph theory**, testing whether $K_5$-freeness forces structured subgraphs at all densities or whether a phase transition separates $K_4$ (always works) from $K_7$ (fails).",
     "significance": "key",
     "relatedConcepts": [
       "extremal graph theory",
@@ -244,8 +404,8 @@
       "edgeCount"
     ],
     "range": {
-      "startLine": 86,
-      "endLine": 91
+      "startLine": 356,
+      "endLine": 371
     }
   }
 ]
