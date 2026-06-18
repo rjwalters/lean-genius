@@ -97,92 +97,36 @@
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Lemniscate Definitions",
-      "summary": "Basic definitions: lemniscate, strictLemniscate, lemniscateBoundary",
-      "startLine": 50,
-      "endLine": 67,
-      "mathContext": "Lemniscate: $\\\\{z : |f(z)| = c\\\\}$. Sublevel set: $\\\\{z : |f(z)| \\\\leq c\\\\}$. Strict: $\\\\{z : |f(z)| < c\\\\}$."
+      "id": "overview",
+      "title": "Overview: Axiom-Free Relocation",
+      "summary": "File docstring — why the four headline theorems live in Erdos1047Main.lean (downstream of the geometric certificate) and Erdős #1047 background.",
+      "startLine": 1,
+      "endLine": 27,
+      "mathContext": "Lemniscate $E_c(f)=\\{z:|f(z)|\\le c\\}$ for monic $f$. Grunsky's question (Erdős–Herzog–Piranian 1958): must every connected component of $E_c(f)$ be convex?"
     },
     {
-      "id": "properties",
-      "title": "Lemniscate Properties",
-      "summary": "Closedness, compactness, and component counting theorems",
-      "startLine": 68,
-      "endLine": 84,
-      "mathContext": "Sublevel sets are closed and compact. Component count depends on root distribution and level $c$."
+      "id": "grunsky-false",
+      "title": "Grunsky's Conjecture is False",
+      "summary": "grunskyConjecture_false and its problem-numbered alias erdos_1047: not all lemniscate components are convex (answer NO), via the discharged Goodman counterexample.",
+      "startLine": 29,
+      "endLine": 45,
+      "mathContext": "$\\neg\\,\\text{grunskyConjecture}$ from $\\text{goodman\\_counterexample\\_proof}$, witnessed by $f(z)=(z^2+1)(z-2)^2$ at $c=5^{3/2}/4$."
     },
     {
-      "id": "components",
-      "title": "Connected Components",
-      "summary": "Component counting and componentContaining helper",
-      "startLine": 85,
-      "endLine": 103,
-      "mathContext": "Connected components of $\\\\{|f(z)| \\\\leq c\\\\}$. For small $c$: components cluster near roots. For large $c$: single component."
+      "id": "counterexample",
+      "title": "The Explicit Counterexample",
+      "summary": "erdos_1047_counterexample and erdos_1047_answer: the existential forms packaging Goodman's monic polynomial, positive critical level, and a boundary point with a non-convex component.",
+      "startLine": 47,
+      "endLine": 60,
+      "mathContext": "$\\exists f\\text{ monic},\\deg f>0,\\exists c>0,\\exists z_0\\in\\{|f|\\le c\\}$ whose component is non-convex."
     },
     {
-      "id": "convexity",
-      "title": "Convexity in ℂ",
-      "summary": "IsConvexComplex definition and closedBall convexity",
-      "startLine": 104,
-      "endLine": 118,
-      "mathContext": "Convexity: $S$ is convex if $\\\\forall x,y \\\\in S$, the line segment $[x,y] \\\\subseteq S$. Closed disks are convex."
-    },
-    {
-      "id": "grunsky",
-      "title": "The Grunsky Conjecture",
-      "summary": "Statement of grunskyConjecture and grunskyConjecture_false",
-      "startLine": 119,
-      "endLine": 134,
-      "mathContext": "Grunsky conjecture (faithful form): all connected components of $\\\\{|f(z)| \\\\leq c\\\\}$ are convex for every $c > 0$. DISPROVED. The negation grunskyConjecture_false is now a theorem (from goodman_counterexample), not an axiom."
-    },
-    {
-      "id": "pommerenke",
-      "title": "Pommerenke's Counterexample",
-      "summary": "The 1961 counterexample: z^k(z-a) for large k",
-      "startLine": 135,
-      "endLine": 167,
-      "mathContext": "Pommerenke (1961): $f(z) = z^k(z-a)$ for large $k$. The sublevel set near 0 is non-convex (elongated toward $a$)."
-    },
-    {
-      "id": "goodman",
-      "title": "Goodman's Counterexamples",
-      "summary": "(z²+1)(z-2)² and the simple-roots degree-4 example",
-      "startLine": 168,
-      "endLine": 197,
-      "mathContext": "Goodman: $f(z) = (z^2+1)(z-2)^2$. Degree-4 with simple roots. Non-convex component."
-    },
-    {
-      "id": "referee",
-      "title": "Referee's Example",
-      "summary": "z(z⁵-1) with symmetric root configuration",
-      "startLine": 198,
-      "endLine": 220,
-      "mathContext": "Referee example: $f(z) = z(z^5-1)$. Symmetric root configuration on unit circle. Non-convex sublevel near origin."
-    },
-    {
-      "id": "positive",
-      "title": "Positive Results",
-      "summary": "Single-root lemniscates are disks (hence convex)",
-      "startLine": 221,
-      "endLine": 231,
-      "mathContext": "Single-root lemniscates: $\\\\{|z-a|^n \\\\leq c\\\\} = \\\\overline{B}(a, c^{1/n})$ (disk). Always convex."
-    },
-    {
-      "id": "open-question",
-      "title": "Goodman's Open Question",
-      "summary": "maxNonConvexComponents as a function of degree",
-      "startLine": 232,
-      "endLine": 250,
-      "mathContext": "OPEN: what is $\\\\max$ number of non-convex components as a function of degree $n$?"
-    },
-    {
-      "id": "main",
-      "title": "Main Results Summary",
-      "summary": "erdos_1047 theorem and existence of counterexamples",
-      "startLine": 251,
-      "endLine": 252,
-      "mathContext": "DISPROVED (Pommerenke 1961). Components can be non-convex even for arbitrarily small $c > 0$."
+      "id": "axiom-audit",
+      "title": "Axiom Audit",
+      "summary": "Docker-verified #print axioms: each headline theorem rests only on propext, Classical.choice, Quot.sound — no problem-specific axiom, no sorry, no Lean.ofReduceBool.",
+      "startLine": 64,
+      "endLine": 70,
+      "mathContext": "Trusted base $=\\{\\text{propext},\\text{Classical.choice},\\text{Quot.sound}\\}$ only."
     }
   ],
   "conclusion": {
