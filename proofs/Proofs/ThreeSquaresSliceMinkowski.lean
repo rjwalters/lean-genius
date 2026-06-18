@@ -21,6 +21,18 @@
   `verify_slice_minkowski.py`), so it needs the measure-theoretic strict
   Minkowski convex-body theorem, not pigeonhole.
 
+  UPDATE (researcher-12, 2026-06-18): the `d = 2` step now has a TURNKEY recipe
+  (see its docstring below) — a near-verbatim port of the proved axiom-free
+  `dirichlet_approximation` (`MinkowskiTheoremOQ02OQ01.lean`). Key simplification:
+  keep the standard `ℤ²` lattice (covolume 1) and shear the *set* to
+  `E' = {(a,b) | (p·a + r·b)² + 2b² < 2p}`; then `vol(E') = √2·π ≈ 4.443 > 4` is
+  `p`-INDEPENDENT, so Minkowski applies uniformly, and the returned `(a,b)` yields
+  `(x,y) = (a·p + b·r, b)` with `p ∣ (x − r·y)` automatic. The target lemma was
+  re-verified true for all `p < 1500` (all `r`) and the two elementary shortcuts
+  (box bound, strict small-ellipse count) re-confirmed insufficient. Remaining work
+  is purely the measure-theory port (2D ellipse volume + the `Measure.map S` change
+  of variables) — build-/Aristotle-gated this session (Aristotle backend down).
+
   Three pieces:
   - `exists_slice_point_lt_two_mul_d1` (PROVED): the `d = 1` pure 2D
     geometry-of-numbers existence, via a Thue pigeonhole on the box `[0,⌊√p⌋]²`.
@@ -204,8 +216,42 @@ Unlike `d = 1`, the integer box `|x|, |y| ≤ ⌊√p⌋` does NOT suffice: the 
 form `x² + 2y²` has Hermite ratio `(2/√3)·√2 ≈ 1.633`, and `verify_slice_minkowski.py`
 exhibits 394 `(p, r)` cases where every box point has `x² + 2y² ≥ 2p`. The proof
 genuinely requires Minkowski's strict convex-body theorem on the ellipse
-`x² + 2y² ≤ R` (area `πR/√2`) with the covolume-`p` sublattice and `R ∈ (4√2·p/π, 2p)`.
-This is the sole remaining `sorry` in the three-squares development. -/
+`x² + 2y² < 2p` (open, area `√2·π·p`); no elementary box/pigeonhole reduction works
+(the best box bound is `2√2·p > 2p`, and the strict small-ellipse count
+`#{x²+2y² < p/2} > p` fails for many `p` — both ruled out numerically, S-2026-06-18).
+This is the sole remaining `sorry` in the three-squares development.
+
+**TURNKEY RECIPE (researcher-12, 2026-06-18 — pinned, build-pending).** The clean
+route is a near-verbatim port of the proved, axiom-free `dirichlet_approximation`
+(`MinkowskiTheoremOQ02OQ01.lean:161`): keep the STANDARD lattice `ℤ²` (covolume `1`,
+basis `Pi.basisFun ℝ (Fin 2)`) and shear the *set*, rather than building a
+covolume-`p` sublattice. Concretely:
+
+  * Let `S = !![(p:ℝ), r; 0, 1]` (det `= p`) and define the sheared open set
+    `E' := { v : Fin 2 → ℝ | (p·v 0 + r·v 1)^2 + 2·(v 1)^2 < 2*p }`,
+    i.e. `E' = S ⁻¹' E` where `E = {w | w 0 ^2 + 2·w 1 ^2 < 2p}` is the axis-aligned
+    open ellipse.
+  * `E'` is symmetric and convex (preimage of the symmetric convex `E` under the
+    linear `S`; reuse the quadratic-form convexity argument of
+    `dirichletEllipsoid_convex`, `ThreeSquares.lean`).
+  * **Volume is `p`-INDEPENDENT**: `vol(E') = vol(E)/|det S| = (√2·π·p)/p = √2·π
+    ≈ 4.443 > 4 = 2²·covol(ℤ²)`, so Minkowski's hypothesis holds for *every* `p`
+    with a fixed margin. Compute `vol(E')` exactly as `dirichletSet_volume`
+    (`MinkowskiTheoremOQ02OQ01.lean:96`) does — via `Measure.map S volume` and
+    `map_matrix_volume_pi_eq_smul_volume_pi` — feeding in `vol(E) = √2·π·p` (the 2D
+    analog of `dirichletEllipsoid_volume`, `ThreeSquares.lean`: ellipse `= T '' ball`
+    with `T = diag(√(2p), √p)`, `EuclideanSpace.volume_ball` in dim 2 `= π`).
+  * Apply `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` to `ℤ²`,
+    `E'`, exactly as in `dirichlet_approximation` (same `ZSpan.isAddFundamentalDomain'`,
+    `Module.finrank_fin_fun`, coordinate-extraction block lines 188–215).
+  * The returned nonzero integer `(a, b)` gives the slice point
+    `(x, y) := (a·p + b·r, b)`: then `x - r·y = a·p` so `(p:ℤ) ∣ (x - r·y)`
+    automatically, `(x,y) ≠ (0,0)` since `(a,b) ≠ 0` (if `b = 0` then `x = a·p ≠ 0`),
+    and `x² + 2y² < 2p` is exactly membership in `E'`. (Numerically validated for all
+    `p < 400`, all `r`.)
+
+This is a KNOWN result (Minkowski applied to a binary form) — an ideal Aristotle
+target once the backend recovers; it was build-/Aristotle-gated this session. -/
 theorem exists_slice_point_lt_two_mul_d2
     (p : ℕ) (hp : 0 < p) (r : ℤ) :
     ∃ x y : ℤ, (x, y) ≠ (0, 0) ∧ (p : ℤ) ∣ (x - r * y) ∧

@@ -550,3 +550,41 @@ the d=1/d=2 split above ⇒ `dirichlet_key_lemma` axiom→theorem (`ThreeSquares
 ### Files touched (S11)
 - `research/problems/zsqrtd-neg-two-oq-02/verify_slice_minkowski.py` — new.
 - `knowledge.md` / `state.md` — this entry.
+
+## Session 2026-06-18 (researcher-12) - d=2 slice-Minkowski turnkey recipe
+
+**Mode**: REVISIT (claimed via claim-random; RICH tier)
+**Outcome**: progress (ORIENT/ACT — recipe pinned; no verified Lean: build + Aristotle both gated)
+
+### What I Did
+- Located the live route: `Proofs/ThreeSquaresSliceMinkowski.lean`, whose SOLE code
+  `sorry` is `exists_slice_point_lt_two_mul_d2` (d=2: nonzero point of the index-p
+  sublattice `{(x,y): p|(x-ry)}` with `x²+2y² < 2p`).
+- Tried to delegate it to Aristotle (it is a textbook HARD/known-math sorry, not OPEN):
+  the Aristotle MCP backend returned `Resource not found` for every `prove` call
+  (async, sync, and a trivial smoke test) — backend is DOWN this session.
+- Re-verified numerically: target lemma TRUE for all p<1500, all r (0 counterexamples).
+- Ruled out elementary shortcuts: box pigeonhole min is `2√2·p > 2p`; the strict
+  small-ellipse count `#{x²+2y²<p/2} > p` fails for many p. Minkowski genuinely needed.
+- Found the decisive simplification by reading the proved axiom-free
+  `dirichlet_approximation` (`MinkowskiTheoremOQ02OQ01.lean:161`): keep the STANDARD
+  `ℤ²` lattice and shear the SET. With `S=!![p,r;0,1]` (det p) and
+  `E' = S⁻¹(ellipse {x²+2y²<2p})`, `vol(E') = √2·π·p / p = √2·π ≈ 4.443 > 4`,
+  **p-INDEPENDENT** — Minkowski applies uniformly. The returned integer `(a,b)` gives
+  `(x,y)=(a·p+b·r,b)` with `p|(x−ry)=a·p` automatic. Validated for all p<400.
+
+### Key Findings
+- d=2 reduces to a near-verbatim port of `dirichlet_approximation`; only new ingredient
+  is the 2D ellipse volume `√2·π·p` (port `dirichletEllipsoid_volume` from 3D→2D) plus
+  the `Measure.map S` change of variables (as in `dirichletSet_volume`).
+- The covolume-p custom-sublattice framing in the old docstring is avoidable — the
+  shear-the-set framing is strictly simpler (covolume stays 1, margin is constant).
+
+### Files Modified
+- proofs/Proofs/ThreeSquaresSliceMinkowski.lean (enhanced d=2 docstring + STATUS block
+  with the turnkey recipe; code unchanged — still one clean `sorry`)
+- src/data/research/problems/zsqrtd-neg-two-oq-02.json (insights/nextSteps/progress)
+
+### Next Steps
+- Build-capable session: execute the recipe (≈ copy `dirichlet_approximation`). 
+- Or submit `exists_slice_point_lt_two_mul_d2` to Aristotle once its backend recovers.
