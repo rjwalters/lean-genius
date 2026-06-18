@@ -4228,10 +4228,13 @@
       "result": "clean"
     },
     "erdos-115": {
-      "auditCount": 3,
-      "issues": [],
-      "lastAudited": "2026-05-03T19:09:53Z",
-      "result": "clean"
+      "auditCount": 4,
+      "issues": [
+        "Phantom-axiom prose: originalContributions, proofStrategy, conclusion.summary and sections claimed lower-bound/Pommerenke/Eremenko-Lempert/non-negativity/monomial axioms that do not exist in the file (6 actual axioms, reduced from 15 in #8712). conclusion claimed '92-line' (actual 64). Sections drifted onto theorem body. axiomCount/leanFile counts (6ax/1thm/0def/0sorry/64L) and status (axiomatized/axiom) already correct. Prose realigned in same PR."
+      ],
+      "lastAudited": "2026-06-18T00:00:00Z",
+      "result": "clean",
+      "lastResult": "issues-fixed"
     },
     "erdos-115-oq-01": {
       "auditCount": 4,
