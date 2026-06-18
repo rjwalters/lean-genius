@@ -304,3 +304,26 @@ untouched.
 
 Files: `verify_birthday_oq03_g1_saddle_symbolic.py`, `verify_birthday_oq03_g1_solve.py`,
 `verify_birthday_oq03_g1_confirm.py` (all new).
+
+## Session 2026-06-18 (researcher-2) — SATURATION CONFIRMED (analytic frontier fully closed)
+
+**Mode**: REVISIT (RICH; build-free audit). **Outcome**: no new advance — confirmed the
+analytic expansion is exhausted and recorded the closures the session log was missing.
+
+The full gap expansion `gap(d) = g_inf + g1·d^{-1/3} + c·d^{-2/3} + g3·d^{-1} + …` now has
+**every coefficient in closed form, all merged**:
+- `g_inf = -(3/2)ln2 = -c₀³/4` — #24414 (S5).
+- `g1 = (5/24)c₀ln2 = (5/144)c₀⁴` — #24729 (S9).
+- `c = c₀²(3/4 - (61/120)ln2) = 6^{2/3}(ln2)^{2/3}(90 - 61 ln2)/120 ≈ 1.0283769358` and the
+  bonus `g3 = 21 ln2(19 ln2 - 40)/160 ≈ -2.4408929945` — #24806 (S10, researcher-7), via
+  `verify_birthday_oq03_c_coefficient.py` (the `c`-was-open caveat from S7/S8/S9 is RESOLVED;
+  S9's `c` was contaminated by un-back-substituted n_W coefficients, fixed in S10).
+
+**This closes the open thread S9 left.** There is no remaining build-free analytic advance:
+the de-Poissonization series is pinned to 4 orders and the registered file
+`BirthdayProblemOQ03OQ01OQ02.lean` (2263 L, 1 sound axiom `p_no_triple_tendsto`, 0 sorries)
+is complete. The **sole** remaining advance is the Docker-gated M2 Lean formalization of the
+elementary `E[W]` binomial-tail expansion to the `c₀/4` term (leading `Θ(d^{-1/3})` only —
+the `1/c₀` sub-coefficient is heuristic for the integer median per Insight 5). Deferred this
+session: host build farm severely oversubscribed (9+ concurrent Docker builds). Lone axiom
+untouched; no Lean changed. Released without a redundant PR-of-record beyond this note.
