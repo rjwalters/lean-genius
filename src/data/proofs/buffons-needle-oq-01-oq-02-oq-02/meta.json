@@ -23,9 +23,9 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 2,
-    "lineCount": 354,
+    "lineCount": 394,
     "assumptions": "0 axioms, 0 sorries. Machine-checked via ./proofs/scripts/docker-build.sh Proofs.BuffonConstantAsymptotic (Lean v4.26.0, Mathlib pin 2df2f01, 7743 jobs, 0 errors). Registered in proofs/Proofs.lean. The asymptotic is additionally validated numerically (lgamma, n up to 1e6: relative error scales as 0.25/n).",
     "mathlibDependencies": [
       {
@@ -52,7 +52,8 @@
     "originalContributions": [
       "Stirling-free proof of the Gamma-ratio asymptotic Γ(n/2)/Γ((n-1)/2) ~ √(n/2): instead of Stirling, a product recurrence s_n·s_{n+1}=(n-1)/2 combined with monotonicity squeezes (s_n)² between (n-2)/2 and (n-1)/2",
       "Monotonicity of n ↦ Γ(n/2)/Γ((n-1)/2) obtained directly from log-convexity of Γ (ConvexOn.slope_mono_adjacent on three equally spaced points), avoiding any derivative computation",
-      "Full real-analysis packaging (squeeze to 1/2, ratio n/(n-1) → 1, algebraic identity (√n·c_n)² = (4/π)·n(s_n)²/(n-1)², √-continuity) closing the open question of the parent buffons-needle-oq-01-oq-02"
+      "Full real-analysis packaging (squeeze to 1/2, ratio n/(n-1) → 1, algebraic identity (√n·c_n)² = (4/π)·n(s_n)²/(n-1)², √-continuity) closing the open question of the parent buffons-needle-oq-01-oq-02",
+      "Effective (non-asymptotic) two-sided bound sqrt_mul_buffonConstant_sq_bounds: for every n ≥ 3, (2/π)·n(n-2)/(n-1)² ≤ (√n·c_n)² ≤ (2/π)·n/(n-1). Both envelopes tend to 2/π (lower from below, upper from above), so the squeeze re-derives the limit value while quantifying the convergence rate at every finite n. Obtained by plugging the Gamma-ratio squeeze s_sq_bounds into the exact identity sq_target_eq, factoring the common positive multiplier (4/π)·n/(n-1)² out of a single mul_le_mul_of_nonneg_left."
     ],
     "dateAdded": "2026-06-15",
     "prerequisites": [
@@ -158,9 +159,9 @@
       "Topology"
     ],
     "namespace": "BuffonOQ010202",
-    "lineCount": 354,
+    "lineCount": 394,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 2,
     "path": "Proofs/BuffonConstantAsymptotic.lean",
     "sorries": 0
@@ -189,6 +190,12 @@
       "type": "supporting",
       "description": "The squeeze on the square of the Gamma ratio: (n-2)/2 ≤ (s n)² ≤ (n-1)/2",
       "leanType": "((n : ℝ) - 2) / 2 ≤ (s n) ^ 2 ∧ (s n) ^ 2 ≤ ((n : ℝ) - 1) / 2"
+    },
+    {
+      "name": "sqrt_mul_buffonConstant_sq_bounds",
+      "type": "supporting",
+      "description": "Effective (non-asymptotic) two-sided bound on the squared target, valid for every n ≥ 3, quantifying the rate of convergence to 2/π",
+      "leanType": "(2/π)·(n·(n-2)/(n-1)²) ≤ (√n·buffonConstant n)² ∧ (√n·buffonConstant n)² ≤ (2/π)·(n/(n-1))"
     }
   ],
   "sorries": 0
