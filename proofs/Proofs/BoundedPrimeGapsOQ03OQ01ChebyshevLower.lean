@@ -136,7 +136,42 @@ discharged by `Nat.Ioc_filter_dvd_card_eq_div`. -/
 lemma log_factorial_eq_sum_vonMangoldt_mul_div (N : ℕ) :
     Real.log (Nat.factorial N : ℝ)
       = ∑ d ∈ Finset.Ioc 0 N, Λ d * ((N / d : ℕ) : ℝ) := by
-  sorry
+  -- Step 1: `N! = ∏_{n ∈ Ioc 0 N} n` (by induction on `N`).
+  have hfact : (Nat.factorial N : ℝ) = ∏ n ∈ Finset.Ioc 0 N, (n : ℝ) := by
+    induction N with
+    | zero => simp
+    | succ k ih =>
+        rw [Finset.prod_Ioc_succ_top (Nat.zero_le k), ← ih, Nat.factorial_succ]
+        push_cast; ring
+  rw [hfact, Real.log_prod _ _ (fun n hn => by
+    have h : 0 < n := (Finset.mem_Ioc.mp hn).1
+    exact_mod_cast h.ne')]
+  -- Step 2: `log n = ∑_{d ∣ n} Λ d` (von Mangoldt summatory identity).
+  rw [show (∑ n ∈ Finset.Ioc 0 N, Real.log (n : ℝ))
+        = ∑ n ∈ Finset.Ioc 0 N, ∑ d ∈ n.divisors, Λ d from
+      Finset.sum_congr rfl (fun n _ => (ArithmeticFunction.vonMangoldt_sum).symm)]
+  -- Step 3: replace `n.divisors` by `{d ∈ Ioc 0 N | d ∣ n}` (valid since `n ≤ N`).
+  have hdiv : ∀ n ∈ Finset.Ioc 0 N,
+      (∑ d ∈ n.divisors, Λ d) = ∑ d ∈ (Finset.Ioc 0 N).filter (· ∣ n), Λ d := by
+    intro n hn
+    obtain ⟨hn0, hnN⟩ := Finset.mem_Ioc.mp hn
+    apply Finset.sum_congr _ (fun _ _ => rfl)
+    ext d
+    simp only [Nat.mem_divisors, Finset.mem_filter, Finset.mem_Ioc]
+    constructor
+    · rintro ⟨hd, _⟩
+      exact ⟨⟨Nat.pos_of_dvd_of_pos hd (by omega), le_trans (Nat.le_of_dvd (by omega) hd) hnN⟩, hd⟩
+    · rintro ⟨_, hd⟩
+      exact ⟨hd, by omega⟩
+  rw [Finset.sum_congr rfl hdiv]
+  -- Step 4: turn each filtered sum into an indicator sum and swap the order.
+  simp_rw [Finset.sum_filter]
+  rw [Finset.sum_comm]
+  -- Step 5: collapse the inner constant sum to `Λ d · (N / d)`.
+  apply Finset.sum_congr rfl
+  intro d _
+  rw [← Finset.sum_filter, Finset.sum_const, Nat.Ioc_filter_dvd_card_eq_div, nsmul_eq_mul,
+    mul_comm]
 
 /-- **L2** (the genuine Mathlib gap): `log C(2n,n) ≤ ψ(2n)`. Build-pending target.
 From L1 applied to `(2n)!` and `(n!)²` plus the pointwise floor bound
@@ -150,7 +185,15 @@ lemma log_centralBinom_le_psi (n : ℕ) :
 lemma log_four_mul_le_log_centralBinom (n : ℕ) :
     (n : ℝ) * Real.log 4 - Real.log (2 * n + 1)
       ≤ Real.log (Nat.centralBinom n : ℝ) := by
-  sorry
+  have hnat : 4 ^ n ≤ (2 * n + 1) * Nat.centralBinom n := by
+    rw [Nat.centralBinom_eq_two_mul_choose]
+    exact Nat.four_pow_le_two_mul_add_one_mul_central_binom n
+  have hR : (4 : ℝ) ^ n ≤ (2 * (n : ℝ) + 1) * (Nat.centralBinom n : ℝ) := by
+    exact_mod_cast hnat
+  have hCpos : (0 : ℝ) < (Nat.centralBinom n : ℝ) := by exact_mod_cast Nat.centralBinom_pos n
+  have hlog := (Real.log_le_log_iff (by positivity) (by positivity)).mpr hR
+  rw [Real.log_pow, Real.log_mul (by positivity) hCpos.ne'] at hlog
+  linarith
 
 /-- The missing ψ lower bound, reduced to the three lemmas above. Assembly:
 `L2 ∘ L3` gives `ψ(2n) ≥ n·log4 − log(2n+1)`; `Chebyshev.psi` monotone with
