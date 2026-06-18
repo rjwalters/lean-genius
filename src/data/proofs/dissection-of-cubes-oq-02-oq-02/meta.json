@@ -15,7 +15,6 @@
       "dehn-invariant",
       "hilbert-problems",
       "tensor-products",
-      "wiedijk-100",
       "research"
     ],
     "badge": "mathlib",
@@ -58,7 +57,6 @@
     "lineCount": 454,
     "assumptions": "0 axioms. All assumptions eliminated. tmul_infinite_order_ne_zero proved via Module.Flat: ℝ is flat over ℤ (Bézout domain + NoZeroSMulDivisors ℤ ℝ), so lTensor ℝ f is injective for any injective f : ℤ →ₗ[ℤ] AngleQuot, giving r⊗x≠0 when r≠0 and x has infinite order. Previously 6 axioms; all eliminated across sessions.",
     "mathlib_version": "4.26.0",
-    "wiedijkNumber": 37,
     "relatedProblems": [
       {
         "id": "dissection-of-cubes-oq-02",
@@ -66,7 +64,7 @@
       },
       {
         "id": "dissection-of-cubes",
-        "relationship": "Root formalization of Hilbert's Third Problem (Wiedijk #37); this file provides the proper tensor product Dehn invariant"
+        "relationship": "Root formalization of Hilbert's Third Problem; this file provides the proper tensor product Dehn invariant"
       }
     ],
     "theoremCount": 24,
@@ -210,7 +208,7 @@
     {
       "targetId": "dissection-of-cubes",
       "relationship": "extends",
-      "description": "Root formalization of Hilbert's Third Problem (Wiedijk #37). This file provides the proper tensor product Dehn invariant and the Dehn-Sydler completeness statement."
+      "description": "Root formalization of Hilbert's Third Problem. This file provides the proper tensor product Dehn invariant and the Dehn-Sydler completeness statement."
     },
     {
       "targetId": "dissection-of-cubes-oq-01",
