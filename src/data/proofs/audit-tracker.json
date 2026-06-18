@@ -1948,10 +1948,12 @@
       ]
     },
     "central-limit-theorem-oq-03": {
-      "auditCount": 3,
-      "issues": [],
-      "lastAudited": "2026-05-03T18:33:05Z",
-      "result": "clean"
+      "auditCount": 4,
+      "issues": [
+        "Phantom claims: meta.json asserted Cramér's indecomposability theorem and Gaussian stability were formalized/axiomatized, but neither is declared as an axiom or theorem in any of the 4 Lean files — they exist only as orphan docstring comments (lines 176-182, 224). Reworded originalContributions, conclusion.summary, gaussian-fixed-point section summary, and description to remove the overclaim and surface the genuine (unlisted) OQ02 infinite-divisibility / Lévy-Khintchine work. Axiom/sorry/def/theorem counts (25/0/5/8) all verified accurate."
+      ],
+      "lastAudited": "2026-06-18T09:05:01Z",
+      "result": "issues-fixed"
     },
     "central-limit-theorem-oq-04": {
       "auditCount": 5,
