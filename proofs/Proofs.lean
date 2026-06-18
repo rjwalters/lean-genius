@@ -2338,6 +2338,7 @@ import Proofs.FairGamesTheoremOQ03Aristotle
 import Proofs.FermatDefectOne
 import Proofs.FermatDefectOneFamilies
 import Proofs.FermatDefectOneNegInfinitude
+import Proofs.FermatDefectOneOQ04
 import Proofs.FermatTwoSquares
 import Proofs.FermatTwoSquaresOQ01
 import Proofs.FermatTwoSquaresOQ01OQ03
