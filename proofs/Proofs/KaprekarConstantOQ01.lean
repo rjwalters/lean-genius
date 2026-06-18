@@ -34,10 +34,17 @@ four-digit strings and are discharged by `native_decide`.
 
 ## Status
 
-The single-point fact `kaprekar_fixed` is kernel-checked (`decide`).  The
-finite-domain enumerations (`kaprekar_converges`, `kaprekar_unique_fixed`,
-`kaprekar_bound_sharp`) use `native_decide` and therefore depend on the
-`Lean.ofReduceBool` axiom (compiled evaluation of a decidable proposition).
+`kaprekar_fixed` is kernel-checked (`decide`).  `kaprekar_unique_fixed` is derived
+*structurally* from convergence (a fixed point is unchanged by seven iterations,
+which equal `6174`), and `kaprekar_bound_sharp` is witnessed by the single string
+`0014` via `decide`.  Only the bounded-convergence enumeration `kaprekar_converges_all`
+uses `native_decide`, so `Lean.ofReduceBool` (compiled evaluation of a decidable
+proposition) is the file's sole non-foundational axiom.
+
+A fully `decide`-checked (0-axiom) version is sketched in the problem knowledge base:
+`kaprekarStep n` factors through the digit multiset (`kaprekarStep n = kaprekarStep
+(canon n)`), reducing the convergence enumeration from 10000 four-digit strings to the
+715 sorted-digit representatives, which kernel `decide` can plausibly discharge.
 -/
 
 namespace KaprekarConstantOQ01
@@ -85,22 +92,19 @@ theorem kaprekar_converges (n : ℕ) (h : n < 10000) (hn : NonRepdigit n) :
     kaprekarStep^[7] n = 6174 :=
   kaprekar_converges_all n (Finset.mem_range.mpr h) hn
 
-/-- **Uniqueness of the fixed point (enumerated form).** Among the four-digit
-strings with not all digits equal, `6174` is the only fixed point of `T`. -/
-theorem kaprekar_unique_fixed_all :
-    ∀ n ∈ Finset.range 10000, NonRepdigit n → kaprekarStep n = n → n = 6174 := by
-  native_decide
-
-/-- **Uniqueness of the fixed point.** `6174` is the unique nonzero fixed point of
-Kaprekar's routine on four-digit non-repdigit strings. -/
+/-- **Uniqueness of the fixed point.** `6174` is the unique fixed point of Kaprekar's
+routine on four-digit non-repdigit strings.  No separate enumeration is needed: a fixed
+point `n` is unchanged by *seven* iterations (`Function.iterate_fixed`), and seven
+iterations land on `6174` by `kaprekar_converges`, so `n = 6174`. -/
 theorem kaprekar_unique_fixed (n : ℕ) (h : n < 10000) (hn : NonRepdigit n)
     (hf : kaprekarStep n = n) : n = 6174 :=
-  kaprekar_unique_fixed_all n (Finset.mem_range.mpr h) hn hf
+  (Function.iterate_fixed hf 7).symm.trans (kaprekar_converges n h hn)
 
-/-- **The bound is sharp.** Some four-digit non-repdigit string needs the full seven
-steps: six are not enough. -/
+/-- **The bound is sharp.** The string `0014` still differs from `6174` after six
+steps (`kaprekarStep^[6] 14 = 4176`), so seven steps are sometimes necessary.  A single
+concrete witness suffices, checked by kernel `decide`. -/
 theorem kaprekar_bound_sharp :
-    ∃ n ∈ Finset.range 10000, NonRepdigit n ∧ kaprekarStep^[6] n ≠ 6174 := by
-  native_decide
+    ∃ n ∈ Finset.range 10000, NonRepdigit n ∧ kaprekarStep^[6] n ≠ 6174 :=
+  ⟨14, Finset.mem_range.mpr (by omega), by decide, by decide⟩
 
 end KaprekarConstantOQ01
