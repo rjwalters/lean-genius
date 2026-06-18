@@ -1,13 +1,25 @@
 [
   {
+    "id": "ann-overview",
+    "proofId": "pentagonal-number-theorem-oq-01",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "concept",
+    "title": "Scope: The Index Theory Beneath Euler's Theorem",
+    "content": "The module header fixes the scope of the file. Euler's pentagonal number theorem expands the infinite product `∏_{n≥1}(1-xⁿ)` as the lacunary series `∑_{k∈ℤ}(-1)ᵏx^{g(k)}`, whose exponents are the generalized pentagonal numbers `g(k)=k(3k-1)/2`.\n\n**What is and isn't formalized.** The analytic/combinatorial heart — Franklin's sign-reversing involution and the formal-power-series identity — is deliberately left to the OPEN CORE note (see the final annotation); Mathlib lacks the requisite distinct-partition and power-series machinery. This file instead supplies the *number-theoretic index theory* that any such formalization consumes: the recognition criterion, the doubling relation, injectivity, and the OEIS A001318 values.\n\n**Indexing convention.** The exponents are indexed by `k : ℤ` (not `ℕ`): the order `k = 0, 1, -1, 2, -2, …` enumerates the generalized pentagonal numbers in increasing order. The single `import Mathlib` and `maxHeartbeats 400000` are the only build prerequisites.",
+    "mathContext": "$\\prod_{n\\ge1}(1-x^n)=\\sum_{k\\in\\mathbb{Z}}(-1)^k x^{g(k)}$, $\\;g(k)=\\tfrac{k(3k-1)}{2}$, indexed by $k\\in\\mathbb{Z}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["pentagonal number theorem", "lacunary series", "generating functions", "OEIS A001318"],
+    "prerequisites": ["integer partitions", "generating functions"]
+  },
+  {
     "id": "ann-setup",
     "proofId": "pentagonal-number-theorem-oq-01",
-    "range": { "startLine": 47, "endLine": 66 },
-    "type": "concept",
+    "range": { "startLine": 47, "endLine": 67 },
+    "type": "definition",
     "title": "Division-Free Generalized Pentagonal Numbers",
-    "content": "Defines `genPent k = k*(3*k-1)/2` and the membership predicate `IsGenPent m := ∃ k, 2*m = k*(3*k-1)`.\n\n**Why the doubling relation.** Integer division is awkward to reason about, so membership is phrased through `2*m = k*(3*k-1)` rather than `m = k*(3*k-1)/2`. The two agree because `k*(3*k-1)` is always even: if `k` is even the first factor is, otherwise `3k-1 = 3k-1` is even. `two_dvd_index_mul` proves the evenness by an even/odd split, and `two_mul_genPent` then certifies `2·g(k) = k(3k-1)` via `Int.mul_ediv_cancel'`.",
+    "content": "Defines `genPent k = k*(3*k-1)/2` and the membership predicate `IsGenPent m := ∃ k, 2*m = k*(3*k-1)`.\n\n**Why the doubling relation.** Integer division is awkward to reason about, so membership is phrased through `2*m = k*(3*k-1)` rather than `m = k*(3*k-1)/2`. The two agree because `k*(3*k-1)` is always even: if `k` is even the first factor is, otherwise `3k-1 = 3k-1` is even. `two_dvd_index_mul` proves the evenness by an even/odd split, and `two_mul_genPent` then certifies `2·g(k) = k(3k-1)` via `Int.mul_ediv_cancel'`. `genPent_isGenPent` records that every value `g(k)` is in the membership set.",
     "mathContext": "$g(k) = k(3k-1)/2$ with $2g(k) = k(3k-1)$; one of $k$, $3k-1$ is even, so the half is exact.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["generalized pentagonal numbers", "parity", "integer division"],
     "prerequisites": ["parity of integers"]
   },
@@ -39,7 +51,7 @@
     "id": "ann-values",
     "proofId": "pentagonal-number-theorem-oq-01",
     "range": { "startLine": 141, "endLine": 159 },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Values (OEIS A001318)",
     "content": "The first generalized pentagonal numbers, indexed `k = 0,1,-1,2,-2,…`, are `0,1,2,5,7,12,15,22,26`, each proved from the doubling relation by `omega`. The sanity check `twelve_isGenPent` confirms the recognition criterion fires: `12 = g(3)` is pentagonal because `24·12+1 = 289 = 17²`.",
     "mathContext": "Indexing $k=0,1,-1,2,-2,\\dots$ enumerates A001318 in increasing order.",
@@ -51,11 +63,11 @@
     "id": "ann-open-core",
     "proofId": "pentagonal-number-theorem-oq-01",
     "range": { "startLine": 161, "endLine": 177 },
-    "type": "context",
+    "type": "insight",
     "title": "The Open Core: Franklin's Involution and the Generating Identity",
     "content": "Documents what this file deliberately does *not* prove: the analytic/combinatorial heart of the theorem.\n\n**The identity.** In the ring of formal power series $\\mathbb{Z}[\\![X]\\!]$, Euler's theorem asserts $\\prod_{n\\ge1}(1-X^n) = \\sum_{k\\in\\mathbb{Z}}(-1)^k X^{g(k)}$. Equivalently, letting $p_{\\mathrm{even}}(n)$ and $p_{\\mathrm{odd}}(n)$ count partitions of $n$ into an even/odd number of *distinct* parts, $p_{\\mathrm{even}}(n)-p_{\\mathrm{odd}}(n)$ equals $(-1)^k$ when $n=g(k)$ and $0$ otherwise.\n\n**Franklin's involution (1881).** The bijective proof builds a sign-reversing involution on partitions into distinct parts using the two statistics $s$ (smallest part) and $\\sigma$ (length of the longest 'staircase' run ending at the largest part). Either the smallest part moves up or the staircase moves down, pairing each partition with one of opposite parity — *except* the staircase partitions $j{+}(j{+}1){+}\\cdots{+}(2j{-}1)$ and their variants, the unmatched fixed points, which sit exactly at $n=g(\\pm j)$ and contribute the surviving $(-1)^k$ term.\n\n**Why it is out of scope.** Mathlib has `Nat.Partition` but not distinct-part partitions with a parity sign, not Franklin's involution, and not the formal-power-series infinite product. This entry supplies the index-set theory (`isGenPent_iff_isSquare`, `genPent_injective`) that any such formalization would consume to locate the surviving exponents.",
     "mathContext": "$\\prod_{n\\ge1}(1-X^n)=\\sum_{k\\in\\mathbb{Z}}(-1)^k X^{g(k)}$; fixed points of Franklin's involution occur precisely at $n=g(k)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Franklin's involution", "partitions into distinct parts", "formal power series", "generating functions", "sign-reversing involution"],
     "prerequisites": ["integer partitions", "generating functions", "involutions and bijective combinatorics"]
   }
