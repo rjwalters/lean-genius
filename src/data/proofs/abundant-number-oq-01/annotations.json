@@ -57,9 +57,28 @@
     ]
   },
   {
+    "id": "abundant-ann-witness-family",
+    "proofId": "abundant-number-oq-01",
+    "range": { "startLine": 101, "endLine": 113 },
+    "type": "lemma",
+    "title": "The Witness Family 12·(k+1) and Its Injectivity",
+    "content": "Two small lemmas assemble the witnessing infinite family before the headline theorem. `abundant_twelve_mul k : (12 \\cdot (k+1)).\\mathrm{Abundant}$ specializes closure (`abundant_mul_right`) to the abundant base $12$, certifying that every term of $24, 36, 48, \\dots$ — and $12$ itself at $k = 0$ — is abundant. `twelve_mul_succ_injective` shows the indexing map $k \\mapsto 12(k+1)$ is injective: from $12(a+1) = 12(b+1)$, left-cancelling the nonzero factor $12$ (`Nat.eq_of_mul_eq_mul_left`) gives $a+1 = b+1$, and `omega` finishes. Injectivity is exactly the hypothesis that turns \"all members of this family are abundant\" into \"there are infinitely many abundant numbers\": a function injective on the infinite domain $\\mathbb{N}$ has infinite range.",
+    "mathContext": "`abundant_twelve_mul = abundant_mul_right Nat.abundant_twelve (Nat.succ_pos k)`; injectivity of $k \\mapsto 12(k+1)$ via cancellation of the nonzero factor 12.",
+    "significance": "supporting",
+    "prerequisites": [
+      "`Function.Injective`",
+      "`Nat.eq_of_mul_eq_mul_left` (left cancellation on ℕ)"
+    ],
+    "relatedConcepts": [
+      "injective family",
+      "multiples of 12",
+      "specialization of closure"
+    ]
+  },
+  {
     "id": "abundant-ann-infinitude",
     "proofId": "abundant-number-oq-01",
-    "range": { "startLine": 101, "endLine": 128 },
+    "range": { "startLine": 114, "endLine": 128 },
     "type": "concept",
     "title": "Infinitely Many Abundant Numbers",
     "content": "Closure immediately yields infinitude. Instantiating `abundant_mul_right` at the abundant number $12$ gives `abundant_twelve_mul k : (12 \\cdot (k+1)).\\mathrm{Abundant}$ — every term of $12, 24, 36, \\dots$ is abundant. The family $k \\mapsto 12(k+1)$ is injective (`twelve_mul_succ_injective`, by cancelling the nonzero factor $12$), so `Set.infinite_of_injective_forall_mem` delivers\n$$ \\{\\, n : \\mathbb{N} \\mid n.\\mathrm{Abundant} \\,\\}\\ \\text{is infinite}. $$\nThis is the **structural complement to minimality**: not only does a smallest abundant number exist (it is $12$), the abundant numbers go on forever. Note infinitude is elementary — no analytic input — in contrast to the much deeper natural-density statement (density $\\approx 0.2476$).",
