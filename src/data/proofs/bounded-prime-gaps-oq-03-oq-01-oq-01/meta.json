@@ -20,7 +20,7 @@
     "dateAdded": "2026-06-17",
     "axiomCount": 0,
     "assumptions": "None beyond Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). 0 sorries, 0 literal axiom declarations, 0 native_decide. The headline equality minAdmissibleDiameter_5 : minAdmissibleDiameter 5 = 12 is fully kernel-verified: the upper-bound witness diameter is now computed symbolically by fsDiameter_0_2_6_8_12 (max' = 12, min' = 0) rather than by native_decide, so #print axioms no longer lists Lean.ofReduceBool. The lower bound admissible_5tuple_diam_ge_12 is a self-contained symbolic parity-plus-mod-3 argument. Reuses the verified admissible_quintuple_0_2_6_8_12 witness from BoundedPrimeGaps.lean.",
-    "lineCount": 226,
+    "lineCount": 232,
     "theoremCount": 4,
     "definitionCount": 0,
     "originalContributions": [
@@ -87,7 +87,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Proved $D(5)=12$: every admissible 5-tuple has diameter $\\geq 12$, witnessed by $\\{0,2,6,8,12\\}$. Both bounds are fully symbolic (native_decide-free): the lower bound interrogates only $p \\in \\{2,3\\}$ via a parity filter plus a two-mod-3-complete-triple counting argument, and the upper-bound witness diameter is computed symbolically by `fsDiameter_0_2_6_8_12`. The result carries no `Lean.ofReduceBool` axiom and is fully kernel-verified. 226 lines, 4 theorems, 0 sorries, 0 axioms.",
+    "summary": "Proved $D(5)=12$: every admissible 5-tuple has diameter $\\geq 12$, witnessed by $\\{0,2,6,8,12\\}$. Both bounds are fully symbolic (native_decide-free): the lower bound interrogates only $p \\in \\{2,3\\}$ via a parity filter plus a two-mod-3-complete-triple counting argument, and the upper-bound witness diameter is computed symbolically by `fsDiameter_0_2_6_8_12`. The result carries no `Lean.ofReduceBool` axiom and is fully kernel-verified. 232 lines, 4 theorems, 0 sorries, 0 axioms.",
     "implications": "With $D(2)=2$, $D(3)=6$, $D(4)=8$, and now $D(5)=12$ all machine-verified, the smallest five prime-constellation diameters are formally established in Lean 4. The two-triple counting argument is the natural successor to the single-AP obstruction used for $D(4)$ and extends the reusable proof infrastructure (parity filtration, residue-complete-block counting) toward $D(6)=16$ and beyond. Under the Elliott–Halberstam conjecture, $D(5)=12$ is the exact predicted span for prime quintuples $n, n+2, n+6, n+8, n+12$.",
     "openQuestions": [
       "Prove $D(6)=16$ by extending the block-counting argument: the candidate window widens and the mod-5 obstruction must be combined with the mod-2 and mod-3 ones used here.",

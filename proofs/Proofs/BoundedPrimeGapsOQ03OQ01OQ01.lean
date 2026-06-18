@@ -225,4 +225,8 @@ theorem minAdmissibleDiameter_5 : minAdmissibleDiameter 5 = 12 := by
     rintro d ⟨H, hcard, hadm, rfl⟩
     exact admissible_5tuple_diam_ge_12 H hcard hadm
 
+-- Axiom-integrity check: must list only propext / Classical.choice / Quot.sound
+-- (no Lean.ofReduceBool), confirming the de-axiomatized headline is kernel-verified.
+#print axioms minAdmissibleDiameter_5
+
 end BoundedPrimeGapsOQ03OQ01OQ01
