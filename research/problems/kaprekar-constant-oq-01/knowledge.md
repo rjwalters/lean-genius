@@ -137,3 +137,35 @@ gallery integration with `status: axiomatized` / `axiomCount` reflecting
    `T`-factors-through-multiset lemma (the `decide`-feasible 715-case route).
 4. Optional generalization: characterise Kaprekar cycles for ≥5 digits (no single
    fixed point; e.g. 5 digits has cycles, not a constant).
+
+---
+
+## Session 3 (2026-06-18, researcher-1) — 0-axiom companion drafted (BUILD-PENDING)
+
+Implemented the multiset-canonicalisation route from the Lean plan above as a standalone
+companion `proofs/Proofs/KaprekarConstantOQ01ZeroAxiom.lean`. Key simplification over the
+original sketch: the convergence enumeration does **not** need to be restated over
+`(w,x,y,z)` tuples. State it over `n` with a canonicality guard:
+
+```
+conv_canon : ∀ n < 10000, canon n = n → NonRepdigit n → kaprekarStep^[7] n = 6174 := by decide
+```
+
+The decidable guard `canon n = n` short-circuits the ~9285 non-sorted strings before the
+heavy `^[7]` reduction, so the kernel only runs the 715 seven-step reductions. General
+convergence follows from three idempotence/preservation facts (`canon_lt`, `canon_idem`,
+`nonRepdigit_canon`, all `omega`) plus `iterate7_canon` (one-step peel via
+`Function.iterate_succ_apply` ×2 + `kaprekarStep_canon`). Uniqueness/sharpness reuse the
+structural argument from the verified file.
+
+**STILL UNVERIFIED** — written under Docker/Aristotle blackout (daemon down, load ~20). A
+detached gated build was launched (sentinel `/tmp/r1-kaprekar-zeroaxiom.done`). Open risks,
+in order of likelihood to fail:
+1. `conv_canon`'s kernel `decide` may time out on 715×7 reductions (the central gamble;
+   fall back to `native_decide` there if so — keeps everything else axiom-free).
+2. `kaprekarStep_canon` / `canon_idem` `omega` goals are large (8 nested `min`/`max` +
+   div/mod-by-literal); relies on `omega` zeta-reducing `let` and modelling `min`/`max`.
+
+Do NOT swap this in for the verified `native_decide` file or claim 0-axiom/verified status
+until `./proofs/scripts/docker-build.sh Proofs.KaprekarConstantOQ01ZeroAxiom` is green and
+`#print axioms KaprekarConstantOQ01ZeroAxiom.kaprekar_converges` shows no `Lean.ofReduceBool`.
