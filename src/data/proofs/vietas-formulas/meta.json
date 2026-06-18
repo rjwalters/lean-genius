@@ -219,16 +219,28 @@
   ],
   "mainTheorems": [
     {
-      "name": "vieta_sum",
+      "name": "vieta_quadratic",
       "type": "core",
-      "description": "Sum of roots equals -a_{n-1}/a_n (coefficient of x^{n-1})",
-      "leanType": "(p : Polynomial R) -> sum(roots p) = -p.coeff(p.natDegree - 1) / p.leadingCoeff"
+      "description": "For a root x of x^2 - bx + c = 0, there exists a second root y with x + y = b and x * y = c (sum and product of roots). Pedagogical wrapper for Mathlib's vieta_formula_quadratic.",
+      "leanType": "{R : Type*} [CommRing R] {b c x : R} -> x*x - b*x + c = 0 -> exists y, y*y - b*y + c = 0 and x + y = b and x*y = c"
     },
     {
-      "name": "vieta_product",
+      "name": "vieta_polynomial_coeff",
       "type": "key",
-      "description": "Product of roots equals (-1)^n * a_0/a_n (constant term ratio)",
-      "leanType": "(p : Polynomial R) -> prod(roots p) = (-1)^p.natDegree * p.coeff 0 / p.leadingCoeff"
+      "description": "General Vieta relation (from Mathlib's coeff_eq_esymm_roots_of_card): each coefficient equals the leading coefficient times (-1)^(n-k) times the elementary symmetric polynomial of the roots.",
+      "leanType": "(p : R[X]) -> Multiset.card p.roots = p.natDegree -> k <= p.natDegree -> p.coeff k = p.leadingCoeff * (-1)^(p.natDegree - k) * Multiset.esymm p.roots (p.natDegree - k)"
+    },
+    {
+      "name": "vieta_monic_coeff",
+      "type": "key",
+      "description": "Monic specialization: with leadingCoeff = 1, coeff k = (-1)^(n-k) * esymm roots (n-k).",
+      "leanType": "(p : R[X]) -> p.Monic -> Multiset.card p.roots = p.natDegree -> k <= p.natDegree -> p.coeff k = (-1)^(p.natDegree - k) * Multiset.esymm p.roots (p.natDegree - k)"
+    },
+    {
+      "name": "monic_cubic_vieta",
+      "type": "supporting",
+      "description": "Explicit cubic expansion: (x - r1)(x - r2)(x - r3) = x^3 - (r1+r2+r3)x^2 + (r1r2+r1r3+r2r3)x - r1r2r3, proved by ring.",
+      "leanType": "{R : Type*} [CommRing R] (r1 r2 r3 : R) -> forall x, (x - r1)*(x - r2)*(x - r3) = x^3 - (r1+r2+r3)*x^2 + (r1*r2+r1*r3+r2*r3)*x - r1*r2*r3"
     }
   ],
   "sorries": 0
