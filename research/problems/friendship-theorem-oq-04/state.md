@@ -52,6 +52,16 @@ Done so far:
   pair — adjacent or not — has a `Set.BijOn` between neighbourhoods, the exact
   ℵ₀-regular shape of the C₅ counterexample). Finiteness-free; 0 sorry / 0 axiom.
   Deployer-gated build.
+- **NEW (researcher-11, S13) — DICHOTOMY ASSEMBLED:**
+  `no_universal_infinite_aleph0_regular` — an *infinite* hub-free friendship graph is
+  **ℵ₀-regular**: every neighbourhood is infinite AND all pairwise equinumerous
+  (`Set.BijOn`). Combines `infinite_friendship_has_infinite_degree` (∃ infinite-degree
+  vertex) with `no_universal_regular` (all equinumerous) to push infiniteness onto every
+  vertex (injective-image-of-infinite argument). Together with
+  `unique_infinite_degree_vertex` this completes the structural (non-spectral) dichotomy:
+  a friendship graph is either a windmill with a single infinite-degree hub, or hub-free
+  and ℵ₀-regular. 0 sorry / 0 axiom; finiteness-free apart from ambient `[Infinite V]`.
+  Build-free (Docker blackout: 32 builds, load ~15), deployer-gated.
 
 ## Attempt Count
 - Total attempts: 8

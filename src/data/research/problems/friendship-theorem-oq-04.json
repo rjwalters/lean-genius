@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (structural): positive half + finiteness-free negative-half framing done through hub-free⟹regular; only explicit colimit counterexample construction remains open.",
+    "progressSummary": "COMPLETE (structural): positive half + negative-half framing assembled into the hub/ℵ₀-regular dichotomy through no_universal_infinite_aleph0_regular; only the explicit C₅ colimit counterexample construction remains open.",
     "builtItems": [
       "research/problems/friendship-theorem-oq-04/verify_infinite_friendship.py: certifies linear-invariant preservation across 4 amalgamation rounds (|V| up to 3695, max common-nbrs stays 1), no universal vertex, degree blow-up [4,5,13,83], diameter-2 covering on W_1..W_8, and covering bound |V|<=1+deg(v)+sum deg(x) on W_1..W_13.",
       "proofs/Proofs/FriendshipTheoremOQ04.lean: ACT formalization (build-pending, unregistered under dual blackout). Fintype-free IsFriendshipGraph + 6 theorems.",
@@ -44,7 +44,8 @@
       "edge_unique_triangle (FriendshipTheoremOQ04.lean): unique triangle per edge / N(u) perfect matching, one-line corollary via huv.ne",
       "no_universal_regular (FriendshipTheoremOQ04.lean:535): hub-free friendship graph is regular — Set.BijOn between every pair of neighbourhoods, unconditional & finiteness-free",
       "adjacent_dominating_implies_universal (FriendshipTheoremOQ04.lean:478): a dominating adjacent pair forces a universal vertex (two common_neighbor_unique.unique contradictions)",
-      "no_universal_adjacent_has_common_nonneighbor (FriendshipTheoremOQ04.lean:510): contrapositive — hub-free edge always has a common non-neighbour"
+      "no_universal_adjacent_has_common_nonneighbor (FriendshipTheoremOQ04.lean:510): contrapositive — hub-free edge always has a common non-neighbour",
+      "no_universal_infinite_aleph0_regular (FriendshipTheoremOQ04.lean) — infinite + hub-free ⟹ ℵ₀-regular: every neighbourhood infinite AND all pairwise equinumerous; assembles infinite_friendship_has_infinite_degree + no_universal_regular. 0 sorry/0 axiom."
     ],
     "insights": [
       "Theorem FAILS for infinite graphs: C5 free-amalgamation (Chvatal-Kotzig-Rosenberg-Davies 1976) yields a countable friendship graph with no universal vertex; all vertices have infinite degree.",
@@ -58,7 +59,8 @@
       "The finite friendship_noncentral_degree (G.degree u = 2) is Fintype-bound; the underlying set equality N(u)={c,w} needs no finiteness and holds on infinite friendship graphs with a universal vertex — the recovered graph is a genuine (infinite) windmill",
       "Adjacent-pair regularity is finiteness-free GIVEN a common non-neighbour: route N(u)≃N(z)≃N(v) through z adjacent to neither (Set.BijOn.comp). This bridges the gap nonadjacent_neighborSet_equinum leaves (it needs u,v themselves non-adjacent). The only remaining open ingredient for full ℵ₀-regularity of a hub-free friendship graph is the EXISTENCE of a common non-neighbour for an adjacent pair — established by counting in the finite proof, genuinely open on the infinite side.",
       "edge_unique_triangle: every edge of a friendship graph lies in a UNIQUE triangle, equivalently N(u) induces a perfect matching — the LOCAL windmill structure, holds unconditionally (no universal vertex, no finiteness), so it survives in the hub-free C5 counterexample",
-      "Bridge closed: conditional regularity engine (common non-neighbour required) upgraded to unconditional hub-free⟹regular by proving hub-free edges always admit a common non-neighbour; the adjacent case was the missing half nonadjacent_neighborSet_equinum could not reach."
+      "Bridge closed: conditional regularity engine (common non-neighbour required) upgraded to unconditional hub-free⟹regular by proving hub-free edges always admit a common non-neighbour; the adjacent case was the missing half nonadjacent_neighborSet_equinum could not reach.",
+      "Structural dichotomy now complete (non-spectral side): a friendship graph is either a windmill with a single infinite-degree hub (unique_infinite_degree_vertex) or hub-free and ℵ₀-regular (no_universal_infinite_aleph0_regular)."
     ],
     "mathlibGaps": [
       "No infinite/analytic spectral analogue: ERS spectral step needs finite adjacency matrix trace + finite eigenvalue multiplicities (Mathlib adjMatrix trace is Fintype-bound). Infinite side must avoid it entirely (use diameter-2 covering instead)."
