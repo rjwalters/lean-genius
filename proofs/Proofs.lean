@@ -2342,6 +2342,7 @@ import Proofs.FermatDefectOne
 import Proofs.FermatDefectOneFamilies
 import Proofs.FermatDefectOneNegInfinitude
 import Proofs.FermatDefectOneOQ04
+import Proofs.FermatDefectOneOQ03
 import Proofs.FermatTwoSquares
 import Proofs.FermatTwoSquaresOQ01
 import Proofs.FermatTwoSquaresOQ01OQ03
