@@ -516,3 +516,60 @@ companion. But it left three `leanFile` fields stale, fixed here in
 
 Lean state re-verified against origin/main: complete, 2 deep cited axioms, 0 sorries; OQ
 `g(n) ≥ (1-o(1))·n` remains OPEN.
+
+## Session 2026-06-18 (Session 11, researcher-2, ACT — explicit g(4)=3 witness derived)
+
+**Mode:** ACT. The elementary frontier is closed at exact small values g(0..3) (S9),
+and S9 explicitly flagged that **g(4) does NOT close from the merged bounds coinciding**
+(`g_le_n_sub_one` gives g(4) ≤ 3, but `g_ge_half` only gives g(4) ≥ 2). S8 noted
+"irregular integer-grid configs certify g(4)=3" but never recorded WHICH config. This
+session derives and hand-verifies the **explicit minimal integer witness** — the precise
+missing ingredient to formalize `g(4) = 3`.
+
+### The witness (verified by hand, integer coordinates → squared-distance arithmetic)
+
+    S = { A=(0,0), B=(5,0), C=(3,4), D=(3,-4) }   ⊂ ℤ² ⊂ ℝ²
+
+B, C, D all lie on the circle of radius 5 about A (5² = 3²+4² = 25). Squared distances
+(distinct squared ⟺ distinct actual, since dist ≥ 0 and √ is injective on ℝ≥0):
+
+| point | d² to the other three      | distinct d² | R = distinctDistCount |
+|-------|----------------------------|-------------|-----------------------|
+| A     | B:25, C:25, D:25           | {25}        | **1**                 |
+| B     | A:25, C:20, D:20           | {25,20}     | **2**                 |
+| C     | A:25, B:20, D:64           | {25,20,64}  | **3**                 |
+| D     | A:25, B:20, C:64           | {25,20,64}  | **3**  (= C by symmetry) |
+
+(`|BC|² = 2²+4² = 20`, `|CD|² = 0²+8² = 64`.) The multiset of R-values is {1,2,3,3},
+so `numDistinctRValues S = |{1,2,3}| = 3`. Since `S.card = 4`, this gives `3 ∈ gSet 4`,
+hence **g(4) ≥ 3**; with `g_le_n_sub_one 4` (g(4) ≤ 3) we get **g(4) = 3**.
+
+This is the first exact value of `g` requiring a genuinely irregular witness (g(0..3)
+all closed from coinciding bounds / the collinear family). It realizes the sharp
+`g(n) ≤ n−1` upper bound at n=4.
+
+### Formalization roadmap (for a future Docker-available ACT session)
+
+In `Erdos653LowerBound.lean` (which already imports the upper bounds), add:
+
+1. `def configG4 : Finset (Fin 2 → ℝ) := {![0,0], ![5,0], ![3,4], ![3,-4]}` and prove
+   `configG4.card = 4` (4 distinct points — `decide`-resistant over ℝ, so prove pairwise
+   `≠` via a coordinate that differs, then `Finset.card_insert_of_not_mem` chain).
+2. Compute `distanceSet configG4 p` for each of the 4 points by reducing
+   `euclidDist p q` to `Real.sqrt (d²)` and using `Real.sqrt_injOn_nonneg` /
+   strict-mono of √ to count distinct values = count distinct squared values
+   (20, 25, 64 pairwise distinct by `norm_num`). Gives `distinctDistCount` = 1,2,3,3.
+3. `numDistinctRValues configG4 = 3` ⟹ `3 ∈ gSet 4` (via `mem_gSet`) ⟹
+   `g 4 ≥ 3` (via `le_csSup gSet_bddAbove`) ⟹ `g_four : g 4 = 3` (with `g_le_n_sub_one`).
+
+Estimated ~150–250 lines (comparable to the collinear `distinctDistCount_collinearConfig`
+development, but per-point and with an explicit 4-element finset). NOT verify-by-construction
+safe — the Finset/√ cardinality steps are intricate; build green before shipping.
+
+### Honest assessment
+Derived + hand-verified the explicit witness (genuine new content: S8 only asserted
+existence, never the config). NO Lean shipped this session — Docker under heavy contention
+(8 lean containers, cold worktree cache) makes a ~200-line intricate √-Finset proof
+unverifiable, and shipping it unverified would be irresponsible. The 2 deep literature
+axioms (`csizmadia_bound`, `upper_bound`) remain correct citations; OQ `g(n) ≥ (1−o(1))n`
+OPEN and untouched. Next ACT (Docker free): formalize per the roadmap above to pin g(4)=3.
