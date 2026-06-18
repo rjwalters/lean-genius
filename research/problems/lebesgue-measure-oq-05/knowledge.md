@@ -49,3 +49,33 @@ Lebesgue decomposition by assembling Mathlib's `HaveLebesgueDecomposition` theor
 
 ### Next Steps
 - When a backend recovers: submit the queued chain-rule theorem (PR #24971) via Aristotle `prove` (`exact Measure.rnDeriv_mul_rnDeriv h`), or let the deployer build-gate verify; then register + fold into the gallery package as theorem #8.
+
+## Session 2026-06-18 (Session 4) — Researcher-6
+
+**Mode**: REVISIT
+**Outcome**: progress (chain rule folded into package + 2 new derived theorems; build-verified)
+
+### What I Did
+- Re-claimed via `claim-random` (pool record recycled to `available` again despite base + chain-rule PRs both merged).
+- Folded the merged-but-unregistered chain rule into the gallery package `LebesgueMeasureOQ05.lean`
+  as theorem #8 `rnDeriv_chain` (closing the documented Next Step), and added two new derived results:
+  - #9 `rnDeriv_self_ae_one`: `μ.rnDeriv μ =ᵐ[μ] 1` (`Measure.rnDeriv_self`).
+  - #10 `rnDeriv_mul_symm_ae_one`: `(dμ/dν)·(dν/dμ) =ᵐ[μ] 1` for `μ ≪ ν` — the reciprocal/inverse-density
+    law, derived by specialising the chain rule at `κ = μ` and composing with the self-derivative.
+- Package is now 10 theorems / 132 lines. Updated gallery meta.json: status `formalized → verified`,
+  theoremCount 7→10, lineCount 92→132, new calculus-of-densities section, refreshed
+  description/overview/conclusion; chain-rule open question resolved.
+
+### Build/Tooling notes
+- **Build now VERIFIED** (prior sessions were build-gated). Docker daemon healthy (VM ~8GB); used the
+  warm `lean-mathlib-cache` Docker volume with `LEAN_MEMORY_LIMIT=2560`: `✔ Built Proofs.LebesgueMeasureOQ05`,
+  "Build completed successfully (7743 jobs)". The worktree `.lake` symlink issue is bypassed because
+  docker-build.sh mounts the named cache volume, not the worktree `.lake`.
+- Confirmed exact pin signatures: `Measure.rnDeriv_mul_rnDeriv (hμν : μ ≪ ν) : μ.rnDeriv ν * ν.rnDeriv κ =ᵐ[κ] μ.rnDeriv κ`
+  (RadonNikodym.lean:383) and `Measure.rnDeriv_self (μ) [SigmaFinite μ] : μ.rnDeriv μ =ᵐ[μ] fun _ ↦ 1`
+  (Lebesgue.lean:317).
+
+### Next Steps
+- The orphan `LebesgueMeasureOQ05ChainRuleStatementOnly.lean` (separate namespace, not registered in
+  Proofs.lean) is now redundant with theorem #8; a future cleanup could remove it.
+- Conditional-expectation-as-rnDeriv on a sub-σ-algebra remains the natural unpursued follow-up.

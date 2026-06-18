@@ -22,7 +22,15 @@ statement for σ-finite measures, together with:
 5. the total-mass specialization,
 6. uniqueness of the density `ν`-a.e.,
 7. the general Lebesgue decomposition (no absolute continuity assumed):
-   `μ = μ.singularPart ν + ν.withDensity (μ.rnDeriv ν)`.
+   `μ = μ.singularPart ν + ν.withDensity (μ.rnDeriv ν)`,
+8. the **Radon–Nikodym chain rule** `(dμ/dν)·(dν/dλ) = dμ/dλ` (`λ`-a.e.),
+9. the **self-derivative** `dμ/dμ = 1` (`μ`-a.e.),
+10. the **reciprocal relation** `(dμ/dν)·(dν/dμ) = 1` (`μ`-a.e.) for `μ ≪ ν` —
+   the chain rule specialised at `λ = μ`, the density analogue of `(dx/dy)(dy/dx)=1`.
+
+Results 8–10 form an elementary *calculus of densities*: the chain rule is the
+multiplicative composition law for Radon–Nikodym derivatives, the self-derivative
+is its identity, and the reciprocal relation is the resulting inverse law.
 
 ## Honest scope
 
@@ -88,5 +96,37 @@ Radon–Nikodym derivative. -/
 theorem lebesgue_decomposition [SigmaFinite μ] [SigmaFinite ν] :
     μ = μ.singularPart ν + ν.withDensity (μ.rnDeriv ν) :=
   Measure.haveLebesgueDecomposition_add μ ν
+
+/-! ### Calculus of densities
+
+The Radon–Nikodym derivative behaves like a derivative: it composes multiplicatively
+(chain rule), has the constant function `1` as its identity (self-derivative), and
+consequently obeys a reciprocal law for mutually related measures. -/
+
+variable {lam : Measure α}
+
+/-- **Radon–Nikodym chain rule (σ-finite).** For σ-finite `μ, ν, λ` with `μ ≪ ν`,
+the Radon–Nikodym derivatives compose multiplicatively, `λ`-almost everywhere:
+`(dμ/dν)·(dν/dλ) = dμ/dλ`. This is the measure-theoretic analogue of the calculus
+chain rule and underlies change-of-variables between densities. -/
+theorem rnDeriv_chain [SigmaFinite μ] [SigmaFinite ν] [SigmaFinite lam]
+    (h : μ ≪ ν) :
+    μ.rnDeriv ν * ν.rnDeriv lam =ᵐ[lam] μ.rnDeriv lam :=
+  Measure.rnDeriv_mul_rnDeriv h
+
+/-- **Self-derivative.** A σ-finite measure has constant Radon–Nikodym derivative `1`
+with respect to itself, `μ`-almost everywhere: `dμ/dμ = 1`. This is the identity of
+the chain rule's multiplicative composition law. -/
+theorem rnDeriv_self_ae_one [SigmaFinite μ] :
+    μ.rnDeriv μ =ᵐ[μ] (fun _ ↦ 1 : α → ℝ≥0∞) :=
+  Measure.rnDeriv_self μ
+
+/-- **Reciprocal relation.** For σ-finite `μ ≪ ν`, the forward and backward densities
+multiply to `1`, `μ`-almost everywhere: `(dμ/dν)·(dν/dμ) = 1`. This is the chain rule
+specialised to `λ = μ` followed by the self-derivative — the density analogue of the
+inverse-function relation `(dx/dy)(dy/dx) = 1`. -/
+theorem rnDeriv_mul_symm_ae_one [SigmaFinite μ] [SigmaFinite ν] (h : μ ≪ ν) :
+    μ.rnDeriv ν * ν.rnDeriv μ =ᵐ[μ] (fun _ ↦ 1 : α → ℝ≥0∞) :=
+  (Measure.rnDeriv_mul_rnDeriv (κ := μ) h).trans (Measure.rnDeriv_self μ)
 
 end LebesgueRadonNikodym
