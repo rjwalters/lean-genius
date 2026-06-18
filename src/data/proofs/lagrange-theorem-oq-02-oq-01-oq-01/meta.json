@@ -93,18 +93,28 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Setup: imports, the borrowed-Burnside problem, and the proof chain",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Imports Mathlib and the parent entry Proofs.LagrangeTheoremOQ02OQ01, opens MulAction/Finset/BigOperators, and fixes the ambient group action variable {G X : Type*} [Group G] [MulAction G X]. The module docstring states the open question — the parent's burnside_from_orbit_stabilizer secretly routes through Mathlib's own Burnside lemma to close the global orbit-partition identity Σ_x |Stab(x)| = |X/G|×|G| — and lays out the self-contained proof chain that this file substitutes in its place.",
+      "mathContext": "Working over an arbitrary finite group action G ↻ X. The goal is Σ_x |Stab(x)| = |X/G|·|G| using only the orbit partition X ≃ Σ_{ω∈X/G} Orb(ω.out) and the parent's per-orbit lemma Σ_{y∈Orb(x)}|Stab(y)| = |G|, never Mathlib's MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group."
+    },
+    {
       "id": "global-stabilizer-sum",
       "title": "The global orbit-partition stabilizer sum",
       "startLine": 60,
       "endLine": 97,
-      "summary": "sum_card_stabilizer_eq_card_orbits_mul_card_group proves Σ_x |Stab(x)| = |X/G| × |G| directly. The orbit-partition equivalence selfEquivSigmaOrbits reindexes the sum over the disjoint union of orbits (the underlying point is preserved, so the summand transports by rfl); Finset.sum_sigma splits it into an outer sum over orbits and an inner sum over each orbit; the parent's sum_card_stabilizer_orbit collapses each inner sum to |G|; and Finset.sum_const sums the constant over the |X/G| orbits. Mathlib's Burnside lemma is never used."
+      "summary": "sum_card_stabilizer_eq_card_orbits_mul_card_group proves Σ_x |Stab(x)| = |X/G| × |G| directly. The orbit-partition equivalence selfEquivSigmaOrbits reindexes the sum over the disjoint union of orbits (the underlying point is preserved, so the summand transports by rfl); Finset.sum_sigma splits it into an outer sum over orbits and an inner sum over each orbit; the parent's sum_card_stabilizer_orbit collapses each inner sum to |G|; and Finset.sum_const sums the constant over the |X/G| orbits. Mathlib's Burnside lemma is never used.",
+      "mathContext": "Σ_{x:X} |Stab(x)| = Σ_{ω∈X/G} Σ_{y∈Orb(ω.out)} |Stab(y)| = Σ_{ω∈X/G} |G| = |X/G| • |G| = |X/G| · |G|, via Fintype.sum_equiv selfEquivSigmaOrbits, Finset.sum_sigma, the per-orbit collapse, and Finset.sum_const + smul_eq_mul."
     },
     {
       "id": "burnside-self-contained",
       "title": "Burnside's counting lemma, self-contained",
       "startLine": 99,
       "endLine": 137,
-      "summary": "burnside_no_intermediate composes the global stabilizer sum with the parent's double-counting bijection (sum_card_fixedBy_eq_sum_card_stabilizer) to obtain Σ_g |Fix(g)| = |X/G| × |G|, a derivation that routes entirely through orbit-stabilizer. burnside_divides_no_intermediate records the consequence |G| ∣ Σ_g |Fix(g)|, the integrality behind orbit counting."
+      "summary": "burnside_no_intermediate composes the global stabilizer sum with the parent's double-counting bijection (sum_card_fixedBy_eq_sum_card_stabilizer) to obtain Σ_g |Fix(g)| = |X/G| × |G|, a derivation that routes entirely through orbit-stabilizer. burnside_divides_no_intermediate records the consequence |G| ∣ Σ_g |Fix(g)|, the integrality behind orbit counting.",
+      "mathContext": "Σ_{g∈G} |Fix(g)| =(1)= Σ_{x∈X} |Stab(x)| =(2)= |X/G|·|G|, where (1) is the parent's bijection Σ_g Fix(g) ≃ Σ_x Stab(x) and (2) is the section above. Corollary: |G| ∣ Σ_g |Fix(g)| by dvd_mul_left, so |X/G| = (Σ_g |Fix(g)|)/|G| is an integer."
     }
   ],
   "conclusion": {
