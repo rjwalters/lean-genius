@@ -31,7 +31,7 @@
   re-verified true for all `p < 1500` (all `r`) and the two elementary shortcuts
   (box bound, strict small-ellipse count) re-confirmed insufficient. Remaining work
   is purely the measure-theory port (2D ellipse volume + the `Measure.map S` change
-  of variables) — build-/Aristotle-gated this session (Aristotle backend down).
+  of variables) — build/Aristotle-gated this session (Aristotle backend down).
 
   Three pieces:
   - `exists_slice_point_lt_two_mul_d1` (PROVED): the `d = 1` pure 2D
@@ -207,6 +207,174 @@ theorem exists_slice_point_lt_two_mul_d1
         exact_mod_cast this
       nlinarith [hx2le, hy2le, hmm]
 
+/-! ### Measure-theoretic machinery for the `d = 2` slice point
+
+A self-contained 2D port of the axiom-free `dirichlet_approximation`
+(`MinkowskiTheoremOQ02OQ01.lean`) and `dirichletEllipsoid_volume`
+(`ThreeSquares.lean`).  We apply Minkowski's strict convex-body theorem to the
+*sheared* closed ellipse `sliceEllipse p r R = {v | (p*v0 + r*v1)^2 + 2*v1^2 <= R}`
+on the standard `ℤ²` lattice (covolume `1`).  Two volume facts combine:
+`axisEllipse2_volume` (the axis-aligned ellipse `{w | w0^2 + 2*w1^2 <= R}` has
+volume `R*π/√2`, via the diagonal scaling `diag(√R, √(R/2))`) and the shear change
+of variables (`map_matrix_volume_pi_eq_smul_volume_pi`, `|det| = p`), giving
+`vol(sliceEllipse p r R) = R*π/(√2*p)`.  Taking `R = 19p/10 ∈ (4√2 p/π, 2p)`
+makes the volume `19π/(10√2) > 4` so Minkowski yields a nonzero integer point,
+and `R < 2p` upgrades the resulting `≤ R` to the strict `< 2p` target. -/
+
+/-- Axis-aligned closed ellipse `{w | w0^2 + 2*w1^2 <= R}` in `Fin 2 → ℝ`. -/
+private def axisEllipse2 (R : ℝ) : Set (Fin 2 → ℝ) :=
+  {v | v 0 ^ 2 + 2 * v 1 ^ 2 ≤ R}
+
+/-- Diagonal scaling `diag(√R, √(R/2))`. -/
+private noncomputable def scale2Matrix (R : ℝ) : Matrix (Fin 2) (Fin 2) ℝ :=
+  Matrix.diagonal ![Real.sqrt R, Real.sqrt (R / 2)]
+
+private noncomputable def scale2 (R : ℝ) : (Fin 2 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) :=
+  Matrix.toLin' (scale2Matrix R)
+
+private lemma scale2_apply (R : ℝ) (v : Fin 2 → ℝ) (i : Fin 2) :
+    (scale2 R v) i = ![Real.sqrt R, Real.sqrt (R / 2)] i * v i := by
+  unfold scale2 scale2Matrix
+  rw [Matrix.toLin'_apply, Matrix.mulVec_diagonal]
+
+private lemma scale2_det (R : ℝ) (hR : 0 ≤ R) :
+    LinearMap.det (scale2 R) = R / Real.sqrt 2 := by
+  unfold scale2 scale2Matrix
+  rw [LinearMap.det_toLin', Matrix.det_diagonal, Fin.prod_univ_two]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+  rw [← Real.sqrt_mul hR, show R * (R / 2) = R ^ 2 / 2 by ring,
+      Real.sqrt_div (by positivity : (0 : ℝ) ≤ R ^ 2), Real.sqrt_sq hR]
+
+/-- The unit ball `{v | v0^2 + v1^2 <= 1}` as a set in `Fin 2 → ℝ`. -/
+private def unitBall2 : Set (Fin 2 → ℝ) := {v | v 0 ^ 2 + v 1 ^ 2 ≤ 1}
+
+private lemma axisEllipse2_eq_image (R : ℝ) (hR : 0 < R) :
+    axisEllipse2 R = (scale2 R) '' unitBall2 := by
+  have hR2 : (0 : ℝ) < R / 2 := by positivity
+  have hsqrtR : Real.sqrt R * Real.sqrt R = R := Real.mul_self_sqrt hR.le
+  have hsqrtR2 : Real.sqrt (R / 2) * Real.sqrt (R / 2) = R / 2 := Real.mul_self_sqrt hR2.le
+  have hsqrtR_ne : Real.sqrt R ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr hR)
+  have hsqrtR2_ne : Real.sqrt (R / 2) ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr hR2)
+  ext v
+  simp only [axisEllipse2, unitBall2, Set.mem_image, Set.mem_setOf_eq]
+  constructor
+  · intro hv
+    refine ⟨![v 0 / Real.sqrt R, v 1 / Real.sqrt (R / 2)], ?_, ?_⟩
+    · simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+      have h0 : (v 0 / Real.sqrt R) ^ 2 = v 0 ^ 2 / R := by
+        rw [div_pow]; congr 1; rw [sq]; exact hsqrtR
+      have h1 : (v 1 / Real.sqrt (R / 2)) ^ 2 = v 1 ^ 2 / (R / 2) := by
+        rw [div_pow]; congr 1; rw [sq]; exact hsqrtR2
+      rw [h0, h1, show v 0 ^ 2 / R + v 1 ^ 2 / (R / 2)
+            = (v 0 ^ 2 + 2 * v 1 ^ 2) / R by field_simp; ring, div_le_one hR]
+      exact hv
+    · ext i
+      rw [scale2_apply]
+      fin_cases i <;>
+        simp [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, hsqrtR_ne,
+          hsqrtR2_ne, mul_div_cancel₀]
+  · rintro ⟨u, hu, rfl⟩
+    simp only [scale2_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    have e0 : (Real.sqrt R * u 0) ^ 2 = R * u 0 ^ 2 := by rw [mul_pow, Real.sq_sqrt hR.le]
+    have e1 : (Real.sqrt (R / 2) * u 1) ^ 2 = (R / 2) * u 1 ^ 2 := by
+      rw [mul_pow, Real.sq_sqrt hR2.le]
+    rw [e0, e1]
+    nlinarith [mul_le_mul_of_nonneg_left hu hR.le]
+
+private lemma unitBall2_measurableSet : MeasurableSet unitBall2 := by
+  unfold unitBall2
+  refine measurableSet_le (Measurable.add ?_ ?_) measurable_const
+  · exact (measurable_pi_apply 0).pow_const 2
+  · exact (measurable_pi_apply 1).pow_const 2
+
+private lemma unitBall2_preimage :
+    (@WithLp.ofLp 2 (Fin 2 → ℝ)) ⁻¹' unitBall2 =
+      Metric.closedBall (0 : EuclideanSpace ℝ (Fin 2)) 1 := by
+  ext x
+  simp only [Set.mem_preimage, unitBall2, Set.mem_setOf_eq, Metric.mem_closedBall,
+    dist_zero_right]
+  have h_norm_sq : ‖x‖ ^ 2 = x 0 ^ 2 + x 1 ^ 2 := by
+    rw [EuclideanSpace.norm_sq_eq, Fin.sum_univ_two, Real.norm_eq_abs, Real.norm_eq_abs]
+    simp only [sq_abs]
+  have hnn : 0 ≤ ‖x‖ := norm_nonneg _
+  constructor
+  · intro hv
+    have h_sq : ‖x‖ ^ 2 ≤ 1 := h_norm_sq.trans_le hv
+    nlinarith
+  · intro hx
+    have h_sq : ‖x‖ ^ 2 ≤ 1 := by nlinarith
+    rw [h_norm_sq] at h_sq
+    exact h_sq
+
+open MeasureTheory in
+private lemma unitBall2_volume :
+    volume unitBall2 = ENNReal.ofReal Real.pi := by
+  rw [← (PiLp.volume_preserving_ofLp (ι := Fin 2)).measure_preimage
+        unitBall2_measurableSet.nullMeasurableSet,
+    unitBall2_preimage, EuclideanSpace.volume_closedBall_fin_two]
+  simp only [ENNReal.ofReal_one, one_pow, one_mul]
+
+open MeasureTheory in
+private lemma axisEllipse2_volume (R : ℝ) (hR : 0 < R) :
+    volume (axisEllipse2 R) = ENNReal.ofReal (R / Real.sqrt 2 * Real.pi) := by
+  have hdet_nn : (0 : ℝ) ≤ R / Real.sqrt 2 := div_nonneg hR.le (Real.sqrt_nonneg 2)
+  rw [axisEllipse2_eq_image R hR, MeasureTheory.Measure.addHaar_image_linearMap,
+      scale2_det R hR.le, unitBall2_volume, abs_of_nonneg hdet_nn,
+      ← ENNReal.ofReal_mul hdet_nn]
+
+/-- The shear matrix `!![p, r; 0, 1]` (determinant `p`). -/
+private noncomputable def shear2Matrix (p : ℕ) (r : ℤ) : Matrix (Fin 2) (Fin 2) ℝ :=
+  !![(p : ℝ), (r : ℝ); 0, 1]
+
+private noncomputable def shear2 (p : ℕ) (r : ℤ) : (Fin 2 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) :=
+  Matrix.toLin' (shear2Matrix p r)
+
+private lemma shear2_det (p : ℕ) (r : ℤ) : (shear2Matrix p r).det = (p : ℝ) := by
+  simp [shear2Matrix, Matrix.det_fin_two]
+
+private lemma shear2_apply0 (p : ℕ) (r : ℤ) (v : Fin 2 → ℝ) :
+    (shear2 p r v) 0 = (p : ℝ) * v 0 + (r : ℝ) * v 1 := by
+  simp [shear2, shear2Matrix, Matrix.toLin'_apply, Matrix.mulVec, Fin.sum_univ_two, dotProduct]
+
+private lemma shear2_apply1 (p : ℕ) (r : ℤ) (v : Fin 2 → ℝ) :
+    (shear2 p r v) 1 = v 1 := by
+  simp [shear2, shear2Matrix, Matrix.toLin'_apply, Matrix.mulVec, Fin.sum_univ_two, dotProduct]
+
+/-- The sheared closed ellipse `{v | (p*v0 + r*v1)^2 + 2*v1^2 <= R}`. -/
+private def sliceEllipse (p : ℕ) (r : ℤ) (R : ℝ) : Set (Fin 2 → ℝ) :=
+  {v | ((p : ℝ) * v 0 + (r : ℝ) * v 1) ^ 2 + 2 * (v 1) ^ 2 ≤ R}
+
+private lemma sliceEllipse_eq_preimage (p : ℕ) (r : ℤ) (R : ℝ) :
+    sliceEllipse p r R = (shear2 p r) ⁻¹' (axisEllipse2 R) := by
+  ext v
+  simp only [sliceEllipse, axisEllipse2, Set.mem_preimage, Set.mem_setOf_eq,
+    shear2_apply0, shear2_apply1]
+
+open MeasureTheory in
+private lemma sliceEllipse_volume (p : ℕ) (r : ℤ) (hp : 0 < p) (R : ℝ) (hR : 0 < R) :
+    volume (sliceEllipse p r R) = ENNReal.ofReal (R / Real.sqrt 2 * Real.pi / p) := by
+  have hppos : (0 : ℝ) < p := by exact_mod_cast hp
+  have hpne : (p : ℝ) ≠ 0 := hppos.ne'
+  have hs2ne : Real.sqrt 2 ≠ 0 := (Real.sqrt_pos.mpr (by norm_num)).ne'
+  have hdet_ne : (shear2Matrix p r).det ≠ 0 := by rw [shear2_det]; exact hpne
+  have hmeas_axis : MeasurableSet (axisEllipse2 R) := by
+    unfold axisEllipse2
+    refine measurableSet_le (Measurable.add ?_ ?_) measurable_const
+    · exact (measurable_pi_apply 0).pow_const 2
+    · exact ((measurable_pi_apply 1).pow_const 2).const_mul 2
+  have hmeas_shear : Measurable (shear2 p r) :=
+    (LinearMap.continuous_on_pi (shear2 p r)).measurable
+  rw [sliceEllipse_eq_preimage, ← Measure.map_apply hmeas_shear hmeas_axis,
+      show (shear2 p r) = Matrix.toLin' (shear2Matrix p r) from rfl,
+      map_matrix_volume_pi_eq_smul_volume_pi hdet_ne, Measure.smul_apply, smul_eq_mul,
+      axisEllipse2_volume R hR, shear2_det,
+      abs_of_nonneg (by positivity : (0 : ℝ) ≤ (p : ℝ)⁻¹),
+      ← ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ (p : ℝ)⁻¹)]
+  congr 1
+  field_simp
+  ring
+
+
 /-- **The `d = 2` slice point (OPEN).**
 
 For any `p > 0` and any `r : ℤ`, the index-`p` sublattice
@@ -251,12 +419,123 @@ covolume-`p` sublattice. Concretely:
     `p < 400`, all `r`.)
 
 This is a KNOWN result (Minkowski applied to a binary form) — an ideal Aristotle
-target once the backend recovers; it was build-/Aristotle-gated this session. -/
+target once the backend recovers; it was build/Aristotle-gated this session. -/
 theorem exists_slice_point_lt_two_mul_d2
     (p : ℕ) (hp : 0 < p) (r : ℤ) :
     ∃ x y : ℤ, (x, y) ≠ (0, 0) ∧ (p : ℤ) ∣ (x - r * y) ∧
       x ^ 2 + 2 * y ^ 2 < 2 * p := by
-  sorry
+  classical
+  have hppos : (0 : ℝ) < p := by exact_mod_cast hp
+  set R : ℝ := 19 * (p : ℝ) / 10 with hRdef
+  have hRpos : 0 < R := by rw [hRdef]; positivity
+  let b := Pi.basisFun ℝ (Fin 2)
+  haveI hcount : Countable (Submodule.span ℤ (Set.range b)).toAddSubgroup := by
+    change Countable (Submodule.span ℤ (Set.range b)); infer_instance
+  have h_fund := ZSpan.isAddFundamentalDomain' b MeasureTheory.volume
+  have h_vol_fund : MeasureTheory.volume (ZSpan.fundamentalDomain b) = 1 := by
+    have hmat : (Matrix.of b).det = 1 := by
+      have hbeq : Matrix.of b = (1 : Matrix (Fin 2) (Fin 2) ℝ) := by
+        ext i j
+        change (Matrix.of (Pi.basisFun ℝ (Fin 2))) i j = (1 : Matrix (Fin 2) (Fin 2) ℝ) i j
+        simp [Matrix.of_apply, Pi.basisFun_apply, Pi.single_apply, Matrix.one_apply, eq_comm]
+      simp [hbeq]
+    rw [ZSpan.volume_fundamentalDomain, hmat, abs_one, ENNReal.ofReal_one]
+  have h_symm : ∀ v ∈ sliceEllipse p r R, -v ∈ sliceEllipse p r R := by
+    intro v hv
+    simp only [sliceEllipse, Set.mem_setOf_eq, Pi.neg_apply] at hv ⊢
+    rw [show (p : ℝ) * -v 0 + (r : ℝ) * -v 1 = -((p : ℝ) * v 0 + (r : ℝ) * v 1) by ring,
+        neg_sq, neg_sq]
+    exact hv
+  have h_conv : Convex ℝ (sliceEllipse p r R) := by
+    intro x hx y hy a c ha hc hac
+    simp only [sliceEllipse, Set.mem_setOf_eq] at hx hy ⊢
+    have sq_convex : ∀ u w : ℝ, (a * u + c * w) ^ 2 ≤ a * u ^ 2 + c * w ^ 2 := by
+      intro u w
+      have key : a * u ^ 2 + c * w ^ 2 - (a * u + c * w) ^ 2 = a * c * (u - w) ^ 2 := by
+        have h1 : c = 1 - a := by linarith
+        rw [h1]; ring
+      nlinarith [mul_nonneg (mul_nonneg ha hc) (sq_nonneg (u - w))]
+    have hc0 := sq_convex ((p : ℝ) * x 0 + (r : ℝ) * x 1) ((p : ℝ) * y 0 + (r : ℝ) * y 1)
+    have hc1 := sq_convex (x 1) (y 1)
+    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+    calc ((p : ℝ) * (a * x 0 + c * y 0) + (r : ℝ) * (a * x 1 + c * y 1)) ^ 2
+            + 2 * (a * x 1 + c * y 1) ^ 2
+        = (a * ((p : ℝ) * x 0 + (r : ℝ) * x 1) + c * ((p : ℝ) * y 0 + (r : ℝ) * y 1)) ^ 2
+            + 2 * (a * x 1 + c * y 1) ^ 2 := by ring
+      _ ≤ (a * ((p : ℝ) * x 0 + (r : ℝ) * x 1) ^ 2 + c * ((p : ℝ) * y 0 + (r : ℝ) * y 1) ^ 2)
+            + 2 * (a * x 1 ^ 2 + c * y 1 ^ 2) := by gcongr
+      _ = a * (((p : ℝ) * x 0 + (r : ℝ) * x 1) ^ 2 + 2 * x 1 ^ 2)
+            + c * (((p : ℝ) * y 0 + (r : ℝ) * y 1) ^ 2 + 2 * y 1 ^ 2) := by ring
+      _ ≤ a * R + c * R := by gcongr
+      _ = R := by rw [← add_mul, hac, one_mul]
+  have hval : R / Real.sqrt 2 * Real.pi / p = 19 * Real.pi / (10 * Real.sqrt 2) := by
+    have hs2ne : Real.sqrt 2 ≠ 0 := (Real.sqrt_pos.mpr (by norm_num)).ne'
+    have hpne : (p : ℝ) ≠ 0 := hppos.ne'
+    rw [hRdef]; field_simp; ring
+  have hgt : (4 : ℝ) < R / Real.sqrt 2 * Real.pi / p := by
+    rw [hval, lt_div_iff₀ (by positivity : (0 : ℝ) < 10 * Real.sqrt 2)]
+    have hsqrt_lt : Real.sqrt 2 < 1.425 := by
+      have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+      nlinarith [hs2, Real.sqrt_nonneg 2, sq_nonneg (Real.sqrt 2 - 1.425)]
+    have h1 : 4 * (10 * Real.sqrt 2) < 57 := by linarith [hsqrt_lt]
+    have h2 : (57 : ℝ) ≤ 19 * Real.pi := by linarith [Real.pi_gt_three]
+    linarith
+  have hpos : 0 < R / Real.sqrt 2 * Real.pi / p := by rw [hval]; positivity
+  have h_vol_cond : MeasureTheory.volume (ZSpan.fundamentalDomain b)
+      * 2 ^ Module.finrank ℝ (Fin 2 → ℝ)
+      < MeasureTheory.volume (sliceEllipse p r R) := by
+    rw [h_vol_fund, one_mul, Module.finrank_fin_fun, sliceEllipse_volume p r hp R hRpos]
+    calc (2 : ENNReal) ^ 2 = ENNReal.ofReal 4 := by norm_num
+      _ < ENNReal.ofReal (R / Real.sqrt 2 * Real.pi / p) :=
+          (ENNReal.ofReal_lt_ofReal_iff hpos).mpr hgt
+  obtain ⟨⟨x_val, hx_mem⟩, hx_ne, hx_S⟩ :=
+    MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure
+      h_fund h_symm h_conv h_vol_cond
+  rw [Submodule.mem_toAddSubgroup, Submodule.mem_span_range_iff_exists_fun] at hx_mem
+  obtain ⟨cc, hcc⟩ := hx_mem
+  have hb00 : b 0 0 = 1 := by change Pi.basisFun ℝ (Fin 2) 0 0 = 1; simp [Pi.basisFun_apply]
+  have hb10 : b 1 0 = 0 := by change Pi.basisFun ℝ (Fin 2) 1 0 = 0; simp [Pi.basisFun_apply]
+  have hb01 : b 0 1 = 0 := by change Pi.basisFun ℝ (Fin 2) 0 1 = 0; simp [Pi.basisFun_apply]
+  have hb11 : b 1 1 = 1 := by change Pi.basisFun ℝ (Fin 2) 1 1 = 1; simp [Pi.basisFun_apply]
+  have ha : x_val 0 = (cc 0 : ℝ) := by
+    have h0 := congr_fun hcc 0
+    rw [Fin.sum_univ_two] at h0
+    simp only [Pi.add_apply, Pi.smul_apply, hb00, hb10, zsmul_eq_mul, mul_one, smul_zero,
+      mul_zero, add_zero] at h0
+    exact h0.symm
+  have hb' : x_val 1 = (cc 1 : ℝ) := by
+    have h1 := congr_fun hcc 1
+    rw [Fin.sum_univ_two] at h1
+    simp only [Pi.add_apply, Pi.smul_apply, hb01, hb11, zsmul_eq_mul, mul_one, smul_zero,
+      mul_zero, zero_add] at h1
+    exact h1.symm
+  simp only [sliceEllipse, Set.mem_setOf_eq] at hx_S
+  rw [ha, hb'] at hx_S
+  refine ⟨(p : ℤ) * cc 0 + r * cc 1, cc 1, ?_, ?_, ?_⟩
+  · intro hcontra
+    rw [Prod.mk.injEq] at hcontra
+    obtain ⟨hX, hY⟩ := hcontra
+    have hpz : (p : ℤ) ≠ 0 := by exact_mod_cast hp.ne'
+    have hcc0 : cc 0 = 0 := by
+      rw [hY, mul_zero, add_zero] at hX
+      exact (mul_eq_zero.mp hX).resolve_left hpz
+    apply hx_ne
+    apply Subtype.ext
+    funext i
+    fin_cases i
+    · show x_val 0 = 0; rw [ha, hcc0]; norm_num
+    · show x_val 1 = 0; rw [hb', hY]; norm_num
+  · exact ⟨cc 0, by ring⟩
+  · have hReal : ((p : ℝ) * (cc 0 : ℝ) + (r : ℝ) * (cc 1 : ℝ)) ^ 2 + 2 * ((cc 1 : ℝ)) ^ 2 ≤ R :=
+      hx_S
+    have hR2p : R < 2 * (p : ℝ) := by
+      rw [hRdef, div_lt_iff₀ (by norm_num : (0 : ℝ) < 10)]; linarith [hppos]
+    have hlt : ((p : ℝ) * (cc 0 : ℝ) + (r : ℝ) * (cc 1 : ℝ)) ^ 2 + 2 * ((cc 1 : ℝ)) ^ 2
+        < 2 * (p : ℝ) := lt_of_le_of_lt hReal hR2p
+    have hgoalR : ((((p : ℤ) * cc 0 + r * cc 1) ^ 2 + 2 * (cc 1) ^ 2 : ℤ) : ℝ)
+        < (((2 * (p : ℤ)) : ℤ) : ℝ) := by push_cast; nlinarith [hlt]
+    exact_mod_cast hgoalR
+
 
 /-- **The missing `Q < 2p` step (2D slice).**
 
