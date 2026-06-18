@@ -2652,6 +2652,7 @@ import Proofs.LovaszLocalLemma
 import Proofs.LovaszLocalLemmaOQ02
 import Proofs.LovaszLocalLemmaOQ02Aristotle
 import Proofs.MachinFromAddition
+import Proofs.MantelStabilityOQ01
 import Proofs.MantelTheorem
 import Proofs.MantelTheoremUniqueness
 import Proofs.MathematicalInduction
