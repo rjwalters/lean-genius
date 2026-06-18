@@ -96,12 +96,28 @@
       "summary": "The lemma sq_mod_four: rewriting n² % 4 as (n % 4)² % 4 by Nat.pow_mod and splitting on n % 4 ∈ {0,1,2,3} via interval_cases, each branch is closed by omega. This is the obstruction powering the backward direction — a sum of two squares is never 3 mod 4."
     },
     {
-      "id": "main-biconditional",
-      "title": "Fermat's Two-Squares Biconditional for Odd Primes",
+      "id": "main-statement",
+      "title": "Statement: Fermat's Two-Squares Biconditional",
       "startLine": 61,
-      "endLine": 91,
+      "endLine": 66,
       "mathContext": "$p\\ \\text{odd prime} \\Rightarrow \\big(p \\equiv 1 \\pmod 4 \\iff \\exists a\\,b,\\ p = a^2 + b^2\\big).$",
-      "summary": "The theorem fermat_two_squares. Forward: rewrite p % 4 = 1 to p % 4 ≠ 3 and apply Mathlib's Nat.Prime.sq_add_sq. Backward: use oddness of p (Nat.Prime.eq_two_or_odd) and the squares-mod-4 lemma on a and b, plus the mod-2 parity reductions, to let omega force p % 4 = 1."
+      "summary": "The theorem fermat_two_squares for an odd prime p (hp : Prime p, hp2 : p ≠ 2): the biconditional p % 4 = 1 ↔ ∃ a b, p = a² + b². The proof opens with `refine ⟨?_, ?_⟩`, splitting into the two implications handled in the following two sections."
+    },
+    {
+      "id": "forward",
+      "title": "Forward Direction: p ≡ 1 (mod 4) ⇒ Sum of Two Squares",
+      "startLine": 67,
+      "endLine": 72,
+      "mathContext": "$p \\equiv 1 \\pmod 4 \\Rightarrow p \\not\\equiv 3 \\pmod 4 \\Rightarrow \\exists a\\,b,\\ p = a^2 + b^2.$",
+      "summary": "The hard direction, delegated to Mathlib. From p % 4 = 1 derive p % 4 ≠ 3 (by omega), register `Fact p.Prime`, and apply `Nat.Prime.sq_add_sq` — Mathlib's proof (descent / Gaussian integers) that a prime not congruent to 3 mod 4 is a sum of two squares — then symmetrize the equation."
+    },
+    {
+      "id": "backward",
+      "title": "Backward Direction: Sum of Two Squares ⇒ p ≡ 1 (mod 4)",
+      "startLine": 73,
+      "endLine": 91,
+      "mathContext": "$p = a^2 + b^2\\ \\text{odd} \\Rightarrow p \\bmod 4 \\in \\{0,1\\}\\setminus\\{\\text{even}\\} = \\{1\\}.$",
+      "summary": "The elementary direction. From p = a² + b² and p odd (Nat.Prime.eq_two_or_odd, using p ≠ 2), apply the squares-mod-4 lemma to a and b and the mod-2 parity reductions (Nat.pow_mod); omega then rules out p % 4 ∈ {0,2,3} — evenness excludes 0 and 2, the squares-mod-4 obstruction excludes 3 — forcing p % 4 = 1."
     }
   ],
   "conclusion": {
