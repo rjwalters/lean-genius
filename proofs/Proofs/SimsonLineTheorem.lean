@@ -133,4 +133,70 @@ theorem simson_collinear {a b c p : ℂ}
   rw [map_mul, Complex.conj_conj]
   exact (simson_key ha hb hc hp).symm
 
+/-! ## The Simson line bisects the segment to the orthocenter
+
+A classical strengthening of Simson's theorem: the Simson line of `P` passes through the
+**midpoint of the segment `P H`**, where `H` is the orthocenter of `△ABC`. Equivalently, the
+Simson line *bisects* `P H`.
+
+With the circumcircle normalised to the unit circle (centre `0`), the orthocenter has the
+closed form `H = A + B + C`, so the midpoint is `M = (P + A + B + C) / 2`. We reuse the foot
+machinery above: the vector from `M` to each foot factors cleanly (`foot_ab_sub_midpoint`,
+`foot_bc_sub_midpoint`), and the collinearity of `M` with two of the feet is closed by the same
+`conj z = z⁻¹` substitution that drives `simson_key`. Since the three feet are already collinear
+(`simson_collinear`), `M` lying on the line through two of them places it on the Simson line. -/
+
+/-- The **orthocenter** of a triangle inscribed in the unit circle (centre `0`) is the sum of its
+vertices. We take this closed form (valid precisely for the unit circumcircle) as the definition
+of `orthocenter a b c`. -/
+noncomputable def orthocenter (a b c : ℂ) : ℂ := a + b + c
+
+/-- Midpoint of the segment `P H`, where `H = orthocenter a b c`. Simson's bisection theorem
+(`simson_bisects_orthocenter_segment`) states that the Simson line of `P` passes through this
+point, i.e. it bisects `P H`. -/
+noncomputable def simsonMidpoint (a b c p : ℂ) : ℂ := (p + orthocenter a b c) / 2
+
+/-- Closed form for the vector from the midpoint `M = (P + H)/2` to the `AB`-foot (pure `ring`).
+The opposite vertex `c` appears, mirroring the chord-direction factoring in `foot_diff`. -/
+theorem foot_ab_sub_midpoint (a b c p : ℂ) :
+    foot a b p - simsonMidpoint a b c p = -(c + a * b * conj p) / 2 := by
+  simp only [foot, simsonMidpoint, orthocenter]; ring
+
+/-- Closed form for the vector from the midpoint `M` to the `BC`-foot (pure `ring`). -/
+theorem foot_bc_sub_midpoint (a b c p : ℂ) :
+    foot b c p - simsonMidpoint a b c p = -(a + b * c * conj p) / 2 := by
+  simp only [foot, simsonMidpoint, orthocenter]; ring
+
+/-- **Bisection theorem (collinearity equation).** For `A, B, C, P` on the unit circle, the
+midpoint `M` of `P` and the orthocenter `H = A + B + C` is collinear with the feet `F_AB` and
+`F_BC`: `(F_BC - M) * conj (F_AB - M)` equals its own conjugate, i.e. it is real. The analogue of
+`simson_key` with one foot replaced by `M`. -/
+theorem simson_bisects_key {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1)
+    (hc : Complex.normSq c = 1) (hp : Complex.normSq p = 1) :
+    (foot b c p - simsonMidpoint a b c p) * conj (foot a b p - simsonMidpoint a b c p)
+      = conj (foot b c p - simsonMidpoint a b c p) * (foot a b p - simsonMidpoint a b c p) := by
+  rw [foot_bc_sub_midpoint, foot_ab_sub_midpoint]
+  simp only [map_mul, map_sub, map_add, map_neg, map_div₀, map_one, map_ofNat, Complex.conj_conj]
+  rw [conj_eq_inv ha, conj_eq_inv hb, conj_eq_inv hc, conj_eq_inv hp]
+  have ha0 := ne_zero_of_normSq_one ha
+  have hb0 := ne_zero_of_normSq_one hb
+  have hc0 := ne_zero_of_normSq_one hc
+  have hp0 := ne_zero_of_normSq_one hp
+  field_simp
+  ring
+
+/-- **Simson's bisection theorem (signed-area form).** The midpoint `M` of `P` and the orthocenter
+`H = A + B + C` lies on the Simson line of `P`: the cross product `((F_BC - M) * conj (F_AB - M))`
+has vanishing imaginary part, so `M`, `F_AB`, `F_BC` are collinear. Combined with `simson_collinear`
+(the three feet are collinear), this places `M` on the Simson line — the Simson line **bisects**
+the segment from `P` to the orthocenter. -/
+theorem simson_bisects_orthocenter_segment {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1)
+    (hc : Complex.normSq c = 1) (hp : Complex.normSq p = 1) :
+    ((foot b c p - simsonMidpoint a b c p) * conj (foot a b p - simsonMidpoint a b c p)).im = 0 := by
+  apply im_eq_zero_of_conj_eq
+  rw [map_mul, Complex.conj_conj]
+  exact (simson_bisects_key ha hb hc hp).symm
+
 end SimsonLineTheorem
