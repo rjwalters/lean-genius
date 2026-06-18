@@ -102,11 +102,20 @@
       "summary": "Defines repunit b n = ∑_{i<n} b^i, gives the base case and successor rewrite (repunit_succ), and proves the bridge to powers: the subtraction-free additive identity (b−1)·R_b(n) + 1 = b^n (pred_mul_repunit_add_one, by induction after substituting b = c+1) and its multiplicative form (b−1)·R_b(n) = b^n − 1 (pred_mul_repunit)."
     },
     {
-      "id": "power-engine",
-      "title": "Power-Difference Divisibility Criterion",
+      "id": "power-engine-forward",
+      "title": "Power-Difference Criterion: Forward Direction",
       "startLine": 65,
+      "endLine": 116,
+      "summary": "The hard direction of pow_sub_one_dvd_iff_dvd (b ≥ 2): (b^m − 1) ∣ (b^n − 1) ⇒ m ∣ n. Write n = mq + r by the division algorithm (r < m). Since b^m ≡ 1 (mod b^m − 1), one gets b^n ≡ b^r (mod b^m − 1); combined with the hypothesis b^n ≡ 1, this forces b^r ≡ 1, i.e. (b^m − 1) ∣ (b^r − 1). But b^r < b^m for r < m, so the only multiple of b^m − 1 below it is 0, giving b^r = 1, hence r = 0 and m ∣ n.",
+      "mathContext": "$b^m \\equiv 1 \\Rightarrow b^n \\equiv b^r \\pmod{b^m-1}$; with $b^r < b^m$ this forces $r=0$, so $m \\mid n$."
+    },
+    {
+      "id": "power-engine-reverse",
+      "title": "Power-Difference Criterion: Reverse Direction",
+      "startLine": 117,
       "endLine": 120,
-      "summary": "Proves pow_sub_one_dvd_iff_dvd: for b ≥ 2, (b^m − 1) ∣ (b^n − 1) ⟺ m ∣ n. The forward direction uses the division algorithm n = mq + r and Nat.ModEq (b^m ≡ 1, so b^n ≡ b^r), reducing to (b^m−1) ∣ (b^r−1) with b^r − 1 < b^m − 1, forcing r = 0. The converse is the geometric factorization via nat_sub_dvd_pow_sub_pow."
+      "summary": "The easy converse: m ∣ n ⇒ (b^m − 1) ∣ (b^n − 1). Writing n = m·k, this is the geometric-series factorization b^{mk} − 1 = (b^m)^k − 1^k, divisible by b^m − 1 via Mathlib's Nat.sub_dvd_pow_sub_pow (x − y ∣ x^k − y^k) with x = b^m, y = 1.",
+      "mathContext": "$m \\mid n,\\ n = mk \\Rightarrow (b^m - 1) \\mid (b^m)^k - 1^k = b^n - 1.$"
     },
     {
       "id": "main",
