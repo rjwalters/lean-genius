@@ -4,8 +4,8 @@
   "slug": "elementary-quadratic-reciprocity-oq-03",
   "description": "Extends quadratic reciprocity from the Legendre symbol (prime moduli) to the Jacobi symbol (composite odd moduli), formalizing the generalized reciprocity law J(m,n)·J(n,m) = (-1)^((m-1)/2·(n-1)/2) for coprime odd m,n.",
   "category": "number-theory",
-  "status": "verified",
-  "badge": "original",
+  "status": "axiomatized",
+  "badge": "axiom",
   "difficulty": "intermediate",
   "leanFile": {
     "path": "Proofs/ElementaryQuadraticReciprocityOQ03.lean",
@@ -26,13 +26,15 @@
   },
   "lineCount": 199,
   "theoremCount": 10,
-  "axiomCount": 0,
-  "assumptions": [],
+  "axiomCount": 1,
+  "assumptions": [
+    "Lean.ofReduceBool — the second supplement theorem `jacobiSym_two` (J(2,n) = (-1)^((n²-1)/8)) discharges the χ₈ character evaluations χ₈(1)=1, χ₈(3)=-1, χ₈(5)=-1, χ₈(7)=1 via `native_decide`, which trusts the Lean compiler's kernel reduction and therefore depends on the `Lean.ofReduceBool` axiom. The remaining theorems (reciprocity, first supplement, residuacity criteria) are axiom-free."
+  ],
   "meta": {
     "author": "Jacobi / Eisenstein (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Jacobi_symbol",
     "date": "1837",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "quadratic-reciprocity",
@@ -41,7 +43,7 @@
       "intermediate"
     ],
     "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ03.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -75,10 +77,10 @@
       "Residuacity for primes: J(a,p) = 1 implies QR for prime p (proved)"
     ],
     "dateAdded": "2026-03-22",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 199,
     "mathlib_version": "4.26.0",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "The second supplement `jacobiSym_two` proves J(2,n) = (-1)^((n²-1)/8) by evaluating the χ₈ character on residues 1,3,5,7 mod 8 via `native_decide`, which depends on the `Lean.ofReduceBool` axiom (it trusts the compiler's kernel reduction). The other six theorems are axiom-free. 0 sorries.",
     "theoremCount": 10,
     "definitionCount": 0
   },
