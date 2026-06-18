@@ -86,7 +86,7 @@ theorem evalMap_apply (T : Module.End K V) (v : V) (p : K[X]) :
 
 theorem evalMap_one (T : Module.End K V) (v : V) :
     evalMap T v 1 = v := by
-  simp [map_one, LinearMap.one_apply]
+  simp [map_one, Module.End.one_apply]
 
 theorem evalMap_X (T : Module.End K V) (v : V) :
     evalMap T v X = T v := by
@@ -147,25 +147,26 @@ theorem range_evalMap_eq_cyclicSubspace (T : Module.End K V) (v : V) :
     -- p(T)v is a K-linear combination of T^k v for k ≤ deg p
     -- This follows because aeval T p = ∑ coeff(p,k) * T^k
     induction p using Polynomial.induction_on' with
-    | h_add p q hp hq =>
+    | add p q hp hq =>
       rw [map_add, LinearMap.add_apply]
-      exact Submodule.add_mem _ (hp ⟨p, rfl⟩) (hq ⟨q, rfl⟩)
-    | h_monomial n a =>
-      rw [aeval_monomial]
-      show a • (T ^ n) v ∈ cyclicSubspace T v
+      exact Submodule.add_mem _ hp hq
+    | monomial n a =>
+      rw [aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]
       exact Submodule.smul_mem _ a (pow_mem_cyclicSubspace T v n)
   · -- Backward: elements of span{T^k v} are in the image
     intro hw
-    refine Submodule.span_induction hw ?_ ?_ ?_ ?_
-    · rintro w ⟨k, rfl⟩
-      exact ⟨X ^ k, by simp [map_pow, aeval_X]⟩
-    · exact ⟨0, by simp⟩
-    · rintro w₁ w₂ ⟨p₁, hp₁⟩ ⟨p₂, hp₂⟩
-      exact ⟨p₁ + p₂, by simp [map_add, LinearMap.add_apply, hp₁, hp₂]⟩
-    · rintro r w ⟨p, hp⟩
-      refine ⟨C r * p, ?_⟩
-      simp only [evalMap_apply, map_mul, map_C, Algebra.algebraMap_eq_smul_one]
-      rw [LinearMap.smul_apply, LinearMap.one_apply, LinearMap.mul_apply, hp]
+    refine Submodule.span_induction
+      (p := fun w _ => w ∈ LinearMap.range (evalMap T v)) ?_ ?_ ?_ ?_ hw
+    · rintro _ ⟨k, rfl⟩
+      exact ⟨X ^ k, evalMap_X_pow T v k⟩
+    · exact ⟨0, by rw [evalMap_apply, map_zero, LinearMap.zero_apply]⟩
+    · rintro w₁ w₂ _ _ ⟨p₁, hp₁⟩ ⟨p₂, hp₂⟩
+      refine ⟨p₁ + p₂, ?_⟩
+      rw [evalMap_apply, map_add, LinearMap.add_apply, ← evalMap_apply, ← evalMap_apply,
+        hp₁, hp₂]
+    · rintro a w _ ⟨p, hp⟩
+      refine ⟨a • p, ?_⟩
+      rw [evalMap_apply, map_smul, LinearMap.smul_apply, ← evalMap_apply, hp]
 
 -- ============================================================
 -- SECTION V: Cyclic Vector Characterization
@@ -201,7 +202,7 @@ theorem minpoly_apply_eq_zero (T : Module.End K V) (v : V) :
 theorem annihilator_mul_closed (T : Module.End K V) (v : V)
     (p q : K[X]) (hp : (aeval T p) v = 0) :
     (aeval T (q * p)) v = 0 := by
-  rw [map_mul, LinearMap.mul_apply, hp, map_zero]
+  rw [map_mul, Module.End.mul_apply, hp, map_zero]
 
 /-- Any multiple of the minimal polynomial annihilates v. -/
 theorem minpoly_multiple_annihilates (T : Module.End K V) (v : V)
@@ -214,10 +215,10 @@ theorem annihilator_congr (T : Module.End K V) (v : V)
     (p q : K[X]) (hp : (aeval T p) v = 0)
     (h : minpoly K T ∣ p - q) :
     (aeval T q) v = 0 := by
-  obtain ⟨r, hr⟩ := h
-  have hq : q = p - r * minpoly K T := by linarith [show p - q = r * minpoly K T from hr]
-  rw [show q = p - r * minpoly K T from by linarith [hr]]
-  rw [map_sub, LinearMap.sub_apply, hp, minpoly_multiple_annihilates, sub_zero]
+  obtain ⟨r, hr⟩ := h   -- hr : p - q = minpoly K T * r
+  have hq : q = p - minpoly K T * r := by rw [← hr]; ring
+  rw [hq, map_sub, LinearMap.sub_apply, hp, zero_sub, neg_eq_zero, mul_comm]
+  exact minpoly_multiple_annihilates T v r
 
 -- ============================================================
 -- SECTION VII: Orbit Dimension Bound
@@ -253,36 +254,40 @@ theorem cyclicSubspace_le_minpoly_degree (T : Module.End K V)
     have hmonic := minpoly.monic hT
     -- Express (aeval T μ) v = ∑_{i≤d} μ.coeff i • (T^i v) = 0
     have h0 : ∑ i ∈ Finset.range (d + 1), μ.coeff i • ((T ^ i) v) = 0 := by
-      have haeval : aeval T μ = 0 := minpoly.aeval K T
-      have := congr_arg (· v) haeval
-      simp only [LinearMap.zero_apply] at this
-      rw [Polynomial.aeval_def, Polynomial.eval₂_eq_sum_range] at this
-      convert this using 1
-      apply Finset.sum_congr rfl; intro i _
-      simp [Algebra.algebraMap_eq_smul_one, mul_comm, LinearMap.smul_apply,
-            LinearMap.mul_apply, LinearMap.one_apply]
+      have happ : (aeval T μ) v = 0 := by
+        show (aeval T (minpoly K T)) v = 0
+        rw [minpoly.aeval K T, LinearMap.zero_apply]
+      rw [aeval_eq_sum_range, LinearMap.sum_apply] at happ
+      simpa only [LinearMap.smul_apply] using happ
     -- Split sum at i = d: ∑_{i<d} (coeff i • T^i v) + coeff d • T^d v = 0
     rw [Finset.sum_range_succ] at h0
     -- μ.coeff d = 1 (monic), so T^d v + ∑_{i<d} ... = 0
-    rw [hmonic.leadingCoeff, one_smul] at h0
-    -- T^d v = -∑_{i<d} μ.coeff i • (T^i v)
-    have := eq_neg_of_add_eq_zero_right h0
-    rw [this]
-    exact W.neg_mem (Submodule.sum_mem W fun i hi =>
-      W.smul_mem _ (Submodule.subset_span ⟨⟨i, Finset.mem_range.mp hi⟩, rfl⟩))
+    rw [show μ.coeff d = 1 from hmonic.coeff_natDegree, one_smul] at h0
+    -- The lower-order part lies in W
+    have hmem : (∑ i ∈ Finset.range d, μ.coeff i • ((T ^ i) v)) ∈ W :=
+      Submodule.sum_mem W fun i hi =>
+        W.smul_mem _ (Submodule.subset_span ⟨⟨i, Finset.mem_range.mp hi⟩, rfl⟩)
+    -- T^d v = -∑_{i<d} μ.coeff i • (T^i v) (solve h0 for the top power)
+    have hTd : (T ^ d) v = -(∑ i ∈ Finset.range d, μ.coeff i • ((T ^ i) v)) := by
+      have h := congrArg (· - (∑ i ∈ Finset.range d, μ.coeff i • ((T ^ i) v))) h0
+      simpa using h
+    rw [hTd]
+    exact W.neg_mem hmem
   -- T maps W into W (cyclic subspace is T-invariant)
   have hT_inv : ∀ w ∈ W, T w ∈ W := by
     intro w hw
-    refine Submodule.span_induction hw ?_ ?_ ?_ ?_
+    refine Submodule.span_induction (p := fun x _ => T x ∈ W) ?_ ?_ ?_ ?_ hw
     · rintro _ ⟨⟨i, hi⟩, rfl⟩
-      rw [← pow_succ']
-      by_cases hi1 : (i : ℕ) + 1 < d
+      have step : T ((T ^ i) v) = (T ^ (i + 1)) v := by
+        rw [pow_succ', Module.End.mul_apply]
+      rw [step]
+      by_cases hi1 : i + 1 < d
       · exact Submodule.subset_span ⟨⟨i + 1, hi1⟩, rfl⟩
-      · have : (i : ℕ) + 1 = d := by omega
-        rw [this]; exact h_Td
-    · simp [map_zero, W.zero_mem]
-    · intro x y hx hy; rw [map_add]; exact W.add_mem hx hy
-    · intro c x hx; rw [map_smul]; exact W.smul_mem c hx
+      · have hid : i + 1 = d := by omega
+        rw [hid]; exact h_Td
+    · rw [map_zero]; exact W.zero_mem
+    · rintro x y _ _ ihx ihy; rw [map_add]; exact W.add_mem ihx ihy
+    · rintro c x _ ih; rw [map_smul]; exact W.smul_mem c ih
   -- Main proof by induction on the ≤ proof
   intro k hk
   induction hk with
