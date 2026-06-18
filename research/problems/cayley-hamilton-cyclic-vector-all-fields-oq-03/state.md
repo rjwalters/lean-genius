@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT — field/operator half COMPLETE + REGISTERED; PID-module half WRITTEN + MERGED (#25497, 0 sorry/0 axiom, still UNREGISTERED, build-pending); operator↔K[X] bridge now has a build-ready recipe (key Mathlib lemma `span_minpoly_eq_annihilator` + worked `NormalBasis.lean` template located)
+**Phase**: ACT — directions (a) operator forward + (b) PID both COMPLETE + REGISTERED (`Proofs.lean:453/454`, 0 sorry/0 axiom). Operator CONVERSE companion `…OQ03Converse.lean` written + ON main (#25622) but UNREGISTERED + NEVER built green; S8 (this session) completed a full offline bearer/namespace/defeq audit → it is one-shot register-ready, build is the only gate. operator↔K[X] bridge still recipe-only (S6).
 **Since**: 2026-06-16 (S3 gallery annotation re-anchor under triple blackout — researcher-8)
-**Iteration**: 6
+**Iteration**: 7
 
 ## S6 (2026-06-18, researcher-2): PID file build-readiness RE-CONFIRMED + operator↔K[X] bridge recipe (the real remaining content)
 
@@ -293,3 +293,60 @@ the host frees up and writes `/tmp/r2-oq03converse-build.done`.
 in `Proofs.lean`, add the converse/iff to the gallery entry, and confirm the headline iff is
 stated. On RED — fix the flagged tactic step (math + every lemma name are sound; any failure
 is a tactical mismatch, not a missing result).
+
+## S8 (2026-06-18, researcher-6): CONVERSE companion FULLY offline-audited → one-shot register-ready; S7 watcher was killed mid-clone (never built)
+
+**Reality reconciled.** Top-of-file Phase header was stale ("PID still UNREGISTERED") — both
+`OQ03` and `OQ03PID` are registered (`Proofs.lean:453/454`). The S7 background watcher
+`/tmp/r2-oq03converse-build.sh` **started but was killed (`Terminated: 15`) mid mathlib-clone**;
+no `/tmp/r2-oq03converse-build.done` exists and the watcher process is dead — so the Converse file
+has **never actually built green**. It IS committed to `origin/main` (via #25622) but is **absent
+from `Proofs.lean`** (not in the fleet build), so its compilation status was unverified going into
+this session.
+
+**Full offline audit vs pin `2df2f0150c` (= v4.26.0, `/Users/rwalters/GitHub/mathlib4`).** Audited
+every bearer in `CayleyHamiltonCyclicVectorAllFieldsOQ03Converse.lean` (5208 B, 2 theorems,
+0 sorry/0 axiom) — names, namespaces, AND the two definitional `rfl`s:
+
+Project-local (registered, present):
+- `IsNonderogatoryOp` def — `OQ03.lean:100` ✓
+- `operator_nonderogatory_has_span_cyclic_vector` — `OQ03.lean:280` ✓
+- `NonderogatoryModule.cyclicSubspace` (def) + `cyclicSubspace_le_minpoly_degree`
+  — `CayleyHamiltonMinpolyOQ05OQ01OQ03.lean:243`; signature
+  `(T)(hT:IsIntegral K T)(v)(∀ k, (minpoly K T).natDegree ≤ k → (T^k)v ∈ span K (range fun i:Fin … ))`
+  EXACTLY matches the call `… T hint v k (by omega)` (the `by_cases ¬k<d` branch gives `d ≤ k`). ✓
+
+Mathlib (all resolve at pin, namespaces confirmed):
+- `IsIntegral.of_finite` — `RingTheory/IntegralClosure/Algebra/Basic.lean:64` (needs `Module.Finite K (End K V)`, auto from `FiniteDimensional`). ✓
+- `finrank_range_le_card {ι}[Fintype ι](b:ι→M) : (Set.range b).finrank R ≤ Fintype.card ι`
+  — `LinearAlgebra/Dimension/Constructions.lean:453`; `rw [Fintype.card_fin]` ⇒ `≤ d`. ✓
+- `finrank_top : finrank R (⊤:Submodule R M) = finrank R M` — `Dimension/Finrank.lean:139`
+  (the `IntermediateField.finrank_top` homonyms are `protected`, so no clash with `open Polynomial` only). ✓
+- `Set.finrank s := finrank R (span R s)` — `Constructions.lean:442` ⇒ the line-82 `rfl`
+  `finrank K (span K (range f)) = (range f).finrank K` holds by definitional unfold. ✓
+- `LinearMap.minpoly_dvd_charpoly` — `Charpoly/Basic.lean:99` (in `namespace LinearMap`, 41–135). ✓
+- `LinearMap.charpoly_natDegree` (`[Nontrivial R][StrongRankCondition R]`, both hold for a field)
+  — `Charpoly/Basic.lean:78`; `: f.charpoly.natDegree = finrank R M`. ✓
+- `LinearMap.charpoly_monic` (⇒ `.ne_zero`) — `Charpoly/Basic.lean:74`. ✓
+- `Polynomial.natDegree_le_of_dvd (h1:p∣q)(h2:q≠0) : p.natDegree ≤ q.natDegree`
+  — `Algebra/Polynomial/Degree/Domain.lean:61` (in `namespace Polynomial`, 27–98). ✓
+
+**Verdict: no bearer/namespace/`rfl`/signature issue found.** Residual risk is only the standard
+`set W …`/`set d …` + `exact` defeq unification (the lemma's span output unifying with the `let`-bound
+`W`) — low, idiomatic. The file should build green on first try; registration is the SOLE remaining
+gate. The next session can skip re-auditing and go straight to build → register → gallery.
+
+**Build blackout this session:** host load **68 on 28 cores, 14 `lean-build` containers** — far above
+the load-30 / ≤2–3-container good-citizen rule. Deliberately did NOT build or relaunch a watcher
+(a watcher that may never fire under sustained saturation is not a deliverable, and the prior one was
+already reaped). Aristotle MCP not needed (file is sorry-free). Did NOT blind-write the S6 bridge
+(its orbit-dictionary `aeval_cyclic_iff_krylov_span_top` needs build iteration — prior sessions
+correctly avoided committing it unverified).
+
+**Gallery note (for the eventual register session, not fixed here — it is an auditor concern and
+the entry is accurate-to-its-file):** `src/data/proofs/cayley-hamilton-cyclic-vector-all-fields-oq-03/meta.json`
+is scoped to `OQ03.lean` (status `formalized`/badge `wip`); its `assumptions` still say
+"Build-pending verification" and frame the PID half as "an explicit open gap, not formalized here."
+The PID half is now done+registered in the separate `OQ03PID.lean` (which has NO gallery dir). When
+the Converse lands, revisit whether this entry should become `verified` and whether PID/converse
+deserve their own entries.
