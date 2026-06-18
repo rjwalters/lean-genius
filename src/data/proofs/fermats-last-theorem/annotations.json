@@ -8,15 +8,12 @@
     },
     "type": "concept",
     "title": "Mathlib Imports",
-    "content": "We import from Mathlib's FLT modules: `FLT.Basic` for the theorem statement, `FLT.Four` for Fermat's descent proof of the n=4 case, `FLT.Three` for Euler's n=3 case, and `EuclideanDomain.Basic` / `RingTheory.Int.Basic` for integer divisibility and unique factorization.",
-    "mathContext": "The imported Mathlib modules supply the verified small cases that this file wraps. `Mathlib.NumberTheory.FLT.Basic` defines `FermatLastTheoremFor n` — the statement that $a^n + b^n = c^n$ has no solution in positive integers $a,b,c$ — and the aggregate `FermatLastTheorem`. `FLT.Four` provides `fermatLastTheoremFour`, Fermat's own infinite-descent proof that $x^4 + y^4 = z^4$ has no nontrivial solution (the one case Fermat could actually prove). `FLT.Three` provides `fermatLastTheoremThree`, Euler's $n=3$ case via unique factorization in the Eisenstein integers $\\mathbb{Z}[\\omega]$, $\\omega = e^{2\\pi i/3}$. The general $n > 2$ theorem (Wiles–Taylor 1995, via the modularity of elliptic curves and Ribet's level-lowering) is not yet in Mathlib and is axiomatized in this file pending the Imperial College FLT project.",
+    "content": "We import from Mathlib's FLT modules: `FLT.Basic` for the theorem statement, `FLT.Four` for Fermat's descent proof of the n=4 case, and ring theory for integer properties.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "Lean 4",
-      "formalization",
-      "fermatLastTheoremFour",
-      "fermatLastTheoremThree"
+      "formalization"
     ]
   },
   {
@@ -75,6 +72,27 @@
     ]
   },
   {
+    "id": "ann-flt-semistable",
+    "proofId": "fermats-last-theorem",
+    "range": {
+      "startLine": 84,
+      "endLine": 87
+    },
+    "type": "technique",
+    "title": "Semi-stability of Frey Curves",
+    "content": "An elliptic curve is **semi-stable** if at every prime of bad reduction, the reduction is multiplicative (nodes, not cusps). Frey curves are semi-stable, which is crucial because Wiles' modularity theorem applies specifically to semi-stable curves.",
+    "mathContext": "Semi-stability is a technical condition on how the curve reduces modulo primes. The Frey curve has multiplicative reduction at the primes dividing $abc$, and good reduction elsewhere.",
+    "significance": "key",
+    "prerequisites": [
+      "ann-flt-frey"
+    ],
+    "relatedConcepts": [
+      "reduction",
+      "bad primes",
+      "Neron model"
+    ]
+  },
+  {
     "id": "ann-flt-modularity",
     "proofId": "fermats-last-theorem",
     "range": {
@@ -91,6 +109,28 @@
       "L-functions",
       "Taniyama-Shimura-Weil",
       "Langlands program"
+    ]
+  },
+  {
+    "id": "ann-flt-ribet",
+    "proofId": "fermats-last-theorem",
+    "range": {
+      "startLine": 115,
+      "endLine": 119
+    },
+    "type": "insight",
+    "title": "Ribet's Theorem (The Epsilon Conjecture)",
+    "content": "**Ribet's Theorem (1986)**: If a Frey curve were modular, it would correspond to a cusp form of level 2. But there are no such forms! Therefore, Frey curves cannot be modular.",
+    "mathContext": "Ribet proved what Serre had conjectured: the \"level-lowering\" property of Galois representations forces the Frey curve's modular form to have impossibly low level. This was the missing link between Taniyama-Shimura and Fermat.",
+    "significance": "key",
+    "prerequisites": [
+      "ann-flt-frey",
+      "ann-flt-modularity"
+    ],
+    "relatedConcepts": [
+      "Galois representations",
+      "Serre",
+      "level lowering"
     ]
   },
   {
@@ -157,7 +197,7 @@
       "startLine": 157,
       "endLine": 169
     },
-    "type": "concept",
+    "type": "technique",
     "title": "Reduction to Primes",
     "content": "If FLT holds for exponent $n$, it holds for all multiples of $n$. Why? If $a^{nm} + b^{nm} = c^{nm}$, then $(a^m)^n + (b^m)^n = (c^m)^n$, contradicting FLT for $n$.",
     "mathContext": "This means we only need to prove FLT for n=4 and all odd primes. Since every n ≥ 3 is divisible by 4 or an odd prime, this covers everything.",
