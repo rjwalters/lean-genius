@@ -7,9 +7,9 @@
     "author": "Classical combinatorics; formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Derangement#Generalizations",
     "date": "classical",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DerangementsOQ02.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "tags": [
       "combinatorics",
@@ -66,9 +66,9 @@
       "11 native_decide verifications: S(3,k) = {2,3,0,1}, S(4,k) = {9,8,6,0,1}, S(5,2) = 20"
     ],
     "dateAdded": "2026-02-25",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 357,
-    "assumptions": "Fully verified: 0 axioms, 0 sorries remain.",
+    "assumptions": "The abstract framework (kFixed_iff_support_card, the permSupportEqEquiv bijection, card_perms_with_kfixed = C(n,k)·D(n-k), the special cases S(n,0)/S(n,n)/S(n,n-1), and the summation identity ∑S(n,k) = n!) is proved symbolically with no axioms or sorries. The named contribution \"11 native_decide verifications\" (the concrete value tables S(3,k) = {2,3,0,1}, S(4,k) = {9,8,6,0,1}, and S(5,2) = 20) is established solely by `native_decide`, which trusts the Lean compiler via the `Lean.ofReduceBool` axiom. Per the project's axiom-integrity policy these substantive computed results count: axiomCount = 1 (Lean.ofReduceBool). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted. leanFile.axiomCount remains 0 (no literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
     "definitionCount": 1
