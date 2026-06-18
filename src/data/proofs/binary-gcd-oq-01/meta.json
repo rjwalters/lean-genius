@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Binary_GCD_algorithm",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BinaryGcdOQ01.lean",
     "tags": [
       "algorithms",
@@ -16,7 +16,7 @@
       "complexity",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
@@ -40,9 +40,9 @@
       "Proof of Binary GCD bound: steps ≤ 2·(log₂(a) + log₂(b)) + 2",
       "Concrete step counts via native_decide"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 215,
-    "assumptions": "None. 0 axiom declarations, 0 sorries.",
+    "assumptions": "Depends on `Lean.ofReduceBool`: the advertised contribution \"Concrete step counts via native_decide\" (the 8 example computations of euclidSteps/binaryGcdSteps on gcd(12,8), gcd(21,15), gcd(100,37), gcd(89,55)) is discharged solely by `native_decide`, which trusts the Lean compiler's kernel reduction (`Lean.ofReduceBool`). The symbolic results — Lamé's bound `euclidSteps_le_log` and the Binary GCD bound `binaryGcdSteps_le_log` — are fully proved without `native_decide`. 0 `axiom` declarations, 0 sorries.",
     "prerequisites": [
       "Natural number GCD and divisibility",
       "Logarithmic functions on naturals",
