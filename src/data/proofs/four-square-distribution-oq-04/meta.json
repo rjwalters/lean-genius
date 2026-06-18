@@ -141,6 +141,60 @@
         "axioms": 0,
         "sorries": 0,
         "description": "Verified sign-count half of the orbit-size lemma for the general B_m = S_m ⋉ (ℤ/2)^m route to OQ-04. Defines signFiber g (tuples agreeing with g coordinatewise up to sign) and proves signFiber_card: its cardinality is 2^(#nonzero coordinates) (signFiber_card), via the single-coordinate count {c,-c}.card = if c=0 then 1 else 2 (card_pair_neg). This is the sign factor 2^(#nonzero) appearing throughout the parent's type-contribution formula (6!/∏mᵢ!)·2^(#nonzero); the file also records the decomposition blueprint reducing the keystone fiber_card_eq_contribution to the single remaining open arrangement-count (multinomial) lemma. 2 theorems, 1 definition, 0 axioms, 0 sorries; Mathlib-only, fully kernel-checked (no decide/native_decide). Registered Proofs.lean:2355 (PR #24885). Namespace FourSquareDistributionOQ04Sign. Standalone reusable infrastructure — does not by itself close OQ-04 (the arrangement-count residue remains open)."
+      },
+      {
+        "path": "Proofs/FourSquareDistributionOQ04Decomp.lean",
+        "lineCount": 184,
+        "theorems": 4,
+        "definitions": 4,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "The genuine representation set reps m n (tuples Fin m → ℤ with Σ squares = n), the shape invariant (multiset of absolute values), and the uniform fiberwise partition reps_card_eq_sum_fiber: |reps m n| = Σ_{shapes} |shapeFiber|, proved via Finset.card_eq_sum_card_fiberwise. This reduces the whole OQ-04 type-decomposition to the single keystone lemma fiber_card_eq_contribution (each attained shape's fiber has size m!/∏count! · 2^#nonzero), here carried as an explicit hypothesis abbreviation rather than a sorry. 4 theorems, 4 definitions, 0 axioms, 0 sorries; Mathlib-only, fully kernel-checked. Namespace FourSquareDistributionOQ04Decomp."
+      },
+      {
+        "path": "Proofs/FourSquareDistributionOQ04ArrangeProof.lean",
+        "lineCount": 260,
+        "theorems": 9,
+        "definitions": 1,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "Discharges the sole combinatorial residue arrangement_card elementarily: the number of orderings (arrangements s) of a length-m multiset s equals m!/∏count!. Proof avoids MulAction.orbit and its Fintype landmine — uses Finset.card_eq_sum_card_fiberwise on the action σ ↦ g₀∘σ : Perm(Fin m) → arrangements s, with each fiber a stabilizer coset (card_nbij' σ ↦ σ*σ₀⁻¹) of size ∏count! via stabilizer_card_eq_prod_count; also supplies nonempty_arrangements (s.toList / ofFn_get). 9 theorems, 1 definition, 0 axioms, 0 sorries; Mathlib-only, fully kernel-checked. Namespace FourSquareDistributionOQ04ArrangeProof."
+      },
+      {
+        "path": "Proofs/FourSquareDistributionOQ04Arrange.lean",
+        "lineCount": 148,
+        "theorems": 5,
+        "definitions": 1,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "The arrangement-count half arrangement_card_div_form: (arrangements s).card = m!/∏count!, obtained by delegating to the now-discharged arrangement_card in FourSquareDistributionOQ04ArrangeProof (identical definitions → defeq). 5 theorems, 1 definition, 0 axioms, 0 sorries; Mathlib-only, fully kernel-checked. Namespace FourSquareDistributionOQ04Arrange."
+      },
+      {
+        "path": "Proofs/FourSquareDistributionOQ04Keystone.lean",
+        "lineCount": 185,
+        "theorems": 6,
+        "definitions": 2,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "The assembly half: proves the keystone fiber_card_eq_contribution modulo a hypothesis harr about the size of the absolute-value image (shapeFiber m n s).image absMap, combining signFiber_card (the 2^#nonzero sign factor) with Finset.card_eq_sum_card_fiberwise. No sorry of its own — the residue is an explicit hypothesis, not an axiom or sorry. 6 theorems, 2 definitions, 0 axioms, 0 sorries; Mathlib-only, fully kernel-checked. Namespace FourSquareDistributionOQ04Keystone."
+      },
+      {
+        "path": "Proofs/FourSquareDistributionOQ04Bridge.lean",
+        "lineCount": 185,
+        "theorems": 6,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "The bridge that collapses the stack to zero residues. Proves image_absMap_eq_arrangements: Keystone's image (shapeFiber m n s).image absMap equals Arrange's canonical arrangement set arrangements s (each is the set of nonneg tuples with value-multiset s; sum-of-squares invariance is the helper sumsq_invariant). This discharges Keystone's hypothesis harr from Arrange's count, so fiber_card_eq_contribution holds for every attained shape; the headline reps_card_eq_sum_shapeContribution is then re-proved with no sorry of its own. The OQ-04 arithmetic-totals question (do the per-shape contributions sum to r_{2k}(n) for all n?) remains OPEN — only the structural decomposition is Lean-closed. 6 theorems, 0 definitions, 0 axioms, 0 sorries; Mathlib-only, fully kernel-checked. Namespace FourSquareDistributionOQ04Bridge."
+      },
+      {
+        "path": "Proofs/FourSquareDistributionOQ04Converse.lean",
+        "lineCount": 99,
+        "theorems": 2,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "The orbit-surjectivity converse: two tuples with the same value-multiset differ by a permutation (exists_perm_of_map_univ_eq, via List.Perm.eq_of_sortedLE / Tuple.sort), together with map_univ_comp_perm_eq. This is the surjectivity direction underlying the arrangement-class partition. 2 theorems, 0 definitions, 0 axioms, 0 sorries; Mathlib-only, fully kernel-checked. Namespace FourSquareDistributionOQ04Converse."
       }
     ]
   },
