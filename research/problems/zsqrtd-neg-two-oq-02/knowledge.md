@@ -499,3 +499,54 @@ using **even** `t`.
 - `research/problems/zsqrtd-neg-two-oq-02/verify_even_core_witness.py` — new
   (STRICT-fails-sporadically + BROAD-always-holds + identity certificate).
 - `knowledge.md` / `state.md` — this entry.
+
+## S11 — 2D-slice Minkowski lemma certified true; d=1/d=2 route split (researcher-4, 2026-06-17)
+
+**Mode**: REVISIT · **Phase**: ORIENT/certify (build-free). Docker daemon responsive
+(`docker info` rc=0) but worktree == `origin/main` HEAD (already S9-GREEN, no rebuild
+value); **Aristotle still 404** ("Resource not found") so the isolated `sorry` cannot
+be auto-proved this session. No `.lean` edited.
+
+### What this settles
+
+The whole development now has exactly ONE open `sorry`:
+`exists_slice_point_lt_two_mul` in `Proofs/ThreeSquaresSliceMinkowski.lean:47` (its
+bridge `slice_point_to_dirichlet_vector` is proved). It is the 2D geometry-of-numbers
+input to `dirichlet_key_lemma` (`ThreeSquares.lean:648`, an axiom). This session
+certifies the lemma is TRUE and pins the formalization route.
+
+Certificate `verify_slice_minkowski.py` (exhaustive integer search):
+
+| check | result |
+|-------|--------|
+| min over `L_{p,r}` of `x²+d·y² < 2p`, `p∈[1,1200]`, all `r`, `d∈{1,2}` | **0 failures** |
+| worst `min/p`, d=1 | `1.15311` (p=209,r=56) vs Hermite cap `2/√3 = 1.15470` |
+| worst `min/p`, d=2 | `1.63207` (p=1079,r=484) vs Hermite cap `2√2/√3 = 1.63299` |
+| Thue box `\|x\|,\|y\|≤⌊√p⌋` suffices? d=1 | YES (0 box-failures, `p≤400`) |
+| Thue box suffices? d=2 | **NO** — `394` `(p,r)` cases with box-best `≥ 2p` |
+
+### Consequences for the Lean proof
+
+- The `< 2p` target is exactly right: the worst case approaches the binary Hermite
+  constant `2/√3·√d` (< 2 for `d≤2`) but never reaches 2 ⇒ use the **strict-`<`**
+  Minkowski convex-body theorem `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`
+  (`Mathlib/MeasureTheory/Group/GeometryOfNumbers.lean:65`), not the `≤` compact one.
+- **Split the lemma by `d`**:
+  - `d=1`: elementary — a Thue/pigeonhole point with `|x|,|y|≤⌊√p⌋` already gives
+    `x²+y²≤2p`, strict on a nonzero non-corner point. No measure theory. (Mathlib has
+    no standalone Thue lemma; pattern is inlined at `SumFourSquares.lean:61`.)
+  - `d=2`: the box bound is only `≤3p` and provably insufficient (394 counterexamples)
+    ⇒ MUST use the disk area bound `area{x²+2y²≤R}=πR/√2`, Minkowski on the covolume-`p`
+    sublattice with `R∈(4p√2/π, 2p)` (nonempty iff `4√2/π≈1.80<2`). No binary-form
+    Hermite-reduction API exists at the pin, so the measure-theoretic route is forced.
+
+### Net open work (unchanged, Docker+Aristotle-gated)
+
+(1) S6 elaboration fix + register corrected companions; (2) generalize the SingleAP
+prime finder to even cores (S10); (3) discharge `exists_slice_point_lt_two_mul` per
+the d=1/d=2 split above ⇒ `dirichlet_key_lemma` axiom→theorem (`ThreeSquares.lean`
+2 axioms → 1). Item (3) is now the most sharply specified of the three.
+
+### Files touched (S11)
+- `research/problems/zsqrtd-neg-two-oq-02/verify_slice_minkowski.py` — new.
+- `knowledge.md` / `state.md` — this entry.

@@ -1,5 +1,62 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S11 — 2D-slice Minkowski lemma CERTIFIED true + formalization route pinned (researcher-4, 2026-06-17)
+
+**Phase**: ORIENT/certify (build-free; Docker daemon responsive `docker info` rc=0,
+but worktree == `origin/main` HEAD which S9 already build-verified GREEN — no rebuild
+adds info; **Aristotle still 404** "Resource not found", so the isolated `sorry`
+cannot be auto-discharged this session). No `.lean` edited.
+
+Targets deep-work item (3) in S10/knowledge.md: discharge the relaxed
+`dirichlet_key_lemma` via the **2D-slice Minkowski**, whose sole open input is
+`exists_slice_point_lt_two_mul` (`Proofs/ThreeSquaresSliceMinkowski.lean:47`, the one
+remaining `sorry` in the whole development — its bridge `slice_point_to_dirichlet_vector`
+is already proved). Statement: for `d∈{1,2}`, `p>0`, any `r:ℤ`, the index-`p`
+sublattice `L_{p,r}={(x,y):p∣(x−r·y)}` holds a nonzero vector with `x²+d·y² < 2p`.
+
+New certificate `verify_slice_minkowski.py` (exhaustive, integer arithmetic):
+
+- **TRUTH** (`p∈[1,1200]`, every residue `r`, `d∈{1,2}`): min of `x²+d·y²` over the
+  nonzero sublattice is `< 2p` in **0 failures** ⇒ the lemma is TRUE as stated.
+- **HERMITE TIGHTNESS**: worst observed `min/p` ratio is `1.15311` (d=1, at p=209)
+  and `1.63207` (d=2, at p=1079), each sitting just under the binary Hermite cap
+  `(2/√3)·√d = 1.15470 / 1.63299`. Both `< 2` ⇒ the `< 2p` target is correct and the
+  **strict-`<`** Minkowski theorem is the right tool (the worst case never reaches 2).
+- **ROUTE-PINNING (d=1 vs d=2 split)**: the elementary **Thue box** `|x|,|y|≤⌊√p⌋`
+  gives `x²+d·y² ≤ (1+d)p`. For **d=1** that is `≤ 2p` and the box ALWAYS contains a
+  good point (0 box-failures over `p≤400`) — the classical two-square route, fully
+  elementary, no measure theory. For **d=2** the box bound is only `≤ 3p` and FAILS
+  (best box point `≥ 2p`) in **394** `(p,r)` cases (e.g. p=24,r=5 → 48=2p; p=35,r=6 →
+  75>70) ⇒ d=2 genuinely requires the Minkowski **area** bound on the disk
+  `{x²+2y² ≤ R}` (area `πR/√2`), NOT a box/Thue argument.
+
+**Actionable formalization plan** (next backend-up + Aristotle-up session):
+1. SPLIT `exists_slice_point_lt_two_mul` by `d`:
+   - `d=1`: prove elementarily from a Thue/pigeonhole point with `|x|,|y|≤⌊√p⌋`
+     (reuse the in-Mathlib pattern behind `Nat.Prime.sq_add_sq` /
+     `SumFourSquares.lean`); strictness `x²+y²<2p` from `(x,y)≠0` not on the corner.
+   - `d=2`: apply `MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`
+     (strict-<, `GeometryOfNumbers.lean:65`) to the open disk `{v: v0²+2v1²<R}` for
+     `R∈(4p√2/π, 2p)` (nonempty since `4√2/π≈1.80<2`) on the covolume-`p` lattice
+     `L_{p,r}⊂ℝ²`. Plumbing: lattice = `Submodule.span ℤ {(p,0),(r,1)}` as an
+     `AddSubgroup (Fin 2→ℝ)`, fundamental domain measure `= p`, `finrank=2`, disk
+     symmetric+convex; pull the real point back to ℤ² via integrality of the lattice.
+2. Feed the result through the proved `slice_point_to_dirichlet_vector` →
+   `exists_dirichlet_vector_lt_two_mul` → wire into `dirichlet_key_lemma`
+   (`ThreeSquares.lean:648`), converting that axiom to a theorem (2 axioms → 1).
+
+**Mathlib bearings confirmed at pin `2df2f0150c`** (offline checkout): Minkowski
+strict-< theorem present (`GeometryOfNumbers.lean:65`); no standalone Thue lemma
+(it is inlined in `SumFourSquares.lean:61` `exists_sq_add_sq_add_one_eq_mul`); no
+binary-form Hermite-reduction API (so d=2 must go through the measure-theoretic
+convex-body theorem, not a reduced-form bound).
+
+**Files touched (S11)**: `verify_slice_minkowski.py` (new); `knowledge.md`/`state.md`.
+Claim RELEASED (not completed — headline iff still axiom-gated; deep work items 1–3
+unchanged).
+
+---
+
 ## S10 — even-core residual: thin-prime trick FAILS (researcher-2, 2026-06-16)
 
 **Phase**: ORIENT/certify (build-free; DUAL BLACKOUT this session — `docker version`
