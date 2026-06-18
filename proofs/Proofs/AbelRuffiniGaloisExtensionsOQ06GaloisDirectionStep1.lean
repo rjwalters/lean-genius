@@ -89,7 +89,7 @@ theorem padicValNat_factorial_self (hp : p.Prime) :
     have hi2 : 2 ≤ i := by
       rcases Finset.mem_Ico.mp hi with ⟨h1, _⟩; omega
     calc p < p ^ 2 := by nlinarith [hp.two_le]
-      _ ≤ p ^ i := Nat.pow_le_pow_right hp.pos.le hi2
+      _ ≤ p ^ i := Nat.pow_le_pow_right hp.pos hi2
   · intro h
     exact absurd (Finset.mem_Ico.mpr ⟨le_refl 1, hp.one_lt⟩) h
 
@@ -149,8 +149,27 @@ theorem normalSubgroup_isTransitive_of_nontrivial
     (_hPrim : MulAction.IsPreprimitive H (ZMod p))
     (A : Subgroup H) [A.Normal] (_hAnt : Nontrivial A) :
     MulAction.IsPretransitive A (ZMod p) := by
-  sorry
+  haveI := _hPrim
+  haveI := _hAnt
+  -- `A` nontrivial: pick `g ≠ 1` in `A`.
+  obtain ⟨g, hg⟩ := exists_ne (1 : A)
+  -- Faithfulness of the `A`-action (`A ≤ H ≤ S_p`, faithful via
+  -- `Perm.applyFaithfulSMul` and the subgroup instance) yields a moved point.
+  have hmove : ∃ a : ZMod p, g • a ≠ a := by
+    by_contra hcon
+    push_neg at hcon
+    exact hg (eq_of_smul_eq_smul (fun a => by rw [hcon a, one_smul]))
+  obtain ⟨a₀, ha₀⟩ := hmove
+  -- The `A`-orbit of `a₀` is a block (orbit of a normal subgroup).
+  have hblock : MulAction.IsBlock H (MulAction.orbit A a₀) :=
+    MulAction.IsBlock.orbit_of_normal a₀
+  -- Primitivity ⇒ the block is subsingleton or univ. It contains `a₀` and
+  -- `g • a₀ ≠ a₀`, so it is not subsingleton ⇒ it is univ ⇒ transitive.
+  rcases hblock.subsingleton_or_eq_univ with hsub | huniv
+  · exact absurd (hsub (MulAction.mem_orbit a₀ g) (MulAction.mem_orbit_self a₀)) ha₀
+  · exact (MulAction.isPretransitive_iff_orbit_eq_univ a₀).mpr huniv
 
+omit [Fact (Nat.Prime p)] in
 /-- **Lemma C (transitive ⇒ `p ∣ |A|`).** A transitive action on `ZMod p`
     forces `p ∣ Nat.card A`. Orbit–stabilizer; mirrors the Step 3 orphan's Step A
     transported from `↥H` to `↥A`. -/
@@ -158,7 +177,19 @@ theorem prime_dvd_card_of_isPretransitive
     (H : Subgroup (Equiv.Perm (ZMod p)))
     (A : Subgroup H) [MulAction.IsPretransitive A (ZMod p)] :
     p ∣ Nat.card A := by
-  sorry
+  -- Orbit–stabilizer in `Nat.card`/index form (mirrors the registered Step 3
+  -- `sylow_p_is_pcycle` Step A, transported from `↥H` to `↥A`), avoiding the
+  -- `Fintype`-typed orbit-count lemma.
+  have huniv : MulAction.orbit A (0 : ZMod p) = Set.univ :=
+    MulAction.orbit_eq_univ A (0 : ZMod p)
+  have e : ZMod p ≃ A ⧸ MulAction.stabilizer A (0 : ZMod p) :=
+    ((Equiv.Set.univ (ZMod p)).symm.trans (Equiv.setCongr huniv.symm)).trans
+      (MulAction.orbitEquivQuotientStabilizer A (0 : ZMod p))
+  have hidx : (MulAction.stabilizer A (0 : ZMod p)).index = p := by
+    rw [Subgroup.index_eq_card, ← Nat.card_congr e, Nat.card_zmod]
+  have hdvd := Subgroup.index_dvd_card
+    (H := MulAction.stabilizer A (0 : ZMod p))
+  rwa [hidx] at hdvd
 
 /-- **Step 1 (Sylow uniqueness).** Inside a primitive solvable subgroup
     `H ≤ S_p`, the Sylow-`p` subgroup of `H` is unique.
@@ -181,6 +212,68 @@ theorem sylow_p_unique
     (_hPrim : MulAction.IsPreprimitive H (ZMod p))
     (_hSolv : IsSolvable H) :
     Subsingleton (Sylow p H) := by
-  sorry
+  have hp : p.Prime := Fact.out
+  haveI := _hSolv
+  rcases subsingleton_or_nontrivial (H : Type _) with hSub | hNt
+  · -- Trivial `H`: `Subgroup ↥H` is subsingleton, so any two Sylows agree.
+    haveI : Subsingleton (Subgroup H) := Subgroup.subsingleton_iff.mpr hSub
+    exact ⟨fun P Q => Sylow.ext (Subsingleton.elim _ _)⟩
+  · -- Nontrivial `H`: extract a nontrivial abelian characteristic `A ⊴ ↥H`.
+    haveI := hNt
+    obtain ⟨A, hAchar, hAnt, hAcomm⟩ :=
+      exists_nontrivial_isMulComm_characteristic_of_solvable (H : Type _)
+    haveI : A.Characteristic := hAchar
+    haveI : A.Normal := inferInstance
+    haveI : Nontrivial A := hAnt
+    haveI : IsMulCommutative A := hAcomm
+    -- `A` transitive (Lemma B) ⇒ `p ∣ |A|` (Lemma C).
+    haveI : MulAction.IsPretransitive A (ZMod p) :=
+      normalSubgroup_isTransitive_of_nontrivial H _hPrim A hAnt
+    have hpA : p ∣ Nat.card A := prime_dvd_card_of_isPretransitive H A
+    -- `A` abelian ⇒ its Sylow `Q` is normal, hence characteristic, in `↥A`.
+    obtain ⟨Q⟩ := (inferInstance : Nonempty (Sylow p A))
+    have hQnorm : (Q : Subgroup A).Normal := inferInstance
+    haveI : (Q : Subgroup A).Characteristic := Sylow.characteristic_of_normal Q hQnorm
+    -- Transport: `Q.map A.subtype` is normal in `↥H`
+    -- (`ConjAct.normal_of_characteristic_of_normal` instance).
+    have hmapnorm : ((Q : Subgroup A).map A.subtype).Normal := inferInstance
+    -- Cardinalities: `v_p(|H|) = 1`, hence `|Q| = p` and `|Q.map| = p`.
+    have hcard_perm : Nat.card (Equiv.Perm (ZMod p)) = Nat.factorial p := by
+      rw [Nat.card_eq_fintype_card, Fintype.card_perm, ZMod.card]
+    have hHdvd : Nat.card H ∣ Nat.card (Equiv.Perm (ZMod p)) :=
+      Subgroup.card_subgroup_dvd_card H
+    have hAHdvd : Nat.card A ∣ Nat.card H := Subgroup.card_subgroup_dvd_card A
+    have hpH : p ∣ Nat.card H := hpA.trans hAHdvd
+    have hfactH : (Nat.card H).factorization p = 1 := by
+      have hpos : 0 < (Nat.card H).factorization p :=
+        Nat.Prime.factorization_pos_of_dvd hp Nat.card_pos.ne' hpH
+      have hle : (Nat.card H).factorization p
+          ≤ (Nat.card (Equiv.Perm (ZMod p))).factorization p :=
+        (Nat.factorization_le_iff_dvd Nat.card_pos.ne'
+          (by rw [hcard_perm]; exact (Nat.factorial_pos p).ne')).2 hHdvd p
+      rw [hcard_perm, padicValNat_factorial_self hp] at hle
+      omega
+    have hfactA : (Nat.card A).factorization p = 1 := by
+      have hpos : 0 < (Nat.card A).factorization p :=
+        Nat.Prime.factorization_pos_of_dvd hp Nat.card_pos.ne' hpA
+      have hle : (Nat.card A).factorization p ≤ (Nat.card H).factorization p :=
+        (Nat.factorization_le_iff_dvd Nat.card_pos.ne' Nat.card_pos.ne').2 hAHdvd p
+      rw [hfactH] at hle; omega
+    have hcardQ : Nat.card (Q : Subgroup A) = p := by
+      have h := Q.card_eq_multiplicity
+      rw [hfactA, pow_one] at h
+      exact h
+    have hmapcard : Nat.card ((Q : Subgroup A).map A.subtype)
+        = p ^ (Nat.card H).factorization p := by
+      rw [Subgroup.card_map_of_injective (Subgroup.subtype_injective A), hcardQ,
+        hfactH, pow_one]
+    -- Package `Q.map A.subtype` as a normal Sylow of `↥H`, then uniqueness.
+    let P : Sylow p H := Sylow.ofCard ((Q : Subgroup A).map A.subtype) hmapcard
+    have hPnorm : (P : Subgroup H).Normal := by
+      have hcoe : (P : Subgroup H) = (Q : Subgroup A).map A.subtype :=
+        Sylow.coe_ofCard _ hmapcard
+      rw [hcoe]; exact hmapnorm
+    haveI := Sylow.unique_of_normal P hPnorm
+    infer_instance
 
 end AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep1
