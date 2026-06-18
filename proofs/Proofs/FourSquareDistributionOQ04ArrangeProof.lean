@@ -75,6 +75,8 @@ re-verified there, but only a Docker build confirms the routine glue.
 namespace FourSquareDistributionOQ04ArrangeProof
 
 open Finset
+open scoped Nat   -- `n !` factorial notation (scoped under `Nat`)
+open scoped List  -- `l₁ ~ l₂` List.Perm notation (scoped under `List`)
 
 /-- The canonical `Finset` of multiset-arrangements (verbatim from the parent file). -/
 def arrangements {m : ℕ} (s : Multiset ℤ) : Finset (Fin m → ℤ) :=
@@ -204,18 +206,19 @@ theorem arrangements_card_mul_prod_count {m : ℕ} (s : Multiset ℤ)
     rw [map_univ_comp_perm_eq g₀ σ, hg₀map]
   -- every fiber has cardinality `∏count!`
   have hfiber : ∀ h ∈ arrangements (m := m) s,
-      ({σ ∈ (Finset.univ : Finset (Equiv.Perm (Fin m))) |
-          g₀ ∘ (σ : Fin m → Fin m) = h}).card = ∏ v ∈ s.toFinset, (s.count v)! := by
+      ((Finset.univ : Finset (Equiv.Perm (Fin m))).filter
+          (fun σ : Equiv.Perm (Fin m) => g₀ ∘ (σ : Fin m → Fin m) = h)).card
+        = ∏ v ∈ s.toFinset, (s.count v)! := by
     intro h hh
     have hhmap : Multiset.map h (Finset.univ : Finset (Fin m)).val = s :=
       (mem_arrangements_iff s h).mp hh
     obtain ⟨σ₀, hσ₀⟩ := exists_perm_of_map_univ_eq (x := h) (y := g₀)
       (by rw [hhmap, hg₀map])
     -- `hσ₀ : h = g₀ ∘ σ₀`; the fiber over `h` bijects with the stabilizer fiber
-    have hbij : ({σ ∈ (Finset.univ : Finset (Equiv.Perm (Fin m))) |
-            g₀ ∘ (σ : Fin m → Fin m) = h}).card
-        = ({σ ∈ (Finset.univ : Finset (Equiv.Perm (Fin m))) |
-            g₀ ∘ (σ : Fin m → Fin m) = g₀}).card := by
+    have hbij : ((Finset.univ : Finset (Equiv.Perm (Fin m))).filter
+            (fun σ : Equiv.Perm (Fin m) => g₀ ∘ (σ : Fin m → Fin m) = h)).card
+        = ((Finset.univ : Finset (Equiv.Perm (Fin m))).filter
+            (fun σ : Equiv.Perm (Fin m) => g₀ ∘ (σ : Fin m → Fin m) = g₀)).card := by
       apply Finset.card_nbij' (fun σ => σ * σ₀⁻¹) (fun σ => σ * σ₀)
       · intro σ hσ
         simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hσ ⊢
@@ -227,8 +230,8 @@ theorem arrangements_card_mul_prod_count {m : ℕ} (s : Multiset ℤ)
         rw [Equiv.Perm.coe_mul, ← Function.comp_assoc, hσ, ← hσ₀]
       · intro σ _; dsimp only; group
       · intro σ _; dsimp only; group
-    have hconv : ({σ ∈ (Finset.univ : Finset (Equiv.Perm (Fin m))) |
-            g₀ ∘ (σ : Fin m → Fin m) = g₀}).card
+    have hconv : ((Finset.univ : Finset (Equiv.Perm (Fin m))).filter
+            (fun σ : Equiv.Perm (Fin m) => g₀ ∘ (σ : Fin m → Fin m) = g₀)).card
         = Fintype.card {σ : Equiv.Perm (Fin m) // g₀ ∘ (σ : Fin m → Fin m) = g₀} := by
       rw [Fintype.card_subtype]
     rw [hbij, hconv, stabilizer_card_eq_prod_count s hg₀]
