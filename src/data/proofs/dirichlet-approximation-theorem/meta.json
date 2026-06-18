@@ -70,7 +70,8 @@
       "**Pigeonhole on fractional parts**: Q+1 points {0·α}, …, {Q·α} cannot all lie in distinct members of a Q-element partition of [0,1), so two must collide — this single counting fact is the whole theorem",
       "**The collision gives the denominator for free**: if frac(iα) and frac(jα) are close, then (i−j)α is close to the integer ⌊iα⌋ − ⌊jα⌋, so the denominator q = i − j and numerator p emerge directly from the two colliding indices",
       "**Equal floor of Q·frac is the interval predicate**: assigning point j to ⌊Q·frac(jα)⌋ ∈ Fin Q is exactly 'which of the Q sub-intervals does {jα} fall into', turning the geometric pigeonhole into a clean floor computation",
-      "**Floor bracketing replaces interval geometry**: the lemma 'two reals in [0,Q) with equal floor differ by < 1' converts the 'same drawer ⇒ close' step into elementary floor inequalities (⌊x⌋ ≤ x < ⌊x⌋+1), keeping the proof inside ordered-field and floor arithmetic"
+      "**Floor bracketing replaces interval geometry**: the lemma 'two reals in [0,Q) with equal floor differ by < 1' converts the 'same drawer ⇒ close' step into elementary floor inequalities (⌊x⌋ ≤ x < ⌊x⌋+1), keeping the proof inside ordered-field and floor arithmetic",
+      "**The 1/Q bound is dimensionally exact, and the q ≤ Q range is what makes it a theorem about good approximations**: factoring |Q·(frac_i − frac_j)| < 1 down to |frac_i − frac_j| < 1/Q and combining with q = i − j ≤ Q yields |α − p/q| < 1/(qQ) ≤ 1/q², the form that drives the existence of infinitely many rationals with |α − p/q| < 1/q² for irrational α — the launching point for continued fractions and Hurwitz's theorem"
     ],
     "prerequisites": [
       "The floor function and fractional part of a real number",
@@ -105,12 +106,20 @@
       "summary": "`intervalMap : Fin (Q+1) → Fin Q` sends point j to the index of the sub-interval containing {jα}. The Fin Q membership obligation is discharged inline by 0 ≤ Q·frac(jα) < Q."
     },
     {
-      "id": "main-theorem",
-      "title": "Dirichlet's Approximation Theorem",
+      "id": "main-pigeonhole",
+      "title": "Main Theorem: Pigeonhole Collision and the Witnesses p, q",
       "startLine": 67,
+      "endLine": 103,
+      "mathContext": "Collision $\\operatorname{intervalMap}(i)=\\operatorname{intervalMap}(j)$ with $j<i$ gives $q=i-j$, $p=\\lfloor i\\alpha\\rfloor-\\lfloor j\\alpha\\rfloor$, and $q\\alpha-p=\\operatorname{frac}(i\\alpha)-\\operatorname{frac}(j\\alpha)$.",
+      "summary": "`dirichlet_approximation`: since |Fin (Q+1)| > |Fin Q|, `Fintype.exists_ne_map_eq_of_card_lt` forces a collision intervalMap(i) = intervalMap(j) with i ≠ j; `wlog` reduces to j < i. Set q = i − j (so 1 ≤ q ≤ Q from the Fin bounds) and p = ⌊iα⌋ − ⌊jα⌋, and prove the key identity qα − p = frac(iα) − frac(jα) by push_cast/ring."
+    },
+    {
+      "id": "main-bound",
+      "title": "Main Theorem: From Equal Floors to |qα − p| < 1/Q",
+      "startLine": 104,
       "endLine": 140,
-      "mathContext": "$\\exists p\\in\\mathbb{Z},\\ q\\in\\mathbb{N},\\ 1\\le q\\le Q \\wedge |q\\alpha - p| < 1/Q.$",
-      "summary": "`dirichlet_approximation`: applies pigeonhole to intervalMap, reduces to j < i by wlog, extracts q = i − j and p = ⌊iα⌋ − ⌊jα⌋, and bounds |qα − p| = |frac(iα) − frac(jα)| < 1/Q via interval_bound."
+      "mathContext": "$\\lfloor Q\\,\\operatorname{frac}(i\\alpha)\\rfloor = \\lfloor Q\\,\\operatorname{frac}(j\\alpha)\\rfloor \\Rightarrow |Q(\\operatorname{frac}_i-\\operatorname{frac}_j)|<1 \\Rightarrow |q\\alpha-p|<1/Q.$",
+      "summary": "Extract the floor equality ⌊Q·frac(iα)⌋ = ⌊Q·frac(jα)⌋ from the Fin equality (via toNat round-trip), apply interval_bound to the two products in [0,Q) to get |Q·frac(iα) − Q·frac(jα)| < 1, factor out Q (abs_mul, abs_of_pos), and conclude |qα − p| = |frac(iα) − frac(jα)| < 1/Q by lt_div_iff₀ and linarith."
     }
   ],
   "conclusion": {
