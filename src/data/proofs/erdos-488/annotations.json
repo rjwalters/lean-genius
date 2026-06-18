@@ -229,5 +229,149 @@
       "rational absolute value",
       "convergence of sequences"
     ]
+  },
+  {
+    "id": "erdos-488-singleton-count",
+    "proofId": "erdos-488",
+    "type": "technique",
+    "range": {
+      "startLine": 53,
+      "endLine": 101
+    },
+    "title": "Singleton Count $|B\\cap[1,N]| = \\lfloor N/a\\rfloor$ (Proved)",
+    "content": "`singleton_multiplesCount` establishes the exact count for a singleton $A=\\{a\\}$: the number of multiples of $a$ in $[1,N]$ is $\\lfloor N/a\\rfloor$. The proof builds an explicit bijection (`Finset.card_bij`) between `Finset.range (N/a)` and the filtered multiples, via $k\\mapsto(k+1)a$, discharging the forward map, injectivity (cancel $a$), and surjectivity (every multiple $am$ has $m-1$ in range). This exact formula is the computational engine that makes the optimality argument concrete.",
+    "significance": "key",
+    "mathContext": "$|\\{n\\in[1,N]:a\\mid n\\}|=\\lfloor N/a\\rfloor$. Bijection $\\text{range}(N/a)\\to\\{$multiples$\\}$, $k\\mapsto(k+1)a$.",
+    "relatedConcepts": [
+      "Finset.card_bij",
+      "floor division",
+      "counting multiples",
+      "explicit bijection"
+    ],
+    "prerequisites": [
+      "Finset.card_bij",
+      "Nat division",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "erdos-488-monotonicity",
+    "proofId": "erdos-488",
+    "type": "technique",
+    "range": {
+      "startLine": 102,
+      "endLine": 118
+    },
+    "title": "Monotonicity of the Counting Function",
+    "content": "Two structural monotonicities, both proved by `Finset.card_le_card` on the filtered sets: `multiplesCount_mono` shows the count is nondecreasing in the range bound $N$ (a larger interval contains more multiples), and `multiplesCount_subset` shows it is nondecreasing in $A$ (enlarging the divisor set can only add multiples). These are the basic order properties used throughout the density analysis.",
+    "significance": "supporting",
+    "mathContext": "$M\\leq N\\Rightarrow|B(A)\\cap[1,M]|\\leq|B(A)\\cap[1,N]|$; $A\\subseteq B\\Rightarrow|B(A)\\cap[1,N]|\\leq|B(B)\\cap[1,N]|$.",
+    "relatedConcepts": [
+      "monotonicity",
+      "Finset.card_le_card",
+      "subset counting",
+      "order properties"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "card_le_card",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "erdos-488-optimality-proof",
+    "proofId": "erdos-488",
+    "type": "technique",
+    "range": {
+      "startLine": 122,
+      "endLine": 172
+    },
+    "title": "Optimality of the Constant 2 (Proved)",
+    "content": "`constant_2_optimal` proves the constant $2$ in the conjecture cannot be lowered: for any $\\varepsilon>0$ there is a singleton $A=\\{a\\}$ with $n=2a-1$, $m=2a$ whose ratio of densities exceeds $2-\\varepsilon$. Using the singleton count formula, $\\text{count}\\{a\\}(2a)=2$ and $\\text{count}\\{a\\}(2a-1)=1$, so the ratio is $\\frac{2/(2a)}{1/(2a-1)}=\\frac{2a-1}{a}=2-\\frac1a$. Choosing $a>1/\\varepsilon$ makes $1/a<\\varepsilon$, forcing the ratio above $2-\\varepsilon$. The limit $2-1/a\\to2$ shows the bound is sharp.",
+    "significance": "key",
+    "mathContext": "$A=\\{a\\}$, $n=2a-1$, $m=2a$: ratio $=\\frac{2a-1}{a}=2-\\frac1a$. Pick $a>1/\\varepsilon\\Rightarrow2-\\varepsilon<2-\\frac1a$.",
+    "relatedConcepts": [
+      "sharp constant",
+      "Archimedean property",
+      "limit 2-1/a",
+      "singleton_multiplesCount"
+    ],
+    "prerequisites": [
+      "singleton_multiplesCount",
+      "exists_nat_gt",
+      "field_simp"
+    ]
+  },
+  {
+    "id": "erdos-488-periodicity",
+    "proofId": "erdos-488",
+    "type": "technique",
+    "range": {
+      "startLine": 176,
+      "endLine": 209
+    },
+    "title": "Periodicity Machinery for $B(A)$",
+    "content": "The density proof rests on the period $P=\\text{lcm}(A)$. `dvd_add_period_iff` gives $a\\mid n\\iff a\\mid(n+P)$ when $a\\mid P$; `lcm_pos_of_pos` guarantees $P>0$ for positive $A$; `inB_periodic` lifts this to membership in $B(A)$ being $P$-periodic. The step lemma `multiplesCount_succ'` records that extending the range by one increments the count by $0$ or $1$ (a fresh multiple or not), the discrete recurrence underlying the additive periodicity.",
+    "significance": "supporting",
+    "mathContext": "$P=\\text{lcm}(A)>0$. $n\\in B(A)\\iff n+P\\in B(A)$. $\\text{count}(N+1)=\\text{count}(N)+[\\,\\exists a\\in A,a\\mid N+1\\,]$.",
+    "relatedConcepts": [
+      "least common multiple",
+      "periodicity",
+      "divisibility period",
+      "step recurrence"
+    ],
+    "prerequisites": [
+      "Finset.lcm",
+      "Finset.dvd_lcm",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "erdos-488-decomposition",
+    "proofId": "erdos-488",
+    "type": "technique",
+    "range": {
+      "startLine": 211,
+      "endLine": 246
+    },
+    "title": "Additive and Division Decomposition of the Count",
+    "content": "`multiplesCount_add_period` proves the count is additive across a full period: $\\text{count}(N+P)=\\text{count}(N)+\\text{count}(P)$, by induction using the step recurrence and $P$-periodicity. `multiplesCount_div_mod` iterates this into the exact Euclidean decomposition $\\text{count}(N)=\\lfloor N/P\\rfloor\\cdot\\text{count}(P)+\\text{count}(N\\bmod P)$. With the bound $\\text{count}(N)\\leq N$ (`multiplesCount_le`), this expresses the count as a linear term plus a bounded remainder -- exactly what yields a convergent density.",
+    "significance": "key",
+    "mathContext": "$\\text{count}(N+P)=\\text{count}(N)+\\text{count}(P)$; hence $\\text{count}(N)=\\lfloor N/P\\rfloor\\,\\text{count}(P)+\\text{count}(N\\bmod P)$, with $\\text{count}(N)\\leq N$.",
+    "relatedConcepts": [
+      "Euclidean decomposition",
+      "additive periodicity",
+      "quotient-remainder",
+      "bounded remainder"
+    ],
+    "prerequisites": [
+      "multiplesCount_add_period",
+      "Nat.div_add_mod",
+      "induction"
+    ]
+  },
+  {
+    "id": "erdos-488-davenport-density",
+    "proofId": "erdos-488",
+    "type": "insight",
+    "range": {
+      "startLine": 248,
+      "endLine": 322
+    },
+    "title": "Davenport's Density Theorem (Proved)",
+    "content": "`multiplesSet_density_exists` proves that the asymptotic density $\\delta=\\lim_{N\\to\\infty}|B(A)\\cap[1,N]|/N$ exists and equals $\\text{count}(P)/P$ with $P=\\text{lcm}(A)$, satisfying $0<\\delta\\leq1$. The convergence is quantitative: writing $N=qP+r$, the decomposition gives $\\text{ratio}(N)-\\delta=\\frac{dP-rc}{NP}$ with $|dP-rc|\\leq Pr<P^2$, so the error is $O(P/N)$ and drops below any $\\varepsilon$ once $N>P/\\varepsilon$. This is the deepest proved result in the file -- the full Davenport-style density theorem -- even though the main Erdős inequality remains a stated open conjecture (status `wip`).",
+    "significance": "key",
+    "mathContext": "$\\delta=\\text{count}(P)/P$, $P=\\text{lcm}(A)$. Error $|\\text{ratio}(N)-\\delta|=\\frac{|dP-rc|}{NP}\\leq\\frac{P^2}{NP}=\\frac{P}{N}<\\varepsilon$ for $N>P/\\varepsilon$.",
+    "relatedConcepts": [
+      "Davenport density",
+      "asymptotic density",
+      "epsilon-N convergence",
+      "Besicovitch sets of multiples"
+    ],
+    "prerequisites": [
+      "multiplesCount_div_mod",
+      "exists_nat_gt",
+      "nlinarith"
+    ]
   }
 ]
