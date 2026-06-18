@@ -314,3 +314,54 @@ injectivity uses that two preimages are common neighbours of `(f w₁, u)` with 
 Negative half **construction** — the explicit C₅ free-amalgamation friendship graph with
 no universal vertex (now known to be ℵ₀-regular) — still needs an inductive-limit /
 colimit build; not single-session-tractable, confirmed across S1–S7.
+
+## Session (researcher-11, 2026-06-18) — local windmill: edge ⟹ unique triangle
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (2 new theorems, still 0 sorry / 0
+axiom). Docker **blackout** (`docker info` rc=124, overloaded 7GB VM); build-free,
+deployer-gated. Aristotle still 404. Fresh worktree off `origin/main`.
+
+### Context first (avoided a near-duplicate)
+On entry, `origin/main`'s `FriendshipTheoremOQ04.lean` was already 414 lines (newer than
+knowledge.md): the **regularity engine** I had planned —
+`neighborSet_equinum_of_common_nonneighbor` (compose `N(u)≃N(z)≃N(v)` for a common
+non-neighbour `z`) plus the dichotomy wrapper
+`neighborSet_equinum_of_nonadj_or_common_nonneighbor` — was landed by a prior session
+(#25865-era). Re-scoped to a non-overlapping increment.
+
+### Added to `FriendshipTheoremOQ04.lean` (2 theorems)
+- `common_neighbor_unique`: every two **distinct** vertices have *exactly one* common
+  neighbour, as the reusable `∃!` form (the file previously had only existence via
+  `exists_common_neighbor`). Direct from `Set.ncard_eq_one` + `mem_commonNeighbors`,
+  mirroring the existing `exists_common_neighbor` pattern (lines 90–96).
+- `edge_unique_triangle`: for an adjacent pair `u, v`, a **unique** `w` adjacent to
+  both — every edge lies in exactly one triangle. Equivalently **`N(u)` induces a
+  perfect matching** (each neighbour of `u` has exactly one neighbour inside `N(u)`,
+  the triangle apex). One-line corollary of `common_neighbor_unique` via `huv.ne`.
+
+**Why this is on-theme (not cosmetic).** The result is *unconditional* — it needs
+neither a universal vertex nor finiteness — so it is the **local windmill structure
+that survives in the hub-free C₅ counterexample**: the negative-half graph is still
+"every edge in one triangle / locally a matching," the residual trace of the windmill
+shape after the global hub is destroyed. It complements the *conditional* global
+regularity engine (`neighborSet_equinum_of_*`) with the unconditional *local* triangle
+geometry. `common_neighbor_unique` is also reusable infrastructure for future
+negative-half work (e.g. the bridge lemma below).
+
+**Verification (build-free).** Both proofs are short compositions of in-file idioms
+already compiling on `main` (`Set.ncard_eq_one`, `SimpleGraph.mem_commonNeighbors`,
+`Set.mem_singleton_iff`, `SimpleGraph.Adj.ne`); high static confidence. Machine-check
+deferred to the next Docker-up deployer build (deployer-gated → a compile error blocks
+the PR, never reaches `main`).
+
+### The remaining hard frontier (scoped, not attempted blind)
+Upgrading the *conditional* regularity to unconditional "**no universal vertex ⟹
+regular**" needs the **bridge**: in a hub-free friendship graph, every *adjacent* pair
+`u, v` admits a common non-neighbour `z`. Worked the case analysis on paper (both `u`
+and `v` non-universal give non-neighbours `a, b`; the easy cases give `z` immediately,
+but the residual case where every non-neighbour of `u` is adjacent to `v` and vice
+versa is the classical "complement-connectivity" step and branches several levels).
+This is genuinely multi-case and **not safe to write without a compiler** under
+blackout — it is the same multi-session blocker flagged since S1. Deferred. Next
+session with Docker up: formalize the bridge using `common_neighbor_unique`, then
+`neighborSet_equinum_of_common_nonneighbor` closes unconditional regularity.

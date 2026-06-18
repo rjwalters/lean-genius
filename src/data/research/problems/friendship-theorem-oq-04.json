@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S, build-verified): added the adjacent-pair regularity step (neighborSet_equinum_of_common_nonneighbor + neighborSet_equinum_of_nonadj_or_common_nonneighbor) — composing the two non-adjacent bijections N(u)≃N(z)≃N(v) extends 'equal neighbourhoods' from non-adjacent pairs to adjacent pairs sharing a common non-neighbour, the missing step toward full regularity of a hub-free friendship graph. Docker green (7745 jobs). Positive (windmill) + hub-uniqueness halves complete; negative half now needs only existence of a common non-neighbour for adjacent pairs (finite-counting classically) + the C5 amalgam construction.",
+    "progressSummary": "PROGRESS: local windmill (edge=>unique triangle, N(u) perfect matching) added unconditionally; conditional global regularity engine already present; remaining = bridge lemma (multi-case, compiler-gated) + C5 negative-half construction",
     "builtItems": [
       "research/problems/friendship-theorem-oq-04/verify_infinite_friendship.py: certifies linear-invariant preservation across 4 amalgamation rounds (|V| up to 3695, max common-nbrs stays 1), no universal vertex, degree blow-up [4,5,13,83], diameter-2 covering on W_1..W_8, and covering bound |V|<=1+deg(v)+sum deg(x) on W_1..W_13.",
       "proofs/Proofs/FriendshipTheoremOQ04.lean: ACT formalization (build-pending, unregistered under dual blackout). Fintype-free IsFriendshipGraph + 6 theorems.",
@@ -39,7 +39,9 @@
       "locally_finite_friendship_has_universal (:117): capstone — restores universal vertex by bridging Finite->Fintype (Fintype.ofFinite) and applying the finite FriendshipTheorem.friendship_theorem with card>=3 from three distinct vertices.",
       "Added import Proofs.FriendshipTheoremOQ04 to proofs/Proofs.lean (manifest registration → file now in the machine-checked build set, deployer-gated)",
       "universal_noncentral_neighborSet + universal_noncentral_ncard_two in FriendshipTheoremOQ04.lean — finiteness-free infinite windmill structure (N(u)={c,w}, ncard=2)",
-      "proofs/Proofs/FriendshipTheoremOQ04.lean (380-413): neighborSet_equinum_of_common_nonneighbor — two vertices sharing a common non-neighbour z have equinumerous neighbourhoods via N(u)≃N(z)≃N(v) (Set.BijOn.comp of two nonadjacent_neighborSet_equinum bijections); neighborSet_equinum_of_nonadj_or_common_nonneighbor — unified dichotomy. 414L/18thm/0ax/0sorry, Docker green 7745 jobs (researcher-10, 2026-06-18)."
+      "proofs/Proofs/FriendshipTheoremOQ04.lean (380-413): neighborSet_equinum_of_common_nonneighbor — two vertices sharing a common non-neighbour z have equinumerous neighbourhoods via N(u)≃N(z)≃N(v) (Set.BijOn.comp of two nonadjacent_neighborSet_equinum bijections); neighborSet_equinum_of_nonadj_or_common_nonneighbor — unified dichotomy. 414L/18thm/0ax/0sorry, Docker green 7745 jobs (researcher-10, 2026-06-18).",
+      "common_neighbor_unique (FriendshipTheoremOQ04.lean): reusable EXISTS-UNIQUE common neighbour for any distinct pair (upgrades exists_common_neighbor existence-only)",
+      "edge_unique_triangle (FriendshipTheoremOQ04.lean): unique triangle per edge / N(u) perfect matching, one-line corollary via huv.ne"
     ],
     "insights": [
       "Theorem FAILS for infinite graphs: C5 free-amalgamation (Chvatal-Kotzig-Rosenberg-Davies 1976) yields a countable friendship graph with no universal vertex; all vertices have infinite degree.",
@@ -51,7 +53,8 @@
       "Bridge technique: my Fintype-free IsFriendshipGraph is DEFINITIONALLY equal to FriendshipTheorem.IsFriendshipGraph (both = forall u v, u!=v -> (commonNeighbors).ncard=1), so the lambda (fun u v h => hF u v h) coerces between them with no rewriting.",
       "Registered FriendshipTheoremOQ04.lean in proofs/Proofs.lean (was the only Friendship sibling absent from the import manifest, so its 8 theorems / 0 sorry / 0 axiom were inspection-only, never machine-checked). Re-verified call convention: friendship_theorem takes G explicitly (variable (G : SimpleGraph V) at FriendshipTheorem.lean:112; internal caller line 232 uses friendship_theorem G hF h), so the capstone call form is sound.",
       "The finite friendship_noncentral_degree (G.degree u = 2) is Fintype-bound; the underlying set equality N(u)={c,w} needs no finiteness and holds on infinite friendship graphs with a universal vertex — the recovered graph is a genuine (infinite) windmill",
-      "Adjacent-pair regularity is finiteness-free GIVEN a common non-neighbour: route N(u)≃N(z)≃N(v) through z adjacent to neither (Set.BijOn.comp). This bridges the gap nonadjacent_neighborSet_equinum leaves (it needs u,v themselves non-adjacent). The only remaining open ingredient for full ℵ₀-regularity of a hub-free friendship graph is the EXISTENCE of a common non-neighbour for an adjacent pair — established by counting in the finite proof, genuinely open on the infinite side."
+      "Adjacent-pair regularity is finiteness-free GIVEN a common non-neighbour: route N(u)≃N(z)≃N(v) through z adjacent to neither (Set.BijOn.comp). This bridges the gap nonadjacent_neighborSet_equinum leaves (it needs u,v themselves non-adjacent). The only remaining open ingredient for full ℵ₀-regularity of a hub-free friendship graph is the EXISTENCE of a common non-neighbour for an adjacent pair — established by counting in the finite proof, genuinely open on the infinite side.",
+      "edge_unique_triangle: every edge of a friendship graph lies in a UNIQUE triangle, equivalently N(u) induces a perfect matching — the LOCAL windmill structure, holds unconditionally (no universal vertex, no finiteness), so it survives in the hub-free C5 counterexample"
     ],
     "mathlibGaps": [
       "No infinite/analytic spectral analogue: ERS spectral step needs finite adjacency matrix trace + finite eigenvalue multiplicities (Mathlib adjMatrix trace is Fintype-bound). Infinite side must avoid it entirely (use diameter-2 covering instead)."
@@ -59,7 +62,8 @@
     "nextSteps": [
       "NEGATIVE half: prove existence of a common non-neighbour for any adjacent pair in a hub-free friendship graph (the last input to full regularity via neighborSet_equinum_of_common_nonneighbor); classically a finite-counting argument, open infinitely.",
       "Lower-confidence lemma names to confirm at build: Set.finite_univ_iff, Set.univ_eq_empty_iff, Set.Finite.biUnion arity, Set.mem_biUnion.",
-      "Optional: formalize the C5-free-amalgamation infinite counterexample (the negative direction) — harder, needs an inductive/colimit construction of the vertex type."
+      "Optional: formalize the C5-free-amalgamation infinite counterexample (the negative direction) — harder, needs an inductive/colimit construction of the vertex type.",
+      "Bridge lemma (Docker-up, compiler-needed): hub-free friendship graph has a common non-neighbour for every adjacent pair -> unconditional no-universal-implies-regular, via common_neighbor_unique + neighborSet_equinum_of_common_nonneighbor"
     ],
     "markdown": "# Knowledge Base: friendship-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
