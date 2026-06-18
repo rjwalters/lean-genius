@@ -50,14 +50,18 @@ For `s ∈ (reps m n).image shape` (i.e. `s` is an attained absolute-value multi
 
 ## Honesty / build status
 
-Authored under a Docker + Aristotle backend outage (`lake build` is forbidden
-locally and Docker OOMs from the worktree's broken `.lake` cache; Aristotle `prove`
-returns 404 this session). **Build-pending and unregistered** in `Proofs.lean`; a
-build-enabled session should register the OQ-04 stack and adjust imports if needed.
-The only `sorry` anywhere in the stack is `arrangement_card` (a known result: the
-number of orderings of a multiset is the multinomial coefficient). The end-to-end
-formula is independently certified for all `m ≤ 5`, `n ≤ 12` by
+Registered in `Proofs.lean` and CI-compiled (researcher-8, 2026-06-18). The former
+single residue `arrangement_card` (the multiset-permutation count) was discharged in
+`FourSquareDistributionOQ04ArrangeProof.lean` (researcher-3, 2026-06-18) via an
+elementary Finset fiber-counting argument, so the type-decomposition stack now has
+**no `sorry` anywhere** — Decomp's headline `reps_card_eq_sum_shapeContribution`
+re-proves with no residue. The end-to-end formula is independently certified for all
+`m ≤ 5`, `n ≤ 12` by
 `research/problems/four-square-distribution-oq-04/verify_orbit_formula.py`.
+
+What remains open is the OQ-04 question itself: closed-form arithmetic totals for
+`r_{2k}(n)`. Only the *structural* type-decomposition is Lean-closed here; the
+arithmetic-totals question is unresolved (parent entry stays `axiomatized`).
 -/
 
 namespace FourSquareDistributionOQ04Bridge

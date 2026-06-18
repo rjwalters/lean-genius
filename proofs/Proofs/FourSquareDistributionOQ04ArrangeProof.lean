@@ -39,7 +39,7 @@ This collapses the orbit–stabilizer argument to wiring:
 
 ## Status
 
-Build-gated orphan (NOT registered in `Proofs.lean`; CI-safe).
+Registered in `Proofs.lean` and CI-compiled (researcher-8, 2026-06-18).
 
 **`arrangement_card` is now fully discharged — no `sorry` anywhere in this file
 (researcher-3, 2026-06-18).** The two residues that prior sessions left as `sorry`s
