@@ -62,7 +62,7 @@ theorem multinomialProb_nonneg {α : Type*} [DecidableEq α]
     0 ≤ multinomialProb s p n k := by
   unfold multinomialProb
   apply mul_nonneg
-  · exact Nat.cast_nonneg
+  · exact Nat.cast_nonneg _
   · exact Finset.prod_nonneg (fun i hi => pow_nonneg (hp i hi) _)
 
 /-! ## Part 2: Normalization via the Multinomial Theorem -/
@@ -152,7 +152,6 @@ theorem multinomial_is_binomial (p : ℝ) (n : ℕ) :
         (fun b => if b then p else 1 - p) n k = 1 := by
   apply multinomialProb_sum_eq_one
   simp [Finset.sum_pair Bool.false_ne_true]
-  ring
 
 /-- **Binomial normalization from multinomial**: The sum of binomial probabilities
 ∑_{j=0}^{n} C(n,j) · p^j · (1-p)^{n-j} = ((1-p) + p)^n = 1
@@ -211,8 +210,9 @@ theorem multinomial_mean {α : Type*} [DecidableEq α]
     have hrw : ∀ j ∈ s, (if j = i then Real.exp t else 1) ^ k j
         = (if j = i then Real.exp (t * k i) else 1) := by
       intro j _
-      split with h
-      · subst h; rw [← Real.exp_nat_mul, mul_comm]
+      split
+      · rename_i h
+        subst h; rw [← Real.exp_nat_mul, mul_comm]
       · exact one_pow _
     rw [Finset.prod_congr rfl hrw,
       Finset.prod_ite_eq' s i (fun _ => Real.exp (t * k i)), if_pos hi]
@@ -241,8 +241,10 @@ theorem multinomial_mean {α : Type*} [DecidableEq α]
   have hR : HasDerivAt
       (fun t : ℝ => ∑ k ∈ s.piAntidiag n, multinomialProb s p n k * Real.exp (t * k i))
       (∑ k ∈ s.piAntidiag n, multinomialProb s p n k * (k i : ℝ)) 0 := by
-    apply HasDerivAt.sum
-    intro k _
+    rw [show (fun t : ℝ => ∑ k ∈ s.piAntidiag n, multinomialProb s p n k * Real.exp (t * k i))
+        = ∑ k ∈ s.piAntidiag n, fun t : ℝ => multinomialProb s p n k * Real.exp (t * k i) by
+      funext t; rw [Finset.sum_apply]]
+    refine HasDerivAt.sum (fun k _ => ?_)
     have hinner : HasDerivAt (fun t : ℝ => Real.exp (t * (k i : ℝ))) ((k i : ℝ)) 0 := by
       have hmul : HasDerivAt (fun t : ℝ => t * (k i : ℝ)) ((k i : ℝ)) 0 := by
         simpa using (hasDerivAt_id (0 : ℝ)).mul_const ((k i : ℝ))
@@ -256,7 +258,15 @@ theorem multinomial_mean {α : Type*} [DecidableEq α]
   rw [hfun] at hL
   exact (hL.unique hR).symm
 
-/-! ## Part 6b: Second Moment and Variance via the Second MGF Derivative -/
+/-! ## Part 6b: Second Moment and Variance via the Second MGF Derivative
+
+The variance `Var(Xᵢ) = n·pᵢ(1 - pᵢ)` is also established in
+`Proofs.BinomialTheoremOQ02OQ01OQ04` by a *fiber-grouping* argument (reducing to the
+binomial marginal of `Xᵢ`). The derivation below is the complementary **moment-generating
+function** route — the canonical textbook method, originally proposed in the OQ04 notes —
+which keeps the entire moment story (normalization → MGF → mean → variance) inside this
+single file and, as a byproduct, yields the *closed form* second moment
+`E[Xᵢ²] = n² pᵢ² + n pᵢ(1 - pᵢ)` (the OQ04 statement stops at `∑ⱼ j² · binomPMF n pᵢ j`). -/
 
 /-- **MGF exponential identity** (single coordinate). Specializing the weight to
 `g j = exp t` when `j = i` and `g j = 1` otherwise, `multinomial_mgf_real` gives, for
@@ -285,8 +295,9 @@ theorem multinomial_mgf_exp {α : Type*} [DecidableEq α]
     have hrw : ∀ j ∈ s, (if j = i then Real.exp t else 1) ^ k j
         = (if j = i then Real.exp (t * k i) else 1) := by
       intro j _
-      split with h
-      · subst h; rw [← Real.exp_nat_mul, mul_comm]
+      split
+      · rename_i h
+        subst h; rw [← Real.exp_nat_mul, mul_comm]
       · exact one_pow _
     rw [Finset.prod_congr rfl hrw,
       Finset.prod_ite_eq' s i (fun _ => Real.exp (t * k i)), if_pos hi]
@@ -326,8 +337,10 @@ theorem multinomial_second_moment {α : Type*} [DecidableEq α]
       (∑ k ∈ s.piAntidiag n,
         multinomialProb s p n k * ((k i : ℝ) * Real.exp (t * (k i : ℝ)))) t := by
     intro t
-    apply HasDerivAt.sum
-    intro k _
+    rw [show (fun t : ℝ => ∑ k ∈ s.piAntidiag n, multinomialProb s p n k * Real.exp (t * k i))
+        = ∑ k ∈ s.piAntidiag n, fun t : ℝ => multinomialProb s p n k * Real.exp (t * k i) by
+      funext t; rw [Finset.sum_apply]]
+    refine HasDerivAt.sum (fun k _ => ?_)
     have hinner : HasDerivAt (fun t : ℝ => Real.exp (t * (k i : ℝ)))
         ((k i : ℝ) * Real.exp (t * (k i : ℝ))) t := by
       have hmul : HasDerivAt (fun t : ℝ => t * (k i : ℝ)) ((k i : ℝ)) t := by
@@ -352,8 +365,12 @@ theorem multinomial_second_moment {α : Type*} [DecidableEq α]
       (fun t : ℝ => ∑ k ∈ s.piAntidiag n,
         multinomialProb s p n k * ((k i : ℝ) * Real.exp (t * (k i : ℝ))))
       (∑ k ∈ s.piAntidiag n, multinomialProb s p n k * (k i : ℝ) ^ 2) 0 := by
-    apply HasDerivAt.sum
-    intro k _
+    rw [show (fun t : ℝ => ∑ k ∈ s.piAntidiag n,
+          multinomialProb s p n k * ((k i : ℝ) * Real.exp (t * (k i : ℝ))))
+        = ∑ k ∈ s.piAntidiag n, fun t : ℝ =>
+          multinomialProb s p n k * ((k i : ℝ) * Real.exp (t * (k i : ℝ))) by
+      funext t; rw [Finset.sum_apply]]
+    refine HasDerivAt.sum (fun k _ => ?_)
     have hinner : HasDerivAt (fun t : ℝ => (k i : ℝ) * Real.exp (t * (k i : ℝ)))
         ((k i : ℝ) ^ 2) 0 := by
       have hbase : HasDerivAt (fun t : ℝ => Real.exp (t * (k i : ℝ)))
