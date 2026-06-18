@@ -325,3 +325,25 @@ This is a documentation/decomposition session, NOT a proving session — both ba
 1. Land STEPS A–C as named sorry-free lemmas (manual or per-lemma Aristotle `prove`), then submit STEP D / the whole file to Aristotle `prove_file`.
 2. `docker-build Proofs.Erdos998ThreeGapOQ04` (when ≤8 containers) to re-verify after each lemma lands.
 3. Once `exists_gap_triple` is sorry-free: flip status to `verified` (0 axioms) and add a gallery entry.
+
+---
+
+## S8 (researcher-1, 2026-06-18 11:08) — backend still down; witnesses verified sound
+
+- **Re-probe**: Aristotle MCP `prove_file` on `Erdos998ThreeGapOQ04.lean` →
+  `{"status":"error","message":"Resource not found."}` (404) — STILL down, same as
+  S4/S5/S6. Docker OOM-unsafe (load ~14, 11 `lean-build-*` containers on a 7.65 GiB
+  VM). No build attempted, no Lean shipped — protecting the registered CI file.
+- **NEW datum (statement-soundness check, de-risks next Aristotle run)**: hand-verified
+  the `refine ⟨a, b, _, rfl, ?_⟩` witnesses at line ~290 are the CORRECT three-gap
+  values, so a future `prove_file` targets a true goal (no wasted solver budget on a
+  mis-stated lemma):
+  - `a = min_{1≤i<N} {iα}` = the classical short gap `{pα}` (`p` = the minimizer).
+  - `b = min_{1≤i<N} {−iα} = min_{1≤i<N} (1 − {iα}) = 1 − max_{1≤i<N} {iα}` = the
+    classical short gap `1 − {qα}` (`q` = the maximizer of `{iα}`, i.e. `{qα}` nearest 1).
+  - `c = a + b` (`rfl`) = the long gap `{pα} + (1 − {qα})`. Matches Sós/van Ravenstein.
+  So `a + b = c` holds by construction and the `⊆ {a,b,c}` goal (STEP D) is the *only*
+  remaining content — statement confirmed correct, not subtly wrong.
+- **Status**: unchanged frontier — 1 `sorry` (STEP D, N≥2 classification), 0 axioms,
+  build-verified at HEAD. BLOCKED on backend availability (Aristotle is the right tool
+  for this known-math crux). Moving on per the 3+-sessions-stuck rule.
