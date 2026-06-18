@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DivisibilityRules.lean",
     "tags": [
       "number-theory",
@@ -15,11 +15,11 @@
       "elementary-number-theory",
       "digit-sum"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "axiomCount": 1,
+    "assumptions": "Relies on Lean.ofReduceBool: many core named theorems discharge load-bearing facts via native_decide. The coprime-factorization rules (six_dvd_iff, twelve_dvd_iff, fifteen_dvd_iff, eighteen_dvd_iff, thirty_dvd_iff) prove their Nat.Coprime side conditions by native_decide; the digit-sum rules (div_by_3, div_by_9, seven_dvd_octal, three_dvd_hex, five_dvd_hex, fifteen_dvd_hex, three_dvd_base7, two_dvd_base7, six_dvd_base7) discharge the b % d = 1 hypothesis by native_decide; and the digital-root value theorems (digitalRoot_nine, digitalRoot_one, digitalRoot_123, digitalRoot_999, digitalRoot_100) are proved entirely by native_decide. native_decide trusts the compiler kernel and so #print axioms lists Lean.ofReduceBool. No literal axiom declarations and no sorries (leanFile.axiomCount = 0).",
     "lineCount": 392,
     "theoremCount": 38,
     "definitionCount": 3,
