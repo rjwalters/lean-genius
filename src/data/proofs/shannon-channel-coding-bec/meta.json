@@ -63,5 +63,125 @@
             "Erasure is symmetric in the input symbol, so the capacity-achieving input is still uniform Bernoulli(1/2), exactly as for the BSC.",
             "Capacity in bits is simply 1 - p: a clean operational reading as the surviving fraction of transmissions."
         ]
-    }
+    },
+    "sections": [
+        {
+            "id": "bec-channel",
+            "title": "The Binary Erasure Channel BEC(p)",
+            "startLine": 49,
+            "endLine": 72,
+            "description": "Defines bec : DMChannel Bool (Option Bool) where none is the erasure symbol: W x none = p and W x (some y) = (1 - p)·[x = y]. The simp lemmas bec_W_none / bec_W_some expose the transition probabilities, and the channel laws (non-negativity, rows sum to one) are discharged for 0 ≤ p ≤ 1.",
+            "summary": "Defines the BEC as a discrete memoryless channel from Bool to Option Bool, with each bit erased independently with probability p."
+        },
+        {
+            "id": "output-marginals",
+            "title": "Output Marginals",
+            "startLine": 74,
+            "endLine": 91,
+            "description": "Computes the output distribution induced by an arbitrary input. bec_ymarg_none: the erasure output has marginal p regardless of the input; bec_ymarg_some: each un-erased symbol y has marginal inp.p y · (1 - p).",
+            "summary": "The erasure output has probability p for every input; each un-erased symbol y has marginal p(y)·(1 - p)."
+        },
+        {
+            "id": "erasure-identity",
+            "title": "The Erasure Identity H(X|Y) = p · H(X)",
+            "startLine": 93,
+            "endLine": 163,
+            "description": "The engine of the proof (bec_conditional_entropy). For any input distribution the un-erased summands vanish — off-diagonal joints are 0 and on the diagonal the conditional probability is 1 (log 1 = 0) — leaving only the erasure term, which reproduces the input entropy scaled by p.",
+            "summary": "Proves that conditioning on the output leaves residual input uncertainty p·H(X): zero when the symbol arrives, full H(X) when erased."
+        },
+        {
+            "id": "mutual-information",
+            "title": "Mutual Information I(X;Y) = (1 - p) · H(X)",
+            "startLine": 165,
+            "endLine": 185,
+            "description": "bec_mi_eq derives the mutual information from the chain rule I = H(X) - H(X|Y) and the erasure identity, holding for every input distribution.",
+            "summary": "Immediate from the chain rule and the erasure identity: I(X;Y) = (1 - p)·H(X)."
+        },
+        {
+            "id": "achievability-converse",
+            "title": "Achievability and Converse",
+            "startLine": 186,
+            "endLine": 202,
+            "description": "bec_uniform_mi shows the uniform Bernoulli(1/2) input achieves I(X;Y) = (1 - p)·log 2 (since H(X) = log 2); bec_mi_le gives the matching converse I(X;Y) ≤ (1 - p)·log 2 for every input via H(X) ≤ log 2.",
+            "summary": "The uniform input attains (1 - p)·log 2, and the entropy bound H(X) ≤ log 2 caps every input at the same value."
+        },
+        {
+            "id": "capacity",
+            "title": "BEC Capacity = (1 - p) · log 2",
+            "startLine": 204,
+            "endLine": 227,
+            "description": "bec_capacity identifies the supremum of mutual information: the converse bounds it above and the uniform input meets the bound, so the capacity equals (1 - p)·log 2. bec_capacity_bits divides by log 2 to read the capacity as 1 - p bits.",
+            "summary": "Capacity is pinned to (1 - p)·log 2 nats, equivalently 1 - p bits — the surviving fraction of transmissions."
+        },
+        {
+            "id": "corollaries",
+            "title": "Corollaries: Non-negativity and the One-bit Ceiling",
+            "startLine": 229,
+            "endLine": 243,
+            "description": "bec_capacity_nonneg shows the capacity is ≥ 0, and bec_capacity_le_log_two bounds it above by log 2 (one bit), with equality only in the noiseless limit p → 0.",
+            "summary": "The capacity sits in [0, log 2]: never negative, never above one bit, approaching one bit as p → 0."
+        }
+    ],
+    "crossReferences": [
+        {
+            "targetId": "shannon-channel-coding",
+            "relationship": "extends",
+            "description": "Built on the parent's DMChannel / InputDist / capacity (csSup) framework; supplies a concrete from-first-principles capacity for one of the two canonical channels."
+        },
+        {
+            "targetId": "shannon-channel-coding-oq-02",
+            "relationship": "sibling",
+            "description": "Companion capacity proof for the binary symmetric channel C(BSC(p)) = log 2 - h(p); reuses uniformBool and entropy_uniform_bool from the BSC development. Together the BEC and BSC are the two canonical discrete memoryless channels."
+        },
+        {
+            "targetId": "shannon-entropy",
+            "relationship": "uses",
+            "description": "Built on the Shannon entropy, conditional entropy, and mutual information definitions that the erasure identity and chain-rule step rely on."
+        }
+    ],
+    "conclusion": {
+        "summary": "This formalization proves the binary erasure channel capacity C(BEC(p)) = (1 - p)·log 2 nats (= 1 - p bits) entirely from first principles, introducing no new axioms and no sorries. The whole argument turns on a single identity, H(X|Y) = p·H(X), which holds for every input distribution; the chain rule then gives I(X;Y) = (1 - p)·H(X), the entropy bound H(X) ≤ log 2 supplies the converse, and the uniform Bernoulli(1/2) input meets it. Three axioms from the parent ShannonChannelCoding.lean (channel_coding_achievability, channel_coding_converse, bsc_capacity_eq) remain in scope via import but are not invoked by the BEC result.",
+        "implications": "The BEC is the canonical model of packet loss and the foundational channel for erasure coding: its capacity 1 - p bits is the benchmark that maximum-distance-separable, fountain (LT, Raptor), and random linear network codes approach. Because the BEC is not weakly symmetric, the parent's symmetric-channel machinery does not apply, so this entry demonstrates that the erasure identity is an independent route to a capacity formula. Paired with the BSC capacity proof, it completes the two textbook discrete memoryless channels from a single shared Mathlib-backed framework.",
+        "openQuestions": [
+            "Generalize the erasure identity and capacity to the q-ary erasure channel, where C = (1 - p)·log q.",
+            "Establish an operational coding theorem for the BEC (e.g. via random linear codes and the peeling decoder), connecting the information-theoretic supremum proved here to achievable rates through the parent's channel_coding_achievability.",
+            "Formalize the converse for the BEC operationally via Fano's inequality, discharging it against the parent's channel_coding_converse axiom.",
+            "Extend to channels with both erasures and errors (the binary error-and-erasure channel) and recover the BEC and BSC as boundary cases."
+        ]
+    },
+    "mainTheorems": [
+        {
+            "name": "bec_capacity",
+            "type": "core",
+            "description": "The capacity of BEC(p) equals (1 - p)·log 2 for 0 < p < 1.",
+            "leanType": "channelCapacity (bec p ..) = (1 - p) * Real.log 2"
+        },
+        {
+            "name": "bec_conditional_entropy",
+            "type": "core",
+            "description": "The erasure identity H(X|Y) = p·H(X) holding for any input distribution — the engine of the proof.",
+            "leanType": "conditionalEntropy (bec p ..) inp = p * inputEntropy inp"
+        },
+        {
+            "name": "bec_mi_eq",
+            "type": "supporting",
+            "description": "Mutual information I(X;Y) = (1 - p)·H(X) for any input, via the chain rule and the erasure identity.",
+            "leanType": "mutualInformation (bec p ..) inp = (1 - p) * inputEntropy inp"
+        },
+        {
+            "name": "bec_capacity_bits",
+            "type": "corollary",
+            "description": "Capacity in bits: C₂(BEC(p)) = 1 - p.",
+            "leanType": "channelCapacity (bec p ..) / Real.log 2 = 1 - p"
+        }
+    ],
+    "leanFile": {
+        "axiomCount": 0,
+        "lineCount": 243,
+        "path": "Proofs/ShannonChannelCodingBEC.lean",
+        "sorries": 0,
+        "definitionCount": 1,
+        "theoremCount": 12
+    },
+    "sorries": 0
 }
