@@ -2,10 +2,10 @@
   "id": "erdos-1054-construction-d",
   "title": "Erdős #1054 Construction D: Prime Square Representability",
   "slug": "erdos-1054-construction-d",
-  "description": "For Erdős #1054, proves that 1+p+p² is representable for every prime p (divisors of p² are {1,p,p²}, partial sum = 1+p+p²). Verifies constructions for p=2,3,5,7,11,13. Also proves p+1 is representable via p² witness and Mersenne number representability. 26 theorems, 0 sorries, 0 axioms.",
+  "description": "For Erdős #1054, proves that 1+p+p² is representable for every prime p (divisors of p² are {1,p,p²}, partial sum = 1+p+p²). Verifies constructions for p=2,3,5,7,11,13. Also proves p+1 is representable via p² witness and Mersenne number representability. 26 theorems, 0 sorries. The concrete witness verifications (constr_d_*, mersenne_repr_*, f_mersenne_bound_*) are discharged by native_decide, which depends on the Lean.ofReduceBool axiom.",
   "meta": {
     "author": "Lean Genius Erdos1054ConstructionD",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1054ConstructionD.lean",
     "tags": [
       "number-theory",
@@ -14,12 +14,12 @@
       "prime-powers",
       "representability"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 250,
     "theoremCount": 26,
-    "assumptions": "None. All 26 theorems proved.",
+    "assumptions": "The general theorems (prime_sq_sum_representable, one_plus_p_via_sq, f_bound_prime_sq, and the divisor-structure lemmas) are axiom-free. However, the concrete representability witnesses — constr_d_2..13, the nine mersenne_repr_* theorems, and the f_mersenne_bound_* theorems — are discharged by native_decide. native_decide trusts the Lean compiler's kernel reduction and depends on the Lean.ofReduceBool axiom, so these results are not axiom-free. axiomCount=1 reflects Lean.ofReduceBool; there are no literal `axiom` declarations in the source (leanFile.axiomCount=0).",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -86,7 +86,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Construction D for Erdős #1054 fully formalized: 26 theorems, 0 sorries, 0 axioms. Prime square representability verified for all primes and concretely for p=2,3,5,7,11,13.",
+    "summary": "Construction D for Erdős #1054 fully formalized: 26 theorems, 0 sorries. Prime square representability is proved symbolically for all primes (prime_sq_sum_representable, axiom-free); the concrete instances p=2,3,5,7,11,13 and the Mersenne family are verified via native_decide, which depends on the Lean.ofReduceBool axiom.",
     "implications": "Construction D gives an infinite family of representable numbers (1+p+p² for all primes p) with explicit witnesses (p²). Combined with OQ-01 (p+1 representable) and OQ-02 (1+q+p representable), these constructions cover a dense set of values.",
     "openQuestions": [
       "Do all natural numbers have the form 1+p+p² or 1+q+p or p+1 for some primes p, q?",
