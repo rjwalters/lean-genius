@@ -113,7 +113,9 @@
   "conclusion": {
     "summary": "The σ-finite Radon–Nikodym theorem and the general Lebesgue decomposition are assembled from Mathlib's HaveLebesgueDecomposition theory: existence of a measurable density, the canonical Radon–Nikodym derivative as witness, the integral characterization ∫⁻_s (dμ/dν) dν = μ s, ν-a.e. uniqueness, and the decomposition μ = μ.singularPart ν + ν.withDensity (dμ/dν). A calculus of densities is then derived: the chain rule (dμ/dν)·(dν/dλ) = dμ/dλ (λ-a.e.), the self-derivative dμ/dμ = 1 (μ-a.e.), and the reciprocal relation (dμ/dν)·(dν/dμ) = 1 (μ-a.e.) for μ ≪ ν. Finally the density's basic regularity (finiteness, positivity, pointwise inverse) and the identification of conditional expectation E[f|m] with a signed Radon–Nikodym derivative (Mathlib's rnDeriv_ae_eq_condExp) round out the package.",
     "openQuestions": [
-      "Extend the reciprocal relation to a full inverse-density statement under mutual absolute continuity (μ ≪ ν and ν ≪ μ), and derive the change-of-variables formula ∫ f dμ = ∫ f·(dμ/dν) dν for integrable f."
+      "Extend the reciprocal relation to a full inverse-density statement under mutual absolute continuity (μ ≪ ν and ν ≪ μ), showing dν/dμ = (dμ/dν)⁻¹ holds ν-a.e. as well as μ-a.e.",
+      "Derive the change-of-variables (integration-by-density) formula ∫ g dμ = ∫ g·(dμ/dν) dν for ν-integrable g, the Lebesgue-integral companion to the ∫⁻ identity already proved here.",
+      "Quantify the necessity of σ-finiteness: exhibit the standard counterexample (counting measure dominating Lebesgue measure on [0,1] admits no density) and characterize the weaker localizable/decomposable hypotheses under which a Radon–Nikodym derivative still exists."
     ],
     "implications": "The Radon–Nikodym derivative underlies conditional expectation, probability densities, likelihood ratios in statistics, and the change-of-measure formulas (Girsanov) of stochastic analysis. Stating the σ-finite package cleanly makes these downstream uses directly citable in the gallery."
   },
@@ -122,6 +124,16 @@
       "targetId": "lebesgue-measure",
       "relationship": "parent-problem",
       "description": "Develops the density theory (Radon–Nikodym derivative) attached to the Lebesgue measure formalization"
+    },
+    {
+      "proofId": "fundamental-theorem-calculus",
+      "relationship": "generalizes",
+      "description": "The Radon–Nikodym derivative dμ/dν is the measure-theoretic generalization of the FTC's pointwise derivative: just as the Fundamental Theorem of Calculus recovers an integrand from the derivative of its integral (d/dx ∫ₐˣ f = f) and integrates a derivative back (∫ₐᵇ F' = F(b)−F(a)), the integral characterization ∫⁻_s (dμ/dν) dν = μ s proved here recovers the measure μ from integrating its density against ν. Specializing ν to Lebesgue measure on ℝ makes dμ/dν the classical density f with μ(s) = ∫_s f, the abstract form of FTC for absolutely continuous measures."
+    },
+    {
+      "proofId": "lebesgue-measure-oq-03",
+      "relationship": "related",
+      "description": "Infinite-Dimensional Measure Theory shows that no translation-invariant σ-finite measure exists on an infinite-dimensional space, forcing Gaussian/Wiener substitutes. It probes the same structural hypothesis — σ-finiteness — that this entry depends on: the σ-finite Radon–Nikodym theorem (and the third open question's counterexample) is exactly where σ-finiteness becomes load-bearing, so the two entries together map both the reach and the failure boundary of σ-finite measure theory."
     }
   ],
   "references": [
