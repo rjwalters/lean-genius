@@ -421,3 +421,52 @@ a new construction + Lean proof + Docker build — NOT attempted this session (b
 
 ### Blackout this session
 `docker run --rm alpine echo` rc=124 (daemon hung, ~9 stuck sibling builds); Aristotle `prove` 404.
+
+## Session 2026-06-18 (Session 8, researcher-1, ORIENT — small exact g(n) + 2-D frontier negative result)
+
+**Mode:** REVISIT / ORIENT. **Blackout:** Docker down (`docker info` times out, 0
+containers — daemon hung), so NO new Lean shipped (writing unverified Lean = the
+build-pending churn anti-pattern prior sessions fell into). Contribution is a
+deterministic, exact-integer **computational ORIENT** of the one genuinely OPEN
+elementary frontier this slug has left: *can an explicit 2-D family beat ⌈n/2⌉ for
+all n?* The Lean program is COMPLETE and verified on main (`Erdos653Problem.lean`:
+0 sorries / 2 deep cited axioms `csizmadia_bound`,`upper_bound`; `Erdos653LowerBound.lean`:
+0 axioms / 0 sorries / `g_ge_half` proved). No Lean re-attempted — confirmed via
+`git show origin/main`.
+
+**New durable artifact:** `verify_g_small_values.py` (exact integer squared-distance
+arithmetic, no float/RNG/Date; deterministic; ALL CHECKS PASS). Findings:
+
+- **(F1) Certified exact small values.** Grid search reaches the proven UB `n-1`
+  for n=2,3,4, **pinning g(2)=1, g(3)=2, g(4)=3 exactly** (lower bound = upper bound).
+  These are concrete exact values of g, not previously recorded here.
+- **(F2) Small-n lower bounds.** Irregular integer-grid configs certify
+  **g(6)≥4, g(7)≥5, g(8)≥5** (each beats ⌈n/2⌉ by exactly 1). But **g(5) is stuck at
+  3 = ⌈5/2⌉ on grids up to 7×7** (UB is 4) — a genuine small-n irregularity (whether
+  g(5)=3 or 4 needs a non-grid/irrational config or a proof; integer grids do not
+  certify >3).
+- **(F3) NEGATIVE structural result (the useful one).** The two *natural parametric*
+  2-D generalizations of the collinear line — **two parallel rows** and **two
+  columns** (all splits a+b=n, gaps 1..3) — **only TIE ⌈n/2⌉; neither beats it for any
+  n=4..12.** So the elementary improvement beyond ⌈n/2⌉ **cannot** come from the
+  obvious row/column generalization of the collinear construction; the sporadic
+  small-n beats (F2) require genuinely IRREGULAR point sets. This sharpens S2's
+  finding 4b ("2-D beats it at small n") into *why* no closed-form 2-D family beating
+  ⌈n/2⌉ is known: the clean families top out exactly at the 1-D optimum.
+- **(F4) Sidon byproduct.** Points on a parabola (all pairwise distances distinct →
+  every point sees n-1 distinct distances) give **D=1** — a second minimal-diversity
+  configuration alongside the regular n-gon (D=1 there too).
+
+**Strategic consequence for any future ACT.** A formalizable elementary lower bound
+beating ⌈n/2⌉ must be built from an *irregular* family, NOT a 2-row/2-column pattern
+(those are now ruled out empirically). The collinear `g_ge_half` therefore remains the
+best *clean closed-form* elementary lower bound, and Csizmadia's 0.7n (axiomatized,
+needs absent incidence machinery) stays the frontier. No closed-form irregular family
+with a provable uniform `D(n) > ⌈n/2⌉` is exhibited here — that remains the OPEN
+elementary question.
+
+**Honest assessment:** modest ORIENT, no new mathematics proven and no Lean (Docker
+down). Value = exact small values g(2..4), certified small-n lower bounds, and a clean
+negative result (natural 2-D families tie, don't beat ⌈n/2⌉) that explains the
+difficulty of the open elementary improvement and steers future work away from a dead
+end. The OQ `g(n) ≥ (1-o(1))n` is OPEN and untouched.
