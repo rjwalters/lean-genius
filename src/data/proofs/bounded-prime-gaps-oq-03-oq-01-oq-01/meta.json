@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-17",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean",
     "tags": [
       "number-theory",
@@ -15,11 +15,11 @@
       "combinatorics",
       "prime-constellations"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-06-17",
-    "axiomCount": 0,
-    "assumptions": "None beyond Mathlib. Fully machine-verified, 0 sorries, 0 axiom declarations. The witness card/diameter checks in minAdmissibleDiameter_5 use native_decide (closed-term Lean.ofReduceBool kernel reduction); the load-bearing lower bound admissible_5tuple_diam_ge_12 is native_decide-free and fully symbolic. Reuses the verified admissible_quintuple_0_2_6_8_12 witness from BoundedPrimeGaps.lean.",
+    "axiomCount": 1,
+    "assumptions": "Lean.ofReduceBool (via native_decide), 0 sorries, 0 literal axiom declarations. The headline equality minAdmissibleDiameter_5 : minAdmissibleDiameter 5 = 12 proves achievability by discharging the witness card/diameter checks with native_decide, so its #print axioms includes Lean.ofReduceBool (closed-term kernel reduction). The lower bound admissible_5tuple_diam_ge_12 is itself native_decide-free and fully symbolic, but the presented D(5)=12 result depends on the native_decide upper bound. Reuses the verified admissible_quintuple_0_2_6_8_12 witness from BoundedPrimeGaps.lean.",
     "lineCount": 198,
     "theoremCount": 3,
     "definitionCount": 0,
