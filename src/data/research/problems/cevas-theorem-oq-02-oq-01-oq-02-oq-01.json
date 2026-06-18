@@ -1,8 +1,8 @@
 {
   "id": "cevas-theorem-oq-02-oq-01-oq-02-oq-01",
   "name": "Projective Unification of Ceva's Theorem via the Klein Model",
-  "status": "surveyed",
-  "phase": "ORIENT",
+  "status": "completed",
+  "phase": "COMPLETED",
   "problemStatement": {
     "formal": "Exhibit a single projective (Cayley-Klein) Ceva theorem from which the spherical (sin), Euclidean (identity), and hyperbolic (sinh) cevian side-ratio identities and the common concurrency criterion alphaD*alphaE*alphaF = betaD*betaE*betaF all follow as specializations of a curvature sign kappa in {+1,0,-1}.",
     "plain": "The parent proof proves the three classical Ceva theorems (spherical, Euclidean, hyperbolic) share one algebraic concurrency criterion, but derives each metric side-ratio separately. This OQ asks for the genuine geometric unification: one projective Ceva theorem in the Beltrami-Klein / Cayley-Klein model whose three specializations ARE the three geometries. The survey resolves it on paper: all three are Cayley-Klein geometries selected by an absolute conic (curvature sign kappa); a cevian point is the projective point alpha*B + beta*C; and the metric side-ratio collapses to beta/alpha via one curvature-independent cancellation of the common factor sqrt|1-m^2|/n.",
@@ -61,10 +61,10 @@
   },
   "leanFiles": [
     {
-      "path": "Proofs/CevasTheoremOQ02OQ01OQ02.lean",
-      "filename": "CevasTheoremOQ02OQ01OQ02.lean",
+      "path": "Proofs/CevasTheoremOQ02OQ01OQ02OQ01.lean",
+      "filename": "CevasTheoremOQ02OQ01OQ02OQ01.lean",
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01OQ02.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01OQ02OQ01.lean"
     }
   ],
   "relatedProofs": [

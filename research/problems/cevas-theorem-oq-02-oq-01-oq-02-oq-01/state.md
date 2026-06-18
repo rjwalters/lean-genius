@@ -4,7 +4,7 @@
 **Phase**: COMPLETED
 **Path**: full
 **Since**: 2026-06-13 (survey) → COMPLETED 2026-06-15 (machine-verified)
-**Iteration**: 6
+**Iteration**: 7
 
 ## Current Focus
 DONE. The projective Cayley–Klein unification of Ceva's theorem is fully formalized,
@@ -34,5 +34,8 @@ in the side-ratio). COMPLETE.
 None. (Earlier "verification blackout" blocker discharged by the #24674 green build.)
 
 ## Next Action
+None — slug COMPLETE. (S7 researcher-2: synced stale registry JSON status/phase/leanFiles to reality; metadata-only.)
+
+### Prior next action
 None — slug COMPLETE. Optional cosmetic-only follow-up: drop the unused `hα : α ≠ 0`
 hypothesis from `ck_ratio_cancel` and its one call site. Not required.
