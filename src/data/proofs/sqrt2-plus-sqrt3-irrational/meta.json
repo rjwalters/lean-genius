@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Sqrt2PlusSqrt3Irrational.lean",
     "tags": [
       "irrationality",
@@ -14,11 +14,11 @@
       "square-roots",
       "number-theory"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Uses Mathlib's irrational_sqrt_natCast_iff and native_decide for ¬IsSquare 6.",
+    "axiomCount": 1,
+    "assumptions": "Depends on Lean.ofReduceBool: the main theorem irrational_sqrt2_plus_sqrt3 derives the irrationality of √6 via irrational_sqrt_six, which discharges ¬IsSquare 6 with native_decide (kernel compiler reduction). Also uses Mathlib's irrational_sqrt_natCast_iff. No literal axiom declarations (leanFile.axiomCount = 0).",
     "lineCount": 54,
     "theoremCount": 3,
     "definitionCount": 0,
