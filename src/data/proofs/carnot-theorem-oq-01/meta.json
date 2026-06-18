@@ -61,26 +61,34 @@
   },
   "sections": [
     {
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 31,
+      "description": "import Mathlib, the module docstring deriving the angle form cos A + cos B + cos C = 1 + r/R from the signed-distance statement and Euler's inradius formula r/R = 4 sin(A/2) sin(B/2) sin(C/2), and `open Real` / `namespace CarnotTheorem`.",
+      "summary": "Imports and module docstring",
+      "id": "header"
+    },
+    {
       "title": "Double-angle helper",
-      "startLine": 39,
-      "endLine": 43,
-      "description": "The sin-form double-angle identity cos(2x) = 1 - 2 sin²x, derived from Mathlib's cos_two_mul' and the Pythagorean identity.",
+      "startLine": 33,
+      "endLine": 36,
+      "description": "The private helper cos_two_mul_sin: the sin-form double-angle identity cos(2x) = 1 - 2 sin²x, derived from Mathlib's Real.cos_two_mul' and the Pythagorean identity Real.cos_sq_add_sin_sq.",
       "summary": "Double-angle helper",
       "id": "double-angle-helper"
     },
     {
       "title": "Carnot's Theorem — angle form",
-      "startLine": 45,
-      "endLine": 72,
-      "description": "The main identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2). Express sin(C/2) via A/2, B/2 using C/2 = π/2 - (A/2 + B/2); rewrite each cosine in 1 - 2 sin² form; close by linear_combination modulo the Pythagorean identities.",
+      "startLine": 38,
+      "endLine": 62,
+      "description": "The main theorem carnot_cos_sum (docstring 38-44, proof 45-62): cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2). Express sin(C/2) via A/2, B/2 using C/2 = π/2 - (A/2 + B/2); rewrite each cosine in 1 - 2 sin² form; close by a single linear_combination modulo the Pythagorean identities.",
       "summary": "Carnot's Theorem — angle form",
       "id": "carnot-theorem-angle-form"
     },
     {
       "title": "Fundamental triangle cosine identity",
-      "startLine": 74,
-      "endLine": 81,
-      "description": "The companion polynomial identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1, via cos C = -cos(A+B) and a linear_combination.",
+      "startLine": 64,
+      "endLine": 79,
+      "description": "The companion theorem carnot_cos_sq_sum (docstring 64-70, proof 71-79): cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1, via cos C = -cos(A+B) and a linear_combination of the Pythagorean identities for A and B.",
       "summary": "Fundamental triangle cosine identity",
       "id": "fundamental-triangle-cosine-identity"
     }
