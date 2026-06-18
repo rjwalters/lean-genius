@@ -51,11 +51,11 @@
       "EventuallyGreedy: formal definition of the eventually greedy property",
       "EventuallyGreedySet: the measurable set of eventually greedy numbers",
       "kovac_theorem: measure(EventuallyGreedySet) = 0",
-      "curtiss_theorem: x = 1 is eventually greedy",
-      "erdos_unit_fractions: x = 1/m is eventually greedy for all positive m",
-      "nathanson_theorem: a/b is greedy when a | b+1",
-      "chu_extension: broader sufficient condition extending Nathanson",
-      "non_greedy_at_step_two: the 11/24 counterexample at finite steps",
+      "curtiss_theorem: axiomatized — x = 1 is eventually greedy",
+      "erdos_unit_fractions: axiomatized — x = 1/m is eventually greedy for all positive m",
+      "validDenominators: positivity predicate for Egyptian fraction denominators",
+      "all_rationals_eventually_greedy: formal statement of the open 'all rationals' question",
+      "explicit_nongreedy_example_exists: formal statement of the open construction question",
       "erdos_206_summary: combined theorem with answer and positive results",
       "sylvesterStep: Sylvester's greedy algorithm step function"
     ],
@@ -89,57 +89,57 @@
       "id": "definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 52,
-      "endLine": 82,
+      "endLine": 70,
       "summary": "Egyptian fractions, valid denominators, R_n(x) axiomatization with properties.",
       "mathContext": "Axiomatized: Egyptian fractions, valid denominators, R_n(x) axiomatization with properties."
     },
     {
       "id": "greedy-property",
       "title": "Part II: The Greedy Property",
-      "startLine": 83,
-      "endLine": 99,
+      "startLine": 71,
+      "endLine": 87,
       "summary": "EventuallyGreedy definition and EventuallyGreedySet.",
       "mathContext": "Formal definition: EventuallyGreedy definition and EventuallyGreedySet."
     },
     {
       "id": "positive-results",
       "title": "Part III: Positive Results",
-      "startLine": 100,
-      "endLine": 124,
-      "summary": "Curtiss, Erdős, Nathanson, and Chu theorems for specific classes.",
-      "mathContext": "Verified: Curtiss, Erdős, Nathanson, and Chu theorems for specific classes."
+      "startLine": 88,
+      "endLine": 99,
+      "summary": "Curtiss (x=1) and Erdős (x=1/m) results, stated as axioms. Nathanson (2023) and Chu (2023) extensions are documented in the background but not formalized as declarations.",
+      "mathContext": "Axiomatized: curtiss_theorem and erdos_unit_fractions. Nathanson/Chu results referenced in prose only."
     },
     {
       "id": "kovac-main",
       "title": "Part IV: Kovač's Theorem",
-      "startLine": 125,
-      "endLine": 148,
+      "startLine": 100,
+      "endLine": 118,
       "summary": "The main result: measure(EventuallyGreedySet) = 0.",
       "mathContext": "Mathematical content: The main result: measure(EventuallyGreedySet) = 0."
     },
     {
       "id": "open-questions",
       "title": "Part V: Open Questions",
-      "startLine": 149,
-      "endLine": 165,
+      "startLine": 119,
+      "endLine": 135,
       "summary": "All rationals? Explicit non-greedy example?",
       "mathContext": "Mathematical content: All rationals? Explicit non-greedy example?"
     },
     {
       "id": "counterexample",
       "title": "Part VI: Special Cases and Counterexample",
-      "startLine": 166,
-      "endLine": 181,
+      "startLine": 136,
+      "endLine": 146,
       "summary": "The 11/24 non-greedy-at-step-two example.",
       "mathContext": "Mathematical content: The 11/24 non-greedy-at-step-two example."
     },
     {
       "id": "egyptian-fractions",
-      "title": "Part VII: Egyptian Fractions",
-      "startLine": 182,
+      "title": "Part VII–VIII: Egyptian Fractions and Summary",
+      "startLine": 147,
       "endLine": 194,
-      "summary": "Existence theorem and Sylvester's greedy algorithm.",
-      "mathContext": "Verified: Existence theorem and Sylvester's greedy algorithm."
+      "summary": "Sylvester's greedy algorithm step (sylvesterStep) and the combined summary theorems (erdos_206_summary, erdos_206).",
+      "mathContext": "sylvesterStep definition plus summary theorems combining the negative answer with the axiomatized positive cases."
     }
   ],
   "conclusion": {
