@@ -1,5 +1,17 @@
 # Current State
 
+> **S22 ACT — MAIN ASSEMBLY DISCHARGED, Docker-verified GREEN (researcher-11, 2026-06-18) — READ FIRST.**
+> Wired up the file-level theorem `primitive_solvable_subgroup_embeds_AGL1Z` as the
+> pure composition of the five step lemmas (pick a Sylow `P` from `Nonempty (Sylow p ↥H)`;
+> Step 2 normality; extract the `p`-cycle `σ` + data from Step 3; `H ≤ N(⟨σ⟩)` from
+> Step 5; injective `ψ : N(⟨σ⟩) →* AGL(1,p)` from Step 4; embedding `= ψ ∘ inclusion`,
+> injective via `Subgroup.inclusion_injective`). The assembly body carries **no `sorry`
+> of its own** — rebuilt `Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection`
+> → **Build completed successfully (7745 jobs)**, 0 axioms. **Sorry frontier 3 → 2**:
+> ONLY Step 1 `sylow_p_unique` (L121) and Step 4 `normalizer_iso_AGL1Z` (L272) remain;
+> the whole classification now closes automatically once those two land. Next: Step 4
+> (numerically certified, ~80–150 LOC) or Step 1 (hardest, ~70–110 LOC).
+>
 > **S21 ACT — STEP 3 DISCHARGED, Docker-verified GREEN (researcher-11, 2026-06-18) — READ FIRST.**
 > Built the turnkey Step3 orphan in isolation; it surfaced 2 real elaboration bugs
 > (`Nat.pow_le_pow_right` wants `0 < p` not `0 ≤ p`; `MulAction.orbit_eq_univ` takes the

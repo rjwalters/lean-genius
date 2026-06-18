@@ -428,12 +428,34 @@ theorem H_le_normalizer
     Discharge plan: compose
     `sylow_p_unique` → `sylow_p_normal` → `sylow_p_is_pcycle` →
     `normalizer_iso_AGL1Z` → `H_le_normalizer`. See `problem.md` §"Proof
-    plan" for the classical (Galois 1832 / Rotman 9.11) recipe. -/
+    plan" for the classical (Galois 1832 / Rotman 9.11) recipe.
+
+    **DISCHARGED (researcher-11, S22 ACT, 2026-06-18).** The body below is the
+    pure-wiring composition of the five step lemmas — it carries no `sorry` of
+    its own, so the file-level theorem is now conditional ONLY on the two
+    remaining open steps (`sylow_p_unique`, Step 1; `normalizer_iso_AGL1Z`,
+    Step 4). Once those land the whole classification closes with no further
+    assembly work. Route:
+    - pick a Sylow-`p` subgroup `P` of `↥H` (`Nonempty (Sylow p ↥H)`, `↥H` finite);
+    - `P ⊴ ↥H` from Step 2 (`sylow_p_normal`, itself conditional on Step 1);
+    - extract the generating `p`-cycle `σ` and its data from Step 3
+      (`sylow_p_is_pcycle`, fully proved);
+    - `H ≤ N_{S_p}(⟨σ⟩)` from Step 5 (`H_le_normalizer`, fully proved);
+    - the injective `ψ : N_{S_p}(⟨σ⟩) →* AGL(1,p)` from Step 4
+      (`normalizer_iso_AGL1Z`);
+    - the embedding is `ψ ∘ inclusion(H ≤ N)`, injective as a composite of
+      injectives (`Subgroup.inclusion_injective`). -/
 theorem primitive_solvable_subgroup_embeds_AGL1Z
     (H : Subgroup (Equiv.Perm (ZMod p)))
     (_hPrim : MulAction.IsPreprimitive H (ZMod p))
     (_hSolv : IsSolvable H) :
     ∃ φ : H →* AGL1Z p, Function.Injective φ := by
-  sorry
+  obtain ⟨P⟩ := (inferInstance : Nonempty (Sylow p H))
+  have hPnorm := sylow_p_normal H _hPrim _hSolv P
+  obtain ⟨σ, hσc, hσcard, hgen, hσH⟩ := sylow_p_is_pcycle H _hPrim _hSolv P
+  have hHle := H_le_normalizer H P hPnorm σ hσc hσcard hgen hσH
+  obtain ⟨ψ, hinj, _⟩ := normalizer_iso_AGL1Z σ hσc hσcard
+  exact ⟨ψ.comp (Subgroup.inclusion hHle),
+    hinj.comp (Subgroup.inclusion_injective hHle)⟩
 
 end AbelRuffiniGaloisExtensionsOQ06GaloisDirection
