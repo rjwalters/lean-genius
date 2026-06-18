@@ -49,10 +49,17 @@
     },
     {
       "id": "binomial-variance-all",
-      "title": "Binomial mean and variance for all n",
+      "title": "Binomial variance for all n",
       "startLine": 49,
+      "endLine": 62,
+      "summary": "The private helper binomial_variance_all extends the binomial variance E[X²] − (E[X])² = n·p(1 − p) to every n. BinomialTheoremOQ03.binomial_variance requires 2 ≤ n; the degenerate cases n = 0 (variance 0) and n = 1 (a single Bernoulli trial, variance p(1 − p)) are discharged directly by simp/ring, while n ≥ 2 delegates to the parent lemma. This all-n form is what lets the diagonal hold for every sample size, including the degenerate ones the off-diagonal lemma never has to face."
+    },
+    {
+      "id": "binomial-mean-all-n",
+      "title": "Mean of the marginal, for all n",
+      "startLine": 63,
       "endLine": 70,
-      "summary": "Two private helpers extend the binomial facts to every n: binomial_variance_all case-splits on n ∈ {0, 1, ≥2}, handling the degenerate cases by simp/ring and delegating n ≥ 2 to BinomialTheoremOQ03.binomial_variance; binomial_mean_all_n similarly extends the binomial mean (which requires n ≥ 1) to n = 0."
+      "summary": "The private helper binomial_mean_all_n extends the binomial mean ∑ⱼ j·binomPMF(n, q, j) = n·q — which BinomialTheoremOQ03.binomial_mean states only for n ≥ 1 — to n = 0, discharged by simp. The main theorem needs this all-n mean to re-express (n·pᵢ)² as (∑ⱼ j·binomPMF)² before invoking binomial_variance_all, so the variance subtraction E[Xᵢ²] − (E[Xᵢ])² lines up with the binomial form exactly."
     },
     {
       "id": "second-moment",
