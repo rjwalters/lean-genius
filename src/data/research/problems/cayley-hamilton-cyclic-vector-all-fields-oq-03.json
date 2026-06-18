@@ -32,14 +32,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S7, researcher-2): Both directions (a) operator and (b) PID are DONE+REGISTERED (PR #25497/#25552, 0/0). Identified the remaining genuine gap: the OQ03 headline operator theorem was FORWARD-ONLY. Wrote the CONVERSE companion CayleyHamiltonCyclicVectorAllFieldsOQ03Converse.lean (span_cyclic_implies_nonderogatoryOp + the iff nonderogatoryOp_iff_exists_span_cyclic), proof fully name-audited vs pin 2df2f0150c using the registered cyclicSubspace_le_minpoly_degree + minpoly∣charpoly degree bound. Docker too contended this session (10 lean-build containers, ~6.7/7.65GiB) to build politely — background watcher /tmp/r2-oq03converse-build.sh builds when host frees up; UNREGISTERED so cannot break fleet. NEXT: on GREEN, register + flip gallery to verified iff.",
+    "progressSummary": "PROGRESS: OQ-03 conceptual core written — Bridge file (CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge.lean, 0 sorry / 0 axiom) links operator theorem (a) to PID/module criterion (b), capstone krylov_cyclic_iff_equiv_quot_minpoly. REGISTER-READY (not yet built/registered): every Mathlib bearer (Module.AEval'.{of,X_pow_smul_of,C_smul}, Polynomial.span_minpoly_eq_annihilator, Submodule.{restrictScalars_eq_top_iff,map_span,map_eq_top_iff,quotEquivOfEq}, Module.End.smul_def) audited against pinned rev v4.26.0, plus the PID-companion lemma cyclic_iff_nonempty_equiv_quotient_annihilator — no missing/ambiguous bearer found. UNREGISTERED in Proofs.lean and absent from gallery counts so it cannot break the fleet build; docker build + registration deferred to an uncontended host (13 lean-build containers, ~6.4/8.2 GiB docker VM this session). NEXT: docker-build Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge on a quiet host -> register -> add Bridge to gallery counts/contributions.",
     "builtItems": [
       "operator_nonderogatory_has_cyclic_vector in CayleyHamiltonCyclicVectorAllFieldsOQ03.lean: nonderogatory operator (minpoly natDegree = finrank) has a cyclic vector",
       "matrix_nonderog_of_minpoly_natDegree: (minpoly K M).natDegree = n implies minpoly = charpoly (monic-cofactor argument on minpoly | charpoly)",
       "toMatrix_mulVec_repr: basis-transport bridge (toMatrix b b f).mulVec (b.repr x) = b.repr (f x), proved from LinearMap.toMatrix_apply",
       "IsCyclicVectorOp / IsNonderogatoryOp: coordinate-free operator definitions",
       "span_cyclic_implies_nonderogatoryOp in CayleyHamiltonCyclicVectorAllFieldsOQ03Converse.lean: cyclicSubspace T v = ⊤ ⟹ (minpoly K T).natDegree = finrank K V (the missing converse)",
-      "nonderogatoryOp_iff_exists_span_cyclic in same file: the full headline biconditional T nonderogatory ↔ ∃ span-cyclic vector"
+      "nonderogatoryOp_iff_exists_span_cyclic in same file: the full headline biconditional T nonderogatory ↔ ∃ span-cyclic vector",
+      "Created CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge.lean (133L, 0 sorry / 0 axiom): the operator-to-K[X]-module bridge connecting OQ-03 direction (a) (operator theorem) and direction (b) (PID/module criterion)",
+      "restrictScalars_span_singleton_eq_span_orbit: K-restriction of K[X] span of w = K-span of {X^n smul w} (Polynomial.induction_on'/monomial expansion)",
+      "aeval_cyclic_iff_krylov_span_top: cyclic generator for Module.AEval' T exists iff some v has Krylov orbit {T^n v} spanning V over K",
+      "krylov_cyclic_iff_equiv_quot_minpoly (capstone): T has a Krylov cyclic vector iff V is K[X]-linearly isomorphic to K[X] quotient (minpoly K T) — cyclic-vector theorem recognized as the PID structure theorem"
     ],
     "insights": [
       "The minimal polynomial transports verbatim from operator to matrix via the algebra isomorphism toMatrixAlgEquiv b and minpoly.algEquiv_eq, so the nonderogatory hypothesis needs no separate matrix-side proof.",
@@ -48,7 +52,8 @@
       "minpoly degree = n upgrades to minpoly = charpoly purely formally (monic cofactor of degree 0 = 1); no spectral input needed.",
       "CONVERSE (cyclic ⟹ nonderogatory) was never proved at the operator level — the OQ03 headline file is FORWARD-only (operator_nonderogatory_has_cyclic_vector / _span_cyclic_vector). The biconditional was incomplete until this session.",
       "The registered infra lemma NonderogatoryModule.cyclicSubspace_le_minpoly_degree (CayleyHamiltonMinpolyOQ05OQ01OQ03.lean:243) is exactly the orbit-containment fact needed: for k ≥ d=(minpoly).natDegree, T^k v ∈ span{T^i v : i<d}. This collapses the converse to a dimension count.",
-      "Converse name-audit vs pinned mathlib 2df2f0150c: IsIntegral.of_finite K T (End K V is a finite K-algebra); finrank_range_le_card (Dimension/Constructions.lean:453) for finrank(span(range))≤card; finrank_top (Finrank.lean:139); LinearMap.minpoly_dvd_charpoly + LinearMap.charpoly_natDegree (Charpoly/Basic.lean:99,78) give d≤finrank."
+      "Converse name-audit vs pinned mathlib 2df2f0150c: IsIntegral.of_finite K T (End K V is a finite K-algebra); finrank_range_le_card (Dimension/Constructions.lean:453) for finrank(span(range))≤card; finrank_top (Finrank.lean:139); LinearMap.minpoly_dvd_charpoly + LinearMap.charpoly_natDegree (Charpoly/Basic.lean:99,78) give d≤finrank.",
+      "Viewing V as Module.AEval' T (X acts as T) turns operator cyclicity into module cyclicity; Mathlib Polynomial.span_minpoly_eq_annihilator identifies the annihilator with the minpoly ideal, so the abstract PID criterion specializes verbatim to K[X] quotient (minpoly K T)"
     ],
     "mathlibGaps": [
       "No Mathlib lemma directly gives the operator-level nonderogatory-implies-cyclic statement; it must be assembled by basis reduction (done here).",
