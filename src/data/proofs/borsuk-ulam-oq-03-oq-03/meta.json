@@ -2,7 +2,7 @@
   "id": "borsuk-ulam-oq-03-oq-03",
   "title": "Constructive 2D Borsuk-Ulam via Tucker's Lemma",
   "slug": "borsuk-ulam-oq-03-oq-03",
-  "description": "The 2D Borsuk-Ulam theorem can be proved combinatorially via Tucker's 2D lemma, avoiding algebraic topology. Tucker's lemma is verified computationally for the 5-vertex triangulated disk (64 labelings) and the 9-vertex grid triangulation (1024 labelings). The logical chain Tucker 2D → approximate BU → exact BU is formalized. BU for linear maps is proved algebraically via rank-nullity.",
+  "description": "The 2D Borsuk-Ulam theorem can be proved combinatorially via Tucker's 2D lemma, avoiding algebraic topology. Tucker's 2D lemma is stated as a single axiom (tucker_2d_grid) — the combinatorial path-following result for the triangulated grid — from which the logical chain Tucker 2D → approximate BU → exact BU is fully formalized. BU for linear maps is proved algebraically via rank-nullity.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Tucker%27s_lemma",
@@ -41,8 +41,7 @@
     ],
     "originalContributions": [
       "Tucker label type with negation involution and complementarity (4-element {+/-1, +/-2})",
-      "Tucker's 2D lemma for 5-vertex triangulated disk (64 cases, decide)",
-      "Tucker's 2D lemma for 9-vertex grid triangulation (1024 cases, native_decide)",
+      "Tucker's 1D lemma proved (tucker_1d); Tucker's 2D lemma stated as a single axiom (tucker_2d_grid)",
       "Boundary parity theorem: even number of complementary boundary edges",
       "Tucker labeling scheme for continuous maps (dominant coordinate encoding)",
       "Tucker 2D implies BU 2D (logical chain with axiomatized analysis steps)",
@@ -51,10 +50,9 @@
     ],
     "dateAdded": "2026-03-06",
     "mathlib_version": "4.26.0",
-    "axioms": 2,
+    "axioms": 1,
     "axiomDetails": [
-      "tuckers_lemma: Deep combinatorial lemma (path-following in simplicial complexes)",
-      "tucker_disk_approx_zero: Grid Fintype bridge (all analytical content proved, only boilerplate remains)"
+      "tucker_2d_grid: Tucker's 2D combinatorial lemma for the triangulated grid — an antipodally-labeled boundary forces an interior complementary edge (path-following in the simplicial complex). The earlier overly-general `tuckers_lemma` axiom was removed as unsound; `tucker_disk_approx_zero` is now proved from this axiom (tucker_disk_approx_zero_proved)."
     ],
     "axiomCount": 1,
     "lineCount": 2633,
@@ -65,8 +63,8 @@
   "overview": {
     "historicalContext": "Tucker's lemma (1946) is the combinatorial analog of the Borsuk-Ulam theorem. While BU states that every continuous map from S^n to R^n has an antipodal pair, Tucker's lemma states that every antipodally-labeled triangulation of the disk has a complementary edge. The connection: discretize a continuous map via Tucker labeling, apply Tucker's lemma to find complementary edges, take limits to get exact antipodal pairs. This provides a constructive/combinatorial proof of BU, avoiding algebraic topology (degree theory, homology).",
     "problemStatement": "Can the 2D Borsuk-Ulam theorem be proved constructively using Tucker's lemma instead of algebraic topology? We formalize the key combinatorial ingredient (Tucker 2D) and the logical reduction to BU.",
-    "text": "The 2D Borsuk-Ulam theorem can be proved combinatorially via Tucker's 2D lemma, avoiding algebraic topology. Tucker's lemma is verified computationally for the 5-vertex triangulated disk (64 labelings) and the 9-vertex grid triangulation (1024 labelings). The logical chain Tucker 2D → approximate BU → exact BU is formalized. BU for linear maps is proved algebraically via rank-nullity.",
-    "proofStrategy": "1. Define Tucker labels {-2,-1,+1,+2} with negation and complementarity. 2. Verify Tucker's 2D lemma computationally for specific triangulations (5-vertex, 9-vertex). 3. State the general Tucker 2D lemma (axiom). 4. Build the logical chain: Tucker 2D -> approximate BU -> exact BU. 5. Prove BU for linear maps algebraically as an alternative.",
+    "text": "The 2D Borsuk-Ulam theorem can be proved combinatorially via Tucker's 2D lemma, avoiding algebraic topology. Tucker's 2D lemma is stated as a single axiom (tucker_2d_grid) — the combinatorial path-following result for the triangulated grid — from which the logical chain Tucker 2D → approximate BU → exact BU is fully formalized. BU for linear maps is proved algebraically via rank-nullity.",
+    "proofStrategy": "1. Define Tucker labels {-2,-1,+1,+2} with negation and complementarity. 2. Prove the 1D Tucker lemma (tucker_1d). 3. State the general Tucker 2D lemma as a single axiom (tucker_2d_grid). 4. Build the logical chain: Tucker 2D -> approximate BU -> exact BU (tucker_disk_approx_zero_proved -> approx_borsuk_ulam_2d_corrected -> borsuk_ulam_2d_corrected). 5. Prove BU for linear maps algebraically as an alternative.",
     "keyInsights": [
       "Tucker 2D is purely combinatorial and computationally verifiable for finite triangulations",
       "The boundary parity theorem (even number of complementary boundary edges) is the key structural constraint that forces interior complements",
@@ -271,13 +269,13 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization demonstrates that the 2D Borsuk-Ulam theorem has a purely combinatorial proof via Tucker's lemma. Tucker 2D is computationally verified for specific triangulations (5-vertex: 64 cases via decide, 9-vertex: 1024 cases via native_decide). The boundary parity theorem (even complementary boundary edges) is verified for both triangulations. The necessity of the antipodal condition is proved by counterexample. The logical chain Tucker → approximate BU → exact BU is formalized with 3 axioms and 0 sorries. IVT on line segments extracts zeros from complementary edges.",
-    "implications": "**Theoretical Significance**: 1. BU is 'morally constructive': Tucker's lemma IS constructive; only the limiting argument requires classical analysis. 2. Tucker 2D is computationally verified for finite triangulations, confirming the axiom.\n\n3. The boundary parity theorem is a key structural invariant of Tucker labelings. 4. The framework is extensible: proving Tucker 2D generally would eliminate all combinatorial axioms.",
+    "summary": "The formalization demonstrates that the 2D Borsuk-Ulam theorem has a purely combinatorial proof via Tucker's lemma. Tucker's 2D lemma is stated as a single axiom (tucker_2d_grid); the boundary-parity structure that motivates it is recorded as exposition (the `*_informal` lemmas state the parity intuition, with the deep combinatorial content carried in their docstrings rather than fully proved). The necessity of the antipodal condition is proved by counterexample. The logical chain Tucker → approximate BU → exact BU is formalized with 1 axiom and 0 sorries, and the exact result borsuk_ulam_2d_corrected follows by compactness. IVT on line segments extracts zeros from complementary edges.",
+    "implications": "**Theoretical Significance**: 1. BU is 'morally constructive': Tucker's lemma IS constructive; only the limiting argument requires classical analysis. 2. The boundary parity theorem is the structural invariant of Tucker labelings that motivates the single combinatorial axiom.\n\n3. The framework is extensible: proving Tucker 2D generally (path-following in the simplicial complex) would eliminate the remaining combinatorial axiom.",
     "openQuestions": [
-      "Can Tucker's 2D lemma be proved formally in Lean using path-following in simplicial complexes?",
+      "Can Tucker's 2D lemma be proved formally in Lean using path-following in simplicial complexes, eliminating the tucker_2d_grid axiom?",
       "Can the discretization step (Tucker labeling of continuous maps) be formalized without axioms?",
-      "Can the computational approach scale to 13-vertex or 25-vertex triangulations?",
-      "Can the boundary parity theorem be proved structurally (not just computationally)?"
+      "Can small finite triangulations (e.g. 5-vertex disk, 9-vertex grid) be machine-checked by decide/native_decide to substantiate the axiom on finite cases?",
+      "Can the boundary parity theorem be proved structurally, replacing the current `*_informal` exposition with a full Lean proof?"
     ]
   },
   "relatedProblems": [
