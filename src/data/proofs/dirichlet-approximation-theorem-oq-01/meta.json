@@ -70,7 +70,8 @@
       "**Infinitude lives in Mathlib already**: the qualitative 'infinitely many good approximations' is Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational; the work is presentational — re-expressing a set of rationals as a set of coprime integer pairs",
       "**The num/den injection carries the error for free**: because (q.num:ℝ)/(q.den:ℝ) = (q:ℝ), the image pair has identical error |α − p/q| and identical bound 1/q.den², so no analytic estimate is repeated — only structural facts about ℚ are used",
       "**Lowest terms is built into ℚ**: Rat.reduced gives gcd(|q.num|, q.den) = 1 with no extra reduction step, so the coprimality clause of the classical statement is automatic",
-      "**The hypothesis is sharp**: infinite_approx_iff_irrational shows infinitude of good approximations characterizes irrationality — a rational target has only finitely many, so Irrational α is exactly the right assumption rather than a convenient sufficient condition"
+      "**The hypothesis is sharp**: infinite_approx_iff_irrational shows infinitude of good approximations characterizes irrationality — a rational target has only finitely many, so Irrational α is exactly the right assumption rather than a convenient sufficient condition",
+      "**Infinitude subsumes existence**: exists_good_approx recovers the parent's one-shot Dirichlet bound as a one-line corollary (an infinite set is nonempty), making explicit that the qualitative infinitude statement is strictly stronger than the single-fraction existence the pigeonhole argument delivers"
     ],
     "prerequisites": [
       "The Mathlib DiophantineApproximation development (infinitude of good rational approximations)",
@@ -126,6 +127,16 @@
       "targetId": "dirichlet-approximation-theorem",
       "relationship": "extends",
       "description": "Parent entry proving the finite one-shot pigeonhole bound. This OQ-01 answers its first open question by upgrading to the infinitude statement and recasting it in the classical coprime integer-pair form."
+    },
+    {
+      "targetId": "hurwitz-theorem",
+      "relationship": "sharpens",
+      "description": "Hurwitz's theorem sharpens the constant 1 in this entry's bound |α − p/q| < 1/q² to the best-possible 1/(√5 q²), still over infinitely many coprime pairs. The coprime integer-pair form proved here is exactly the statement Hurwitz refines; the golden ratio shows √5 cannot be improved."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "contrasts",
+      "description": "Liouville's theorem runs in the opposite direction: algebraic irrationals of degree n cannot be approximated to order better than n, which combined with the unconditional order-2 approximability proved here yields explicit transcendental numbers (Liouville numbers approximable to every order)."
     }
   ],
   "leanFile": {
