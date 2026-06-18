@@ -107,10 +107,18 @@
     {
       "id": "grunsky-false",
       "title": "Grunsky's Conjecture is False",
-      "summary": "grunskyConjecture_false and its problem-numbered alias erdos_1047: not all lemniscate components are convex (answer NO), via the discharged Goodman counterexample.",
+      "summary": "grunskyConjecture_false: not all lemniscate components are convex. The negation of the faithful ∀ c > 0 conjecture is discharged from the machine-checked Goodman counterexample (no longer an axiom).",
       "startLine": 29,
-      "endLine": 45,
+      "endLine": 41,
       "mathContext": "$\\neg\\,\\text{grunskyConjecture}$ from $\\text{goodman\\_counterexample\\_proof}$, witnessed by $f(z)=(z^2+1)(z-2)^2$ at $c=5^{3/2}/4$."
+    },
+    {
+      "id": "erdos-1047-solved",
+      "title": "Erdős #1047: Solved (Answer NO)",
+      "summary": "erdos_1047 — the headline problem-numbered alias of grunskyConjecture_false, recording the resolution of Erdős Problem #1047: the components need not be convex.",
+      "startLine": 43,
+      "endLine": 45,
+      "mathContext": "$\\text{erdos\\_1047} := \\text{grunskyConjecture\\_false} : \\neg\\,\\text{grunskyConjecture}$."
     },
     {
       "id": "counterexample",
