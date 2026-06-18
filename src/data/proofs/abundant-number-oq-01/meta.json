@@ -42,7 +42,8 @@
       "**Minimality is a finite kernel computation.** Because `Nat.Abundant` is decidable, the lower bound `∀ n < 12, ¬ Nat.Abundant n` is a single bounded `decide` over eleven cases — no hand case analysis — and because it is kernel `decide` (not `native_decide`) the result is genuinely axiom-free, avoiding the `Lean.ofReduceBool` axiom.",
       "**Abundance propagates upward along divisibility.** The abundancy index σ(n)/n is non-decreasing under multiplication: scaling the divisors of `a` by a factor `t` injects them into the divisors of `a·t`, so σ(a·t) ≥ t·σ(a). This single monotonicity is what turns one abundant number into an infinite family.",
       "**Infinitude needs no analytic input.** Unlike the density statement (abundant numbers have density ≈ 0.2476, a 20th-century result), mere infinitude is elementary: the multiples of 12 are all abundant by closure, and there are infinitely many of them. The proof reduces to injectivity of `k ↦ 12·(k+1)`.",
-      "**Canonical predicate, axiom-free.** The entry works with Mathlib's own `Nat.Abundant` and `Nat.abundant_twelve` rather than a bespoke σ definition, and discharges minimality with kernel `decide`, so every claim is machine-checked with 0 axioms."
+      "**Canonical predicate, axiom-free.** The entry works with Mathlib's own `Nat.Abundant` and `Nat.abundant_twelve` rather than a bespoke σ definition, and discharges minimality with kernel `decide`, so every claim is machine-checked with 0 axioms.",
+      "**One injection, two classical corollaries.** The scaled-divisor injection `d ↦ t·d` is the single mechanism behind the folklore facts that *every* multiple of an abundant number is abundant and that *every proper* multiple of a perfect number (σ(n) = 2n) is abundant — in the perfect case the image `{t·d}` omits the divisor `1` of `a·t`, so the inequality σ(a·t) ≥ t·σ(a) = 2(a·t) becomes strict. This entry formalizes the abundant half (`abundant_mul_right`), where strictness is immediate from `a` already being abundant; the perfect-number corollary is the same argument and explains why abundant numbers, once seeded, proliferate."
     ],
     "prerequisites": [
       "The sum-of-divisors function σ and proper divisors",
@@ -72,9 +73,17 @@
       "id": "closure",
       "title": "Multiples of an Abundant Number Are Abundant",
       "startLine": 55,
+      "endLine": 88,
+      "summary": "`abundant_mul_right`: for abundant `a` and `t > 0`, the scaled divisors `d ↦ t·d` inject into the divisors of `a·t` (subset `hsub` plus injectivity `hinj`), so `Finset.sum_le_sum_of_subset` gives σ(a·t) ≥ t·σ(a) > t·2a = 2(a·t); hence `a·t` is abundant. The `sum_image` rewrite is phrased over the bound variable so the higher-order unification (motive `g = id`) succeeds.",
+      "mathContext": "An explicit injection of divisor sets realizes the monotonicity of the abundancy index along divisibility: σ(a·t) ≥ t·σ(a)."
+    },
+    {
+      "id": "closure-dvd",
+      "title": "Divisibility Restatement of Closure",
+      "startLine": 90,
       "endLine": 99,
-      "summary": "`abundant_mul_right`: for abundant `a` and `t > 0`, the scaled divisors `d ↦ t·d` inject into the divisors of `a·t`, giving σ(a·t) ≥ t·σ(a) > t·2a = 2(a·t); hence `a·t` is abundant. `abundant_of_abundant_dvd` restates this via divisibility.",
-      "mathContext": "An explicit injection of divisor sets realizes the monotonicity of the abundancy index along divisibility."
+      "summary": "`abundant_of_abundant_dvd`: if `a` is abundant, `a ∣ m`, and `m > 0`, then `m` is abundant. Writing `m = a·t` from divisibility and deducing `t > 0` from `m > 0`, the claim reduces directly to `abundant_mul_right`. This is the form most convenient for applications phrased with `∣` rather than an explicit product.",
+      "mathContext": "Closure under multiples re-expressed along the divisibility relation: a.Abundant → a ∣ m → 0 < m → m.Abundant."
     },
     {
       "id": "infinitude",
