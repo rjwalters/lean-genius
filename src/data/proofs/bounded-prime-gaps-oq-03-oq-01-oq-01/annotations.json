@@ -4,7 +4,7 @@
     "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-01",
     "range": {
       "startLine": 1,
-      "endLine": 33
+      "endLine": 36
     },
     "type": "concept",
     "title": "Setup: Admissible Tuples and the D(k) Series",
@@ -27,8 +27,8 @@
     "id": "ann-bgp-oq01-witness",
     "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-01",
     "range": {
-      "startLine": 39,
-      "endLine": 44
+      "startLine": 42,
+      "endLine": 47
     },
     "type": "theorem",
     "title": "Witness Admissibility: {0,2,6,8,12}",
@@ -45,11 +45,36 @@
     ]
   },
   {
+    "id": "ann-bgp-oq01-diameter",
+    "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Symbolic Witness Diameter: fsDiameter {0,2,6,8,12} = 12",
+    "content": "fsDiameter_0_2_6_8_12 computes the witness diameter symbolically, replacing the previous native_decide. It proves max' {0,2,6,8,12} = 12 and min' {0,2,6,8,12} = 0, each by le_antisymm: the ≤ direction via Finset.max'_le / le_min' (reducing to ∀ y ∈ S, bound, closed by simp [mem_insert] + omega), the ≥ direction via Finset.le_max' / min'_le with a decidable membership witness. Unfolding fsDiameter (the set is nonempty) then gives 12 - 0 = 12. Because no native_decide is used, the headline D(5)=12 no longer depends on Lean.ofReduceBool and is fully kernel-verified.",
+    "mathContext": "$\\mathrm{fsDiameter}(H) = \\max'(H) - \\min'(H)$ when $H \\ne \\emptyset$. For $H = \\{0,2,6,8,12\\}$: $\\max' = 12$, $\\min' = 0$, so the diameter is $12$. Proving the extrema symbolically (rather than by closed-term kernel reduction) keeps the proof inside the ordinary foundational axioms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.max'",
+      "Finset.min'",
+      "axiom-free verification",
+      "native_decide elimination"
+    ],
+    "prerequisites": [
+      "Finset.max'_le",
+      "Finset.le_max'",
+      "Finset.min'_le",
+      "Finset.le_min'"
+    ]
+  },
+  {
     "id": "ann-bgp-oq01-parity",
     "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-01",
     "range": {
-      "startLine": 46,
-      "endLine": 87
+      "startLine": 77,
+      "endLine": 115
     },
     "type": "theorem",
     "title": "Reduction: Same Parity Confines H to a 6-Set",
@@ -72,12 +97,12 @@
     "id": "ann-bgp-oq01-main",
     "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-01",
     "range": {
-      "startLine": 184,
-      "endLine": 198
+      "startLine": 212,
+      "endLine": 226
     },
     "type": "theorem",
     "title": "Main Result: D(5) = 12",
-    "content": "minAdmissibleDiameter_5 proves minAdmissibleDiameter 5 = 12 by le_antisymm, mirroring the parent's minAdmissibleDiameter_3 assembly exactly. The upper half (≤) applies csInf_le with the witness {0,2,6,8,12}: its card is 5 (by decide), it is admissible (admissible_5tuple_0_2_6_8_12), and its diameter is 12 (by native_decide). The lower half (≥) supplies nonemptiness of the diameter set from the same witness and then applies le_csInf, discharging each member d via admissible_5tuple_diam_ge_12. The only native_decide calls are the closed-term card and diameter checks of the concrete witness.",
+    "content": "minAdmissibleDiameter_5 proves minAdmissibleDiameter 5 = 12 by le_antisymm, mirroring the parent's minAdmissibleDiameter_3 assembly exactly. The upper half (≤) applies csInf_le with the witness {0,2,6,8,12}: its card is 5 (by decide), it is admissible (admissible_5tuple_0_2_6_8_12), and its diameter is 12 (fsDiameter_0_2_6_8_12, proved symbolically). The lower half (≥) supplies nonemptiness of the diameter set from the same witness and then applies le_csInf, discharging each member d via admissible_5tuple_diam_ge_12. No native_decide is used anywhere, so #print axioms shows only the foundational axioms — D(5)=12 is fully kernel-verified.",
     "mathContext": "$D(5) = \\inf\\{d : \\exists H,\\ |H|=5 \\wedge \\text{admissible}(H) \\wedge \\mathrm{fsDiameter}(H) = d\\}$. The antisymmetric split sets $D(5) \\le 12$ from the explicit admissible witness of diameter 12 and $D(5) \\ge 12$ from the universal lower bound, pinning $D(5) = 12$ — the $k=5$ entry of OEIS A008407.",
     "significance": "key",
     "relatedConcepts": [
@@ -96,8 +121,8 @@
     "id": "ann-bgp-oq01-pigeonhole",
     "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-01",
     "range": {
-      "startLine": 88,
-      "endLine": 182
+      "startLine": 116,
+      "endLine": 210
     },
     "type": "insight",
     "title": "Mod-3 Pigeonhole: Two Forced Omissions Beat a 5-Set",
