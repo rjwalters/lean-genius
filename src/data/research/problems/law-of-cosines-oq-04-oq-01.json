@@ -1,8 +1,8 @@
 {
   "slug": "law-of-cosines-oq-04-oq-01",
   "title": "Stewart's theorem via inner products in Euclidean space",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -45,7 +45,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1 2026-06-15): proved+certified the inner-product ANGLE-BISECTOR theorem, closing S2's honesty gap — D=(b·B+c·C)/(b+c) gives ray AD bisecting ∠BAC via the ring identity b⟪B-A,D-A⟫=c⟪C-A,D-A⟫. Lean target reuses S2's name-checked real_inner lemmas; upgrades the S2 length law to a genuine bisector length.",
+    "progressSummary": "COMPLETE (researcher-6 2026-06-18): the inner-product angle-bisector theory is fully proved AND merged. Main LawOfCosinesOQ04OQ01.lean (178L, 0 sorry/0 axiom, registered) + companion LawOfCosinesOQ04OQ01Bisector.lean (147L, 0 sorry/0 axiom, registered, merged #24930) together establish: angle_bisector_factor (the bilinear factorization), angle_bisector_iff (equal-cosine criterion), angle_bisector_ratio_of_equal_angle (the Angle Bisector Theorem: BD:DC = c:b derived from equal angles, NOT assumed), and angle_bisector_length_of_equal_angle (bisector length from genuine equal angles). Gallery meta verified/0-axiom — honest. All prior nextSteps DONE.",
     "builtItems": [
       "stewart_cevian_inner in Proofs/LawOfCosinesOQ04OQ01.lean (coordinate-free Stewart / cevian length).",
       "stewarts_theorem_inner (classical b²m+c²n=a(d²+mn) from real points).",
@@ -61,16 +61,16 @@
       "S? (2026-06-15, build-free blackout de-risk): LawOfCosinesOQ04OQ01.lean is COMPLETE (5 theorems, 0 axioms/0 sorries) incl angle_bisector_length_inner. Verified the hand-computed linear_combination certificate for angle_bisector_length_inner symbolically (sympy residual==0): coeff ((b+c)^2(b-c)+a^2(s(b+c)-b))*hs with hs:s(b+c)=c, b=||A-C|| c=||A-B|| a=||B-C||. Name-checked all Mathlib deps against pinned v4.26 sibling (~/GitHub/mathlib4): norm_add_sq_real/norm_sub_sq_real/real_inner_smul_left/real_inner_smul_right/real_inner_comm all in Analysis/InnerProductSpace/Basic.lean, sq_abs in Algebra/Order/Ring/Abs.lean, norm_smul OK, module/linear_combination/ring tactics. Master+Apollonius re-verified numerically (20k random trials dims=4, max err 8.5e-14). File NOT YET registered in proofs/Proofs.lean. Build-ready pending Docker-up.",
       "Angle-bisector theorem closes S2's honesty gap (researcher-1 2026-06-15): for D=(b·B+c·C)/(b+c) [ratio BD:DC=c:b, c=‖A-B‖,b=‖A-C‖], ray AD bisects ∠BAC. Cleared identity b·⟪B-A,D-A⟫=c·⟪C-A,D-A⟫ — both sides = (bc/(b+c))(bc+⟪u,v⟫), a ring identity using only ‖u‖²=c²,‖v‖²=b².",
       "Certified (verify_bisector_theorem.py): 20000 configs dims 2-8, the cleared identity + equal-cosine + D-A∥(û+v̂) all hold ≤1e-13. So S2's ratio-c:b cevian IS the internal angle-bisector foot ⇒ its length law is genuinely the bisector length.",
-      "Lean target angle_bisector_ratio_inner uses the SAME lemmas S2 name-checked at v4.26.0 (real_inner_smul_left/right, real_inner_comm, norm_sub_sq_real) + ring; external bisector D'=(b·B−c·C)/(b−c) gives sign-flipped b⟪..⟫=−c⟪..⟫."
+      "Lean target angle_bisector_ratio_inner uses the SAME lemmas S2 name-checked at v4.26.0 (real_inner_smul_left/right, real_inner_comm, norm_sub_sq_real) + ring; external bisector D'=(b·B−c·C)/(b−c) gives sign-flipped b⟪..⟫=−c⟪..⟫.",
+      "The S2 honesty gap (segment ratio was assumed, not derived) is fully closed: angle_bisector_ratio_of_equal_angle derives s(b+c)=c from equal cosines + nondegeneracy (bc != inner(A-B,A-C), strict Cauchy-Schwarz). The whole bisector chain is now equal-angle -> ratio -> length with no assumed hypotheses."
     ],
     "mathlibGaps": [
       "None — Mathlib v4.26.0 has norm_add_sq_real, norm_sub_sq_real, real_inner_smul_left/right, real_inner_comm, and the `module` tactic, all that is needed."
     ],
     "nextSteps": [
-      "Build LawOfCosinesOQ04OQ01.lean with docker-build.sh and register in proofs/Proofs.lean (de-risked: cert PASS + all Mathlib names confirmed v4.26).",
-      "Follow-up (genuine, theory-level): prove angle_bisector_ratio — that the INTERNAL angle bisector from A (direction unit(B-A)+unit(C-A)) meets BC at the foot D dividing it in ratio BD:DC = ||A-B||:||A-C||, i.e. derive the hypothesis hs:s(||A-C||+||A-B||)=||A-B|| of angle_bisector_length_inner from equal-angles-at-A rather than assuming it. This closes the one gap the file's docstring flags as 'a separate geometric fact, not used or proved here'. Doable in the existing inner-product framework; defer Lean authoring to a Docker-up session.",
-      "Build with docker-build.sh and register in Proofs.lean.",
-      "Optional: derive the angle-bisector length formula as a further specialization (m:n = c:b)."
+      "FOLLOW-UP (genuine, theory-level, Docker-up session): External angle bisector. The external bisector of angle A makes cos(AB,AD) = -cos(AC,AD), i.e. b*inner(A-B,A-D) + c*inner(A-C,A-D) = 0 (SUM, vs the internal bisectors DIFFERENCE in angle_bisector_factor). Prove a companion angle_bisector_factor_external giving the SUM factorization, then derive external division BD:DC = c:b externally (foot outside segment BC). Requires a Docker build to verify the sign/factorization — do NOT ship unbuilt.",
+      "FOLLOW-UP (genuine, larger): general Stewart theorem (namespace is StewartsTheoremInner). The file proves only the bisector special case of the cevian length; the general b^2*m + c^2*n = a*(d^2 + m*n) cevian-length identity in the inner-product framework would be the parent result. Doable via inner_sub_left/right_cevian; defer to Docker-up session.",
+      "Both files already built+registered+merged (#24930) — do NOT re-build or re-register."
     ],
     "markdown": "See research/problems/law-of-cosines-oq-04-oq-01/knowledge.md"
   },
