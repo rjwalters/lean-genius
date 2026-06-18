@@ -6,7 +6,7 @@
   "meta": {
     "author": "Gabriel Lame (1844), formalized in Lean 4",
     "date": "1844",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/GCDAlgorithmOQ01.lean",
     "tags": [
       "number-theory",
@@ -15,7 +15,7 @@
       "fibonacci",
       "classic"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -49,9 +49,9 @@
       "Finite average computation infrastructure"
     ],
     "dateAdded": "2026-02-10",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 460,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Depends on Lean.ofReduceBool: several named load-bearing theorems are discharged by native_decide (euclideanSteps_fib for worst-case optimality, fib_ge_pow10 for the exponential lower bound, lame_pair_bound, and the digit-bound corollaries), which trusts the Lean compiler's kernel reduction rather than producing a fully kernel-checked proof term. No literal axiom declarations and 0 sorries; the ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted.",
     "mathlib_version": "4.26.0",
     "theoremCount": 28,
     "definitionCount": 4
@@ -159,7 +159,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization provides a complete treatment of the worst-case complexity of the Euclidean algorithm, from the fundamental Lame bound through tight examples and practical digit-based bounds. All results are fully proved (0 sorries).\n\nThe average-case analysis (Dixon's theorem) remains unformalized due to its dependence on continued fractions, the Gauss map, and ergodic theory.",
+    "summary": "This formalization provides a complete treatment of the worst-case complexity of the Euclidean algorithm, from the fundamental Lame bound through tight examples and practical digit-based bounds. All results are established (0 sorries), with several concrete bounds discharged by native_decide (hence depending on Lean.ofReduceBool rather than being fully kernel-checked).\n\nThe average-case analysis (Dixon's theorem) remains unformalized due to its dependence on continued fractions, the Gauss map, and ergodic theory.",
     "implications": "**Algorithm Analysis**: Demonstrates formal verification of classical complexity results.\n\n**Number Theory**: The deep connection between Fibonacci numbers and the Euclidean algorithm exemplifies how number-theoretic structure governs algorithmic behavior.\n\n**Future Work**: Formalizing Dixon's theorem would require developing ergodic theory in Mathlib.",
     "openQuestions": [
       "Can Dixon's average-case theorem ($\\sim 0.8427 \\ln N$ steps on average) be formalized once Mathlib has continued fractions and ergodic theory for the Gauss map?",
