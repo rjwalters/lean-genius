@@ -69,6 +69,21 @@
       "targetId": "furstenberg-correspondence",
       "relationship": "extends",
       "description": "Constructs the shift dynamical system on Cantor space, advancing toward a full formalization of the Furstenberg correspondence principle"
+    },
+    {
+      "targetId": "furstenberg-correspondence-oq-02",
+      "relationship": "related",
+      "description": "Sibling line of work on the Furstenberg correspondence; both advance toward eliminating the correspondence axiom from a shift-dynamics foundation"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "motivates",
+      "description": "The correspondence's ultimate purpose: transferring multiple recurrence of the constructed measure-preserving system into Szemerédi's theorem on arithmetic progressions in positive-density sets"
+    },
+    {
+      "targetId": "roth-theorem",
+      "relationship": "related",
+      "description": "The k=3 case of the arithmetic progressions delivered by the return property (positive_measure_gives_ap); Roth's theorem is the density Szemerédi statement for 3-term APs"
     }
   ],
   "overview": {
@@ -216,7 +231,9 @@
     "implications": "The remaining gap for the full correspondence is the construction of a T-invariant limit measure via weak-* compactness, connecting combinatorial density results to ergodic theory.",
     "openQuestions": [
       "Can weak-* sequential compactness for probability measures on compact metrizable spaces be formalized in Mathlib?",
-      "Can the T-invariance of Cesàro limit measures be proved directly using Mathlib's measure theory?"
+      "Can the T-invariance of Cesàro limit measures be proved directly using Mathlib's measure theory?",
+      "Can the single remaining T-invariance sorry (limit_invariant_on_cylinder) be discharged once the surrounding Mathlib measure-theory API drift is repaired, completing the construction modulo only the Prokhorov axiom?",
+      "Given the Prokhorov axiom, do the orbit-density formula and the return property proved here suffice to derive Roth's theorem (3-term APs) directly as the first nontrivial instance of the correspondence?"
     ]
   },
   "leanFile": {
