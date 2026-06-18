@@ -71,11 +71,19 @@
   "sections": [
     {
       "id": "section-header",
-      "title": "Header: the L^p surface-derivative question and its answer",
+      "title": "Header: the open question and the tractable volume side",
       "startLine": 1,
+      "endLine": 31,
+      "summary": "Docstring stating the parent's open question — does dV/dr = surface area survive for the L^p ball when p≠2? — and the first half of the answer: the volume and its r^n radial scaling are fully tractable. Mathlib's MeasureTheory.volume_sum_rpow_le gives both the Dirichlet closed form V_n(p) and the r^n factor in one lemma, so the power rule yields dV/dr = n·V_n(p)·r^(n-1) (★) directly, mirroring the parent's Euclidean nBallVolumeFn_hasDerivAt.",
+      "mathContext": "V_n(p) = 2^n·Γ(1/p+1)^n/Γ(n/p+1) (Dirichlet); volume{‖x‖_p ≤ r} = r^n·V_n(p); (★) dV/dr = n·V_n(p)·r^(n-1) by the power rule."
+    },
+    {
+      "id": "section-surface-failure",
+      "title": "Which surface measure? The coarea weight and why the identity fails for p≠2",
+      "startLine": 32,
       "endLine": 79,
-      "summary": "Docstring stating the parent's open question (does dV/dr = surface area survive for L^p, p≠2?) and the full answer: the volume + r^n scaling are tractable via MeasureTheory.volume_sum_rpow_le, but the surface identity holds only for p=2 — for p≠2, dV/dr is a |∇ρ|^{-1}-weighted coarea integral. Includes the L^1 diamond witness and notes the surface side is Mathlib-blocked (no coarea formula in v4.26).",
-      "mathContext": "V_n(p) = 2^n·Γ(1/p+1)^n/Γ(n/p+1); |∇ρ|^2 = ∑|x_i|^{2p-2} ≡ 1 on the sphere iff p=2; L^1 n=2: dV/dr=4 vs perimeter 4√2."
+      "summary": "The mathematical crux of the extension. By the coarea formula for ρ(x)=‖x‖_p, dV/dr is the 1/|∇ρ|-weighted surface integral, where |∇ρ|^2 = ∑|x_i|^{2p-2} is identically 1 on the sphere iff p=2. So (★) equals the genuine Euclidean Hausdorff surface measure only at p=2; for every finite p≠2 the naive identity dV/dr = Euclidean surface area is FALSE. The L^1 diamond (n=2) is the explicit witness: dV/dr = 4 but the perimeter is 4√2, with the coarea-weighted surface (4√2)/√2 = 4 reconciling (★). Records that the surface side is Mathlib-blocked in v4.26 (no coarea formula), so the false identity is documented, not stated as a theorem.",
+      "mathContext": "|∇ρ|^2 = ∑|x_i|^{2p-2} ≡ 1 on the sphere iff p=2; ∂ρ/∂x_i = sgn(x_i)|x_i|^{p-1}; L^1, n=2: dV/dr=4, perimeter 4√2, (4√2)/√2 = 4 = dV/dr; degenerate a.e. for p=∞."
     },
     {
       "id": "section-defs",
