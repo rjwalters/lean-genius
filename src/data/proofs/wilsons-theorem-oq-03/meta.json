@@ -7,7 +7,7 @@
     "author": "Adrien-Marie Legendre (1808), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Legendre%27s_formula",
     "date": "1808",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "p-adic",
@@ -18,10 +18,10 @@
       "intermediate"
     ],
     "proofRepoPath": "Proofs/WilsonsTheoremOQ03.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "None. All theorems are fully proved using Mathlib's sub_one_mul_padicValNat_factorial and supporting lemmas.",
+    "axiomCount": 1,
+    "assumptions": "The main Legendre theorems (legendre_digit_sum, legendre_sum, digits_pred_prime, legendre_wilson, prime_not_dvd_factorial_pred, padic_val_p_factorial, padic_val_factorial_le, padic_val_factorial_zero_iff) are fully proved using Mathlib's sub_one_mul_padicValNat_factorial and supporting lemmas, and are axiom-free. However, the advertised concrete computations (ν₂(10!)=8, ν₂(8!)=7, ν₃(9!)=4, ν₅(25!)=6, ν₇(48!)=6, ν₇(49!)=8, plus the Wilson checks for p = 5, 7, 11, 13) are established solely by `native_decide`, with no symbolic alternative for the specific valuation values in this file. `native_decide` trusts the Lean compiler's kernel reduction and so depends on the `Lean.ofReduceBool` axiom (1 assumption beyond the standard propext / Classical.choice / Quot.sound). No literal `axiom` declarations are present (leanFile.axiomCount = 0).",
     "dateAdded": "2026-04-05",
     "lineCount": 222,
     "mathlibDependencies": [
@@ -56,7 +56,7 @@
       "Digit representation lemma for (p-1) in base p",
       "Characterization ν_p(n!) = 0 ↔ n < p",
       "Upper bound ν_p(n!) ≤ n/(p-1) from digit sums",
-      "Pedagogical computations for ν₂(10!), ν₃(9!), ν₅(25!), ν₇(49!)"
+      "Pedagogical computations for ν₂(10!), ν₃(9!), ν₅(25!), ν₇(49!) (verified by native_decide; depends on Lean.ofReduceBool)"
     ],
     "theoremCount": 9,
     "definitionCount": 0
