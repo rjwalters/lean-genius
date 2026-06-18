@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-galois-extensions-oq-06-galois-direction",
   "title": "Galois direction: every primitive solvable subgroup of S_p embeds into AGL(1, p)",
-  "phase": "S16_ACT",
+  "phase": "S21_ACT",
   "status": "active",
   "tier": "B",
   "path": "galois-direction",
@@ -44,23 +44,21 @@
     "goal": "Formalise Galois's 1832 structure theorem for primitive solvable permutation groups of prime degree as `theorem primitive_solvable_subgroup_embeds_AGL1Z : ∃ φ : H →* AGL1Z p, Function.Injective φ`. Combined with the parent slug's forward direction, yields the full Galois classification."
   },
   "currentState": {
-    "phase": "S16_ACT",
-    "since": "2026-06-16T00:00:00.000Z",
-    "iteration": 16,
-    "focus": "S16 ACT (researcher-2, 2026-06-16): Step 3 sylow_p_is_pcycle FULLY PROVED and parked as a self-contained turnkey draft (research/problems/.../step3-sylow-p-is-pcycle-draft.lean); registered file untouched (TRUE sorry intact). Not machine-checked: Aristotle MCP 404 AND this worktree's proofs/.lake is the self-referential symlink (build aborts at Mathlib clone, git 128) so no verification path; did not touch the shared .lake (policy). Proof: primitivity->p|H| (orbit/stabilizer), |H||p! -> no p^2 | H -> v_p(|H|)=1 -> |P|=p (mirrors verified Step 5), then cyclic generator -> order-p element -> p-cycle via isCycle_of_prime_order''. Every bearer name+line checked vs pin 2df2f015.",
-    "nextAction": "From any worktree with a healthy .lake (or Aristotle-up): docker-build Proofs.Step3SylowPIsPCycleDraft to verify the draft, then transcribe its body into sylow_p_is_pcycle (replace sorry, rename _hPrim->hPrim) and rebuild the registered module. Low-iteration expected.",
-    "blockers": [
-      "researcher-2 worktree proofs/.lake is a self-referential symlink (proofs/.lake -> .../proofs/.lake); docker-build mounts only the .lake/build cache volume, so Mathlib packages are unreachable and the build aborts cloning Mathlib (git exit 128). Aristotle MCP returns 404 on prove_file. No verification path this session from this worktree; the proof is drafted but unverified."
-    ],
+    "phase": "S21_ACT",
+    "since": "2026-06-18T00:00:00.000Z",
+    "iteration": 21,
+    "focus": "S21 ACT (researcher-11, 2026-06-18): Step 3 sylow_p_is_pcycle DISCHARGED and folded into the registered file; Docker-verified GREEN (7745 jobs). Built the turnkey Step3 orphan in isolation, which surfaced 2 real elaboration bugs (Nat.pow_le_pow_right wants 0<p not 0<=p; MulAction.orbit_eq_univ takes the acting group H as an explicit argument), fixed both, folded the corrected proof + the padicValNat_factorial_self helper into the registered module (now import Mathlib), deleted the now-redundant orphan, and rebuilt GREEN. Sorry frontier 4 -> 3 (Step 1 sylow_p_unique, Step 4 normalizer_iso_AGL1Z, main remain). Steps 2, 3, 5 now proved.",
+    "nextAction": "Discharge Step 1 (sylow_p_unique), the hardest remaining step (~70-110 LOC): the Step1 orphan (AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep1.lean) already proves Lemma A (derived-series abelian characteristic subgroup) and has the full route scoped; discharge Lemma B (normal->transitive via blocks), Lemma C (transitive->p|A via orbit-stabilizer, mirrors Step 3 Step A), then the Sylow transport assembly. Then Step 4 (normalizer_iso_AGL1Z, ~80-150 LOC, numerically certified) and the main glue.",
+    "blockers": [],
     "attemptCounts": {
-      "total": 8,
+      "total": 9,
       "currentApproach": 1,
       "approachesTried": 4
     },
-    "lastUpdate": "2026-06-16T00:00:00.000Z"
+    "lastUpdate": "2026-06-18T12:00:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "BUILD DIAGNOSIS CORRECTED + infra fix (researcher-1 2026-06-18 S19): Docker builds DO work despite the proofs/.lake self-symlink (cache-volume mount shadows it; 7743-job build succeeded today) — prior 'dual blackout breaks builds' diagnosis was wrong; shipped PR #25509 removing the tracked symlink. Real blockers: Aristotle 404 (verified via smoke test) + severe host IO-load. Launched detached Docker verify of the complete Step3 orphan (sylow_p_is_pcycle, 0 sorries) -> /tmp/r1-step3-verify.{log,done}; if green, fold into registered file to go 4 sorries -> 3. Frontier unchanged this session: 4 sorries (Steps 1/3/4 + main).",
+    "progressSummary": "STEP 3 DISCHARGED, BUILD-VERIFIED GREEN (researcher-11, 2026-06-18, S21): folded the build-verified Step3 orphan into the registered file after fixing 2 elaboration bugs the first isolation build surfaced (Nat.pow_le_pow_right needs 0<p; orbit_eq_univ takes the group explicitly). Registered module now imports full Mathlib, carries the padicValNat_factorial_self helper, and builds GREEN (7745 jobs). Sorry frontier 4 -> 3. Steps 2/3/5 proved; remaining: Step 1 sylow_p_unique (hardest, ~70-110 LOC; Lemma A already drafted in the Step1 orphan), Step 4 normalizer_iso_AGL1Z (~80-150 LOC, numerically certified), and the main assembly glue. Docker builds work from this worktree (cache-volume mount shadows the .lake symlink); ~14 min/build under IO contention.",
     "insights": [
       "Forward direction parent oq-06 already discharged (S7 ACT PR #19071); this sub-OQ owns only the Galois direction.",
       "Step 1 (sylow_p_unique) HAS a bearer-complete sound route after all (researcher-3 S7 ORIENT 2026-06-14): derived-series last-nontrivial-term A (abelian, characteristic) + block-of-normal-orbit primitivity argument gives A transitive => p | |A|; A's Sylow-p Q is characteristic in A hence normal in H; v_p(p!)=1 => |Q|=p => Q is a normal Sylow-p of H => unique. All bearers present at pin (IsBlock.orbit_of_normal, IsBlock.subsingleton_or_eq_univ, derivedSeries_normal/characteristic/succ, Sylow.characteristic_of_normal/ofCard/unique_of_normal, Nat.Prime.factorization_factorial). The absent socle/MinimalNormal/IsElementaryAbelian API is NOT needed.",
@@ -114,5 +112,5 @@
       "citation": "abel-ruffini-galois-extensions-oq-06 (forward direction, Docker-verified at 1884 jobs by S7 ACT PR #19071)."
     }
   ],
-  "lastUpdate": "2026-06-14T12:00:00.000Z"
+  "lastUpdate": "2026-06-18T12:00:00.000Z"
 }
