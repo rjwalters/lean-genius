@@ -24,6 +24,28 @@
     ]
   },
   {
+    "id": "cb04oq0101-setup",
+    "proofId": "chebyshev-bounds-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 94,
+      "endLine": 105
+    },
+    "type": "technique",
+    "title": "Imports, Options & the ArithmeticFunction Namespace",
+    "content": "The setup block pulls in all of Mathlib (`import Mathlib`) — appropriate for a gallery proof that needs the `ArithmeticFunction` convolution API — and raises two resource limits: `maxHeartbeats 1000000` and `maxRecDepth 4000`, anticipating the heavier elaboration of the divisor-sum rewrites. `autoImplicit false` enforces explicit binders (a correctness-hygiene choice), and `linter.all false` silences style lints on this batch-derived file.\n\nThe three `open`s are what make the proof readable: `open scoped BigOperators` for the `∑` notation, `open ArithmeticFunction` to use `coe_mul_zeta_apply`, `moebius_mul_coe_zeta`, and `one_apply` unqualified, and `open scoped ArithmeticFunction.Moebius` to write `μ` for `ArithmeticFunction.moebius`. Without the Moebius scope the theorem statement could not use the bare `μ`.",
+    "mathContext": "`open scoped ArithmeticFunction.Moebius` binds `μ = ` `ArithmeticFunction.moebius : ArithmeticFunction ℤ`; the convolution lemmas live in the `ArithmeticFunction` namespace.",
+    "significance": "technical",
+    "prerequisites": [
+      "Lean 4 imports, set_option, and scoped notation",
+      "ArithmeticFunction namespace"
+    ],
+    "relatedConcepts": [
+      "scoped notation",
+      "maxHeartbeats / maxRecDepth",
+      "ArithmeticFunction.moebius"
+    ]
+  },
+  {
     "id": "cb04oq0101-theorem",
     "proofId": "chebyshev-bounds-oq-04-oq-01-oq-01",
     "range": {
