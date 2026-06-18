@@ -198,10 +198,28 @@
   ],
   "mainTheorems": [
     {
-      "name": "triangular_reciprocal_sum",
+      "name": "sum_reciprocals_triangular",
       "type": "core",
-      "description": "Sum of reciprocals of triangular numbers: sum 2/(n(n+1)) = 2",
-      "leanType": "HasSum (fun n => 2 / ((n+1) * (n+2))) 2"
+      "description": "Sum of reciprocals of triangular numbers: ∑ 2/(n(n+1)) = 2 (Wiedijk #42), proved via telescoping and an ε-N limit argument",
+      "leanType": "HasSum (fun n : ℕ => if n = 0 then 0 else (2 : ℝ) / ((n : ℝ) * (n + 1))) 2"
+    },
+    {
+      "name": "tsum_reciprocals_triangular",
+      "type": "corollary",
+      "description": "The tsum form of the main theorem: ∑' 2/(n(n+1)) = 2",
+      "leanType": "∑' n : ℕ, (if n = 0 then 0 else (2 : ℝ) / ((n : ℝ) * (n + 1))) = 2"
+    },
+    {
+      "name": "sum_reciprocals_one",
+      "type": "corollary",
+      "description": "Unscaled corollary: ∑ 1/(n(n+1)) = 1",
+      "leanType": "HasSum (fun n : ℕ => if n = 0 then 0 else (1 : ℝ) / ((n : ℝ) * (n + 1))) 1"
+    },
+    {
+      "name": "reciprocal_triangular",
+      "type": "supporting",
+      "description": "Connection to triangular numbers: 1/T_n = 2/(n(n+1)), verifying exact division by 2",
+      "leanType": "(n : ℕ) → (hn : n ≠ 0) → (1 : ℝ) / (triangular n) = 2 / (n * (n + 1))"
     }
   ],
   "sorries": 0
