@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DerangementsOQ02OQ02.lean",
     "tags": [
       "combinatorics",
@@ -16,14 +16,14 @@
       "probability",
       "generating-functions"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 249,
     "theoremCount": 13,
     "definitionCount": 0,
-    "assumptions": "None.",
+    "assumptions": "Depends on Lean.ofReduceBool: the concrete-verification and boundary-value theorems (sum_fixedPoints_three, sum_fixedPoints_four, weighted_sum_three, weighted_sum_four, sum_fixedPoints_one, sum_fixedPoints_two) are discharged by native_decide, which trusts the compiler's kernel reduction, so #print axioms lists Lean.ofReduceBool. The general results — ∑_σ |Fix(σ)| = n! via Burnside's lemma, card_perm_fixing_point = (n-1)! via orbit-stabilizer, and the weighted partition identity by double counting — are axiom-free. 0 sorries; no literal axiom declarations (leanFile.axiomCount = 0).",
     "originalContributions": [
       "Proof of ∑_σ |Fix(σ)| = n! via Burnside's lemma using MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group",
       "Proof that exactly (n-1)! permutations fix any given point via orbit-stabilizer theorem",
@@ -87,7 +87,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This file proves 13 theorems (including concrete verifications for n=1,2,3,4) with 0 sorries and 0 axioms, establishing both the Burnside-based main theorem and the weighted partition identity by double counting.",
+    "summary": "This file proves 13 theorems (including concrete verifications for n=1,2,3,4) with 0 sorries, establishing both the Burnside-based main theorem and the weighted partition identity by double counting. The general theorems are axiom-free; the concrete n=1,2,3,4 verifications use native_decide and so depend on Lean.ofReduceBool.",
     "implications": "The result confirms E[#fixed] = 1 in Lean and provides a rigorous connection between the derangement formula S(n,k) = C(n,k)·D(n-k) and moment calculations. The card_perm_fixing_point lemma (orbit-stabilizer) is a reusable result for permutation group theory. The double-counting technique via sum_fiberwise_of_maps_to is a general pattern applicable to any fiber sum.",
     "openQuestions": [
       "Prove higher moment formulas: E[(#fixed)^k] for k ≥ 2, using the fact that the k-th factorial moment equals 1 for the derangement distribution (Poisson(1) approximation)",
