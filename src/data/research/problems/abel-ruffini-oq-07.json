@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-oq-07",
   "title": "Selmer-Style S₅ Galois Group for x⁵ − x − 1",
-  "phase": "ORIENT",
+  "phase": "FORMALIZE",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,17 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-06-16T03:36:37-07:00",
-    "iteration": 1,
-    "focus": "ORIENT: corrected statement + verified Dedekind-Frobenius proof skeleton; blocked on Dedekind bridge (same as InverseGaloisA5 axiom).",
-    "blockers": [],
-    "nextAction": "Wait on inverse-galois-a5-oq-01 Frobenius lemma; or ship axiomatized entry.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
+    "phase": "FORMALIZE",
+    "since": "2026-06-18T21:30:00-07:00",
+    "iteration": 2,
+    "focus": "Verified the corrected group-theoretic reduction in Lean (Proofs/AbelRuffiniOQ07.lean): assembly criterion gal_eq_top_of_five_dvd_and_swap (5∣|G| + swap ∈ G ⟹ S₅), formalized the correction prod_two_swaps_mem_alternating (double transposition is EVEN, refuting the curated 3-real-roots route), plus discriminant direction and polynomial degree facts. 0 sorry / 0 axiom; the two Frobenius inputs are explicit hypotheses.",
+    "blockers": [
+      "Dedekind–Frobenius bridge (factor type mod unramified p ⟹ matching cycle type in f.Gal) not in Mathlib v4.26.0; same bridge axiomatised as three_dvd_gal_card in InverseGaloisA5.lean. Supplies the two hypotheses (5∣|Gal|, swap∈Gal)."
+    ],
+    "nextAction": "When inverse-galois-a5-oq-01 lands a reusable cycle-type-from-factor-type lemma, discharge the two hypotheses to obtain Gal(X⁵−X−1)=S₅ unconditionally."
   },
   "knowledge": {
     "progressSummary": "ORIENT: corrected the statement (x⁵−x−1 has 1 real root, NOT 3 → real-roots/conjugation route inapplicable; conjugation is even, in A₅). Disc=2869=19·151 not square but disc-alone only narrows G to {F₂₀,S₅}. Correct proof = Dedekind/Frobenius: 5-cycle@p=3 + transposition(σ³)@p=2 + subgroup_eq_top_of_swap_mem ⟹ S₅. Buildability blocker = Dedekind-Frobenius bridge, the SAME axiom (three_dvd_gal_card) the gallery A5 entry still carries.",
@@ -334,6 +331,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ10.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ07.lean",
+      "filename": "AbelRuffiniOQ07.lean",
+      "lineCount": 129,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ07.lean"
     }
   ]
 }

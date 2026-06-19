@@ -23,6 +23,7 @@ import Proofs.AbelRuffiniOQ04OQ02OQ03
 import Proofs.AbelRuffiniOQ04OQ03
 import Proofs.AbelRuffiniOQ04OQ07
 import Proofs.AbelRuffiniOQ04OQ09Cyclic
+import Proofs.AbelRuffiniOQ07
 import Proofs.AbelRuffiniOQ09
 import Proofs.AbelRuffiniOQ10
 import Proofs.AbundantMultiplesOQ01
