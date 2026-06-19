@@ -34,6 +34,7 @@ Tags: graph-theory, chromatic-number, infinite-graphs, set-theory
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Combinatorics.SimpleGraph.Coloring
+import Mathlib.Combinatorics.SimpleGraph.Finsubgraph
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.SetTheory.Cardinal.Ordinal
 import Mathlib.Data.Fintype.Basic
@@ -156,10 +157,27 @@ Taylor's conjecture cannot be decided in ZFC alone.
 -/
 
 /--
-**De Bruijn-Erdős theorem (finite version):**
-If every finite subgraph of G is k-colorable, then G is k-colorable.
-(This requires the axiom of choice.)
+**De Bruijn–Erdős theorem (coloring/compactness version):**
+If every finite (induced) subgraph of `G` is `n`-colorable, then `G` itself is
+`n`-colorable. This is the graph-coloring form of the compactness principle and
+genuinely requires the axiom of choice (here packaged via Mathlib's inverse-limit
+argument `nonempty_hom_of_forall_finite_subgraph_hom`).
+
+This is the key piece of infrastructure underlying the "finite subgraph
+inheritance" theme of Erdős #736: the chromatic number of an infinite graph is
+controlled by its finite subgraphs. It is fully machine-checked; the only
+foundational dependency beyond the usual `propext`/`Quot.sound` is
+`Classical.choice`.
 -/
+theorem deBruijn_erdos_coloring {V : Type*} (G : SimpleGraph V) (n : ℕ)
+    (h : ∀ G' : G.Subgraph, G'.verts.Finite → G'.coe.Colorable n) :
+    G.Colorable n := by
+  -- `Colorable n` unfolds to `Nonempty (G →g completeGraph (Fin n))`; apply
+  -- compactness with the finite target graph `completeGraph (Fin n)`.
+  apply SimpleGraph.nonempty_hom_of_forall_finite_subgraph_hom
+  intro G' hfin
+  exact (h G' hfin).some
+
 /--
 **Compactness in graph coloring:**
 The chromatic number of a graph is determined by its finite subgraphs
