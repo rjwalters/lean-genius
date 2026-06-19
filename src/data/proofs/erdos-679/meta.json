@@ -274,7 +274,8 @@
     "imports": [
       "Mathlib.NumberTheory.ArithmeticFunction",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Topology.Instances.Real.Lemmas",
+      "Mathlib.Data.Nat.Nth",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -284,11 +285,11 @@
       "Filter"
     ],
     "namespace": "Erdos679",
-    "lineCount": 259,
+    "lineCount": 284,
     "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 18,
-    "sorries": 10,
+    "sorries": 9,
     "path": "Proofs/Erdos679Problem.lean",
     "additionalFiles": [
       "Proofs/Erdos679Aristotle.lean",
