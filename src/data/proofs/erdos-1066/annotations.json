@@ -17,7 +17,12 @@
       "Independent sets",
       "Four Colour Theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "discrete geometry",
+      "combinatorics",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e1066-pointset",
@@ -36,7 +41,12 @@
       "Planar graphs",
       "Independent sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean geometry",
+      "metric spaces",
+      "Lean 4 structures and definitions",
+      "Mathlib EuclideanSpace API"
+    ]
   },
   {
     "id": "ann-e1066-gn",
@@ -55,7 +65,12 @@
       "Asymptotic density",
       "Infimum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "real analysis (infima and limits)",
+      "Lean 4 axiom declarations",
+      "measure theory"
+    ]
   },
   {
     "id": "ann-e1066-lowerbounds",
@@ -74,7 +89,12 @@
       "Planarity",
       "Swanepoel"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph coloring",
+      "planar graph theory",
+      "discrete geometry",
+      "real number inequalities"
+    ]
   },
   {
     "id": "ann-e1066-upperbounds",
@@ -93,7 +113,12 @@
       "Counterexamples",
       "Pach-Tóth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "discrete geometry",
+      "combinatorial constructions",
+      "rational number arithmetic"
+    ]
   },
   {
     "id": "ann-e1066-gap",
@@ -112,6 +137,11 @@
       "Open gap",
       "Asymptotic ratio"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "rational arithmetic",
+      "asymptotic density",
+      "real analysis (limits)",
+      "Lean 4 norm_num tactic"
+    ]
   }
 ]
