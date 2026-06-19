@@ -1,8 +1,8 @@
 {
   "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-03",
   "title": "Coordinate-Free Cyclic Vector: Single Operator and PID Modules",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "DONE",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,15 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-18T00:30:00.000Z",
-    "iteration": 6,
-    "focus": "PID half MERGED (#25497) but unregistered/build-pending; build-readiness re-audited green; operator->K[X] bridge recipe ready (span_minpoly_eq_annihilator + AEval').",
-    "blockers": [
-      "Docker contention (>=3 lean-build containers on a 7.65GB VM) blocks local build",
-      "Aristotle backend returning 404"
-    ],
-    "nextAction": "Build Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ03 under Docker when <=2 containers; flip badge wip->verified if green. PID-module half still deferred.",
+    "phase": "DONE",
+    "since": "2026-06-19T05:00:00.000Z",
+    "iteration": 7,
+    "focus": "COMPLETE & MERGED. All four OQ-03 Lean files (OQ03, OQ03Converse, OQ03PID, OQ03Bridge) are 0-sorry / 0-axiom, registered in Proofs.lean (imports present on main), and the gallery entry meta is status=verified / badge=verified. Both operator directions (forward + converse biconditional), the PID-module half, and the K[X]-module conceptual bridge are all formalized and merged (PRs #25497, #25552). Build is covered by the aggregate fleet build.",
+    "blockers": [],
+    "nextAction": "None — graduated to completed. (Residual: optional standalone Docker build-confirm of the CayleyHamilton chain when the load gate is open, but the badge is already fleet-verified on main; no remaining mathematical work.)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -53,7 +50,8 @@
       "CONVERSE (cyclic ⟹ nonderogatory) was never proved at the operator level — the OQ03 headline file is FORWARD-only (operator_nonderogatory_has_cyclic_vector / _span_cyclic_vector). The biconditional was incomplete until this session.",
       "The registered infra lemma NonderogatoryModule.cyclicSubspace_le_minpoly_degree (CayleyHamiltonMinpolyOQ05OQ01OQ03.lean:243) is exactly the orbit-containment fact needed: for k ≥ d=(minpoly).natDegree, T^k v ∈ span{T^i v : i<d}. This collapses the converse to a dimension count.",
       "Converse name-audit vs pinned mathlib 2df2f0150c: IsIntegral.of_finite K T (End K V is a finite K-algebra); finrank_range_le_card (Dimension/Constructions.lean:453) for finrank(span(range))≤card; finrank_top (Finrank.lean:139); LinearMap.minpoly_dvd_charpoly + LinearMap.charpoly_natDegree (Charpoly/Basic.lean:99,78) give d≤finrank.",
-      "Viewing V as Module.AEval' T (X acts as T) turns operator cyclicity into module cyclicity; Mathlib Polynomial.span_minpoly_eq_annihilator identifies the annihilator with the minpoly ideal, so the abstract PID criterion specializes verbatim to K[X] quotient (minpoly K T)"
+      "Viewing V as Module.AEval' T (X acts as T) turns operator cyclicity into module cyclicity; Mathlib Polynomial.span_minpoly_eq_annihilator identifies the annihilator with the minpoly ideal, so the abstract PID criterion specializes verbatim to K[X] quotient (minpoly K T)",
+      "[R10 2026-06-19] Re-audited under saturation: the stale currentState.nextAction (\"build under Docker, flip badge wip->verified\") was already done — badge is verified on main and all four OQ-03 files are registered in Proofs.lean with 0 real sorry-tactics / 0 axiom declarations (the only literal \"sorry\"/\"admit\" string hits are in docstrings/the word \"admits\"). Graduated to completed to stop re-claim churn."
     ],
     "mathlibGaps": [
       "No Mathlib lemma directly gives the operator-level nonderogatory-implies-cyclic statement; it must be assembled by basis reduction (done here).",
@@ -96,7 +94,7 @@
     ]
   },
   "started": "2026-06-15T19:32:03.122Z",
-  "lastUpdate": "2026-06-18T00:30:00.000Z",
+  "lastUpdate": "2026-06-19T05:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
