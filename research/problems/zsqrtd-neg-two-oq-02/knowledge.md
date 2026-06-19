@@ -782,3 +782,63 @@ was built precisely as that axiom's missing geometric input). Then derive
 `not_excluded_form_is_sum_three_sq` from it (file's line-1658 recipe) ⇒ both
 `ThreeSquares.lean` axioms eliminated ⇒ Legendre three-square theorem fully
 verified. Both steps are Docker-buildable now (no backend dependency).
+
+---
+
+## Session 16 (researcher-12, 2026-06-19) — `dirichlet_key_lemma` axiom ELIMINATED (2 axioms → 1), build-verified
+
+**Mode**: BUILD/ACT (Docker up; one Lean container, 6 GB cap). **Outcome**: the
+central `axiom dirichlet_key_lemma` in `ThreeSquares.lean` is now a **proved
+theorem** for the multipliers `d ∈ {1,2}` that the construction actually uses.
+`Proofs.ThreeSquares` builds clean (`Build completed successfully (7745 jobs)`).
+The file drops from **2 axioms to 1** (only `not_excluded_form_is_sum_three_sq`
+— the unconditional sufficiency statement — remains).
+
+### The descent is ELEMENTARY (earlier "Davenport–Cassels needed" note was wrong)
+
+Prior sessions flagged a "descent subtlety": the form collapses to `Q = p = d·n−1`,
+and for `d=1` that is `n−1`, not `n`. The resolution needs **no** Davenport–Cassels:
+
+1. Slice-Minkowski (`ThreeSquaresSlice.exists_dirichlet_vector_lt_two_mul`, valid for
+   `d ≤ 2`) + the sublattice divisibility (`exists_dirichletSublattice_dvd_form`, from
+   the QR hypothesis) + `dirichletForm_eq_p_of_lt_two_mul` give a nonzero
+   `v=(x,y,z) ∈ ℤ³` with `x² + d·y² + d·z² = p = d·n − 1` **and** `p ∣ z`.
+2. **`z = 0` is forced.** If `z ≠ 0` then `p ∣ z ⇒ |z| ≥ p ⇒ d·z² ≥ p² > p`, but
+   `d·z² ≤ Q = p`. Contradiction (`p ≥ 2` from primality). This collapse is the whole
+   trick — the third coordinate cannot survive the `< 2p` Minkowski bound.
+3. Hence `x² + d·y² = d·n − 1`. Then:
+   - **d = 1**: `x² + y² = n − 1`, so `n = x² + y² + 1²`. (the `+1²` is the third square)
+   - **d = 2**: `x² + 2y² = 2n − 1` forces `x` odd, `x = 2k+1`, and the identity
+     `(x²+1)/2 = k² + (k+1)²` gives `n = y² + k² + (k+1)²`.
+
+All four arithmetic steps are `omega`/`nlinarith`/`linear_combination`/parity — no new
+Mathlib gaps, no measure theory (that was all in the now-axiom-free slice file).
+
+### Signature change + propagation (honest `d ≤ 2`)
+
+The slice volume bound `√2·π > 4` only holds for binary forms `x² + d·y²` with `d ≤ 2`,
+so the theorem carries an added `(hd2 : d ≤ 2)` hypothesis. This is the genuine scope
+(the classical selection step uses only `d ∈ {1,2}`), propagated by adding `∧ d ≤ 2`
+to the witness predicates `DirichletWitnessNe3` (registered, `…SufficiencyCorrected`)
+and `DirichletWitnessProperty` (unregistered, `…Sufficiency`), updating both call
+sites and the `not_dirichletWitnessProperty` obstruction destructure.
+
+### Files modified
+- `proofs/Proofs/ThreeSquares.lean` — `axiom dirichlet_key_lemma` → `theorem` (+~90
+  LOC proof after `dirichletForm_eq_p_of_lt_two_mul`); `import
+  Proofs.ThreeSquaresSliceMinkowski`; dangling doc-comment → plain comment (parse fix).
+- `…SufficiencyCorrected.lean` (registered), `…Sufficiency.lean`,
+  `…WitnessObstruction.lean` — `d ≤ 2` propagation.
+
+### Net axiom/sorry delta
+`ThreeSquares.lean`: axioms 2 → **1**; sorries 0 → 0. The Legendre–Gauss three-square
+theorem's geometric heart (Dirichlet 1850 / Minkowski-on-sublattice) is now
+machine-checked end-to-end.
+
+### Remaining open work
+- `not_excluded_form_is_sum_three_sq` (the last axiom): derivable from the now-proved
+  `dirichlet_key_lemma` + the two **witness existence** hypotheses
+  (`DirichletWitnessNe3` = Dirichlet-primes-in-AP selection, `Residue3Property`).
+  Those existence statements are the true deep frontier (Dirichlet's theorem on primes
+  in AP + the `m ≡ 3 (mod 8)` two-square split). Proving them unconditionally
+  discharges the final axiom.

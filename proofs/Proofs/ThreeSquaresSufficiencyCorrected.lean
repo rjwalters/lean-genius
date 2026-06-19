@@ -69,7 +69,7 @@ the witness is provably unsatisfiable (audit #24529 / obstruction #24614), is
 handled separately by `Residue3Property`. -/
 def DirichletWitnessNe3 : Prop :=
   ∀ {m : ℕ}, ¬IsExcludedForm m → ¬(4 ∣ m) → m % 8 ≠ 3 → 1 < m →
-    ∃ d p : ℕ, 0 < d ∧ p = d * m - 1 ∧ Nat.Prime p ∧ IsSquare ((-d : ℤ) : ZMod p)
+    ∃ d p : ℕ, 0 < d ∧ d ≤ 2 ∧ p = d * m - 1 ∧ Nat.Prime p ∧ IsSquare ((-d : ℤ) : ZMod p)
 
 /-- The residue-3 property: for every `m ≡ 3 (mod 8)` with `m > 3`, there is an
 odd witness `t` and a prime `mm = (m − t²)/2` with `mm % 4 ≠ 3`, packaged as the
@@ -143,7 +143,7 @@ theorem three_sq_of_corrected_witnesses
             haveI : Fact (Nat.Prime mm) := ⟨hmm_prime⟩
             exact ThreeSquaresResidue3.three_sq_of_residue3_prime hmm4 hdecomp
         · -- n % 8 ≠ 3: invoke the (restricted) Dirichlet witness
-          obtain ⟨d, p, hd, hp, hpp, hqr⟩ := Hne3 hne h4 h3 hle
+          obtain ⟨d, p, hd, hd2, hp, hpp, hqr⟩ := Hne3 hne h4 h3 hle
           haveI : Fact (Nat.Prime p) := ⟨hpp⟩
           -- The witness now carries `IsSquare ((-d : ℤ) : ZMod p)` (instance-free,
           -- so the `def` elaborates without a `Fact` in the `Prop`). Convert back to
@@ -165,7 +165,7 @@ theorem three_sq_of_corrected_witnesses
             push_cast; exact neg_ne_zero.mpr hd_ne
           have hqr' : legendreSym p (-d : ℤ) = 1 :=
             (legendreSym.eq_one_iff p hneg_d_ne).mpr hqr
-          exact dirichlet_key_lemma (n := n) (d := d) (p := p) hle hd hp hqr'
+          exact dirichlet_key_lemma (n := n) (d := d) (p := p) hle hd hd2 hp hqr'
 
 /-- **The sufficiency axiom is redundant given the corrected split.**
 
