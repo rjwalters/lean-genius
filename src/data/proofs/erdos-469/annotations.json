@@ -17,7 +17,11 @@
       "reciprocal sums",
       "divisor sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "convergence of infinite series of reciprocals",
+      "pseudoperfect (semiperfect) numbers",
+      "proper divisors of an integer"
+    ]
   },
   {
     "id": "ann-e469-definitions",
@@ -37,7 +41,11 @@
       "perfect numbers",
       "antichain"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proper divisors and divisor sums",
+      "subset-sum representations of integers",
+      "antichains in the divisibility partial order"
+    ]
   },
   {
     "id": "ann-e469-perfect",
@@ -56,7 +64,11 @@
       "constructive proof",
       "by decide"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "perfect numbers and the sum-of-divisors function",
+      "constructive existence proofs",
+      "decidable arithmetic via Lean's by decide tactic"
+    ]
   },
   {
     "id": "ann-e469-non-pseudo",
@@ -75,7 +87,11 @@
       "divisor sum",
       "case analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "deficient numbers and the proper divisor sum",
+      "bounding a subset sum by the total sum",
+      "exhaustive case analysis over small integers"
+    ]
   },
   {
     "id": "ann-e469-primitive-6",
@@ -94,7 +110,11 @@
       "smallest example",
       "primitivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primitivity as minimality under divisibility",
+      "proper divisors of 6",
+      "smallest-example lower bound arguments"
+    ]
   },
   {
     "id": "ann-e469-abundance",
@@ -114,7 +134,11 @@
       "weird numbers",
       "70"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "abundant, deficient, and perfect number classification",
+      "the sum-of-divisors function sigma",
+      "weird numbers and the subset-sum obstruction"
+    ]
   },
   {
     "id": "ann-e469-conjecture",
@@ -134,6 +158,10 @@
       "antichain",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "boundedness of partial sums and series convergence",
+      "closure of pseudoperfect numbers under multiplication",
+      "divisibility antichains analogous to primes"
+    ]
   }
 ]
