@@ -17,7 +17,11 @@
       "Multiset.toFinset",
       "submultiset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Multisets",
+      "Submultiset Order",
+      "Finite Order Intervals"
+    ]
   },
   {
     "id": "ann-nodup-set-case",
@@ -58,7 +62,11 @@
       "Multiset.count_eq_zero",
       "Multiset.mem_toFinset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Multiset Count",
+      "Disjoint Finsets",
+      "Products Over Finsets"
+    ]
   },
   {
     "id": "ann-concrete-verification",
@@ -75,7 +83,11 @@
     "relatedConcepts": [
       "native_decide"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Multiset Notation",
+      "Decidable Equality",
+      "Kernel Computation"
+    ]
   },
   {
     "id": "ann-finset-iic-semantics",
