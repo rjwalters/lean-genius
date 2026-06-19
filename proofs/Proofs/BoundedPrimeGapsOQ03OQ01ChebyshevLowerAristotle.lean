@@ -92,7 +92,25 @@ Apply L1 with `N = 2n` and `N = n`:
 `log C(2n,n) = log((2n)!) − 2·log(n!) = ∑_{d ∈ Ioc 0 2n} Λ d · (⌊2n/d⌋ − 2⌊n/d⌋)`
 (the `n`-sum extends to `Ioc 0 2n` since `⌊n/d⌋ = 0` for `d > n`). Each bracket lies in
 `{0,1}` (`0 ≤ ⌊2n/d⌋ − 2⌊n/d⌋ ≤ 1`) and `Λ d ≥ 0` (`vonMangoldt_nonneg`), so the sum is
-`≤ ∑_{d ∈ Ioc 0 2n} Λ d = ψ(2n)`. -/
+`≤ ∑_{d ∈ Ioc 0 2n} Λ d = ψ(2n)`.
+
+Lemma-level plan (Mathlib v4.26.0 hooks confirmed; complete when build infra recovers):
+  • Factorial form of C(2n,n): `Nat.choose_mul_factorial_mul_factorial (le : n ≤ 2*n)` gives
+    `(2n).choose n * n ! * (2n - n)! = (2n)!` with `2n - n = n`; combined with
+    `Nat.centralBinom_eq_two_mul_choose` this yields, after `Nat.cast_*` to ℝ and
+    `Real.log_div`/`Real.log_mul` (positivity from `Nat.factorial_pos`,
+    `Nat.centralBinom_pos`), `log C(2n,n) = log((2n)!) − 2·log(n!)`.
+  • Rewrite both factorials by `log_factorial_eq_sum_vonMangoldt_mul_div` (L1) at `N = 2n`
+    and `N = n`. Extend the `N = n` sum from `Ioc 0 n` to `Ioc 0 2n` via
+    `Finset.sum_subset` (`Ioc_subset_Ioc_right (by omega)`); the new terms vanish because
+    `n / d = 0` for `d > n` (`Nat.div_eq_of_lt`).
+  • Merge into `∑_{d ∈ Ioc 0 2n} Λ d * (↑(2n/d) − 2·↑(n/d))` and bound termwise by
+    `Λ d * 1`: use `ArithmeticFunction.vonMangoldt_nonneg` together with the ℕ bracket
+    bound `2n/d ≤ 2*(n/d) + 1` (proved: lower `Nat.mul_div_le_mul_div_assoc 2 n d`; upper
+    via `Nat.div_lt_iff_lt_mul hd` reducing to `2n < (2*(n/d)+2)*d`, closed by
+    `Nat.div_add_mod` + `nlinarith`/`ring`, NOT `omega` — the step is nonlinear in `d, n/d`).
+  • `Chebyshev.psi (2 * n) = ∑ d ∈ Ioc 0 (2n), Λ d` by unfolding `Chebyshev.psi` and
+    `Nat.floor_natCast` (note `(2 * n : ℝ)` casts as `↑(2*n)`), giving the final `≤`. -/
 theorem log_centralBinom_le_psi (n : ℕ) :
     Real.log (Nat.centralBinom n : ℝ) ≤ Chebyshev.psi (2 * n) := by
   sorry
