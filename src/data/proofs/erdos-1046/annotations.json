@@ -22,7 +22,11 @@
       "sublevel-set",
       "polynomial-geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "polynomials over the complex numbers",
+      "point-set topology (connectedness)"
+    ]
   },
   {
     "id": "ann-1046-sublevel",
@@ -47,7 +51,11 @@
       "complex-abs",
       "topology"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "metric space topology (open/closed sets)",
+      "continuity of complex functions"
+    ]
   },
   {
     "id": "ann-1046-centroid",
@@ -72,7 +80,11 @@
       "centroid",
       "monic-polynomial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial algebra",
+      "complex roots and multiplicities",
+      "Mathlib Polynomial API"
+    ]
   },
   {
     "id": "ann-1046-connectivity",
@@ -97,7 +109,11 @@
       "potential-theory",
       "biconditional"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "complex differentiation of polynomials",
+      "point-set topology (connectedness)"
+    ]
   },
   {
     "id": "ann-1046-pommerenke",
@@ -122,7 +138,11 @@
       "sharp-bound",
       "potential-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "potential theory",
+      "metric geometry of the plane"
+    ]
   },
   {
     "id": "ann-1046-width",
@@ -147,7 +167,12 @@
       "convex-geometry",
       "lemniscate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "convex geometry",
+      "real analysis",
+      "complex analysis",
+      "Lean 4 axiomatization"
+    ]
   },
   {
     "id": "ann-1046-diameter",
@@ -172,7 +197,11 @@
       "supremum",
       "pommerenke"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "metric space theory",
+      "supremum and order completeness of the reals",
+      "complex analysis"
+    ]
   },
   {
     "id": "ann-1046-summary",
@@ -197,6 +226,10 @@
       "width-conjecture",
       "problem-resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "logical connectives and existential proofs",
+      "complex analysis"
+    ]
   }
 ]
