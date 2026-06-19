@@ -16,7 +16,11 @@
       "arithmetic-progressions",
       "harmonic-sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progressions",
+      "Harmonic Series",
+      "Van Der Waerden Numbers"
+    ]
   },
   {
     "id": "ann-169-ap-def",
@@ -34,7 +38,11 @@
       "szemerédi-theorem",
       "van-der-waerden"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progressions",
+      "Common Difference",
+      "Set Membership"
+    ]
   },
   {
     "id": "ann-169-harmonic",
@@ -52,7 +60,11 @@
       "harmonic-series",
       "supremum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Reciprocal Sums",
+      "Supremum",
+      "Convergent Series"
+    ]
   },
   {
     "id": "ann-169-vdw",
@@ -70,7 +82,11 @@
       "ramsey-theory",
       "coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Theory",
+      "Two-Coloring",
+      "Monochromatic Progressions"
+    ]
   },
   {
     "id": "ann-169-berlekamp",
@@ -88,7 +104,11 @@
       "digit-restrictions",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binary Representation",
+      "Digit Restrictions",
+      "Lower Bound Constructions"
+    ]
   },
   {
     "id": "ann-169-gerver",
@@ -106,7 +126,11 @@
       "asymptotic-bounds",
       "equivalence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Notation",
+      "Superlinear Growth",
+      "Little-o Notation"
+    ]
   },
   {
     "id": "ann-169-ratio",
@@ -124,7 +148,11 @@
       "open-problem",
       "growth-rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Growth Rate Comparison",
+      "Limit To Infinity",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-169-records",
@@ -142,7 +170,11 @@
       "computation",
       "explicit-bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Explicit Constructions",
+      "Numerical Lower Bounds",
+      "3-AP-Free Sets"
+    ]
   },
   {
     "id": "ann-169-kempner",
@@ -161,7 +193,11 @@
       "digit-restrictions",
       "optimization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Kempner Sets",
+      "Base-b Representation",
+      "Optimization Reduction"
+    ]
   },
   {
     "id": "ann-169-properties",
@@ -179,7 +215,11 @@
       "monotonicity",
       "positivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Monotonic Functions",
+      "Positivity",
+      "Singleton Sets"
+    ]
   },
   {
     "id": "ann-169-related",
@@ -197,7 +237,11 @@
       "problem-cluster",
       "oeis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdos Problems",
+      "OEIS Sequences",
+      "Problem Equivalence"
+    ]
   },
   {
     "id": "ann-169-summary",
@@ -215,6 +259,10 @@
       "open-problem",
       "status-summary"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Lower Bounds",
+      "Open Conjectures",
+      "Kempner Approximation"
+    ]
   }
 ]
