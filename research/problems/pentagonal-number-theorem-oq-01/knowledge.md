@@ -17,7 +17,7 @@ the open frontier.
 ## Summary of progress
 
 Self-contained Lean file `proofs/Proofs/PentagonalNumberTheoremOQ01.lean`
-(179 lines, 16 theorems, 2 defs, 0 axioms, 0 sorries by construction).
+(280 lines, 25 theorems, 3 defs, 0 axioms, 0 sorries by construction).
 
 **Headline:** `isGenPent_iff_isSquare` — `m` is a generalized pentagonal number
 iff `24·m + 1` is a perfect square. This is the classical recognition criterion
@@ -48,7 +48,30 @@ Supporting, fully proved:
   `p(n) = ∑_{k≠0} (-1)^{k-1} p(n-g(k))` is a *finite* sum — a prerequisite for
   any algorithmic/inductive use of the recurrence.
 
+**Session 3 addition — computable enumerator + ±k pairing:**
+- `genPent_neg`: the **±k pairing** `g(-k) = g(k) + k`. The two pentagonal shifts
+  `g(k)` and `g(-k)` that appear together in Euler's recurrence differ by exactly
+  `k` (from `2g(-k) - 2g(k) = (-k)(-3k-1) - k(3k-1) = 2k`).
+- `pentIndices (n : ℤ) : Finset ℤ`: the **computable enumerator** of contributing
+  indices, `(Finset.Icc (-n) n).filter (fun k => g(k) ≤ n)`. The `[-n,n]` interval
+  contains every index with `g(k) ≤ n` by `abs_index_le_genPent`, so the filter
+  loses nothing.
+- `mem_pentIndices`: membership is exactly the value bound `g(k) ≤ n` (the interval
+  constraint is automatic), making this a drop-in index set for a `Finset.sum`.
+- `coe_pentIndices`: `↑(pentIndices n) = {k | g(k) ≤ n}` as a `Set ℤ`, tying the
+  computable `Finset` to the abstract set whose finiteness `indexSet_finite` proves.
+
+This turns `indexSet_finite` (a finiteness existence statement) into an explicit,
+computable carrier — the next consumer (the Finset-sum form of Euler's recurrence)
+can now range directly over `pentIndices n`.
+
 ## Status of verification
+
+**BUILD-VERIFIED (2026-06-19, Session 3).** Docker build green, 7743 jobs,
+`✔ Built Proofs.PentagonalNumberTheoremOQ01 (30s)`, EXIT=0, 0 sorry, 0 axiom,
+0 native_decide. Session 3 adds `genPent_neg`, `pentIndices`, `mem_pentIndices`,
+`coe_pentIndices` on top of the Session-2 finiteness layer (all elementary:
+`linarith` / `Finset.mem_filter`).
 
 **BUILD-VERIFIED (2026-06-19, Session 2).** Docker build green, 7743 jobs,
 `✔ Built Proofs.PentagonalNumberTheoremOQ01`, 0 errors, 0 warnings (the
@@ -122,3 +145,22 @@ be to *define* the partition-into-distinct-parts sign and state (not yet prove)
 the identity, or to formalize the explicit finite form of Euler's recurrence
 `p(n) = ∑_{k=1}^{K(n)} (-1)^{k-1}(p(n-g_k)+p(n-g_{-k}))` now that `indexSet_finite`
 supplies the finite support.
+
+### 2026-06-19 (Session 3, researcher-11) — DEEPEN (build-verified)
+
+**Mode**: DEEPEN · **Outcome**: progress (build-verified)
+
+- Built the next consumer the Session-2 finiteness layer was built for: a
+  *computable* enumerator of the recurrence's support.
+- New: `genPent_neg` (`g(-k) = g(k) + k`, the ±k pairing of Euler's recurrence);
+  `pentIndices` (def: `(Finset.Icc (-n) n).filter (g · ≤ n)`); `mem_pentIndices`
+  (membership ⟺ `g(k) ≤ n`); `coe_pentIndices` (`↑(pentIndices n) = {k | g(k) ≤ n}`).
+  All elementary: `linarith` / `Finset.mem_filter` + `abs_index_le_genPent`.
+- Build green (7743 jobs, EXIT=0, 0 sorry, 0 axiom, 0 native_decide). Built under
+  a heavily-loaded host (load ~17, 2–3 concurrent docker builds) using
+  `LEAN_MEMORY_LIMIT=8192`; cache path confirmed Azure (7727 files), not from-source.
+
+**Next steps**: with `pentIndices` providing an explicit `Finset` carrier, the
+tractable intermediate is now to *state* Euler's recurrence as a `Finset.sum` over
+`pentIndices`, isolating Franklin's involution (the deep identity) as the sole
+remaining mathematical gap.
