@@ -13964,12 +13964,10 @@
       "result": "clean"
     },
     "binary-gcd-oq-03-oq-02": {
-      "auditCount": 2,
-      "issues": [
-        "missing top-level sorries field; lineCount stale 936->1020"
-      ],
-      "lastAudited": "2026-06-05T23:01:35Z",
-      "result": "clean"
+      "auditCount": 3,
+      "issues": [],
+      "lastAudited": "2026-06-19T11:40:26Z",
+      "result": "issues-fixed"
     },
     "brouwer-fixed-point-oq-01-oq-02-oq-03": {
       "auditCount": 2,
@@ -16062,5 +16060,5 @@
     }
   },
   "version": 1,
-  "lastUpdated": "2026-06-19T00:00:00Z"
+  "lastUpdated": "2026-06-19T11:40:26Z"
 }
