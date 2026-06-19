@@ -17,7 +17,11 @@
       "density",
       "egyptian-fractions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Unit Fraction Sums",
+      "Integer Sequences"
+    ]
   },
   {
     "id": "ann-e299-bounded-gaps",
@@ -36,7 +40,11 @@
       "big-O",
       "sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Big-O Notation",
+      "Asymptotic Analysis",
+      "Consecutive Differences"
+    ]
   },
   {
     "id": "ann-e299-unit-fractions",
@@ -55,7 +63,11 @@
       "finset",
       "rational-arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Finite Sets",
+      "Rational Arithmetic"
+    ]
   },
   {
     "id": "ann-e299-density",
@@ -74,7 +86,11 @@
       "counting",
       "natural-density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper Density",
+      "Limit Superior",
+      "Counting Functions"
+    ]
   },
   {
     "id": "ann-e299-key-lemma",
@@ -93,7 +109,11 @@
       "counting",
       "gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Bounded Gaps",
+      "Natural Density",
+      "Counting Arguments"
+    ]
   },
   {
     "id": "ann-e299-bloom",
@@ -112,7 +132,11 @@
       "additive-combinatorics",
       "erdos-graham"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper Density",
+      "Additive Combinatorics",
+      "Erdos-Graham Conjecture"
+    ]
   },
   {
     "id": "ann-e299-main",
@@ -131,7 +155,11 @@
       "main-theorem",
       "solved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proof By Contradiction",
+      "Positive Density",
+      "Egyptian Fractions"
+    ]
   },
   {
     "id": "ann-e299-examples",
@@ -150,7 +178,11 @@
       "verification",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Native Decide",
+      "Rational Arithmetic"
+    ]
   },
   {
     "id": "ann-e299-powers-of-two",
@@ -169,7 +201,11 @@
       "geometric-series",
       "exponential-growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Exponential Growth",
+      "Geometric Series",
+      "Proof By Contradiction"
+    ]
   },
   {
     "id": "ann-e299-summary",
@@ -188,6 +224,10 @@
       "bundled-theorem",
       "completeness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Main Theorem",
+      "Positive Density",
+      "Egyptian Fractions"
+    ]
   }
 ]
