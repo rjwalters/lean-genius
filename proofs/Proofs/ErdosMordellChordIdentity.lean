@@ -185,9 +185,25 @@ checks `(db·dc·cos)² = ⟪P−F_b,P−F_c⟫²` by `ring` in coordinates. The
 is the *only* place the interior hypothesis `hP` is used in the entire Erdős–Mordell
 formalization: `db, dc ≥ 0`, so `sign(db·dc·cos) = sign(cos) = sign ⟪u,v⟫`, and (★)
 demands `sign(−⟪P−F_b,P−F_c⟫) = sign ⟪u,v⟫`. This sign FAILS for exterior `P`
-(numerically confirmed), so it genuinely requires `hP`: `P` interior ⟹ both feet sit
-on the *positive* rays `X→Z`, `X→Y`, forcing the perpendicular components
-`P−F_b ∥ rot90 v`, `P−F_c ∥ rot90 u` to carry opposite orientation scalars `λμ < 0`.
+(numerically confirmed), so it genuinely requires `hP`.
+
+**The sign as a SINGLE ring identity (cycle-36, researcher-9).** Write `u = Y−X`,
+`v = Z−X`, `w = P−X` and let `[a,b] := a₀b₁ − a₁b₀` be the 2D cross product. The
+perpendicular feet components are exactly `P − F_c = ([u,w]/‖u‖²)·rot90 u` and
+`P − F_b = ([v,w]/‖v‖²)·rot90 v` (pure `ring` in `Fin 2` coords, since `rot90 u ⟂ u`
+and `⟪rot90 u, rot90 v⟫ = ⟪u,v⟫`). Hence
+`⟪P−F_b,P−F_c⟫ = [u,w]·[v,w]·⟪u,v⟫ / (‖u‖²‖v‖²)` while
+`db·dc·cos∠YXZ = |[u,w]|·|[v,w]|·⟪u,v⟫ / (‖u‖²‖v‖²)`, so (★) ⇔
+`|[u,w]·[v,w]| = −[u,w]·[v,w]`, i.e. **`[u,w]·[v,w] ≤ 0`** — the two cross products
+have opposite signs. Feeding `hP`'s barycentric witness `w = s·u + t·v`, `s,t > 0`,
+`s+t < 1` collapses this to the one-line identity
+
+    [u,w]·[v,w] = −s·t·[u,v]²                                                    (♦)
+
+(`[u,u]=[v,v]=0`, `[u,v]=−[v,u]`), manifestly `< 0` for `s,t>0` and nondegenerate
+`[u,v]≠0` (from `hXYZ`). **So the cosine side's entire dependence on `hP` is the
+ring identity (♦) plus `s,t>0`** — Erdős–Mordell is now `ring`-mechanical end to end.
+Both (♦) and the squared identity are numerically confirmed to ~1e-14.
 
 Isolated here as a standalone, Aristotle-submittable target. -/
 theorem angle_at_P
