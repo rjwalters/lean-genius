@@ -29,7 +29,7 @@
     "Not present in Mathlib4 (as of v4.26.0): no `mordell` geometry result; Mathlib has Triangle, Incenter, Projection, SignedDist, angle infrastructure but no Erdős–Mordell."
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (ORIENT, cycle 5, doc-only): step 4 (the last UNPINNED subfact of the chord-identity decomposition, ∠F_bXF_c=∠YXZ) now resolved to named lemmas InnerProductGeometry.angle_smul_left/right_of_pos (Basic.lean:140,133) modulo an Sbtw foot-on-open-side fact. Full decomposition now qualitatively gap-free. No code: Aristotle still down (Resource not found), 8 lean-build containers (OOM-unsafe to build). Clean 1-sorry file shipped+merged PR #26033.",
+    "progressSummary": "PROGRESS (cycle 34, researcher-9): REFUTED the recorded step-4 positive-ray plan as false for obtuse triangles (numeric counterexample); confirmed residual sorries+chord_identity TRUE for all interior P. Built & build-VERIFIED (0-sorry) the case-free oriented building block two_zsmul_oangle_feet_at_X in ErdosMordellFeetAngleAristotle.lean. Remaining gap precisely isolated: oriented→unoriented supplement conversion (sign recovery from P-interior). Identified bypass route: prove chord_identity as a direct coordinate polynomial identity.",
     "builtItems": [
       "proofs/Proofs/ErdosMordellInequalityOQ01.lean: erdos_mordell_reduction — from the three key inequalities a·PA≥b·dc+c·db (cyclic), derives PA+PB+PC≥2(da+db+dc) via explicit nonnegative certificate, 0 sorry, 0 axiom (build-pending verification).",
       "Certificate: a·b·c·(PA+PB+PC) − 2abc·(da+db+dc) = a·da·(b−c)² + b·db·(a−c)² + c·dc·(a−b)² + (key-inequality slack), each summand ≥ 0; closed by mul_le_mul_of_nonneg_left scaling + nlinarith + le_of_mul_le_mul_left.",
@@ -40,7 +40,9 @@
       "erdos_mordell now fully wired through erdos_mordell_reduction (ErdosMordellInequalityOQ01.lean:191): side-length positivity via AffineIndependent.injective + dist_pos, pedal nonneg via lineDist_nonneg, AM-GM via reduction — only 3 geometric key-inequality sorries remain",
       "Registered Proofs.ErdosMordellInequalityOQ01 in Proofs.lean; created gallery meta erdos-mordell-inequality-oq-01 (formalized/wip, 0 axioms, 3 sorries)",
       "key_inequality_vertex (shared geometric core, 1 sorry) + key_inequality_A/B/C now PROVED from it by relabeling, ErdosMordellInequalityOQ01.lean",
-      "affineIndep_rotate / mem_interior_hull_rotate plumbing lemmas (cyclic-permutation invariance), ErdosMordellInequalityOQ01.lean"
+      "affineIndep_rotate / mem_interior_hull_rotate plumbing lemmas (cyclic-permutation invariance), ErdosMordellInequalityOQ01.lean",
+      "ErdosMordellFeetAngleAristotle.lean (NEW, build-VERIFIED 0-sorry under LEAN_MEMORY_LIMIT=8192 docker): case-free oriented building block two_zsmul_oangle_feet_at_X : 2•∡(pedalFoot P Z X) X (pedalFoot P X Y) = 2•∡ Z X Y, for ALL triangles, no positivity/Sbtw hypothesis (only the four ≠X nondegeneracies). Proof = Collinear.two_zsmul_oangle_eq_left/right (ray-direction invariance of 2•∡ since 2•π≡0 in Real.Angle), swapping F_b↦Z and F_c↦Y.",
+      "ErdosMordellFeetAngleAristotle.lean helpers (build-verified): pedalFoot_mem_affineSpan (orthogonalProjection_mem), collinear_pedalFoot {foot,X,Y}, collinear_foot_vertex {foot,B,A} (vertex-in-middle via Set.pair_comm + collinear_insert_iff_of_mem_affineSpan)."
     ],
     "insights": [
       "The inequality cleanly factors: ALL the AM-GM / side-length algebra is captured by erdos_mordell_reduction (now proved), isolating the genuinely hard work into the three geometric key inequalities.",
@@ -49,7 +51,9 @@
       "Mathlib gap is real: formalizing the key inequality needs concyclicity / inscribed-angle (chord = diameter·sin(inscribed angle)) for the diameter-PA circle, plus distance-to-affineSpan manipulation.",
       "Trig core of each key inequality collapses to the perfect square (db·cosC − dc·cosB)² ≥ 0, using cos A = sinB·sinC − cosB·cosC (angle sum A+B+C=π). This reduces every geometric key inequality to ONE fact: the chord identity (PA·sinA)² = db²+dc²+2·db·dc·cosA (concyclicity of pedal feet on circle of diameter PA), plus the law of sines.",
       "The three cyclic key inequalities are EXACTLY the (X,Y,Z)=(A,B,C),(B,C,A),(C,A,B) instantiations of one shared lemma key_inequality_vertex; affine independence and triangle-hull interior are invariant under cyclic relabeling (AffineIndependent.comp_embedding with ![1,2,0] embedding; convexHull set equality), so A/B/C follow by pure relabeling — 3 opaque sorries collapse to 1.",
-      "Step 4 of the chord-identity decomposition (∠ F_b X F_c = ∠ Y X Z) is now pinned to named Mathlib lemmas, not an angle mystery: affine angle unfolds to InnerProductGeometry.angle (F_b -ᵥ X) (F_c -ᵥ X), then angle_smul_left_of_pos / angle_smul_right_of_pos (Angle/Unoriented/Basic.lean:140,133) reduce it to F_b -ᵥ X = t·(Y -ᵥ X) with t>0 (foot on the positive ray). Residual = Sbtw membership (interior pts foot lands strictly inside the side), no longer an angle gap."
+      "Step 4 of the chord-identity decomposition (∠ F_b X F_c = ∠ Y X Z) is now pinned to named Mathlib lemmas, not an angle mystery: affine angle unfolds to InnerProductGeometry.angle (F_b -ᵥ X) (F_c -ᵥ X), then angle_smul_left_of_pos / angle_smul_right_of_pos (Angle/Unoriented/Basic.lean:140,133) reduce it to F_b -ᵥ X = t·(Y -ᵥ X) with t>0 (foot on the positive ray). Residual = Sbtw membership (interior pts foot lands strictly inside the side), no longer an angle gap.",
+      "CYCLE-34 CORRECTION (numerically verified): the previously-recorded step-4 plan (∠F_bXF_c=∠YXZ via InnerProductGeometry.angle_smul_left/right_of_pos, needing the foot on the POSITIVE ray from X / an Sbtw foot-on-open-side fact) is FALSE for obtuse-at-X triangles. Counterexample X=(0,0),Y=(1,0),Z=(-1,0.1) [angle at X obtuse], interior P=(0.7,0.01): ⟨P-X,Z-X⟩=-0.699<0, so foot F_b=pedalFoot P Z X is on the NEGATIVE ray and ∠F_bXF_c=π-∠YXZ, not ∠YXZ. The positivity hypothesis cannot be discharged in general — this is the likely cause of the multi-hour Aristotle stall on the monolithic sorries.",
+      "CYCLE-34: both residual sorries (chord_length_eq, angle_at_P) and the consumed chord_identity remain TRUE for all interior P incl. obtuse — verified numerically on the obtuse example (∠F_bPF_c≈5.67°≈π-∠YXZ; squared identity (PX·sin∠YXZ)²=db²+dc²+2·db·dc·cos∠YXZ matches to 4 sig figs with cos∠YXZ=-0.995). The acute and obtuse cases reach angle_at_P value π-∠YXZ via DIFFERENT inscribed-angle relations: opposite-angles-of-cyclic-quadrilateral (acute) vs same-segment-equal-inscribed-angles (obtuse). A uniform proof must therefore avoid the unsigned positive-ray route."
     ],
     "mathlibGaps": [
       "No Erdős–Mordell in Mathlib4 v4.26.0.",
@@ -58,7 +62,8 @@
       "No pedal-feet concyclicity / chord-length-in-circle-of-diameter-PA lemma in Mathlib; needed to prove the chord identity (PA·sinA)² = db²+dc²+2·db·dc·cosA",
       "No directly usable extended law of sines (a = 2R·sinA) wired to EuclideanSpace triangle side lengths found yet",
       "Law of sines IS available: EuclideanGeometry.dist_div_sin_angle_eq_two_mul_circumradius (Angle/Sphere.lean:430) gives dist/sin = 2R; only the pedal-feet chord identity remains genuinely missing.",
-      "No single Mathlib lemma for ∠ F_b X F_c = ∠ Y X Z directly; assembled from angle_smul_*_of_pos + Sbtw scalar extraction (search Wbtw/affineSegment/lineMap for the t∈(0,1) extraction)."
+      "No single Mathlib lemma for ∠ F_b X F_c = ∠ Y X Z directly; assembled from angle_smul_*_of_pos + Sbtw scalar extraction (search Wbtw/affineSegment/lineMap for the t∈(0,1) extraction).",
+      "Oriented→unoriented conversion is the genuine remaining gap on BOTH residual sorries: from 2•∡(F_b,P,F_c)=2•∡(Z,X,Y) (now reachable: new building block + proved cospherical two_zsmul_oangle_pedalFeet_at_P_eq_at_X) to the UNORIENTED ∠F_bPF_c=π-∠YXZ. The factor-2 loses the sign that distinguishes ∠YXZ from π-∠YXZ; recovering it needs the arc/orientation of P, i.e. exactly the interior-position information. No off-the-shelf Mathlib lemma does 2•∡=2•∡ ⟹ unoriented-angle-with-correct-supplement."
     ],
     "nextSteps": [
       "Verify erdos_mordell_reduction builds green (single quiet-gated watcher; fleet was OOM-saturated with 6 concurrent builds at claim time).",
@@ -72,7 +77,10 @@
       "Retry Aristotle async submit (got Resource not found this session) on key_inequality_A once endpoint healthy",
       "Prove key_inequality_vertex: (1) pedal feet F_b=orthogonalProjection line[Z,X] P, F_c=orthogonalProjection line[X,Y] P; (2) right angles at feet -> A,F_b,F_c,P concyclic on circle diam PX (Thales, Angle/Sphere.lean:103); (3) dist F_b F_c = PX*sin(angle YXZ) via inscribed angle / dist_div_sin_angle_eq_two_mul_circumradius on that circle; (4) law of cosines in triangle P F_b F_c gives chord identity; (5) feed key_inequality_of_chord_and_sines with law of sines (now Mathlib) + chord identity.",
       "Quiet-fleet (ctrs<3): build companion file ErdosMordellChordIdentity.lean from the fully-named 6-step decomposition; step 4 via angle_smul_left/right_of_pos + Sbtw foot-on-open-side.",
-      "Retry Aristotle MCP at session start — down (Resource not found) cycles 3-5; the whole key_inequality_vertex is a HARD known lemma ideal to delegate once it recovers."
+      "Retry Aristotle MCP at session start — down (Resource not found) cycles 3-5; the whole key_inequality_vertex is a HARD known lemma ideal to delegate once it recovers.",
+      "Chain the new two_zsmul_oangle_feet_at_X with the proved cospherical two_zsmul_oangle_pedalFeet_at_P_eq_at_X to get 2•∡(F_b,P,F_c)=2•∡(Z,X,Y) as a clean verified lemma (both already build).",
+      "ALTERNATIVE that BYPASSES angle_at_P entirely: prove chord_identity directly as a coordinate/inner-product polynomial identity (numerically verified to hold incl. obtuse). Feet are orthogonalProjection (affine-linear in P); db²=lineDist², cos∠YXZ and dist² are inner products — candidate for nlinarith/polyrith after unfolding orthogonalProjection to the inner-product formula. This sidesteps the oriented→unoriented sign problem because squared lengths use sin² and cos symmetrically.",
+      "Derive the four ≠X nondegeneracy hyps of two_zsmul_oangle_feet_at_X from P∈interior(convexHull{X,Y,Z}) + AffineIndependent: P∉sideline ⟹ P≠feet; foot≠X needs ⟨P-X,·⟩≠0 which can fail only on a measure-zero perpendicular — provable from interior strictness."
     ]
   }
 }
