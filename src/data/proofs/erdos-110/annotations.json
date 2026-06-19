@@ -17,7 +17,11 @@
       "Compactness",
       "ZFC"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the chromatic number of a graph",
+      "cardinal numbers and the axiom system ZFC",
+      "compactness for infinite graphs"
+    ]
   },
   {
     "id": "ann-110-definitions",
@@ -36,7 +40,11 @@
       "combinatorics",
       "extremal problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph coloring and the chromatic number",
+      "extremal graph problems",
+      "Erdős-style combinatorics"
+    ]
   },
   {
     "id": "ann-110-cardinals",
@@ -55,7 +63,11 @@
       "Successor cardinals",
       "Uncountability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinal numbers and aleph notation ℵ",
+      "successor cardinals",
+      "uncountable sets"
+    ]
   },
   {
     "id": "ann-110-debruijn",
@@ -73,7 +85,11 @@
       "limits",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the chromatic number of infinite graphs",
+      "finite subgraphs and limits",
+      "the de Bruijn–Erdős compactness theorem"
+    ]
   },
   {
     "id": "ann-110-conjecture",
@@ -91,7 +107,11 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "uncountable chromatic number",
+      "subgraphs of large chromatic number",
+      "the Erdős–Hajnal–Szemerédi conjecture statement"
+    ]
   },
   {
     "id": "ann-110-disproof",
@@ -110,7 +130,11 @@
       "Consistency",
       "Counterexample construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ZFC axioms and independence/consistency",
+      "forcing and consistency results (Shelah)",
+      "constructing a ZFC counterexample (Lambie-Hanson)"
+    ]
   },
   {
     "id": "ann-110-counterexample",
@@ -129,7 +153,11 @@
       "ring theory",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graphs defined from algebraic (ring) structure",
+      "uncountable chromatic number",
+      "the Lambie-Hanson construction"
+    ]
   },
   {
     "id": "ann-110-summary",
@@ -148,6 +176,10 @@
       "graph theory",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "chromatic number in uncountable graphs",
+      "the proof technique of the disproof",
+      "what the resolution means"
+    ]
   }
 ]
