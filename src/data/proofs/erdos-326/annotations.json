@@ -16,7 +16,11 @@
       "filters",
       "topology"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib filter and topology imports",
+      "limits and convergence notation",
+      "open problems in additive combinatorics"
+    ]
   },
   {
     "id": "ann-e326-add-basis",
@@ -35,7 +39,11 @@
       "representation",
       "generating sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sums of natural numbers",
+      "representing integers as sums of set elements",
+      "the notion of a generating set under addition"
+    ]
   },
   {
     "id": "ann-e326-order-k-basis",
@@ -54,7 +62,11 @@
       "Goldbach conjecture",
       "representation number"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases and number of summands",
+      "Lagrange's four-square theorem",
+      "bounding representation length by k"
+    ]
   },
   {
     "id": "ann-e326-growth-ratio",
@@ -73,7 +85,11 @@
       "density",
       "enumeration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "enumerating a set in increasing order",
+      "real division and the noncomputable keyword",
+      "quadratic asymptotic growth bounds"
+    ]
   },
   {
     "id": "ann-e326-no-limit",
@@ -92,7 +108,11 @@
       "oscillation",
       "limit superior/inferior"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "convergence of a real sequence to a limit",
+      "negating tendsto for every real x",
+      "oscillation and unbounded behavior"
+    ]
   },
   {
     "id": "ann-e326-main-axiom",
@@ -111,7 +131,11 @@
       "existential statements",
       "law of excluded middle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential statements over sub-bases",
+      "the law of excluded middle as a disjunction",
+      "axioms encoding unresolved problems"
+    ]
   },
   {
     "id": "ann-e326-cassels",
@@ -130,6 +154,10 @@
       "construction",
       "convergent sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counterexample construction to a conjecture",
+      "convergence of the growth ratio to a positive limit",
+      "Cassels' 1957 explicit basis"
+    ]
   }
 ]
