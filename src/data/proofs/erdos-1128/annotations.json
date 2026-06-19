@@ -16,7 +16,11 @@
       "Ramsey theory",
       "cardinal arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "infinite combinatorics",
+      "cardinal arithmetic"
+    ]
   },
   {
     "id": "ann-e1128-cardinals",
@@ -35,7 +39,12 @@
       "Cardinal.mk",
       "uncountable sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axiomatic set theory",
+      "ordinal and cardinal numbers",
+      "Mathlib Cardinal API",
+      "Lean 4 axiom declarations"
+    ]
   },
   {
     "id": "ann-e1128-coloring",
@@ -54,7 +63,12 @@
       "homogeneous set",
       "Ramsey property"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "naive set theory",
+      "functions and product sets",
+      "Lean 4 definitions",
+      "Boolean types"
+    ]
   },
   {
     "id": "ann-e1128-conjecture",
@@ -73,7 +87,12 @@
       "Ramsey property",
       "partition relation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite Ramsey theory",
+      "infinite set theory",
+      "Lean 4 propositions",
+      "first-order quantifiers"
+    ]
   },
   {
     "id": "ann-e1128-disproof",
@@ -92,7 +111,12 @@
       "push_neg",
       "ordinal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ordinal combinatorics",
+      "classical logic",
+      "Lean 4 tactic mode",
+      "negation of quantifiers"
+    ]
   },
   {
     "id": "ann-e1128-twodim",
@@ -111,7 +135,11 @@
       "Δ-system",
       "negative partition relation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinitary combinatorics",
+      "well-ordering theory",
+      "cardinal arithmetic"
+    ]
   },
   {
     "id": "ann-e1128-summary",
@@ -130,6 +158,10 @@
       "summary theorem",
       "problem resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "propositional logic",
+      "Lean 4 anonymous constructors"
+    ]
   }
 ]
