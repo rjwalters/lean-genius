@@ -22,9 +22,9 @@
     "erdosNumber": 875,
     "erdosUrl": "https://erdosproblems.com/875",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 212,
-    "assumptions": "No axioms, no sorries. All theorems fully proved: powers_of_two_admissible (binary uniqueness proof via pow2_subset_sum_inj), pow2_strictly_increasing, admissible_growth_lower, pow2_small_example (native_decide), finite_version_connection. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "No `axiom` declarations, no sorries. Supporting lemmas fully proved: powers_of_two_admissible (binary uniqueness proof via pow2_subset_sum_inj), pow2_strictly_increasing, admissible_growth_lower, finite_version_connection. The theorem `pow2_small_example` is discharged by `native_decide`, so it depends on `Lean.ofReduceBool` (Lean's compiler kernel-reduction axiom; #print axioms lists it) — it is free of mathematical axioms but not axiom-free in the strict sense. Open conjecture; supporting lemmas otherwise verified.",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,
     "definitionCount": 7
@@ -93,7 +93,7 @@
       "startLine": 188,
       "endLine": 195,
       "summary": "PROVES `pow2_small_example`: $\\{1,2,4\\}$ has disjoint $1$-fold and $2$-fold sumsets ($S_1=\\{1,2,4\\}$, $S_2=\\{3,5,6\\}$), by `native_decide`.",
-      "mathContext": "$\\{1,2,4\\}$: $S_1=\\{1,2,4\\}$, $S_2=\\{3,5,6\\}$ disjoint."
+      "mathContext": "$\\{1,2,4\\}$: $S_1=\\{1,2,4\\}$, $S_2=\\{3,5,6\\}$ disjoint (verified by `native_decide`, depends on `Lean.ofReduceBool`)."
     },
     {
       "id": "connection-874",

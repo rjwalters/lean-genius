@@ -17,11 +17,11 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 2932,
     "theoremCount": 142,
     "definitionCount": 10,
-    "assumptions": "Axiomatized: jacobi_r4_formula — for all n ≥ 1, the integer-tuple count r₄(n) equals 8·σ*(n). Numerically verified for n = 1..10. The general statement is open in this formalization because Mathlib lacks the q-expansion / Fourier-coefficient infrastructure for jacobiTheta and the identification of θ⁴ with the weight-2 Eisenstein series E₂(τ) − 4·E₂(4τ).",
+    "assumptions": "2 axioms: (1) jacobi_r4_formula — for all n ≥ 1, the integer-tuple count r₄(n) equals 8·σ*(n); numerically verified for n = 1..10; the general statement is open in this formalization because Mathlib lacks the q-expansion / Fourier-coefficient infrastructure for jacobiTheta and the identification of θ⁴ with the weight-2 Eisenstein series E₂(τ) − 4·E₂(4τ). (2) Lean.ofReduceBool — the credited numerical verification theorems (sigmaStar_1..10, jacobiR4_1..10, r4Count_1..10, jacobi_holds_1..10, r4Count_zero, sigmaStar_zero, and the sigmaOne_* divisor-sum values) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy these credited theorems are counted in meta.axiomCount. The structural reductions (Parts 6, 8, 9, 12, 13, 15–18) and the cross-check `example`s use `decide`/induction and are free of `Lean.ofReduceBool`. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. (leanFile.axiomCount remains 1, counting only the literal `axiom` declaration.)",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",

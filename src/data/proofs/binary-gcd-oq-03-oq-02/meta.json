@@ -20,11 +20,11 @@
     "proofRepoPath": "Proofs/BinaryGcdOQ03OQ02.lean",
     "badge": "wip",
     "sorries": 1,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 2225,
     "dateAdded": "2026-05-03",
     "theoremCount": 65,
-    "assumptions": "",
+    "assumptions": "Depends on the `Lean.ofReduceBool` axiom: several credited theorems are discharged by `native_decide`, including hgcdShift_pos, the S17 counterexample family (hgcdMatrix_130_89_value, hgcdMatrix_130_89_row_alpha, hgcdMatrix_130_89_row_beta, hgcdMatrix_row_alpha_exceeds_max, hgcdMatrix_row_beta_negative) in BinaryGcdOQ03OQ02.lean and surveyRange_length (S24) in the companion BinaryGcdOQ03OQ02PathA.lean. `native_decide` relies on Lean compiler kernel reduction (`Lean.ofReduceBool`), so these results are not axiom-free. Hence axiomCount = 1; leanFile.axiomCount remains 0 since there are no literal `axiom` declarations. (One sorry remains in the recursive row-output size bound; see status `formalized`.)",
     "mathlibDependencies": [
       {
         "theorem": "Nat.log_mono_right",

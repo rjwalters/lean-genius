@@ -18,8 +18,8 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 2,
-    "assumptions": "Sufficiency direction of Euler's theorem axiomatized in HierholzerAlgorithm.lean: (1) euler_circuit_exists — connected + all-even-degree graphs admit an Eulerian circuit; (2) euler_trail_exists — connected graph with exactly two odd-degree vertices u, v admits an Eulerian trail u→v. Both encode the classical Hierholzer construction (1873) which is not yet formalized. The necessity direction (the focus of this file) is fully machine-verified.",
+    "axiomCount": 3,
+    "assumptions": "3 axioms. (1)–(2): the sufficiency direction of Euler's theorem axiomatized in HierholzerAlgorithm.lean — euler_circuit_exists (connected + all-even-degree graphs admit an Eulerian circuit) and euler_trail_exists (connected graph with exactly two odd-degree vertices u, v admits an Eulerian trail u→v); both encode the classical Hierholzer construction (1873) which is not yet formalized. (3): `Lean.ofReduceBool`. The credited concrete-graph theorems (sq_degree, sq_edge_count, sqCircuit_length, sqCircuit_visits_all, pent_degree, pent_edge_count, pentCircuit_length, pentCircuit_visits_all, k4_degree, k4_edge_count, k4_four_odd, sq_degree_sum, k4_degree_sum) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy these credited theorems are counted in meta.axiomCount. Notably k4_four_odd (native_decide) feeds k4_not_eulerian. The general trail-theory results (euler_criterion_necessary, no_eulerian_path_three_or_more_odd, euler_circuit_implies_all_even, euler_trail_non_endpoint_even, regular_odd_no_euler) use no native_decide and depend only on Mathlib. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. The necessity direction (the focus of this file) is otherwise machine-verified.",
     "lineCount": 404,
     "theoremCount": 24,
     "definitionCount": 11,
@@ -47,7 +47,7 @@
       "$K_4$ is the 'canonical' counterexample: it has $\\binom{4}{2} = 6$ edges and all 4 vertices with degree 3, so there are 4 odd-degree vertices. Any Eulerian path would need at most 2 odd-degree vertices — a gap of 2 is enough to prevent any Eulerian path.",
       "The key Mathlib lemma `Walk.IsEulerian.card_odd_degree` is the central tool: it states that if $p$ is an Eulerian walk from $u$ to $v$, then the number of odd-degree vertices is 0 (if $u = v$, a circuit) or 2 (if $u \\neq v$, a trail). The non-existence proofs all reduce to showing this count exceeds 2.",
       "The `regular_odd_no_euler` theorem is the cleanest general result: for odd $k$-regular graphs, every vertex has odd degree, so $|\\{v : \\text{Odd}(\\deg v)\\}| = |V| \\geq 3$. The proof converts between the set cardinality and Fintype.card using Finset.card_univ and ext.",
-      "Concrete computations by `native_decide`: degree values, edge counts, circuit lengths, and vertex visitation are all verified by Lean's native evaluator rather than symbolic proof — this keeps the proofs short and avoids constructing explicit inductions over small finite types."
+      "Concrete computations by `native_decide`: degree values, edge counts, circuit lengths, and vertex visitation are all verified by Lean's native evaluator rather than symbolic proof — this keeps the proofs short and avoids constructing explicit inductions over small finite types. Because `native_decide` trusts the compiler's kernel reduction, these credited theorems depend on `Lean.ofReduceBool` (counted in axiomCount); they are free of mathematical axioms but not of this compiler-trust axiom."
     ],
     "prerequisites": [
       "Eulerian circuits: connected graph, all even degrees",
@@ -111,12 +111,12 @@
       "title": "Summary and Sanity Checks",
       "startLine": 358,
       "endLine": 404,
-      "summary": "Closing docstring cataloguing the 24 proved theorems (C₄, C₅, K₄, and general trail theory) with 0 axioms / 0 sorries, plus #check sanity statements for the key Eulerian results.",
+      "summary": "Closing docstring cataloguing the 24 proved theorems (C₄, C₅, K₄, and general trail theory) with 0 sorries and no mathematical axioms in the main file (the concrete native_decide theorems depend on `Lean.ofReduceBool`), plus #check sanity statements for the key Eulerian results.",
       "mathContext": "Epilogue; no new declarations. #checks confirm sqCircuit_isEulerian, pentCircuit_isEulerian, k4_not_eulerian, and regular_odd_no_euler typecheck."
     }
   ],
   "conclusion": {
-    "summary": "Verifies Eulerian circuit existence for $C_4$ (explicit 4-edge circuit) and $C_5$ (explicit 5-edge circuit), and non-existence for $K_4$ (4 odd-degree vertices) and all odd-regular graphs with $|V| \\geq 3$. Proves general necessary conditions: Eulerian circuits require all-even degrees; Eulerian paths require $\\leq 2$ odd-degree vertices. 24 theorems, 8 definitions, 404 lines, 0 axioms in the main file. The companion HierholzerAlgorithm.lean axiomatizes the sufficiency direction (2 axioms) pending Hierholzer's algorithm formalization.",
+    "summary": "Verifies Eulerian circuit existence for $C_4$ (explicit 4-edge circuit) and $C_5$ (explicit 5-edge circuit), and non-existence for $K_4$ (4 odd-degree vertices) and all odd-regular graphs with $|V| \\geq 3$. Proves general necessary conditions: Eulerian circuits require all-even degrees; Eulerian paths require $\\leq 2$ odd-degree vertices. 24 theorems, 8 definitions, 404 lines, no mathematical axioms in the main file (the concrete native_decide theorems depend on `Lean.ofReduceBool` via the compiler's kernel reduction). The companion HierholzerAlgorithm.lean axiomatizes the sufficiency direction (2 axioms) pending Hierholzer's algorithm formalization.",
     "implications": "This provides machine-verified concrete examples for Euler's theorem — the foundational result of graph theory. The combination of explicit circuit constructions (positive examples) with odd-degree counting arguments (negative examples) demonstrates both directions of the degree criterion. The `Walk.IsEulerian.card_odd_degree` lemma from Mathlib is the key bridge between the combinatorial structure and the algebraic degree counts.",
     "openQuestions": [
       "Prove the sufficiency direction of Euler's theorem: if $G$ is connected and all degrees are even, then $G$ has an Eulerian circuit. This requires Hierholzer's algorithm (1873) or a constructive induction on $|E|$, both of which require more substantial formalization than the necessity direction.",

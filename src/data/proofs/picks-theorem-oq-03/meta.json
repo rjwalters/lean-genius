@@ -67,9 +67,9 @@
       "Proofs/PicksTheoremOQ03CrossPoly.lean",
       "Proofs/PicksTheoremOQ03.lean"
     ],
-    "axiomCount": 3,
+    "axiomCount": 4,
     "lineCount": 710,
-    "assumptions": "3 axioms: ehrhart_is_polynomial (Ehrhart counting function is polynomial), ehrhart_macdonald_reciprocity (interior count via sign-change), and ehrhart_fn (Ehrhart counting function as a typed primitive, declared in PicksTheoremOQ03.lean for the d=2 Pick's-theorem specialization).",
+    "assumptions": "4 axioms: 3 axiom declarations — ehrhart_is_polynomial (Ehrhart counting function is polynomial), ehrhart_macdonald_reciprocity (interior count via sign-change), and ehrhart_fn (Ehrhart counting function as a typed primitive, declared in PicksTheoremOQ03.lean for the d=2 Pick's-theorem specialization) — plus `Lean.ofReduceBool`. The credited h*-vector sum theorems (unitCube_hstar_sum, simplex_hstar_sum, octahedron_hstar_sum, in EhrhartPolynomialOQ03.lean) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy these credited theorems are counted in meta.axiomCount (the literal axiom-declaration counts in leanFile remain unchanged). The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. The cross-polytope companion file (PicksTheoremOQ03CrossPoly.lean) uses no native_decide.",
     "mathlib_version": "4.26.0",
     "theoremCount": 45,
     "definitionCount": 23
