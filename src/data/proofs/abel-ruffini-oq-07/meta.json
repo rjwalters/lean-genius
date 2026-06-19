@@ -69,6 +69,89 @@
     "theoremCount": 7,
     "definitionCount": 1
   },
+  "overview": {
+    "historicalContext": "The Abel–Ruffini theorem (Ruffini 1799, Abel 1824) shows the general quintic is not solvable by radicals; Galois (1830s) recast solvability as a property of the polynomial's Galois group, solvable iff the group is. Concrete unsolvable quintics are exhibited by proving their Galois group is the non-solvable S₅. Selmer (1956) proved the trinomial X⁵−X−1 is irreducible over ℚ, making it a natural S₅ candidate. Determining Galois groups of quintics in practice rests on Dedekind's theorem (factorisation type mod an unramified prime p equals the cycle type of a Frobenius element), the standard computational tool described in Dummit & Foote §14.8 and van der Waerden §61.",
+    "problemStatement": "Establish that Gal(X⁵−X−1/ℚ) ≅ S₅ (so X⁵−X−1 is not solvable by radicals), and correct the curated proof route: X⁵−X−1 has exactly one real root, so complex conjugation is a double transposition (even, in A₅), not a transposition. Formalize the corrected group-theoretic reduction: a subgroup G ≤ S₅ with 5 ∣ |G| and a transposition in G must be all of S₅.",
+    "proofStrategy": "Separate the verifiable group theory from the open number theory. The file proves the assembly criterion gal_eq_top_of_five_dvd_and_swap (5 ∣ |G| and a transposition in G ⟹ G = S₅) by feeding card_fin5_prime into Mathlib's subgroup_eq_top_of_swap_mem, and the sign facts (a transposition is odd; a product of two transpositions is even) by sign computations plus decide. The two number-theoretic inputs — 5 ∣ |Gal| (from f irreducible mod 3) and a transposition in Gal (from the order-6 Frobenius at p=2) — are exposed as explicit HYPOTHESES rather than axioms, so every theorem is fully machine-checked (0 sorry, 0 axiom). Supplying those inputs in Lean requires the Dedekind–Frobenius bridge that Mathlib v4.26.0 lacks.",
+    "keyInsights": [
+      "**The curated route was false, and the file proves why.** X⁵−X−1 has one real root, so complex conjugation is a product of two transpositions — an even permutation in A₅ (prod_two_swaps_mem_alternating), not the transposition the curated proof assumed. Mathlib's real-roots assembler galActionHom_bijective_of_prime_degree therefore does not apply.",
+      "**The discriminant alone is not enough.** Δ = 2869 = 19·151 is a non-square, so Gal ⊄ A₅; but among transitive subgroups of S₅ the odd-containing ones are {F₂₀, S₅}, so excluding F₂₀ (order 20) requires the extra divisibility input 5 ∣ |Gal|.",
+      "**Hypotheses, not axioms.** The two number-theoretic facts are theorem hypotheses, keeping the file 0-axiom and 0-sorry while making the open gap explicit and reusable; this is an honest reduction rather than an axiomatization.",
+      "**Prime degree drives the machinery.** Because the root set has prime cardinality 5, a transitive subgroup containing a single transposition is forced to be the whole symmetric group — the crisp prime-degree generation fact encoded in subgroup_eq_top_of_swap_mem.",
+      "**One shared open bridge.** The missing input is the Dedekind–Frobenius bridge (factor type mod p ⟹ Frobenius cycle type), the same machinery inverse-galois-a5-oq-01 axiomatizes as three_dvd_gal_card; closing it there closes this problem too."
+    ],
+    "prerequisites": [
+      "Galois theory and solvability by radicals",
+      "Symmetric and alternating groups; permutation sign",
+      "Dedekind's theorem on factorisation mod p"
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring-correction",
+      "title": "Statement, Correction, and Corrected Proof",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Documents the curated claim Gal(X⁵−X−1)≅S₅, identifies the error in the curated route (one real root ⟹ conjugation is a double transposition in A₅, not a transposition), notes the discriminant Δ=2869 only excludes A₅, and lays out the corrected Dedekind/Frobenius route (5-cycle mod 3, order-6 Frobenius at p=2 cubing to a transposition). Marks the open Dedekind–Frobenius bridge as the sole gap."
+    },
+    {
+      "id": "s5-setup",
+      "title": "Modelling S₅ and Prime Cardinality",
+      "startLine": 62,
+      "endLine": 76,
+      "summary": "Imports the permutation-group and alternating-group machinery, defines S5 := Equiv.Perm (Fin 5), and proves card_fin5_prime (|Fin 5| = 5 is prime) — the hypothesis that activates Mathlib's prime-degree permutation machinery."
+    },
+    {
+      "id": "assembly-criterion",
+      "title": "The Corrected Assembly Criterion",
+      "startLine": 78,
+      "endLine": 91,
+      "summary": "Proves gal_eq_top_of_five_dvd_and_swap: a subgroup G ≤ S₅ with 5 ∣ |G| and containing a transposition equals ⊤. The two number-theoretic facts are hypotheses; the proof routes them through subgroup_eq_top_of_swap_mem and card_fin5_prime."
+    },
+    {
+      "id": "sign-facts",
+      "title": "Sign Facts: Odd Transposition, Even Double Transposition",
+      "startLine": 93,
+      "endLine": 111,
+      "summary": "isSwap_not_mem_alternating shows a transposition is odd (the discriminant direction, Gal ⊄ A₅); prod_two_swaps_mem_alternating shows a product of two transpositions is even — the formal correction that complex conjugation lies in A₅. Both via sign computations and decide."
+    },
+    {
+      "id": "polynomial-anchoring",
+      "title": "Anchoring the Polynomial f = X⁵ − X − 1",
+      "startLine": 113,
+      "endLine": 129,
+      "summary": "Defines f := X⁵ − X − 1 ∈ ℚ[X] and verifies f_natDegree (degree 5), f_monic, and natDegree_prime (degree prime) via compute_degree!, monicity!, and norm_num — connecting the abstract criterion to the concrete witness quintic."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "gal_eq_top_of_five_dvd_and_swap",
+      "type": "core",
+      "description": "Corrected assembly criterion: a subgroup G ≤ S₅ with 5 ∣ |G| and containing a transposition equals ⊤ = S₅ (PROVED, 0 axioms; the two arithmetic facts are hypotheses).",
+      "leanType": "∀ {G : Subgroup S5} [DecidablePred (· ∈ G)], 5 ∣ Fintype.card G → ∀ {τ : S5}, τ ∈ G → τ.IsSwap → G = ⊤"
+    },
+    {
+      "name": "prod_two_swaps_mem_alternating",
+      "type": "core",
+      "description": "The formal correction: a product of two transpositions is even (lies in A₅), so complex conjugation on the roots of X⁵−X−1 is not a transposition (PROVED, 0 axioms).",
+      "leanType": "∀ {τ₁ τ₂ : S5}, τ₁.IsSwap → τ₂.IsSwap → τ₁ * τ₂ ∈ alternatingGroup (Fin 5)"
+    },
+    {
+      "name": "isSwap_not_mem_alternating",
+      "type": "supporting",
+      "description": "A transposition is odd, hence outside A₅ — the discriminant direction (Δ non-square ⟹ Gal ⊄ A₅) at the level of a single element (PROVED, 0 axioms).",
+      "leanType": "∀ {τ : S5}, τ.IsSwap → τ ∉ alternatingGroup (Fin 5)"
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully machine-checked (0 sorries, 0 axioms) group-theoretic reduction of Gal(X⁵−X−1/ℚ) ≅ S₅, together with a formalized correction to the curated proof route. The corrected assembly criterion gal_eq_top_of_five_dvd_and_swap reduces the S₅ claim to two number-theoretic inputs (5 ∣ |Gal| and a transposition in Gal), exposed as explicit hypotheses; the sign lemmas establish that complex conjugation, a double transposition, is even and cannot supply that transposition.",
+    "implications": "Demonstrates the value of honest reductions: separating verifiable group theory from an unformalized number-theoretic bridge yields a 0-axiom file that pinpoints exactly what Mathlib must add (the Dedekind–Frobenius cycle-type bridge). The criterion is reusable for any prime-degree Galois-group determination, and the correction shows how symbolic root-counting can refute a plausible-looking proof route.",
+    "openQuestions": [
+      "Formalize the Dedekind–Frobenius bridge in Mathlib: factor type of f mod an unramified prime p ⟹ a Frobenius element of matching cycle type in f.Gal — this supplies both hypotheses and closes the problem unconditionally.",
+      "Discharge the same bridge for inverse-galois-a5-oq-01, where it is axiomatized as three_dvd_gal_card; a single formalization serves both entries.",
+      "Verify 5 ∣ |Gal(X⁵−X−1)| and the existence of a transposition directly from irreducibility mod 3 and the factorisation mod 2, once the bridge exists."
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "abel-ruffini-oq-04-oq-01",
