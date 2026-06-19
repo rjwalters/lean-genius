@@ -17,7 +17,11 @@
       "factorials",
       "disproof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős problems and their conventions",
+      "Diophantine equations of the form n! = x^k ± y^k",
+      "the role of coprimality assumptions in factorial power problems"
+    ]
   },
   {
     "id": "ann-e399-imports",
@@ -35,7 +39,11 @@
       "namespace"
     ],
     "mathContext": "See annotation content for formal details of imports and namespace",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib library structure",
+      "Lean 4 namespaces and the Nat namespace",
+      "factorial, gcd, and coprimality functions on naturals"
+    ]
   },
   {
     "id": "ann-e399-factorial10",
@@ -53,7 +61,11 @@
       "factorial",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the factorial function on natural numbers",
+      "native_decide for kernel-level numeric computation",
+      "evaluating 10! = 3,628,800"
+    ]
   },
   {
     "id": "ann-e399-powers",
@@ -71,7 +83,11 @@
       "powers",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "fourth powers of integers",
+      "computing 48^4 and 36^4",
+      "verifying that the difference of these fourth powers equals 10!"
+    ]
   },
   {
     "id": "ann-e399-counterexample",
@@ -90,7 +106,11 @@
       "disproof",
       "native_decide"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Barfield's counterexample 10! = 48^4 - 36^4",
+      "the conditions xy > 1 and k > 2",
+      "decide and native_decide for verifying numeric and inequality claims"
+    ]
   },
   {
     "id": "ann-e399-main",
@@ -109,7 +129,11 @@
       "existential",
       "witness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential statements and explicit witnesses in Lean",
+      "the witness (10, 48, 36, 4) for n! + y^k = x^k",
+      "Nat.factorial elaboration in existential goals"
+    ]
   },
   {
     "id": "ann-e399-alt",
@@ -127,7 +151,11 @@
       "integers",
       "subtraction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural number versus integer subtraction and underflow",
+      "the integer form 10! = 48^4 - 36^4",
+      "casting factorial and powers into the integers"
+    ]
   },
   {
     "id": "ann-e399-erdos-oblath",
@@ -146,7 +174,11 @@
       "algebraic-number-theory",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Erdős-Obláth theorem of 1937",
+      "the coprimality hypothesis gcd(x,y) = 1",
+      "the Fermat equation over cyclotomic fields"
+    ]
   },
   {
     "id": "ann-e399-pollack-shapiro",
@@ -164,7 +196,11 @@
       "special-case",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Pollack-Shapiro theorem of 1973 on n! = x^4 - 1",
+      "the special case y = 1 of n! = x^4 - y^4",
+      "axiomatizing cited number-theoretic results"
+    ]
   },
   {
     "id": "ann-e399-cambie",
@@ -183,7 +219,11 @@
       "sum-case",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cambie's observation on n! = x^4 + y^4",
+      "fourth powers modulo 8",
+      "divisibility of large factorials by 8"
+    ]
   },
   {
     "id": "ann-e399-sum-squares",
@@ -202,7 +242,11 @@
       "fermat",
       "breusch"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fermat's two-square theorem",
+      "the unique solution 6! = 12^2 + 24^2",
+      "Breusch's prime gap bound q_{i+1} < 2q_i for primes ≡ 3 (mod 4)"
+    ]
   },
   {
     "id": "ann-e399-gcd",
@@ -221,6 +265,10 @@
       "coprimality",
       "gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the greatest common divisor gcd(48, 36) = 12",
+      "prime factorizations 48 = 2^4·3 and 36 = 2^2·3^2",
+      "how non-coprimality evades the Erdős-Obláth theorem"
+    ]
   }
 ]
