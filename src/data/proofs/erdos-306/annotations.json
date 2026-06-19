@@ -17,7 +17,11 @@
       "squarefree",
       "prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian fractions as sums of distinct unit fractions",
+      "squarefree denominators in reduced rationals",
+      "semiprimes as products of two distinct primes"
+    ]
   },
   {
     "id": "ann-e306-kdistinct",
@@ -37,7 +41,11 @@
       "squarefree numbers",
       "semiprimes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the omega function counting distinct prime divisors",
+      "the big-Omega function counting prime factors with multiplicity",
+      "Mathlib's ArithmeticFunction.cardDistinctFactors and cardFactors"
+    ]
   },
   {
     "id": "ann-e306-egyptian-repr",
@@ -56,7 +64,11 @@
       "StrictMono",
       "Finset.Icc"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unit fractions and their finite sums",
+      "StrictMono for strictly increasing sequences",
+      "indexing with Fin and a sentinel base denominator"
+    ]
   },
   {
     "id": "ann-e306-conjecture",
@@ -75,7 +87,11 @@
       "Rat.den",
       "existential quantifier"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Rat.den and the Squarefree predicate",
+      "existential quantifiers over Egyptian representations",
+      "denominators restricted to products of two distinct primes"
+    ]
   },
   {
     "id": "ann-e306-beg",
@@ -94,7 +110,11 @@
       "density arguments",
       "constructive existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axiomatizing the Butler-Erdős-Graham theorem in Lean",
+      "Egyptian representation with three-distinct-prime denominators",
+      "constructive existence statements for unit-fraction sums"
+    ]
   },
   {
     "id": "ann-e306-three-prime-solved",
@@ -113,7 +133,11 @@
       "existential elimination",
       "corollary"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the obtain tactic for destructuring existentials",
+      "deriving a corollary from an axiomatized theorem",
+      "dropping the k > 0 hypothesis when rebuilding the witness"
+    ]
   },
   {
     "id": "ann-e306-examples",
@@ -132,7 +156,11 @@
       "decidability",
       "computational verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "native_decide for kernel-level arithmetic computation",
+      "evaluating cardDistinctFactors and cardFactors on concrete numbers",
+      "decidability of prime-factor-counting statements"
+    ]
   },
   {
     "id": "ann-e306-one-repr",
@@ -151,7 +179,11 @@
       "perfect Egyptian fraction",
       "pairs of primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "summing unit fractions over a common denominator of 210",
+      "products of pairs from the prime set {2,3,5,7}",
+      "representing the integer 1 as an Egyptian fraction"
+    ]
   },
   {
     "id": "ann-e306-density",
@@ -170,7 +202,11 @@
       "asymptotic analysis",
       "logarithmic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic density of integers with k distinct prime factors",
+      "iterated logarithms in prime-counting estimates",
+      "Landau's count of k-prime products up to n"
+    ]
   },
   {
     "id": "ann-e306-squarefree",
@@ -189,7 +225,11 @@
       "lowest terms",
       "prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "squarefree integers as products of distinct primes",
+      "reduced fractions having squarefree denominators",
+      "axiomatizing reduction to a squarefree denominator"
+    ]
   },
   {
     "id": "ann-e306-greedy",
@@ -208,6 +248,10 @@
       "Fibonacci-Sylvester",
       "algorithmic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Fibonacci-Sylvester greedy algorithm for Egyptian fractions",
+      "termination of the greedy unit-fraction expansion",
+      "greedy denominators ignoring the semiprime constraint"
+    ]
   }
 ]
