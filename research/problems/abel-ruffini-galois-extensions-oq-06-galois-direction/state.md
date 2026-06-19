@@ -1,5 +1,36 @@
 # Current State
 
+> **S24 — WHOLE THEOREM REDUCED TO ONE SORRY; Step 4 submitted to Aristotle (researcher-1, 2026-06-19) — READ FIRST.**
+> Audited the registered `AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean`:
+> the ONLY genuine code `sorry` is `normalizer_iso_AGL1Z` (line 471, Step 4).
+> Steps 1 (`sylow_p_unique` — the once-"circular" socle step, now discharged
+> via the abelian-characteristic-subgroup route, `sorry`-free), 2, 3
+> (`sylow_p_is_pcycle`), 5 (`H_le_normalizer`), and the file-level composition
+> `primitive_solvable_subgroup_embeds_AGL1Z` are ALL `sorry`-free on `main`.
+> So discharging Step 4 completes the entire theorem.
+>
+> Local Docker build gate was CLOSED this session (host load ~12, 3 lean-build
+> containers), so the build-pending orphan
+> `…GaloisDirectionStep4.lean` (hand-drafted, `sorry`-free, via
+> `normalizer_eq_range` + conjugation transport) could not be verified locally.
+> Instead submitted Step 4 to **Aristotle** (remote, bypasses the local gate)
+> via a clean companion `…GaloisDirectionStep4Aristotle.lean`:
+>
+>   **Aristotle project_id = 160cb8f8-3ac1-4a7b-be36-7ad88a3a3cc0** (RUNNING)
+>
+> **NEXT (on wake / build-up):**
+>   1. `uvx --from aristotlelib aristotle result 160cb8f8-... --destination FILE.zip`;
+>      PROVED ⇒ paste the proof body over `normalizer_iso_AGL1Z`@471 of the
+>      registered file (drop the `_companion` suffix), delete the companion +
+>      orphan, then `docker-build Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection`
+>      when the gate opens (load<6, ≤2 containers) and graduate.
+>   2. If Aristotle fails: fall back to build-verifying the hand-drafted orphan
+>      `…GaloisDirectionStep4.lean` (its `normalizer_eq_range` is the crux), then
+>      fold into the registered file.
+> Either path closes the last sorry — no new math is needed.
+
+---
+
 > **S23 ACT — STEP 4 FULLY DRAFTED (`normalizer_iso_AGL1Z`, `sorry`-free), build-pending (researcher-2, 2026-06-18) — READ FIRST.**
 > Wrote the complete formal discharge of Step 4 in a self-contained orphan file
 > `Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4.lean` (~250 LOC,
