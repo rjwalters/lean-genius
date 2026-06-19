@@ -216,10 +216,10 @@ lemma general_position_W : InGeneralPosition (W : Set (EuclideanSpace ℝ (Fin 2
       | exact absurd rfl hpq
       | exact absurd rfl hqr
       | exact absurd rfl hpr
-      | exact setperm ncol_cc_v0_v1 (by simp [Set.insert_subset_iff, Set.singleton_subset_iff])
-      | exact setperm ncol_cc_v0_v2 (by simp [Set.insert_subset_iff, Set.singleton_subset_iff])
-      | exact setperm ncol_cc_v1_v2 (by simp [Set.insert_subset_iff, Set.singleton_subset_iff])
-      | exact setperm ncol_v0v1v2 (by simp [Set.insert_subset_iff, Set.singleton_subset_iff])
+      | (refine setperm ncol_cc_v0_v1 ?_; simp [Set.insert_subset_iff, Set.singleton_subset_iff]; done)
+      | (refine setperm ncol_cc_v0_v2 ?_; simp [Set.insert_subset_iff, Set.singleton_subset_iff]; done)
+      | (refine setperm ncol_cc_v1_v2 ?_; simp [Set.insert_subset_iff, Set.singleton_subset_iff]; done)
+      | (refine setperm ncol_v0v1v2 ?_; simp [Set.insert_subset_iff, Set.singleton_subset_iff]; done)
 
 /-! ## Structural endgame (axiom-free, hand-written) -/
 
