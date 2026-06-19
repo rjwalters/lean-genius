@@ -1,14 +1,13 @@
 /-
 # Friendship Theorem (infinite case), OQ-04 — the amalgamation STEP lemma
 
-STATUS: BUILD-PENDING SCAFFOLD (3 `sorry`s). NOT registered in `Proofs.lean`,
-NOT a verified result. Both verification routes were closed when this was
-authored (2026-06-19, researcher-2): the local Docker build gate was shut
-(host load ~24, two `lean-build` containers already running) and the Aristotle
-backend returned 404. This file records the precise, build-ready statement and
-proof strategy for the one remaining open gap so the next session — with a gate
-open — can discharge it directly (each `sorry` is a routine finite case bash;
-the statements were designed to be Aristotle `prove_file`-ready).
+STATUS: discharged — all three `sorry`s of the original scaffold (PR #26211) are
+now closed with hand proofs (0 `sorry`, 0 `axiom`). The three obligations were
+exactly the routine finite case bashes the scaffold predicted:
+`amalgam_new_common` (trivial membership), `amalgam_new_common_unique` (a `some c`
+witness would land in the empty `G`-common set), and `amalgam_linear` (a full
+`Option V × Option V` case split, every branch closing by the empty-common-set
+`key` fact or `G`'s own linearity). Authored 2026-06-19 by researcher-2.
 
 ## Why this file exists
 
@@ -100,14 +99,23 @@ def amalgam (G : SimpleGraph V) (u v : V) : SimpleGraph (Option V) where
 /-- After the step, `none` is a common neighbour of `some u, some v`. -/
 theorem amalgam_new_common (G : SimpleGraph V) (u v : V) :
     none ∈ commonNeighbors (amalgam G u v) (some u) (some v) := by
-  sorry
+  simp [commonNeighbors, amalgam]
 
 /-- After the step, when `u, v` had no common neighbour, `none` is the *unique*
 common neighbour of `some u, some v`: the deficient pair now has exactly one. -/
 theorem amalgam_new_common_unique (G : SimpleGraph V) {u v : V}
     (hempty : commonNeighbors G u v = ∅) :
     commonNeighbors (amalgam G u v) (some u) (some v) = {none} := by
-  sorry
+  ext x
+  cases x with
+  | none => simp [commonNeighbors, amalgam]
+  | some c =>
+    simp only [commonNeighbors, Set.mem_setOf_eq, amalgam, Set.mem_singleton_iff,
+      reduceCtorEq, iff_false]
+    rintro ⟨h1, h2⟩
+    have hmem : c ∈ commonNeighbors G u v := ⟨h1, h2⟩
+    rw [hempty] at hmem
+    exact hmem
 
 /-- The amalgamation step preserves linearity, provided the fixed pair `u, v` is
 distinct and currently has no common neighbour. This is the inductive core of the
@@ -116,6 +124,76 @@ universal vertex. -/
 theorem amalgam_linear (G : SimpleGraph V) {u v : V} (huv : u ≠ v)
     (hG : Linear G) (hempty : commonNeighbors G u v = ∅) :
     Linear (amalgam G u v) := by
-  sorry
+  -- No vertex is adjacent to both `u` and `v` (else it lies in the empty common set).
+  have key : ∀ b : V, ¬ (G.Adj u b ∧ G.Adj v b) := by
+    intro b hb
+    have hmem : b ∈ commonNeighbors G u v := hb
+    rw [hempty] at hmem
+    exact hmem
+  intro p q hpq x hx y hy
+  obtain ⟨hxp, hxq⟩ := hx
+  obtain ⟨hyp, hyq⟩ := hy
+  cases p with
+  | none =>
+    cases q with
+    | none => exact absurd rfl hpq
+    | some b =>
+      -- `none` has no `none`-neighbour, so both common neighbours are `some _`.
+      cases x with
+      | none => simp [amalgam] at hxp
+      | some c =>
+        cases y with
+        | none => simp [amalgam] at hyp
+        | some d =>
+          simp only [amalgam] at hxp hxq hyp hyq
+          rcases hxp with rfl | rfl <;> rcases hyp with rfl | rfl
+          · rfl
+          · exact absurd ⟨hxq.symm, hyq.symm⟩ (key b)
+          · exact absurd ⟨hyq.symm, hxq.symm⟩ (key b)
+          · rfl
+  | some a =>
+    cases q with
+    | none =>
+      cases x with
+      | none => simp [amalgam] at hxq
+      | some c =>
+        cases y with
+        | none => simp [amalgam] at hyq
+        | some d =>
+          simp only [amalgam] at hxp hxq hyp hyq
+          rcases hxq with rfl | rfl <;> rcases hyq with rfl | rfl
+          · rfl
+          · exact absurd ⟨hxp.symm, hyp.symm⟩ (key a)
+          · exact absurd ⟨hyp.symm, hxp.symm⟩ (key a)
+          · rfl
+    | some b =>
+      have hab : a ≠ b := fun h => hpq (by rw [h])
+      cases x with
+      | none =>
+        cases y with
+        | none => rfl
+        | some d =>
+          simp only [amalgam] at hxp hxq hyp hyq
+          exfalso
+          rcases hxp with rfl | rfl <;> rcases hxq with rfl | rfl
+          · exact hab rfl
+          · exact key d ⟨hyp, hyq⟩
+          · exact key d ⟨hyq, hyp⟩
+          · exact hab rfl
+      | some c =>
+        cases y with
+        | none =>
+          simp only [amalgam] at hxp hxq hyp hyq
+          exfalso
+          rcases hyp with rfl | rfl <;> rcases hyq with rfl | rfl
+          · exact hab rfl
+          · exact key c ⟨hxp, hxq⟩
+          · exact key c ⟨hxq, hxp⟩
+          · exact hab rfl
+        | some d =>
+          simp only [amalgam] at hxp hxq hyp hyq
+          have hc : c ∈ commonNeighbors G a b := ⟨hxp, hxq⟩
+          have hd : d ∈ commonNeighbors G a b := ⟨hyp, hyq⟩
+          exact congrArg some (hG a b hab hc hd)
 
 end FriendshipAmalgam
