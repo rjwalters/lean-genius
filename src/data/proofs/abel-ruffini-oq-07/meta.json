@@ -46,7 +46,8 @@
       "Discriminant direction (isSwap_not_mem_alternating): a transposition is odd, hence outside A₅.",
       "Polynomial anchoring (f_natDegree, f_monic, natDegree_prime): X⁵−X−1 is monic of prime degree 5.",
       "Documentation of the open gap: the two hypotheses are the output of the Dedekind–Frobenius bridge shared with inverse-galois-a5-oq-01; closing it there closes this problem.",
-      "Concrete Frobenius witness (frob2, frob2_not_mem_alternating, frob2_pow_three_eq_swap, frob2_pow_three_isSwap): exhibits a (2,3)-cycle-type element (0 1)(2 3 4) ∈ S₅ modelling a Frobenius element of f mod 2, machine-checks it is odd and that its cube is the transposition (0 1) — making the prose 'order-6 Frobenius ⟹ transposition' step into verified permutation data."
+      "Concrete Frobenius witness (frob2, frob2_not_mem_alternating, frob2_pow_three_eq_swap, frob2_pow_three_isSwap): exhibits a (2,3)-cycle-type element (0 1)(2 3 4) ∈ S₅ modelling a Frobenius element of f mod 2, machine-checks it is odd and that its cube is the transposition (0 1) — making the prose 'order-6 Frobenius ⟹ transposition' step into verified permutation data.",
+      "Concrete p=3 Frobenius witness and capstone (frob3, frob3_pow_five, orderOf_frob3, five_dvd_card_of_frob3_mem, gal_eq_top_of_frobenii): exhibits the 5-cycle frob3 = (0 1 2 3 4) ∈ S₅ modelling a Frobenius element of f mod 3 (irreducible quintic), machine-checks orderOf frob3 = 5, and derives via Lagrange that any subgroup containing it has 5 ∣ |G| — supplying hypothesis (a) of gal_eq_top_of_five_dvd_and_swap from a single membership fact. The capstone gal_eq_top_of_frobenii assembles G = ⊤ = S₅ from both witnesses (frob3 gives 5 ∣ |G|, frob2³ gives the transposition), turning the entire prose cycle-type computation into verified permutation data modulo the open Dedekind–Frobenius bridge."
     ],
     "prerequisites": [
       "Symmetric and alternating groups; permutation sign",
@@ -56,7 +57,7 @@
       "Lean 4 and Mathlib"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 165,
+    "lineCount": 227,
     "relatedProblems": [
       {
         "id": "abel-ruffini-oq-04-oq-01",
@@ -67,8 +68,8 @@
         "relationship": "Needs the SAME Dedekind–Frobenius bridge (cycle type of Frobenius from factor type mod p); closing it there supplies this file's two hypotheses."
       }
     ],
-    "theoremCount": 10,
-    "definitionCount": 2
+    "theoremCount": 15,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The Abel–Ruffini theorem (Ruffini 1799, Abel 1824) shows the general quintic is not solvable by radicals; Galois (1830s) recast solvability as a property of the polynomial's Galois group, solvable iff the group is. Concrete unsolvable quintics are exhibited by proving their Galois group is the non-solvable S₅. Selmer (1956) proved the trinomial X⁵−X−1 is irreducible over ℚ, making it a natural S₅ candidate. Determining Galois groups of quintics in practice rests on Dedekind's theorem (factorisation type mod an unramified prime p equals the cycle type of a Frobenius element), the standard computational tool described in Dummit & Foote §14.8 and van der Waerden §61.",
@@ -312,6 +313,7 @@
     "imports": [
       "Mathlib.GroupTheory.Perm.Cycle.Type",
       "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.GroupTheory.OrderOfElement",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -320,10 +322,10 @@
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ07",
-    "lineCount": 129,
+    "lineCount": 227,
     "axiomCount": 0,
-    "theoremCount": 7,
-    "definitionCount": 1,
+    "theoremCount": 12,
+    "definitionCount": 2,
     "sorries": 0,
     "path": "Proofs/AbelRuffiniOQ07.lean"
   },
