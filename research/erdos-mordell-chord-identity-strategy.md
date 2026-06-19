@@ -328,3 +328,33 @@ Aristotle 404 (16th consecutive cycle). Companion left in known-good 2-sorry sta
 (PID 13290) ships the cycle-14 commit (Thales lemma `angle_pedalFoot_eq_pi_div_two`,
 sig re-verified against `Angle/Unoriented/Projection.lean:28`) as a fresh PR on the
 next quiet build window — prior PR #26042 merged, so a NEW PR is required.
+
+**Cycle-17 — elementary angle-chase ruled out; oriented mechanism pinned.**
+A tempting shortcut for `angle_at_P` avoids the inscribed-angle theorem entirely:
+in the two right triangles `△P F_b X`, `△P F_c X` (right angles at the feet, the
+already-proved `angle_pedalFoot_{ZX,XY}_at_X`), each non-right pair sums to `π/2`,
+so adding the angles at `P` and at `X` gives `∠ F_b P F_c = π − ∠ F_b X F_c =
+π − ∠ Y X Z`. **This does not shortcut the Lean proof:** Mathlib provides *no*
+unoriented angle-addition *equality* `∠ a p c = ∠ a p b + ∠ b p c` (interior `b`).
+The only unoriented additivity is the *inequality*
+`EuclideanGeometry.angle_le_angle_add_angle` (`Angle/Unoriented/TriangleInequality.lean:183`);
+the equality lives only in the *oriented* world. So the elementary chase collapses
+back onto the same oriented→unoriented descent as the inscribed-angle route — it is
+not an independent simpler path.
+
+The concrete oriented mechanism (sharper than "establish opposite-arc sign" above):
+  - `EuclideanGeometry.oangle_add` (`Angle/Oriented/Affine.lean:271`)
+    `: ∡ p₁ p p₂ + ∡ p₂ p p₃ = ∡ p₁ p p₃` — additivity needs **only** `pᵢ ≠ p`
+    (no betweenness/`Sbtw`), so it applies at both apex `P` and apex `X` for free.
+  - `EuclideanGeometry.angle_eq_abs_oangle_toReal` (`Angle/Oriented/Affine.lean:346`)
+    `: ∠ p₁ p p₂ = |((∡ p₁ p p₂).toReal)|` — the `∠ = |∡.toReal|` bridge that turns
+    the oriented chase back into the unoriented goal. The absolute value is what
+    forces the opposite-arc sign analysis: `P` interior to `△XYZ` ⟹ both sub-oangles
+    `∡ F_b P X`, `∡ X P F_c` carry the **same** sign (orientation), so their
+    `|toReal|` add without cancellation, while `X` and `P` sit on opposite arcs of
+    chord `F_b F_c` ⟹ the supplementary (`π −`) rather than equal collapse.
+  Both lemma signatures re-verified cycle-17 against live `.lake/packages/mathlib`.
+
+Aristotle 404 (17th consecutive cycle; both `prove_file` and inline `prove`
+endpoints return `Resource not found`). Companion Lean unchanged since cycle-14
+(2-sorry known-good); cycle-17 is strategy-doc only.
