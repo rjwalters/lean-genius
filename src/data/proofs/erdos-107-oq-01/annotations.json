@@ -1,0 +1,132 @@
+[
+  {
+    "id": "ann-witness-configuration",
+    "proofId": "erdos-107-oq-01",
+    "range": { "startLine": 50, "endLine": 60 },
+    "type": "definition",
+    "title": "The Triangle-Plus-Centroid Witness",
+    "content": "The entire lower bound rests on one explicit configuration: the right triangle with vertices v0 = (0,0), v1 = (6,0), v2 = (0,6) together with its centroid cc = (2,2) = (v0 + v1 + v2)/3. The coordinates 6 (rather than 1 or 3) are chosen so the centroid is an integer point, keeping every later cross-product and convex-combination computation in exact rational arithmetic that `norm_num` can close. The points live in `EuclideanSpace ℝ (Fin 2)` built via the `!₂[·,·]` notation (the WithLp/PiLp ℓ² type-synonym layer over `Fin 2 → ℝ`). The witness set is `W = insert cc tri` with `tri = {v0, v1, v2}`, a 4-element `Finset`. The single design idea — a simplex with an interior point — is exactly the lower-bound construction that generalises to all f(n): an interior point can never be a vertex of the convex hull, so the points are never in convex position.",
+    "mathContext": "$v_0=(0,0),\\ v_1=(6,0),\\ v_2=(0,6),\\ cc=\\tfrac{v_0+v_1+v_2}{3}=(2,2),\\quad W=\\{cc\\}\\cup\\{v_0,v_1,v_2\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Happy Ending problem",
+      "general position",
+      "convex position",
+      "centroid of a triangle",
+      "EuclideanSpace / WithLp coordinates"
+    ],
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin 2) and the !₂[·] notation",
+      "Finset insert / literal sets",
+      "centroid as the average of vertices"
+    ]
+  },
+  {
+    "id": "ann-noncollinearity-crossproduct",
+    "proofId": "erdos-107-oq-01",
+    "range": { "startLine": 99, "endLine": 168 },
+    "type": "proof-technique",
+    "title": "Non-Collinearity as a Vanishing Cross-Product",
+    "content": "General position means no three of the four points are collinear, and each of the four triples needs its own certificate (ncol_v0v1v2, ncol_cc_v0_v1, ncol_cc_v0_v2, ncol_cc_v1_v2). The trick is `collinear_iff_of_mem`: collinearity of {a, b, c} through a base point a is equivalent to the existence of a common direction — both b − a and c − a are scalar multiples of one vector. Negating this and specialising reduces 'collinear' to the 2D determinant (b − a) × (c − a) = (b₁−a₁)(c₂−a₂) − (b₂−a₂)(c₁−a₁) being zero; a nonzero value is a contradiction. After unfolding the points' coordinates through the WithLp layer, each cross-product is a concrete rational that `norm_num` evaluates — e.g. for the triangle (6)(6) − (0)(0) = 36 ≠ 0. So a geometric predicate becomes one arithmetic inequality per triple, with no affine-independence machinery.",
+    "mathContext": "$\\mathrm{Collinear}\\{a,b,c\\} \\iff (b-a)\\times(c-a)=0;\\quad (b_1-a_1)(c_2-a_2)-(b_2-a_2)(c_1-a_1)\\ne 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "collinearity",
+      "2D cross-product / determinant",
+      "affine independence",
+      "general position",
+      "norm_num decision"
+    ],
+    "prerequisites": [
+      "collinear_iff_of_mem",
+      "2×2 determinant orientation test",
+      "coordinate access through WithLp/PiLp"
+    ]
+  },
+  {
+    "id": "ann-centroid-in-hull",
+    "proofId": "erdos-107-oq-01",
+    "range": { "startLine": 171, "endLine": 192 },
+    "type": "insight",
+    "title": "The Centroid Lies in the Convex Hull — Without Barycentric Machinery",
+    "content": "`cc_mem_hull` is the crux of the lower bound: the centroid is in the convex hull of the three triangle vertices, hence it is an interior (non-extreme) point and the four points are not in convex position. Rather than invoke a barycentric-coordinate API, the proof writes the centroid as an explicit iterated convex combination and applies `convex_convexHull` twice. First the midpoint m = (1/2)v1 + (1/2)v2 lies in the hull (a combination of two hull points with weights summing to 1); then cc = (1/3)v0 + (2/3)m is a combination of v0 and m. Multiplying out: (1/3)(0,0) + (2/3)((1/2)(6,0)+(1/2)(0,6)) = (2/3)(3,3) = (2,2) = cc. Each application uses only that the hull is convex (`convex_convexHull`) and that the vertices lie in it (`subset_convexHull`); the arithmetic is closed by `norm_num`. This 'two-step convexity' pattern is a reusable way to certify hull membership of any explicitly weighted point.",
+    "mathContext": "$cc = \\tfrac13 v_0 + \\tfrac23\\!\\left(\\tfrac12 v_1 + \\tfrac12 v_2\\right) \\in \\mathrm{conv}\\{v_0,v_1,v_2\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "convex hull",
+      "convex combination",
+      "extreme points",
+      "convex position",
+      "barycentric coordinates"
+    ],
+    "prerequisites": [
+      "convex_convexHull and subset_convexHull",
+      "definition of a convex combination",
+      "Convex.combo / segment membership"
+    ]
+  },
+  {
+    "id": "ann-general-position-assembly",
+    "proofId": "erdos-107-oq-01",
+    "range": { "startLine": 195, "endLine": 212 },
+    "type": "proof-technique",
+    "title": "Lifting Four Atoms to the General-Position Predicate",
+    "content": "`InGeneralPosition W` quantifies over every ordered triple of distinct points of W, so it must hold for all 4·4·4 index choices — but only the four genuinely distinct unordered triples carry content, and there are exactly C(4,3) = 4 of them, matching the four non-collinearity atoms. `general_position_W` does the bookkeeping: a case analysis over the ordered triples, normalising each to one of the four atoms using that `Collinear` is invariant under permuting its argument set (`Set.insert_comm`, `Set.pair_comm`). Degenerate triples with a repeated point are dismissed because the predicate only ranges over distinct triples. The lemma is essentially permutation invariance made explicit: the geometric fact 'no three collinear' is symmetric, but the Lean predicate is stated over ordered tuples, so the symmetry must be discharged by hand.",
+    "mathContext": "$\\binom{4}{3}=4$ triples; each ordered triple $\\equiv$ one atom via permutation-invariance of $\\mathrm{Collinear}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "general position predicate",
+      "permutation invariance",
+      "Collinear symmetry",
+      "case analysis"
+    ],
+    "prerequisites": [
+      "InGeneralPosition definition",
+      "Set.insert_comm / Set.pair_comm",
+      "the four ncol_* atoms"
+    ]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "erdos-107-oq-01",
+    "range": { "startLine": 242, "endLine": 266 },
+    "type": "insight",
+    "title": "Four Points Do Not Force a Convex Quadrilateral: 4 ∉ CardSet 4",
+    "content": "This is the theorem the entry contributes (the parent only axiomatised it). `not_hasConvexNGon_W` shows W contains no convex 4-gon: since |W| = 4 (W_card), the only 4-element subset of W is W itself, so a convex quadrilateral would have to be all of W — but `IsConvexNGon 4 W` requires every point to be a vertex of the convex hull, and the centroid cc is in the hull of the other three (cc_mem_hull), contradiction. Then `four_notin_cardSet : 4 ∉ CardSet 4` follows: CardSet 4 collects the cardinalities N such that *every* N-point set in general position has a convex 4-gon; W is a 4-point general-position set (general_position_W) with no convex 4-gon, so 4 is not such an N. Combinatorially this is the lower bound f(4) ≥ 5 — four points are never enough.",
+    "mathContext": "$|W|=4,\\ cc\\in\\mathrm{conv}\\{v_0,v_1,v_2\\} \\;\\Rightarrow\\; \\neg\\,\\mathrm{HasConvexNGon}\\,4\\,W \\;\\Rightarrow\\; 4\\notin \\mathrm{CardSet}\\,4$",
+    "significance": "key",
+    "relatedConcepts": [
+      "CardSet / threshold function f(n)",
+      "convex n-gon (IsConvexNGon)",
+      "extreme points of a hull",
+      "lower bound construction"
+    ],
+    "prerequisites": [
+      "cc_mem_hull and W_card",
+      "IsConvexNGon / HasConvexNGon definitions",
+      "the only 4-subset of a 4-set is itself"
+    ]
+  },
+  {
+    "id": "ann-axiom-and-endgame",
+    "proofId": "erdos-107-oq-01",
+    "range": { "startLine": 275, "endLine": 294 },
+    "type": "insight",
+    "title": "Isolating the Hard Axiom and Recovering f(4) = 5",
+    "content": "The whole point of the entry is axiom hygiene. The parent erdos-107 bundles f(4) = 5 into one axiom; here the only assumption left is `klein_upper_bound : 5 ∈ CardSet 4` — Klein's genuinely hard 1931 direction (any 5 points in general position contain a convex quadrilateral), whose Lean proof would need a convex-hull vertex-count case analysis not yet in Mathlib. From this single axiom plus the proved lower bound, `f_four_eq_five : f 4 = 5` follows by an order argument on f 4 = sInf(CardSet 4): the upper bound f 4 ≤ 5 is `Nat.sInf_le klein_upper_bound`, and the lower bound 5 ≤ f 4 holds because sInf(CardSet 4) ∈ CardSet 4 (`Nat.sInf_mem`, the set being nonempty by the axiom) — were it < 5 it would be ≤ 4, and upward-closure `CardSet.mono` would force 4 ∈ CardSet 4, contradicting four_notin_cardSet. `#print axioms f_four_eq_five` then lists only klein_upper_bound beside the standard propext / Classical.choice / Quot.sound — the parent's f_four_eq is gone.",
+    "mathContext": "$f\\,4=\\inf(\\mathrm{CardSet}\\,4);\\quad f\\,4\\le 5\\ (\\text{sInf\\_le}),\\ \\ 5\\le f\\,4\\ (\\text{sInf\\_mem}+\\text{mono}) \\Rightarrow f\\,4=5$",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom isolation / assumption footprint",
+      "infimum of a set of naturals (sInf)",
+      "upward closure (CardSet.mono)",
+      "#print axioms verification",
+      "Klein 1931 theorem"
+    ],
+    "prerequisites": [
+      "Nat.sInf_mem and Nat.sInf_le",
+      "CardSet.mono (upward closure)",
+      "four_notin_cardSet (the proved lower bound)"
+    ]
+  }
+]
