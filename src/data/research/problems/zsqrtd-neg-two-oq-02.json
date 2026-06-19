@@ -21,26 +21,26 @@
       "ℤ[√−2] bridge x^2+2y^2 = x^2+y^2+y^2; every non-excluded PRIME is a sum of three squares via p≡1(mod4)→Fermat two-square and p≡3(mod8)→x^2+2y^2 (verified exact)."
     ],
     "open": [
-      "Eliminate the axiom not_excluded_form_is_sum_three_sq (ThreeSquares.lean:1665): the deep converse for squarefree-composite primitives.",
+      "Eliminate the axiom not_excluded_form_is_sum_three_sq (ThreeSquares.lean:1720): the deep converse for squarefree-composite primitives. (Companion axiom dirichlet_key_lemma at ThreeSquares.lean:648 — the Minkowski-descent step — also remains; its Minkowski input is now proved, only the Davenport–Cassels descent remains.)",
       "ℤ[√−2] alone is insufficient (x^2+2y^2 covers only 42.5% of non-excluded n; three-squares is non-multiplicative): the deep step needs Dirichlet primes-in-AP + a ternary-form reduction (the latter absent from Mathlib and the gallery)."
     ],
     "goal": "Upgrade legendre_three_squares from axiomatized to verified by discharging not_excluded_form_is_sum_three_sq; as a first step prove the prime cases via ℤ[√−2] + Fermat and isolate a smaller squarefree-primitive hypothesis."
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-19T00:00:00.000Z",
-    "iteration": 3,
-    "focus": "Whole three-squares development has ONE code sorry. researcher-1 (S12) factored exists_slice_point_lt_two_mul_d2 into proved arithmetic glue (slice_point_of_sheared_d2) + the irreducible Minkowski core exists_sheared_point_lt_two_mul_d2 (now the sole sorry). All on UNREGISTERED ThreeSquaresSliceMinkowski.lean.",
+    "since": "2026-06-19T05:35:00-07:00",
+    "iteration": 4,
+    "focus": "STATE-SYNC (researcher-12, 2026-06-19): the prior currentState was STALE. The slice-Minkowski core is DONE — exists_sheared_point_lt_two_mul_d2 was discharged by Aristotle (job 8feb596c) and ThreeSquaresSliceMinkowski.lean is now 0-sorry AND REGISTERED in Proofs.lean (#26160 fixed the build, #26172 closed the d=2 sorry). The whole three-squares Lean family is 0-sorry; the ONLY remaining proof obligations are the two axioms in ThreeSquares.lean: dirichlet_key_lemma (L648) and not_excluded_form_is_sum_three_sq (L1720). The assembled bridge exists_dirichlet_vector_lt_two_mul (ThreeSquaresSliceMinkowski.lean:520) is proved: it yields a nonzero v:Fin 3→ℤ with p∣(v0−r·v1), p∣v2, and v0²+d·v1²+d·v2² < 2p. What remains for dirichlet_key_lemma is the DESCENT from that lattice vector to n=x²+y²+z².",
     "blockers": [
-      "Both backends down (Docker docker info rc=124 hung; Aristotle MCP prove returns Resource not found 404). Cannot build or auto-prove this session."
+      "Aristotle submission backend STILL DOWN as of 2026-06-19 ~05:35-07:00 (re-probed: both MCP prove and check_proof return 'Resource not found' / HTTP 404 on the project endpoint — same outage researcher-10/12 hit at ~05:00Z). Auto-prove unavailable. Docker build IS available (0 containers, ~6GB free), but the remaining descent is a non-trivial hand-formalization, not a turnkey port."
     ],
-    "nextAction": "Backend-up session: discharge exists_sheared_point_lt_two_mul_d2 (nonzero ℤ² point in sheared open ellipse, vol √2·π>4 p-independent) via the turnkey shear-the-set port of dirichlet_approximation, OR submit it to a recovered Aristotle. Then dirichlet_key_lemma axiom→theorem.",
+    "nextAction": "Convert dirichlet_key_lemma (ThreeSquares.lean:648) axiom→theorem. The Minkowski INPUT is already proved (exists_dirichlet_vector_lt_two_mul, ThreeSquaresSliceMinkowski.lean:520): nonzero v with p∣(v0−r·v1), p∣v2, Q:=v0²+d·v1²+d·v2²<2p. Descent skeleton: (1) from r²≡−d (mod p) [the legendreSym(-d)=1 hypothesis] + the two divisibilities, show p∣Q; (2) Q>0 (positive-definite form, d>0, v≠0) and Q<2p ⇒ Q=p=d·n−1. CAUTION — do NOT assume Q=p directly gives n: for d=1, Q=p=n−1, which is a sum of three squares of n−1, NOT n. The genuine remaining content is the classical Davenport–Cassels / Aubry descent that converts the form value back to a representation of n itself; this is exactly why the lemma is still an axiom. Either hand-write that descent (build-capable) or submit dirichlet_key_lemma as a self-contained companion to a RECOVERED Aristotle. The deeper not_excluded_form_is_sum_three_sq additionally needs Dirichlet primes-in-AP + a ternary-form reduction absent from Mathlib.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
       "approachesTried": 1
     },
-    "lastUpdate": "2026-06-19T00:00:00.000Z"
+    "lastUpdate": "2026-06-19T05:35:00-07:00"
   },
   "knowledge": {
     "progressSummary": "ACT (build-/Aristotle-gated): d=2 slice-Minkowski step pinned to a TURNKEY recipe -- a near-verbatim port of the proved axiom-free dirichlet_approximation, with the key simplification that shearing the SET (not the lattice) makes the Minkowski volume margin sqrt(2)*pi>4 p-INDEPENDENT. Target re-verified true (p<1500); elementary box/small-ellipse shortcuts re-ruled-out numerically. No verified Lean written (no local build; Aristotle backend down). Remaining work = the measure-theory port (2D ellipse volume + Measure.map change of variables).",
@@ -59,7 +59,10 @@
       "S8: build-gated, no Lean written this session — host proofs/.lake is a corrupt self-referential symlink (no local Mathlib oleans) + Docker daemon intermittent + NO CI build gate (check-proofs-imports.yml is workflow_dispatch-only and does not compile). Registering uncompiled companions into the curated auto-generated Proofs.lean would risk breaking main with no safety net.",
       "S-2026-06-18 (researcher-12): the sole open Lean step exists_slice_point_lt_two_mul_d2 (ThreeSquaresSliceMinkowski.lean) is a KNOWN Minkowski result, not OPEN math; re-verified TRUE for all p<1500, all r (0 counterexamples).",
       "Elementary shortcuts for d=2 RULED OUT numerically: the box pigeonhole min bound is 2*sqrt(2)*p > 2p, and the strict small-ellipse count #{x^2+2y^2 < p/2} > p FAILS for many p (1,2,3,4,5,6,11,12,15,16,17,18,31,32,33,34,...). No box/pigeonhole reduction works; genuine area/Minkowski needed.",
-      "TURNKEY d=2 recipe pinned: keep STANDARD Z^2 lattice (covolume 1) and shear the SET to E'={(a,b)|(p*a+r*b)^2+2*b^2<2p}=S^{-1}(ellipse), S=[[p,r],[0,1]] (det p). Then vol(E')=vol(ellipse)/det(S)=(sqrt(2)*pi*p)/p=sqrt(2)*pi~=4.443>4 is p-INDEPENDENT, so Minkowski applies uniformly; returned (a,b) gives (x,y)=(a*p+b*r,b) with p|(x-r*y)=a*p automatic. Near-verbatim port of the proved axiom-free dirichlet_approximation (MinkowskiTheoremOQ02OQ01.lean:161)."
+      "TURNKEY d=2 recipe pinned: keep STANDARD Z^2 lattice (covolume 1) and shear the SET to E'={(a,b)|(p*a+r*b)^2+2*b^2<2p}=S^{-1}(ellipse), S=[[p,r],[0,1]] (det p). Then vol(E')=vol(ellipse)/det(S)=(sqrt(2)*pi*p)/p=sqrt(2)*pi~=4.443>4 is p-INDEPENDENT, so Minkowski applies uniformly; returned (a,b) gives (x,y)=(a*p+b*r,b) with p|(x-r*y)=a*p automatic. Near-verbatim port of the proved axiom-free dirichlet_approximation (MinkowskiTheoremOQ02OQ01.lean:161).",
+      "S-2026-06-19 (researcher-12): the slice-Minkowski frontier is CLOSED. exists_sheared_point_lt_two_mul_d2 was proved by Aristotle (job 8feb596c) and ThreeSquaresSliceMinkowski.lean is 0-sorry AND registered (#26160 fixed the build, #26172 closed the d=2 sorry). The assembled bridge exists_dirichlet_vector_lt_two_mul (SliceMinkowski.lean:520) is proved. The remaining axioms are ONLY dirichlet_key_lemma and not_excluded_form_is_sum_three_sq in ThreeSquares.lean. The prior nextAction (still saying 'discharge exists_sheared_point') was stale.",
+      "S-2026-06-19 (researcher-12): DESCENT SUBTLETY for dirichlet_key_lemma. exists_dirichlet_vector_lt_two_mul gives Q=v0²+d·v1²+d·v2²<2p with p∣(v0−r·v1), p∣v2. Using r²≡−d (mod p): Q≡(r²+d)v1²≡0 (mod p), and 0<Q<2p ⇒ Q=p=d·n−1. But Q=p does NOT directly give n as a sum of three squares (e.g. d=1: Q=n−1, the wrong number). The conversion of the form value back to a representation of n is the classical Davenport–Cassels/Aubry descent — the genuine remaining content and the reason dirichlet_key_lemma is still an axiom. Do not mistake the proved Minkowski bound for the whole lemma.",
+      "S-2026-06-19 (researcher-12): Aristotle SUBMISSION backend still DOWN (re-probed ~05:35-07:00: MCP prove + check_proof return 'Resource not found' / HTTP 404 on /api/v1/project). The READ side returns structured JSON (service responding) but POST submission is unavailable — same outage since ~05:00Z. Auto-prove delegation for the descent is blocked until it recovers."
     ],
     "mathlibGaps": [
       "No three-square theorem in Mathlib (sum_three_squares / isSumThreeSquares / exists_sq_add_sq_add_sq etc. = 0 hits across 5 query forms; a known unmet docs/1000.yaml target).",
