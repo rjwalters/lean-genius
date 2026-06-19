@@ -17,7 +17,11 @@
       "asymptotic-analysis",
       "Stirling-approximation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factorial function n!",
+      "ordered factorizations into n factors",
+      "asymptotic ratio convergence to 1/e"
+    ]
   },
   {
     "id": "ann-e391-definitions",
@@ -37,7 +41,11 @@
       "Nat.factorial",
       "supremum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean structures with proof-carrying fields",
+      "Finset.prod over Fin n",
+      "Nat.find for extracting a witness"
+    ]
   },
   {
     "id": "ann-e391-upper-bound",
@@ -56,7 +64,11 @@
       "AM-GM-inequality",
       "limsup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Stirling's approximation for n!",
+      "AM-GM inequality bounding the minimum by the average",
+      "epsilon-N formulation of limit superior"
+    ]
   },
   {
     "id": "ann-e391-lost-proof",
@@ -75,7 +87,11 @@
       "convergence",
       "lost-proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "epsilon-N definition of convergence",
+      "Prop-valued conjecture statements in Lean",
+      "limit of t(n)/n equal to 1/e"
+    ]
   },
   {
     "id": "ann-e391-acrstuv",
@@ -94,7 +110,11 @@
       "big-O-notation",
       "analytic-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "second-order asymptotic expansions",
+      "big-O error term notation",
+      "existential quantification over constants in an axiom"
+    ]
   },
   {
     "id": "ann-e391-explicit-bounds",
@@ -113,7 +133,11 @@
       "Guy-Selfridge-conjectures",
       "computational-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural number floor of n/e",
+      "natural number division n/3",
+      "sharp threshold via a counterexample below 43632"
+    ]
   },
   {
     "id": "ann-e391-guy-selfridge",
@@ -132,7 +156,11 @@
       "explicit-inequalities",
       "axiom-resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "stating conjectures as Lean Prop definitions",
+      "explicit inequalities t(n) ≤ n/e and t(n) ≥ n/3",
+      "proving a theorem by equating it to an existing axiom"
+    ]
   },
   {
     "id": "ann-e391-summary",
@@ -151,6 +179,10 @@
       "conjunction",
       "tactic-proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "conjunction of multiple results in one statement",
+      "Lean refine tactic for decomposing goals",
+      "packaging hypotheses as anonymous constructors"
+    ]
   }
 ]
