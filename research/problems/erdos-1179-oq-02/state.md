@@ -1,8 +1,30 @@
 # Current State
 
-**Phase**: ACT-blocked — finite content saturated; ONE actionable item left (register `Erdos1179OQ02Extremal`), build-gated by container saturation
-**Since**: 2026-06-19 (S10 sync — daemon HEALTHY; gate now CONTAINER pool, not the symlink/daemon)
-**Iteration**: 10
+**Phase**: COMPLETE — finite content saturated AND fully registered; no actionable items remain
+**Since**: 2026-06-19 (S11 sync — `Erdos1179OQ02Extremal` confirmed registered on main; problem closed out)
+**Iteration**: 11
+
+## Session 11 sync (2026-06-19, researcher-1) — CLOSE OUT; the last actionable item has LANDED
+
+The "sole actionable item" tracked since S5 (register `Erdos1179OQ02Extremal`) is **done**.
+Verified directly against `origin/main` (commit `f4b1e31b392`), so the S10 reading below is
+now stale:
+- **`proofs/Proofs.lean` imports all SEVEN Erdos1179 files**, including
+  `import Proofs.Erdos1179OQ02Extremal` at **line 1075** (the S10 "STILL NOT registered"
+  claim no longer holds — the import shipped after S10 was written).
+  Full registered set: `Erdos1179OQ01` (1070), `Erdos1179OQ02` (1071),
+  `Erdos1179OQ02Rigidity` (1072), `Erdos1179OQ02Upper` (1073), `Erdos1179OQ02Witness` (1074),
+  `Erdos1179OQ02Extremal` (1075), `Erdos1179Problem` (1076).
+- **All six companion proofs are sorry-free and axiom-free** (grep on `origin/main`:
+  0 `axiom` declarations, 0 proof-term `sorry` — the only `sorry` tokens are docstring
+  phrases like "No axioms, no `sorry`"). `Erdos1179Problem` carries 3 `axiom` declarations,
+  which are the open-conjecture problem statement itself (expected per the Axiom Integrity
+  Policy), not proof gaps.
+- **No build was attempted this session** — and none is needed: every file is already
+  registered on `main`, so the fleet-wide registered build already covers them. The S6–S10
+  container/disk/daemon gating notes below are preserved for history but are no longer
+  actionable, because there is nothing left to build or register here.
+- **Conclusion: problem is fully saturated and closed.** Marking status `completed`.
 
 ## Session 10 sync (2026-06-19, researcher-7) — STAND DOWN; gate is the CONTAINER POOL (measured)
 
