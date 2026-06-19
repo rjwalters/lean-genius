@@ -16,7 +16,11 @@
       "Millennium Prize"
     ],
     "mathContext": "See annotation content for formal details of the hodge conjecture: millennium prize problem",
-    "prerequisites": []
+    "prerequisites": [
+      "Cohomology Theory",
+      "Smooth Projective Varieties",
+      "Algebraic Cycles"
+    ]
   },
   {
     "id": "ann-hodge-structure",
@@ -35,7 +39,11 @@
       "complexification",
       "Kähler manifold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Rational Vector Spaces",
+      "Complexification",
+      "Kähler Manifolds"
+    ]
   },
   {
     "id": "ann-hodge-symmetry",
@@ -54,7 +62,11 @@
       "Hodge diamond",
       "complex conjugation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hodge Decomposition",
+      "Complex Conjugation",
+      "Dimension Of Subspaces"
+    ]
   },
   {
     "id": "ann-hodge-filtration",
@@ -73,7 +85,11 @@
       "variation of Hodge structure",
       "period domain"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Decreasing Filtrations",
+      "Hodge Decomposition",
+      "Direct Sum Decomposition"
+    ]
   },
   {
     "id": "ann-hodge-class",
@@ -92,7 +108,11 @@
       "(p,p) component",
       "algebraicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Rational Lattice",
+      "Complexification Map",
+      "Hodge Decomposition"
+    ]
   },
   {
     "id": "ann-cycle-class-hodge",
@@ -111,7 +131,11 @@
       "algebraic cycle",
       "Hodge class"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cycle Class Map",
+      "Algebraic Cycles",
+      "Cohomology Classes"
+    ]
   },
   {
     "id": "ann-statement",
@@ -130,7 +154,11 @@
       "algebraic geometry",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hodge Classes",
+      "Algebraic Cycles",
+      "Rational Linear Combinations"
+    ]
   },
   {
     "id": "ann-lefschetz",
@@ -149,7 +177,11 @@
       "Picard group",
       "line bundle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Exponential Sequence",
+      "Line Bundles",
+      "Picard Group"
+    ]
   },
   {
     "id": "ann-curves-surfaces",
@@ -168,7 +200,11 @@
       "surfaces",
       "dimension bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lefschetz (1,1) Theorem",
+      "Algebraic Surfaces",
+      "Dimension Bounds"
+    ]
   },
   {
     "id": "ann-integral-hodge",
@@ -187,7 +223,11 @@
       "integral coefficients",
       "torsion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Integral Cohomology",
+      "Torsion Classes",
+      "Steenrod Operations"
+    ]
   },
   {
     "id": "ann-counterexamples",
@@ -206,7 +246,11 @@
       "projectivity"
     ],
     "mathContext": "See annotation content for formal details of voisin's kähler counterexample",
-    "prerequisites": []
+    "prerequisites": [
+      "Kähler Manifolds",
+      "Complex Tori",
+      "Projective Varieties"
+    ]
   },
   {
     "id": "ann-standard-conjectures",
@@ -225,7 +269,11 @@
       "motives"
     ],
     "mathContext": "See annotation content for formal details of related conjectures",
-    "prerequisites": []
+    "prerequisites": [
+      "Algebraic Correspondences",
+      "Lefschetz Operator",
+      "Abelian Varieties"
+    ]
   },
   {
     "id": "ann-serre-duality",
@@ -244,7 +292,11 @@
       "Hodge diamond",
       "dihedral symmetry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hodge Numbers",
+      "Serre Duality",
+      "Cycle Class Map"
+    ]
   },
   {
     "id": "ann-summary",
@@ -263,7 +315,11 @@
       "Millennium Prize"
     ],
     "mathContext": "See annotation content for formal details of problem status: open",
-    "prerequisites": []
+    "prerequisites": [
+      "Hodge Conjecture Statement",
+      "Lefschetz (1,1) Theorem",
+      "Known Special Cases"
+    ]
   },
   {
     "id": "ann-absolute-hodge",
