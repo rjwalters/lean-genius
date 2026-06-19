@@ -1,21 +1,142 @@
 # Knowledge Base: abel-ruffini-oq-07
 
-Insights accumulated during research on this problem.
+Galois group of f = x⁵ − x − 1 over ℚ is S₅ (a second Abel–Ruffini quintic witness,
+complementing the Eisenstein example).
 
 ---
 
 ## Problem Understanding
 
-[Initial observations about the problem will be recorded here]
+**Goal:** Gal(x⁵ − x − 1 / ℚ) ≅ S₅, hence not solvable.
+
+The original problem statement proposed the route:
+(i) f irreducible (Selmer 1956); (ii) Δ = 2869 = 19·151 not a perfect square ⟹ G ⊄ A₅;
+(iii) "f has exactly three real roots" ⟹ complex conjugation is a transposition ⟹ S₅.
 
 ---
 
 ## Insights
 
-[Insights from research attempts will be accumulated here]
+### ⚠️ CORRECTION: the problem statement is mathematically WRONG on point (iii)
+
+Verified numerically/symbolically (sympy + numpy, session 2026-06-18):
+
+- **f = x⁵ − x − 1 has exactly ONE real root** (≈ 1.1673), NOT three.
+  The four non-real roots form **two** complex-conjugate pairs
+  (≈ 0.1812 ± 1.0840i and ≈ −0.7649 ± 0.3525i).
+  Reason: f′ = 5x⁴ − 1 has critical points ±(1/5)^{1/4} ≈ ±0.6687; both critical
+  values are negative (f(−0.6687) ≈ −0.465, f(+0.6687) ≈ −1.535), so f crosses zero once.
+- Consequence: **complex conjugation acts as a product of TWO transpositions** on the
+  four non-real roots (fixing the one real root) — an **EVEN** permutation, lying in A₅.
+  It is therefore **NOT a transposition.**
+- The clean Mathlib real-roots lemma is thus **inapplicable**:
+  `Polynomial.Gal.galActionHom_bijective_of_prime_degree`
+  (`Mathlib/Analysis/Complex/Polynomial/Basic.lean:126`) requires
+  `card (rootSet ℂ) = card (rootSet ℝ) + 2`, i.e. exactly ONE conjugate pair.
+  Here `card ℂ = card ℝ + 4`, which fails the hypothesis. (The Eisenstein examples
+  x⁵−4x+2 and x⁵−6x+3 DO have 3 real roots — verified — which is why they use this route.)
+
+### ⚠️ The discriminant route (ii) alone is INSUFFICIENT
+
+Δ not a perfect square ⟹ G ⊄ A₅ ⟹ G contains an odd permutation. But among the
+**transitive** subgroups of S₅ (C₅, D₅, F₂₀, A₅, S₅), the ones containing odd
+permutations are exactly **{F₂₀ (order 20), S₅}** — note D₅'s reflections act on 5
+points as products of two transpositions (even), so D₅ ⊂ A₅. So "irreducible +
+disc-not-square" only narrows the group to {F₂₀, S₅}. To exclude F₂₀ one must show
+**3 ∣ |G|** (|F₂₀| = 20 is not divisible by 3). The problem statement implicitly
+assumed disc-not-square + a transposition (from the false "3 real roots") gave S₅
+directly; with the real-roots claim removed, an extra mod-p (Frobenius) input is required.
+
+### Correct, fully-verified proof (Dedekind / Frobenius cycle types)
+
+Verified factorization types of f mod p (sympy, all squarefree ⟹ p unramified):
+
+| p  | factor degrees | Frobenius cycle type | contributes |
+|----|----------------|----------------------|-------------|
+| 3  | [5]            | 5-cycle              | transitive, 5 ∣ |G| |
+| 5  | [5]            | 5-cycle              | (alt for p=3) |
+| 2  | [2, 3]         | (2,3), order 6       | σ³ = **transposition**; σ² = 3-cycle ⟹ 3 ∣ |G| |
+| 7  | [2, 3]         | (2,3), order 6       | (alt for p=2) |
+| 17 | [1, 1, 3]      | 3-cycle              | 3 ∣ |G| |
+| 23 | [1, 4]         | 4-cycle (odd)        | G ⊄ A₅ |
+
+**Cleanest argument (transposition route):**
+1. f irreducible mod 3 ⟹ G (= image of `galActionHom`) contains a **5-cycle** ⟹ transitive, 5 ∣ |G|.
+2. f ≡ (irred. quadratic)·(irred. cubic) mod 2 ⟹ Frobenius σ of cycle type (2,3), order 6;
+   then **σ³ is a transposition** ∈ G.
+3. `Equiv.Perm.subgroup_eq_top_of_swap_mem` (`Mathlib/GroupTheory/Perm/Cycle/Type.lean:549`):
+   for H ≤ Perm α with `card α` prime, `card α ∣ card H`, and H containing a swap ⟹ H = ⊤.
+   With α = roots (card 5, prime), 5 ∣ |G|, transposition ∈ G ⟹ G = S₅. ∎
+
+(Alternative "resolvent/discriminant" route matching the problem title: disc-not-square ⟹
+G ⊄ A₅, plus 3 ∣ |G| from p=17 ⟹ G = S₅ since the only transitive subgroup with an odd
+element and order divisible by 3 is S₅. Same Frobenius dependency.)
+
+Independently verified: Δ(f) = 2869 = 19·151 (not a square), f irreducible over ℚ.
+
+### Buildability assessment (Lean 4 / Mathlib, pin v4.26.0)
+
+| Step | Mathlib support | Verdict |
+|------|-----------------|---------|
+| natDegree 5 is prime | trivial (`decide`) | BUILDABLE |
+| f irreducible over ℚ | reducible mod 2 (=(x²+x+1)(x³+x²+1)) and mod 7, but **irreducible mod 3/5/11/13** ⟹ irreducible over ℚ by mod-p reduction. Eisenstein does NOT apply. | BUILDABLE (~100–200 L) |
+| 5 ∣ card Gal | `Polynomial.Gal.prime_degree_dvd_card` | BUILDABLE |
+| transposition ∈ Gal (or 3 ∣ \|G\|) | **Dedekind–Frobenius bridge: factor type mod p ⟹ cycle type of Frobenius as a root-permutation.** | **NOT BUILDABLE today** |
+| assemble S₅ | `Equiv.Perm.subgroup_eq_top_of_swap_mem` | BUILDABLE |
+
+**The single blocker is the Dedekind–Frobenius bridge** — and the gallery's own
+flagship "Galois group of a specific quintic" entry confirms its difficulty:
+- `Proofs/InverseGaloisA5.lean` (2067 L) **still carries `axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal`** (line 309) — precisely this bridge, axiomatized.
+- `Proofs/InverseGaloisA5Dedekind.lean` is actively trying to discharge it via
+  `AlgHom.IsArithFrobAt` / `arithFrobAt` / `Ideal.inertiaDegIn`
+  (`Mathlib/RingTheory/Frobenius.lean`, `Mathlib/NumberTheory/RamificationInertia/Galois.lean`)
+  and still has a substantive `sorry` (the Frobenius construction `exists_gal_order_three`).
+
+**Cross-problem synergy:** OQ-07 and `inverse-galois-a5-oq-01` need the *same* Dedekind–
+Frobenius machinery. If that open work lands a reusable
+"factor type mod unramified p ⟹ element of matching cycle type in `p.Gal`" lemma, BOTH
+problems close. OQ-07 needs it for a 5-cycle (p=3) and a transposition (σ³, p=2); a5-oq-01
+needs it for a 3-cycle (p=7).
 
 ---
 
 ## Dead Ends
 
-[Approaches known not to work will be documented here]
+- **Real-roots / complex-conjugation route** (`galActionHom_bijective_of_prime_degree`):
+  fails because f has only 1 real root ⟹ conjugation is even (∈ A₅), not a swap.
+  This is the route the Eisenstein gallery examples use; it does NOT transfer to x⁵−x−1.
+- **Discriminant alone**: only narrows G to {F₂₀, S₅}; needs a supplementary 3 ∣ |G| input.
+- **Eisenstein for irreducibility**: inapplicable (no prime divides all lower coeffs).
+  Use mod-3 (or mod-5) irreducibility instead.
+
+---
+
+## Session Log
+
+### Session 2026-06-18 (Session 1, OBSERVE → ORIENT) — FRESH
+
+**Mode:** FRESH. **Outcome:** scouted / ORIENT (no Lean written — see below).
+
+**What I did**
+- Symbolically verified (sympy/numpy, no docker): Δ = 2869 = 19·151 (not square),
+  irreducible over ℚ, **exactly 1 real root** (refuting the statement's "3 real roots"),
+  and the full table of mod-p factorization cycle types.
+- Mapped the Mathlib toolchain: `prime_degree_dvd_card`,
+  `galActionHom_bijective_of_prime_degree` (inapplicable here),
+  `subgroup_eq_top_of_swap_mem` (the assembler).
+- Grounded buildability in the gallery A5 precedent (`InverseGaloisA5*`): the Dedekind–
+  Frobenius bridge is the universal blocker and is currently axiomatized/sorry'd there.
+
+**Why no Lean file:** Both verifiers were down this session (docker image-inspect FAIL,
+host load ~19; Aristotle backend 404). More importantly, the *one buildable gap* (the
+Frobenius bridge) is open infra already under attack in `inverse-galois-a5-oq-01`; writing
+a partial S₅ file now would either be unbuildable or just re-axiomatize the same step.
+
+**Next steps**
+- Coordinate with / wait on `inverse-galois-a5-oq-01`'s `exists_gal_order_three`
+  (`IsArithFrobAt`) work; when it yields a reusable cycle-type lemma, write `AbelRuffiniOQ07.lean`:
+  irreducible(mod 3) + `prime_degree_dvd_card` + transposition(σ³, p=2) + `subgroup_eq_top_of_swap_mem`.
+- Interim option (matching gallery convention): an **axiomatized** entry that states the
+  S₅ result with `axiom`s for the two Frobenius cycle-type facts (5-cycle@3, transposition@2),
+  exactly parallel to `InverseGaloisA5.three_dvd_gal_card`. Status would be `axiomatized`.
+- File a correction note: the curated problem statement's "exactly three real roots" is false.
