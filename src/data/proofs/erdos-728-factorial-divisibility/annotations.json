@@ -16,7 +16,11 @@
       "Erdos problems"
     ],
     "mathContext": "See annotation content for formal details of ai's first genuinely novel mathematics",
-    "prerequisites": []
+    "prerequisites": [
+      "Factorials",
+      "Divisibility",
+      "Erdős problems"
+    ]
   },
   {
     "id": "ann-problem-statement",
@@ -35,7 +39,11 @@
       "logarithmic gap",
       "Erdos-Graham-Ruzsa-Straus"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Factorials",
+      "Divisibility",
+      "Logarithms"
+    ]
   },
   {
     "id": "ann-padic-defs",
@@ -54,7 +62,11 @@
       "factorial",
       "binomial coefficient"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "p-adic valuation",
+      "Factorials",
+      "Binomial coefficients"
+    ]
   },
   {
     "id": "ann-kummer",
@@ -73,7 +85,11 @@
       "carries",
       "base-p representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Base-p representation",
+      "Binomial coefficients",
+      "p-adic valuation"
+    ]
   },
   {
     "id": "ann-forced-carries",
@@ -92,7 +108,11 @@
       "divisibility",
       "modular arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Modular arithmetic",
+      "Base-p representation",
+      "Carries"
+    ]
   },
   {
     "id": "ann-large-primes",
@@ -110,7 +130,10 @@
       "prime sieving",
       "valuation comparison"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime numbers",
+      "p-adic valuation"
+    ]
   },
   {
     "id": "ann-counting",
@@ -129,7 +152,10 @@
       "prime powers",
       "interval arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counting functions",
+      "Prime powers"
+    ]
   },
   {
     "id": "ann-w-sum",
@@ -147,7 +173,10 @@
       "p-adic valuation",
       "counting formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "p-adic valuation",
+      "Summation"
+    ]
   },
   {
     "id": "ann-probabilistic",
@@ -166,7 +195,11 @@
       "Chernoff bounds",
       "concentration inequalities"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probability theory",
+      "Probabilistic method",
+      "Concentration inequalities"
+    ]
   },
   {
     "id": "ann-good-triples",
@@ -185,7 +218,10 @@
       "central binomial",
       "gap control"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Central binomial coefficient",
+      "Factorials"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -204,7 +240,10 @@
       "infinite set",
       "unbounded existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite sets",
+      "Existence proofs"
+    ]
   },
   {
     "id": "ann-formal-conjectures",
@@ -223,7 +262,10 @@
       "DeepMind",
       "statement matching"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Formal verification",
+      "Lean 4"
+    ]
   },
   {
     "id": "ann-ai-story",
@@ -243,7 +285,10 @@
       "human-AI collaboration"
     ],
     "mathContext": "See annotation content for formal details of the ai collaboration story",
-    "prerequisites": []
+    "prerequisites": [
+      "AI-assisted mathematics",
+      "Formal verification"
+    ]
   },
   {
     "id": "ann-spike-count",
@@ -262,7 +307,10 @@
       "valuation",
       "counting argument"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "p-adic valuation",
+      "Counting arguments"
+    ]
   },
   {
     "id": "ann-xp-small-primes",
@@ -282,7 +330,11 @@
       "small primes",
       "expected value"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Base-p digit counting",
+      "Expected value",
+      "Carries"
+    ]
   },
   {
     "id": "ann-chernoff",
@@ -302,7 +354,11 @@
       "moment generating function",
       "probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probability theory",
+      "Moment generating functions",
+      "Concentration inequalities"
+    ]
   },
   {
     "id": "ann-infinite-unbounded",
@@ -321,7 +377,10 @@
       "infinity",
       "proof by contradiction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set theory",
+      "Proof by contradiction"
+    ]
   },
   {
     "id": "ann-final-construction",
@@ -340,7 +399,10 @@
       "verification",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Constructive proofs",
+      "Divisibility"
+    ]
   },
   {
     "id": "ann-good-m-exists",
@@ -360,6 +422,10 @@
       "probabilistic method",
       "pigeonhole"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic method",
+      "Pigeonhole principle",
+      "Counting arguments"
+    ]
   }
 ]
