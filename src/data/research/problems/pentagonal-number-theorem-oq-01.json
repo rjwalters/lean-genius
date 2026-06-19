@@ -18,7 +18,9 @@
       "genPent_injective: distinct indices give distinct pentagonal numbers, via (a-b)(3(a+b)-1)=0 and 3(a+b)≠1 over ℤ [PentagonalNumberTheoremOQ01.lean]",
       "isGenPent_nonneg + concrete values g(0..±4)=0,1,2,5,7,12,15,22,26 (OEIS A001318) [PentagonalNumberTheoremOQ01.lean]",
       "genPent_sq_le_self (k²≤g(k)), index_le_genPent / neg_index_le_genPent / abs_index_le_genPent (|k|≤g(k)), mul_pred_nonneg / mul_succ_nonneg (consecutive-integer products ≥0) [PentagonalNumberTheoremOQ01.lean]",
-      "indexSet_finite: for any n, {k | g(k) ≤ n} is finite (⊆ [-n,n]) — Euler's recurrence is a finite sum [PentagonalNumberTheoremOQ01.lean]"
+      "indexSet_finite: for any n, {k | g(k) ≤ n} is finite (⊆ [-n,n]) — Euler's recurrence is a finite sum [PentagonalNumberTheoremOQ01.lean]",
+      "pentIndices (def) + mem_pentIndices + coe_pentIndices: COMPUTABLE Finset enumerator of contributing indices {k | g(k) ≤ n} filtered from [-n,n]; membership ⟺ g(k) ≤ n, and its Set coercion is exactly the index set indexSet_finite proves finite [PentagonalNumberTheoremOQ01.lean]",
+      "genPent_neg: the ±k pairing g(-k) = g(k) + k of Euler's recurrence (the two shifts g(k), g(-k) appearing together differ by exactly k) [PentagonalNumberTheoremOQ01.lean]"
     ],
     "mathlibGaps": [
       "No Franklin sign-reversing involution on partitions into distinct parts.",
@@ -27,9 +29,9 @@
     ],
     "nextSteps": [
       "Mathematical frontier: build Franklin's involution to reach the deep identity p_even(n)-p_odd(n) = [n=g(k)]·(-1)ᵏ.",
-      "Tractable intermediate now that indexSet_finite supplies finite support: formalize the explicit finite form of Euler's recurrence p(n) = ∑_{k=1}^{K(n)} (-1)^{k-1}(p(n-g_k)+p(n-g_{-k})), or define the partition-into-distinct-parts parity sign and state the identity.",
-      "Define a Finset enumerator of pentagonal indices ≤ n (via abs_index_le_genPent / indexSet_finite) to make the recurrence computable."
+      "Tractable intermediate now that pentIndices supplies a computable support: formalize the explicit finite form of Euler's recurrence p(n) = ∑_{k ∈ pentIndices' n} (-1)^{k-1} p(n-g_k) as a Finset.sum over the enumerator, or define the partition-into-distinct-parts parity sign and state the identity.",
+      "Define the partition function p(n) (or reuse Nat.Partition.card) and state — not yet prove — Euler's recurrence as a Finset.sum identity indexed by pentIndices, isolating Franklin's involution as the sole remaining gap."
     ],
-    "progressSummary": "BUILD-VERIFIED (Session 2, 2026-06-19): foundation file (headline 24m+1-square recognition criterion) was merged build-verified via PR #25893; Session 2 adds the index-bound / finiteness layer — k²≤g(k) (quadratic growth), |k|≤g(k), and indexSet_finite ({k|g(k)≤n} finite ⊆ [-n,n]), which is the precise statement that Euler's partition recurrence is a finite sum. Build green (7743 jobs), 0 sorry, 0 axiom, warning-clean. Deep identity (Franklin's involution) remains the open core."
+    "progressSummary": "BUILD-VERIFIED (Session 3, 2026-06-19): foundation file (headline 24m+1-square recognition criterion) merged via PR #25893; Session 2 added the index-bound/finiteness layer (k²≤g(k), |k|≤g(k), indexSet_finite). Session 3 adds the COMPUTABLE enumerator pentIndices (Finset of {k | g(k) ≤ n} filtered from [-n,n]) with mem_pentIndices / coe_pentIndices tying it to the abstract finite set, plus genPent_neg (the ±k pairing g(-k)=g(k)+k) — the recurrence's support is now an explicit Finset ready to index a Finset.sum. Build green (7743 jobs), 0 sorry, 0 axiom, warning-clean. Deep identity (Franklin's involution) remains the open core."
   }
 }

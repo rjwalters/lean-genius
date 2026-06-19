@@ -44,7 +44,9 @@
       "genPent_injective: distinctness of pentagonal numbers across indices, via the factorization (a-b)(3(a+b)-1)=0 and impossibility of 3(a+b)=1 over ℤ",
       "A ZMod-6 decision argument turning 's² = 24m+1' into 's ≡ ±1 (mod 6)', recovering the index from each residue class",
       "Concrete values g(0..±4) = 0,1,2,5,7,12,15,22,26 matching OEIS A001318, with a sanity check that 12 = g(3) and 24·12+1 = 17²",
-      "Index-bound theory making Euler partition recurrence a finite sum: genPent_sq_le_self (k^2 <= g(k), quadratic growth), abs_index_le_genPent (|k| <= g(k)), and indexSet_finite ({k | g(k) <= n} is finite, contained in [-n,n])"
+      "Index-bound theory making Euler partition recurrence a finite sum: genPent_sq_le_self (k^2 <= g(k), quadratic growth), abs_index_le_genPent (|k| <= g(k)), and indexSet_finite ({k | g(k) <= n} is finite, contained in [-n,n])",
+      "A computable enumerator pentIndices (def): the explicit Finset of indices k with g(k) <= n, filtered from [-n,n], with mem_pentIndices (membership iff g(k) <= n) and coe_pentIndices (realizing the abstract set {k | g(k) <= n}), so the finite sum in Euler's recurrence can be evaluated",
+      "genPent_neg: the +/-k pairing g(-k) = g(k) + k of Euler's recurrence, relating the two pentagonal shifts g(k) and g(-k) that occur together at each level"
     ],
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
