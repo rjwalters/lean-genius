@@ -16,7 +16,11 @@
       "Littlewood-polynomials",
       "almost-sure-convergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "real analysis",
+      "polynomial algebra"
+    ]
   },
   {
     "id": "ann-e521-defs",
@@ -35,7 +39,12 @@
       "Littlewood-polynomial",
       "root-counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "polynomial algebra",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e521-kac",
@@ -54,7 +63,11 @@
       "Kac-formula",
       "root-density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "probability theory"
+    ]
   },
   {
     "id": "ann-e521-eo",
@@ -73,7 +86,11 @@
       "variance-bound",
       "concentration-inequality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "asymptotic analysis",
+      "filters and limits"
+    ]
   },
   {
     "id": "ann-e521-conjecture",
@@ -92,7 +109,11 @@
       "measure-theory",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "measure theory",
+      "probability theory",
+      "Lean 4 propositions"
+    ]
   },
   {
     "id": "ann-e521-do",
@@ -111,7 +132,11 @@
       "partial-result",
       "Do-2024"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "real analysis",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e521-kac-formula",
@@ -130,6 +155,10 @@
       "root-density",
       "fundamental-theorem-algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "integral calculus",
+      "real analysis",
+      "polynomial algebra"
+    ]
   }
 ]
