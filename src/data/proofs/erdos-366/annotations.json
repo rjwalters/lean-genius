@@ -17,7 +17,11 @@
       "consecutive integers",
       "prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization and prime power divisibility",
+      "powerful (squareful) and cubeful numbers",
+      "consecutive integers"
+    ]
   },
   {
     "id": "ann-e366-kfull-def",
@@ -37,7 +41,11 @@
       "squarefree",
       "prime powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.factorization and prime multiplicities",
+      "prime factors and divisibility",
+      "squarefree versus prime-power conditions"
+    ]
   },
   {
     "id": "ann-e366-one-kfull",
@@ -56,7 +64,11 @@
       "Nat.dvd_one",
       "Nat.Prime.ne_one"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "vacuous truth over an empty quantifier",
+      "Nat.dvd_one (only 1 divides 1)",
+      "Nat.Prime.ne_one"
+    ]
   },
   {
     "id": "ann-e366-main-conjecture",
@@ -75,7 +87,11 @@
       "existence statement",
       "computational search"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential statements in Lean",
+      "powerful and cubeful number definitions",
+      "axioms encoding an open problem's status"
+    ]
   },
   {
     "id": "ann-e366-known-pairs",
@@ -94,7 +110,11 @@
       "computational search",
       "OEIS A060355"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cubeful and powerful number definitions",
+      "set-builder notation for number sets",
+      "verifying prime factorizations of specific integers"
+    ]
   },
   {
     "id": "ann-e366-weaker-question",
@@ -113,7 +133,11 @@
       "consecutive integers",
       "3-full density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cubeful (3-full) number definition",
+      "logical strength between conjectures",
+      "consecutive integers"
+    ]
   },
   {
     "id": "ann-e366-pell",
@@ -132,7 +156,11 @@
       "continued fractions",
       "infinite families"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pell equations and their infinitely many solutions",
+      "powerful numbers",
+      "Set.Infinite"
+    ]
   },
   {
     "id": "ann-e366-asymmetry",
@@ -151,7 +179,11 @@
       "heuristics",
       "statistical reasoning"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cubeful and powerful number conditions",
+      "heuristic density arguments",
+      "the (8,9) and (12167,12168) reverse-direction pairs"
+    ]
   },
   {
     "id": "ann-e366-structure",
@@ -170,7 +202,11 @@
       "canonical form",
       "prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "k-full number definition",
+      "representation as a^k times b^(k+1)",
+      "the a²b³ form of powerful numbers"
+    ]
   },
   {
     "id": "ann-e366-computational",
@@ -189,6 +225,10 @@
       "OEIS",
       "exhaustive search"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "CubefulPowerfulPairs set",
+      "exhaustive computational search bounds",
+      "powerful and cubeful divisibility conditions"
+    ]
   }
 ]
