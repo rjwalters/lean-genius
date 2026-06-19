@@ -16,7 +16,11 @@
       "moebius-function",
       "irrationality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Möbius Function",
+      "Squarefree Integers",
+      "Irrational Numbers"
+    ]
   },
   {
     "id": "ann-e259-moebius-abbrev",
@@ -34,7 +38,11 @@
       "moebius-function"
     ],
     "mathContext": "See annotation content for formal details of möbius function abbreviation",
-    "prerequisites": []
+    "prerequisites": [
+      "Möbius Function",
+      "Mathlib Arithmetic Functions",
+      "Lean Abbreviations"
+    ]
   },
   {
     "id": "ann-e259-moebius-one",
@@ -52,7 +60,11 @@
       "moebius-function",
       "multiplicative"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Möbius Function",
+      "Multiplicative Functions",
+      "Prime Factorization"
+    ]
   },
   {
     "id": "ann-e259-moebius-examples",
@@ -71,7 +83,11 @@
       "native-decide",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Möbius Function",
+      "Prime Factorization",
+      "Native Decide"
+    ]
   },
   {
     "id": "ann-e259-squarefree-one",
@@ -89,7 +105,11 @@
       "squarefree",
       "base-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Squarefree Integers",
+      "Divisibility",
+      "Base Case Reasoning"
+    ]
   },
   {
     "id": "ann-e259-squarefree-iff",
@@ -108,7 +128,11 @@
       "squarefree",
       "characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Möbius Function",
+      "Squarefree Integers",
+      "Prime Square Divisors"
+    ]
   },
   {
     "id": "ann-e259-moebius-sq",
@@ -127,7 +151,11 @@
       "squarefree",
       "filtering"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Möbius Function",
+      "Indicator Functions",
+      "Squarefree Integers"
+    ]
   },
   {
     "id": "ann-e259-series-term",
@@ -145,7 +173,11 @@
       "series-definition",
       "type-coercion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Series Terms",
+      "Type Coercion",
+      "Real Numbers"
+    ]
   },
   {
     "id": "ann-e259-summable",
@@ -163,7 +195,11 @@
       "convergence",
       "comparison-test"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Absolute Convergence",
+      "Comparison Test",
+      "Geometric Series"
+    ]
   },
   {
     "id": "ann-e259-chen-ruzsa",
@@ -182,7 +218,11 @@
       "transcendence-theory",
       "chen-ruzsa"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Irrationality Proofs",
+      "Transcendence Theory",
+      "Squarefree Series"
+    ]
   },
   {
     "id": "ann-e259-main",
@@ -201,7 +241,11 @@
       "irrationality",
       "main-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Irrational Numbers",
+      "Infinite Series",
+      "Möbius Function"
+    ]
   },
   {
     "id": "ann-e259-alt",
@@ -219,6 +263,10 @@
       "tsum",
       "hassum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Tsum Notation",
+      "HasSum Predicate",
+      "Infinite Series"
+    ]
   }
 ]
