@@ -16,7 +16,11 @@
       "Admissible sets",
       "Covering congruences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime numbers",
+      "Divisibility and congruence mod p",
+      "Subsets of natural numbers"
+    ]
   },
   {
     "id": "ann-e429-covers-residue",
@@ -34,7 +38,10 @@
       "Residue classes"
     ],
     "mathContext": "See annotation content for formal details of residue class coverage",
-    "prerequisites": []
+    "prerequisites": [
+      "Congruence relation a ≡ r (mod m)",
+      "Complete residue system mod m"
+    ]
   },
   {
     "id": "ann-e429-admissible",
@@ -53,7 +60,11 @@
       "Hardy-Littlewood conjecture",
       "Prime k-tuples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Residue classes modulo a prime",
+      "Primes vs composite numbers",
+      "Universal and existential quantifiers"
+    ]
   },
   {
     "id": "ann-e429-admissible-equiv",
@@ -72,7 +83,11 @@
       "Constructive proof",
       "Classical logic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Negation of quantified statements",
+      "Definition of admissibility",
+      "If-and-only-if biconditional"
+    ]
   },
   {
     "id": "ann-e429-prime-shift",
@@ -91,7 +106,11 @@
       "Green-Tao theorem"
     ],
     "mathContext": "See annotation content for formal details of prime shifts",
-    "prerequisites": []
+    "prerequisites": [
+      "Translation of a set by an integer",
+      "Primality of integers",
+      "Existential quantification over ℕ"
+    ]
   },
   {
     "id": "ann-e429-zero-density",
@@ -109,7 +128,11 @@
       "Asymptotic density",
       "Prime number theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counting function |A ∩ [1,N]|",
+      "Limit of a sequence as N → ∞",
+      "Asymptotic proportion"
+    ]
   },
   {
     "id": "ann-e429-lacunary",
@@ -128,7 +151,11 @@
       "Super-exponential growth",
       "Gap sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ratio of consecutive terms",
+      "Sequences diverging to infinity",
+      "Sorted/increasing sequences"
+    ]
   },
   {
     "id": "ann-e429-conjecture",
@@ -146,7 +173,11 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical implication",
+      "Definitions of zero density and admissibility",
+      "Prime shift existence"
+    ]
   },
   {
     "id": "ann-e429-weisenberg",
@@ -165,7 +196,11 @@
       "Chinese Remainder Theorem",
       "Constructive counterexamples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisibility by a prime",
+      "Modular arithmetic",
+      "Axioms in formal proofs"
+    ]
   },
   {
     "id": "ann-e429-disproof",
@@ -183,7 +218,11 @@
       "Proof by contradiction",
       "Modus tollens"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical implication and negation",
+      "Counterexample to a universal claim",
+      "Deriving a contradiction"
+    ]
   },
   {
     "id": "ann-e429-covering",
@@ -202,7 +241,11 @@
       "Chinese Remainder Theorem",
       "Modular arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Congruence n ≡ a (mod m)",
+      "Finite collections of congruence classes",
+      "Partitioning the integers"
+    ]
   },
   {
     "id": "ann-e429-necessity",
@@ -220,7 +263,11 @@
       "Contrapositive"
     ],
     "mathContext": "See annotation content for formal details of admissibility is necessary",
-    "prerequisites": []
+    "prerequisites": [
+      "Divisibility and primality",
+      "Logical contrapositive",
+      "Residue class coverage"
+    ]
   },
   {
     "id": "ann-e429-summary",
@@ -238,6 +285,10 @@
       "Complete resolution",
       "Counterexample hierarchy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical conjunction",
+      "Negation of a conjecture",
+      "Existence of counterexamples"
+    ]
   }
 ]
