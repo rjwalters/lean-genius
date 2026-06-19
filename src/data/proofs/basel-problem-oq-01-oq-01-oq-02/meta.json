@@ -24,9 +24,9 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-12",
-    "axiomCount": 5,
+    "axiomCount": 6,
     "lineCount": 952,
-    "assumptions": "5 axioms: aperyB_recurrence (WZ recurrence), denominator_control (lcm^3*a_n is integer), lcm_hanson_bound (3^n Hanson bound), apery_linearForm_decay (geometric decay), apery_linearForm_nonzero (L_n != 0 for n>=1). Removed unused nair_lcm_bound. Main theorem apery_theorem PROVED from these 5 axioms.",
+    "assumptions": "6 axioms: aperyB_recurrence (WZ recurrence), denominator_control (lcm^3*a_n is integer), lcm_hanson_bound (3^n Hanson bound), apery_linearForm_decay (geometric decay), apery_linearForm_nonzero (L_n != 0 for n>=1), and Lean.ofReduceBool. Removed unused nair_lcm_bound. Main theorem apery_theorem PROVED from the first 5 axioms. The credited theorems aperyB_two (b₂=73), aperyB_three (b₃=1445), and the concrete base cases linearForm_two_pos / linearForm_three_pos are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy these credited theorems are counted in meta.axiomCount. The genuinely axiom-free results denominator_control_factorial ((n!)³·aₙ ∈ ℤ by pure induction) and linearForm_one_pos (from the norm_num lower bound ζ(3) > 6/5) use no native_decide and remain free of Lean.ofReduceBool. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted.",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Defined Apéry numbers aperyB(n) = ∑ C(n,k)²C(n+k,k)² as a computable ℕ-valued function",

@@ -21,10 +21,10 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 6,
+    "axiomCount": 7,
     "lineCount": 599,
     "theoremCount": 10,
-    "assumptions": "6 axioms: gaussSumBound (|τ(χ)| = √q for primitive characters), polyaVinogradov (|Σ χ(n)| ≤ √q·log q), largeSieve (bilinear exponential sum bound), siegelWalfisz (ψ(x;q,a) = x/φ(q) + O(xe^{-c√log x}) for small q), vaughanIdentity (von Mangoldt decomposition into bilinear sums), zeroDensityEstimate (N(σ,T,χ) ≪ (qT)^{A(1-σ)}). These are proved theorems missing from Mathlib, not mathematical assumptions.",
+    "assumptions": "6 mathematical axioms: gaussSumBound (|τ(χ)| = √q for primitive characters), polyaVinogradov (|Σ χ(n)| ≤ √q·log q), largeSieve (bilinear exponential sum bound), siegelWalfisz (ψ(x;q,a) = x/φ(q) + O(xe^{-c√log x}) for small q), vaughanIdentity (von Mangoldt decomposition into bilinear sums), zeroDensityEstimate (N(σ,T,χ) ≪ (qT)^{A(1-σ)}). These are proved theorems missing from Mathlib, not mathematical assumptions. In addition, the credited theorem total_new_code (sum of estimated line counts = 5500) is discharged by `native_decide`, which depends on the `Lean.ofReduceBool` axiom (Lean compiler kernel reduction). Hence axiomCount = 7 (6 stated theorem-axioms + Lean.ofReduceBool); leanFile.axiomCount remains 6 since native_decide adds no literal `axiom` declaration.",
     "originalContributions": [
       "dirichletGaussSum: definition of τ(χ) = Σ χ(t)·e^{2πit/q}",
       "principalGaussSum: Ramanujan sum c_q(1) for the principal character",
