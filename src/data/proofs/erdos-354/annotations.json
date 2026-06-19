@@ -16,7 +16,11 @@
       "representation",
       "completeness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "floor function ⌊2ᵏα⌋",
+      "additive completeness of integer sequences",
+      "irrationality of α/β"
+    ]
   },
   {
     "id": "ann-e354-floorseq",
@@ -34,7 +38,11 @@
       "Int.floor",
       "exponential-growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Int.floor and toNat coercion",
+      "exponential growth of 2ᵏα",
+      "indexed sequences over ℕ"
+    ]
   },
   {
     "id": "ann-e354-representable",
@@ -52,7 +60,11 @@
       "Finset.sum",
       "representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.sum over subsets",
+      "representing integers as sums of sequence terms",
+      "eventual coverage for n ≥ N"
+    ]
   },
   {
     "id": "ann-e354-dyadic",
@@ -70,7 +82,11 @@
       "binary-representation",
       "periodicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "dyadic rationals m/2ⁿ",
+      "terminating binary expansions",
+      "Irrational predicate on α/β"
+    ]
   },
   {
     "id": "ann-e354-hegyvari-positive",
@@ -89,7 +105,11 @@
       "periodicity",
       "coverage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "periodicity of dyadic floor sequences mod 2ᵏ",
+      "irrational ratio ensuring variety",
+      "complementary roles of dyadic and non-dyadic reals"
+    ]
   },
   {
     "id": "ann-e354-hegyvari-negative",
@@ -108,7 +128,11 @@
       "alignment",
       "residue-classes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "alignment β = 2ᵏα",
+      "residue classes missed by aligned sequences",
+      "obstruction to completeness via gaps"
+    ]
   },
   {
     "id": "ann-e354-vandoorn",
@@ -126,7 +150,11 @@
       "separation",
       "interleaving"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "separation condition α < 2 < β",
+      "interleaving of two floor sequences",
+      "upper bound β < 3 limiting gap size"
+    ]
   },
   {
     "id": "ann-e354-recent",
@@ -145,7 +173,11 @@
       "fang-he-2025",
       "extension"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extension of non-completeness to α ∈ (1,2)",
+      "the alignment β = 2ᵏα phenomenon",
+      "threshold k ≥ K in Jiang–Ma and Fang–He"
+    ]
   },
   {
     "id": "ann-e354-conjecture",
@@ -163,7 +195,11 @@
       "open-problem",
       "characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "disjunction of universal and existential statements",
+      "HasIrrationalRatio hypothesis",
+      "known existence of counterexamples"
+    ]
   },
   {
     "id": "ann-e354-counterexample",
@@ -181,7 +217,11 @@
       "counterexample",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential counterexample construction",
+      "perturbing β near 2ᵏα while keeping α/β irrational",
+      "Hegyvári non-completeness for aligned pairs"
+    ]
   },
   {
     "id": "ann-e354-refined",
@@ -199,6 +239,10 @@
       "refined-conjecture",
       "power-exclusion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "excluding β = 2ᵏα for all integers k",
+      "Hegyvári's refined completeness conjecture",
+      "open characterization of completeness"
+    ]
   }
 ]
