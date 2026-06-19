@@ -1,0 +1,99 @@
+{
+  "slug": "sylvester-gallai-theorem-oq-01",
+  "title": "sylvester-gallai-theorem-oq-01: every finite non-collinear point set has an ordinary line",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a finite S : Finset (EuclideanSpace ℝ (Fin 2)) with ¬ Collinear ℝ (↑S), there exist a b ∈ S, a ≠ b, such that the connecting line line[ℝ, a, b] is ordinary: ∀ c ∈ S, Collinear ℝ {a, b, c} → c = a ∨ c = b.",
+    "plain": "Sylvester–Gallai theorem: given finitely many points in the plane that do not all lie on one line, there is always a line that passes through exactly two of the points (an 'ordinary line'). Equivalently: it is impossible to arrange finitely many points, not all collinear, so that every line through two of them passes through a third.",
+    "whyMatters": [
+      "Foundational result of combinatorial / incidence geometry; posed by Sylvester (1893), first proved by Melchior (1940) and independently Gallai; Kelly's metric proof (1948) is the canonical elementary argument.",
+      "Gateway to the de Bruijn–Erdős theorem, the Motzkin–Hansen bounds, the Green–Tao 'ordinary lines' theorem, and the orchard-planting problem.",
+      "Not present in Mathlib — a genuine formalization gap. Confirmed by source search: no `SylvesterGallai`, `ordinaryLine`, or de Bruijn–Erdős declarations exist."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Melchior 1940 (dual, via Euler's formula on the arrangement of lines).",
+      "Kelly 1948 (metric/minimal-distance proof — the route chosen here).",
+      "All required Mathlib primitives exist (collinearity, orthogonal projection, distance-to-affine-subspace, betweenness, finite-min)."
+    ],
+    "open": [
+      "No Lean formalization in Mathlib or this gallery."
+    ],
+    "goal": "Machine-checked Lean 4 proof of the existence of an ordinary line for any finite non-collinear point set in the Euclidean plane, with 0 sorries and 0 nonstandard axioms."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-18 (researcher-8, Session 1)",
+    "iteration": 1,
+    "focus": "Confirm Mathlib gap, fix the proof architecture (Kelly), map each step to concrete Mathlib API, size the build.",
+    "activeApproach": "Kelly's minimal-distance proof over EuclideanSpace ℝ (Fin 2).",
+    "blockers": [
+      "Build host saturated (≥6 concurrent lean-build containers on a 7.65GiB Docker VM → OOM risk). No Lean build this session; ORIENT is build-free."
+    ],
+    "nextAction": "(ACT, build host) Write the statement + Lemma B/C scaffolding and build the foot-of-perpendicular geometric kernel (Lemma D) using the cross-product distance formula in Fin 2.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ORIENT complete: Mathlib gap confirmed; Kelly proof decomposed into 4 lemmas with exact Mathlib API mapping; geometric kernel (foot-of-perpendicular distance inequality) identified as the hard part. Estimated 500-900 line BUILD, multi-session. No Lean code yet.",
+    "builtItems": [],
+    "insights": [
+      "Sylvester–Gallai is NOT in Mathlib (no SylvesterGallai / ordinaryLine / de Bruijn–Erdős declarations) — confirmed by exhaustive source grep. This is a real formalization contribution.",
+      "Kelly's metric proof is the right route for Lean: it avoids the projective-duality + Euler-characteristic machinery of Melchior's proof, needing only orthogonal projection, distance, and betweenness — all present in Mathlib.",
+      "The hard kernel is a single geometric inequality (Lemma D): if F is the foot of the perpendicular from P₀ to the minimal line ℓ₀, and two of the ≥3 collinear points B,C lie on the same closed ray from F with FB < FC, then dist(B, line[P₀,C]) < dist(P₀, ℓ₀). Everything else is bookkeeping.",
+      "In EuclideanSpace ℝ (Fin 2) the distance from a point x to line[a,b] has the closed form |det[b-a, x-a]| / ‖b-a‖ (signed-area / cross-product). This is likely far easier to manipulate for Lemma D than orthogonalProjection coordinates, since the inequality reduces to a ratio of areas / nested-similar-triangle leg ratio CB/CP₀ < 1.",
+      "Pigeonhole step: parametrize ℓ₀ by an affine coordinate r about the foot F (collinear_iff_of_mem gives each point = r•v +ᵥ F); the SIGN of r is the side of F. ≥3 points ⟹ two share a sign ⟹ pick nearer (B) and farther (C); distinct same-side points have distinct |r|, so FB<FC strictly and B≠C.",
+      "Non-degeneracy facts needed: P₀ ∉ ℓ₀ and B,C ∈ ℓ₀ ⟹ line[P₀,C] meets ℓ₀ only at C ⟹ B ∉ line[P₀,C] (since B≠C); also B≠P₀, C≠P₀. So (B, line[P₀,C]) is a legitimate element of the minimization domain, contradicting minimality."
+    ],
+    "mathlibGaps": [
+      "No Sylvester–Gallai / ordinary-line theorem (this is the contribution).",
+      "No prepackaged 'distance from point to line = |cross product| / norm' lemma in Fin 2 — must derive from orthogonalProjection or Matrix.det / area form (~30-60 lines).",
+      "No prepackaged 'among ≥3 collinear points two lie on the same side of a given point' pigeonhole — must build from collinear_iff_of_mem + sign trichotomy (~40-80 lines)."
+    ],
+    "nextSteps": [
+      "ACT: State the theorem over EuclideanSpace ℝ (Fin 2) with the ordinary-line conclusion; build the file unregistered + standalone (fleet-safe).",
+      "ACT: Lemma B (minimization domain nonempty from ¬Collinear) and Lemma C (Finset.exists_min_image over the finite triple set with positive distance) — these are routine, do first.",
+      "ACT: Derive the cross-product distance formula dist x line[a,b] = |det[b-a,x-a]|/‖b-a‖ in Fin 2; this is the lever for Lemma D.",
+      "ACT: Lemma D pigeonhole (same-side-of-foot) via affine coordinate + sign trichotomy.",
+      "ACT: Lemma D inequality CB/CP₀ < 1 ⟹ dist(B,line[P₀,C]) < dist(P₀,ℓ₀); assemble the contradiction.",
+      "Consider submitting the cross-product distance formula and the pigeonhole lemma to Aristotle as independent HARD sorries once the statements are fixed and the file parses."
+    ],
+    "markdown": "# Knowledge Base: sylvester-gallai-theorem-oq-01\n\n**Goal.** Formalize the Sylvester–Gallai theorem in Lean 4 / Mathlib: *every finite set of points in the Euclidean plane, not all collinear, determines an ordinary line* (a line through exactly two of the points).\n\n---\n\n## Session 1 (researcher-8, 2026-06-18) — OBSERVE → ORIENT (build-free)\n\nBuild host saturated (≥6 lean-build containers on a 7.65 GiB Docker VM → OOM). This session is a **build-free ORIENT**: confirm the gap, fix the architecture, map to Mathlib, size the work. No Lean code committed.\n\n### Mathlib gap — confirmed\n\nExhaustive source grep of `proofs/.lake/packages/mathlib/Mathlib/`: **no** `SylvesterGallai`, `ordinaryLine`, `OrdinaryLine`, or de Bruijn–Erdős declarations. The theorem is a genuine contribution. (The only `Erdős–Szekeres` hit is the monotone-subsequence theorem in `Order.OrderIsoNat`, unrelated.)\n\n### Why Kelly, not Melchior\n\nTwo classical proofs:\n- **Melchior (1940), dual:** apply Euler's formula `V − E + F = 2` to the arrangement of the dual lines; a counting argument forces an ordinary point. Needs planar-arrangement / Euler-characteristic infrastructure Mathlib lacks.\n- **Kelly (1948), metric:** minimize point-to-line distance; the minimizing line is ordinary. Needs only orthogonal projection, distance, betweenness, and a finite minimum — **all in Mathlib**. This is the chosen route.\n\n### Statement (target)\n\n```lean\ntheorem sylvester_gallai\n    (S : Finset (EuclideanSpace ℝ (Fin 2)))\n    (hS : ¬ Collinear ℝ (↑S : Set (EuclideanSpace ℝ (Fin 2)))) :\n    ∃ a ∈ S, ∃ b ∈ S, a ≠ b ∧\n      ∀ c ∈ S, Collinear ℝ ({a, b, c} : Set _) → c = a ∨ c = b\n```\nThe conclusion says the connecting line `line[ℝ, a, b]` is **ordinary**: any third point of `S` collinear with `a,b` is already `a` or `b`. (Working in `Fin 2` keeps the cross-product distance formula 1-dimensional; a general inner-product-space version can come later.)\n\n### Kelly's proof, decomposed into Lean lemmas\n\nLet `dline x a b := dist x (line[ℝ,a,b])` (distance from `x` to the line through `a,b`).\n\n**Lemma B — minimization domain nonempty.** From `¬ Collinear` there are distinct `a,b ∈ S`; if every `c ∈ S` lay on `line[a,b]` then `S` would be collinear, so some `P ∈ S` has `P ∉ line[a,b]`, giving a triple with `dline P a b > 0`.\n\n**Lemma C — minimizer exists.** The set of triples `T = {(P,a,b) ∈ S³ : a≠b, P ∉ line[a,b]}` is finite (`Finset` product) and (by B) nonempty, so `Finset.exists_min_image` yields a minimizer `(P₀,a₀,b₀)` with `δ := dline P₀ a₀ b₀ > 0` minimal. Let `ℓ₀ := line[ℝ,a₀,b₀]`.\n\n**Lemma D — the minimizing line is ordinary (the hard kernel).** Suppose `ℓ₀` contains ≥3 points of `S`. Let `F := orthogonalProjection (affineSpan ℝ {a₀,b₀}) P₀` (foot of perpendicular); `dist P₀ F = δ`.\n  - *Pigeonhole (same side of foot).* Parametrize `ℓ₀` about `F`: by `collinear_iff_of_mem` each on-line point `= r • v +ᵥ F` for some `r : ℝ`. The **sign** of `r` is the side of `F`. Among ≥3 points, two share a sign (pigeonhole on `{<0, ≥0}` etc.); distinct same-side points have distinct `|r|`. Take `B` (smaller `|r|`, nearer `F`) and `C` (larger). Then `FB < FC`, `B ≠ C`.\n  - *Non-degeneracy.* `P₀ ∉ ℓ₀`, `B,C ∈ ℓ₀` ⟹ `line[P₀,C] ∩ ℓ₀ = {C}` ⟹ `B ∉ line[P₀,C]` (else `B=C`). Also `B,C ≠ P₀`. Hence `(B,P₀,C) ∈ T`.\n  - *Distance strictly decreases.* In the right triangle `P₀ F C` (right angle at `F`), drop perpendicular `B → line[P₀,C]`, foot `G`. Triangles `C G B ∼ C F P₀` (right angles, shared angle at `C`), so\n    `dist B (line[P₀,C]) = BG = P₀F · (CB / CP₀) = δ · (CB / CP₀)`.\n    Since `CB ≤ CF < CP₀` (leg `<` hypotenuse, because `FP₀ = δ > 0`), the ratio `CB/CP₀ < 1`, so `dist B (line[P₀,C]) < δ`. (Includes `B = F`: then it is the altitude-to-hypotenuse length `P₀F·FC/P₀C < δ`.)\n  - *Contradiction.* `(B,P₀,C) ∈ T` with `dline B P₀ C < δ` contradicts minimality of `δ`. So `ℓ₀` has exactly 2 points of `S` ⟹ `a₀,b₀` is the ordinary pair. ∎\n\n### Mathlib API map (from source reconnaissance)\n\n| Need | Declaration | Module |\n|------|-------------|--------|\n| Collinearity | `Collinear ℝ s`, `collinear_iff_of_mem`, `collinear_pair`, `affineIndependent_iff_not_collinear_set` | `LinearAlgebra/AffineSpace/FiniteDimensional` |\n| Line through 2 pts | `line[ℝ, a, b]` = `affineSpan ℝ {a,b}`, `left_mem_affineSpan_pair`, `right_mem_affineSpan_pair` | `LinearAlgebra/AffineSpace/AffineSubspace/Defs` |\n| Foot of perpendicular | `EuclideanGeometry.orthogonalProjection`, `orthogonalProjection_mem`, `vsub_orthogonalProjection_mem_direction_orthogonal` | `Geometry/Euclidean/Projection` |\n| Distance to line | `dist_orthogonalProjection_eq_infDist`, `dist_sq_eq_dist_orthogonalProjection_sq_add_dist_orthogonalProjection_sq` (Pythagoras) | `Geometry/Euclidean/Projection` |\n| Finite minimum | `Finset.exists_min_image` | `Data/Finset/Max` |\n| Betweenness | `Wbtw`, `Sbtw`, `affineSegment_subset_affineSpan` | `Analysis/Convex/Between` |\n\n### Infrastructure assessment\n\n- **Cross-product distance formula** `dist x line[a,b] = |det[b-a, x-a]| / ‖b-a‖` in `Fin 2`: not packaged; derive from `orthogonalProjection` or `Matrix.det`/area. ~30-60 lines. This is the lever that turns Lemma D's inequality into an algebraic `CB/CP₀ < 1`.\n- **Same-side-of-foot pigeonhole**: not packaged; build from `collinear_iff_of_mem` + sign trichotomy. ~40-80 lines.\n- **Lemma D assembly**: the similar-triangles / leg-ratio inequality. ~100-200 lines (the crux).\n- **Lemmas B, C + glue**: ~100-150 lines (routine).\n- **Total estimate: 500–900 lines, multi-session.** Decision: **BUILD** (no elementary shortcut for the full theorem; `tractability 4` is accurate — doable but the geometric kernel is delicate). Lemmas B, C and the distance formula are good independent **Aristotle** candidates once statements are fixed.\n\n### Dead ends / cautions\n\n- Do **not** pursue Melchior's dual proof — the planar-arrangement Euler-characteristic machinery is a much larger Mathlib gap than Kelly's metric primitives.\n- Avoid stating in a general `InnerProductSpace` first: the cross-product distance lever is cleanest in `Fin 2`; generalize only after the `Fin 2` proof closes.\n- Build host is OOM-prone; keep the file **standalone + unregistered** while iterating, build single-target via the Docker wrapper only when `lean-build` container count is 0.\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorial-geometry",
+    "incidence-geometry",
+    "euclidean-geometry",
+    "research"
+  ],
+  "relatedProofs": [
+    "erdos-107-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "J. J. Sylvester, Mathematical Question 11851, Educational Times 59 (1893) 98.",
+      "E. Melchior, Über Vielseite der projektiven Ebene, Deutsche Math. 5 (1940) 461–475.",
+      "L. M. Kelly, in H. S. M. Coxeter, A problem of collinear points, Amer. Math. Monthly 55 (1948) 26–28.",
+      "P. Borwein, W. O. J. Moser, A survey of Sylvester's problem and its generalizations, Aequationes Math. 40 (1990) 111–135."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Sylvester%E2%80%93Gallai_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional (Collinear)",
+      "Mathlib.Geometry.Euclidean.Projection (orthogonalProjection)",
+      "Mathlib.Analysis.Convex.Between (Wbtw/Sbtw)"
+    ]
+  },
+  "started": "2026-06-18T23:10:00.000Z",
+  "lastUpdate": "2026-06-18T23:10:00.000Z",
+  "leanFiles": []
+}
