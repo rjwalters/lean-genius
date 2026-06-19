@@ -16,7 +16,11 @@
       "Divisor function",
       "Counting functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisor function",
+      "highly composite numbers",
+      "asymptotic growth (≫/≪ notation)"
+    ]
   },
   {
     "id": "ann-e381-tau",
@@ -34,7 +38,11 @@
       "Multiplicative functions"
     ],
     "mathContext": "Formal statement of divisor function τ(n) as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of an integer",
+      "finite set cardinality",
+      "Lean 4 Finset.filter"
+    ]
   },
   {
     "id": "ann-e381-highly-composite",
@@ -52,7 +60,11 @@
       "Record-setting numbers",
       "Divisor extrema"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisor function τ(n)",
+      "record-setting (champion) numbers",
+      "Lean 4 propositions and quantifiers"
+    ]
   },
   {
     "id": "ann-e381-Q",
@@ -70,7 +82,11 @@
       "Asymptotic growth"
     ],
     "mathContext": "Formal statement of counting function q(x) as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "highly composite numbers",
+      "counting functions",
+      "Nat.card / set cardinality"
+    ]
   },
   {
     "id": "ann-e381-one-hc",
@@ -87,7 +103,10 @@
       "Base cases"
     ],
     "mathContext": "Formal statement of 1 is highly composite as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "highly composite numbers",
+      "vacuous quantification (base case)"
+    ]
   },
   {
     "id": "ann-e381-twelve-hc",
@@ -105,7 +124,11 @@
       "Divisor records"
     ],
     "mathContext": "Formal statement of 12 is highly composite as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "divisor function τ(n)",
+      "highly composite numbers",
+      "divisor enumeration"
+    ]
   },
   {
     "id": "ann-e381-tau-examples",
@@ -123,7 +146,11 @@
       "native_decide"
     ],
     "mathContext": "Formal statement of divisor counts verified as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "divisor function τ(n)",
+      "native_decide kernel evaluation",
+      "computational verification in Lean"
+    ]
   },
   {
     "id": "ann-e381-erdos-lower",
@@ -141,7 +168,11 @@
       "Lower bounds",
       "Erdős 1944"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting function Q(x)",
+      "asymptotic lower bounds (≫)",
+      "logarithmic growth rates"
+    ]
   },
   {
     "id": "ann-e381-question",
@@ -159,7 +190,11 @@
       "Growth rates"
     ],
     "mathContext": "Formal statement of the erdős question as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic notation (≫_k)",
+      "Filter.atTop / eventually",
+      "polynomial vs superpolynomial growth in log x"
+    ]
   },
   {
     "id": "ann-e381-nicolas",
@@ -178,7 +213,11 @@
       "Nicolas 1971",
       "Disproof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting function Q(x)",
+      "asymptotic upper bounds (≪)",
+      "Ramanujan's highly composite numbers"
+    ]
   },
   {
     "id": "ann-e381-false",
@@ -196,7 +235,11 @@
       "Contradiction"
     ],
     "mathContext": "Formal statement of the conjecture is false as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős's question (erdos_question)",
+      "Nicolas's upper bound",
+      "proof by contradiction"
+    ]
   },
   {
     "id": "ann-e381-bounds",
@@ -214,7 +257,11 @@
       "Asymptotic behavior"
     ],
     "mathContext": "Formal statement of combined bounds as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős's lower bound",
+      "Nicolas's upper bound",
+      "asymptotic two-sided bounds"
+    ]
   },
   {
     "id": "ann-e381-exponent-decreasing",
@@ -232,7 +279,11 @@
       "Prime factorization",
       "Ramanujan structure theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "highly composite numbers",
+      "Ramanujan structure theorem (1915)"
+    ]
   },
   {
     "id": "ann-e381-ramanujan",
@@ -250,7 +301,11 @@
       "Prime factorization"
     ],
     "mathContext": "Formal statement of ramanujan's characterization as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "largest prime factor",
+      "Ramanujan's characterization of HC numbers"
+    ]
   },
   {
     "id": "ann-e381-superior",
@@ -268,7 +323,11 @@
       "Superior highly composite",
       "Optimization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "highly composite numbers",
+      "divisor function τ(n)",
+      "optimization of τ(n)/n^ε"
+    ]
   },
   {
     "id": "ann-e381-comparison",
@@ -286,7 +345,11 @@
       "Highly abundant"
     ],
     "mathContext": "Formal statement of comparison with other sequences as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "prime counting function π(x)",
+      "asymptotic density comparison",
+      "highly abundant numbers (σ extrema)"
+    ]
   },
   {
     "id": "ann-e381-main",
@@ -304,6 +367,10 @@
       "Disproved"
     ],
     "mathContext": "Formal statement of main result: erdos_381 as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős's question (erdos_question)",
+      "disproof / negation of a conjecture",
+      "Nicolas's upper bound"
+    ]
   }
 ]
