@@ -11,7 +11,11 @@
     "content": "The claim that Principia Mathematica took 362 pages to prove $1+1=2$ has become legendary—and somewhat misleading. Those pages weren't proving a single equation; they were constructing the entire logical framework needed to give rigorous meaning to the symbols '1', '+', '=', and '2'.\n\nIn modern type theory, this proof is definitionally true: the computation $1+1$ *reduces to* $2$ by the very definitions of the symbols involved. The `rfl` tactic (reflexivity) captures this.",
     "mathContext": "Principia Mathematica (1910) defines $1$ as the class of all unit classes: $1 = \\hat{\\alpha}(\\exists x.\\alpha = \\iota'x)$. Modern type theory takes $1 \\stackrel{\\text{def}}{=} S(0)$—a structural definition that makes $1+1=2$ reduce to $S(S(0)) = S(S(0))$ by computation, proved by `rfl`.",
     "significance": "key",
-    "prerequisites": [],
+    "prerequisites": [
+      "Natural Number Arithmetic",
+      "Mathematical Foundations",
+      "Symbolic Logic"
+    ],
     "relatedConcepts": [
       "Principia Mathematica",
       "definitional equality",
@@ -30,7 +34,11 @@
     "content": "The natural numbers are defined as an **inductive type** with exactly two constructors:\n\n1. `zero` — the base case, representing 0\n2. `succ` — the successor function, taking any natural to its successor\n\nThis is Peano's original insight: we don't need to say *what* numbers are, only *how they behave*. Zero exists, and every number has a successor. From these two building blocks, we get all of $\\mathbb{N}$.",
     "mathContext": "$\\mathbb{N} = \\{0, S(0), S(S(0)), S(S(S(0))), \\ldots\\}$. In Lean 4: `inductive ℕ where | zero : ℕ | succ : ℕ → ℕ`. The two constructors are the *only* way to build a natural number; pattern matching on them is exhaustive and well-founded by structural recursion.",
     "significance": "key",
-    "prerequisites": [],
+    "prerequisites": [
+      "Natural Numbers",
+      "Successor Function",
+      "Function Constructors"
+    ],
     "relatedConcepts": [
       "inductive types",
       "Peano axioms",
