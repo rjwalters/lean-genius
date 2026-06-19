@@ -17,7 +17,11 @@
       "Edge partition",
       "Disproved conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube graphs",
+      "Cycles in graphs"
+    ]
   },
   {
     "id": "ann-666-hypercube-def",
@@ -37,7 +41,11 @@
       "XOR",
       "Regular graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binary representation",
+      "Hamming distance",
+      "Simple graphs"
+    ]
   },
   {
     "id": "ann-666-vertices-edges",
@@ -56,7 +64,11 @@
       "Edge count",
       "Degree sum formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hypercube graphs",
+      "Counting vertices and edges",
+      "Powers of two"
+    ]
   },
   {
     "id": "ann-666-regular",
@@ -75,7 +87,11 @@
       "Degree",
       "Vertex-transitive"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hypercube graphs",
+      "Vertex degree",
+      "Regular graphs"
+    ]
   },
   {
     "id": "ann-666-has-cycle",
@@ -94,7 +110,11 @@
       "Injective sequence",
       "Cyclic adjacency"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Simple graphs",
+      "Cycles in graphs",
+      "Adjacency"
+    ]
   },
   {
     "id": "ann-666-specific-cycles",
@@ -114,7 +134,11 @@
       "Even cycles",
       "Bipartite"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cycles in graphs",
+      "Even cycles",
+      "Bipartite graphs"
+    ]
   },
   {
     "id": "ann-666-dense-subgraph",
@@ -133,7 +157,11 @@
       "Edge count",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Subgraphs",
+      "Edge counting",
+      "Extremal graph theory"
+    ]
   },
   {
     "id": "ann-666-epsilon-dense",
@@ -152,7 +180,11 @@
       "Fraction of edges",
       "Threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dense subgraphs",
+      "Edge density",
+      "Hypercube edge count"
+    ]
   },
   {
     "id": "ann-666-conjecture",
@@ -171,7 +203,11 @@
       "Threshold problem",
       "Extremal question"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ε-dense subgraphs",
+      "6-cycles (C₆)",
+      "Hypercube graphs"
+    ]
   },
   {
     "id": "ann-666-conjecture-false",
@@ -190,7 +226,10 @@
       "Counterexample",
       "Chung 1992"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős conjecture #666",
+      "Counterexamples"
+    ]
   },
   {
     "id": "ann-666-chung",
@@ -210,7 +249,11 @@
       "Chung 1992",
       "4 colors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hypercube graphs",
+      "Edge partitions",
+      "C₆-free subgraphs"
+    ]
   },
   {
     "id": "ann-666-chung-counterexample",
@@ -228,7 +271,11 @@
       "Counterexample",
       "1/4 fraction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chung's partition",
+      "ε-dense subgraphs",
+      "Counterexamples"
+    ]
   },
   {
     "id": "ann-666-bdt",
@@ -247,7 +294,11 @@
       "BDT 1993",
       "No C₄ or C₆"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Edge coloring",
+      "Hypercube graphs",
+      "C₄ and C₆ cycles"
+    ]
   },
   {
     "id": "ann-666-conder",
@@ -266,7 +317,11 @@
       "Improved bound",
       "Conder 1993"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Edge coloring",
+      "Brouwer-Dejter-Thomassen theorem",
+      "C₄ and C₆ cycles"
+    ]
   },
   {
     "id": "ann-666-conder-bound",
@@ -285,7 +340,11 @@
       "1/3 fraction",
       "Open question"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Conder's 3-coloring",
+      "ε-dense subgraphs",
+      "Counterexamples"
+    ]
   },
   {
     "id": "ann-666-generalized",
@@ -304,7 +363,11 @@
       "C_{2k}",
       "Threshold exponent"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ε-dense subgraphs",
+      "Even cycles C₂ₖ",
+      "Threshold exponents"
+    ]
   },
   {
     "id": "ann-666-generalized-open",
@@ -322,7 +385,10 @@
       "Open problem",
       "Turán theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Generalized conjecture",
+      "Turán-type problems"
+    ]
   },
   {
     "id": "ann-666-turan-c4",
@@ -341,6 +407,10 @@
       "C₄ threshold",
       "Extremal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turán numbers",
+      "C₄-free subgraphs",
+      "Extremal graph theory"
+    ]
   }
 ]
