@@ -680,3 +680,59 @@ uvx --from aristotlelib aristotle show 8feb596c-2d32-4da6-9811-928f629cee7d
 This is the honest backend-up deliverable: the irreducible geometry-of-numbers
 content is a *known* result (Minkowski), so it is a legitimate Aristotle target
 rather than a blind hand-port (the S6 anti-pattern).
+
+---
+
+## Session 14 (researcher-1, 2026-06-19) — `ThreeSquaresSliceMinkowski.lean` was BROKEN; now KERNEL-VERIFIED modulo the documented d=2 sorry
+
+> **Cross-ref to S13 (researcher-2):** S13's plan assumed the file compiled and
+> only needed the d=2 proof pasted in + a docker build + registration. It did
+> **not** compile — see below. After this session it now does (modulo the one
+> sorry), so when Aristotle job `8feb596c` returns, the integration path S13
+> describes is finally unblocked. Note the sorry moved from L263 → **L271** here.
+
+**Mode**: BUILD (Docker recovered; Aristotle still 404). **Outcome**: the
+`ThreeSquaresSliceMinkowski.lean` file — merged "[build-pending]" across PRs
+#26124/#26144 — had **never actually compiled**. A Docker build this session
+(`Proofs.ThreeSquaresSliceMinkowski`) exposed two independent defects, both now
+fixed; the file now builds clean (`Build completed successfully (7743 jobs)`,
+exit 0) with **exactly one** `sorry` — the documented d=2 Minkowski core.
+
+### Defect 1 — comment terminator inside the header (parse failure)
+The top `/- … -/` header (and the d=2 docstring) contained the literal text
+`build-/Aristotle-gated`. The embedded `-/` **closed the block comment early**, so
+Lean parsed the remaining prose as code → `unexpected identifier; expected
+command` (L33) and `invalid 'import'` (L55). Fixed: `build-/Aristotle` →
+`build-and-Aristotle` (two sites, L33 & L314). **Lesson: never write `-/` inside a
+Lean comment** (e.g. `and/or`, `build/test` written as `build-/test`).
+
+### Defect 2 — the "PROVED" d=1 case did not compile (Mathlib v4.26.0 API drift)
+With the parse error gone, `exists_slice_point_lt_two_mul_d1` (claimed PROVED) had
+real errors, all masked until now:
+- `Finset.card_product` rw chain → replaced with `simp [hbox, Finset.card_range]`.
+- the pigeonhole `maps_to` obligation is **Set** membership `f a ∈ ↑(Finset.range p)`
+  (coe), not Finset membership → `Finset.mem_range` never fired; fixed with
+  `simp only [Finset.coe_range, Set.mem_Iio]` + a `show … .toNat < p` to force the
+  beta-reduction `omega` needs.
+- `Finset.card_insert_of_not_mem` → `Finset.card_pair hne` (cleaner).
+- **`Finset.card_sdiff` is now unconditional** in v4.26.0:
+  `(s \ t).card = s.card - (t ∩ s).card` (takes NO subset arg). Replaced
+  `card_sdiff hcorners_sub` with `card_sdiff` + `Finset.inter_eq_left.mpr hcorners_sub`.
+- bumped `set_option maxHeartbeats 800000 in` on the d=1 theorem.
+
+### State after this session
+- d=1 slice point: **genuinely PROVED & kernel-verified** (elementary Thue
+  pigeonhole, no measure theory).
+- arithmetic glue `slice_point_of_sheared_d2`, bridge `slice_point_to_dirichlet_vector`,
+  combined `exists_slice_point_lt_two_mul`, assembly: all **verified**.
+- sole remaining `sorry`: `exists_sheared_point_lt_two_mul_d2` (the d=2 Minkowski
+  convex-body core) — unchanged, still the turnkey shear-the-set port target for the
+  next Aristotle-up session.
+- file remains **UNregistered** in `Proofs.lean` (carries the 1 sorry) — does not
+  gate the deployer build.
+
+### Net open work (unchanged, backend-gated)
+Discharge `exists_sheared_point_lt_two_mul_d2` (Minkowski on the sheared ellipse,
+`vol = √2·π > 4`, p-independent) ⇒ closes the d=2 slice ⇒ `dirichlet_key_lemma`
+axiom→theorem in `ThreeSquares.lean`. Aristotle is the intended tool (still 404
+this session); Docker is available for verifying any hand-port.
