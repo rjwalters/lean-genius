@@ -36,12 +36,17 @@ rather than redefining them.
 
 ## Status
 
-OPEN, axiomatized: 2 axioms.
+OPEN, axiomatized: 1 axiom declared in this file.
   1. `koenigsmann_2016_universal` — Π₂-definability of ℤ in ℚ (PROVED in
      Koenigsmann, Annals 2016; axiomatized here pending model-theoretic
      formalization).
-  2. `mazur_conjecture_implies_not_diophantine_over_Q` — Mazur ⟹ ¬Σ₁
-     (a topological argument; restated against this file's predicate).
+
+The Mazur direction (Mazur ⟹ ¬Σ₁) is NOT a new axiom here: it is stated
+*conditionally* as the theorem
+  `mazur_implies_not_sigma1_definable : MazurConjecture → ¬IntegersAreDiophantineOverQ`,
+which carries the `MazurConjecture` hypothesis explicitly and reuses the
+imported parent's conditional axiom `mazur_implies_not_diophantine`
+(`Hilbert10OQ01.lean`) rather than asserting a fresh one.
 
 The Σ₁ question itself is left as a `Prop`-valued statement, NOT axiomatized
 either way: we encode it as `IntegersDiophantineOverQ` (already in OQ-01) and
