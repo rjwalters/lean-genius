@@ -202,8 +202,30 @@ theorem lllThreshold_strict_maximum (d : ℕ) (hd : 0 < d) (x : ℚ) (hx : 0 ≤
   · exact h
   · -- equality implies x = 1/(d+1): blocked on the same general AM-GM
     exfalso
-    -- The AM-GM equality case: x*(1-x)^d = T(d) iff x = 1/(d+1)
-    -- This requires the same general machinery as lllThreshold_is_maximum.
+    -- The AM-GM equality case: x*(1-x)^d = T(d) iff x = 1/(d+1).
+    --
+    -- ORIENT (researcher-3, 2026-06-19): this is now a one-cycle ACT. Mathlib already
+    -- carries the *equality characterization* of weighted AM-GM — the strict siblings of
+    -- the exact tools `lllThreshold_is_maximum` already uses:
+    --   • `geom_mean_lt_arith_mean_weighted_iff_of_pos`  (MeanInequalities.lean:254)
+    --       ∏ z i ^ w i < ∑ w i * z i  ↔  ∃ j k ∈ s, z j ≠ z k
+    --   • `geom_mean_eq_arith_mean_weighted_iff'`         (MeanInequalities.lean:200)
+    --   • `Real.rpow_lt_rpow`  (strict monotone of `·^z`)
+    --
+    -- PREFERRED: prove `<` directly (drop this `rcases`), mirroring
+    -- `lllThreshold_is_maximum` line-for-line with `≤`→`<`. Reuse its ℝ-cast preamble,
+    -- `h_eq` rpow identity, and final calc verbatim. The two changes:
+    --   (1) over s := (Finset.univ : Finset (Fin 2)),
+    --       w := ![1/(dr+1), dr/(dr+1)],  z := ![xr, (1-xr)/dr],
+    --       use `geom_mean_lt_arith_mean_weighted_iff_of_pos … |>.mpr ⟨0,_,1,_,hz01⟩`,
+    --       where `hz01 : xr ≠ (1-xr)/dr` comes from `hne` since
+    --       xr = (1-xr)/dr ↔ (dr+1)*xr = 1 ↔ xr = 1/(dr+1);
+    --   (2) raise to the (dr+1)-th power with `Real.rpow_lt_rpow` (strict), then
+    --       multiply by `dr^d > 0` with `mul_lt_mul_of_pos_right`.
+    -- No new imports / no new axioms; closes the file to 0 sorry / 0 axiom.
+    -- Full proof skeleton + Mathlib API map:
+    --   research/problems/lovasz-local-lemma-oq-02/sessions/
+    --     2026-06-19-s2-orient-strict-maximum-amgm.md
     sorry
 
 /-- The threshold T(d) satisfies a fixed-point equation:
