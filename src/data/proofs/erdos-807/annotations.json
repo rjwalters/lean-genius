@@ -16,7 +16,11 @@
       "Random graphs",
       "Independence number"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Theory Basics",
+      "Random Graphs G(n,1/2)",
+      "Erdos Problems"
+    ]
   },
   {
     "id": "ann-e807-independence-number",
@@ -35,7 +39,11 @@
       "Clique",
       "Graph coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Independent Set",
+      "Vertex Subsets",
+      "Finset Supremum"
+    ]
   },
   {
     "id": "ann-e807-complete-bipartite",
@@ -54,7 +62,11 @@
       "Graph decomposition"
     ],
     "mathContext": "See annotation content for formal details of complete bipartite subgraph",
-    "prerequisites": []
+    "prerequisites": [
+      "Bipartite Graphs",
+      "Disjoint Vertex Sets",
+      "Subgraph Adjacency"
+    ]
   },
   {
     "id": "ann-e807-bipartite-cover",
@@ -72,7 +84,11 @@
       "Graph decomposition"
     ],
     "mathContext": "See annotation content for formal details of edge-disjoint bipartite cover",
-    "prerequisites": []
+    "prerequisites": [
+      "Edge-Disjoint Subgraphs",
+      "Edge Covering",
+      "Complete Bipartite Subgraphs"
+    ]
   },
   {
     "id": "ann-e807-bipartition-number",
@@ -90,7 +106,11 @@
       "Graph decomposition",
       "Complete bipartite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Edge-Disjoint Decomposition",
+      "Infimum Over Sets",
+      "Complete Bipartite Subgraphs"
+    ]
   },
   {
     "id": "ann-e807-erw-conjecture",
@@ -108,7 +128,11 @@
       "Graham-Pollak theorem",
       "Random graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graham-Pollak Theorem",
+      "Bipartition Number",
+      "Almost Sure Events"
+    ]
   },
   {
     "id": "ann-e807-alon-2015",
@@ -126,7 +150,11 @@
       "graph theory",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Bipartition Number",
+      "Almost Sure Bounds"
+    ]
   },
   {
     "id": "ann-e807-erw-false",
@@ -144,7 +172,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Bipartition Number",
+      "Negation Of Conjecture",
+      "Strict Inequality"
+    ]
   },
   {
     "id": "ann-e807-abh-2017",
@@ -162,7 +194,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Multiplicative Gap",
+      "Probabilistic Method",
+      "Absolute Constants"
+    ]
   },
   {
     "id": "ann-e807-graham-pollak",
@@ -180,7 +216,11 @@
       "Complete graphs",
       "Linear algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete Graph K_n",
+      "Matrix Rank Argument",
+      "Linear Algebra Over GF(2)"
+    ]
   },
   {
     "id": "ann-e807-random-graph-alpha",
@@ -198,7 +238,11 @@
       "Probabilistic methods"
     ],
     "mathContext": "See annotation content for formal details of independence number of random graphs",
-    "prerequisites": []
+    "prerequisites": [
+      "First Moment Method",
+      "Second Moment Method",
+      "Independence Number"
+    ]
   },
   {
     "id": "ann-e807-main-theorem",
@@ -216,7 +260,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Alon-Bohman-Huang Bound",
+      "Multiplicative Gap",
+      "Almost Sure Events"
+    ]
   },
   {
     "id": "ann-e807-answer",
@@ -234,7 +282,11 @@
       "proof technique",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Bipartition Number",
+      "Independence Number",
+      "Almost Sure Events"
+    ]
   },
   {
     "id": "ann-e807-clique-cover",
@@ -252,6 +304,10 @@
       "Graph covering"
     ],
     "mathContext": "See annotation content for formal details of clique cover number",
-    "prerequisites": []
+    "prerequisites": [
+      "Clique",
+      "Edge Covering",
+      "Bipartition Number"
+    ]
   }
 ]
