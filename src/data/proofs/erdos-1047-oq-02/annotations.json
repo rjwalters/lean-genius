@@ -39,7 +39,11 @@
       "Soundness",
       "Definitional equality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Axioms And Soundness",
+      "Polynomial Lemniscates",
+      "Print Axioms Command"
+    ]
   },
   {
     "id": "ann-e1047-oq02-faithful",
@@ -79,7 +83,11 @@
       "Logical implication",
       "Axiom integrity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Definitional Equality",
+      "Logical Implication",
+      "Quantifier Strength"
+    ]
   },
   {
     "id": "ann-e1047-oq02-negation-theorem",
