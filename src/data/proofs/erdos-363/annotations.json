@@ -16,7 +16,11 @@
       "Perfect powers",
       "Diophantine equations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "intervals of consecutive integers",
+      "perfect squares from products",
+      "Erdős-Selfridge theorem"
+    ]
   },
   {
     "id": "ann-e363-interval",
@@ -34,7 +38,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive integers",
+      "product over an interval",
+      "Lean 4 structure definitions"
+    ]
   },
   {
     "id": "ann-e363-collection",
@@ -52,7 +60,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "pairwise disjoint sets",
+      "products of multiple intervals",
+      "structures carrying a disjointness proof"
+    ]
   },
   {
     "id": "ann-e363-square",
@@ -70,7 +82,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "perfect square of an integer",
+      "set comprehension over collections",
+      "interval size constraints"
+    ]
   },
   {
     "id": "ann-e363-conjecture",
@@ -88,7 +104,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finiteness of a set",
+      "disjoint interval collections",
+      "Erdős conjecture statement"
+    ]
   },
   {
     "id": "ann-e363-pomerance",
@@ -106,7 +126,11 @@
       "Powers of 2",
       "Mersenne numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powers of 2",
+      "Mersenne numbers and the factorization 2^n(2^(2n)-1)",
+      "size-3 interval counterexamples"
+    ]
   },
   {
     "id": "ann-e363-ulas",
@@ -124,7 +148,11 @@
       "Parametric solutions",
       "Diophantine equations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "parametric families of solutions",
+      "Diophantine equations",
+      "axiom declarations in Lean"
+    ]
   },
   {
     "id": "ann-e363-bauer-bennett",
@@ -141,7 +169,11 @@
     "relatedConcepts": [
       "Bauer-Bennett (2007)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinitely many size-4 collections",
+      "case analysis for n = 3 and n = 5",
+      "axiomatized theorems in Lean"
+    ]
   },
   {
     "id": "ann-e363-bennett-vl",
@@ -158,7 +190,11 @@
     "relatedConcepts": [
       "Bennett-Van Luijk (2012)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "size-5 disjoint intervals",
+      "infinitude of square-product collections",
+      "Ulas's conjecture context"
+    ]
   },
   {
     "id": "ann-e363-infinite-size4",
@@ -176,7 +212,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ulas's theorem for n = 4",
+      "projection forgetting a constraint",
+      "infinite sets of collections"
+    ]
   },
   {
     "id": "ann-e363-false",
@@ -194,7 +234,11 @@
       "proof technique",
       "proof by contradiction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proof by contradiction",
+      "infinite subset of a finite set",
+      "size-4 collections as a subset of squareCollections"
+    ]
   },
   {
     "id": "ann-e363-main",
@@ -212,7 +256,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "negation of the Erdős conjecture",
+      "main theorem statement in Lean"
+    ]
   },
   {
     "id": "ann-e363-ulas-conj",
@@ -230,7 +277,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "fixed interval size k ≥ 4",
+      "open conjecture statement",
+      "sufficiently large number of intervals"
+    ]
   },
   {
     "id": "ann-e363-selfridge",
@@ -248,7 +299,11 @@
       "Erdős-Selfridge (1975)",
       "Perfect powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "product of consecutive positive integers",
+      "perfect powers",
+      "prime factorization arguments"
+    ]
   },
   {
     "id": "ann-e363-summary",
@@ -266,6 +321,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "summary of disproof results",
+      "size-4 and size-5 interval coverage",
+      "open status of Ulas's conjecture"
+    ]
   }
 ]
