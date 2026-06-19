@@ -1,0 +1,195 @@
+{
+  "id": "sylvester-gallai-theorem-oq-01",
+  "title": "Sylvester–Gallai Theorem in Canonical Mathlib Form",
+  "slug": "sylvester-gallai-theorem-oq-01",
+  "description": "The Sylvester–Gallai theorem: every finite set of points in the Euclidean plane that is not all collinear determines an ordinary line — a line passing through exactly two of the points. This entry states the theorem in the canonical Mathlib formulation, over EuclideanSpace ℝ (Fin 2) with Mathlib's own Collinear ℝ predicate, and proves it as a corollary of the gallery's already-verified Kelly-proof (erdos-606-oq-03-oq-03 / SylvesterGallai.sylvester_gallai), which is stated over the concrete coordinate plane ℝ × ℝ with a custom cross-product collinearity predicate. The reduction transports along the coordinate map φ x = (x 0, x 1): four mechanical bridge lemmas (injectivity of φ, the ≥3-points cardinality bound, the predicate equivalence Collinear ℝ {a,b,c} ↔ cross-product collinearity for a ≠ b, and not-all-collinear transport) close the gap with 0 sorries and 0 axioms — replacing a re-proof of Kelly's delicate ~500-line geometric kernel with a small type/predicate bridge. Sylvester–Gallai is not present in Mathlib, so this is a genuine formalization contribution.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sylvester%E2%80%93Gallai_theorem",
+    "date": "Posed 1893 (Sylvester); proved 1940 (Melchior), 1944 (Gallai), 1948 (Kelly)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylvesterGallaiOQ01.lean",
+    "badge": "verified",
+    "tags": [
+      "combinatorial-geometry",
+      "incidence-geometry",
+      "euclidean-geometry",
+      "ordinary-lines",
+      "affine-transport",
+      "advanced"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 222,
+    "theoremCount": 6,
+    "definitionCount": 3,
+    "dateAdded": "2026-06-19",
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. The geometric content (Kelly's minimal-distance argument) is supplied by the verified gallery proof SylvesterGallai.sylvester_gallai in Proofs/Erdos606OQ03OQ03.lean (508 lines, 0 sorries, 0 axioms); this file closes the four bridge lemmas with no native_decide and no nonstandard axioms, so the canonical-form theorem inherits the same axiom-free status. Builds on Mathlib's Collinear ℝ, collinear_iff_of_mem, PiLp coordinate evaluation, and EuclideanSpace ℝ (Fin 2).",
+    "originalContributions": [
+      "States and proves the Sylvester–Gallai theorem in the canonical Mathlib formulation — `∃ a ∈ S, ∃ b ∈ S, a ≠ b ∧ IsOrdinary S a b` for `S : Finset (EuclideanSpace ℝ (Fin 2))` with `¬ Collinear ℝ ↑S`, using Mathlib's own `Collinear ℝ` predicate. Sylvester–Gallai (and ordinary lines / de Bruijn–Erdős) are absent from Mathlib, confirmed by exhaustive source grep, so this is a real formalization gap closed.",
+      "Reduces the canonical statement to the gallery's verified Kelly proof `SylvesterGallai.sylvester_gallai` (stated over `ℝ × ℝ` with a custom cross-product collinearity) by transporting along the forward coordinate map `φ x = (x 0, x 1)` — no inverse map and no `EuclideanSpace` element construction required, sidestepping `PiLp` reconstruction.",
+      "Proves `collinear_iff_sg` — for distinct `a b`, Mathlib's `Collinear ℝ {a,b,c}` is equivalent to the cross-product predicate `SylvesterGallai.Collinear (φ a) (φ b) (φ c)` — by unfolding `collinear_iff_of_mem` to a common-direction form and reading off the two `Fin 2` coordinates, with the `rb ≠ 0` non-degeneracy handled via `a ≠ b`.",
+      "Proves the three supporting bridge lemmas `phi_injective` (`PiLp.ext` + `Fin.forall_fin_two`), `three_le_card_of_not_collinear` (a non-collinear finite set has ≥ 3 points, via `collinear_empty`/`collinear_singleton`/`collinear_pair`), and `not_allCollinear_image` (the not-all-collinear hypothesis transports along `φ`), all with 0 sorries.",
+      "Demonstrates a reusable pattern: a theorem proved in the gallery over a concrete coordinate model can be lifted to the canonical Mathlib type by a purely mechanical predicate/coordinate bridge, preserving the verified, axiom-free status while presenting the result in the form an upstream Mathlib user expects."
+    ]
+  },
+  "overview": {
+    "historicalContext": "In 1893 J.J. Sylvester asked whether every finite set of points in the plane, not all on one line, must determine an ordinary line — a line containing exactly two of the points. The question lay open for decades; Eberhard Melchior gave a dual proof via Euler's formula in 1940, Tibor Gallai proved it around 1944, and L.M. Kelly's 1948 metric argument — minimize the distance from a point to a connecting line, and show the minimizing line is ordinary — became the canonical elementary proof. Sylvester–Gallai is the gateway to the de Bruijn–Erdős theorem, the Motzkin–Hansen bounds, the Green–Tao structure theorem for ordinary lines, and the orchard-planting problem. It is not formalized in Mathlib.",
+    "problemStatement": "For a finite S : Finset (EuclideanSpace ℝ (Fin 2)) with ¬ Collinear ℝ (↑S), exhibit a b ∈ S, a ≠ b, whose connecting line is ordinary: every c ∈ S with Collinear ℝ {a, b, c} equals a or b.",
+    "text": "A Lean 4 / Mathlib formalization (222 lines, 0 sorries, 0 axioms). The gallery already contains a complete, machine-checked Kelly proof of Sylvester–Gallai in Proofs/Erdos606OQ03OQ03.lean — but stated over the concrete plane Point := ℝ × ℝ with a custom cross-product collinearity predicate, not Mathlib's EuclideanSpace ℝ (Fin 2) / Collinear ℝ. This file restates the theorem in the canonical Mathlib form and obtains it as a corollary, transporting hypotheses and conclusion along the coordinate map φ x = (x 0, x 1). The mathematics is unchanged; what is added is a mechanical bridge: φ is injective, a non-collinear set has ≥ 3 points, the two collinearity predicates agree for distinct a, b, and non-collinearity transports to the image. The hard geometric kernel — Kelly's minimal-distance contradiction — is reused verbatim, so the canonical-form theorem is verified with 0 sorries and 0 axioms.",
+    "proofStrategy": "1. **Coordinate map.** Define φ : EuclideanSpace ℝ (Fin 2) → ℝ × ℝ by φ x = (x 0, x 1) and the ordinary-line predicate IsOrdinary S a b := ∀ c ∈ S, Collinear ℝ {a,b,c} → c = a ∨ c = b.\n\n2. **Injectivity.** phi_injective: a planar point is determined by its two coordinates (PiLp.ext + Fin.forall_fin_two).\n\n3. **Cardinality.** three_le_card_of_not_collinear: any set of ≤ 2 points is collinear (collinear_empty / collinear_singleton / collinear_pair), so ¬ Collinear ℝ ↑S forces 3 ≤ S.card; with injectivity, 3 ≤ (S.image φ).card.\n\n4. **Predicate bridge.** collinear_iff_sg: for a ≠ b, Collinear ℝ {a,b,c} ↔ SylvesterGallai.Collinear (φa)(φb)(φc). Forward: collinear_iff_of_mem gives a common direction v with b−a = rb•v, c−a = rc•v; a ≠ b forces rb ≠ 0, so c−a = (rc·rb⁻¹)•(b−a) and reading the two coordinates yields the cross-product form. Reverse: sg_to_smul re-exhibits c on the line through a,b.\n\n5. **Hypothesis transport.** not_allCollinear_image: ¬ Collinear ℝ ↑S ⟹ ¬ SylvesterGallai.AllCollinear (S.image φ).\n\n6. **Assembly.** Feed (S.image φ), the cardinality bound, and the not-all-collinear hypothesis to the verified SylvesterGallai.sylvester_gallai; pull the ordinary pair (A,B) back to (a,b) ∈ S along the injective φ, and carry collinearity of a third point across collinear_iff_sg to conclude IsOrdinary S a b.",
+    "keyInsights": [
+      "**Reuse beats re-proof.** Kelly's metric argument has a delicate multi-case geometric kernel (~500–900 lines). Rather than re-prove it over EuclideanSpace, the file transports the already-verified ℝ × ℝ proof along a coordinate isomorphism — turning the entire remaining obligation into four mechanical bridge lemmas. The verified, axiom-free status is inherited, not re-earned.",
+      "**Only the forward map is needed.** Because every hypothesis and the conclusion can be pushed forward along φ (image of S, image membership, collinearity forward), no inverse map ℝ × ℝ → EuclideanSpace is constructed. This avoids building EuclideanSpace / PiLp elements by hand — the awkward direction in coordinate transports.",
+      "**The predicate bridge needs a ≠ b.** The custom cross-product collinearity matches Mathlib's Collinear ℝ {a,b,c} only when a ≠ b (otherwise the 'direction' b−a degenerates). collinear_iff_sg carries that hypothesis, which is always available in the ordinary-line context where a, b are the two distinct points spanning the line.",
+      "**Canonical form is what makes it Mathlib-facing.** Stating the result over EuclideanSpace ℝ (Fin 2) with Mathlib's Collinear ℝ — rather than a bespoke ℝ × ℝ model — is precisely the form an upstream user (or a downstream theorem like de Bruijn–Erdős) would consume. The bridge converts an internal gallery result into a reusable Mathlib-shaped statement."
+    ],
+    "prerequisites": [
+      "Collinearity in affine/Euclidean space (Collinear ℝ, collinear_iff_of_mem)",
+      "EuclideanSpace ℝ (Fin 2) and PiLp coordinate evaluation",
+      "Affine combinations and direction vectors (c = t • (b - a) +ᵥ a)",
+      "Finite sets, images under an injective map (Finset.card_image_of_injective)",
+      "The Sylvester–Gallai theorem and Kelly's minimal-distance proof (see erdos-606-oq-03-oq-03)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Statement and the Reduction Strategy",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Module docstring: the Sylvester–Gallai theorem in canonical Mathlib form (EuclideanSpace ℝ (Fin 2), Collinear ℝ), obtained as a corollary of the verified gallery proof Erdos606OQ03OQ03 by transporting along φ x = (x 0, x 1). Lists the four bridge lemmas and the key subtlety that the predicate equivalence needs a ≠ b.",
+      "mathContext": "Sylvester–Gallai is not in Mathlib; the geometric content is already verified over ℝ × ℝ, so the remaining work is a mechanical type/predicate bridge to the canonical formulation."
+    },
+    {
+      "id": "definitions",
+      "title": "The Plane, the Coordinate Map, and Ordinary Lines",
+      "startLine": 59,
+      "endLine": 73,
+      "summary": "E := EuclideanSpace ℝ (Fin 2) is the canonical plane; φ x = (x 0, x 1) is the forward coordinate map to ℝ × ℝ; IsOrdinary S a b says every c ∈ S collinear with a, b is already a or b — the spanning pair is an ordinary line.",
+      "mathContext": "Working in Fin 2 keeps the cross-product/area form one-dimensional; the ordinary-line predicate is the conclusion the theorem must produce."
+    },
+    {
+      "id": "injectivity-cardinality",
+      "title": "Injectivity of φ and the ≥3-Points Bound",
+      "startLine": 79,
+      "endLine": 105,
+      "summary": "phi_injective: a planar point is determined by its two coordinates (PiLp.ext + Fin.forall_fin_two). three_le_card_of_not_collinear: any set of ≤ 2 points is collinear (collinear_empty / collinear_singleton / collinear_pair), so a non-collinear finite set has ≥ 3 points.",
+      "mathContext": "These supply the cardinality hypothesis 3 ≤ (S.image φ).card and the injectivity needed to pull witnesses back from the image."
+    },
+    {
+      "id": "predicate-bridge",
+      "title": "The Collinearity Predicate Bridge",
+      "startLine": 107,
+      "endLine": 167,
+      "summary": "sg_to_smul re-exhibits c = t • (b−a) +ᵥ a from the cross-product predicate. collinear_iff_sg: for a ≠ b, Mathlib's Collinear ℝ {a,b,c} ↔ SylvesterGallai.Collinear (φa)(φb)(φc) — forward via collinear_iff_of_mem (common direction v, b−a = rb•v with rb ≠ 0 from a ≠ b, then c−a = (rc·rb⁻¹)•(b−a) read off both coordinates); reverse via sg_to_smul.",
+      "mathContext": "This is the mathematical heart of the bridge: the equivalence of Mathlib's affine collinearity with the gallery proof's cross-product collinearity, valid for distinct a, b."
+    },
+    {
+      "id": "transport-main",
+      "title": "Hypothesis Transport and the Main Theorem",
+      "startLine": 169,
+      "endLine": 221,
+      "summary": "not_allCollinear_image transports ¬ Collinear ℝ ↑S to ¬ SylvesterGallai.AllCollinear (S.image φ). sylvester_gallai assembles everything: feed the image, the cardinality bound, and the transported hypothesis to the verified SylvesterGallai.sylvester_gallai, pull the ordinary pair back along injective φ, and carry a third point's collinearity across collinear_iff_sg to conclude IsOrdinary S a b.",
+      "mathContext": "The final reduction: the canonical-form theorem follows from the verified ℝ × ℝ proof with no new geometric content, 0 sorries and 0 axioms."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sylvester_gallai",
+      "type": "core",
+      "description": "The Sylvester–Gallai theorem in canonical Mathlib form: every finite non-collinear set S of points in EuclideanSpace ℝ (Fin 2) determines an ordinary line — there exist distinct a, b ∈ S such that every c ∈ S collinear with a, b is already a or b. Proved by reduction to the verified gallery proof, 0 sorries / 0 axioms.",
+      "leanType": "(S : Finset (EuclideanSpace ℝ (Fin 2))) → ¬ Collinear ℝ (↑S) → ∃ a ∈ S, ∃ b ∈ S, a ≠ b ∧ IsOrdinary S a b"
+    },
+    {
+      "name": "collinear_iff_sg",
+      "type": "supporting",
+      "description": "For distinct a b, Mathlib's Collinear ℝ {a,b,c} is equivalent to the gallery proof's cross-product collinearity SylvesterGallai.Collinear (φ a) (φ b) (φ c). The predicate bridge at the heart of the reduction.",
+      "leanType": "(a b c : E) → a ≠ b → (Collinear ℝ ({a, b, c} : Set E) ↔ SylvesterGallai.Collinear (φ a) (φ b) (φ c))"
+    },
+    {
+      "name": "three_le_card_of_not_collinear",
+      "type": "supporting",
+      "description": "A finite non-collinear point set has at least three points (any set of ≤ 2 points is collinear).",
+      "leanType": "(S : Finset E) → ¬ Collinear ℝ (↑S) → 3 ≤ S.card"
+    },
+    {
+      "name": "phi_injective",
+      "type": "supporting",
+      "description": "The coordinate map φ x = (x 0, x 1) is injective: a planar point is determined by its two coordinates.",
+      "leanType": "Function.Injective φ"
+    },
+    {
+      "name": "not_allCollinear_image",
+      "type": "supporting",
+      "description": "Hypothesis transport: a non-collinear set maps to a not-all-collinear image under φ.",
+      "leanType": "(S : Finset E) → ¬ Collinear ℝ (↑S) → ¬ SylvesterGallai.AllCollinear (S.image φ)"
+    }
+  ],
+  "conclusion": {
+    "summary": "The entry states the Sylvester–Gallai theorem in the canonical Mathlib formulation — over EuclideanSpace ℝ (Fin 2) with Mathlib's Collinear ℝ predicate — and proves it as a corollary of the gallery's already-verified Kelly proof (erdos-606-oq-03-oq-03), which lives over the concrete plane ℝ × ℝ. The reduction transports along the forward coordinate map φ x = (x 0, x 1) and closes four mechanical bridge lemmas (injectivity of φ, the ≥3-points bound, the predicate equivalence for distinct a, b, and not-all-collinear transport). All 6 theorems are machine-checked with 0 sorries and 0 axioms.",
+    "implications": "Sylvester–Gallai is absent from Mathlib, so a canonical-form, axiom-free statement is a genuine formalization contribution and a usable building block for downstream results (de Bruijn–Erdős, ordinary-line counting). The reduction also illustrates a reusable discipline: a theorem proved in the gallery over a concrete coordinate model can be lifted to the canonical Mathlib type by a purely mechanical predicate/coordinate bridge — preserving its verified status while restating it in the form upstream users and dependent theorems expect, without re-proving the hard geometric kernel.",
+    "openQuestions": [
+      "Generalize the statement from EuclideanSpace ℝ (Fin 2) to a general real inner-product space (or affine plane over an ordered field), removing the Fin 2 coordinate dependence used by the cross-product collinearity.",
+      "Formalize the de Bruijn–Erdős theorem (n non-collinear points determine at least n lines), for which Sylvester–Gallai is a standard ingredient, building directly on this canonical-form statement.",
+      "Strengthen the existence of one ordinary line to the Motzkin–Hansen / Green–Tao quantitative bounds on the number of ordinary lines."
+    ]
+  },
+  "references": [
+    {
+      "authors": "J. J. Sylvester",
+      "title": "Mathematical Question 11851",
+      "year": "1893",
+      "venue": "Educational Times 59, p. 98",
+      "note": "Original posing of the ordinary-line problem."
+    },
+    {
+      "authors": "E. Melchior",
+      "title": "Über Vielseite der projektiven Ebene",
+      "year": "1940",
+      "venue": "Deutsche Mathematik 5, 461–475",
+      "note": "First proof, via Euler's formula on the dual line arrangement."
+    },
+    {
+      "authors": "L. M. Kelly (in H. S. M. Coxeter)",
+      "title": "A problem of collinear points",
+      "year": "1948",
+      "venue": "American Mathematical Monthly 55, 26–28",
+      "note": "The canonical elementary metric proof formalized (over ℝ × ℝ) in erdos-606-oq-03-oq-03 and reused here."
+    },
+    {
+      "authors": "P. Borwein, W. O. J. Moser",
+      "title": "A survey of Sylvester's problem and its generalizations",
+      "year": "1990",
+      "venue": "Aequationes Mathematicae 40, 111–135",
+      "note": "Survey of proofs, generalizations, and the ordinary-lines literature."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-606-oq-03-oq-03",
+      "relationship": "extends",
+      "description": "The parent entry contains the complete, verified Kelly proof of Sylvester–Gallai over the concrete plane ℝ × ℝ with a custom cross-product collinearity predicate (theorem SylvesterGallai.sylvester_gallai, 0 sorries / 0 axioms). This entry restates that theorem in the canonical Mathlib formulation (EuclideanSpace ℝ (Fin 2), Collinear ℝ) and obtains it as a corollary via the coordinate map φ, reusing the parent's geometric kernel verbatim."
+    },
+    {
+      "targetId": "erdos-107-oq-01",
+      "relationship": "related",
+      "description": "Both are results in combinatorial/incidence geometry over finite point sets in the plane; the Sylvester–Gallai theorem is a foundational tool in the same circle of problems (ordinary lines, point–line incidences, the orchard-planting problem)."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/SylvesterGallaiOQ01.lean",
+    "namespace": "SylvesterGallaiOQ01",
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos606OQ03OQ03"
+    ],
+    "lineCount": 222,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 6,
+    "definitionCount": 3
+  }
+}
