@@ -18,7 +18,11 @@
       "Intersection number"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "chordal graphs",
+      "partitioning a graph's edges into cliques",
+      "quadratic (n²) extremal bounds"
+    ]
   },
   {
     "id": "ann-81-induced-cycle",
@@ -38,7 +42,11 @@
       "induced subgraph"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "induced subgraphs",
+      "cycles in a graph",
+      "injective maps Fin k → V"
+    ]
   },
   {
     "id": "ann-81-chordal",
@@ -58,7 +66,10 @@
       "Clique tree"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "induced cycles of length ≥ 4",
+      "chords of a cycle"
+    ]
   },
   {
     "id": "ann-81-clique-partition",
@@ -79,7 +90,11 @@
       "complement graph"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "cliques in a graph",
+      "partitioning the edge set",
+      "Finset-bundled structures in Lean"
+    ]
   },
   {
     "id": "ann-81-split-graph",
@@ -99,7 +114,10 @@
       "Földes-Hammer characterization"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "cliques and independent sets",
+      "partitioning the vertex set"
+    ]
   },
   {
     "id": "ann-81-split-chordal",
@@ -118,7 +136,11 @@
       "bipartition"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "split graphs",
+      "chordal graphs",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-81-extremal",
@@ -138,7 +160,11 @@
       "complete bipartite graph"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "split graphs",
+      "lower-bound constructions",
+      "the n²/6 extremal quantity"
+    ]
   },
   {
     "id": "ann-81-eoz",
@@ -157,7 +183,11 @@
       "perfect elimination ordering"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "chordal graphs",
+      "the clique partition number",
+      "quadratic upper bounds"
+    ]
   },
   {
     "id": "ann-81-ceo",
@@ -176,7 +206,11 @@
       "bipartite edges"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "split graphs",
+      "the clique partition number",
+      "the 3n²/16 upper bound"
+    ]
   },
   {
     "id": "ann-81-conjecture",
@@ -195,7 +229,11 @@
       "cliquePartitionNumber"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "chordal graphs",
+      "the clique partition number",
+      "the conjectured n²/6 + n bound"
+    ]
   },
   {
     "id": "ann-81-gap-analysis",
@@ -214,7 +252,11 @@
       "gap analysis"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "rational inequalities",
+      "the constants 1/4 and 1/6",
+      "the norm_num tactic"
+    ]
   },
   {
     "id": "ann-81-simplicial",
@@ -234,7 +276,10 @@
       "Dirac's theorem"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "vertex neighborhoods N(v)",
+      "cliques"
+    ]
   },
   {
     "id": "ann-81-peo",
@@ -255,7 +300,11 @@
       "Fulkerson-Gross theorem"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "simplicial vertices",
+      "orderings as bijections Fin |V| → V",
+      "perfect elimination orderings"
+    ]
   },
   {
     "id": "ann-81-peo-partition",
@@ -274,7 +323,11 @@
       "approximation algorithm"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "perfect elimination orderings",
+      "greedy clique partitioning",
+      "2-approximation of an optimum"
+    ]
   },
   {
     "id": "ann-81-optimal-partition",
@@ -294,7 +347,10 @@
       "chordal recognition"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "clique partitions",
+      "existence of a minimum-size partition"
+    ]
   },
   {
     "id": "ann-81-intersection",
@@ -315,7 +371,11 @@
       "edge cover"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "clique edge covers with overlapping cliques",
+      "the intersection number",
+      "partition number vs intersection number"
+    ]
   },
   {
     "id": "ann-81-summary",
@@ -335,6 +395,10 @@
       "existential quantification"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "the n²/6 lower bound",
+      "the quadratic upper bounds",
+      "combining bounds into a single theorem"
+    ]
   }
 ]
