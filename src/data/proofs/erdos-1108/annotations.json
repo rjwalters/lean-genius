@@ -16,7 +16,11 @@
       "perfect powers",
       "powerful numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Diophantine equations",
+      "history of mathematics"
+    ]
   },
   {
     "id": "ann-e1108-factorial-sums",
@@ -35,7 +39,11 @@
       "sum",
       "factorial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Lean 4 Finset",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e1108-factorial-examples",
@@ -54,7 +62,11 @@
       "simp",
       "Nat.factorial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "norm_num and simp tactics",
+      "arithmetic computation"
+    ]
   },
   {
     "id": "ann-e1108-powerful-def",
@@ -73,7 +85,11 @@
       "divisibility",
       "squarefree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "prime factorization",
+      "divisibility"
+    ]
   },
   {
     "id": "ann-e1108-one-powerful",
@@ -92,7 +108,11 @@
       "Prime.ne_one",
       "dvd_one"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "propositional logic",
+      "Mathlib divisibility lemmas"
+    ]
   },
   {
     "id": "ann-e1108-main-sets",
@@ -111,7 +131,11 @@
       "intersection",
       "k-th power"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Lean 4 Set type",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e1108-question1",
@@ -130,7 +154,11 @@
       "open problem",
       "finiteness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Lean 4 axiom declarations",
+      "Diophantine analysis"
+    ]
   },
   {
     "id": "ann-e1108-question2",
@@ -149,7 +177,11 @@
       "open problem",
       "finiteness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Lean 4 axiom declarations",
+      "multiplicative number theory"
+    ]
   },
   {
     "id": "ann-e1108-brindza-erdos",
@@ -168,7 +200,11 @@
       "finite case",
       "partial result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Diophantine equations",
+      "analytic number theory",
+      "S-unit equations"
+    ]
   },
   {
     "id": "ann-e1108-mahler",
@@ -187,6 +223,10 @@
       "Mahler",
       "dichotomy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Diophantine equations",
+      "history of mathematics"
+    ]
   }
 ]
