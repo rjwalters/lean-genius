@@ -50,7 +50,7 @@ import Proofs.ShannonEntropyOQ01
 
 namespace ShannonAWGN
 
-open DifferentialEntropy Real
+open DifferentialEntropy MeasureTheory Real
 
 /-- AWGN channel capacity as a function of signal power `P` and noise power `N`:
     `C(P, N) = ½ log(1 + P/N)`. -/
@@ -189,7 +189,7 @@ theorem awgn_capacity_antitone_noise {P N₁ N₂ : ℝ} (hP : 0 ≤ P) (hN₁ :
     have h0 : (0 : ℝ) ≤ P * (N₂ - N₁) / (N₁ * N₂) :=
       div_nonneg (mul_nonneg hP (by linarith)) hden
     have he : P * (N₂ - N₁) / (N₁ * N₂) = P / N₁ - P / N₂ := by
-      field_simp [hN₁.ne', hN₂.ne']
+      rw [div_sub_div _ _ hN₁.ne' hN₂.ne']
       ring
     linarith [he ▸ h0]
   have hle : 1 + P / N₂ ≤ 1 + P / N₁ := by linarith
