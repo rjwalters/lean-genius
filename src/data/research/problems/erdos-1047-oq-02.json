@@ -21,7 +21,8 @@
     "phase": "ORIENT",
     "since": "2026-06-15T00:00:00Z",
     "iteration": 3,
-    "focus": "Session 3 solves the two-distinct-root case completely. Equal multiplicities (m,m) reduce (sign-invariantly) to z(z-1); closed form u'=1/2+1/(8s^2) gives the exact classification via 8c^2-6c+1: separated components (c<1/4) convex, dumbbell (1/4<c<1/2) non-convex, oval (c>=1/2) convex. Discriminator for convex separated components in the two-root case is exactly m1=m2 (multiplicity IMBALANCE, not size, drives pre-merge necking)."
+    "focus": "Session 3 solves the two-distinct-root case completely. Equal multiplicities (m,m) reduce (sign-invariantly) to z(z-1); closed form u'=1/2+1/(8s^2) gives the exact classification via 8c^2-6c+1: separated components (c<1/4) convex, dumbbell (1/4<c<1/2) non-convex, oval (c>=1/2) convex. Discriminator for convex separated components in the two-root case is exactly m1=m2 (multiplicity IMBALANCE, not size, drives pre-merge necking).",
+    "nextAction": "Off-axis re-confirmation of the quartic necks with the saddle-cone filter; then non-collinear three-root onset. No Lean delta (parent axiom-free/0-sorry; OQ-02 open in literature)."
   },
   "knownResults": [
     "Grunsky conjecture (all components convex) is FALSE — Pommerenke (1961), Goodman (1966).",
@@ -54,6 +55,7 @@
       "deg(minpoly c_nc²) is IRREGULAR in (m1,m2) — not a function of gcd, m1−m2, or M; (2,1),(3,2),(4,3),(5,2) deg-2 surds but (5,3),(7,3) deg-4. (2,1) is the unique cleanest case (single √10). No uniform-radical closed form for the full two-root onset."
     ],
     "builtItems": [
+      "research/problems/erdos-1047-oq-02/three_collinear_convexity.py (researcher-3) -- proves (numerically, 40-angle off-axis curvature filter) that all three m=3 components of any collinear simple-root cubic {-1,0,t} are convex pre-merge, and DIAGNOSES the c->c_merge min-Re(u') classifier as a saddle-divergence artifact (min migrates to the saddle, |w|->0).",
       "research/problems/erdos-1047-oq-02/curvature_closed_form.py — [S2] derives & numerically certifies the closed-form complex curvature κ=|f'/f|(1−Re(f f''/f'²)) and its log-derivative reduction κ=−|w|Re(w'/w²); asserts agreement with the S1 real Hessian to <1e-3, single-root Re(w'/w²)≡−1/m to 1e-9, and both Pommerenke on-axis tips convex for all c.",
       "research/problems/erdos-1047-oq-02/verify_lemniscate_curvature.py — grid+contour curvature test, Newton-projected onto {g=c}, calibrated on the unit circle.",
       "research/problems/erdos-1047-oq-02/pommerenke_scan.py — analytic complex-curvature, merge-threshold bisection, Pommerenke k×a sweep.",
@@ -72,11 +74,11 @@
       "Convexity of polynomial level sets / lemniscate components is heavy real analysis (curvature of implicit curves); no direct Mathlib support. A Lean formalization is deferred — the checkable artifact here is the numerical curvature certificate, not a Lean proof."
     ],
     "nextSteps": [
-      "Attempt a closed-form c_nc(2,1) by eliminating z from the Lagrange system (resultant of Re(u^prime)=0 and grad|f| parallel grad Re(u^prime)).",
-      "Higher-resolution grid + mpmath polish to drive the (A grid)-(B bisect) agreement to full precision (current gap is discretization only).",
-      "Three distinct roots: the open structural case (collinear vs triangular configurations).",
-      "Three distinct roots (collinear vs triangular): closed-form onset would need a 2-variable Lagrange elimination — the open structural frontier."
+      "Off-axis re-confirmation of r2/r9 quartic necks: apply the saddle-cone filter to (z+2)(z+1)(z-1)(z-2) to verify its neck is a GENUINE off-axis waist (symmetric mirror-merge), not the same saddle artifact.",
+      "General non-collinear / triangular three-root configuration: does any genuine off-axis neck appear, and at what closed-form onset?",
+      "Closed-form onset for higher-degree collinear families (5+ roots) where interior components can genuinely neck.",
+      "Full OQ-02 characterization of all-convex polynomials (open in the literature)."
     ],
-    "progressSummary": "PROGRESS (researcher-9 2026-06-18): closed-form necking onset c_nc(m1,m2) extended from the committed m2=1 Pommerenke slice to the GENERAL two-root family — explicit quadratic surds for (3,2),(5,2),(4,3) (verified vs prior numerics), via the unifying identity Φ=1−u′ and a clean 2-eqn Lagrange system. minpoly degree shown irregular in (m1,m2); (2,1) uniquely cleanest. Build-free; OQ-02 characterization remains OPEN."
+    "progressSummary": "PROGRESS (researcher-3 2026-06-18): resolved the explicitly-flagged \"three distinct collinear simple roots\" frontier. Normal form f_t=z(z+1)(z-t), roots {-1,0,t}, t>0 (0=middle; verdict t<->1/t symmetric). RESULT: every three-collinear-simple-root polynomial has ALL m=3 lemniscate components CONVEX throughout the pre-merge regime -> lies in the OQ-02 all-convex class; the cubic shows NO necking (consistent with Pommerenke/Goodman counterexamples needing deg>=4 or non-collinear roots). METHODOLOGICAL CORRECTION: the prior 'push c->c_merge, min Re(u')' classifier is a SADDLE ARTIFACT for the cubic -- min migrates onto the merging saddle (w=0 => u'=-w'/w' diverges, level set locally hyperbolic at the topology-change point) so min Re(u')->-inf for all t and the apparent threshold t*~2.06 is a c-cutoff artifact (drifts to inf as cutoff->c_merge). The genuine OFF-axis curvature (saddle cones excluded) stays strictly positive and converges for all 3 components & all t. Build-free (three_collinear_convexity.py). OQ-02 full characterization remains OPEN. | PROGRESS (researcher-9 2026-06-18): closed-form necking onset c_nc(m1,m2) extended from the committed m2=1 Pommerenke slice to the GENERAL two-root family — explicit quadratic surds for (3,2),(5,2),(4,3) (verified vs prior numerics), via the unifying identity Φ=1−u′ and a clean 2-eqn Lagrange system. minpoly degree shown irregular in (m1,m2); (2,1) uniquely cleanest. Build-free; OQ-02 characterization remains OPEN."
   }
 }
