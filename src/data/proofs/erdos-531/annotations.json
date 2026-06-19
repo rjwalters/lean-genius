@@ -16,7 +16,11 @@
       "Ramsey theory",
       "Subset sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "number theory",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e531-coloring",
@@ -34,7 +38,11 @@
       "Ramsey theory"
     ],
     "mathContext": "See annotation content for formal details of two-colorings",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "functions on natural numbers",
+      "Boolean values"
+    ]
   },
   {
     "id": "ann-e531-subset-sums",
@@ -52,7 +60,11 @@
       "Subset sum problem"
     ],
     "mathContext": "See annotation content for formal details of subset sums",
-    "prerequisites": []
+    "prerequisites": [
+      "finite set theory",
+      "Mathlib Finset API",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e531-monochromatic",
@@ -70,7 +82,11 @@
       "Ramsey theory"
     ],
     "mathContext": "See annotation content for formal details of monochromatic subset sums",
-    "prerequisites": []
+    "prerequisites": [
+      "finite set theory",
+      "predicate logic",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e531-f-definition",
@@ -88,7 +104,11 @@
       "Extremal combinatorics"
     ],
     "mathContext": "See annotation content for formal details of the folkman number f(k)",
-    "prerequisites": []
+    "prerequisites": [
+      "order theory",
+      "real analysis",
+      "Lean 4 noncomputable definitions"
+    ]
   },
   {
     "id": "ann-e531-folkman",
@@ -106,7 +126,11 @@
       "Rado's theorem",
       "Partition regularity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "additive number theory",
+      "Lean 4 axiom declarations"
+    ]
   },
   {
     "id": "ann-e531-erdos-spencer",
@@ -124,7 +148,11 @@
       "Probabilistic method"
     ],
     "mathContext": "See annotation content for formal details of erdős-spencer lower bound (1989)",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "asymptotic analysis",
+      "logarithms"
+    ]
   },
   {
     "id": "ann-e531-balogh",
@@ -142,7 +170,11 @@
       "Doubly exponential",
       "Tower functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "asymptotic analysis",
+      "mathematical induction"
+    ]
   },
   {
     "id": "ann-e531-small-cases",
@@ -160,7 +192,11 @@
       "Computational complexity"
     ],
     "mathContext": "See annotation content for formal details of small cases",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "elementary number theory",
+      "case analysis"
+    ]
   },
   {
     "id": "ann-e531-upper-bound",
@@ -178,7 +214,11 @@
       "Ackermann function"
     ],
     "mathContext": "See annotation content for formal details of upper bounds",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "recursive functions",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e531-rado",
@@ -197,6 +237,10 @@
       "Partition regularity",
       "Linear systems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "linear algebra",
+      "additive number theory"
+    ]
   }
 ]
