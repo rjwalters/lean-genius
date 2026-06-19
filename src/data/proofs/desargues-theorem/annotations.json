@@ -16,7 +16,11 @@
       "duality"
     ],
     "mathContext": "If $AA'$, $BB'$, $CC'$ are concurrent at $O$, then $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$ are collinear. Conversely, collinearity of $P, Q, R$ implies concurrence of $AA'$, $BB'$, $CC'$. Self-dual under the projective duality that swaps points $\\leftrightarrow$ lines and concurrent $\\leftrightarrow$ collinear.",
-    "prerequisites": []
+    "prerequisites": [
+      "Projective Geometry",
+      "Collinearity And Concurrence",
+      "Projective Duality"
+    ]
   },
   {
     "id": "ann-projective-setup",
@@ -35,7 +39,11 @@
       "cross product",
       "projective plane"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Homogeneous Coordinates",
+      "Vector Cross Product",
+      "Projective Plane"
+    ]
   },
   {
     "id": "ann-collinearity",
@@ -54,7 +62,11 @@
       "linear dependence",
       "duality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Matrix Determinant",
+      "Linear Dependence",
+      "Homogeneous Coordinates"
+    ]
   },
   {
     "id": "ann-perspective",
@@ -73,7 +85,11 @@
       "axis of perspectivity",
       "triangle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Concurrent Lines",
+      "Line Intersection",
+      "Triangle Configuration"
+    ]
   },
   {
     "id": "ann-helper-lemmas",
@@ -92,7 +108,11 @@
       "scalar triple product",
       "determinant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vector Cross Product",
+      "Vector Triple Product",
+      "Scalar Triple Product"
+    ]
   },
   {
     "id": "ann-key-identity",
@@ -111,7 +131,11 @@
       "polynomial identity",
       "factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Scalar Triple Product",
+      "Determinant Expansion",
+      "Ring Tactic"
+    ]
   },
   {
     "id": "ann-desargues-identity",
@@ -130,7 +154,11 @@
       "concurrence",
       "collinearity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Determinant Factorization",
+      "Concurrence And Collinearity",
+      "Polynomial Identity"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -180,7 +208,11 @@
       "mul_eq_zero",
       "non-degeneracy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Zero Product Property",
+      "Non-Degeneracy Condition",
+      "Contrapositive Reasoning"
+    ]
   },
   {
     "id": "ann-equivalence",
@@ -199,7 +231,11 @@
       "equivalence",
       "biconditional"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Biconditional Statement",
+      "Forward And Converse Directions",
+      "Non-Degeneracy Condition"
+    ]
   },
   {
     "id": "ann-special-cases",
@@ -218,7 +254,11 @@
       "crossProduct_self"
     ],
     "mathContext": "See annotation content for formal details of special cases",
-    "prerequisites": []
+    "prerequisites": [
+      "Degenerate Configurations",
+      "Cross Product Self-Annihilation",
+      "Collinearity Determinant"
+    ]
   },
   {
     "id": "ann-context",
@@ -238,6 +278,10 @@
       "Pappus"
     ],
     "mathContext": "See annotation content for formal details of projective duality and context",
-    "prerequisites": []
+    "prerequisites": [
+      "Projective Duality",
+      "Non-Desarguesian Planes",
+      "Division Ring Coordinatization"
+    ]
   }
 ]
