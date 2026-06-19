@@ -1,0 +1,155 @@
+[
+  {
+    "id": "ann-translation-invariance",
+    "proofId": "shannon-channel-coding-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 67
+    },
+    "type": "theorem",
+    "title": "Translation Invariance of Differential Entropy",
+    "content": "The engine of the whole entry: shifting a density by a constant c leaves its differential entropy unchanged, h(f(· − c)) = h(f). The proof unfolds the definition differentialEntropy f = −∫ f log f, and after congr 1 the goal reduces to ∫ f(y−c)·log f(y−c) dy = ∫ f(y)·log f(y) dy. This is exactly the Mathlib lemma integral_sub_right_eq_self applied to the integrand g(x) = f(x)·log(f(x)): the change of variables u = y − c is free because Lebesgue measure is translation invariant. No hypotheses on f (integrability, positivity) are needed because the statement is a pure equality of integrals, both of which are defined for every f.",
+    "mathContext": "$h\\big(f(\\cdot - c)\\big) = -\\!\\int f(y-c)\\log f(y-c)\\,dy = -\\!\\int f(u)\\log f(u)\\,du = h(f)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "differential entropy",
+      "translation invariance",
+      "change of variables",
+      "Lebesgue measure"
+    ],
+    "prerequisites": [
+      "MeasureTheory.integral_sub_right_eq_self",
+      "Differential entropy h(f) = −∫ f log f"
+    ]
+  },
+  {
+    "id": "ann-additive-output-density",
+    "proofId": "shannon-channel-coding-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "The Additive Channel Output Density",
+    "content": "Models the additive channel Y = X + Z with noise Z independent of the input. Conditioned on the input value x, the output Y = x + Z has density equal to the noise density fZ shifted by x: additiveOutputDensity fZ x = (fun y => fZ (y − x)). If the noise has mean 0, then Y | X = x has mean x. This single shift is the entire probabilistic content of the additive-channel assumption — every downstream entropy collapse is a consequence of translation invariance applied to this shift.",
+    "mathContext": "$f_{Y\\mid X=x}(y) = f_Z(y - x)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "additive channel",
+      "conditional density",
+      "noise model",
+      "AWGN"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-conditional-entropy-eq",
+    "proofId": "shannon-channel-coding-oq-01",
+    "range": {
+      "startLine": 77,
+      "endLine": 83
+    },
+    "type": "theorem",
+    "title": "Conditional Output Entropy Equals Noise Entropy",
+    "content": "For every input value x, the differential entropy of the (shifted) output density equals the noise entropy: h(Y | X = x) = h(Z). After unfolding additiveOutputDensity the goal is differentialEntropy (fun y => fZ (y − x)) = differentialEntropy fZ, which is precisely the previous theorem differentialEntropy_translation with c = x. The decisive structural fact: the conditional output entropy does not depend on the input value x at all — every input shifts the noise density without changing its entropy.",
+    "mathContext": "$h(Y \\mid X = x) = h(Z)\\quad\\text{for every } x$",
+    "significance": "key",
+    "relatedConcepts": [
+      "conditional entropy",
+      "translation invariance",
+      "additive channel"
+    ],
+    "prerequisites": [
+      "differentialEntropy_translation"
+    ]
+  },
+  {
+    "id": "ann-gaussian-instance",
+    "proofId": "shannon-channel-coding-oq-01",
+    "range": {
+      "startLine": 85,
+      "endLine": 94
+    },
+    "type": "theorem",
+    "title": "AWGN Instance: Gaussian Conditional Entropy",
+    "content": "Specializes the additive channel to Gaussian noise Z ~ N(0, N): the conditional output entropy h(Y | X = x) equals ½ log(2πeN) for every input x. The proof first rewrites with additive_conditional_entropy_eq to collapse the conditional entropy to the noise entropy of the Gaussian density gaussianPDF 0 (√N), then imports the proven Gaussian differential entropy gaussianDifferentialEntropy 0 (√N > 0) from ShannonEntropyOQ01, which gives ½ log(2πe·(√N)²). The final step rewrites (√N)² = N via Real.sq_sqrt hN.le. This connects the abstract translation-invariance core to the concrete value that the AWGN capacity formula needs.",
+    "mathContext": "$Z \\sim \\mathcal N(0, N):\\quad h(Y \\mid X = x) = \\tfrac12\\log(2\\pi e\\,N)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Gaussian differential entropy",
+      "AWGN channel",
+      "maximum entropy"
+    ],
+    "prerequisites": [
+      "additive_conditional_entropy_eq",
+      "gaussianDifferentialEntropy",
+      "Real.sq_sqrt"
+    ]
+  },
+  {
+    "id": "ann-averaging",
+    "proofId": "shannon-channel-coding-oq-01",
+    "range": {
+      "startLine": 96,
+      "endLine": 107
+    },
+    "type": "theorem",
+    "title": "Averaging Over the Input Law",
+    "content": "Averaging the per-input conditional entropy h(Y | X = x) against any input probability density fX (with ∫ fX = 1) yields the noise entropy h(Z): ∫ fX(x)·h(Y | X = x) dx = h(Z). The proof is almost free precisely because the integrand is constant in x: simp_rw [additive_conditional_entropy_eq] replaces every h(Y | X = x) by the constant differentialEntropy fZ, then integral_mul_const pulls that constant out of the integral, leaving (∫ fX)·h(Z); the hypothesis hX : ∫ fX = 1 and one_mul finish. The averaged conditional entropy h(Y | X) is therefore exactly h(Z), regardless of the input distribution.",
+    "mathContext": "$h(Y \\mid X) = \\int f_X(x)\\,h(Y \\mid X = x)\\,dx = \\Big(\\!\\int f_X\\Big)\\,h(Z) = h(Z)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "conditional entropy",
+      "averaging",
+      "probability density",
+      "law of total probability"
+    ],
+    "prerequisites": [
+      "additive_conditional_entropy_eq",
+      "MeasureTheory.integral_mul_const"
+    ]
+  },
+  {
+    "id": "ann-mutual-information-def",
+    "proofId": "shannon-channel-coding-oq-01",
+    "range": {
+      "startLine": 109,
+      "endLine": 116
+    },
+    "type": "definition",
+    "title": "Chain-Rule Mutual Information",
+    "content": "Defines the mutual information of the additive channel in its chain-rule form I(X;Y) = h(Y) − h(Y|X), where the conditional entropy h(Y|X) is the fX-average of the per-input output entropies ∫ fX(x)·h(Y|X=x) dx, and hY is the output differential entropy h(Y) supplied as a parameter. SCOPE: taking this chain-rule identity as the definition of mutual information is exactly where the entry stops short of the full operational theory — proving that it coincides with the measure-theoretic KL-divergence definition (joint law vs. product of marginals) is the part that remains genuinely open.",
+    "mathContext": "$I(X;Y) := h(Y) - \\int f_X(x)\\,h(Y\\mid X=x)\\,dx$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mutual information",
+      "chain rule",
+      "KL divergence",
+      "conditional entropy"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-decomposition",
+    "proofId": "shannon-channel-coding-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "The Decomposition I(X;Y) = h(Y) − h(Z)",
+    "content": "The capstone: for any input law fX (∫ fX = 1) the chain-rule mutual information collapses to the output entropy minus the noise entropy, I(X;Y) = h(Y) − h(Z). The proof unfolds additiveMutualInformation and rewrites the averaged conditional entropy via additive_averaged_conditional_entropy, turning h(Y) − h(Y|X) into h(Y) − h(Z). This is the exact identity the AWGN capacity ½ log(1 + P/N) rests on: with the capacity-achieving Gaussian output h(Y) = ½ log(2πe(P+N)) and noise h(Z) = ½ log(2πeN), the difference is ½ log((P+N)/N) = ½ log(1 + P/N). The AWGN capacity entry had to leave this step in prose; here it is machine-checked, axiom-free, for the chain-rule definition of mutual information.",
+    "mathContext": "$I(X;Y) = h(Y) - h(Z);\\quad \\tfrac12\\log\\!\\big(2\\pi e(P{+}N)\\big) - \\tfrac12\\log\\!\\big(2\\pi e N\\big) = \\tfrac12\\log\\!\\big(1 + \\tfrac{P}{N}\\big)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "mutual information",
+      "channel capacity",
+      "AWGN",
+      "differential entropy"
+    ],
+    "prerequisites": [
+      "additiveMutualInformation",
+      "additive_averaged_conditional_entropy"
+    ]
+  }
+]
