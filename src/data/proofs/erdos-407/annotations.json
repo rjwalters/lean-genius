@@ -16,7 +16,11 @@
       "Exponential Diophantine equations",
       "Baker's method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Representation functions in number theory",
+      "Integer exponents and powers of 2 and 3",
+      "Boundedness of arithmetic functions"
+    ]
   },
   {
     "id": "ann-e407-powers",
@@ -34,7 +38,10 @@
       "Primes"
     ],
     "mathContext": "See annotation content for formal details of powers of 2 and 3",
-    "prerequisites": []
+    "prerequisites": [
+      "Exponentiation with natural-number exponents",
+      "Existential quantifiers in predicate definitions"
+    ]
   },
   {
     "id": "ann-e407-smooth",
@@ -52,7 +59,11 @@
       "Smooth numbers",
       "S-units"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime factorization",
+      "Multiplicative structure of integers",
+      "Products of prime powers"
+    ]
   },
   {
     "id": "ann-e407-valid-rep",
@@ -70,7 +81,11 @@
       "Diophantine equations"
     ],
     "mathContext": "See annotation content for formal details of valid representation",
-    "prerequisites": []
+    "prerequisites": [
+      "Multivariate predicates over naturals",
+      "Addition and multiplication of powers",
+      "Equation-defined representations"
+    ]
   },
   {
     "id": "ann-e407-counting",
@@ -88,7 +103,11 @@
       "Representations"
     ],
     "mathContext": "See annotation content for formal details of counting functions",
-    "prerequisites": []
+    "prerequisites": [
+      "Tuples and ordered solutions",
+      "Set cardinality (ncard)",
+      "Distinct vs ordered representations"
+    ]
   },
   {
     "id": "ann-e407-w-one",
@@ -106,7 +125,11 @@
       "Lower bounds"
     ],
     "mathContext": "See annotation content for formal details of w(1) = 0",
-    "prerequisites": []
+    "prerequisites": [
+      "Lower bounds for positive powers",
+      "Minimum value of a sum of positive terms",
+      "Proof by contradiction on size"
+    ]
   },
   {
     "id": "ann-e407-five-rep",
@@ -124,7 +147,11 @@
       "Multiple representations"
     ],
     "mathContext": "See annotation content for formal details of representations of 5",
-    "prerequisites": []
+    "prerequisites": [
+      "Evaluating power expressions concretely",
+      "Witnessing existence by example",
+      "norm_num arithmetic verification"
+    ]
   },
   {
     "id": "ann-e407-egst",
@@ -142,7 +169,11 @@
       "S-unit equations",
       "Baker's method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Existence (non-effective) statements",
+      "Linear forms in logarithms",
+      "Transcendence theory background"
+    ]
   },
   {
     "id": "ann-e407-tw",
@@ -160,7 +191,11 @@
       "Large n"
     ],
     "mathContext": "See annotation content for formal details of tijdeman-wang 1988",
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic 'for sufficiently large n' statements",
+      "Counting distinct term-sets",
+      "Quantitative refinement of existence bounds"
+    ]
   },
   {
     "id": "ann-e407-bb",
@@ -178,7 +213,11 @@
       "Effective bounds",
       "Computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Explicit numeric thresholds and constants",
+      "Computer-assisted bound verification",
+      "Maximum-attaining cases"
+    ]
   },
   {
     "id": "ann-e407-four-family",
@@ -196,7 +235,11 @@
       "Infinite families"
     ],
     "mathContext": "See annotation content for formal details of family with 4 representations",
-    "prerequisites": []
+    "prerequisites": [
+      "Algebraic identities among power sums",
+      "Constructing infinite parametric families",
+      "Axiomatized lemmas in formalization"
+    ]
   },
   {
     "id": "ann-e407-summary",
@@ -214,6 +257,10 @@
       "Solved problems"
     ],
     "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "Combining lemmas into a main theorem",
+      "Conjecture resolution via explicit bounds",
+      "Structure of summary theorems"
+    ]
   }
 ]
