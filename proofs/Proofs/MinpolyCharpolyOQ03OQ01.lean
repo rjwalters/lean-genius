@@ -1,5 +1,7 @@
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
+import Mathlib.LinearAlgebra.Charpoly.Basic
+import Mathlib.LinearAlgebra.Charpoly.ToMatrix
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.Algebra.Polynomial.Module.AEval
 import Mathlib.Algebra.Module.Torsion.Basic
@@ -65,10 +67,13 @@ algorithm of `Module.equiv_directSum_of_isTorsion`, out of scope for
 this foundational sub-OQ. Its statement is fixed here only to pin the
 bridging API surface.
 
-Note: the torsion proofs are statically complete (all referenced
-Mathlib lemmas verified present) but their final kernel check is
-**build-pending** — they have not yet been confirmed by a full Lean
-build in this environment.
+Note: the torsion proofs are **build-verified** (researcher-7, S13:
+`docker-build.sh Proofs.MinpolyCharpolyOQ03OQ01`, 3070 jobs, 1 sorry —
+the deferred bridge only). An earlier revision was build-broken: it
+relied on `LinearMap.charpoly`/`aeval_self_charpoly` and
+`charpoly_mulVecLin` without importing `Mathlib.LinearAlgebra.Charpoly.{Basic,ToMatrix}`,
+and tried to feed the strict-implicit `IsTorsionBy` proof directly into
+the `IsTorsion` existential. Both are now fixed.
 
 ## References
 
@@ -166,11 +171,16 @@ are now proved (build-pending kernel verification). -/
     for the API audit and alternate routes. -/
 theorem xModule_isTorsionBy_charpoly (M : Matrix n n F) :
     Module.IsTorsionBy F[X] (xModule M) M.charpoly := by
+  -- Cayley–Hamilton on the endomorphism, transported to `M.charpoly` via
+  -- `charpoly_mulVecLin` (note `endo` is a `def`, so it needs unfolding to
+  -- expose `M.mulVecLin` for the rewrite).
+  have hk : aeval (endo M) M.charpoly = 0 := by
+    have h1 : (endo M).charpoly = M.charpoly := by
+      unfold endo; exact charpoly_mulVecLin M
+    rw [← h1]; exact LinearMap.aeval_self_charpoly (endo M)
   intro x
-  have hC : (endo M).charpoly = M.charpoly := charpoly_mulVecLin M
-  apply (AEval'.of (endo M)).symm.injective
-  rw [Module.AEval.of_symm_smul, ← hC, LinearMap.aeval_self_charpoly]
-  simp
+  obtain ⟨m, rfl⟩ := (Module.AEval'.of (endo M)).surjective x
+  rw [← Module.AEval.of_aeval_smul, hk, zero_smul, map_zero]
 
 /-- **The F[X]-module `xModule M` is torsion.**
 
@@ -182,11 +192,21 @@ theorem xModule_isTorsionBy_charpoly (M : Matrix n n F) :
     to extract the invariant-factor decomposition. -/
 theorem xModule_isTorsion (M : Matrix n n F) :
     Module.IsTorsion F[X] (xModule M) := by
-  intro x
   have hne : M.charpoly ≠ 0 := (charpoly_monic M).ne_zero
   have hnzd : M.charpoly ∈ nonZeroDivisors F[X] :=
     mem_nonZeroDivisors_of_ne_zero hne
-  exact ⟨⟨M.charpoly, hnzd⟩, xModule_isTorsionBy_charpoly M x⟩
+  have hk : aeval (endo M) M.charpoly = 0 := by
+    have h1 : (endo M).charpoly = M.charpoly := by
+      unfold endo; exact charpoly_mulVecLin M
+    rw [← h1]; exact LinearMap.aeval_self_charpoly (endo M)
+  intro x
+  -- The `F[X]⁰`-element `⟨M.charpoly, hnzd⟩` annihilates `x`; its submonoid
+  -- smul reduces definitionally to the `F[X]`-smul, so `show` recovers the
+  -- plain Cayley–Hamilton computation.
+  refine ⟨⟨M.charpoly, hnzd⟩, ?_⟩
+  obtain ⟨m, rfl⟩ := (Module.AEval'.of (endo M)).surjective x
+  show (M.charpoly : F[X]) • (Module.AEval'.of (endo M) m) = 0
+  rw [← Module.AEval.of_aeval_smul, hk, zero_smul, map_zero]
 
 /-! ## Part 4: Deliverable surface for OQ-03-OQ-02 (statement only)
 
