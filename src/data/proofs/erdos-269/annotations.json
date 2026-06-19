@@ -17,7 +17,12 @@
       "LCM",
       "infinite series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Smooth Numbers",
+      "Irrational Numbers",
+      "Least Common Multiple",
+      "Infinite Series"
+    ]
   },
   {
     "id": "ann-e269-psmooth",
@@ -36,7 +41,11 @@
       "regular numbers",
       "multiplicative semigroups"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Factorization",
+      "Prime Divisors",
+      "Multiplicative Closure"
+    ]
   },
   {
     "id": "ann-e269-sequence",
@@ -55,7 +64,11 @@
       "Nat.nth"
     ],
     "mathContext": "See annotation content for formal details of the p-smooth sequence",
-    "prerequisites": []
+    "prerequisites": [
+      "Smooth Numbers",
+      "Strictly Increasing Sequences",
+      "Nth Element Enumeration"
+    ]
   },
   {
     "id": "ann-e269-lcm",
@@ -74,7 +87,11 @@
       "lattice operations",
       "Finset.lcm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Least Common Multiple",
+      "Finset Lcm",
+      "Monotone Sequences"
+    ]
   },
   {
     "id": "ann-e269-series",
@@ -93,7 +110,11 @@
       "tsum"
     ],
     "mathContext": "See annotation content for formal details of the lcm series",
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite Series",
+      "Series Convergence",
+      "Exponential Growth"
+    ]
   },
   {
     "id": "ann-e269-main",
@@ -112,7 +133,11 @@
       "open problems",
       "finite sets of primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Irrationality Proofs",
+      "Finite Sets Of Primes",
+      "Open Conjectures"
+    ]
   },
   {
     "id": "ann-e269-infinite",
@@ -131,7 +156,11 @@
       "p-adic contributions",
       "solved cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite Sets",
+      "P-adic Valuation",
+      "Irrationality Criteria"
+    ]
   },
   {
     "id": "ann-e269-examples",
@@ -150,7 +179,11 @@
       "Babylonian mathematics"
     ],
     "mathContext": "See annotation content for formal details of example: p = {2, 3}",
-    "prerequisites": []
+    "prerequisites": [
+      "3-smooth Numbers",
+      "Least Common Multiple",
+      "Divisibility"
+    ]
   },
   {
     "id": "ann-e269-padic",
@@ -169,7 +202,11 @@
       "prime factorization",
       "LCM structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "P-adic Valuation",
+      "Prime Powers",
+      "Prime Factorization"
+    ]
   },
   {
     "id": "ann-e269-distinct",
@@ -188,6 +225,10 @@
       "partial results",
       "series manipulation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Least Common Multiple",
+      "Duplicate Removal",
+      "Irrationality Of Series"
+    ]
   }
 ]
