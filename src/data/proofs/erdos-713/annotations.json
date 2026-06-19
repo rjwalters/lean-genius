@@ -16,7 +16,11 @@
       "Turán numbers",
       "Bipartite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-713-definitions",
@@ -35,7 +39,11 @@
       "Extremal function"
     ],
     "mathContext": "See annotation content for formal details of core definitions",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-713-growth",
@@ -54,7 +62,11 @@
       "Growth rate"
     ],
     "mathContext": "See annotation content for formal details of growth conditions",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "sequences and limits"
+    ]
   },
   {
     "id": "ann-713-questions",
@@ -73,7 +85,11 @@
       "Conjecture",
       "$500 prize"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "mathematical logic",
+      "number theory"
+    ]
   },
   {
     "id": "ann-713-known",
@@ -92,7 +108,11 @@
       "Complete bipartite graph",
       "Rational exponent"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-713-disproof",
@@ -111,7 +131,11 @@
       "Counterexample",
       "Conjecture disproof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "graph theory",
+      "proof by counterexample"
+    ]
   },
   {
     "id": "ann-713-hypergraph",
@@ -130,7 +154,11 @@
       "Füredi-Gerbner 2021",
       "Hypergraph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "set theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-713-summary",
@@ -149,6 +177,10 @@
       "Open problem"
     ],
     "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 tactic mode",
+      "number theory"
+    ]
   }
 ]
