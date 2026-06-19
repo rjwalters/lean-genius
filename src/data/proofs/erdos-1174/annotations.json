@@ -16,12 +16,7 @@
       "set-theoretic independence",
       "partition calculus"
     ],
-    "prerequisites": [
-      "Ramsey’s theorem (finite version)",
-      "complete graph K_ω on ℕ",
-      "edge 2-coloring",
-      "monochromatic clique"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-clique",
@@ -40,11 +35,7 @@
       "Ramsey theory",
       "induced subgraph"
     ],
-    "prerequisites": [
-      "SimpleGraph.Adj (adjacency relation)",
-      "complete subgraph K_k",
-      "definition of a clique as a set of pairwise-adjacent vertices"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-k4free",
@@ -63,12 +54,7 @@
       "graph density",
       "forbidden subgraph"
     ],
-    "prerequisites": [
-      "clique definition (preceding)",
-      "complete graph K₄",
-      "forbidden-subgraph constraint",
-      "the 6 edges among 4 vertices"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-cardinal-clique",
@@ -87,12 +73,7 @@
       "cardinal arithmetic",
       "set theory"
     ],
-    "prerequisites": [
-      "Cardinal.mk and cardinal comparison",
-      "ℵ₁ as the first uncountable cardinal",
-      "clique definition",
-      "strict cardinal inequality < κ"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-symmetric-coloring",
@@ -110,11 +91,7 @@
       "graph homomorphism"
     ],
     "mathContext": "See annotation content for formal details of symmetric coloring structure",
-    "prerequisites": [
-      "function type V → V → C",
-      "symmetry condition f(v,w)=f(w,v)",
-      "unordered edges {v,w}"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-mono-triangle",
@@ -133,12 +110,7 @@
       "monochromatic subgraph",
       "countable coloring"
     ],
-    "prerequisites": [
-      "SimpleGraph.Adj",
-      "triangle as a 3-clique",
-      "symmetric coloring f",
-      "equality of three edge colors"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-eh-finite",
@@ -157,12 +129,7 @@
       "Ramsey forcing"
     ],
     "mathContext": "See annotation content for formal details of erdős-hajnal finite property",
-    "prerequisites": [
-      "K₄-free definition",
-      "HasMonochromaticTriangle",
-      "countably many colors (ℵ₀ colors)",
-      "conjunction of two predicates"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-part-a",
@@ -181,11 +148,7 @@
       "Type*"
     ],
     "mathContext": "See annotation content for formal details of problem 1174 part (a)",
-    "prerequisites": [
-      "existential quantification over Type*",
-      "SimpleGraph G on V",
-      "Erdős–Hajnal finite property predicate"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-mono-aleph0",
@@ -204,11 +167,7 @@
       "aleph-0",
       "infinite Ramsey theory"
     ],
-    "prerequisites": [
-      "ℵ₀ and Set.Countable / Set.Infinite",
-      "clique definition",
-      "constant color c on all edges of S"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-eh-infinite",
@@ -227,12 +186,7 @@
       "uncountable cardinals"
     ],
     "mathContext": "See annotation content for formal details of erdős-hajnal infinite property and part (b)",
-    "prerequisites": [
-      "IsCliqueFreeCardinal G ℵ₁",
-      "countable edge coloring",
-      "HasMonochromaticAleph0Clique",
-      "transfinite analog of the finite property"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-ramsey",
@@ -251,11 +205,7 @@
       "König's lemma",
       "infinite combinatorics"
     ],
-    "prerequisites": [
-      "infinite Ramsey theorem for 2 colors",
-      "axiom declaration in Lean",
-      "monochromatic countably infinite clique"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-complete-not-k4free",
@@ -274,12 +224,7 @@
       "proof by contradiction",
       "constructive mathematics"
     ],
-    "prerequisites": [
-      "complete graph (⊤ : SimpleGraph ℕ)",
-      "proof by contradiction",
-      "K₄-free definition",
-      "the explicit 4-clique {0,1,2,3}"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-partition",
@@ -298,12 +243,7 @@
       "Erdős-Rado theorem",
       "arrow notation"
     ],
-    "prerequisites": [
-      "arrow notation G → (k)²_c",
-      "partition calculus",
-      "edge coloring with numColors colors",
-      "monochromatic clique of size k"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-nesetril-rodl",
@@ -322,12 +262,7 @@
       "Hales-Jewett theorem",
       "amalgamation"
     ],
-    "prerequisites": [
-      "structural Ramsey theory",
-      "partitionProperty predicate",
-      "axiomatization of a deep theorem",
-      "K₄-free graphs with G → (3)²_{k+1}"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-shelah",
@@ -346,11 +281,7 @@
       "consistency",
       "set-theoretic independence"
     ],
-    "prerequisites": [
-      "ZFC consistency statements",
-      "forcing",
-      "distinction between a comment and a formal axiom"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e1174-summary",
@@ -369,10 +300,6 @@
       "Ramsey theory"
     ],
     "mathContext": "See annotation content for formal details of open status summary",
-    "prerequisites": [
-      "independence from ZFC",
-      "the Nešetřil–Rödl and Shelah results above",
-      "open-problem status"
-    ]
+    "prerequisites": []
   }
 ]
