@@ -23,7 +23,11 @@
       "erdos-problem",
       "solved-conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chromatic Number",
+      "Graph Coloring",
+      "Ramsey Theory"
+    ]
   },
   {
     "id": "ann-e760-homog",
@@ -107,7 +111,11 @@
       "tightness"
     ],
     "mathContext": "See annotation content for formal details of complete graph bounds",
-    "prerequisites": []
+    "prerequisites": [
+      "Complete Graph",
+      "Chromatic Number",
+      "Clique Partition"
+    ]
   },
   {
     "id": "ann-e760-erdosgimbel",
@@ -131,7 +139,11 @@
       "ramsey-theory",
       "subgraph-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cochromatic Number",
+      "Ramsey-Type Argument",
+      "Asymptotic Lower Bound"
+    ]
   },
   {
     "id": "ann-e760-aks",
@@ -156,7 +168,11 @@
       "cochromatic-number",
       "solved-conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cochromatic Number",
+      "Recursive Decomposition",
+      "Homogeneous Sets"
+    ]
   },
   {
     "id": "ann-e760-ramsey",
@@ -181,6 +197,10 @@
       "logarithmic-bound"
     ],
     "mathContext": "See annotation content for formal details of ramsey-theoretic tools",
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Number",
+      "Homogeneous Set",
+      "Logarithmic Bound"
+    ]
   }
 ]
