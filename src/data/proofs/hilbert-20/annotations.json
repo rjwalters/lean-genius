@@ -16,7 +16,11 @@
       "Dirichlet problem",
       "existence theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "partial differential equations",
+      "boundary conditions on a domain",
+      "existence theory for PDE"
+    ]
   },
   {
     "id": "ann-dirichlet",
@@ -35,7 +39,11 @@
       "harmonic functions",
       "maximum principle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Laplace equation Δu = 0",
+      "harmonic functions",
+      "the maximum principle"
+    ]
   },
   {
     "id": "ann-dirichlet-existence",
@@ -54,7 +62,11 @@
       "subharmonic functions",
       "regularity theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Dirichlet boundary-value problem",
+      "subharmonic functions and Perron's method",
+      "boundary regularity (barriers)"
+    ]
   },
   {
     "id": "ann-bilinear",
@@ -73,7 +85,11 @@
       "Poincare inequality",
       "energy estimates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bilinear forms on a Hilbert space",
+      "ellipticity / coercivity",
+      "the Poincaré inequality"
+    ]
   },
   {
     "id": "ann-lax-milgram",
@@ -92,7 +108,11 @@
       "variational methods",
       "weak solutions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hilbert spaces and the Riesz representation theorem",
+      "bounded coercive bilinear forms",
+      "weak formulations of PDE"
+    ]
   },
   {
     "id": "ann-energy",
@@ -111,7 +131,11 @@
       "energy minimization",
       "Euler-Lagrange equations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "energy functionals",
+      "the calculus of variations / minimization",
+      "the Euler–Lagrange equation"
+    ]
   },
   {
     "id": "ann-sobolev",
@@ -130,7 +154,11 @@
       "trace theorem",
       "embedding theorems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "weak derivatives",
+      "Sobolev spaces H^k and norms",
+      "trace and embedding theorems"
+    ]
   },
   {
     "id": "ann-poisson",
@@ -149,7 +177,11 @@
       "gravitational potential",
       "heat equation steady state"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Poisson equation −Δu = f",
+      "the Lax–Milgram / variational existence theory",
+      "physical potentials (electrostatic, gravitational)"
+    ]
   },
   {
     "id": "ann-lewy",
@@ -168,6 +200,10 @@
       "Hormander condition",
       "characteristic variety"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "local solvability of PDE",
+      "the Hörmander solvability condition",
+      "Lewy's smooth-but-unsolvable example"
+    ]
   }
 ]
