@@ -22,7 +22,12 @@
       "degree-diversity",
       "overview"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Clique number ω(G) and independence number α(G)",
+      "Big-O notation (O(log n))",
+      "Induced subgraph and its degree sequence",
+      "Asymptotic notation ≫ (much greater than)"
+    ]
   },
   {
     "id": "ann-e637-degree",
@@ -46,7 +51,12 @@
       "definition"
     ],
     "mathContext": "See annotation content for formal details of vertex degree",
-    "prerequisites": []
+    "prerequisites": [
+      "SimpleGraph G on vertex type V",
+      "SimpleGraph.neighborFinset",
+      "Finset.card",
+      "Neighborhood of a vertex"
+    ]
   },
   {
     "id": "ann-e637-distinct",
@@ -70,7 +80,12 @@
       "definition"
     ],
     "mathContext": "See annotation content for formal details of distinct degrees",
-    "prerequisites": []
+    "prerequisites": [
+      "vertexDegree (G v) definition",
+      "Finset.image",
+      "Finset.univ",
+      "Regular graph (single degree value)"
+    ]
   },
   {
     "id": "ann-e637-clique",
@@ -95,7 +110,12 @@
       "definition"
     ],
     "mathContext": "See annotation content for formal details of clique and independence numbers",
-    "prerequisites": []
+    "prerequisites": [
+      "Clique (mutually adjacent vertex set)",
+      "Independent set (mutually non-adjacent vertex set)",
+      "Complement graph Gᶜ",
+      "Maximum-cardinality vertex subset"
+    ]
   },
   {
     "id": "ann-e637-ramsey",
@@ -119,7 +139,12 @@
       "clique-bound",
       "definition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Clique number ω(G) and independence number α(G)",
+      "Big-O notation O(log n)",
+      "Ramsey number R(k+1,k+1)",
+      "Erdős-Rényi random graph G(n, 1/2)"
+    ]
   },
   {
     "id": "ann-e637-induced",
@@ -143,7 +168,12 @@
       "definition"
     ],
     "mathContext": "See annotation content for formal details of induced subgraphs",
-    "prerequisites": []
+    "prerequisites": [
+      "Induced subgraph G[S] on vertex subset S",
+      "distinctDegrees and degree counting",
+      "Vertex subset S ⊆ V",
+      "Existential predicate over subsets"
+    ]
   },
   {
     "id": "ann-e637-original",
@@ -167,7 +197,12 @@
       "solved"
     ],
     "mathContext": "See annotation content for formal details of original conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "IsRamseyGraph definition",
+      "HasLargeInducedWithManyDegrees predicate",
+      "Real.sqrt and Nat.ceil (⌈·⌉₊)",
+      "Erdős-Faudree-Sós conjecture"
+    ]
   },
   {
     "id": "ann-e637-bukh",
@@ -192,7 +227,12 @@
       "degree-analysis",
       "key-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "OriginalConjecture (Erdős-Faudree-Sós)",
+      "IsRamseyGraph definition",
+      "Induced subgraph with √n distinct degrees",
+      "Regularity/spectral methods in graph theory"
+    ]
   },
   {
     "id": "ann-e637-strengthened",
@@ -216,7 +256,12 @@
       "improvement"
     ],
     "mathContext": "See annotation content for formal details of strengthened conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "numDistinctDegrees G",
+      "IsRamseyGraph definition",
+      "Real exponentiation n^(2/3)",
+      "Whole-graph vs induced-subgraph degree count"
+    ]
   },
   {
     "id": "ann-e637-jkly",
@@ -241,7 +286,12 @@
       "algebraic-method",
       "key-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "StrengthenedConjecture (n^{2/3} bound)",
+      "Bukh-Sudakov √n result",
+      "Probabilistic and algebraic methods",
+      "Dependent random choice"
+    ]
   },
   {
     "id": "ann-e637-optimal",
@@ -265,7 +315,12 @@
       "open-question"
     ],
     "mathContext": "See annotation content for formal details of optimality",
-    "prerequisites": []
+    "prerequisites": [
+      "StrengthenedConjecture (n^{2/3} bound)",
+      "Extremal construction of Ramsey graphs",
+      "Asymptotic notation n^{2/3+o(1)}",
+      "Tightness of an exponent"
+    ]
   },
   {
     "id": "ann-e637-regular",
@@ -289,7 +344,12 @@
       "supporting-result"
     ],
     "mathContext": "See annotation content for formal details of regular graphs",
-    "prerequisites": []
+    "prerequisites": [
+      "k-regular graph (all degrees equal)",
+      "numDistinctDegrees G",
+      "IsRamseyGraph definition",
+      "SimpleGraph.IsRegular"
+    ]
   },
   {
     "id": "ann-e637-random",
@@ -313,7 +373,12 @@
       "probabilistic-argument"
     ],
     "mathContext": "See annotation content for formal details of random graphs",
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős-Rényi random graph G(n, 1/2)",
+      "IsRamseyGraph definition",
+      "Degree concentration around n/2",
+      "ω(G), α(G) ≈ 2 log n"
+    ]
   },
   {
     "id": "ann-e637-ramsey-conn",
@@ -337,7 +402,12 @@
       "combinatorics"
     ],
     "mathContext": "See annotation content for formal details of ramsey connections",
-    "prerequisites": []
+    "prerequisites": [
+      "Diagonal Ramsey number R(k,k)",
+      "Probabilistic lower bound R(k,k) ≥ 2^{k/2}",
+      "Clique number ω(G) and independence number α(G)",
+      "n ≤ R(ω+1, α+1) size bound"
+    ]
   },
   {
     "id": "ann-e637-summary",
@@ -361,6 +431,11 @@
       "historical-context"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős-Faudree-Sós conjecture (√n)",
+      "Bukh-Sudakov (2007) result",
+      "JKLY (2020) n^{2/3} strengthening",
+      "IsRamseyGraph and degree diversity"
+    ]
   }
 ]
