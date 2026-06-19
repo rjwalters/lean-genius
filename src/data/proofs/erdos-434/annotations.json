@@ -17,7 +17,11 @@
       "numerical semigroups",
       "extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Subsets of {1,...,n}",
+      "Representable integers (sums with repetition)",
+      "Numerical semigroups"
+    ]
   },
   {
     "id": "ann-434-representable",
@@ -37,7 +41,11 @@
       "integer representation",
       "additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Multisets",
+      "Finite sums",
+      "Membership predicates"
+    ]
   },
   {
     "id": "ann-434-zero-rep",
@@ -55,7 +63,11 @@
       "proof technique",
       "group theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Representability via multisets",
+      "Empty multiset / empty sum convention",
+      "Identity element"
+    ]
   },
   {
     "id": "ann-434-mem-rep",
@@ -73,7 +85,11 @@
       "proof technique",
       "group theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Representability via multisets",
+      "Singleton multiset",
+      "Generating set"
+    ]
   },
   {
     "id": "ann-434-add-rep",
@@ -92,7 +108,11 @@
       "group theory",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Representability via multisets",
+      "Multiset addition (Multiset.mem_add, sum_add)",
+      "Closure under addition"
+    ]
   },
   {
     "id": "ann-434-nonrep-def",
@@ -112,7 +132,11 @@
       "Apéry set",
       "Wilf conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Representable set",
+      "Set complement",
+      "gcd and the Frobenius (Chicken McNugget) theorem"
+    ]
   },
   {
     "id": "ann-434-count",
@@ -130,7 +154,12 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Non-representable set",
+      "Set.encard / Set.ncard",
+      "Extended naturals ℕ∞",
+      "Finite vs infinite sets"
+    ]
   },
   {
     "id": "ann-434-frobenius",
@@ -148,7 +177,11 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Non-representable set",
+      "Supremum sSup",
+      "Coprimality / gcd = 1"
+    ]
   },
   {
     "id": "ann-434-complete",
@@ -166,7 +199,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Non-representable set",
+      "gcd of a set",
+      "Chicken McNugget theorem"
+    ]
   },
   {
     "id": "ann-434-topk",
@@ -186,7 +223,11 @@
       "optimal generating set",
       "consecutive integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Subsets of {1,...,n}",
+      "Closed interval Set.Icc",
+      "Extremal configurations"
+    ]
   },
   {
     "id": "ann-434-extremal-def",
@@ -204,7 +245,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counting non-representables (nCardNonRepresentable)",
+      "topK set",
+      "Optimality / maximization"
+    ]
   },
   {
     "id": "ann-434-examples",
@@ -222,7 +267,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Representability via multisets",
+      "Non-representable set",
+      "Frobenius number"
+    ]
   },
   {
     "id": "ann-434-kiss",
@@ -241,7 +290,11 @@
       "extremal optimization",
       "element replacement argument"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Frobenius question",
+      "topK set",
+      "Counting non-representables"
+    ]
   },
   {
     "id": "ann-434-answer",
@@ -259,7 +312,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Kiss's theorem (2002)",
+      "Extremal Frobenius question",
+      "Corollary / direct application"
+    ]
   },
   {
     "id": "ann-434-intuition",
@@ -277,7 +334,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counting non-representables",
+      "Representability via multisets",
+      "Small generating sets {1,2}"
+    ]
   },
   {
     "id": "ann-434-sylvester",
@@ -297,7 +358,12 @@
       "Chicken McNugget theorem",
       "coprimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Frobenius number",
+      "Coprimality",
+      "Sylvester-Frobenius formula ab-a-b",
+      "Counting non-representables"
+    ]
   },
   {
     "id": "ann-434-greedy",
@@ -315,7 +381,12 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "topK set",
+      "Closed interval Set.Icc",
+      "Greedy algorithms",
+      "Definitional equality (rfl)"
+    ]
   },
   {
     "id": "ann-434-finite",
@@ -333,7 +404,11 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Non-representable set",
+      "Coprime elements",
+      "Frobenius finiteness theorem"
+    ]
   },
   {
     "id": "ann-434-problem433",
@@ -351,7 +426,12 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "topK set",
+      "Frobenius number",
+      "Consecutive-integer sets",
+      "Erdős problem #433"
+    ]
   },
   {
     "id": "ann-434-complete-answer",
@@ -369,7 +449,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Kiss's theorem (2002)",
+      "Counting non-representables",
+      "topK optimality"
+    ]
   },
   {
     "id": "ann-434-maximum",
@@ -387,6 +471,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "topK set",
+      "IsGreatest (Mathlib)",
+      "Validity constraints on subsets"
+    ]
   }
 ]
