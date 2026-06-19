@@ -27,7 +27,7 @@ Numerical companion: `verify_unique_repr_upper.py` checks reprCount ≡ 1,
 
 NOTE: registered in `Proofs.lean` (researcher-1, S4) after a line-by-line audit
 that every bearer matches the parent's signatures and the file is free of the
-stray-`-/` docstring hazard; still build-pending under the Docker blackout, so a
+stray comment-terminator docstring hazard; still build-pending under the Docker blackout, so a
 post-blackout session should confirm via
 `./proofs/scripts/docker-build.sh Proofs.Erdos1179OQ02Upper`.
 Mathlib bearer name-checked @ pinned rev 2df2f01:
