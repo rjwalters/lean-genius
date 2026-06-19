@@ -17,7 +17,11 @@
       "Diophantine equations",
       "ABC conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factorials and the growth of n!",
+      "factorizations into distinct increasing integers",
+      "the span max minus min of a factor sequence"
+    ]
   },
   {
     "id": "erdos-393-factorization",
@@ -36,7 +40,11 @@
       "Divisibility",
       "Multiplicative decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "products of lists of positive integers",
+      "multiplicative decomposition of an integer",
+      "list product equaling a target value"
+    ]
   },
   {
     "id": "erdos-393-span",
@@ -55,7 +63,11 @@
       "Max-min",
       "Spread"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "maximum and minimum of a list",
+      "sorted sequences of factors",
+      "difference between largest and smallest element"
+    ]
   },
   {
     "id": "erdos-393-f-function",
@@ -74,7 +86,11 @@
       "Minimum span",
       "Factorial structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "minimal span over all valid factorizations of n!",
+      "products of distinct increasing integers",
+      "extremal functions defined by a minimization"
+    ]
   },
   {
     "id": "erdos-393-consecutive",
@@ -93,7 +109,11 @@
       "Pell equations",
       "Diophantine equations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "product of two consecutive integers k(k+1)",
+      "Pell-like Diophantine equations",
+      "the f(n) = 1 special case for n!"
+    ]
   },
   {
     "id": "erdos-393-counting",
@@ -112,7 +132,11 @@
       "Density",
       "Distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting function F(m, N) over n at most N",
+      "arithmetic functions and their value distribution",
+      "density analysis in analytic number theory"
+    ]
   },
   {
     "id": "erdos-393-berend-osgood",
@@ -131,7 +155,11 @@
       "Little-o notation",
       "Asymptotic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "little-o asymptotic notation",
+      "asymptotic density of an integer set",
+      "density zero results for fixed span m"
+    ]
   },
   {
     "id": "erdos-393-bpz",
@@ -150,7 +178,11 @@
       "Exponential sums",
       "Analytic methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "power-saving bounds N^theta with theta below 1",
+      "exponential sum techniques",
+      "improving over the trivial bound N"
+    ]
   },
   {
     "id": "erdos-393-abc",
@@ -169,7 +201,11 @@
       "Coprimality",
       "Diophantine implications"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the radical rad(n) as product of distinct prime factors",
+      "coprime triples a + b = c",
+      "the ABC conjecture and its Diophantine implications"
+    ]
   },
   {
     "id": "erdos-393-luca",
@@ -188,7 +224,11 @@
       "ABC applications",
       "Divergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "conditional results assuming the ABC conjecture",
+      "divergence f(n) tending to infinity",
+      "bounding solutions to P(x) = n!"
+    ]
   },
   {
     "id": "erdos-393-diophantine",
@@ -207,7 +247,11 @@
       "Brocard's problem",
       "Factorial equations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial equals factorial equations P(x) = n!",
+      "Brocard's problem n! + 1 = m squared",
+      "consecutive-integer products equaling n!"
+    ]
   },
   {
     "id": "erdos-393-density-zero",
@@ -226,6 +270,10 @@
       "Density arguments",
       "Sparse sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density of a set of integers",
+      "the Berend-Osgood density estimate",
+      "sparse sets with density zero"
+    ]
   }
 ]
