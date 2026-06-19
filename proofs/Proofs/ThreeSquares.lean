@@ -12,6 +12,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls
 import Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace
 import Mathlib.Tactic
 import Proofs.ZsqrtdNegTwo
+import Proofs.ThreeSquaresSliceMinkowski
 
 /-!
 # Legendre's Three Squares Theorem
@@ -1396,6 +1397,46 @@ private lemma dirichletForm_eq_p_of_lt_two_mul
       have : 0 < d * v 2 ^ 2 := mul_pos hd hi2
       linarith
   exact multiple_p_eq_p_of_lt_two_mul hp h_pos h_lt h_dvd
+
+/-- **Geometric half of the Dirichlet Key Lemma (S12, researcher-3 2026-06-19)**:
+for a prime `p` and `d ∈ {1, 2}` with `-d` a quadratic residue mod `p`, the ternary
+Dirichlet form `x² + d·y² + d·z²` represents `p` *exactly* on a non-zero integer
+triple.
+
+This wires the now-complete geometric Minkowski input
+(`ThreeSquaresSlice.exists_dirichlet_vector_lt_two_mul`, the 2D-slice lattice point
+with form value `< 2p` lying in the sublattice `L_r`) into the integer-side
+identification chain:
+
+* `exists_int_sqrt_neg_d_mod_p` (S8) chooses the sublattice parameter `r` with
+  `p ∣ r² + d` from the quadratic-residue hypothesis;
+* `dirichletForm_dvd_of_in_sublattice` (S9) gives `p ∣ form(v)`;
+* `dirichletForm_eq_p_of_lt_two_mul` (S10A) upgrades `0 < form(v) < 2p ∧ p ∣ form(v)`
+  to `form(v) = p`.
+
+With this, the geometry-of-numbers component of `dirichlet_key_lemma` is fully
+machine-checked. The sole remaining step toward eliminating the axiom is the
+arithmetic descent from `form(v) = p = d·n − 1` to a sum-of-three-squares
+representation of `n`. -/
+private lemma exists_form_eq_p_of_qr
+    {p d : ℕ} [Fact (Nat.Prime p)]
+    (hd_pos : 0 < d) (hd_lt_p : d < p) (hd2 : d ≤ 2)
+    (hqr : legendreSym p (-d : ℤ) = 1) :
+    ∃ v : Fin 3 → ℤ, v ≠ 0 ∧
+      v 0 ^ 2 + (d : ℤ) * v 1 ^ 2 + (d : ℤ) * v 2 ^ 2 = (p : ℤ) := by
+  have hp_nat : 0 < p := (Fact.out : Nat.Prime p).pos
+  have hp_pos : (0 : ℤ) < (p : ℤ) := by exact_mod_cast hp_nat
+  have hd_pos' : (0 : ℤ) < (d : ℤ) := by exact_mod_cast hd_pos
+  -- QR ⟹ choose sublattice parameter `r` with `p ∣ r² + d`.
+  obtain ⟨r, hr⟩ := exists_int_sqrt_neg_d_mod_p hd_pos hd_lt_p hqr
+  -- Geometric Minkowski input: a non-zero `v ∈ L_r` with `form(v) < 2p`.
+  obtain ⟨v, hv_ne, ⟨hdvd_xy, hdvd_z⟩, hlt⟩ :=
+    ThreeSquaresSlice.exists_dirichlet_vector_lt_two_mul p d hp_nat hd_pos hd2 r
+  -- Divisibility side: `p ∣ form(v)` from sublattice membership.
+  have hdvd : (p : ℤ) ∣ v 0 ^ 2 + (d : ℤ) * v 1 ^ 2 + (d : ℤ) * v 2 ^ 2 :=
+    dirichletForm_dvd_of_in_sublattice hr v ⟨hdvd_xy, hdvd_z⟩
+  -- Identification: `0 < form(v) < 2p` and `p ∣ form(v)` force `form(v) = p`.
+  exact ⟨v, hv_ne, dirichletForm_eq_p_of_lt_two_mul hp_pos hd_pos' v hv_ne hlt hdvd⟩
 
 /-! ### S10B (2026-05-08): Dirichlet Sublattice as a `Submodule ℤ (Fin 3 → ℤ)`
 

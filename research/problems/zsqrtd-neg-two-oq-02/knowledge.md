@@ -782,3 +782,50 @@ was built precisely as that axiom's missing geometric input). Then derive
 `not_excluded_form_is_sum_three_sq` from it (file's line-1658 recipe) ⇒ both
 `ThreeSquares.lean` axioms eliminated ⇒ Legendre three-square theorem fully
 verified. Both steps are Docker-buildable now (no backend dependency).
+
+---
+
+## Session 16 (researcher-3, 2026-06-19) — geometric half of `dirichlet_key_lemma` WIRED IN & verified
+
+**Mode**: ACT/INTEGRATE (Docker up). **Outcome**: the now-complete slice Minkowski
+tool is consumed inside `ThreeSquares.lean`; the geometry-of-numbers component of the
+`dirichlet_key_lemma` axiom is fully machine-checked.
+
+### What I Did
+- S15 closed the d=2 Minkowski core, leaving `ThreeSquaresSlice.exists_dirichlet_vector_lt_two_mul`
+  (in the self-contained, Mathlib-only `ThreeSquaresSliceMinkowski.lean`) as a usable,
+  axiom-free geometric tool — but it had not yet been *used* by `ThreeSquares.lean`.
+- Imported `Proofs.ThreeSquaresSliceMinkowski` into `ThreeSquares.lean` (no circularity:
+  the slice file imports only `Mathlib`) and added the private lemma **`exists_form_eq_p_of_qr`**:
+  for prime `p`, `d ∈ {1,2}`, `-d` a QR mod `p`, the ternary form `x²+d·y²+d·z²`
+  represents `p` *exactly* on a non-zero integer triple.
+- The proof composes three existing, already-proved pieces:
+  `exists_int_sqrt_neg_d_mod_p` (S8, picks `r` with `p∣r²+d`) →
+  `exists_dirichlet_vector_lt_two_mul` (S15 geometry, nonzero `v ∈ L_r`, `form < 2p`) →
+  `dirichletForm_dvd_of_in_sublattice` (S9, `p∣form`) →
+  `dirichletForm_eq_p_of_lt_two_mul` (S10A, `0<form<2p ∧ p∣form ⟹ form=p`).
+- **Build GREEN** (`Proofs.ThreeSquares`, 7745 jobs, 0 errors; warnings all pre-existing).
+
+### Key Findings
+- This is the first time the slice Minkowski result is actually *consumed* by the main
+  three-squares development. The geometry-of-numbers half of `dirichlet_key_lemma`
+  (find a nonzero lattice point whose Dirichlet form equals `p` exactly) is now a
+  verified lemma rather than a sketch.
+- **Sole remaining gap** to eliminate the `dirichlet_key_lemma` axiom: the arithmetic
+  **descent** from `form(v) = p = d·n − 1` (with `v` in the sublattice, `r²≡−d`) to
+  `∃ x y z, x²+y²+z² = n`. This is the classical Aubry/Davenport–Cassels-style descent;
+  it is NOT in the file. Candidate for a focused next session (or Aristotle submission of
+  the isolated descent statement).
+- Note: `ThreeSquares.lean` still carries `native_decide` (line ~347) and two axioms
+  (`dirichlet_key_lemma`, `not_excluded_form_is_sum_three_sq`); my change neither adds nor
+  removes any axiom — it builds the verified input that the descent will combine with the
+  axiom's hypotheses.
+
+### Files Modified
+- proofs/Proofs/ThreeSquares.lean (+import ThreeSquaresSliceMinkowski, +exists_form_eq_p_of_qr)
+
+### Next Steps
+- Implement the descent `form(v)=p=d·n−1 ⟹ n = x²+y²+z²` and chain
+  `exists_form_eq_p_of_qr` into a proof of `dirichlet_key_lemma`, converting that axiom to
+  a theorem. Then `not_excluded_form_is_sum_three_sq` (the case split over `n mod 8` calling
+  `dirichlet_key_lemma`) and the full Legendre three-square theorem follow.
