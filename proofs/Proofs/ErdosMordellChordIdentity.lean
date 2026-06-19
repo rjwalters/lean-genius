@@ -304,6 +304,63 @@ theorem chord_length_eq
     star_trivial]
   ring
 
+/-- **Barycentric witness from interior membership (cycle-38, researcher-11) —
+isolates the SOLE use of the interior hypothesis `hP`.**
+
+For `P` strictly interior to the nondegenerate triangle `X Y Z`, the displacement
+`w = P − X` is a *strictly positive* combination of the two edge vectors at `X`:
+
+    P − X = s • (Y − X) + t • (Z − X),   s > 0,  t > 0.
+
+This is exactly the witness the cosine-side sign identity `(♦)` consumes: with
+`u = Y−X`, `v = Z−X`, the 2D cross products satisfy `[u,w] = t·[u,v]` and
+`[v,w] = −s·[u,v]`, so `[u,w]·[v,w] = −s·t·[u,v]² < 0` — the strict negativity that
+pins the sign `cos∠F_bPF_c = −cos∠YXZ` (it fails for exterior `P`). Proved from
+`AffineBasis.interior_convexHull` (interior of the hull of an affine basis ⇔ all
+barycentric coordinates `> 0`): the three barycentric coordinates of `P` are
+positive, sum to `1`, and reconstruct `P`, so `s, t` are its `Y`- and
+`Z`-coordinates. -/
+theorem interior_barycentric
+    (X Y Z P : EuclideanSpace ℝ (Fin 2))
+    (hXYZ : AffineIndependent ℝ ![X, Y, Z])
+    (hP : P ∈ interior (convexHull ℝ {X, Y, Z})) :
+    ∃ s t : ℝ, 0 < s ∧ 0 < t ∧ P - X = s • (Y - X) + t • (Z - X) := by
+  -- three affinely independent points span the plane (card = finrank + 1)
+  have htot : affineSpan ℝ (Set.range ![X, Y, Z]) = ⊤ := by
+    rw [hXYZ.affineSpan_eq_top_iff_card_eq_finrank_add_one]
+    simp [finrank_euclideanSpace_fin, Fintype.card_fin]
+  -- assemble the affine basis with the vertices as basis points
+  let b : AffineBasis (Fin 3) ℝ (EuclideanSpace ℝ (Fin 2)) := ⟨![X, Y, Z], hXYZ, htot⟩
+  have e0 : b 0 = X := rfl
+  have e1 : b 1 = Y := rfl
+  have e2 : b 2 = Z := rfl
+  -- the basis points are exactly the vertex set
+  have hrange : Set.range (b : Fin 3 → EuclideanSpace ℝ (Fin 2)) = {X, Y, Z} := by
+    ext p
+    simp only [Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff]
+    constructor
+    · rintro ⟨i, rfl⟩; fin_cases i <;> simp [e0, e1, e2]
+    · rintro (rfl | rfl | rfl)
+      exacts [⟨0, e0⟩, ⟨1, e1⟩, ⟨2, e2⟩]
+  -- interior of the hull ⇔ all barycentric coordinates are positive
+  have hpos : ∀ i, 0 < b.coord i P := by
+    have hchar := b.interior_convexHull
+    rw [hrange] at hchar
+    rw [hchar] at hP
+    exact hP
+  -- the coordinates reconstruct P and sum to one
+  have hsum := b.linear_combination_coord_eq_self P
+  have hone := b.sum_coord_apply_eq_one P
+  rw [Fin.sum_univ_three, e0, e1, e2] at hsum
+  rw [Fin.sum_univ_three] at hone
+  set c0 := b.coord 0 P with hc0def
+  set c1 := b.coord 1 P with hc1def
+  set c2 := b.coord 2 P with hc2def
+  refine ⟨c1, c2, hpos 1, hpos 2, ?_⟩
+  have hc0 : c0 = 1 - c1 - c2 := by linarith
+  rw [← hsum, hc0]
+  module
+
 /-- **The single residual geometric subfact of the cosine side.**
 
 The angle subtended at `P` by the two pedal feet is supplementary to the
