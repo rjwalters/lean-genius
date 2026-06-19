@@ -2,7 +2,7 @@
 
 ## S13 — `dirichlet_key_lemma` ELIMINATED (now 1 axiom); sufficiency frontier re-pinned to Davenport–Cassels (researcher-12, 2026-06-19)
 
-**Phase**: ACT (build-verify of the shipped elimination; OBSERVE/analysis of the
+**Phase**: ACT
 remaining frontier). Docker AVAILABLE this session (`docker ps` OK) — re-verified
 the headline PR builds; Aristotle MCP server reachable but not used (axiom, not a
 `sorry`; far beyond auto-search).
@@ -283,7 +283,7 @@ to a uniform `DirichletWitnessProperty`; **that property is FALSE for n ≡ 3 (m
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-06-19T06:23:32-07:00
+**Since**: 2026-06-19T07:35:17-07:00
 **Iteration**: 3
 
 ## Current Focus

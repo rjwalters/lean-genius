@@ -842,3 +842,65 @@ machine-checked end-to-end.
   Those existence statements are the true deep frontier (Dirichlet's theorem on primes
   in AP + the `m ≡ 3 (mod 8)` two-square split). Proving them unconditionally
   discharges the final axiom.
+
+## Session 17 (researcher-12, 2026-06-19) — Davenport–Cassels descent built & API-audited (the rational→integral factor)
+
+**Mode**: BUILD/ACT (both backends down: Docker `docker ps` rc=124; Aristotle MCP
+returns "Resource not found" on a fresh submission). **Outcome**: new self-contained,
+**axiom-free, sorry-free** companion `proofs/Proofs/ThreeSquaresDavenportCassels.lean`
+(159 LOC, unregistered → zero gallery-build blast radius). Build-pending; every lemma
+name/signature and both `linear_combination` identities were audited by hand against
+Lean v4.30.0 core + the local Mathlib clone (no GREEN container available this session).
+
+### Why this is the right infrastructure (ties to S14 + S16)
+
+S16 proved `dirichlet_key_lemma` for `d ≤ 2` (Minkowski volume bound `√2·π > 4` only
+holds for binary `x²+d·y²` with `d ≤ 2`). S14 then EXPOSED that the `d ≤ 2`-restricted
+witness `DirichletWitnessNe3` is a **false proposition**: 610/999 cores `m < 2000` admit
+**no** `d ≤ 2` witness, so the final axiom `not_excluded_form_is_sum_three_sq` cannot be
+discharged inside the `d ≤ 2` world. The documented escape is the two-factor split
+
+    (n is a sum of three RATIONAL squares)  +  (Davenport–Cassels: rational ⇒ integral).
+
+This file supplies the **second factor**, which is the elementary one. (Note: S16's "no
+Davenport–Cassels needed" remark was about the *`d≤2` key-lemma descent*, not about this
+final rational→integral reduction — both statements stand.)
+
+### What was built
+- `exists_sq_of_scaled (n) : ∀ t>0, ∀ v, Σvᵢ² = n·t² → ∃ a b c, Σ = n` — the
+  Davenport–Cassels descent by strong induction on `t`, via balanced remainders
+  `Int.bmod`. Nearest-integer rounding `rᵢ = bmod(vᵢ,t)` gives `f(r) < t²`, a congruence
+  gives `t ∣ f(r)` (`f(r)=t·s`, `0≤s<t`); reflected vector `v'ᵢ = s·wᵢ+(f(w)−n)·rᵢ`
+  satisfies `f(v') = n·s²` with `s<t`, so we descend. The pivotal identity
+  `f(v')−n·s² = s(f(w)−n)(s+2⟨w,r⟩+(f(w)−n)t) + (f(w)−n)²(f(r)−t·s)` (both brackets
+  vanish) is discharged by a single `linear_combination (s*(W-n))*hs + (W-n)^2*hfr`.
+- `exists_int_sq_of_rat_sq (n) : (∃ x y z : ℚ, Σ = n) → ∃ a b c : ℤ, Σ = n` — clears
+  denominators with `d = x.den·y.den·z.den` and feeds the descent.
+
+### API audit (no build available — verified against source)
+- `Int.bdiv_add_bmod (x)(m) : m*bdiv x m + bmod x m = x` ✓ (Lean core
+  Init/Data/Int/DivMod/Lemmas.lean:2507)
+- `Int.le_bmod (h:0<m) : -(m/2) ≤ bmod x m` ✓ (:2725);
+  `Int.bmod_lt (h:0<m) : bmod x m < (m+1)/2` ✓ (:2758). The `omega` step
+  `-(t:ℤ) ≤ 2·bmod ≤ t` is sound (omega handles Nat-division-by-2 + casts).
+- `Rat.den_nz` (field) ✓, `Rat.den_pos` ✓ (core Init/Data/Rat/Basic.lean:55),
+  `Rat.num_div_den (r:ℚ) : (r.num:ℚ)/(r.den:ℚ)=r` ✓ (Mathlib Algebra/Ring/Rat.lean:78).
+- Both `linear_combination` identities verified algebraically by hand (expansion matches).
+
+### Net axiom/sorry delta
+`ThreeSquares.lean` unchanged (still 1 axiom). New companion adds 0 axioms / 0 sorries.
+This is **critical-path infrastructure**, not an axiom elimination: it does NOT discharge
+`not_excluded_form_is_sum_three_sq` by itself.
+
+### Remaining open work (the real blocker, factor 1)
+`∃ x y z : ℚ, x²+y²+z² = n` for `n` not of excluded form `4ᵃ(8b+7)` — i.e. the
+local–global (Hasse–Minkowski) solvability of the ternary form `x²+y²+z²` over ℚ. Absent
+from Mathlib; the honest estimate remains ≫500 LOC (p-adic / Hilbert-symbol machinery).
+With factor 1 in hand, `exists_int_sq_of_rat_sq` closes the last axiom immediately.
+
+### Next steps
+- Build-verify `ThreeSquaresDavenportCassels.lean` when Docker/Aristotle returns (high
+  confidence GREEN given the API audit).
+- Scope factor 1: check Mathlib for `ℚ`-solvability of diagonal ternary forms / Hilbert
+  symbols (`Mathlib.NumberTheory.…`); if a sum-of-three-rational-squares criterion exists
+  or is <500 LOC buildable, the axiom falls. Otherwise this stays the documented frontier.
