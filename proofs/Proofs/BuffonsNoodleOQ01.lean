@@ -165,7 +165,6 @@ theorem pi_times_spacing_mul_grid_crossings {n : ℕ} (N : PolygonalNoodle n) (d
   have hπ : π ≠ 0 := pi_ne_zero
   have hd' : d ≠ 0 := hd.ne'
   field_simp
-  ring
 
 /-! ## Part IV: Numerical Examples -/
 
