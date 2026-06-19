@@ -17,7 +17,11 @@
       "unit-circle",
       "random-polynomials"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "harmonic analysis",
+      "polynomials"
+    ]
   },
   {
     "id": "ann-e525-littlewood-def",
@@ -36,7 +40,11 @@
       "rademacher-random-variables",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial algebra",
+      "combinatorics",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e525-min-modulus",
@@ -56,7 +64,11 @@
       "complex-analysis",
       "continuous-functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "point-set topology"
+    ]
   },
   {
     "id": "ann-e525-almost-all",
@@ -75,7 +87,11 @@
       "asymptotic-density",
       "o-notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "probability theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e525-kashin",
@@ -94,7 +110,11 @@
       "random-trigonometric-polynomials",
       "littlewood-conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "measure theory",
+      "harmonic analysis"
+    ]
   },
   {
     "id": "ann-e525-konyagin",
@@ -113,7 +133,11 @@
       "exponent-optimization",
       "probabilistic-method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "asymptotic analysis",
+      "probability theory"
+    ]
   },
   {
     "id": "ann-e525-konyagin-schlag",
@@ -132,7 +156,11 @@
       "probability-distribution",
       "small-ball-probability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "real analysis",
+      "anti-concentration inequalities"
+    ]
   },
   {
     "id": "ann-e525-cook-nguyen",
@@ -152,7 +180,11 @@
       "limiting-distribution",
       "exponential-distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "extreme value theory",
+      "random matrix universality"
+    ]
   },
   {
     "id": "ann-e525-rudin-shapiro",
@@ -171,7 +203,11 @@
       "flat-polynomials",
       "geometric-series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial algebra",
+      "complex analysis",
+      "geometric series"
+    ]
   },
   {
     "id": "ann-e525-mahler",
@@ -191,7 +227,11 @@
       "number-theory",
       "algebraic-integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Lebesgue integration",
+      "algebraic number theory"
+    ]
   },
   {
     "id": "ann-e525-summary",
@@ -210,6 +250,10 @@
       "summary-theorems",
       "historical-progression"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "harmonic analysis",
+      "asymptotic analysis"
+    ]
   }
 ]
