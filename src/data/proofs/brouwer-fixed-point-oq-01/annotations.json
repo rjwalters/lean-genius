@@ -9,6 +9,11 @@
       "ContinuousOn.sub for continuity of g = f - id",
       "Cauchy-Bolzano theorem as prototype"
     ],
+    "prerequisites": [
+      "continuity of real functions on a closed interval [a,b]",
+      "the Intermediate Value Theorem",
+      "the auxiliary function g(x) = f(x) \u2212 x and its sign changes"
+    ],
     "proofId": "brouwer-fixed-point-oq-01",
     "range": {
       "startLine": 67,
@@ -27,6 +32,11 @@
       "H_{n-1}(S^{n-1}) = Z as obstruction",
       "connected vs discrete image",
       "Brouwer FPT \u2194 No-Retraction equivalence"
+    ],
+    "prerequisites": [
+      "continuous maps and connectedness of the image",
+      "the boundary {0,1} of the interval [0,1]",
+      "the Intermediate Value Theorem (no continuous surjection onto a disconnected set)"
     ],
     "proofId": "brouwer-fixed-point-oq-01",
     "range": {
@@ -47,6 +57,11 @@
       "antipodal points on S^n",
       "antisymmetric function g(-x) = -g(x)"
     ],
+    "prerequisites": [
+      "antipodal / antisymmetric functions g(\u2212x) = \u2212g(x)",
+      "the Intermediate Value Theorem",
+      "odd functions vanish somewhere on a symmetric interval"
+    ],
     "proofId": "brouwer-fixed-point-oq-01",
     "range": {
       "startLine": 165,
@@ -65,6 +80,11 @@
       "LipschitzWith.of_dist_le_mul",
       "NNReal for nonneg Lipschitz constants",
       "Picard iteration for ODEs as application"
+    ],
+    "prerequisites": [
+      "metric spaces and the distance function",
+      "contraction mappings (Lipschitz constant K < 1)",
+      "the Banach fixed-point theorem and Picard iteration"
     ],
     "proofId": "brouwer-fixed-point-oq-01",
     "range": {
@@ -85,6 +105,11 @@
       "existence vs uniqueness in fixed point theory",
       "existsUnique (\u2203! x) in Lean 4"
     ],
+    "prerequisites": [
+      "the distinction between existence and uniqueness",
+      "fixed points of the identity vs a constant map",
+      "the \u2203! (exists-unique) quantifier"
+    ],
     "proofId": "brouwer-fixed-point-oq-01",
     "range": {
       "startLine": 284,
@@ -103,6 +128,11 @@
       "Sperner's Lemma as combinatorial Brouwer",
       "BrouwerFixedPoint.lean axiomatized companion",
       "Mathlib gap: Brouwer FPT not in Mathlib 4.26"
+    ],
+    "prerequisites": [
+      "the 1-dimensional Brouwer/IVT argument",
+      "why the IVT has no direct higher-dimensional analogue",
+      "algebraic-topology obstructions (singular homology H\u2099(S\u207f\u207b\u00b9), Sperner\u2019s lemma)"
     ],
     "proofId": "brouwer-fixed-point-oq-01",
     "range": {
