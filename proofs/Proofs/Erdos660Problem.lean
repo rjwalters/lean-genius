@@ -118,7 +118,93 @@ theorem trivial_lower_bound
     (S : Finset Point3D)
     (hn : S.card ≥ 2) :
     distinctDistances S ≥ 1 := by
-  sorry
+  unfold distinctDistances
+  obtain ⟨p, hp, q, hq, hne⟩ := Finset.one_lt_card.mp (by omega : 1 < S.card)
+  have hmem : euclideanDist p q ∈ (pairwiseDistances S).filter (· > 0) := by
+    rw [Finset.mem_filter]
+    refine ⟨?_, ?_⟩
+    · simp only [pairwiseDistances, Finset.mem_image]
+      exact ⟨(p, q), Finset.mem_product.mpr ⟨hp, hq⟩, rfl⟩
+    · simpa [euclideanDist] using dist_pos.mpr hne
+  exact Finset.card_pos.mpr ⟨_, hmem⟩
+
+/-! ### Verified base cases
+
+These small cases are fully machine-checked (no `sorry`). They pin down the
+behaviour of `distinctDistances` on empty, singleton, and two-point sets, and
+record that the count is monotone under adding vertices — the structural facts
+any lower-bound argument for the main conjecture must respect. -/
+
+/-- The empty configuration has no pairwise distances. -/
+theorem pairwiseDistances_empty :
+    pairwiseDistances (∅ : Finset Point3D) = ∅ := by
+  simp [pairwiseDistances]
+
+/-- The empty configuration has zero distinct distances. -/
+theorem distinctDistances_empty :
+    distinctDistances (∅ : Finset Point3D) = 0 := by
+  simp [distinctDistances, pairwiseDistances_empty]
+
+/-- A single point determines only the zero self-distance. -/
+theorem pairwiseDistances_singleton (p : Point3D) :
+    pairwiseDistances {p} = {0} := by
+  simp [pairwiseDistances, euclideanDist, dist_self]
+
+/-- A single point has zero distinct (positive) distances. -/
+theorem distinctDistances_singleton (p : Point3D) :
+    distinctDistances {p} = 0 := by
+  simp [distinctDistances, pairwiseDistances_singleton]
+
+/-- Two distinct points determine exactly one distinct distance. -/
+theorem two_point_one_distance (p q : Point3D) (hne : p ≠ q) :
+    distinctDistances {p, q} = 1 := by
+  have hpq : (0 : ℝ) < euclideanDist p q := dist_pos.mpr hne
+  have h1 : pairwiseDistances {p, q} = {0, euclideanDist p q} := by
+    ext d
+    constructor
+    · intro hd
+      simp only [pairwiseDistances, Finset.mem_image] at hd
+      obtain ⟨⟨a, b⟩, hab, rfl⟩ := hd
+      obtain ⟨ha, hb⟩ := Finset.mem_product.mp hab
+      simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb
+      rw [Finset.mem_insert, Finset.mem_singleton]
+      rcases ha with rfl | rfl <;> rcases hb with rfl | rfl
+      · exact Or.inl (by simp [euclideanDist])
+      · exact Or.inr rfl
+      · exact Or.inr (by simp [euclideanDist, dist_comm])
+      · exact Or.inl (by simp [euclideanDist])
+    · intro hd
+      simp only [pairwiseDistances, Finset.mem_image]
+      rw [Finset.mem_insert, Finset.mem_singleton] at hd
+      rcases hd with rfl | rfl
+      · exact ⟨(p, p), Finset.mem_product.mpr
+          ⟨Finset.mem_insert_self _ _, Finset.mem_insert_self _ _⟩, by simp [euclideanDist]⟩
+      · exact ⟨(p, q), Finset.mem_product.mpr
+          ⟨Finset.mem_insert_self _ _,
+            Finset.mem_insert_of_mem (Finset.mem_singleton_self _)⟩, rfl⟩
+  unfold distinctDistances
+  rw [h1]
+  have h2 : ({0, euclideanDist p q} : Finset ℝ).filter (· > 0)
+      = {euclideanDist p q} := by
+    ext d
+    simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton,
+      gt_iff_lt]
+    constructor
+    · rintro ⟨rfl | rfl, hd⟩
+      · exact absurd hd (lt_irrefl 0)
+      · rfl
+    · rintro rfl
+      exact ⟨Or.inr rfl, hpq⟩
+  rw [h2, Finset.card_singleton]
+
+/-- Distinct distances are monotone: adding vertices never decreases the count. -/
+theorem distinctDistances_mono {S T : Finset Point3D} (h : S ⊆ T) :
+    distinctDistances S ≤ distinctDistances T := by
+  unfold distinctDistances
+  apply Finset.card_le_card
+  apply Finset.filter_subset_filter
+  unfold pairwiseDistances
+  exact Finset.image_subset_image (Finset.product_subset_product h h)
 
 /-- Conjecture: Linear lower bound without the precise constant.
     The vertices of a convex polyhedron in ℝ³ determine Ω(n) distinct distances. -/
