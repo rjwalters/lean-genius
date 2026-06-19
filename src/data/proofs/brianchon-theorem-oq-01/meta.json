@@ -1,0 +1,169 @@
+{
+  "id": "brianchon-theorem-oq-01",
+  "title": "Brianchon's Theorem",
+  "slug": "brianchon-theorem-oq-01",
+  "description": "If a hexagon is circumscribed about a conic (each side tangent to it), the three main diagonals joining opposite vertices are concurrent. Proved here as the projective dual of Pascal's hexagon theorem, with the duality bridge fully verified and axiom-free.",
+  "meta": {
+    "author": "Charles-Julien Brianchon (1806)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brianchon%27s_theorem",
+    "date": "1806",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BrianchonTheorem.lean",
+    "tags": [
+      "geometry",
+      "projective",
+      "conic",
+      "duality",
+      "concurrency",
+      "classic"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.LinearAlgebra.CrossProduct",
+        "description": "Cross product in ℝ³ for line-through and line-intersection (join/meet) operations",
+        "module": "Mathlib.LinearAlgebra.CrossProduct"
+      },
+      {
+        "theorem": "Matrix.adjugate_adjugate",
+        "description": "adjugate (adjugate A) = det A ^ (card - 2) • A; for 3×3 this collapses the iterated cofactor map to det C • C",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Matrix.adjugate_fin_three",
+        "description": "Explicit 3×3 adjugate entries, enabling the cofactor cross-product identity to be discharged by `ring`",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Matrix.det_mul",
+        "description": "Multiplicativity of the determinant, used to transport Pascal's vanishing determinant to Brianchon's",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      }
+    ],
+    "originalContributions": [
+      "First formal proof of Brianchon's theorem in the gallery, derived from Pascal's theorem via pole–polar duality",
+      "An axiom-free, sorry-free duality bridge `concurrent_brianchon_of_collinear_pascal`: Pascal collinearity ⟹ Brianchon concurrency, by pure linear algebra",
+      "The cofactor / Binet–Cauchy cross-product identity `(M·u)×(M·v) = (adj M)ᵀ·(u×v)` proved by `ring`",
+      "Reduction showing each Brianchon diagonal equals the fixed linear map `det C • C` applied to the corresponding Pascal point",
+      "Answers an open question posed in the `pascals-hexagon` gallery entry"
+    ],
+    "dateAdded": "2026-06-19",
+    "axiomCount": 1,
+    "lineCount": 293,
+    "assumptions": "1 axiom: `conic_implies_pascal` — the same deep geometric fact (six points on a conic ⟹ opposite-side intersections collinear) axiomatized by the `pascals-hexagon` gallery entry as `conic_implies_pascal_constraint`. No new axiom is introduced. The duality bridge `concurrent_brianchon_of_collinear_pascal` is axiom-free and sorry-free (verified via `#print axioms`: depends only on propext, Classical.choice, Quot.sound). The full `brianchon_theorem` adds only `conic_implies_pascal`.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 14
+  },
+  "overview": {
+    "historicalContext": "Charles-Julien Brianchon discovered this theorem in 1806 as a student at the École Polytechnique, publishing it in the *Journal de l'École Polytechnique*. It is the projective dual of Pascal's hexagon theorem (1639): where Pascal's theorem concerns a hexagon *inscribed* in a conic and concludes that the intersections of opposite sides are collinear, Brianchon's theorem concerns a hexagon *circumscribed* about a conic and concludes that the main diagonals are concurrent. The two statements are exchanged by the principle of projective duality, which swaps points with lines and 'collinear' with 'concurrent'. Brianchon's result was historically significant as one of the first striking applications of the (then-new) duality principle in projective geometry, later systematized by Poncelet and Gergonne.",
+    "problemStatement": "**Brianchon's Theorem**: Let a hexagon with sides $a, b, c, d, e, f$ be circumscribed about a conic (each side tangent to the conic), and let its vertices be the meets of consecutive sides. Then the three main diagonals joining opposite vertices are **concurrent** — they pass through a common point, the *Brianchon point*.",
+    "text": "If a hexagon is circumscribed about a conic, the three main diagonals joining opposite vertices are concurrent. The projective dual of Pascal's theorem.",
+    "proofStrategy": "Work in the same homogeneous model as `pascals-hexagon`: points and lines are nonzero vectors in $\\mathbb{R}^3$, the join of two points / meet of two lines is the cross product, and three points are collinear (resp. three lines concurrent) iff their $3\\times3$ coordinate determinant vanishes. For a symmetric conic matrix $C$, the polarity $P \\mapsto C\\cdot P$ sends a contact point on the conic to its tangent line, so a circumscribed hexagon is the dual of an inscribed hexagon of contact points $A,\\dots,F$. The proof hinges on the cofactor identity $(M\\cdot u)\\times(M\\cdot v) = (\\operatorname{adj} M)^{\\mathsf T}\\cdot(u\\times v)$. Applying it twice (with $M=C$ then $M=\\operatorname{adj} C$) and using $\\operatorname{adj}(\\operatorname{adj} C)=\\det C\\cdot C$ for $3\\times3$ matrices shows each Brianchon diagonal equals $(\\det C\\cdot C)$ applied to the corresponding Pascal point. Since applying a fixed matrix multiplies the triple determinant by its own determinant, Pascal's vanishing determinant forces Brianchon's. This duality bridge is axiom-free; the unconditional theorem then feeds in Pascal's axiom.",
+    "keyInsights": [
+      "**Self-dual coordinates**: In the homogeneous $\\mathbb{R}^3$ model the predicates `collinear` (of points) and `concurrent` (of lines) are *the same function* — both are 'the $3\\times3$ determinant vanishes' — so projective duality is literally the relabelling of vectors as points or as lines",
+      "**The cofactor identity is the whole duality**: $(M\\cdot u)\\times(M\\cdot v) = (\\operatorname{adj} M)^{\\mathsf T}\\cdot(u\\times v)$ says the join/meet operation intertwines the point map $M$ with the line map $(\\operatorname{adj} M)^{\\mathsf T}$; this one degree-3 polynomial identity, closed by `ring`, drives the entire reduction",
+      "**Diagonals are a fixed image of Pascal points**: applying the identity twice collapses the iterated cofactor matrix via $\\operatorname{adj}(\\operatorname{adj} C)=\\det C\\cdot C$, so every Brianchon diagonal is $(\\det C\\cdot C)$ applied to the matching Pascal point",
+      "**No nondegeneracy needed for the bridge**: because $\\det(M\\cdot u, M\\cdot v, M\\cdot w)=\\det M\\cdot\\det(u,v,w)$ and $0$ times anything is $0$, Pascal's collinearity forces Brianchon's concurrency even without assuming $\\det C\\neq0$",
+      "**No new axiom**: Brianchon is proved using exactly the one axiom Pascal already needs (`conic_implies_pascal`); the duality bridge itself depends only on the foundational axioms propext / Classical.choice / Quot.sound"
+    ],
+    "prerequisites": [
+      "Projective plane in homogeneous coordinates (points and lines as vectors in ℝ³)",
+      "Cross product as join/meet; determinant as the collinearity/concurrency test",
+      "Adjugate / cofactor matrix and the identity adjugate (adjugate A) = det A ^ (n-2) • A",
+      "Pole–polar duality with respect to a conic"
+    ]
+  },
+  "conclusion": {
+    "summary": "Brianchon's theorem is proved as the projective dual of Pascal's hexagon theorem. The core deliverable is the axiom-free, sorry-free duality bridge `concurrent_brianchon_of_collinear_pascal`, which shows by pure linear algebra that Pascal's three collinear points force Brianchon's three concurrent diagonals. The unconditional `brianchon_theorem` combines this bridge with the single Pascal axiom `conic_implies_pascal`, introducing no new assumption.",
+    "implications": "This closes the classic Pascal/Brianchon duality pair and answers an open question recorded in the `pascals-hexagon` entry ('Can the Brianchon dual be formally proved from Pascal's theorem via projective duality?'). The reusable bridge — cofactor cross-product identity plus determinant transport — is a template for dualizing other projective incidence theorems (e.g. Desargues self-duality, the dual of Pappus).",
+    "openQuestions": [
+      "Eliminate the shared `conic_implies_pascal` axiom (via Cayley–Bacharach or the Sylvester reduction to the standard conic), upgrading both Pascal and Brianchon to fully verified",
+      "Add the nondegeneracy hypothesis to recover the converse and the genuine Brianchon point as an honest projective point (validity of the diagonals)",
+      "Formalize the limiting/degenerate cases (a side through a point at infinity) explicitly"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Brianchon's theorem is the exact projective dual of Pascal's hexagon theorem; this proof derives Brianchon from Pascal via pole–polar duality and reuses the same homogeneous-coordinate model and the same `conic_implies_pascal` fact",
+      "sharedConcepts": [
+        "projective-geometry",
+        "conic-sections",
+        "duality",
+        "incidence-theorem"
+      ],
+      "targetId": "pascals-hexagon"
+    },
+    {
+      "relationship": "Both are fundamental incidence theorems of projective geometry exhibiting point-line duality; Desargues concerns perspective triangles, Brianchon concerns circumscribed hexagons",
+      "sharedConcepts": [
+        "projective-geometry",
+        "concurrency",
+        "incidence-theorem"
+      ],
+      "targetId": "desargues-theorem"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/BrianchonTheorem.lean",
+    "lineCount": 293,
+    "axiomCount": 1,
+    "sorries": 0,
+    "theoremCount": 8,
+    "definitionCount": 14,
+    "imports": [
+      "import Mathlib.Data.Real.Basic",
+      "import Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "import Mathlib.LinearAlgebra.CrossProduct",
+      "import Mathlib.LinearAlgebra.Matrix.Adjugate",
+      "import Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "concurrent_brianchon_of_collinear_pascal",
+      "type": "core",
+      "description": "Axiom-free duality bridge: for a symmetric conic, if the three Pascal points of the contact hexagon are collinear, then the three main diagonals of the circumscribed hexagon are concurrent",
+      "leanType": "C.symmetric → collinear (pascal points) → concurrent (brianchon diagonals)"
+    },
+    {
+      "name": "brianchon_theorem",
+      "type": "core",
+      "description": "Brianchon's theorem: the three main diagonals of a hexagon circumscribed about a symmetric conic are concurrent",
+      "leanType": "C.symmetric → (hex : ContactHexagon C) → concurrent (brianchonDiag1 hex) (brianchonDiag2 hex) (brianchonDiag3 hex)"
+    },
+    {
+      "name": "crossProduct_mulMatrix",
+      "type": "supporting",
+      "description": "Cofactor / Binet–Cauchy identity: (M·u)×(M·v) = (adjugate M)ᵀ·(u×v)",
+      "leanType": "crossProduct (M *ᵥ u) (M *ᵥ v) = (M.adjugate)ᵀ *ᵥ crossProduct u v"
+    },
+    {
+      "name": "det_threeVectorMatrix_mulMatrix",
+      "type": "supporting",
+      "description": "Determinant transport: applying a fixed matrix to the three rows scales the triple determinant by det M",
+      "leanType": "det (threeVectorMatrix (M·u) (M·v) (M·w)) = det M * det (threeVectorMatrix u v w)"
+    }
+  ],
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Brianchon, Charles-Julien",
+      "title": "Sur les surfaces courbes du second degré",
+      "year": "1806",
+      "venue": "Journal de l'École Polytechnique",
+      "note": "Original statement of Brianchon's theorem: the three main diagonals of a hexagon circumscribed about a conic are concurrent"
+    },
+    {
+      "authors": "Coxeter, H. S. M.",
+      "title": "Projective Geometry",
+      "year": "1987",
+      "venue": "Springer",
+      "note": "Modern treatment of Pascal/Brianchon duality and the pole–polar correspondence with respect to a conic"
+    }
+  ]
+}
