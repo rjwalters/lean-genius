@@ -16,7 +16,11 @@
       "radicals"
     ],
     "mathContext": "See annotation content for formal details of quartic formula: wiedijk #46",
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial equations and their roots",
+      "solving by radicals (nested square/cube roots)",
+      "the quadratic and cubic formulas"
+    ]
   },
   {
     "id": "ann-definitions",
@@ -35,7 +39,11 @@
       "resolvent",
       "auxiliary variable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial coefficients and monic polynomials",
+      "the depressed (reduced) form of a polynomial",
+      "auxiliary/resolvent variables"
+    ]
   },
   {
     "id": "ann-depression",
@@ -54,7 +62,11 @@
       "depression",
       "substitution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "substitution x ↦ y − b/4 to remove the cubic term",
+      "completing/shifting in polynomials",
+      "the depressed quartic y⁴+py²+qy+r"
+    ]
   },
   {
     "id": "ann-ferrari-insight",
@@ -73,7 +85,11 @@
       "perfect square",
       "factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "completing the square",
+      "perfect-square trinomials",
+      "introducing a parameter to force a square"
+    ]
   },
   {
     "id": "ann-factorization",
@@ -92,7 +108,11 @@
       "quadratic factors",
       "four roots"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factoring a quartic into two quadratics",
+      "the resolvent cubic",
+      "matching coefficients"
+    ]
   },
   {
     "id": "ann-four-roots",
@@ -111,7 +131,11 @@
       "quadratic formula",
       "nested radicals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the quadratic formula",
+      "nested radicals",
+      "extracting four roots from two quadratic factors"
+    ]
   },
   {
     "id": "ann-biquadratic",
@@ -130,7 +154,11 @@
       "substitution",
       "quadratic formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "biquadratic equations ax⁴+bx²+c",
+      "the substitution u = x²",
+      "the quadratic formula"
+    ]
   },
   {
     "id": "ann-galois",
@@ -150,7 +178,11 @@
       "Abel-Ruffini"
     ],
     "mathContext": "See annotation content for formal details of why quartic works (galois)",
-    "prerequisites": []
+    "prerequisites": [
+      "Galois groups of polynomials",
+      "solvable groups and the solvability of S₄",
+      "the Abel–Ruffini theorem (degree ≥ 5)"
+    ]
   },
   {
     "id": "ann-history",
@@ -170,6 +202,10 @@
       "Ars Magna"
     ],
     "mathContext": "See annotation content for formal details of historical race (1515-1545)",
-    "prerequisites": []
+    "prerequisites": [
+      "solving cubic and quartic equations by radicals",
+      "the Renaissance algebraists (del Ferro, Tartaglia, Cardano, Ferrari)",
+      "Cardano's Ars Magna (1545)"
+    ]
   }
 ]
