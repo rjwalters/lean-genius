@@ -1,0 +1,34 @@
+[
+  {
+    "id": "abundant-oq02-ann-intro",
+    "proofId": "abundant-number-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Smallest Odd Abundant Number: 945",
+    "content": "A natural number $n$ is **abundant** when $\\sigma(n) > 2n$, where $\\sigma(n) = \\sum_{d \\mid n} d$. The smallest abundant number is $12$, but the abundant numbers $12, 18, 20, 24, 30, \\dots$ are all **even** for a while: the smallest **odd** abundant number is $945 = 3^3 \\cdot 5 \\cdot 7$, with $\\sigma(945) = 40 \\cdot 6 \\cdot 8 = 1920 > 1890 = 2 \\cdot 945$.\n\nThe goal is `IsLeast {n \\mid \\text{Odd } n \\wedge n.\\text{Abundant}} 945$. The minimality half is a bounded check $\\forall n < 945,\\ \\text{Odd } n \\to \\neg\\, n.\\text{Abundant}$. The obstruction is purely computational: Mathlib's `Nat.Abundant` is decidable only via `Finset`/`Multiset` divisor folds, whose **kernel** reduction blows up well before $945$, so a direct `decide` is infeasible. Keeping the proof axiom-free (kernel `decide`, not `native_decide`) requires a divisor sum the kernel can actually evaluate."
+  },
+  {
+    "id": "abundant-oq02-ann-sigmafast",
+    "proofId": "abundant-number-oq-01-oq-02",
+    "range": { "startLine": 30, "endLine": 39 },
+    "type": "technique",
+    "title": "A Kernel-Reducible Divisor Sum",
+    "content": "`sigmaAux n m` computes $\\sum_{d=1}^{m} (d \\text{ if } d \\mid n \\text{ else } 0)$ by **structural recursion on $m$**, and `sigmaFast n := sigmaAux n n`. The key design choice: no `Finset` or `Multiset` appears at reduction time, so the Lean kernel evaluates $\\sigma$ through ordinary GMP-accelerated $\\mathbb{N}$ arithmetic. This is what makes the $n < 945$ check feasible by kernel `decide` where the canonical `Finset`-based representation cannot reduce."
+  },
+  {
+    "id": "abundant-oq02-ann-agreement",
+    "proofId": "abundant-number-oq-01-oq-02",
+    "range": { "startLine": 41, "endLine": 66 },
+    "type": "proof-step",
+    "title": "Agreement with Mathlib's σ",
+    "content": "`sigmaAux_eq_sum` (induction on $m$) identifies the recursion with the indicator sum over `range (m+1)`. `sigmaFast_eq_sigma` then uses `Finset.sum_filter` and the fact that $d \\mid n$ with $n \\neq 0$ forces $1 \\le d \\le n$ to collapse the filtered range to `n.divisors`, proving $\\texttt{sigmaFast } n = \\sum_{d \\mid n} d$. After this one-time bridge, downstream reasoning may freely use the kernel-fast form."
+  },
+  {
+    "id": "abundant-oq02-ann-minimality",
+    "proofId": "abundant-number-oq-01-oq-02",
+    "range": { "startLine": 68, "endLine": 105 },
+    "type": "key-insight",
+    "title": "Bounded Kernel decide and Minimality",
+    "content": "`abundant_iff_sigmaFast` restates abundance as $2n < \\texttt{sigmaFast } n$ (via `Nat.sum_divisors_eq_sum_properDivisors_add_self` and `omega`), and `abundant_945` follows from $\\texttt{sigmaFast } 945 = 1920$. The minimality lower bound `not_abundant_odd_below_945 : ∀ n < 945, Odd n → sigmaFast n ≤ 2n` is a **single kernel `decide`** (`Nat.decidableBallLT`): even $n$ are discharged instantly because $\\text{Odd } n$ is false, and odd $n$ reduce `sigmaFast n` in the kernel. `smallest_odd_abundant` assembles odd-abundance of $945$ with the lower bound — entirely axiom-free, with no `Lean.ofReduceBool`."
+  }
+]

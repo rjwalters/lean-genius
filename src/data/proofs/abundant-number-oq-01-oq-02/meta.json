@@ -1,0 +1,179 @@
+{
+  "id": "abundant-number-oq-01-oq-02",
+  "title": "945 Is the Smallest Odd Abundant Number",
+  "slug": "abundant-number-oq-01-oq-02",
+  "description": "An abundant number n satisfies σ(n) > 2n. The smallest abundant number is 12, but every abundant number below 945 is even; the smallest odd abundant number is 945 = 3³·5·7, whose divisors sum to σ(945) = 40·6·8 = 1920 > 1890 = 2·945. This entry proves IsLeast {n | Odd n ∧ n.Abundant} 945 — 945 is odd, abundant, and a lower bound for the odd abundant numbers — fully machine-checked with 0 axioms and 0 sorries. The minimality half is a bounded check ∀ n < 945, Odd n → ¬ n.Abundant; because that range is far too large for a direct Finset-based decide, the file introduces a kernel-reducible divisor sum sigmaFast (plain structural recursion on ℕ, no Finset/Multiset at reduction time), proves it equal to Mathlib's canonical divisor sum, and discharges the whole minimality check by a single kernel decide — keeping the result axiom-free (no native_decide, hence no Lean.ofReduceBool).",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Abundant_number",
+    "date": "Classical; OEIS A005231 (odd abundant numbers)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbundantNumberOQ02.lean",
+    "badge": "verified",
+    "tags": [
+      "number-theory",
+      "divisor-sum",
+      "abundant-numbers",
+      "decidability",
+      "kernel-reduction",
+      "intermediate"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 105,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "dateAdded": "2026-06-19",
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. The minimality bound `∀ n < 945, Odd n → ¬ Nat.Abundant n` is discharged by kernel `decide` over the kernel-reducible `sigmaFast` — not `native_decide` — so the result carries no `Lean.ofReduceBool` axiom. Builds on Mathlib's canonical `Nat.Abundant` predicate and `Nat.sum_divisors_eq_sum_properDivisors_add_self`.",
+    "originalContributions": [
+      "Proves `smallest_odd_abundant : IsLeast {n : ℕ | Odd n ∧ Nat.Abundant n} 945` — 945 is the smallest odd abundant number — a minimality statement Mathlib does not record. This answers an open question posed by the companion entry `abundant-number-oq-01`.",
+      "Introduces a kernel-reducible sum-of-divisors `sigmaFast n := sigmaAux n n`, where `sigmaAux n m = ∑_{d=1}^{m} (d if d ∣ n else 0)` is defined by plain structural recursion on `m`. No `Finset`/`Multiset` appears at reduction time, so the Lean kernel evaluates it through ordinary (GMP-accelerated) `ℕ` arithmetic — the ingredient that makes the n < 945 check feasible by kernel `decide` where the direct `Finset`-based `decide` on `Nat.Abundant` blows up.",
+      "Proves `sigmaFast_eq_sigma : n ≠ 0 → sigmaFast n = ∑_{d ∣ n} d`, bridging the fast recursion to Mathlib's canonical divisor sum: the indicator sum over `range (n+1)` collapses to the sum over `n.divisors` because `d ∣ n` with `n ≠ 0` forces `1 ≤ d ≤ n`.",
+      "Proves the bridge `abundant_iff_sigmaFast : n ≠ 0 → (Nat.Abundant n ↔ 2n < sigmaFast n)`, converting the proper-divisor form of abundance into a full divisor-sum inequality on the kernel-fast sum, and `abundant_945 : Nat.Abundant 945` from the single value `sigmaFast 945 = 1920`.",
+      "Discharges `not_abundant_odd_below_945 : ∀ n < 945, Odd n → sigmaFast n ≤ 2n` by a single kernel `decide` (bounded quantifier via `Nat.decidableBallLT`); even `n` are eliminated without computing any sum since `Odd n` is false, and odd `n` reduce `sigmaFast n` in the kernel. The whole proof is axiom-free."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classification of integers as deficient (σ(n) < 2n), perfect (σ(n) = 2n), or abundant (σ(n) > 2n) dates to Nicomachus (~100 CE). The smallest abundant number is 12, and the abundant numbers begin 12, 18, 20, 24, 30, 36, … — all even. Odd abundant numbers are much rarer: the first is 945 = 3³·5·7 (σ(945) = 1920 > 1890), followed by 1575, 2205, 3465, … (OEIS A005231). That the smallest odd abundant number is exactly 945 is a folklore computational fact; formalizing it axiom-free requires a divisor sum the Lean kernel can actually evaluate across all odd n below 945.",
+    "problemStatement": "Working with Mathlib's `Nat.Abundant n := n < ∑_{d ∈ properDivisors n} d`, prove `IsLeast {n | Odd n ∧ Nat.Abundant n} 945`: 945 is odd and abundant, and no smaller odd number is abundant.",
+    "text": "A Lean 4 / Mathlib formalization (105 lines, 0 sorries, 0 axioms). The obstruction is scale: the bounded minimality check ranges over n < 945, and Mathlib's `Nat.Abundant` unfolds to a `Finset` divisor sum whose kernel reduction (Multiset/`range` folds) blows up well before 945, so a direct `decide` is infeasible. The file supplies a kernel-reducible replacement: `sigmaAux n m`, the indicator sum of divisors ≤ m defined by structural recursion on m, and `sigmaFast n := sigmaAux n n`. It proves `sigmaAux_eq_sum` (the recursion equals the `range` indicator sum) and `sigmaFast_eq_sigma` (for n ≠ 0 it equals Mathlib's `∑_{d ∣ n} d`), then the bridge `abundant_iff_sigmaFast`. The minimality bound `not_abundant_odd_below_945` is one kernel `decide` over `sigmaFast`, and `smallest_odd_abundant` assembles 945's abundance with the lower bound. Because `decide` reduces in the kernel — not `native_decide` — every claim is axiom-free.",
+    "proofStrategy": "1. **Kernel-reducible σ.** Define `sigmaAux n m` by structural recursion on m (`sigmaAux n 0 = 0`, `sigmaAux n (m+1) = (if (m+1) ∣ n then m+1 else 0) + sigmaAux n m`) and `sigmaFast n := sigmaAux n n`. No `Finset`/`Multiset` is touched during reduction, so the kernel computes it with plain ℕ arithmetic.\n\n2. **Agreement with Mathlib's σ.** `sigmaAux_eq_sum` (induction on m) gives `sigmaAux n m = ∑_{d ∈ range (m+1)} (if d ∣ n then d else 0)`. Rewriting and `Finset.sum_filter` turns `sigmaFast n` into a sum over `filter (· ∣ n) (range (n+1))`; for n ≠ 0 this filter equals `n.divisors` (since d ∣ n forces 1 ≤ d ≤ n), giving `sigmaFast_eq_sigma`.\n\n3. **Abundance bridge.** `abundant_iff_sigmaFast` rewrites `Nat.Abundant n` via `Nat.sum_divisors_eq_sum_properDivisors_add_self` and `omega` into `2n < sigmaFast n`. Then `abundant_945` follows from `sigmaFast 945 = 1920` (one kernel `decide`).\n\n4. **Minimality.** `not_abundant_odd_below_945 : ∀ n < 945, Odd n → sigmaFast n ≤ 2n` is a single kernel `decide` (`Nat.decidableBallLT`); even n are discharged immediately because `Odd n` is false. `smallest_odd_abundant` pairs `Odd 945 ∧ Abundant 945` with the lower bound via `abundant_iff_sigmaFast` and `omega`.",
+    "keyInsights": [
+      "**The minimality range, not the math, is the obstacle.** Mathematically, odd abundance below 945 is just a finite check; the difficulty is that Mathlib's `Nat.Abundant` is decidable only through `Finset`/`Multiset` folds that the kernel cannot reduce at this scale. Replacing the *representation* of σ — not the predicate's meaning — is what unlocks `decide`.",
+      "**Structural recursion on ℕ is kernel-friendly; Finset folds are not.** `sigmaAux` deliberately avoids `Finset.range`, `Multiset`, and `Nat.divisors` at reduction time, so the kernel evaluates divisor sums through GMP-accelerated `ℕ` arithmetic. This is the same axiom-free `decide` discipline used for 12 in the companion entry, scaled from 11 cases to 944.",
+      "**Axiom-free by design.** Using kernel `decide` rather than `native_decide` keeps the proof free of `Lean.ofReduceBool`. The cost is that `sigmaFast` must be genuinely cheap for the kernel; the proof's structure (fast recursion + a one-time equality to Mathlib's σ) is exactly what pays that cost.",
+      "**Odd abundance is genuinely sparse.** Every abundant number below 945 is even — 945 is the first place oddness and abundance coincide. The proof makes this explicit: the bounded check confirms `sigmaFast n ≤ 2n` for *every* odd n < 945, with no exceptions, while 945 itself overshoots by 30."
+    ],
+    "prerequisites": [
+      "The sum-of-divisors function σ and proper divisors",
+      "Abundant / deficient / perfect classification (σ(n) vs 2n)",
+      "Structural recursion on ℕ and how the Lean kernel reduces it",
+      "Decidability, kernel `decide` vs `native_decide`, `Nat.decidableBallLT`",
+      "`IsLeast`, `Finset.sum_filter`, `Nat.mem_divisors`"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Statement and the Scale Obstruction",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Module docstring: 945 = 3³·5·7 is the smallest odd abundant number (σ(945) = 1920 > 1890). The minimality check ∀ n < 945, Odd n → ¬ Nat.Abundant n is too large for a direct Finset-based decide, motivating a kernel-reducible divisor sum sigmaFast and an axiom-free (kernel decide, not native_decide) proof.",
+      "mathContext": "Odd abundant numbers are rare; the first is 945, and proving its minimality axiom-free requires a divisor sum the kernel can evaluate across all odd n < 945."
+    },
+    {
+      "id": "sigma-fast",
+      "title": "A Kernel-Reducible Divisor Sum",
+      "startLine": 30,
+      "endLine": 39,
+      "summary": "`sigmaAux n m` sums the divisor contributions d ≤ m by structural recursion on m, and `sigmaFast n := sigmaAux n n`. No Finset/Multiset appears at reduction time, so the kernel reduces it through ordinary ℕ arithmetic.",
+      "mathContext": "Representing σ by plain ℕ recursion (rather than Finset folds) is what makes the kernel reduction feasible at scale."
+    },
+    {
+      "id": "agreement",
+      "title": "Agreement with Mathlib's Divisor Sum",
+      "startLine": 41,
+      "endLine": 66,
+      "summary": "`sigmaAux_eq_sum` (induction on m) identifies the recursion with the range indicator sum; `sigmaFast_eq_sigma` then collapses the filtered range to n.divisors for n ≠ 0, proving sigmaFast n = ∑_{d ∣ n} d.",
+      "mathContext": "The fast recursion is proved equal, once and for all, to Mathlib's canonical σ, so downstream reasoning can use either form."
+    },
+    {
+      "id": "bridge",
+      "title": "Abundance Bridge and 945 Abundant",
+      "startLine": 68,
+      "endLine": 84,
+      "summary": "`abundant_iff_sigmaFast`: for n ≠ 0, Nat.Abundant n ↔ 2n < sigmaFast n (via Nat.sum_divisors_eq_sum_properDivisors_add_self and omega). `abundant_945` follows from sigmaFast 945 = 1920 by kernel decide.",
+      "mathContext": "Abundance, expressed on the kernel-fast sum, becomes a single decidable inequality."
+    },
+    {
+      "id": "minimality",
+      "title": "No Odd Number Below 945 Is Abundant; 945 Is Least",
+      "startLine": 86,
+      "endLine": 105,
+      "summary": "`not_abundant_odd_below_945 : ∀ n < 945, Odd n → sigmaFast n ≤ 2n` by a single kernel decide (Nat.decidableBallLT; even n discharged via ¬ Odd n). `smallest_odd_abundant : IsLeast {n | Odd n ∧ Nat.Abundant n} 945` pairs 945's odd-abundance with the lower bound, axiom-free.",
+      "mathContext": "The bounded kernel decide over the fast divisor sum is the step the direct Finset decide cannot perform at this scale."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "smallest_odd_abundant",
+      "type": "core",
+      "description": "IsLeast {n : ℕ | Odd n ∧ Nat.Abundant n} 945 — 945 is odd and abundant, and is a lower bound for the odd abundant numbers, i.e. the smallest odd abundant number. Proved axiom-free by kernel decide over a kernel-reducible divisor sum.",
+      "leanType": "IsLeast {n : ℕ | Odd n ∧ Nat.Abundant n} 945"
+    },
+    {
+      "name": "not_abundant_odd_below_945",
+      "type": "supporting",
+      "description": "∀ n < 945, Odd n → sigmaFast n ≤ 2 * n — the minimality lower bound; a bounded kernel decide via Nat.decidableBallLT over the fast divisor sum.",
+      "leanType": "∀ n < 945, Odd n → sigmaFast n ≤ 2 * n"
+    },
+    {
+      "name": "abundant_945",
+      "type": "supporting",
+      "description": "Nat.Abundant 945 — 945 is abundant, since sigmaFast 945 = 1920 > 1890 = 2·945.",
+      "leanType": "Nat.Abundant 945"
+    },
+    {
+      "name": "sigmaFast_eq_sigma",
+      "type": "supporting",
+      "description": "For n ≠ 0, sigmaFast n = ∑_{d ∣ n} d — the kernel-reducible divisor sum agrees with Mathlib's canonical divisor sum.",
+      "leanType": "n ≠ 0 → sigmaFast n = ∑ d ∈ n.divisors, d"
+    },
+    {
+      "name": "abundant_iff_sigmaFast",
+      "type": "supporting",
+      "description": "For n ≠ 0, Nat.Abundant n ↔ 2 * n < sigmaFast n — abundance restated on the kernel-fast divisor sum.",
+      "leanType": "n ≠ 0 → (Nat.Abundant n ↔ 2 * n < sigmaFast n)"
+    }
+  ],
+  "conclusion": {
+    "summary": "Working with Mathlib's canonical Nat.Abundant predicate, the entry proves that 945 is the smallest odd abundant number: IsLeast {n | Odd n ∧ n.Abundant} 945. The crux is a kernel-reducible divisor sum sigmaFast, defined by structural recursion on ℕ and proved equal to Mathlib's ∑_{d ∣ n} d, which lets the bounded minimality check ∀ n < 945, Odd n → ¬ n.Abundant be discharged by a single kernel decide. All 6 theorems are machine-checked with 0 sorries and 0 axioms (no native_decide, hence no Lean.ofReduceBool).",
+    "implications": "The kernel-reducible-σ technique answers the open question raised by the companion entry abundant-number-oq-01 (which proved 12 is the smallest abundant number but only conjectured the 945 result) and generalizes: any bounded divisor-sum minimality/threshold statement that is out of reach for a Finset-based decide can be made axiom-free by routing the computation through a structurally-recursive ℕ surrogate proved equal to the canonical Mathlib function. This is the same discipline that keeps the smallest-abundant (12) proof axiom-free, scaled from 11 to 944 cases.",
+    "openQuestions": [
+      "Formalize that 5391411025 = 5²·7·11·13·17·19·23·29 is the smallest odd abundant number not divisible by 3, or more modestly that every odd abundant number below some explicit bound is divisible by 3 — extending the kernel-reducible-σ check to a structural (rather than purely enumerative) statement.",
+      "Prove that the odd abundant numbers are infinite (e.g. every odd multiple of 945 is abundant by the closure result in abundant-number-oq-01), giving an injective odd-abundant family and connecting this minimality entry to the infinitude machinery already in the gallery."
+    ]
+  },
+  "references": [
+    {
+      "authors": "OEIS Foundation",
+      "title": "A005231: Odd abundant numbers (odd numbers n with σ(n) > 2n)",
+      "year": "—",
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "note": "The sequence 945, 1575, 2205, 3465, … of odd abundant numbers; 945 is the smallest."
+    },
+    {
+      "authors": "Nicomachus of Gerasa",
+      "title": "Introduction to Arithmetic",
+      "year": "~100 CE",
+      "venue": "—",
+      "note": "Earliest classification of numbers as deficient, perfect, and abundant."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "abundant-number-oq-01",
+      "relationship": "extends",
+      "description": "The companion entry proves 12 is the smallest abundant number (axiom-free kernel decide over 11 cases) and explicitly raises 'formalize that 945 is the smallest odd abundant number' as an open question, noting it 'likely needs a kernel-reducible σ to remain axiom-free.' This entry supplies exactly that: the kernel-reducible sigmaFast and the bounded decide over odd n < 945."
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers satisfy σ(n) = 2n, the boundary between deficient and abundant. The same divisor-sum function underlies both entries; here the threshold is crossed by an odd number (945) for the first time."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/AbundantNumberOQ02.lean",
+    "namespace": "AbundantNumberOQ02",
+    "imports": [
+      "Mathlib"
+    ],
+    "lineCount": 105,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 6,
+    "definitionCount": 2
+  }
+}
