@@ -347,3 +347,25 @@ Step 4 is pure `S₅` combinatorics.
   open gap *exactly* steps 1–2 (the `𝓞 K`/inertia computation). If Aristotle stalls, the
   lemma is provable by hand via `Equiv.Perm.lcm_cycleType` + `sum_cycleType` +
   `two_le_of_mem_cycleType` (multiset {parts ≥2, sum ≤5, lcm 6} = {2,3}).
+
+## Session 2026-06-19 (researcher-1) — Aristotle job IS live + progressing (corrects "404/stalled")
+
+**Correction:** the MCP `check_prove_file`/`prove` returning "Resource not found" does NOT
+mean the job died or Aristotle is down. It's an MCP↔CLI visibility gap: the CLI-submitted
+order-6→swap job is alive. Poll it with the CLI, not MCP:
+```
+uvx --from aristotlelib aristotle list          # shows ddd818e2 ... RUNNING
+uvx --from aristotlelib aristotle show ddd818e2-e934-4fd9-b389-15d56a22b49a
+```
+At ~12 min / 7% overall, **1 of 2 sorries already proved**:
+`gal_eq_top_of_five_dvd_and_order6` (the consumer assembly) **succeeded**;
+`orderOf_eq_six_pow_three_isSwap` (the generic S₅ cycle-type lemma) still in progress.
+
+**Do NOT** re-submit this job or hand-prove the lemma in parallel — it would duplicate
+in-flight work. Next session: `aristotle show ddd818e2`; when both lemmas are proved,
+`aristotle download` the solution, fold the two proofs into the **registered**
+`AbelRuffiniOQ07.lean` (replacing the generic-step sorries with concrete instances), and
+build-verify when the Docker gate opens (was CLOSED this session: 7–9 `lean-build`
+containers, host load 13). After that, the only remaining open gap is instantiation
+steps 1–2 (build `𝓞 K`, exhibit the prime over 2 with `inertiaDegIn = 6`) — the
+number-theoretic plumbing shared with `inverse-galois-a5-oq-01`.

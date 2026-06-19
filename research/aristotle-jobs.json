@@ -2185,8 +2185,10 @@
         "gal_eq_top_of_five_dvd_and_order6 : 5∣|G| ∧ ∃ order-6 elem → G=⊤"
       ],
       "notes": "Generic S5 order-6→swap step. Consumes the now-PROVED Dedekind-Frobenius bridge (DedekindFrobeniusBridge.lean) output: bridge gives orderOf(arithFrobAt)=inertiaDegIn=6 at a prime over 2 of the splitting field, this turns it into the swap the verified reduction gal_eq_top_of_five_dvd_and_swap consumes. Self-contained Mathlib-only companion (NOT registered in Proofs.lean). CLI submit; v4.26 vs Aristotle v4.28 warning (Perm(Fin5) API stable).",
-      "status": "submitted",
-      "last_check": null
+      "status": "running",
+      "last_check": "2026-06-19T13:37:26Z",
+      "progress": "1/2 sorries proved (gal_eq_top_of_five_dvd_and_order6 succeeded); orderOf_eq_six_pow_three_isSwap in progress (~12m, 7%)",
+      "mcp_note": "MCP check returns 404 (Resource not found) for CLI-submitted projects; poll via: uvx --from aristotlelib aristotle show ddd818e2-..."
     }
   ]
 }
