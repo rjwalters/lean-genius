@@ -153,7 +153,11 @@
       "mul_three_mem_smooth23",
       "mul_mem_smooth23"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "3-Smooth Numbers",
+      "Multiplicative Monoid",
+      "Laws Of Exponents"
+    ]
   },
   {
     "id": "ann-e1146-mann",
@@ -172,7 +176,11 @@
       "smooth23_schnirelmann_zero",
       "IsEssentialComponent"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mann's Theorem",
+      "Schnirelmann Density",
+      "Sumsets"
+    ]
   },
   {
     "id": "ann-e1146-conjecture",
@@ -191,7 +199,11 @@
       "IsEssentialComponent",
       "smoothNumbers23"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Essential Component",
+      "Schnirelmann Density",
+      "Open Conjecture"
+    ]
   },
   {
     "id": "ann-e1146-single-prime",
@@ -210,6 +222,10 @@
       "erdos_37_disproved",
       "smoothNumbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lacunary Set",
+      "Prime Powers",
+      "Essential Component"
+    ]
   }
 ]
