@@ -32,6 +32,9 @@
   - `abs_index_le_genPent`   — index bound `|k| ≤ g(k)`
   - `indexSet_finite`        — only finitely many `g(k) ≤ n` (Euler's recurrence
                                is a finite sum)
+  - `pentSeriesCoeff`        — the RHS coefficient `[Xⁿ] ∑ₖ(-1)ᵏ X^{g(k)}`, well
+                               defined by injectivity; supported on the pentagonal
+                               numbers, value `(-1)ᵏ` at `g(k)`, everywhere `0`/`±1`
   - concrete values `g(0..±4) = 0,1,2,5,7,12,15,22,26` matching the OEIS A001318.
 -/
 
@@ -263,6 +266,101 @@ theorem genPent_neg_four : genPent (-4) = 26 := by have := two_mul_genPent (-4);
 `12 = g(3)` is pentagonal and `24·12+1 = 289 = 17²`. -/
 theorem twelve_isGenPent : IsGenPent 12 :=
   (isGenPent_iff_isSquare 12).mpr ⟨17, by norm_num⟩
+
+/-! ## Part 5: The series-side coefficient (RHS of Euler's identity)
+
+The right-hand side of the pentagonal number theorem is the lacunary series
+`∑_{k∈ℤ} (-1)ᵏ X^{g(k)}`.  Here we construct its coefficient function explicitly,
+which is the precise object the OPEN CORE must prove equal to the product
+`∏_{n≥1}(1 - Xⁿ)`.
+
+The sign `(-1)ᵏ` depends only on the parity of `k`, so we record it as
+`pentSign k = (-1)^{|k|}`.  Because the index map `g` is injective
+(`genPent_injective`), each exponent `n` is hit by **at most one** index, so the
+coefficient `[Xⁿ] ∑_k (-1)ᵏ X^{g(k)}` is the well-defined function
+
+    `pentSeriesCoeff n = (-1)ᵏ`  if `n = g(k)` for the (unique) `k`,  else `0`.
+
+We prove it is supported exactly on the generalized pentagonal numbers, takes the
+value `pentSign k` at `g(k)`, and is everywhere `0` or `±1`. -/
+
+/-- The pentagonal sign `(-1)ᵏ`.  As `(-1)^{·}` only sees parity, we phrase it via
+`k.natAbs`; this matches `(-1)ᵏ` since `k` and `|k|` have the same parity. -/
+def pentSign (k : ℤ) : ℤ := (-1) ^ k.natAbs
+
+/-- The sign is `±1`. -/
+theorem pentSign_eq_one_or_neg_one (k : ℤ) : pentSign k = 1 ∨ pentSign k = -1 := by
+  unfold pentSign
+  rcases Nat.even_or_odd k.natAbs with he | ho
+  · exact Or.inl he.neg_one_pow
+  · exact Or.inr ho.neg_one_pow
+
+/-- The sign is never zero. -/
+theorem pentSign_ne_zero (k : ℤ) : pentSign k ≠ 0 := by
+  rcases pentSign_eq_one_or_neg_one k with h | h <;> rw [h] <;> norm_num
+
+/-- The `±k` pairing has matching sign: `pentSign (-k) = pentSign k` (both indices
+in a recurrence pair carry the same `(-1)ᵏ`), since `|-k| = |k|`. -/
+@[simp] theorem pentSign_neg (k : ℤ) : pentSign (-k) = pentSign k := by
+  unfold pentSign; rw [Int.natAbs_neg]
+
+/-- **The coefficient of `Xⁿ` in `∑_{k∈ℤ} (-1)ᵏ X^{g(k)}`.**  If `n` is a
+generalized pentagonal number it equals `pentSign k` for the unique index `k` with
+`g(k) = n`; otherwise it is `0`.  Well-defined by `genPent_injective`. -/
+noncomputable def pentSeriesCoeff (n : ℤ) : ℤ :=
+  if h : IsGenPent n then pentSign (Classical.choose h) else 0
+
+/-- Off the pentagonal numbers the coefficient vanishes. -/
+theorem pentSeriesCoeff_of_not {n : ℤ} (h : ¬ IsGenPent n) : pentSeriesCoeff n = 0 := by
+  unfold pentSeriesCoeff; rw [dif_neg h]
+
+/-- **Value at a pentagonal exponent.** `[X^{g(k)}] ∑_j (-1)ʲ X^{g(j)} = (-1)ᵏ`.
+The chosen witness for `IsGenPent (g k)` must be `k` itself by injectivity. -/
+theorem pentSeriesCoeff_genPent (k : ℤ) : pentSeriesCoeff (genPent k) = pentSign k := by
+  have hex : IsGenPent (genPent k) := genPent_isGenPent k
+  unfold pentSeriesCoeff
+  rw [dif_pos hex]
+  have hspec := Classical.choose_spec hex
+  have h2 := two_mul_genPent (Classical.choose hex)
+  have hval : genPent (Classical.choose hex) = genPent k := by linarith [hspec, h2]
+  rw [genPent_injective hval]
+
+/-- The coefficient is supported exactly on the generalized pentagonal numbers:
+it is nonzero iff `n` is one (the value there is `±1` by `pentSign_ne_zero`). -/
+theorem pentSeriesCoeff_ne_zero_iff (n : ℤ) : pentSeriesCoeff n ≠ 0 ↔ IsGenPent n := by
+  constructor
+  · intro h
+    by_contra hn
+    exact h (pentSeriesCoeff_of_not hn)
+  · rintro ⟨k, hk⟩
+    have hval : genPent k = n := by
+      have h2 := two_mul_genPent k; linarith [hk, h2]
+    rw [← hval, pentSeriesCoeff_genPent]
+    exact pentSign_ne_zero k
+
+/-- Every coefficient is `0` or `±1`. -/
+theorem pentSeriesCoeff_eq_zero_or (n : ℤ) :
+    pentSeriesCoeff n = 0 ∨ pentSeriesCoeff n = 1 ∨ pentSeriesCoeff n = -1 := by
+  by_cases h : IsGenPent n
+  · obtain ⟨k, hk⟩ := h
+    have hval : genPent k = n := by have h2 := two_mul_genPent k; linarith [hk, h2]
+    rw [← hval, pentSeriesCoeff_genPent]
+    exact Or.inr (pentSign_eq_one_or_neg_one k)
+  · exact Or.inl (pentSeriesCoeff_of_not h)
+
+/-- Concrete: the constant term `[X⁰]` of the series is `+1` (matching the leading
+`1` of the product `∏(1-Xⁿ)`), since `0 = g(0)` and `(-1)⁰ = 1`. -/
+theorem pentSeriesCoeff_zero : pentSeriesCoeff 0 = 1 := by
+  have h : pentSeriesCoeff (genPent 0) = pentSign 0 := pentSeriesCoeff_genPent 0
+  rw [genPent_zero] at h
+  rw [h]; rfl
+
+/-- Concrete: `[X¹] = -1` (the `-X` term of the product), since `1 = g(1)` and
+`(-1)¹ = -1`. -/
+theorem pentSeriesCoeff_one : pentSeriesCoeff 1 = -1 := by
+  have h : pentSeriesCoeff (genPent 1) = pentSign 1 := pentSeriesCoeff_genPent 1
+  rw [genPent_one] at h
+  rw [h]; rfl
 
 /-! ## OPEN CORE (not formalized here)
 
