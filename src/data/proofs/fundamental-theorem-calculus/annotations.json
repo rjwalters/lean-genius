@@ -15,6 +15,11 @@
       "definite integral",
       "area under curve",
       "accumulation function"
+    ],
+    "prerequisites": [
+      "the definite integral as area under a curve",
+      "functions defined by an integral with a variable upper limit",
+      "continuity of the integrand"
     ]
   },
   {
@@ -33,6 +38,11 @@
       "antiderivative",
       "HasDerivAt",
       "differentiability"
+    ],
+    "prerequisites": [
+      "the derivative as a limit of difference quotients",
+      "the integral (accumulation) function F(x)=∫ₐˣ f",
+      "continuity of f at a point"
     ]
   },
   {
@@ -51,6 +61,11 @@
       "continuity",
       "ContinuousAt",
       "limit definition"
+    ],
+    "prerequisites": [
+      "continuity (ContinuousAt) and its ε–δ definition",
+      "the limit definition of the derivative",
+      "why discontinuities break differentiability of the integral"
     ]
   },
   {
@@ -69,6 +84,11 @@
       "antiderivative",
       "evaluation",
       "net change"
+    ],
+    "prerequisites": [
+      "antiderivatives (primitives) of a function",
+      "the definite integral",
+      "the net-change interpretation ∫ₐᵇ f' = f(b)−f(a)"
     ]
   },
   {
@@ -87,6 +107,11 @@
       "differentiability",
       "ContinuousOn",
       "interval conditions"
+    ],
+    "prerequisites": [
+      "differentiability on an interval",
+      "continuity of the derivative (ContinuousOn)",
+      "closed/open interval hypotheses for integration"
     ]
   },
   {
@@ -105,6 +130,11 @@
       "derivative",
       "indefinite integral",
       "primitive function"
+    ],
+    "prerequisites": [
+      "the derivative of a function",
+      "indefinite integrals / primitives",
+      "the relation F' = f"
     ]
   },
   {
@@ -123,6 +153,11 @@
       "mean value theorem",
       "constant function",
       "uniqueness"
+    ],
+    "prerequisites": [
+      "the Mean Value Theorem",
+      "functions with zero derivative are constant",
+      "antiderivatives and the constant of integration"
     ]
   },
   {
@@ -141,6 +176,11 @@
       "mean value theorem",
       "constant function",
       "convexity"
+    ],
+    "prerequisites": [
+      "the Mean Value Theorem",
+      "connected domains / intervals",
+      "the link between derivative sign and monotonicity"
     ]
   },
   {
@@ -160,6 +200,11 @@
       "Newton",
       "Leibniz",
       "calculus unification"
+    ],
+    "prerequisites": [
+      "differentiation and integration as operations",
+      "both parts of the FTC",
+      "the historical Newton–Leibniz synthesis"
     ]
   }
 ]
