@@ -16,7 +16,11 @@
       "General position",
       "Extremal geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean geometry",
+      "Circumcircles",
+      "Asymptotic notation"
+    ]
   },
   {
     "id": "ann-e831-point",
@@ -34,7 +38,11 @@
       "formal definition",
       "metric spaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Metric spaces",
+      "Euclidean plane",
+      "Type theory"
+    ]
   },
   {
     "id": "ann-e831-triple",
@@ -52,7 +60,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean plane",
+      "Ordered tuples"
+    ]
   },
   {
     "id": "ann-e831-collinear",
@@ -70,7 +81,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Collinearity",
+      "Affine geometry"
+    ]
   },
   {
     "id": "ann-e831-concyclic",
@@ -88,7 +102,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Circles",
+      "Euclidean geometry"
+    ]
   },
   {
     "id": "ann-e831-general-position",
@@ -106,7 +123,11 @@
       "formal definition",
       "metric spaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Collinearity",
+      "Concyclicity",
+      "General position"
+    ]
   },
   {
     "id": "ann-e831-circumradius",
@@ -125,7 +146,11 @@
       "Law of sines",
       "Triangle geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Triangle geometry",
+      "Law of sines",
+      "Circumcircles"
+    ]
   },
   {
     "id": "ann-e831-all-radii",
@@ -143,7 +168,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set-builder notation",
+      "Circumradius"
+    ]
   },
   {
     "id": "ann-e831-h-function",
@@ -161,7 +189,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set cardinality",
+      "Extremal functions"
+    ]
   },
   {
     "id": "ann-e831-upper-bound",
@@ -179,7 +210,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binomial coefficients",
+      "Counting arguments"
+    ]
   },
   {
     "id": "ann-e831-h-four",
@@ -197,7 +231,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Circumcircles",
+      "Case analysis"
+    ]
   },
   {
     "id": "ann-e831-conjecture",
@@ -215,7 +252,10 @@
       "asymptotics",
       "polynomial theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic notation",
+      "Extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e831-regular-polygon",
@@ -233,7 +273,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Regular polygons",
+      "Symmetry"
+    ]
   },
   {
     "id": "ann-e831-random",
@@ -251,7 +294,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic method",
+      "General position"
+    ]
   },
   {
     "id": "ann-e831-orchard",
@@ -269,7 +315,10 @@
       "Point-line incidences"
     ],
     "mathContext": "Erdős #104 (orchard problem): maximize 3-point lines in an $n$-point configuration. Related via point-circle duality",
-    "prerequisites": []
+    "prerequisites": [
+      "Point-line incidences",
+      "Orchard-planting problem"
+    ]
   },
   {
     "id": "ann-e831-unit-distance",
@@ -287,7 +336,10 @@
       "Unit distance graph"
     ],
     "mathContext": "Erdős #506: $u(n) = \\max_{|S|=n} |\\{(p_i,p_j) : d(p_i,p_j) = 1\\}|$. Related: distances constrain circumradii",
-    "prerequisites": []
+    "prerequisites": [
+      "Unit distance graph",
+      "Incidence geometry"
+    ]
   },
   {
     "id": "ann-e831-small-cases",
@@ -305,7 +357,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Case analysis",
+      "Finite configurations"
+    ]
   },
   {
     "id": "ann-e831-summary",
@@ -323,7 +378,10 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal geometry",
+      "Combinatorics"
+    ]
   },
   {
     "id": "ann-e831-open",
@@ -341,6 +399,9 @@
       "proof technique",
       "asymptotics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Open problems"
+    ]
   }
 ]
