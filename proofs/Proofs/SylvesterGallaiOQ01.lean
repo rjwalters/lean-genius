@@ -1,149 +1,222 @@
-/-
-# Sylvester–Gallai theorem (ordinary line existence) — research scaffold
-
-**Problem (`sylvester-gallai-theorem-oq-01`):** every finite set of points in the
-real plane that is *not* collinear determines an *ordinary line* — a line passing
-through exactly two of the points.
-
-This file sets up Kelly's metric proof, which is the right route for Lean: it needs
-only the signed-area (2D cross-product) functional, distance, and the affine
-`Collinear` predicate, all available in Mathlib, and avoids the projective-duality
-and Euler-characteristic machinery of Melchior's proof.
-
-## Status (research, in progress)
-
-The reusable *lever* is the signed-area functional `area2 a b c` — twice the signed
-area of triangle `abc`, equal to the determinant `det[b-a, c-a]`. The perpendicular
-distance from `c` to the line through `a b` is `|area2 a b c| / dist a b`.
-
-Proved here (self-contained, no `sorry`):
-* `area2` and its full permutation/degeneracy algebra (`ring`-closed);
-* `distToLine` and its non-negativity.
-
-Open kernel (left as `sorry`, decomposed for Aristotle / future sessions):
-* `collinear_iff_area2_eq_zero` — the bridge from the affine `Collinear` predicate to
-  the vanishing of the signed area (HARD, known; clean Aristotle target);
-* `area2_strict_decrease` — Kelly's geometric inequality (the heart of the proof);
-* `sylvester_gallai` — the assembled minimization argument.
-
-This is a genuine formalization contribution: Sylvester–Gallai is **not** in Mathlib
-(no `SylvesterGallai` / `ordinaryLine` / de Bruijn–Erdős declarations exist).
--/
 import Mathlib
+import Proofs.Erdos606OQ03OQ03
+
+/-!
+# Sylvester–Gallai theorem (sylvester-gallai-theorem-oq-01)
+
+**Statement.** Every finite set of points in the Euclidean plane that is *not* all
+collinear determines an *ordinary line* — a line passing through exactly two of the
+points.
+
+## Strategy — REDUCTION to the already-verified gallery proof
+
+A complete, machine-checked proof of Sylvester–Gallai by Kelly's 1948 metric
+argument **already exists in this gallery**: `Proofs/Erdos606OQ03OQ03.lean`,
+namespace `SylvesterGallai`, theorem `SylvesterGallai.sylvester_gallai`
+(508 lines, 0 sorries, 0 axioms, registered in `Proofs.lean`). That proof is
+stated over the *concrete coordinate plane* `Point := ℝ × ℝ` with a custom
+cross-product collinearity predicate
+
+  `SylvesterGallai.Collinear a b c := ∃ t, c.1-a.1 = t*(b.1-a.1) ∧ c.2-a.2 = t*(b.2-a.2)`.
+
+This file restates the theorem in the **canonical Mathlib formulation** —
+`EuclideanSpace ℝ (Fin 2)` with `Collinear ℝ` — and obtains it as a corollary of
+the verified proof, transporting along the coordinate isomorphism
+
+  `φ : EuclideanSpace ℝ (Fin 2) → ℝ × ℝ,  φ x := (x 0, x 1)`.
+
+This replaces re-proving Kelly's delicate 6-case geometric kernel (~500–900 lines)
+with a small, purely mechanical **type/predicate bridge**: a lemma relating
+`Collinear ℝ {a,b,c}` to `SylvesterGallai.Collinear (φ a) (φ b) (φ c)`, the
+injectivity of `φ`, and the not-all-collinear / cardinality transport. The hard
+mathematics is done; what remains is bookkeeping along an isomorphism.
+
+### The four bridge lemmas (all discharged below, 0 sorries)
+
+* `phi_injective` — `φ` is injective (a point of the plane is determined by its two
+  coordinates). `PiLp.ext` + `Fin.forall_fin_two`.
+* `three_le_card_of_not_collinear` — a non-collinear finite set has ≥ 3 points
+  (any set of ≤ 2 points is collinear: `collinear_empty` / `collinear_singleton` /
+  `collinear_pair`).
+* `collinear_iff_sg` — for `a ≠ b`, Mathlib `Collinear ℝ {a,b,c}` is equivalent to
+  the cross-product predicate `SylvesterGallai.Collinear (φ a) (φ b) (φ c)`.
+  (`collinear_iff_of_mem` unfolds Mathlib collinearity to `∃ r, p = r • v +ᵥ p₀`;
+  reading off the two `Fin 2` coordinates gives exactly the cross-product form.)
+* `not_allCollinear_image` — `¬ Collinear ℝ ↑S` transports to
+  `¬ SylvesterGallai.AllCollinear (S.image φ)`.
+
+**Key subtlety** (documented in-file): the custom predicate matches Mathlib's
+`Collinear ℝ {a,b,c}` only when `a ≠ b`, so `collinear_iff_sg` carries that
+hypothesis (always available in the ordinary-line context). Only the *forward*
+map `φ` is needed — no inverse — sidestepping `PiLp`/`EuclideanSpace` element
+construction.
+
+**Status.** `verified` — the geometric content lives in the verified
+`Erdos606OQ03OQ03`; this file closes the four bridge lemmas with 0 sorries and
+0 nonstandard axioms, yielding the theorem in the canonical Mathlib formulation.
+-/
 
 namespace SylvesterGallaiOQ01
 
-/-- Points of the real Euclidean plane. -/
-abbrev Pt := EuclideanSpace ℝ (Fin 2)
+open SylvesterGallai (Point)
 
-/-- Twice the signed area of triangle `a b c`: the 2D cross product of `b - a` and
-`c - a`, i.e. the determinant `det[b-a, c-a]`. This is the lever for Kelly's proof —
-its absolute value over the base length is the perpendicular distance to the line. -/
-noncomputable def area2 (a b c : Pt) : ℝ :=
-  (b 0 - a 0) * (c 1 - a 1) - (b 1 - a 1) * (c 0 - a 0)
+/-- The Euclidean plane `ℝ²` in its canonical Mathlib form. -/
+abbrev E := EuclideanSpace ℝ (Fin 2)
 
-/-! ### Algebra of the signed area (degeneracies and permutations) -/
+/-- Coordinate isomorphism to the concrete plane `ℝ × ℝ` used by the verified
+gallery proof `Proofs/Erdos606OQ03OQ03.lean`. -/
+noncomputable def φ (x : E) : ℝ × ℝ := (x 0, x 1)
 
-@[simp] lemma area2_self_left (a c : Pt) : area2 a a c = 0 := by
-  unfold area2; ring
+/-- A pair `(a, b)` of points of `S` spans an **ordinary line**: every point of `S`
+collinear with `a` and `b` is already one of `a`, `b`. -/
+def IsOrdinary (S : Finset E) (a b : E) : Prop :=
+  ∀ c ∈ S, Collinear ℝ ({a, b, c} : Set E) → c = a ∨ c = b
 
-@[simp] lemma area2_self_mid (a b : Pt) : area2 a b a = 0 := by
-  unfold area2; ring
+-- ============================================================
+-- Bridge lemmas (the only remaining obligations — all mechanical)
+-- ============================================================
 
-@[simp] lemma area2_self_right (a b : Pt) : area2 a b b = 0 := by
-  unfold area2; ring
+/-- `φ` is injective: a planar point is determined by its two coordinates. -/
+theorem phi_injective : Function.Injective φ := by
+  intro x y h
+  simp only [φ, Prod.mk.injEq] at h
+  apply PiLp.ext
+  rw [Fin.forall_fin_two]
+  exact h
 
-/-- Swapping the last two vertices negates the signed area. -/
-lemma area2_swap_right (a b c : Pt) : area2 a c b = - area2 a b c := by
-  unfold area2; ring
+/-- A finite non-collinear point set has at least three points. -/
+theorem three_le_card_of_not_collinear (S : Finset E)
+    (hS : ¬ Collinear ℝ (↑S : Set E)) : 3 ≤ S.card := by
+  by_contra h
+  push_neg at h
+  apply hS
+  rcases (by omega : S.card = 0 ∨ S.card = 1 ∨ S.card = 2) with h0 | h1 | h2
+  · rw [Finset.card_eq_zero] at h0
+    subst h0
+    rw [Finset.coe_empty]
+    exact collinear_empty ℝ E
+  · obtain ⟨x, hx⟩ := Finset.card_eq_one.mp h1
+    subst hx
+    rw [Finset.coe_singleton]
+    exact collinear_singleton ℝ x
+  · obtain ⟨x, y, hxy, hS2⟩ := Finset.card_eq_two.mp h2
+    subst hS2
+    rw [Finset.coe_insert, Finset.coe_singleton]
+    exact collinear_pair ℝ x y
 
-/-- Swapping the first two vertices negates the signed area. -/
-lemma area2_swap_left (a b c : Pt) : area2 b a c = - area2 a b c := by
-  unfold area2; ring
+/-- **Helper.** The cross-product collinearity `SylvesterGallai.Collinear (φa)(φb)(φc)`
+exhibits `c` as an affine combination `c = t • (b - a) +ᵥ a` on the line through
+`a, b`. This is the algebraic core of the predicate bridge. -/
+private theorem sg_to_smul {a b c : E}
+    (h : SylvesterGallai.Collinear (φ a) (φ b) (φ c)) :
+    ∃ t : ℝ, c = t • (b - a) +ᵥ a := by
+  obtain ⟨t, ht0, ht1⟩ := h
+  -- `φ _` projections are definitionally the coordinates; rewrite ht0/ht1 to that form.
+  change c 0 - a 0 = t * (b 0 - a 0) at ht0
+  change c 1 - a 1 = t * (b 1 - a 1) at ht1
+  refine ⟨t, ?_⟩
+  rw [vadd_eq_add]
+  apply PiLp.ext
+  rw [Fin.forall_fin_two]
+  refine ⟨?_, ?_⟩
+  · simp only [PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply, smul_eq_mul]
+    linarith
+  · simp only [PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply, smul_eq_mul]
+    linarith
 
-/-- The signed area is invariant under a cyclic rotation of the vertices. -/
-lemma area2_cyclic (a b c : Pt) : area2 b c a = area2 a b c := by
-  unfold area2; ring
+/-- **Predicate bridge.** For distinct `a b`, Mathlib collinearity of `{a,b,c}`
+agrees with the cross-product collinearity of `Proofs/Erdos606OQ03OQ03.lean`
+under the coordinate map `φ`. -/
+theorem collinear_iff_sg (a b c : E) (hab : a ≠ b) :
+    Collinear ℝ ({a, b, c} : Set E) ↔
+      SylvesterGallai.Collinear (φ a) (φ b) (φ c) := by
+  constructor
+  · -- Mathlib collinearity → cross-product predicate
+    intro hcol
+    rw [collinear_iff_of_mem (Set.mem_insert a _)] at hcol
+    obtain ⟨v, hv⟩ := hcol
+    obtain ⟨rb, hb⟩ := hv b (by simp)
+    obtain ⟨rc, hc⟩ := hv c (by simp)
+    rw [vadd_eq_add] at hb hc
+    have hbv : b - a = rb • v := by rw [hb]; abel
+    have hcv : c - a = rc • v := by rw [hc]; abel
+    have hrb : rb ≠ 0 := by
+      intro h0
+      apply hab
+      rw [h0, zero_smul, sub_eq_zero] at hbv
+      exact hbv.symm
+    have key : c - a = (rc * rb⁻¹) • (b - a) := by
+      rw [hcv, hbv, smul_smul, mul_assoc, inv_mul_cancel₀ hrb, mul_one]
+    refine ⟨rc * rb⁻¹, ?_, ?_⟩
+    · show c 0 - a 0 = (rc * rb⁻¹) * (b 0 - a 0)
+      have h0 := congrArg (fun w => w 0) key
+      simpa using h0
+    · show c 1 - a 1 = (rc * rb⁻¹) * (b 1 - a 1)
+      have h1 := congrArg (fun w => w 1) key
+      simpa using h1
+  · -- cross-product predicate → Mathlib collinearity
+    intro hsg
+    obtain ⟨t, hc⟩ := sg_to_smul hsg
+    rw [collinear_iff_of_mem (Set.mem_insert a _)]
+    refine ⟨b - a, ?_⟩
+    intro p hp
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hp
+    rcases hp with rfl | rfl | rfl
+    · exact ⟨0, by rw [zero_smul, vadd_eq_add]; abel⟩
+    · exact ⟨1, by rw [one_smul, vadd_eq_add]; abel⟩
+    · exact ⟨t, hc⟩
 
-/-- Translation invariance: shifting all three vertices by a common vector `t`
-leaves the signed area unchanged. -/
-lemma area2_vadd (t a b c : Pt) :
-    area2 (t + a) (t + b) (t + c) = area2 a b c := by
-  unfold area2
-  simp only [PiLp.add_apply]
-  ring
+/-- **Hypothesis transport.** A non-collinear set maps to a not-all-collinear image. -/
+theorem not_allCollinear_image (S : Finset E)
+    (hS : ¬ Collinear ℝ (↑S : Set E)) :
+    ¬ SylvesterGallai.AllCollinear (S.image φ) := by
+  intro hAC
+  apply hS
+  obtain ⟨A, hA, B, hB, hAB, hall⟩ := hAC
+  obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp hA
+  obtain ⟨b, hb, rfl⟩ := Finset.mem_image.mp hB
+  rw [collinear_iff_of_mem (Finset.mem_coe.mpr ha)]
+  refine ⟨b - a, ?_⟩
+  intro p hp
+  rw [Finset.mem_coe] at hp
+  have hsg : SylvesterGallai.Collinear (φ a) (φ b) (φ p) :=
+    hall (φ p) (Finset.mem_image_of_mem φ hp)
+  exact sg_to_smul hsg
 
-/-! ### Perpendicular distance to a line -/
+-- ============================================================
+-- Main theorem — reduction to the verified proof
+-- ============================================================
 
-/-- The perpendicular distance from `c` to the line through `a` and `b`,
-expressed via the signed area: `|area2 a b c| / dist a b`. When `a = b` this is `0`
-(degenerate base), so it is only meaningful for `a ≠ b`. -/
-noncomputable def distToLine (a b c : Pt) : ℝ := |area2 a b c| / dist a b
+/-- **Sylvester–Gallai theorem** (canonical Mathlib formulation). Every finite
+non-collinear set of points in the Euclidean plane determines an ordinary line.
 
-lemma distToLine_nonneg (a b c : Pt) : 0 ≤ distToLine a b c :=
-  div_nonneg (abs_nonneg _) dist_nonneg
-
-@[simp] lemma distToLine_self_left (a c : Pt) : distToLine a a c = 0 := by
-  simp [distToLine]
-
-/-! ### The collinearity bridge (open) -/
-
-/-- **Bridge (open).** Three points are collinear exactly when the signed area
-vanishes. This connects the affine `Collinear` predicate used in the statement to
-the concrete `area2` functional used in the proof.
-
-Forward direction: `collinear_iff_of_mem` gives a common direction `v` with
-`b = r_b • v +ᵥ a`, `c = r_c • v +ᵥ a`, whence each coordinate difference is a scalar
-multiple of `v` and the determinant collapses to `0`. Reverse: a vanishing
-determinant exhibits `b - a` and `c - a` as linearly dependent, giving the direction.
-Clean `HARD` Aristotle target once the coordinate-evaluation bookkeeping is fixed. -/
-theorem collinear_iff_area2_eq_zero (a b c : Pt) :
-    Collinear ℝ ({a, b, c} : Set Pt) ↔ area2 a b c = 0 := by
-  sorry
-
-/-- `distToLine a b c = 0` iff `c` lies on the line through `a b` (for `a ≠ b`). -/
-theorem distToLine_eq_zero_iff {a b c : Pt} (hab : a ≠ b) :
-    distToLine a b c = 0 ↔ Collinear ℝ ({a, b, c} : Set Pt) := by
-  rw [distToLine, div_eq_zero_iff, abs_eq_zero, collinear_iff_area2_eq_zero]
-  have : dist a b ≠ 0 := by
-    simpa [dist_eq_zero] using hab
-  simp [this]
-
-/-! ### Kelly's geometric inequality (open kernel) -/
-
-/-- **Kelly's strict-decrease step (open).** Suppose `P₀` is off the line `ℓ₀`
-through `a₀ b₀`, and `ℓ₀` carries a third collinear point. Taking the foot `F` of the
-perpendicular from `P₀` and the two collinear points `B` (nearer `F`), `C` (farther,
-same side), one gets a strictly smaller perpendicular distance
-`distToLine P₀ C B < distToLine a₀ b₀ P₀`.
-
-This is the geometric heart of Kelly's proof; the ratio of nested similar triangles
-`CB / CP₀ < 1` drives the strict inequality. Left as a `sorry`: this is the genuinely
-hard, creative part and is **not** a known Mathlib result. -/
-theorem area2_strict_decrease
-    {a₀ b₀ P₀ B C : Pt} (hab : a₀ ≠ b₀)
-    (hP : ¬ Collinear ℝ ({a₀, b₀, P₀} : Set Pt))
-    (hB : Collinear ℝ ({a₀, b₀, B} : Set Pt))
-    (hC : Collinear ℝ ({a₀, b₀, C} : Set Pt))
-    (hBC : B ≠ C) (hPC : P₀ ≠ C)
-    (hside : True /- B, C strictly on the same side of the foot F, B nearer -/) :
-    distToLine P₀ C B < distToLine a₀ b₀ P₀ := by
-  sorry
-
-/-! ### Main theorem (open assembly) -/
-
-/-- **Sylvester–Gallai (open).** Any finite, non-collinear set of points in the plane
-admits an *ordinary line*: two distinct points `a, b ∈ S` such that every point of `S`
-collinear with `a` and `b` is equal to `a` or `b`.
-
-Proof strategy (Kelly): minimize `distToLine a b P` over the finite, nonempty set of
-triples `(a, b, P)` with `a, b, P ∈ S`, `a ≠ b`, and `P` off the line `ab`
-(nonempty since `S` is non-collinear). If the minimizing line carried a third point,
-`area2_strict_decrease` would produce a strictly smaller member — contradiction. -/
-theorem sylvester_gallai {S : Finset Pt}
-    (hS : ¬ Collinear ℝ (↑S : Set Pt)) :
-    ∃ a ∈ S, ∃ b ∈ S, a ≠ b ∧
-      ∀ c ∈ S, Collinear ℝ ({a, b, c} : Set Pt) → c = a ∨ c = b := by
-  sorry
+Proof: transport `S` to `S.image φ ⊆ ℝ × ℝ`, invoke the verified
+`SylvesterGallai.sylvester_gallai`, and pull the ordinary line back along the
+injective coordinate map `φ`. -/
+theorem sylvester_gallai (S : Finset E)
+    (hS : ¬ Collinear ℝ (↑S : Set E)) :
+    ∃ a ∈ S, ∃ b ∈ S, a ≠ b ∧ IsOrdinary S a b := by
+  classical
+  -- Transport the hypotheses to the concrete plane.
+  have hcard : 3 ≤ (S.image φ).card := by
+    have h3 := three_le_card_of_not_collinear S hS
+    calc 3 ≤ S.card := h3
+      _ = (S.image φ).card := (Finset.card_image_of_injective S phi_injective).symm
+  have hnot := not_allCollinear_image S hS
+  -- Invoke the verified Kelly proof over ℝ × ℝ.
+  obtain ⟨A, B, hAmem, hBmem, hAB, hord⟩ :=
+    SylvesterGallai.sylvester_gallai (S.image φ) hcard hnot
+  -- Pull the witnesses back along φ.
+  obtain ⟨a, haS, rfl⟩ := Finset.mem_image.mp hAmem
+  obtain ⟨b, hbS, rfl⟩ := Finset.mem_image.mp hBmem
+  have hab : a ≠ b := fun h => hAB (by rw [h])
+  refine ⟨a, haS, b, hbS, hab, ?_⟩
+  intro c hcS hcol
+  -- Carry collinearity across the bridge and apply ordinariness of (φ a, φ b).
+  have hsg : SylvesterGallai.Collinear (φ a) (φ b) (φ c) :=
+    (collinear_iff_sg a b c hab).mp hcol
+  rcases hord (φ c) (Finset.mem_image_of_mem φ hcS) hsg with h | h
+  · exact Or.inl (phi_injective h)
+  · exact Or.inr (phi_injective h)
 
 end SylvesterGallaiOQ01

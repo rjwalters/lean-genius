@@ -68,7 +68,8 @@ lemma collinear_comm (a b c : Point) : Collinear a b c ↔ Collinear b a c := by
     by_cases hab : a.1 = b.1 ∧ a.2 = b.2
     · obtain ⟨ha1, ha2⟩ := hab
       simp [ha1, ha2] at h1 h2
-      exact ⟨0, by simp [h1, ha1.symm], by simp [h2, ha2.symm]⟩
+      exact ⟨0, by simp only [zero_mul]; linarith [h1, ha1],
+                by simp only [zero_mul]; linarith [h2, ha2]⟩
     · push_neg at hab
       exact ⟨1 - t, by ring_nf; linarith, by ring_nf; linarith⟩
 
@@ -117,6 +118,7 @@ private lemma not_collinear_of_cross
   apply h
   linear_combination (b.1 - a.1) * ht2 - (b.2 - a.2) * ht1
 
+set_option maxHeartbeats 1000000 in
 /-- **Kelly's Key Lemma** (the geometric calculation):
 
     If a line ℓ through points a, b passes through a third point c,
@@ -162,14 +164,12 @@ theorem kelly_distance_lemma
       have hv1 : v₁ = 0 := by
         have h1 : u₂ * v₁ = 0 := by linear_combination -hCeq + v₂ * hu1
         exact (mul_eq_zero.mp h1).resolve_left hu2
-      exact ⟨v₂ / u₂, by linarith [hu₁, hv₁, hu1, hv1],
-             by rw [hv₂, hu₂]; field_simp [hu2]⟩
+      exact ⟨v₂ / u₂, by rw [← hv₁, ← hu₁, hv1, hu1]; ring,
+                by rw [← hv₂, ← hu₂]; field_simp [hu2]⟩
     · exact ⟨v₁ / u₁,
-             by rw [hv₁, hu₁]; field_simp [hu1],
-             by
-               have hCeq : u₁ * v₂ - u₂ * v₁ = 0 := hC0
-               have : v₂ = u₂ * v₁ / u₁ := by field_simp [hu1]; linarith
-               rw [hv₂, hv₁, hu₁, hu₂]; field_simp [hu1]; linarith⟩
+             by rw [← hv₁, ← hu₁]; field_simp [hu1],
+             by rw [← hv₂, ← hu₂, div_mul_eq_mul_div, eq_div_iff hu1];
+                linear_combination hC0⟩
   -- D > 0 from a ≠ b
   have hD : 0 < D := by
     apply lt_of_le_of_ne (by positivity)
@@ -203,16 +203,16 @@ theorem kelly_distance_lemma
     show (|(b.1-a.1)*(p.2-a.2)-(b.2-a.2)*(p.1-a.1)| /
          Real.sqrt ((b.1-a.1)^2+(b.2-a.2)^2))^2 = C^2/D
     rw [div_pow, sq_abs, Real.sq_sqrt (by positivity)]
-    congr 1 <;> simp only [hC_def, hD_def, hu₁, hu₂, hv₁, hv₂] <;> ring
+    all_goals (congr 1 <;> simp only [hC_def, hD_def, hu₁, hu₂, hv₁, hv₂] <;> ring)
   -- d(p,line(a,b)) > 0
   have hpld_pos : 0 < pointLineDistance p a b := by
     show 0 < |(b.1-a.1)*(p.2-a.2)-(b.2-a.2)*(p.1-a.1)| /
              Real.sqrt ((b.1-a.1)^2+(b.2-a.2)^2)
     apply div_pos
     · have : (b.1-a.1)*(p.2-a.2)-(b.2-a.2)*(p.1-a.1) = C := by
-        simp only [hC_def, hu₁, hu₂, hv₁, hv₂]; ring
+        simp only [hC_def, hu₁, hu₂, hv₁, hv₂] <;> ring
       rw [this]; exact abs_pos.mpr hC
-    · have : (b.1-a.1)^2+(b.2-a.2)^2 = D := by simp only [hD_def, hu₁, hu₂]; ring
+    · have : (b.1-a.1)^2+(b.2-a.2)^2 = D := by simp only [hD_def, hu₁, hu₂] <;> ring
       rw [this]; exact Real.sqrt_pos.mpr hD
   -- Helper: compare squared distances
   -- For each case: q ∈ S, Y ∈ S, q≠p, ¬Collinear p q Y, and d(q,line(p,Y)) < d(p,line(a,b))
@@ -300,8 +300,10 @@ theorem kelly_distance_lemma
           linarith
         have hlt_sq_C1 : (pointLineDistance a p c)^2 < (pointLineDistance p a b)^2 := by
           rw [hpld_apc_sq, hpld_sq]
-          rw [div_lt_div_iff hden_apc hD]
-          nlinarith [hkey_C1, hC2]
+          rw [div_lt_div_iff₀ hden_apc hD]
+          calc t ^ 2 * C ^ 2 * D = C ^ 2 * (t ^ 2 * D) := by ring
+            _ < C ^ 2 * ((t * u₁ - v₁) ^ 2 + (t * u₂ - v₂) ^ 2) :=
+                mul_lt_mul_of_pos_left hkey_C1 hC2
         have hlt_C1 : pointLineDistance a p c < pointLineDistance p a b := by
           rw [← Real.sqrt_sq (pld_nonneg a p c), ← Real.sqrt_sq (le_of_lt hpld_pos)]
           exact Real.sqrt_lt_sqrt (sq_nonneg _) hlt_sq_C1
@@ -334,8 +336,9 @@ theorem kelly_distance_lemma
             linarith
           have hlt_sq_C2 : (pointLineDistance c p a)^2 < (pointLineDistance p a b)^2 := by
             rw [hpld_cpa_sq, hpld_sq]
-            rw [div_lt_div_iff hden_cpa hD]
-            nlinarith [hkey_C2, hC2]
+            rw [div_lt_div_iff₀ hden_cpa hD]
+            calc t ^ 2 * C ^ 2 * D = C ^ 2 * (t ^ 2 * D) := by ring
+              _ < C ^ 2 * (v₁ ^ 2 + v₂ ^ 2) := mul_lt_mul_of_pos_left hkey_C2 hC2
           have hlt_C2 : pointLineDistance c p a < pointLineDistance p a b := by
             rw [← Real.sqrt_sq (pld_nonneg c p a), ← Real.sqrt_sq (le_of_lt hpld_pos)]
             exact Real.sqrt_lt_sqrt (sq_nonneg _) hlt_sq_C2
@@ -355,7 +358,7 @@ theorem kelly_distance_lemma
               have : (b.1-p.1)*(c.2-p.2)-(b.2-p.2)*(c.1-p.1) = (t-1)*C := by
                 simp only [hC_def, hu₁, hu₂, hv₁, hv₂, hc1_nc, hc2_nc]; ring
               rw [this]
-              exact mul_ne_zero (sub_ne_zero.mpr (Ne.symm ht_ne1)) hC
+              exact mul_ne_zero (sub_ne_zero.mpr ht_ne1) hC
             have hp_ne_b : p ≠ b := by
               intro hpb; apply hpnot; rw [hpb]; exact ⟨1, by simp [hu₁], by simp [hu₂]⟩
             have hpld_cpb_sq : (pointLineDistance c p b)^2 =
@@ -372,8 +375,10 @@ theorem kelly_distance_lemma
               linarith
             have hlt_sq_C3 : (pointLineDistance c p b)^2 < (pointLineDistance p a b)^2 := by
               rw [hpld_cpb_sq, hpld_sq]
-              rw [div_lt_div_iff hden_cpb hD]
-              nlinarith [hkey_C3, hC2]
+              rw [div_lt_div_iff₀ hden_cpb hD]
+              calc (t - 1) ^ 2 * C ^ 2 * D = C ^ 2 * ((t - 1) ^ 2 * D) := by ring
+                _ < C ^ 2 * ((u₁ - v₁) ^ 2 + (u₂ - v₂) ^ 2) :=
+                    mul_lt_mul_of_pos_left hkey_C3 hC2
             have hlt_C3 : pointLineDistance c p b < pointLineDistance p a b := by
               rw [← Real.sqrt_sq (pld_nonneg c p b), ← Real.sqrt_sq (le_of_lt hpld_pos)]
               exact Real.sqrt_lt_sqrt (sq_nonneg _) hlt_sq_C3
@@ -409,8 +414,10 @@ theorem kelly_distance_lemma
               linarith
             have hlt_sq_C4 : (pointLineDistance b p c)^2 < (pointLineDistance p a b)^2 := by
               rw [hpld_bpc_sq, hpld_sq]
-              rw [div_lt_div_iff hden_bpc hD]
-              nlinarith [hkey_C4, hC2]
+              rw [div_lt_div_iff₀ hden_bpc hD]
+              calc (1 - t) ^ 2 * C ^ 2 * D = C ^ 2 * ((1 - t) ^ 2 * D) := by ring
+                _ < C ^ 2 * ((t * u₁ - v₁) ^ 2 + (t * u₂ - v₂) ^ 2) :=
+                    mul_lt_mul_of_pos_left hkey_C4 hC2
             have hlt_C4 : pointLineDistance b p c < pointLineDistance p a b := by
               rw [← Real.sqrt_sq (pld_nonneg b p c), ← Real.sqrt_sq (le_of_lt hpld_pos)]
               exact Real.sqrt_lt_sqrt (sq_nonneg _) hlt_sq_C4
@@ -454,9 +461,10 @@ theorem sylvester_gallai (S : Finset Point)
     -- From S.card ≥ 3 > 1, get distinct a, b ∈ S
     have ⟨a, haS, b, hbS, hab⟩ : ∃ a ∈ S, ∃ b ∈ S, a ≠ b :=
       Finset.one_lt_card.mp (by omega)
-    rcases hnot a haS b hbS with rfl | ⟨c, hcS, hnc⟩
-    · exact absurd rfl hab
-    · exact ⟨a, haS, b, hbS, hab, c, hcS, hnc⟩
+    -- `push_neg` turns `¬AllCollinear` into
+    -- `∀ a ∈ S, ∀ b ∈ S, a ≠ b → ∃ c ∈ S, ¬Collinear a b c`; discharge `a ≠ b` with `hab`.
+    obtain ⟨c, hcS, hnc⟩ := hnot a haS b hbS hab
+    exact ⟨a, haS, b, hbS, hab, c, hcS, hnc⟩
   -- Step 3: Take the minimum-distance non-incident pair (p, a, b) in S³
   -- Use Classical decidability for the Finset filter
   classical
