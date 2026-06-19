@@ -143,6 +143,17 @@ theorem genPent_injective : Function.Injective genPent := by
   · linarith
   · omega
 
+/-- **The `±k` pairing of Euler's recurrence.** `g(-k) = g(k) + k`: the two
+pentagonal shifts `g(k)` and `g(-k)` appearing together in
+`p(n) = ∑_{k≥1} (-1)^{k-1}(p(n - g_k) + p(n - g_{-k}))` differ by exactly `k`,
+since `2g(-k) - 2g(k) = (-k)(-3k-1) - k(3k-1) = 2k`. -/
+theorem genPent_neg (k : ℤ) : genPent (-k) = genPent k + k := by
+  have h1 := two_mul_genPent (-k)
+  have h2 := two_mul_genPent k
+  have h3 : (2 : ℤ) * genPent (-k) - 2 * genPent k = 2 * k := by
+    rw [h1, h2]; ring
+  linarith
+
 /-! ## Part 3b: Index bounds — Euler's recurrence is a finite sum
 
 Euler's partition recurrence `p(n) = ∑_{k≠0} (-1)^{k-1} p(n - g(k))` is only
@@ -200,6 +211,39 @@ theorem indexSet_finite (n : ℤ) : {k : ℤ | genPent k ≤ n}.Finite := by
   rw [Set.mem_Icc]
   rw [abs_le] at hb
   exact hb
+
+/-! ## Part 3c: A computable enumerator of contributing indices
+
+`indexSet_finite` shows the support of Euler's recurrence is finite; here we make
+it *explicit and computable*.  `pentIndices n` is the `Finset` of indices `k` with
+`g(k) ≤ n`, carved out of the interval `[-n, n]` (which contains every such index
+by `abs_index_le_genPent`).  Its membership predicate is exactly `g(k) ≤ n`, so the
+finite sum in `p(n) = ∑_{k} (-1)^{k-1} p(n - g_k)` can be evaluated over it. -/
+
+/-- The contributing indices of Euler's recurrence at level `n`: the explicit
+`Finset` of `k` with `g(k) ≤ n`, obtained by filtering `[-n, n]`. -/
+def pentIndices (n : ℤ) : Finset ℤ :=
+  (Finset.Icc (-n) n).filter (fun k => genPent k ≤ n)
+
+/-- Membership in `pentIndices n` is exactly the value bound `g(k) ≤ n`; the
+interval `[-n, n]` constraint is automatic via `abs_index_le_genPent`. -/
+@[simp] theorem mem_pentIndices {n k : ℤ} : k ∈ pentIndices n ↔ genPent k ≤ n := by
+  unfold pentIndices
+  rw [Finset.mem_filter, Finset.mem_Icc]
+  constructor
+  · exact fun h => h.2
+  · intro h
+    have hb := le_trans (abs_index_le_genPent k) h
+    rw [abs_le] at hb
+    exact ⟨hb, h⟩
+
+/-- The enumerator `pentIndices n` realizes the abstract index set `{k | g(k) ≤ n}`,
+tying the computable `Finset` to the `Set` whose finiteness `indexSet_finite`
+establishes. -/
+theorem coe_pentIndices (n : ℤ) :
+    (pentIndices n : Set ℤ) = {k : ℤ | genPent k ≤ n} := by
+  ext k
+  rw [Finset.mem_coe, Set.mem_setOf_eq, mem_pentIndices]
 
 /-! ## Part 4: Concrete values (OEIS A001318)
 
