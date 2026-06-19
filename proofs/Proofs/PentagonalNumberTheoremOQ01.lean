@@ -33,6 +33,15 @@
   - `indexSet_finite`        — only finitely many `g(k) ≤ n` (Euler's recurrence
                                is a finite sum)
   - concrete values `g(0..±4) = 0,1,2,5,7,12,15,22,26` matching the OEIS A001318.
+
+  Both sides of Euler's identity are then constructed as honest objects in `ℤ⟦X⟧`:
+  - `pentSeries`              — the lacunary RHS `∑_{k∈ℤ} (-1)ᵏ X^{g(k)}`, every
+                               coefficient pinned down
+  - `eulerProduct`            — the product LHS `∏_{n≥1} (1 − Xⁿ)`, defined by
+                               coefficient stabilization (`coeff_eulerProduct_of_le`)
+  - `eulerPentagonalIdentity` — the open core, now a single typed equation
+                               `eulerProduct = pentSeries`, verified at the constant
+                               coefficient (`eulerPentagonalIdentity_constantCoeff`).
 -/
 
 import Mathlib
@@ -343,24 +352,118 @@ theorem coeff_pentSeries_eq_zero {n : ℕ} (h : ¬ IsGenPent (n : ℤ)) :
   refine pentCoeff_eq_zero fun k hk => ?_
   exact h ((isGenPent_iff_exists_genPent _).mpr ⟨k, hk⟩)
 
-/-! ## OPEN CORE (not formalized here)
+/-! ## Part 6: The left-hand side — the Euler product `∏(1−Xⁿ)` as a power series
 
-With `pentSeries` (Part 5) realizing the **right-hand side**, the pentagonal
-number theorem reduces to the single identity in `ℤ⟦X⟧`
+Euler's identity equates `pentSeries` (Part 5) with the infinite product
+`∏_{n≥1} (1 − Xⁿ)`.  We give that product an honest meaning in `ℤ⟦X⟧` by a
+coefficient-stabilization argument that needs no topology.
 
-    `∏_{n≥1} (1 - Xⁿ) = pentSeries`,
+The finite truncations `eulerPartialProd N = ∏_{n=1}^{N} (1 − Xⁿ)` stabilize
+coefficient-by-coefficient: passing from `N` to `N+1` multiplies by a single
+factor `1 − X^{N+1}`, and `X^{N+1}` contributes only in degrees `≥ N+1`, so no
+coefficient of degree `≤ N` can change (`coeff_eulerPartialProd_succ`).  Hence the
+`m`-th coefficient is already final in the truncation `eulerPartialProd m`, and we
+define `eulerProduct` by reading it off there (`eulerProduct`,
+`coeff_eulerProduct_of_le`).  This upgrades the open core from prose to the single
+honest equation `eulerProduct = pentSeries` between two fully constructed objects. -/
 
-equivalently the partition statement `p_even(n) - p_odd(n) = [n = g(k)]·(-1)ᵏ`,
-where `p_even`/`p_odd` count partitions of `n` into an even/odd number of
-*distinct* parts.  The standard proof is **Franklin's sign-reversing involution**
-on partitions into distinct parts, whose only fixed points are the staircase
-partitions of generalized pentagonal numbers.
+/-- The truncated Euler product `∏_{n=1}^{N} (1 − Xⁿ)` in `ℤ⟦X⟧`. -/
+def eulerPartialProd (N : ℕ) : PowerSeries ℤ :=
+  ∏ n ∈ Finset.range N, (1 - (PowerSeries.X : PowerSeries ℤ) ^ (n + 1))
+
+/-- Truncating one factor further multiplies by `1 − X^{N+1}`. -/
+theorem eulerPartialProd_succ (N : ℕ) :
+    eulerPartialProd (N + 1)
+      = eulerPartialProd N * (1 - (PowerSeries.X : PowerSeries ℤ) ^ (N + 1)) := by
+  unfold eulerPartialProd
+  rw [Finset.prod_range_succ]
+
+/-- **Coefficient stabilization, one step.** For `m ≤ N`, the extra factor
+`1 − X^{N+1}` does not change the coefficient of `Xᵐ`, since `X^{N+1}` lives in
+degrees `≥ N+1 > m`. -/
+theorem coeff_eulerPartialProd_succ {m N : ℕ} (h : m ≤ N) :
+    PowerSeries.coeff ℤ m (eulerPartialProd (N + 1))
+      = PowerSeries.coeff ℤ m (eulerPartialProd N) := by
+  rw [eulerPartialProd_succ, mul_sub, mul_one, map_sub,
+    PowerSeries.coeff_mul_X_pow', if_neg (by omega : ¬ (N + 1 ≤ m)), sub_zero]
+
+/-- **Coefficient stabilization.** For every `N ≥ m`, the `m`-th coefficient of the
+truncated product has already reached its final value (that of `eulerPartialProd m`). -/
+theorem coeff_eulerPartialProd_stable {m N : ℕ} (h : m ≤ N) :
+    PowerSeries.coeff ℤ m (eulerPartialProd N)
+      = PowerSeries.coeff ℤ m (eulerPartialProd m) := by
+  induction N, h using Nat.le_induction with
+  | base => rfl
+  | succ n hn ih => rw [coeff_eulerPartialProd_succ hn, ih]
+
+/-- The Euler product `∏_{n≥1} (1 − Xⁿ)` as a formal power series in `ℤ⟦X⟧`,
+defined by reading off each coefficient from a truncation long enough to have
+stabilized. -/
+noncomputable def eulerProduct : PowerSeries ℤ :=
+  PowerSeries.mk fun m => PowerSeries.coeff ℤ m (eulerPartialProd m)
+
+@[simp] theorem coeff_eulerProduct (m : ℕ) :
+    PowerSeries.coeff ℤ m eulerProduct
+      = PowerSeries.coeff ℤ m (eulerPartialProd m) := by
+  unfold eulerProduct
+  rw [PowerSeries.coeff_mk]
+
+/-- The defining property: every coefficient of `eulerProduct` equals that of any
+sufficiently long truncation `eulerPartialProd N` (`N ≥ m`).  This is the precise
+sense in which `eulerProduct` *is* the infinite product `∏(1−Xⁿ)`. -/
+theorem coeff_eulerProduct_of_le {m N : ℕ} (h : m ≤ N) :
+    PowerSeries.coeff ℤ m eulerProduct
+      = PowerSeries.coeff ℤ m (eulerPartialProd N) := by
+  rw [coeff_eulerProduct, ← coeff_eulerPartialProd_stable h]
+
+/-- The Euler product is normalized: its constant term is `1` (the empty
+truncation `eulerPartialProd 0 = 1`). -/
+@[simp] theorem coeff_eulerProduct_zero :
+    PowerSeries.coeff ℤ 0 eulerProduct = 1 := by
+  rw [coeff_eulerProduct]
+  unfold eulerPartialProd
+  rw [Finset.range_zero, Finset.prod_empty]
+  simp
+
+/-! ## OPEN CORE: the pentagonal identity as a typed equation
+
+With **both** sides now constructed in `ℤ⟦X⟧` — the product side `eulerProduct`
+(Part 6) and the lacunary side `pentSeries` (Part 5) — Euler's pentagonal number
+theorem is the single equation `eulerProduct = pentSeries`, recorded below as
+`eulerPentagonalIdentity`.  It is the *only* statement left open. -/
+
+/-- **Euler's pentagonal number theorem**, stated as the equality of the two
+power series constructed in this file: the product side `∏_{n≥1}(1−Xⁿ)` and the
+lacunary side `∑_{k∈ℤ}(-1)ᵏ X^{g(k)}`.  This is the open core; see the note
+below. -/
+def eulerPentagonalIdentity : Prop := eulerProduct = pentSeries
+
+/-- A consistency check on the open core that the two constructed sides are at
+least correctly normalized: they agree at the constant coefficient (both `1`).
+`eulerProduct` has constant term `1` as an empty product; `pentSeries` has
+constant term `(-1)^|0| = 1` at the exponent `g(0) = 0`.  This verifies the
+identity in degree `0` only — it does not prove `eulerPentagonalIdentity`. -/
+theorem eulerPentagonalIdentity_constantCoeff :
+    PowerSeries.coeff ℤ 0 eulerProduct = PowerSeries.coeff ℤ 0 pentSeries := by
+  have h := coeff_pentSeries_genPent 0
+  rw [genPent_zero] at h
+  rw [coeff_eulerProduct_zero]
+  simpa using h.symm
+
+/-! ## On the remaining open content (Franklin's involution)
+
+`eulerPentagonalIdentity` is equivalently the partition statement
+`p_even(n) − p_odd(n) = [n = g(k)]·(-1)ᵏ`, where `p_even`/`p_odd` count partitions
+of `n` into an even/odd number of *distinct* parts.  The standard proof is
+**Franklin's sign-reversing involution** on partitions into distinct parts, whose
+only fixed points are the staircase partitions of the generalized pentagonal
+numbers.
 
 Mathlib (as of this writing) has `Nat.Partition` but neither partitions into
-distinct parts with a parity sign, nor Franklin's involution, nor the requisite
-formal-power-series infinite-product manipulation.  Building that is a
-multi-file development; this file supplies both the index-set theory it would
-consume (notably `isGenPent_iff_isSquare` and `genPent_injective`) and the fully
-characterized target series `pentSeries`. -/
+distinct parts with a parity sign nor Franklin's involution; building that is a
+multi-file development.  This file supplies the surrounding scaffolding both sides
+of the identity rest on: the index-set theory (notably `isGenPent_iff_isSquare`
+and `genPent_injective`), the fully characterized lacunary series `pentSeries`,
+and now the product side `eulerProduct` with its coefficient-stabilization API. -/
 
 end PentagonalNumberTheoremOQ01

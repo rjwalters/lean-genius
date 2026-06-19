@@ -196,3 +196,46 @@ identity `∏_{n≥1}(1-Xⁿ) = pentSeries` in `ℤ⟦X⟧` — equivalently the
 statement `p_even(n) - p_odd(n) = pentCoeff n`. Both the index/finiteness theory
 *and* the target series are now in place; what is missing upstream is the
 distinct-parts parity sign and Franklin's involution (a multi-file development).
+
+### 2026-06-19 (Session 5, researcher-8) — DEEPEN (build-verified)
+
+**Mode**: DEEPEN · **Outcome**: progress (build-verified)
+
+- Carried out the Session-4 next step from the other direction: constructed the
+  **left-hand side** of Euler's identity, the infinite product `∏_{n≥1}(1−Xⁿ)`,
+  as an honest object in `ℤ⟦X⟧` — *without* any topology — via a
+  **coefficient-stabilization** argument. With both sides now built, the open
+  problem is a single typed equation `eulerProduct = pentSeries`.
+- New (Part 6): `eulerPartialProd N` (def: `∏_{n ∈ range N} (1 − X^{n+1})`, the
+  truncated product); `eulerPartialProd_succ` (peels one factor via
+  `Finset.prod_range_succ`); `coeff_eulerPartialProd_succ` (the key step: for
+  `m ≤ N` the extra factor `1 − X^{N+1}` leaves the coefficient of `Xᵐ` unchanged,
+  because `X^{N+1}` lives in degrees `≥ N+1 > m` — `PowerSeries.coeff_mul_X_pow'`
+  + `if_neg`); `coeff_eulerPartialProd_stable` (`Nat.le_induction`: every
+  truncation `≥ m` already shows the final `m`-th coefficient); `eulerProduct`
+  (noncomputable def: `PowerSeries.mk fun m => coeff m (eulerPartialProd m)`, read
+  each coefficient off the truncation where it has stabilized);
+  `coeff_eulerProduct` (simp) / `coeff_eulerProduct_of_le` (each coefficient
+  equals that of any long-enough truncation — the precise sense in which
+  `eulerProduct` *is* `∏(1−Xⁿ)`); `coeff_eulerProduct_zero` (constant term `1`).
+- Open core upgraded from prose to a typed `Prop`: `eulerPentagonalIdentity :
+  eulerProduct = pentSeries` (a *statement*, carries no proof obligation, not an
+  assumption), with `eulerPentagonalIdentity_constantCoeff` machine-verifying that
+  the two constructed sides agree in degree 0 (both `= 1`).
+- Why stabilization works with no limits/topology: multiplying a power series by
+  `1 − X^{N+1}` is the identity on every coefficient of degree `≤ N`, so the
+  coefficient sequence of the truncations is eventually constant in each fixed
+  degree; `PowerSeries.mk` of those eventual values is the honest infinite product.
+- Build green (EXIT=0, 0 sorry, 0 axiom, 0 native_decide). Single-file incremental
+  compile against the Azure olean cache, `LEAN_MEMORY_LIMIT=6144`; gate opened
+  immediately (2 concurrent docker builds, load ~9 on the 7.65 GiB VM).
+
+**Next steps**: both sides of Euler's identity are now fully constructed in-file,
+so all the formal-power-series infrastructure the proof consumes is present. The
+sole remaining mathematical gap is the combinatorial heart — **Franklin's
+sign-reversing involution** on partitions into distinct parts (equivalently
+`p_even(n) − p_odd(n) = pentCoeff n`), which needs the distinct-parts parity sign
+absent from Mathlib (a multi-file development). A tractable intermediate is to
+verify `eulerPentagonalIdentity` in further low degrees (degree 1, 2) by
+`decide`/`Finset`-expansion of `eulerPartialProd`, giving incremental numerical
+evidence while the involution layer is built.
