@@ -16,7 +16,11 @@
       "covering-systems",
       "primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "integers coprime to 6",
+      "primality of numbers of the form 2^k 3^l m + 1",
+      "Sierpinski numbers as a single-base precedent"
+    ]
   },
   {
     "id": "ann-203-candidate",
@@ -34,7 +38,11 @@
       "prime-power",
       "coprimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "products of prime powers 2^k and 3^l",
+      "coprimality to 6",
+      "two-parameter exponent families"
+    ]
   },
   {
     "id": "ann-203-conjecture",
@@ -52,7 +60,11 @@
       "existence",
       "avoidance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential statements over the integers",
+      "avoidance of primality for all exponent pairs",
+      "the avoiding set being nonempty"
+    ]
   },
   {
     "id": "ann-203-sierpinski",
@@ -70,7 +82,11 @@
       "sierpinski",
       "selfridge"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "odd integers",
+      "primality of 2^k m + 1 for all k",
+      "Selfridge's covering-system argument for 78557"
+    ]
   },
   {
     "id": "ann-203-selfridge",
@@ -88,7 +104,11 @@
       "sierpinski-problem",
       "seventeen-or-bust"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Sierpinski problem and its smallest known solution",
+      "Seventeen or Bust verification",
+      "the unresolved minimality of 78557"
+    ]
   },
   {
     "id": "ann-203-covering",
@@ -107,7 +127,11 @@
       "congruence",
       "fermat"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "systems of congruences covering all integers",
+      "primes dividing 2^n - 1",
+      "Fermat-type divisibility of Mersenne-like values"
+    ]
   },
   {
     "id": "ann-203-extended",
@@ -125,7 +149,11 @@
       "two-dimensional",
       "lattice"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "two-dimensional avoidance over exponent pairs (a, b)",
+      "primes dividing 2^a 3^b - 1",
+      "covering systems on the lattice Z^2"
+    ]
   },
   {
     "id": "ann-203-coprime6",
@@ -143,7 +171,11 @@
       "coprime",
       "factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "coprimality to a composite modulus",
+      "factorization 6 = 2 * 3",
+      "decomposing Nat.Coprime over prime factors"
+    ]
   },
   {
     "id": "ann-203-basecase",
@@ -161,7 +193,11 @@
       "base-case",
       "constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the k = l = 0 specialization",
+      "primality of m + 1",
+      "necessary conditions from a single exponent pair"
+    ]
   },
   {
     "id": "ann-203-fails",
@@ -179,7 +215,11 @@
       "counterexamples",
       "small-cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "checking small coprime-to-6 values",
+      "primality of 2 and of 11 = 2*5 + 1",
+      "explicit counterexamples to avoidance"
+    ]
   },
   {
     "id": "ann-203-general",
@@ -197,7 +237,11 @@
       "generalization",
       "variants"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "multi-prime base generalizations",
+      "primes congruent to 1 mod 4",
+      "Erdos-Graham problem variants"
+    ]
   },
   {
     "id": "ann-203-statement",
@@ -215,7 +259,11 @@
       "formal-statement",
       "main-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "formal existential equivalence",
+      "integers coprime to 6 avoiding all primes",
+      "precise restatement of the conjecture"
+    ]
   },
   {
     "id": "ann-203-status",
@@ -233,6 +281,10 @@
       "open-problem",
       "difficulty"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open problems with no known resolution",
+      "existence of Sierpinski numbers in one dimension",
+      "difficulty of the two-dimensional extension"
+    ]
   }
 ]
