@@ -45,7 +45,8 @@
       "Assembly criterion (gal_eq_top_of_five_dvd_and_swap): the corrected proof's group-theoretic core, stated as a clean reusable theorem — 5 ∣ |G| and a transposition in G ⟹ G = S₅ — verified down to its two number-theoretic hypotheses.",
       "Discriminant direction (isSwap_not_mem_alternating): a transposition is odd, hence outside A₅.",
       "Polynomial anchoring (f_natDegree, f_monic, natDegree_prime): X⁵−X−1 is monic of prime degree 5.",
-      "Documentation of the open gap: the two hypotheses are the output of the Dedekind–Frobenius bridge shared with inverse-galois-a5-oq-01; closing it there closes this problem."
+      "Documentation of the open gap: the two hypotheses are the output of the Dedekind–Frobenius bridge shared with inverse-galois-a5-oq-01; closing it there closes this problem.",
+      "Concrete Frobenius witness (frob2, frob2_not_mem_alternating, frob2_pow_three_eq_swap, frob2_pow_three_isSwap): exhibits a (2,3)-cycle-type element (0 1)(2 3 4) ∈ S₅ modelling a Frobenius element of f mod 2, machine-checks it is odd and that its cube is the transposition (0 1) — making the prose 'order-6 Frobenius ⟹ transposition' step into verified permutation data."
     ],
     "prerequisites": [
       "Symmetric and alternating groups; permutation sign",
@@ -55,7 +56,7 @@
       "Lean 4 and Mathlib"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 129,
+    "lineCount": 165,
     "relatedProblems": [
       {
         "id": "abel-ruffini-oq-04-oq-01",
@@ -66,8 +67,8 @@
         "relationship": "Needs the SAME Dedekind–Frobenius bridge (cycle type of Frobenius from factor type mod p); closing it there supplies this file's two hypotheses."
       }
     ],
-    "theoremCount": 7,
-    "definitionCount": 1
+    "theoremCount": 10,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The Abel–Ruffini theorem (Ruffini 1799, Abel 1824) shows the general quintic is not solvable by radicals; Galois (1830s) recast solvability as a property of the polynomial's Galois group, solvable iff the group is. Concrete unsolvable quintics are exhibited by proving their Galois group is the non-solvable S₅. Selmer (1956) proved the trinomial X⁵−X−1 is irreducible over ℚ, making it a natural S₅ candidate. Determining Galois groups of quintics in practice rests on Dedekind's theorem (factorisation type mod an unramified prime p equals the cycle type of a Frobenius element), the standard computational tool described in Dummit & Foote §14.8 and van der Waerden §61.",
@@ -119,8 +120,15 @@
       "id": "polynomial-anchoring",
       "title": "Anchoring the Polynomial f = X⁵ − X − 1",
       "startLine": 113,
-      "endLine": 129,
+      "endLine": 127,
       "summary": "Defines f := X⁵ − X − 1 ∈ ℚ[X] and verifies f_natDegree (degree 5), f_monic, and natDegree_prime (degree prime) via compute_degree!, monicity!, and norm_num — connecting the abstract criterion to the concrete witness quintic."
+    },
+    {
+      "id": "frobenius-witness",
+      "title": "A Concrete (2,3)-Frobenius Witness at p = 2",
+      "startLine": 128,
+      "endLine": 165,
+      "summary": "Turns the prose 'order-6 Frobenius ⟹ transposition' step into verified permutation data. Defines frob2 := (0 1)(2 3 4) ∈ S₅, the (2,3)-cycle-type element modelling a Frobenius element of f mod 2 (irreducible quadratic · irreducible cubic). Proves frob2_not_mem_alternating (it is odd, ∉ A₅), frob2_pow_three_eq_swap (its cube kills the 3-cycle, leaving the swap (0 1)), and frob2_pow_three_isSwap (so it supplies exactly the transposition gal_eq_top_of_five_dvd_and_swap requires) — all by decide over Perm (Fin 5)."
     }
   ],
   "mainTheorems": [
@@ -141,6 +149,12 @@
       "type": "supporting",
       "description": "A transposition is odd, hence outside A₅ — the discriminant direction (Δ non-square ⟹ Gal ⊄ A₅) at the level of a single element (PROVED, 0 axioms).",
       "leanType": "∀ {τ : S5}, τ.IsSwap → τ ∉ alternatingGroup (Fin 5)"
+    },
+    {
+      "name": "frob2_pow_three_isSwap",
+      "type": "supporting",
+      "description": "The order-6 Frobenius step made concrete: frob2 = (0 1)(2 3 4) models a (2,3)-cycle-type Frobenius element of f mod 2, and its cube is the transposition (0 1) — exactly the swap input gal_eq_top_of_five_dvd_and_swap requires (PROVED by decide, 0 axioms).",
+      "leanType": "(frob2 ^ 3).IsSwap"
     }
   ],
   "conclusion": {
