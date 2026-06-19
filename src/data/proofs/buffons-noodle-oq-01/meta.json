@@ -142,6 +142,50 @@
       "leanType": "∀ {n : ℕ} (N : PolygonalNoodle n) (d : ℝ), 0 < d → π * d * N.expectedGridCrossings d d = 4 * N.totalLength"
     }
   ],
+  "sections": [
+    {
+      "id": "module-overview",
+      "title": "Overview: The Buffon–Laplace Grid Problem",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports the parent polygonal noodle theorem and Mathlib.Tactic, and frames the Buffon–Laplace extension: dropping a noodle on a grid of two perpendicular line families (spacings dₕ, dᵥ) and counting crossings against both at once, giving E = 2L/(πdₕ) + 2L/(πdᵥ). States the key idea (additivity of expectation across families needs no independence) and the scope (polygonal noodles only, 0 axioms, 0 sorries)."
+    },
+    {
+      "id": "grid-definition",
+      "title": "Definition: expectedGridCrossings",
+      "startLine": 54,
+      "endLine": 66,
+      "summary": "Defines PolygonalNoodle.expectedGridCrossings as the sum of the parent's single-family expectedCrossings at each spacing. This definitional sum encodes additivity of expectation across the two families and introduces no new probabilistic primitive."
+    },
+    {
+      "id": "grid-theorem",
+      "title": "Part I: The Buffon–Laplace Grid Theorem",
+      "startLine": 68,
+      "endLine": 111,
+      "summary": "Proves buffon_noodle_grid (E = 2L/(πdₕ) + 2L/(πdᵥ)) by rewriting each term with the parent buffon_noodle_polygon; records the additive structure via buffon_noodle_grid_eq_sum (rfl); specializes to the square grid (buffon_noodle_square_grid, 4L/(πd)); and shows the square-grid count is exactly twice the single-family count (buffon_noodle_grid_eq_two_mul_single)."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Part II: Structural Properties",
+      "startLine": 113,
+      "endLine": 150,
+      "summary": "Three corollaries inherited from the grid identity: shape independence (equal total length ⟹ equal expected crossings), nonnegativity (via totalLength_nonneg and positivity), and monotonicity in total length (via gcongr per family plus linarith)."
+    },
+    {
+      "id": "pi-estimator",
+      "title": "Part III: The Monte-Carlo π Estimator",
+      "startLine": 152,
+      "endLine": 167,
+      "summary": "Proves pi_times_spacing_mul_grid_crossings: π·d·E = 4L on a square grid, i.e. π = 4L/(d·E). The multiplicative form avoids a nondegeneracy hypothesis on E; the proof rewrites with the square-grid identity and clears denominators with field_simp using π ≠ 0 and d ≠ 0."
+    },
+    {
+      "id": "numerical-examples",
+      "title": "Part IV: Numerical Examples",
+      "startLine": 169,
+      "endLine": 214,
+      "summary": "Three concrete instances: a circle (one-segment noodle) on a square grid crosses 8r/d times — independent of π; a square of side s crosses 16s/(πd) times; and on a rectangular grid the circle crosses 4r·(1/dₕ + 1/dᵥ), confirming the two families contribute distinct additive terms."
+    }
+  ],
   "conclusion": {
     "summary": "A fully machine-checked (0 sorries, 0 axioms) formalization of the Buffon–Laplace grid extension of Buffon's Noodle for polygonal noodles, obtained by additivity of expectation across two perpendicular line families. Includes the square-grid specialization, shape independence, monotonicity, a Monte-Carlo π estimator, and numerical examples.",
     "implications": "Demonstrates that the gallery's linearity-of-expectation crossing machinery composes cleanly across independent line families — a reusable pattern for further integral-geometry formalizations — and supplies the variance-reduced Buffon–Laplace estimator of π as a proved identity.",

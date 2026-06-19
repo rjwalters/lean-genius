@@ -1,0 +1,104 @@
+[
+  {
+    "id": "ann-buffons-noodle-oq-01-01",
+    "proofId": "buffons-noodle-oq-01",
+    "range": { "startLine": 4, "endLine": 52 },
+    "type": "concept",
+    "title": "Buffon–Laplace: From One Family of Lines to a Grid",
+    "content": "Buffon (1777) dropped a needle on a floor ruled with ONE family of parallel lines. Barbier (1860) extended the result to arbitrary curves (the \"noodle\"): a curve of total length L crosses the lines on average 2L/(πd) times, independent of its shape. Laplace observed that dropping the curve on a GRID — two perpendicular families with spacings dₕ and dᵥ — and counting crossings against both families gives a strictly better Monte-Carlo estimator of π, because each trial now yields two crossing tallies instead of one. This file formalizes the polygonal Buffon–Laplace identity E = 2L/(πdₕ) + 2L/(πdᵥ) as a corollary of the gallery's parent polygonal noodle theorem, adding no new axioms or sorries.",
+    "mathContext": "$\\mathbb{E}[\\text{grid crossings}] = \\dfrac{2L}{\\pi d_h} + \\dfrac{2L}{\\pi d_v}$, collapsing to $\\dfrac{4L}{\\pi d}$ when $d_h = d_v = d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Buffon's needle",
+      "Buffon's noodle",
+      "Buffon–Laplace problem",
+      "integral geometry",
+      "Monte-Carlo estimation of π"
+    ],
+    "prerequisites": ["geometric probability", "expected value", "arc length"]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-01-02",
+    "proofId": "buffons-noodle-oq-01",
+    "range": { "startLine": 58, "endLine": 66 },
+    "type": "definition",
+    "title": "Grid Expectation as a Sum of Two Single-Family Expectations",
+    "content": "expectedGridCrossings is DEFINED as N.expectedCrossings dh + N.expectedCrossings dv — literally the sum of the parent's single-family expected-crossing functional evaluated at each spacing. This definitional choice is the whole mathematical content: it encodes additivity of expectation across the two perpendicular families. No new probabilistic primitive is introduced; the grid functional is built entirely from the parent's expectedCrossings. Placing the definition back inside the parent BuffonsNoodle namespace makes it a natural method N.expectedGridCrossings on any PolygonalNoodle.",
+    "mathContext": "$\\operatorname{expectedGridCrossings}(N, d_h, d_v) := \\mathbb{E}[\\text{cross}_{d_h}] + \\mathbb{E}[\\text{cross}_{d_v}]$.",
+    "significance": "key",
+    "relatedConcepts": ["additivity of expectation", "linearity of expectation", "functional composition"],
+    "prerequisites": ["expected value", "Lean structures"]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-01-03",
+    "proofId": "buffons-noodle-oq-01",
+    "range": { "startLine": 74, "endLine": 97 },
+    "type": "insight",
+    "title": "The Grid Identity: Additivity Needs No Independence",
+    "content": "buffon_noodle_grid is the central result. Its proof unfolds the grid expectation into its two terms and rewrites each with the parent theorem buffon_noodle_polygon — a two-line proof. The deep point is that the horizontal and vertical crossing counts are produced by the SAME drop of the SAME noodle and are therefore strongly correlated, yet E[X + Y] = E[X] + E[Y] holds regardless of dependence. So the grid expectation is exactly the sum of two copies of the single-family theorem. buffon_noodle_grid_eq_sum records this additive structure as a definitional equality (proved by rfl).",
+    "mathContext": "$\\mathbb{E}[X+Y]=\\mathbb{E}[X]+\\mathbb{E}[Y]$ holds without independence; here $X,Y$ are the horizontal and vertical crossing counts of one drop.",
+    "significance": "key",
+    "relatedConcepts": ["linearity of expectation", "correlated random variables", "Buffon's noodle"],
+    "prerequisites": ["expected value", "probability of dependent events"]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-01-04",
+    "proofId": "buffons-noodle-oq-01",
+    "range": { "startLine": 99, "endLine": 111 },
+    "type": "technique",
+    "title": "Square-Grid Specialization: Exactly Double the Single-Family Count",
+    "content": "buffon_noodle_square_grid sets dh = dv = d and simplifies 2L/(πd) + 2L/(πd) to 4L/(πd) via ring. buffon_noodle_grid_eq_two_mul_single makes the doubling explicit at the level of the abstract functional: on a square grid the grid expectation is precisely 2·(single-family expectation), proved by unfolding the definition and ring. This factor of two is the source of the Buffon–Laplace variance reduction — two independent-direction tallies per trial.",
+    "mathContext": "$\\mathbb{E}[\\text{grid}] = \\dfrac{2L}{\\pi d} + \\dfrac{2L}{\\pi d} = \\dfrac{4L}{\\pi d} = 2\\cdot\\dfrac{2L}{\\pi d}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["variance reduction", "specialization", "field algebra"],
+    "prerequisites": ["field algebra"]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-01-05",
+    "proofId": "buffons-noodle-oq-01",
+    "range": { "startLine": 113, "endLine": 150 },
+    "type": "technique",
+    "title": "Structural Properties: Shape Independence, Nonnegativity, Monotonicity",
+    "content": "Three structural corollaries inherit cleanly from the grid identity. buffon_noodle_grid_shape_independence shows two noodles of equal total length have identical expected grid crossings, whatever their shapes — the grid functional sees only L. buffon_noodle_grid_nonneg derives nonnegativity from totalLength_nonneg plus positivity of π and the spacings (via positivity and div_nonneg). buffon_noodle_grid_mono proves monotonicity in length using gcongr to discharge a/c ≤ b/c from a ≤ b for each family, then linarith. Each is a short rewrite through buffon_noodle_grid followed by elementary inequality reasoning.",
+    "mathContext": "Shape independence: $L_1=L_2 \\Rightarrow \\mathbb{E}_1=\\mathbb{E}_2$. Monotonicity: $L_1\\le L_2 \\Rightarrow \\mathbb{E}_1\\le\\mathbb{E}_2$. Nonnegativity: $\\mathbb{E}\\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity", "gcongr tactic", "shape independence", "Cauchy–Crofton"],
+    "prerequisites": ["ordered fields", "monotonicity of division"]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-01-06",
+    "proofId": "buffons-noodle-oq-01",
+    "range": { "startLine": 152, "endLine": 167 },
+    "type": "insight",
+    "title": "The Monte-Carlo π Estimator as a Proved Identity",
+    "content": "pi_times_spacing_mul_grid_crossings states π·d·E = 4L on a square grid — equivalently π = 4L/(d·E). The multiplicative form is deliberate: it avoids any nondegeneracy hypothesis on E (no need to assume E ≠ 0 to state it). The proof rewrites with the square-grid identity, notes π ≠ 0 (pi_ne_zero) and d ≠ 0, then clears denominators with field_simp. This turns the experimental Buffon–Laplace π estimate into a formally verified algebraic relationship: count crossings, plug into 4L/(d·E), recover π — with the grid's reduced variance over the single-family estimator.",
+    "mathContext": "$\\pi \\cdot d \\cdot \\mathbb{E} = 4L \\iff \\pi = \\dfrac{4L}{d\\,\\mathbb{E}}$.",
+    "significance": "key",
+    "relatedConcepts": ["Monte-Carlo method", "variance reduction", "field_simp", "π estimation"],
+    "prerequisites": ["field algebra", "estimation theory"]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-01-07",
+    "proofId": "buffons-noodle-oq-01",
+    "range": { "startLine": 169, "endLine": 195 },
+    "type": "context",
+    "title": "Numerical Sanity Checks: Circle and Square",
+    "content": "circle_grid_crossings models a circle of circumference 2πr as a one-segment noodle (Fin.sum_univ_one collapses the sum) and computes its expected square-grid crossings as 8r/d — strikingly INDEPENDENT of π, since the π in the circumference cancels the π in the 2L/(πd) law. This is exactly double the single-family 4r/d, the canonical Buffon's-noodle sanity check. square_grid_crossings does the same for a square of perimeter 4s (four segments, Fin.sum_univ_four), giving 16s/(πd), again twice the single-family value. Both are discharged by simp-unfolding the definitions followed by field_simp/ring.",
+    "mathContext": "Circle: $\\mathbb{E} = \\dfrac{8r}{d}$ (π cancels). Square: $\\mathbb{E} = \\dfrac{16s}{\\pi d}$.",
+    "significance": "context",
+    "relatedConcepts": ["sanity check", "Fin.sum_univ_one", "Fin.sum_univ_four", "circumference"],
+    "prerequisites": ["finite sums over Fin n"]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-01-08",
+    "proofId": "buffons-noodle-oq-01",
+    "range": { "startLine": 197, "endLine": 214 },
+    "type": "context",
+    "title": "Rectangular Grid: When the Two Families Genuinely Differ",
+    "content": "circle_rect_grid_crossings drops the square-grid assumption: with dh ≠ dv the circle's expected crossings are 4r·(1/dh + 1/dv), recovering 8r/d only when dh = dv. This confirms that expectedGridCrossings genuinely distinguishes the two perpendicular families and is not merely a relabelled single-family count — the anisotropic spacings each contribute their own additive term. It also previews the general Buffon–Laplace / Cauchy–Crofton discretization for k families at arbitrary angles, where expected crossings become (2L/π)·Σ 1/dⱼ.",
+    "mathContext": "$\\mathbb{E} = \\dfrac{4r}{d_h} + \\dfrac{4r}{d_v}$; general $k$-family form $\\dfrac{2L}{\\pi}\\sum_{j=1}^{k}\\dfrac{1}{d_j}$.",
+    "significance": "context",
+    "relatedConcepts": ["anisotropy", "Cauchy–Crofton formula", "kinematic measure", "generalized grids"],
+    "prerequisites": ["field algebra"]
+  }
+]
