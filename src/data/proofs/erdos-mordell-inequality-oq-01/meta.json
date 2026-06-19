@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős (1935), Mordell–Barrow (1937)",
     "date": "2026-06-18",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "geometry",
       "euclidean-geometry",
@@ -16,8 +16,8 @@
       "triangle"
     ],
     "proofRepoPath": "Proofs/ErdosMordellInequalityOQ01.lean",
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Affine.Triangle.dist_div_sin_angle_eq_two_mul_circumradius",
@@ -42,8 +42,8 @@
     ],
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
-    "lineCount": 394,
-    "assumptions": "1 sorry: the chord identity at vertex A, (dist P A · sin ∠BAC)² = lineDist P C A² + lineDist P A B² + 2·lineDist P C A·lineDist P A B·cos ∠BAC (chord_identity). This single planar fact — the squared length of the chord between the two pedal feet — is the genuine remaining geometric content, classical mathematics not yet in Mathlib. Everything else is fully proved: the law of sines (via Mathlib's dist_div_sin_angle_eq_two_mul_circumradius), the reduction of the three cyclic key inequalities key_inequality_A/B/C to the single vertex-A case key_inequality_A_of_chord, side-length positivity, pedal-distance nonnegativity, and the AM–GM algebraic reduction. The companion file ErdosMordellChordReduction.lean additionally proves the geometry-free trigonometric core of the chord identity (chord_identity_of_half_angles), reducing the chord identity itself to three elementary right-triangle facts.",
+    "lineCount": 399,
+    "assumptions": "None. The Erdős–Mordell inequality is fully proved with no sorries and no axioms beyond Lean/Mathlib's standard foundations (propext, Classical.choice, Quot.sound). The last remaining geometric obligation — the chord identity at vertex A, (dist P A · sin ∠BAC)² = lineDist P C A² + lineDist P A B² + 2·lineDist P C A·lineDist P A B·cos ∠BAC (chord_identity) — is discharged by delegation to ErdosMordellChord.chord_identity in the companion file ErdosMordellChordIdentity.lean, whose cosine-side core chord_cos_eq is a pure inner-product/coordinate identity in EuclideanSpace ℝ (Fin 2): the cosine of the angle subtended at P by the two pedal feet equals minus the cosine of the triangle's angle at the vertex. That identity is proved via a small 2D signed-area (cross-product) toolkit — Lagrange's identity, the recentred pedal-foot displacement, the squared-length and cleared-denominator inner-product identities, and the barycentric sign witness [u,w]·[v,w] = −s·t·[u,v]² < 0 from interior_barycentric. Everything else was already proved: the law of sines (Mathlib's dist_div_sin_angle_eq_two_mul_circumradius), the reduction of the three cyclic key inequalities to the single vertex-A case, side-length positivity, pedal-distance nonnegativity, and the AM–GM algebraic reduction.",
     "originalContributions": [
       "erdos_mordell_reduction: the geometry-free AM–GM core, proving 2(da+db+dc) ≤ PA+PB+PC from the three weighted key inequalities via an explicit nonnegative certificate (a·da·(b−c)² + ... ≥ 0). Carries no geometric hypotheses; reusable for any proof of the key inequalities.",
       "key_inequality_trig_core: a geometry-free proof that sin B·dc + sin C·db ≤ √(db²+dc²+2·db·dc·cos A) for triangle angles, collapsing each key inequality (modulo the chord identity and the law of sines) to the perfect square (db·cos C − dc·cos B)² ≥ 0.",
@@ -51,7 +51,8 @@
       "key_inequality_A_of_chord: the law-of-sines reduction (geometry → algebra). Instantiating the triangle ABC, it discharges all three law-of-sines inputs a=2R sinA, b=2R sinB, c=2R sinC directly from Mathlib's Affine.Triangle.dist_div_sin_angle_eq_two_mul_circumradius (plus angle-sum = π and sin-positivity for a non-degenerate triangle), then assembles the vertex-A key inequality via key_inequality_of_chord_and_sines, leaving the chord identity as the only geometric obligation. This eliminates the heavier oriented-angle / inscribed-angle route entirely.",
       "Cyclic relabeling plumbing affineIndep_rotate and mem_interior_hull_rotate: affine independence and interior-of-hull membership are invariant under the rotation (X,Y,Z)↦(Y,Z,X), so the vertex-B and vertex-C key inequalities are proved as relabeled instances of key_inequality_A — the entire geometric obligation is isolated in a single vertex.",
       "Precise Lean statement of the geometric Erdős–Mordell inequality using Metric.infDist to the affine span (lineDist) for pedal distances, with the full modular assembly of erdos_mordell discharging all positivity/nonnegativity/algebra.",
-      "Companion file ErdosMordellChordReduction.lean: an elementary, fully-proved (no sorry) route to the chord identity that avoids the pedal circle and the inscribed-angle theorem. Its core lemma chord_identity_of_half_angles derives the chord identity from the three right-triangle facts db=PA·sin α, dc=PA·sin β, A=α+β by expanding sin(α+β), cos(α+β); the bridge lemma lineDist_eq_dist_orthogonalProjection identifies the pedal distance with the orthogonal-projection foot."
+      "Companion file ErdosMordellChordReduction.lean: an elementary, fully-proved (no sorry) route to the chord identity that avoids the pedal circle and the inscribed-angle theorem. Its core lemma chord_identity_of_half_angles derives the chord identity from the three right-triangle facts db=PA·sin α, dc=PA·sin β, A=α+β by expanding sin(α+β), cos(α+β); the bridge lemma lineDist_eq_dist_orthogonalProjection identifies the pedal distance with the orthogonal-projection foot.",
+      "ErdosMordellChordIdentity.lean closes the final geometric obligation: chord_cos_eq proves the pedal-feet cosine identity directly in coordinates (no inscribed-angle / pedal-circle machinery), and chord_identity composes it with chord_length_eq to obtain the squared-chord identity in the exact (dist P X · sin ∠YXZ)² = db² + dc² + 2·db·dc·cos ∠YXZ form. The vertex-A chord_identity in the main file is then a one-line delegation, completing a fully machine-checked, axiom-free Erdős–Mordell inequality."
     ],
     "theoremCount": 12,
     "definitionCount": 1
@@ -165,14 +166,17 @@
       "EuclideanGeometry"
     ],
     "namespace": "ErdosMordellOQ01",
-    "lineCount": 394,
+    "lineCount": 399,
     "axiomCount": 0,
     "theoremCount": 12,
     "substantiveTheoremCount": 6,
     "duplicateTheorems": 0,
     "definitionCount": 1,
     "path": "Proofs/ErdosMordellInequalityOQ01.lean",
-    "sorries": 1
+    "sorries": 0,
+    "companionFiles": [
+      "Proofs/ErdosMordellChordIdentity.lean"
+    ]
   },
   "mainTheorems": [
     {
@@ -218,5 +222,5 @@
       "leanType": "(A B C P : EuclideanSpace ℝ (Fin 2)) → AffineIndependent ℝ ![A,B,C] → P ∈ interior (convexHull ℝ {A,B,C}) → dist C A * lineDist P A B + dist A B * lineDist P C A ≤ dist B C * dist P A"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
