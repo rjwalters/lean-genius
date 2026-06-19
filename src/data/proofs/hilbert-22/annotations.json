@@ -16,7 +16,11 @@
       "conformal geometry",
       "Riemann surfaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Riemann surfaces and complex structure",
+      "Gaussian curvature (positive/zero/negative)",
+      "conformal (angle-preserving) geometry"
+    ]
   },
   {
     "id": "ann-unit-disk",
@@ -35,7 +39,11 @@
       "hyperbolic geometry",
       "Mobius transformations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the open unit disk in ℂ",
+      "hyperbolic geometry and the Poincaré disk model",
+      "Möbius transformations"
+    ]
   },
   {
     "id": "ann-conformal",
@@ -54,7 +62,11 @@
       "angle preservation",
       "complex analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "holomorphic and biholomorphic maps",
+      "angle preservation under conformal maps",
+      "complex analysis basics"
+    ]
   },
   {
     "id": "ann-riemann-mapping",
@@ -73,7 +85,11 @@
       "normal families",
       "Schwarz lemma"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "simply connected open subsets of ℂ",
+      "normal families and the Schwarz lemma",
+      "biholomorphic equivalence to the disk"
+    ]
   },
   {
     "id": "ann-uniformization",
@@ -92,7 +108,11 @@
       "Koebe's proof",
       "Poincare's proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "universal covering spaces",
+      "Riemann surfaces and their simply connected covers",
+      "the three model geometries (sphere, plane, disk)"
+    ]
   },
   {
     "id": "ann-fuchsian",
@@ -111,7 +131,11 @@
       "hyperbolic surfaces",
       "modular group"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "discrete subgroups of PSL(2,ℝ)",
+      "quotients giving hyperbolic surfaces",
+      "the modular group as an example"
+    ]
   },
   {
     "id": "ann-genus",
@@ -130,6 +154,10 @@
       "Euler characteristic",
       "elliptic curves"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the genus and Euler characteristic of a surface",
+      "the Gauss–Bonnet theorem",
+      "the curvature/genus trichotomy (sphere, torus/elliptic curve, higher genus)"
+    ]
   }
 ]
