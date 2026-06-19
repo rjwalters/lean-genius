@@ -16,7 +16,11 @@
       "Binomial coefficients",
       "Natural density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomial coefficients C(n,k)",
+      "squarefree integers",
+      "natural density of sets of integers"
+    ]
   },
   {
     "id": "ann-e378-squarefree",
@@ -34,7 +38,10 @@
       "Divisibility"
     ],
     "mathContext": "$n$ is squarefree $\\iff \\forall p$ prime: $p^2 \\nmid n$. Equivalently, $n = \\prod p_i$ with distinct primes",
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "divisibility by a prime square p²"
+    ]
   },
   {
     "id": "ann-e378-squarefree-examples",
@@ -52,7 +59,11 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the squarefree property",
+      "axioms as stated assumptions in the formalization",
+      "small worked examples"
+    ]
   },
   {
     "id": "ann-e378-binomial-squarefree",
@@ -70,7 +81,10 @@
       "Pascal's triangle"
     ],
     "mathContext": "$\\binom{n}{k}$ is squarefree $\\iff \\forall p$ prime: $p^2 \\nmid \\binom{n}{k}$",
-    "prerequisites": []
+    "prerequisites": [
+      "the binomial coefficient n.choose k",
+      "squarefree integers"
+    ]
   },
   {
     "id": "ann-e378-count",
@@ -88,7 +102,10 @@
       "Row analysis"
     ],
     "mathContext": "$\\text{sqfCount}(n) = |\\{k \\in [1, n-1] : \\binom{n}{k}$ is squarefree$\\}|$",
-    "prerequisites": []
+    "prerequisites": [
+      "squarefree binomial coefficients",
+      "counting k over [1, n−1]"
+    ]
   },
   {
     "id": "ann-e378-density",
@@ -106,7 +123,10 @@
       "Limits",
       "Asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density lim |S ∩ [1,N]| / N",
+      "existence of the limit"
+    ]
   },
   {
     "id": "ann-e378-erdos-graham",
@@ -124,7 +144,11 @@
       "Sparsity"
     ],
     "mathContext": "Erdős-Graham: (1) for fixed $m$, $|\\{n : \\text{sqfCount}(n) = 2m+2\\}|$ is finite; (2) for $n = 2^a$, only $\\binom{n}{1}$ and $\\binom{n}{n-1}$ are squarefree",
-    "prerequisites": []
+    "prerequisites": [
+      "squarefree binomial coefficients",
+      "asymptotic density o_k(1)",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e378-exactly",
@@ -142,7 +166,11 @@
       "Partitioning"
     ],
     "mathContext": "$\\text{exactly}(m) = \\{n : \\text{sqfCount}(n) = 2m + 2\\}$ — always even+2 by the symmetry $\\binom{n}{k} = \\binom{n}{n-k}$",
-    "prerequisites": []
+    "prerequisites": [
+      "the squarefree count",
+      "the symmetry C(n,k) = C(n,n−k)",
+      "why the count has the form 2m + 2"
+    ]
   },
   {
     "id": "ann-e378-granville-ramare",
@@ -160,7 +188,12 @@
       "Analytic number theory",
       "Exponential sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density",
+      "the sets exactlySquarefree(m)",
+      "Granville–Ramaré (1996)",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e378-atleast",
@@ -177,7 +210,10 @@
       "Main question"
     ],
     "mathContext": "$\\text{atLeast}(r) = \\{n : \\text{sqfCount}(n) \\geq r\\}$ — a superset of $\\text{exactly}(m)$ for all $m \\geq (r-2)/2$",
-    "prerequisites": []
+    "prerequisites": [
+      "the squarefree count",
+      "the set {n : count ≥ r}"
+    ]
   },
   {
     "id": "ann-e378-complement",
@@ -195,7 +231,11 @@
       "Complement",
       "Partition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the complement of a set",
+      "decomposition into exactlySquarefree(m) with 2m + 2 < r",
+      "finite additivity of density"
+    ]
   },
   {
     "id": "ann-e378-main-density",
@@ -213,7 +253,11 @@
       "Complement"
     ],
     "mathContext": "$\\lim_{N \\to \\infty} |\\text{atLeast}(r) \\cap [1,N]| / N$ exists for all $r \\geq 0$",
-    "prerequisites": []
+    "prerequisites": [
+      "natural density",
+      "the complement decomposition",
+      "the set atLeastSquarefree(r)"
+    ]
   },
   {
     "id": "ann-e378-main-positive",
@@ -231,7 +275,10 @@
       "Key argument"
     ],
     "mathContext": "$\\lim_{N \\to \\infty} |\\text{atLeast}(r) \\cap [1,N]| / N > 0$ for all $r \\geq 0$",
-    "prerequisites": []
+    "prerequisites": [
+      "positivity of a density",
+      "the summed densities of the complement"
+    ]
   },
   {
     "id": "ann-e378-example-C21",
@@ -249,7 +296,10 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the binomial coefficient C(2,1) = 2",
+      "squarefree integers"
+    ]
   },
   {
     "id": "ann-e378-example-C63",
@@ -266,7 +316,10 @@
       "Counterexample"
     ],
     "mathContext": "$\\binom{6}{3} = 20 = 2^2 \\cdot 5$ is NOT squarefree ($4 = 2^2 \\mid 20$)",
-    "prerequisites": []
+    "prerequisites": [
+      "the binomial coefficient C(6,3) = 20",
+      "divisibility by 4 = 2²"
+    ]
   },
   {
     "id": "ann-e378-symmetry",
@@ -284,7 +337,10 @@
       "Pairing"
     ],
     "mathContext": "$\\binom{n}{k}$ is squarefree $\\iff \\binom{n}{n-k}$ is squarefree, since $\\binom{n}{k} = \\binom{n}{n-k}$",
-    "prerequisites": []
+    "prerequisites": [
+      "the identity C(n,k) = C(n,n−k)",
+      "the squarefree property"
+    ]
   },
   {
     "id": "ann-e378-summary",
@@ -302,6 +358,10 @@
       "Resolution"
     ],
     "mathContext": "For all $r$: the set $\\{n : \\text{sqfCount}(n) \\geq r\\}$ has positive natural density",
-    "prerequisites": []
+    "prerequisites": [
+      "existence of the density",
+      "positivity of the density",
+      "the Granville–Ramaré density formula"
+    ]
   }
 ]
