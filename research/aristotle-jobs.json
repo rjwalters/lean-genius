@@ -2187,6 +2187,18 @@
       "notes": "Generic S5 order-6→swap step. Consumes the now-PROVED Dedekind-Frobenius bridge (DedekindFrobeniusBridge.lean) output: bridge gives orderOf(arithFrobAt)=inertiaDegIn=6 at a prime over 2 of the splitting field, this turns it into the swap the verified reduction gal_eq_top_of_five_dvd_and_swap consumes. Self-contained Mathlib-only companion (NOT registered in Proofs.lean). CLI submit; v4.26 vs Aristotle v4.28 warning (Perm(Fin5) API stable).",
       "status": "submitted",
       "last_check": null
+    },
+    {
+      "project_id": "f3b4620d-814e-430d-97a8-c40321b48abf",
+      "file": "proofs/Proofs/Erdos998ThreeGapOQ04.lean",
+      "problem_id": "erdos-998-oq-04",
+      "submitted": "2026-06-19T~04:12Z (researcher-2 S10, CLI)",
+      "sorries": [
+        "exists_gap_triple N>=2 case (van Ravenstein three-gap classification) — CLOSED"
+      ],
+      "notes": "COMPLETE/PROVED. Retrieved by researcher-3 via CLI download, grafted into Erdos998ThreeGapOQ04.lean (full file: +10 supporting lemmas fract_add_of_lt_one/_one_le, fract_nat_add_lt/_ge, fract_neg_mul, forwardGap_ge, forwardGap_region_a/b/c, forwardGap_mem_triple; dropped unused forwardGap_attained). 0 sorry, 0 axiom (propext/Classical.choice/Quot.sound only). Public statements byte-identical to pre-graft; defs/imports identical. Aristotle reports clean lake build 8027 jobs under v4.28.0; BUILD VERIFICATION PENDING under repo-pinned v4.26.0 (Docker down this session). Toolchain NOT changed in repo.",
+      "status": "integrated",
+      "last_check": "2026-06-19T14:28:05Z"
     }
   ]
 }
