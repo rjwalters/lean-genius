@@ -17,7 +17,11 @@
       "Cohen forcing"
     ],
     "mathContext": "Continuum Hypothesis: $2^{\\aleph_0} = \\aleph_1$, i.e., there is no cardinal between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. Hilbert's first problem (1900). Independence: $\\text{ZFC} \\nvdash \\text{CH}$ (Cohen, 1963) and $\\text{ZFC} \\nvdash \\neg\\text{CH}$ (Gödel, 1940).",
-    "prerequisites": []
+    "prerequisites": [
+      "cardinality and infinite sets",
+      "ZFC set theory",
+      "Hilbert's problems"
+    ]
   },
   {
     "id": "ann-continuum-def",
@@ -36,7 +40,11 @@
       "cardinal arithmetic",
       "Cantor's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "power set",
+      "cardinal arithmetic",
+      "Cantor's diagonal argument"
+    ]
   },
   {
     "id": "ann-aleph-one",
@@ -55,7 +63,11 @@
       "well-ordering",
       "successor cardinal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ordinals and well-ordering",
+      "cardinal numbers",
+      "successor cardinals"
+    ]
   },
   {
     "id": "ann-ch-statement",
@@ -74,7 +86,11 @@
       "aleph hierarchy",
       "independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the continuum 2^aleph_0",
+      "aleph hierarchy",
+      "cardinal comparison"
+    ]
   },
   {
     "id": "ann-ch-alt",
@@ -92,7 +108,11 @@
       "cardinal comparison",
       "intermediate cardinals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinal comparison",
+      "intermediate cardinals",
+      "Continuum Hypothesis statement"
+    ]
   },
   {
     "id": "ann-gch",
@@ -111,7 +131,11 @@
       "power set",
       "successor cardinals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Continuum Hypothesis",
+      "ordinal-indexed aleph hierarchy",
+      "power set and cardinal exponentiation"
+    ]
   },
   {
     "id": "ann-zfc-structure",
@@ -130,7 +154,11 @@
       "consistency"
     ],
     "mathContext": "ZFC axioms: Extensionality, Pairing, Union, Power Set, Infinity, Separation, Replacement, Foundation, Choice. These axioms are neither too strong (they don't decide CH) nor too weak (they prove most of mathematics).",
-    "prerequisites": []
+    "prerequisites": [
+      "first-order logic",
+      "ZFC axioms",
+      "models and satisfaction"
+    ]
   },
   {
     "id": "ann-godel-L",
@@ -149,7 +177,11 @@
       "definability",
       "inner models"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "transfinite recursion over ordinals",
+      "first-order definability",
+      "inner models of ZFC"
+    ]
   },
   {
     "id": "ann-L-exists",
@@ -167,7 +199,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Gödel's constructible universe L",
+      "axioms as scaffolding",
+      "Lean 4 axiom declarations"
+    ]
   },
   {
     "id": "ann-forcing",
@@ -186,7 +222,11 @@
       "posets",
       "boolean-valued models"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "models of ZFC",
+      "partial orders (posets) and generic filters",
+      "Cohen forcing"
+    ]
   },
   {
     "id": "ann-forcing-axiom",
@@ -204,7 +244,11 @@
       "mathematical context",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cohen forcing and generic extensions",
+      "dense sets and the Rasiowa-Sikorski lemma",
+      "Lean 4 axiom declarations"
+    ]
   },
   {
     "id": "ann-relative-consistency",
@@ -223,7 +267,11 @@
       "model theory",
       "metamathematics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consistency and models",
+      "metamathematics",
+      "constructing models (L and forcing)"
+    ]
   },
   {
     "id": "ann-godel-result",
@@ -242,7 +290,11 @@
       "inner models",
       "GCH"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "relative consistency",
+      "Gödel's constructible universe L",
+      "GCH in L"
+    ]
   },
   {
     "id": "ann-cohen-result",
@@ -261,7 +313,11 @@
       "Cohen reals",
       "independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "relative consistency",
+      "Cohen forcing",
+      "cardinals of the continuum"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -280,7 +336,11 @@
       "metamathematics",
       "set-theoretic pluralism"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Gödel's consistency result (CH in L)",
+      "Cohen's consistency result (forcing)",
+      "independence and metamathematics"
+    ]
   },
   {
     "id": "ann-cantor",
@@ -299,7 +359,11 @@
       "power set",
       "cardinal comparison"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "power set",
+      "Cantor's diagonal argument",
+      "cardinal comparison"
+    ]
   },
   {
     "id": "ann-philosophy",
@@ -318,6 +382,10 @@
       "foundations"
     ],
     "mathContext": "Independence means CH is undecidable in ZFC: $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC}+\\text{CH}) \\land \\text{Con}(\\text{ZFC}+\\neg\\text{CH})$. This parallels the parallel postulate: Euclidean and non-Euclidean geometries are both consistent. Gödel conjectured CH is false; others (e.g., Woodin) have proposed large cardinal axioms that would settle it.",
-    "prerequisites": []
+    "prerequisites": [
+      "independence of CH from ZFC",
+      "philosophy of mathematics",
+      "large cardinals and forcing axioms"
+    ]
   }
 ]
