@@ -16,7 +16,11 @@
       "Multiplicative functions",
       "Prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime factorization",
+      "Divisibility",
+      "Prime numbers"
+    ]
   },
   {
     "id": "ann-e969-squarefree-examples",
@@ -34,7 +38,10 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Squarefree integers",
+      "Prime factorization"
+    ]
   },
   {
     "id": "ann-e969-counting-function",
@@ -53,7 +60,11 @@
       "Asymptotic analysis",
       "Analytic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Squarefree integers",
+      "Counting functions",
+      "Floor function"
+    ]
   },
   {
     "id": "ann-e969-Q-examples",
@@ -71,7 +82,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Squarefree counting function Q(x)",
+      "Decidable computation"
+    ]
   },
   {
     "id": "ann-e969-density",
@@ -90,7 +104,11 @@
       "Riemann zeta function",
       "Euler's work"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic density",
+      "Riemann zeta function",
+      "Basel problem"
+    ]
   },
   {
     "id": "ann-e969-density-approx",
@@ -108,7 +126,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic density 6/π²",
+      "Numerical bounds for π"
+    ]
   },
   {
     "id": "ann-e969-error-term",
@@ -127,7 +148,11 @@
       "Explicit formulas",
       "Oscillation behavior"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic density",
+      "Squarefree counting function Q(x)",
+      "Order of magnitude notation"
+    ]
   },
   {
     "id": "ann-e969-elementary-bound",
@@ -145,7 +170,11 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Error term E(x)",
+      "Inclusion-exclusion",
+      "Convergent series over primes"
+    ]
   },
   {
     "id": "ann-e969-pnt-improvement",
@@ -163,7 +192,12 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Error term E(x)",
+      "Prime Number Theorem",
+      "Möbius function",
+      "Little-o notation"
+    ]
   },
   {
     "id": "ann-e969-walfisz",
@@ -181,7 +215,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Error term E(x)",
+      "Prime Number Theorem",
+      "Zero-free regions"
+    ]
   },
   {
     "id": "ann-e969-evelyn-linfoot",
@@ -199,7 +237,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Error term E(x)",
+      "Omega (≫) notation",
+      "Oscillation of arithmetic functions"
+    ]
   },
   {
     "id": "ann-e969-conjecture",
@@ -217,7 +259,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Error term E(x)",
+      "Order of magnitude (≍) notation",
+      "Matching upper and lower bounds"
+    ]
   },
   {
     "id": "ann-e969-rh-connection",
@@ -236,7 +282,11 @@
       "Millennium Problems",
       "Explicit formulas"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Error term E(x)",
+      "Riemann Hypothesis",
+      "Riemann zeta function"
+    ]
   },
   {
     "id": "ann-e969-liu-bound",
@@ -254,7 +304,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Error term E(x)",
+      "Riemann Hypothesis",
+      "Conditional results"
+    ]
   },
   {
     "id": "ann-e969-exponent-comparison",
@@ -272,7 +326,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Liu's conditional bound",
+      "Rational number comparison"
+    ]
   },
   {
     "id": "ann-e969-mobius",
@@ -291,7 +348,11 @@
       "Dirichlet series",
       "Möbius inversion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime factorization",
+      "Multiplicative functions",
+      "Squarefree integers"
+    ]
   },
   {
     "id": "ann-e969-mobius-formula",
@@ -309,7 +370,12 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Möbius function",
+      "Squarefree counting function Q(x)",
+      "Möbius inversion",
+      "Dirichlet convolution"
+    ]
   },
   {
     "id": "ann-e969-zero-free",
@@ -328,6 +394,11 @@
       "Zero-free regions",
       "Explicit formulas"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Riemann zeta function",
+      "Complex analysis",
+      "Explicit formulas",
+      "Error term E(x)"
+    ]
   }
 ]
