@@ -16,7 +16,11 @@
       "Permanent",
       "van der Waerden conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "doubly stochastic matrices and their row/column sum constraints",
+      "permutations and diagonals of a square matrix",
+      "the bound n^{-n} as the minimum diagonal product"
+    ]
   },
   {
     "id": "ann-e499-doubly-stochastic",
@@ -35,7 +39,11 @@
       "Stochastic matrix",
       "Markov chains"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "non-negative real matrix entries",
+      "summing matrix rows and columns to 1",
+      "convex combinations of permutation matrices"
+    ]
   },
   {
     "id": "ann-e499-uniform",
@@ -53,7 +61,11 @@
       "formal definition",
       "linear algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the n×n matrix with every entry equal to 1/n",
+      "computing the diagonal product (1/n)^n",
+      "the uniform matrix as the extremal worst case"
+    ]
   },
   {
     "id": "ann-e499-diagonal-product",
@@ -71,7 +83,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "permutations σ selecting one entry per row and column",
+      "the product ∏ M_{i,σ(i)} over a permutation",
+      "the n! distinct diagonals of an n×n matrix"
+    ]
   },
   {
     "id": "ann-e499-permanent",
@@ -90,7 +106,11 @@
       "Perfect matching",
       "Bipartite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "summing diagonal products over all permutations in S_n",
+      "contrast with the determinant's alternating signs",
+      "perfect matchings in bipartite graphs for 0-1 matrices"
+    ]
   },
   {
     "id": "ann-e499-marcus-ree",
@@ -108,7 +128,11 @@
       "ring theory",
       "linear algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existence of a permutation with all non-zero diagonal entries",
+      "the sum bound ∑ M_{i,σ(i)} ≥ 1",
+      "sum bounds versus product bounds on diagonals"
+    ]
   },
   {
     "id": "ann-e499-marcus-minc",
@@ -126,7 +150,11 @@
       "linear algebra",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the product bound ∏ M_{i,σ(i)} ≥ n^{-n}",
+      "existence of a permutation achieving the diagonal bound",
+      "Marcus-Minc as the resolution of Erdős #499"
+    ]
   },
   {
     "id": "ann-e499-van-der-waerden",
@@ -144,7 +172,11 @@
       "Permanent bounds",
       "Extremal matrix theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the permanent of a doubly stochastic matrix",
+      "the lower bound perm(M) ≥ n^{-n}·n! with uniform-matrix equality",
+      "Egorychev and Falikman's 1981 proof of the conjecture"
+    ]
   },
   {
     "id": "ann-e499-implication",
@@ -162,7 +194,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the permanent as a sum of n! diagonal products",
+      "pigeonhole averaging from a sum bound to a single-term bound",
+      "deriving the diagonal bound n^{-n} from the permanent bound"
+    ]
   },
   {
     "id": "ann-e499-two-by-two",
@@ -180,7 +216,11 @@
       "proof technique",
       "linear algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the form of a 2×2 doubly stochastic matrix in one parameter a",
+      "the diagonal products a² and (1-a)²",
+      "case analysis showing max(a², (1-a)²) ≥ 1/4"
+    ]
   },
   {
     "id": "ann-e499-birkhoff",
@@ -199,7 +239,11 @@
       "Permutation matrices",
       "Extreme points"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "convex combinations with weights summing to 1",
+      "permutation matrices P_σ as polytope vertices",
+      "the Birkhoff polytope of doubly stochastic matrices"
+    ]
   },
   {
     "id": "ann-e499-summary",
@@ -217,6 +261,10 @@
       "proof technique",
       "linear algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Marcus-Minc product bound and van der Waerden permanent bound",
+      "supporting Marcus-Ree sum bound and Birkhoff-von Neumann structure",
+      "the affirmative answer to Erdős #499"
+    ]
   }
 ]
