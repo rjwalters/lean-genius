@@ -17,7 +17,11 @@
       "Cycle spectrum",
       "Girth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "chromatic number basics"
+    ]
   },
   {
     "id": "ann-e751-minDegree",
@@ -35,7 +39,11 @@
       "Graph sparsity"
     ],
     "mathContext": "See annotation content for formal details of minimum degree",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "finite sets",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e751-chromaticNumber",
@@ -54,7 +62,11 @@
       "Clique number",
       "Independence number"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e751-girth",
@@ -73,7 +85,10 @@
       "Local structure"
     ],
     "mathContext": "See annotation content for formal details of girth",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "cycles and paths"
+    ]
   },
   {
     "id": "ann-e751-cycleLengths",
@@ -91,7 +106,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "Lean 4 formalization basics"
+    ]
   },
   {
     "id": "ann-e751-minCycleLengthGap",
@@ -109,7 +128,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "order theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e751-chromatic-minDeg",
@@ -127,7 +150,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "greedy coloring",
+      "proof by contrapositive"
+    ]
   },
   {
     "id": "ann-e751-bondy-vince",
@@ -145,7 +172,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "cycle structure",
+      "Lean 4 axiom declarations"
+    ]
   },
   {
     "id": "ann-e751-main-chromatic",
@@ -163,7 +194,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "logical deduction",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e751-with-girth",
@@ -181,7 +216,11 @@
       "proof technique",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal graph theory",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e751-full-answer",
@@ -199,7 +238,11 @@
       "proof technique",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "predicate logic",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e751-generalization",
@@ -217,7 +260,11 @@
       "proof technique",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal graph theory",
+      "mathematical generalization"
+    ]
   },
   {
     "id": "ann-e751-summary",
@@ -235,6 +282,10 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "proof composition"
+    ]
   }
 ]
