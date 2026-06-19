@@ -16,7 +16,11 @@
       "Bipartite graphs",
       "Degree sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Vertex Degree",
+      "Turán-Type Problems"
+    ]
   },
   {
     "id": "ann-e816-path3",
@@ -36,7 +40,11 @@
       "P4 subgraph",
       "vertex-disjoint paths"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Paths And Walks",
+      "Vertex Adjacency",
+      "Bipartite Graphs"
+    ]
   },
   {
     "id": "ann-e816-main-prop",
@@ -56,7 +64,11 @@
       "Erdős-Hajnal conjecture"
     ],
     "mathContext": "See annotation content for formal details of equal-degree path-3 pair",
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Degree",
+      "Degree Sequence",
+      "Existential Quantification"
+    ]
   },
   {
     "id": "ann-e816-conditions",
@@ -76,7 +88,11 @@
       "vertex-edge bounds"
     ],
     "mathContext": "See annotation content for formal details of erdős-hajnal and chen-ma conditions",
-    "prerequisites": []
+    "prerequisites": [
+      "Edge Count Bounds",
+      "Complete Bipartite Graph",
+      "Extremal Threshold"
+    ]
   },
   {
     "id": "ann-e816-bipartite",
@@ -94,7 +110,11 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete Bipartite Graph",
+      "Bipartite Degree Structure",
+      "Extremal Counterexample"
+    ]
   },
   {
     "id": "ann-e816-chen-ma",
@@ -114,7 +134,11 @@
       "extremal graph theory",
       "P4 existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Unique Extremal Graph",
+      "Asymptotic Conditions"
+    ]
   },
   {
     "id": "ann-e816-pigeonhole",
@@ -132,7 +156,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pigeonhole Principle",
+      "Degree Range Bound",
+      "Vertex Degree"
+    ]
   },
   {
     "id": "ann-e816-summary",
@@ -152,6 +180,10 @@
       "Erdős problems solved"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "Edge Density Threshold",
+      "Complete Bipartite Graph",
+      "Extremal Graph Theory"
+    ]
   }
 ]
