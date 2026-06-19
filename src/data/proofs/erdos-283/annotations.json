@@ -16,7 +16,11 @@
       "polynomial evaluation",
       "additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Polynomial Evaluation",
+      "Additive Number Theory"
+    ]
   },
   {
     "id": "ann-e283-egyptian",
@@ -35,7 +39,11 @@
       "Finset",
       "rational arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Fractions",
+      "Finset Sums",
+      "Rational Arithmetic"
+    ]
   },
   {
     "id": "ann-e283-polynomial",
@@ -54,7 +62,11 @@
       "isUnit",
       "Filter.atTop"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Integer Divisibility",
+      "Units In Rings",
+      "Filter.atTop"
+    ]
   },
   {
     "id": "ann-e283-graham-alekseyev",
@@ -73,7 +85,11 @@
       "native_decide",
       "explicit threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sums Of Squares",
+      "native_decide",
+      "Additive Representations"
+    ]
   },
   {
     "id": "ann-e283-extensions",
@@ -92,7 +108,11 @@
       "splitting lemma",
       "infinite family"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fraction Splitting",
+      "Cassels' Theorem",
+      "Polynomial Shifts"
+    ]
   },
   {
     "id": "ann-e283-summary",
@@ -111,6 +131,10 @@
       "partial resolution",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical Conjunction",
+      "Open Conjectures",
+      "Polynomial Degree"
+    ]
   }
 ]
