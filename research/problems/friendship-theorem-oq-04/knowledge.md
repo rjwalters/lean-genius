@@ -398,3 +398,63 @@ and ruling that out is itself the finite counting argument. **Conclusion: the fu
 theorem is not single-session-clean; it is entangled with the same finite↔infinite gap that
 blocks the negative half.** No marginal lemma added this session (honesty: the easy structural
 facts are already harvested across 10 iterations). Status stays **in-progress**.
+
+---
+
+## Insights (Session S14, 2026-06-19 — researcher-2, ACT scaffold)
+
+### Amalgamation STEP lemma isolated (the colimit's inductive core)
+
+The negative-half counterexample (C₅ free-amalgamation, infinite friendship
+graph with no universal vertex) has been flagged "multi-session, needs an
+inductive limit" since S1. That framing conflates two things:
+
+1. The ω-indexed **direct limit** itself (needs colimit machinery) — still open.
+2. The **single amalgamation step** that the limit iterates — this is a *finitary*
+   lemma and is single-session-tractable.
+
+This session isolates (2) as a build-ready Lean statement in
+`proofs/Proofs/FriendshipTheoremOQ04Amalgam.lean` (BUILD-PENDING SCAFFOLD, 3
+`sorry`s, NOT registered — authored under a closed build gate, host load ~24,
+and Aristotle 404, so it could not be discharged this cycle).
+
+**Setup.** `commonNeighbors G a b := {x | G.Adj a x ∧ G.Adj b x}`;
+`Linear G := ∀ a b, a ≠ b → (commonNeighbors G a b).Subsingleton` (the friendship
+*upper* bound). One step `amalgam G u v : SimpleGraph (Option V)` adds a fresh
+vertex `none` adjacent to exactly `some u, some v`.
+
+**Three theorems (statements final, proofs pending):**
+- `amalgam_new_common` — `none` is a common neighbour of `some u, some v`.
+- `amalgam_new_common_unique` — under `commonNeighbors G u v = ∅`, `none` is the
+  *unique* common neighbour, so the deficient pair gains exactly one.
+- `amalgam_linear` — under `u ≠ v`, `Linear G`, and `commonNeighbors G u v = ∅`,
+  the step preserves `Linear`.
+
+**Proof of `amalgam_linear` (verified by hand, the `sorry` just needs the Lean
+case bash):** distinct `p, q : Option V`.
+- `some a, some b` (`a ≠ b`): `some c` common ⟹ `c ∈ commonNeighbors G a b`
+  (subsingleton); `none` common ⟹ `a, b ∈ {u, v}` ⟹ `{a,b} = {u,v}` (since
+  `a ≠ b`) ⟹ `commonNeighbors G a b = ∅`, so `none` is then the unique common
+  neighbour.
+- `none, some b`: `some c` common ⟹ `c ∈ {u,v} ∧ G.Adj b c`; if **both** `u, v`
+  were adjacent to `b` then `b ∈ commonNeighbors G u v = ∅` (contradiction), so
+  ≤ 1 qualifies. (`some, none` symmetric.)
+Every distinct pair keeps ≤ 1 common neighbour. ∎
+
+This is the exact preservation invariant the Python check
+`verify_infinite_friendship.py` confirmed numerically across 4 rounds; it is now
+captured as a precise Lean obligation.
+
+### Revised tractability of the negative half
+- **Amalgamation step** (`amalgam_*` above): single-session, finitary —
+  ready to land the moment a build gate opens or Aristotle returns.
+- **ω-colimit / full counterexample**: still multi-session (direct-limit on the
+  step, plus the "every deficient pair eventually repaired" fairness argument
+  giving the *lower* bound `≥ 1` in the limit, and "no universal vertex"
+  persisting through the limit).
+
+### Next-session recipe
+1. Gate open (`uptime` load < 6, ≤ 2 `lean-build` containers) → `docker-build.sh
+   Proofs.FriendshipTheoremOQ04Amalgam` after registering it, OR
+2. Aristotle up → `prove_file` on the scaffold (statements are self-contained).
+3. On green: register in `Proofs.lean`, mark verified, then attack the colimit.
