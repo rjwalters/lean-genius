@@ -16,7 +16,11 @@
       "finite generation",
       "counterexamples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial rings and ideals",
+      "invariant theory and group actions on polynomials",
+      "finite generation of algebras"
+    ]
   },
   {
     "id": "ann-basis-theorem",
@@ -35,7 +39,11 @@
       "polynomial rings",
       "ascending chain condition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial rings over a field",
+      "ideals and the ascending chain condition",
+      "Noetherian rings"
+    ]
   },
   {
     "id": "ann-invariant-ring",
@@ -54,7 +62,11 @@
       "subrings",
       "symmetric functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "a group acting on a polynomial ring",
+      "subrings and fixed-point subrings",
+      "symmetric polynomials as invariants"
+    ]
   },
   {
     "id": "ann-reductive",
@@ -73,7 +85,11 @@
       "complete reducibility",
       "Reynolds operator"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "linear algebraic groups and their representations",
+      "complete reducibility of representations",
+      "the Reynolds (averaging) operator"
+    ]
   },
   {
     "id": "ann-hilbert-finiteness",
@@ -92,7 +108,11 @@
       "Noetherian property",
       "Reynolds operator"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "reductive groups and their invariants",
+      "the Noetherian property / Hilbert basis theorem",
+      "the Reynolds operator projecting onto invariants"
+    ]
   },
   {
     "id": "ann-nagata",
@@ -111,6 +131,10 @@
       "unipotent groups",
       "counterexamples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite generation of invariant rings",
+      "the additive and unipotent groups (non-reductive)",
+      "constructing a non-finitely-generated invariant ring"
+    ]
   }
 ]
