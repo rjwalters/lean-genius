@@ -17,7 +17,11 @@
       "arithmetic progressions",
       "Prime Number Theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime gaps d_n = p_{n+1} - p_n",
+      "natural density of a set of integers",
+      "consecutive primes and arithmetic progressions"
+    ]
   },
   {
     "id": "erdos-218-nthprime",
@@ -36,7 +40,11 @@
       "prime enumeration",
       "Nat.Prime"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.nth and Nat.Prime in Mathlib",
+      "enumeration of primes in increasing order",
+      "strict monotonicity of indexed sequences"
+    ]
   },
   {
     "id": "erdos-218-primegap",
@@ -55,7 +63,11 @@
       "Prime Number Theorem",
       "natural number subtraction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the n-th prime function nthPrime",
+      "natural number subtraction (truncated)",
+      "strict monotonicity giving positive gaps"
+    ]
   },
   {
     "id": "erdos-218-density",
@@ -75,7 +87,11 @@
       "limsup",
       "liminf"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto and the nhds neighborhood filter",
+      "limsup and liminf for upper and lower density",
+      "asymptotic density as a limit of counting ratios"
+    ]
   },
   {
     "id": "erdos-218-keysets",
@@ -94,7 +110,11 @@
       "gap comparisons",
       "le_antisymm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime gap function primeGap",
+      "set intersection and antisymmetry of ≤",
+      "comparing consecutive gaps d_n and d_{n+1}"
+    ]
   },
   {
     "id": "erdos-218-conjectures",
@@ -113,7 +133,11 @@
       "natural density",
       "symmetry arguments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density equal to 1/2",
+      "the gap-increasing and gap-decreasing sets",
+      "axiomatizing open conjectures in Lean"
+    ]
   },
   {
     "id": "erdos-218-ap",
@@ -132,7 +156,11 @@
       "consecutive primes",
       "Green-Tao"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "three-term arithmetic progression p_n + p_{n+2} = 2·p_{n+1}",
+      "equal consecutive gaps gapEqualSet",
+      "infinitude of sets and Set.Infinite"
+    ]
   },
   {
     "id": "erdos-218-greentao",
@@ -151,7 +179,11 @@
       "additive combinatorics",
       "arbitrarily long APs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Green-Tao theorem on long prime APs",
+      "primality of arithmetic progression terms a + i·d",
+      "distinction between consecutive and non-consecutive primes"
+    ]
   },
   {
     "id": "erdos-218-partial",
@@ -170,7 +202,11 @@
       "infinite sets",
       "gap growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Number Theorem and average gap growth",
+      "gap-increasing and gap-decreasing sets being infinite",
+      "boundedness of gap divided by log(p)"
+    ]
   },
   {
     "id": "erdos-218-symmetry",
@@ -189,7 +225,11 @@
       "prime randomness",
       "Cramér model"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic Cramér model of primes",
+      "partitioning ℕ via gap comparison",
+      "case split on Nat.lt_or_ge with antisymmetry"
+    ]
   },
   {
     "id": "erdos-218-summary",
@@ -208,6 +248,10 @@
       "prime gaps",
       "arithmetic progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "equivalence of equal gaps and three-term prime APs",
+      "infinitude of the gap-increasing and gap-decreasing sets",
+      "deriving a summary theorem from stated axioms"
+    ]
   }
 ]
