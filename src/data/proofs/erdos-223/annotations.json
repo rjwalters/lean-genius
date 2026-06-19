@@ -16,7 +16,11 @@
       "point configuration",
       "extremal geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean diameter of a finite point set",
+      "extremal combinatorial geometry",
+      "dependence of f_d(n) on dimension"
+    ]
   },
   {
     "id": "ann-223-pointconfig",
@@ -35,7 +39,11 @@
       "Fin",
       "function type"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin d) as the d-dimensional model",
+      "functions Fin n → space encoding n points",
+      "inner product and distance on ℝ^d"
+    ]
   },
   {
     "id": "ann-223-diameter",
@@ -54,7 +62,11 @@
       "metric space",
       "pairwise distance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "supremum (iSup) over pairwise distances",
+      "distance function in a metric space",
+      "maxima attained on finite sets"
+    ]
   },
   {
     "id": "ann-223-diameterPairs",
@@ -73,7 +85,11 @@
       "filter",
       "ordered pairs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "filtering pairs by distance equal to the diameter",
+      "counting unordered pairs via i < j",
+      "Finset cardinality"
+    ]
   },
   {
     "id": "ann-223-f-function",
@@ -92,7 +108,11 @@
       "extremal problem",
       "constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "supremum of diameterPairs over configurations",
+      "the constraint hasDiameterExactly A 1",
+      "extremal maximization problem"
+    ]
   },
   {
     "id": "ann-223-hopf-pannwitz",
@@ -111,7 +131,11 @@
       "2D geometry",
       "extremal configuration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "regular n-gon inscribed in a unit circle",
+      "diameter pairs between opposite vertices",
+      "planar (2D) diameter-graph degree bounds"
+    ]
   },
   {
     "id": "ann-223-three-dimensional",
@@ -130,7 +154,11 @@
       "independent discovery",
       "two polygons"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "two regular (n-1)-gons in perpendicular planes",
+      "sharing a common vertex",
+      "counting 2(n-1) diameter pairs in 3D"
+    ]
   },
   {
     "id": "ann-223-erdos-1960",
@@ -149,7 +177,11 @@
       "phase transition",
       "dimension 4"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "quadratic growth of f_d(n) for d ≥ 4",
+      "floor function p = ⌊d/2⌋ in the coefficient",
+      "cross-polytope constructions"
+    ]
   },
   {
     "id": "ann-223-coefficient",
@@ -168,7 +200,11 @@
       "floor function",
       "limit"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the formula (p-1)/(2p) with p = ⌊d/2⌋",
+      "asymptotic density of diameter pairs",
+      "limit approaching 1/2 as d → ∞"
+    ]
   },
   {
     "id": "ann-223-swanepoel",
@@ -187,7 +223,11 @@
       "extremal configuration",
       "complete solution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "exact formula for f_d(n) at large n",
+      "characterization of extremal configurations",
+      "threshold N(d) for d ≥ 4"
+    ]
   },
   {
     "id": "ann-223-diameterGraph",
@@ -207,7 +247,11 @@
       "degree bound",
       "cross-polytope"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "SimpleGraph with diameter pairs as edges",
+      "vertex degree bounds in low dimensions",
+      "Θ(n²) edge density from cross-polytopes"
+    ]
   },
   {
     "id": "ann-223-4d-coefficient",
@@ -226,6 +270,10 @@
       "explicit calculation",
       "quarter of pairs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "evaluating (p-1)/(2p) at p = 2",
+      "the leading coefficient 1/4 in dimension 4",
+      "asymptotic f₄(n) ≈ n²/4"
+    ]
   }
 ]
