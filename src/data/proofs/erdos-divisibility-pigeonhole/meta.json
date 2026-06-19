@@ -65,7 +65,8 @@
       "**The odd part is the right pigeonhole**: classifying integers by ⌊2-free core⌋ rather than by value turns a divisibility question into an equality-of-labels collision. {1,…,2n} has exactly n odd parts, one short of the n+1 elements",
       "**Same odd part ⇒ comparable in the divisibility order**: two numbers sharing an odd part differ only by a power of two, so they form a chain — the smaller exponent divides the larger. This is where 'collision' becomes 'divides'",
       "**Avoid counting odds with a half-index**: instead of computing the cardinality of the odd numbers in {1,…,2n}, the proof maps odd parts into Finset.range n via o ↦ (o−1)/2 and uses injectivity-on-odds to recover the collision; this keeps the Lean proof free of Finset.filter cardinality lemmas",
-      "**Sharpness is one line of arithmetic**: the top half {n+1,…,2n} is an antichain because doubling the smallest possible divisor already leaves the window — so n+1 is genuinely the optimal threshold, not an artifact of the proof"
+      "**Sharpness is one line of arithmetic**: the top half {n+1,…,2n} is an antichain because doubling the smallest possible divisor already leaves the window — so n+1 is genuinely the optimal threshold, not an artifact of the proof",
+      "**The odd-part fibers are exactly the chains of the divisibility poset**: each fiber {m : ordCompl[2] m = o} is the totally-ordered set {o, 2o, 4o, …} ∩ {1,…,2n}, so the n odd parts partition {1,…,2n} into n chains. The main bound (n+1 elements force two in one chain) and the sharpness witness (the n-element antichain {n+1,…,2n}) are the two halves of the Dilworth chain–antichain duality for this specific poset"
     ],
     "prerequisites": [
       "The pigeonhole principle in Finset form (Finset.exists_ne_map_eq_of_card_lt_of_maps_to)",
@@ -75,28 +76,44 @@
   },
   "sections": [
     {
-      "id": "module-overview-and-helpers",
+      "id": "module-overview-and-odd-helpers",
       "title": "Module Overview and Odd-Part Helpers",
       "startLine": 1,
-      "endLine": 75,
-      "mathContext": "Odd parts: $o(m) = \\mathrm{ordCompl}_2(m)$ is odd, and $o \\mapsto (o-1)/2$ is injective on odd numbers since $2\\cdot((o-1)/2)+1 = o$.",
-      "summary": "Docstring states the theorem, the odd-part pigeonhole proof, and sharpness. Helpers: odd_recover (2·((o−1)/2)+1 = o, injectivity of the half-map on odds), odd_ordCompl (ordCompl[2] m is odd for m ≠ 0, via Nat.not_dvd_ordCompl), and dvd_or_dvd_of_ordCompl_eq (equal odd parts ⇒ one divides the other, via the 2-adic decomposition and pow_dvd_pow)."
+      "endLine": 53,
+      "mathContext": "Odd parts: $o(m) = \\mathrm{ordCompl}_2(m)$ is odd ($m \\ne 0$), and $o \\mapsto (o-1)/2$ is injective on odd numbers since $2\\cdot((o-1)/2)+1 = o$.",
+      "summary": "Docstring states the theorem, the odd-part pigeonhole proof, and sharpness. Two foundational helpers: odd_recover (2·((o−1)/2)+1 = o, so the half-map o ↦ (o−1)/2 is injective on odd numbers) and odd_ordCompl (ordCompl[2] m is odd for m ≠ 0, via Nat.not_dvd_ordCompl and Nat.odd_iff). Together they guarantee that a half-index collision can be inverted back to an equality of odd parts."
     },
     {
-      "id": "main-theorem",
-      "title": "Erdős Divisibility Pigeonhole",
-      "startLine": 76,
-      "endLine": 115,
-      "mathContext": "$S \\subseteq \\{1,\\dots,2n\\}$, $|S| \\ge n+1 \\Rightarrow \\exists\\, a \\ne b \\in S,\\ a \\mid b$.",
-      "summary": "erdos_divisibility_pigeonhole: the half-index f(m) = (ordCompl[2] m − 1)/2 maps S into Finset.range n (because o ≤ m ≤ 2n), and |range n| = n < |S|, so the Finset pigeonhole gives distinct a, b with f(a) = f(b). Oddness of the odd parts plus odd_recover upgrade this to ordCompl[2] a = ordCompl[2] b, and dvd_or_dvd_of_ordCompl_eq closes the goal, oriented by a ≠ b."
+      "id": "equal-odd-parts-divide",
+      "title": "Equal Odd Parts Force Divisibility",
+      "startLine": 55,
+      "endLine": 78,
+      "mathContext": "$\\mathrm{ordCompl}_2 a = \\mathrm{ordCompl}_2 b \\Rightarrow a \\mid b \\lor b \\mid a$, via $a = 2^{v_2 a} o$, $b = 2^{v_2 b} o$.",
+      "summary": "dvd_or_dvd_of_ordCompl_eq turns a collision into a divisibility. Using the 2-adic factorization Nat.ordProj_mul_ordCompl_eq_self, a and b sharing an odd part o differ only by a power of two; le_total on the valuations v₂ splits into two symmetric cases, and pow_dvd_pow on the smaller exponent (times the common factor o) yields a ∣ b or b ∣ a. This is the structural fact that the odd-part fibers are chains in the divisibility order."
+    },
+    {
+      "id": "halfindex-pigeonhole",
+      "title": "The Half-Index Pigeonhole",
+      "startLine": 79,
+      "endLine": 98,
+      "mathContext": "$f(m) = \\lfloor(\\mathrm{ordCompl}_2 m - 1)/2\\rfloor : S \\to \\mathrm{range}\\,n$, $|\\mathrm{range}\\,n| = n < n+1 \\le |S|$.",
+      "summary": "The first half of erdos_divisibility_pigeonhole sets up the pigeonhole. The half-index f(m) = (ordCompl[2] m − 1)/2 maps S into Finset.range n (because the odd part o satisfies 1 ≤ o ≤ m ≤ 2n, via Nat.ordCompl_le and Nat.div_lt_iff_lt_mul), and |range n| = n < n+1 ≤ |S|. Finset.exists_ne_map_eq_of_card_lt_of_maps_to then produces distinct a, b ∈ S with f(a) = f(b) — no manual counting of odd numbers required."
+    },
+    {
+      "id": "collision-to-witness",
+      "title": "From Collision to a Divisibility Witness",
+      "startLine": 99,
+      "endLine": 117,
+      "mathContext": "$f a = f b \\xrightarrow{\\text{odd\\_recover}} \\mathrm{ordCompl}_2 a = \\mathrm{ordCompl}_2 b \\Rightarrow a \\mid b \\lor b \\mid a$, oriented by $a \\ne b$.",
+      "summary": "The second half of erdos_divisibility_pigeonhole upgrades and orients. Positivity of a, b (from S ⊆ Icc 1 (2n)) makes both odd parts odd (odd_ordCompl); odd_recover inverts the half-map to give ordCompl[2] a = ordCompl[2] b; dvd_or_dvd_of_ordCompl_eq then delivers a ∣ b ∨ b ∣ a, and a final rcases relabels the pair using a ≠ b to return the witness in the right order."
     },
     {
       "id": "sharpness",
       "title": "Sharpness of the n+1 Threshold",
-      "startLine": 116,
-      "endLine": 141,
-      "mathContext": "$\\{n+1,\\dots,2n\\}$ has $n$ elements and no pair $a \\mid b$ with $a \\ne b$.",
-      "summary": "erdos_divisibility_pigeonhole_sharp: the block Icc (n+1) (2n) has cardinality n (Nat.card_Icc) and is divisibility-free — if a ∣ b with a ≠ b then b ≥ 2a ≥ 2(n+1) > 2n ≥ b, a contradiction. Hence no n-element bound can replace n+1."
+      "startLine": 119,
+      "endLine": 143,
+      "mathContext": "$|\\{n+1,\\dots,2n\\}| = n$ and the block has no pair $a \\mid b$ with $a \\ne b$, since $a \\mid b \\Rightarrow b \\ge 2a > 2n$.",
+      "summary": "erdos_divisibility_pigeonhole_sharp: the block Icc (n+1) (2n) has cardinality n (Nat.card_Icc) and is divisibility-free — if a ∣ b with a ≠ b then writing b = a·c with c ≥ 2 gives b ≥ 2a ≥ 2(n+1) > 2n ≥ b, a contradiction closed by omega. Hence no n-element bound can replace n+1, and the top half of {1,…,2n} is a maximum antichain."
     }
   ],
   "conclusion": {

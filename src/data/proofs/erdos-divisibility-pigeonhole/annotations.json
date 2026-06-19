@@ -1,0 +1,131 @@
+[
+  {
+    "id": "ann-odd-recover",
+    "proofId": "erdos-divisibility-pigeonhole",
+    "range": { "startLine": 41, "endLine": 46 },
+    "type": "proof-technique",
+    "title": "The Half-Index Map Is Injective on Odd Numbers",
+    "content": "The whole reduction hinges on encoding each odd part `o` by its half-index `(o − 1)/2`. For this encoding to recover the odd part from a collision, the map `o ↦ (o − 1)/2` must be injective on odd numbers — and it is, because it has an explicit inverse there. Writing `o = 2k + 1` (the meaning of `Odd o`), natural-number division gives `(o − 1)/2 = (2k)/2 = k`, so `2·((o − 1)/2) + 1 = 2k + 1 = o`. The lemma `odd_recover` records exactly this identity. Two odd numbers with the same half-index therefore satisfy `o₁ = 2·((o₁−1)/2)+1 = 2·((o₂−1)/2)+1 = o₂`. The point of routing through half-indices rather than the odd parts directly is that the half-indices land in `Finset.range n` (the next annotations), giving a clean pigeonhole target of size exactly `n` with no `Finset.filter` cardinality computation.",
+    "mathContext": "$o = 2k+1 \\;\\Rightarrow\\; \\tfrac{o-1}{2} = k \\;\\text{and}\\; 2\\cdot\\tfrac{o-1}{2}+1 = o$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "injective encoding",
+      "natural-number (floor) division",
+      "odd numbers as 2k+1",
+      "pigeonhole target construction"
+    ],
+    "prerequisites": [
+      "Odd o ↔ ∃ k, o = 2k + 1",
+      "Nat.add_sub_cancel / Nat.mul_div_cancel_left",
+      "natural-number division truncates toward zero"
+    ]
+  },
+  {
+    "id": "ann-odd-ordcompl",
+    "proofId": "erdos-divisibility-pigeonhole",
+    "range": { "startLine": 48, "endLine": 53 },
+    "type": "definition",
+    "title": "The Odd Part ordCompl[2] m Is Genuinely Odd",
+    "content": "`ordCompl[2] m` is the odd part of `m`: it is `m` with all factors of `2` removed, so that `m = 2^(v₂ m) · ordCompl[2] m`. The lemma `odd_ordCompl` certifies that this really is odd whenever `m ≠ 0`. The key Mathlib input is `Nat.not_dvd_ordCompl`: a prime `p` never divides `ordCompl[p] m` (for `m ≠ 0`), since by construction the full power of `p` has been stripped out. With `p = 2`, `2 ∤ ordCompl[2] m`, and `Nat.odd_iff` (oddness ⇔ remainder 1 mod 2) plus `omega` close the goal. This oddness is precisely the hypothesis that lets `odd_recover` apply to the odd parts of the colliding elements — without it, the half-index map would not be invertible.",
+    "mathContext": "$m \\ne 0 \\;\\Rightarrow\\; 2 \\nmid \\mathrm{ordCompl}_2(m) \\;\\Leftrightarrow\\; \\mathrm{ordCompl}_2(m)\\ \\text{is odd}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "2-adic valuation",
+      "odd part of an integer",
+      "ordCompl / ordProj",
+      "p-adic factorization"
+    ],
+    "prerequisites": [
+      "Nat.not_dvd_ordCompl",
+      "Nat.odd_iff (odd ⇔ n % 2 = 1)",
+      "definition of ordCompl[p] m"
+    ]
+  },
+  {
+    "id": "ann-dvd-of-ordcompl-eq",
+    "proofId": "erdos-divisibility-pigeonhole",
+    "range": { "startLine": 55, "endLine": 77 },
+    "type": "insight",
+    "title": "Equal Odd Parts ⇒ One Divides the Other",
+    "content": "This lemma is where a pigeonhole *collision* becomes a *divisibility*. Two positive integers sharing an odd part `o = ordCompl[2] a = ordCompl[2] b` differ only by a power of two: by the 2-adic factorization `Nat.ordProj_mul_ordCompl_eq_self`, `a = 2^(v₂ a)·o` and `b = 2^(v₂ b)·o`. Comparing the exponents via `le_total` splits into two symmetric cases. If `v₂ a ≤ v₂ b`, then `2^(v₂ a) ∣ 2^(v₂ b)` (`pow_dvd_pow`), and multiplying both sides by the common factor `o` (`mul_dvd_mul_right`) gives `a ∣ b`; otherwise `b ∣ a`. The two numbers form a chain in the divisibility poset — they sit on the same 'odd-part fiber', which is totally ordered by the power of two. This is the structural reason the theorem is true: the fibers of `m ↦ ordCompl[2] m` are exactly the chains of the divisibility order restricted to `{1,…,2n}`.",
+    "mathContext": "$a = 2^{v_2 a}\\,o,\\ b = 2^{v_2 b}\\,o,\\ v_2 a \\le v_2 b \\;\\Rightarrow\\; a \\mid b$",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility poset",
+      "chains and fibers",
+      "2-adic factorization",
+      "pow_dvd_pow",
+      "Dilworth / chain decomposition"
+    ],
+    "prerequisites": [
+      "Nat.ordProj_mul_ordCompl_eq_self (m = 2^(v₂ m)·ordCompl[2] m)",
+      "pow_dvd_pow and mul_dvd_mul_right",
+      "le_total on the exponents"
+    ]
+  },
+  {
+    "id": "ann-halfindex-pigeonhole",
+    "proofId": "erdos-divisibility-pigeonhole",
+    "range": { "startLine": 83, "endLine": 97 },
+    "type": "proof-technique",
+    "title": "Pigeonholing the Half-Indices into Finset.range n",
+    "content": "Here the abstract Finset pigeonhole is set up. Define `f m = (ordCompl[2] m − 1)/2`. The bound `hmaps` shows `f` sends `S` into `Finset.range n`: for `m ∈ S ⊆ Icc 1 (2n)` the odd part satisfies `1 ≤ o ≤ m ≤ 2n` (using `Nat.ordCompl_le`), and `Nat.div_lt_iff_lt_mul` turns `(o−1)/2 < n` into `o − 1 < 2n`, dispatched by `omega`. Then `hlt` notes `|range n| = n < n+1 ≤ |S|`. Feeding both to `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` — the Finset form of the pigeonhole principle, that a map into a strictly smaller set must identify two distinct points — yields distinct `a, b ∈ S` with `f a = f b`. Crucially the target has size *exactly* `n` (the number of odd parts available in `{1,…,2n}`), so `n+1` elements force a collision; this is the quantitative heart of the argument, obtained without ever counting the odd numbers by hand.",
+    "mathContext": "$f: S \\to \\mathrm{range}\\,n,\\quad |\\mathrm{range}\\,n| = n < n+1 \\le |S| \\;\\Rightarrow\\; \\exists\\, a \\ne b,\\ f a = f b$",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "Finset cardinality",
+      "ordCompl_le bound",
+      "extremal counting"
+    ],
+    "prerequisites": [
+      "Finset.exists_ne_map_eq_of_card_lt_of_maps_to",
+      "Nat.ordCompl_le (ordCompl[2] m ≤ m)",
+      "Nat.div_lt_iff_lt_mul",
+      "Finset.card_range"
+    ]
+  },
+  {
+    "id": "ann-collision-to-equality",
+    "proofId": "erdos-divisibility-pigeonhole",
+    "range": { "startLine": 99, "endLine": 117 },
+    "type": "insight",
+    "title": "Upgrading a Half-Index Collision to Equal Odd Parts, then Orienting",
+    "content": "The pigeonhole gave `f a = f b`, i.e. equal half-indices `(ordCompl[2] a − 1)/2 = (ordCompl[2] b − 1)/2`. To recover the odd parts themselves, the proof first notes both `a, b ≠ 0` (positivity from `S ⊆ Icc 1 (2n)`), so both odd parts are odd (`odd_ordCompl`). Then `odd_recover` inverts the half-map on each: `ordCompl[2] a = 2·(half) + 1 = ordCompl[2] b`, giving `hocc`. With equal odd parts in hand, `dvd_or_dvd_of_ordCompl_eq` delivers `a ∣ b ∨ b ∣ a`. The final `rcases` orients the witness using `a ≠ b`: in the first branch return `(a, b)`, in the second return `(b, a)` with `hab.symm`. This last step shows the theorem is genuinely symmetric — the pigeonhole does not know which of the pair is the divisor, and the disjunction is resolved purely by relabeling.",
+    "mathContext": "$f a = f b \\;\\xrightarrow{\\text{odd\\_recover}}\\; \\mathrm{ordCompl}_2 a = \\mathrm{ordCompl}_2 b \\;\\Rightarrow\\; a \\mid b \\ \\lor\\ b \\mid a$",
+    "significance": "key",
+    "relatedConcepts": [
+      "injectivity recovers equality",
+      "case orientation",
+      "symmetric witnesses",
+      "divisibility disjunction"
+    ],
+    "prerequisites": [
+      "odd_recover and odd_ordCompl (the local lemmas)",
+      "dvd_or_dvd_of_ordCompl_eq (the local lemma)",
+      "Finset.mem_Icc for positivity"
+    ]
+  },
+  {
+    "id": "ann-sharpness",
+    "proofId": "erdos-divisibility-pigeonhole",
+    "range": { "startLine": 119, "endLine": 142 },
+    "type": "insight",
+    "title": "Sharpness: the Top Block {n+1,…,2n} Is Divisibility-Free",
+    "content": "The companion theorem `erdos_divisibility_pigeonhole_sharp` proves `n+1` is the optimal threshold: there is an `n`-element subset of `{1,…,2n}` with no divisibility pair, so no `n`-element bound could replace `n+1`. The witness is the top block `Icc (n+1) (2n)`. Its cardinality is `n` by `Nat.card_Icc` (`2n − (n+1) + 1 = n`). It is divisibility-free by a one-line size argument: if `a ∣ b` with `a ≠ b`, write `b = a·c`; then `c ≥ 2` (it cannot be 0 or 1 since `a < b`), so `b = a·c ≥ 2a ≥ 2(n+1) = 2n + 2 > 2n ≥ b`, a contradiction closed by `omega`. Geometrically: a proper multiple of any `a ≥ n+1` already jumps past `2n`, so the upper half of `{1,…,2n}` is an antichain in the divisibility order — and it has exactly `n` elements, matching the number of odd parts. Sharpness and the main bound are two faces of the same chain/antichain duality.",
+    "mathContext": "$|\\{n{+}1,\\dots,2n\\}| = n,\\quad a \\mid b,\\ a \\ne b \\;\\Rightarrow\\; b \\ge 2a \\ge 2n+2 > 2n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "tightness / optimality of bounds",
+      "antichains in the divisibility poset",
+      "primitive sets",
+      "Nat.card_Icc",
+      "extremal set theory"
+    ],
+    "prerequisites": [
+      "Nat.card_Icc (cardinality of an integer interval)",
+      "Nat.le_of_dvd and factoring b = a·c",
+      "linear arithmetic (omega)"
+    ]
+  }
+]
