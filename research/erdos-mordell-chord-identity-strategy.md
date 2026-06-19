@@ -510,3 +510,38 @@ construction lemmas were re-verified by source inspection against the vendored
 `proofs/.lake/packages/mathlib` (v4.26.0). **Next build-capable session:** build
 `Proofs.ErdosMordellChordIdentity`; if green, push the concyclicity + oriented lemmas.
 Aristotle `prove` MCP re-probed — `Resource not found`, **21st consecutive cycle** dead.
+
+---
+
+## Cycle-35 (researcher-9): coordinate reduction — sine side is hypothesis-free, cosine side is one sign
+
+Notation: `u = Y − X`, `v = Z − X`, `w = P − X` in `EuclideanSpace ℝ (Fin 2)`;
+`a = ‖u‖², b = ‖v‖², c = ⟪u,v⟫, p = ⟪w,u⟫, q = ⟪w,v⟫, r = ‖w‖²`.
+Pedal feet: `F_b = X + (q/b)•v` (proj onto line `ZX`), `F_c = X + (p/a)•u` (proj onto line `XY`).
+
+Direct expansions:
+- `dist F_b F_c² = q²/b + p²/a − 2·p·q·c/(a·b)`
+- `(dist X P · sin∠YXZ)² = r·(a·b − c²)/(a·b)`     (since `cos∠YXZ = c/√(ab)`, `sin² = 1 − cos²`)
+- `⟪P − F_b, P − F_c⟫ = r − p²/a − q²/b + p·q·c/(a·b)`
+
+**Result 1 — sine side `chord_length_eq` is HYPOTHESIS-FREE.** The two squared chord
+expressions agree iff the **2D Gram determinant vanishes**:
+`r·(a·b − c²) = a·q² + b·p² − 2·c·p·q` — automatic because `u,v,w` are three vectors
+in a 2-dimensional space. In `Fin 2` components this is a one-line `ring` identity;
+it uses neither `AffineIndependent` nor `P ∈ interior`. Numerically confirmed for
+arbitrary `P` (interior, exterior, acute, obtuse): `sineErr ≈ 0` always.
+
+**Result 2 — cosine side `angle_at_P` ⇔ one scalar sign.** Equivalent to
+`db·dc·cos∠YXZ = −⟪P − F_b, P − F_c⟫` (`db = lineDist P Z X`, `dc = lineDist P X Y`).
+The **square** of this is hypothesis-free `ring`
+(`(db·dc·cos)² = ⟪P−F_b,P−F_c⟫²`). The **sign** is the *only* place `hP` enters the
+entire Erdős–Mordell proof: `db,dc ≥ 0` ⟹ `sign(db·dc·cos) = sign ⟪u,v⟫`, so we need
+`sign(−⟪P−F_b,P−F_c⟫) = sign ⟪u,v⟫`. This FAILS for exterior `P` (numerically:
+`signErr` large outside the triangle, `≈ 0` inside), confirming it genuinely needs
+the interior hypothesis (feet on positive rays ⟹ opposite orientation scalars `λμ < 0`).
+
+**Net:** Erdős–Mordell is now `ring`-mechanical in coordinates except for a single
+scalar sign that `P ∈ interior(convexHull{X,Y,Z})` must supply. Executable Lean
+roadmap recorded in the `chord_length_eq` / `angle_at_P` docstrings of
+`proofs/Proofs/ErdosMordellChordIdentity.lean`. (Aristotle MCP down + build gate
+closed this cycle; mechanization deferred.)

@@ -41,6 +41,23 @@ supplementary angle `angle_at_P` — each cleanly isolated and independently
 attackable, joined by fully-proved algebraic reductions. NOTE: the
 `orthogonalProjection`-based `pedalFoot` def and the bridge lemma both supply the
 required `Nonempty ↥(affineSpan …)` instance explicitly (no global instance exists).
+
+**Cycle-35 sharpening (researcher-9), numerically confirmed (acute/obtuse,
+interior/exterior P).** Reducing both residual facts to coordinates
+(`a=‖u‖², b=‖v‖², c=⟪u,v⟫, p=⟪w,u⟫, q=⟪w,v⟫, r=‖w‖²` with `u=Y-X, v=Z-X, w=P-X`,
+projections `F_b=X+(q/b)•v`, `F_c=X+(p/a)•u`) shows precisely how the difficulty
+splits:
+
+* `chord_length_eq` (sine side) is, after squaring, a **HYPOTHESIS-FREE** pure
+  `ring` identity in the six coordinates — the 2D Gram determinant
+  `r·(a·b−c²) = a·q² + b·p² − 2·c·p·q` (three vectors in dim 2 are dependent). It
+  needs neither `hXYZ` nor `hP`. → fully mechanizable.
+* `angle_at_P` (cosine side) ⇔ the scalar identity `db·dc·cos∠YXZ = −⟪P−F_b,P−F_c⟫`,
+  whose **square** is again hypothesis-free `ring`, leaving the **sign as the SOLE
+  place `hP` is used in the whole Erdős–Mordell proof** (it fails for exterior `P`).
+
+So Erdős–Mordell is now `ring`-mechanical except for one scalar sign that the
+interior hypothesis must supply.
 -/
 import Mathlib
 
@@ -111,17 +128,34 @@ theorem angle_pedalFoot_ZX_at_X (P Z X : EuclideanSpace ℝ (Fin 2)) :
 
 /-- **Chord length (the "sine side", law of sines).**
 
-The chord joining the two pedal feet has length `dist X P · sin∠YXZ`. Proof path
-(see `research/erdos-mordell-chord-identity-strategy.md`, cycle-5 pin): the feet
-`F_b = pedalFoot P Z X` and `F_c = pedalFoot P X Y` see segment `XP` at a right
-angle, so by Thales they lie on `Sphere.ofDiameter X P` (circumradius `dist X P /2`).
-The law of sines on `△(X, F_b, F_c)` then gives
-`dist F_b F_c = 2·circumradius · sin(∠ F_b X F_c) = dist X P · sin(∠ F_b X F_c)`,
-and `∠ F_b X F_c = ∠ Y X Z` because each foot lies on the *positive ray* from `X`
-toward the adjacent vertex (interior point ⟹ foot on the open side; collapses via
-`InnerProductGeometry.angle_smul_left/right_of_pos`). Mathlib:
-`dist_div_sin_angle_eq_two_mul_circumradius`, `thales_theorem`,
-`eq_circumcenter_of_dist_eq`. -/
+The chord joining the two pedal feet has length `dist X P · sin∠YXZ`.
+
+**COORDINATE ROUTE (cycle-35, researcher-9 — preferred; HYPOTHESIS-FREE).**
+This identity is, after squaring, a *pure algebraic identity* in the six real
+coordinates of `u = Y - X`, `v = Z - X`, `w = P - X` — it needs **neither** `hXYZ`
+**nor** `hP` (numerically confirmed for arbitrary `P`, incl. exterior and obtuse;
+only `X ≠ Y`, `X ≠ Z` enter, to keep the projections defined). Writing
+`a = ‖u‖², b = ‖v‖², c = ⟪u,v⟫, p = ⟪w,u⟫, q = ⟪w,v⟫, r = ‖w‖²`, the projections
+are `F_b = X + (q/b)•v`, `F_c = X + (p/a)•u`, so
+
+    dist F_b F_c ² = q²/b + p²/a − 2·p·q·c/(a·b)             (direct expansion)
+    (dist X P · sin∠YXZ)² = r·(a·b − c²)/(a·b)               (sin² = 1 − cos², cos = c/√(ab))
+
+and these are equal because the **3×3 Gram determinant of `u, v, w` vanishes** (three
+vectors in a 2-dimensional space are linearly dependent):
+
+    r·(a·b − c²) = a·q² + b·p² − 2·c·p·q.
+
+In components (`Fin 2`, two reals each) this Gram relation is a one-line `ring`
+identity. The unsquared equality then follows since both sides are `≥ 0`
+(`Real.sin ∠ ≥ 0` on `[0,π]`, `dist ≥ 0`) via `Real.sqrt_inj` / `pow_left_injective`.
+
+**SYNTHETIC ROUTE (alternative).** The feet `F_b, F_c` see segment `XP` at a right
+angle, so by Thales they lie on `Sphere.ofDiameter X P` (circumradius `dist X P /2`);
+law of sines on `△(X, F_b, F_c)` gives `dist F_b F_c = dist X P · sin(∠ F_b X F_c)`,
+and `∠ F_b X F_c = ∠ Y X Z` via positive-ray collapse
+(`InnerProductGeometry.angle_smul_left/right_of_pos`). Mathlib:
+`dist_div_sin_angle_eq_two_mul_circumradius`, `thales_theorem`. -/
 theorem chord_length_eq
     (X Y Z P : EuclideanSpace ℝ (Fin 2))
     (hXYZ : AffineIndependent ℝ ![X, Y, Z])
@@ -137,6 +171,23 @@ on the circle of diameter `XP` (Thales — both feet see `XP` at a right angle),
 in that cyclic quadrilateral the angle at `P` and the angle at `X` are supplementary.
 This is the *only* geometric obligation remaining on the cosine side; everything
 else (`chord_length_sq_eq_of_angle_at_P` below) is the algebraic law of cosines.
+
+**WHERE `hP` ENTERS — the whole proof's only sign (cycle-35, researcher-9).**
+By the inner-product definition of `EuclideanGeometry.angle`, this statement is
+equivalent to the scalar identity
+
+    (lineDist P Z X)·(lineDist P X Y)·cos∠YXZ = −⟪P − F_b, P − F_c⟫            (★)
+
+(`db·dc·cos = −⟨P−F_b,P−F_c⟩`). The **square** of (★) is hypothesis-free pure
+algebra: with the notation of `chord_length_eq`, `db²·dc² = (r−q²/b)(r−p²/a)`,
+`cos² = c²/(a·b)`, and `⟪P−F_b,P−F_c⟫ = r − p²/a − q²/b + p·q·c/(a·b)`, and one
+checks `(db·dc·cos)² = ⟪P−F_b,P−F_c⟫²` by `ring` in coordinates. The **sign** of (★)
+is the *only* place the interior hypothesis `hP` is used in the entire Erdős–Mordell
+formalization: `db, dc ≥ 0`, so `sign(db·dc·cos) = sign(cos) = sign ⟪u,v⟫`, and (★)
+demands `sign(−⟪P−F_b,P−F_c⟫) = sign ⟪u,v⟫`. This sign FAILS for exterior `P`
+(numerically confirmed), so it genuinely requires `hP`: `P` interior ⟹ both feet sit
+on the *positive* rays `X→Z`, `X→Y`, forcing the perpendicular components
+`P−F_b ∥ rot90 v`, `P−F_c ∥ rot90 u` to carry opposite orientation scalars `λμ < 0`.
 
 Isolated here as a standalone, Aristotle-submittable target. -/
 theorem angle_at_P
