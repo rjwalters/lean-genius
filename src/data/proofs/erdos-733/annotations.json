@@ -16,7 +16,11 @@
       "Point-line geometry",
       "Szemeredi-Trotter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "combinatorial geometry",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e733-pointset",
@@ -36,7 +40,12 @@
       "combinatorial geometry"
     ],
     "mathContext": "See annotation content for formal details of point configuration",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "finite set theory",
+      "Euclidean plane geometry"
+    ]
   },
   {
     "id": "ann-e733-line",
@@ -54,7 +63,11 @@
       "Incidence geometry"
     ],
     "mathContext": "See annotation content for formal details of lines and incidences",
-    "prerequisites": []
+    "prerequisites": [
+      "analytic geometry",
+      "incidence geometry",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e733-line-compatible",
@@ -72,7 +85,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "discrete geometry",
+      "Lean 4 formalization"
+    ]
   },
   {
     "id": "ann-e733-count",
@@ -90,7 +107,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "enumerative combinatorics",
+      "Lean 4 formalization"
+    ]
   },
   {
     "id": "ann-e733-szemeredi-trotter",
@@ -108,7 +128,11 @@
       "Incidence bounds",
       "Crossing number inequality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "extremal combinatorics",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e733-rich-lines",
@@ -126,7 +150,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "asymptotic analysis",
+      "incidence geometry"
+    ]
   },
   {
     "id": "ann-e733-lower",
@@ -144,7 +172,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "discrete geometry",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e733-grid",
@@ -162,7 +194,11 @@
       "mathematical insight",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "discrete geometry",
+      "combinatorics",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e733-upper",
@@ -180,7 +216,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "extremal combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e733-tight",
@@ -198,7 +238,10 @@
       "mathematical insight",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e733-main",
@@ -216,7 +259,11 @@
       "mathematical insight",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "asymptotic analysis",
+      "Lean 4 formalization"
+    ]
   },
   {
     "id": "ann-e733-limit",
@@ -234,7 +281,11 @@
       "formal definition",
       "limits"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limits of sequences",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e733-summary",
@@ -252,6 +303,10 @@
       "mathematical insight",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "combinatorial geometry",
+      "asymptotic analysis"
+    ]
   }
 ]
