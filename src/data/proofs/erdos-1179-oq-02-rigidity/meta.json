@@ -1,0 +1,182 @@
+{
+  "id": "erdos-1179-oq-02-rigidity",
+  "title": "Erdős #1179 OQ-02: Rigidity / Equality Case of the Trivial Lower Bound",
+  "slug": "erdos-1179-oq-02-rigidity",
+  "description": "For Erdős #1179 OQ-02, the sibling entry erdos-1179-oq-02 proves the axiom-free trivial lower bound: an ε-uniform subset A (ε < 1) of an abelian group of order N satisfies N ≤ 2^|A|, hence ⌈log₂N⌉ ≤ |A|. This entry proves the matching rigidity / equality statement: such a set saturates the bound (N = 2^|A|) if and only if every group element has a unique subset-sum representation. The extremal subsets of the trivial bound are exactly the unique-representation (perfectly 0-uniform) configurations realized by the deterministic 𝔽₂^m bases of the companion Upper entry. A clean counting rigidity — no probability, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Erdős–Hall (1976); rigidity formalization in Lean 4",
+    "sourceUrl": "https://www.erdosproblems.com/1179",
+    "date": "1976",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1179OQ02Rigidity.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "additive-combinatorics",
+      "abelian-groups",
+      "subset-sums",
+      "erdos-problem",
+      "rigidity"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Depends only on Erdos1179.epsUniform_spanning (from the verified sibling Proofs/Erdos1179OQ02.lean) and Erdos1179.total_reprCount (from the parent Proofs/Erdos1179Problem.lean), plus the named Mathlib lemma Finset.sum_eq_sum_iff_of_le (the @[to_additive] image of Finset.prod_eq_prod_iff_of_le). This file formalizes the EQUALITY/rigidity case of the trivial lower bound only; the headline OQ-02 (the additive Oₑ(1) UPPER bound) remains open.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_eq_sum_iff_of_le",
+        "description": "For f i ≤ g i on s, (∑ f = ∑ g) ↔ (∀ i ∈ s, f i = g i); turns equal sums with a pointwise ≥ into termwise equality, forcing each count to be exactly 1",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Nat.clog_pow",
+        "description": "Nat.clog b (b ^ n) = n for b > 1; identifies |A| = ⌈log₂N⌉ on a power-of-two group in the logarithmic form of the equality case",
+        "module": "Mathlib.Algebra.Order.Log"
+      }
+    ],
+    "originalContributions": [
+      "epsUniform_saturated_iff_unique_repr: for an ε-uniform A (ε < 1) of a group of order N, the trivial lower bound N ≤ 2^|A| is attained with equality (N = 2^|A|) IF AND ONLY IF every group element g has reprCount A g = 1 (a unique subset-sum representation) — a counting rigidity with no probability and no axioms",
+      "Forward direction (the rigidity content): saturation N = 2^|A| forces uniqueness. Each count is ≥ 1 (epsUniform_spanning) and the counts sum to 2^|A| = N = ∑_g 1; a sum of N integers each ≥ 1 equalling N forces each to be exactly 1, via Finset.sum_eq_sum_iff_of_le",
+      "Reverse direction: uniqueness gives ∑_g 1 = 2^|A|, i.e. N = 2^|A|, an elementary recount through total_reprCount",
+      "unique_repr_of_epsUniform_saturated: the standalone forward rigidity statement — an ε-uniform set saturating the bound gives every element a unique representation",
+      "epsUniform_card_eq_clog_iff_unique_repr: the logarithmic form — on a power-of-two group an ε-uniform set attains the integer bound |A| = ⌈log₂N⌉ exactly when its representations are unique (using Nat.clog_pow to identify ⌈log₂(2^m)⌉ = m)",
+      "Identifies the extremal sets of the trivial bound with the perfectly 0-uniform (unique-representation) configurations exhibited deterministically on (ZMod 2)^m bases by the companion Erdos1179OQ02Upper, closing the loop between the lower-bound rigidity and the upper-bound construction"
+    ],
+    "dateAdded": "2026-06-19",
+    "lineCount": 106,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "prerequisites": [
+      "ε-uniform subset-sum representation functions on finite abelian groups (parent Erdos1179Problem.lean)",
+      "The trivial lower bound N ≤ 2^|A| and the spanning lemma epsUniform_spanning (sibling Erdos1179OQ02.lean)",
+      "The total count identity ∑_g F_A(g) = 2^|A| (total_reprCount)",
+      "Nat.clog as the integer ceiling logarithm and Nat.clog_pow"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős problem #1179 (Erdős–Hall 1976) concerns ε-uniform subset-sum representations in a finite abelian group of order N: the representation function F_A(g) counts subsets of A summing to g, with average μ = 2^|A|/N, and ε-uniformity asks |F_A(g) − μ| ≤ ε·μ for all g. The proved asymptotic is gₑ(N) = (1 + oₑ(1))·log₂N; open question OQ-02 asks whether the multiplicative (1+o(1)) factor sharpens to a bounded additive error gₑ(N) ≤ log₂N + Oₑ(1). The sibling entry erdos-1179-oq-02 formalizes the matching trivial lower bound gₑ(N) ≥ log₂N axiom-free (N ≤ 2^|A|). This entry characterizes exactly when that lower bound is tight — the equality case — completing the rigidity picture around the trivial bound.",
+    "problemStatement": "When is the trivial lower bound N ≤ 2^|A| for an ε-uniform set A attained with equality? Equivalently, which ε-uniform sets are extremal for gₑ(N) ≥ log₂N?",
+    "text": "A 106-line, axiom-free, machine-checked formalization of the equality / rigidity case of the Erdős #1179 OQ-02 trivial lower bound. The lower bound N ≤ 2^|A| comes from two facts already in the gallery: ε-uniformity (ε < 1) forces every count F_A(g) ≥ 1 (epsUniform_spanning), and the counts always sum to 2^|A| (total_reprCount). There are exactly N summands. The rigidity is then pure counting: if N = 2^|A| the sum of N integers each ≥ 1 equals N, forcing every count to be exactly 1; conversely if each count is 1 the sum is N = 2^|A|. The main theorem epsUniform_saturated_iff_unique_repr packages this equivalence; unique_repr_of_epsUniform_saturated is the standalone forward direction; and epsUniform_card_eq_clog_iff_unique_repr restates it in the logarithmic form |A| = ⌈log₂N⌉ on power-of-two groups. The headline OQ-02 (the additive Oₑ(1) upper bound) remains open.",
+    "proofStrategy": "Forward (saturation ⇒ uniqueness): from epsUniform_spanning, F_A(g) ≥ 1 for all g; total_reprCount gives ∑_g F_A(g) = 2^|A|, and saturation N = 2^|A| rewrites this as ∑_g F_A(g) = ∑_g 1. Finset.sum_eq_sum_iff_of_le (pointwise 1 ≤ F_A(g) with equal sums) forces F_A(g) = 1 for every g. Reverse (uniqueness ⇒ saturation): substituting F_A(g) = 1 into total_reprCount gives ∑_g 1 = 2^|A|, i.e. N = 2^|A|. The logarithmic form follows by Nat.clog_pow (⌈log₂(2^m)⌉ = m).",
+    "keyInsights": [
+      "The equality case of an information-theoretic covering bound is a perfect-packing condition: 2^|A| subsets must cover all N group elements, and equality N = 2^|A| means the covering is exact — each element is hit exactly once",
+      "Only counting is needed, no probability: the rigidity is the elementary fact that N nonnegative integers each ≥ 1 summing to N must all equal 1, expressed cleanly by Finset.sum_eq_sum_iff_of_le",
+      "The extremal sets are precisely the perfectly 0-uniform (unique-representation) configurations — the same ones the deterministic 𝔽₂^m basis construction of the companion Upper entry exhibits, so the lower-bound rigidity and the upper-bound construction describe the same objects from two sides",
+      "ε < 1 (not small ε) is all the rigidity uses: ε-uniformity is needed only to guarantee spanning (F_A(g) ≥ 1); once spanning holds, the equality analysis is uniformity-quality-independent"
+    ]
+  },
+  "sections": [
+    {
+      "id": "framing",
+      "title": "Rigidity Framing and Dependencies",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "The module docstring recalls the sibling trivial lower bound N ≤ 2^|A| (Erdos1179OQ02.lean) and states the rigidity target: an ε-uniform set saturates the bound (N = 2^|A|) iff every group element has a unique subset-sum representation, identifying the extremal sets with the perfectly 0-uniform configurations of the Upper companion. It records the mathematical content (N summands each ≥ 1 summing to N force each = 1), the dependencies (epsUniform_spanning, total_reprCount), and the name-checked Mathlib bearer Finset.sum_eq_sum_iff_of_le.",
+      "mathContext": "Saturation $N = 2^{|A|}$ of the covering bound $\\sum_g F_A(g) = 2^{|A|}$ with each $F_A(g) \\ge 1$ is a perfect-packing condition."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Namespace",
+      "startLine": 43,
+      "endLine": 48,
+      "summary": "Imports the verified sibling Proofs.Erdos1179OQ02 (supplying epsUniform_spanning and the IsEpsUniform / reprCount definitions, which in turn re-export the parent Erdos1179Problem) and Mathlib, then opens the Erdos1179 namespace and Finset so the rigidity theorems reuse the existing machinery.",
+      "mathContext": "Brings $F_A(g) \\ge 1$ (spanning) and $\\sum_g F_A(g) = 2^{|A|}$ (total_reprCount) into scope."
+    },
+    {
+      "id": "saturation-iff",
+      "title": "Saturation ⇔ Unique Representations",
+      "startLine": 50,
+      "endLine": 80,
+      "summary": "epsUniform_saturated_iff_unique_repr: for ε-uniform A (ε < 1), N = 2^|A| ↔ ∀ g, reprCount A g = 1. Forward: spanning gives F_A(g) ≥ 1; with ∑_g F_A(g) = 2^|A| = N = ∑_g 1, the lemma Finset.sum_eq_sum_iff_of_le forces termwise equality F_A(g) = 1. Reverse: substituting F_A(g) = 1 into total_reprCount recovers ∑_g 1 = 2^|A|.",
+      "mathContext": "$\\sum_g F_A(g) = \\sum_g 1$ with $1 \\le F_A(g)$ pointwise $\\Rightarrow F_A(g) = 1$ for all $g$, and conversely."
+    },
+    {
+      "id": "forward-standalone",
+      "title": "Forward Rigidity, Standalone",
+      "startLine": 82,
+      "endLine": 89,
+      "summary": "unique_repr_of_epsUniform_saturated packages the forward direction as a directly usable lemma: an ε-uniform set (ε < 1) that saturates N = 2^|A| gives every group element a unique subset-sum representation reprCount A g = 1.",
+      "mathContext": "Extremal $\\Rightarrow$ unique-representation: the convenient one-directional corollary of the equivalence."
+    },
+    {
+      "id": "log-form",
+      "title": "Logarithmic Form of the Equality Case",
+      "startLine": 91,
+      "endLine": 104,
+      "summary": "epsUniform_card_eq_clog_iff_unique_repr: on a power-of-two group, an ε-uniform set attains the integer lower bound |A| = ⌈log₂N⌉ (alongside N = 2^|A|) exactly when its representations are unique. Uses Nat.clog_pow to identify ⌈log₂(2^|A|)⌉ = |A| and rewrites through the saturation equivalence.",
+      "mathContext": "$N = 2^{|A|} \\wedge |A| = \\lceil\\log_2 N\\rceil \\iff \\forall g,\\ F_A(g) = 1$, via $\\operatorname{clog}_2(2^{|A|}) = |A|$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1179-oq-02",
+      "relationship": "extends",
+      "description": "The sibling entry proves the axiom-free trivial lower bound N ≤ 2^|A| (⌈log₂N⌉ ≤ |A|) and supplies epsUniform_spanning, on which this rigidity result directly depends. This entry characterizes exactly when that lower bound is tight."
+    },
+    {
+      "targetId": "erdos-1179-oq-02-witness",
+      "relationship": "related",
+      "description": "The witness / upper companion exhibits the deterministic (ZMod 2)^m basis construction whose subsets have unique representations — precisely the extremal, perfectly 0-uniform configurations characterized here as the equality case of the lower bound."
+    },
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Parent Erdős #1179 entry: the (1+o(1))·log₂N asymptotic (Erdős–Hall 1976) and the abstract lower-bound axiom that the OQ-02 sibling discharges concretely."
+    }
+  ],
+  "conclusion": {
+    "summary": "The equality / rigidity case of the Erdős #1179 OQ-02 trivial lower bound is formalized axiom-free: an ε-uniform set A (ε < 1) of a group of order N saturates N ≤ 2^|A| with equality if and only if every group element has a unique subset-sum representation. The forward direction (saturation ⇒ uniqueness) is a clean counting rigidity via Finset.sum_eq_sum_iff_of_le; the reverse is an elementary recount. A logarithmic form characterizes |A| = ⌈log₂N⌉ on power-of-two groups. 3 theorems, 0 axioms, 0 sorries.",
+    "implications": "Pins down the extremal objects of the trivial lower bound as exactly the unique-representation (perfectly 0-uniform) sets, matching the deterministic 𝔽₂^m construction of the upper companion and sharpening the gallery's picture of OQ-02's matching target. The additive Oₑ(1) upper bound — the actual open content of OQ-02 — remains the frontier.",
+    "openQuestions": [
+      "Prove the additive upper bound gₑ(N) ≤ log₂N + Oₑ(1), the actual content of OQ-02 (asymptotic, not finitely decidable)",
+      "Quantify how far a near-extremal ε-uniform set must be from a unique-representation set — a stability (as opposed to exact rigidity) statement around N = 2^|A|",
+      "Connect the unique-representation extremal sets to the perfect-difference / Sidon-type structures on (ZMod 2)^m"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Hall, R. R.",
+      "title": "Probabilistic methods in group theory II",
+      "year": "1976",
+      "venue": "Houston Journal of Mathematics 2(2), 173–180"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1179OQ02",
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1179",
+    "lineCount": 106,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1179OQ02Rigidity.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "epsUniform_saturated_iff_unique_repr",
+      "type": "core",
+      "description": "For ε-uniform A (ε < 1) of a group of order N, the trivial lower bound is saturated (N = 2^|A|) iff every group element has a unique subset-sum representation",
+      "leanType": "Fintype.card G = 2 ^ A.card ↔ ∀ g : G, reprCount A g = 1"
+    },
+    {
+      "name": "epsUniform_card_eq_clog_iff_unique_repr",
+      "type": "core",
+      "description": "Logarithmic form: on a power-of-two group, an ε-uniform set attains |A| = ⌈log₂N⌉ exactly when its representations are unique",
+      "leanType": "(Fintype.card G = 2 ^ A.card ∧ A.card = Nat.clog 2 (Fintype.card G)) ↔ ∀ g : G, reprCount A g = 1"
+    },
+    {
+      "name": "unique_repr_of_epsUniform_saturated",
+      "type": "supporting",
+      "description": "Forward rigidity, standalone: an ε-uniform set saturating N = 2^|A| gives every element a unique subset-sum representation",
+      "leanType": "reprCount A g = 1"
+    }
+  ],
+  "sorries": 0
+}

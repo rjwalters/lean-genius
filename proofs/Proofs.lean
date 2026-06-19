@@ -1061,6 +1061,7 @@ import Proofs.Erdos1177Problem
 import Proofs.Erdos1178Problem
 import Proofs.Erdos1179OQ01
 import Proofs.Erdos1179OQ02
+import Proofs.Erdos1179OQ02Rigidity
 import Proofs.Erdos1179OQ02Upper
 import Proofs.Erdos1179OQ02Witness
 import Proofs.Erdos1179Problem
