@@ -41,13 +41,6 @@
                             so the cyclic distance between two orbit points
                             depends only on their index difference (the engine
                             of STEP A in `exists_gap_triple`)
-    * `forwardGap_le`     — STEP A (upper-bound half): `forwardGap α N {kα}` is
-                            `≤ {(j − k)·α}` for every other index `j`
-    * `forwardGap_attained` — STEP A/B (lower-bound / attainment half): the gap is
-                            *equal to* `{(j − k)·α}` for some concrete `j < N`,
-                            `j ≠ k`.  Combined with `forwardGap_le` this pins
-                            `forwardGap α N {kα} = min_{j≠k} {(j − k)·α}` — the gap
-                            is now pure index arithmetic (full STEP A/B reduction)
 
   PROVED (reductions — fully discharged modulo the isolated core):
     * `three_gap`         — at most three distinct gap lengths, reduced to
@@ -55,23 +48,35 @@
     * `three_gap_additive`— the additive relation among the three lengths,
                             reduced to `exists_gap_triple` by pure `Finset` reasoning
 
-  PARTIALLY PROVED (the genuine content — see the proof-path comments):
+  PROVED (the genuine content — the classification core, now CLOSED):
     * `exists_gap_triple` — the Sós–Surányi–Świerczkowski / van Ravenstein
-                            classification.  The `N = 1` base case is now CLOSED
-                            (degenerate single-point orbit); the `N ≥ 2` case
-                            pins the two Steinhaus first-return generators as the
-                            minimal forward / backward cyclic returns and the long
-                            gap as their sum (`a + b = c` by construction), leaving
-                            a single `sorry` on the gap-classification step.
+                            classification, now fully discharged (no `sorry`).
+                            The `N = 1` base case is the degenerate single-point
+                            orbit; the `N ≥ 2` case pins the two Steinhaus
+                            first-return generators as the minimal forward /
+                            backward cyclic returns and the long gap as their sum
+                            (`a + b = c` by construction), then shows every
+                            forward gap length is one of the three.
+    Supporting lemmas added for the `N ≥ 2` classification (all `sorry`-free,
+    no axioms): `fract_add_of_lt_one`, `fract_add_of_one_le`, `fract_nat_add_lt`,
+    `fract_nat_add_ge` (fractional-part carry / no-carry rules); `fract_neg_mul`
+    (`{-iα} = 1 - {iα}` for irrational `α`, `i ≠ 0`); `forwardGap_ge` (the
+    `Finset.le_inf'` lower-bound companion to `forwardGap_le`);
+    `forwardGap_region_a / _b / _c` (the three regional gap values) and
+    `forwardGap_mem_triple` (their assembly into membership in `{a, b, a+b}`).
 
-  ## Status: scaffolding through STEP A/B build-VERIFIED at the S7 revision
-  (v4.26.0, 7743 jobs); the S9 addition `forwardGap_attained` is hand-verified
-  against the Mathlib source but NOT yet kernel-checked (Aristotle backend down +
-  Docker host OOM-saturated this cycle — deferred to a cache-warm build, the same
-  mode in which S7's `forwardGap_le` was shipped then verified).  All scaffolding
-  plus the `N = 1` base case compile; the only remaining `sorry` is the `N ≥ 2`
-  classification step (STEP D) inside the isolated core `exists_gap_triple`.
-  Registered in `Proofs.lean`.
+  ## Status: COMPLETE — 0 `sorry`, 0 `axiom` (uses only `propext`,
+  `Classical.choice`, `Quot.sound`).  The classification core was closed by
+  Aristotle (Harmonic) proof search; project `f3b4620d-814e-430d-97a8-c40321b48abf`,
+  which reports a clean `lake build` (8027 jobs) in its sandbox.
+
+  BUILD VERIFICATION PENDING under this repo's pinned toolchain: Aristotle built
+  the file under `leanprover/lean4:v4.28.0` (its vendored Mathlib), whereas this
+  repo pins `v4.26.0`.  The proof uses only stable `Int.fract` / `Finset` API and
+  is expected to compile unchanged, but it has NOT yet been kernel-checked here.
+  A build-capable session must run
+  `./proofs/scripts/docker-build.sh Proofs.Erdos998ThreeGapOQ04`
+  before the gallery entry is flipped to `verified`.  Registered in `Proofs.lean`.
 -/
 import Mathlib
 
@@ -206,47 +211,6 @@ theorem forwardGap_le {α : ℝ} (hα : Irrational α) {N : ℕ}
     (le_of_eq ?_)
   rw [fract_fract_sub_fract, sub_mul]
 
-/-- **STEP A/B (attainment) — the forward gap is REALISED by an index difference.**
-    Whenever the erased orbit at `P_k = {kα}` is nonempty, the forward gap is not
-    merely bounded by, but *equal to*, the cyclic distance `{(j - k)·α}` of some
-    concrete in-range index `j < N`, `j ≠ k`:
-
-      `∃ j < N, j ≠ k ∧ forwardGap α N {kα} = {(j - k)·α}`.
-
-    This is the lower-bound companion to `forwardGap_le`: together they pin the
-    forward gap as the *minimum* of `{(j - k)·α}` over `j ∈ [0,N) \ {k}`, turning
-    the gap into pure index arithmetic — the STEP A/B reduction in the
-    `exists_gap_triple` proof path.  No irrationality is needed: the `inf'`
-    attaining point lies in the orbit (`Finset.exists_mem_eq_inf'`), hence equals
-    `{jα}` for some `j ∈ range N`, and `j ≠ k` because it is `erase`d-distinct from
-    `{kα}`; the value rewrite is `fract_fract_sub_fract` exactly as in
-    `forwardGap_le`. -/
-theorem forwardGap_attained {α : ℝ} {N : ℕ} {k : ℕ}
-    (hNe : ((orbit α N).erase (Int.fract ((k : ℝ) * α))).Nonempty) :
-    ∃ j, j < N ∧ j ≠ k ∧
-      forwardGap α N (Int.fract ((k : ℝ) * α))
-        = Int.fract (((j : ℝ) - (k : ℝ)) * α) := by
-  have hfg : forwardGap α N (Int.fract ((k : ℝ) * α))
-      = ((orbit α N).erase (Int.fract ((k : ℝ) * α))).inf' hNe
-          (fun y => Int.fract (y - Int.fract ((k : ℝ) * α))) := by
-    unfold forwardGap
-    rw [dif_pos hNe]
-  obtain ⟨y, hy, hyeq⟩ :=
-    Finset.exists_mem_eq_inf'
-      (s := (orbit α N).erase (Int.fract ((k : ℝ) * α))) hNe
-      (fun y => Int.fract (y - Int.fract ((k : ℝ) * α)))
-  rw [Finset.mem_erase] at hy
-  obtain ⟨hyne, hyorb⟩ := hy
-  simp only [orbit, Finset.mem_image, Finset.mem_range] at hyorb
-  obtain ⟨j, hjN, rfl⟩ := hyorb
-  refine ⟨j, hjN, ?_, ?_⟩
-  · intro h
-    exact hyne (by rw [h])
-  · rw [hfg, hyeq]
-    show Int.fract (Int.fract ((j : ℝ) * α) - Int.fract ((k : ℝ) * α))
-        = Int.fract (((j : ℝ) - (k : ℝ)) * α)
-    rw [fract_fract_sub_fract, sub_mul]
-
 /-
     PROOF PATH for the core classification `exists_gap_triple`
     (van Ravenstein / Sós, elementary).  Session 6 (researcher-1, 2026-06-18)
@@ -331,6 +295,308 @@ theorem card_le_three_of_subset_triple {s : Finset ℝ} {a b c : ℝ}
     omega
   exact le_trans (Finset.card_le_card h) hc
 
+/-! ### Infrastructure for the `N ≥ 2` three-gap classification -/
+
+/-- General fract addition (no carry): if the fractional parts sum to `< 1`,
+    the fractional part of the sum is their sum. -/
+theorem fract_add_of_lt_one {x y : ℝ} (h : Int.fract x + Int.fract y < 1) :
+    Int.fract (x + y) = Int.fract x + Int.fract y := by
+  obtain ⟨z, hz⟩ := Int.fract_add x y
+  have h0 := Int.fract_nonneg x
+  have h1 := Int.fract_nonneg y
+  have h2 := Int.fract_nonneg (x+y)
+  have h3 := Int.fract_lt_one (x+y)
+  have hzr : (z:ℝ) = Int.fract (x+y) - Int.fract x - Int.fract y := by linarith [hz]
+  have ha : (-1:ℝ) < (z:ℝ) := by linarith
+  have hb : (z:ℝ) < 1 := by linarith
+  have ha' : (-1:ℤ) < z := by exact_mod_cast ha
+  have hb' : z < (1:ℤ) := by exact_mod_cast hb
+  have hz0 : z = 0 := by omega
+  rw [hz0] at hzr; push_cast at hzr; linarith
+
+/-- General fract addition (with carry): if the fractional parts sum to `≥ 1`,
+    the fractional part of the sum is their sum minus one. -/
+theorem fract_add_of_one_le {x y : ℝ} (h : 1 ≤ Int.fract x + Int.fract y) :
+    Int.fract (x + y) = Int.fract x + Int.fract y - 1 := by
+  obtain ⟨z, hz⟩ := Int.fract_add x y
+  have h0 := Int.fract_nonneg x
+  have h1 := Int.fract_nonneg y
+  have h2 := Int.fract_nonneg (x+y)
+  have h3 := Int.fract_lt_one (x+y)
+  have h4 := Int.fract_lt_one x
+  have h5 := Int.fract_lt_one y
+  have hzr : (z:ℝ) = Int.fract (x+y) - Int.fract x - Int.fract y := by linarith [hz]
+  have ha : (-2:ℝ) < (z:ℝ) := by linarith
+  have hb : (z:ℝ) < 0 := by linarith
+  have ha' : (-2:ℤ) < z := by exact_mod_cast ha
+  have hb' : z < (0:ℤ) := by exact_mod_cast hb
+  have hz0 : z = -1 := by omega
+  rw [hz0] at hzr; push_cast at hzr; linarith
+
+/-- Nat-indexed version of `fract_add_of_lt_one`. -/
+theorem fract_nat_add_lt {α : ℝ} {m n : ℕ}
+    (h : Int.fract ((m:ℝ)*α) + Int.fract ((n:ℝ)*α) < 1) :
+    Int.fract (((m+n : ℕ):ℝ)*α) = Int.fract ((m:ℝ)*α) + Int.fract ((n:ℝ)*α) := by
+  have hc : ((m+n:ℕ):ℝ)*α = (m:ℝ)*α + (n:ℝ)*α := by push_cast; ring
+  rw [hc, fract_add_of_lt_one h]
+
+/-- Nat-indexed version of `fract_add_of_one_le`. -/
+theorem fract_nat_add_ge {α : ℝ} {m n : ℕ}
+    (h : 1 ≤ Int.fract ((m:ℝ)*α) + Int.fract ((n:ℝ)*α)) :
+    Int.fract (((m+n : ℕ):ℝ)*α) = Int.fract ((m:ℝ)*α) + Int.fract ((n:ℝ)*α) - 1 := by
+  have hc : ((m+n:ℕ):ℝ)*α = (m:ℝ)*α + (n:ℝ)*α := by push_cast; ring
+  rw [hc, fract_add_of_one_le h]
+
+/-- For irrational `α` and `i ≠ 0`, `{-iα} = 1 - {iα}` (since `{iα} ≠ 0`). -/
+theorem fract_neg_mul {α : ℝ} (hα : Irrational α) {i : ℕ} (hi : i ≠ 0) :
+    Int.fract (-((i:ℝ) * α)) = 1 - Int.fract ((i:ℝ) * α) := by
+  apply Int.fract_neg
+  have := fract_mul_inj hα hi
+  simpa using this
+
+/-- **Lower bound for the forward gap.**  If a real `L` bounds every cyclic
+    index-difference distance `{(j-k)·α}` (for `j < N`, `j ≠ k`) from below,
+    then `L` bounds the forward gap at `P_k` from below.  This is the
+    `Finset.le_inf'` companion to `forwardGap_le`. -/
+theorem forwardGap_ge {α : ℝ} (hα : Irrational α) {N : ℕ} (hN2 : 2 ≤ N) {k : ℕ}
+    (hk : k < N) (L : ℝ)
+    (hL : ∀ j, j < N → j ≠ k → L ≤ Int.fract (((j : ℝ) - (k : ℝ)) * α)) :
+    L ≤ forwardGap α N (Int.fract ((k : ℝ) * α)) := by
+  unfold forwardGap
+  have hNe : ((orbit α N).erase (Int.fract ((k:ℝ)*α))).Nonempty := by
+    obtain ⟨i, hiN, hik⟩ : ∃ i, i < N ∧ i ≠ k := by
+      rcases eq_or_ne k 0 with rfl | hk0
+      · exact ⟨1, by omega, one_ne_zero⟩
+      · exact ⟨0, by omega, Ne.symm hk0⟩
+    refine ⟨Int.fract ((i:ℝ)*α), Finset.mem_erase.mpr ⟨fract_mul_inj hα hik, ?_⟩⟩
+    simp only [orbit, Finset.mem_image, Finset.mem_range]; exact ⟨i, hiN, rfl⟩
+  rw [dif_pos hNe]
+  apply Finset.le_inf'
+  intro y hy
+  rw [Finset.mem_erase, orbit, Finset.mem_image] at hy
+  obtain ⟨hyne, j, hjr, rfl⟩ := hy
+  rw [Finset.mem_range] at hjr
+  have hjk : j ≠ k := by intro h; subst h; exact hyne rfl
+  have hh : Int.fract (Int.fract ((j:ℝ)*α) - Int.fract ((k:ℝ)*α))
+      = Int.fract (((j:ℝ)-(k:ℝ))*α) := by
+    rw [fract_fract_sub_fract, sub_mul]
+  rw [hh]; exact hL j hjr hjk
+
+/-- **Region `a`.**  When the forward step `p` keeps the index inside the orbit
+    (`k + p < N`), the forward gap at `P_k` is exactly the short forward gap `a`. -/
+theorem forwardGap_region_a {α : ℝ} (hα : Irrational α) {N : ℕ} (hN2 : 2 ≤ N)
+    (a : ℝ) (p : ℕ)
+    (hp1 : 1 ≤ p) (hpa : Int.fract ((p:ℝ) * α) = a)
+    (hamin : ∀ i, 1 ≤ i → i < N → a ≤ Int.fract ((i:ℝ) * α))
+    {k : ℕ} (hk : k < N) (hreg : k + p < N) :
+    forwardGap α N (Int.fract ((k:ℝ) * α)) = a := by
+  -- The backward-direction trick: every backward return `{-eα}` with `e + p < N`
+  -- is at least `a`, else `{(e+p)α} < a` contradicts minimality of `a`.
+  have htrick : ∀ e, 1 ≤ e → e + p < N → a ≤ Int.fract (-((e:ℝ) * α)) := by
+    intro e he1 hep
+    by_contra hlt
+    push_neg at hlt
+    rw [fract_neg_mul hα (by omega)] at hlt
+    have hsum : 1 ≤ Int.fract ((e:ℝ) * α) + Int.fract ((p:ℝ) * α) := by
+      rw [hpa]; linarith
+    have hcol := fract_nat_add_ge (α := α) (m := e) (n := p) hsum
+    have hbound := hamin (e + p) (by omega) hep
+    rw [hcol, hpa] at hbound
+    have hlt1 := Int.fract_lt_one ((e:ℝ) * α)
+    linarith
+  refine le_antisymm ?_ ?_
+  · -- Upper bound: the orbit point `P_{k+p}` realises gap `a`.
+    have hle := forwardGap_le hα (j := k + p) (k := k) (by omega) (by omega)
+    have harg : ((k + p : ℕ) : ℝ) - (k : ℝ) = (p : ℝ) := by push_cast; ring
+    rw [harg, hpa] at hle
+    exact hle
+  · -- Lower bound: no orbit point lies closer than `a`.
+    apply forwardGap_ge hα hN2 hk
+    intro j hj hjk
+    rcases lt_or_gt_of_ne hjk with hlt | hgt
+    · -- `j < k`: backward return, use the trick.
+      have hee : ((j : ℝ) - (k : ℝ)) * α = -(((k - j : ℕ) : ℝ) * α) := by
+        rw [Nat.cast_sub (le_of_lt hlt)]; ring
+      rw [hee]
+      exact htrick (k - j) (by omega) (by omega)
+    · -- `j > k`: forward return, use minimality of `a`.
+      have hee : ((j : ℝ) - (k : ℝ)) * α = (((j - k : ℕ) : ℝ) * α) := by
+        rw [Nat.cast_sub (le_of_lt hgt)]
+      rw [hee]
+      exact hamin (j - k) (by omega) (by omega)
+
+/-- **Region `b`.**  When the backward step `q` keeps the index inside the orbit
+    (`q ≤ k`), the forward gap at `P_k` is exactly the short backward gap `b`. -/
+theorem forwardGap_region_b {α : ℝ} (hα : Irrational α) {N : ℕ} (hN2 : 2 ≤ N)
+    (b : ℝ) (q : ℕ)
+    (hq1 : 1 ≤ q) (hqb : Int.fract (-((q:ℝ) * α)) = b)
+    (hbmin : ∀ i, 1 ≤ i → i < N → b ≤ Int.fract (-((i:ℝ) * α)))
+    {k : ℕ} (hk : k < N) (hreg : q ≤ k) :
+    forwardGap α N (Int.fract ((k:ℝ) * α)) = b := by
+  -- `b = 1 - {qα}`.
+  have hbval : b = 1 - Int.fract ((q:ℝ) * α) := by
+    rw [← hqb, fract_neg_mul hα (by omega)]
+  -- The forward-direction trick: every forward return `{dα}` with `d + q < N`
+  -- is at least `b`, else `{-(d+q)α} < b` contradicts minimality of `b`.
+  have htrick : ∀ d, 1 ≤ d → d + q < N → b ≤ Int.fract ((d:ℝ) * α) := by
+    intro d hd1 hdq
+    by_contra hlt
+    push_neg at hlt
+    have hsum : Int.fract ((d:ℝ) * α) + Int.fract ((q:ℝ) * α) < 1 := by
+      rw [hbval] at hlt; linarith
+    have hcol := fract_nat_add_lt (α := α) (m := d) (n := q) hsum
+    have hbound := hbmin (d + q) (by omega) hdq
+    rw [fract_neg_mul hα (by omega), hcol] at hbound
+    rw [hbval] at hbound
+    have hdpos : 0 < Int.fract ((d:ℝ) * α) := by
+      have hne0 : Int.fract ((d:ℝ) * α) ≠ 0 := by
+        have := fract_mul_inj hα (i := d) (j := 0) (by omega)
+        simpa using this
+      exact lt_of_le_of_ne (Int.fract_nonneg _) (Ne.symm hne0)
+    linarith
+  refine le_antisymm ?_ ?_
+  · -- Upper bound: the orbit point `P_{k-q}` realises gap `b`.
+    have hkq_lt : k - q < k := Nat.sub_lt (by omega) (by omega)
+    have hle := forwardGap_le hα (N := N) (j := k - q) (k := k) (by omega) (by omega)
+    have harg : ((k - q : ℕ) : ℝ) - (k : ℝ) = -((q : ℝ)) := by
+      rw [Nat.cast_sub hreg]; ring
+    rw [harg, show ((-(q:ℝ)) * α) = -((q:ℝ) * α) by ring, hqb] at hle
+    exact hle
+  · -- Lower bound: no orbit point lies closer than `b`.
+    apply forwardGap_ge hα hN2 hk
+    intro j hj hjk
+    rcases lt_or_gt_of_ne hjk with hlt | hgt
+    · -- `j < k`: backward return, use minimality of `b`.
+      have hee : ((j : ℝ) - (k : ℝ)) * α = -(((k - j : ℕ) : ℝ) * α) := by
+        rw [Nat.cast_sub (le_of_lt hlt)]; ring
+      rw [hee]
+      exact hbmin (k - j) (by omega) (by omega)
+    · -- `j > k`: forward return, use the trick.
+      have hee : ((j : ℝ) - (k : ℝ)) * α = (((j - k : ℕ) : ℝ) * α) := by
+        rw [Nat.cast_sub (le_of_lt hgt)]
+      rw [hee]
+      exact htrick (j - k) (by omega) (by omega)
+
+/-- **Region `a + b`.**  When neither `p` (forward) nor `q` (backward) keeps the
+    index inside the orbit (`N ≤ k + p` and `k < q`), the forward gap at `P_k`
+    is exactly the long gap `a + b`. -/
+theorem forwardGap_region_c {α : ℝ} (hα : Irrational α) {N : ℕ} (hN2 : 2 ≤ N)
+    (a b : ℝ) (p q : ℕ)
+    (hpN : p < N) (hpa : Int.fract ((p:ℝ) * α) = a)
+    (hamin : ∀ i, 1 ≤ i → i < N → a ≤ Int.fract ((i:ℝ) * α))
+    (hq1 : 1 ≤ q) (hqN : q < N) (hqb : Int.fract (-((q:ℝ) * α)) = b)
+    (hbmin : ∀ i, 1 ≤ i → i < N → b ≤ Int.fract (-((i:ℝ) * α)))
+    {k : ℕ} (hk : k < N) (hreg1 : N ≤ k + p) (hreg2 : k < q) :
+    forwardGap α N (Int.fract ((k:ℝ) * α)) = a + b := by
+  -- Basic facts about `a`, `b` and the max property of index `q`.
+  have ha0 : 0 ≤ a := by rw [← hpa]; exact Int.fract_nonneg _
+  have hb0 : 0 ≤ b := by rw [← hqb]; exact Int.fract_nonneg _
+  have hbval : b = 1 - Int.fract ((q:ℝ) * α) := by
+    rw [← hqb, fract_neg_mul hα (by omega)]
+  have hqmax : ∀ i, 1 ≤ i → i < N → Int.fract ((i:ℝ) * α) ≤ Int.fract ((q:ℝ) * α) := by
+    intro i hi1 hiN
+    have := hbmin i hi1 hiN
+    rw [fract_neg_mul hα (by omega), hbval] at this
+    linarith
+  -- `a < {qα}` (min strictly below max) and hence `a + b < 1`.
+  have halt : a < Int.fract ((q:ℝ) * α) :=
+    lt_of_le_of_ne (hamin q hq1 hqN)
+      (by rw [← hpa]; exact fract_mul_inj hα (by
+        -- `p ≠ q`: else min = max forces all returns equal, contradicting injectivity.
+        intro h
+        have hN3 : 3 ≤ N := by omega
+        have hqa : Int.fract ((q:ℝ) * α) = a := by rw [← h]; exact hpa
+        have e1 : Int.fract (((1:ℕ):ℝ) * α) = a :=
+          le_antisymm (le_trans (hqmax 1 (by norm_num) (by omega)) (le_of_eq hqa))
+            (hamin 1 (by norm_num) (by omega))
+        have e2 : Int.fract (((2:ℕ):ℝ) * α) = a :=
+          le_antisymm (le_trans (hqmax 2 (by norm_num) (by omega)) (le_of_eq hqa))
+            (hamin 2 (by norm_num) (by omega))
+        exact fract_mul_inj hα (i := 1) (j := 2) (by norm_num) (e1.trans e2.symm)))
+  have hpq : p ≠ q := by
+    intro h; rw [← hpa, h] at halt; exact lt_irrefl _ halt
+  have hab_lt : a + b < 1 := by rw [hbval]; linarith
+  have hfab : Int.fract (a + b) = a + b := Int.fract_eq_self.mpr ⟨by linarith, hab_lt⟩
+  have hqfract : Int.fract ((q:ℝ) * α) = 1 - b := by rw [hbval]; ring
+  -- Forward index-difference distances (`d < p`) are at least `a + b`.
+  have hfwd : ∀ d, 1 ≤ d → d < p → a + b ≤ Int.fract ((d:ℝ) * α) := by
+    intro d hd1 hdp
+    have hda : a ≤ Int.fract ((d:ℝ) * α) := hamin d hd1 (by omega)
+    have hdlt1 : Int.fract ((d:ℝ) * α) < 1 := Int.fract_lt_one _
+    have hkey : Int.fract ((d:ℝ) * α) - a = Int.fract (-(((p - d : ℕ):ℝ) * α)) := by
+      have h1 := fract_fract_sub_fract ((d:ℝ) * α) ((p:ℝ) * α)
+      rw [← sub_mul, hpa] at h1
+      have h2 : Int.fract (Int.fract ((d:ℝ) * α) - a) = Int.fract ((d:ℝ) * α) - a :=
+        Int.fract_eq_self.mpr ⟨by linarith, by linarith⟩
+      have h3 : ((d:ℝ) - (p:ℝ)) * α = -(((p - d : ℕ):ℝ) * α) := by
+        rw [Nat.cast_sub (le_of_lt hdp)]; ring
+      rw [h2] at h1; rw [h3] at h1; exact h1
+    have hb_le := hbmin (p - d) (by omega) (by omega)
+    rw [← hkey] at hb_le; linarith
+  -- Backward index-difference distances (`e < q`) are at least `a + b`.
+  have hbwd : ∀ e, 1 ≤ e → e < q → a + b ≤ Int.fract (-((e:ℝ) * α)) := by
+    intro e he1 heq
+    have hve : Int.fract (-((e:ℝ) * α)) = 1 - Int.fract ((e:ℝ) * α) := fract_neg_mul hα (by omega)
+    have hue_le : Int.fract ((e:ℝ) * α) ≤ Int.fract ((q:ℝ) * α) := hqmax e he1 (by omega)
+    have hkey : Int.fract ((q:ℝ) * α) - Int.fract ((e:ℝ) * α) = Int.fract (((q - e : ℕ):ℝ) * α) := by
+      have h1 := fract_fract_sub_fract ((q:ℝ) * α) ((e:ℝ) * α)
+      rw [← sub_mul] at h1
+      have h2 : Int.fract (Int.fract ((q:ℝ) * α) - Int.fract ((e:ℝ) * α))
+          = Int.fract ((q:ℝ) * α) - Int.fract ((e:ℝ) * α) :=
+        Int.fract_eq_self.mpr ⟨by linarith,
+          by linarith [Int.fract_nonneg ((e:ℝ) * α), Int.fract_lt_one ((q:ℝ) * α)]⟩
+      have h3 : ((q:ℝ) - (e:ℝ)) * α = (((q - e : ℕ):ℝ) * α) := by
+        rw [Nat.cast_sub (le_of_lt heq)]
+      rw [h2] at h1; rw [h3] at h1; exact h1
+    have ha_le := hamin (q - e) (by omega) (by omega)
+    rw [← hkey] at ha_le
+    rw [hve, hbval]; linarith
+  refine le_antisymm ?_ ?_
+  · -- Upper bound: the orbit point `P_{k+p-q}` realises gap `a + b`.
+    have hle := forwardGap_le hα (N := N) (j := k + p - q) (k := k) (by omega) (by omega)
+    have harg : ((k + p - q : ℕ):ℝ) - (k:ℝ) = (p:ℝ) - (q:ℝ) := by
+      rw [Nat.cast_sub (by omega), Nat.cast_add]; ring
+    rw [harg] at hle
+    have hval : Int.fract (((p:ℝ) - (q:ℝ)) * α) = a + b := by
+      have h1 := fract_fract_sub_fract ((p:ℝ) * α) ((q:ℝ) * α)
+      rw [← sub_mul, hpa, hqfract] at h1
+      have e : a - (1 - b) = (a + b) - ((1:ℤ):ℝ) := by push_cast; ring
+      rw [e, Int.fract_sub_intCast, hfab] at h1
+      exact h1.symm
+    rw [hval] at hle; exact hle
+  · -- Lower bound: no orbit point lies closer than `a + b`.
+    apply forwardGap_ge hα hN2 hk
+    intro j hj hjk
+    rcases lt_or_gt_of_ne hjk with hlt | hgt
+    · -- `j < k`: backward return.
+      have hee : ((j : ℝ) - (k : ℝ)) * α = -(((k - j : ℕ) : ℝ) * α) := by
+        rw [Nat.cast_sub (le_of_lt hlt)]; ring
+      rw [hee]; exact hbwd (k - j) (by omega) (by omega)
+    · -- `j > k`: forward return.
+      have hee : ((j : ℝ) - (k : ℝ)) * α = (((j - k : ℕ) : ℝ) * α) := by
+        rw [Nat.cast_sub (le_of_lt hgt)]
+      rw [hee]; exact hfwd (j - k) (by omega) (by omega)
+
+/-- **Core classification.**  For every orbit index `k < N`, the forward gap at
+    `P_k` is one of the three values `a`, `b`, `a + b`. -/
+theorem forwardGap_mem_triple {α : ℝ} (hα : Irrational α) {N : ℕ} (hN2 : 2 ≤ N)
+    (a b : ℝ) (p q : ℕ)
+    (hp1 : 1 ≤ p) (hpN : p < N) (hpa : Int.fract ((p:ℝ) * α) = a)
+    (hamin : ∀ i, 1 ≤ i → i < N → a ≤ Int.fract ((i:ℝ) * α))
+    (hq1 : 1 ≤ q) (hqN : q < N) (hqb : Int.fract (-((q:ℝ) * α)) = b)
+    (hbmin : ∀ i, 1 ≤ i → i < N → b ≤ Int.fract (-((i:ℝ) * α)))
+    {k : ℕ} (hk : k < N) :
+    forwardGap α N (Int.fract ((k:ℝ) * α)) ∈ ({a, b, a + b} : Finset ℝ) := by
+  by_cases hka : k + p < N
+  · rw [forwardGap_region_a hα hN2 a p hp1 hpa hamin hk hka]
+    simp
+  · by_cases hkb : q ≤ k
+    · rw [forwardGap_region_b hα hN2 b q hq1 hqb hbmin hk hkb]
+      simp
+    · push_neg at hka hkb
+      rw [forwardGap_region_c hα hN2 a b p q hpN hpa hamin hq1 hqN hqb hbmin hk hka hkb]
+      simp
+
 /-- **Core combinatorial classification (Sós–Surányi–Świerczkowski /
     van Ravenstein).**  This is the genuine mathematical content of the
     three-gap theorem, isolated as a single statement.
@@ -384,7 +650,45 @@ theorem exists_gap_triple (α : ℝ) (hα : Irrational α) {N : ℕ} (hN : 1 ≤
               (fun (i : ℕ) => Int.fract (-((i : ℝ) * α)))).min'
               (hS.image (fun (i : ℕ) => Int.fract (-((i : ℝ) * α)))),
             _, rfl, ?_⟩
-    sorry
+    -- Membership: each gap length is `forwardGap α N (P_k)` for some `k < N`,
+    -- so the classification lemma `forwardGap_mem_triple` finishes.
+    intro x hx
+    rw [gapLengths, Finset.mem_image] at hx
+    obtain ⟨y, hy, rfl⟩ := hx
+    rw [orbit, Finset.mem_image] at hy
+    obtain ⟨k, hk_mem, rfl⟩ := hy
+    rw [Finset.mem_range] at hk_mem
+    -- Extract the forward generator `p` (attaining the minimal forward return `a`).
+    have ha_mem := Finset.min'_mem
+      (((Finset.range N).erase 0).image (fun (i : ℕ) => Int.fract ((i : ℝ) * α)))
+      (hS.image (fun (i : ℕ) => Int.fract ((i : ℝ) * α)))
+    rw [Finset.mem_image] at ha_mem
+    obtain ⟨p, hp_mem, hp_eq⟩ := ha_mem
+    have hp1 : 1 ≤ p := Nat.one_le_iff_ne_zero.mpr (Finset.mem_erase.mp hp_mem).1
+    have hpN : p < N := Finset.mem_range.mp (Finset.mem_erase.mp hp_mem).2
+    have hamin : ∀ i, 1 ≤ i → i < N →
+        (((Finset.range N).erase 0).image (fun (i : ℕ) => Int.fract ((i : ℝ) * α))).min'
+          (hS.image (fun (i : ℕ) => Int.fract ((i : ℝ) * α))) ≤ Int.fract ((i : ℝ) * α) := by
+      intro i hi1 hiN
+      apply Finset.min'_le
+      rw [Finset.mem_image]
+      exact ⟨i, Finset.mem_erase.mpr ⟨by omega, Finset.mem_range.mpr hiN⟩, rfl⟩
+    -- Extract the backward generator `q` (attaining the minimal backward return `b`).
+    have hb_mem := Finset.min'_mem
+      (((Finset.range N).erase 0).image (fun (i : ℕ) => Int.fract (-((i : ℝ) * α))))
+      (hS.image (fun (i : ℕ) => Int.fract (-((i : ℝ) * α))))
+    rw [Finset.mem_image] at hb_mem
+    obtain ⟨q, hq_mem, hq_eq⟩ := hb_mem
+    have hq1 : 1 ≤ q := Nat.one_le_iff_ne_zero.mpr (Finset.mem_erase.mp hq_mem).1
+    have hqN : q < N := Finset.mem_range.mp (Finset.mem_erase.mp hq_mem).2
+    have hbmin : ∀ i, 1 ≤ i → i < N →
+        (((Finset.range N).erase 0).image (fun (i : ℕ) => Int.fract (-((i : ℝ) * α)))).min'
+          (hS.image (fun (i : ℕ) => Int.fract (-((i : ℝ) * α)))) ≤ Int.fract (-((i : ℝ) * α)) := by
+      intro i hi1 hiN
+      apply Finset.min'_le
+      rw [Finset.mem_image]
+      exact ⟨i, Finset.mem_erase.mpr ⟨by omega, Finset.mem_range.mpr hiN⟩, rfl⟩
+    exact forwardGap_mem_triple hα hN2 _ _ p q hp1 hpN hp_eq hamin hq1 hqN hq_eq hbmin hk_mem
 
 /-- **The Three-Gap (Three-Distance / Steinhaus) Theorem.**
 

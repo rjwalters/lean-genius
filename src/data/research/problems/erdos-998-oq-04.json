@@ -45,7 +45,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS S7: STEP A discharged as named lemma fract_fract_sub_fract; sole remaining sorry is STEP D Steinhaus crux (N>=2). 0 axioms.",
+    "progressSummary": "PROGRESS S11 (researcher-3): STEP D (van Ravenstein three-gap classification, N>=2) CLOSED via Aristotle proj f3b4620d, retrieved+grafted. File now 0 sorry / 0 axiom (propext/Classical.choice/Quot.sound). Aristotle reports clean build 8027 jobs (v4.28.0 sandbox); build-verification PENDING under repo-pinned v4.26.0 (Docker down).",
     "builtItems": [
       {
         "file": "proofs/Proofs/Erdos998ThreeGapOQ04.lean",
@@ -55,7 +55,9 @@
         "sorries": 1,
         "summary": "First formal Lean statement of the three-gap/Steinhaus theorem, BUILD-VERIFIED green (7743 jobs, v4.26.0) and registered in Proofs.lean. Definitions: orbit, forwardGap, gapLengths. Proved (sorry-free): orbit_mem_Ico, zero_mem_orbit, orbit_nonempty, forwardGap_nonneg, orbit_card (N distinct points for irrational α via Int.fract_eq_fract + Irrational.intCast_mul + Int.not_irrational), card_le_three_of_subset_triple. three_gap and three_gap_additive proved modulo the single core sorry exists_gap_triple (line 181)."
       },
-      "Proved fract_fract_sub_fract (STEP A primitive: {{x}-{y}}={x-y}) in Erdos998ThreeGapOQ04.lean:154 — PR #25755"
+      "Proved fract_fract_sub_fract (STEP A primitive: {{x}-{y}}={x-y}) in Erdos998ThreeGapOQ04.lean:154 — PR #25755",
+      "Grafted Aristotle proof of exists_gap_triple (STEP D, N>=2) into Erdos998ThreeGapOQ04.lean — sole sorry CLOSED; file 0 sorry/0 axiom. proj f3b4620d (researcher-3 S11)",
+      "+10 supporting lemmas: fract_add_of_lt_one, fract_add_of_one_le, fract_nat_add_lt, fract_nat_add_ge, fract_neg_mul, forwardGap_ge, forwardGap_region_a/_b/_c, forwardGap_mem_triple (all sorry-free, 0 axiom)"
     ],
     "insights": [
       "The whole theorem reduces to ONE set-containment statement plus an additive equation: exists_gap_triple : ∃ a b c, a + b = c ∧ gapLengths α N ⊆ {a, b, c}. The '≤ 3 distinct values' and 'long = short + short' claims are NOT independent — both fall out of this single lemma.",
@@ -63,16 +65,18 @@
       "The ≤3-lengths claim needs NO equidistribution and NO irrationality of α; irrationality is only used in orbit_card to guarantee the N orbit points are distinct. The gap structure itself is purely combinatorial.",
       "Defining gaps via forwardGap (minimum positive cyclic distance {y-x}, using Finset.inf') sidesteps an explicit sort / orderEmbOfFin, keeping the statement order-theoretic and the successor map index-arithmetic over Finset.range.",
       "orbit_card is provable cleanly: {iα} = {jα} ⇒ (i-j)α ∈ ℤ (Int.fract_eq_fract); for i ≠ j this makes a nonzero-int multiple of α rational, contradicting Irrational.intCast_mul + Int.not_irrational. NOTE: the lemma is Irrational.intCast_mul (NOT int_mul) and the contradiction lemma is Int.not_irrational (NOT not_irrational_int); the orbit def must annotate fun (i:ℕ) => (a bare (i:ℝ) ascription forces i:ℝ and breaks Finset.image over range N). All three were latent compile errors fixed in session 5.",
-      "The remaining content exists_gap_triple is KNOWN mathematics (Sós–Surányi–Świerczkowski / van Ravenstein), so it is a HARD (not OPEN) sorry: the correct tool is Aristotle prove_file, not manual creative work — reserve manual effort for the index-arithmetic of the cyclic-successor map if Aristotle stalls."
+      "The remaining content exists_gap_triple is KNOWN mathematics (Sós–Surányi–Świerczkowski / van Ravenstein), so it is a HARD (not OPEN) sorry: the correct tool is Aristotle prove_file, not manual creative work — reserve manual effort for the index-arithmetic of the cyclic-successor map if Aristotle stalls.",
+      "Aristotle MCP prove/prove_file still 404 (Resource not found), but the CLI (uvx --from aristotlelib aristotle show/download) is reachable — the working retrieval path for jobs submitted via CLI submit.",
+      "Statement well-posedness verified (build-independent): for N>=2 the orbit has >=2 distinct points (orbit_card), so erasing any point leaves forwardGap on the inf branch — never the junk 0 — so gapLengths has no spurious 4th value; the subset {a,b,a+b} target is exactly the three Steinhaus values. Also a+b<=1 since {p alpha}<={q alpha} (min<=max).",
+      "Aristotle proved STEP D by three regional lemmas (forwardGap_region_a/b/c: gap = a when k+p<N, = b when q<=k, = a+b otherwise) assembled by forwardGap_mem_triple, with forwardGap_ge as the le_inf lower-bound companion to the existing forwardGap_le. It dropped the S9 hand-lemma forwardGap_attained (unused elsewhere)."
     ],
     "mathlibGaps": [
       "Mathlib4 has no three-gap / three-distance / Steinhaus theorem (verified June 2026); only a Coq (van Ravenstein) formalization exists. The proof needs no new infrastructure — only Int.fract, Finset.image/erase/min'/inf'/exists_min_image, and Nat/range order arithmetic."
     ],
     "nextSteps": [
-      "Land STEPS A–C of the in-file scaffold as named sorry-free lemmas (manual or per-lemma Aristotle prove), then submit STEP D / the whole file to Aristotle prove_file once non-404.",
-      "Backend up: submit exists_gap_triple to Aristotle prove_file (KNOWN math, ideal target), or manually define the Steinhaus first-return generators p, q via Finset.exists_min_image and prove the cyclic-successor neighbour map.",
-      "Once exists_gap_triple compiles: docker-build Proofs.Erdos998ThreeGapOQ04 to verify the file (currently build-pending under the corrupt self-referential .lake symlink / OOM hazard).",
-      "Register Erdos998ThreeGapOQ04 in proofs/Proofs.lean (currently unregistered, so not in CI) and add a gallery entry (status formalized/wip until a green build, then verified-modulo nothing since axioms=0)."
+      "BUILD-VERIFY under repo pin: ./proofs/scripts/docker-build.sh Proofs.Erdos998ThreeGapOQ04 (v4.26.0). Aristotle built under v4.28.0; proof uses only stable Int.fract/Finset API so expected to compile, but NOT yet kernel-checked here. Fix any minor v4.26 API drift if red.",
+      "On green build: create a dedicated gallery entry for the three-gap theorem (status verified, 0 sorry/0 axiom) — distinct from parent erdos-998 (Kesten) meta which tracks a different file with 2 axioms.",
+      "Optional: re-add forwardGap_attained if a future caller wants it; currently unused so safely dropped."
     ]
   },
   "approaches": [

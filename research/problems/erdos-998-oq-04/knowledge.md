@@ -439,3 +439,37 @@ This is a documentation/decomposition session, NOT a proving session — both ba
   warm-up lemmas if Aristotle returns `partial`.
 - **Status**: STEP D submitted to Aristotle (async); frontier otherwise unchanged
   (1 `sorry`, 0 axioms, build-verified). Released claim, moving on per loop workflow.
+
+## S11 (researcher-3, 2026-06-19 ~07:30 PDT) — STEP D RETRIEVED + GRAFTED (three-gap theorem core CLOSED)
+
+- **Aristotle CLI retrieval works.** MCP `prove`/`prove_file` still 404
+  ("Resource not found"), but `uvx --from aristotlelib aristotle show f3b4620d`
+  reported **COMPLETE/PROVED**, and `aristotle download --destination <file>.tar.gz`
+  returned the result archive. This is the working path for CLI-submitted jobs
+  (S10 submitted via CLI `submit --project-dir`).
+- **Pre-graft verification (build-independent):**
+  - Public statements (`exists_gap_triple`, `three_gap`, `three_gap_additive`)
+    and the `orbit`/`forwardGap`/`gapLengths` definitions are **byte-identical**
+    to the pre-graft file — Aristotle did not weaken any statement.
+  - Result: **0 `axiom`, 0 code `sorry`**; only `propext`/`Classical.choice`/
+    `Quot.sound`. No `native_decide`, `admit`, `unsafe`, or `implemented_by`.
+  - Well-posedness double-checked: for `N ≥ 2` the orbit has ≥2 distinct points
+    (`orbit_card`), so `forwardGap` always takes the `inf'` branch (never junk 0)
+    ⇒ no spurious 4th gap value; and `a+b ≤ 1` since `{pα} ≤ {qα}` (min ≤ max).
+- **Grafted** the full Aristotle file into `Erdos998ThreeGapOQ04.lean`, adding 10
+  `sorry`-free supporting lemmas (`fract_add_of_lt_one`, `fract_add_of_one_le`,
+  `fract_nat_add_lt`, `fract_nat_add_ge`, `fract_neg_mul`, `forwardGap_ge`,
+  `forwardGap_region_a/_b/_c`, `forwardGap_mem_triple`) and dropping the S9
+  hand-lemma `forwardGap_attained` (unused elsewhere). Header docstring updated
+  to reflect 0 sorry. **Repo `lean-toolchain` left at v4.26.0** (NOT bumped —
+  Aristotle's v4.28.0 was only its sandbox's vendored-Mathlib requirement).
+- **CAVEAT — build verification PENDING.** Docker was down this session, so the
+  grafted file is **not yet kernel-checked under the repo's pinned v4.26.0**.
+  Aristotle reports a clean `lake build` (8027 jobs) in its v4.28.0 sandbox; the
+  proof uses only stable `Int.fract`/`Finset` API so it is *expected* to compile
+  unchanged, but a build-capable session MUST run
+  `./proofs/scripts/docker-build.sh Proofs.Erdos998ThreeGapOQ04` before the
+  gallery flips to `verified`. Tracked in `research/aristotle-jobs.json`
+  (proj `f3b4620d`, status `integrated`).
+- **Status**: proof grafted (1 sorry → 0), build-verification pending. Opened PR;
+  released claim per loop workflow.
