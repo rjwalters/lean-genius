@@ -276,3 +276,82 @@ theorem maxNDKOSize_ge_one (k n : ℕ) (hk : 1 ≤ k) (hn : 1 ≤ n) :
     1 ≤ maxNDKOSize k n := by
   have := maxNDKOSize_ge_half k n hk
   omega
+
+/-
+## Section VI: The k-Dependent Lower Bound
+
+The bound in Section V uses only the primitive upper-half interval and is
+therefore `k`-independent. The sharper witness `{⌊n/(k+1)⌋+1,…,n}` exploits the
+full `k`-fold allowance: each of its elements has at most `k-1` proper multiples
+`≤ n`, yielding `maxNDKOSize k n ≥ n − ⌊n/(k+1)⌋`. For `k = 2` this is
+`n − ⌊n/3⌋ ≈ 0.667n`, recovering the order of Lebensold's lower bound for the
+base Erdős #1062 problem.
+-/
+
+/-- The interval `{⌊n/(k+1)⌋+1, …, n}` satisfies `NoDividesKOthers k`: every
+element `a` there exceeds `n/(k+1)`, forcing `⌊n/a⌋ ≤ k`, so `a` has at most
+`k-1` proper multiples `≤ n`. (The proper multiples of `a` that are `≤ n` are
+`2a, 3a, …, ⌊n/a⌋·a`, i.e. `⌊n/a⌋-1` of them.) -/
+private lemma noDivides_upper_kfold (k n : ℕ) (hk : 1 ≤ k) :
+    NoDividesKOthers k (Finset.Icc (n / (k + 1) + 1) n) := by
+  intro a ha
+  simp only [Finset.mem_Icc] at ha
+  obtain ⟨ha1, _⟩ := ha
+  have ha0 : 0 < a := lt_of_lt_of_le (Nat.succ_pos _) ha1
+  -- Key arithmetic: `n < a·(k+1)`, hence `⌊n/a⌋ ≤ k`.
+  have hkey : n < a * (k + 1) := by
+    have hmod : n % (k + 1) ≤ k := Nat.lt_succ_iff.mp (Nat.mod_lt n (by omega))
+    have hdm := Nat.div_add_mod n (k + 1)
+    have h2 : (n / (k + 1) + 1) * (k + 1) ≤ a * (k + 1) := Nat.mul_le_mul_right _ ha1
+    have h3 : (n / (k + 1) + 1) * (k + 1)
+        = (k + 1) * (n / (k + 1)) + (k + 1) := by ring
+    omega
+  have hnak : n / a ≤ k := by
+    have h := (Nat.div_lt_iff_lt_mul ha0).mpr (by rw [Nat.mul_comm (k + 1) a]; exact hkey)
+    omega
+  -- Inject the proper multiples into `Icc 2 (⌊n/a⌋)` via `b ↦ b/a`.
+  have hcard : (properMultiples a (Finset.Icc (n / (k + 1) + 1) n)).card
+      ≤ (Finset.Icc 2 (n / a)).card := by
+    apply Finset.card_le_card_of_injOn (f := fun b => b / a)
+    · intro b hb
+      have hbf := Finset.mem_filter.mp (Finset.mem_coe.mp hb)
+      have hbIcc := Finset.mem_Icc.mp hbf.1
+      obtain ⟨hb1, hb2⟩ := hbIcc
+      obtain ⟨hdvd, hne⟩ := hbf.2
+      obtain ⟨j, rfl⟩ := hdvd
+      have hjval : a * j / a = j := Nat.mul_div_cancel_left j ha0
+      have hmem : a * j / a ∈ Finset.Icc 2 (n / a) := by
+        rw [Finset.mem_Icc, hjval]
+        refine ⟨?_, ?_⟩
+        · rcases Nat.lt_or_ge j 2 with hj | hj
+          · interval_cases j
+            · simp only [Nat.mul_zero] at hb1; omega
+            · simp only [Nat.mul_one] at hne; exact absurd rfl hne
+          · exact hj
+        · rw [Nat.le_div_iff_mul_le ha0, Nat.mul_comm j a]; exact hb2
+      simpa using hmem
+    · intro b1 hb1 b2 hb2 heq
+      have hdvd1 := (Finset.mem_filter.mp (Finset.mem_coe.mp hb1)).2.1
+      have hdvd2 := (Finset.mem_filter.mp (Finset.mem_coe.mp hb2)).2.1
+      have heq' : b1 / a = b2 / a := heq
+      rw [← Nat.div_mul_cancel hdvd1, ← Nat.div_mul_cancel hdvd2, heq']
+  rw [Nat.card_Icc] at hcard
+  set q := n / a with hq
+  omega
+
+/-- **k-dependent lower bound.** For every `k ≥ 1`,
+`maxNDKOSize k n ≥ n − ⌊n/(k+1)⌋`, witnessed by the interval
+`{⌊n/(k+1)⌋+1, …, n}`. This strengthens `maxNDKOSize_ge_half` (the `k = 1`
+case `n − ⌊n/2⌋`): for `k = 2` it gives `n − ⌊n/3⌋`, matching the order of
+Lebensold's lower bound `0.6725n` for the Erdős #1062 extremal function. -/
+theorem maxNDKOSize_ge_kfold (k n : ℕ) (hk : 1 ≤ k) :
+    n - n / (k + 1) ≤ maxNDKOSize k n := by
+  have hcard : (Finset.Icc (n / (k + 1) + 1) n).card ≤ maxNDKOSize k n := by
+    apply Finset.le_sup
+    simp only [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨fun x hx => ?_, noDivides_upper_kfold k n hk⟩
+    simp only [Finset.mem_Icc] at hx ⊢
+    exact ⟨le_trans (Nat.le_add_left 1 (n / (k + 1))) hx.1, hx.2⟩
+  rw [Nat.card_Icc] at hcard
+  set q := n / (k + 1) with hq
+  omega

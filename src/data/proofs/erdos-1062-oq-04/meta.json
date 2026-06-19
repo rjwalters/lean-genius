@@ -133,18 +133,24 @@
       "type": "supporting",
       "description": "Heredity: subsets of a NoDividesKOthers k set are again NoDividesKOthers k",
       "leanType": "∀ {k : ℕ} {A B : Finset ℕ}, B ⊆ A → NoDividesKOthers k A → NoDividesKOthers k B"
+    },
+    {
+      "name": "maxNDKOSize_ge_kfold",
+      "type": "core",
+      "description": "k-dependent lower bound: maxNDKOSize k n ≥ n − ⌊n/(k+1)⌋, witnessed by the interval {⌊n/(k+1)⌋+1,…,n}; for k=2 gives n−⌊n/3⌋, matching the order of Lebensold lower bound",
+      "leanType": "∀ (k n : ℕ), 1 ≤ k → n - n / (k + 1) ≤ maxNDKOSize k n"
     }
   ],
   "leanFile": {
-    "lineCount": 278,
+    "lineCount": 357,
     "namespace": "",
     "opens": [],
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 12,
-    "substantiveTheoremCount": 5,
+    "theoremCount": 13,
+    "substantiveTheoremCount": 6,
     "computationalVerifications": 1,
-    "lemmaCount": 1,
+    "lemmaCount": 2,
     "imports": [
       "Mathlib"
     ],
@@ -199,7 +205,8 @@
       "noDividesKOthers_two_iff: PROVED the k=2 case is exactly the Erdős #1062 NoDividesTwoOthers condition",
       "noDividesKOthers_mono_k / noDividesKOthers_subset: PROVED monotonicity in k and heredity of the family",
       "ndko_three_not_two_example: VERIFIED (by decide) that {1,2,3} separates k=2 from k=3, so the ladder is strict",
-      "maxNDKOSize_le / maxNDKOSize_mono_n / maxNDKOSize_mono_k / maxNDKOSize_ge_half: PROVED the two-sided bound n - ⌊n/2⌋ ≤ maxNDKOSize k n ≤ n with monotonicity in both arguments"
+      "maxNDKOSize_le / maxNDKOSize_mono_n / maxNDKOSize_mono_k / maxNDKOSize_ge_half: PROVED the two-sided bound n - ⌊n/2⌋ ≤ maxNDKOSize k n ≤ n with monotonicity in both arguments",
+      "maxNDKOSize_ge_kfold: PROVED the k-dependent lower bound maxNDKOSize k n ≥ n − ⌊n/(k+1)⌋, witnessed by the interval {⌊n/(k+1)⌋+1,…,n}; for k=2 this gives n − ⌊n/3⌋ ≈ 0.667n, recovering the order of Lebensold's lower bound for the base Erdős #1062 problem"
     ],
     "axiomCount": 0,
     "prerequisites": [
@@ -207,7 +214,7 @@
       "Finset filter / powerset / sup / card API",
       "Elementary divisibility in ℕ"
     ],
-    "lineCount": 278,
+    "lineCount": 357,
     "relatedProblems": [
       {
         "id": "erdos-1062",
@@ -215,7 +222,7 @@
       }
     ],
     "assumptions": "0 axioms. Relies only on Mathlib's Finset and divisibility API and the gallery's verified Erdős #1062 definitions. The sharp k-dependent density bounds and the irrationality of any limiting density remain OPEN and are out of scope.",
-    "theoremCount": 12,
+    "theoremCount": 13,
     "definitionCount": 5,
     "additionalFiles": []
   }
