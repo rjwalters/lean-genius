@@ -204,3 +204,51 @@ present status — consistent with the parent file's `f(5)=9`, `f(6)=17` axioms.
   deployer merges. Check `/tmp/r8-erdos107-DONE` next session.
 - klein_upper_bound remains OPEN/axiomatized — retry Aristotle prove_file when it
   recovers, or a dedicated multi-session extreme-point-infra build.
+
+## Session 2026-06-19 (researcher-10) — Klein upper bound submitted to Aristotle
+
+**Mode**: REVISIT (FRESH claim of available pool entry)
+**Outcome**: progress — delegated the lone open axiom to Aristotle (CLI live again)
+
+### What I Did
+- Confirmed state: lower bound `4 ∉ CardSet 4` is axiom-free + merged (PR #26001);
+  `f_four_eq_five` rests on the single isolated axiom `klein_upper_bound : 5 ∈ CardSet 4`.
+- Prior sessions could not delegate it: Aristotle MCP endpoint was 404. This session
+  the MCP `prove` still 404s, but the **CLI** (`uvx --from aristotlelib aristotle`)
+  is live (`aristotle list` returns running projects).
+- Built a **self-contained** target `proofs/Proofs/Erdos107OQ01KleinUpperAristotle.lean`:
+  inlines `InGeneralPosition / IsConvexNGon / HasConvexNGon / CardSet` (no local
+  `Proofs.*` imports, so the single-file submit-dir compiles against Mathlib alone)
+  and states `klein_upper_bound := by sorry`.
+- Submitted async via `research/scripts/aristotle-submit.sh` → **project
+  a1441c24-c444-4cb6-ba78-9c0357beffcf** (logged to research/aristotle-jobs.json).
+
+### Key Findings
+- The submit script ships ONLY the named file + lakefile + toolchain; any
+  `import Proofs.Foo` will NOT resolve. Aristotle targets must be self-contained
+  (inline the definitions) or they fail to compile before search even starts.
+- Aristotle MCP `prove`/`prove_file` tools return "Resource not found" while the
+  `uvx --from aristotlelib aristotle` CLI works — prefer the CLI/submit-script path.
+- Decomposition strategy for a hand-proof fallback (if Aristotle fails): case-split
+  on the convex hull of the 5 points.
+  (1) Hull ≥4 vertices ⇒ any 4 hull vertices are in convex position (each is an
+      extreme point, so not in the hull of the others).
+  (2) Hull = triangle ⇒ exactly 2 points interior; the line through them misses all
+      3 vertices (general position) ⇒ 2 vertices share a side ⇒ those 2 + the 2
+      interior points are a convex quadrilateral.
+  Mathlib gap: convex-hull vertex-count case split and "a line separates points"
+  for `EuclideanSpace ℝ (Fin 2)` are not packaged; a hand-proof is ~800–1200 lines.
+
+### Files Modified
+- proofs/Proofs/Erdos107OQ01KleinUpperAristotle.lean (new self-contained Aristotle target)
+- research/aristotle-jobs.json (job a1441c24 logged)
+- research/problems/erdos-107-oq-01/knowledge.md (this entry)
+
+### Next Steps
+- Check Aristotle project a1441c24 next session (`uvx --from aristotlelib aristotle
+  list` / `aristotle show a1441c24-...`). If PROVED: paste the proof over the axiom
+  in `Erdos107OQ01.lean` (convert `axiom klein_upper_bound` → `theorem ... := <proof>`),
+  rebuild, `#print axioms f_four_eq_five` should drop to only propext/Choice/Quot,
+  flip meta status axiomatized→verified.
+- If Aristotle fails/counterexamples (it won't — statement is TRUE): the hand-proof
+  needs the extreme-point/separating-line infra above as a dedicated multi-session build.
