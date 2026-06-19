@@ -32,9 +32,14 @@
   Toward size reduction (PARTS VIII–IX):
   We also prove `hgcdShift_pos` (shift ≥ 1 for large inputs) and
   `hgcdShift_top_lt` (top-half inputs strictly decrease), which
-  enable the strong induction for Step 4. The joint bound
-  `hgcdMatrix_joint_bound` is stated as a sorry; the missing piece
-  is a "quotient stability" lemma not yet formalized here.
+  enable the strong induction for Step 4. The row-output bound
+  `hgcdMatrix_row_output_le` holds in the non-recursive regime
+  `max a b < hgcdThreshold`; the *unconditional* `≤ max a b` bound is
+  FALSE for the present algorithm — PART XIV freezes `decide`-checked
+  counterexamples refuting it in BOTH the row and column conventions
+  (witness `(5, 130, 89)`). This file is now 0-sorry; an unconditional
+  size-reduction theorem requires Path A (an abort check in the
+  algorithm definition), documented at the end of PART XIV.
 
   Toward size reduction (PART XI, Session 14):
   We add the abstract composition law `cofactor_mul_row_invariant`
@@ -322,8 +327,13 @@ theorem lehmerInnerStep_invariant {a₀ b₀ : ℤ} {ahat bhat : ℕ} {M : Cofac
     have hdivmod_int :
         (bhat : ℤ) * ((ahat / bhat : ℕ) : ℤ) + ((ahat % bhat) : ℤ) = (ahat : ℤ) := by
       exact_mod_cast Nat.div_add_mod ahat bhat
-    push_cast at hdivmod_int
-    linarith
+    -- Normalize casts in BOTH the hypothesis and the goal so they share
+    -- the same division/mod atoms (`↑ahat / ↑bhat`, `↑ahat % ↑bhat`).
+    push_cast at hdivmod_int ⊢
+    -- `linarith` treats `↑bhat * X` and `X * ↑bhat` as distinct atoms
+    -- (nonlinear product of two atoms), so it cannot close this; use
+    -- `linear_combination`, whose `ring` backend knows commutativity.
+    linear_combination -hdivmod_int
 
 /-- Multi-step matrix-vector invariant for `lehmerCofactors`.
 
@@ -1022,48 +1032,35 @@ theorem hgcdMatrix_small_row_output_le (fuel a b : ℕ) (h : max a b < hgcdThres
   · rw [h1]; simp only [Int.natAbs_natCast]; exact le_trans (le_max_left ahat' bhat') hmax
   · rw [h2]; simp only [Int.natAbs_natCast]; exact le_trans (le_max_right ahat' bhat') hmax
 
-/-- [Sorry] The ROW output of `hgcdMatrix fuel a b` is bounded by `max a b`.
+/-- The ROW output of `hgcdMatrix fuel a b` is bounded by `max a b`
+    **in the non-recursive regime** `max a b < hgcdThreshold`.
 
     The row output `(a·M.α + b·M.γ, a·M.β + b·M.δ)` equals the Euclidean residues
     produced by the Lehmer–Schönhage steps applied to `(a, b)`.
 
     **Base case** (`fuel = 0`): `M = id`, row output = `(a, b)` ≤ `max a b`. ✓
     **Threshold case** (`max a b < hgcdThreshold`): `hgcdMatrix_small_row_output_le`. ✓
-    **Recursive case** (Session 11 analysis):
-      `hgcdMatrix (f+1) a b = (hgcdMatrix f aHi bHi).mul M₂` where
-      `aHi = a / 2^s`, `bHi = b / 2^s`, `s = hgcdShift a b`, and
-      `M₂ = hgcdMatrix f (rowOut(hgcdMatrix f aHi bHi))`.
 
-      By `cofactor_mul_apply` + `row_product_decompose`, the row output decomposes as:
-        `a·(M₁.mul M₂).α + b·(M₁.mul M₂).γ`
-        `= rowOut(M₂, rowOut(M₁, aHi, bHi))` + low-order term from `(aLo, bLo)`.
+    **The unconditional `≤ max a b` bound is FALSE in the recursive case.**
+    Earlier sessions left this as a `sorry`; the `decide`-checked
+    `BinaryGcdOQ03OQ02_Counterexample` section (PART XIV) refutes it at
+    `(fuel, a, b) = (5, 130, 89)`, where the row output reaches `(1390, -2287)`,
+    far exceeding `max 130 89 = 130` — and even the looser `≤ 2·max a b`. The
+    threshold hypothesis `h` is therefore *necessary*: it forces the algorithm
+    into the `lehmerCofactors` leaf (`hgcdMatrix_small`), the only branch where
+    size reduction is unconditional.
 
-      The IH gives `|rowOut(M₁, aHi, bHi)| ≤ max(aHi, bHi) < max(a,b)`.
-      But M₂ was built for inputs *from M₁'s column output*, not the row output:
-      `M₂ = hgcdMatrix f (M₁.apply aHi bHi).1 (M₁.apply aHi bHi).2`.
-
-      Sign-pattern analysis (EvenPattern/OddPattern) bounds each *individual* entry
-      of M₁ and M₂ by `max(aHi, bHi) < max(a,b)`, but when applied to the row
-      output of M₁ (which can be up to `max(a,b)`), the second-stage row products
-      `rowOut(M₂, rowOut(M₁))` can reach `2 · max(a,b)`.
-
-      The fundamental obstacle: the IH for M₂ is at its *own* inputs (column output of
-      M₁ applied to `aHi,bHi`), not at `rowOut(M₁, aHi, bHi)`.
-
-    **Required**: Joint induction on `max(a,b)` tracking simultaneously:
-      (1) row output ≤ max(a,b), and
-      (2) column output ≤ max(a,b) · C for some entry-bound constant C.
-    This follows Stehlé–Zimmermann (2004) §4 and requires stronger intermediate lemmas
-    connecting the two conventions via the Lehmer invariant.
-
-    **Classification**: HARD (structural invariant linking row and column conventions
-    across recursive calls). Not amenable to Aristotle. -/
-theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
+    The honest quantitative replacement for the recursive case is the
+    composition bound `cofactor_mul_row_output_natAbs_le`: a single recursion
+    level multiplies the row output by `2·E` (twice the inner entry bound), and
+    it is exactly this `2·E > 1` blow-up factor that the unconditional bound
+    ignored. See `hgcdMatrix_row_output_recursive_le` below. -/
+theorem hgcdMatrix_row_output_le (fuel a b : ℕ) (h : max a b < hgcdThreshold) :
     ((a : ℤ) * (hgcdMatrix fuel a b).α
         + (b : ℤ) * (hgcdMatrix fuel a b).γ).natAbs ≤ max a b ∧
     ((a : ℤ) * (hgcdMatrix fuel a b).β
         + (b : ℤ) * (hgcdMatrix fuel a b).δ).natAbs ≤ max a b := by
-  induction fuel generalizing a b with
+  cases fuel with
   | zero =>
     rw [hgcdMatrix_zero]
     -- simp [CofactorMatrix.id, Int.natAbs_natCast] reduces to
@@ -1072,10 +1069,8 @@ theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
     -- witnesses, hence the `try`.
     simp [CofactorMatrix.id, Int.natAbs_natCast]
     try exact ⟨le_max_left a b, le_max_right a b⟩
-  | succ f ih =>
-    by_cases hsmall : max a b < hgcdThreshold
-    · exact hgcdMatrix_small_row_output_le f a b hsmall
-    · sorry
+  | succ f =>
+    exact hgcdMatrix_small_row_output_le f a b h
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART X: SIGN-PATTERN INVARIANT FOR `hgcdMatrix` (Session 13)
@@ -1877,13 +1872,16 @@ size-reduce on a substantial fraction of small inputs above threshold.
   (B) **Restricted size-reduction theorem.** Reformulate the size
       reduction to apply only on a "well-behaved" subset (e.g.,
       Fibonacci-like quotient sequences), and document the restriction.
-  (C) **Column-convention strategy.** Pursue size reduction directly
-      via the column action `M.apply(a, b)`, sidestepping the row-vector
-      invariant. The `cofactor_mul_apply` chain
+  (C) **Column-convention strategy.** ~~Pursue size reduction directly
+      via the column action `M.apply(a, b)`.~~ **REFUTED** (see
+      `hgcdMatrix_column_invariant_counterexample` below): although the
+      `cofactor_mul_apply` chain
       `(M_outer.mul M_inner).apply (a, b) = M_outer.apply (M_inner.apply (a, b))`
-      has a natural inductive structure (M_outer's natural inputs
-      ARE the column-output of M_inner) that the row convention
-      lacks.
+      has a natural inductive structure, the column output ALSO exceeds
+      `max a b` at the witness `(5, 130, 89)` — `M.apply 130 89 = (55, -337)`,
+      and `337 > 130`. Both conventions blow up, so only Path (A)
+      (an abort check in the algorithm definition) can yield an
+      unconditional size-reduction invariant.
 
 The `decide`-checked theorems below freeze the counterexample as an
 artifact: any future attempt to close the row-vector invariant for
@@ -1953,6 +1951,50 @@ theorem hgcdMatrix_row_invariant_counterexample :
     hgcdMatrix_row_beta_negative
   have hbhat_nn : (0 : ℤ) ≤ (bhat' : ℤ) := Int.natCast_nonneg _
   linarith
+
+/-! ### The COLUMN convention also fails to size-reduce (kills Path C)
+
+The "Path forward" note above listed a **column-convention strategy** (C) as
+promising: pursue size reduction directly through the column action
+`M.apply (a, b)`, whose composition `cofactor_mul_apply` has the natural
+inductive structure (`M_outer`'s inputs ARE the column output of `M_inner`)
+that the row convention lacks.
+
+The same witness `(5, 130, 89)` refutes the column bound too. With
+`M = hgcdMatrix 5 130 89 = ⟨-3, 5, 20, -33⟩`,
+
+  `M.apply 130 89 = (M.α·130 + M.β·89, M.γ·130 + M.δ·89)`
+                  `= (-390 + 445, 2600 - 2937) = (55, -337)`,
+
+so the second column component has magnitude `337 > max 130 89 = 130`. Hence
+`(M.apply a b).natAbs ≤ max a b` is **false** in the recursive case, just like
+the row bound. Both the natural inductive conventions therefore blow up on the
+present (unsafe) `hgcdMatrix`; only **Path A** — adding a GMP-style abort check
+that discards a recursive branch whenever `max u v ≥ max a b` — can restore an
+unconditional size-reduction invariant. -/
+
+/-- The column action of `hgcdMatrix 5 130 89` on its own input pair
+    `(130, 89)` is `(55, -337)`. -/
+theorem hgcdMatrix_130_89_apply :
+    (hgcdMatrix 5 130 89).apply 130 89 = (55, -337) := by native_decide
+
+/-- The second column component magnitude `337` strictly exceeds
+    `max 130 89 = 130`, refuting the column-convention size bound
+    `(M.apply a b).natAbs ≤ max a b` in the recursive case (Path C). -/
+theorem hgcdMatrix_col_snd_exceeds_max :
+    ((hgcdMatrix 5 130 89).apply 130 89).2.natAbs > max 130 89 := by
+  native_decide
+
+/-- Direct refutation of the all-fuel column-output size invariant at
+    `(fuel, a, b) = (5, 130, 89)`: the column output is not bounded by
+    `max a b` componentwise. Combined with
+    `hgcdMatrix_row_invariant_counterexample`, this shows *neither* the row
+    nor the column convention size-reduces under the present algorithm. -/
+theorem hgcdMatrix_column_invariant_counterexample :
+    ¬ (((hgcdMatrix 5 130 89).apply 130 89).1.natAbs ≤ max 130 89 ∧
+       ((hgcdMatrix 5 130 89).apply 130 89).2.natAbs ≤ max 130 89) := by
+  rintro ⟨_, h2⟩
+  exact absurd h2 (not_le.mpr hgcdMatrix_col_snd_exceeds_max)
 
 end BinaryGcdOQ03OQ02_Counterexample
 
@@ -2189,11 +2231,16 @@ end BinaryGcdOQ03OQ02_Counterexample
       Session 17 target — no natural `(ahat', bhat')` simultaneously
       satisfy `(a, b) · M = (ahat', bhat')` for `M = hgcdMatrix 5
       130 89`.
+    - `hgcdMatrix_130_89_apply`, `hgcdMatrix_col_snd_exceeds_max`,
+      `hgcdMatrix_column_invariant_counterexample` (Session 18): the
+      **column** action `M.apply 130 89 = (55, -337)` also breaks
+      `max 130 89 = 130` (`337 > 130`), refuting the column-convention
+      strategy (C). Neither natural convention size-reduces here.
 
     The Schönhage HGCD as currently formalized does not size-reduce
     on a substantial fraction (≥ 39.6 %) of input pairs above
-    threshold. The conjectured `hgcdMatrix_row_invariant` and
-    `hgcdMatrix_row_output_le` are FALSE in the recursive case.
+    threshold. The conjectured `hgcdMatrix_row_invariant` and the
+    unconditional `hgcdMatrix_row_output_le` are FALSE in the recursive case.
     PARTS XI–XIII remain valid: their theorems are unconditional
     truths, and `hgcdMatrix_entry_bound` (PART XIII) is correctly
     stated as conditional on row-vector witnesses — witnesses which
@@ -2203,13 +2250,18 @@ end BinaryGcdOQ03OQ02_Counterexample
     well-behaved subset, or a column-convention strategy) is
     documented at the end of PART XIV.
 
-**Remaining for size reduction (1 sorry, now known unprovable as stated):**
-- `hgcdMatrix_row_output_le` (PART IX): the full row-output bound for all fuel.
-  PART XIV refutes the recursive case as stated. Closing this sorry
-  requires either (A) algorithm refinement to add a size-reduction
-  safety check, (B) restating with a "well-behaved input" precondition,
-  or (C) replacing the row-convention statement with a column-convention
-  one. The Session 12 infrastructure (PART VIIc), the Session 14
+**Remaining for size reduction (0 sorries — the false bound was retired):**
+- `hgcdMatrix_row_output_le` (PART IX) now carries the hypothesis
+  `max a b < hgcdThreshold`, the maximal regime in which `≤ max a b` is
+  TRUE; the recursive-case `sorry` (which stood for a *refuted*
+  proposition) has been removed. Session 18 also refuted the
+  column-convention path (C) via `hgcdMatrix_column_invariant_counterexample`,
+  so a fully unconditional size-reduction theorem now requires **Path A**:
+  adding an abort check to the `hgcdMatrix` definition so a non-reducing
+  recursive branch is discarded (GMP `mpn_hgcd` style). The honest
+  unconditional row bound meanwhile is the *quantitative* `2·E·R`
+  composition law `cofactor_mul_row_output_natAbs_le`.
+  The Session 12 infrastructure (PART VIIc), the Session 14
   composition law (`cofactor_mul_row_invariant`, PART XI), the Session 16
   conditional entry bound (`hgcdMatrix_entry_bound`, PART XIII), the
   Session 12 row-output composition (`cofactor_mul_row_output_natAbs_le`,
