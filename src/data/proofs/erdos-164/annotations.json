@@ -16,7 +16,11 @@
       "prime numbers",
       "analytic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Primitive Sets",
+      "Divisibility Poset",
+      "Analytic Number Theory"
+    ]
   },
   {
     "id": "ann-e164-primitive",
@@ -35,7 +39,11 @@
       "divisibility",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisibility Relation",
+      "Antichains",
+      "Prime Numbers"
+    ]
   },
   {
     "id": "ann-e164-example",
@@ -53,7 +61,11 @@
       "divisibility"
     ],
     "mathContext": "See annotation content for formal details of concrete primitive set example",
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Factorization",
+      "Divisibility",
+      "Case Analysis"
+    ]
   },
   {
     "id": "ann-e164-sum",
@@ -72,7 +84,11 @@
       "convergence",
       "harmonic sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Supremum",
+      "Series Convergence",
+      "Harmonic Series"
+    ]
   },
   {
     "id": "ann-e164-convergence",
@@ -91,7 +107,11 @@
       "Erdős 1935",
       "prime harmonic series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Convergent Series",
+      "Upper Density",
+      "Prime Harmonic Series"
+    ]
   },
   {
     "id": "ann-e164-lichtman",
@@ -110,7 +130,11 @@
       "prime optimality",
       "Lichtman 2023"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Problems",
+      "Primitive Sets",
+      "Multiplicative Structure"
+    ]
   },
   {
     "id": "ann-e164-generalization",
@@ -129,7 +153,11 @@
       "primitive sets"
     ],
     "mathContext": "See annotation content for formal details of generalization framework",
-    "prerequisites": []
+    "prerequisites": [
+      "Weight Functions",
+      "Extremal Combinatorics",
+      "Primitive Sets"
+    ]
   },
   {
     "id": "ann-e164-summary",
@@ -147,6 +175,9 @@
       "primitive set conjecture"
     ],
     "mathContext": "See annotation content for formal details of summary: erdős #164 solved",
-    "prerequisites": []
+    "prerequisites": [
+      "Primitive Set Conjecture",
+      "Prime Optimality"
+    ]
   }
 ]
