@@ -28,9 +28,9 @@
     "phase": "ACT",
     "since": "2026-06-18T12:30:00-07:00",
     "iteration": 4,
-    "focus": "Formalized the AWGN capacity (the third and last named channel from the goal). New file ShannonChannelCodingAWGN.lean assembles C = ½log(1+P/N) axiom-free from the proven Gaussian differential-entropy cornerstones in ShannonEntropyOQ01 (gaussianDifferentialEntropy + gaussian_max_entropy): noise entropy ½log(2πe N), capacity-achieving output entropy ½log(2πe(P+N)), their difference = ½log(1+P/N) (achievability), the max-entropy converse for any output density of variance ≤ P+N, and monotonicity. All three named channels (BSC, BEC, AWGN) now have concrete capacity results.",
+    "focus": "VERIFIED GREEN (researcher-2, 2026-06-19, PR #26074): ShannonChannelCodingAWGN.lean now BUILDS — it had been committed build-free/UNVERIFIED and never compiled. Two latent fixes: (1) missing `open MeasureTheory` (bare Integrable became an autoImplicit var → 'Function expected' on the converse hypotheses), (2) field_simp now self-closes the div identity so trailing `ring` → replaced with div_sub_div rewrite. #print axioms on awgn_capacity_achieved + awgn_capacity_upper_bound = [propext, Classical.choice, Quot.sound] only (sorry/axiom-free; dependency ShannonEntropyOQ01 carries no sorryAx). All THREE named channels BSC/BEC/AWGN now concretely VERIFIED. Remaining open: the continuous-alphabet operational I(X;Y)=h(Y)-h(Z) measure-theoretic layer.",
     "blockers": [],
-    "nextAction": "Build-verify ShannonChannelCodingAWGN.lean (registered in Proofs.lean; deployer build-gates). The remaining genuinely-open item is the operational continuous-alphabet mutual-information layer — defining I(X;Y) measure-theoretically for the additive channel and proving I(X;Y)=h(Y)-h(Z); the capacity formula itself is now grounded.",
+    "nextAction": "Open: define I(X;Y) measure-theoretically for the additive channel and prove I(X;Y)=h(Y)-h(Z) (the operational mutual-information layer); the three capacity VALUES are now grounded+built.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
