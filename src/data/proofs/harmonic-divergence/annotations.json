@@ -11,7 +11,11 @@
     "content": "We import `Mathlib.Analysis.PSeries` which contains the main theorems about p-series convergence and the harmonic series, plus `Mathlib.Topology.Algebra.InfiniteSum.Basic` for the `Summable` predicate. The p-series module is the workhorse: it proves convergence and divergence by relating series to improper integrals via the Cauchy condensation test.",
     "mathContext": "`Mathlib.Analysis.PSeries` exports `Real.not_summable_one_div_natCast`, `Real.not_summable_natCast_inv`, `Real.tendsto_sum_range_one_div_nat_succ_atTop`, and `Real.summable_nat_rpow_inv`. These are proved via the integral test: $\\sum_{n=1}^{N} f(n) \\leq \\int_1^N f(x)\\,dx + f(1)$ for decreasing $f$. `Mathlib.Topology.Algebra.InfiniteSum.Basic` provides the `Summable f` predicate (meaning $\\sum_n f(n)$ converges in the topological sense) and the `HasSum` API for working with partial sums.",
     "significance": "supporting",
-    "prerequisites": [],
+    "prerequisites": [
+      "Infinite Series",
+      "Improper Integrals",
+      "Cauchy Condensation Test"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "p-series",
@@ -30,7 +34,11 @@
     "content": "**The Main Result**: The function $n \\mapsto 1/n$ is not summable over the natural numbers. In other words, $\\sum_{n=1}^{\\infty} \\frac{1}{n} = \\infty$. This is Wiedijk #34, one of the 100 most important theorems in mathematics. The proof is a single `exact` — the heavy lifting is done by Mathlib, which proves it via the integral test comparing $\\sum 1/n$ to $\\int_1^\\infty dx/x = \\ln(\\infty) = \\infty$.",
     "mathContext": "In Lean, `Summable f` means the series $\\sum f(n)$ converges in the topological sense: there exists $L$ such that the net of partial sums converges to $L$. We prove `¬Summable (fun n => 1 / n)` using Mathlib's `Real.not_summable_one_div_natCast`. The divergence is equivalent to: $\\forall M, \\exists N, \\sum_{n=1}^{N} 1/n > M$.",
     "significance": "key",
-    "prerequisites": [],
+    "prerequisites": [
+      "Harmonic Series",
+      "Series Convergence",
+      "Integral Test"
+    ],
     "relatedConcepts": [
       "Summable",
       "divergence",
