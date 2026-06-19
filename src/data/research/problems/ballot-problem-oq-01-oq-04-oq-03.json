@@ -25,19 +25,21 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-06-19T21:56:11.000Z",
-    "iteration": 1,
-    "focus": "Feasibility survey of the LGV route.",
+    "iteration": 2,
+    "focus": "Decision: deprioritized (route mismatch + missing Mathlib infra). Settled the (a)/(b) survey question.",
     "blockers": [
-      "Mathlib has no Lindstrom-Gessel-Viennot lemma (confirmed: no Lindstrom/GesselViennot sources; only Catalan + DyckWord present)."
+      "Mathlib has no Lindstrom-Gessel-Viennot lemma (confirmed: no Lindstrom/GesselViennot sources; only Catalan + DyckWord present).",
+      "STRUCTURAL MISMATCH: the verified target chung_feller_uniform' is an EQUINUMEROSITY statement (ncard(balancedPathsOfType n j) = ncard(balancedPathsOfType n k), k-independence), proved via an explicit cycle-lemma bijection. LGV is a COUNTING tool: its determinant evaluates ONE class size (e.g. the Dyck/all-above class C_n via reflection = binom(2n,n) - binom(2n,n-1)). Deriving k-uniformity from determinants needs each class's count to be a k-independent determinant evaluation -- non-standard, not the textbook LGV setup, and research-level."
     ],
-    "nextAction": "Decide between (a) building a Chung-Feller-specific Gessel-Viennot determinant lemma, or (b) deprioritizing since the target is already verified.",
-    "attemptCounts": { "total": 0, "currentApproach": 0, "approachesTried": 0 }
+    "nextAction": "DECIDED (iter 2): deprioritize (option b). Rationale settled below -- do NOT re-survey. RE-PICKUP TRIGGER: reclaim only if (i) Mathlib lands a general Lindstrom-Gessel-Viennot / non-intersecting-paths signed-determinant lemma (watch Mathlib.Combinatorics for 'LGV'/'GesselViennot'/'nonIntersecting'), OR (ii) a contributor specifically wants the pedagogical determinant exposition and is willing to budget the multi-cycle specialized build. Absent either, leave at 'surveyed' -- the mathematical fact is already machine-verified in the parent.",
+    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Target already verified via cycle lemma in parent. LGV route blocked on missing Mathlib LGV lemma; full general LGV is a >500-line build. Marginal value is pedagogical only.",
+    "progressSummary": "DEPRIORITIZED (iter 2, 2026-06-19): the survey's open (a)/(b) decision is now settled as (b) deprioritize, with a documented re-pickup trigger. Beyond the survey's '>500-line build + missing Mathlib LGV' finding, iter 2 identified a STRUCTURAL mismatch: the verified target chung_feller_uniform' is a k-uniformity / equinumerosity statement (proved by an explicit cycle-lemma bijection), whereas LGV is a determinant COUNTING tool that yields one class size (the Dyck count C_n via reflection), not k-independence. So LGV is not merely missing infrastructure -- it is the wrong shape for the theorem's actual content, making even a 'specialized' determinant route research-level rather than a clean re-proof. Mathematical fact already machine-verified in the parent; route left deferred, not abandoned.",
     "builtItems": [],
     "insights": [
       "The Chung-Feller theorem is already machine-verified (0 sorries, 0 axioms) via the cycle lemma in BallotProblemOQ01OQ04OQ01.lean (chung_feller_uniform'). This OQ only seeks an ALTERNATIVE proof, so marginal mathematical value is low (value-hierarchy: re-proof of an already-proved theorem).",
+      "STRUCTURAL MISMATCH (iter 2): the verified statement is chung_feller_uniform' (n j k) : Set.ncard (balancedPathsOfType n j) = Set.ncard (balancedPathsOfType n k) -- pure k-UNIFORMITY (equinumerosity of the j- and k-type classes), proved by an explicit type-swapping bijection built from the cycle lemma (chung_feller_bijection_exists). The LGV / non-intersecting-paths lemma is a COUNTING device: its determinant evaluates a SINGLE class size. The classic reflection/LGV result counts the all-above (Dyck, k=n) class as binom(2n,n) - binom(2n,n-1) = C_n. To recover Chung-Feller's k-INDEPENDENCE from determinants one would need each k-class to be a k-independent determinant evaluation -- not the textbook LGV setup. The cycle-lemma bijection is the natural tool precisely because the theorem is a bijection/equidistribution statement, not a count. Hence LGV is the wrong-shaped instrument, not just absent infrastructure.",
       "Mathlib does NOT contain the Lindstrom-Gessel-Viennot lemma (grep for Lindstrom/GesselViennot in proofs/.lake/packages/mathlib/Mathlib returns nothing). Available related infra: Mathlib/Combinatorics/Enumerative/Catalan.lean and DyckWord.lean.",
       "General LGV (det of the path-count matrix equals the signed sum over non-intersecting path families, proved by a sign-reversing involution on intersecting families plus Matrix.det permutation expansion) is a substantial build, estimated >500 lines and depending on Matrix.det, Equiv.Perm sign, and a careful involution argument.",
       "A Chung-Feller-specific specialization could avoid the fully general lemma (e.g. a fixed small determinant of binomials counting non-intersecting pairs), but still requires the involution/sign machinery and is non-trivial."
@@ -47,12 +49,12 @@
       "No general 'non-intersecting lattice path families' / signed determinant enumeration framework in Mathlib."
     ],
     "nextSteps": [
-      "If pursued: build a minimal Gessel-Viennot determinant lemma specialized to two non-intersecting monotone lattice paths, rather than the fully general LGV lemma.",
-      "Reuse Mathlib Catalan (Mathlib/Combinatorics/Enumerative/Catalan.lean) and the gallery's existing Dyck-path / balanced-path defs from BallotProblemOQ01OQ04Core.lean.",
-      "Alternatively deprioritize: the theorem is already verified, so the LGV proof adds pedagogy, not correctness."
+      "DEPRIORITIZED -- do NOT re-survey. Re-pickup only on the trigger in currentState.nextAction (Mathlib LGV lands, or a contributor budgets the pedagogical multi-cycle build).",
+      "If ever pursued: note that the hard part is NOT counting one class (the Dyck count C_n already follows from reflection / a 1-by-1 or 2-by-2 binomial determinant) but obtaining the k-UNIFORMITY. A determinant route must produce a k-independent evaluation for every class -- so it must encode the cycle-lemma bijection's content determinantally, which is the genuinely non-standard step. A minimal specialized Gessel-Viennot determinant for two non-intersecting monotone paths would still leave this k-independence gap.",
+      "Reuse anchors if pursued: Mathlib Catalan (Mathlib/Combinatorics/Enumerative/Catalan.lean); gallery defs balancedPathsOfType / upstepsAboveAxis / IsBalancedPath in BallotProblemOQ01OQ04Core.lean; the verified bijection chung_feller_bijection_exists / chungFellerMap in BallotProblemOQ01OQ04OQ01.lean."
     ]
   },
-  "tractability": "Blocked on missing Mathlib LGV; large build (>500 lines) for the general lemma. Low marginal value since target already verified.",
+  "tractability": "DEPRIORITIZED. Blocked on missing Mathlib LGV AND a structural mismatch: LGV counts one class, but the target is k-uniformity (equinumerosity). Even a specialized determinant leaves the k-independence gap, which is the cycle lemma's actual content -- so the route is research-level, not a clean re-proof. Low marginal value: the mathematical fact is already machine-verified in the parent.",
   "significance": "Methodological/pedagogical alternative proof of an already-verified theorem.",
   "tags": ["seeker-selected", "extension", "alternative-proof", "needs-infrastructure"],
   "relatedProofs": [
@@ -67,5 +69,5 @@
     "Chung, K.L. and Feller, W. (1949). On fluctuations in coin-tossing."
   ],
   "started": "2026-06-19T21:56:11.000Z",
-  "lastUpdate": "2026-06-19T21:56:11.000Z"
+  "lastUpdate": "2026-06-19T22:16:17.000Z"
 }
