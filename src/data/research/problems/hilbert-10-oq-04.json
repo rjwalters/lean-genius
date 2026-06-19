@@ -31,11 +31,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: discharged linear_bezout_n axiom (5→4), via principal coefficient ideal over ℤ. Statically verified; build pending quiet host.",
+    "builtItems": [
+      "Proofs/Hilbert10OQ04.lean:205 theorem linear_bezout_n (0 sorry/0 new axiom), replacing former axiom — reduces axiomCount 5→4."
+    ],
+    "insights": [
+      "linear_bezout_n (n-variable Bézout: Σ aᵢxᵢ=b solvable over ℤ iff a gcd divides b) is PROVABLE, not axiomatic: solvability ⟺ b ∈ Ideal.span (Set.range a); over the PID ℤ that ideal is principal (generator g), and d=|g| is the gcd. Discharged via Ideal.mem_span_range_iff_exists_fun + Submodule.IsPrincipal.generator + Ideal.mem_span_singleton.",
+      "Original axiom statement was FALSE in the all-zero degenerate case: strict 0<d wrongly excludes (aᵢ=0,b=0) which is solvable with only witness d=0. Corrected to 0≤d — the minimal fix."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "docker-build Proofs.Hilbert10OQ04 on a quiet host (file imports Mathlib.Tactic → needs multi-GB; host was OOM-gated this session), then push branch feature/researcher-7-hilbert10-bezout + open PR. Remaining 4 axioms (mrdp_finite_var, jones_matiyasevich_bound, nine_var_h10_undecidable, jones_universal_poly) are deep literature (MRDP/Jones 1982) — not single-session dischargeable."
+    ]
   },
   "tags": [
     "seeker-selected"
