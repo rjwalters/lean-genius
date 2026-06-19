@@ -75,39 +75,47 @@
       "id": "setup",
       "title": "Setup: Generalized Pentagonal Numbers",
       "startLine": 1,
-      "endLine": 66,
+      "endLine": 71,
       "summary": "Module documentation, the value genPent and the division-free membership predicate IsGenPent, evenness of k(3k-1), and the exact doubling relation two_mul_genPent.",
       "mathContext": "g(k) = k(3k-1)/2 with 2·g(k) = k(3k-1). Since one of k, 3k-1 is even, the half is exact; membership is carried by the relation 2m = k(3k-1) to keep proofs over ℤ without integer division."
     },
     {
       "id": "criterion",
       "title": "The Square-Discriminant Criterion (Headline)",
-      "startLine": 68,
-      "endLine": 116,
+      "startLine": 73,
+      "endLine": 121,
       "summary": "isGenPent_iff_isSquare: m is a generalized pentagonal number iff 24m+1 is a perfect square. Forward via 24·g(k)+1 = (6k-1)²; converse via a ZMod-6 residue argument recovering the index.",
       "mathContext": "Forward: linear_combination on 2m=k(3k-1). Converse: s²=24m+1 ⟹ (s mod 6)²=1 ⟹ s≡±1 (mod 6); 6∣(s∓1) gives s=6k±1, and cancelling 12 yields 2m=k'(3k'-1)."
     },
     {
       "id": "structural",
       "title": "Structural Facts: Nonnegativity and Injectivity",
-      "startLine": 118,
-      "endLine": 139,
+      "startLine": 123,
+      "endLine": 144,
       "summary": "isGenPent_nonneg (k(3k-1) ≥ 0) and genPent_injective (distinct indices give distinct pentagonal numbers).",
       "mathContext": "Injectivity reduces to (a-b)(3(a+b)-1)=0; since 3(a+b)=1 has no integer solution, a=b. Nonnegativity is a sign analysis of the two factors of k(3k-1)."
     },
     {
+      "id": "index-bounds",
+      "title": "Index Bounds: Euler's Recurrence is a Finite Sum",
+      "startLine": 146,
+      "endLine": 202,
+      "summary": "Quadratic growth k² ≤ g(k) (genPent_sq_le_self), the resulting index bound |k| ≤ g(k) (abs_index_le_genPent), and indexSet_finite: {k | g(k) ≤ n} ⊆ [-n, n] is finite, so the pentagonal sum in Euler's partition recurrence at level n ranges over a finite set.",
+      "mathContext": "From the doubling relation, 2g(k) − 2k² = k(k−1) ≥ 0 gives k² ≤ g(k); combining k ≤ g(k) and −k ≤ g(k) yields |k| ≤ g(k). Hence g(k) ≤ n forces |k| ≤ n, bounding the recurrence's support inside [-n, n]."
+    },
+    {
       "id": "values",
       "title": "Concrete Values (OEIS A001318)",
-      "startLine": 141,
-      "endLine": 159,
+      "startLine": 204,
+      "endLine": 221,
       "summary": "The first generalized pentagonal numbers g(0..±4) = 0,1,2,5,7,12,15,22,26, and a sanity check that 12 = g(3) is recognized via 24·12+1 = 289 = 17².",
       "mathContext": "Indexing k = 0,1,-1,2,-2,… enumerates the pentagonal numbers in increasing order, matching OEIS A001318."
     },
     {
       "id": "open-core",
       "title": "Open Core: Franklin's Involution (Not Formalized)",
-      "startLine": 161,
-      "endLine": 177,
+      "startLine": 223,
+      "endLine": 239,
       "summary": "Documents the deep generating-function identity ∏(1-Xⁿ)=∑(-1)ᵏX^{g(k)} and its bijective proof via Franklin's sign-reversing involution on partitions into distinct parts, explaining why it is out of scope: Mathlib lacks distinct-partition parity machinery and formal-power-series infinite products. The index theory this entry supplies is exactly what such a development would consume.",
       "mathContext": "Equivalently p_even(n)-p_odd(n) = [n=g(k)]·(-1)ᵏ, where p_even/p_odd count partitions into an even/odd number of distinct parts; Franklin's involution's only fixed points are the staircase partitions of the generalized pentagonal numbers g(k)."
     }
