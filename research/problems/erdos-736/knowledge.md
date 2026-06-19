@@ -75,3 +75,9 @@ finite-subgraph / compactness infrastructure that the problem is built around.
   deferred.
 - Refreshed gallery `meta.json` to reflect the now-proved de Bruijn–Erdős theorem
   (previously listed only as a "statement").
+- **Build-verified** via Docker (`Built Proofs.Erdos736Problem`, 1158 jobs, 0 errors).
+  `#print axioms` confirms both `deBruijn_erdos_coloring` and
+  `exists_finite_subgraph_not_colorable` depend only on
+  `propext`/`Classical.choice`/`Quot.sound` — fully verified, no `sorryAx`.
+- Opened PR **#26780** (`research` label only, no Judge review per math-agent policy).
+- Remaining work: `finite_case` discrete-IVT side lemma still deferred (1 `sorry`).
