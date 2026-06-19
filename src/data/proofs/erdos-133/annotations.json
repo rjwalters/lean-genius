@@ -17,7 +17,11 @@
       "Moore bound",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "triangle-free graphs",
+      "the diameter of a graph",
+      "the Moore bound / extremal graph theory"
+    ]
   },
   {
     "id": "erdos-133-triangle-free",
@@ -37,7 +41,11 @@
       "Turán graphs",
       "Ramsey numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "independent sets and edges",
+      "Mantel's / Turán's theorem",
+      "graphs with no triangle (K₃)"
+    ]
   },
   {
     "id": "erdos-133-diameter-2",
@@ -57,7 +65,11 @@
       "Small-world graphs",
       "Distance in graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "distance in a graph and eccentricity",
+      "graph connectivity",
+      "diameter 2 (every two vertices at distance ≤ 2)"
+    ]
   },
   {
     "id": "erdos-133-f-def",
@@ -77,7 +89,11 @@
       "Ramsey-type problems",
       "Guaranteed properties"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal (minimax) functions",
+      "Ramsey-type guaranteed properties",
+      "the maximum-degree function f(n)"
+    ]
   },
   {
     "id": "erdos-133-moore-bound",
@@ -97,7 +113,11 @@
       "Degree-diameter problem",
       "Petersen graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the degree-diameter problem",
+      "Moore graphs and cage graphs",
+      "the Petersen graph"
+    ]
   },
   {
     "id": "erdos-133-lower-bound",
@@ -116,7 +136,11 @@
       "Vertex counting",
       "Degree-vertex relationship"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "vertex and degree counting",
+      "the degree–vertex relationship in diameter-2 graphs",
+      "the Moore bound"
+    ]
   },
   {
     "id": "erdos-133-simonovits",
@@ -136,7 +160,11 @@
       "Binary entropy",
       "Disjoint sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Kneser graphs and set systems",
+      "disjointness of sets",
+      "binary entropy in counting bounds"
+    ]
   },
   {
     "id": "erdos-133-alon",
@@ -156,7 +184,11 @@
       "Ramsey graphs",
       "Small independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the independence number of a graph",
+      "the probabilistic method",
+      "Ramsey graphs with small independence"
+    ]
   },
   {
     "id": "erdos-133-hanson-seyffarth",
@@ -176,7 +208,11 @@
       "Cyclic groups",
       "Algebraic constructions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cayley graphs over cyclic groups",
+      "sum-free sets",
+      "algebraic graph constructions"
+    ]
   },
   {
     "id": "erdos-133-furedi-seress",
@@ -196,6 +232,10 @@
       "Best known bounds",
       "Constant optimization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "geometric / packing constructions",
+      "optimizing the leading constant",
+      "the best-known bounds for f(n)"
+    ]
   }
 ]
