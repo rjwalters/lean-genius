@@ -16,7 +16,11 @@
       "namespace scoping",
       "open declarations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib library organization",
+      "namespaces and open declarations"
+    ]
   },
   {
     "id": "ann-additive",
@@ -35,7 +39,11 @@
       "coprimality",
       "multiplicative number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic functions",
+      "coprimality and gcd",
+      "multiplicative number theory"
+    ]
   },
   {
     "id": "ann-completely-additive",
@@ -53,7 +61,11 @@
       "IsAdditive",
       "function classification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive functions",
+      "function classification",
+      "logarithm properties"
+    ]
   },
   {
     "id": "ann-log-additive",
@@ -72,7 +84,11 @@
       "Real.log_mul",
       "positivity tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive functions",
+      "real logarithm identities",
+      "Nat-to-Real coercion"
+    ]
   },
   {
     "id": "ann-value-primes",
@@ -91,7 +107,11 @@
       "Nat.factorization",
       "Finset.sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive functions",
+      "prime factorization",
+      "Finset summation"
+    ]
   },
   {
     "id": "ann-defect-set",
@@ -111,7 +131,11 @@
       "Finset.card",
       "noncomputable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set-builder notation in Lean",
+      "Finset.filter and card",
+      "monotonicity"
+    ]
   },
   {
     "id": "ann-littleo",
@@ -130,7 +154,11 @@
       "ε-N definition",
       "Nat to Real coercion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "little-o asymptotic notation",
+      "epsilon-N limit definitions",
+      "monotonicity defect set"
+    ]
   },
   {
     "id": "ann-empty-increasing",
@@ -149,7 +177,11 @@
       "push_neg",
       "Set.mem_empty_iff_false"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "monotonicity defect set",
+      "proof by contradiction",
+      "set membership and the empty set"
+    ]
   },
   {
     "id": "ann-logarithmic-form",
@@ -168,7 +200,11 @@
       "ring tactic",
       "Real.log_mul"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive functions",
+      "existential quantifiers in Lean",
+      "real logarithm identities"
+    ]
   },
   {
     "id": "ann-erdos-results",
@@ -188,7 +224,11 @@
       "nhds",
       "axiom pattern"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive functions and logarithmic form",
+      "filter-based limits (Tendsto, atTop, nhds)",
+      "axiomatizing deep theorems"
+    ]
   },
   {
     "id": "ann-mangerel-density",
@@ -207,7 +247,11 @@
       "Real.log power",
       "nested existentials"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "little-o defect density",
+      "nested existential quantifiers",
+      "prime values of additive functions"
+    ]
   },
   {
     "id": "ann-mangerel-thm",
@@ -226,7 +270,11 @@
       "partial progress",
       "axiom for deep result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mangerel density and bounded prime values",
+      "logarithmic form",
+      "axiomatizing deep theorems"
+    ]
   },
   {
     "id": "ann-conjecture",
@@ -245,7 +293,11 @@
       "axiom for conjecture",
       "erdos1122Conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive functions and little-o defects",
+      "logarithmic form",
+      "axiom encoding of open conjectures"
+    ]
   },
   {
     "id": "ann-hierarchy",
@@ -264,7 +316,11 @@
       "Finset.filter_eq_empty_iff",
       "Set.not_mem_empty"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "empty defect, Mangerel density, and little-o conditions",
+      "Finset.filter_eq_empty_iff",
+      "empty set membership"
+    ]
   },
   {
     "id": "ann-log-example",
@@ -283,7 +339,11 @@
       "Real.log_le_log",
       "positivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "monotonicity defect set",
+      "strict monotonicity of log",
+      "Set.ext and Real.log_le_log"
+    ]
   },
   {
     "id": "ann-omega",
@@ -302,7 +362,11 @@
       "Finset.card",
       "counterexample pattern"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive functions",
+      "distinct prime factor counting (omega)",
+      "counterexamples and logarithmic form"
+    ]
   },
   {
     "id": "ann-summary",
@@ -321,6 +385,10 @@
       "anonymous constructor",
       "conjunction introduction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdos, Katai-Wirsing, and Mangerel results",
+      "conjunction introduction (refine)",
+      "axioms as known theorems"
+    ]
   }
 ]
