@@ -157,6 +157,88 @@
       "leanType": "det (threeVectorMatrix (M·u) (M·v) (M·w)) = det M * det (threeVectorMatrix u v w)"
     }
   ],
+  "sections": [
+    {
+      "id": "docs-imports",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "Module docstring framing Brianchon as the projective dual of Pascal, the four Mathlib imports (`Real.Basic`, `Determinant.Basic`, `CrossProduct`, `Adjugate`), `open Matrix`, and the `Brianchon` namespace.",
+      "mathContext": "Sets the axiom budget: the unconditional theorem rests on the single shared fact `conic_implies_pascal`, while the duality bridge is advertised as axiom- and sorry-free."
+    },
+    {
+      "id": "proj-model",
+      "title": "PART 1: Projective model (homogeneous coordinates in ℝ³)",
+      "startLine": 68,
+      "endLine": 115,
+      "summary": "`ProjPoint`/`ProjLine` as `Fin 3 → ℝ`; `lineThrough`/`lineIntersection` as cross products; `threeVectorMatrix`, `collinear`, `concurrent`, `Conic`, `conicQuadraticForm`, `pointOnConic`, `Conic.symmetric`, and `mapPoint`.",
+      "mathContext": "Points and lines of ℝP² are nonzero vectors in ℝ³; join and meet are both the cross product, and `collinear`/`concurrent` are literally the same vanishing-determinant predicate — the self-duality that makes Pascal⇄Brianchon a relabelling."
+    },
+    {
+      "id": "computational-identities",
+      "title": "PART 2: The two computational identities",
+      "startLine": 116,
+      "endLine": 150,
+      "summary": "`crossProduct_mulMatrix`: the cofactor/Binet–Cauchy identity $(M u)\\times(M v) = (\\operatorname{adj}M)^{\\mathsf T}(u\\times v)$; and `det_threeVectorMatrix_mulMatrix`: applying $M$ to all three rows scales the triple determinant by $\\det M$.",
+      "mathContext": "These two degree-3 polynomial identities — the first closed by `ring` via the explicit `adjugate_fin_three` entries — are the entire algebraic engine of the duality; everything downstream is bookkeeping around them."
+    },
+    {
+      "id": "symmetric-bookkeeping",
+      "title": "PART 3: Symmetric-conic bookkeeping",
+      "startLine": 151,
+      "endLine": 171,
+      "summary": "`transpose_of_symmetric` ($C^{\\mathsf T}=C$), `adjugate_symmetric` ($(\\operatorname{adj}C)^{\\mathsf T}=\\operatorname{adj}C$), and `dual_matrix_eq` collapsing the iterated cofactor matrix via `adjugate_adjugate`.",
+      "mathContext": "Symmetry of the conic matrix lets the transpose in the cofactor identity be dropped, so the polarity $P\\mapsto C\\,P$ and its dual line map coincide — the precise hypothesis that turns the abstract identity into a self-polarity."
+    },
+    {
+      "id": "circumscribed-hexagon",
+      "title": "PART 4: The circumscribed hexagon (dual configuration)",
+      "startLine": 172,
+      "endLine": 184,
+      "summary": "`tangentLine C P = mapPoint C P`, the polar line of a contact point, and `circVertex C P Q`, a hexagon vertex as the meet of two consecutive tangent lines.",
+      "mathContext": "Pole–polar duality with respect to $C$ sends each contact point to the tangent at it; the circumscribed hexagon is therefore the exact dual of an inscribed hexagon of contact points."
+    },
+    {
+      "id": "diagonal-reduction",
+      "title": "PART 5: Each diagonal is the dual image of a Pascal point",
+      "startLine": 185,
+      "endLine": 200,
+      "summary": "`diag_eq`: a circumscribed-hexagon diagonal equals $(\\det C\\cdot C)$ applied to the corresponding Pascal opposite-side intersection point.",
+      "mathContext": "Applying the cofactor identity twice (with $M=C$ then $M=\\operatorname{adj}C$) and `dual_matrix_eq` shows every Brianchon diagonal is one fixed linear image of the matching Pascal point — reducing concurrency of three lines to collinearity of three points."
+    },
+    {
+      "id": "duality-bridge",
+      "title": "PART 6: The axiom-free duality bridge",
+      "startLine": 201,
+      "endLine": 230,
+      "summary": "`concurrent_brianchon_of_collinear_pascal`: for a symmetric conic, collinearity of the three Pascal points implies concurrency of the three Brianchon diagonals, proved with no axioms beyond the foundational `propext`/`Classical.choice`/`Quot.sound`.",
+      "mathContext": "Since $\\det(Mu,Mv,Mw)=\\det M\\cdot\\det(u,v,w)$ and $0$ times anything is $0$, Pascal's vanishing determinant forces Brianchon's even without $\\det C\\neq0$ — no nondegeneracy is needed for the implication."
+    },
+    {
+      "id": "contact-hexagon-axiom",
+      "title": "PART 7: The contact hexagon + Pascal's axiom",
+      "startLine": 231,
+      "endLine": 261,
+      "summary": "The `ContactHexagon C` structure (six points on the conic) and the single `axiom conic_implies_pascal` carrying the deep geometric fact that six conic points make opposite-side intersections collinear.",
+      "mathContext": "This is the *same* assumption the `pascals-hexagon` entry axiomatizes as `conic_implies_pascal_constraint`; Brianchon introduces no new axiom, only reuses Pascal's."
+    },
+    {
+      "id": "brianchon-theorem",
+      "title": "PART 8: Brianchon's Theorem",
+      "startLine": 262,
+      "endLine": 292,
+      "summary": "The three main diagonals `brianchonDiag1/2/3` and the unconditional `brianchon_theorem`: the diagonals of a hexagon circumscribed about a symmetric conic are concurrent.",
+      "mathContext": "Feeds Pascal's axiom into the axiom-free bridge of PART 6 — the only place the assumption enters, yielding the classical concurrency statement."
+    },
+    {
+      "id": "brianchon-point",
+      "title": "PART 9: The genuine Brianchon point (under nondegeneracy)",
+      "startLine": 293,
+      "endLine": 372,
+      "summary": "Incidence `onLine`, the meet lemmas `dotProduct_self_crossProduct`/`dotProduct_crossProduct_self`, the scalar-triple-product reading `det_threeVectorMatrix_eq_dot_cross`, and `brianchon_point`: under the hypothesis that two diagonals meet in a well-defined point, all three pass through one explicit projective point.",
+      "mathContext": "Upgrades the bare vanishing-determinant concurrency to an honest common point; the nondegeneracy hypothesis `lineIntersection diag1 diag2 ≠ 0` is exactly what is needed to name the point as the meet of the first two diagonals."
+    }
+  ],
   "sorries": 0,
   "references": [
     {
