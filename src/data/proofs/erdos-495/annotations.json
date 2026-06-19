@@ -16,7 +16,11 @@
       "littlewood-conjecture",
       "liminf"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real numbers and the nearest-integer distance ‖x‖",
+      "Diophantine approximation of reals by fractions",
+      "liminf of a sequence over the integers"
+    ]
   },
   {
     "id": "ann-e495-distint",
@@ -35,7 +39,11 @@
       "nearest-integer",
       "diophantine-approximation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "absolute value of a real number",
+      "rounding a real to its nearest integer",
+      "the fractional part of a real number"
+    ]
   },
   {
     "id": "ann-e495-product",
@@ -53,7 +61,11 @@
       "simultaneous-approximation",
       "multiplicative-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the nearest-integer distance ‖nα‖",
+      "simultaneous approximation of two reals by a common denominator",
+      "Dirichlet's theorem giving ‖nα‖ < 1/n"
+    ]
   },
   {
     "id": "ann-e495-conjecture",
@@ -72,7 +84,11 @@
       "liminf",
       "diophantine-approximation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Littlewood product n·‖nα‖·‖nβ‖",
+      "the 'infinitely often' formulation via ∃ n ≥ N",
+      "equivalence of liminf zero with the existential statement"
+    ]
   },
   {
     "id": "ann-e495-rational",
@@ -90,7 +106,11 @@
       "rational-approximation",
       "trivial-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "rational numbers written as p/q",
+      "divisibility and integer multiples of a denominator",
+      "‖nα‖ = 0 when nα is an integer"
+    ]
   },
   {
     "id": "ann-e495-cubic",
@@ -109,7 +129,11 @@
       "geometry-of-numbers",
       "algebraic-irrationals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cubic irrationals as roots of aX³ + bX + c",
+      "cubic field extensions of ℚ",
+      "Minkowski's geometry of numbers"
+    ]
   },
   {
     "id": "ann-e495-ekl",
@@ -129,7 +153,11 @@
       "homogeneous-dynamics",
       "fields-medal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hausdorff dimension of a set",
+      "ergodic theory and invariant measures",
+      "the homogeneous space SL(3,ℝ)/SL(3,ℤ)"
+    ]
   },
   {
     "id": "ann-e495-padic",
@@ -148,7 +176,11 @@
       "de-mathan-teulie",
       "badly-approximable-numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the p-adic absolute value |n|_p and valuation v_p",
+      "primes dividing an integer",
+      "the de Mathan-Teulié conjecture variant"
+    ]
   },
   {
     "id": "ann-e495-summary",
@@ -167,6 +199,10 @@
       "diophantine-approximation",
       "ergodic-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the trivial rational case of Littlewood",
+      "the countable-exceptions consequence of EKL",
+      "open status of the conjecture in full generality"
+    ]
   }
 ]
