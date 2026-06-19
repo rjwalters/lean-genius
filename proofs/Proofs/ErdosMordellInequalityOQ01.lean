@@ -220,6 +220,41 @@ private theorem mem_interior_hull_rotate {X Y Z P : EuclideanSpace ℝ (Fin 2)}
     ext q; simp only [Set.mem_insert_iff, Set.mem_singleton_iff]; tauto
   rw [hs]; exact h
 
+/-- **Geometry → algebra bridge for the shared vertex inequality** (verified).
+
+This is the native-`EuclideanSpace` specialization of
+`key_inequality_of_chord_and_sines`: it states exactly which geometric data about
+the concrete configuration `(X, Y, Z, P)` suffice to prove the shared key
+inequality `key_inequality_vertex`, and discharges the inequality from them with
+no further work.
+
+The required inputs — for some triangle angles `A, B, C` at `X, Y, Z` and a common
+circumradius `R > 0` — are the **law of sines** in side-length form
+(`dist Y Z = 2R sin A`, `dist Z X = 2R sin B`, `dist X Y = 2R sin C`) and the
+**pedal-feet chord identity** at `X`
+(`(dist P X · sin A)² = (lineDist P Z X)² + (lineDist P X Y)² + 2·…·cos A`),
+which encodes the concyclicity of `P`, `X`, and the two perpendicular feet on the
+circle of diameter `PX`.
+
+After this lemma, the *only* remaining obligation inside `key_inequality_vertex`
+is to **exhibit** such `A, B, C, R` for the affine-independent interior
+configuration and verify these two identities — the algebraic assembly is done.
+The pedal distances and `dist P X` supply their own nonnegativity. -/
+theorem key_inequality_vertex_of_los_chord
+    (X Y Z P : EuclideanSpace ℝ (Fin 2)) {A B C R : ℝ}
+    (hsum : A + B + C = Real.pi)
+    (hsA : 0 ≤ Real.sin A) (hsB : 0 ≤ Real.sin B) (hsC : 0 ≤ Real.sin C)
+    (hR : 0 < R)
+    (haR : dist Y Z = 2 * R * Real.sin A)
+    (hbR : dist Z X = 2 * R * Real.sin B)
+    (hcR : dist X Y = 2 * R * Real.sin C)
+    (hchord : (dist P X * Real.sin A) ^ 2
+      = lineDist P Z X ^ 2 + lineDist P X Y ^ 2
+        + 2 * lineDist P Z X * lineDist P X Y * Real.cos A) :
+    dist Z X * lineDist P X Y + dist X Y * lineDist P Z X ≤ dist Y Z * dist P X :=
+  key_inequality_of_chord_and_sines hsum hsA hsB hsC
+    (lineDist_nonneg P Z X) (lineDist_nonneg P X Y) dist_nonneg hR haR hbR hcR hchord
+
 /-- **Erdős–Mordell key inequality at a generic vertex `X`** (shared geometric core).
 
 For `P` interior to the nondegenerate triangle `X Y Z`, with adjacent sides `XY`
