@@ -1,0 +1,238 @@
+{
+  "id": "algebraic-reals-meager",
+  "title": "The Algebraic Reals are Meagre (Baire Category)",
+  "slug": "algebraic-reals-meager",
+  "description": "Strengthens the countability of the algebraic reals to the Baire-category statement that {x : ℝ | IsAlgebraic ℚ x} is meagre (first category) in ℝ, and dually that the transcendental reals are residual (comeagre) and dense. Proves the abstract lemma — in any T1 perfect space, every countable set is meagre — flagged as an unformalized follow-up in the companion nested-interval entry, then instantiates it at the algebraic reals via Mathlib's Algebraic.countable. Recovers the existence of transcendentals purely from meagreness (a nonempty Baire space is not meagre in itself).",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Meagre_set",
+    "date": "2026-06-18",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicRealsMeager.lean",
+    "tags": [
+      "topology",
+      "baire-category",
+      "real-analysis",
+      "meagre-set",
+      "algebraic-numbers",
+      "transcendental-numbers",
+      "descriptive-set-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "isMeagre_iUnion",
+        "description": "A countable union of meagre sets is meagre",
+        "module": "Mathlib.Topology.GDelta.Basic"
+      },
+      {
+        "theorem": "isMeagre_iff_countable_union_isNowhereDense",
+        "description": "A set is meagre iff contained in a countable union of nowhere-dense sets",
+        "module": "Mathlib.Topology.GDelta.Basic"
+      },
+      {
+        "theorem": "IsClosed.isNowhereDense_iff",
+        "description": "A closed set is nowhere dense iff its interior is empty",
+        "module": "Mathlib.Topology.GDelta.Basic"
+      },
+      {
+        "theorem": "interior_singleton",
+        "description": "The interior of a singleton {x} is empty when x is not isolated (𝓝[≠] x ≠ ⊥)",
+        "module": "Mathlib.Topology.ClusterPt"
+      },
+      {
+        "theorem": "dense_of_mem_residual",
+        "description": "Residual sets in a Baire space are dense",
+        "module": "Mathlib.Topology.Baire.Lemmas"
+      },
+      {
+        "theorem": "not_isMeagre_of_isOpen",
+        "description": "A nonempty open set in a Baire space is not meagre",
+        "module": "Mathlib.Topology.Baire.Lemmas"
+      },
+      {
+        "theorem": "Algebraic.countable",
+        "description": "Algebraic elements over a countable ring form a countable set (reused via AlgebraicNumbersCountable.algebraic_reals_countable)",
+        "module": "Mathlib.RingTheory.Algebraic.Cardinality"
+      }
+    ],
+    "originalContributions": [
+      "countable_isMeagre: PROVED in any T1 perfect space, every countable set is meagre — the abstract Baire-category lemma flagged as an open follow-up in algebraic-numbers-countable-oq-02-oq-02",
+      "isNowhereDense_singleton: PROVED a singleton in a T1 perfect space is nowhere dense (closed with empty interior)",
+      "isMeagre_of_isNowhereDense: PROVED a nowhere-dense set is meagre",
+      "algebraicReals_isMeagre: PROVED {x : ℝ | IsAlgebraic ℚ x} is meagre in ℝ",
+      "transcendentalReals_residual: PROVED the transcendental reals are residual (comeagre)",
+      "transcendentalReals_dense: PROVED the transcendental reals are dense in ℝ",
+      "algebraicReals_ne_univ / exists_transcendental_real: PROVED transcendentals exist, recovered purely from meagreness with no explicit construction"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Baire category: meagre / nowhere-dense / residual sets",
+      "ℝ is a perfect, T1, Baire space",
+      "Countability of the algebraic reals (Algebraic.countable)"
+    ],
+    "lineCount": 136,
+    "relatedProblems": [
+      {
+        "id": "algebraic-numbers-countable-oq-02-oq-02",
+        "relationship": "Parent: nested-interval uncountability proof that flagged the Baire-category generalization as an open follow-up"
+      },
+      {
+        "id": "algebraic-numbers-countable",
+        "relationship": "Grandparent: the algebraic reals are countable (the countability input reused here)"
+      }
+    ],
+    "assumptions": "0 axioms. Relies only on Mathlib's Baire-category infrastructure, the perfect/Baire-space structure of ℝ, and the countability of the algebraic reals.",
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Cantor's 1874 paper proved the algebraic reals countable and ℝ uncountable, establishing the existence of transcendentals by a cardinality gap. The 20th-century Baire category theorem (René-Louis Baire, 1899) supplies an orthogonal notion of 'smallness': a set is meagre (of the first category) if it is a countable union of nowhere-dense sets, and a complete metric space is never meagre in itself. In a perfect space (no isolated points) every singleton is nowhere dense, so every countable set is meagre. The algebraic reals are therefore small in three independent senses — countable (cardinality), Lebesgue-null (measure), and meagre (category) — while the transcendentals are co-small in all three. This entry formalizes the category statement, the piece explicitly named as an unformalized follow-up in the companion nested-interval entry.",
+    "problemStatement": "Formalize that the algebraic reals form a meagre (first category) subset of ℝ, strengthening their countability, and that the transcendental reals are residual (comeagre) and dense.",
+    "text": "A 136-line, 0-sorry, 0-axiom formalization. The core is a reusable lemma — in any T1 perfect topological space a countable set is meagre — built from the facts that a singleton is closed with empty interior (since points are not isolated) and that countable unions of nowhere-dense sets are meagre. Instantiating at ℝ and the countable set of algebraic reals gives meagreness; the complement is residual, hence dense, and the existence of transcendentals follows because a nonempty Baire space is not meagre in itself.",
+    "proofStrategy": "Reduce meagreness of a countable set to a countable union of singletons. Each singleton {x} is closed (T1) and has empty interior because x is not an isolated point (interior_singleton, available since ℝ is a PerfectSpace), hence is nowhere dense; a nowhere-dense set is meagre via the singleton family in isMeagre_iff_countable_union_isNowhereDense; a countable union of meagre sets is meagre via isMeagre_iUnion. Apply to {x : ℝ | IsAlgebraic ℚ x}, countable by Mathlib's Algebraic.countable. The complement is residual by definition of IsMeagre; dense by dense_of_mem_residual in the Baire space ℝ; and not all of ℝ because not_isMeagre_of_isOpen rules out univ being meagre.",
+    "keyInsights": [
+      "**Category strengthens cardinality**: 'countable' already implies 'meagre' in a perfect space, so meagreness is a strict topological strengthening of the classical countability of the algebraic reals — not merely a restatement.",
+      "**Three independent smallness notions agree**: the algebraic reals are countable, Lebesgue-null, AND meagre; the transcendentals are co-small in each sense. 'Almost every real is transcendental' holds in the Baire-category sense, not only the cardinality sense.",
+      "**The singleton is the atom of the argument**: the entire phenomenon reduces to one fact — a point is not isolated in ℝ, so {x} has empty interior. PerfectSpace ℝ packages exactly this.",
+      "**Existence of transcendentals from smallness alone**: a nonempty Baire space is not meagre in itself, so a meagre set cannot be all of ℝ — yielding a transcendental with no explicit construction, dual to Liouville's explicit witnesses.",
+      "**Closes a flagged follow-up**: the companion nested-interval entry explicitly noted that 'formalizing this Baire-category generalization in Lean would subsume both this entry and the more general statement'; countable_isMeagre is precisely that abstract lemma."
+    ],
+    "prerequisites": [
+      "Baire category theorem and the IsMeagre / IsNowhereDense / residual API",
+      "Perfect spaces and isolated points (𝓝[≠] x)",
+      "Countability of algebraic elements over ℚ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: Meagreness of the Algebraic Reals",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "File docstring and imports. States the open question — strengthen the countability of the algebraic reals to the Baire-category statement that they are meagre — and situates it against the three independent smallness notions (cardinality, measure, category). Quotes the companion nested-interval entry's flagged follow-up that this entry resolves.",
+      "mathContext": "A set is meagre iff it is a countable union of nowhere-dense sets; in a perfect space every singleton is nowhere dense, so every countable set is meagre."
+    },
+    {
+      "id": "abstract-lemma",
+      "title": "Countable Sets are Meagre in a Perfect Space",
+      "startLine": 66,
+      "endLine": 99,
+      "summary": "Proves the three building blocks: isMeagre_of_isNowhereDense (a nowhere-dense set is meagre via its singleton family), isNowhereDense_singleton (a singleton is closed with empty interior in a T1 perfect space), and countable_isMeagre (a countable set is a countable union of singletons, hence meagre).",
+      "mathContext": "{x} is closed and interior{x} = ∅ ⇒ {x} nowhere dense; s = ⋃_{x ∈ s} {x} with s countable ⇒ IsMeagre s."
+    },
+    {
+      "id": "application",
+      "title": "Algebraic Reals Meagre, Transcendentals Comeagre",
+      "startLine": 100,
+      "endLine": 136,
+      "summary": "Instantiates the abstract lemma: algebraicReals_isMeagre (the algebraic reals are meagre), transcendentalReals_residual (their complement is residual), transcendentalReals_dense (hence dense), and algebraicReals_ne_univ / exists_transcendental_real (transcendentals exist, from meagreness alone).",
+      "mathContext": "{x | IsAlgebraic ℚ x} meagre ⇒ {x | ¬IsAlgebraic ℚ x} ∈ residual ℝ ⇒ dense; univ not meagre ⇒ algebraic ≠ univ."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-02",
+      "relationship": "parent",
+      "description": "The nested-interval entry proves ℝ uncountable and explicitly flags the abstract Baire Category Theorem ('every nonempty complete metric space without isolated points is uncountable') as an unformalized follow-up. This entry formalizes the relevant abstract lemma (countable sets are meagre in a perfect space) and applies it to the algebraic reals, strengthening their countability to meagreness."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "ancestor",
+      "description": "Proves the algebraic reals are countable via Algebraic.countable. This entry reuses that result (AlgebraicNumbersCountable.algebraic_reals_countable) as the countability input and upgrades the conclusion from countable to meagre."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "complementary",
+      "description": "Liouville (1844) gives explicit transcendental witnesses via Diophantine approximation. This entry proves transcendentals exist and are comeagre/dense with no explicit construction — the non-constructive, category-theoretic face of transcendence, complementing Liouville's constructive face."
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "complementary",
+      "description": "The algebraic reals are also Lebesgue-null (measure smallness). This entry establishes the parallel Baire-category smallness (meagreness). The two notions are logically independent in general — there exist meagre sets of full measure and null sets that are comeagre — so each is a genuinely distinct sense in which the algebraic reals are small."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 136,
+    "namespace": "AlgebraicRealsMeager",
+    "opens": [
+      "Set",
+      "Topology"
+    ],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 5,
+    "computationalVerifications": 0,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib.Topology.GDelta.Basic",
+      "Mathlib.Topology.Perfect",
+      "Mathlib.Topology.Baire.Lemmas",
+      "Mathlib.Topology.Baire.CompleteMetrizable",
+      "Mathlib.Tactic",
+      "Proofs.AlgebraicNumbersCountable"
+    ],
+    "path": "Proofs/AlgebraicRealsMeager.lean",
+    "sorries": 0,
+    "definitionCount": 0,
+    "additionalFiles": []
+  },
+  "mainTheorems": [
+    {
+      "name": "countable_isMeagre",
+      "type": "core",
+      "description": "In any T1 perfect space, every countable set is meagre",
+      "leanType": "∀ {X : Type*} [TopologicalSpace X] [T1Space X] [PerfectSpace X] {s : Set X}, s.Countable → IsMeagre s"
+    },
+    {
+      "name": "algebraicReals_isMeagre",
+      "type": "core",
+      "description": "The algebraic reals are meagre (first category) in ℝ",
+      "leanType": "IsMeagre {x : ℝ | IsAlgebraic ℚ x}"
+    },
+    {
+      "name": "transcendentalReals_dense",
+      "type": "core",
+      "description": "The transcendental reals are residual (comeagre) and dense in ℝ",
+      "leanType": "Dense {x : ℝ | ¬ IsAlgebraic ℚ x}"
+    }
+  ],
+  "conclusion": {
+    "summary": "A 136-line, 0-sorry, 0-axiom formalization establishing that the algebraic reals are meagre in ℝ and the transcendentals are comeagre and dense, built on a reusable abstract lemma that countable sets are meagre in any T1 perfect space.",
+    "implications": "Meagreness is a strict topological strengthening of countability. Combined with the measure-zero and countability results for the algebraic reals, it shows the transcendentals are co-small in the three classical senses — cardinality, measure, and Baire category — so 'almost every real is transcendental' holds categorically, not merely cardinally. The abstract lemma countable_isMeagre is reusable for any T1 perfect space (e.g. any nontrivial real/complex normed space, or any connected T1 nontrivial space) and directly subsumes the Baire-category follow-up flagged by the companion nested-interval entry.",
+    "openQuestions": [
+      "Generalize from ℝ to an arbitrary perfect Polish space: countable_isMeagre already holds in any T1 perfect space; pairing it with completeness gives the full Baire-category theorem that such spaces are uncountable, subsuming the nested-interval entry.",
+      "Quantify the comeagre transcendental complement as an explicit dense Gδ set, exhibiting the residual witness from mem_residual concretely rather than abstractly.",
+      "Formalize the independence of the three smallness notions on ℝ: construct a meagre set of full Lebesgue measure (and a null comeagre set) to show measure-smallness and category-smallness of the algebraic reals are genuinely distinct facts rather than one implying the other."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Baire, René-Louis",
+      "title": "Sur les fonctions de variables réelles",
+      "year": "1899",
+      "venue": "Annali di Matematica Pura ed Applicata, 3",
+      "note": "Introduces the notion of category and the Baire category theorem."
+    },
+    {
+      "authors": "Oxtoby, John C.",
+      "title": "Measure and Category",
+      "year": "1980",
+      "venue": "Graduate Texts in Mathematics 2, Springer, 2nd edition",
+      "note": "The duality between meagre sets and null sets; the parallel smallness notions on ℝ used in this entry."
+    },
+    {
+      "authors": "Kechris, Alexander S.",
+      "title": "Classical Descriptive Set Theory",
+      "year": "1995",
+      "venue": "Graduate Texts in Mathematics 156, Springer",
+      "note": "Perfect Polish spaces, meagre sets, and the Baire category theorem in the general setting that countable_isMeagre abstracts."
+    }
+  ],
+  "sorries": 0
+}
