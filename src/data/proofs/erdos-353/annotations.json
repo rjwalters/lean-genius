@@ -16,7 +16,11 @@
       "Geometric configurations",
       "Point sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue measure on the plane",
+      "geometric configurations defined by vertex sets",
+      "Erdős-style existence problems in combinatorial geometry"
+    ]
   },
   {
     "id": "ann-e353-infinite-measure",
@@ -34,7 +38,11 @@
       "Lebesgue measure",
       "Measurability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue measurability of planar sets",
+      "infinite measure as unbounded volume",
+      "density implications of infinite measure"
+    ]
   },
   {
     "id": "ann-e353-triangle-area",
@@ -53,7 +61,11 @@
       "Determinant",
       "Shoelace formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "determinant and 2D cross product",
+      "shoelace formula for polygon area",
+      "decomposing a quadrilateral into triangles"
+    ]
   },
   {
     "id": "ann-e353-isosceles",
@@ -71,7 +83,11 @@
       "Triangle types"
     ],
     "mathContext": "See annotation content for formal details of isosceles triangle",
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean distance between points",
+      "equal-length sides of a triangle",
+      "apex opposite the base of an isosceles triangle"
+    ]
   },
   {
     "id": "ann-e353-right-triangle",
@@ -89,7 +105,11 @@
       "Inner product",
       "Perpendicularity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "inner product of vectors",
+      "perpendicularity via vanishing inner product",
+      "right angle located at a triangle vertex"
+    ]
   },
   {
     "id": "ann-e353-trapezoid",
@@ -107,7 +127,11 @@
       "Parallel lines",
       "Cross product"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "parallel sides detected by zero cross product",
+      "equal-length legs of a trapezoid",
+      "distinguishing one versus two parallel pairs"
+    ]
   },
   {
     "id": "ann-e353-parallelogram",
@@ -125,7 +149,11 @@
       "Parallel sides"
     ],
     "mathContext": "See annotation content for formal details of parallelogram",
-    "prerequisites": []
+    "prerequisites": [
+      "vector equality of opposite sides",
+      "both pairs of sides parallel and equal",
+      "Kovač's parallelogram non-existence result"
+    ]
   },
   {
     "id": "ann-e353-cyclic",
@@ -143,7 +171,11 @@
       "Inscribed quadrilateral"
     ],
     "mathContext": "See annotation content for formal details of cyclic quadrilateral",
-    "prerequisites": []
+    "prerequisites": [
+      "circle defined by center and radius",
+      "concyclic points equidistant from a center",
+      "quadrilateral inscribed in a circle"
+    ]
   },
   {
     "id": "ann-e353-koizumi",
@@ -161,7 +193,11 @@
       "Main theorems",
       "Recent resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "measurable sets of infinite measure",
+      "measure-theoretic density arguments",
+      "area-1 isosceles and right configurations"
+    ]
   },
   {
     "id": "ann-e353-kovac-counter",
@@ -179,7 +215,11 @@
       "Counterexample",
       "Parallelogram rigidity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existence of an infinite-measure counterexample set",
+      "rigidity from two parallel pairs",
+      "constraints distinguishing parallelograms from trapezoids"
+    ]
   },
   {
     "id": "ann-e353-cyclic-exists",
@@ -197,7 +237,11 @@
       "Circle"
     ],
     "mathContext": "See annotation content for formal details of cyclic quadrilaterals exist",
-    "prerequisites": []
+    "prerequisites": [
+      "four concyclic points forming a quadrilateral",
+      "area-1 cyclic configuration in infinite-measure sets",
+      "Kovač-Predojević circle existence theorem"
+    ]
   },
   {
     "id": "ann-e353-scaling",
@@ -215,7 +259,11 @@
       "Dilation"
     ],
     "mathContext": "See annotation content for formal details of scaling property",
-    "prerequisites": []
+    "prerequisites": [
+      "dilation of a set by factor √t",
+      "invariance of infinite measure under scaling",
+      "rescaling area-1 configurations to arbitrary positive area"
+    ]
   },
   {
     "id": "ann-e353-summary",
@@ -233,6 +281,10 @@
       "Complete resolution"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "contrast between trapezoid and parallelogram parallelism",
+      "shape-by-shape resolution of Erdős #353",
+      "guaranteed versus failing area-1 configurations"
+    ]
   }
 ]
