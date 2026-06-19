@@ -310,8 +310,21 @@ juggling. Instead use
   angles via `cospherical_of_two_zsmul_oangle_eq_of_not_collinear` (`Angle/Sphere.lean:449`)
   or directly `Sphere.ofDiameter` membership.
 
-Aristotle 404 (14th consecutive cycle). Companion left in known-good 2-sorry state;
-watcher (PID 13290) ships the cycle-14 commit (new Thales lemma
-`angle_pedalFoot_eq_pi_div_two`, signature re-verified against
-`Angle/Unoriented/Projection.lean:28`) as a fresh PR on the next quiet build window
-— the prior PR #26042 merged, so a NEW PR is required.
+  **Pin both forms re-verified cycle-16** against live `.lake/packages/mathlib`:
+  - `dist_div_sin_oangle_eq_two_mul_radius` (`:298`) — exact concl
+    `dist p₁ p₃ / |Real.Angle.sin (∡ p₁ p₂ p₃)| = 2 * s.radius`, matches doc.
+  - `two_zsmul_oangle_eq` (`:164`) — exact concl `(2:ℤ)•∡ p₁ p₂ p₄ = (2:ℤ)•∡ p₁ p₃ p₄`,
+    hyps `p₂≠p₁, p₂≠p₄, p₃≠p₁, p₃≠p₄`, matches doc.
+  - **Prefer the `Cospherical.two_zsmul_oangle_eq` form (`:178`)** for the cosine-side
+    descent: it consumes `Cospherical ({F_b, X, P, F_c} : Set P)` *directly* (same four
+    distinctness hyps), so no explicit `s : Sphere P` / named center+radius is needed —
+    the Thales setup yields cospherical-ness of the four feet+`X`+`P` immediately
+    (`cospherical_of_two_zsmul_oangle_eq_of_not_collinear` or `Sphere.ofDiameter`
+    membership of all four), then this lemma is applied with zero sphere bookkeeping.
+    No phantom lemmas; both signatures are real.
+
+Aristotle 404 (16th consecutive cycle). Companion left in known-good 2-sorry state
+(unchanged Lean since cycle-14; cycle-15/16 are strategy-doc only); watcher
+(PID 13290) ships the cycle-14 commit (Thales lemma `angle_pedalFoot_eq_pi_div_two`,
+sig re-verified against `Angle/Unoriented/Projection.lean:28`) as a fresh PR on the
+next quiet build window — prior PR #26042 merged, so a NEW PR is required.
