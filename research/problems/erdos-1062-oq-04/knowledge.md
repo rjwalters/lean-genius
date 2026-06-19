@@ -43,6 +43,22 @@ computable extremal function `maxNDKOSize k n`, with:
   `maxNDKOSize_ge_half` (≥ n − ⌊n/2⌋ via the primitive upper-half interval) —
   sandwiching `⌈n/2⌉ ≤ maxNDKOSize k n ≤ n` for `k ≥ 1`.
 
+**Continuation (same session) — k-dependent lower bound PROVED**:
+`maxNDKOSize_ge_kfold : 1 ≤ k → n − ⌊n/(k+1)⌋ ≤ maxNDKOSize k n` (Section VI),
+witnessed by the interval `I = {⌊n/(k+1)⌋+1,…,n}`. This strengthens
+`maxNDKOSize_ge_half` (the `k=1` case); for `k=2` it gives `n − ⌊n/3⌋ ≈ 0.667n`,
+recovering the *order* of Lebensold's `0.6725n` lower bound for the base #1062
+function. Proof exactly as scoped in the prior Next Steps:
+- `noDivides_upper_kfold`: each `a ∈ I` has `< k` proper multiples. Core fact
+  `n < a·(k+1)` from `a ≥ ⌊n/(k+1)⌋+1` is nonlinear, discharged by `omega` after
+  feeding it `Nat.div_add_mod` + `Nat.mod_lt` + a `ring`-normalized product.
+  Then `⌊n/a⌋ ≤ k` via `Nat.div_lt_iff_lt_mul`, and
+  `card (properMultiples a I) ≤ card (Icc 2 ⌊n/a⌋) = ⌊n/a⌋−1` via the injection
+  `b ↦ b/a` (`Finset.card_le_card_of_injOn`; injectivity from
+  `Nat.div_mul_cancel`).
+- File now 352 L, 13 theorems / 2 private lemmas / 5 defs, still 0 sorry /
+  0 axiom.
+
 **Key technical decisions**:
 - Count proper multiples as a **decidable `Finset.filter`**, so the predicate
   and `maxNDKOSize` are computable and concrete cases close by `decide`.
@@ -83,12 +99,12 @@ building.
 
 ## Next Steps (open, out of current scope)
 
-- **k-dependent lower bound** `maxNDKOSize k n ≥ n − ⌊n/(k+1)⌋` via the interval
-  `{⌊n/(k+1)⌋+1,…,n}`: each element `a` there has `⌊n/a⌋ ≤ k`, so at most `k-1`
-  proper multiples `≤ n`. The arithmetic core `n < (k+1)·a` from `a ≥ ⌊n/(k+1)⌋+1`
-  is nonlinear in `(k, a)` (omega can't do it directly) — bound
-  `card (properMultiples a I) ≤ card (Icc 2 (n/a)) = n/a − 1` via an injection
-  `b ↦ b/a` into `Icc 2 (n/a)`, then `n/a ≤ k` from the division bound. Good
-  Aristotle candidate.
+- ~~**k-dependent lower bound** `maxNDKOSize k n ≥ n − ⌊n/(k+1)⌋`~~ — **DONE**
+  this session (`maxNDKOSize_ge_kfold`, Section VI). See Insights above.
+- **k-dependent UPPER bound** matching `n − ⌊n/(k+1)⌋`? The witness interval is
+  primitive-flavoured; the true extremal set likely beats it (the base `k=2`
+  optimum is `≈0.6725n > 2/3`). An upper bound `maxNDKOSize k n ≤ c_k·n` with
+  `c_k < 1` for fixed `k` would be the natural next target (hard — this is where
+  the base #1062 difficulty lives).
 - Existence/location of a limiting density `d(k)`; whether `d(k) → 1`.
 - Irrationality of any `d(k)` (the k-fold form of the still-open #1062 question).
