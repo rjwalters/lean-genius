@@ -18,7 +18,11 @@
       "List.getLast?"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "walks and paths",
+      "Lean 4 list operations"
+    ]
   },
   {
     "id": "ann-e915-vertex-disjoint",
@@ -39,7 +43,11 @@
       "vertex cut"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "walks and paths",
+      "Menger's theorem"
+    ]
   },
   {
     "id": "ann-e915-edge-disjoint",
@@ -59,7 +67,11 @@
       "Menger's theorem (edge version)"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "edges as vertex pairs",
+      "simple graph adjacency symmetry"
+    ]
   },
   {
     "id": "ann-e915-m-vertex-disjoint",
@@ -79,7 +91,11 @@
       "pairwise property"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "vertex-disjoint paths",
+      "Fin indexing",
+      "existential quantification"
+    ]
   },
   {
     "id": "ann-e915-k-function",
@@ -99,7 +115,11 @@
       "Ramsey theory"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Turán-type extremal functions",
+      "edge-count thresholds"
+    ]
   },
   {
     "id": "ann-e915-ell-function",
@@ -118,7 +138,11 @@
       "monotonicity of extremal functions"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "edge-disjoint paths",
+      "extremal threshold functions",
+      "monotonicity inequalities"
+    ]
   },
   {
     "id": "ann-e915-conjecture",
@@ -138,7 +162,11 @@
       "Turán-type conjecture"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "complete graph K_m",
+      "binomial coefficients"
+    ]
   },
   {
     "id": "ann-e915-extremal",
@@ -158,7 +186,11 @@
       "complete graph"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal construction",
+      "complete graph K_m",
+      "lower bound witnesses"
+    ]
   },
   {
     "id": "ann-e915-k2",
@@ -177,7 +209,11 @@
       "Euler's formula for trees"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "cycles in graphs",
+      "trees and edge counts",
+      "vertex-disjoint paths"
+    ]
   },
   {
     "id": "ann-e915-bartfai",
@@ -196,7 +232,11 @@
       "conjecture_m3"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal threshold k_m(n)",
+      "parity arguments",
+      "vertex-disjoint paths"
+    ]
   },
   {
     "id": "ann-e915-bollobas-k4",
@@ -215,7 +255,11 @@
       "extremal graph theory"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal threshold k_m(n)",
+      "Bollobás-Erdős conjecture",
+      "extremal graph theory"
+    ]
   },
   {
     "id": "ann-e915-conjecture-small-m",
@@ -236,7 +280,11 @@
       "conjecture_m4"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Bollobás-Erdős conjecture",
+      "modular arithmetic",
+      "binomial coefficients"
+    ]
   },
   {
     "id": "ann-e915-leonard-counterexample",
@@ -256,7 +304,11 @@
       "conjecture_false_m5"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "counterexample construction",
+      "vertex and edge counting",
+      "Bollobás-Erdős conjecture"
+    ]
   },
   {
     "id": "ann-e915-leonard-lower-bound",
@@ -276,7 +328,11 @@
       "sorensen_thomassen_k5"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic lower bounds",
+      "Filter.atTop eventually quantifier",
+      "rational constants"
+    ]
   },
   {
     "id": "ann-e915-sorensen-thomassen",
@@ -295,7 +351,11 @@
       "conjecture_false_m5"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "exact extremal formulas",
+      "floor division",
+      "asymptotic growth rates"
+    ]
   },
   {
     "id": "ann-e915-mader-disproof",
@@ -315,6 +375,10 @@
       "conjecture_false_large_m"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic counting arguments",
+      "Bollobás-Erdős conjecture",
+      "negation of conjectures"
+    ]
   }
 ]
