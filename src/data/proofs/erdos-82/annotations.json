@@ -16,7 +16,11 @@
       "induced subgraphs",
       "Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Theory",
+      "Asymptotic Growth",
+      "Extremal Combinatorics"
+    ]
   },
   {
     "id": "erdos-82-regular",
@@ -35,7 +39,11 @@
       "graph regularity",
       "algebraic graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Degree",
+      "Simple Graphs",
+      "Graph Adjacency"
+    ]
   },
   {
     "id": "erdos-82-induced",
@@ -54,7 +62,11 @@
       "vertex subset",
       "SimpleGraph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Subsets",
+      "Subtype Construction",
+      "Symmetric Relations"
+    ]
   },
   {
     "id": "erdos-82-fn",
@@ -73,7 +85,11 @@
       "graph invariant",
       "sSup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Supremum",
+      "Existential Quantifiers",
+      "Noncomputable Definitions"
+    ]
   },
   {
     "id": "erdos-82-trivial",
@@ -92,7 +108,11 @@
       "independent set",
       "0-regular"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cliques",
+      "Independent Sets",
+      "Regular Graphs"
+    ]
   },
   {
     "id": "erdos-82-ramsey",
@@ -111,7 +131,11 @@
       "Erdős-Szekeres",
       "diagonal Ramsey"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Numbers",
+      "Erdos-Szekeres Bound",
+      "Binary Logarithm"
+    ]
   },
   {
     "id": "erdos-82-aks",
@@ -130,7 +154,11 @@
       "upper bound",
       "extremal construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Asymptotic Upper Bounds",
+      "Random Graph Constructions"
+    ]
   },
   {
     "id": "erdos-82-small",
@@ -149,7 +177,11 @@
       "OEIS A390256",
       "computational graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "OEIS Sequences",
+      "Inverse Functions",
+      "Infimum"
+    ]
   },
   {
     "id": "erdos-82-conjecture",
@@ -168,7 +200,11 @@
       "Filter.Tendsto",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto",
+      "Limits At Infinity",
+      "Logarithmic Growth"
+    ]
   },
   {
     "id": "erdos-82-connections",
@@ -187,7 +223,11 @@
       "random graphs",
       "Erdős-Sauer"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Diagonal Ramsey Numbers",
+      "Random Graphs",
+      "Degree-Constrained Subgraphs"
+    ]
   },
   {
     "id": "erdos-82-summary",
@@ -206,6 +246,10 @@
       "open problem",
       "growth rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower And Upper Bounds",
+      "Open Problems",
+      "Asymptotic Gap"
+    ]
   }
 ]
