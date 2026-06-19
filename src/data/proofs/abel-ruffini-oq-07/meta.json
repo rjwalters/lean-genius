@@ -57,6 +57,7 @@
       "Polynomial anchoring (f_natDegree, f_monic, natDegree_prime): X⁵−X−1 is monic of prime degree 5.",
       "Documentation of the open gap: the two hypotheses are the output of the Dedekind–Frobenius bridge shared with inverse-galois-a5-oq-01; closing it there closes this problem.",
       "Concrete Frobenius witness (frob2, frob2_not_mem_alternating, frob2_pow_three_eq_swap, frob2_pow_three_isSwap): exhibits a (2,3)-cycle-type element (0 1)(2 3 4) ∈ S₅ modelling a Frobenius element of f mod 2, machine-checks it is odd and that its cube is the transposition (0 1) — making the prose 'order-6 Frobenius ⟹ transposition' step into verified permutation data.",
+      "Machine-checked mod-2 factorisation (f2, f2_factorization, quad_no_root_mod2, cubic_no_root_mod2): verifies the polynomial identity X⁵−X−1 = (X²+X+1)(X³+X²+1) in 𝔽₂[X] (the 2-coefficients of the expansion vanish in characteristic 2, via linear_combination against (2 : 𝔽₂[X]) = 0), and that each factor has no root in 𝔽₂ — so the quadratic and cubic are irreducible. This is the arithmetic input that JUSTIFIES the (2,3) cycle type modelled by frob2, previously only asserted in prose; it parallels the mod-3 no-root corroboration (no_root_mod3) for frob3's 5-cycle.",
       "Concrete p=3 Frobenius witness and capstone (frob3, frob3_pow_five, orderOf_frob3, five_dvd_card_of_frob3_mem, gal_eq_top_of_frobenii): exhibits the 5-cycle frob3 = (0 1 2 3 4) ∈ S₅ modelling a Frobenius element of f mod 3 (irreducible quintic), machine-checks orderOf frob3 = 5, and derives via Lagrange that any subgroup containing it has 5 ∣ |G| — supplying hypothesis (a) of gal_eq_top_of_five_dvd_and_swap from a single membership fact. The capstone gal_eq_top_of_frobenii assembles G = ⊤ = S₅ from both witnesses (frob3 gives 5 ∣ |G|, frob2³ gives the transposition), turning the entire prose cycle-type computation into verified permutation data modulo the open Dedekind–Frobenius bridge.",
       "Real-Galois-group order divisibility (five_dvd_card_gal): proves 5 ∣ Nat.card f.Gal for the GENUINE Galois group f.Gal of X⁵−X−1, conditional only on Irreducible f, via Polynomial.Gal.prime_degree_dvd_card. This discharges the order-divisibility half of the corrected proof WITHOUT the Dedekind–Frobenius bridge: where frob3 supplies 5 ∣ |G| for an abstract subgroup G ≤ S₅, this supplies it for the real f.Gal, reducing that half of the open bridge to the separately-classical irreducibility of f.",
       "Unconditional generation theorem (closure_frobenii_eq_top): the two explicit permutations frob2 = (0 1)(2 3 4) and frob3 = (0 1 2 3 4) generate the whole symmetric group, Subgroup.closure {frob2, frob3} = ⊤. Specializes the conditional capstone gal_eq_top_of_frobenii to the subgroup they generate (both are members of their own closure), giving the concrete, hypothesis-free form of the S₅ criterion: the order-5 cycle forces 5 ∣ |⟨frob2,frob3⟩| and the cube of the order-6 element is the transposition, so the generated subgroup cannot be proper. (Classically, the transposition (0 1) and the 5-cycle (0 1 2 3 4) generate S₅.)",
@@ -70,7 +71,7 @@
       "Lean 4 and Mathlib"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 348,
+    "lineCount": 378,
     "relatedProblems": [
       {
         "id": "abel-ruffini-oq-04-oq-01",
@@ -81,8 +82,8 @@
         "relationship": "Needs the SAME Dedekind–Frobenius bridge (cycle type of Frobenius from factor type mod p); closing it there supplies this file's two hypotheses."
       }
     ],
-    "theoremCount": 21,
-    "definitionCount": 5
+    "theoremCount": 23,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Paolo Ruffini (1799) and Niels Henrik Abel (1824) showed there is no general radical formula for the quintic; Évariste Galois (1831) recast solvability as a property of the equation's permutation group, making 'Gal not solvable' the modern criterion for unsolvability by radicals. A concrete unsolvable quintic therefore needs a polynomial whose Galois group is non-solvable — and the smallest non-solvable transitive subgroups of S_5 are A_5 and S_5. Ernst Selmer (1956, Math. Scand. 4) proved the trinomials X^n - X - 1 irreducible over Q for all n, making X^5 - X - 1 a natural candidate witness. The standard tool for pinning down such a Galois group is Dedekind's theorem (1880s): for a prime p not dividing the discriminant, the factorization type of f mod p equals the cycle type of a Frobenius element of Gal(f). Combined with Frobenius's density results, this turns Galois-group identification into a finite set of modular factorizations — the method underlying every computer-algebra Galois routine (GAP, PARI/GP, Magma).",
@@ -266,10 +267,10 @@
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ07",
-    "lineCount": 348,
+    "lineCount": 378,
     "axiomCount": 0,
-    "theoremCount": 21,
-    "definitionCount": 5,
+    "theoremCount": 23,
+    "definitionCount": 6,
     "sorries": 0,
     "path": "Proofs/AbelRuffiniOQ07.lean"
   },

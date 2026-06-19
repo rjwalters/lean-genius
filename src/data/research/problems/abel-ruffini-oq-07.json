@@ -17,9 +17,9 @@
   },
   "currentState": {
     "phase": "FORMALIZE",
-    "since": "2026-06-18T21:30:00-07:00",
-    "iteration": 2,
-    "focus": "Verified the corrected group-theoretic reduction in Lean (Proofs/AbelRuffiniOQ07.lean): assembly criterion gal_eq_top_of_five_dvd_and_swap (5∣|G| + swap ∈ G ⟹ S₅), formalized the correction prod_two_swaps_mem_alternating (double transposition is EVEN, refuting the curated 3-real-roots route), plus discriminant direction and polynomial degree facts. 0 sorry / 0 axiom; the two Frobenius inputs are explicit hypotheses.",
+    "since": "2026-06-19T05:00:00-07:00",
+    "iteration": 3,
+    "focus": "Machine-checked the mod-2 factorisation underlying frob2's (2,3) cycle type (r3): f2_factorization proves X⁵−X−1 = (X²+X+1)(X³+X²+1) in 𝔽₂[X] (linear_combination against (2:𝔽₂[X])=0), and quad_no_root_mod2 / cubic_no_root_mod2 (decide) show each factor has no 𝔽₂-root, hence is irreducible. Turns the previously prose-only mod-2 factorisation insight into verified arithmetic, paralleling no_root_mod3 for frob3. Build GREEN (3066 jobs); all three new theorems depend only on propext/Classical.choice/Quot.sound. Still 0 sorry / 0 axiom; the transposition input to gal_eq_top_of_five_dvd_and_swap remains a hypothesis pending the Dedekind–Frobenius bridge.",
     "blockers": [
       "Dedekind–Frobenius bridge (factor type mod unramified p ⟹ matching cycle type in f.Gal) not in Mathlib v4.26.0; same bridge axiomatised as three_dvd_gal_card in InverseGaloisA5.lean. Supplies the two hypotheses (5∣|Gal|, swap∈Gal)."
     ],
@@ -31,7 +31,8 @@
       "five_dvd_card_gal (AbelRuffiniOQ07.lean:156): Irreducible f → 5 ∣ Nat.card f.Gal for the REAL Galois group f.Gal, via Polynomial.Gal.prime_degree_dvd_card + natDegree_prime. Verified (0 sorry/0 axiom), conditional only on Irreducible f. Connects the entry to Mathlib Polynomial.Gal for the first time (previously only abstract Subgroup S5).",
       "no_root_mod3 + f3_no_root (AbelRuffiniOQ07.lean): X⁵−X−1 has no root in 𝔽₃ (decide over ZMod 3), the linear-factor obstruction of the mod-3 irreducibility argument. f3 := (X^5-X-1 : (ZMod 3)[X]). Verified, 0 sorry. The remaining obstruction (no monic quadratic factor over 𝔽₃) resists decide because polynomial %ₘ does not kernel-reduce through Finsupp — left as documented next step.",
       "f_irreducible (AbelRuffiniOQ07.lean): Irreducible f via X_pow_sub_X_sub_one_irreducible_rat (by norm_num).",
-      "five_dvd_card_gal_unconditional (AbelRuffiniOQ07.lean): 5 ∣ Nat.card f.Gal UNCONDITIONALLY (0 sorry, 0 axiom). Build GREEN, 3066 jobs."
+      "five_dvd_card_gal_unconditional (AbelRuffiniOQ07.lean): 5 ∣ Nat.card f.Gal UNCONDITIONALLY (0 sorry, 0 axiom). Build GREEN, 3066 jobs.",
+      "f2 + f2_factorization + quad_no_root_mod2 + cubic_no_root_mod2 (AbelRuffiniOQ07.lean, r3 2026-06-19): the mod-2 factorisation X⁵−X−1 = (X²+X+1)(X³+X²+1) in 𝔽₂[X], machine-checked as a polynomial identity via linear_combination against (2:𝔽₂[X])=0 (char-2 kills the 2-coefficients of the expansion), plus decide-checks that both factors are root-free over 𝔽₂ hence irreducible. Formalizes the (2,3) factor-type insight that justifies frob2's cycle structure; the mod-2 analogue of no_root_mod3. Verified 0 sorry/0 axiom, axiom set {propext, Classical.choice, Quot.sound}. Build GREEN."
     ],
     "insights": [
       "VERIFIED (sympy/numpy): x⁵−x−1 has exactly ONE real root (≈1.1673), not three; 4 non-real roots = two conjugate pairs. Problem statement point (iii) is FALSE.",
