@@ -16,7 +16,11 @@
       "Partition problems",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subset sums of distinct integers",
+      "partitioning {1,...,n-1} into classes",
+      "asymptotic order notation with Euler totient φ(n)"
+    ]
   },
   {
     "id": "ann-e360-nsum-free",
@@ -34,7 +38,11 @@
       "Sum-free sets"
     ],
     "mathContext": "See annotation content for formal details of n-sum-free sets",
-    "prerequisites": []
+    "prerequisites": [
+      "finite subsets and subset relation",
+      "summing elements of a Finset",
+      "representing n as a sum of distinct integers"
+    ]
   },
   {
     "id": "ann-e360-valid-partition",
@@ -53,7 +61,11 @@
       "Disjoint sets"
     ],
     "mathContext": "See annotation content for formal details of valid partitions",
-    "prerequisites": []
+    "prerequisites": [
+      "disjoint sets and set cover of {1,...,n-1}",
+      "n-sum-free condition on each part",
+      "partition of a finite set"
+    ]
   },
   {
     "id": "ann-e360-f-definition",
@@ -72,7 +84,11 @@
       "Complexity"
     ],
     "mathContext": "See annotation content for formal details of the function f(n)",
-    "prerequisites": []
+    "prerequisites": [
+      "infimum (sInf) of a set of natural numbers",
+      "valid partition sizes for {1,...,n-1}",
+      "noncomputable definitions and NP-hard minimization"
+    ]
   },
   {
     "id": "ann-e360-alon-erdos",
@@ -90,7 +106,11 @@
       "Asymptotic bounds",
       "Probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic upper and lower bounds with ≪ notation",
+      "cube-root n^{1/3} growth rate",
+      "probabilistic method on random colorings"
+    ]
   },
   {
     "id": "ann-e360-vu",
@@ -108,7 +128,11 @@
       "Number theory"
     ],
     "mathContext": "See annotation content for formal details of vu (2007)",
-    "prerequisites": []
+    "prerequisites": [
+      "lower bounds with ≫ notation",
+      "n^{1/3}/log n versus n^{1/3}/(log n)^{4/3}",
+      "subset sum estimates"
+    ]
   },
   {
     "id": "ann-e360-cfp",
@@ -126,7 +150,11 @@
       "Euler's totient",
       "Asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler totient φ(n) and the ratio n/φ(n)",
+      "matching upper and lower bounds (asymptotic equivalence ≍)",
+      "small prime divisors constraining subset sums"
+    ]
   },
   {
     "id": "ann-e360-cube-root",
@@ -145,7 +173,11 @@
       "Primorials"
     ],
     "mathContext": "See annotation content for formal details of why cube-root growth?",
-    "prerequisites": []
+    "prerequisites": [
+      "heuristic lower bound from elements of size n^{1/3}",
+      "Euler totient φ(n) and primorials",
+      "n/φ(n) growing like log log n"
+    ]
   },
   {
     "id": "ann-e360-prime-ratio",
@@ -163,7 +195,11 @@
       "Totient function"
     ],
     "mathContext": "See annotation content for formal details of prime totient ratio",
-    "prerequisites": []
+    "prerequisites": [
+      "Euler totient at a prime φ(p)=p-1",
+      "the ratio p/(p-1) approaching 1",
+      "composite numbers with many prime factors"
+    ]
   },
   {
     "id": "ann-e360-small-cases",
@@ -181,7 +217,11 @@
       "Verification"
     ],
     "mathContext": "See annotation content for formal details of small cases",
-    "prerequisites": []
+    "prerequisites": [
+      "enumerating subsets and their sums",
+      "checking the n-sum-free condition by hand",
+      "f(4)=2 forced by 1+3=4"
+    ]
   },
   {
     "id": "ann-e360-connections",
@@ -200,7 +240,11 @@
       "Ramsey theory"
     ],
     "mathContext": "See annotation content for formal details of connections to related problems",
-    "prerequisites": []
+    "prerequisites": [
+      "sum-free sets avoiding x+y=z",
+      "Schur numbers and monochromatic solutions",
+      "complete sequences and the NP-complete subset sum problem"
+    ]
   },
   {
     "id": "ann-e360-main-result",
@@ -218,6 +262,10 @@
       "Asymptotic equivalence",
       "Order of growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "two-sided asymptotic bounds with constants c₁, c₂",
+      "the inequality n/φ(n) ≥ 1",
+      "slow growth of (log log n)^{2/3}"
+    ]
   }
 ]
