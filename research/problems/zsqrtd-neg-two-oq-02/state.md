@@ -1,5 +1,44 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S15 — Minkowski slice build-verified GREEN + SingleAP docstring overstatement corrected (researcher-1, 2026-06-19)
+
+**Phase**: ACT (verify + research-hygiene). Docker AVAILABLE (`docker info` OK);
+built two leaf modules under the safety wrapper. No math changed; frontier unchanged.
+
+**1. `ThreeSquaresSliceMinkowski.lean` BUILD-VERIFIED GREEN.** The previously
+"build-pending" `d = 2` Minkowski core is now machine-checked:
+`./proofs/scripts/docker-build.sh Proofs.ThreeSquaresSliceMinkowski`
+→ `Build completed successfully (7743 jobs)` (one benign `unusedSimpArgs` linter
+warning on `hB@263`, no error). The file is sorry-free/axiom-free: the geometry-of-
+numbers input `exists_sheared_point_lt_two_mul_d2` (nonzero `ℤ²` point in the sheared
+open ellipse, `vol = √2·π ≈ 4.443 > 4` independent of `p`, via
+`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`) and the arithmetic glue
+`slice_point_of_sheared_d2` compile against the project's Mathlib. NOTE: this slice
+belongs to the *relaxed*-key-lemma route; the key lemma actually proved in
+`ThreeSquares.lean:1440` is the elementary `p = d·n − 1` descent, so the slice is
+currently a self-contained, verified-but-unconsumed companion (see item 2).
+
+**2. `ThreeSquaresSingleAP.lean` docstring OVERSTATEMENT corrected (S13 TODO).**
+S13 flagged that the header claimed the file "removes that carve-out at the source"
+and that `dirichlet_key_lemma` "never uses the rigid tie `p = d·n − 1`" — true only
+of a hypothetical relaxed engine that was never proved. The ACTUALLY-proved key lemma
+(`ThreeSquares.lean:1440`) uses the tie essentially (`p ∣ z` + `d·z² ≥ p² > p` ⟹
+`z = 0`), and the large Dirichlet prime `p ≡ 1 (mod 4n)` produced here is not of that
+form, so `legendreSym_neg_n_eq_one` / `exists_prime_eq_one_mod_four_mul` are ORPHAN
+(grep-confirmed: called nowhere outside the file). The header now states this
+accurately and labels the two theorems a reusable witness held in reserve for a future
+relaxed-key-lemma route. STATUS line updated build-pending → build-verified.
+Comment-only on a registered file; BUILD-VERIFIED:
+`docker-build.sh Proofs.ThreeSquaresSingleAP` → `Build completed successfully`.
+
+**FRONTIER UNCHANGED.** `ThreeSquares.lean` still carries the lone sufficiency axiom
+`not_excluded_form_is_sum_three_sq` (`:1838`). Both factors of the eventual
+elimination are now machine-checked or build-verified EXCEPT factor (1): every
+non-`4ᵃ(8b+7)` `n` is a sum of three *rational* squares (Hasse–Minkowski for ternary
+forms, absent from Mathlib). That remains the deep, multi-session open piece. Factor
+(2) Davenport–Cassels (rational ⟹ integral) is build-verified (S14); the Minkowski
+slice and the SingleAP witness are verified support for the relaxed route.
+
 ## S14 — `ThreeSquaresDavenportCassels.lean` REPAIRED + REGISTERED (build-verified GREEN, researcher-3, 2026-06-19)
 
 **Phase**: ACT. Docker AVAILABLE this session (`docker ps` OK); built under the 8GB cap.

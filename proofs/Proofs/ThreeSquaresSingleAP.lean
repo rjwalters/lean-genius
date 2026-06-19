@@ -10,11 +10,11 @@
   (`no_residue3_witness`), forcing a separate `Residue3Property` carve-out and a
   delicate `m = t² + 2p` Hardy–Littlewood-type existence input.
 
-  THIS FILE removes that carve-out at the source.  The Minkowski / lattice
-  construction inside `dirichlet_key_lemma` only ever uses the quadratic
-  side-condition `legendreSym p (−n) = 1`; it never uses the rigid tie
-  `p = d·n − 1`.  Dropping the tie, the side-condition is satisfied by a SINGLE
-  universal arithmetic progression:
+  THIS FILE supplies the quadratic side-condition `legendreSym p (−n) = 1` for a
+  *relaxed* form of the key lemma — one that would consume ANY prime `p` carrying
+  that residue condition, rather than the rigid `p = d·n − 1`.  For such a relaxed
+  engine the side-condition is satisfied by a SINGLE universal arithmetic
+  progression:
 
       **Single-AP witness.**  For odd `n` and any prime `p ≡ 1 (mod 4n)`,
             legendreSym p (−n) = 1.
@@ -23,6 +23,17 @@
   supplies a prime in the always-admissible class `1 (mod 4n)` (`gcd(1,4n)=1`),
   so every odd `n` — including `n ≡ 3 (mod 8)` — gets a usable witness from one
   uniform branch.  No `t² + 2p`, no multi-residue spread, no Residue3 carve-out.
+
+  CAVEAT (corrected S15, 2026-06-19 — see `ThreeSquaresResidue3Obstruction`).  The
+  `dirichlet_key_lemma` ACTUALLY PROVED in `ThreeSquares.lean:1440` is NOT that
+  relaxed engine: its elementary descent uses the tie `p = d·n − 1` essentially
+  (`p ∣ z` together with `d·z² ≥ p² > p` forces `z = 0`, after which `x² + d·y² =
+  d·n − 1` reconstructs `n`).  A large Dirichlet prime `p ≡ 1 (mod 4n)` is not of
+  the form `d·n − 1`, so the witness below does NOT slot into the proved key lemma,
+  and this file contains no descent reconnecting such a `p` to `n = x²+y²+z²`.
+  Consequently `legendreSym_neg_n_eq_one` and `exists_prime_eq_one_mod_four_mul`
+  are currently ORPHAN: a correct, reusable quadratic witness held in reserve for a
+  future relaxed-key-lemma route, not consumed by the current representation engine.
 
   PROOF.  Pure quadratic reciprocity, the positive mirror of the obstruction:
   `p ≡ 1 (mod 4) ⇒ (−1 | p) = 1`, so `(−n | p) = (n | p)`; `p ≡ 1 (mod 4)` makes
@@ -42,9 +53,8 @@
   STATUS: 0 sorries, 0 axioms.  The Dirichlet existence input
   (`exists_prime_eq_one_mod_four_mul`) is discharged via
   `Nat.forall_exists_prime_gt_and_modEq` at the always-admissible class `1 (mod 4n)`.
-  Registered in `Proofs.lean`.  Build-pending the deployer gate (Docker pool was
-  saturated this session, so no local leaf build was run); every Mathlib bearer is
-  name-checked against the pinned rev.
+  Registered in `Proofs.lean`.  Build-verified S15 (2026-06-19):
+  `docker-build.sh Proofs.ThreeSquaresSingleAP` → `Build completed successfully`.
 -/
 import Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol
 import Mathlib.NumberTheory.LegendreSymbol.Basic
