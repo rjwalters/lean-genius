@@ -16,7 +16,11 @@
       "Additive combinatorics",
       "Asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Additive combinatorics",
+      "Asymptotic notation",
+      "Representation functions"
+    ]
   },
   {
     "id": "ann-e763-rep-count",
@@ -35,7 +39,11 @@
       "Additive bases",
       "Counting functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Convolution",
+      "Additive bases",
+      "Counting functions"
+    ]
   },
   {
     "id": "ann-e763-rep-count-alt",
@@ -53,7 +61,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Convolution",
+      "Set membership"
+    ]
   },
   {
     "id": "ann-e763-cumulative",
@@ -72,7 +83,10 @@
       "Counting functions",
       "Asymptotic growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Summation",
+      "Asymptotic growth"
+    ]
   },
   {
     "id": "ann-e763-linear-growth",
@@ -91,7 +105,10 @@
       "Bounded error",
       "Linear growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Big-O notation",
+      "Asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e763-truncate",
@@ -109,7 +126,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite sets",
+      "Truncation"
+    ]
   },
   {
     "id": "ann-e763-erdos-fuchs",
@@ -128,7 +148,11 @@
       "Parseval's identity",
       "Trigonometric sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fourier analysis",
+      "Parseval's identity",
+      "Generating functions"
+    ]
   },
   {
     "id": "ann-e763-main",
@@ -146,7 +170,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Proof by contradiction"
+    ]
   },
   {
     "id": "ann-e763-error-term",
@@ -164,7 +191,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Big-O notation",
+      "Error analysis"
+    ]
   },
   {
     "id": "ann-e763-strong-form",
@@ -183,7 +213,10 @@
       "Error bounds",
       "Asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Little-o notation",
+      "Asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e763-montgomery-vaughan",
@@ -201,7 +234,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Analytic number theory",
+      "Error bounds"
+    ]
   },
   {
     "id": "ann-e763-variance",
@@ -219,7 +255,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Variance",
+      "Second-moment method"
+    ]
   },
   {
     "id": "ann-e763-fourier",
@@ -238,7 +277,11 @@
       "Fourier series",
       "Parseval's identity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fourier series",
+      "Generating functions",
+      "Parseval's identity"
+    ]
   },
   {
     "id": "ann-e763-squares",
@@ -256,7 +299,10 @@
       "Sums of squares",
       "Jacobi's formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sums of two squares",
+      "Jacobi's two-square theorem"
+    ]
   },
   {
     "id": "ann-e763-arithmetic-prog",
@@ -274,7 +320,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic progressions",
+      "Counting functions"
+    ]
   },
   {
     "id": "ann-e763-sidon",
@@ -292,7 +341,10 @@
       "B_h sequences",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets",
+      "Additive combinatorics"
+    ]
   },
   {
     "id": "ann-e763-sidon-theorem",
@@ -310,7 +362,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets",
+      "Asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e763-k-fold",
@@ -328,7 +383,10 @@
       "k-fold sums"
     ],
     "mathContext": "See annotation content for formal details of problem #764: k-fold sums",
-    "prerequisites": []
+    "prerequisites": [
+      "k-fold sumsets",
+      "Additive bases"
+    ]
   },
   {
     "id": "ann-e763-summary",
@@ -346,6 +404,9 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Additive combinatorics",
+      "Asymptotic analysis"
+    ]
   }
 ]
