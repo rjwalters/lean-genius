@@ -16,7 +16,11 @@
       "probabilistic-method",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Theory",
+      "Diagonal Ramsey Numbers",
+      "Graph 2-Colorings"
+    ]
   },
   {
     "id": "ann-e77-ramsey-def",
@@ -35,7 +39,11 @@
       "complete-graph",
       "monochromatic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey's Theorem",
+      "Complete Graphs",
+      "Monochromatic Cliques"
+    ]
   },
   {
     "id": "ann-e77-small-values",
@@ -54,7 +62,11 @@
       "known-values",
       "alien-parable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Small Ramsey Numbers",
+      "Greenwood-Gleason Theorem",
+      "Exhaustive Search"
+    ]
   },
   {
     "id": "ann-e77-lower-bound",
@@ -73,7 +85,11 @@
       "union-bound",
       "erdos-1947"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Union Bound",
+      "Random Graph Colorings"
+    ]
   },
   {
     "id": "ann-e77-upper-bound",
@@ -92,7 +108,11 @@
       "recurrence",
       "90-years"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdos-Szekeres Recurrence",
+      "Binomial Coefficient Bounds",
+      "Off-Diagonal Ramsey Numbers"
+    ]
   },
   {
     "id": "ann-e77-growth-rate",
@@ -111,7 +131,11 @@
       "limit",
       "normalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Exponential Growth Rate",
+      "k-th Root Normalization",
+      "Sequence Limits"
+    ]
   },
   {
     "id": "ann-e77-erdos-bounds",
@@ -130,7 +154,11 @@
       "limsup",
       "verified"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limit Inferior",
+      "Limit Superior",
+      "Exponential Bounds"
+    ]
   },
   {
     "id": "ann-e77-cgms",
@@ -149,7 +177,11 @@
       "cgms",
       "annals-math"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Diagonal Ramsey Bounds",
+      "Book Algorithm",
+      "Exponential Improvement"
+    ]
   },
   {
     "id": "ann-e77-gnnw",
@@ -168,7 +200,11 @@
       "current-best",
       "improvement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper Bound Refinement",
+      "Limit Superior",
+      "Diagonal Ramsey Numbers"
+    ]
   },
   {
     "id": "ann-e77-open",
@@ -187,7 +223,11 @@
       "erdos-conjecture",
       "prize"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Existence of Limits",
+      "Erdos Conjecture",
+      "Liminf-Limsup Gap"
+    ]
   },
   {
     "id": "ann-e77-consistent",
@@ -206,6 +246,10 @@
       "verified",
       "erdos-conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Numerical Inequalities",
+      "Square Root of Two",
+      "Bound Consistency"
+    ]
   }
 ]
