@@ -16,7 +16,11 @@
       "Ramsey theory",
       "Schur numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "number theory",
+      "extremal set theory"
+    ]
   },
   {
     "id": "ann-792-sumfree-def",
@@ -35,7 +39,12 @@
       "finite sets",
       "subset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "finite combinatorics"
+    ]
   },
   {
     "id": "ann-792-f-axiom",
@@ -54,7 +63,11 @@
       "axiomatization",
       "infimum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 axiom declarations",
+      "extremal combinatorics",
+      "mathematical logic"
+    ]
   },
   {
     "id": "ann-792-erdos-bound",
@@ -72,7 +85,11 @@
       "middle third",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "elementary number theory",
+      "combinatorial constructions"
+    ]
   },
   {
     "id": "ann-792-ak-bound",
@@ -90,7 +107,11 @@
       "lower bound"
     ],
     "mathContext": "See annotation content for formal details of alon-kleitman bound",
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "additive combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-792-bourgain-bound",
@@ -108,7 +129,11 @@
       "lower bound"
     ],
     "mathContext": "See annotation content for formal details of bourgain bound",
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "harmonic analysis",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-792-bedert-bound",
@@ -126,7 +151,11 @@
       "second-order term",
       "logarithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "asymptotic analysis",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-792-egm-bound",
@@ -144,7 +173,11 @@
       "upper bound",
       "o(n)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "asymptotic analysis",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-792-asymptotic",
@@ -162,7 +195,11 @@
       "limit",
       "asymptotic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limits and filters",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-792-constructions",
@@ -181,7 +218,11 @@
       "construction",
       "middle third"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "combinatorial constructions",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-792-summary",
@@ -199,6 +240,10 @@
       "bounds composition"
     ],
     "mathContext": "See annotation content for formal details of summary theorems",
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "Lean 4 tactic mode",
+      "order relations"
+    ]
   }
 ]
