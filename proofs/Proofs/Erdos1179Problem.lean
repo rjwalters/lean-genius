@@ -225,7 +225,7 @@ theorem logloglog_div_loglog_tendsto_zero :
   -- Step 2: log(log(N)) → ∞, so eventually log(log(N)) ≥ max M 1
   have h_ll : Tendsto (fun N : ℕ => Real.log (Real.log (↑N : ℝ))) atTop atTop :=
     Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop)
-  rw [Filter.tendsto_atTop] at h_ll
+  rw [Filter.tendsto_atTop_atTop] at h_ll
   obtain ⟨N₀, hN₀⟩ := h_ll (max M 1)
   use N₀
   intro N hN hlog_pos
