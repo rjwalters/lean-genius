@@ -17,7 +17,12 @@
       "prime factorization"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "least common multiples",
+      "analytic number theory",
+      "Diophantine approximation"
+    ]
   },
   {
     "id": "erdos-677-lcm",
@@ -37,7 +42,12 @@
       "Finset.fold"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "least common multiples",
+      "Lean 4 definitions",
+      "Mathlib Finset operations"
+    ]
   },
   {
     "id": "erdos-677-conjecture",
@@ -56,7 +66,11 @@
       "prime distribution in intervals"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "arithmetic functions",
+      "injectivity of functions"
+    ]
   },
   {
     "id": "erdos-677-examples",
@@ -75,7 +89,11 @@
       "prime power distribution"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "arithmetic of small integers"
+    ]
   },
   {
     "id": "erdos-677-prime-factors",
@@ -94,7 +112,12 @@
       "Bertrand's postulate"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "Lean 4 definitions",
+      "finite sets"
+    ]
   },
   {
     "id": "erdos-677-strong",
@@ -114,7 +137,11 @@
       "Pell equations"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Diophantine equations",
+      "asymptotic finiteness arguments"
+    ]
   },
   {
     "id": "erdos-677-thue-siegel",
@@ -134,7 +161,11 @@
       "effective bounds"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Diophantine approximation",
+      "number theory",
+      "algebraic number theory"
+    ]
   },
   {
     "id": "erdos-677-basic-properties",
@@ -154,7 +185,12 @@
       "Lean 4 simp tactic"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "Mathlib simp tactic",
+      "least common multiples",
+      "Finset folds"
+    ]
   },
   {
     "id": "erdos-677-structural-axioms",
@@ -174,6 +210,10 @@
       "arithmetic axioms"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "divisibility theory",
+      "Lean 4 axioms"
+    ]
   }
 ]
