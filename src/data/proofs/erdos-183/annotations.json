@@ -16,7 +16,11 @@
       "graph-coloring",
       "growth-rates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Theory",
+      "Graph Coloring",
+      "Complete Graphs"
+    ]
   },
   {
     "id": "ann-183-edge-coloring",
@@ -35,7 +39,11 @@
       "coloring",
       "symmetry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete Graphs",
+      "Undirected Edges",
+      "Finite Index Types"
+    ]
   },
   {
     "id": "ann-183-mono-triangle",
@@ -54,7 +62,11 @@
       "monochromatic",
       "ramsey-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cliques",
+      "Triangle Graph K3",
+      "Edge Coloring"
+    ]
   },
   {
     "id": "ann-183-r3k-def",
@@ -73,7 +85,11 @@
       "ramsey-number",
       "finite-ramsey"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Ramsey Theorem",
+      "Minimum Of A Set",
+      "Edge Coloring"
+    ]
   },
   {
     "id": "ann-183-small-values",
@@ -92,7 +108,11 @@
       "greenwood-gleason",
       "ramsey-values"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Number R(3,3)",
+      "Exhaustive Case Analysis",
+      "Multicolor Ramsey Numbers"
+    ]
   },
   {
     "id": "ann-183-inductive",
@@ -111,7 +131,11 @@
       "induction",
       "recurrence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pigeonhole Principle",
+      "Mathematical Induction",
+      "Recurrence Relations"
+    ]
   },
   {
     "id": "ann-183-factorial",
@@ -130,7 +154,11 @@
       "euler-constant",
       "upper-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Factorial Growth",
+      "Solving Recurrences",
+      "Euler's Number e"
+    ]
   },
   {
     "id": "ann-183-schur",
@@ -149,7 +177,11 @@
       "sum-free",
       "arithmetic-ramsey"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Schur Numbers",
+      "Sum-Free Sets",
+      "Arithmetic Combinatorics"
+    ]
   },
   {
     "id": "ann-183-lower-bound",
@@ -168,7 +200,11 @@
       "lower-bound",
       "exponential-growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Additive Combinatorics",
+      "Asymptotic Lower Bounds",
+      "Probabilistic Constructions"
+    ]
   },
   {
     "id": "ann-183-kth-root",
@@ -187,7 +223,11 @@
       "growth-rate",
       "limit"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Exponential Growth Rate",
+      "Stirling's Approximation",
+      "Sequence Limits"
+    ]
   },
   {
     "id": "ann-183-main-question",
@@ -206,7 +246,11 @@
       "limit",
       "dichotomy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limits Of Sequences",
+      "Filter Tendsto",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-183-gap",
@@ -225,7 +269,11 @@
       "growth-rate",
       "unknown"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Bounds",
+      "Stirling's Approximation",
+      "Super-Exponential Growth"
+    ]
   },
   {
     "id": "ann-183-bounds-summary",
@@ -244,7 +292,11 @@
       "calc",
       "axiom-usage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Inequality Chaining",
+      "Calc Proof Mode",
+      "Upper And Lower Bounds"
+    ]
   },
   {
     "id": "ann-183-related",
@@ -263,7 +315,11 @@
       "diagonal-ramsey",
       "connections"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Multicolor Ramsey Numbers",
+      "Diagonal Ramsey Numbers",
+      "Ramsey Theory"
+    ]
   },
   {
     "id": "ann-183-main-theorem",
@@ -282,6 +338,10 @@
       "formal-statement",
       "dichotomy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Factorial Upper Bound",
+      "Law Of Excluded Middle",
+      "Convergence Dichotomy"
+    ]
   }
 ]
