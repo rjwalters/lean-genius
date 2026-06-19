@@ -291,4 +291,26 @@ theorem gal_eq_top_of_frobenii {G : Subgroup S5} [DecidablePred (· ∈ G)]
   gal_eq_top_of_five_dvd_and_swap (five_dvd_card_of_frob3_mem h3)
     (G.pow_mem h2 3) frob2_pow_three_isSwap
 
+/-- **The two Frobenius witnesses generate all of `S₅`** (unconditional).
+
+Specializing `gal_eq_top_of_frobenii` to the subgroup they generate, the two
+explicit permutations `frob2 = (0 1)(2 3 4)` and `frob3 = (0 1 2 3 4)` together
+generate the whole symmetric group: `⟨frob2, frob3⟩ = S₅`.  This is the concrete,
+hypothesis-free form of the assembly criterion — the order-`5` cycle supplies
+`5 ∣ |⟨frob2, frob3⟩|` and the cube of the order-`6` element supplies the
+transposition, so the generated subgroup cannot be proper.  (Classically: a
+transposition `(0 1)` together with the `5`-cycle `(0 1 2 3 4)` generate `S₅`.)
+
+The genuinely-open content of OQ-07 is *not* this group-theoretic fact but the
+Dedekind–Frobenius bridge placing cycle-type representatives inside the actual
+Galois group of `X⁵ − X − 1`. -/
+theorem closure_frobenii_eq_top :
+    Subgroup.closure ({frob2, frob3} : Set S5) = ⊤ := by
+  classical
+  have h2 : frob2 ∈ Subgroup.closure ({frob2, frob3} : Set S5) :=
+    Subgroup.subset_closure (Set.mem_insert _ _)
+  have h3 : frob3 ∈ Subgroup.closure ({frob2, frob3} : Set S5) :=
+    Subgroup.subset_closure (Set.mem_insert_of_mem _ rfl)
+  exact gal_eq_top_of_frobenii h3 h2
+
 end AbelRuffiniOQ07
