@@ -18,7 +18,11 @@
       "complex analysis"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "sequences and limits"
+    ]
   },
   {
     "id": "erdos-513-max-term",
@@ -37,7 +41,11 @@
       "order of entire functions"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "power series",
+      "real analysis"
+    ]
   },
   {
     "id": "erdos-513-max-modulus",
@@ -57,7 +65,11 @@
       "convexity"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "convex functions"
+    ]
   },
   {
     "id": "erdos-513-ratio",
@@ -76,7 +88,11 @@
       "liminf optimization"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "erdos-513-trivial-bound",
@@ -95,7 +111,11 @@
       "term-by-term bounds"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "inequalities",
+      "integration theory"
+    ]
   },
   {
     "id": "erdos-513-proved-structural",
@@ -114,7 +134,11 @@
       "real arithmetic in Lean"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "Mathlib library structure",
+      "real analysis"
+    ]
   },
   {
     "id": "erdos-513-kovari",
@@ -134,7 +158,11 @@
       "gap series"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "existence proofs"
+    ]
   },
   {
     "id": "erdos-513-clunie-hayman",
@@ -154,7 +182,11 @@
       "phase cancellation"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Fourier analysis",
+      "real analysis"
+    ]
   },
   {
     "id": "erdos-513-gap-theorem",
@@ -174,7 +206,11 @@
       "interval consistency"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "Mathlib library structure",
+      "real arithmetic"
+    ]
   },
   {
     "id": "erdos-513-conjecture",
@@ -195,6 +231,10 @@
       "supremum characterization"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "supremum and limits"
+    ]
   }
 ]
