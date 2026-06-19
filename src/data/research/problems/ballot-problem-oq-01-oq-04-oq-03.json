@@ -1,0 +1,71 @@
+{
+  "slug": "ballot-problem-oq-01-oq-04-oq-03",
+  "title": "Chung-Feller via Lindstrom-Gessel-Viennot (Non-Intersecting Lattice Paths)",
+  "phase": "ORIENT",
+  "status": "surveyed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\#\\{ \\text{lattice paths } (0,0)\\to(2n,0) \\text{ with } k \\text{ upsteps above axis}\\} = C_n, \\text{ via an LGV determinant of non-intersecting path families}",
+    "plain": "Re-prove the Chung-Feller theorem (the number of (+1,-1) lattice paths from (0,0) to (2n,0) with exactly k upsteps above the x-axis equals the Catalan number C_n, independent of k) using the Lindstrom-Gessel-Viennot lemma on non-intersecting lattice paths, rather than the cycle lemma used in the parent proof.",
+    "whyMatters": [
+      "Provides a determinantal / non-intersecting-paths perspective on Chung-Feller, complementing the cycle-lemma proof.",
+      "Would introduce the LGV lemma to the gallery, a broadly reusable enumerative tool."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Chung-Feller is ALREADY fully proved (0 sorries, 0 axioms) via the cycle lemma: ChungFellerBijection.chung_feller_uniform' in proofs/Proofs/BallotProblemOQ01OQ04OQ01.lean, re-exported as ChungFeller.chung_feller_uniform in BallotProblemOQ01OQ04.lean."
+    ],
+    "open": [
+      "An independent LGV-based proof of the same count."
+    ],
+    "goal": "Methodological re-proof via LGV; no new mathematical fact beyond the already-verified parent."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-19T21:56:11.000Z",
+    "iteration": 1,
+    "focus": "Feasibility survey of the LGV route.",
+    "blockers": [
+      "Mathlib has no Lindstrom-Gessel-Viennot lemma (confirmed: no Lindstrom/GesselViennot sources; only Catalan + DyckWord present)."
+    ],
+    "nextAction": "Decide between (a) building a Chung-Feller-specific Gessel-Viennot determinant lemma, or (b) deprioritizing since the target is already verified.",
+    "attemptCounts": { "total": 0, "currentApproach": 0, "approachesTried": 0 }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: Target already verified via cycle lemma in parent. LGV route blocked on missing Mathlib LGV lemma; full general LGV is a >500-line build. Marginal value is pedagogical only.",
+    "builtItems": [],
+    "insights": [
+      "The Chung-Feller theorem is already machine-verified (0 sorries, 0 axioms) via the cycle lemma in BallotProblemOQ01OQ04OQ01.lean (chung_feller_uniform'). This OQ only seeks an ALTERNATIVE proof, so marginal mathematical value is low (value-hierarchy: re-proof of an already-proved theorem).",
+      "Mathlib does NOT contain the Lindstrom-Gessel-Viennot lemma (grep for Lindstrom/GesselViennot in proofs/.lake/packages/mathlib/Mathlib returns nothing). Available related infra: Mathlib/Combinatorics/Enumerative/Catalan.lean and DyckWord.lean.",
+      "General LGV (det of the path-count matrix equals the signed sum over non-intersecting path families, proved by a sign-reversing involution on intersecting families plus Matrix.det permutation expansion) is a substantial build, estimated >500 lines and depending on Matrix.det, Equiv.Perm sign, and a careful involution argument.",
+      "A Chung-Feller-specific specialization could avoid the fully general lemma (e.g. a fixed small determinant of binomials counting non-intersecting pairs), but still requires the involution/sign machinery and is non-trivial."
+    ],
+    "mathlibGaps": [
+      "No Lindstrom-Gessel-Viennot lemma in Mathlib.",
+      "No general 'non-intersecting lattice path families' / signed determinant enumeration framework in Mathlib."
+    ],
+    "nextSteps": [
+      "If pursued: build a minimal Gessel-Viennot determinant lemma specialized to two non-intersecting monotone lattice paths, rather than the fully general LGV lemma.",
+      "Reuse Mathlib Catalan (Mathlib/Combinatorics/Enumerative/Catalan.lean) and the gallery's existing Dyck-path / balanced-path defs from BallotProblemOQ01OQ04Core.lean.",
+      "Alternatively deprioritize: the theorem is already verified, so the LGV proof adds pedagogy, not correctness."
+    ]
+  },
+  "tractability": "Blocked on missing Mathlib LGV; large build (>500 lines) for the general lemma. Low marginal value since target already verified.",
+  "significance": "Methodological/pedagogical alternative proof of an already-verified theorem.",
+  "tags": ["seeker-selected", "extension", "alternative-proof", "needs-infrastructure"],
+  "relatedProofs": [
+    "ballot-problem-oq-01-oq-04",
+    "ballot-problem-oq-01-oq-04-oq-01",
+    "ballot-problem-oq-01"
+  ],
+  "leanFiles": [],
+  "references": [
+    "Lindstrom, B. (1973). On vector representations of induced matroids.",
+    "Gessel, I. and Viennot, G. (1985). Binomial determinants, paths, and hook length formulae.",
+    "Chung, K.L. and Feller, W. (1949). On fluctuations in coin-tossing."
+  ],
+  "started": "2026-06-19T21:56:11.000Z",
+  "lastUpdate": "2026-06-19T21:56:11.000Z"
+}
