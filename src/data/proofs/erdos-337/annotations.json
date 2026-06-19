@@ -39,7 +39,11 @@
       "Finset",
       "Set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean import and open commands",
+      "Mathlib Finset and Set types",
+      "BigOperators summation notation"
+    ]
   },
   {
     "id": "ann-337-counting",
