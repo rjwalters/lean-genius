@@ -16,7 +16,11 @@
       "Extremal configurations",
       "Congruence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Distance Problem",
+      "Combinatorial Geometry",
+      "Extremal Configurations"
+    ]
   },
   {
     "id": "ann-e668-plane",
@@ -57,7 +61,11 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Distance",
+      "Unit Distance Graph",
+      "Point Configurations"
+    ]
   },
   {
     "id": "ann-e668-count",
@@ -75,7 +83,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unordered Pairs",
+      "Finset Cardinality",
+      "Filtering Predicates"
+    ]
   },
   {
     "id": "ann-e668-u-n",
@@ -93,7 +105,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Supremum",
+      "Maximum Unit Distances",
+      "Erdos Problem 90"
+    ]
   },
   {
     "id": "ann-e668-extremal",
@@ -134,7 +150,11 @@
       "formal definition",
       "metric spaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Rigid Motions",
+      "Isometries",
+      "Equivalence Relations"
+    ]
   },
   {
     "id": "ann-e668-f-n",
@@ -176,7 +196,11 @@
       "ring theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Equilateral Triangle",
+      "Unit Distance Count",
+      "Double Triangle Configuration"
+    ]
   },
   {
     "id": "ann-e668-unique",
@@ -194,7 +218,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Congruence of Sets",
+      "Extremal Uniqueness",
+      "Axiomatized Statements"
+    ]
   },
   {
     "id": "ann-e668-computational",
@@ -212,7 +240,11 @@
       "metric spaces",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Isomorphism",
+      "Geometric Congruence",
+      "Exhaustive Search"
+    ]
   },
   {
     "id": "ann-e668-question-one",
@@ -230,7 +262,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counting Function f(n)",
+      "Unbounded Growth",
+      "Quantifier Nesting"
+    ]
   },
   {
     "id": "ann-e668-question-two",
@@ -248,7 +284,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Statements",
+      "Counterexample at n=4",
+      "Sufficiently Large n"
+    ]
   },
   {
     "id": "ann-e668-problem-90",
@@ -266,7 +306,11 @@
       "Extremal graph theory"
     ],
     "mathContext": "See annotation content for formal details of connection to problem #90",
-    "prerequisites": []
+    "prerequisites": [
+      "Maximum Unit Distances",
+      "Asymptotic Bounds",
+      "Extremal Graph Theory"
+    ]
   },
   {
     "id": "ann-e668-summary",
@@ -284,6 +328,10 @@
       "combinatorics",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Configuration Uniqueness",
+      "Double Triangle",
+      "Open Problems"
+    ]
   }
 ]
