@@ -16,7 +16,11 @@
       "Graph coloring",
       "Combinatorial geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorial geometry",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e704-graph-def",
@@ -35,7 +39,12 @@
       "EuclideanSpace",
       "Metric spaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Euclidean geometry",
+      "metric spaces",
+      "Lean 4 structure syntax"
+    ]
   },
   {
     "id": "ann-e704-chi-def",
@@ -53,7 +62,11 @@
       "Chromatic number"
     ],
     "mathContext": "See annotation content for formal details of chromatic number χ(gₙ)",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "Lean 4 noncomputable definitions"
+    ]
   },
   {
     "id": "ann-e704-frankl-wilson",
@@ -71,7 +84,11 @@
       "Intersection theorems",
       "Algebraic combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "linear algebra",
+      "Euclidean geometry"
+    ]
   },
   {
     "id": "ann-e704-larman-rogers",
@@ -90,7 +107,11 @@
       "Tilings"
     ],
     "mathContext": "See annotation content for formal details of larman-rogers upper bound (1972)",
-    "prerequisites": []
+    "prerequisites": [
+      "lattice theory",
+      "Euclidean geometry",
+      "covering and tiling"
+    ]
   },
   {
     "id": "ann-e704-conjectured",
@@ -108,7 +129,10 @@
       "Exponential bases"
     ],
     "mathContext": "See annotation content for formal details of conjectured base",
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean geometry",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e704-de-grey",
@@ -127,7 +151,11 @@
       "Moser spindle",
       "Computer-assisted proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "discrete geometry",
+      "computer-assisted search"
+    ]
   },
   {
     "id": "ann-e704-hadwiger-nelson",
@@ -145,7 +173,11 @@
       "Hexagonal tilings"
     ],
     "mathContext": "See annotation content for formal details of hadwiger-nelson bounds",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "plane geometry",
+      "tiling theory"
+    ]
   },
   {
     "id": "ann-e704-limit",
@@ -163,7 +195,11 @@
       "Exponential growth"
     ],
     "mathContext": "See annotation content for formal details of chromatic limit",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "sequences and limits",
+      "asymptotic growth"
+    ]
   },
   {
     "id": "ann-e704-derived",
@@ -181,7 +217,11 @@
       "Asymptotic analysis",
       "Exponential growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "limit theory"
+    ]
   },
   {
     "id": "ann-e704-techniques",
@@ -200,6 +240,10 @@
       "Voronoi diagrams"
     ],
     "mathContext": "See annotation content for formal details of proof techniques",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "lattice theory",
+      "Euclidean geometry"
+    ]
   }
 ]
