@@ -14,6 +14,11 @@
       "global elements",
       "sorry diagnosis"
     ],
+    "prerequisites": [
+      "Lawvere's fixed-point theorem and the diagonal argument",
+      "cartesian closed categories and the evaluation morphism",
+      "reading and diagnosing a Lean `sorry`"
+    ],
     "content": "This file is a case study in categorical proof formalization. The sorry in the parent was not a mathematical gap but a type-theoretic error: the evaluation morphism e must be universally quantified over global elements of A, not be a fixed constant. Making the abstract structure (EvalStructure) and the concrete instantiation (CategoricalEval) explicit separates the logical kernel from the categorical machinery.",
     "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
     "range": {
@@ -35,6 +40,11 @@
       "fixed-point theorem",
       "self-application",
       "Lawvere 1969"
+    ],
+    "prerequisites": [
+      "point-surjective maps and self-application",
+      "the diagonal argument behind fixed-point theorems",
+      "packaging hypotheses as a Lean structure"
     ],
     "content": "The core of Lawvere's fixed-point theorem in its purest form. The diagonal argument `a \u21a6 f(eval a a)` is point-surjected to some code a\u2080, giving `eval a\u2080 a\u2080 = f(eval a\u2080 a\u2080)` \u2014 a fixed point. The two-line proof (obtain + exact) captures the entire argument. All subsequent theorems \u2014 categorical, type-theoretic, Cantor \u2014 reduce to this abstract kernel.",
     "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
@@ -58,6 +68,11 @@
       "terminal object",
       "internal hom"
     ],
+    "prerequisites": [
+      "category theory: objects, morphisms, terminal object",
+      "global elements (morphisms out of the terminal object)",
+      "the internal hom and evaluation in a cartesian closed category"
+    ],
     "content": "The CategoricalEval structure axiomatizes exactly the CCC data needed for Lawvere's theorem at the global-element level, avoiding full category theory (functors, naturality, coherence). Working with Pt A = Hom(1, A) and apply = ev \u2218 (id \u00d7 pt) is sufficient for the diagonal argument. This is the 'point-set' model of a CCC.",
     "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
     "range": {
@@ -79,6 +94,11 @@
       "let binding",
       "lawvere_abstract",
       "categorical fixed-point"
+    ],
+    "prerequisites": [
+      "the abstract EvalStructure / Lawvere kernel",
+      "definitional equality and `let` bindings in Lean",
+      "fixed-point theorems stated categorically"
     ],
     "content": "The proof is 5 lines total. The 'let E' bundles categorical morphisms into an EvalStructure, making the reduction explicit. hSurj directly IS E.IsPointSurjective (definitional equality, no rewriting needed). The categorical theorem is not more general than the abstract one \u2014 it is the abstract one with different vocabulary. This transparency is the value of the EvalStructure abstraction.",
     "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
@@ -102,6 +122,11 @@
       "function surjectivity",
       "type universe CCC"
     ],
+    "prerequisites": [
+      "Cantor's theorem (no surjection X \u2192 \ud835\udcab(X))",
+      "the type universe as a cartesian closed category",
+      "the diagonal function and Prop negation"
+    ],
     "content": "hNotFixed uses classical logic on Prop: v = \u00acv gives a proof of both v and \u00acv simultaneously (lines 166-170). This explicit construction avoids omega/decide and works purely from the logical structure of Prop. categorical_cantor is the standard Cantor diagonal argument as a corollary of the categorical Lawvere framework, showing that 2^A surjects onto A is impossible in any reasonable setting.",
     "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
     "range": {
@@ -124,6 +149,11 @@
       "Cantor's diagonal",
       "reusable theorem"
     ],
+    "prerequisites": [
+      "contrapositive / proof by contradiction",
+      "fixed-point-free endomorphisms",
+      "Cantor's diagonal as an instance of Lawvere"
+    ],
     "content": "This is the form used in applications: to prove no surjection A \u2192 (A \u2192 B) exists, exhibit a fixed-point-free endomorphism of B (negation on Prop, successor on \u2115). no_categorical_surjection makes this chain explicit as a reusable theorem, separating the abstract impossibility from its concrete instantiation in categorical_cantor.",
     "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
     "range": {
@@ -145,6 +175,11 @@
       "pointwise equality",
       "type-theoretic Lawvere",
       "sorry diagnosis"
+    ],
+    "prerequisites": [
+      "function surjectivity (Function.Surjective)",
+      "pointwise equality of functions (congr_fun)",
+      "specializing a categorical theorem to type theory"
     ],
     "content": "congr_fun is the bridge: Function.Surjective e says \u2203 a, e a = g (function equality), while lawvere_categorical needs \u2200 x, e a x = g x (pointwise equality). congr_fun converts one to the other. categorical_specializes_to_type_theoretic closes the circle, confirming that the type-theoretic Lawvere is a special case of the categorical one, not an independent theorem.",
     "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
