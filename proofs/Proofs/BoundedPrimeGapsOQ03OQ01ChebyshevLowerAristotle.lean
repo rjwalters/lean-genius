@@ -14,6 +14,12 @@
   STATUS: build-gated ORPHAN (not imported by Proofs.lean). Do NOT register until it
   compiles green with all sorries discharged.
 
+  PROGRESS (researcher-2): L1 (`log_factorial_eq_sum_vonMangoldt_mul_div`) and L3
+  (`log_four_le_log_centralBinom`) are fully proved; L2 (`log_centralBinom_le_psi`) and
+  the final assembly (`chebyshev_psi_lower_bound`) remain `sorry`. The L1 proof is written
+  but UNVERIFIED — docker build infra is down (daemon unresponsive, fleet outage), so it
+  has not been compiled. Verify before relying on it.
+
   Confirmed Mathlib v4.26.0 hooks (verified by grep of the source tree this session):
     • `ArithmeticFunction.vonMangoldt_sum : ∑ i ∈ n.divisors, Λ i = Real.log n`
         (NumberTheory/ArithmeticFunction/VonMangoldt.lean:102)
@@ -39,7 +45,46 @@ Derivation: `log(N!) = ∑_{n ∈ Ioc 0 N} log n = ∑_n ∑_{d ∈ n.divisors} 
 then `Nat.Ioc_filter_dvd_card_eq_div` rewrites the inner count as `N / d`. -/
 theorem log_factorial_eq_sum_vonMangoldt_mul_div (N : ℕ) :
     Real.log (Nat.factorial N : ℝ) = ∑ d ∈ Finset.Ioc 0 N, Λ d * ((N / d : ℕ) : ℝ) := by
-  sorry
+  -- Step 1: `N! = ∏_{n ∈ Ioc 0 N} n`, cast to ℝ.
+  have hfact : (Nat.factorial N : ℝ) = ∏ n ∈ Finset.Ioc 0 N, (n : ℝ) := by
+    have hnat : (∏ n ∈ Finset.Ioc 0 N, n) = Nat.factorial N := by
+      have hI : Finset.Ioc 0 N = Finset.Ico 1 (N + 1) := by
+        ext x
+        simp only [Finset.mem_Ioc, Finset.mem_Ico]
+        omega
+      rw [hI, Finset.prod_Ico_id_eq_factorial]
+    rw [← hnat, Nat.cast_prod]
+  rw [hfact]
+  -- Step 2: `log ∏ = ∑ log` (each factor is positive on `Ioc 0 N`).
+  rw [Real.log_prod (fun n hn => by
+    have hn0 : 0 < n := (Finset.mem_Ioc.mp hn).1
+    exact_mod_cast hn0.ne')]
+  -- Step 3: replace `log n` by `∑_{d ∈ n.divisors} Λ d`.
+  rw [Finset.sum_congr rfl (fun n _ => (ArithmeticFunction.vonMangoldt_sum).symm)]
+  -- Step 4: rewrite each divisor-sum as a filtered sum over the common index `Ioc 0 N`.
+  have step4 : ∀ n ∈ Finset.Ioc 0 N,
+      (∑ d ∈ n.divisors, Λ d)
+        = ∑ d ∈ Finset.Ioc 0 N, (if d ∣ n then Λ d else 0) := by
+    intro n hn
+    have hn0 : 0 < n := (Finset.mem_Ioc.mp hn).1
+    have hnN : n ≤ N := (Finset.mem_Ioc.mp hn).2
+    have hset : n.divisors = (Finset.Ioc 0 N).filter (fun d => d ∣ n) := by
+      ext d
+      simp only [Nat.mem_divisors, Finset.mem_filter, Finset.mem_Ioc]
+      constructor
+      · rintro ⟨hdvd, -⟩
+        have hd_pos : 0 < d := Nat.pos_of_dvd_of_pos hdvd hn0
+        have hd_le : d ≤ n := Nat.le_of_dvd hn0 hdvd
+        exact ⟨⟨hd_pos, by omega⟩, hdvd⟩
+      · rintro ⟨-, hdvd⟩
+        exact ⟨hdvd, by omega⟩
+    rw [hset, Finset.sum_filter]
+  rw [Finset.sum_congr rfl step4, Finset.sum_comm]
+  -- Step 5: collapse the constant inner sum to `Λ d * (N / d)`.
+  apply Finset.sum_congr rfl
+  intro d _
+  rw [← Finset.sum_filter, Finset.sum_const, Nat.Ioc_filter_dvd_card_eq_div,
+    nsmul_eq_mul, mul_comm]
 
 /-- **L2 — the genuine gap: `log C(2n,n) ≤ ψ(2n)`.**
 
