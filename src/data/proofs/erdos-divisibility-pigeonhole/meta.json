@@ -65,7 +65,8 @@
       "**The odd part is the right pigeonhole**: classifying integers by ⌊2-free core⌋ rather than by value turns a divisibility question into an equality-of-labels collision. {1,…,2n} has exactly n odd parts, one short of the n+1 elements",
       "**Same odd part ⇒ comparable in the divisibility order**: two numbers sharing an odd part differ only by a power of two, so they form a chain — the smaller exponent divides the larger. This is where 'collision' becomes 'divides'",
       "**Avoid counting odds with a half-index**: instead of computing the cardinality of the odd numbers in {1,…,2n}, the proof maps odd parts into Finset.range n via o ↦ (o−1)/2 and uses injectivity-on-odds to recover the collision; this keeps the Lean proof free of Finset.filter cardinality lemmas",
-      "**Sharpness is one line of arithmetic**: the top half {n+1,…,2n} is an antichain because doubling the smallest possible divisor already leaves the window — so n+1 is genuinely the optimal threshold, not an artifact of the proof"
+      "**Sharpness is one line of arithmetic**: the top half {n+1,…,2n} is an antichain because doubling the smallest possible divisor already leaves the window — so n+1 is genuinely the optimal threshold, not an artifact of the proof",
+      "**It is a chain decomposition in disguise**: grouping {1,…,2n} by odd part partitions it into exactly n divisibility chains (each chain o, 2o, 4o, … capped at 2n). The pigeonhole 'n+1 elements meet a common chain' is the Dilworth/Mirsky reading — the same combinatorial skeleton behind primitive-set and antichain extremal bounds"
     ],
     "prerequisites": [
       "The pigeonhole principle in Finset form (Finset.exists_ne_map_eq_of_card_lt_of_maps_to)",
@@ -75,12 +76,28 @@
   },
   "sections": [
     {
-      "id": "module-overview-and-helpers",
-      "title": "Module Overview and Odd-Part Helpers",
+      "id": "module-overview",
+      "title": "Module Overview",
       "startLine": 1,
-      "endLine": 75,
-      "mathContext": "Odd parts: $o(m) = \\mathrm{ordCompl}_2(m)$ is odd, and $o \\mapsto (o-1)/2$ is injective on odd numbers since $2\\cdot((o-1)/2)+1 = o$.",
-      "summary": "Docstring states the theorem, the odd-part pigeonhole proof, and sharpness. Helpers: odd_recover (2·((o−1)/2)+1 = o, injectivity of the half-map on odds), odd_ordCompl (ordCompl[2] m is odd for m ≠ 0, via Nat.not_dvd_ordCompl), and dvd_or_dvd_of_ordCompl_eq (equal odd parts ⇒ one divides the other, via the 2-adic decomposition and pow_dvd_pow)."
+      "endLine": 39,
+      "mathContext": "$S \\subseteq \\{1,\\dots,2n\\},\\ |S| \\ge n+1 \\Rightarrow \\exists\\, a \\ne b,\\ a \\mid b$; sharp via the antichain $\\{n+1,\\dots,2n\\}$.",
+      "summary": "Docstring states the theorem, sketches the odd-part pigeonhole proof (m = 2^k·o with o = ordCompl[2] m; only n odd parts available in {1,…,2n}), the half-index encoding that avoids counting, and the sharpness witness {n+1,…,2n}. Imports Mathlib and opens Finset."
+    },
+    {
+      "id": "odd-part-helpers",
+      "title": "Odd-Part Helper Lemmas",
+      "startLine": 41,
+      "endLine": 52,
+      "mathContext": "$o \\mapsto (o-1)/2$ is injective on odds since $2\\cdot((o-1)/2)+1 = o$; and $\\mathrm{ordCompl}_2(m)$ is odd for $m \\neq 0$.",
+      "summary": "odd_recover: 2·((o−1)/2)+1 = o, so the half-map o ↦ (o−1)/2 loses no information on odd numbers. odd_ordCompl: ordCompl[2] m is odd for m ≠ 0, via Nat.not_dvd_ordCompl converted with omega. Together they let the proof read an odd part back off its half-index."
+    },
+    {
+      "id": "same-odd-part-divides",
+      "title": "Same Odd Part ⇒ One Divides the Other",
+      "startLine": 54,
+      "endLine": 74,
+      "mathContext": "$\\mathrm{ordCompl}_2(a) = \\mathrm{ordCompl}_2(b) = o,\\ a = 2^{i}o,\\ b = 2^{j}o,\\ i \\le j \\Rightarrow a \\mid b$.",
+      "summary": "dvd_or_dvd_of_ordCompl_eq: equal odd parts force comparability. Writing a = 2^(v₂ a)·o and b = 2^(v₂ b)·o (Nat.ordProj_mul_ordCompl_eq_self), le_total on the exponents plus pow_dvd_pow and mul_dvd_mul_right give a ∣ b or b ∣ a. This converts an equality of labels into a divisibility relation."
     },
     {
       "id": "main-theorem",
