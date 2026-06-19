@@ -2846,6 +2846,7 @@ import Proofs.PythagoreanTriplesOQ02
 import Proofs.QuadraticGaussSumSquare
 import Proofs.QuadraticGaussSumSquareOQ01
 import Proofs.QuadraticGaussSumSignReduction
+import Proofs.QuadraticGaussSumSignSmall
 import Proofs.QuadraticReciprocity
 import Proofs.QuadraticReciprocityAlgorithmOQ01
 import Proofs.QuadraticReciprocityAlgorithmOQ03
