@@ -16,7 +16,11 @@
       "Set theory",
       "Distance geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Euclidean geometry",
+      "infinite cardinals"
+    ]
   },
   {
     "id": "ann-1127-2",
@@ -36,7 +40,11 @@
       "metric geometry"
     ],
     "mathContext": "See annotation content for formal details of distinct distances property",
-    "prerequisites": []
+    "prerequisites": [
+      "metric spaces",
+      "Euclidean geometry",
+      "naive set theory"
+    ]
   },
   {
     "id": "ann-1127-3",
@@ -54,7 +62,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "naive set theory",
+      "countable sets",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-1127-4",
@@ -73,7 +85,11 @@
       "ZFC",
       "Independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axiomatic set theory (ZFC)",
+      "cardinal arithmetic",
+      "mathematical logic"
+    ]
   },
   {
     "id": "ann-1127-5",
@@ -92,7 +108,11 @@
       "combinatorics",
       "algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "linear algebra",
+      "field theory",
+      "abstract algebra"
+    ]
   },
   {
     "id": "ann-1127-6",
@@ -111,7 +131,11 @@
       "Linear algebra",
       "Decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axiomatic set theory (ZFC)",
+      "transfinite induction",
+      "linear algebra over ℚ"
+    ]
   },
   {
     "id": "ann-1127-7",
@@ -129,7 +153,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Euclidean plane geometry",
+      "transfinite recursion"
+    ]
   },
   {
     "id": "ann-1127-8",
@@ -147,7 +175,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Euclidean geometry in n dimensions",
+      "transfinite recursion"
+    ]
   },
   {
     "id": "ann-1127-9",
@@ -165,6 +197,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axiomatic set theory (ZFC)",
+      "infinite combinatorics",
+      "cardinal arithmetic"
+    ]
   }
 ]
