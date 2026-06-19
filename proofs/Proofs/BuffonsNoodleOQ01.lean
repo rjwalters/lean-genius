@@ -143,12 +143,10 @@ theorem buffon_noodle_grid_mono {m n : ℕ}
     (hlen : N₁.totalLength ≤ N₂.totalLength) :
     N₁.expectedGridCrossings dh dv ≤ N₂.expectedGridCrossings dh dv := by
   rw [buffon_noodle_grid N₁ dh dv hdh hdv, buffon_noodle_grid N₂ dh dv hdh hdv]
-  have hdh0 : (0 : ℝ) < π * dh := by positivity
-  have hdv0 : (0 : ℝ) < π * dv := by positivity
   have t1 : 2 * N₁.totalLength / (π * dh) ≤ 2 * N₂.totalLength / (π * dh) := by
-    rw [div_le_div_right hdh0]; linarith
+    gcongr <;> linarith
   have t2 : 2 * N₁.totalLength / (π * dv) ≤ 2 * N₂.totalLength / (π * dv) := by
-    rw [div_le_div_right hdv0]; linarith
+    gcongr <;> linarith
   linarith
 
 /-! ## Part III: The Monte-Carlo π Estimator
