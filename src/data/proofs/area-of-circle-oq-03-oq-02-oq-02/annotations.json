@@ -17,7 +17,11 @@
       "ring tactic",
       "field_simp tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial Long Division",
+      "Partial Fraction Decomposition",
+      "Ring Normalization"
+    ]
   },
   {
     "id": "ann-dalzell-positivity",
@@ -36,7 +40,11 @@
       "sign analysis",
       "integral positivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sign Of Products",
+      "Strict Positivity",
+      "Squares Are Nonnegative"
+    ]
   },
   {
     "id": "ann-dalzell-ftc",
