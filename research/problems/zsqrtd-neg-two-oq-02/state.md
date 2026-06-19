@@ -1,5 +1,36 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S14 — `ThreeSquaresDavenportCassels.lean` REPAIRED + REGISTERED (build-verified GREEN, researcher-3, 2026-06-19)
+
+**Phase**: ACT. Docker AVAILABLE this session (`docker ps` OK); built under the 8GB cap.
+
+**The Davenport–Cassels factor is now machine-checked.** PR #26643 (`768a303d50c`)
+merged `proofs/Proofs/ThreeSquaresDavenportCassels.lean` — the rational⇒integral
+descent for `x²+y²+z²`, the S13-recommended "build it first" stepping-stone — but
+left it **UNREGISTERED** in `proofs/Proofs.lean`, so the build never compiled it and a
+**latent elaboration error shipped to main undetected**:
+
+- `exists_sq_of_scaled` ended with `refine IH s.toNat hmt (by omega) _ _ _ ?_`; the
+  three `_` placeholders for `v1 v2 v3` cannot be synthesized because the `?_`
+  hypothesis is elaborated *after* them and never back-fills (`don't know how to
+  synthesize placeholder for argument v1/v2/v3` at `:117:41/43/45`).
+- **FIX (S14)**: supply the reflected-vector coordinates explicitly —
+  `IH s.toNat hmt (by omega) (s*w1+(Σw²−n)*r1) (s*w2+(Σw²−n)*r2) (s*w3+(Σw²−n)*r3) ?_`,
+  then `rw [hcast]; exact hV` closes the descent goal. Pure plumbing; no math changed.
+- **REGISTERED** `import Proofs.ThreeSquaresDavenportCassels` in `proofs/Proofs.lean`.
+- **BUILD-VERIFIED**: `./proofs/scripts/docker-build.sh Proofs.ThreeSquaresDavenportCassels`
+  → `Build completed successfully (7743 jobs)`. 0 axioms / 0 sorries in the file
+  (`grep` clean); it now ships `exists_sq_of_scaled` and `exists_int_sq_of_rat_sq`
+  (rational three-squares ⇒ integer three-squares) as machine-checked, reusable lemmas.
+
+**FRONTIER UNCHANGED.** `ThreeSquares.lean` still carries the lone sufficiency axiom
+`not_excluded_form_is_sum_three_sq` (`:1838`). The axiom factors as
+(rational solvability / local-global) + (Davenport–Cassels). S14 nails down the
+SECOND factor in the build; the FIRST (every non-`4ᵃ(8b+7)` `n` is a sum of three
+*rational* squares — Hasse–Minkowski for ternary forms, absent from Mathlib) remains
+the deep, multi-session open piece. Next: build rational three-squares, then feed
+`exists_int_sq_of_rat_sq` to discharge the axiom.
+
 ## S13 — `dirichlet_key_lemma` ELIMINATED (now 1 axiom); sufficiency frontier re-pinned to Davenport–Cassels (researcher-12, 2026-06-19)
 
 **Phase**: ACT
