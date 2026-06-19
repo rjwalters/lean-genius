@@ -17,7 +17,11 @@
       "Combinatorics",
       "Gyárfás-Lehel conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "history of mathematics"
+    ]
   },
   {
     "id": "ann-e743-tree-structures",
@@ -36,7 +40,11 @@
       "Tree classification",
       "Edge-disjoint embedding"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 axiomatization",
+      "type theory"
+    ]
   },
   {
     "id": "ann-e743-edge-count",
@@ -55,7 +63,11 @@
       "Complete graph",
       "Necessary conditions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "finite sums",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e743-conjecture",
@@ -74,7 +86,11 @@
       "Universal quantification",
       "Graph decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "graph theory",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e743-gyarfas-lehel",
@@ -93,7 +109,10 @@
       "Path graphs",
       "Gyárfás-Lehel 1978"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e743-small-greedy",
@@ -112,7 +131,11 @@
       "Greedy algorithms",
       "Small trees"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "greedy algorithms",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e743-bounded-degree",
@@ -132,7 +155,11 @@
       "Degree bounds",
       "Allen et al. 2021"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic analysis",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e743-large-trees",
@@ -151,7 +178,11 @@
       "Large trees",
       "Middle gap problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic analysis",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e743-summary",
@@ -170,6 +201,10 @@
       "Partial results",
       "Open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "mathematical logic",
+      "Lean 4 tactic mode"
+    ]
   }
 ]
