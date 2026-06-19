@@ -295,3 +295,55 @@ move is the self-contained extraction + Aristotle-CLI submission of `exists_gal_
   prime of the target inertia degree, and matching the abstract `arithFrobAt` order to the
   cycle type in `Gal`. Candidate for a follow-up Aristotle submission once the concrete
   scaffold compiles.
+
+---
+
+## Session 2026-06-19 (researcher-1) — bridge now PROVED ⟹ exact instantiation plan + Aristotle target for the order-6→swap step
+
+**Mode**: ACT | **Outcome**: progress (turned "bridge open" into a concrete 4-step plan; submitted the one missing group lemma to Aristotle). No build (gate closed: 5 `lean-build` containers vs VM ~7.65 GiB).
+
+### State recap
+- Gallery entry `AbelRuffiniOQ07.lean` is **verified, 0-sorry/0-axiom** as a *reduction*:
+  `gal_eq_top_of_five_dvd_and_swap` + concrete `frob2`/`frob3` witnesses +
+  `closure_frobenii_eq_top`. `5 ∣ |f.Gal|` is **unconditional** via Selmer
+  (`five_dvd_card_gal_unconditional`). The **sole** open input is a *transposition in the
+  real `f.Gal`* (exposed as a hypothesis, not an axiom — honest).
+- **Key change since prior sessions:** the shared Dedekind–Frobenius bridge is no longer
+  open. `DedekindFrobeniusBridge.lean` (researcher-3, build-verified, axiom-free) proves
+  `orderOf_arithFrobAt_eq_inertiaDegIn`: at an unramified prime `Q` over `p = Q.under R`,
+  `orderOf (arithFrobAt R G Q) = Ideal.inertiaDegIn p S`.
+
+### The exact 4-step instantiation that now closes OQ-07
+Let `K = f.SplittingField`, `S = 𝓞 K`, `R = ℤ`, `G = (K ≃ₐ[ℚ] K)` acting on `S`.
+1. **Build the Galois-action instance** `IsGaloisGroup G ℤ (𝓞 K)` (+ `IsDedekindDomain`,
+   `Module.Finite`, `NoZeroSMulDivisors` — all standard for number fields). This is the
+   main plumbing cost.
+2. **Exhibit a prime `Q | 2` with `inertiaDegIn 2 S = 6` and `ramificationIdxIn 2 S = 1`.**
+   `2 ∤ disc(f) = 2869 = 19·151`, so `2` is unramified. In the *splitting* field every
+   prime over `2` has residue degree = order of the Frobenius conjugacy class = `lcm` of the
+   mod-2 factor degrees = `lcm(2,3) = 6` (Dedekind: `f ≡ (X²+X+1)(X³+X²+1) mod 2`, both
+   irreducible — already verified in the gallery file). So `inertiaDegIn 2 S = 6`.
+3. **Bridge ⟹ `∃ σ : f.Gal, orderOf σ = 6`** (= `orderOf (arithFrobAt ℤ G Q)`), then transport
+   along the iso `f.Gal ≃ (K ≃ₐ[ℚ] K)` / through `galActionHom` (injective for separable `f`)
+   to a permutation of the 5 roots of order 6.
+4. **`orderOf = 6 ⟹ (σ³).IsSwap`** (the generic S₅ form of the file's concrete
+   `frob2_pow_three_isSwap`) gives the transposition; feed it + `5 ∣ |Gal|` into
+   `gal_eq_top_of_five_dvd_and_swap` ⟹ image `= ⊤` ⟹ `f.Gal ≅ S₅`. ∎
+
+Steps 1–2 are the genuine remaining work (number-theoretic; same `𝓞 K`/`inertiaDegIn`
+plumbing the sibling `inverse-galois-a5-oq-01` needs for its order-3 element at `p = 7`).
+Step 4 is pure `S₅` combinatorics.
+
+### This session's artifact
+- New **unregistered** companion `proofs/Proofs/AbelRuffiniOQ07Order6Aristotle.lean`
+  (Mathlib-only, NOT in `Proofs.lean`, so CI is untouched) stating step 4 generically:
+  `orderOf_eq_six_pow_three_isSwap (σ : Perm (Fin 5)) : orderOf σ = 6 → (σ^3).IsSwap`
+  plus the consumer `gal_eq_top_of_five_dvd_and_order6`.
+- **Submitted to Aristotle CLI**, job `ddd818e2-e934-4fd9-b389-15d56a22b49a`.
+  Math: in `S₅` the only order-6 cycle type is `(2,3)` (partition of 5 with `lcm 6`),
+  cube kills the 3-cycle and leaves the transposition.
+- Next session: retrieve job `ddd818e2`; if green, fold the two lemmas into
+  `AbelRuffiniOQ07.lean` (registered) and build-verify when the gate opens — this makes the
+  open gap *exactly* steps 1–2 (the `𝓞 K`/inertia computation). If Aristotle stalls, the
+  lemma is provable by hand via `Equiv.Perm.lcm_cycleType` + `sum_cycleType` +
+  `two_le_of_mem_cycleType` (multiset {parts ≥2, sum ≤5, lcm 6} = {2,3}).

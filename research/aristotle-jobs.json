@@ -2174,6 +2174,19 @@
       "notes": "STEP D crux: gapLengths a N subset {a,b,c}; witnesses a,b,c fixed in file; self-contained (Mathlib-only import). MCP prove_file still 404; submitted via CLI submit --project-dir.",
       "status": "submitted",
       "last_check": null
+    },
+    {
+      "project_id": "ddd818e2-e934-4fd9-b389-15d56a22b49a",
+      "file": "proofs/Proofs/AbelRuffiniOQ07Order6Aristotle.lean",
+      "problem_id": "abel-ruffini-oq-07",
+      "submitted": "2026-06-19T13:20:00Z",
+      "sorries": [
+        "orderOf_eq_six_pow_three_isSwap : (σ:Perm(Fin5)) orderOf σ=6 → (σ^3).IsSwap",
+        "gal_eq_top_of_five_dvd_and_order6 : 5∣|G| ∧ ∃ order-6 elem → G=⊤"
+      ],
+      "notes": "Generic S5 order-6→swap step. Consumes the now-PROVED Dedekind-Frobenius bridge (DedekindFrobeniusBridge.lean) output: bridge gives orderOf(arithFrobAt)=inertiaDegIn=6 at a prime over 2 of the splitting field, this turns it into the swap the verified reduction gal_eq_top_of_five_dvd_and_swap consumes. Self-contained Mathlib-only companion (NOT registered in Proofs.lean). CLI submit; v4.26 vs Aristotle v4.28 warning (Perm(Fin5) API stable).",
+      "status": "submitted",
+      "last_check": null
     }
   ]
 }
