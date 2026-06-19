@@ -76,7 +76,7 @@ def fixedEmbEquiv (σ : Equiv.Perm (Fin n)) :
         ext i
         simp only [Function.Embedding.smul_apply, Equiv.Perm.smul_def,
           Function.Embedding.coeFn_mk]
-        exact (g i).property⟩
+        exact congrArg _ (g i).property⟩
   left_inv := fun ⟨f, hf⟩ => Subtype.ext (Function.Embedding.ext fun i => rfl)
   right_inv := fun g => Function.Embedding.ext fun i => Subtype.ext rfl
 
