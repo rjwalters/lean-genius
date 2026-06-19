@@ -16,7 +16,11 @@
       "Finite fields",
       "Sumsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite fields 𝔽ₚ and subsets of ℤ/pℤ",
+      "sumsets and the Cauchy-Davenport theorem",
+      "restricted addition excluding diagonal sums a + a"
+    ]
   },
   {
     "id": "ann-e476-restricted-def",
@@ -35,7 +39,11 @@
       "Cartesian product",
       "Filter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset cartesian product and image in Lean",
+      "filtering pairs by the distinctness condition a ≠ b",
+      "addition of elements in ZMod p"
+    ]
   },
   {
     "id": "ann-e476-sumset-def",
@@ -53,7 +61,11 @@
       "Sumsets"
     ],
     "mathContext": "See annotation content for formal details of ordinary sumset definition",
-    "prerequisites": []
+    "prerequisites": [
+      "ordinary sumset A + A over a finite field",
+      "Finset product and image construction in Lean",
+      "the Cauchy-Davenport lower bound min(2|A| - 1, p)"
+    ]
   },
   {
     "id": "ann-e476-subset",
@@ -71,7 +83,11 @@
       "Sumsets"
     ],
     "mathContext": "See annotation content for formal details of restricted subset of ordinary",
-    "prerequisites": []
+    "prerequisites": [
+      "subset relation between Finsets",
+      "restricted versus ordinary sumset definitions",
+      "every distinct-pair sum is also an unrestricted sum"
+    ]
   },
   {
     "id": "ann-e476-singleton",
@@ -89,7 +105,11 @@
       "Singleton sets"
     ],
     "mathContext": "See annotation content for formal details of singleton restricted sumset",
-    "prerequisites": []
+    "prerequisites": [
+      "singleton sets having no pairs of distinct elements",
+      "the empty restricted sumset as an edge case",
+      "the bound 2|A| - 3 going negative when |A| = 1"
+    ]
   },
   {
     "id": "ann-e476-main-bound",
@@ -107,7 +127,11 @@
       "Additive combinatorics",
       "Lower bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the lower bound min(2|A| - 3, p) on restricted sumsets",
+      "arithmetic progressions achieving the tight bound",
+      "the bound stated as an axiom feeding the main theorem"
+    ]
   },
   {
     "id": "ann-e476-da-silva",
@@ -126,7 +150,11 @@
       "Linear algebra",
       "Grassmann derivatives"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "exterior (Grassmann) algebra over 𝔽ₚ",
+      "Grassmann derivatives generalizing ordinary derivatives",
+      "dimension counting in the wedge-product algebra"
+    ]
   },
   {
     "id": "ann-e476-ap",
@@ -145,7 +173,11 @@
       "Extremal examples",
       "Tightness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic progressions {a, a+d, ..., a+(n-1)d} in 𝔽ₚ",
+      "computing the restricted sumset of an AP with d ≠ 0",
+      "tightness of the bound via 2n - 3 distinct elements"
+    ]
   },
   {
     "id": "ann-e476-cauchy",
@@ -163,7 +195,11 @@
       "Cauchy-Davenport",
       "Sumset inequalities"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Cauchy-Davenport theorem |A + B| ≥ min(|A| + |B| - 1, p)",
+      "comparing ordinary and restricted sumset bounds",
+      "the gap of 2 from excluding diagonal sums"
+    ]
   },
   {
     "id": "ann-e476-polynomial",
@@ -182,7 +218,11 @@
       "Combinatorial Nullstellensatz",
       "Alon"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Combinatorial Nullstellensatz of Alon",
+      "leading-monomial coefficients of multivariate polynomials",
+      "the Alon-Nathanson-Ruzsa polynomial-method proof"
+    ]
   },
   {
     "id": "ann-e476-generalized",
@@ -200,7 +240,11 @@
       "Generalization"
     ],
     "mathContext": "See annotation content for formal details of generalization to r-sums",
-    "prerequisites": []
+    "prerequisites": [
+      "r-fold restricted sumsets of distinct elements",
+      "the bound min(r|A| - r² + 1, p) reducing to 2|A| - 3 at r = 2",
+      "polynomial-method proof of the generalized conjecture"
+    ]
   },
   {
     "id": "ann-e476-card-two",
@@ -218,7 +262,11 @@
       "Examples"
     ],
     "mathContext": "See annotation content for formal details of example: |a| = 2",
-    "prerequisites": []
+    "prerequisites": [
+      "the two-element case A = {a, b} with a ≠ b",
+      "the single restricted sum a + b",
+      "checking the bound min(2·2 - 3, p) = 1"
+    ]
   },
   {
     "id": "ann-e476-card-three",
@@ -236,7 +284,11 @@
       "Examples"
     ],
     "mathContext": "See annotation content for formal details of example: |a| = 3",
-    "prerequisites": []
+    "prerequisites": [
+      "the three-element case A = {a, b, c}",
+      "the three pairwise sums a+b, a+c, b+c",
+      "verifying the bound min(2·3 - 3, p) = 3 for p ≥ 3"
+    ]
   },
   {
     "id": "ann-e476-summary",
@@ -254,6 +306,10 @@
       "Main results"
     ],
     "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "the restricted sumset lower bound for |A| ≥ 2",
+      "tightness achieved by arithmetic progressions",
+      "complete resolution of the Erdős-Heilbronn conjecture"
+    ]
   }
 ]
