@@ -23,7 +23,11 @@
       "erdos-problems",
       "solved-problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Smooth numbers",
+      "Prime factorization",
+      "Number theory basics"
+    ]
   },
   {
     "id": "ann-e240-smooth-def",
@@ -48,7 +52,11 @@
       "prime-factorization",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime factorization",
+      "Divisibility",
+      "Set-builder notation"
+    ]
   },
   {
     "id": "ann-e240-one-smooth",
@@ -73,7 +81,11 @@
       "smooth-numbers",
       "base-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vacuous truth",
+      "Divisibility",
+      "Prime number properties"
+    ]
   },
   {
     "id": "ann-e240-enum",
@@ -98,7 +110,11 @@
       "well-ordering",
       "smooth-numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Well-ordering principle",
+      "Strictly increasing sequences",
+      "Surjective functions"
+    ]
   },
   {
     "id": "ann-e240-gap",
@@ -123,7 +139,11 @@
       "consecutive-integers",
       "smooth-numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Integer sequences",
+      "Consecutive differences",
+      "Smooth numbers"
+    ]
   },
   {
     "id": "ann-e240-question",
@@ -148,7 +168,11 @@
       "infinite-sets",
       "erdos-problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unbounded sequences",
+      "Infinite sets",
+      "Quantifier logic"
+    ]
   },
   {
     "id": "ann-e240-polya",
@@ -173,7 +197,11 @@
       "quadratic-polynomials",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Quadratic polynomials",
+      "Prime factors of polynomials",
+      "Discriminant and repeated roots"
+    ]
   },
   {
     "id": "ann-e240-finite-case",
@@ -198,7 +226,11 @@
       "quantitative-bounds",
       "gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proof by contradiction",
+      "Polya's theorem",
+      "Asymptotic notation"
+    ]
   },
   {
     "id": "ann-e240-tijdeman",
@@ -223,7 +255,11 @@
       "main-result",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Smooth number density",
+      "Asymptotic bounds",
+      "Sparse prime sequences"
+    ]
   },
   {
     "id": "ann-e240-construction",
@@ -248,7 +284,11 @@
       "geometric-sequences",
       "examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometric sequences",
+      "Exponential growth",
+      "Prime powers"
+    ]
   },
   {
     "id": "ann-e240-stormer",
@@ -273,7 +313,11 @@
       "diophantine-equations",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Smooth numbers",
+      "Consecutive integers",
+      "Diophantine equations"
+    ]
   },
   {
     "id": "ann-e240-abc",
@@ -298,7 +342,11 @@
       "open-problems",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ABC conjecture",
+      "Radical of an integer",
+      "Coprime integers"
+    ]
   },
   {
     "id": "ann-e240-summary",
@@ -323,7 +371,11 @@
       "smooth-numbers",
       "tijdeman-theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polya's theorem",
+      "Tijdeman's theorem",
+      "Proof composition"
+    ]
   },
   {
     "id": "ann-e240-intuition",
@@ -348,7 +400,11 @@
       "smooth-numbers",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Density of integer sets",
+      "Prime growth rates",
+      "Smooth numbers"
+    ]
   },
   {
     "id": "ann-e240-sorry1",
@@ -373,7 +429,11 @@
       "real-analysis",
       "proof-gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limits of sequences",
+      "Divergence to infinity",
+      "Real analysis basics"
+    ]
   },
   {
     "id": "ann-e240-sorry2",
@@ -398,7 +458,11 @@
       "proof-gap",
       "examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometric sequences",
+      "Exponential growth",
+      "Prime powers"
+    ]
   },
   {
     "id": "ann-e240-imports",
@@ -423,7 +487,11 @@
       "lean4",
       "dependencies"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 and Mathlib",
+      "Prime number predicate",
+      "Real exponentiation"
+    ]
   },
   {
     "id": "ann-e240-progressions",
@@ -448,6 +516,10 @@
       "sieve-methods",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic progressions",
+      "Modular arithmetic",
+      "Sieve methods"
+    ]
   }
 ]
