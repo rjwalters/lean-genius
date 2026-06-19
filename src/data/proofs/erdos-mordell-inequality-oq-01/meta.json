@@ -33,19 +33,25 @@
         "theorem": "dist_pos",
         "description": "0 < dist x y ↔ x ≠ y",
         "module": "Mathlib.Topology.MetricSpace.Defs"
+      },
+      {
+        "theorem": "Real.sqrt_sq",
+        "description": "√(a²) = a for 0 ≤ a (collapses the chord √ to PA·sin A in the assembly lemma)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
       }
     ],
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
-    "lineCount": 222,
+    "lineCount": 271,
     "assumptions": "3 sorries: the three geometric key inequalities key_inequality_A/B/C (a·PA ≥ b·dc + c·db and cyclic). These are the genuine planar-geometry content (concyclic pedal feet / chord-projection argument), known classical mathematics not yet in Mathlib. Everything else — side-length positivity, pedal-distance nonnegativity, and the AM–GM algebraic reduction — is fully proved.",
     "originalContributions": [
       "erdos_mordell_reduction: the geometry-free AM–GM core, proving 2(da+db+dc) ≤ PA+PB+PC from the three weighted key inequalities via an explicit nonnegative certificate (a·da·(b−c)² + ... ≥ 0). Carries no geometric hypotheses; reusable for any proof of the key inequalities.",
       "key_inequality_trig_core: a geometry-free proof that sin B·dc + sin C·db ≤ √(db²+dc²+2·db·dc·cos A) for triangle angles, collapsing each key inequality (modulo the chord identity (PA·sin A)² = db²+dc²+2·db·dc·cos A and the law of sines) to the perfect square (db·cos C − dc·cos B)² ≥ 0. Isolates the single remaining geometric obligation.",
+      "key_inequality_of_chord_and_sines: a verified, geometry-free assembly lemma that takes exactly the two geometric facts the chord identity supplies — the chord identity (PA·sin A)² = db²+dc²+2·db·dc·cos A and the law of sines a = 2R sin A, b = 2R sin B, c = 2R sin C — and derives the key inequality b·dc + c·db ≤ a·PA purely algebraically (via the trig core, collapsing √(…) to PA·sin A and scaling by 2R > 0). This sharpens each remaining geometric obligation from an opaque sorry into precisely 'supply the chord identity and law of sines for the concrete configuration'.",
       "Precise Lean statement of the geometric Erdős–Mordell inequality using Metric.infDist to the affine span (lineDist) for pedal distances.",
       "Full modular assembly of erdos_mordell: reduces the geometric theorem to exactly three separately-stated key-inequality lemmas, discharging all positivity/nonnegativity/algebra."
     ],
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 1
   },
   "overview": {
@@ -69,36 +75,43 @@
     {
       "id": "reduction",
       "title": "Algebraic AM–GM Reduction (Proved)",
-      "startLine": 58,
-      "endLine": 95,
+      "startLine": 73,
+      "endLine": 117,
       "summary": "erdos_mordell_reduction: from the three weighted key inequalities and side-length positivity/pedal nonnegativity, derive 2(da+db+dc) ≤ PA+PB+PC via an explicit nonnegative certificate (nlinarith)."
     },
     {
       "id": "trig-core",
       "title": "Trigonometric Core of the Key Inequality (Proved)",
-      "startLine": 97,
-      "endLine": 137,
+      "startLine": 119,
+      "endLine": 160,
       "summary": "key_inequality_trig_core: geometry-free proof that sin B·dc + sin C·db ≤ √(db²+dc²+2·db·dc·cos A), collapsing to the perfect square (db·cos C − dc·cos B)² via cos A = sin B sin C − cos B cos C; isolates the chord identity as the sole remaining geometric input."
+    },
+    {
+      "id": "chord-assembly",
+      "title": "Chord-to-Key Assembly (Proved)",
+      "startLine": 162,
+      "endLine": 188,
+      "summary": "key_inequality_of_chord_and_sines: verified, geometry-free lemma deriving b·dc + c·db ≤ a·PA from the chord identity (PA·sin A)² = db²+dc²+2·db·dc·cos A and the law of sines (a=2R sinA, …), by collapsing √(…) to PA·sin A and scaling the trig core by 2R > 0."
     },
     {
       "id": "pedal-distance",
       "title": "Pedal Distance Definition",
-      "startLine": 139,
-      "endLine": 147,
+      "startLine": 190,
+      "endLine": 197,
       "summary": "lineDist: distance from P to the affine span of two points (Metric.infDist), with lineDist_nonneg."
     },
     {
       "id": "key-inequalities",
       "title": "Geometric Key Inequalities (Open)",
-      "startLine": 149,
-      "endLine": 179,
+      "startLine": 207,
+      "endLine": 238,
       "summary": "key_inequality_A/B/C: the three cyclic side-length-weighted key inequalities (sorry-deferred; the genuine planar-geometry content)."
     },
     {
       "id": "assembly",
       "title": "Assembled Geometric Statement",
-      "startLine": 181,
-      "endLine": 222,
+      "startLine": 240,
+      "endLine": 271,
       "summary": "erdos_mordell: the full geometric inequality, assembled from the reduction plus the three key inequalities, with side-length positivity (affine independence) and pedal nonnegativity fully discharged."
     }
   ],
@@ -117,10 +130,10 @@
     ],
     "opens": [],
     "namespace": "ErdosMordellOQ01",
-    "lineCount": 222,
+    "lineCount": 271,
     "axiomCount": 0,
-    "theoremCount": 7,
-    "substantiveTheoremCount": 4,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 5,
     "duplicateTheorems": 0,
     "definitionCount": 1,
     "path": "Proofs/ErdosMordellInequalityOQ01.lean",
@@ -138,6 +151,18 @@
       "type": "core",
       "description": "The Erdős–Mordell inequality for P interior to triangle ABC, assembled from the reduction and the three key inequalities.",
       "leanType": "(A B C P : EuclideanSpace ℝ (Fin 2)) → AffineIndependent ℝ ![A,B,C] → P ∈ interior (convexHull ℝ {A,B,C}) → 2*(lineDist P B C + lineDist P C A + lineDist P A B) ≤ dist P A + dist P B + dist P C"
+    },
+    {
+      "name": "key_inequality_trig_core",
+      "type": "core",
+      "description": "Geometry-free trig bound sin B·dc + sin C·db ≤ √(db²+dc²+2·db·dc·cos A), collapsing to the perfect square (db·cos C − dc·cos B)² ≥ 0. Fully proved.",
+      "leanType": "A + B + C = π → 0 ≤ db → 0 ≤ dc → 0 ≤ sin B → 0 ≤ sin C → sin B * dc + sin C * db ≤ √(db^2 + dc^2 + 2*db*dc*cos A)"
+    },
+    {
+      "name": "key_inequality_of_chord_and_sines",
+      "type": "core",
+      "description": "Verified geometry-free assembly: from the chord identity (PA·sin A)² = db²+dc²+2·db·dc·cos A and the law of sines (a=2R sinA, b=2R sinB, c=2R sinC), derives the key inequality b·dc + c·db ≤ a·PA. Fully proved.",
+      "leanType": "A+B+C = π → 0 ≤ sin A → 0 ≤ sin B → 0 ≤ sin C → 0 ≤ db → 0 ≤ dc → 0 ≤ PA → 0 < R → a = 2R sinA → b = 2R sinB → c = 2R sinC → (PA*sinA)^2 = db^2+dc^2+2*db*dc*cos A → b*dc + c*db ≤ a*PA"
     },
     {
       "name": "key_inequality_A",

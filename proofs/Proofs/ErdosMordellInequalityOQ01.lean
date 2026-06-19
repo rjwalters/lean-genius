@@ -38,12 +38,18 @@ The standard proof factors into two independent pieces:
 ## Status
 
 - [x] `erdos_mordell_reduction` — the AM–GM reduction (algebraic core), PROVED.
-- [ ] `key_inequality_*` — the three geometric key inequalities (OPEN / hard).
+- [x] `key_inequality_trig_core` — geometry-free trig bound, PROVED.
+- [x] `key_inequality_of_chord_and_sines` — verified assembly: from the chord
+  identity + law of sines, derives the key inequality `b·dc + c·db ≤ a·PA`, PROVED.
+- [ ] `key_inequality_*` — the three geometric key inequalities (OPEN / hard);
+  each now reduces to supplying the chord identity and the law of sines for the
+  concrete Euclidean configuration (see `key_inequality_of_chord_and_sines`).
 - [ ] `erdos_mordell` — assembled geometric statement (depends on the above).
 
-The reduction is the reusable, Mathlib-independent heart of the argument; the
-remaining work is purely the planar-geometry derivation of the key
-inequalities (deferred — see knowledge notes).
+The reduction, the trig core, and the chord-to-key assembly are the reusable,
+Mathlib-independent heart of the argument; the remaining work is purely the
+planar-geometry derivation of the chord identity and law of sines (deferred —
+see knowledge notes).
 
 ## References
 - P. Erdős, *Problem 3740*, Amer. Math. Monthly 42 (1935), 396.
@@ -135,6 +141,49 @@ theorem key_inequality_trig_core
   calc Real.sin B * dc + Real.sin C * db
       = Real.sqrt ((Real.sin B * dc + Real.sin C * db) ^ 2) := (Real.sqrt_sq hLHS).symm
     _ ≤ Real.sqrt (db ^ 2 + dc ^ 2 + 2 * db * dc * Real.cos A) := Real.sqrt_le_sqrt hsq
+
+/-- **Key inequality from the chord identity and the law of sines** (geometry-free).
+
+This is the verified *assembly* step: it takes the two geometric facts that the
+chord identity provides and produces the Erdős–Mordell key inequality
+`b · dc + c · db ≤ a · PA` purely algebraically, via `key_inequality_trig_core`.
+
+The two inputs are exactly:
+* the **chord identity** `hchord : (PA · sin A)² = db² + dc² + 2·db·dc·cos A`
+  (concyclicity of the pedal feet on the circle of diameter `PA`), and
+* the **law of sines** with a common circumradius `R > 0`:
+  `a = 2R sin A`, `b = 2R sin B`, `c = 2R sin C`.
+
+Together with the angle sum `A + B + C = π` and the obvious sign conditions, the
+trig core gives `sin B · dc + sin C · db ≤ PA · sin A`; scaling by `2R > 0`
+turns this into `b · dc + c · db ≤ a · PA`. After this lemma, the *only*
+remaining geometric obligation in each `key_inequality_*` is to exhibit the
+chord identity and the law of sines for the concrete Euclidean configuration. -/
+theorem key_inequality_of_chord_and_sines
+    {A B C a b c db dc PA R : ℝ}
+    (hsum : A + B + C = Real.pi)
+    (hsA : 0 ≤ Real.sin A) (hsB : 0 ≤ Real.sin B) (hsC : 0 ≤ Real.sin C)
+    (hdb : 0 ≤ db) (hdc : 0 ≤ dc) (hPA : 0 ≤ PA) (hR : 0 < R)
+    (haR : a = 2 * R * Real.sin A) (hbR : b = 2 * R * Real.sin B)
+    (hcR : c = 2 * R * Real.sin C)
+    (hchord : (PA * Real.sin A) ^ 2 = db ^ 2 + dc ^ 2 + 2 * db * dc * Real.cos A) :
+    b * dc + c * db ≤ a * PA := by
+  -- The trig core bounds the pedal projection by the chord √(…).
+  have htrig := key_inequality_trig_core hsum hdb hdc hsB hsC
+  -- The chord identity collapses √(…) to `PA · sin A` (nonnegative).
+  have hchordNN : 0 ≤ PA * Real.sin A := mul_nonneg hPA hsA
+  have hroot : Real.sqrt (db ^ 2 + dc ^ 2 + 2 * db * dc * Real.cos A) = PA * Real.sin A := by
+    rw [← hchord, Real.sqrt_sq hchordNN]
+  rw [hroot] at htrig
+  -- htrig : sin B · dc + sin C · db ≤ PA · sin A.  Scale by `2R > 0`.
+  have hscaled : 2 * R * (Real.sin B * dc + Real.sin C * db)
+      ≤ 2 * R * (PA * Real.sin A) :=
+    mul_le_mul_of_nonneg_left htrig (by linarith)
+  -- Rewrite both sides into the side-length form.
+  calc b * dc + c * db
+      = 2 * R * (Real.sin B * dc + Real.sin C * db) := by rw [hbR, hcR]; ring
+    _ ≤ 2 * R * (PA * Real.sin A) := hscaled
+    _ = a * PA := by rw [haR]; ring
 
 /-- Perpendicular distance from a point `P` to the line through two points
 `X Y`, as the distance from `P` to the affine span `line[X, Y]`. -/
