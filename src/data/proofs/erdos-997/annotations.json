@@ -17,7 +17,11 @@
       "Prime distribution",
       "WellDistributed"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "fractional parts {αpₙ}",
+      "well-distribution vs. equidistribution mod 1",
+      "the sequence of primes"
+    ]
   },
   {
     "id": "ann-e997-frac",
@@ -37,7 +41,11 @@
       "unit interval"
     ],
     "mathContext": "$\\{x\\} = x - \\lfloor x \\rfloor \\in [0, 1)$ — the fractional part function",
-    "prerequisites": []
+    "prerequisites": [
+      "the floor function ⌊x⌋",
+      "fractional part x − ⌊x⌋",
+      "real numbers in Lean"
+    ]
   },
   {
     "id": "ann-e997-frac-range",
@@ -55,7 +63,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "floor-function inequalities",
+      "the half-open interval [0,1)",
+      "Set.Ico membership"
+    ]
   },
   {
     "id": "ann-e997-count",
@@ -73,7 +85,11 @@
       "formal definition",
       "ring theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting elements in an interval",
+      "half-open intervals (n, n+k]",
+      "indicator / counting functions"
+    ]
   },
   {
     "id": "ann-e997-well-dist",
@@ -93,7 +109,11 @@
       "uniform distribution",
       "equidistribution comparison"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "uniform distribution mod 1",
+      "uniformity over all starting points n",
+      "ε–K distribution definitions"
+    ]
   },
   {
     "id": "ann-e997-comparison",
@@ -111,7 +131,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "equidistribution mod 1",
+      "well-distribution (uniform over all windows)",
+      "strict implication between the two notions"
+    ]
   },
   {
     "id": "ann-e997-prime-seq",
@@ -129,7 +153,11 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the nth-prime function",
+      "Mathlib's Nat.nth",
+      "enumerating the primes"
+    ]
   },
   {
     "id": "ann-e997-prime-mult",
@@ -147,7 +175,11 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "fractional parts {α·pₙ}",
+      "irrational multiples mod 1",
+      "sequence definitions in Lean"
+    ]
   },
   {
     "id": "ann-e997-lacunary",
@@ -165,7 +197,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lacunary (Hadamard-gap) sequences",
+      "geometric growth ratio nₖ₊₁/nₖ ≥ q",
+      "sparse integer sequences"
+    ]
   },
   {
     "id": "ann-e997-lacunary-thm",
@@ -183,7 +219,11 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős's lacunary theorem",
+      "almost-all (measure-theoretic) statements",
+      "non-well-distribution of {α·nₖ}"
+    ]
   },
   {
     "id": "ann-e997-retracted",
@@ -201,7 +241,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős's 1964 claim and its retraction",
+      "well-distribution of {αpₙ}",
+      "irrational α"
+    ]
   },
   {
     "id": "ann-e997-cllw",
@@ -221,7 +265,11 @@
       "SAT-free existence proof",
       "Champagne-Le-Liu-Wooley"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Champagne–Le–Liu–Wooley (2024)",
+      "existence of a special irrational α",
+      "exponential sums over primes"
+    ]
   },
   {
     "id": "ann-e997-conjecture",
@@ -241,7 +289,11 @@
       "prime multiples"
     ],
     "mathContext": "$\\forall \\alpha \\in \\mathbb{R}$: the sequence $(\\{\\alpha p_n\\})_{n \\geq 1}$ is not well-distributed mod 1",
-    "prerequisites": []
+    "prerequisites": [
+      "universal quantification over all α",
+      "the non-well-distribution conjecture",
+      "Prop-valued statements"
+    ]
   },
   {
     "id": "ann-e997-rational",
@@ -259,7 +311,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "rational α = p/q",
+      "periodicity mod 1 (≤ q distinct values)",
+      "finiteness of value sets"
+    ]
   },
   {
     "id": "ann-e997-vinogradov",
@@ -277,7 +333,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vinogradov's equidistribution of {αp}",
+      "exponential sums over primes",
+      "irrational α"
+    ]
   },
   {
     "id": "ann-e997-discrepancy",
@@ -295,7 +355,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "discrepancy Dₙ",
+      "supremum over subintervals",
+      "quantitative equidistribution"
+    ]
   },
   {
     "id": "ann-e997-current",
@@ -313,6 +377,10 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the CLLW and lacunary results",
+      "well-distribution status",
+      "the open universal conjecture"
+    ]
   }
 ]
