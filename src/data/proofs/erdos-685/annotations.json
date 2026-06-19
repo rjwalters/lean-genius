@@ -16,7 +16,11 @@
       "prime-divisors",
       "analytic-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "asymptotic analysis",
+      "combinatorics"
+    ]
   },
   {
     "id": "erdos-685-omega",
@@ -35,7 +39,12 @@
       "hardy-ramanujan",
       "additive-function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "arithmetic functions",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "erdos-685-primesum",
@@ -53,7 +62,11 @@
       "mertens-theorem",
       "prime-reciprocals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "real analysis",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "erdos-685-conjecture",
@@ -72,7 +85,11 @@
       "kummer-theorem",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "probability theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "erdos-685-lower",
@@ -90,7 +107,11 @@
       "trivial-bound",
       "prime-counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "real analysis",
+      "inequalities"
+    ]
   },
   {
     "id": "erdos-685-tight",
@@ -108,7 +129,11 @@
       "boundary-behavior"
     ],
     "mathContext": "See annotation content for formal details of tightness near n",
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic analysis",
+      "inequalities"
+    ]
   },
   {
     "id": "erdos-685-basic",
@@ -126,7 +151,11 @@
       "verified-examples",
       "boundary-cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Lean 4 tactic mode",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "erdos-685-zero-iff",
@@ -144,6 +173,10 @@
       "small-cases"
     ],
     "mathContext": "See annotation content for formal details of characterization of ω = 0",
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "elementary logic",
+      "Lean 4 tactic mode"
+    ]
   }
 ]
