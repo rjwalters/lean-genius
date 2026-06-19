@@ -16,7 +16,11 @@
       "group-theory",
       "subgroups"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Group Theory Basics",
+      "Cosets And Subgroups",
+      "Finite Cardinality"
+    ]
   },
   {
     "id": "ann-e274-exact-covering",
@@ -35,7 +39,11 @@
       "partitions",
       "subgroups"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Left Cosets",
+      "Group Partitions",
+      "Subgroup Definition"
+    ]
   },
   {
     "id": "ann-e274-distinct-indices",
@@ -53,7 +61,11 @@
       "index",
       "Lagrange-theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Subgroup Index",
+      "Lagrange's Theorem",
+      "Coset Counting"
+    ]
   },
   {
     "id": "ann-e274-conjecture",
@@ -71,7 +83,11 @@
       "covering-systems",
       "egyptian-fractions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Covering Systems",
+      "Egyptian Fractions",
+      "Subgroup Index"
+    ]
   },
   {
     "id": "ann-e274-sun-axiom",
@@ -89,7 +105,11 @@
       "abelian-groups",
       "sun-theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Abelian Groups",
+      "Subnormal Subgroups",
+      "Coset Coverings"
+    ]
   },
   {
     "id": "ann-e274-repeated-index",
@@ -106,7 +126,11 @@
     "relatedConcepts": [
       "logical-equivalence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical Negation",
+      "Push-Neg Tactic",
+      "Subgroup Index"
+    ]
   },
   {
     "id": "ann-e274-margolis",
@@ -124,7 +148,11 @@
       "computational-verification",
       "small-groups"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Computational Verification",
+      "Small Groups Enumeration",
+      "Group Order"
+    ]
   },
   {
     "id": "ann-e274-main-theorem",
@@ -142,7 +170,11 @@
       "erdos-274",
       "herzog-schonheim"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Herzog-Schonheim Conjecture",
+      "Finite Abelian Groups",
+      "Coset Partitions"
+    ]
   },
   {
     "id": "ann-e274-index-sum",
@@ -160,7 +192,11 @@
       "egyptian-fractions",
       "counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Lagrange's Theorem",
+      "Counting Argument"
+    ]
   },
   {
     "id": "ann-e274-summary",
@@ -178,6 +214,10 @@
       "erdos"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "Herzog-Schonheim Conjecture",
+      "Sun's Theorem",
+      "Open Problems"
+    ]
   }
 ]
