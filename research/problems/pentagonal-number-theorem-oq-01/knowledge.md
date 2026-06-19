@@ -36,9 +36,30 @@ Supporting, fully proved:
 - `isGenPent_nonneg`.
 - Concrete values `g(0..±4) = 0,1,2,5,7,12,15,22,26` matching A001318.
 
+**Session 2 addition — index bounds / finiteness of Euler's recurrence:**
+- `mul_pred_nonneg`, `mul_succ_nonneg`: products of consecutive integers
+  `k(k-1) ≥ 0`, `k(k+1) ≥ 0` (case split + `mul_nonneg`).
+- `genPent_sq_le_self`: **quadratic growth** `k² ≤ g(k)` (since
+  `2g(k) - 2k² = k(k-1) ≥ 0`).
+- `index_le_genPent` / `neg_index_le_genPent` / `abs_index_le_genPent`:
+  the index is bounded by the value, `|k| ≤ g(k)`.
+- `indexSet_finite`: for any `n`, `{k | g(k) ≤ n}` is **finite** (⊆ `[-n,n]`).
+  This is the precise statement that Euler's partition recurrence
+  `p(n) = ∑_{k≠0} (-1)^{k-1} p(n-g(k))` is a *finite* sum — a prerequisite for
+  any algorithmic/inductive use of the recurrence.
+
 ## Status of verification
 
-**BUILD-PENDING.** This cycle both verification backends were unavailable:
+**BUILD-VERIFIED (2026-06-19, Session 2).** Docker build green, 7743 jobs,
+`✔ Built Proofs.PentagonalNumberTheoremOQ01`, 0 errors, 0 warnings (the
+`le_or_lt` deprecation warnings were fixed to `le_or_gt`). The Session-1 file was
+already merged build-verified via PR #25893; Session 2 adds the index-bound /
+finiteness layer (`genPent_sq_le_self`, `abs_index_le_genPent`, `indexSet_finite`)
+on top, build-confirmed.
+
+---
+
+### Historical (Session 1, 2026-06-18) — was BUILD-PENDING at the time:
 - Aristotle MCP returned `Resource not found` (404) on every call.
 - Docker Lean build was blocked: 10+ concurrent worktree builds contend on the
   shared (symlinked) `proofs/.lake`; a deterministic ProofWidgets cloud-release
@@ -79,3 +100,25 @@ fails, the likely culprits are exact lemma names (`Int.cast_pow`,
 `ZMod.intCast_zmod_eq_zero_iff_dvd`, `Int.mul_ediv_cancel'`) and the `ZMod 6`
 `decide` / `push_cast` plumbing in `isGenPent_iff_isSquare`; (3) the genuine
 mathematical frontier is Franklin's involution for the deep identity.
+
+### 2026-06-19 (Session 2) — DEEPEN (build-verified)
+
+**Mode**: DEEPEN · **Outcome**: progress (build-verified)
+
+- Session-1 file was already merged build-verified (PR #25893). Rather than
+  re-survey, added the next tractable, on-target layer: the **index-bound /
+  finiteness** theory that makes Euler's partition recurrence a *finite* sum.
+- New: `mul_pred_nonneg`, `mul_succ_nonneg` (consecutive-integer products ≥ 0);
+  `genPent_sq_le_self` (`k² ≤ g(k)`, quadratic growth); `index_le_genPent`,
+  `neg_index_le_genPent`, `abs_index_le_genPent` (`|k| ≤ g(k)`);
+  `indexSet_finite` (`{k | g(k) ≤ n}` finite, ⊆ `[-n,n]`). All via
+  `two_mul_genPent` + `nlinarith` / `Set.Finite.subset Set.finite_Icc`.
+- Build green (7743 jobs, 0 sorry, 0 axiom). Fixed `le_or_lt`→`le_or_gt`
+  deprecation so the file is warning-clean.
+
+**Next steps**: the genuine frontier remains Franklin's involution for the deep
+identity `p_even(n) - p_odd(n) = [n=g(k)]·(-1)ᵏ`. A tractable intermediate would
+be to *define* the partition-into-distinct-parts sign and state (not yet prove)
+the identity, or to formalize the explicit finite form of Euler's recurrence
+`p(n) = ∑_{k=1}^{K(n)} (-1)^{k-1}(p(n-g_k)+p(n-g_{-k}))` now that `indexSet_finite`
+supplies the finite support.

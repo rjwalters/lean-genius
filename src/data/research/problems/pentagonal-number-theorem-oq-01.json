@@ -8,14 +8,17 @@
       "Euler's pentagonal number theorem's exponents g(k)=k(3k-1)/2 form an index set whose recognition criterion is purely number-theoretic: m is generalized pentagonal iff 24m+1 is a perfect square, because 24·g(k)+1 = (6k-1)².",
       "The converse rests on a modular fact decidable in ZMod 6: a square s² = 24m+1 satisfies s² ≡ 1 (mod 6), which holds only for s ≡ ±1 (mod 6); each residue class yields an explicit index k with 6k-1 = ±s.",
       "Working with the doubling relation 2m = k(3k-1) as the membership predicate (instead of g(k)=k(3k-1)/2) sidesteps integer division entirely; exactness of the division is a one-line even/odd case split.",
-      "Mathlib has Nat.Partition but neither Franklin's involution, distinct-part partitions with a parity sign, nor the formal power-series infinite product, so the deep identity has no Mathlib bearer; the index-set theory is the tractable, self-contained piece."
+      "Mathlib has Nat.Partition but neither Franklin's involution, distinct-part partitions with a parity sign, nor the formal power-series infinite product, so the deep identity has no Mathlib bearer; the index-set theory is the tractable, self-contained piece.",
+      "Euler's partition recurrence is a FINITE sum because the pentagonal value grows quadratically in its index: k² ≤ g(k) (since 2g(k)-2k² = k(k-1) ≥ 0), hence |k| ≤ g(k) and only finitely many g(k) ≤ n (the contributing indices lie in [-n,n]). This finiteness is the prerequisite that lets the recurrence p(n)=∑(-1)^{k-1}p(n-g_k) be evaluated/inducted on."
     ],
     "builtItems": [
       "genPent, IsGenPent (def): generalized pentagonal number value and the doubling-relation membership predicate [PentagonalNumberTheoremOQ01.lean]",
       "isGenPent_iff_isSquare: HEADLINE — m generalized pentagonal ⟺ 24m+1 a perfect square [PentagonalNumberTheoremOQ01.lean]",
       "two_dvd_index_mul, two_mul_genPent: k(3k-1) even; exact doubling 2·g(k)=k(3k-1) [PentagonalNumberTheoremOQ01.lean]",
       "genPent_injective: distinct indices give distinct pentagonal numbers, via (a-b)(3(a+b)-1)=0 and 3(a+b)≠1 over ℤ [PentagonalNumberTheoremOQ01.lean]",
-      "isGenPent_nonneg + concrete values g(0..±4)=0,1,2,5,7,12,15,22,26 (OEIS A001318) [PentagonalNumberTheoremOQ01.lean]"
+      "isGenPent_nonneg + concrete values g(0..±4)=0,1,2,5,7,12,15,22,26 (OEIS A001318) [PentagonalNumberTheoremOQ01.lean]",
+      "genPent_sq_le_self (k²≤g(k)), index_le_genPent / neg_index_le_genPent / abs_index_le_genPent (|k|≤g(k)), mul_pred_nonneg / mul_succ_nonneg (consecutive-integer products ≥0) [PentagonalNumberTheoremOQ01.lean]",
+      "indexSet_finite: for any n, {k | g(k) ≤ n} is finite (⊆ [-n,n]) — Euler's recurrence is a finite sum [PentagonalNumberTheoremOQ01.lean]"
     ],
     "mathlibGaps": [
       "No Franklin sign-reversing involution on partitions into distinct parts.",
@@ -23,10 +26,10 @@
       "No formal-power-series manipulation of the infinite product ∏(1-Xⁿ) needed for the pentagonal identity itself."
     ],
     "nextSteps": [
-      "Confirm the file compiles: re-run the docker build when concurrent load drops, or submit to Aristotle when the MCP recovers (both backends were down this cycle).",
-      "If a tactic fails, suspect exact lemma names (Int.cast_pow, ZMod.intCast_zmod_eq_zero_iff_dvd, Int.mul_ediv_cancel') and the ZMod 6 decide / push_cast plumbing in isGenPent_iff_isSquare.",
-      "Mathematical frontier: build Franklin's involution to reach the deep identity p_even(n)-p_odd(n) = [n=g(k)]·(-1)ᵏ."
+      "Mathematical frontier: build Franklin's involution to reach the deep identity p_even(n)-p_odd(n) = [n=g(k)]·(-1)ᵏ.",
+      "Tractable intermediate now that indexSet_finite supplies finite support: formalize the explicit finite form of Euler's recurrence p(n) = ∑_{k=1}^{K(n)} (-1)^{k-1}(p(n-g_k)+p(n-g_{-k})), or define the partition-into-distinct-parts parity sign and state the identity.",
+      "Define a Finset enumerator of pentagonal indices ≤ n (via abs_index_le_genPent / indexSet_finite) to make the recurrence computable."
     ],
-    "progressSummary": "PROGRESS (build-pending): formalized the generalized-pentagonal-number foundation with the headline 24m+1-square recognition criterion (16 thms, 0 ax, 0 sorry). Hand-audited; not yet machine-checked (Aristotle 404 + docker build contention). Deep identity (Franklin's involution) documented as open core."
+    "progressSummary": "BUILD-VERIFIED (Session 2, 2026-06-19): foundation file (headline 24m+1-square recognition criterion) was merged build-verified via PR #25893; Session 2 adds the index-bound / finiteness layer — k²≤g(k) (quadratic growth), |k|≤g(k), and indexSet_finite ({k|g(k)≤n} finite ⊆ [-n,n]), which is the precise statement that Euler's partition recurrence is a finite sum. Build green (7743 jobs), 0 sorry, 0 axiom, warning-clean. Deep identity (Franklin's involution) remains the open core."
   }
 }

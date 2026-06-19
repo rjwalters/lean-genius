@@ -28,6 +28,10 @@
   - `isGenPent_iff_isSquare` — HEADLINE: pentagonality ⟺ `24m+1` a perfect square
   - `isGenPent_nonneg`       — generalized pentagonal numbers are nonnegative
   - `genPent_injective`      — distinct indices give distinct pentagonal numbers
+  - `genPent_sq_le_self`     — quadratic growth `k² ≤ g(k)`
+  - `abs_index_le_genPent`   — index bound `|k| ≤ g(k)`
+  - `indexSet_finite`        — only finitely many `g(k) ≤ n` (Euler's recurrence
+                               is a finite sum)
   - concrete values `g(0..±4) = 0,1,2,5,7,12,15,22,26` matching the OEIS A001318.
 -/
 
@@ -122,7 +126,7 @@ theorem isGenPent_iff_isSquare (m : ℤ) :
 theorem isGenPent_nonneg {m : ℤ} (h : IsGenPent m) : 0 ≤ m := by
   obtain ⟨k, hk⟩ := h
   have hnn : 0 ≤ k * (3 * k - 1) := by
-    rcases le_or_lt k 0 with hk0 | hk0
+    rcases le_or_gt k 0 with hk0 | hk0
     · have hrw : k * (3 * k - 1) = (-k) * (1 - 3 * k) := by ring
       rw [hrw]; exact mul_nonneg (by omega) (by omega)
     · exact mul_nonneg (by omega) (by omega)
@@ -138,6 +142,64 @@ theorem genPent_injective : Function.Injective genPent := by
   rcases mul_eq_zero.mp hfac with h | h
   · linarith
   · omega
+
+/-! ## Part 3b: Index bounds — Euler's recurrence is a finite sum
+
+Euler's partition recurrence `p(n) = ∑_{k≠0} (-1)^{k-1} p(n - g(k))` is only
+useful because the sum is **finite**: for fixed `n` only finitely many
+generalized pentagonal numbers are `≤ n`.  We make this precise and quantitative.
+The key estimate is `k² ≤ g(k)` (so the value grows at least quadratically in the
+index), which immediately bounds the index `|k| ≤ g(k)` and shows the set of
+indices contributing to the recurrence at level `n` is finite. -/
+
+/-- Product of consecutive integers `k·(k-1) ≥ 0` (one factor is `≤ 0` exactly
+when the other is). -/
+theorem mul_pred_nonneg (k : ℤ) : 0 ≤ k * (k - 1) := by
+  rcases le_or_gt k 0 with hk | hk
+  · have h : k * (k - 1) = (-k) * (1 - k) := by ring
+    rw [h]; exact mul_nonneg (by omega) (by omega)
+  · exact mul_nonneg (by omega) (by omega)
+
+/-- Product of consecutive integers `k·(k+1) ≥ 0`. -/
+theorem mul_succ_nonneg (k : ℤ) : 0 ≤ k * (k + 1) := by
+  rcases le_or_gt k (-1) with hk | hk
+  · have h : k * (k + 1) = (-k) * (-(k + 1)) := by ring
+    rw [h]; exact mul_nonneg (by omega) (by omega)
+  · exact mul_nonneg (by omega) (by omega)
+
+/-- **Quadratic growth.** `k² ≤ g(k)`: the pentagonal number dominates the square
+of its index, since `2g(k) - 2k² = k(k-1) ≥ 0`. -/
+theorem genPent_sq_le_self (k : ℤ) : k ^ 2 ≤ genPent k := by
+  have hd := two_mul_genPent k
+  nlinarith [hd, mul_pred_nonneg k]
+
+/-- `k ≤ g(k)`, from `2g(k) - 2k = 3k(k-1) ≥ 0`. -/
+theorem index_le_genPent (k : ℤ) : k ≤ genPent k := by
+  have hd := two_mul_genPent k
+  nlinarith [hd, mul_pred_nonneg k]
+
+/-- `-k ≤ g(k)`, from `2g(k) + 2k = 2k² + k(k+1) ≥ 0`. -/
+theorem neg_index_le_genPent (k : ℤ) : -k ≤ genPent k := by
+  have hd := two_mul_genPent k
+  nlinarith [hd, mul_succ_nonneg k, sq_nonneg k]
+
+/-- **Index bound.** `|k| ≤ g(k)`: the index of a generalized pentagonal number is
+bounded by its value. -/
+theorem abs_index_le_genPent (k : ℤ) : |k| ≤ genPent k := by
+  rw [abs_le]
+  exact ⟨by linarith [neg_index_le_genPent k], index_le_genPent k⟩
+
+/-- **Finite support of Euler's recurrence.** For any bound `n`, only finitely many
+indices `k` have `g(k) ≤ n`; equivalently, the sum in Euler's partition recurrence
+at level `n` ranges over a finite set.  Indeed every such index lies in `[-n, n]`. -/
+theorem indexSet_finite (n : ℤ) : {k : ℤ | genPent k ≤ n}.Finite := by
+  apply Set.Finite.subset (Set.finite_Icc (-n) n)
+  intro k hk
+  rw [Set.mem_setOf_eq] at hk
+  have hb : |k| ≤ n := le_trans (abs_index_le_genPent k) hk
+  rw [Set.mem_Icc]
+  rw [abs_le] at hb
+  exact hb
 
 /-! ## Part 4: Concrete values (OEIS A001318)
 
