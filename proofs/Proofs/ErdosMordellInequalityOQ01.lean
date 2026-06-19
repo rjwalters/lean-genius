@@ -41,15 +41,20 @@ The standard proof factors into two independent pieces:
 - [x] `key_inequality_trig_core` — geometry-free trig bound, PROVED.
 - [x] `key_inequality_of_chord_and_sines` — verified assembly: from the chord
   identity + law of sines, derives the key inequality `b·dc + c·db ≤ a·PA`, PROVED.
-- [ ] `key_inequality_*` — the three geometric key inequalities (OPEN / hard);
-  each now reduces to supplying the chord identity and the law of sines for the
-  concrete Euclidean configuration (see `key_inequality_of_chord_and_sines`).
-- [ ] `erdos_mordell` — assembled geometric statement (depends on the above).
+- [x] `chord_identity` — the chord identity at vertex `A`, PROVED (by delegation to
+  `ErdosMordellChord.chord_identity` in `Proofs/ErdosMordellChordIdentity.lean`,
+  whose cosine-side core `chord_cos_eq` is a pure coordinate identity in
+  `EuclideanSpace ℝ (Fin 2)`).
+- [x] `key_inequality_*` — the three geometric key inequalities, PROVED; each
+  reduces to the chord identity and the law of sines for the concrete Euclidean
+  configuration (see `key_inequality_of_chord_and_sines`).
+- [x] `erdos_mordell` — assembled geometric statement, PROVED.
 
-The reduction, the trig core, and the chord-to-key assembly are the reusable,
-Mathlib-independent heart of the argument; the remaining work is purely the
-planar-geometry derivation of the chord identity and law of sines (deferred —
-see knowledge notes).
+The inequality is now fully machine-checked with no `sorry` and no axioms beyond
+Lean/Mathlib's standard foundations. The reduction, the trig core, and the
+chord-to-key assembly are the reusable, Mathlib-independent heart of the argument;
+the chord identity itself is discharged by the coordinate proof in the companion
+file `ErdosMordellChordIdentity.lean`.
 
 ## References
 - P. Erdős, *Problem 3740*, Amer. Math. Monthly 42 (1935), 396.
@@ -58,6 +63,7 @@ see knowledge notes).
 -/
 
 import Mathlib
+import Proofs.ErdosMordellChordIdentity
 
 namespace ErdosMordellOQ01
 
@@ -279,7 +285,7 @@ theorem key_inequality_A_of_chord
     (lineDist_nonneg P C A) (lineDist_nonneg P A B) dist_nonneg hRpos
     hlaw_a hlaw_b hlaw_c hchord
 
-/-- **Chord identity at vertex `A`** (the sole remaining geometric obligation).
+/-- **Chord identity at vertex `A`** (PROVED — formerly the sole remaining geometric obligation).
 
 Let `F_b, F_c` be the feet of the perpendiculars from `P` to the sides `CA, AB`,
 so `db = dist P F_b = lineDist P C A` and `dc = dist P F_c = lineDist P A B`. The
@@ -288,9 +294,10 @@ the chord `F_b F_c` has length `PA · sin (∠ B A C)` (inscribed-angle theorem)
 and the law of cosines in `△ P F_b F_c` (where `∠ F_b P F_c = π − ∠ B A C`)
 gives the identity below.
 
-This is the single open planar-geometry fact; once supplied, the entire
-Erdős–Mordell inequality is fully proved (via `key_inequality_A_of_chord`, the
-cyclic relabelings for `B`/`C`, and the algebraic reduction). -/
+This was the single open planar-geometry fact; it is now discharged by delegation
+to `ErdosMordellChord.chord_identity`, completing the entire Erdős–Mordell
+inequality (via `key_inequality_A_of_chord`, the cyclic relabelings for `B`/`C`,
+and the algebraic reduction). -/
 theorem chord_identity
     (A B C P : EuclideanSpace ℝ (Fin 2))
     (hABC : AffineIndependent ℝ ![A, B, C])
@@ -298,7 +305,11 @@ theorem chord_identity
     (dist P A * Real.sin (∠ B A C)) ^ 2
       = lineDist P C A ^ 2 + lineDist P A B ^ 2
         + 2 * lineDist P C A * lineDist P A B * Real.cos (∠ B A C) := by
-  sorry
+  -- This is exactly `ErdosMordellChord.chord_identity` with `(X, Y, Z) := (A, B, C)`:
+  -- both `lineDist` defs unfold to `Metric.infDist P (affineSpan ℝ {·, ·})`, and the
+  -- pedal-feet chord identity there was discharged via `chord_cos_eq` (the law-of-cosines
+  -- core). See `Proofs/ErdosMordellChordIdentity.lean`.
+  exact ErdosMordellChord.chord_identity A B C P hABC hP
 
 /-- **Erdős–Mordell key inequality at vertex `A`.**
 

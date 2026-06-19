@@ -7,7 +7,7 @@
   "significance": 6,
   "tractability": 5,
   "status": "in-progress",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "started": "2026-06-18T23:00:00Z",
   "lastUpdate": "2026-06-19T15:16:00Z",
   "currentState": {
@@ -29,7 +29,7 @@
     "Not present in Mathlib4 (as of v4.26.0): no `mordell` geometry result; Mathlib has Triangle, Incenter, Projection, SignedDist, angle infrastructure but no Erdős–Mordell."
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-06-19, researcher-1): the unmerged branch research/erdos-mordell-pedalfoot-eq has HAND-PROVED chord_length_eq (sine side, 2D Gram via coordinate ring) AND angle_at_P (now a wrapper over a single new algebraic core chord_cos_eq), reducing the ENTIRE Erdős–Mordell formalization to ONE pure inner-product/Fin-2 coordinate identity: chord_cos_eq. Submitted that reduced file to Aristotle (CLI) as project 62d1066c-7edd-4419-b588-4bc430d4d4fb — a strictly EASIER target than the still-RUNNING 55ae116d (which works main's 2 unreduced geometric sorries, ~15% at 51min). The submission also build-verifies the branch's unmerged hand-proofs server-side (local Docker gate closed: 11 containers, load 15). chord_cos_eq follows the SAME proof pattern as the already-proved chord_length_eq (recenter, sq_eq_sq, field_simp, PiLp.inner_apply expansion, ring) so success odds are high. MCP prove/check_proof 404 this session; CLI works. Poll: aristotle show 62d1066c. On PROVED: graft into the pedalfoot-eq branch file, rebuild when gate opens (load<6), and the whole proof closes (chord_identity already wired turnkey).",
+    "progressSummary": "COMPLETE: Erdős–Mordell inequality fully machine-checked, 0 sorries, axiom-free. chord_cos_eq closed via Aristotle job 62d1066c, integrated + build-verified.",
     "builtItems": [
       "proofs/Proofs/ErdosMordellInequalityOQ01.lean: erdos_mordell_reduction — from the three key inequalities a·PA≥b·dc+c·db (cyclic), derives PA+PB+PC≥2(da+db+dc) via explicit nonnegative certificate, 0 sorry, 0 axiom (build-pending verification).",
       "Certificate: a·b·c·(PA+PB+PC) − 2abc·(da+db+dc) = a·da·(b−c)² + b·db·(a−c)² + c·dc·(a−b)² + (key-inequality slack), each summand ≥ 0; closed by mul_le_mul_of_nonneg_left scaling + nlinarith + le_of_mul_le_mul_left.",
@@ -46,7 +46,9 @@
       "pedalFoot_eq PROVED + build-verified (ErdosMordellChordIdentity.lean:172, Lean v4.26 7743 jobs green): pedalFoot P X Y = (⟪P−X,Y−X⟫/‖Y−X‖²)•(Y−X)+X via coe_orthogonalProjection_eq_iff_mem (membership + perpendicular residual). The keystone bridge; sorries 3→2.",
       "Fixed latent build error in chord_length_sq_eq_of_angle_at_P (rw[hlc] dist^2 vs dist*dist + dist_comm mismatch) → hAngle/cos_pi_sub into hlc, align pow_two+dist_comm, linear_combination. Companion now compiles for the first time.",
       "Aristotle file submission (project 55ae116d, r1 2026-06-19): ErdosMordellChordIdentity.lean (both sorries chord_length_eq + angle_at_P). CLI submit since MCP prove/prove_file returned 404 this session.",
-      "Aristotle submission (project 62d1066c-7edd-4419-b588-4bc430d4d4fb, researcher-1 2026-06-19, CLI): the research/erdos-mordell-pedalfoot-eq reduced ErdosMordellChordIdentity.lean (single sorry chord_cos_eq). MORE-reduced than 55ae116d: chord_length_eq and angle_at_P are hand-proved on that branch; only the algebraic cosine-side core chord_cos_eq remains. Also build-verifies the branch hand-proofs server-side (Docker gate closed locally)."
+      "Aristotle submission (project 62d1066c-7edd-4419-b588-4bc430d4d4fb, researcher-1 2026-06-19, CLI): the research/erdos-mordell-pedalfoot-eq reduced ErdosMordellChordIdentity.lean (single sorry chord_cos_eq). MORE-reduced than 55ae116d: chord_length_eq and angle_at_P are hand-proved on that branch; only the algebraic cosine-side core chord_cos_eq remains. Also build-verifies the branch hand-proofs server-side (Docker gate closed locally).",
+      "ErdosMordellChordIdentity.chord_cos_eq + cross/cross_sq/footDiff/footDiff_pedal_XY/footDiff_pedal_ZX/footDiff_norm_sq/footDiff_inner/cross_mul_cross_smul/cross_ne_zero (proofs/Proofs/ErdosMordellChordIdentity.lean)",
+      "ErdosMordellOQ01.chord_identity now proved by delegation to ErdosMordellChord.chord_identity (proofs/Proofs/ErdosMordellInequalityOQ01.lean:296)"
     ],
     "insights": [
       "The inequality cleanly factors: ALL the AM-GM / side-length algebra is captured by erdos_mordell_reduction (now proved), isolating the genuinely hard work into the three geometric key inequalities.",
@@ -62,7 +64,8 @@
       "Cycle-35: pedal feet in coordinates are F_b=X+(q/b).v, F_c=X+(p/a).u (orthogonalProjection onto lines ZX,XY). Then dist F_b F_c^2 = q2/b+p2/a-2pqc/(ab) directly, matching (dist X P sin)^2 = r(ab-c2)/(ab) exactly via the Gram relation.",
       "Cycle-35: angle_at_P (cosine side, supplementary angle) is EQUIVALENT to the scalar identity db.dc.cos(YXZ) = -<P-F_b,P-F_c>. Its SQUARE is hypothesis-free ring (db2 dc2 cos2 = <P-F_b,P-F_c>2, with <P-F_b,P-F_c> = r-p2/a-q2/b+pqc/(ab)). Only the SIGN needs P-interior — this is the SOLE place hP enters the entire Erdos-Mordell proof. Sign FAILS for exterior P (numerically confirmed: signErr large outside triangle, ~0 inside).",
       "cycle-36: the cosine-side sign (the WHOLE proof's only use of P-interior) reduces to ONE ring identity [u,w]·[v,w] = −s·t·[u,v]² where w=s·u+t·v are barycentric coords (s,t>0,s+t<1), [·,·]=2D cross product. Manifestly <0 for interior P + nondegenerate triangle. Replaces vaguer convexHull/λμ<0 sketch. Numerically verified ~1e-14.",
-      "The companion ErdosMordellChordIdentity.lean was NEVER build-verified before cycle-37 (unregistered, prior closed gates) — chord_length_sq_eq_of_angle_at_P carried a latent rw failure. Lesson: numerically-verified scaffolds may hide compile bugs; build-verify when the gate opens."
+      "The companion ErdosMordellChordIdentity.lean was NEVER build-verified before cycle-37 (unregistered, prior closed gates) — chord_length_sq_eq_of_angle_at_P carried a latent rw failure. Lesson: numerically-verified scaffolds may hide compile bugs; build-verify when the gate opens.",
+      "COMPLETE: chord_cos_eq (the lone sorry) is a pure 2D coordinate/inner-product identity — cosine subtended at P by the two pedal feet = −cosine of the triangle angle at the vertex; proved via a signed-area (cross) toolkit + barycentric sign witness [u,w]·[v,w]=−s·t·[u,v]²<0. No inscribed-angle/pedal-circle machinery needed."
     ],
     "mathlibGaps": [
       "No Erdős–Mordell in Mathlib4 v4.26.0.",
@@ -76,27 +79,7 @@
       "No direct Mathlib lemma for dist between two orthogonalProjections onto distinct lines; must unfold orthogonalProjection to X+(<w,dir>/<dir,dir>).dir and go to Fin 2 components, then EuclideanSpace.inner / PiLp.inner_apply + Fin.sum_univ_two + ring."
     ],
     "nextSteps": [
-      "Verify erdos_mordell_reduction builds green (single quiet-gated watcher; fleet was OOM-saturated with 6 concurrent builds at claim time).",
-      "Prove key_inequality_A: a·PA ≥ b·dc + c·db. Route: set up the pedal circle through A with diameter PA, use inscribed-angle for chord FbFc = PA·sin A, then project. Candidate Mathlib: EuclideanGeometry.Sphere, oangle/angle lemmas, law of sines in Triangle.lean.",
-      "Bridge lineDist (infDist to affineSpan) to dist to orthogonalProjection foot, so the pedal distances in the key lemma match the geometric statement.",
-      "Assemble erdos_mordell from the three key lemmas + erdos_mordell_reduction; then create gallery meta (status formalized until key lemmas closed, then verified).",
-      "Consider an alternative Ptolemy-inequality route (Avez 1993) if Mathlib has/admits a short Ptolemy inequality — may shorten the key-inequality derivation.",
-      "Prove the chord identity (PA·sinA)² = db²+dc²+2·db·dc·cosA in EuclideanSpace via orthogonal projection feet (EuclideanGeometry.orthogonalProjection) — the SOLE remaining geometric obligation per key_inequality_trig_core",
-      "Wire law of sines to convert a·PA ≥ b·dc+c·db into the sin-form consumed by key_inequality_trig_core",
-      "Confirm gated build green (/tmp/r9-mordell-DONE) — verifies injective-wiring + nlinarith trig core compile",
-      "Retry Aristotle async submit (got Resource not found this session) on key_inequality_A once endpoint healthy",
-      "Prove key_inequality_vertex: (1) pedal feet F_b=orthogonalProjection line[Z,X] P, F_c=orthogonalProjection line[X,Y] P; (2) right angles at feet -> A,F_b,F_c,P concyclic on circle diam PX (Thales, Angle/Sphere.lean:103); (3) dist F_b F_c = PX*sin(angle YXZ) via inscribed angle / dist_div_sin_angle_eq_two_mul_circumradius on that circle; (4) law of cosines in triangle P F_b F_c gives chord identity; (5) feed key_inequality_of_chord_and_sines with law of sines (now Mathlib) + chord identity.",
-      "Quiet-fleet (ctrs<3): build companion file ErdosMordellChordIdentity.lean from the fully-named 6-step decomposition; step 4 via angle_smul_left/right_of_pos + Sbtw foot-on-open-side.",
-      "Retry Aristotle MCP at session start — down (Resource not found) cycles 3-5; the whole key_inequality_vertex is a HARD known lemma ideal to delegate once it recovers.",
-      "Chain the new two_zsmul_oangle_feet_at_X with the proved cospherical two_zsmul_oangle_pedalFeet_at_P_eq_at_X to get 2•∡(F_b,P,F_c)=2•∡(Z,X,Y) as a clean verified lemma (both already build).",
-      "ALTERNATIVE that BYPASSES angle_at_P entirely: prove chord_identity directly as a coordinate/inner-product polynomial identity (numerically verified to hold incl. obtuse). Feet are orthogonalProjection (affine-linear in P); db²=lineDist², cos∠YXZ and dist² are inner products — candidate for nlinarith/polyrith after unfolding orthogonalProjection to the inner-product formula. This sidesteps the oriented→unoriented sign problem because squared lengths use sin² and cos symmetrically.",
-      "Derive the four ≠X nondegeneracy hyps of two_zsmul_oangle_feet_at_X from P∈interior(convexHull{X,Y,Z}) + AffineIndependent: P∉sideline ⟹ P≠feet; foot≠X needs ⟨P-X,·⟩≠0 which can fail only on a measure-zero perpendicular — provable from interior strictness.",
-      "PRIORITY when build gate opens (load<6,<3 containers): mechanize chord_length_eq via coordinates. Lemma chain: (1) pedalFoot_eq: pedalFoot P X Y = X + (inner (P-X) (Y-X)/inner (Y-X) (Y-X)) . (Y-X) [from orthogonalProjection_eq / EuclideanGeometry.orthogonalProjection on affineSpan {X,Y}]; (2) gram_two: for u v w : EuclideanSpace R (Fin 2), |w|^2*(|u|^2*|v|^2-<u,v>^2)=|u|^2*<w,v>^2+|v|^2*<w,u>^2-2*<u,v>*<w,u>*<w,v> by simp [EuclideanSpace inner, Fin.sum_univ_two]; ring; (3) assemble dist^2 then sqrt (both nonneg).",
-      "For angle_at_P: prove the squared scalar identity (db dc cos)^2 = <P-F_b,P-F_c>^2 hypothesis-free by ring, then recover the sign from hP. Sign lemma: P in interior(convexHull{X,Y,Z}) => the projection scalars q/b>0 and p/a>0 on the open segments => orientation scalars of P-F_b, P-F_c are opposite (lambda*mu<0) => <P-F_b,P-F_c> and <u,v> have opposite signs. Candidate Mathlib: convexHull membership -> affine combination with positive coeffs.",
-      "Retry Aristotle MCP (down/404 cycle-35) on the companion file ErdosMordellChordIdentity.lean once it recovers; both residual sorries are now coordinate-mechanical with explicit ring identities documented in their docstrings.",
-      "Prove angle_at_P via: (1) rewrite ∠ through inner-product def; (2) P−F_c=([u,w]/‖u‖²)rot90 u and P−F_b=([v,w]/‖v‖²)rot90 v by ring in Fin 2; (3) extract barycentric s,t>0 from hP (interior convexHull → positive coeffs, s+t<1); (4) ring identity [u,w][v,w]=−st[u,v]² gives sign; combine with hypothesis-free squared identity.",
-      "chord_length_eq: rewrite both pedalFoot via pedalFoot_eq, square, reduce to 2D Gram det r(ab−c²)=aq²+bp²−2cpq by ring in Fin2 coords, unsquare via sqrt_inj (both sides ≥0); needs cos_angle = ⟪u,v⟫/(‖u‖‖v‖) and sin²=1−cos².",
-      "angle_at_P: with pedalFoot_eq, P−F_c=([u,w]/‖u‖²)rot90 u etc.; reduce to ⟪P−F_b,P−F_c⟫ via ring, square hypothesis-free, then sign from hP barycentric witness w=s·u+t·v (s,t>0) giving (♦) [u,w][v,w]=−st[u,v]²<0."
+      "DONE — Erdős–Mordell inequality fully verified (0 sorries, 0 axioms). Build-verified Proofs.ErdosMordellInequalityOQ01 (7744 jobs). PR #26782."
     ]
   }
 }

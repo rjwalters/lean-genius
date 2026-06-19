@@ -70,6 +70,9 @@ open EuclideanGeometry Metric
 
 namespace ErdosMordellChord
 
+set_option maxRecDepth 8000
+set_option maxHeartbeats 2000000
+
 /-- Perpendicular distance from `P` to the line through `X` and `Y` (matches the
 `lineDist` of the main file: distance to the affine span). -/
 noncomputable def lineDist (P X Y : EuclideanSpace ℝ (Fin 2)) : ℝ :=
@@ -295,7 +298,7 @@ theorem chord_length_eq
       have := Real.sin_sq_add_cos_sq (∠ Y X Z); linarith,
     hcos, div_pow, mul_pow]
   simp only [← real_inner_self_eq_norm_sq, inner_sub_left, inner_sub_right,
-    real_inner_smul_left, real_inner_smul_right]
+    real_inner_smul_left, real_inner_smul_right] at ha hb ⊢
   -- clear the `⟪v,v⟫`, `⟪u,u⟫` denominators, then expand every inner product into the
   -- two `Fin 2` components; `ring` resolves inner-product commutativity and discharges the
   -- resulting polynomial identity (the 2D Gram relation `gram_two`).
@@ -361,7 +364,95 @@ theorem interior_barycentric
   rw [← hsum, hc0]
   module
 
-/-- **The single residual geometric subfact of the cosine side.**
+/-! ### Coordinate helpers for the cosine-side identity `chord_cos_eq`. -/
+
+/-- The signed area (2D cross product) of two plane vectors. -/
+noncomputable def cross (u v : EuclideanSpace ℝ (Fin 2)) : ℝ := u 0 * v 1 - u 1 * v 0
+
+/-- Lagrange's identity in the plane: `[u,v]² = ‖u‖²‖v‖² − ⟪u,v⟫²`. -/
+theorem cross_sq (u v : EuclideanSpace ℝ (Fin 2)) :
+    cross u v ^ 2 = ‖u‖ ^ 2 * ‖v‖ ^ 2 - inner ℝ u v ^ 2 := by
+  simp only [cross, ← real_inner_self_eq_norm_sq, PiLp.inner_apply, Fin.sum_univ_two,
+    RCLike.inner_apply, starRingEnd_apply, star_trivial]
+  ring
+
+/-- The displacement from `P` to its pedal foot on the line through `X` along `u`,
+in recentred form `w = P − X`: `pedalFoot − P = (⟪w,u⟫/‖u‖²)•u − w`. -/
+noncomputable def footDiff (w u : EuclideanSpace ℝ (Fin 2)) : EuclideanSpace ℝ (Fin 2) :=
+  (inner ℝ w u / ‖u‖ ^ 2) • u - w
+
+/-- `pedalFoot P X Y − P` in recentred coordinate form. -/
+theorem footDiff_pedal_XY (P X Y : EuclideanSpace ℝ (Fin 2)) (hY : Y ≠ X) :
+    pedalFoot P X Y - P = footDiff (P - X) (Y - X) := by
+  rw [pedalFoot_eq P X Y hY, footDiff]
+  abel
+
+/-- `pedalFoot P Z X − P` in recentred coordinate form (recentred at `X`). -/
+theorem footDiff_pedal_ZX (P X Z : EuclideanSpace ℝ (Fin 2)) (hXZ : X ≠ Z) :
+    pedalFoot P Z X - P = footDiff (P - X) (Z - X) := by
+  have hb : ‖Z - X‖ ^ 2 ≠ 0 :=
+    pow_ne_zero 2 (norm_ne_zero_iff.mpr (sub_ne_zero.mpr (Ne.symm hXZ)))
+  have hsc : (inner ℝ (P - Z) (X - Z) : ℝ) / ‖X - Z‖ ^ 2
+      = 1 - inner ℝ (P - X) (Z - X) / ‖Z - X‖ ^ 2 := by
+    rw [norm_sub_rev X Z, eq_sub_iff_add_eq, div_add_div_same, div_eq_one_iff_eq hb]
+    have e1 : (P - Z : EuclideanSpace ℝ (Fin 2)) = (P - X) - (Z - X) := by abel
+    have e2 : (X - Z : EuclideanSpace ℝ (Fin 2)) = -(Z - X) := by abel
+    rw [e1, e2, inner_sub_left, inner_neg_right, inner_neg_right, real_inner_self_eq_norm_sq]
+    ring
+  have hFb : pedalFoot P Z X
+      = (inner ℝ (P - X) (Z - X) / ‖Z - X‖ ^ 2) • (Z - X) + X := by
+    rw [pedalFoot_eq P Z X hXZ, hsc]; module
+  rw [hFb, footDiff]; abel
+
+/-- The pedal-foot displacement has squared length `[u,w]²/‖u‖²`. -/
+theorem footDiff_norm_sq (w u : EuclideanSpace ℝ (Fin 2)) (hu : ‖u‖ ^ 2 ≠ 0) :
+    ‖footDiff w u‖ ^ 2 * ‖u‖ ^ 2 = cross u w ^ 2 := by
+  simp only [footDiff, cross, ← real_inner_self_eq_norm_sq, inner_sub_left, inner_sub_right,
+    real_inner_smul_left, real_inner_smul_right] at hu ⊢
+  field_simp
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, starRingEnd_apply,
+    star_trivial] at hu ⊢
+  ring
+
+/-- Inner product of the two pedal-foot displacements, cleared of denominators. -/
+theorem footDiff_inner (w u v : EuclideanSpace ℝ (Fin 2))
+    (hu : ‖u‖ ^ 2 ≠ 0) (hv : ‖v‖ ^ 2 ≠ 0) :
+    inner ℝ (footDiff w v) (footDiff w u) * (‖u‖ ^ 2 * ‖v‖ ^ 2)
+      = cross u w * cross v w * inner ℝ u v := by
+  simp only [footDiff, cross, ← real_inner_self_eq_norm_sq, inner_sub_left, inner_sub_right,
+    real_inner_smul_left, real_inner_smul_right] at hu hv ⊢
+  field_simp
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, starRingEnd_apply,
+    star_trivial] at hu hv ⊢
+  ring
+
+/-- The cross-product sign identity `(♦)`: substituting `w = s•u + t•v`,
+`[u,w]·[v,w] = −s·t·[u,v]²`. -/
+theorem cross_mul_cross_smul (u v : EuclideanSpace ℝ (Fin 2)) (s t : ℝ) :
+    cross u (s • u + t • v) * cross v (s • u + t • v) = -(s * t) * cross u v ^ 2 := by
+  simp only [cross, PiLp.add_apply, PiLp.smul_apply, smul_eq_mul]
+  ring
+
+/-
+Nondegeneracy: for an affinely independent triangle the two edge vectors at `X`
+have nonzero signed area.
+-/
+theorem cross_ne_zero (X Y Z : EuclideanSpace ℝ (Fin 2))
+    (hXYZ : AffineIndependent ℝ ![X, Y, Z]) : cross (Y - X) (Z - X) ≠ 0 := by
+  by_contra h_contra;
+  obtain ⟨α, β, hαβ, h_eq⟩ : ∃ α β : ℝ, (α ≠ 0 ∨ β ≠ 0) ∧ α • (Y - X) + β • (Z - X) = 0 := by
+    by_cases hYX : Y - X = 0;
+    · exact ⟨ 1, 0, by norm_num, by norm_num [ hYX ] ⟩;
+    · obtain ⟨i, hi⟩ : ∃ i : Fin 2, (Y - X) i ≠ 0 := by
+        exact not_forall.mp fun h => hYX <| by ext i; exact h i;
+      use (Z - X) i, -(Y - X) i;
+      fin_cases i <;> simp_all +decide [ cross ]; all_goals exact ⟨ Or.inr ( by contrapose! hi; linarith ), by ext i; fin_cases i <;> simpa [ sub_eq_iff_eq_add ] using by linarith ⟩;
+  have := hXYZ; simp_all +decide [ Fin.sum_univ_three, affineIndependent_iff_of_fintype ] ;
+  specialize this ( fun i => if i = 0 then -α - β else if i = 1 then α else β ) ; simp_all +decide [ Fin.forall_fin_succ ];
+  exact hαβ.elim ( fun h => h ( this ( by ring ) ( by convert h_eq using 1; ext ; simpa using by ring ) |>.2.1 ) ) fun h => h ( this ( by ring ) ( by convert h_eq using 1; ext ; simpa using by ring ) |>.2.2 )
+
+/-
+**The single residual geometric subfact of the cosine side.**
 
 The angle subtended at `P` by the two pedal feet is supplementary to the
 triangle's angle at `X`. Geometrically: `F_b, F_c` and `X` are concyclic with `P`
@@ -403,9 +494,9 @@ have opposite signs. Feeding `hP`'s barycentric witness `w = s·u + t·v`, `s,t 
 ring identity (♦) plus `s,t>0`** — Erdős–Mordell is now `ring`-mechanical end to end.
 Both (♦) and the squared identity are numerically confirmed to ~1e-14.
 
-Isolated here as a standalone, Aristotle-submittable target. -/
+Isolated here as a standalone, Aristotle-submittable target.
 
-/-- **The cosine-fraction core of `angle_at_P` (cycle-39, researcher-11).**
+**The cosine-fraction core of `angle_at_P` (cycle-39, researcher-11).**
 
 The single remaining algebraic obligation, in raw inner-product/norm form: the
 cosine of the angle subtended at `P` by the two pedal feet is the negative of the
@@ -423,29 +514,7 @@ above: cross-multiply (all four norms are positive), reduce to `N·‖u‖·‖v
 `ring` identity in the `Fin 2` coordinates and whose sign half is `(♦)`
 (`N·‖u‖²‖v‖² = −s·t·c·(‖u‖²‖v‖²−c²)` after the barycentric substitution, with
 `‖u‖²‖v‖²−c² = cross² ≥ 0` by Lagrange's identity and `cross ≠ 0` by nondegeneracy).
-
-**CLEANEST ABS-FREE ROUTE (cycle-40, researcher-1 — barycentric-factored).** Write
-`u = Y−X`, `v = Z−X`, `c = ⟪u,v⟫`, `D = ‖u‖²‖v‖² − c²`. Recentre both feet at `X`
-(`pedalFoot P Z X − P = (⟪P−X,v⟫/‖v‖²)•v − (P−X)`, likewise for `u`) and feed the
-interior barycentric witness `P−X = s•u + t•v` (`s,t>0`, from `interior_barycentric`).
-The two residuals then *factor* as plain `ℝ`-linear combinations of `u, v`:
-
-    F_b − P = (-s)•u + (s·c/‖v‖²)•v,        F_c − P = (t·c/‖u‖²)•u + (-t)•v.
-
-From these three scalar facts follow by `inner_add/inner_smul` bilinearity alone — no
-coordinates, no `cross`, no `abs`:
-
-    ⟪F_b−P, F_c−P⟫ = − s·t·c·D / (‖u‖²‖v‖²)
-    ‖F_b−P‖²       =   s²·D / ‖v‖²          ‖F_c−P‖² = t²·D / ‖u‖²
-
-so `‖F_b−P‖·‖F_c−P‖ = s·t·D / (‖u‖·‖v‖)` (combine the squares; `s,t>0`, `D≥0`, no
-`abs`), and the quotient collapses to `−c/(‖u‖·‖v‖)` after the manifestly-positive
-factor `s·t·D` cancels. The SOLE remaining obligation is `D ≠ 0`: `D ≥ 0` is
-`abs_real_inner_le_norm`, and `D > 0` is strict Cauchy–Schwarz `inner_lt_norm_mul_iff_real`
-(applied to `(u,v)` and `(u,−v)`) once `u, v` are shown linearly independent via
-`affineIndependent_iff_linearIndependent_vsub` from `hXYZ`. Numerically confirmed
-end-to-end; not yet build-checked (Docker gate closed, Aristotle `prove` 404 this
-session) so left as the lone `sorry`. -/
+-/
 theorem chord_cos_eq
     (X Y Z P : EuclideanSpace ℝ (Fin 2))
     (hXYZ : AffineIndependent ℝ ![X, Y, Z])
@@ -453,7 +522,37 @@ theorem chord_cos_eq
     inner ℝ (pedalFoot P Z X - P) (pedalFoot P X Y - P)
         / (‖pedalFoot P Z X - P‖ * ‖pedalFoot P X Y - P‖)
       = - inner ℝ (Y - X) (Z - X) / (‖Y - X‖ * ‖Z - X‖) := by
-  sorry
+  -- By definition of pedal foot, we have:
+  have hPedalFootZ : pedalFoot P Z X - P = footDiff (P - X) (Z - X) := by
+    convert footDiff_pedal_ZX P X Z _ using 1;
+    exact fun h => by have := hXYZ.injective.ne ( show ( 0 : Fin 3 ) ≠ 2 by decide ) ; aesop;
+  have hPedalFootY : pedalFoot P X Y - P = footDiff (P - X) (Y - X) := by
+    apply footDiff_pedal_XY;
+    exact fun h => by have := hXYZ.injective.ne ( show ( 0 : Fin 3 ) ≠ 1 by decide ) ; aesop;
+  obtain ⟨s, t, hs, ht, hw⟩ := interior_barycentric X Y Z P hXYZ hP;
+  have hnu : ‖Y - X‖ ^ 2 ≠ 0 := by
+    exact ne_of_gt ( sq_pos_of_pos ( norm_pos_iff.mpr ( sub_ne_zero.mpr ( by intro h; have := hXYZ.injective.ne ( show ( 0 : Fin 3 ) ≠ 1 by decide ) ; aesop ) ) ) )
+  have hnv : ‖Z - X‖ ^ 2 ≠ 0 := by
+    exact pow_ne_zero 2 ( norm_ne_zero_iff.mpr ( sub_ne_zero.mpr ( by intro h; have := hXYZ.injective.ne ( show ( 0 : Fin 3 ) ≠ 2 by decide ) ; aesop ) ) )
+  have hN := footDiff_inner (P - X) (Y - X) (Z - X) hnu hnv
+  have hfu := footDiff_norm_sq (P - X) (Y - X) hnu
+  have hfv := footDiff_norm_sq (P - X) (Z - X) hnv
+  have hcc : cross (Y - X) (P - X) * cross (Z - X) (P - X) = -(s * t) * cross (Y - X) (Z - X) ^ 2 := by
+    rw [ hw ] ; exact cross_mul_cross_smul _ _ _ _;
+  have hcuv : cross (Y - X) (Z - X) ≠ 0 := by
+    -- By definition of cross, we know that cross (Y - X) (Z - X) ≠ 0 if and only if Y - X and Z - X are linearly independent.
+    apply cross_ne_zero X Y Z hXYZ
+  have hKneg : cross (Y - X) (P - X) * cross (Z - X) (P - X) < 0 := by
+    exact hcc.symm ▸ mul_neg_of_neg_of_pos ( neg_neg_of_pos ( mul_pos hs ht ) ) ( sq_pos_of_ne_zero hcuv );
+  rw [ hPedalFootZ, hPedalFootY, div_eq_div_iff ];
+  · have h_abs : ‖footDiff (P - X) (Y - X)‖ * ‖Y - X‖ = |cross (Y - X) (P - X)| ∧ ‖footDiff (P - X) (Z - X)‖ * ‖Z - X‖ = |cross (Z - X) (P - X)| := by
+      exact ⟨ by rw [ ← sq_eq_sq₀ ( by positivity ) ( by positivity ), mul_pow, hfu, sq_abs ], by rw [ ← sq_eq_sq₀ ( by positivity ) ( by positivity ), mul_pow, hfv, sq_abs ] ⟩;
+    have h_abs_eq : |cross (Y - X) (P - X)| * |cross (Z - X) (P - X)| = -(cross (Y - X) (P - X) * cross (Z - X) (P - X)) := by
+      rw [ ← abs_mul, abs_of_neg hKneg ];
+    grind +splitImp;
+  · simp +zetaDelta at *;
+    constructor <;> intro h <;> simp_all +decide [ sq ];
+  · exact mul_ne_zero ( norm_ne_zero_iff.mpr ( sub_ne_zero.mpr <| by intro h; simp_all +decide [ affineIndependent_iff_not_collinear, collinear_pair ] ) ) ( norm_ne_zero_iff.mpr ( sub_ne_zero.mpr <| by intro h; simp_all +decide [ affineIndependent_iff_not_collinear, collinear_pair ] ) )
 
 /-- **The single residual geometric subfact of the cosine side** (now a
 hypothesis-free wrapper over `chord_cos_eq`). The angle subtended at `P` by the two
