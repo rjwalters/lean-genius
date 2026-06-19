@@ -16,7 +16,11 @@
       "Cycles",
       "Graph coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "erdos-556-edge-coloring",
@@ -35,7 +39,11 @@
       "Complete graphs",
       "Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "finite functions",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "erdos-556-cycle-graph",
@@ -54,7 +62,11 @@
       "Simple graphs",
       "Path graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "modular arithmetic",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "erdos-556-R-cycle-3",
@@ -73,7 +85,11 @@
       "Monochromatic subgraphs",
       "Forcing structures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "erdos-556-bondy-erdos",
@@ -92,7 +108,11 @@
       "Upper bounds",
       "Tight bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "erdos-556-luczak-general",
@@ -110,7 +130,11 @@
       "Asymptotic bounds",
       "First major results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "extremal graph theory",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "erdos-556-luczak-even",
@@ -129,7 +153,11 @@
       "Improved bounds",
       "Dichotomy preview"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "extremal graph theory",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "erdos-556-kss-upper",
@@ -148,7 +176,11 @@
       "Regularity method",
       "KSS 2005"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Szemeredi regularity method",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "erdos-556-kss-lower",
@@ -167,7 +199,11 @@
       "Constructions",
       "Tightness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorial constructions",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "erdos-556-R-odd-exact",
@@ -185,7 +221,11 @@
       "Exact Ramsey numbers",
       "Matching bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "combinatorics",
+      "real analysis"
+    ]
   },
   {
     "id": "erdos-556-benevides-skokan",
@@ -204,7 +244,11 @@
       "Exact bounds",
       "Parity dichotomy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Ramsey theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "erdos-556-dichotomy",
@@ -223,7 +267,11 @@
       "Structural differences",
       "Bipartite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "bipartite graphs",
+      "parity arguments"
+    ]
   },
   {
     "id": "erdos-556-small-cases",
@@ -242,7 +290,11 @@
       "Explicit values",
       "Pattern confirmation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "graph theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "erdos-556-regularity",
@@ -261,6 +313,10 @@
       "Blow-up lemma",
       "Proof techniques"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Szemeredi regularity lemma",
+      "graph embedding"
+    ]
   }
 ]
