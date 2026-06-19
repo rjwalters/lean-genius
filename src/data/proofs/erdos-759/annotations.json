@@ -138,7 +138,11 @@
       "planar-graph",
       "topological-graph-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Planar Graphs",
+      "Surface Embedding",
+      "Kuratowski's Theorem"
+    ]
   },
   {
     "id": "ann-e759-max-cochromatic",
@@ -163,7 +167,11 @@
       "surface-embedding",
       "axiomatized"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cochromatic Number",
+      "Extremal Graph Theory",
+      "Surface Embeddability"
+    ]
   },
   {
     "id": "ann-e759-question",
@@ -188,7 +196,11 @@
       "cochromatic-number",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Theta Notation",
+      "Asymptotic Growth Rate",
+      "Square Root And Logarithm"
+    ]
   },
   {
     "id": "ann-e759-gimbel-lower",
@@ -213,7 +225,11 @@
       "probabilistic-method",
       "extremal-graph-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "High-Girth Graphs",
+      "Probabilistic Method",
+      "Asymptotic Lower Bound"
+    ]
   },
   {
     "id": "ann-e759-gimbel-upper",
@@ -238,7 +254,11 @@
       "surface-density",
       "extremal-graph-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler's Formula",
+      "Graph Density Bounds",
+      "Asymptotic Upper Bound"
+    ]
   },
   {
     "id": "ann-e759-gimbel-thomassen",
@@ -294,7 +314,11 @@
       "chromatic-number",
       "map-coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chromatic Number",
+      "Euler Characteristic",
+      "Ringel-Youngs Theorem"
+    ]
   },
   {
     "id": "ann-e759-girth",
@@ -319,7 +343,11 @@
       "graph-coloring",
       "extremal-graph-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Girth",
+      "Sparse Graphs",
+      "Chromatic Number"
+    ]
   },
   {
     "id": "ann-e759-intuition",
@@ -344,7 +372,11 @@
       "girth",
       "surface-embedding"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler's Formula",
+      "Graph Girth",
+      "Asymptotic Growth Rate"
+    ]
   },
   {
     "id": "ann-e759-planar",
@@ -368,7 +400,11 @@
       "four-color-theorem",
       "cochromatic-number"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Planar Graphs",
+      "Four Color Theorem",
+      "Chromatic Number"
+    ]
   },
   {
     "id": "ann-e759-summary",
@@ -393,7 +429,11 @@
       "surface-embedding",
       "solved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cochromatic Number",
+      "Tight Asymptotic Bounds",
+      "Theta Notation"
+    ]
   },
   {
     "id": "ann-e759-imports",
@@ -418,7 +458,11 @@
       "imports",
       "formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 Imports",
+      "Mathlib Library",
+      "SimpleGraph Basics"
+    ]
   },
   {
     "id": "ann-e759-comparison",
@@ -443,7 +487,11 @@
       "surface-embedding",
       "comparison"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chromatic Number",
+      "Independent Sets",
+      "Heawood Number"
+    ]
   },
   {
     "id": "ann-e759-historical",
@@ -467,6 +515,10 @@
       "cochromatic-number",
       "topological-graph-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cochromatic Number",
+      "Topological Graph Theory",
+      "Asymptotic Bounds"
+    ]
   }
 ]
