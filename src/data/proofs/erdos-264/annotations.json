@@ -16,7 +16,11 @@
       "irrationality",
       "robustness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Irrational Numbers",
+      "Infinite Series",
+      "Erdős Problems"
+    ]
   },
   {
     "id": "ann-e264-imports",
@@ -35,7 +39,11 @@
       "infinite-sums"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib Library",
+      "Filters And Liminf",
+      "Infinite Sums"
+    ]
   },
   {
     "id": "ann-e264-definition",
@@ -54,7 +62,11 @@
       "boundedness",
       "robustness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Universal Quantification",
+      "Bounded Sequences",
+      "Irrationality Of Series"
+    ]
   },
   {
     "id": "ann-e264-powers-of-two",
@@ -73,7 +85,11 @@
       "exponential-growth",
       "negative-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometric Sequences",
+      "Series Convergence",
+      "Rational Sums"
+    ]
   },
   {
     "id": "ann-e264-factorial",
@@ -92,7 +108,11 @@
       "open-problem",
       "borderline-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Factorial Growth",
+      "Polynomial Vs Exponential Growth",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-e264-double-exp",
@@ -111,7 +131,11 @@
       "positive-example",
       "growth-rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Double Exponential Growth",
+      "Sequence Ratios",
+      "Superexponential Growth"
+    ]
   },
   {
     "id": "ann-e264-negative-criterion",
@@ -130,7 +154,11 @@
       "tail-sum",
       "negative-criterion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limit Inferior",
+      "Tail Of A Series",
+      "Monotone Sequences"
+    ]
   },
   {
     "id": "ann-e264-positive-criterion",
@@ -149,7 +177,11 @@
       "asymptotic-equivalence",
       "superexponential"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Equivalence",
+      "Existence Proofs",
+      "Superexponential Growth"
+    ]
   },
   {
     "id": "ann-e264-growth-discussion",
@@ -168,7 +200,11 @@
       "boundary",
       "characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Growth Rate Comparison",
+      "Necessary And Sufficient Conditions",
+      "Exponential Growth"
+    ]
   },
   {
     "id": "ann-e264-power-ratio",
@@ -187,7 +223,11 @@
       "constant-ratio",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Exponent Laws",
+      "Geometric Ratio",
+      "Powers Of Two"
+    ]
   },
   {
     "id": "ann-e264-double-exp-ratio",
@@ -206,6 +246,10 @@
       "unbounded-ratio",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Exponent Laws",
+      "Nested Exponentials",
+      "Unbounded Limits"
+    ]
   }
 ]
