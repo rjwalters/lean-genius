@@ -16,7 +16,11 @@
       "B_2 sequences",
       "sum-free sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "integer arithmetic",
+      "distinctness of pairwise sums",
+      "set membership"
+    ]
   },
   {
     "id": "ann-e44-check-pair",
@@ -35,7 +39,11 @@
       "finite verification",
       "case analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bounded quantifiers over finite sets",
+      "Diophantine equation a+b=c+d",
+      "ordering relations on integers"
+    ]
   },
   {
     "id": "ann-e44-example",
@@ -54,7 +62,11 @@
       "concrete mathematics",
       "example construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "small finite sets",
+      "enumeration of pairwise sums",
+      "Sidon property"
+    ]
   },
   {
     "id": "ann-e44-upper-bound",
@@ -73,7 +85,11 @@
       "pigeonhole",
       "density bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinality of finite sets",
+      "interval [1,N]",
+      "injective map into a bounded range"
+    ]
   },
   {
     "id": "ann-e44-formal-bound",
@@ -92,7 +108,11 @@
       "sqrt bounds",
       "asymptotic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "square root function on reals",
+      "monotonicity of sqrt",
+      "weak-to-strong bound conversion"
+    ]
   },
   {
     "id": "ann-e44-powers-sidon",
@@ -111,7 +131,11 @@
       "2-adic valuation",
       "uniqueness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powers of two",
+      "uniqueness of binary expansion",
+      "parity of integers"
+    ]
   },
   {
     "id": "ann-e44-lower-bound",
@@ -130,7 +154,11 @@
       "construction",
       "Singer difference sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "explicit set construction",
+      "lower bounds via examples",
+      "growth rate sqrt(N)"
+    ]
   },
   {
     "id": "ann-e44-main",
@@ -149,6 +177,10 @@
       "density",
       "open conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon set extension",
+      "asymptotic density sqrt(N)",
+      "status of open problems"
+    ]
   }
 ]
