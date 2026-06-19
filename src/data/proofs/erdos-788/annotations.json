@@ -17,7 +17,11 @@
       "additive combinatorics",
       "probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "asymptotic analysis",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e788-definitions",
@@ -37,7 +41,11 @@
       "pairwiseSums",
       "isSumFreeWithResp"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Mathlib Finset API",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e788-function-f",
@@ -56,7 +64,11 @@
       "combinatorial function",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "min-max optimization",
+      "Lean 4 axioms",
+      "combinatorial game theory"
+    ]
   },
   {
     "id": "ann-e788-choi",
@@ -75,7 +87,11 @@
       "choiConjecture",
       "o(1) notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic notation",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e788-adenwalla",
@@ -94,7 +110,11 @@
       "B₂ sequences",
       "Sidon set construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "additive combinatorics",
+      "probabilistic method"
+    ]
   },
   {
     "id": "ann-e788-improvements",
@@ -113,7 +133,11 @@
       "bss_bound",
       "probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "asymptotic analysis",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-e788-interval",
@@ -132,7 +156,11 @@
       "omega tactic",
       "constructive proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "Lean 4 tactic mode",
+      "omega tactic"
+    ]
   },
   {
     "id": "ann-e788-summary",
@@ -151,6 +179,9 @@
       "exact",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "asymptotic analysis"
+    ]
   }
 ]
