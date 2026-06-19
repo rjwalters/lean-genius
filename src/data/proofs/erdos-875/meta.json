@@ -22,9 +22,9 @@
     "erdosNumber": 875,
     "erdosUrl": "https://erdosproblems.com/875",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 212,
-    "assumptions": "No axioms, no sorries. All theorems fully proved: powers_of_two_admissible (binary uniqueness proof via pow2_subset_sum_inj), pow2_strictly_increasing, admissible_growth_lower, pow2_small_example (native_decide), finite_version_connection. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "Free of mathematical axioms and sorries. All theorems fully proved: powers_of_two_admissible (binary uniqueness proof via pow2_subset_sum_inj), pow2_strictly_increasing, admissible_growth_lower, pow2_small_example, finite_version_connection. The small-example theorem pow2_small_example is dispatched by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,
     "definitionCount": 7

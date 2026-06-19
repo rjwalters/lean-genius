@@ -55,9 +55,9 @@
       "Proved h_eq_succ_of_prime: h(n) = n+1 when n+1 is prime",
       "Bridge lemma zmod_pow_eq_one_of_dvd: converts nat divisibility to ZMod equality"
     ],
-    "axiomCount": 2,
+    "axiomCount": 3,
     "lineCount": 550,
-    "assumptions": "2 axioms: erdos_770_q1 (density of {n : hMinK n = p} exists for each prime p — OPEN), erdos_770_q3 (hMinK n = p when p is the largest prime with (p-1)|n, for large n — OPEN). Q2 (h(n) unbounded) is fully proved via hMinK_unbounded. 74 theorems, 0 sorries.",
+    "assumptions": "2 axioms: erdos_770_q1 (density of {n : hMinK n = p} exists for each prime p — OPEN), erdos_770_q3 (hMinK n = p when p is the largest prime with (p-1)|n, for large n — OPEN). Q2 (h(n) unbounded) is fully proved via hMinK_unbounded. 74 theorems, 0 sorries. The credited computational witnesses (h(n) values for n=1..12, the gcdPowerSeq_* and fermat_* checks, and the h_eq_3_at_* / h_gt_3_at_* facts) are dispatched by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted.",
     "mathlib_version": "4.26.0",
     "theoremCount": 74,
     "definitionCount": 2
@@ -148,7 +148,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #770 is fully verified with 0 axioms and 0 sorries. Contains computation of h(n) for n = 1..12 via native_decide, Fermat-based structural theorems, gcd monotonicity, polynomial root counting argument for h(n) ≤ n+1, and the formal definition hMinK with its properties. New: hMinK_prime_minus_one proves h(p-1) = p for all primes p; hMinK_unbounded proves that h is unbounded (resolving Q2's upper half).",
+    "summary": "Erdős Problem #770 is verified free of mathematical axioms and sorries (modulo the two open conjecture axioms erdos_770_q1/q3). Contains computation of h(n) for n = 1..12 via native_decide (which adds `Lean.ofReduceBool` to `#print axioms`), Fermat-based structural theorems, gcd monotonicity, polynomial root counting argument for h(n) ≤ n+1, and the formal definition hMinK with its properties. New: hMinK_prime_minus_one proves h(p-1) = p for all primes p; hMinK_unbounded proves that h is unbounded (resolving Q2's upper half).",
     "implications": "**Theoretical Significance**: Understanding h(n) would illuminate the arithmetic structure of exponential sequences modulo primes.\n\nThe density question connects to the distribution of smooth numbers and Fermat quotients. The largest-prime characterization would link h(n) to the factorization of n+1, bridging analytic and algebraic number theory.",
     "openQuestions": [
       "Does the natural density of {n : h(n) = p} exist for each prime p? If so, what is its value?",

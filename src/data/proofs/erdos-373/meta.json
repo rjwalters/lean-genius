@@ -47,9 +47,9 @@
       "Hickerson's conjecture on complete classification",
       "Suranyi's conjecture on two-factor solutions"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 168,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "Free of mathematical axioms and sorries. The credited witness theorems solution_9 / solution_10_67 / solution_10_357 / solution_16 are dispatched by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. Open conjecture; supporting lemmas fully verified.",
     "theoremCount": 5,
     "definitionCount": 9
   },

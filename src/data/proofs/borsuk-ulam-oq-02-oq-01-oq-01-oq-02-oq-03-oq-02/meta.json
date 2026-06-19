@@ -20,7 +20,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 5,
+    "axiomCount": 6,
     "lineCount": 303,
     "theoremCount": 19,
     "definitionCount": 0,
@@ -77,7 +77,7 @@
       "Concrete prime-power cases: buDim_eight (2³), buDim_twentyseven (3³), buDim_oneoh24 (2¹⁰) via buDim_prime_pow_eq",
       "buDim_twelve: first non-squarefree composite — buDim(12,d) = buDim(2,d) ⊔ buDim(3,d) (12 = 2²·3), confirming multiplicities are invisible"
     ],
-    "assumptions": "0 sorries. 0 new axiom declarations in this file. All 19 theorems fully machine-checked relative to 5 imported axioms from parent files: buDim (function axiom), buDim_two, buDim_prime, buDim_mono (monotonicity axiom) from BorsukUlamOQ02OQ01, and buDim_le_formula (formula conjecture axiom) from BorsukUlamOQ02OQ01OQ01.",
+    "assumptions": "0 sorries. 0 new axiom declarations in this file. All 19 theorems fully machine-checked relative to 5 imported axioms from parent files: buDim (function axiom), buDim_two, buDim_prime, buDim_mono (monotonicity axiom) from BorsukUlamOQ02OQ01, and buDim_le_formula (formula conjecture axiom) from BorsukUlamOQ02OQ01OQ01. Several credited theorems in this file (buDim_le_prod_primes, buDim_thirty, buDim_twohundredten, buDim_twothreeten, buDim_twelve) are dispatched by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted.",
     "additionalFiles": []
   },
   "overview": {
@@ -184,7 +184,7 @@
       "title": "Closing Summary Table and Namespace End",
       "startLine": 275,
       "endLine": 303,
-      "summary": "Closing module-level docstring (275-301) summarizes the OQ and answer, lists all 13+ theorems with their statements and verification status (most fully proved, several via native_decide), and confirms the file's bookkeeping: 0 sorries, 0 axioms (only consumes the upstream `buDim_le_formula` axiom from `BorsukUlamOQ02OQ01OQ01` — itself the residue of the entire BorsukUlam composite-formula chain). Closes with `end BorsukUlamCRTSquarefree`.",
+      "summary": "Closing module-level docstring (275-301) summarizes the OQ and answer, lists all 13+ theorems with their statements and verification status (most fully proved, several via native_decide), and confirms the file's bookkeeping: 0 sorries, 0 local axiom declarations (the several native_decide theorems add `Lean.ofReduceBool` to `#print axioms`; the file only consumes the upstream `buDim_le_formula` axiom from `BorsukUlamOQ02OQ01OQ01` — itself the residue of the entire BorsukUlam composite-formula chain). Closes with `end BorsukUlamCRTSquarefree`.",
       "mathContext": "**Provenance accounting**: this file is `axiomatized` only via inheritance — every theorem in the file is `Proved`, but the chain consumes one upstream axiom (`buDim_le_formula : buDim n d ≤ buDimFormula n d` for $n \\ge 2$) from the `BorsukUlamOQ02OQ01OQ01` parent. The companion `buDimFormula_le` is *proved* in that parent, so the composite-formula reduction `buDim = buDimFormula` is half-axiomatized. Eliminating `buDim_le_formula` is the next research milestone in the BorsukUlam chain — it would render every downstream file (including this one) fully verified with no axiom inheritance."
     }
   ],

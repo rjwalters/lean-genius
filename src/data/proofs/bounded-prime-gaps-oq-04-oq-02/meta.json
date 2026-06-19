@@ -21,10 +21,10 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 6,
+    "axiomCount": 7,
     "lineCount": 599,
     "theoremCount": 10,
-    "assumptions": "6 axioms: gaussSumBound (|τ(χ)| = √q for primitive characters), polyaVinogradov (|Σ χ(n)| ≤ √q·log q), largeSieve (bilinear exponential sum bound), siegelWalfisz (ψ(x;q,a) = x/φ(q) + O(xe^{-c√log x}) for small q), vaughanIdentity (von Mangoldt decomposition into bilinear sums), zeroDensityEstimate (N(σ,T,χ) ≪ (qT)^{A(1-σ)}). These are proved theorems missing from Mathlib, not mathematical assumptions.",
+    "assumptions": "6 axioms: gaussSumBound (|τ(χ)| = √q for primitive characters), polyaVinogradov (|Σ χ(n)| ≤ √q·log q), largeSieve (bilinear exponential sum bound), siegelWalfisz (ψ(x;q,a) = x/φ(q) + O(xe^{-c√log x}) for small q), vaughanIdentity (von Mangoldt decomposition into bilinear sums), zeroDensityEstimate (N(σ,T,χ) ≪ (qT)^{A(1-σ)}). These are proved theorems missing from Mathlib, not mathematical assumptions. In addition, the bookkeeping theorem total_new_code (a non-mathematical line-count estimate) is dispatched by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted.",
     "originalContributions": [
       "dirichletGaussSum: definition of τ(χ) = Σ χ(t)·e^{2πit/q}",
       "principalGaussSum: Ramanujan sum c_q(1) for the principal character",

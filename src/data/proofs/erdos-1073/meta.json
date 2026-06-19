@@ -21,9 +21,9 @@
     "erdosNumber": 1073,
     "erdosUrl": "https://erdosproblems.com/1073",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 161,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "Free of mathematical axioms and sorries. The credited compositeness witnesses composite_25 / composite_121 / composite_169 / composite_437 are dispatched by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0",
     "theoremCount": 17,
     "definitionCount": 4

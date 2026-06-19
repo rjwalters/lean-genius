@@ -2,7 +2,7 @@
   "id": "sqrt2-plus-sqrt3-irrational-oq-03",
   "title": "Minimal Polynomial of √2 + √3",
   "slug": "sqrt2-plus-sqrt3-irrational-oq-03",
-  "description": "Proves the minimal polynomial of α = √2+√3 over ℚ is X⁴ − 10X² + 1. Establishes: f(α)=0 by direct computation (α²=5+2√6, α⁴=49+20√6), f is monic, and f is irreducible over ℚ via Gauss's lemma (irreducibility over ℤ[X]: no integer roots + coefficient analysis eliminates quadratic factors). Concludes [ℚ(√2+√3):ℚ] = 4. 0 sorries, 0 axioms.",
+  "description": "Proves the minimal polynomial of α = √2+√3 over ℚ is X⁴ − 10X² + 1. Establishes: f(α)=0 by direct computation (α²=5+2√6, α⁴=49+20√6), f is monic, and f is irreducible over ℚ via Gauss's lemma (irreducibility over ℤ[X]: no integer roots + coefficient analysis eliminates quadratic factors). Concludes [ℚ(√2+√3):ℚ] = 4. 0 sorries and free of mathematical axioms; the credited irrationality theorem sqrt2_plus_sqrt3_irrational proves Irrational(√6) via `native_decide`, which adds `Lean.ofReduceBool` to `#print axioms` (counted in meta.axiomCount).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-22",
@@ -18,8 +18,8 @@
     "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-22",
-    "axiomCount": 0,
-    "assumptions": "None. Fully proved: 0 sorries, 0 axioms. Irreducibility is proved over ℤ[X] via case analysis, then transferred to ℚ[X] via Gauss's lemma (Mathlib's IsPrimitive.Int.irreducible_iff_irreducible_map_cast).",
+    "axiomCount": 1,
+    "assumptions": "Free of mathematical axioms and sorries. The minimal-polynomial and degree-4 results are pure: irreducibility is proved over ℤ[X] via case analysis, then transferred to ℚ[X] via Gauss's lemma (Mathlib's IsPrimitive.Int.irreducible_iff_irreducible_map_cast). The credited irrationality theorem sqrt2_plus_sqrt3_irrational establishes Irrational(√6) via `irrational_sqrt_natCast_iff.mpr (by native_decide)`; `native_decide` trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms` (counted in meta.axiomCount). The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted.",
     "lineCount": 403,
     "theoremCount": 8,
     "definitionCount": 0,
@@ -54,7 +54,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms): minpoly ℚ (√2+√3) = X⁴−10X²+1 and [ℚ(√2+√3):ℚ]=4. Irreducibility proved over ℤ[X] via integer root theorem + quadratic factor coefficient analysis, then transferred to ℚ[X] by Gauss's lemma. 5 main theorems, ~400 lines.",
+    "summary": "Fully verified (0 sorries; free of mathematical axioms): minpoly ℚ (√2+√3) = X⁴−10X²+1 and [ℚ(√2+√3):ℚ]=4. Irreducibility proved over ℤ[X] via integer root theorem + quadratic factor coefficient analysis, then transferred to ℚ[X] by Gauss's lemma. 5 main theorems, ~400 lines. The credited irrationality theorem additionally depends on `Lean.ofReduceBool` via `native_decide`.",
     "implications": "The degree-4 result shows √2+√3 is a primitive element of the biquadratic extension ℚ(√2,√3)/ℚ. Combined with the explicit minimal polynomial, this enables computation of the full Galois group (Klein 4-group) and explains why the polynomial factors mod every prime despite being irreducible over ℚ.",
     "openQuestions": [
       "Generalize the irreducibility proof to parametric X⁴ - (a+b+2√(ab))X² + (a-b)² for squarefree a,b.",

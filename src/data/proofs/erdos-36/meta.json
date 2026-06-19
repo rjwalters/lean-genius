@@ -57,14 +57,14 @@
       "Proved small_values via computable mirror function MC and native_decide",
       "Axiomatized three deep bounds (limit existence, White lower, Haugland upper)"
     ],
-    "axiomCount": 3,
+    "axiomCount": 4,
     "prerequisites": [
       "Additive combinatorics: partitions of {1,...,2N} into equal halves",
       "Fourier analysis on finite groups (Scherk's technique)",
       "Convex optimization (White's improved bounds)",
       "Asymptotic analysis: limit of M(N)/N"
     ],
-    "assumptions": "3 axiom declarations: erdos_36_limit_exists (the limit c = lim M(N)/N exists), white_lower (White's 0.379 lower bound), upper_bound (Haugland's 0.381 upper bound). small_values is now a theorem proved computationally via native_decide on a computable mirror function MC.",
+    "assumptions": "3 axiom declarations: erdos_36_limit_exists (the limit c = lim M(N)/N exists), white_lower (White's 0.379 lower bound), upper_bound (Haugland's 0.381 upper bound). small_values is now a theorem proved computationally via `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. (here via a computable mirror function MC).",
     "lineCount": 380,
     "relatedProblems": [
       {

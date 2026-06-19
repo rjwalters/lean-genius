@@ -19,8 +19,8 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: three_dvd_gal_card — 3 divides |Gal(q/ℚ)|. This follows from Dedekind's theorem applied to q mod 7 (which factors as (1-cycle)(1-cycle)(3-cycle)), implying the Galois group contains an element of order divisible by 3. Axiomatized because Mathlib lacks Dedekind's theorem for polynomial Galois groups.",
+    "axiomCount": 2,
+    "assumptions": "1 axiom: three_dvd_gal_card — 3 divides |Gal(q/ℚ)|. This follows from Dedekind's theorem applied to q mod 7 (which factors as (1-cycle)(1-cycle)(3-cycle)), implying the Galois group contains an element of order divisible by 3. Axiomatized because Mathlib lacks Dedekind's theorem for polynomial Galois groups. Several credited theorems (perm_fin5_order5_order3_not_commute, perm_fin5_no_order_15, no_subgroup_order_15, a5_card, and the resolvent_* sign checks) are dispatched by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted.",
     "lineCount": 2067,
     "theoremCount": 84,
     "definitionCount": 12,
@@ -74,7 +74,7 @@
   },
   "conclusion": {
     "summary": "This formalization proves Gal(q/ℚ) ≅ A₅ for q(x) = x⁵ − 5x⁴ + 10x³ − 10x² + 25x − 5, with exactly one axiom: `three_dvd_gal_card` (Dedekind's theorem mod 7). Starting from 5 axioms, the formalization was systematically reduced to 1 by proving the discriminant bound via the Vandermonde chain and replacing the structural axioms with Sylow theory. This is the first non-solvable group formally realized as a Galois group over ℚ in this library.",
-    "implications": "This result marks the boundary between solvable and non-solvable algebra in the formalization. The Vandermonde discriminant technique developed here (proving |Gal| | 60 without axioms via complex embedding and Sophie Germain identity) is reusable for other polynomial Galois group computations. The non-solvability proof connects directly to the Abel-Ruffini theorem: q is not solvable by radicals, providing a concrete quintic witnessing this over ℚ.",
+    "implications": "This result marks the boundary between solvable and non-solvable algebra in the formalization. The Vandermonde discriminant technique developed here (proving |Gal| | 60 without mathematical axioms via complex embedding and Sophie Germain identity) is reusable for other polynomial Galois group computations. The non-solvability proof connects directly to the Abel-Ruffini theorem: q is not solvable by radicals, providing a concrete quintic witnessing this over ℚ.",
     "openQuestions": [
       "Formalize Dedekind's theorem (mod-p factorization ↦ cycle types in Gal) in Mathlib, eliminating the last axiom three_dvd_gal_card and making this entry fully verified.",
       "Realize PSL(2,7) (order 168, the second smallest non-abelian simple group) over ℚ using the polynomial x⁷ − 7x + 3.",
@@ -183,7 +183,7 @@
       "title": "Parts XIII–XV: Vandermonde Framework and Discriminant",
       "startLine": 996,
       "endLine": 1897,
-      "summary": "Major technical section. Proves Δ² = disc(q) = 32000² via complex embedding + Sophie Germain identity. Shows all Galois automorphisms are even permutations. Concludes |Gal| | 60 axiom-free."
+      "summary": "Major technical section. Proves Δ² = disc(q) = 32000² via complex embedding + Sophie Germain identity. Shows all Galois automorphisms are even permutations. Concludes |Gal| | 60 free of mathematical axioms."
     },
     {
       "id": "part-xv-cardinality",

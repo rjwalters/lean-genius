@@ -17,11 +17,11 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 2932,
     "theoremCount": 142,
     "definitionCount": 10,
-    "assumptions": "Axiomatized: jacobi_r4_formula — for all n ≥ 1, the integer-tuple count r₄(n) equals 8·σ*(n). Numerically verified for n = 1..10. The general statement is open in this formalization because Mathlib lacks the q-expansion / Fourier-coefficient infrastructure for jacobiTheta and the identification of θ⁴ with the weight-2 Eisenstein series E₂(τ) − 4·E₂(4τ).",
+    "assumptions": "Axiomatized: jacobi_r4_formula — for all n ≥ 1, the integer-tuple count r₄(n) equals 8·σ*(n). Numerically verified for n = 1..10. The general statement is open in this formalization because Mathlib lacks the q-expansion / Fourier-coefficient infrastructure for jacobiTheta and the identification of θ⁴ with the weight-2 Eisenstein series E₂(τ) − 4·E₂(4τ). The numeric verification theorems (sigmaStar_1..10, jacobiR4_1..10, r4Count_1..10, jacobi_holds_1..10, and the sigmaOne_* checks) are dispatched by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted.",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",

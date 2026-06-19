@@ -18,8 +18,8 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 2,
-    "assumptions": "Sufficiency direction of Euler's theorem axiomatized in HierholzerAlgorithm.lean: (1) euler_circuit_exists — connected + all-even-degree graphs admit an Eulerian circuit; (2) euler_trail_exists — connected graph with exactly two odd-degree vertices u, v admits an Eulerian trail u→v. Both encode the classical Hierholzer construction (1873) which is not yet formalized. The necessity direction (the focus of this file) is fully machine-verified.",
+    "axiomCount": 3,
+    "assumptions": "Sufficiency direction of Euler's theorem axiomatized in HierholzerAlgorithm.lean: (1) euler_circuit_exists — connected + all-even-degree graphs admit an Eulerian circuit; (2) euler_trail_exists — connected graph with exactly two odd-degree vertices u, v admits an Eulerian trail u→v. Both encode the classical Hierholzer construction (1873) which is not yet formalized. The necessity direction (the focus of this file) is fully machine-verified. Additionally, the explicit C₄/C₅/K₄ witness theorems (sq_degree, sq_edge_count, sqCircuit_length, sqCircuit_visits_all, and the pent/k4 analogues) are dispatched by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted.",
     "lineCount": 404,
     "theoremCount": 24,
     "definitionCount": 11,
@@ -111,7 +111,7 @@
       "title": "Summary and Sanity Checks",
       "startLine": 358,
       "endLine": 404,
-      "summary": "Closing docstring cataloguing the 24 proved theorems (C₄, C₅, K₄, and general trail theory) with 0 axioms / 0 sorries, plus #check sanity statements for the key Eulerian results.",
+      "summary": "Closing docstring cataloguing the 24 proved theorems (C₄, C₅, K₄, and general trail theory) free of mathematical axioms and sorries (the C₄/C₅/K₄ witnesses use native_decide, which adds `Lean.ofReduceBool`), plus #check sanity statements for the key Eulerian results.",
       "mathContext": "Epilogue; no new declarations. #checks confirm sqCircuit_isEulerian, pentCircuit_isEulerian, k4_not_eulerian, and regular_odd_no_euler typecheck."
     }
   ],

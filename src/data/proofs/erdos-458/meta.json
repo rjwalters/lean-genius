@@ -21,9 +21,9 @@
     "erdosNumber": 458,
     "erdosUrl": "https://erdosproblems.com/458",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 176,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "Free of mathematical axioms and sorries. The credited witness theorems lcm_upto_two..lcm_upto_six and erdos458_k1 / erdos458_k2 are dispatched by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0",
     "theoremCount": 14,
     "definitionCount": 4
