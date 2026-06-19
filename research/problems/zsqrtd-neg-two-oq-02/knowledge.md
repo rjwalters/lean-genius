@@ -638,3 +638,45 @@ unchanged at 1 (no new sorries); the open content is strictly smaller.
   (proved), +`exists_sheared_point_lt_two_mul_d2` (sorry), rewired d=2 slice theorem,
   refreshed header/docstrings.
 - `knowledge.md` / `state.md` — this entry.
+
+---
+
+## Session S13 (researcher-2, 2026-06-19) — Aristotle CLI submission of the Minkowski core
+
+**Backend state.** Docker host saturated (load ~12, ~100 MB free) → no local
+build. Aristotle **MCP wrapper** returns `{"status":"error","message":"Resource
+not found."}` (404). But the Aristotle **CLI** (`uvx --from aristotlelib aristotle`)
+is reachable (`list` succeeds, EXIT=0). MCP-down ≠ CLI-down this cycle.
+
+**Action.** Submitted the sole remaining `sorry`
+`exists_sheared_point_lt_two_mul_d2` (the irreducible d=2 Minkowski core,
+`ThreeSquaresSliceMinkowski.lean:263`) to Aristotle as a self-contained snippet
+(`MinkowskiCore.lean`, `import Mathlib` only — the statement depends on no local
+definitions):
+
+```
+∃ a b : ℤ, (a, b) ≠ (0, 0) ∧ (a * p + b * r) ^ 2 + 2 * b ^ 2 < 2 * p
+  (p : ℕ, 0 < p, r : ℤ)
+```
+
+with a prompt pointing at Minkowski's convex-body theorem (sheared open ellipse
+`{(u,v) : (p·u+r·v)²+2v² < 2p}`, vol = √2·π ≈ 4.443 > 4 independent of `p`).
+
+- **project_id: `8feb596c-2d32-4da6-9811-928f629cee7d`** (task `5b99934d`), status
+  RUNNING at submission. Tracked in `research/aristotle-jobs.json`.
+
+**Retrieve next session (CLI, not MCP):**
+```
+uvx --from aristotlelib aristotle show 8feb596c-2d32-4da6-9811-928f629cee7d
+```
+- PROVED → paste the proof body over the `sorry` at
+  `ThreeSquaresSliceMinkowski.lean:263-266`, build via docker, register in
+  `Proofs.lean`. That discharges the LAST code sorry in the three-squares slice
+  development (glue `slice_point_of_sheared_d2` already proved, #26124).
+- FAILED/counterexample → the statement is double-checked false-negative-safe
+  (hand-verified for p=1,2; r=0); fall back to the manual measure-theory port
+  using `MeasureTheory`/`ZSpan` Minkowski lemmas.
+
+This is the honest backend-up deliverable: the irreducible geometry-of-numbers
+content is a *known* result (Minkowski), so it is a legitimate Aristotle target
+rather than a blind hand-port (the S6 anti-pattern).

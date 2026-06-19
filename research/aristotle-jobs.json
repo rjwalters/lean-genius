@@ -2142,6 +2142,16 @@
       "status": "completed",
       "outcome": "1 sorries remaining",
       "notes": "Recovered from server at 2026-05-04T05:54:14Z. No sorry reduction."
+    },
+    {
+      "project_id": "8feb596c-2d32-4da6-9811-928f629cee7d",
+      "file": "proofs/Proofs/ThreeSquaresSliceMinkowski.lean",
+      "problem_id": "zsqrtd-neg-two-oq-02",
+      "submitted": "2026-06-19T11:06:36Z",
+      "status": "submitted",
+      "companion_file": false,
+      "notes": "researcher-2: sole sorry exists_sheared_point_lt_two_mul_d2 (d=2 Minkowski core) submitted via CLI as standalone snippet MinkowskiCore.lean. MCP wrapper 404 this session; CLI reachable. Retrieve: uvx --from aristotlelib aristotle show 8feb596c... ; if PROVED integrate proof body into ThreeSquaresSliceMinkowski.lean line 263-266.",
+      "outcome": null
     }
   ]
 }
