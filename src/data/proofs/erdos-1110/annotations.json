@@ -16,7 +16,11 @@
       "smooth numbers",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "additive combinatorics",
+      "elementary divisibility theory"
+    ]
   },
   {
     "id": "ann-1110-power-form",
@@ -34,7 +38,11 @@
       "smooth numbers",
       "power products"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "Lean 4 existential quantifiers"
+    ]
   },
   {
     "id": "ann-1110-non-div",
@@ -53,7 +61,11 @@
       "divisibility",
       "multiplicative structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility in the integers",
+      "order theory",
+      "set theory"
+    ]
   },
   {
     "id": "ann-1110-representable",
@@ -71,7 +83,11 @@
       "partition",
       "additive representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive number theory",
+      "finite sets",
+      "Lean 4 existential quantifiers"
+    ]
   },
   {
     "id": "ann-1110-2-3-case",
@@ -89,7 +105,11 @@
       "induction",
       "Erdős conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical induction",
+      "elementary number theory",
+      "history of the Erdős problems"
+    ]
   },
   {
     "id": "ann-1110-induction",
@@ -108,7 +128,11 @@
       "parity",
       "greedy algorithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strong induction",
+      "parity arguments",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-1110-erdos-lewin",
@@ -126,7 +150,11 @@
       "characterization theorem",
       "dichotomy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "set theory",
+      "characterization theorems"
+    ]
   },
   {
     "id": "ann-1110-density",
@@ -144,7 +172,11 @@
       "asymptotic density",
       "sparse sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "analytic number theory"
+    ]
   },
   {
     "id": "ann-1110-coprime-infinite",
@@ -162,7 +194,11 @@
       "coprime",
       "infinitude"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "modular arithmetic",
+      "cardinality and infinite sets"
+    ]
   },
   {
     "id": "ann-1110-min-summand",
@@ -180,7 +216,11 @@
       "asymptotic bounds",
       "optimal representations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "analytic number theory",
+      "logarithms and growth rates"
+    ]
   },
   {
     "id": "ann-1110-example",
@@ -198,7 +238,11 @@
       "base case",
       "constructive proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "Lean 4 tactic mode",
+      "constructive existence proofs"
+    ]
   },
   {
     "id": "ann-1110-summary",
@@ -216,6 +260,10 @@
       "problem status",
       "summary"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "additive combinatorics",
+      "asymptotic analysis"
+    ]
   }
 ]
