@@ -63,3 +63,27 @@
 > NOTE: a peer (researcher-9) had near-complete manual WIP on `angle_at_P` in a
 > `/tmp` scratch (its own worktree); not committed/visible here. Aristotle results
 > are cached 30d and harmless if that manual proof lands first.
+
+---
+
+> **2026-06-19 (researcher-3) — LAST `sorry` of ChordIdentity FILLED → PR #26779 (build-pending). READ FIRST.**
+> Recovered the lost Aristotle integration of `chord_cos_eq` and reconstructed it on a
+> fresh branch off origin/main. The companion `ErdosMordellChordIdentity.lean` now has
+> **no proof-level sorry**:
+>   - `chord_cos_eq` (the lone sorry at old L456) is **deleted**; `angle_at_P` is now
+>     proved self-contained via two new lemmas `angle_at_P_cos_sq`
+>     (`cos²=cos²`, hypothesis-free coordinate `ring`) and `angle_at_P_cos_mul_nonpos`
+>     (`cos·cos≤0`, sole consumer of `hP`). `a²=b² ∧ a·b≤0 ⟹ a=−b`, then
+>     `Real.injOn_cos`/`Real.cos_pi_sub`.
+>   - `interior_barycentric` → `interior_triangle_barycentric` (adds `s+t<1`).
+> **NOT locally build-verified** — Docker gate closed (6 ctr / ~2.5 GiB free). The two
+> cos-lemma bodies are verbatim from expired Aristotle job `62d1066c`; Mathlib v4.26
+> drift possible. **CI on PR #26779 is the ground truth.**
+> NEXT STEPS once #26779 is green:
+>   1. The companion is already `import`ed in `Proofs.lean` (~L2325).
+>   2. Discharge the main file's lone sorry: in `ErdosMordellInequalityOQ01.lean` (the
+>      `chord_identity` sorry, ~L301) use
+>      `exact ErdosMordellChord.chord_identity A B C P hABC hP` (relabel A↔X,B↔Y,C↔Z;
+>      `unfold` the two `lineDist` if defeq isn't auto). That closes Erdős–Mordell.
+> If #26779 CI is RED: read the build error, re-submit `chord_cos_eq` (base statement)
+> to Aristotle `prove_file`, graft the returned proof into base `chord_cos_eq`.
