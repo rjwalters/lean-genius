@@ -16,7 +16,11 @@
       "coprime",
       "kummer-theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "central binomial coefficient C(2n,n)",
+      "coprimality and prime factorization of 105 = 3 x 5 x 7",
+      "Kummer's theorem on prime powers in binomial coefficients"
+    ]
   },
   {
     "id": "ann-e376-definitions",
@@ -35,7 +39,11 @@
       "coprime",
       "good-set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "central binomial coefficient as (2n)!/(n!)^2",
+      "coprimality of two integers",
+      "set-builder notation for the set of 105-good integers"
+    ]
   },
   {
     "id": "ann-e376-kummer",
@@ -54,7 +62,11 @@
       "carries",
       "digit-constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "base-p digit representation of integers",
+      "carries when adding numbers in base p",
+      "p-adic valuation of binomial coefficients"
+    ]
   },
   {
     "id": "ann-e376-105",
@@ -73,7 +85,11 @@
       "digit-constraints",
       "simultaneous"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factorization 105 = 3 x 5 x 7 into distinct primes",
+      "coprimality to a product via coprimality to each prime factor",
+      "digit bounds (p-1)/2 in bases 3, 5, and 7"
+    ]
   },
   {
     "id": "ann-e376-egrs",
@@ -92,7 +108,11 @@
       "verified",
       "two-primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "EGRS 1975 two-prime coprimality result",
+      "infinitude of n with C(2n,n) coprime to pq",
+      "deriving corollaries for 15, 21, and 35 from the theorem"
+    ]
   },
   {
     "id": "ann-e376-summary",
@@ -111,6 +131,10 @@
       "open",
       "graham-prize"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open status of Erdos problem 376",
+      "EGRS solution of the two-prime case",
+      "intersection of base-3, base-5, base-7 digit constraints"
+    ]
   }
 ]
