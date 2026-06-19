@@ -16,7 +16,11 @@
       "Sidon sets",
       "counting functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Additive Combinatorics",
+      "Sidon Sets",
+      "Counting Functions"
+    ]
   },
   {
     "id": "ann-e158-b2g-def",
@@ -35,7 +39,11 @@
       "representation function",
       "sumsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon Sets",
+      "Representation Functions",
+      "Extended Cardinality"
+    ]
   },
   {
     "id": "ann-e158-counting",
@@ -54,7 +62,11 @@
       "growth rate",
       "normalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Density",
+      "Asymptotic Normalization",
+      "Square-Root Scaling"
+    ]
   },
   {
     "id": "ann-e158-sidon-equiv",
@@ -73,7 +85,11 @@
       "B₂ sequences",
       "unique representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon Sets",
+      "Unique Representation",
+      "Mathlib IsSidon"
+    ]
   },
   {
     "id": "ann-e158-ess94",
@@ -92,7 +108,11 @@
       "sieve theory",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limit Inferior",
+      "Sieve Methods",
+      "Logarithmic Bounds"
+    ]
   },
   {
     "id": "ann-e158-sidon-liminf",
@@ -111,7 +131,11 @@
       "density bounds",
       "Sidon sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite Sidon Sets",
+      "Limit Inferior",
+      "Density Lower Bounds"
+    ]
   },
   {
     "id": "ann-e158-conjecture",
@@ -130,7 +154,11 @@
       "B₂[2] sets",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "B₂[g] Sets",
+      "Limit Inferior",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-e158-hierarchy",
@@ -149,7 +177,11 @@
       "generalization",
       "proof structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Containment",
+      "Sidon Sets",
+      "Generalization Principle"
+    ]
   },
   {
     "id": "ann-e158-sqrt-bound",
@@ -168,7 +200,11 @@
       "upper bound",
       "finite Sidon sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Sidon Sets",
+      "Counting Argument",
+      "Distinct Pairwise Sums"
+    ]
   },
   {
     "id": "ann-e158-examples",
@@ -187,6 +223,10 @@
       "Gaussian integers",
       "unique factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Perfect Squares",
+      "Gaussian Integers",
+      "Unique Factorization"
+    ]
   }
 ]
