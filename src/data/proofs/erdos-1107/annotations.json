@@ -16,7 +16,11 @@
       "additive number theory",
       "Erdős problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "additive number theory",
+      "multiplicative number theory"
+    ]
   },
   {
     "id": "ann-e1107-imports",
@@ -35,7 +39,11 @@
       "prime factorization",
       "filters"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "order theory (filters)"
+    ]
   },
   {
     "id": "ann-e1107-isfull-def",
@@ -54,7 +62,11 @@
       "squareful numbers",
       "prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "divisibility"
+    ]
   },
   {
     "id": "ann-e1107-decidable",
@@ -73,7 +85,11 @@
       "native_decide",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 typeclass resolution",
+      "decidability in type theory",
+      "finite sets"
+    ]
   },
   {
     "id": "ann-e1107-sumdef",
@@ -91,7 +107,11 @@
       "additive representation",
       "sum decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "list operations",
+      "existential quantifiers"
+    ]
   },
   {
     "id": "ann-e1107-basic-props",
@@ -110,7 +130,11 @@
       "divisibility",
       "monotonicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility theory",
+      "Lean 4 tactic mode",
+      "elementary order theory"
+    ]
   },
   {
     "id": "ann-e1107-examples",
@@ -129,7 +153,11 @@
       "native_decide",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "kernel computation (native_decide)",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e1107-main-conjecture",
@@ -148,7 +176,12 @@
       "Erdős problems",
       "asymptotic statements"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic analysis",
+      "order theory (filters)",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e1107-heathbrown",
@@ -167,7 +200,11 @@
       "ternary quadratic forms",
       "squareful numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "quadratic forms theory",
+      "algebraic number theory"
+    ]
   },
   {
     "id": "ann-e1107-example-13",
@@ -186,7 +223,11 @@
       "computational proof",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "kernel computation (native_decide)",
+      "list operations"
+    ]
   },
   {
     "id": "ann-e1107-example-17",
@@ -204,6 +245,10 @@
       "prime representation",
       "computational proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "kernel computation (native_decide)",
+      "Lean 4 tactic mode"
+    ]
   }
 ]
