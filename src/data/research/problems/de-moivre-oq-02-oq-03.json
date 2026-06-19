@@ -1,0 +1,52 @@
+{
+  "slug": "de-moivre-oq-02-oq-03",
+  "title": "Minimax Property of Chebyshev Polynomials",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\| \\tilde T_n \\|_{\\infty,[-1,1]} \\;=\\; 2^{-(n-1)} \\;=\\; \\min_{\\substack{p \\text{ monic} \\\\ \\deg p = n}} \\ \\max_{x \\in [-1,1]} |p(x)|.",
+    "plain": "Among all degree-$n$ polynomials with leading coefficient $1$, the one that stays closest to zero on the interval $[-1,1]$ is the (rescaled) Chebyshev polynomial, and its largest deviation is exactly $2^{-(n-1)}$. We want a formal proof of this classical extremal/minimax property.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-18T23:18:44-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: de-moivre-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "approximation-theory",
+    "chebyshev-polynomials",
+    "minimax",
+    "real-analysis"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-18T23:18:44-07:00"
+}

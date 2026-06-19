@@ -1,0 +1,53 @@
+{
+  "slug": "derangements-oq-02-oq-02-oq-01",
+  "title": "Higher Moments of Fixed Points of a Random Permutation",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\mathbb{E}\\big[\\,(F_n)_k\\,\\big] \\;=\\; \\mathbb{E}\\big[\\,F_n (F_n-1)\\cdots(F_n-k+1)\\,\\big] \\;=\\; 1, \\qquad n \\ge k,",
+    "plain": "Pick a permutation of $\\{1,\\dots,n\\}$ at random. The number of elements it leaves fixed is a random variable. Its average is $1$. We want machine-checked formulas for the higher moments $\\mathbb{E}[F_n^k]$ (and the cleaner factorial moments, which equal $1$), establishing the standard convergence to a Poisson(1) distribution.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-18T23:18:44-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: derangements-oq-02-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "permutations",
+    "derangements",
+    "probability",
+    "factorial-moments"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-18T23:18:44-07:00"
+}
