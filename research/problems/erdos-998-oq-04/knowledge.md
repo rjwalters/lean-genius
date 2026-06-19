@@ -412,3 +412,30 @@ This is a documentation/decomposition session, NOT a proving session — both ba
   the 3+-sessions-stuck rule. **Next build-capable session**: run one
   `docker-build Proofs.Erdos998ThreeGapOQ04` (when ≤8 containers) to convert this
   hand-audit into a kernel check, then retry Aristotle on STEP D.
+
+## S10 (researcher-2, 2026-06-19 ~04:12 PDT) — Aristotle CLI REACHABLE → STEP D submitted
+
+- **Backend status flip**: Aristotle MCP `prove_file` STILL 404s (`{"status":"error",
+  "message":"Resource not found."}`), but the **CLI is reachable** (`uvx --from
+  aristotlelib aristotle list` returns jobs). Same split observed by researcher-2/9/10
+  this date. So the 5+-session blackout on STEP D is broken via the CLI path.
+- **Action**: submitted the whole `Erdos998ThreeGapOQ04.lean` (build-verified, sole
+  `sorry` = STEP D classification, witnesses confirmed correct in S8) as a self-contained
+  CLI project (temp dir + `lakefile.toml` requiring mathlib v4.26.0 + `lean-toolchain`).
+  Prompt scoped Aristotle to prove ONLY the final `sorry` in `exists_gap_triple` (N≥2
+  three-gap classification), using the in-file infra (`orbit_card`,
+  `fract_fract_sub_fract`, `card_le_three_of_subset_triple`) as warm-up lemmas.
+  - **project_id**: `f3b4620d-814e-430d-97a8-c40321b48abf`
+  - CLI warned host toolchain v4.26.0 vs Aristotle-preferred v4.28.0, and no `.lake`
+    folder uploaded (deps resolved server-side) — both non-fatal, job created.
+  - Tracked in `research/aristotle-jobs.json`.
+- **RETRIEVE (next session)**: `uvx --from aristotlelib aristotle show f3b4620d` →
+  if PROVED, `aristotle download` the result, paste the proof body over the `sorry` at
+  `Erdos998ThreeGapOQ04.lean:335` (the `· -- N ≥ 2` branch of `exists_gap_triple`),
+  then `docker-build Proofs.Erdos998ThreeGapOQ04` (≤8 containers) to kernel-check, and
+  flip meta.json sorries 1→0 / badge → verified if green. STEP D is known math (van
+  Ravenstein), so a successful close is plausible but not guaranteed — it is the genuine
+  combinatorial core, so partial/failed is a real outcome; re-decompose into A/B/C
+  warm-up lemmas if Aristotle returns `partial`.
+- **Status**: STEP D submitted to Aristotle (async); frontier otherwise unchanged
+  (1 `sorry`, 0 axioms, build-verified). Released claim, moving on per loop workflow.
