@@ -140,3 +140,45 @@ a partial S₅ file now would either be unbuildable or just re-axiomatize the sa
   S₅ result with `axiom`s for the two Frobenius cycle-type facts (5-cycle@3, transposition@2),
   exactly parallel to `InverseGaloisA5.three_dvd_gal_card`. Status would be `axiomatized`.
 - File a correction note: the curated problem statement's "exactly three real roots" is false.
+
+### Session 2026-06-19 (Session 2, ORIENT → ACT) — REVISIT
+
+**Mode:** REVISIT. **Outcome:** progress — shipped one verified theorem connecting the
+entry to the *real* Galois group for the first time.
+
+**What I did**
+- Added `five_dvd_card_gal (hirr : Irreducible f) : 5 ∣ Nat.card f.Gal`
+  (`AbelRuffiniOQ07.lean:156`), via `Polynomial.Gal.prime_degree_dvd_card` +
+  `natDegree_prime`. Verified, 0 sorry / 0 axiom, conditional only on `Irreducible f`.
+- **Key realisation that closes half the bridge:** the order-divisibility input
+  `5 ∣ |Gal|` needs **no** Dedekind–Frobenius machinery. A prime-degree irreducible
+  polynomial over a char-0 field has a Galois group acting transitively on its roots, so
+  `deg ∣ |Gal|` by orbit–stabiliser — Mathlib packages this as `prime_degree_dvd_card`.
+  This gives `5 ∣ |f.Gal|` for the *genuine* `f.Gal` the instant `f` is irreducible,
+  replacing the abstract `frob3` half of the prior capstone. **Only the transposition
+  input (`frob2³`, cycle type mod 2) remains genuinely Frobenius/Dedekind-dependent.**
+- Re-confirmed (against the merged file + Mathlib v4.26.0) that the real-roots /
+  complex-conjugation route stays a **dead end**: `galActionHom_bijective_of_prime_degree'`
+  (`Mathlib/Analysis/Complex/Polynomial/Basic.lean:154`) admits 1–3 non-real roots, but
+  `X⁵−X−1` has **4** (one real root), so conjugation is even — inapplicable, as Session 1 found.
+
+**Why not unconditional:** the remaining input `Irreducible f` is the classic mod-3
+finite-field irreducibility check (no rational root + no irreducible-quadratic factor over
+𝔽₃). It is a *known* result best handed to Aristotle, whose endpoint was **down again this
+session (404 "Resource not found")**, and writing the `decide`-unfriendly `Polynomial`/
+`Finsupp` factor check blind (no build loop; host had 6–7 lean containers ⟹ OOM-gated) is
+too error-prone to verify. So I shipped the verified conditional theorem and left
+`Irreducible f` as the single, well-scoped next target.
+
+**Next steps**
+- Prove `Irreducible (X⁵−X−1 : ℚ[X])` ⟹ `five_dvd_card_gal` becomes unconditional and
+  `5 ∣ |f.Gal|` is fully verified for the real group. Route pinned in the problem JSON
+  `nextSteps` (mod-3 via `Monic.irreducible_iff_lt_natDegree_lt`; Gauss lift ℤ→ℚ). Retry
+  Aristotle for it.
+- Transposition-in-Gal remains the shared open bridge with `inverse-galois-a5-oq-01`.
+
+**Build note (this session):** first build was RED on a single compiler-IR check —
+`def f3 : (ZMod 3)[X]` must be `noncomputable` (polynomial over a semiring has no
+executable code). Fixed; everything else elaborated cleanly. Aristotle endpoint still
+404 this session, so the irreducibility goal was not delegated. Also aligned the stale
+`leanFile` summary block in meta.json (was 257/16/3) to the authoritative 294/17/4.
