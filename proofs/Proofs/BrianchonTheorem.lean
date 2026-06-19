@@ -290,4 +290,83 @@ theorem brianchon_theorem {C : Conic} (hC : C.symmetric) (hex : ContactHexagon C
   concurrent_brianchon_of_collinear_pascal hC hex.A hex.B hex.C' hex.D hex.E hex.F
     (conic_implies_pascal C hex)
 
+-- ============================================================
+-- PART 9: The genuine Brianchon point (under nondegeneracy)
+-- ============================================================
+
+/-
+The theorem `brianchon_theorem` records concurrency as the *vanishing of the
+diagonals' coefficient determinant*.  By itself that predicate is also satisfied
+degenerately (e.g. if two diagonals coincide, or a diagonal collapses to the zero
+covector).  Brianchon's classical statement asserts more: there is a genuine
+single point — the **Brianchon point** — through which all three diagonals pass.
+
+We recover it here under the natural nondegeneracy hypothesis that two of the
+diagonals actually meet in a well-defined point (their meet is a nonzero vector,
+i.e. the two lines are distinct).  The witness is that meet, and incidence of the
+third diagonal is exactly the concurrency already proved.  This part is pure
+linear algebra: **no axioms, no `sorry`** beyond `conic_implies_pascal` (used only
+through `brianchon_theorem`).
+-/
+
+/-- Incidence: a projective point `X` lies on a projective line `l` iff `l · X = 0`. -/
+def onLine (l : ProjLine) (X : ProjPoint) : Prop := dotProduct l X = 0
+
+/-- A line passes through its own meet with any other line: `u · (u × v) = 0`. -/
+theorem dotProduct_self_crossProduct (u v : Fin 3 → ℝ) :
+    dotProduct u (crossProduct u v) = 0 := by
+  simp only [dotProduct, cross_apply, Fin.sum_univ_three, Fin.isValue,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- The second line of a meet also passes through it: `v · (u × v) = 0`. -/
+theorem dotProduct_crossProduct_self (u v : Fin 3 → ℝ) :
+    dotProduct v (crossProduct u v) = 0 := by
+  simp only [dotProduct, cross_apply, Fin.sum_univ_three, Fin.isValue,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- The triple determinant of three rows is the scalar triple product:
+`det (a, b, c) = c · (a × b)`.  Hence the concurrency determinant of three lines
+is exactly the incidence of the third line with the meet of the first two. -/
+theorem det_threeVectorMatrix_eq_dot_cross (a b c : Fin 3 → ℝ) :
+    (threeVectorMatrix a b c).det = dotProduct c (crossProduct a b) := by
+  simp only [Matrix.det_fin_three, threeVectorMatrix, Matrix.of_apply,
+    dotProduct, cross_apply, Fin.sum_univ_three, Fin.isValue,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- **The genuine Brianchon point.**
+
+Under the nondegeneracy assumption that two of the diagonals actually meet in a
+well-defined projective point (`lineIntersection (brianchonDiag1 hex)
+(brianchonDiag2 hex) ≠ 0`, i.e. the first two diagonals are distinct lines), the
+three main diagonals of the circumscribed hexagon pass through a *single* common
+projective point — the classical **Brianchon point**.
+
+The witness is the meet of the first two diagonals; the first two incidences are
+the self-incidence identities, and the third is precisely the concurrency proved
+in `brianchon_theorem`.  No axiom beyond `conic_implies_pascal`. -/
+theorem brianchon_point {C : Conic} (hC : C.symmetric) (hex : ContactHexagon C)
+    (hnd : lineIntersection (brianchonDiag1 hex) (brianchonDiag2 hex) ≠ 0) :
+    ∃ X : ProjPoint, X ≠ 0 ∧
+      onLine (brianchonDiag1 hex) X ∧
+      onLine (brianchonDiag2 hex) X ∧
+      onLine (brianchonDiag3 hex) X := by
+  refine ⟨lineIntersection (brianchonDiag1 hex) (brianchonDiag2 hex), hnd, ?_, ?_, ?_⟩
+  · -- diag1 passes through the meet of diag1 and diag2
+    simp only [onLine, lineIntersection]
+    exact dotProduct_self_crossProduct (brianchonDiag1 hex) (brianchonDiag2 hex)
+  · -- diag2 passes through the meet of diag1 and diag2
+    simp only [onLine, lineIntersection]
+    exact dotProduct_crossProduct_self (brianchonDiag1 hex) (brianchonDiag2 hex)
+  · -- diag3 passes through the meet: this is the concurrency from brianchon_theorem
+    have hconc := brianchon_theorem hC hex
+    unfold concurrent at hconc
+    rw [det_threeVectorMatrix_eq_dot_cross] at hconc
+    simpa [onLine, lineIntersection] using hconc
+
 end Brianchon

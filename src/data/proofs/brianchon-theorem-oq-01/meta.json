@@ -46,15 +46,16 @@
       "An axiom-free, sorry-free duality bridge `concurrent_brianchon_of_collinear_pascal`: Pascal collinearity ⟹ Brianchon concurrency, by pure linear algebra",
       "The cofactor / Binet–Cauchy cross-product identity `(M·u)×(M·v) = (adj M)ᵀ·(u×v)` proved by `ring`",
       "Reduction showing each Brianchon diagonal equals the fixed linear map `det C • C` applied to the corresponding Pascal point",
+      "The genuine **Brianchon point** `brianchon_point`: under the nondegeneracy hypothesis that two diagonals actually meet (`lineIntersection (brianchonDiag1 hex) (brianchonDiag2 hex) ≠ 0`), all three diagonals pass through a single honest projective point — strengthening the bare concurrency determinant to a common point, still axiom-free beyond `conic_implies_pascal`",
       "Answers an open question posed in the `pascals-hexagon` gallery entry"
     ],
     "dateAdded": "2026-06-19",
     "axiomCount": 1,
-    "lineCount": 293,
+    "lineCount": 372,
     "assumptions": "1 axiom: `conic_implies_pascal` — the same deep geometric fact (six points on a conic ⟹ opposite-side intersections collinear) axiomatized by the `pascals-hexagon` gallery entry as `conic_implies_pascal_constraint`. No new axiom is introduced. The duality bridge `concurrent_brianchon_of_collinear_pascal` is axiom-free and sorry-free (verified via `#print axioms`: depends only on propext, Classical.choice, Quot.sound). The full `brianchon_theorem` adds only `conic_implies_pascal`.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8,
-    "definitionCount": 14
+    "theoremCount": 12,
+    "definitionCount": 15
   },
   "overview": {
     "historicalContext": "Charles-Julien Brianchon discovered this theorem in 1806 as a student at the École Polytechnique, publishing it in the *Journal de l'École Polytechnique*. It is the projective dual of Pascal's hexagon theorem (1639): where Pascal's theorem concerns a hexagon *inscribed* in a conic and concludes that the intersections of opposite sides are collinear, Brianchon's theorem concerns a hexagon *circumscribed* about a conic and concludes that the main diagonals are concurrent. The two statements are exchanged by the principle of projective duality, which swaps points with lines and 'collinear' with 'concurrent'. Brianchon's result was historically significant as one of the first striking applications of the (then-new) duality principle in projective geometry, later systematized by Poncelet and Gergonne.",
@@ -76,11 +77,12 @@
     ]
   },
   "conclusion": {
-    "summary": "Brianchon's theorem is proved as the projective dual of Pascal's hexagon theorem. The core deliverable is the axiom-free, sorry-free duality bridge `concurrent_brianchon_of_collinear_pascal`, which shows by pure linear algebra that Pascal's three collinear points force Brianchon's three concurrent diagonals. The unconditional `brianchon_theorem` combines this bridge with the single Pascal axiom `conic_implies_pascal`, introducing no new assumption.",
+    "summary": "Brianchon's theorem is proved as the projective dual of Pascal's hexagon theorem. The core deliverable is the axiom-free, sorry-free duality bridge `concurrent_brianchon_of_collinear_pascal`, which shows by pure linear algebra that Pascal's three collinear points force Brianchon's three concurrent diagonals. The unconditional `brianchon_theorem` combines this bridge with the single Pascal axiom `conic_implies_pascal`, introducing no new assumption. A further result `brianchon_point` upgrades the bare concurrency determinant to the genuine Brianchon point: under the nondegeneracy hypothesis that two diagonals meet in a well-defined point, all three diagonals are shown to pass through one explicit common projective point.",
     "implications": "This closes the classic Pascal/Brianchon duality pair and answers an open question recorded in the `pascals-hexagon` entry ('Can the Brianchon dual be formally proved from Pascal's theorem via projective duality?'). The reusable bridge — cofactor cross-product identity plus determinant transport — is a template for dualizing other projective incidence theorems (e.g. Desargues self-duality, the dual of Pappus).",
     "openQuestions": [
       "Eliminate the shared `conic_implies_pascal` axiom (via Cayley–Bacharach or the Sylvester reduction to the standard conic), upgrading both Pascal and Brianchon to fully verified",
-      "Add the nondegeneracy hypothesis to recover the converse and the genuine Brianchon point as an honest projective point (validity of the diagonals)",
+      "Establish the converse (concurrency ⟹ the six tangency points lie on a conic). The genuine Brianchon point is now recovered (`brianchon_point`) under the nondegeneracy hypothesis that two diagonals meet",
+      "Discharge the nondegeneracy hypothesis of `brianchon_point` from a genericity condition on the conic and contact points (e.g. `det C ≠ 0` plus distinct contact points), rather than assuming the diagonals' meet is nonzero",
       "Formalize the limiting/degenerate cases (a side through a point at infinity) explicitly"
     ]
   },
@@ -107,11 +109,11 @@
   ],
   "leanFile": {
     "path": "Proofs/BrianchonTheorem.lean",
-    "lineCount": 293,
+    "lineCount": 372,
     "axiomCount": 1,
     "sorries": 0,
-    "theoremCount": 8,
-    "definitionCount": 14,
+    "theoremCount": 12,
+    "definitionCount": 15,
     "imports": [
       "import Mathlib.Data.Real.Basic",
       "import Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
@@ -135,6 +137,12 @@
       "type": "core",
       "description": "Brianchon's theorem: the three main diagonals of a hexagon circumscribed about a symmetric conic are concurrent",
       "leanType": "C.symmetric → (hex : ContactHexagon C) → concurrent (brianchonDiag1 hex) (brianchonDiag2 hex) (brianchonDiag3 hex)"
+    },
+    {
+      "name": "brianchon_point",
+      "type": "core",
+      "description": "The genuine Brianchon point: under the nondegeneracy hypothesis that the first two diagonals meet in a well-defined point, the three main diagonals all pass through a single common projective point. Strengthens the bare concurrency determinant to an explicit incident point, axiom-free beyond conic_implies_pascal",
+      "leanType": "C.symmetric → (hex : ContactHexagon C) → lineIntersection (brianchonDiag1 hex) (brianchonDiag2 hex) ≠ 0 → ∃ X, X ≠ 0 ∧ onLine (brianchonDiag1 hex) X ∧ onLine (brianchonDiag2 hex) X ∧ onLine (brianchonDiag3 hex) X"
     },
     {
       "name": "crossProduct_mulMatrix",
