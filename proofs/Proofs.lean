@@ -961,6 +961,7 @@ import Proofs.Erdos1100ProblemProvable
 import Proofs.Erdos1101Problem
 import Proofs.Erdos1102Problem
 import Proofs.Erdos1103Problem
+import Proofs.Erdos1104OQ01
 import Proofs.Erdos1104Problem
 import Proofs.Erdos1105Aristotle
 import Proofs.Erdos1105Problem
