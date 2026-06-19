@@ -17,7 +17,11 @@
       "Sperner-theorem",
       "antichains"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subsets of a finite ground set {1,...,n}",
+      "set union as a family operation",
+      "growth rate notation f(n) ~ g(n)"
+    ]
   },
   {
     "id": "ann-1023-unionfree-def",
@@ -37,7 +41,11 @@
       "set-union",
       "logical-equivalence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subfamily of a finite set system",
+      "Finset.erase and removing an element from a family",
+      "cardinality threshold |G| >= 2 to exclude the trivial A = A case"
+    ]
   },
   {
     "id": "ann-1023-extremal",
@@ -57,7 +65,11 @@
       "finiteness",
       "powerset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "supremum over a finite set of achievable cardinalities",
+      "powerset of {1,...,n} as an upper bound 2^n",
+      "attainment of a maximum (existence of an extremal family)"
+    ]
   },
   {
     "id": "ann-1023-antichain",
@@ -77,7 +89,11 @@
       "containment",
       "proof-by-contradiction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set containment B subseteq union of G",
+      "antichain: incomparable elements under inclusion",
+      "proof by contradiction with distinct elements forcing B = A"
+    ]
   },
   {
     "id": "ann-1023-middle-layer",
@@ -97,7 +113,11 @@
       "antichain",
       "Sperner-theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "k-th layer (sets of fixed size floor(n/2))",
+      "equal-cardinality sets with containment are equal",
+      "binomial coefficient C(n, floor(n/2)) counting"
+    ]
   },
   {
     "id": "ann-1023-upper-bound",
@@ -117,7 +137,11 @@
       "chain-decomposition",
       "LYM-inequality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdos-Kleitman upper bound F(n) <= C(n, floor(n/2))",
+      "le_antisymm combining matching lower and upper bounds",
+      "symmetric chain decomposition of the Boolean lattice"
+    ]
   },
   {
     "id": "ann-1023-asymptotic",
@@ -137,7 +161,11 @@
       "asymptotic-analysis",
       "convergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Stirling's approximation n! ~ sqrt(2 pi n)(n/e)^n",
+      "central binomial coefficient C(n, n/2)",
+      "limit of F(n)/(2^n/sqrt(n)) to the constant sqrt(2/pi)"
+    ]
   },
   {
     "id": "ann-1023-problem447",
@@ -157,6 +185,10 @@
       "Hunter-observation",
       "monotonicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "2-union-free families (forbidding unions of exactly two members)",
+      "monotonicity: stronger forbiddance implies weaker (union-free => 2-union-free)",
+      "Erdos Problem 447 extremal value C(n, floor(n/2))"
+    ]
   }
 ]
