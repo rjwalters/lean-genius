@@ -18,7 +18,11 @@
       "ZFC independence"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "infinite Ramsey theory",
+      "cardinal arithmetic",
+      "partition calculus notation"
+    ]
   },
   {
     "id": "ann-e474-continuum",
@@ -38,7 +42,11 @@
       "Gödel-Cohen independence"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "aleph sequence of cardinals",
+      "cardinal exponentiation (2^ℵ₀)",
+      "Mathlib Cardinal.aleph"
+    ]
   },
   {
     "id": "ann-e474-three-coloring",
@@ -58,7 +66,11 @@
       "Ramsey theory"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "functions to Fin n",
+      "ordered vs unordered pairs",
+      "edge coloring"
+    ]
   },
   {
     "id": "ann-e474-uncountable",
@@ -78,7 +90,11 @@
       "Cantor's theorem"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "cardinality comparison",
+      "first uncountable cardinal ℵ₁",
+      "countable vs uncountable sets"
+    ]
   },
   {
     "id": "ann-e474-all-colors",
@@ -98,7 +114,11 @@
       "Rainbow condition"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "three-coloring of pairs",
+      "surjectivity onto a finite set",
+      "diagonal exclusion (a ≠ b)"
+    ]
   },
   {
     "id": "ann-e474-erdos-property",
@@ -118,7 +138,11 @@
       "Existential quantification"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "existential vs universal quantification",
+      "ContainsAllColorPairs condition",
+      "uncountable subset predicate"
+    ]
   },
   {
     "id": "ann-e474-partition",
@@ -138,7 +162,11 @@
       "Monochromatic set"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "partition arrow notation κ→(λ)ʳ_s",
+      "monochromatic sets",
+      "Cantor space 2^ω as the continuum"
+    ]
   },
   {
     "id": "ann-e474-sierpinski-kurepa",
@@ -158,7 +186,11 @@
       "Two-coloring"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "two-coloring of pairs",
+      "pigeonhole principle on uncountable sets",
+      "unconditional (ZFC) results"
+    ]
   },
   {
     "id": "ann-e474-two-color-partition",
@@ -178,7 +210,11 @@
       "Cardinal Ramsey theory"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "partition relation notation",
+      "Sierpiński-Kurepa theorem",
+      "Erdős-Rado partition calculus"
+    ]
   },
   {
     "id": "ann-e474-ch",
@@ -199,7 +235,11 @@
       "Hilbert's problems"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "continuum vs ℵ₁",
+      "ZFC independence (Gödel-Cohen)",
+      "Hilbert's first problem"
+    ]
   },
   {
     "id": "ann-e474-erdos-ch",
@@ -219,7 +259,11 @@
       "Well-ordering"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Continuum Hypothesis",
+      "well-ordering in type ω₁",
+      "transfinite induction"
+    ]
   },
   {
     "id": "ann-e474-shelah",
@@ -239,7 +283,11 @@
       "NegativePartition"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "forcing",
+      "consistency relative to ZFC",
+      "iterated forcing adding reals"
+    ]
   },
   {
     "id": "ann-e474-shelah-large",
@@ -259,7 +307,11 @@
       "shelah_consistency"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Cohen reals",
+      "forcing iteration length",
+      "size of the continuum vs ℵ₂"
+    ]
   },
   {
     "id": "ann-e474-open-question",
@@ -279,7 +331,11 @@
       "NegativePartition"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "consistency strength",
+      "forcing constructions",
+      "c = ℵ₂ and negative partition relation"
+    ]
   },
   {
     "id": "ann-e474-prize",
@@ -298,7 +354,11 @@
       "Minimal failure cardinal"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "threshold cardinal for failure",
+      "consistency of c = κ with partition failure",
+      "cardinal arithmetic dichotomies"
+    ]
   },
   {
     "id": "ann-e474-negative-partition",
@@ -318,7 +378,11 @@
       "ZFC"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "negation of the partition relation",
+      "independence from ZFC",
+      "Erdős (CH) vs Shelah (forcing) results"
+    ]
   },
   {
     "id": "ann-e474-ch-argument",
@@ -338,6 +402,10 @@
       "Pigeonhole principle"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "well-ordering of ℝ in order type ω₁",
+      "transfinite induction (successor and limit stages)",
+      "pigeonhole over uncountably many points"
+    ]
   }
 ]
