@@ -16,7 +16,12 @@
       "Graph coloring",
       "Asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "combinatorics",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e554-ramsey-axiom",
@@ -35,7 +40,12 @@
       "Graph Ramsey theory",
       "Monotonicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 axiom declarations",
+      "graph theory",
+      "order relations",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e554-triangle-odd-defs",
@@ -54,7 +64,11 @@
       "Chromatic number"
     ],
     "mathContext": "See annotation content for formal details of triangle and odd cycle ramsey numbers",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e554-conjecture",
@@ -73,7 +87,12 @@
       "Rational arithmetic",
       "Limit formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "rational arithmetic",
+      "real analysis",
+      "first-order logic",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e554-triangle-bounds",
@@ -92,7 +111,12 @@
       "Exponential growth",
       "Stepping-up lemma"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "combinatorics",
+      "number theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e554-odd-cycle-bounds",
@@ -111,7 +135,11 @@
       "Growth rate comparison"
     ],
     "mathContext": "See annotation content for formal details of odd cycle ramsey bounds",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e554-two-color",
@@ -130,7 +158,11 @@
       "Hamiltonian cycles",
       "Classical Ramsey numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-e554-pentagon",
@@ -149,6 +181,10 @@
       "Special cases",
       "Specialization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "first-order logic",
+      "Lean 4 tactic mode"
+    ]
   }
 ]
