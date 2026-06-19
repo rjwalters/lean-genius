@@ -11,7 +11,11 @@
     "content": "Imports Mathlib modules for normed fields, inner product spaces, quaternions, real analysis, Fin vector notation, matrix multiplication, determinants, and matrix inverses. These form the mathematical backbone: quaternions for the n=4 identity, matrices/determinants for the n=3 impossibility proof.",
     "mathContext": "The import structure reveals the two proof strategies: algebraic (ring tactic on polynomial identities) and linear-algebraic (matrix invertibility for the impossibility argument).",
     "significance": "supporting",
-    "prerequisites": [],
+    "prerequisites": [
+      "Lean Imports",
+      "Inner Product Space",
+      "Matrix Determinant"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "quaternions",
@@ -306,7 +310,11 @@
     "content": "admissibleDimensions : Set N := {1, 2, 4, 8}. The set of dimensions for which n-square identities exist. These are exactly the dimensions of the four normed division algebras: R (1), C (2), H (4), O (8).",
     "mathContext": "These dimensions are all powers of 2, reflecting the Cayley-Dickson doubling construction. By Bott-Milnor and Kervaire (1958), they also correspond to the parallelizable spheres S^0, S^1, S^3, S^7. The fact that only these four dimensions work is one of the most surprising results in algebra.",
     "significance": "key",
-    "prerequisites": [],
+    "prerequisites": [
+      "Normed Division Algebra",
+      "Cayley-Dickson Construction",
+      "Powers Of Two"
+    ],
     "relatedConcepts": [
       "Cayley-Dickson construction",
       "parallelizable spheres",
