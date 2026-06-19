@@ -14,11 +14,14 @@
   STATUS: build-gated ORPHAN (not imported by Proofs.lean). Do NOT register until it
   compiles green with all sorries discharged.
 
-  PROGRESS (researcher-2): L1 (`log_factorial_eq_sum_vonMangoldt_mul_div`) and L3
-  (`log_four_le_log_centralBinom`) are fully proved; L2 (`log_centralBinom_le_psi`) and
-  the final assembly (`chebyshev_psi_lower_bound`) remain `sorry`. The L1 proof is written
-  but UNVERIFIED — docker build infra is down (daemon unresponsive, fleet outage), so it
-  has not been compiled. Verify before relying on it.
+  PROGRESS (researcher-2): L1 (`log_factorial_eq_sum_vonMangoldt_mul_div`), L2
+  (`log_centralBinom_le_psi`) and L3 (`log_four_le_log_centralBinom`) are now fully
+  proved; only the final real-analysis assembly (`chebyshev_psi_lower_bound`) remains
+  `sorry`. The L1/L2 proofs are written but UNVERIFIED — docker build infra is down
+  (daemon unresponsive, mem=0; Aristotle backend 404), so they have not been compiled.
+  Verify before relying on them. The L2 derivation is the genuine combinatorial gap:
+  `log C(2n,n) = log(2n)! − 2·log n! = ∑_{d≤2n} Λ d·(⌊2n/d⌋ − 2⌊n/d⌋) ≤ ∑_{d≤2n} Λ d = ψ(2n)`,
+  with each de Polignac bracket `⌊2n/d⌋ − 2⌊n/d⌋ ∈ {0,1}` and `Λ d ≥ 0`.
 
   Confirmed Mathlib v4.26.0 hooks (verified by grep of the source tree this session):
     • `ArithmeticFunction.vonMangoldt_sum : ∑ i ∈ n.divisors, Λ i = Real.log n`
@@ -113,7 +116,70 @@ Lemma-level plan (Mathlib v4.26.0 hooks confirmed; complete when build infra rec
     `Nat.floor_natCast` (note `(2 * n : ℝ)` casts as `↑(2*n)`), giving the final `≤`. -/
 theorem log_centralBinom_le_psi (n : ℕ) :
     Real.log (Nat.centralBinom n : ℝ) ≤ Chebyshev.psi (2 * n) := by
-  sorry
+  -- Positivity facts.
+  have hfn : (0 : ℝ) < (Nat.factorial n : ℝ) := by exact_mod_cast Nat.factorial_pos n
+  have hcbpos : (0 : ℝ) < (Nat.centralBinom n : ℝ) := by exact_mod_cast Nat.centralBinom_pos n
+  -- Step 1: `log C(2n,n) = log (2n)! − 2·log n!`, from
+  -- `C(2n,n) · n! · n! = (2n)!` (`choose_mul_factorial_mul_factorial`).
+  have hcb_def : Nat.centralBinom n = (2 * n).choose n := rfl
+  have hkey : (Nat.centralBinom n : ℝ) * (Nat.factorial n : ℝ) * (Nat.factorial n : ℝ)
+      = (Nat.factorial (2 * n) : ℝ) := by
+    have h := Nat.choose_mul_factorial_mul_factorial (show n ≤ 2 * n by omega)
+    have h2 : 2 * n - n = n := by omega
+    rw [h2] at h
+    rw [hcb_def]
+    exact_mod_cast h
+  have hlogkey : Real.log (Nat.centralBinom n : ℝ)
+      = Real.log (Nat.factorial (2 * n) : ℝ) - 2 * Real.log (Nat.factorial n : ℝ) := by
+    have hl := congrArg Real.log hkey
+    rw [Real.log_mul (ne_of_gt (mul_pos hcbpos hfn)) (ne_of_gt hfn),
+        Real.log_mul (ne_of_gt hcbpos) (ne_of_gt hfn)] at hl
+    linarith
+  rw [hlogkey, log_factorial_eq_sum_vonMangoldt_mul_div (2 * n),
+      log_factorial_eq_sum_vonMangoldt_mul_div n]
+  -- Step 2: extend the `N = n` sum from `Ioc 0 n` to `Ioc 0 (2n)`; the new
+  -- terms vanish since `n / d = 0` whenever `d > n`.
+  have hext : (∑ d ∈ Finset.Ioc 0 n, Λ d * ((n / d : ℕ) : ℝ))
+      = ∑ d ∈ Finset.Ioc 0 (2 * n), Λ d * ((n / d : ℕ) : ℝ) := by
+    apply Finset.sum_subset (Finset.Ioc_subset_Ioc_right (by omega))
+    intro d hd hdnotin
+    have hd0 : 0 < d := (Finset.mem_Ioc.mp hd).1
+    have hdn : n < d := by
+      rcases Nat.lt_or_ge n d with h | h
+      · exact h
+      · exact absurd (Finset.mem_Ioc.mpr ⟨hd0, h⟩) hdnotin
+    rw [Nat.div_eq_of_lt hdn]
+    simp
+  rw [hext, Finset.mul_sum, ← Finset.sum_sub_distrib]
+  -- Step 3: `ψ(2n) = ∑_{d ∈ Ioc 0 2n} Λ d` (unfold `psi`, evaluate the floor).
+  have hfloor : ⌊(2 : ℝ) * (n : ℝ)⌋₊ = 2 * n := by
+    rw [show (2 : ℝ) * (n : ℝ) = ((2 * n : ℕ) : ℝ) by push_cast; ring, Nat.floor_natCast]
+  have hpsi : Chebyshev.psi (2 * (n : ℝ)) = ∑ d ∈ Finset.Ioc 0 (2 * n), Λ d := by
+    unfold Chebyshev.psi
+    rw [hfloor]
+  -- ℕ bracket bound: `⌊2n/d⌋ ≤ 2⌊n/d⌋ + 1` (nonlinear in `d`, `n/d`).
+  have hbracket : ∀ d : ℕ, 2 * n / d ≤ 2 * (n / d) + 1 := by
+    intro d
+    rcases Nat.eq_zero_or_pos d with hd | hd
+    · subst hd; simp
+    · rw [← Nat.lt_succ_iff, Nat.div_lt_iff_lt_mul hd, Nat.succ_eq_add_one]
+      have h1 := Nat.div_add_mod n d
+      have h2 := Nat.mod_lt n hd
+      nlinarith [h1, h2]
+  rw [hpsi]
+  -- Step 4: termwise, `Λ d · (⌊2n/d⌋ − 2⌊n/d⌋) ≤ Λ d · 1 = Λ d` since `Λ d ≥ 0`.
+  apply Finset.sum_le_sum
+  intro d _
+  have hLnn : 0 ≤ Λ d := ArithmeticFunction.vonMangoldt_nonneg
+  have hbr : ((2 * n / d : ℕ) : ℝ) - 2 * ((n / d : ℕ) : ℝ) ≤ 1 := by
+    have hc : ((2 * n / d : ℕ) : ℝ) ≤ 2 * ((n / d : ℕ) : ℝ) + 1 := by exact_mod_cast hbracket d
+    linarith
+  have hfactor : Λ d * ((2 * n / d : ℕ) : ℝ) - 2 * (Λ d * ((n / d : ℕ) : ℝ))
+      = Λ d * (((2 * n / d : ℕ) : ℝ) - 2 * ((n / d : ℕ) : ℝ)) := by ring
+  rw [hfactor]
+  calc Λ d * (((2 * n / d : ℕ) : ℝ) - 2 * ((n / d : ℕ) : ℝ))
+      ≤ Λ d * 1 := mul_le_mul_of_nonneg_left hbr hLnn
+    _ = Λ d := mul_one _
 
 /-- **L3 — central-binomial size bound: `n·log 4 − log(2n) ≤ log C(2n,n)`.**
 
