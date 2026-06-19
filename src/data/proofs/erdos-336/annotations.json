@@ -17,7 +17,11 @@
       "representation-functions",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases and order of a basis",
+      "exact order of a representing set",
+      "asymptotic limits of the form h(r)/r²"
+    ]
   },
   {
     "id": "ann-336-isbasis",
@@ -36,7 +40,11 @@
       "additive basis",
       "Waring's problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sums of at most r elements from a set",
+      "Finset.sum and Finset.card",
+      "eventual representation above a threshold N₀"
+    ]
   },
   {
     "id": "ann-336-exactorder",
@@ -55,7 +63,11 @@
       "exact representation",
       "additive number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Multiset sums with repeated summands",
+      "representation by exactly k elements",
+      "distinction between cardinality equality and inequality"
+    ]
   },
   {
     "id": "ann-336-h",
@@ -74,7 +86,11 @@
       "supremum",
       "extremal function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "supremum sSup over a set of naturals",
+      "noncomputable definitions and the axiom of choice",
+      "extremal functions over sets achieving order and exact order"
+    ]
   },
   {
     "id": "ann-336-limit",
@@ -93,7 +109,11 @@
       "convergence",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ε-δ definition of a limit",
+      "Classical.choose for extracting an existential witness",
+      "convergence of a real-valued sequence in r"
+    ]
   },
   {
     "id": "ann-336-bounds",
@@ -113,7 +133,11 @@
       "asymptotic bounds",
       "lim inf/sup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lim inf and lim sup bounds on h(r)/r²",
+      "Sidon-type set constructions",
+      "representation function arguments"
+    ]
   },
   {
     "id": "ann-336-values",
@@ -132,7 +156,11 @@
       "ratio examples",
       "norm_num"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "exact values h(2) = 4 and h(3) = 7",
+      "rational ratio arithmetic with norm_num",
+      "the simp tactic for verifying small cases"
+    ]
   },
   {
     "id": "ann-336-example",
@@ -151,7 +179,11 @@
       "order gap",
       "exponential intervals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "dyadic intervals (2^{2k}, 2^{2k+1}]",
+      "a set with order 2 but exact order 3",
+      "witness construction via anonymous constructor"
+    ]
   },
   {
     "id": "ann-336-characterization",
@@ -171,7 +203,11 @@
       "divisibility",
       "necessary condition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "gcd of consecutive differences of a basis",
+      "divisibility obstructions modulo d",
+      "if-and-only-if criterion for exact order existence"
+    ]
   },
   {
     "id": "ann-336-plagne",
@@ -190,7 +226,11 @@
       "refined asymptotics",
       "Plagne 2004"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lower-order correction term cr - C",
+      "the leading bound h(r) ≥ r²/3",
+      "refined asymptotics for r ≥ 4"
+    ]
   },
   {
     "id": "ann-336-main",
@@ -209,6 +249,10 @@
       "open problem",
       "anonymous constructor"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combining bounds, specific values, and the order gap",
+      "anonymous constructor proofs from axioms",
+      "the open status of the limit in [1/3, 1/2]"
+    ]
   }
 ]
