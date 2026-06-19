@@ -17,7 +17,12 @@
       "balanced colourings",
       "complete graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "Ramsey theory",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-617-definitions",
@@ -36,7 +41,12 @@
       "Fin",
       "edge colouring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "Mathlib SimpleGraph API",
+      "finite types"
+    ]
   },
   {
     "id": "ann-617-colours",
@@ -55,7 +65,12 @@
       "colour spectrum",
       "Finset.image"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "finite set theory",
+      "Mathlib Finset library",
+      "Lean 4 axiom declarations"
+    ]
   },
   {
     "id": "ann-617-balanced",
@@ -74,7 +89,11 @@
       "uniformity",
       "edge colouring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "first-order logic"
+    ]
   },
   {
     "id": "ann-617-conjecture",
@@ -93,7 +112,11 @@
       "threshold",
       "complete graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "first-order logic"
+    ]
   },
   {
     "id": "ann-617-known",
@@ -112,7 +135,11 @@
       "K₁₀",
       "K₁₇"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "double counting arguments",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-617-counterexamples",
@@ -131,7 +158,11 @@
       "tightness",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "algebraic graph theory"
+    ]
   },
   {
     "id": "ann-617-summary",
@@ -150,6 +181,10 @@
       "edge colouring",
       "summary"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "Lean 4 proposition logic"
+    ]
   }
 ]
