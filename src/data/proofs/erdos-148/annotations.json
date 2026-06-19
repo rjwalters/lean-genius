@@ -16,7 +16,11 @@
       "unit-fractions",
       "counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Unit Fractions",
+      "Asymptotic Growth Rates"
+    ]
   },
   {
     "id": "ann-148-unitfrac",
@@ -34,7 +38,11 @@
       "fractions",
       "rationals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Rational Numbers",
+      "Positive Integers",
+      "Reciprocals"
+    ]
   },
   {
     "id": "ann-148-sum",
@@ -52,7 +60,11 @@
       "sums",
       "finsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Sets",
+      "Finset.sum",
+      "Rational Arithmetic"
+    ]
   },
   {
     "id": "ann-148-decomp",
@@ -70,7 +82,11 @@
       "decomposition",
       "unit-sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Fraction Sum",
+      "Set Predicates",
+      "Positivity Conditions"
+    ]
   },
   {
     "id": "ann-148-F",
@@ -88,7 +104,11 @@
       "counting",
       "cardinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Cardinality",
+      "Set.ncard",
+      "Egyptian Decomposition"
+    ]
   },
   {
     "id": "ann-148-F1",
@@ -105,7 +125,11 @@
     "relatedConcepts": [
       "base-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Base Case",
+      "Unit Fractions",
+      "Singleton Sets"
+    ]
   },
   {
     "id": "ann-148-F2",
@@ -123,7 +147,11 @@
       "impossibility",
       "algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Distinct Unit Fractions",
+      "Elementary Algebra",
+      "Proof By Contradiction"
+    ]
   },
   {
     "id": "ann-148-F3",
@@ -141,7 +169,11 @@
       "uniqueness",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Decomposition",
+      "Computational Verification",
+      "Uniqueness Argument"
+    ]
   },
   {
     "id": "ann-148-konyagin",
@@ -159,7 +191,11 @@
       "lower-bounds",
       "growth-rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower Bounds",
+      "Super-Polynomial Growth",
+      "Exponential Notation"
+    ]
   },
   {
     "id": "ann-148-elsholtz",
@@ -177,7 +213,11 @@
       "upper-bounds",
       "vardi-constant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper Bounds",
+      "Double Exponential Growth",
+      "Vardi Constant"
+    ]
   },
   {
     "id": "ann-148-properties",
@@ -195,7 +235,11 @@
       "monotonicity",
       "bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Monotonicity",
+      "Super-Exponential Growth",
+      "Denominator Bounds"
+    ]
   },
   {
     "id": "ann-148-egyptian",
@@ -213,7 +257,11 @@
       "greedy-algorithm",
       "existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Greedy Algorithm",
+      "Fibonacci-Sylvester Expansion",
+      "Algorithm Termination"
+    ]
   },
   {
     "id": "ann-148-asymptotics",
@@ -231,7 +279,11 @@
       "asymptotics",
       "logarithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Bounds",
+      "Logarithmic Scale",
+      "Big-O Notation"
+    ]
   },
   {
     "id": "ann-148-oeis",
@@ -249,7 +301,11 @@
       "oeis",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Integer Sequences",
+      "OEIS Database",
+      "Numerical Computation"
+    ]
   },
   {
     "id": "ann-148-summary",
@@ -267,6 +323,10 @@
       "summary",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower And Upper Bounds",
+      "Open Problems",
+      "Theorem Statement"
+    ]
   }
 ]
