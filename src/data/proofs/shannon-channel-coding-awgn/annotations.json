@@ -16,7 +16,11 @@
       "signal-to-noise ratio",
       "Shannon–Hartley theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "channel capacity",
+      "Gaussian (AWGN) channels",
+      "logarithms"
+    ]
   },
   {
     "id": "ann-awgn-log-identity",
@@ -34,7 +38,11 @@
       "differential entropy",
       "logarithm of a quotient"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "differential entropy",
+      "logarithm identities (log of a quotient)",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-awgn-achievability",
@@ -52,7 +60,11 @@
       "Gaussian differential entropy",
       "capacity-achieving input"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Gaussian differential entropy",
+      "mutual information",
+      "capacity-achieving distributions"
+    ]
   },
   {
     "id": "ann-awgn-converse",
@@ -71,7 +83,11 @@
       "converse bound",
       "power constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "differential entropy",
+      "maximum-entropy principle",
+      "average-power (variance) constraints"
+    ]
   },
   {
     "id": "ann-awgn-structural",
@@ -89,6 +105,10 @@
       "monotonicity",
       "signal-to-noise ratio"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis (monotonicity)",
+      "logarithm monotonicity",
+      "signal-to-noise ratio"
+    ]
   }
 ]
