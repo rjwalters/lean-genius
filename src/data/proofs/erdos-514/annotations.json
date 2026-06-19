@@ -17,7 +17,11 @@
       "Transcendental functions",
       "Complex analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "geometric measure theory"
+    ]
   },
   {
     "id": "ann-e514-entire",
@@ -36,7 +40,11 @@
       "Taylor series",
       "Complex differentiability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "complex differentiability",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e514-maxmodulus",
@@ -55,7 +63,11 @@
       "Growth rates",
       "Level curves"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis (suprema)",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e514-transcendental",
@@ -74,7 +86,11 @@
       "Taylor coefficients",
       "Liouville numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "asymptotic analysis",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e514-path-to-infinity",
@@ -93,7 +109,11 @@
       "Filters",
       "Limits at infinity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "point-set topology",
+      "filters and limits",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e514-super-polynomial",
@@ -112,7 +132,11 @@
       "Asymptotic analysis",
       "Growth rates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "filters and limits"
+    ]
   },
   {
     "id": "ann-e514-boas",
@@ -131,7 +155,11 @@
       "Maximum modulus points",
       "Central index"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "entire function theory",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e514-part1",
@@ -149,7 +177,11 @@
       "proof technique",
       "polynomial theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "entire function theory",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e514-part2-open",
@@ -168,7 +200,11 @@
       "Geometric measure theory",
       "Quantitative bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "geometric measure theory",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e514-max-modulus-power",
@@ -187,7 +223,11 @@
       "Exceptional sets",
       "Density of values"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "filters and limits"
+    ]
   },
   {
     "id": "ann-e514-part3-open",
@@ -205,7 +245,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "entire function theory",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e514-exponential",
@@ -224,7 +268,11 @@
       "Maximum modulus",
       "Real and imaginary axes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "complex exponential function",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e514-wiman-valiron",
@@ -243,7 +291,11 @@
       "Central index",
       "Local polynomial approximation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "power series",
+      "entire function theory"
+    ]
   },
   {
     "id": "ann-e514-max-modulus-props",
@@ -262,6 +314,10 @@
       "Limits"
     ],
     "mathContext": "See annotation content for formal details of properties of m(r)",
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis (monotonicity, limits)",
+      "entire function theory"
+    ]
   }
 ]
