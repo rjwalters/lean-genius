@@ -22,7 +22,11 @@
       "import-structure",
       "regularity-lemma"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Additive Combinatorics",
+      "Szemerédi Regularity Lemma",
+      "Mathlib Module System"
+    ]
   },
   {
     "id": "ann-e139-ap-def",
@@ -47,7 +51,11 @@
       "additive-combinatorics",
       "AP-free-sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progression",
+      "Common Difference",
+      "Finite Sets"
+    ]
   },
   {
     "id": "ann-e139-r-function",
@@ -72,7 +80,11 @@
       "supremum",
       "noncomputable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Set Function",
+      "Supremum",
+      "Set Density"
+    ]
   },
   {
     "id": "ann-e139-main-theorem",
@@ -97,7 +109,11 @@
       "filter-tendsto",
       "main-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Szemerédi's Theorem",
+      "Asymptotic Density",
+      "Filter Limits"
+    ]
   },
   {
     "id": "ann-e139-density-form",
@@ -122,7 +138,11 @@
       "positive-density",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Density",
+      "Contrapositive Statement",
+      "Little-o Notation"
+    ]
   },
   {
     "id": "ann-e139-trivial-cases",
@@ -146,7 +166,11 @@
       "trivial-bounds",
       "arithmetic-progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progression",
+      "Base Cases",
+      "Interval Cases Tactic"
+    ]
   },
   {
     "id": "ann-e139-threeapfree-equiv",
@@ -171,7 +195,11 @@
       "three-AP-free",
       "case-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Three-Term AP-Free Sets",
+      "Definitional Equivalence",
+      "Case Analysis"
+    ]
   },
   {
     "id": "ann-e139-roth-theorem",
@@ -196,7 +224,11 @@
       "regularity-lemma",
       "verified-proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Roth's Theorem",
+      "Corners Theorem",
+      "Triangle Removal Lemma"
+    ]
   },
   {
     "id": "ann-e139-kelley-meka",
@@ -221,7 +253,11 @@
       "harmonic-analysis",
       "axiomatized"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Quantitative Upper Bounds",
+      "Density Increment Method",
+      "Harmonic Analysis"
+    ]
   },
   {
     "id": "ann-e139-behrend",
@@ -246,7 +282,11 @@
       "geometric-method",
       "axiomatized"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Behrend Construction",
+      "Sphere Packing in Lattices",
+      "Lower Bound Constructions"
+    ]
   },
   {
     "id": "ann-e139-full-szemeredi",
@@ -271,6 +311,10 @@
       "axiomatized",
       "higher-order-fourier-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hypergraph Regularity Lemma",
+      "Ergodic Theory",
+      "Gowers Norms"
+    ]
   }
 ]
