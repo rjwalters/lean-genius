@@ -37,6 +37,7 @@ import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.Combinatorics.SimpleGraph.Finsubgraph
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.SetTheory.Cardinal.Ordinal
+import Mathlib.SetTheory.Cardinal.Regular
 import Mathlib.Data.Fintype.Basic
 
 open Cardinal SimpleGraph
@@ -50,9 +51,16 @@ namespace Erdos736
 /--
 **Chromatic number of a simple graph:**
 The minimum number of colors needed to properly color the vertices.
+
+We fix the vertex universe to `Type` (i.e. `Type 0`) and the color universe to
+`Type`/`Cardinal.{0}`. This is no loss of generality: `Type 0` already contains
+types of every cardinality relevant here (ℵ₁, ℵ₂, …), and any proper coloring can
+be taken to use at most `#V` colors, so the infimum is unchanged. Pinning the
+universe also keeps the cardinal-valued statements below free of universe
+metavariables.
 -/
-noncomputable def chromaticNumber (V : Type*) (G : SimpleGraph V) : Cardinal :=
-  sInf { κ : Cardinal | ∃ (α : Type*), #α = κ ∧ Nonempty (G.Coloring α) }
+noncomputable def chromaticNumber (V : Type) (G : SimpleGraph V) : Cardinal.{0} :=
+  sInf { κ : Cardinal.{0} | ∃ (α : Type), #α = κ ∧ Nonempty (G.Coloring α) }
 
 /--
 **Finite subgraph:**
@@ -88,7 +96,7 @@ If G has chromatic number ℵ₁, then for every cardinal m, there exists
 a graph G_m with χ(G_m) = m whose finite subgraphs are all subgraphs of G.
 -/
 def TaylorConjecture : Prop :=
-  ∀ (V : Type*) (G : SimpleGraph V),
+  ∀ (V : Type) (G : SimpleGraph V),
     chromaticNumber V G = aleph 1 →
     ∀ (m : Cardinal.{0}),
       ∃ (W : Type) (H : SimpleGraph W),
@@ -102,7 +110,7 @@ Same as above but for any uncountable cardinal κ.
 -/
 def GeneralizedTaylorConjecture : Prop :=
   ∀ (κ : Cardinal.{0}), Cardinal.IsRegular κ → κ > aleph 0 →
-    ∀ (V : Type*) (G : SimpleGraph V),
+    ∀ (V : Type) (G : SimpleGraph V),
       chromaticNumber V G = κ →
       ∀ (m : Cardinal.{0}),
         ∃ (W : Type) (H : SimpleGraph W),
@@ -126,7 +134,7 @@ A family F is realizable at ℵ_α if there exists a graph G with
 χ(G) = ℵ_α and all finite subgraphs of G are in F.
 -/
 def realizableAt (F : FiniteGraphFamily) (α : Ordinal.{0}) : Prop :=
-  ∃ (V : Type*) (G : SimpleGraph V),
+  ∃ (V : Type) (G : SimpleGraph V),
     chromaticNumber V G = aleph α ∧
     finiteSubgraphClass G ⊆ F
 
@@ -178,6 +186,24 @@ theorem deBruijn_erdos_coloring {V : Type*} (G : SimpleGraph V) (n : ℕ)
   intro G' hfin
   exact (h G' hfin).some
 
+/--
+**De Bruijn–Erdős theorem (contrapositive form):**
+If `G` is *not* `n`-colorable, then some *finite* subgraph of `G` is already not
+`n`-colorable. Equivalently, the chromatic number of an infinite graph is the
+supremum of the chromatic numbers of its finite subgraphs.
+
+This is the form of the theorem most directly relevant to Erdős #736: it says the
+obstruction to a small coloring always lives in a finite part of the graph, so the
+"finite subgraph inheritance" behaviour of chromatic number is genuine. It is a
+short, fully machine-checked consequence of `deBruijn_erdos_coloring`.
+-/
+theorem exists_finite_subgraph_not_colorable {V : Type*} (G : SimpleGraph V) (n : ℕ)
+    (h : ¬ G.Colorable n) :
+    ∃ G' : G.Subgraph, G'.verts.Finite ∧ ¬ G'.coe.Colorable n := by
+  by_contra hcon
+  push_neg at hcon
+  exact h (deBruijn_erdos_coloring G n hcon)
+
 /-
 **Compactness in graph coloring:**
 The chromatic number of a graph is determined by its finite subgraphs
@@ -195,26 +221,28 @@ For infinite graphs, chromatic number interacts with cardinal arithmetic.
 For graphs with χ(G) = ℵ₀, the Taylor question is easier.
 -/
 /--
-**Finite case is trivial:**
-For finite chromatic number, inheritance is straightforward.
+**Finite case:**
+For finite chromatic number `k`, every value `m ≤ k` is itself realized *as a
+subgraph of `G`*, so the finite-subgraph inheritance is automatic.
+
+This is true and not deep: the witness `H` is an induced subgraph of `G`, so every
+finite subgraph of `H` is a finite subgraph of `G` for free, and a subgraph of `G`
+with chromatic number exactly `m` exists by the discrete intermediate-value
+principle — deleting vertices one at a time lowers the chromatic number by at most
+one, so it passes through every value between `k` and `0`.
+
+The remaining `sorry` is the formalization of that intermediate-value argument for
+the (custom, `Cardinal`-valued) `chromaticNumber` used here; it is a self-contained
+side result rather than part of the open conjecture itself. See `knowledge.md` for
+the proof sketch.
 -/
-theorem finite_case (V : Type*) (G : SimpleGraph V) (k : ℕ) :
+theorem finite_case (V : Type) (G : SimpleGraph V) (k : ℕ) :
     chromaticNumber V G = k →
-    ∀ m ≤ k, ∃ (W : Type*) (H : SimpleGraph W),
+    ∀ m ≤ k, ∃ (W : Type) (H : SimpleGraph W),
       chromaticNumber W H = m ∧
       ∀ (n : ℕ) (F : SimpleGraph (Fin n)),
         isSubgraphOf F H → isSubgraphOf F G := by
   intro _ _ _
   sorry
-
-/-
-## Part VII: Summary
--/
-
-/--
-**Summary of the problem:**
--/
-theorem erdos_736_summary : TaylorConjecture ↔ TaylorConjecture :=
-  Iff.rfl
 
 end Erdos736
