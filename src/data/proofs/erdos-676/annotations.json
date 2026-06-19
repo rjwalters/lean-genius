@@ -16,7 +16,11 @@
       "representation",
       "sieve"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime numbers",
+      "additive number theory"
+    ]
   },
   {
     "id": "ann-676-hasrep",
@@ -35,7 +39,11 @@
       "decomposition",
       "constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime numbers",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-676-isrep",
@@ -53,7 +61,11 @@
       "existence",
       "exceptions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "predicate logic",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-676-conjecture",
@@ -71,7 +83,11 @@
       "threshold",
       "finiteness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "predicate logic",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-676-equiv",
@@ -89,7 +105,11 @@
       "equivalence",
       "finset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "set theory",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-676-density",
@@ -108,7 +128,11 @@
       "density",
       "asymptotic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "sieve methods",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-676-examples",
@@ -126,7 +150,11 @@
       "examples",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic",
+      "prime numbers",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-676-general",
@@ -144,7 +172,11 @@
       "general-case",
       "selfridge-wagstaff"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "additive number theory",
+      "modular arithmetic"
+    ]
   },
   {
     "id": "ann-676-minimal",
@@ -163,7 +195,11 @@
       "limsup",
       "growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "real analysis",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-676-subpoly",
@@ -181,7 +217,11 @@
       "growth-rate",
       "little-o"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic notation",
+      "limits"
+    ]
   },
   {
     "id": "ann-676-byprime",
@@ -199,7 +239,11 @@
       "prime-partition",
       "coverage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "set theory",
+      "prime numbers"
+    ]
   },
   {
     "id": "ann-676-skeptical",
@@ -217,7 +261,11 @@
       "heuristic",
       "expectation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "heuristic reasoning",
+      "sieve methods"
+    ]
   },
   {
     "id": "ann-676-statement",
@@ -235,7 +283,11 @@
       "formal-statement",
       "main-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "predicate logic",
+      "prime numbers"
+    ]
   },
   {
     "id": "ann-676-status",
@@ -253,6 +305,10 @@
       "open-problem",
       "status"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "open problems in mathematics",
+      "density arguments"
+    ]
   }
 ]
