@@ -1,8 +1,8 @@
 {
   "slug": "cauchy-schwarz-oq-02-oq-03",
   "title": "Complex Polarization Identity",
-  "phase": "OBSERVE",
-  "status": "in-progress",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -25,27 +25,27 @@
     "goal": "Ship a verified (0 sorries, 0 axioms) gallery entry with the complex polarization identity, proven by a one-line wrapper of Mathlib's inner_eq_sum_norm_sq_div_four."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T17:46:00Z",
-    "iteration": 1,
-    "focus": "Mathlib API audit + S2 plan (no Lean changes this iteration).",
+    "phase": "COMPLETE",
+    "since": "2026-06-19T00:00:00Z",
+    "iteration": 2,
+    "focus": "S2 COMPLETE — shipped CauchySchwarzOQ02OQ03.lean + gallery entry, Docker build green (Lean v4.26.0), axiom-clean.",
     "blockers": [],
-    "nextAction": "S2 ACT: ship CauchySchwarzOQ02OQ03.lean (typed wrapper ~5 LOC) + gallery entry (~120 LOC) + Docker build verification.",
+    "nextAction": "Done. Optional future S3: Jordan–von Neumann converse, complex Pythagorean/Bessel wrappers, Mazur–Ulam corollary (see meta openQuestions).",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE — confirmed Mathlib's inner_eq_sum_norm_sq_div_four is the correct upstream lemma; identified the existing real-case polarization_identity in CauchySchwarzOQ02.lean (a hand proof, not a wrapper of the Mathlib lemma); planned single-session S2 deliverable (~60 lines Lean + gallery entry).",
+    "progressSummary": "S2 COMPLETE — shipped proofs/Proofs/CauchySchwarzOQ02OQ03.lean (114 lines, 6 theorems, 0 sorries/axioms; depends only on propext/Classical.choice/Quot.sound) plus gallery entry (meta.json + 5 annotations). Headline polarization_identity_complex wraps Mathlib's inner_eq_sum_norm_sq_div_four over a general RCLike field; polarization_identity_C gives the concrete ℂ instance with Complex.I; re/im-part wrappers, complex parallelogram law, and an inner_eq_of_norm_eq uniqueness corollary round it out. Docker build verified green on Lean v4.26.0; import registered in Proofs.lean.",
     "builtItems": [
-      "S1 documents: problem.md, knowledge.md, state.md, src/data/research/problems/cauchy-schwarz-oq-02-oq-03.json (this file)."
+      "S1 documents: problem.md, knowledge.md, state.md, src/data/research/problems/cauchy-schwarz-oq-02-oq-03.json (this file).",
+      "S2: proofs/Proofs/CauchySchwarzOQ02OQ03.lean (verified, Docker-built); src/data/proofs/cauchy-schwarz-oq-02-oq-03/{meta.json,annotations.json}; import in Proofs.lean."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "S2 ACT: create proofs/Proofs/CauchySchwarzOQ02OQ03.lean wrapping inner_eq_sum_norm_sq_div_four for the complex case; create gallery entry; Docker build verify.",
-      "S3 (optional): expose ℂ-parallelogram-law and Pythagorean-ℂ as additional gallery wrappers if not already covered by Mathlib's RCLike-generic versions."
+      "S3 (optional): Jordan–von Neumann converse (parallelogram law ⇒ inner product); complex Pythagorean theorem and Bessel's inequality as RCLike wrappers; Mazur–Ulam / isometry-rigidity corollary built on inner_eq_of_norm_eq."
     ]
   },
   "tags": [
