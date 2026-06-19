@@ -16,7 +16,11 @@
       "law of iterated logarithm",
       "probabilistic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "analytic number theory",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e520-imports",
@@ -35,7 +39,11 @@
       "filters"
     ],
     "mathContext": "See annotation content for formal details of imports and setup",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "namespaces and imports"
+    ]
   },
   {
     "id": "ann-e520-rademacher",
@@ -54,7 +62,12 @@
       "independence",
       "square-free integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "number theory",
+      "arithmetic functions",
+      "Lean 4 structures"
+    ]
   },
   {
     "id": "ann-e520-partial-sum",
@@ -72,7 +85,11 @@
       "finite sums"
     ],
     "mathContext": "See annotation content for formal details of partial sum",
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "finite sums",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e520-normalized",
@@ -90,7 +107,11 @@
       "normalization",
       "law of iterated logarithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "logarithms",
+      "probability theory"
+    ]
   },
   {
     "id": "ann-e520-conjecture",
@@ -109,7 +130,11 @@
       "limsup",
       "almost sure convergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "measure theory",
+      "real analysis",
+      "probability theory"
+    ]
   },
   {
     "id": "ann-e520-wintner",
@@ -128,7 +153,11 @@
       "variance calculation",
       "orthogonality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "linearity of expectation",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e520-squarefree",
@@ -147,7 +176,11 @@
       "density",
       "zeta function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "real analysis",
+      "inclusion-exclusion"
+    ]
   },
   {
     "id": "ann-e520-harper",
@@ -166,7 +199,11 @@
       "Harper's work",
       "higher moments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "asymptotic analysis",
+      "analytic number theory"
+    ]
   },
   {
     "id": "ann-e520-values",
@@ -184,7 +221,10 @@
       "bounded values"
     ],
     "mathContext": "See annotation content for formal details of values in {-1, 0, 1}",
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "multiplicative arithmetic functions"
+    ]
   },
   {
     "id": "ann-e520-mean-zero",
@@ -202,6 +242,10 @@
       "symmetry"
     ],
     "mathContext": "See annotation content for formal details of mean zero",
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "expectation",
+      "number theory"
+    ]
   }
 ]
