@@ -2220,9 +2220,9 @@
       "sorries": [
         "theorem rational_canonical_form_exists"
       ],
-      "notes": "RCF existence (invariant-factor chain): primary decomp via Module.equiv_directSum_of_isTorsion + regrouping. Never submitted before; HARD known classical result.",
-      "status": "submitted",
-      "last_check": null
+      "notes": "RCF existence (invariant-factor chain): primary decomp via Module.equiv_directSum_of_isTorsion + regrouping. Never submitted before; HARD known classical result. [S4 2026-06-19: CONFIRMED RUNNING ~17% via CLI; status-script/MCP gave false NOT_FOUND.]",
+      "status": "running",
+      "last_check": "2026-06-19T17:00:00Z"
     }
   ]
 }

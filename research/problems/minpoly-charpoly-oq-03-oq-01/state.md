@@ -1,18 +1,33 @@
 # Current State
 
-**Phase**: ACT (torsion deliverables proved; build-verification pending; RCF bridge delegated to Aristotle)
-**Since**: 2026-06-19 (researcher-9 — Aristotle delegation of RCF existence + gap re-confirmation)
-**Iteration**: 3
+**Phase**: ACT (torsion deliverables proved; build-verification pending; RCF bridge delegated to Aristotle — job CONFIRMED RUNNING)
+**Since**: 2026-06-19 (researcher-9 S4 — confirmed Aristotle RCF job live; corrected false-expiry signal)
+**Iteration**: 4
 
 ## Active Aristotle job
 
 - **project d2395b8d-2153-48fd-823f-e267f93ec5d7** — `rational_canonical_form_exists`
   (the underlying content of this file's lone bridge sorry), submitted async
-  2026-06-19 as a self-contained Mathlib-only snippet. Poll with
-  `./research/scripts/aristotle-status.sh`. On success, integrate into
-  `MinpolyCharpolyOQ03.lean:232` and derive `xModule_has_invariantFactorChain`
-  via a ~5-line glue. Modest odds (regrouping is ~290 LOC of bookkeeping Aristotle
-  is unlikely to synthesize), but cheap and never tried before.
+  2026-06-19 as a self-contained Mathlib-only snippet. **CONFIRMED RUNNING at
+  ~17% as of S4 (2026-06-19), actively exploring Mathlib `AEval` /
+  `AnnihilatingPolynomial`.** Do NOT re-submit — the job is live and progressing.
+
+  **IMPORTANT — poll with the CLI, NOT the status script:** in S4 both
+  `./research/scripts/aristotle-status.sh` AND the `mcp__aristotle__*` tools
+  returned a FALSE `NOT_FOUND` / "Resource not found" for this (and every) job,
+  while `uvx --from aristotlelib aristotle list` / `... show <id>` correctly
+  showed it RUNNING. The status-script's NOT_FOUND is a false negative this
+  session; trust the CLI:
+
+  ```
+  uvx --from aristotlelib aristotle show d2395b8d-2153-48fd-823f-e267f93ec5d7
+  uvx --from aristotlelib aristotle download --project-id d2395b8d-... # on COMPLETE
+  ```
+
+  On success, integrate into `MinpolyCharpolyOQ03.lean:232` and derive
+  `xModule_has_invariantFactorChain` via a ~5-line glue. Modest odds (regrouping
+  is ~290 LOC of bookkeeping Aristotle is unlikely to synthesize), but the job is
+  free background work — let it run to a verdict.
 
 ## Current Focus
 
@@ -79,6 +94,21 @@ synonym) is now in place.
 
 ## Session Log
 
+* **S4 (researcher-9, 2026-06-19)** — confirmed the S3 Aristotle delegation is
+  **live, not expired**. The `aristotle-status.sh` script and the
+  `mcp__aristotle__check_proof` / `mcp__aristotle__prove` MCP tools all reported
+  `NOT_FOUND` / "Resource not found" for project d2395b8d (and every job) — a
+  false-negative this session. The Aristotle CLI (`uvx --from aristotlelib
+  aristotle list` / `show`) correctly showed **d2395b8d RUNNING at ~17%**,
+  actively grepping Mathlib's `Algebra/Polynomial/Module/AEval.lean` and
+  `LinearAlgebra/AnnihilatingPolynomial.lean`. Did **not** re-submit (would
+  duplicate the running job). Did not hand-write the ~290 LOC regrouping: it
+  would (a) be unverifiable — Docker build pool saturated at 5 > the ≤3 gate —
+  and (b) duplicate exactly what the live Aristotle job is attempting. Action
+  this session: corrected the polling instructions to use the CLI, recorded the
+  live status, preserved/published the cumulative branch (no proof content
+  changed; lone sorry still 1). Next session: `aristotle show d2395b8d`; on
+  COMPLETE, `download` and integrate.
 * **S3 (researcher-9, 2026-06-19)** — Aristotle delegation + gap re-confirmation.
   Re-confirmed at Mathlib v4.26.0 that `Module.equiv_directSum_of_isTorsion`
   (`Algebra/Module/PID.lean:233`) gives the **primary (prime-power)**
