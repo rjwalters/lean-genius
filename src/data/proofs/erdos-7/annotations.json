@@ -16,7 +16,11 @@
       "Modular arithmetic",
       "Prime 2"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic and congruence classes",
+      "covering systems of congruences",
+      "the special role of the prime 2"
+    ]
   },
   {
     "id": "ann-e7-congclass",
@@ -34,7 +38,11 @@
       "Arithmetic progressions",
       "Modular arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic progressions a mod n",
+      "congruences and residues",
+      "the modulus n"
+    ]
   },
   {
     "id": "ann-e7-toset",
@@ -52,7 +60,11 @@
       "Int.ModEq",
       "Set membership"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the relation Int.ModEq (a ≡ b mod n)",
+      "the set {x : x ≡ a mod n}",
+      "set membership"
+    ]
   },
   {
     "id": "ann-e7-covering",
@@ -70,7 +82,11 @@
       "Covering systems",
       "Chinese Remainder Theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "congruence classes covering all integers",
+      "the Chinese Remainder Theorem",
+      "distinct moduli"
+    ]
   },
   {
     "id": "ann-e7-conjecture",
@@ -88,7 +104,11 @@
       "Erdős-Selfridge",
       "Open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "covering systems with distinct odd moduli",
+      "the Erdős–Selfridge conjecture",
+      "open problems in number theory"
+    ]
   },
   {
     "id": "ann-e7-equiv",
@@ -106,7 +126,11 @@
       "Logical equivalence",
       "Negation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "covering vs non-covering formulations",
+      "logical negation and equivalence",
+      "restating an existence statement"
+    ]
   },
   {
     "id": "ann-e7-sqfree",
@@ -124,7 +148,11 @@
       "Squarefree",
       "Prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "squarefree integers",
+      "prime factorization",
+      "moduli with no repeated prime"
+    ]
   },
   {
     "id": "ann-e7-balister",
@@ -142,7 +170,11 @@
       "Squarefree restriction",
       "Partial result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "odd covering systems",
+      "the squarefree restriction",
+      "the Balister et al. (2022) partial result"
+    ]
   },
   {
     "id": "ann-e7-hough",
@@ -160,7 +192,11 @@
       "Divisibility",
       "Sieve methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility and sieve methods",
+      "density of covered integers",
+      "the Hough–Nielsen (2019) bound"
+    ]
   },
   {
     "id": "ann-e7-lcmconst",
@@ -178,7 +214,11 @@
       "LCM",
       "Density constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the least common multiple of the moduli",
+      "density constraints from the LCM",
+      "period of a covering system"
+    ]
   },
   {
     "id": "ann-e7-constraints",
@@ -196,7 +236,11 @@
       "Necessary conditions",
       "Combined constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "necessary conditions for a covering system",
+      "combining density and LCM constraints",
+      "obstructions to odd coverings"
+    ]
   },
   {
     "id": "ann-e7-selfridge",
@@ -214,7 +258,11 @@
       "Constructive proof",
       "Prize problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "constructive existence of a covering system",
+      "Selfridge's \\$2000 prize challenge",
+      "odd moduli > 1"
+    ]
   },
   {
     "id": "ann-e7-summary",
@@ -232,6 +280,10 @@
       "Open problems",
       "Partial results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the odd covering systems problem",
+      "known partial results",
+      "what remains open"
+    ]
   }
 ]
