@@ -16,7 +16,11 @@
       "namespace scoping",
       "module structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "import Mathlib",
+      "Lean namespace scoping",
+      "unitary perfect numbers (Wall 1972)"
+    ]
   },
   {
     "id": "ann-proper-unitary-divisors",
@@ -36,7 +40,12 @@
       "Nat.Coprime",
       "unitary divisors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.Ico",
+      "Finset.filter",
+      "Nat.Coprime (gcd = 1)",
+      "divisibility d ∣ n"
+    ]
   },
   {
     "id": "ann-is-unitary-perfect",
@@ -56,7 +65,12 @@
       "Finset.sum",
       "computational verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "properUnitaryDivisors definition",
+      "Finset.sum",
+      "Decidable instance / instDecidableAnd",
+      "native_decide"
+    ]
   },
   {
     "id": "ann-one-mem",
@@ -76,7 +90,13 @@
       "Nat.Coprime",
       "omega tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "properUnitaryDivisors definition",
+      "Finset.mem_filter",
+      "Finset.mem_Ico",
+      "one_dvd",
+      "omega tactic"
+    ]
   },
   {
     "id": "ann-mem-characterization",
@@ -95,7 +115,11 @@
       "Finset.mem_filter",
       "characterization lemma"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "properUnitaryDivisors definition",
+      "Finset.mem_filter",
+      "simp unfolding"
+    ]
   },
   {
     "id": "ann-odd-divisor",
@@ -115,7 +139,12 @@
       "Odd.not_two_dvd_nat",
       "proof by contradiction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Even.two_dvd",
+      "dvd_trans",
+      "Odd.not_two_dvd_nat",
+      "proof by contradiction"
+    ]
   },
   {
     "id": "ann-sum-parity",
@@ -135,7 +164,12 @@
       "Odd.add_odd",
       "parity arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.induction",
+      "Finset.sum_insert",
+      "Finset.card_insert_of_not_mem",
+      "Odd.add_odd / Odd.add_even"
+    ]
   },
   {
     "id": "ann-unitary-prime-char",
@@ -155,7 +189,12 @@
       "Nat.gcd_dvd_left",
       "prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.exists_prime_and_dvd",
+      "Nat.dvd_gcd",
+      "Nat.gcd_dvd_left / Nat.gcd_dvd_right",
+      "Nat.Prime.not_dvd_one"
+    ]
   },
   {
     "id": "ann-unitary-complement",
@@ -175,7 +214,11 @@
       "divisor pairing",
       "involution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.div_div_self",
+      "Nat.Coprime.symm",
+      "properUnitaryDivisors definition"
+    ]
   },
   {
     "id": "ann-divisor-sum",
@@ -194,7 +237,12 @@
       "sigma-star function",
       "Finset.Ico range difference"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.Ico",
+      "Finset.sum",
+      "properUnitaryDivisors definition",
+      "sigma-star divisor sum"
+    ]
   },
   {
     "id": "ann-even-theorem",
@@ -214,7 +262,12 @@
       "2-adic valuation",
       "axiom with proof sketch"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsUnitaryPerfect definition",
+      "multiplicative product formula σ*(n)=∏(1+pᵢ^aᵢ)",
+      "2-adic valuation",
+      "axiom declaration"
+    ]
   },
   {
     "id": "ann-examples",
@@ -233,7 +286,12 @@
       "computational verification",
       "known unitary perfect numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsUnitaryPerfect definition",
+      "Decidable instance",
+      "native_decide",
+      "prime factorization"
+    ]
   },
   {
     "id": "ann-prime-power",
@@ -252,7 +310,12 @@
       "Finset equality",
       "base case for multiplicativity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime powers p^k",
+      "Nat.Coprime / gcd of prime powers",
+      "Finset equality",
+      "axiom declaration"
+    ]
   },
   {
     "id": "ann-multiplicativity",
@@ -271,7 +334,12 @@
       "Coprime.mul",
       "product formula derivation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unitaryDivisorSum definition",
+      "Nat.Coprime",
+      "unitary divisor bijection",
+      "axiom declaration"
+    ]
   },
   {
     "id": "ann-pairing",
@@ -290,7 +358,12 @@
       "involution on Finset",
       "square root divisor"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unitary_complement lemma",
+      "involution d ↦ n/d",
+      "Finset (ℕ × ℕ) pairs",
+      "axiom declaration"
+    ]
   },
   {
     "id": "ann-conjecture",
@@ -309,6 +382,11 @@
       "open conjectures",
       "computational search bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsUnitaryPerfect definition",
+      "Set.Finite",
+      "open conjecture as axiom",
+      "exhaustive computational search"
+    ]
   }
 ]
