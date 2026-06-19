@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Full Chebyshev minimax theorem formalized (both halves), 0 sorry / 0 axiom. chebyshev_minimax = achievability (monicChebyshev_abs_le) ∧ optimality (monicChebyshev_minimax).",
+    "progressSummary": "FRONTIER=uniqueness. Value half DONE (0sorry/0axiom, merged). Uniqueness mechanically reduced to ONE self-contained crux (weak_alternation_eq_zero); reduction API-audited consistent vs merged base. Crux=KNOWN classical lemma (Aristotle target, backend 404 this session). Build-pending DRAFT preserves the reduction + Case A/B strategy.",
     "builtItems": [
       "monicChebyshev_minimax (DeMoivreOQ02OQ03.lean Part IV): optimality/lower-bound half — every monic degree-n p has |p| ≥ 2^(1-n) somewhere on [-1,1]",
       "chebyshev_minimax (DeMoivreOQ02OQ03.lean): full minimax theorem = achievability ∧ optimality",
@@ -41,7 +41,9 @@
       "Roots are strictly interior (open intervals) because q is nonzero at the nodes themselves, so the n chosen roots are distinct via StrictAnti (node_strict_anti: cos(kπ/n) strictly decreasing in k), hence the selection map is injective.",
       "chebyshev_minimax proves the minimax VALUE (achievability + optimality) but NOT uniqueness of the minimizer; problem.md headlines uniqueness, so uniqueness is the genuine open frontier.",
       "Uniqueness is strictly harder than optimality: a minimizer gives only WEAK alternation of q = Mₙ - p at the n+1 nodes, so the strict-IVT root-count of monicChebyshev_minimax does not transfer; need n roots counted WITH MULTIPLICITY (Rolle/rootMultiplicity).",
-      "Degree infrastructure chebyshev_natDegree/chebyshev_leadingCoeff fills an explicit Mathlib TODO (Polynomial/Chebyshev.lean) — candidate for upstream contribution."
+      "Degree infrastructure chebyshev_natDegree/chebyshev_leadingCoeff fills an explicit Mathlib TODO (Polynomial/Chebyshev.lean) — candidate for upstream contribution.",
+      "Build-free API audit (researcher-10): the mechanical reduction monicChebyshev_unique is fully consistent with the MERGED base file Proofs.DeMoivreOQ02OQ03 — every referenced lemma (monicChebyshev def L178, monicChebyshev_monic L182, monicChebyshev_natDegree L187, monicChebyshev_eval_node L202) exists with the exact signature used; node_strict_anti is private so the companion re-derives node_strict_anti. The reduction half is therefore sound; the SOLE remaining obligation is the crux weak_alternation_eq_zero.",
+      "Crux decomposition (the new content over the strict case): Case A — if no node is a root, weak alternation upgrades to STRICT and the verified monicChebyshev_minimax argument applies verbatim (n distinct simple interior roots vs deg<n), needing NO multiplicity. Case B — if some node is a root, that node is a non-crossing local extremum hence a root of q too (Rolle); counting roots WITH multiplicity over the n intervals still gives >=n, contradicting card_roots (<n). Only Case B is genuinely new."
     ],
     "mathlibGaps": [
       "Mathlib lacks the Chebyshev minimax theorem and the natDegree/leadingCoeff lemmas for Tₙ; this file now supplies both halves plus that infrastructure. The TODO in Mathlib/RingTheory/Polynomial/Chebyshev.lean ('Prove minimax properties of Chebyshev polynomials') remains open upstream."
@@ -49,7 +51,9 @@
     "nextSteps": [
       "Prove monicChebyshev_unique (the uniqueness half) via the weak-equioscillation + multiplicity root count. Requires a kernel build — do not ship unbuilt.",
       "Once a backend recovers, route the uniqueness multiplicity lemma to Aristotle prove() as a single hard supporting lemma.",
-      "Optional: consider upstreaming chebyshev_natDegree / chebyshev_leadingCoeff to Mathlib (fills its Chebyshev minimax TODO)."
+      "Optional: consider upstreaming chebyshev_natDegree / chebyshev_leadingCoeff to Mathlib (fills its Chebyshev minimax TODO).",
+      "Backend recovery: route weak_alternation_eq_zero (self-contained, import Mathlib only) to Aristotle prove() as the lone HARD supporting lemma; crux file is DeMoivreOQ02OQ03UniqueAristotle.lean.",
+      "Manual route for the crux: formalize Case A by exposing the strict-alternation root-count from monicChebyshev_minimax as a reusable lemma, then Case B via Polynomial.le_rootMultiplicity_iff / rootMultiplicity + derivative (non-crossing zero => root of q)."
     ],
     "markdown": "# Knowledge Base: de-moivre-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

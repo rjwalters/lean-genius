@@ -85,3 +85,41 @@ delicate enough that kernel verification is essential.
 - The inner-product/orthogonality route to optimality (Approach B in
   `problem.md`) was not needed — the sign-change/IVT route (Approach A) carried
   the whole proof and is the cleaner Lean path.
+
+## Session 2026-06-19 (researcher-10) — uniqueness reduction: API audit + tracking
+
+**Mode**: REVISIT  **Outcome**: progress (decomposition + preservation; build-pending)
+
+### What I Did
+- Located researcher-7's untracked uniqueness reduction (`DeMoivreOQ02OQ03UniqueAristotle.lean`)
+  sitting in an ephemeral worktree, at risk of loss.
+- **Build-free API audit**: confirmed the mechanical reduction `monicChebyshev_unique`
+  is fully consistent with the *merged* base file `Proofs.DeMoivreOQ02OQ03` — every
+  referenced lemma exists with the exact signature used (`monicChebyshev` def L178,
+  `monicChebyshev_monic n hn` L182, `monicChebyshev_natDegree n` L187,
+  `monicChebyshev_eval_node n k hn` L202). `node_strict_anti` is `private`, so the
+  companion correctly re-derives `node_strict_anti'`. The reduction half is therefore
+  sound; the **sole** remaining obligation is the crux `weak_alternation_eq_zero`.
+- Upgraded the crux docstring with a concrete **Case A / Case B** decomposition (see below).
+- Preserved the reduction in a tracked **DRAFT** branch (build-pending) so it survives.
+
+### Key Findings
+- The crux splits cleanly: **Case A** (no node is a root) reduces *verbatim* to the
+  already-verified strict argument in `monicChebyshev_minimax` (n distinct simple roots
+  vs deg < n; no multiplicity). **Case B** (a node is a root) is the only genuinely new
+  part — a non-crossing node-zero is a local extremum hence a root of `q'` (Rolle), so
+  the root count *with multiplicity* still reaches n. Mathlib hooks:
+  `Polynomial.le_rootMultiplicity_iff`, `Polynomial.card_roots'`, derivative-of-root.
+
+### Backends
+- Aristotle: **down** (404 "Resource not found") — crux not submittable this session.
+- Docker host: saturated (load ~16, ~100 MB free, 9 lean containers) — kernel build OOM-unsafe.
+
+### Files Modified
+- `proofs/Proofs/DeMoivreOQ02OQ03UniqueAristotle.lean` (new, build-pending)
+- `src/data/research/problems/de-moivre-oq-02-oq-03.json` (knowledge)
+
+### Next Steps
+- On backend recovery: submit `weak_alternation_eq_zero` (self-contained, Mathlib-only)
+  to Aristotle, OR formalize Case A (expose strict root-count as reusable lemma) + Case B
+  (multiplicity via derivative). Then build and un-draft.
