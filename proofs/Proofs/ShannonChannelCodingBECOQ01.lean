@@ -96,7 +96,7 @@ lemma qec_ymarg_some {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) (inp : InputDist 
     (∑ x' : α, jointDist (qec p hp0 hp1) inp (x', some y)) = inp.p y * (1 - p) := by
   simp only [jointDist, qec_W_some]
   rw [Finset.sum_eq_single y
-        (fun b _ hby => by rw [if_neg (fun h => hby h.symm), mul_zero])
+        (fun b _ hby => by rw [if_neg hby, mul_zero])
         (fun h => absurd (Finset.mem_univ y) h),
       if_pos rfl]
 
@@ -224,7 +224,7 @@ theorem qec_mi_le {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) (inp : InputDist α) :
     input distribution gives `I(X;Y) = (1 - p)·H(X) ≤ (1 - p)·log|α|`, and the
     uniform input achieves the bound. -/
 theorem qec_capacity [Nonempty α] {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :
-    channelCapacity (qec p hp0.le hp1.le)
+    channelCapacity (qec (α := α) p hp0.le hp1.le)
       = (1 - p) * Real.log (Fintype.card α) := by
   unfold channelCapacity
   apply le_antisymm
@@ -242,12 +242,12 @@ theorem qec_capacity [Nonempty α] {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :
     capacity is `(1 - p) · log q`. -/
 theorem qec_capacity_card [Nonempty α] {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)
     {q : ℕ} (hq : Fintype.card α = q) :
-    channelCapacity (qec p hp0.le hp1.le) = (1 - p) * Real.log q := by
+    channelCapacity (qec (α := α) p hp0.le hp1.le) = (1 - p) * Real.log q := by
   rw [qec_capacity hp0 hp1, hq]
 
 /-- QEC capacity is non-negative. -/
 theorem qec_capacity_nonneg [Nonempty α] {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :
-    0 ≤ channelCapacity (qec p hp0.le hp1.le) := by
+    0 ≤ channelCapacity (qec (α := α) p hp0.le hp1.le) := by
   rw [qec_capacity hp0 hp1]
   have h1p : 0 ≤ 1 - p := by linarith
   have hlog : 0 ≤ Real.log (Fintype.card α) :=
@@ -259,7 +259,8 @@ theorem qec_capacity_nonneg [Nonempty α] {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) 
 /-- The QEC transition kernel over `Bool` coincides on the nose with the binary
     erasure channel `bec`: the BEC is literally the `q = 2` instance of the QEC. -/
 theorem qec_eq_bec {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
-    (qec (α := Bool) p hp0 hp1).W = (BEC.bec p hp0 hp1).W := rfl
+    (qec (α := Bool) p hp0 hp1).W = (BEC.bec p hp0 hp1).W := by
+  funext x o; cases o <;> rfl
 
 /-- The `q = 2` capacity specializes to `(1 - p) · log 2`, recovering the BEC. -/
 theorem qec_capacity_bool {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :
