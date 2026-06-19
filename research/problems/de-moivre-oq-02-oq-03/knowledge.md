@@ -115,6 +115,39 @@ session. Docker, by contrast, is back (used it to kernel-verify the value half
 above), so once Aristotle returns the crux proof, integrate into the gallery
 file and re-build to confirm before flipping any status.
 
+### Update (researcher-7, 2026-06-19, cycle 4) — Lagrange-route API CONFIRMED against Mathlib v4.26.0
+
+Backends still down this cycle (Aristotle MCP `prove` → `Resource not found`/404; the worktree
+docker build re-clones Mathlib from source → OOM at the 12 GB cap, so it is unsafe to raise the
+limit — the from-source Mathlib build is exactly the trap CLAUDE.md forbids). No `.lean` shipped.
+Instead, every API name in the Lagrange route above was checked directly against the local
+Mathlib source (`proofs/.lake/packages/mathlib/Mathlib/...`). All five exist; **two refinements**:
+
+- `Lagrange.eq_interpolate` — `Mathlib/LinearAlgebra/Lagrange.lean:362`:
+  `{f : F[X]} (hvs : Set.InjOn v s) (degree_f_lt : f.degree < #s) : f = interpolate s v (fun i => f.eval (v i))`.
+  Uses `f.degree` (`WithBot`) `< #s`, so feed `q.degree < n+1` (from `natDegree q < n`; handle `q=0` first).
+- `Lagrange.interpolate` is `@[simps]` (`:299`), so `interpolate_apply` rewrites it to
+  `∑ i ∈ s, C (r i) * Lagrange.basis s v i`.
+- **REFINEMENT 1 — the divided-difference coefficient identity is NOT a named lemma; derive it inline.**
+  Copy the recipe used inside Mathlib's own `leadingCoeff`-of-interpolant proof
+  (`Lagrange.lean:481-486`): after `interpolate_apply`, apply `finset_sum_coeff`
+  (`Mathlib/Algebra/Polynomial/Coeff.lean:89`), then per term `coeff_C_mul`, then rewrite
+  `coeff n (basis ..) = leadingCoeff (basis ..)` using `← natDegree_basis hvs hi`
+  (`Lagrange.lean:241`, gives `natDegree (basis) = #s − 1 = n`) and `← leadingCoeff`, then
+  `leadingCoeff_basis hvs hi` (`Lagrange.lean:279`):
+  `(Lagrange.basis s v i).leadingCoeff = (∏ j ∈ s.erase i, (v i − v j))⁻¹`. Net:
+  `coeff n (interpolate s x (fun i => q.eval (x i))) = ∑ i ∈ s, q.eval (x i) · (∏ j ∈ s.erase i, (x i − x j))⁻¹`.
+- `Finset.sum_eq_zero_iff_of_nonneg` — confirmed (used widely, e.g. `Analysis/Convex/Combination.lean:199`):
+  `(∀ i ∈ s, 0 ≤ f i) → (∑ i ∈ s, f i = 0 ↔ ∀ i ∈ s, f i = 0)`.
+- **REFINEMENT 2 — the finisher takes a `Finset ℝ` of distinct roots directly** (no `Fintype`/range plumbing):
+  `Polynomial.eq_zero_of_natDegree_lt_card_of_eval_eq_zero'` (`Mathlib/Algebra/Polynomial/Roots.lean:662`):
+  `(p : R[X]) (s : Finset R) (heval : ∀ i ∈ s, p.eval i = 0) (hcard : natDegree p < #s) : p = 0`
+  `[CommRing R] [IsDomain R]` — so pass `s := (Finset.range (n+1)).image x` (card `n+1` by injectivity
+  from strict antitonicity), `heval` from the per-node `q.eval (x k) = 0`, and `natDegree q < n < n+1 = #s`.
+
+Net effect: the crux is now a fully API-pinned ~30–50 line proof with no unverified lemma names.
+This is the first-try recipe for the next Aristotle/build session (or a hand proof once a build host frees up).
+
 ## Other outward directions (lower priority)
 
 - **General interval `[a,b]`**: affine change of variables rescales the minimax
