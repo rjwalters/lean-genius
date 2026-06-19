@@ -133,7 +133,33 @@ theorem exists_transcendental_real : ∃ x : ℝ, ¬ IsAlgebraic ℚ x := by
   push_neg at h
   exact algebraicReals_ne_univ (Set.eq_univ_of_forall h)
 
+/-- **Abstract Baire-category uncountability.**
+
+A nonempty `T1` perfect Baire space is uncountable: were the whole space countable it would
+be meagre in itself (`countable_isMeagre`), contradicting that a nonempty Baire space is not
+meagre (`not_isMeagre_of_isOpen` applied to the open set `univ`). This is exactly the abstract
+Baire Category Theorem flagged as an unformalized follow-up by the companion nested-interval
+entry — "every nonempty complete metric space without isolated points is uncountable" — here
+isolated to the genuinely topological hypotheses (`T1` + `PerfectSpace` + `BaireSpace`), with
+no metric or completeness assumption beyond what `BaireSpace` packages. -/
+theorem not_countable_of_perfect_t1_baire {X : Type*} [TopologicalSpace X] [T1Space X]
+    [PerfectSpace X] [BaireSpace X] [Nonempty X] : ¬ (Set.univ : Set X).Countable := by
+  intro hcount
+  have hmeagre : IsMeagre (Set.univ : Set X) := countable_isMeagre hcount
+  exact (not_isMeagre_of_isOpen isOpen_univ Set.univ_nonempty) hmeagre
+
+/-- **`ℝ` is uncountable, recovered abstractly from the Baire-category lemma.**
+
+A non-constructive, category-theoretic proof of Cantor's theorem that the reals are
+uncountable: it uses only that `ℝ` is `T1`, perfect (no isolated points), a Baire space, and
+nonempty, with no diagonal argument or nested-interval construction. This subsumes the
+companion nested-interval entry, whose conclusion is this very statement. -/
+theorem not_countable_real : ¬ (Set.univ : Set ℝ).Countable :=
+  not_countable_of_perfect_t1_baire
+
 end AlgebraicRealsMeager
 
 #print axioms AlgebraicRealsMeager.algebraicReals_isMeagre
 #print axioms AlgebraicRealsMeager.exists_transcendental_real
+#print axioms AlgebraicRealsMeager.not_countable_of_perfect_t1_baire
+#print axioms AlgebraicRealsMeager.not_countable_real
