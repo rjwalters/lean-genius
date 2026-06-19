@@ -330,11 +330,74 @@ theorem chebyshev_psi_lower_bound :
     _ ≤ Chebyshev.psi (2 * n) := heven n hnpos
     _ ≤ Chebyshev.psi x := Chebyshev.psi_mono hle
 
-/-- Derived θ lower bound (downstream of `chebyshev_psi_lower_bound` via
-`Chebyshev.abs_psi_sub_theta_le_sqrt_mul_log`). Recorded here to document the
-chain; not the core gap. -/
+/-- `log u ≤ 2·√u` for `u > 0`. Since `log √u = (log u)/2` (`Real.log_sqrt`) and
+`log √u ≤ √u − 1` (`Real.log_le_sub_one_of_pos`), we get `log u ≤ 2(√u − 1) ≤ 2√u`. -/
+lemma log_le_two_mul_sqrt {u : ℝ} (hu : 0 < u) :
+    Real.log u ≤ 2 * Real.sqrt u := by
+  have hsqrt_pos : 0 < Real.sqrt u := Real.sqrt_pos.mpr hu
+  have hlog_eq : Real.log (Real.sqrt u) = Real.log u / 2 := Real.log_sqrt hu.le
+  have hle : Real.log (Real.sqrt u) ≤ Real.sqrt u - 1 :=
+    Real.log_le_sub_one_of_pos hsqrt_pos
+  linarith
+
+/-- **Derived θ lower bound.** A Chebyshev-strength linear lower bound on `θ`,
+obtained from `chebyshev_psi_lower_bound` together with the prime-power correction
+estimate `Chebyshev.abs_psi_sub_theta_le_sqrt_mul_log` (`|ψ x − θ x| ≤ 2√x·log x`).
+
+From `ψ x ≥ c₁·x` (`x ≥ 2`) we get `θ x ≥ c₁·x − 2√x·log x`. Writing `s = ⁴√x`, the
+error term is `≤ 8 s³`: `log x ≤ 4 s` (two applications of `log u ≤ 2√u`) and
+`√x = s²`. Meanwhile `c₁·x = c₁ s⁴`, so once `s ≥ 16/c₁` the error is `≤ (c₁/2)·x`,
+giving `θ x ≥ (c₁/2)·x` for every `x ≥ max 2 ((16/c₁)⁴)` — no asymptotics, fully
+explicit `x₀`. This is the elementary lower half of Chebyshev's `θ`-bound, the
+complement of Mathlib's upper bounds (`Chebyshev.theta_le_log4_mul_x`). -/
 theorem chebyshev_theta_lower_bound :
     ∃ c : ℝ, 0 < c ∧ ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → c * x ≤ Chebyshev.theta x := by
-  sorry
+  obtain ⟨c₁, hc₁pos, hc₁⟩ := chebyshev_psi_lower_bound
+  refine ⟨c₁ / 2, by linarith, max 2 ((16 / c₁) ^ 4), ?_⟩
+  intro x hx
+  have hx2 : (2 : ℝ) ≤ x := le_trans (le_max_left _ _) hx
+  have hx0 : (0 : ℝ) < x := by linarith
+  have hx1 : (1 : ℝ) ≤ x := by linarith
+  have hbig : (16 / c₁) ^ 4 ≤ x := le_trans (le_max_right _ _) hx
+  have hc16 : (0 : ℝ) ≤ 16 / c₁ := by positivity
+  -- Fourth-root variable `s = √(√x)`.
+  set s : ℝ := Real.sqrt (Real.sqrt x) with hs_def
+  have hsx : (0 : ℝ) ≤ Real.sqrt x := Real.sqrt_nonneg x
+  have hs0 : (0 : ℝ) ≤ s := Real.sqrt_nonneg _
+  have hs2 : s ^ 2 = Real.sqrt x := by rw [hs_def, Real.sq_sqrt hsx]
+  have hs4 : s ^ 4 = x := by
+    rw [show s ^ 4 = (s ^ 2) ^ 2 by ring, hs2, Real.sq_sqrt hx0.le]
+  -- `s ≥ 16/c₁`, since `√(√·)` is monotone and collapses `((16/c₁)^4)` to `16/c₁`.
+  have hs_ge : 16 / c₁ ≤ s := by
+    have h1 : Real.sqrt ((16 / c₁) ^ 4) = (16 / c₁) ^ 2 := by
+      rw [show (16 / c₁) ^ 4 = ((16 / c₁) ^ 2) ^ 2 by ring, Real.sqrt_sq (by positivity)]
+    have h2 : Real.sqrt (Real.sqrt ((16 / c₁) ^ 4)) = 16 / c₁ := by
+      rw [h1, Real.sqrt_sq hc16]
+    calc 16 / c₁ = Real.sqrt (Real.sqrt ((16 / c₁) ^ 4)) := h2.symm
+      _ ≤ Real.sqrt (Real.sqrt x) := Real.sqrt_le_sqrt (Real.sqrt_le_sqrt hbig)
+      _ = s := hs_def.symm
+  have hcs : (16 : ℝ) ≤ s * c₁ := (div_le_iff₀ hc₁pos).mp hs_ge
+  -- `log x ≤ 4 s` (apply `log u ≤ 2√u` to `√x`, then `log √x = (log x)/2`).
+  have hlogx : Real.log x ≤ 4 * s := by
+    have hA : Real.log (Real.sqrt x) ≤ 2 * Real.sqrt (Real.sqrt x) :=
+      log_le_two_mul_sqrt (Real.sqrt_pos.mpr hx0)
+    have hlogsqrt : Real.log (Real.sqrt x) = Real.log x / 2 := Real.log_sqrt hx0.le
+    rw [← hs_def] at hA
+    linarith
+  have hlogx_nonneg : (0 : ℝ) ≤ Real.log x := Real.log_nonneg hx1
+  -- Error term `2√x·log x ≤ 8 s³ ≤ (c₁/2)·x`.
+  have herr_le : 2 * Real.sqrt x * Real.log x ≤ c₁ / 2 * x := by
+    have hstep1 : 2 * Real.sqrt x * Real.log x ≤ 8 * s ^ 3 := by
+      rw [← hs2]
+      nlinarith [hlogx, hs0, hlogx_nonneg, sq_nonneg s, mul_nonneg hs0 (sq_nonneg s)]
+    have hstep2 : 8 * s ^ 3 ≤ c₁ / 2 * x := by
+      rw [← hs4]
+      nlinarith [pow_nonneg hs0 3, hcs, hs0]
+    linarith
+  -- Assemble: `θ x ≥ ψ x − |ψ x − θ x| ≥ c₁·x − 2√x·log x ≥ (c₁/2)·x`.
+  have hpsi : c₁ * x ≤ Chebyshev.psi x := hc₁ x hx2
+  have hdiff : Chebyshev.psi x - Chebyshev.theta x ≤ 2 * Real.sqrt x * Real.log x :=
+    le_trans (le_abs_self _) (Chebyshev.abs_psi_sub_theta_le_sqrt_mul_log hx1)
+  linarith
 
 end BoundedPrimeGapsOQ03OQ01.ChebyshevLower
