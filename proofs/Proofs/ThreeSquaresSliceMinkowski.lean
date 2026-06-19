@@ -14,8 +14,7 @@
 
   STATUS (researcher-2, 2026-06-18): the `d = 1` case is now FULLY PROVED by an
   elementary Thue/pigeonhole argument (no measure theory) — see
-  `exists_slice_point_lt_two_mul_d1`. The `d = 2` case
-  (`exists_slice_point_lt_two_mul_d2`) remains the sole `sorry`: it genuinely
+  `exists_slice_point_lt_two_mul_d1`. The `d = 2` case genuinely
   requires the area bound on the ellipse `x² + 2y² ≤ R` (the integer box is
   provably insufficient — 394 counterexamples were exhibited in
   `verify_slice_minkowski.py`), so it needs the measure-theoretic strict
@@ -40,14 +39,18 @@
     plain box can return the corner difference `(±m, ±m)` with `x²+y² = 2p`, so
     we run the pigeonhole on the box with the two corners `(m,m)`, `(m,0)`
     removed, which forces a non-corner collision and hence the strict bound.
-  - `exists_slice_point_lt_two_mul_d2` (OPEN): the `d = 2` existence.
+  - `exists_slice_point_lt_two_mul_d2` (PROVED modulo its Minkowski core): the
+    `d = 2` existence, now reduced — via the proved arithmetic glue
+    `slice_point_of_sheared_d2` — to the single irreducible geometry sorry
+    `exists_sheared_point_lt_two_mul_d2` (nonzero `ℤ²` point in the sheared ellipse).
   - `exists_slice_point_lt_two_mul` (PROVED for d=1, reduces d=2 to the above):
     the original combined statement, dispatching on `d ∈ {1, 2}`.
   - `slice_point_to_dirichlet_vector` (PROVED): pure plumbing that lifts a 2D
     slice point `(x, y)` to the `Fin 3 → ℤ` vector `![x, y, 0]`.
 
   NOTE: build-pending and intentionally UNregistered in `Proofs.lean` — it
-  carries one `sorry` (the `d = 2` target) and must not gate the deployer build.
+  carries one `sorry` (`exists_sheared_point_lt_two_mul_d2`, the `d = 2` Minkowski
+  core) and must not gate the deployer build.
 -/
 import Mathlib
 
@@ -207,7 +210,62 @@ theorem exists_slice_point_lt_two_mul_d1
         exact_mod_cast this
       nlinarith [hx2le, hy2le, hmm]
 
-/-- **The `d = 2` slice point (OPEN).**
+/-- **Arithmetic glue (proved): sheared lattice point → slice point.**
+
+The `d = 2` Minkowski step reduces, via the turnkey "shear-the-set" recipe, to
+producing a nonzero integer pair `(a, b)` on which the *sheared* binary form
+`(a·p + b·r)² + 2·b²` is `< 2p` — this is exactly membership of the standard-lattice
+point `(a, b)` in the sheared open ellipse `E' = S⁻¹ '' E`, `S = !![p, r; 0, 1]`
+(see `exists_sheared_point_lt_two_mul_d2`). This lemma performs the remaining
+purely-arithmetic conversion of such a pair into the required slice point
+`(x, y) = (a·p + b·r, b)`:
+
+  * `p ∣ (x − r·y)` because `x − r·y = a·p + b·r − r·b = a·p`;
+  * `(x, y) ≠ (0, 0)` because `(a, b) ≠ (0, 0)` and `p > 0` (if `b = 0` then
+    `x = a·p ≠ 0` since `a ≠ 0`);
+  * `x² + 2y² < 2p` is the hypothesis verbatim.
+
+No geometry of numbers here — pure `ring`/`omega` plumbing, so it is fully proved.
+It isolates the irreducible Minkowski content from the arithmetic, de-risking the
+eventual build. -/
+theorem slice_point_of_sheared_d2
+    (p : ℕ) (hp : 0 < p) (r : ℤ) (a b : ℤ)
+    (hab : (a, b) ≠ (0, 0))
+    (hlt : (a * p + b * r) ^ 2 + 2 * b ^ 2 < 2 * p) :
+    ∃ x y : ℤ, (x, y) ≠ (0, 0) ∧ (p : ℤ) ∣ (x - r * y) ∧
+      x ^ 2 + 2 * y ^ 2 < 2 * p := by
+  refine ⟨a * p + b * r, b, ?_, ⟨a, by ring⟩, hlt⟩
+  intro hzero
+  rw [Prod.mk.injEq] at hzero
+  obtain ⟨hx, hy⟩ := hzero
+  apply hab
+  rw [Prod.mk.injEq]
+  refine ⟨?_, hy⟩
+  -- from `b = 0` and `a·p + b·r = 0` we get `a·p = 0`, so `a = 0` (since `p ≠ 0`)
+  rw [hy] at hx
+  simp only [zero_mul, add_zero] at hx
+  have hpne : (p : ℤ) ≠ 0 := by exact_mod_cast hp.ne'
+  rcases mul_eq_zero.mp hx with ha | hpz
+  · exact ha
+  · exact absurd hpz hpne
+
+/-- **The irreducible `d = 2` Minkowski core (OPEN).**
+
+The sole geometry-of-numbers input remaining in the three-squares development: the
+standard lattice `ℤ²` contains a nonzero point `(a, b)` inside the sheared open
+ellipse `E' = { (u, v) : ℝ² | (p·u + r·v)² + 2·v² < 2p }`. Because the shear
+`S = !![p, r; 0, 1]` has `det = p`, dividing out the `√2·π·p` area of the
+axis-aligned ellipse `{w₀² + 2·w₁² < 2p}` leaves `vol(E') = √2·π ≈ 4.443 > 4`
+*independently of `p`*, so Minkowski's strict convex-body theorem
+`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` applies uniformly
+for every `p`. The full port recipe is documented on
+`exists_slice_point_lt_two_mul_d2` below. -/
+theorem exists_sheared_point_lt_two_mul_d2
+    (p : ℕ) (hp : 0 < p) (r : ℤ) :
+    ∃ a b : ℤ, (a, b) ≠ (0, 0) ∧ (a * p + b * r) ^ 2 + 2 * b ^ 2 < 2 * p := by
+  sorry
+
+/-- **The `d = 2` slice point (OPEN, now reduced to its Minkowski core).**
 
 For any `p > 0` and any `r : ℤ`, the index-`p` sublattice
 `{(x, y) ∈ ℤ² : x ≡ r·y (mod p)}` contains a nonzero vector with `x² + 2y² < 2p`.
@@ -219,7 +277,9 @@ genuinely requires Minkowski's strict convex-body theorem on the ellipse
 `x² + 2y² < 2p` (open, area `√2·π·p`); no elementary box/pigeonhole reduction works
 (the best box bound is `2√2·p > 2p`, and the strict small-ellipse count
 `#{x²+2y² < p/2} > p` fails for many `p` — both ruled out numerically, S-2026-06-18).
-This is the sole remaining `sorry` in the three-squares development.
+This statement is now PROVED from the arithmetic glue `slice_point_of_sheared_d2`
+plus the irreducible Minkowski core `exists_sheared_point_lt_two_mul_d2`, which is
+the sole remaining `sorry` in the three-squares development.
 
 **TURNKEY RECIPE (researcher-12, 2026-06-18 — pinned, build-pending).** The clean
 route is a near-verbatim port of the proved, axiom-free `dirichlet_approximation`
@@ -256,7 +316,8 @@ theorem exists_slice_point_lt_two_mul_d2
     (p : ℕ) (hp : 0 < p) (r : ℤ) :
     ∃ x y : ℤ, (x, y) ≠ (0, 0) ∧ (p : ℤ) ∣ (x - r * y) ∧
       x ^ 2 + 2 * y ^ 2 < 2 * p := by
-  sorry
+  obtain ⟨a, b, hab, hlt⟩ := exists_sheared_point_lt_two_mul_d2 p hp r
+  exact slice_point_of_sheared_d2 p hp r a b hab hlt
 
 /-- **The missing `Q < 2p` step (2D slice).**
 

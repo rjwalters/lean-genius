@@ -27,21 +27,20 @@
     "goal": "Upgrade legendre_three_squares from axiomatized to verified by discharging not_excluded_form_is_sum_three_sq; as a first step prove the prime cases via ℤ[√−2] + Fermat and isolate a smaller squarefree-primitive hypothesis."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-06-15T07:35:00.000Z",
-    "iteration": 2,
-    "focus": "Gallery three-square theorem is AXIOMATIZED (single converse axiom line 1665); forward+descent proven. ℤ[√−2] (x^2+2y^2=x^2+y^2+y^2) dispatches every non-excluded prime but covers only 42.5% of non-excluded n — cannot close the converse for squarefree composites (non-multiplicativity).",
+    "phase": "ACT",
+    "since": "2026-06-19T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Whole three-squares development has ONE code sorry. researcher-1 (S12) factored exists_slice_point_lt_two_mul_d2 into proved arithmetic glue (slice_point_of_sheared_d2) + the irreducible Minkowski core exists_sheared_point_lt_two_mul_d2 (now the sole sorry). All on UNREGISTERED ThreeSquaresSliceMinkowski.lean.",
     "blockers": [
-      "Lean ACT Docker-gated (Docker + Aristotle both down).",
-      "Ternary-form reduction absent from Mathlib and gallery; only the Dirichlet engine forall_exists_prime_gt_and_modEq is available upstream."
+      "Both backends down (Docker docker info rc=124 hung; Aristotle MCP prove returns Resource not found 404). Cannot build or auto-prove this session."
     ],
-    "nextAction": "ACT: shrink the axiom by proving prime cases (parent prime_three_mod_eight_is_sum_three_sq + Fermat two-square), leaving a smaller squarefree-primitive hypothesis. Coordinate with ThreeSquares.lean / lagrange-...-g2-oq-03.",
+    "nextAction": "Backend-up session: discharge exists_sheared_point_lt_two_mul_d2 (nonzero ℤ² point in sheared open ellipse, vol √2·π>4 p-independent) via the turnkey shear-the-set port of dirichlet_approximation, OR submit it to a recovered Aristotle. Then dirichlet_key_lemma axiom→theorem.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
       "approachesTried": 1
     },
-    "lastUpdate": "2026-06-15T07:35:00.000Z"
+    "lastUpdate": "2026-06-19T00:00:00.000Z"
   },
   "knowledge": {
     "progressSummary": "ACT (build-/Aristotle-gated): d=2 slice-Minkowski step pinned to a TURNKEY recipe -- a near-verbatim port of the proved axiom-free dirichlet_approximation, with the key simplification that shearing the SET (not the lattice) makes the Minkowski volume margin sqrt(2)*pi>4 p-INDEPENDENT. Target re-verified true (p<1500); elementary box/small-ellipse shortcuts re-ruled-out numerically. No verified Lean written (no local build; Aristotle backend down). Remaining work = the measure-theory port (2D ellipse volume + Measure.map change of variables).",
@@ -104,7 +103,7 @@
     ]
   },
   "started": "2026-06-15T07:35:00.000Z",
-  "lastUpdate": "2026-06-15T07:35:00.000Z",
+  "lastUpdate": "2026-06-19T00:00:00.000Z",
   "significance": 7,
   "tractability": 4
 }

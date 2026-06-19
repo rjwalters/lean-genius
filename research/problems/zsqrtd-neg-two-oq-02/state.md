@@ -288,3 +288,15 @@ UNREGISTERED companions (zero blast radius); no registered file touched.
   Minkowski-deep, not session-sized.
 
 **Next**: build the two companions when Docker returns; then attack items 1–3.
+
+## S12 — factor arithmetic glue out of d=2 Minkowski sorry (researcher-1, 2026-06-19)
+
+ACT, build-free (Docker rc=124 hung + Aristotle 404, both probed). Additive edits to
+UNREGISTERED `ThreeSquaresSliceMinkowski.lean` (zero blast radius).
+- PROVED `slice_point_of_sheared_d2`: nonzero sheared point `(a,b)` with
+  `(a·p+b·r)²+2b²<2p` → slice point `(a·p+b·r, b)` (pure ring/omega/mul_eq_zero).
+- Isolated the irreducible Minkowski content as the new sole sorry
+  `exists_sheared_point_lt_two_mul_d2` (`ℤ²` point in the sheared ellipse).
+- `exists_slice_point_lt_two_mul_d2` now PROVED via the glue + core.
+- Sorry count unchanged (1); open content strictly smaller; arithmetic pre-verified.
+- Next (backend-up): discharge the core via the turnkey shear-the-set recipe.

@@ -588,3 +588,53 @@ the d=1/d=2 split above ⇒ `dirichlet_key_lemma` axiom→theorem (`ThreeSquares
 ### Next Steps
 - Build-capable session: execute the recipe (≈ copy `dirichlet_approximation`). 
 - Or submit `exists_slice_point_lt_two_mul_d2` to Aristotle once its backend recovers.
+
+## Session 2026-06-19 (researcher-1) — factor the arithmetic glue out of the d=2 Minkowski sorry
+
+**Mode**: REVISIT (claim-random, RICH) · **Phase**: ACT · **Outcome**: additive,
+hand-verified Lean progress on the UNREGISTERED `ThreeSquaresSliceMinkowski.lean`
+(zero blast radius); both backends DOWN this session — Docker `docker info` rc=124
+(daemon hung, host OOM-saturated), Aristotle MCP `prove` returns `Resource not
+found` (404, probed with the isolated d=2 lemma). No build, no registered file
+touched.
+
+### What I did
+
+The development still has exactly ONE code `sorry`. Prior sessions left it as the
+*whole* statement `exists_slice_point_lt_two_mul_d2` (slice point existence). I
+**factored it** into:
+
+- `slice_point_of_sheared_d2` (**PROVED**, pure `ring`/`omega`/`mul_eq_zero`): given
+  a nonzero `(a,b)` with the *sheared* form `(a·p+b·r)² + 2b² < 2p`, produce the
+  slice point `(x,y)=(a·p+b·r, b)`. Discharges all three plumbing obligations —
+  `p ∣ (x−r·y)=a·p` via `⟨a, by ring⟩`; `(x,y)≠(0,0)` from `(a,b)≠0 ∧ p>0` (if
+  `b=0` then `x=a·p≠0`); and `x²+2y²<2p` verbatim from the hypothesis.
+- `exists_sheared_point_lt_two_mul_d2` (**OPEN, the new sole sorry**): the tight,
+  purely-geometric core — `ℤ²` has a nonzero point in the sheared open ellipse. This
+  is exactly the input to Minkowski's strict convex-body theorem, `vol = √2·π > 4`
+  (p-independent). This is what a build/Aristotle session must discharge.
+- `exists_slice_point_lt_two_mul_d2` is now **PROVED** by `obtain … := core; exact
+  slice_point_of_sheared_d2 …`.
+
+### Why this (and not the full port)
+
+Writing the ~80-line measure-theory port blind is the exact anti-pattern S6
+documented (the `Fact`-instance elaboration bug that "checks out by inspection"
+missed). Under dual blackout the honest deliverable is the mechanical, hand-verifiable
+glue, which (a) isolates the irreducible geometry into a sharper statement, (b)
+pre-verifies the arithmetic so the eventual build session only needs the Minkowski
+core, and (c) cannot break the deployer build (file unregistered). Sorry count
+unchanged at 1 (no new sorries); the open content is strictly smaller.
+
+### Net open work (unchanged, backend-gated)
+1. Discharge `exists_sheared_point_lt_two_mul_d2` via the turnkey shear-the-set
+   recipe (now the sole sorry) ⇒ `dirichlet_key_lemma` axiom→theorem.
+2. SingleAP prime finder for even cores (S10); land the S6 `IsSquare`-form
+   elaboration fix on the sufficiency companions.
+3. Both 1–2 require a working Docker or a recovered Aristotle backend.
+
+### Files touched
+- `proofs/Proofs/ThreeSquaresSliceMinkowski.lean` — +`slice_point_of_sheared_d2`
+  (proved), +`exists_sheared_point_lt_two_mul_d2` (sorry), rewired d=2 slice theorem,
+  refreshed header/docstrings.
+- `knowledge.md` / `state.md` — this entry.
