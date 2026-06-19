@@ -20,7 +20,8 @@
 
 import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.Instances.Real
+import Mathlib.Topology.Instances.Real.Lemmas
+import Mathlib.Data.Nat.Nth
 import Mathlib.Tactic
 
 namespace Erdos679
@@ -38,13 +39,15 @@ theorem omega_one : omega 1 = 0 := by
 
 /-- ω(p) = 1 for prime p. -/
 theorem omega_prime (p : ℕ) (hp : p.Prime) : omega p = 1 := by
-  rw [show p = p ^ 1 from (pow_one p).symm]
-  simp [omega, Nat.primeFactors_prime_pow hp (show (1 : ℕ) ≠ 0 by omega)]
+  unfold omega
+  rw [hp.primeFactors, Finset.card_singleton]
 
 /-- ω(p^k) = 1 for prime p and k ≥ 1. -/
 theorem omega_prime_pow (p k : ℕ) (hp : p.Prime) (hk : k ≥ 1) :
     omega (p ^ k) = 1 := by
-  simp [omega, Nat.primeFactors_prime_pow hp (show k ≠ 0 by omega)]
+  unfold omega
+  rw [Nat.primeFactors_pow p (show k ≠ 0 by omega), hp.primeFactors,
+    Finset.card_singleton]
 
 /-- ω is additive on coprime arguments. -/
 theorem omega_mul_coprime (m n : ℕ) (hmn : m.Coprime n) :
@@ -57,8 +60,8 @@ theorem omega_mul_coprime (m n : ℕ) (hmn : m.Coprime n) :
 
 /-- The normal order of ω(n) is log log n. -/
 def NormalOrderOmega : Prop :=
-  ∀ ε > 0, ∀ᶠ n in atTop,
-    (1 - ε) * Real.log (Real.log n) < omega n ∧
+  ∀ ε > 0, ∀ᶠ n : ℕ in atTop,
+    (1 - ε) * Real.log (Real.log n) < (omega n : ℝ) ∧
     (omega n : ℝ) < (1 + ε) * Real.log (Real.log n)
 
 /-- Hardy-Ramanujan (1917): ω(n) ~ log log n for almost all n. -/
@@ -125,8 +128,8 @@ theorem bigOmega_ge_omega (n : ℕ) : bigOmega n ≥ omega n := by
         ≤ n.primeFactorsList.toFinset.card := by
           apply Finset.card_le_card; intro p hp
           exact List.mem_toFinset.mpr ((Nat.mem_primeFactorsList hn).mpr
-            ((Nat.mem_primeFactors hn).mp hp))
-      _ ≤ n.primeFactorsList.length := List.toFinset_card_le_length
+            ((Nat.mem_primeFactors_of_ne_zero hn).mp hp))
+      _ ≤ n.primeFactorsList.length := List.toFinset_card_le _
 
 /-- For Ω, the threshold is log₂ k. -/
 noncomputable def thresholdOmega (k : ℕ) : ℝ :=
@@ -147,11 +150,33 @@ theorem power_of_two_case (m : ℕ) (hm : m ≥ 10) :
   sorry
 
 /-- For primorial n = p₁ · p₂ · ... · p_r, analyze ω(n-k). -/
-def primorial (r : ℕ) : ℕ := (Finset.range r).prod (fun i => (Nat.nth Nat.Prime i))
+noncomputable def primorial (r : ℕ) : ℕ := (Finset.range r).prod (fun i => (Nat.nth Nat.Prime i))
 
-/-- Primorials have high ω. -/
+/-- Primorials have high ω: the product of the first `r` primes has exactly
+    `r` distinct prime factors, since `Nat.nth Nat.Prime` enumerates distinct
+    primes. -/
 theorem omega_primorial (r : ℕ) : omega (primorial r) = r := by
-  sorry
+  induction r with
+  | zero => simp [primorial, omega]
+  | succ n ih =>
+    have hp : (Nat.nth Nat.Prime n).Prime :=
+      Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
+    have hprod : primorial (n + 1) = primorial n * Nat.nth Nat.Prime n := by
+      unfold primorial
+      rw [Finset.prod_range_succ]
+    have hcop : (primorial n).Coprime (Nat.nth Nat.Prime n) := by
+      rw [Nat.coprime_comm, hp.coprime_iff_not_dvd]
+      intro hdvd
+      simp only [primorial] at hdvd
+      obtain ⟨i, hi, hdvd_i⟩ := hp.prime.exists_mem_finset_dvd hdvd
+      have hpi : (Nat.nth Nat.Prime i).Prime :=
+        Nat.nth_mem_of_infinite Nat.infinite_setOf_prime i
+      have heq : Nat.nth Nat.Prime n = Nat.nth Nat.Prime i :=
+        (Nat.prime_dvd_prime_iff_eq hp hpi).mp hdvd_i
+      have hni : n = i := Nat.nth_injective Nat.infinite_setOf_prime heq
+      rw [Finset.mem_range] at hi
+      omega
+    rw [hprod, omega_mul_coprime _ _ hcop, ih, omega_prime _ hp]
 
 /- ## Part VII: Lower Bounds -/
 
