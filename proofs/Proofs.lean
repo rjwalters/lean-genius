@@ -2952,6 +2952,7 @@ import Proofs.Sqrt2PlusSqrt3IrrationalOQ03
 import Proofs.Sqrt2PlusSqrt3IrrationalOQ03Aristotle
 import Proofs.Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01
 import Proofs.Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02
+import Proofs.Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ03
 import Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01
 import Proofs.SteinerLehmusTheoremOQ01
 import Proofs.SternBrocotTreeOQ01
