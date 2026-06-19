@@ -1,0 +1,178 @@
+{
+  "id": "buffons-noodle-oq-01",
+  "title": "Buffon–Laplace for the Polygonal Noodle (Doubly-Ruled Grid)",
+  "slug": "buffons-noodle-oq-01",
+  "description": "Extends Buffon's Noodle from a single family of parallel lines to a grid of two perpendicular families (the Buffon–Laplace setting). For a polygonal noodle of total length L on a grid with spacings dₕ and dᵥ, the expected total number of crossings is 2L/(πdₕ) + 2L/(πdᵥ), collapsing to 4L/(πd) on a square grid. Proved as a clean corollary of the parent polygonal theorem by additivity of expectation across the two families — no independence required. Fully machine-checked: 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
+    "date": "2026-06-18",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BuffonsNoodleOQ01.lean",
+    "tags": [
+      "geometric-probability",
+      "integral-geometry",
+      "buffon",
+      "buffon-laplace",
+      "linearity-of-expectation",
+      "monte-carlo"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.pi_ne_zero",
+        "description": "π ≠ 0, used to clear the spacing factor π·d in the Monte-Carlo π estimator and numerical examples",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "gcongr",
+        "description": "Generalized-congruence tactic discharging a/c ≤ b/c from a ≤ b for c > 0, used for monotonicity of grid crossings in total length (replaces the removed div_le_div_right lemma)",
+        "module": "Mathlib.Tactic.GCongr"
+      },
+      {
+        "theorem": "Fin.sum_univ_one",
+        "description": "Collapses the one-segment (circle) noodle sum",
+        "module": "Mathlib.Algebra.BigOperators.Fin"
+      }
+    ],
+    "originalContributions": [
+      "PolygonalNoodle.expectedGridCrossings: DEFINED the expected total grid crossings as the sum of the two single-family expectations (additivity of expectation across perpendicular families)",
+      "buffon_noodle_grid: PROVED the Buffon–Laplace identity E = 2L/(πdₕ) + 2L/(πdᵥ) for a polygonal noodle on a doubly-ruled grid",
+      "buffon_noodle_square_grid: PROVED the square-grid specialization E = 4L/(πd) (exactly double the single-family count)",
+      "buffon_noodle_grid_shape_independence: PROVED grid crossings depend only on total length, not shape",
+      "buffon_noodle_grid_nonneg / buffon_noodle_grid_mono: PROVED nonnegativity and monotonicity-in-length of the grid functional",
+      "pi_times_spacing_mul_grid_crossings: PROVED π·d·E = 4L on a square grid — the variance-reduced Buffon–Laplace Monte-Carlo estimator of π",
+      "circle_grid_crossings / square_grid_crossings / circle_rect_grid_crossings: PROVED concrete numerical instances (circle 8r/d independent of π; square 16s/(πd); rectangular grid 4r(1/dₕ+1/dᵥ))"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Buffon's Noodle (polygonal case): expected single-family crossings 2L/(πd) — the parent theorem buffon_noodle_polygon",
+      "Additivity of expectation (no independence needed)",
+      "Elementary field algebra"
+    ],
+    "lineCount": 214,
+    "relatedProblems": [
+      {
+        "id": "buffons-noodle",
+        "relationship": "Direct parent: supplies the single-family polygonal theorem reused once per grid family"
+      },
+      {
+        "id": "buffons-needle",
+        "relationship": "Base case: a single straight segment crossing one family"
+      }
+    ],
+    "assumptions": "None. 0 axioms, 0 sorries. The per-segment crossing probability 2ℓ/(πd) is inherited as the parent's segmentCrossingProb definition (reflecting Buffon's Needle); this file adds no new axioms and proves every result as an algebraic corollary of the parent's machine-checked buffon_noodle_polygon. The smooth/C¹ grid generalization (depending on the parent's still-axiomatized kinematic-measure functional) is deliberately out of scope.",
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "structureCount": 0
+  },
+  "overview": {
+    "historicalContext": "Buffon (1777) computed the crossing probability of a needle on one family of parallel lines; Barbier (1860) extended it to curves (the noodle). Laplace observed that dropping on a GRID of two perpendicular families gives a better Monte-Carlo estimator of π — the Buffon–Laplace problem. This entry formalizes the grid case for polygonal noodles as a corollary of the gallery's existing polygonal noodle theorem.",
+    "problemStatement": "Prove that a polygonal noodle of total length L dropped on a grid of two perpendicular line families with spacings dₕ, dᵥ has expected total crossings 2L/(πdₕ) + 2L/(πdᵥ), reducing to 4L/(πd) on a square grid.",
+    "text": "A 214-line file adding the grid expected-crossing functional and proving the Buffon–Laplace identity, its square-grid specialization, shape independence, nonnegativity, monotonicity, a Monte-Carlo π estimator, and three numerical examples — all as corollaries of the parent's buffon_noodle_polygon via additivity of expectation across the two families.",
+    "proofStrategy": "Additivity of expectation. Total grid crossings = horizontal-family crossings + vertical-family crossings; expectation is additive regardless of the (strong) correlation between the two tallies. So expectedGridCrossings is defined as the sum of two single-family expectations, and buffon_noodle_polygon supplies each term. Every downstream theorem is a one- or two-line rewrite through the grid theorem plus field algebra.",
+    "keyInsights": [
+      "**Additivity needs no independence.** The horizontal and vertical crossing counts come from the same drop of the same noodle and are strongly correlated, yet E[X+Y] = E[X] + E[Y] still holds — so the grid expectation is literally the sum of two single-family theorems.",
+      "**Square grid doubles the count.** With equal spacings the expected crossings are exactly 4L/(πd) = 2·(single family), giving two crossing tallies per trial and hence the variance reduction that motivates the Buffon–Laplace π estimator.",
+      "**Shape still does not matter.** Grid crossings depend only on total length L, inheriting the parent's shape-independence one level up.",
+      "**A circle gives a π-free count.** A circle of circumference 2πr on a square grid crosses 8r/d times on average — independent of π — doubling the single-family 4r/d sanity check.",
+      "**π estimator as a proved identity.** pi_times_spacing_mul_grid_crossings states π·d·E = 4L exactly, so π = 4L/(d·E): the formalized Monte-Carlo estimator with the grid's reduced variance."
+    ],
+    "prerequisites": [
+      "Buffon's Noodle polygonal theorem (parent)",
+      "Additivity of expectation",
+      "Field algebra"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "buffons-noodle",
+      "relationship": "extends",
+      "description": "Reuses the parent's buffon_noodle_polygon (single family, 2L/(πd)) once per grid family. The grid result is the additive composition of two instances of the parent theorem."
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "specializes",
+      "description": "A single straight segment on one family is the base case; the grid theorem reduces to twice the needle count on a square grid."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 214,
+    "namespace": "BuffonsNoodleOQ01",
+    "opens": [
+      "Real",
+      "Finset",
+      "BigOperators",
+      "BuffonsNoodle"
+    ],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "substantiveTheoremCount": 6,
+    "computationalVerifications": 0,
+    "lemmaCount": 0,
+    "imports": [
+      "Proofs.BuffonsNoodle",
+      "Mathlib.Tactic"
+    ],
+    "path": "Proofs/BuffonsNoodleOQ01.lean",
+    "sorries": 0,
+    "definitionCount": 1
+  },
+  "mainTheorems": [
+    {
+      "name": "buffon_noodle_grid",
+      "type": "core",
+      "description": "Buffon–Laplace grid identity: expected crossings = 2L/(πdₕ) + 2L/(πdᵥ) (PROVED, 0 axioms)",
+      "leanType": "∀ {n : ℕ} (N : PolygonalNoodle n) (dh dv : ℝ), 0 < dh → 0 < dv → N.expectedGridCrossings dh dv = 2 * N.totalLength / (π * dh) + 2 * N.totalLength / (π * dv)"
+    },
+    {
+      "name": "buffon_noodle_square_grid",
+      "type": "core",
+      "description": "Square-grid specialization: expected crossings = 4L/(πd) (PROVED, 0 axioms)",
+      "leanType": "∀ {n : ℕ} (N : PolygonalNoodle n) (d : ℝ), 0 < d → N.expectedGridCrossings d d = 4 * N.totalLength / (π * d)"
+    },
+    {
+      "name": "pi_times_spacing_mul_grid_crossings",
+      "type": "core",
+      "description": "Monte-Carlo π estimator: π·d·E = 4L on a square grid, i.e. π = 4L/(d·E) (PROVED, 0 axioms)",
+      "leanType": "∀ {n : ℕ} (N : PolygonalNoodle n) (d : ℝ), 0 < d → π * d * N.expectedGridCrossings d d = 4 * N.totalLength"
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully machine-checked (0 sorries, 0 axioms) formalization of the Buffon–Laplace grid extension of Buffon's Noodle for polygonal noodles, obtained by additivity of expectation across two perpendicular line families. Includes the square-grid specialization, shape independence, monotonicity, a Monte-Carlo π estimator, and numerical examples.",
+    "implications": "Demonstrates that the gallery's linearity-of-expectation crossing machinery composes cleanly across independent line families — a reusable pattern for further integral-geometry formalizations — and supplies the variance-reduced Buffon–Laplace estimator of π as a proved identity.",
+    "openQuestions": [
+      "Generalize the grid identity to the smooth/C¹ case once the parent's kinematic-measure functional smoothExpectedCrossings is discharged.",
+      "Extend to k non-parallel families at angles θ₁,…,θₖ, giving expected crossings (2L/π)·Σ 1/dⱼ (the general Buffon–Laplace / Cauchy–Crofton discretization).",
+      "Quantify the variance reduction of the grid estimator versus the single-family estimator for a fixed number of trials."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Barbier, Joseph-Émile",
+      "title": "Note sur le problème de l'aiguille et le jeu du joint couvert",
+      "year": "1860",
+      "venue": "Journal de mathématiques pures et appliquées, 2e série, tome 5",
+      "note": "Extends Buffon's needle to curved needles (the noodle)."
+    },
+    {
+      "authors": "Laplace, Pierre-Simon",
+      "title": "Théorie analytique des probabilités",
+      "year": "1812",
+      "venue": "Courcier, Paris",
+      "note": "Introduces the doubly-ruled grid variant, improving the Monte-Carlo estimate of π."
+    },
+    {
+      "authors": "Santaló, Luis A.",
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "2004",
+      "venue": "Cambridge Mathematical Library, 2nd edition",
+      "note": "Standard reference for the Cauchy–Crofton formula and the kinematic measure on lines."
+    }
+  ],
+  "sorries": 0
+}

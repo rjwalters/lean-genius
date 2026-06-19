@@ -338,9 +338,7 @@ theorem buffon_noodle_lipschitz {m n : ℕ}
   rw [show 2 * N₁.totalLength / (π * d) - 2 * N₂.totalLength / (π * d) =
       2 / (π * d) * (N₁.totalLength - N₂.totalLength) by ring]
   rw [abs_mul]
-  have h2πd : (0 : ℝ) < π * d := mul_pos pi_pos hd
   rw [abs_of_pos (by positivity)]
-  exact le_refl _
 
 /-! ## Part VIII: The Cauchy-Crofton Connection
 
@@ -410,9 +408,8 @@ theorem PolygonalNoodle.expectedCrossings_mono {m n : ℕ}
     (N₁ : PolygonalNoodle m) (N₂ : PolygonalNoodle n) (d : ℝ) (hd : 0 < d)
     (hlen : N₁.totalLength ≤ N₂.totalLength) :
     N₁.expectedCrossings d ≤ N₂.expectedCrossings d := by
-  rw [buffon_noodle_polygon N₁ d hd, buffon_noodle_polygon N₂ d hd,
-      div_le_div_right (mul_pos pi_pos hd)]
-  linarith
+  rw [buffon_noodle_polygon N₁ d hd, buffon_noodle_polygon N₂ d hd]
+  gcongr
 
 /-- **Additivity**: For two noodles of lengths L₁ and L₂, a noodle of total length L₁+L₂
     has expected crossings equal to the sum of their individual expected crossings.
@@ -421,7 +418,7 @@ theorem buffon_noodle_additive {m n : ℕ}
     (N₁ : PolygonalNoodle m) (N₂ : PolygonalNoodle n) (d : ℝ) (hd : 0 < d) :
     2 * (N₁.totalLength + N₂.totalLength) / (π * d) =
     N₁.expectedCrossings d + N₂.expectedCrossings d := by
-  rw [← buffon_noodle_polygon N₁ d hd, ← buffon_noodle_polygon N₂ d hd]
+  rw [buffon_noodle_polygon N₁ d hd, buffon_noodle_polygon N₂ d hd]
   ring
 
 /-- **Strict Monotonicity**: A strictly longer noodle has strictly more expected crossings
@@ -430,9 +427,8 @@ theorem PolygonalNoodle.expectedCrossings_strictMono {m n : ℕ}
     (N₁ : PolygonalNoodle m) (N₂ : PolygonalNoodle n) (d : ℝ) (hd : 0 < d)
     (hlen : N₁.totalLength < N₂.totalLength) :
     N₁.expectedCrossings d < N₂.expectedCrossings d := by
-  rw [buffon_noodle_polygon N₁ d hd, buffon_noodle_polygon N₂ d hd,
-      div_lt_div_right (mul_pos pi_pos hd)]
-  linarith
+  rw [buffon_noodle_polygon N₁ d hd, buffon_noodle_polygon N₂ d hd]
+  gcongr
 
 /-! ## Conclusion
 
