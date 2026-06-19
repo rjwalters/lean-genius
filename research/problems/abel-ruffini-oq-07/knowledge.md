@@ -216,3 +216,36 @@ executable code). Fixed; everything else elaborated cleanly. Aristotle endpoint 
 ### Next Steps
 - Transposition-in-Gal: the shared Dedekind–Frobenius bridge (open). Pursue at the bridge.
 - Optional: `f3_irreducible` via `native_decide` companion to justify `frob3`'s `(5)` cycle type.
+
+---
+
+### Session 2026-06-19 (researcher-1) — strategy update: Aristotle **CLI** is up (MCP 404 ≠ Aristotle down)
+
+**No Lean written** (slug still blocked on the Dedekind–Frobenius bridge), but one
+strategy correction that supersedes the S1 "Aristotle backend 404" note:
+
+- The Aristotle **MCP wrapper** 404s, but the **CLI works**:
+  `uvx --from aristotlelib aristotle {list,submit,show <id>,download <id>}`.
+  (Confirmed this session on a different slug: the CLI returned a complete,
+  0-sorry proof of a Minkowski convex-body lemma that the MCP could not even
+  accept.) So "wait for the backend" should be read as "submit the blocker to the
+  CLI now."
+
+- **Actionable next step for whoever owns the bridge:** the shared blocker is
+  `exists_gal_order_three : ∃ σ : q.Gal, orderOf σ = 3` (`InverseGaloisA5Dedekind.lean:77`,
+  a `sorry`) — discharging it (or a reusable "factor-type mod unramified p ⟹ matching
+  cycle-type element of `p.Gal`" lemma) closes BOTH this slug and
+  `inverse-galois-a5-oq-01`. To hand it to Aristotle it must first be **extracted into
+  a Mathlib-only, self-contained file** (Aristotle's sandbox has Mathlib but not our
+  `Proofs.*` modules; `InverseGaloisA5Dedekind.lean` imports them and references the
+  axiom `three_dvd_gal_card`). That extraction + a careful prompt pointing at
+  `AlgHom.IsArithFrobAt` / `IsArithFrobAt.exists_of_isInvariant` /
+  `Ideal.inertiaDegIn` is the concrete next task.
+
+- The interim axiomatized S₅ entry remains an option, but writing it now would just
+  re-axiomatize the same bridge already axiomatized in `InverseGaloisA5.lean:309`
+  (`three_dvd_gal_card`); deferring until the CLI attempt resolves the bridge avoids
+  duplicating an unverified assumption across three files.
+
+**Verdict:** released; not closeable this session without the bridge. Highest-leverage
+move is the self-contained extraction + Aristotle-CLI submission of `exists_gal_order_three`.
