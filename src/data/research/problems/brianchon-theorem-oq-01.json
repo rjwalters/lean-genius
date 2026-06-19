@@ -29,8 +29,8 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-06-19",
-    "iteration": 2,
-    "focus": "Proved Brianchon from Pascal via pole–polar duality in the homogeneous ℝ³ model. Self-contained file (PascalsHexagon.lean does not currently build). Status axiomatized: 1 axiom (conic_implies_pascal), 0 sorries."
+    "iteration": 3,
+    "focus": "Proved Brianchon from Pascal via pole–polar duality in the homogeneous ℝ³ model. Iteration 3 added brianchon_point: the genuine Brianchon point recovered under the nondegeneracy hypothesis that two diagonals meet (axiom-free beyond conic_implies_pascal). Status axiomatized: 1 axiom (conic_implies_pascal), 0 sorries. Build-verified GREEN."
   },
   "knowledge": {
     "progressSummary": "COMPLETED: Brianchon's theorem proved as the projective dual of Pascal's theorem. Axiom-free duality bridge + unconditional theorem using only the shared Pascal axiom. Gallery entry added.",
@@ -42,6 +42,7 @@
       "diag_eq: each Brianchon diagonal = (det C • C)·(corresponding Pascal point)",
       "concurrent_brianchon_of_collinear_pascal: axiom-free, sorry-free duality bridge",
       "brianchon_theorem: unconditional Brianchon's theorem (1 axiom, conic_implies_pascal)",
+      "brianchon_point: genuine Brianchon point under nondegeneracy (∃ X ≠ 0 on all three diagonals); built on onLine incidence + det_threeVectorMatrix_eq_dot_cross (scalar triple product = concurrency determinant) + dotProduct_self/_crossProduct self-incidence identities",
       "Gallery entry src/data/proofs/brianchon-theorem-oq-01/meta.json"
     ],
     "insights": [
@@ -55,7 +56,8 @@
     ],
     "nextSteps": [
       "Eliminate the shared conic_implies_pascal axiom (Cayley–Bacharach or Sylvester reduction) — Pascal-side work.",
-      "Add nondegeneracy to recover the genuine Brianchon point and the converse.",
+      "Discharge brianchon_point's nondegeneracy hypothesis (two diagonals meet) from a genericity condition on C and the contact points (e.g. det C ≠ 0 + distinct contacts) instead of assuming the meet is nonzero.",
+      "Establish the converse (concurrency ⟹ contacts lie on a conic).",
       "Formalize the degenerate/point-at-infinity cases explicitly."
     ]
   },
