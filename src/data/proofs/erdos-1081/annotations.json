@@ -16,7 +16,11 @@
       "Asymptotic analysis",
       "Counting functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Notation",
+      "Number-Theoretic Counting Functions",
+      "Logarithmic Growth Rates"
+    ]
   },
   {
     "id": "ann-e1081-squarefull-def",
@@ -35,7 +39,11 @@
       "Powerful numbers",
       "OEIS A001694"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Factorization",
+      "Divisibility And Prime Powers",
+      "Integer Sequences"
+    ]
   },
   {
     "id": "ann-e1081-squarefull-alt",
@@ -53,7 +61,11 @@
       "Counting arguments"
     ],
     "mathContext": "See annotation content for formal details of alternative characterization",
-    "prerequisites": []
+    "prerequisites": [
+      "Unique Factorization",
+      "Exponent Decomposition",
+      "Density Estimates"
+    ]
   },
   {
     "id": "ann-e1081-examples",
@@ -71,7 +83,11 @@
       "Computational verification"
     ],
     "mathContext": "See annotation content for formal details of squarefull examples",
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Divisor Enumeration",
+      "Case Analysis Proofs",
+      "Divisibility Checking"
+    ]
   },
   {
     "id": "ann-e1081-sums-def",
@@ -89,7 +105,11 @@
       "Additive representations"
     ],
     "mathContext": "See annotation content for formal details of sums of two squarefull numbers",
-    "prerequisites": []
+    "prerequisites": [
+      "Additive Representations Of Integers",
+      "Existential Quantification",
+      "Powerful Numbers"
+    ]
   },
   {
     "id": "ann-e1081-sum-examples",
@@ -107,7 +127,11 @@
       "Witness arguments"
     ],
     "mathContext": "See annotation content for formal details of sum examples",
-    "prerequisites": []
+    "prerequisites": [
+      "Constructive Existence Proofs",
+      "Witness Selection",
+      "Additive Decomposition"
+    ]
   },
   {
     "id": "ann-e1081-counting",
@@ -126,7 +150,11 @@
       "Zeta function",
       "Asymptotic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Density",
+      "Riemann Zeta Function",
+      "Dirichlet Series"
+    ]
   },
   {
     "id": "ann-e1081-conjecture",
@@ -144,7 +172,11 @@
       "Disproved conjectures",
       "Odoni's paper"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Equivalence",
+      "Probabilistic Heuristics In Number Theory",
+      "Logarithmic Correction Factors"
+    ]
   },
   {
     "id": "ann-e1081-odoni",
@@ -163,7 +195,11 @@
       "Triple logarithm",
       "Slow growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower Bound Estimates",
+      "Iterated Logarithms",
+      "Growth Rate Comparison"
+    ]
   },
   {
     "id": "ann-e1081-alpha",
@@ -182,7 +218,11 @@
       "Blomer-Granville",
       "Quadratic forms"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real Exponentiation",
+      "Binary Quadratic Forms",
+      "Discriminants"
+    ]
   },
   {
     "id": "ann-e1081-blomer-granville",
@@ -201,7 +241,11 @@
       "Quadratic forms",
       "Duke Math. J."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Two-Sided Asymptotic Bounds",
+      "Theory Of Binary Quadratic Forms",
+      "Polylogarithmic Factors"
+    ]
   },
   {
     "id": "ann-e1081-comparison",
@@ -219,7 +263,11 @@
       "Exponent analysis"
     ],
     "mathContext": "See annotation content for formal details of exponent comparison",
-    "prerequisites": []
+    "prerequisites": [
+      "Comparison Of Real Exponents",
+      "Monotonicity Of Power Functions",
+      "Asymptotic Inequalities"
+    ]
   },
   {
     "id": "ann-e1081-heuristic",
@@ -238,7 +286,11 @@
       "Non-uniformity"
     ],
     "mathContext": "See annotation content for formal details of why the conjecture failed",
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Number Theory",
+      "Multiplicative Structure Of Integers",
+      "Distributional Non-Uniformity"
+    ]
   },
   {
     "id": "ann-e1081-summary",
@@ -257,6 +309,10 @@
       "Correct asymptotics"
     ],
     "mathContext": "See annotation content for formal details of problem summary",
-    "prerequisites": []
+    "prerequisites": [
+      "Disproof By Counterexample",
+      "Asymptotic Exponents",
+      "Conjecture Resolution"
+    ]
   }
 ]
