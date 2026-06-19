@@ -14,6 +14,11 @@
       "floor deficiency",
       "q-analogs"
     ],
+    "prerequisites": [
+      "binomial coefficients and Kummer's theorem (carries in base p)",
+      "cyclotomic polynomials \u03a6\u2099(X)",
+      "q-analogs (Gaussian binomial coefficients)"
+    ],
     "content": "This 412-line formalization lifts Kummer's classical theorem from integer divisibility to polynomial algebra. The q-analog encodes strictly more information: while C(n,k) mod p^k is captured by digit carries in base p, [n choose k]_q captures carries in ALL bases d \u2265 2 simultaneously as a polynomial factorization. At q=1, the cyclotomic factors \u03a6_p(1) = p recover classical Kummer.",
     "proofId": "kummer-theorem-oq-02",
     "range": {
@@ -35,6 +40,11 @@
       "geometric sum",
       "noncomputable",
       "polynomial ring"
+    ],
+    "prerequisites": [
+      "the polynomial ring \u2124[X] as an integral domain",
+      "the q-number [n]_q = 1+q+\u22ef+q^{n-1}",
+      "the q-Pascal recurrence"
     ],
     "content": "The Pascal-recurrence definition of qBinomial is the key design choice: it produces a polynomial directly without polynomial division. This is crucial for the proof \u2014 division in Z[X] is not always exact, so the Pascal approach keeps everything in the polynomial ring. All computations are exact in Z[X] (an integral domain), enabling the final cancellation step.",
     "proofId": "kummer-theorem-oq-02",
@@ -58,6 +68,11 @@
       "cyclotomic polynomials",
       "X^n - 1 factorization"
     ],
+    "prerequisites": [
+      "cyclotomic polynomials and X\u207f\u22121 = \u220f_{d|n} \u03a6_d(X)",
+      "divisors of n (Nat.divisors)",
+      "the geometric sum 1+q+\u22ef+q^{n-1}"
+    ],
     "content": "This is the Mathlib bridge theorem \u2014 the one theorem in the entire development that requires Mathlib's cyclotomic machinery. Everything else is built from scratch. The one-line proof shows how much is already in Mathlib: the factorization X^n - 1 = \u220f \u03a6_d is a deep result about algebraic number theory that transfers to the polynomial ring Z[X].",
     "proofId": "kummer-theorem-oq-02",
     "range": {
@@ -79,6 +94,11 @@
       "Nat.choose_succ_succ",
       "push_cast",
       "q=1 evaluation"
+    ],
+    "prerequisites": [
+      "q-analogs and their q\u21921 specialization",
+      "evaluating a polynomial at q=1",
+      "recovering classical binomials [n choose k]"
     ],
     "content": "The evaluation theorems establish that q-analogs are genuine generalizations. The proofs of qBinomial_eval_one and qBinomial_eq_zero use the same Pascal recurrence structure as the definitions, showing definitional coherence. qNumber_add_shift is the key algebraic identity used in the quotient formula proof \u2014 it partitions the geometric sum into two consecutive ranges.",
     "proofId": "kummer-theorem-oq-02",
@@ -102,6 +122,11 @@
       "qNumber_add_shift",
       "polynomial identity"
     ],
+    "prerequisites": [
+      "the q-Pascal identity",
+      "strong induction",
+      "polynomial identities via linear_combination"
+    ],
     "content": "The quotient formula is the most technically demanding theorem in the file. The linear_combination step at line 199-200 is the mathematical heart: it proves the polynomial identity by expressing the goal as a linear combination of the hypotheses with explicit polynomial coefficients. This is the q-analog of the binomial identity C(n+1,k+1) = C(n,k) + C(n,k+1), lifted to polynomial ring arithmetic.",
     "proofId": "kummer-theorem-oq-02",
     "range": {
@@ -123,6 +148,11 @@
       "succ_div_step",
       "Icc product",
       "Finset.prod_filter_mul_prod_filter_not"
+    ],
+    "prerequisites": [
+      "floor division \u230a\u00b7\u230b and its subadditivity",
+      "counting carries in addition",
+      "products over an integer interval (Finset.Icc)"
     ],
     "content": "floorDeficiency is the polynomial-analog of 'number of carries'. Its exponent identity fd + k/d + (n-k)/d = n/d is the key that enables cancellation in the main theorem. The cyclotomic factorization of q-factorials (qFactorial_cyclotomic) is a deep inductive construction: each step n \u2192 n+1 adds exactly the cyclotomic factors for divisors of n+1, matching the step identity succ_div_step.",
     "proofId": "kummer-theorem-oq-02",
@@ -146,6 +176,11 @@
       "Finset.prod_ne_zero",
       "exponent algebra"
     ],
+    "prerequisites": [
+      "cyclotomic factorization of q-factorials",
+      "cancellation in an integral domain",
+      "nonvanishing of cyclotomic polynomials"
+    ],
     "content": "The final cancellation step (mul_left_cancel\u2080) is only valid in an integral domain \u2014 Z[X] satisfies this because Z is an integral domain. This is the key structural requirement: the q-analog theorem requires Z[X] to be an integral domain to cancel the product of cyclotomic polynomials. The theorem works over any integral domain, not just Z. Polynomial.cyclotomic_ne_zero is the crucial fact that cyclotomic polynomials are nonzero.",
     "proofId": "kummer-theorem-oq-02",
     "range": {
@@ -167,6 +202,11 @@
       "p-adic valuation",
       "carries in base p",
       "q=1 specialization"
+    ],
+    "prerequisites": [
+      "the identity \u03a6_p(1) = p",
+      "p-adic valuation and counting carries in base p",
+      "the q\u21921 specialization recovering classical Kummer"
     ],
     "content": "Classical Kummer groups all base-p carries together (summing over digit positions), while q-Kummer separates them (individual exponent per p^j). This separation is the polynomial information that is lost when evaluating at q=1. The theorem qKummer_classical_connection is intentionally simple \u2014 the connection is conceptual (via \u03a6_p(1) = p) rather than requiring a new proof, since the q-Kummer theorem already subsumes everything.",
     "proofId": "kummer-theorem-oq-02",
