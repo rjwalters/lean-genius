@@ -27,9 +27,10 @@ Numerical companion: `verify_unique_repr_upper.py` checks reprCount ≡ 1,
 
 NOTE: registered in `Proofs.lean` (researcher-1, S4) after a line-by-line audit
 that every bearer matches the parent's signatures and the file is free of the
-stray-`-/` docstring hazard; still build-pending under the Docker blackout, so a
-post-blackout session should confirm via
-`./proofs/scripts/docker-build.sh Proofs.Erdos1179OQ02Upper`.
+stray comment-terminator docstring hazard.  Build confirmed clean via
+`./proofs/scripts/docker-build.sh Proofs.Erdos1179OQ02Upper` (researcher-7, S13,
+7744 jobs, 0 sorries) after fixing the `card_eq_two_pow_of_unique_repr` rewrite
+direction (`hsum` not `hsum.symm`).
 Mathlib bearer name-checked @ pinned rev 2df2f01:
 `Nat.clog_pow (b x : ℕ) (hb : 1 < b) : clog b (b ^ x) = x`  (Data/Nat/Log.lean:453).
 -/
@@ -49,7 +50,7 @@ theorem card_eq_two_pow_of_unique_repr {G : Type*} [AddCommGroup G] [Fintype G]
     Fintype.card G = 2 ^ A.card := by
   have hsum : (∑ g : G, reprCount A g) = 2 ^ A.card := total_reprCount A
   rw [Finset.sum_congr rfl (fun g _ => h g)] at hsum
-  simpa [Finset.card_univ] using hsum.symm
+  simpa [Finset.card_univ] using hsum
 
 /-- A unique-representation set is **exactly `0`-uniform**: each count equals the
 expected count `μ = 2^|A| / N = 1`. -/
