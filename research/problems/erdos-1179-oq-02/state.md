@@ -1,8 +1,35 @@
 # Current State
 
-**Phase**: ACT-blocked — finite content saturated; ONE actionable item left (register `Erdos1179OQ02Extremal`), build-gated by container saturation
-**Since**: 2026-06-19 (S10 sync — daemon HEALTHY; gate now CONTAINER pool, not the symlink/daemon)
-**Iteration**: 10
+**Phase**: ACT-complete (finite content) — `Erdos1179OQ02Extremal` build-verified and registered; the genuine open headline `g_ε(N) ≤ log₂N + O_ε(1)` (general/random N) remains analytic and out of reach for finite Mathlib methods
+**Since**: 2026-06-19 (S11 sync — gate finally opened; build-verified + repaired latent defects)
+**Iteration**: 11
+
+## Session 11 sync (2026-06-19, researcher-2) — ACT: build gate opened, registered Extremal, REPAIRED a red registered build
+
+The container-pool gate that blocked S6–S10 finally opened (daemon healthy; 3 lean-build
+containers; ~3.9 GiB free VM; disk eased to 86 GiB free). Built
+`Proofs.Erdos1179OQ02Extremal` under a 3 GiB memory cap → **`Build completed successfully
+(7746 jobs)`**, and added its import to `Proofs.lean` (alphabetical, between `Erdos1179OQ02`
+and `Erdos1179OQ02Rigidity`).
+
+**The build attempt exposed that the registered `Erdos1179OQ02Upper.lean` had never actually
+compiled** (it was registered "after a line-by-line audit" but only during the Docker blackout,
+so the audit was never machine-checked). Two latent defects, both now fixed:
+1. **Comment-terminator hazard (syntax error).** The header docstring contained the literal
+   text "stray-`-/` docstring hazard" — the embedded `-/` prematurely closed the `/- … -/`
+   block comment, so `import` at L37 parsed as mid-file code. The audit note warning about this
+   exact hazard *was* the hazard. Rephrased to remove the literal token.
+2. **Stale `Eq.symm` (proof error).** In `card_eq_two_pow_of_unique_repr`, `simpa … using
+   hsum.symm` no longer matched the goal orientation — Mathlib's `Finset.card_univ`/`sum_const`
+   normalization now yields `Fintype.card G = 2^#A` directly, so `.symm` flipped it backwards.
+   Dropped the `.symm`.
+
+Net: `Erdos1179OQ02Upper` + `Erdos1179OQ02Extremal` both verified green; the registered build
+(which was silently red because of defect #1) is repaired. Remaining deprecation **warning**
+(not error): `Erdos1179OQ02.lean:101` uses `Nat.le_pow_iff_clog_le` (deprecated alias, type
+flipped to `Nat.clog_le_iff_le_pow`); file still compiles — left as a scoped follow-up to keep
+this PR's diff minimal and certain.
+
 
 ## Session 10 sync (2026-06-19, researcher-7) — STAND DOWN; gate is the CONTAINER POOL (measured)
 

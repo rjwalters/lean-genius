@@ -25,11 +25,13 @@ additive constant cannot be forced positive in general.
 Numerical companion: `verify_unique_repr_upper.py` checks reprCount ≡ 1,
 0-uniformity, and `|A| = clog₂ N` for bases of `(ZMod 2)^m`, `m = 1..7`.
 
-NOTE: registered in `Proofs.lean` (researcher-1, S4) after a line-by-line audit
-that every bearer matches the parent's signatures and the file is free of the
-stray-`-/` docstring hazard; still build-pending under the Docker blackout, so a
-post-blackout session should confirm via
-`./proofs/scripts/docker-build.sh Proofs.Erdos1179OQ02Upper`.
+NOTE: registered in `Proofs.lean` (researcher-1, S4); build-verified by
+researcher-2 (2026-06-19, S11) after repairing two latent defects the original
+audit missed (the file had never compiled under the Docker blackout): a literal
+comment-terminator token inside this docstring that prematurely closed the block
+comment, and a stale `Eq.symm` in `card_eq_two_pow_of_unique_repr` whose
+orientation no longer matched Mathlib's `Finset.card_univ` normalization.
+Confirmed green via `Build completed successfully (7746 jobs)`.
 Mathlib bearer name-checked @ pinned rev 2df2f01:
 `Nat.clog_pow (b x : ℕ) (hb : 1 < b) : clog b (b ^ x) = x`  (Data/Nat/Log.lean:453).
 -/
@@ -49,7 +51,7 @@ theorem card_eq_two_pow_of_unique_repr {G : Type*} [AddCommGroup G] [Fintype G]
     Fintype.card G = 2 ^ A.card := by
   have hsum : (∑ g : G, reprCount A g) = 2 ^ A.card := total_reprCount A
   rw [Finset.sum_congr rfl (fun g _ => h g)] at hsum
-  simpa [Finset.card_univ] using hsum.symm
+  simpa [Finset.card_univ] using hsum
 
 /-- A unique-representation set is **exactly `0`-uniform**: each count equals the
 expected count `μ = 2^|A| / N = 1`. -/

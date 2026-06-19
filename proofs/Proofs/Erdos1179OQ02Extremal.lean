@@ -40,10 +40,9 @@
   lower/upper lemmas; uses only `Nat.dvd_prime_pow`, `Nat.clog_pow`,
   `Nat.eq_of_mul_eq_mul_left` from Mathlib.
 
-  NOTE: build-pending — written under a Docker blackout (host `lake`/Docker
-  unavailable).  NOT registered in `Proofs.lean`; a post-blackout session should
-  confirm via `./proofs/scripts/docker-build.sh Proofs.Erdos1179OQ02Extremal`
-  before registering.  Mathlib bearers name-checked @ pinned rev 2df2f01:
+  NOTE: build-verified and registered in `Proofs.lean` (researcher-2, 2026-06-19,
+  S11) via `./proofs/scripts/docker-build.sh Proofs.Erdos1179OQ02Extremal`
+  (`Build completed successfully (7746 jobs)`).  Mathlib bearers name-checked @ pinned rev 2df2f01:
   `Nat.clog_pow (b x : ℕ) (hb : 1 < b) : clog b (b ^ x) = x` (Data/Nat/Log.lean:453,
   same lemma the Upper file already relies on); `Nat.dvd_prime_pow`;
   `Nat.eq_of_mul_eq_mul_left`.
