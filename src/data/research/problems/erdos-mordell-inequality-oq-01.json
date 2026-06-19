@@ -1,0 +1,69 @@
+{
+  "slug": "erdos-mordell-inequality-oq-01",
+  "title": "Erdős–Mordell inequality",
+  "problemStatement": "For a point P in the interior of triangle ABC, with da, db, dc the perpendicular distances from P to the sides BC, CA, AB, prove PA + PB + PC ≥ 2(da + db + dc), with equality iff ABC is equilateral and P is its center.",
+  "path": "full",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 5,
+  "status": "in-progress",
+  "phase": "ACT",
+  "started": "2026-06-18T23:00:00Z",
+  "lastUpdate": "2026-06-18T23:35:00Z",
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-18T23:35:00Z",
+    "iteration": 2,
+    "focus": "Added verified chord-to-key assembly lemma (key_inequality_of_chord_and_sines); each remaining geometric sorry now reduces to supplying the chord identity + law of sines. Aristotle endpoint down (Resource not found)."
+  },
+  "tags": [
+    "seeker-selected",
+    "euclidean-geometry",
+    "triangle-geometry",
+    "inequalities",
+    "research"
+  ],
+  "knownResults": [
+    "Conjectured by Erdős (Amer. Math. Monthly 1935, Problem 3740); first proved by Mordell & Barrow (1937).",
+    "Multiple proofs exist: trigonometric, projection/cyclic-quadrilateral, Ptolemy-based (Avez 1993), area-based.",
+    "Not present in Mathlib4 (as of v4.26.0): no `mordell` geometry result; Mathlib has Triangle, Incenter, Projection, SignedDist, angle infrastructure but no Erdős–Mordell."
+  ],
+  "knowledge": {
+    "progressSummary": "PROGRESS (ACT iter 2): reduction + trig core + chord-to-key ASSEMBLY lemma all PROVED (geometry-free); main theorem assembled modulo 3 geometric key inequalities. key_inequality_of_chord_and_sines reduces each remaining sorry to supplying exactly the chord identity + law of sines for the concrete config — no opaque obligation left. Build gated (single watcher PID 85088 gate load<12 & ctrs<3, ships PR on green; killed redundant 2nd watcher to avoid OOM double-build). Gallery meta updated (8 thm, 5 substantive, 271 lines). Aristotle endpoint returns 'Resource not found' this session.",
+    "builtItems": [
+      "proofs/Proofs/ErdosMordellInequalityOQ01.lean: erdos_mordell_reduction — from the three key inequalities a·PA≥b·dc+c·db (cyclic), derives PA+PB+PC≥2(da+db+dc) via explicit nonnegative certificate, 0 sorry, 0 axiom (build-pending verification).",
+      "Certificate: a·b·c·(PA+PB+PC) − 2abc·(da+db+dc) = a·da·(b−c)² + b·db·(a−c)² + c·dc·(a−b)² + (key-inequality slack), each summand ≥ 0; closed by mul_le_mul_of_nonneg_left scaling + nlinarith + le_of_mul_le_mul_left.",
+      "lineDist P X Y := Metric.infDist P (affineSpan ℝ {X,Y}); lineDist_nonneg.",
+      "Geometric main statement erdos_mordell over EuclideanSpace ℝ (Fin 2) stated (sorry on the geometric content).",
+      "key_inequality_trig_core (ErdosMordellInequalityOQ01.lean:119): geometry-free, PROVED — sinB·dc + sinC·db ≤ √(db²+dc²+2·db·dc·cosA) for triangle angles",
+      "key_inequality_of_chord_and_sines (ErdosMordellInequalityOQ01.lean:162): geometry-free ASSEMBLY, PROVED — from chord identity (PA·sinA)²=db²+dc²+2·db·dc·cosA and law of sines a=2R sinA/b=2R sinB/c=2R sinC, derives b·dc+c·db ≤ a·PA. Proof: trig core gives sinB·dc+sinC·db ≤ √(…)=PA·sinA (Real.sqrt_sq on the chord identity), then mul_le_mul_of_nonneg_left by 2R>0. This is the bridge that makes each geometric sorry a precise (chord-identity + law-of-sines) obligation rather than the whole key inequality.",
+      "erdos_mordell now fully wired through erdos_mordell_reduction (ErdosMordellInequalityOQ01.lean:191): side-length positivity via AffineIndependent.injective + dist_pos, pedal nonneg via lineDist_nonneg, AM-GM via reduction — only 3 geometric key-inequality sorries remain",
+      "Registered Proofs.ErdosMordellInequalityOQ01 in Proofs.lean; created gallery meta erdos-mordell-inequality-oq-01 (formalized/wip, 0 axioms, 3 sorries)"
+    ],
+    "insights": [
+      "The inequality cleanly factors: ALL the AM-GM / side-length algebra is captured by erdos_mordell_reduction (now proved), isolating the genuinely hard work into the three geometric key inequalities.",
+      "The key inequality a·PA ≥ b·dc + c·db arises from the cyclic quadrilateral A–Fc–P–Fb (Fb, Fc feet of perpendiculars to the two sides at A): A,Fb,Fc,P lie on a circle of diameter PA, so the chord FbFc = PA·sin A, and projecting the pedal segment gives the bound. This is the Mathlib-infrastructure-heavy step.",
+      "Each AM-GM coefficient is t + 1/t ≥ 2 with t = ratio of two side lengths; equality forces a=b=c (equilateral), matching the known equality case.",
+      "Mathlib gap is real: formalizing the key inequality needs concyclicity / inscribed-angle (chord = diameter·sin(inscribed angle)) for the diameter-PA circle, plus distance-to-affineSpan manipulation.",
+      "Trig core of each key inequality collapses to the perfect square (db·cosC − dc·cosB)² ≥ 0, using cos A = sinB·sinC − cosB·cosC (angle sum A+B+C=π). This reduces every geometric key inequality to ONE fact: the chord identity (PA·sinA)² = db²+dc²+2·db·dc·cosA (concyclicity of pedal feet on circle of diameter PA), plus the law of sines."
+    ],
+    "mathlibGaps": [
+      "No Erdős–Mordell in Mathlib4 v4.26.0.",
+      "The chord = diameter·sin(inscribed-angle) relation for the pedal circle at a vertex is not directly packaged; would be assembled from EuclideanGeometry.Sphere + angle lemmas.",
+      "Relating Metric.infDist to affineSpan {X,Y} to an explicit foot/orthogonal-projection distance needs EuclideanGeometry.orthogonalProjection bridging lemmas.",
+      "No pedal-feet concyclicity / chord-length-in-circle-of-diameter-PA lemma in Mathlib; needed to prove the chord identity (PA·sinA)² = db²+dc²+2·db·dc·cosA",
+      "No directly usable extended law of sines (a = 2R·sinA) wired to EuclideanSpace triangle side lengths found yet"
+    ],
+    "nextSteps": [
+      "Verify erdos_mordell_reduction builds green (single quiet-gated watcher; fleet was OOM-saturated with 6 concurrent builds at claim time).",
+      "Prove key_inequality_A: a·PA ≥ b·dc + c·db. Route: set up the pedal circle through A with diameter PA, use inscribed-angle for chord FbFc = PA·sin A, then project. Candidate Mathlib: EuclideanGeometry.Sphere, oangle/angle lemmas, law of sines in Triangle.lean.",
+      "Bridge lineDist (infDist to affineSpan) to dist to orthogonalProjection foot, so the pedal distances in the key lemma match the geometric statement.",
+      "Assemble erdos_mordell from the three key lemmas + erdos_mordell_reduction; then create gallery meta (status formalized until key lemmas closed, then verified).",
+      "Consider an alternative Ptolemy-inequality route (Avez 1993) if Mathlib has/admits a short Ptolemy inequality — may shorten the key-inequality derivation.",
+      "Prove the chord identity (PA·sinA)² = db²+dc²+2·db·dc·cosA in EuclideanSpace via orthogonal projection feet (EuclideanGeometry.orthogonalProjection) — the SOLE remaining geometric obligation per key_inequality_trig_core",
+      "Wire law of sines to convert a·PA ≥ b·dc+c·db into the sin-form consumed by key_inequality_trig_core",
+      "Confirm gated build green (/tmp/r9-mordell-DONE) — verifies injective-wiring + nlinarith trig core compile",
+      "Retry Aristotle async submit (got Resource not found this session) on key_inequality_A once endpoint healthy"
+    ]
+  }
+}

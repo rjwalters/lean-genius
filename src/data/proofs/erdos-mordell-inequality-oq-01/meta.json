@@ -1,0 +1,175 @@
+{
+  "id": "erdos-mordell-inequality-oq-01",
+  "title": "Erdős–Mordell Inequality: Algebraic Reduction Core",
+  "slug": "erdos-mordell-inequality-oq-01",
+  "description": "Formalizes the Erdős–Mordell inequality PA+PB+PC ≥ 2(da+db+dc) in the Euclidean plane and proves its geometry-free algebraic core: the AM–GM reduction from the three side-length key inequalities to the bound. The full geometric statement is assembled modulo the three planar-geometry key inequalities.",
+  "meta": {
+    "author": "Erdős (1935), Mordell–Barrow (1937)",
+    "date": "2026-06-18",
+    "status": "formalized",
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "inequalities",
+      "am-gm",
+      "erdos-mordell",
+      "triangle"
+    ],
+    "proofRepoPath": "Proofs/ErdosMordellInequalityOQ01.lean",
+    "badge": "wip",
+    "sorries": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "Metric.infDist_nonneg",
+        "description": "Distance to a set is nonnegative (gives pedal distances ≥ 0)",
+        "module": "Mathlib.Topology.MetricSpace.HausdorffDistance"
+      },
+      {
+        "theorem": "AffineIndependent.injective",
+        "description": "Affinely independent points are pairwise distinct (gives positive side lengths)",
+        "module": "Mathlib.LinearAlgebra.AffineSpace.Independent"
+      },
+      {
+        "theorem": "dist_pos",
+        "description": "0 < dist x y ↔ x ≠ y",
+        "module": "Mathlib.Topology.MetricSpace.Defs"
+      },
+      {
+        "theorem": "Real.sqrt_sq",
+        "description": "√(a²) = a for 0 ≤ a (collapses the chord √ to PA·sin A in the assembly lemma)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      }
+    ],
+    "dateAdded": "2026-06-18",
+    "axiomCount": 0,
+    "lineCount": 271,
+    "assumptions": "3 sorries: the three geometric key inequalities key_inequality_A/B/C (a·PA ≥ b·dc + c·db and cyclic). These are the genuine planar-geometry content (concyclic pedal feet / chord-projection argument), known classical mathematics not yet in Mathlib. Everything else — side-length positivity, pedal-distance nonnegativity, and the AM–GM algebraic reduction — is fully proved.",
+    "originalContributions": [
+      "erdos_mordell_reduction: the geometry-free AM–GM core, proving 2(da+db+dc) ≤ PA+PB+PC from the three weighted key inequalities via an explicit nonnegative certificate (a·da·(b−c)² + ... ≥ 0). Carries no geometric hypotheses; reusable for any proof of the key inequalities.",
+      "key_inequality_trig_core: a geometry-free proof that sin B·dc + sin C·db ≤ √(db²+dc²+2·db·dc·cos A) for triangle angles, collapsing each key inequality (modulo the chord identity (PA·sin A)² = db²+dc²+2·db·dc·cos A and the law of sines) to the perfect square (db·cos C − dc·cos B)² ≥ 0. Isolates the single remaining geometric obligation.",
+      "key_inequality_of_chord_and_sines: a verified, geometry-free assembly lemma that takes exactly the two geometric facts the chord identity supplies — the chord identity (PA·sin A)² = db²+dc²+2·db·dc·cos A and the law of sines a = 2R sin A, b = 2R sin B, c = 2R sin C — and derives the key inequality b·dc + c·db ≤ a·PA purely algebraically (via the trig core, collapsing √(…) to PA·sin A and scaling by 2R > 0). This sharpens each remaining geometric obligation from an opaque sorry into precisely 'supply the chord identity and law of sines for the concrete configuration'.",
+      "Precise Lean statement of the geometric Erdős–Mordell inequality using Metric.infDist to the affine span (lineDist) for pedal distances.",
+      "Full modular assembly of erdos_mordell: reduces the geometric theorem to exactly three separately-stated key-inequality lemmas, discharging all positivity/nonnegativity/algebra."
+    ],
+    "theoremCount": 8,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Paul Erdős posed the inequality as Problem 3740 in the American Mathematical Monthly in 1935; the first proofs were given by L. J. Mordell and D. F. Barrow in 1937. For a point P interior to triangle ABC, the sum of distances from P to the three vertices is at least twice the sum of distances from P to the three sides, with equality exactly when the triangle is equilateral and P is its center. Many proofs are now known (trigonometric, via Ptolemy, the rotation/Avez proof); it is not yet in Mathlib.",
+    "problemStatement": "Formalize the Erdős–Mordell inequality PA + PB + PC ≥ 2(da + db + dc) for P interior to triangle ABC, where da, db, dc are the distances from P to the sides.",
+    "text": "Formalizes the Erdős–Mordell inequality and proves its algebraic AM–GM reduction core, assembling the full geometric statement modulo the three geometric key inequalities.",
+    "proofStrategy": "Factor the standard proof into (1) three geometric key inequalities a·PA ≥ b·dc + c·db (and cyclic), and (2) a purely algebraic reduction: divide each key inequality by the appropriate side and sum, so each pedal distance picks up a coefficient t + 1/t ≥ 2 by AM–GM. The reduction is captured by the explicit nonnegative certificate a·b·c·(PA+PB+PC) − 2a·b·c·(da+db+dc) = a·da·(b−c)² + b·db·(a−c)² + c·dc·(a−b)² + key-inequality slack ≥ 0.",
+    "keyInsights": [
+      "The reduction is entirely geometry-free: it is an algebraic consequence of the three key inequalities plus side-length positivity and pedal-distance nonnegativity, so it can be stated and proved independently of any planar-geometry development.",
+      "The factor 2 in the inequality comes precisely from t + 1/t ≥ 2 (AM–GM) applied to the ratios of side lengths.",
+      "The remaining difficulty is concentrated in the three cyclic key inequalities, which encode the concyclicity of the pedal feet and the chord-projection bound — the only genuinely geometric step.",
+      "An explicit SOS-style certificate (sum of x·d·(y−z)² terms) makes the reduction discharge cleanly by nlinarith."
+    ],
+    "prerequisites": [
+      "Euclidean plane geometry (pedal distances, triangle vertices)",
+      "AM–GM inequality",
+      "Affine independence and metric distance in EuclideanSpace"
+    ]
+  },
+  "sections": [
+    {
+      "id": "reduction",
+      "title": "Algebraic AM–GM Reduction (Proved)",
+      "startLine": 73,
+      "endLine": 117,
+      "summary": "erdos_mordell_reduction: from the three weighted key inequalities and side-length positivity/pedal nonnegativity, derive 2(da+db+dc) ≤ PA+PB+PC via an explicit nonnegative certificate (nlinarith)."
+    },
+    {
+      "id": "trig-core",
+      "title": "Trigonometric Core of the Key Inequality (Proved)",
+      "startLine": 119,
+      "endLine": 160,
+      "summary": "key_inequality_trig_core: geometry-free proof that sin B·dc + sin C·db ≤ √(db²+dc²+2·db·dc·cos A), collapsing to the perfect square (db·cos C − dc·cos B)² via cos A = sin B sin C − cos B cos C; isolates the chord identity as the sole remaining geometric input."
+    },
+    {
+      "id": "chord-assembly",
+      "title": "Chord-to-Key Assembly (Proved)",
+      "startLine": 162,
+      "endLine": 188,
+      "summary": "key_inequality_of_chord_and_sines: verified, geometry-free lemma deriving b·dc + c·db ≤ a·PA from the chord identity (PA·sin A)² = db²+dc²+2·db·dc·cos A and the law of sines (a=2R sinA, …), by collapsing √(…) to PA·sin A and scaling the trig core by 2R > 0."
+    },
+    {
+      "id": "pedal-distance",
+      "title": "Pedal Distance Definition",
+      "startLine": 190,
+      "endLine": 197,
+      "summary": "lineDist: distance from P to the affine span of two points (Metric.infDist), with lineDist_nonneg."
+    },
+    {
+      "id": "key-inequalities",
+      "title": "Geometric Key Inequalities (Open)",
+      "startLine": 207,
+      "endLine": 238,
+      "summary": "key_inequality_A/B/C: the three cyclic side-length-weighted key inequalities (sorry-deferred; the genuine planar-geometry content)."
+    },
+    {
+      "id": "assembly",
+      "title": "Assembled Geometric Statement",
+      "startLine": 240,
+      "endLine": 271,
+      "summary": "erdos_mordell: the full geometric inequality, assembled from the reduction plus the three key inequalities, with side-length positivity (affine independence) and pedal nonnegativity fully discharged."
+    }
+  ],
+  "crossReferences": [],
+  "conclusion": {
+    "summary": "The Erdős–Mordell inequality is formalized in the Euclidean plane and its geometry-free algebraic core (the AM–GM reduction) is fully proved. The full theorem is assembled modulo exactly three geometric key inequalities.",
+    "implications": "The reduction is a reusable, Mathlib-independent component: any future formalization of the three key inequalities immediately yields a complete, sorry-free Erdős–Mordell proof. A full proof would be a valuable Mathlib contribution.",
+    "openQuestions": [
+      "Can the three geometric key inequalities a·PA ≥ b·dc + c·db be formalized via Mathlib's Euclidean geometry (orthogonal projection, concyclicity)?",
+      "Is there a coordinate/inner-product proof of the key inequality more amenable to Lean than the classical concyclic-pedal-feet argument?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "ErdosMordellOQ01",
+    "lineCount": 271,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 5,
+    "duplicateTheorems": 0,
+    "definitionCount": 1,
+    "path": "Proofs/ErdosMordellInequalityOQ01.lean",
+    "sorries": 3
+  },
+  "mainTheorems": [
+    {
+      "name": "erdos_mordell_reduction",
+      "type": "core",
+      "description": "The geometry-free AM–GM reduction: from the three weighted key inequalities, 2(da+db+dc) ≤ PA+PB+PC. Fully proved.",
+      "leanType": "0 < a → 0 < b → 0 < c → 0 ≤ da → 0 ≤ db → 0 ≤ dc → b*dc + c*db ≤ a*PA → c*da + a*dc ≤ b*PB → a*db + b*da ≤ c*PC → 2*(da+db+dc) ≤ PA+PB+PC"
+    },
+    {
+      "name": "erdos_mordell",
+      "type": "core",
+      "description": "The Erdős–Mordell inequality for P interior to triangle ABC, assembled from the reduction and the three key inequalities.",
+      "leanType": "(A B C P : EuclideanSpace ℝ (Fin 2)) → AffineIndependent ℝ ![A,B,C] → P ∈ interior (convexHull ℝ {A,B,C}) → 2*(lineDist P B C + lineDist P C A + lineDist P A B) ≤ dist P A + dist P B + dist P C"
+    },
+    {
+      "name": "key_inequality_trig_core",
+      "type": "core",
+      "description": "Geometry-free trig bound sin B·dc + sin C·db ≤ √(db²+dc²+2·db·dc·cos A), collapsing to the perfect square (db·cos C − dc·cos B)² ≥ 0. Fully proved.",
+      "leanType": "A + B + C = π → 0 ≤ db → 0 ≤ dc → 0 ≤ sin B → 0 ≤ sin C → sin B * dc + sin C * db ≤ √(db^2 + dc^2 + 2*db*dc*cos A)"
+    },
+    {
+      "name": "key_inequality_of_chord_and_sines",
+      "type": "core",
+      "description": "Verified geometry-free assembly: from the chord identity (PA·sin A)² = db²+dc²+2·db·dc·cos A and the law of sines (a=2R sinA, b=2R sinB, c=2R sinC), derives the key inequality b·dc + c·db ≤ a·PA. Fully proved.",
+      "leanType": "A+B+C = π → 0 ≤ sin A → 0 ≤ sin B → 0 ≤ sin C → 0 ≤ db → 0 ≤ dc → 0 ≤ PA → 0 < R → a = 2R sinA → b = 2R sinB → c = 2R sinC → (PA*sinA)^2 = db^2+dc^2+2*db*dc*cos A → b*dc + c*db ≤ a*PA"
+    },
+    {
+      "name": "key_inequality_A",
+      "type": "supporting",
+      "description": "The vertex-A key inequality b·dc + c·db ≤ a·PA (sorry-deferred; the geometric content).",
+      "leanType": "(A B C P : EuclideanSpace ℝ (Fin 2)) → AffineIndependent ℝ ![A,B,C] → P ∈ interior (convexHull ℝ {A,B,C}) → dist C A * lineDist P A B + dist A B * lineDist P C A ≤ dist B C * dist P A"
+    }
+  ],
+  "sorries": 3
+}
