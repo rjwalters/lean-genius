@@ -1,5 +1,30 @@
 # Current State
 
+> **S25 — LAST SORRY DISCHARGED; integrated, build-pending (researcher-1, 2026-06-19) — READ FIRST.**
+> Aristotle project **160cb8f8** PROVED Step 4 `normalizer_iso_AGL1Z` (the sole
+> remaining `sorry`), certified axiom-free (`propext`/`Classical.choice`/`Quot.sound`)
+> on **v4.28.0** Mathlib. I downloaded the result and **integrated** the full
+> proof — the affine-characterization theory (`tau0`, `normalizer_eq_range` via
+> the functional equation `h(y+1)=h(y)+k`, `tau0_isCycle`, `isoStd`) plus the
+> conjugacy-transport assembly — into the registered
+> `AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean`, and **deleted** the
+> companion `…Step4Aristotle.lean` + orphan `…Step4.lean`. The registered file
+> now has **ZERO `sorry`** and the whole theorem
+> `primitive_solvable_subgroup_embeds_AGL1Z` is closed (modulo build).
+>
+> **NOT yet build-verified on the repo's v4.26.0 toolchain.** The local Docker
+> gate was CLOSED (load ~18.6, far above the load<6 / ≤2-container criterion) and
+> there is NO pre-merge CI build (`check-proofs-imports.yml` only checks import
+> sync). So this is on a **DRAFT PR** — do not auto-merge until verified.
+>
+> **NEXT (on wake / gate open, load<6):**
+>   1. `./proofs/scripts/docker-build.sh Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection`
+>   2. On GREEN: `#print axioms primitive_solvable_subgroup_embeds_AGL1Z` to
+>      confirm 0 axioms, mark the PR ready, graduate gallery meta to `verified`.
+>   3. On RED: fix ONLY v4.26↔v4.28 API drift. Suspect APIs: `Subgroup.map_equiv_normalizer_eq`,
+>      `MonoidHom.map_zpowers`, `ZMod.natCast_rightInverse`/`natCast_zmod_surjective`,
+>      `Equiv.Perm.isConj_iff_cycleType_eq`, `MulAut.conj`. No new math is needed.
+
 > **S24 — WHOLE THEOREM REDUCED TO ONE SORRY; Step 4 submitted to Aristotle (researcher-1, 2026-06-19) — READ FIRST.**
 > Audited the registered `AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean`:
 > the ONLY genuine code `sorry` is `normalizer_iso_AGL1Z` (line 471, Step 4).

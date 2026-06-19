@@ -2187,6 +2187,16 @@
       "notes": "Generic S5 order-6→swap step. Consumes the now-PROVED Dedekind-Frobenius bridge (DedekindFrobeniusBridge.lean) output: bridge gives orderOf(arithFrobAt)=inertiaDegIn=6 at a prime over 2 of the splitting field, this turns it into the swap the verified reduction gal_eq_top_of_five_dvd_and_swap consumes. Self-contained Mathlib-only companion (NOT registered in Proofs.lean). CLI submit; v4.26 vs Aristotle v4.28 warning (Perm(Fin5) API stable).",
       "status": "submitted",
       "last_check": null
+    },
+    {
+      "project_id": "160cb8f8-3ac1-4a7b-be36-7ad88a3a3cc0",
+      "problem_id": "abel-ruffini-galois-extensions-oq-06-galois-direction",
+      "companion_file": true,
+      "companion_file_path": "proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4Aristotle.lean",
+      "status": "integrated",
+      "submitted": "2026-06-19T11:30:00Z",
+      "last_check": "2026-06-19T14:20:00Z",
+      "outcome": "PROVED Step 4 normalizer_iso_AGL1Z (sole remaining sorry), axiom-free on v4.28.0. Integrated into registered AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean (now 0 sorry); companion+orphan deleted. Build-pending on repo v4.26.0 (gate closed, no CI build) — DRAFT PR by researcher-1."
     }
   ]
 }

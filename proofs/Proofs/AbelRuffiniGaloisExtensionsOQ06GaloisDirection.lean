@@ -464,11 +464,224 @@ theorem centralizer_pcycle_eq_zpowers
     the recovered conjugation map `h ↦ (a,u)` is checked multiplicative
     (a group hom, not just a set bijection). Certifies Step 4 sound before
     a Docker-up ACT discharges its ~80–150 LOC. -/
+/-! ### Step-4 supporting theory (affine characterization of the normalizer)
+
+    The lemmas below develop the affine action used to identify
+    `N_{S_p}(⟨τ₀⟩)` with `AGL(1, p)` for the standard translation `τ₀ : x ↦ x+1`,
+    then transport the result to an arbitrary `p`-cycle `σ` by conjugacy. They
+    were proved by Aristotle (project `160cb8f8`, axiom-free: `propext`,
+    `Classical.choice`, `Quot.sound`) and discharge the last `sorry`. -/
+
+/-- The standard translation `x ↦ x + 1`, realised as `AGL1Z.toPerm ⟨1, 1⟩`. -/
+noncomputable def tau0 (p : ℕ) [Fact p.Prime] : Equiv.Perm (ZMod p) :=
+  AGL1Z.toPerm p ⟨1, 1⟩
+
+local notation "τ₀" => tau0 p
+
+/-- Evaluation of an affine permutation. -/
+@[simp] lemma toPerm_apply (g : AGL1Z p) (x : ZMod p) :
+    AGL1Z.toPerm p g x = g.trans + (g.scale : ZMod p) * x := rfl
+
+/-- `τ₀` is the `+1` translation. -/
+lemma tau0_apply (x : ZMod p) : τ₀ x = x + 1 := by
+  show AGL1Z.toPerm p (⟨1, 1⟩ : AGL1Z p) x = x + 1
+  rw [toPerm_apply]
+  simp only [Units.val_one, one_mul]
+  ring
+
+/-- `τ₀⁻¹` is the `-1` translation. -/
+lemma tau0_inv_apply (x : ZMod p) : τ₀⁻¹ x = x - 1 := by
+  apply (τ₀).injective
+  rw [show τ₀ (τ₀⁻¹ x) = x from (τ₀).apply_symm_apply x, tau0_apply]
+  ring
+
+/-- Natural powers of `τ₀` are translations by the corresponding integer. -/
+lemma tau0_natPow (n : ℕ) :
+    τ₀ ^ n = AGL1Z.toPerm p ⟨(n : ZMod p), 1⟩ := by
+  induction n with
+  | zero =>
+      simp only [pow_zero, Nat.cast_zero]
+      symm
+      rw [show (⟨(0 : ZMod p), 1⟩ : AGL1Z p) = 1 from rfl]
+      exact map_one (AGL1Z.toPerm p)
+  | succ k ih =>
+      rw [pow_succ, ih, show τ₀ = AGL1Z.toPerm p ⟨1, 1⟩ from rfl, ← map_mul]
+      congr 1
+      apply AGL1Z.ext
+      · simp only [AGL1Z.mul_trans, Units.val_one]
+        push_cast
+        ring
+      · simp only [AGL1Z.mul_scale, mul_one]
+
+/-- Every translation lies in `⟨τ₀⟩`. -/
+lemma transl_mem (c : ZMod p) :
+    AGL1Z.toPerm p ⟨c, 1⟩ ∈ Subgroup.zpowers τ₀ := by
+  haveI : NeZero p := ⟨(Fact.out : p.Prime).pos.ne'⟩
+  rw [Subgroup.mem_zpowers_iff]
+  refine ⟨(c.val : ℤ), ?_⟩
+  rw [zpow_natCast, tau0_natPow, ZMod.natCast_rightInverse c]
+
+/-- Integer powers of `τ₀` act by translation. -/
+lemma tau0_zpow_apply (k : ℤ) : ∀ x : ZMod p, (τ₀ ^ k) x = x + (k : ZMod p) := by
+  induction k using Int.induction_on with
+  | zero => intro x; simp
+  | succ k ih =>
+      intro x
+      rw [zpow_add_one, Equiv.Perm.mul_apply, tau0_apply, ih]
+      push_cast
+      ring
+  | pred k ih =>
+      intro x
+      rw [zpow_sub_one, Equiv.Perm.mul_apply, tau0_inv_apply, ih]
+      push_cast
+      ring
+
+/-- Conjugating `τ₀` by an affine permutation gives a translation by the scale. -/
+lemma conj_tau0 (g : AGL1Z p) :
+    AGL1Z.toPerm p g * τ₀ * (AGL1Z.toPerm p g)⁻¹
+      = AGL1Z.toPerm p ⟨(g.scale : ZMod p), 1⟩ := by
+  have hu : (g.scale : ZMod p) * ((g.scale⁻¹ : (ZMod p)ˣ) : ZMod p) = 1 := by
+    rw [← Units.val_mul, mul_inv_cancel, Units.val_one]
+  rw [show τ₀ = AGL1Z.toPerm p ⟨1, 1⟩ from rfl, ← map_inv, ← map_mul, ← map_mul]
+  congr 1
+  apply AGL1Z.ext
+  · simp only [AGL1Z.mul_trans, AGL1Z.mul_scale, AGL1Z.inv_trans, mul_one]
+    linear_combination (-g.trans) * hu
+  · simp only [AGL1Z.mul_scale, AGL1Z.inv_scale, mul_one]
+    rw [mul_inv_cancel]
+
+/-- Conjugating an element of `⟨τ₀⟩` by an affine permutation stays in `⟨τ₀⟩`. -/
+lemma conj_mem (g : AGL1Z p) (n : Equiv.Perm (ZMod p))
+    (hn : n ∈ Subgroup.zpowers τ₀) :
+    AGL1Z.toPerm p g * n * (AGL1Z.toPerm p g)⁻¹ ∈ Subgroup.zpowers τ₀ := by
+  obtain ⟨j, rfl⟩ := Subgroup.mem_zpowers_iff.mp hn
+  have hconj : AGL1Z.toPerm p g * τ₀ ^ j * (AGL1Z.toPerm p g)⁻¹
+      = (AGL1Z.toPerm p g * τ₀ * (AGL1Z.toPerm p g)⁻¹) ^ j := by
+    simp only [← MulAut.conj_apply]
+    exact map_zpow _ _ _
+  rw [hconj, conj_tau0]
+  exact Subgroup.zpow_mem _ (transl_mem _) j
+
+/-- **Affine characterization (standard translation).**
+    The normalizer of `⟨τ₀⟩` in `S_p` is exactly the affine group. -/
+theorem normalizer_eq_range :
+    (Subgroup.zpowers τ₀).normalizer = (AGL1Z.toPerm p).range := by
+  haveI : NeZero p := ⟨(Fact.out : p.Prime).pos.ne'⟩
+  apply le_antisymm
+  · -- normalizer ≤ range : every normalizing permutation is affine
+    intro h hh
+    have hmem : h * τ₀ * h⁻¹ ∈ Subgroup.zpowers τ₀ :=
+      (Subgroup.mem_normalizer_iff.mp hh τ₀).mp (Subgroup.mem_zpowers τ₀)
+    obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp hmem
+    -- the functional equation `h(y+1) = h(y) + k`
+    have hrec : ∀ y : ZMod p, h (y + 1) = h y + (k : ZMod p) := by
+      intro y
+      have hx : (h * τ₀ * h⁻¹) (h y) = (τ₀ ^ k) (h y) := by rw [hk]
+      rw [Equiv.Perm.mul_apply, Equiv.Perm.mul_apply,
+        show h⁻¹ (h y) = y from h.symm_apply_apply y,
+        tau0_apply, tau0_zpow_apply] at hx
+      exact hx
+    -- `k ≠ 0`, else `h` is not injective
+    have hu0 : (k : ZMod p) ≠ 0 := by
+      intro h0
+      have e1 : h ((0 : ZMod p) + 1) = h 0 := by rw [hrec 0, h0, add_zero]
+      have : (0 : ZMod p) + 1 = 0 := h.injective e1
+      exact one_ne_zero (by linear_combination this : (1 : ZMod p) = 0)
+    -- promote `k` to a unit
+    have hunit : IsUnit (k : ZMod p) := hu0.isUnit
+    -- affine formula by induction on `ℕ`, then surjectivity of the cast
+    have hnat : ∀ n : ℕ, h ((n : ZMod p)) = h 0 + (k : ZMod p) * (n : ZMod p) := by
+      intro n
+      induction n with
+      | zero => simp
+      | succ m ih =>
+          have hcast : ((m + 1 : ℕ) : ZMod p) = (m : ZMod p) + 1 := by push_cast; ring
+          rw [hcast, hrec, ih]
+          ring
+    have hall : ∀ x : ZMod p, h x = h 0 + (k : ZMod p) * x := by
+      intro x
+      obtain ⟨n, rfl⟩ := ZMod.natCast_zmod_surjective x
+      exact hnat n
+    -- conclude `h = toPerm ⟨h 0, hunit.unit⟩`
+    refine ⟨⟨h 0, hunit.unit⟩, ?_⟩
+    apply Equiv.ext
+    intro x
+    simp only [toPerm_apply, hunit.unit_spec]
+    exact (hall x).symm
+  · -- range ≤ normalizer : affine maps normalize the translation group
+    rintro h ⟨g, rfl⟩
+    rw [Subgroup.mem_normalizer_iff]
+    intro n
+    constructor
+    · intro hn
+      exact conj_mem g n hn
+    · intro hn
+      have hback := conj_mem g⁻¹ _ hn
+      rwa [show AGL1Z.toPerm p g⁻¹
+            * (AGL1Z.toPerm p g * n * (AGL1Z.toPerm p g)⁻¹)
+            * (AGL1Z.toPerm p g⁻¹)⁻¹ = n from by
+        rw [map_inv]; group] at hback
+
+/-- `τ₀` is a `p`-cycle: support is everything, hence order `p`. -/
+lemma tau0_support_card : (τ₀).support.card = p := by
+  haveI : NeZero p := ⟨(Fact.out : p.Prime).pos.ne'⟩
+  have hsupp : (τ₀).support = Finset.univ := by
+    rw [Finset.eq_univ_iff_forall]
+    intro x
+    rw [Equiv.Perm.mem_support, tau0_apply]
+    intro hcon
+    exact one_ne_zero (by linear_combination hcon : (1 : ZMod p) = 0)
+  rw [hsupp, Finset.card_univ, ZMod.card]
+
+lemma tau0_orderOf : orderOf τ₀ = p := by
+  apply orderOf_eq_prime
+  · rw [tau0_natPow, show ((p : ℕ) : ZMod p) = 0 from ZMod.natCast_self p,
+      show (⟨(0 : ZMod p), 1⟩ : AGL1Z p) = 1 from rfl]
+    exact map_one (AGL1Z.toPerm p)
+  · intro hcon
+    have : τ₀ (0 : ZMod p) = (0 : ZMod p) := by rw [hcon]; rfl
+    rw [tau0_apply] at this
+    exact one_ne_zero (by linear_combination this : (1 : ZMod p) = 0)
+
+lemma tau0_isCycle : (τ₀).IsCycle := by
+  have hprime : (orderOf τ₀).Prime := by rw [tau0_orderOf]; exact (Fact.out : p.Prime)
+  have hsupp_lt : (τ₀).support.card < 2 * orderOf τ₀ := by
+    rw [tau0_support_card, tau0_orderOf]
+    have := (Fact.out : p.Prime).pos
+    omega
+  exact Equiv.Perm.isCycle_of_prime_order hprime hsupp_lt
+
+/-- `AGL1Z p ≃* N(⟨τ₀⟩)` for the standard translation. -/
+noncomputable def isoStd : AGL1Z p ≃* (Subgroup.zpowers τ₀).normalizer :=
+  (MonoidHom.ofInjective (AGL1Z.toPerm_injective p)).trans
+    (MulEquiv.subgroupCongr normalizer_eq_range.symm)
+
 theorem normalizer_iso_AGL1Z
-    (σ : Equiv.Perm (ZMod p)) (_hσ : σ.IsCycle) (_hσ_card : σ.support.card = p) :
+    (σ : Equiv.Perm (ZMod p)) (hσ : σ.IsCycle) (hσ_card : σ.support.card = p) :
     ∃ φ : (Subgroup.zpowers σ).normalizer →* AGL1Z p,
       Function.Injective φ ∧ Function.Surjective φ := by
-  sorry
+  -- `σ` and `τ₀` are conjugate (same cycle type `{p}`)
+  have hconj : IsConj σ τ₀ := by
+    rw [Equiv.Perm.isConj_iff_cycleType_eq, hσ.cycleType, tau0_isCycle.cycleType,
+      hσ_card, tau0_support_card]
+  obtain ⟨c, hc⟩ := isConj_iff.mp hconj
+  set e : Equiv.Perm (ZMod p) ≃* Equiv.Perm (ZMod p) := MulAut.conj c with he
+  have hes : e σ = τ₀ := by rw [he, MulAut.conj_apply, hc]
+  -- `e` maps `⟨σ⟩` onto `⟨τ₀⟩`
+  have hmapz : Subgroup.map e.toMonoidHom (Subgroup.zpowers σ)
+      = Subgroup.zpowers τ₀ := by
+    rw [MonoidHom.map_zpowers]
+    congr 1
+  -- normalizers correspond under `e`
+  have hN : Subgroup.map e.toMonoidHom (Subgroup.zpowers σ).normalizer
+      = (Subgroup.zpowers τ₀).normalizer := by
+    rw [Subgroup.map_equiv_normalizer_eq (Subgroup.zpowers σ) e, hmapz]
+  -- assemble `N(⟨σ⟩) ≃* N(⟨τ₀⟩) ≃* AGL1Z`
+  let isoConj : (Subgroup.zpowers σ).normalizer ≃* (Subgroup.zpowers τ₀).normalizer :=
+    (Subgroup.equivMapOfInjective _ e.toMonoidHom
+      e.injective).trans (MulEquiv.subgroupCongr hN)
+  let φe : (Subgroup.zpowers σ).normalizer ≃* AGL1Z p := isoConj.trans isoStd.symm
+  exact ⟨φe.toMonoidHom, φe.injective, φe.surjective⟩
 
 /-- **Step 5 (H ≤ N_{S_p}(P)).** Since the Sylow-p subgroup `P` is
     normal in `H` and its image under `ι = H.subtype ∘ P.subtype` is the
