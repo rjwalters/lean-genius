@@ -1,0 +1,140 @@
+[
+  {
+    "id": "e653oq01-ann-01",
+    "proofId": "erdos-653-oq-01",
+    "range": {
+      "startLine": 39,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "The Collinear Configuration: Universal Elementary Witness",
+    "content": "`collinearConfig n` is the n-point set (0,0),(1,0),…,(n-1,0) on the x-axis, built as `(Finset.range n).image (fun i => ![(i:ℝ), 0])`. `collinearConfig_card` proves it has exactly n distinct points (the embedding i ↦ (i,0) is injective). Because g(n) is a maximum over ALL n-point configurations, every lower bound on g comes from exhibiting ONE good configuration; the collinear arrangement is the simplest such witness and the only construction this file needs. Its single virtue is that distances are transparent: the distance between the i-th and j-th points is exactly |i-j|.",
+    "mathContext": "$\\mathrm{collinearConfig}(n) = \\{(0,0),(1,0),\\dots,(n-1,0)\\}$, $|\\mathrm{collinearConfig}(n)| = n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distinct distances",
+      "extremal configuration",
+      "Finset.image injectivity"
+    ],
+    "prerequisites": [
+      "Finset.range and Finset.image",
+      "points as Fin 2 → ℝ",
+      "maximum over configurations"
+    ]
+  },
+  {
+    "id": "e653oq01-ann-02",
+    "proofId": "erdos-653-oq-01",
+    "range": {
+      "startLine": 61,
+      "endLine": 94
+    },
+    "type": "insight",
+    "title": "g as a Supremum: Lower Bounds via le_csSup",
+    "content": "`gSet n` is the set of all achievable distinct-R-value counts for n-point configurations, and `g_eq_sSup` establishes g(n) = sSup (gSet n). `gSet_bddAbove` shows this set is bounded above (by n, since there are only n points), so the conditionally-complete-lattice machinery applies. The payoff is `le_csSup`: to prove g(n) ≥ k it suffices to exhibit a single configuration realizing k distinct R-values. This converts every lower bound in the file into a construction-plus-count, and is the structural reason the collinear witness suffices.",
+    "mathContext": "$g(n) = \\sup\\, \\mathrm{gSet}(n)$, with $\\mathrm{gSet}(n)$ bounded above; hence $k \\in \\mathrm{gSet}(n) \\Rightarrow k \\le g(n)$ (`le_csSup`).",
+    "significance": "high",
+    "relatedConcepts": [
+      "conditionally complete lattice",
+      "sSup / le_csSup",
+      "BddAbove"
+    ],
+    "prerequisites": [
+      "supremum of a set of naturals",
+      "le_csSup and BddAbove",
+      "definition of g(n)"
+    ]
+  },
+  {
+    "id": "e653oq01-ann-03",
+    "proofId": "erdos-653-oq-01",
+    "range": {
+      "startLine": 95,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "g(n) ≥ 1: The First Proved Lower Bound",
+    "content": "`g_ge_one` proves g(n) ≥ 1 for n ≥ 1. In the parent file this was only asserted in a docstring; here it is witnessed by any nonempty configuration (`numDistinctRValues_pos`), needing no distance values at all — a single point already has a well-defined R-value, so at least one distinct R-value exists. Trivial mathematically, but it is the base case of the lower-bound ladder and the first place le_csSup is applied to the collinear witness.",
+    "mathContext": "$n \\ge 1 \\Rightarrow g(n) \\ge 1$.",
+    "significance": "medium",
+    "relatedConcepts": [
+      "nonempty configuration",
+      "base case",
+      "le_csSup application"
+    ],
+    "prerequisites": [
+      "g as supremum",
+      "nonempty Finset",
+      "positivity of a cardinality"
+    ]
+  },
+  {
+    "id": "e653oq01-ann-04",
+    "proofId": "erdos-653-oq-01",
+    "range": {
+      "startLine": 110,
+      "endLine": 218
+    },
+    "type": "technique",
+    "title": "Counting Distinct Distances from a Collinear Point",
+    "content": "The technical heart of the ⌈n/2⌉ bound. `euclidDist_collinearPoint` verifies that the Euclidean distance between the i-th and j-th x-axis points is |i-j|. Then `absDiff_image_eq` and `maxCount_image_card` show that the set of distances {|i-j| : j ≠ i} from the i-th point has cardinality max(i, n-1-i) — the farther of the two endpoints determines how many distinct gaps appear. `distinctDistCount_collinearConfig` packages this as R(xᵢ) = max(i, n-1-i) for the collinear configuration.",
+    "mathContext": "For collinear points, $\\mathrm{dist}(x_i, x_j) = |i-j|$ and $R(x_i) = \\#\\{|i-j| : j \\ne i\\} = \\max(i,\\, n-1-i)$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "Euclidean distance",
+      "Finset.image cardinality",
+      "absolute-difference counting"
+    ],
+    "prerequisites": [
+      "EuclideanSpace distance formula",
+      "Finset.image and card_image_of_injOn",
+      "max of two naturals"
+    ]
+  },
+  {
+    "id": "e653oq01-ann-05",
+    "proofId": "erdos-653-oq-01",
+    "range": {
+      "startLine": 219,
+      "endLine": 268
+    },
+    "type": "insight",
+    "title": "g(n) ≥ ⌈n/2⌉ from the Collinear Configuration",
+    "content": "`numDistinctRValues_collinearConfig` assembles the per-point counts R(xᵢ) = max(i, n-1-i): as i ranges over 0,…,n-1 these values are n-1, n-2, …, ⌈n/2⌉, …, n-2, n-1, taking exactly ⌈n/2⌉ distinct values. `g_ge_half` then concludes g(n) ≥ (n+1)/2 by le_csSup on the collinear witness. This is the file's strongest elementary bound — still a factor of 2 short of the conjectured (1-o(1))n, which the symmetric collinear construction provably cannot reach.",
+    "mathContext": "The multiset $\\{\\max(i, n-1-i) : 0 \\le i < n\\}$ has $\\lceil n/2 \\rceil$ distinct values, so $g(n) \\ge \\lceil n/2 \\rceil = \\lfloor (n+1)/2 \\rfloor$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ceiling of n/2",
+      "symmetric distance profile",
+      "le_csSup"
+    ],
+    "prerequisites": [
+      "distinct-distance counts per point",
+      "image cardinality of a symmetric function",
+      "Nat division (n+1)/2"
+    ]
+  },
+  {
+    "id": "e653oq01-ann-06",
+    "proofId": "erdos-653-oq-01",
+    "range": {
+      "startLine": 269,
+      "endLine": 293
+    },
+    "type": "concept",
+    "title": "Exact Values: Where Lower Meets Upper",
+    "content": "`g_zero`, `g_one`, `g_two`, `g_three` pin down g(0)=0, g(1)=1, g(2)=1, g(3)=2 — the first formalized exact values of g. Each is a one-line `omega` corollary combining a lower bound from this file (g_ge_one or g_ge_half) with an upper bound from the parent (g_le_n or the sharper g_le_n_sub_one). The bounds coincide only at these smallest arguments: g(4) already escapes, with g_le_n_sub_one giving g(4) ≤ 3 but g_ge_half giving only g(4) ≥ 2, so pinning g(4)=3 needs a certified 4-point construction.",
+    "mathContext": "$g(0)=0,\\; g(1)=1,\\; g(2)=1,\\; g(3)=2$; the elementary bounds give only $2 \\le g(4) \\le 3$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "exact extremal values",
+      "matching bounds",
+      "omega arithmetic"
+    ],
+    "prerequisites": [
+      "g_ge_one / g_ge_half",
+      "parent upper bounds g_le_n / g_le_n_sub_one",
+      "omega tactic on Nat"
+    ]
+  }
+]
