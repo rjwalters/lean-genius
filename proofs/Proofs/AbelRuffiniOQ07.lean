@@ -62,6 +62,8 @@
 import Mathlib.GroupTheory.Perm.Cycle.Type
 import Mathlib.GroupTheory.SpecificGroups.Alternating
 import Mathlib.GroupTheory.OrderOfElement
+import Mathlib.FieldTheory.PolynomialGaloisGroup
+import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
 
 open Equiv Equiv.Perm Polynomial
@@ -126,6 +128,71 @@ theorem f_monic : f.Monic := by
     (`subgroup_eq_top_of_swap_mem`, `prime_degree_dvd_card`) applicable. -/
 theorem natDegree_prime : Nat.Prime f.natDegree := by
   rw [f_natDegree]; norm_num
+
+/-! ## The order-divisibility input from the *real* Galois group
+
+The witnesses below (`frob2`, `frob3`) model Frobenius elements as abstract cycle-type
+representatives in `S₅`, and the capstone `gal_eq_top_of_frobenii` assembles `S₅` from
+them *modulo* the Dedekind–Frobenius bridge that places those representatives inside the
+genuine Galois group.  One half of that bridge — the order-`5` input `5 ∣ |Gal|`, which
+`frob3` supplies abstractly — can be obtained **directly and unconditionally from
+irreducibility**, with no Frobenius/Dedekind input at all:
+
+Mathlib's `Polynomial.Gal.prime_degree_dvd_card` states that for a polynomial of prime
+degree over a characteristic-zero field, the degree divides the cardinality of its Galois
+group (the Galois group acts transitively on the roots, so the orbit-stabiliser theorem
+forces `deg ∣ |Gal|`).  For `f = X⁵ − X − 1` this gives `5 ∣ |Gal(f)|` *for the actual
+`Polynomial.Gal` of `f`* the instant we know `f` is irreducible — replacing the abstract
+`frob3` half of the bridge by a purely algebraic fact.  Only the *transposition* input
+(`frob2 ^ 3`, from the cycle type mod `2`) then remains genuinely Frobenius-dependent. -/
+
+/-- **The `5 ∣ |Gal|` input from irreducibility, for the real Galois group.**
+    If `f = X⁵ − X − 1` is irreducible over `ℚ`, then `5` divides the order of its
+    genuine Galois group `f.Gal` — because a prime-degree irreducible polynomial over a
+    characteristic-zero field has a Galois group acting transitively on its roots
+    (`Polynomial.Gal.prime_degree_dvd_card`).  This discharges the order-divisibility
+    half of the corrected proof *without* the Dedekind–Frobenius bridge: where `frob3`
+    supplies `5 ∣ |G|` for an abstract subgroup `G ≤ S₅`, this supplies it for the actual
+    `f.Gal`, modulo only the (separately classical) irreducibility of `f`. -/
+theorem five_dvd_card_gal (hirr : Irreducible f) : 5 ∣ Nat.card f.Gal := by
+  have h := Polynomial.Gal.prime_degree_dvd_card hirr natDegree_prime
+  rwa [f_natDegree] at h
+
+/-! ## Toward discharging `Irreducible f`: the reduction mod 3
+
+`five_dvd_card_gal` is conditional on `Irreducible f`.  Classically that hypothesis is
+established by **reduction mod 3**: `X⁵ − X − 1` stays degree-`5` and *irreducible* over
+the finite field `𝔽₃ = ZMod 3`, and a monic integer polynomial whose mod-`p` reduction is
+irreducible of the same degree is irreducible over `ℚ` (`Monic.irreducible_of_irreducible_map`
+to lift `𝔽₃ → ℤ`, then Gauss's lemma `ℤ → ℚ`).
+
+Irreducibility of a monic quintic over a field has two obstructions to rule out
+(`Polynomial.Monic.irreducible_iff_lt_natDegree_lt`, with `natDegree / 2 = 2`):
+a **linear** factor (a root) and a **quadratic** factor.  We discharge the *linear* half
+here, completely and by `decide`: `X⁵ − X − 1` has **no root in `𝔽₃`**.  The arithmetic
+core (`no_root_mod3`) is a finite check over the three elements of `ZMod 3`; the polynomial
+restatement (`f3_no_root`) is the no-linear-factor input to the irreducibility criterion.
+
+The remaining quadratic obstruction — that none of the three monic irreducible quadratics
+over `𝔽₃` (`X²+1`, `X²+X+2`, `X²+2X+2`) divides `f` — is the only piece left before
+`five_dvd_card_gal` becomes unconditional.  It resists `decide` (polynomial `%ₘ` does not
+kernel-reduce through `Finsupp`), so it is left as documented future work, best handled by
+Aristotle (a known finite-field computation) or a hand enumeration of the nine monic
+quadratics. -/
+
+/-- The reduction of `X⁵ − X − 1` to `(ZMod 3)[X] = 𝔽₃[X]`. -/
+noncomputable def f3 : (ZMod 3)[X] := X ^ 5 - X - 1
+
+/-- **Arithmetic core of the linear-factor obstruction.**
+    `X⁵ − X − 1` has no zero in `𝔽₃`: a finite check over the three field elements
+    (`0 ↦ −1`, `1 ↦ −1`, `2 ↦ 2⁵−2−1 = 29 ≡ 2`), none of which is `0`. -/
+theorem no_root_mod3 : ∀ x : ZMod 3, x ^ 5 - x - 1 ≠ 0 := by decide
+
+/-- **The no-linear-factor input mod 3.**
+    `f` reduced mod `3` has no root in `𝔽₃`, hence no degree-`1` factor — the first of the
+    two obstructions in `Monic.irreducible_iff_lt_natDegree_lt` for the quintic `f3`. -/
+theorem f3_no_root (x : ZMod 3) : f3.eval x ≠ 0 := by
+  simpa [f3] using no_root_mod3 x
 
 /-! ## A concrete Frobenius witness at `p = 2`
 
