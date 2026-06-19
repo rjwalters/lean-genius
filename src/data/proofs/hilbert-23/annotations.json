@@ -16,7 +16,11 @@
       "variational methods",
       "research programs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the calculus of variations",
+      "Hilbert's 1900 list of problems",
+      "variational methods across analysis"
+    ]
   },
   {
     "id": "ann-lagrangian",
@@ -35,7 +39,11 @@
       "extremization",
       "Euler-Lagrange"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "functions of position and velocity",
+      "the action/energy functional",
+      "extremization of functionals"
+    ]
   },
   {
     "id": "ann-action",
@@ -54,7 +62,11 @@
       "Hamilton's principle",
       "extremum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "functionals (maps from curves to numbers)",
+      "Hamilton's principle of stationary action",
+      "extrema of a functional"
+    ]
   },
   {
     "id": "ann-fundamental-lemma",
@@ -73,7 +85,11 @@
       "distribution theory",
       "weak formulation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "test functions (compactly supported)",
+      "integration by parts",
+      "the fundamental lemma (vanishing integral ⇒ vanishing integrand)"
+    ]
   },
   {
     "id": "ann-euler-lagrange",
@@ -92,7 +108,11 @@
       "extremum",
       "differential equations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the first variation of the action",
+      "the fundamental lemma of the calculus of variations",
+      "deriving the Euler–Lagrange ODE"
+    ]
   },
   {
     "id": "ann-geodesics",
@@ -111,7 +131,11 @@
       "differential geometry",
       "Riemannian manifolds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arc length as a functional",
+      "Riemannian metrics and manifolds",
+      "the Euler–Lagrange equation for length"
+    ]
   },
   {
     "id": "ann-mechanics",
@@ -130,7 +154,11 @@
       "Hamilton's principle",
       "conservation laws"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Lagrangian L = T − V",
+      "Hamilton's principle of least action",
+      "recovering Newton's second law / conservation laws"
+    ]
   },
   {
     "id": "ann-direct-methods",
@@ -149,7 +177,11 @@
       "weak convergence",
       "Sobolev spaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lower semicontinuity and weak convergence",
+      "Sobolev spaces and coercivity",
+      "Tonelli's direct method for existence of minimizers"
+    ]
   },
   {
     "id": "ann-pontryagin",
@@ -168,6 +200,10 @@
       "Hamiltonian",
       "costate equations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "optimal control problems",
+      "the control Hamiltonian and costate equations",
+      "the Pontryagin maximum principle"
+    ]
   }
 ]
