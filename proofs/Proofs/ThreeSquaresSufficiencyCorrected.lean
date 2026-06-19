@@ -17,56 +17,75 @@
   `DirichletWitnessProperty` as stated is a FALSE proposition — reducing the
   axiom to it is vacuous, since the hypothesis can never be discharged.
 
-  This file fixes the architecture by splitting the open content into TWO
-  hypotheses, each of which is SATISFIABLE (numerically certified in
-  `verify_corrected_split.py`):
+  This file splits the open content into TWO hypotheses:
 
     * `DirichletWitnessNe3` — the Dirichlet witness, RESTRICTED to the residue
-      classes `m % 8 ∈ {1,2,5,6}` where it actually holds; and
+      classes `m % 8 ∈ {1,2,5,6}`, asking for a multiplier `d` with `1 ≤ d ≤ 2`
+      and a prime `p = d·m − 1` with `−d` a quadratic residue mod `p`; and
     * `Residue3Property` — for `m % 8 = 3` (and `m > 3`), the existence of a
       prime deficit `mm = (m − t²)/2` with `mm % 4 ≠ 3`, handled by Fermat's
       two-square theorem via `ThreeSquaresResidue3.three_sq_of_residue3_prime`.
 
-  Everything else — the `4`-power descent, the small cases (`n ≤ 1` and the
-  lone exceptional core `n = 3 = 1²+1²+1²`), and the assembly via
-  `dirichlet_key_lemma` — is discharged here with NO new axioms and NO `sorry`,
-  reusing only lemmas already proved in `Proofs.ThreeSquares` and
-  `Proofs.ThreeSquaresResidue3`. The witness branch is verbatim the proven
-  branch of `ThreeSquaresSufficiency.three_sq_of_dirichlet_witness`; the only
-  additions are the mod-8 case split and the residue-3 route.
+  The `4`-power descent, the small cases (`n ≤ 1` and the lone exceptional core
+  `n = 3 = 1²+1²+1²`), and the assembly via `dirichlet_key_lemma` are discharged
+  here with NO new axioms and NO `sorry`, reusing only lemmas already proved in
+  `Proofs.ThreeSquares` and `Proofs.ThreeSquaresResidue3`. Both companions ARE now
+  registered in `Proofs.lean`, so the conditional theorems below are
+  kernel-verified.
 
-  CONSEQUENCE FOR THE AXIOM BUDGET. `not_excluded_form_is_sum_three_sq` follows
-  from `dirichlet_key_lemma` together with the two SATISFIABLE hypotheses above.
-  Unlike #24443, both hypotheses can in principle be discharged (the first by
-  Dirichlet primes in AP + quadratic reciprocity on the four good residues, the
-  second by Dirichlet primes in AP for the deficit), so this is a genuine route
-  to eliminating the sufficiency axiom rather than a reduction to a false claim.
+  ⚠ CORRECTNESS DISCLOSURE (S14, 2026-06-19, researcher-12).
+  `DirichletWitnessNe3` AS STATED IS A FALSE PROPOSITION, and the residue-class
+  `{1,2,5,6}` branch of `three_sq_of_corrected_witnesses` is therefore VACUOUS —
+  the very `#24443` defect this file was meant to repair, merely relocated.
 
-  NOTE: build-pending (Docker blackout — daemon unresponsive this session). The
-  earlier elaboration bug is now FIXED: the Dirichlet witness `Prop` states the
-  QR condition instance-free as `IsSquare ((-d : ℤ) : ZMod p)` (the old
-  `legendreSym p (-d) = 1` form failed instance synthesis, since `legendreSym`
-  needs a `Fact (Nat.Prime p)` instance that a `Nat.Prime p` *conjunct* cannot
-  supply). The consumer converts back to `legendreSym = 1` for `dirichlet_key_lemma`
-  via `legendreSym.eq_one_iff`, reusing the proven in-file pattern at
-  `ThreeSquares.lean:1191–1223`. Still NOT registered in `Proofs.lean`; a
-  Docker-available session should build both companions, then register
-  `Proofs.ThreeSquaresResidue3` + `Proofs.ThreeSquaresSufficiencyCorrected`.
+  Why: the def hard-caps the multiplier at `d ≤ 2` (to match `dirichlet_key_lemma`,
+  which is proved ONLY for `d ∈ {1,2}` — its reconstruction step `interval_cases d`
+  closes `x² + d·y² = d·m − 1` into three squares only for `d = 1` (`m = x²+y²+1²`)
+  and `d = 2` (`m = y²+k²+(k+1)²`)). But for `m % 8 ∈ {1,2,5,6}` neither `m − 1`
+  nor `2m − 1` need be prime: a brute-force check (sympy) finds NO `d ≤ 2` witness
+  for `610` of the `999` 4-free cores `m < 2000` in these classes (smallest:
+  `m = 5, 13, 17, 25, …`). The witness is satisfiable only with UNBOUNDED `d`
+  (minimal required `d` grows — e.g. `d = 70` at `m = 1166`). The numerical
+  "certification" in `verify_corrected_split.py` actually scanned `d ∈ 1..299`
+  (`witness_exists_ne3`, `range(1,300)`), so it validated a DIFFERENT, unbounded-`d`
+  proposition than the `d ≤ 2` Lean `def` below.
+
+  Net: there is NO genuine elimination route through this construction. The
+  elementary slice-Minkowski + `z = 0` descent of `dirichlet_key_lemma` is
+  INTRINSICALLY limited to `d ≤ 2` (both the volume bound `√2·π > 4` for the
+  binary form `x² + d·y²` and the explicit `d ∈ {1,2}` reconstruction), while
+  satisfiability of the Dirichlet witness demands unbounded `d`. Closing the
+  `{1,2,5,6}` classes requires a `d`-uniform argument — Gauss's reduction theory
+  of ternary quadratic forms, or the Davenport–Cassels lemma (rational ⟹ integral
+  representability of `x²+y²+z²`) together with the local–global solvability of
+  `x²+y²+z² = m`. None of this is in Mathlib (≫ 500 lines of new foundational
+  infrastructure); this is the documented blocker for `zsqrtd-neg-two-oq-02`.
+
+  By contrast `Residue3Property` / `Residue3PropertyOdd` (the `m ≡ 3 (mod 8)`
+  branch) IS satisfiable and sound: the only `m` lacking an odd-`t` prime deficit
+  is `m = 3` itself, which the `3 < m` hypothesis excludes (and `n = 3` is the
+  explicit base case). Proving it still needs primes in a thin (quadratic-in-`t`)
+  sequence, beyond a direct appeal to Mathlib's `Nat.forall_exists_prime_gt_and_modEq`.
 -/
 import Proofs.ThreeSquares
 import Proofs.ThreeSquaresResidue3
 
 namespace ThreeSquares
 
-/-- The Dirichlet witness property, RESTRICTED to the residue classes where it
-holds. For every `n > 1` that is not of excluded form, is not divisible by `4`,
-and is **not** `≡ 3 (mod 8)`, there is a multiplier `d` and a prime `p = d·n − 1`
+/-- The Dirichlet witness property for the residue classes `m % 8 ∈ {1,2,5,6}`:
+for every `n > 1` not of excluded form, not divisible by `4`, and **not**
+`≡ 3 (mod 8)`, there is a multiplier `d` with `0 < d ≤ 2` and a prime `p = d·n − 1`
 with `−d` a quadratic residue mod `p`.
 
-This is the satisfiable part of the monolithic `DirichletWitnessProperty` of
-`Proofs.ThreeSquaresSufficiency`; the excluded class `m ≡ 3 (mod 8)`, on which
-the witness is provably unsatisfiable (audit #24529 / obstruction #24614), is
-handled separately by `Residue3Property`. -/
+⚠ THIS PROPOSITION IS FALSE as stated (see the file header for the full audit):
+the `d ≤ 2` cap makes it unsatisfiable — `610` of the `999` 4-free cores `m < 2000`
+in these classes (smallest `m = 5, 13, 17, 25`) have neither `m − 1` nor `2m − 1`
+prime. It is kept at `d ≤ 2` only because the consumer `dirichlet_key_lemma` is
+proved exclusively for `d ∈ {1,2}`. Consequently the `{1,2,5,6}` branch of
+`three_sq_of_corrected_witnesses` below is VACUOUS, and this `def` must NOT be
+treated as a dischargeable obligation. A satisfiable witness needs unbounded `d`,
+which in turn needs a `d`-uniform key lemma (ternary-form reduction /
+Davenport–Cassels) that does not yet exist — the genuine open content. -/
 def DirichletWitnessNe3 : Prop :=
   ∀ {m : ℕ}, ¬IsExcludedForm m → ¬(4 ∣ m) → m % 8 ≠ 3 → 1 < m →
     ∃ d p : ℕ, 0 < d ∧ d ≤ 2 ∧ p = d * m - 1 ∧ Nat.Prime p ∧ IsSquare ((-d : ℤ) : ZMod p)
@@ -86,9 +105,15 @@ def Residue3Property : Prop :=
 
 /-- **Corrected sufficiency from the split witnesses.**
 
-Assuming the two satisfiable hypotheses `DirichletWitnessNe3` and
-`Residue3Property`, every natural number that is not of the excluded form
-`4^a (8b + 7)` is a sum of three integer squares.
+Assuming the two hypotheses `DirichletWitnessNe3` and `Residue3Property`, every
+natural number that is not of the excluded form `4^a (8b + 7)` is a sum of three
+integer squares.
+
+⚠ This implication is sound and kernel-checked, but its `n % 8 ∈ {1,2,5,6}`
+branch is VACUOUS: `DirichletWitnessNe3` is a false proposition (the `d ≤ 2` cap
+is unsatisfiable — see the file header). So this theorem does NOT, on its own,
+provide a route to discharge `ThreeSquares.not_excluded_form_is_sum_three_sq`; it
+records the proof architecture and isolates the genuine open input.
 
 The proof is strong induction on `n`:
 
