@@ -16,7 +16,11 @@
       "derivatives",
       "zeros"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "entire functions of a complex variable",
+      "derivatives and iterated derivatives",
+      "discrete subsets of the complex plane"
+    ]
   },
   {
     "id": "ann-e229-discrete",
@@ -35,7 +39,11 @@
       "discrete set",
       "accumulation point"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "accumulation points and the derived set",
+      "isolated points and discreteness",
+      "limit points in the complex plane"
+    ]
   },
   {
     "id": "ann-e229-entire",
@@ -54,7 +62,11 @@
       "holomorphic",
       "analytic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex differentiability and holomorphic functions",
+      "analytic functions on the complex plane",
+      "the exponential and trigonometric functions"
+    ]
   },
   {
     "id": "ann-e229-transcendental",
@@ -73,7 +85,11 @@
       "essential singularity",
       "power series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomials over the complex numbers",
+      "power series expansions of entire functions",
+      "differentiating entire functions repeatedly"
+    ]
   },
   {
     "id": "ann-e229-question",
@@ -92,7 +108,11 @@
       "iteratedDeriv",
       "zeros"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "iterated derivatives of entire functions",
+      "transcendental entire functions",
+      "sets with no finite limit point"
+    ]
   },
   {
     "id": "ann-e229-identity",
@@ -111,7 +131,11 @@
       "analytic continuation",
       "countable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the identity theorem for analytic functions",
+      "limit points of zero sets",
+      "analytic continuation"
+    ]
   },
   {
     "id": "ann-e229-barth-schneider",
@@ -130,7 +154,11 @@
       "function theory",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Weierstrass products",
+      "prescribing zeros of derivatives",
+      "axiomatized results in formalization"
+    ]
   },
   {
     "id": "ann-e229-answer",
@@ -148,7 +176,11 @@
       "resolution",
       "positive answer"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Barth-Schneider theorem",
+      "existence of transcendental entire functions",
+      "positive resolution of an Erdős problem"
+    ]
   },
   {
     "id": "ann-e229-explicit",
@@ -166,7 +198,11 @@
       "explicit construction",
       "positive integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sequences of positive integers indexing derivatives",
+      "simultaneous construction of a function and its derivative orders",
+      "vanishing of higher derivatives on discrete sets"
+    ]
   },
   {
     "id": "ann-e229-weierstrass",
@@ -185,7 +221,11 @@
       "canonical product",
       "zero set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Weierstrass factorization theorem",
+      "canonical products with prescribed zeros",
+      "entire functions vanishing on a discrete set"
+    ]
   },
   {
     "id": "ann-e229-deriv-zeros",
@@ -203,6 +243,10 @@
       "specific derivative",
       "integration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the k-th iterated derivative of an entire function",
+      "extending Weierstrass factorization to derivatives",
+      "antidifferentiation of entire functions"
+    ]
   }
 ]
