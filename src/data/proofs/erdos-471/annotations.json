@@ -16,7 +16,11 @@
       "additive number theory",
       "prime decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vinogradov's three primes theorem",
+      "iterative closure operations on sets of primes",
+      "Erdős and Graham's problem collection"
+    ]
   },
   {
     "id": "ann-e471-defs",
@@ -35,7 +39,11 @@
       "monotone sequence",
       "ascending chain"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set-union closure operations and their monotonicity",
+      "unions of ascending chains of sets",
+      "representing a number as a sum of three distinct primes"
+    ]
   },
   {
     "id": "ann-e471-questions",
@@ -54,7 +62,11 @@
       "unbounded growth",
       "infinitude of primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinality of infinite sets (Set.ncard)",
+      "the infinitude of primes",
+      "universally and existentially quantified statements"
+    ]
   },
   {
     "id": "ann-e471-vinogradov",
@@ -74,7 +86,11 @@
       "Goldbach conjecture",
       "Helfgott"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vinogradov's three primes theorem",
+      "the Hardy-Littlewood circle method and exponential sums",
+      "Goldbach's conjecture and Helfgott's odd Goldbach result"
+    ]
   },
   {
     "id": "ann-e471-solution",
@@ -93,7 +109,11 @@
       "strong induction",
       "Classical.choose"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Classical.choose and the axiom of choice for existentials",
+      "strong induction on the natural numbers",
+      "constructing finite sets via Finset.filter on Finset.range"
+    ]
   },
   {
     "id": "ann-e471-examples",
@@ -112,7 +132,11 @@
       "norm_num",
       "interval_cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primality testing of small integers",
+      "Lean tactics norm_num and interval_cases",
+      "parity of sums of odd primes"
+    ]
   },
   {
     "id": "ann-e471-properties",
@@ -131,7 +155,11 @@
       "induction",
       "set invariant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "structural induction on natural numbers",
+      "subset relations and Set.subset_union_left",
+      "preservation of invariants under closure steps"
+    ]
   },
   {
     "id": "ann-e471-summary",
@@ -150,6 +178,10 @@
       "summary theorem",
       "formalization pattern"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logical conjunction and anonymous constructors in Lean",
+      "packaging multiple lemmas into a single theorem",
+      "the proved results StrongerQuestion, QSeq_monotone, and QSeq_primes"
+    ]
   }
 ]
