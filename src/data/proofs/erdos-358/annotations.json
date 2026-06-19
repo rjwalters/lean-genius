@@ -16,7 +16,11 @@
       "additive-basis",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "integer sequences",
+      "consecutive sums",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-358-intseq",
@@ -34,7 +38,11 @@
       "sequences",
       "monotonicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strictly increasing sequences",
+      "monotonicity",
+      "Lean 4 structures"
+    ]
   },
   {
     "id": "ann-358-count",
@@ -52,7 +60,11 @@
       "counting-functions",
       "sum-representations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive sums",
+      "Set.ncard cardinality",
+      "Finset.Icc interval sums"
+    ]
   },
   {
     "id": "ann-358-naturals",
@@ -70,7 +82,11 @@
       "natural-numbers",
       "odd-divisors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural numbers sequence",
+      "odd divisors",
+      "omega tactic"
+    ]
   },
   {
     "id": "ann-358-formula",
@@ -88,7 +104,11 @@
       "arithmetic-series",
       "gauss-sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic series",
+      "Gauss sum formula",
+      "triangular numbers"
+    ]
   },
   {
     "id": "ann-358-classic",
@@ -106,7 +126,11 @@
       "powers-of-two",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sums of consecutive integers",
+      "powers of two",
+      "odd divisibility"
+    ]
   },
   {
     "id": "ann-358-odd-divisors",
@@ -124,7 +148,11 @@
       "divisor-function",
       "odd-numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisor function",
+      "odd divisors",
+      "consecutive-sum bijection"
+    ]
   },
   {
     "id": "ann-358-strong",
@@ -142,7 +170,11 @@
       "limits",
       "tendsto"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limits of sequences",
+      "Filter.Tendsto",
+      "Filter.atTop"
+    ]
   },
   {
     "id": "ann-358-weak",
@@ -160,7 +192,11 @@
       "eventually",
       "lower-bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "eventually filter",
+      "lower bounds",
+      "power-of-two obstruction"
+    ]
   },
   {
     "id": "ann-358-egami",
@@ -177,7 +213,11 @@
     "relatedConcepts": [
       "trivial-bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "trivial representations",
+      "single-term sums",
+      "lower bounds"
+    ]
   },
   {
     "id": "ann-358-power2",
@@ -195,7 +235,11 @@
       "powers-of-two",
       "uniqueness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powers of two",
+      "factorization of consecutive sums",
+      "odd factors"
+    ]
   },
   {
     "id": "ann-358-primes",
@@ -213,7 +257,11 @@
       "prime-numbers",
       "erdos-moser"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime number sequence",
+      "Erdos-Moser conjecture",
+      "limsup"
+    ]
   },
   {
     "id": "ann-358-density",
@@ -231,7 +279,11 @@
       "density",
       "prime-sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "upper density",
+      "representation counting function",
+      "consecutive prime sums"
+    ]
   },
   {
     "id": "ann-358-related",
@@ -249,7 +301,11 @@
       "problem-356",
       "convex-sumsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite analogue (Problem 356)",
+      "convex sumsets",
+      "convolution of indicators"
+    ]
   },
   {
     "id": "ann-358-status",
@@ -267,7 +323,11 @@
       "open-problems",
       "erdos-quote"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open problems",
+      "odd divisor characterization",
+      "power-of-two obstruction"
+    ]
   },
   {
     "id": "ann-358-main",
@@ -285,6 +345,10 @@
       "summary",
       "implications"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logical implication",
+      "strong-implies-weak",
+      "law of excluded middle"
+    ]
   }
 ]
