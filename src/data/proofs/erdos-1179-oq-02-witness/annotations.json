@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-vacuity-gap",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 1, "endLine": 51 },
+    "type": "context",
+    "title": "The Vacuity Gap in the OQ-02 Sibling Edifice",
+    "content": "The module docstring frames Erdős #1179 OQ-02 — whether the multiplicative Erdős–Hall bound g_ε(N) = (1+o_ε(1))·log₂N sharpens to an additive error g_ε(N) ≤ log₂N + O_ε(1) — and identifies the gap it closes. The sibling files (Erdos1179OQ02 lower bound, Upper, Extremal, Rigidity) each prove optimality or rigidity ONLY under the hypothesis that a unique-representation set exists: a finset A with reprCount A g = 1 for every g. None of them exhibit such a set, so the whole chain could be describing the empty class of groups. This file discharges that hypothesis constructively.",
+    "mathContext": "Conditional theorems assume $\\forall g,\\; F_A(g) = 1$ where $F_A(g) = \\#\\{S \\subseteq A : \\sum_{x\\in S} x = g\\}$; without a witness the antecedent might be unsatisfiable.",
+    "significance": "context",
+    "relatedConcepts": ["subset-sum representations", "ε-uniform sets", "vacuous truth", "conditional theorems"],
+    "prerequisites": ["finite abelian groups", "Erdős–Hall probabilistic method"]
+  },
+  {
+    "id": "ann-basis-construction",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 60, "endLine": 67 },
+    "type": "definition",
+    "title": "The Standard Basis of (Fin m → ZMod 2)",
+    "content": "basisVec m i is the i-th indicator vector Pi.single i 1 — the function that is 1 at coordinate i and 0 elsewhere. stdBasis m is the finset image of these over all i ∈ Fin m, i.e. the standard basis of the elementary abelian 2-group G = (Fin m → ZMod 2). Choosing 𝔽₂ as the scalar field is what makes subset-sum a bijection onto the whole group: over ZMod 2, adding a vector twice cancels, so each subset of basis vectors sums to a distinct indicator vector.",
+    "mathContext": "$e_i = \\mathrm{Pi.single}\\,i\\,1 \\in (\\mathbb{F}_2)^m$, and $\\mathrm{stdBasis}\\,m = \\{e_0,\\dots,e_{m-1}\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["elementary abelian 2-group", "indicator vectors", "standard basis", "ZMod 2"],
+    "prerequisites": ["Pi.single", "Finset.image", "vector spaces over 𝔽₂"]
+  },
+  {
+    "id": "ann-injective",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 69, "endLine": 80 },
+    "type": "technique",
+    "title": "Distinctness and Cardinality of the Basis",
+    "content": "basisVec_injective proves the m indicator vectors are pairwise distinct: if e_i = e_j then evaluating at coordinate i forces Pi.single_eq_same (= 1) to equal Pi.single_eq_of_ne (= 0), contradicting 1 ≠ 0 in ZMod 2. stdBasis_card then gives |stdBasis m| = m via card_image_of_injective over univ. This cardinality m is one of the two numbers the later counting argument equates.",
+    "mathContext": "$e_i \\ne e_j$ for $i \\ne j$ because $e_i(i) = 1 \\ne 0 = e_j(i)$; hence $|\\mathrm{stdBasis}\\,m| = m$.",
+    "significance": "supporting",
+    "relatedConcepts": ["injectivity", "Finset.card_image_of_injective", "Pi.single_eq_of_ne"],
+    "prerequisites": ["function injectivity", "image cardinality"]
+  },
+  {
+    "id": "ann-card-group",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "technique",
+    "title": "Order of the Group: N = 2^m",
+    "content": "card_pi_zmod_two computes |(Fin m → ZMod 2)| = 2^m using Fintype.card_fun (the cardinality of a function type is base^exponent) together with ZMod.card and Fintype.card_fin. This is the order N of the ambient group and the second number — alongside |stdBasis m| = m — that the global counting argument uses to force uniqueness.",
+    "mathContext": "$|(\\mathbb{F}_2)^m| = |\\mathbb{F}_2|^m = 2^m = N$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fintype.card_fun", "function type cardinality", "group order"],
+    "prerequisites": ["cardinality of finite function types"]
+  },
+  {
+    "id": "ann-spanning",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 86, "endLine": 113 },
+    "type": "insight",
+    "title": "Constructive Spanning: Every g Is Hit At Least Once",
+    "content": "stdBasis_spanning exhibits an explicit subset-sum representation for every g, giving reprCount ≥ 1. The witness subset is the image under basisVec of the support T = {i : g i = 1}. Its sum is computed coordinatewise: Finset.sum_apply pushes evaluation inside the sum, each term basisVec m i evaluated at j is the indicator (if j = i then 1 else 0), and Finset.sum_ite_eq collapses the sum to whether j ∈ T. A ZMod 2 case split (g j = 0 or g j = 1, decided by `decide`) confirms the result equals g. Membership in the reprCount fiber then gives card_pos ⟹ reprCount ≥ 1.",
+    "mathContext": "For $g$, the subset $\\{e_i : g_i = 1\\}$ sums to $\\sum_{i : g_i = 1} e_i = g$, so $F_{\\mathrm{stdBasis}}(g) \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": ["spanning set", "support of a vector", "Finset.sum_ite_eq", "coordinatewise computation"],
+    "prerequisites": ["Pi.single_apply", "Finset.sum_apply", "subset-sum over 𝔽₂"]
+  },
+  {
+    "id": "ann-unique-repr",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 115, "endLine": 130 },
+    "type": "insight",
+    "title": "Uniqueness via Global Counting — the Main Witness",
+    "content": "stdBasis_unique_repr is the heart of the file: it upgrades spanning (reprCount ≥ 1) to exact equality reprCount = 1 with no per-element analysis. The parent total_reprCount gives Σ_g reprCount = 2^|A|; stdBasis_card and card_pi_zmod_two give 2^|A| = 2^m = |G| = Σ_g 1. Since reprCount ≥ 1 termwise and the two sums over g are equal, Finset.sum_eq_sum_iff_of_le forces every term to be exactly 1. This is the unique-representation witness the conditional sibling theorems assume but never construct.",
+    "mathContext": "$\\sum_g F_A(g) = 2^{|A|} = 2^m = |G| = \\sum_g 1$ with $F_A(g) \\ge 1 \\Rightarrow F_A(g) = 1\\ \\forall g$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_eq_sum_iff_of_le", "double counting", "pigeonhole equality", "unique-representation set"],
+    "prerequisites": ["total subset-sum count Σ = 2^|A|", "termwise sum equality"]
+  },
+  {
+    "id": "ann-exists",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 132, "endLine": 136 },
+    "type": "concept",
+    "title": "Existential Packaging for the Sibling Files",
+    "content": "exists_unique_repr_set repackages stdBasis_unique_repr as ∃ A, ∀ g, reprCount A g = 1, witnessed by ⟨stdBasis m, stdBasis_unique_repr m⟩. This is the clean, import-ready lemma the Upper/Extremal/Rigidity files can use to discharge their existence hypothesis and convert their conditional theorems into unconditional ones for (Fin m → ZMod 2).",
+    "mathContext": "$\\exists A : \\mathrm{Finset}\\,(\\mathbb{F}_2)^m,\\ \\forall g,\\ F_A(g) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["existential quantification", "hypothesis discharge", "modular proof reuse"],
+    "prerequisites": ["existential introduction"]
+  },
+  {
+    "id": "ann-clog",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 138, "endLine": 142 },
+    "type": "technique",
+    "title": "Size Meets the Lower Bound: |A| = ⌈log₂N⌉",
+    "content": "stdBasis_card_eq_clog shows the witness has size exactly the ceiling logarithm ⌈log₂N⌉ = Nat.clog 2 N. The proof rewrites N = 2^m, applies Nat.clog_pow 2 m (valid since 1 < 2) to get clog 2 (2^m) = m, and matches stdBasis_card = m. So the standard basis meets the trivial lower bound g_ε(N) ≥ log₂N with equality — the size cannot be smaller.",
+    "mathContext": "$\\lceil\\log_2 N\\rceil = \\mathrm{clog}_2(2^m) = m = |\\mathrm{stdBasis}\\,m|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.clog", "ceiling logarithm", "lower bound tightness"],
+    "prerequisites": ["Nat.clog_pow", "integer logarithms"]
+  },
+  {
+    "id": "ann-eps-uniform-zero",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 144, "endLine": 155 },
+    "type": "insight",
+    "title": "Exact 0-Uniformity: Every Count Equals the Mean μ = 1",
+    "content": "stdBasis_epsUniform_zero proves the standard basis is EXACTLY 0-uniform (IsEpsUniform (stdBasis m) 0). The expected count μ = expectedReprCount |A| N = 2^|A| / N = 2^m / 2^m = 1 (computed via div_self after casting to ℝ), and reprCount = 1 from stdBasis_unique_repr, so |reprCount − μ| = 0 ≤ 0. This is the strongest possible uniformity: not just within a (1±ε) band, but exact equality for every group element, deterministically rather than with high probability.",
+    "mathContext": "$\\mu = 2^{|A|}/N = 2^m/2^m = 1$, and $F_A(g) = 1$, so $|F_A(g) - \\mu| = 0 \\le 0$.",
+    "significance": "key",
+    "relatedConcepts": ["ε-uniform subset-sums", "expected representation count", "deterministic vs probabilistic existence"],
+    "prerequisites": ["expectedReprCount", "div_self", "real-number casting"]
+  },
+  {
+    "id": "ann-additive-zero",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 157, "endLine": 170 },
+    "type": "insight",
+    "title": "Additive Constant Zero Is Attained Deterministically",
+    "content": "additive_constant_zero_attained bundles the two consequences: for every m there is a subset A of (Fin m → ZMod 2) that is exactly 0-uniform AND has size exactly ⌈log₂N⌉, witnessed by ⟨stdBasis m, stdBasis_epsUniform_zero m, stdBasis_card_eq_clog m⟩. So on the infinite family of orders N = 2^m, the conjectured additive sharpening g_ε(N) ≤ log₂N + O_ε(1) holds with additive constant 0 (and ε = 0). This certifies the additive constant can never be forced positive in general, and makes the conditional sibling optimality/rigidity theorems non-vacuous.",
+    "mathContext": "$\\exists A,\\ \\mathrm{IsEpsUniform}\\,A\\,0 \\wedge |A| = \\lceil\\log_2 N\\rceil$, so $g_0(2^m) = \\log_2(2^m)$ exactly.",
+    "significance": "key",
+    "relatedConcepts": ["additive sharpening", "extremal construction", "Erdős #1179 OQ-02", "deterministic witness"],
+    "prerequisites": ["ε-uniformity", "ceiling logarithm sizing"]
+  }
+]
