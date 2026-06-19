@@ -61,7 +61,11 @@
       "Additive bases",
       "Subset sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Subset sums",
+      "Additive bases",
+      "Asymptotic density"
+    ]
   },
   {
     "id": "erdos-246-birch",
@@ -80,7 +84,11 @@
       "Completeness",
       "Coprime bases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Coprime integers",
+      "Complete sequences",
+      "Power sets"
+    ]
   },
   {
     "id": "erdos-246-cassels",
@@ -99,7 +107,11 @@
       "Logarithmic growth",
       "General criterion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counting functions",
+      "Logarithmic density",
+      "Asymptotic growth rates"
+    ]
   },
   {
     "id": "erdos-246-davenport",
@@ -118,7 +130,11 @@
       "Finite restrictions",
       "Uniform bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Bounded parameters",
+      "Complete sequences",
+      "Uniform bounds"
+    ]
   },
   {
     "id": "erdos-246-quantitative",
@@ -137,7 +153,11 @@
       "Tower functions",
       "Quantitative improvement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Tower (iterated) exponentials",
+      "Asymptotic upper bounds",
+      "Big-O notation"
+    ]
   },
   {
     "id": "erdos-246-yu",
@@ -156,7 +176,11 @@
       "Efficient representation",
       "Recent results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic notation",
+      "Logarithmic functions",
+      "Distinct subset sums"
+    ]
   },
   {
     "id": "erdos-246-related",
@@ -175,7 +199,11 @@
       "Binary representation",
       "Uniqueness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Zeckendorf representation",
+      "Binary representation",
+      "Fibonacci numbers"
+    ]
   },
   {
     "id": "erdos-246-non-complete",
@@ -194,6 +222,10 @@
       "Growth rate",
       "Density of gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometric growth rates",
+      "Natural density",
+      "Distinct power sums"
+    ]
   }
 ]
