@@ -16,7 +16,11 @@
       "binomial-coefficients",
       "disproof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős problems and conjectures in combinatorial number theory",
+      "central binomial coefficients C(2n,n)",
+      "what it means for a conjecture to be disproved by a counterexample"
+    ]
   },
   {
     "id": "ann-e397-imports",
@@ -35,7 +39,11 @@
       "finset"
     ],
     "mathContext": "See annotation content for formal details of imports",
-    "prerequisites": []
+    "prerequisites": [
+      "the Mathlib library and its import system",
+      "Nat.centralBinom and Finset products in Lean",
+      "finite sets and products over Finsets"
+    ]
   },
   {
     "id": "ann-e397-central-binom",
@@ -54,7 +62,11 @@
       "combinatorics",
       "lattice-paths"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the binomial coefficient C(2n,n) = (2n)!/(n!)²",
+      "Lean abbreviations and Nat.centralBinom",
+      "combinatorial interpretations such as lattice-path counts"
+    ]
   },
   {
     "id": "ann-e397-solution-set",
@@ -73,7 +85,11 @@
       "product",
       "finiteness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "disjoint finite sets of natural numbers",
+      "products of central binomial coefficients over a Finset",
+      "equality of two such products defining a solution pair"
+    ]
   },
   {
     "id": "ann-e397-somani-c",
@@ -91,7 +107,11 @@
       "parametric-family",
       "quadratic-formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the quadratic parameter c(a) = 8a² + 8a + 1",
+      "parametric families of solutions",
+      "factorial structure of central binomials"
+    ]
   },
   {
     "id": "ann-e397-main-axiom",
@@ -110,7 +130,11 @@
       "infinite-set",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axioms in Lean and stating a result as Infinite",
+      "Somani's parametric family yielding a distinct solution per a ≥ 2",
+      "countably infinite sets of solutions"
+    ]
   },
   {
     "id": "ann-e397-somani-lhs-rhs",
@@ -128,7 +152,11 @@
       "solution-family",
       "parametric"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the index sets M = {a, 2a+2, c} and N = {a+1, 2a, c+1}",
+      "the parameter c = 8a² + 8a + 1",
+      "disjointness of the two index sets for a ≥ 2"
+    ]
   },
   {
     "id": "ann-e397-somani-identity",
@@ -147,7 +175,11 @@
       "factorial",
       "prime-factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Somani's identity C(a)·C(2a+2)·C(c) = C(a+1)·C(2a)·C(c+1)",
+      "prime factorization of factorial expressions",
+      "stating an algebraic identity as an axiom"
+    ]
   },
   {
     "id": "ann-e397-disjoint",
@@ -166,7 +198,11 @@
       "arithmetic",
       "well-definedness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "verifying disjointness of {a, 2a+2, c} and {a+1, 2a, c+1}",
+      "elementary inequalities among a, 2a, 2a+2, c, c+1 for a ≥ 2",
+      "well-definedness of a solution pair"
+    ]
   },
   {
     "id": "ann-e397-examples",
@@ -185,6 +221,10 @@
       "native_decide",
       "concrete-examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "concrete values C(0)=1, C(1)=2, C(2)=6, C(3)=20 and c(2)=49",
+      "native_decide for automatic numeric verification",
+      "asymptotic growth C(2n,n) ~ 4ⁿ/√(πn)"
+    ]
   }
 ]
