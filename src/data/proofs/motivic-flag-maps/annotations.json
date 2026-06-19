@@ -16,7 +16,10 @@
       "Finset.sum"
     ],
     "mathContext": "See annotation content for formal details of namespace and imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean namespaces",
+      "BigOperators notation (∑, ∏)"
+    ]
   },
   {
     "id": "ann-motivic-grothendieck-ring",
@@ -35,7 +38,12 @@
       "motivic measures",
       "scissor relations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Algebraic varieties",
+      "Isomorphism classes",
+      "Scissor (cut-and-paste) relations",
+      "Ring structure"
+    ]
   },
   {
     "id": "ann-motivic-lefschetz",
@@ -54,7 +62,11 @@
       "projective space",
       "motivic class"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Grothendieck ring K₀(Var)",
+      "Affine line A¹",
+      "Motivic class [X]"
+    ]
   },
   {
     "id": "ann-motivic-affine-class",
@@ -72,7 +84,11 @@
       "product formula",
       "dimension"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lefschetz motive L",
+      "Affine space Aⁿ",
+      "Powers in a ring"
+    ]
   },
   {
     "id": "ann-motivic-projective-class",
@@ -90,7 +106,11 @@
       "cell decomposition",
       "geometric series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lefschetz motive L",
+      "Projective space Pⁿ",
+      "Cell decomposition"
+    ]
   },
   {
     "id": "ann-motivic-geom-series",
@@ -108,7 +128,11 @@
       "mul_geom_sum",
       "algebraic identity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Projective class [Pⁿ]",
+      "Geometric series",
+      "mul_geom_sum (Mathlib)"
+    ]
   },
   {
     "id": "ann-motivic-gln-type",
@@ -127,7 +151,11 @@
       "linear group",
       "subtype"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Matrices over a field",
+      "Determinant",
+      "Subtype (subset with property)"
+    ]
   },
   {
     "id": "ann-motivic-triangular",
@@ -145,7 +173,11 @@
       "Bruhat cells"
     ],
     "mathContext": "See annotation content for formal details of triangular numbers",
-    "prerequisites": []
+    "prerequisites": [
+      "Counting ordered pairs i<j",
+      "Binomial coefficient n choose 2",
+      "Strictly upper-triangular matrices"
+    ]
   },
   {
     "id": "ann-motivic-gln-formula",
@@ -164,7 +196,12 @@
       "LU factorization",
       "cell decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "General linear group GL_n",
+      "Lefschetz motive L",
+      "Bruhat decomposition",
+      "Triangular numbers"
+    ]
   },
   {
     "id": "ann-motivic-gl1",
@@ -182,7 +219,11 @@
       "multiplicative group",
       "punctured line"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "GL_n motivic class",
+      "Multiplicative group Gₘ",
+      "Lefschetz motive L"
+    ]
   },
   {
     "id": "ann-motivic-gl2",
@@ -200,7 +241,11 @@
       "2×2 matrices",
       "row reduction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "GL_n motivic class",
+      "Product factorization",
+      "Pivot / Bruhat cells"
+    ]
   },
   {
     "id": "ann-motivic-complete-flag",
@@ -219,7 +264,11 @@
       "Grassmannian",
       "nested subspaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vector subspaces",
+      "Nested (filtered) sequences",
+      "Dimension"
+    ]
   },
   {
     "id": "ann-motivic-flag-variety-class",
@@ -237,7 +286,11 @@
       "fiber bundle",
       "iterated fibration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete flag",
+      "Projective class [Pⁿ]",
+      "Products in K₀(Var)"
+    ]
   },
   {
     "id": "ann-motivic-fl1-fl2",
@@ -255,7 +308,11 @@
       "projective line",
       "base case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Flag variety class",
+      "Projective line",
+      "Unfolding definitions"
+    ]
   },
   {
     "id": "ann-motivic-homology-class",
@@ -274,7 +331,11 @@
       "multi-degree",
       "positivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Second homology H₂",
+      "Flag variety Fl_{n+1}",
+      "Positivity condition"
+    ]
   },
   {
     "id": "ann-motivic-computeA",
@@ -292,7 +353,11 @@
       "dimension counting",
       "triangular numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Homology class β = (d₁,...,d_n)",
+      "Triangular-number sums",
+      "Affine dimension"
+    ]
   },
   {
     "id": "ann-motivic-main-theorem",
@@ -311,7 +376,12 @@
       "moduli space",
       "based maps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Based rational maps Ω²_β",
+      "GL_n motivic class",
+      "Affine dimension a",
+      "Bryan et al. 2025"
+    ]
   },
   {
     "id": "ann-motivic-special-cases",
@@ -329,7 +399,11 @@
       "rational functions",
       "specialization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Main theorem",
+      "Projective line P¹",
+      "Flag variety Fl₃"
+    ]
   },
   {
     "id": "ann-motivic-expanded",
@@ -347,7 +421,12 @@
       "explicit formula",
       "L-polynomial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Main theorem",
+      "Lefschetz motive L",
+      "Triangular numbers",
+      "Dimension formula a"
+    ]
   },
   {
     "id": "ann-motivic-ai-collaboration",
@@ -366,7 +445,10 @@
       "human-AI collaboration",
       "research methodology"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Motivic flag-maps main theorem",
+      "AI-assisted mathematics"
+    ]
   },
   {
     "id": "ann-motivic-formalization-status",
@@ -385,6 +467,10 @@
       "Mathlib development",
       "future work"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "GL_n and flag variety formulas",
+      "Stratification",
+      "Moduli space theory in Mathlib"
+    ]
   }
 ]
