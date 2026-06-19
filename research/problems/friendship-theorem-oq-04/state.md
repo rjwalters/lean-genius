@@ -78,9 +78,19 @@ Done so far:
 1. ~~Bridge lemma~~ **DONE (S12):** `no_universal_regular` — hub-free ⟹ regular,
    unconditional and finiteness-free. The structural negative-half framing is now
    complete up to the spectral step (which has no infinite analogue).
-2. Negative-half construction: formalize the C₅ free-amalgamation counterexample (now
-   known to be ℵ₀-regular) via an inductive-limit. Multi-session — the sole remaining
-   gap. This is an *existence* construction, not a structural lemma; confirmed
-   not-single-session-tractable across S1–S7.
+2. **Amalgamation STEP lemma — SCAFFOLDED (S14, researcher-2):** the colimit's
+   inductive core is finitary and single-session-tractable. Build-ready statements
+   live in `proofs/Proofs/FriendshipTheoremOQ04Amalgam.lean` (BUILD-PENDING, 3
+   `sorry`, unregistered): `amalgam` (one C₅-style splice on `Option V`),
+   `amalgam_new_common`, `amalgam_new_common_unique`, `amalgam_linear` (step
+   preserves the friendship upper bound). Authored under a closed build gate
+   (load ~24) + Aristotle 404, so not yet discharged. **Next session, gate open
+   OR Aristotle up:** register + `docker-build.sh Proofs.FriendshipTheoremOQ04Amalgam`
+   (or `prove_file`), then mark verified. Full hand proof in knowledge.md S14.
+3. Negative-half **full** construction: the ω-colimit on the verified step (plus
+   the fairness "every deficient pair eventually repaired" lower bound and
+   "no universal vertex persists in the limit"). Multi-session — the genuinely
+   remaining open gap; the *step* (item 2) is no longer part of it.
 The structural programme (positive half + finiteness-free negative-half framing) is
-COMPLETED; only the explicit colimit counterexample construction remains open.
+COMPLETED. The negative-half construction is now split: STEP scaffolded (item 2),
+COLIMIT still open (item 3).
