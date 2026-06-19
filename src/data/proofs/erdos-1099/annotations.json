@@ -16,7 +16,11 @@
       "Consecutive ratios",
       "Liminf"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function τ(n)",
+      "consecutive divisor ratios",
+      "boundedness of a sum"
+    ]
   },
   {
     "id": "ann-e1099-tau",
@@ -34,7 +38,10 @@
       "Highly composite numbers"
     ],
     "mathContext": "$\\tau(n) = \\sum_{d \\mid n} 1$. Defined here as `n.divisors.card`, where `Nat.divisors n` is the finset of positive divisors of n (empty for n = 0).",
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of an integer",
+      "counting divisors"
+    ]
   },
   {
     "id": "ann-e1099-sorted-divisors",
@@ -52,7 +59,10 @@
       "Ordering"
     ],
     "mathContext": "`(n.divisors).sort (· ≤ ·)` materializes the finset of divisors as a sorted `List ℕ`, enabling positional access to $d_i$ and the consecutive-pair structure that the ratios need.",
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of n",
+      "ordering divisors increasingly (1 = d₁ < … < d_τ = n)"
+    ]
   },
   {
     "id": "ann-e1099-sorted-infra",
@@ -95,7 +105,10 @@
       "Telescoping products"
     ],
     "mathContext": "`List.zipWith (a b => a/b) divs.tail divs` pairs each divisor with its successor, yielding the τ(n)−1 ratios $r_i = d_{i+1}/d_i$ over ℚ. Telescoping: $\\prod_i r_i = d_{\\tau}/d_1 = n$.",
-    "prerequisites": []
+    "prerequisites": [
+      "sorted divisors",
+      "consecutive ratios d_{i+1}/dᵢ"
+    ]
   },
   {
     "id": "ann-e1099-h-alpha",
@@ -114,7 +127,10 @@
       "Power sums",
       "Real.rpow"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive divisor ratios",
+      "the power sum Σᵢ (d_{i+1}/dᵢ − 1)^α"
+    ]
   },
   {
     "id": "ann-e1099-unfold",
@@ -204,7 +220,11 @@
       "Real.one_le_rpow"
     ],
     "mathContext": "Combines first_ratio_ge_two (a term ≥ 1 exists) with divisorRatios_ge_one (all terms ≥ 0): $h_\\alpha(n) \\ge (r_1 - 1)^\\alpha \\ge 1$. So liminf $h_\\alpha \\ge 1$ unconditionally for $\\alpha > 1$.",
-    "prerequisites": []
+    "prerequisites": [
+      "the h_α function",
+      "the exponent α > 1",
+      "a trivial lower bound h_α ≥ 1"
+    ]
   },
   {
     "id": "ann-e1099-factorial",
@@ -223,7 +243,10 @@
       "Erdős's candidates",
       "def erdos_1099_factorial_open"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of n!",
+      "the prime factorization of factorials"
+    ]
   },
   {
     "id": "ann-e1099-lcm",
@@ -243,7 +266,10 @@
       "Erdős's candidates",
       "def erdos_1099_lcm_open"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the lcm{1,…,n}",
+      "prime powers p^⌊log_p n⌋ dividing the lcm"
+    ]
   },
   {
     "id": "ann-e1099-vose-witness",
@@ -285,7 +311,10 @@
       "Vose 1984",
       "Bounded sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the h_α function",
+      "a uniformly bounded subsequence h_α(nₖ) ≤ C"
+    ]
   },
   {
     "id": "ann-e1099-vose-theorem",
@@ -303,7 +332,12 @@
       "Main theorem",
       "Problem resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the h_α function",
+      "liminf as n → ∞",
+      "Vose's 1984 theorem",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e1099-main-theorem",
@@ -322,7 +356,11 @@
       "theorem vose_liminf_bounded"
     ],
     "mathContext": "$\\exists C > 0, \\forall \\varepsilon > 0, \\exists n > 0, h_\\alpha(n) < C + \\varepsilon$. Proved from vose_liminf_bounded by taking $C = |\\text{bound}| + 1$.",
-    "prerequisites": []
+    "prerequisites": [
+      "the h_α function",
+      "boundedness of the liminf",
+      "the exponent α > 1"
+    ]
   },
   {
     "id": "ann-e1099-sum-ratio-def",
@@ -342,7 +380,11 @@
       "noncomputable def sumDivisorRatios",
       "axiom integrity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive divisor ratios",
+      "the unweighted sum S(n) = Σᵢ d_{i+1}/dᵢ",
+      "a corrected formalization (removed false axiom)"
+    ]
   },
   {
     "id": "ann-e1099-prime-proof",
@@ -384,7 +426,11 @@
       "Unbounded examples"
     ],
     "mathContext": "$h_\\alpha(p) = (p-1)^\\alpha$. As $p \\to \\infty$ this diverges for every $\\alpha \\ge 1$, so primes can never be the bounded witnesses.",
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of a prime {1, p}",
+      "the single ratio p",
+      "h_α unbounded along primes"
+    ]
   },
   {
     "id": "ann-e1099-power-two-proof",
@@ -428,7 +474,11 @@
       "Linear growth"
     ],
     "mathContext": "$h_\\alpha(2^k) = k$. The `set_option maxHeartbeats 1600000` on this theorem reflects the cost of fusing the monadic casts and computing on the replicate list.",
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of 2^k",
+      "the k ratios all equal to 2",
+      "h_α(2^k) = k"
+    ]
   },
   {
     "id": "ann-e1099-summary",
@@ -447,7 +497,11 @@
       "theorem erdos_1099_summary"
     ],
     "mathContext": "erdos_1099_summary bundles the existence result (erdos_1099) with the trivial lower bound (h_alpha_ge_one) into one statement: $1 \\le \\liminf h_\\alpha$ and a finite bound exists.",
-    "prerequisites": []
+    "prerequisites": [
+      "the h_α function",
+      "Vose's 1984 boundedness result",
+      "the trivial lower bound and worked examples"
+    ]
   },
   {
     "id": "ann-e1099-open-subq",
