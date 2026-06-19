@@ -41,6 +41,13 @@
                             so the cyclic distance between two orbit points
                             depends only on their index difference (the engine
                             of STEP A in `exists_gap_triple`)
+    * `forwardGap_le`     — STEP A (upper-bound half): `forwardGap α N {kα}` is
+                            `≤ {(j − k)·α}` for every other index `j`
+    * `forwardGap_attained` — STEP A/B (lower-bound / attainment half): the gap is
+                            *equal to* `{(j − k)·α}` for some concrete `j < N`,
+                            `j ≠ k`.  Combined with `forwardGap_le` this pins
+                            `forwardGap α N {kα} = min_{j≠k} {(j − k)·α}` — the gap
+                            is now pure index arithmetic (full STEP A/B reduction)
 
   PROVED (reductions — fully discharged modulo the isolated core):
     * `three_gap`         — at most three distinct gap lengths, reduced to
@@ -57,9 +64,13 @@
                             gap as their sum (`a + b = c` by construction), leaving
                             a single `sorry` on the gap-classification step.
 
-  ## Status: BUILD-VERIFIED (v4.26.0, 7743 jobs).  All scaffolding plus the
-  `N = 1` base case compile; the only remaining `sorry` is the `N ≥ 2`
-  classification step inside the isolated core `exists_gap_triple`.
+  ## Status: scaffolding through STEP A/B build-VERIFIED at the S7 revision
+  (v4.26.0, 7743 jobs); the S9 addition `forwardGap_attained` is hand-verified
+  against the Mathlib source but NOT yet kernel-checked (Aristotle backend down +
+  Docker host OOM-saturated this cycle — deferred to a cache-warm build, the same
+  mode in which S7's `forwardGap_le` was shipped then verified).  All scaffolding
+  plus the `N = 1` base case compile; the only remaining `sorry` is the `N ≥ 2`
+  classification step (STEP D) inside the isolated core `exists_gap_triple`.
   Registered in `Proofs.lean`.
 -/
 import Mathlib
@@ -194,6 +205,47 @@ theorem forwardGap_le {α : ℝ} (hα : Irrational α) {N : ℕ}
     (Finset.inf'_le (f := fun y => Int.fract (y - Int.fract ((k : ℝ) * α))) hmem)
     (le_of_eq ?_)
   rw [fract_fract_sub_fract, sub_mul]
+
+/-- **STEP A/B (attainment) — the forward gap is REALISED by an index difference.**
+    Whenever the erased orbit at `P_k = {kα}` is nonempty, the forward gap is not
+    merely bounded by, but *equal to*, the cyclic distance `{(j - k)·α}` of some
+    concrete in-range index `j < N`, `j ≠ k`:
+
+      `∃ j < N, j ≠ k ∧ forwardGap α N {kα} = {(j - k)·α}`.
+
+    This is the lower-bound companion to `forwardGap_le`: together they pin the
+    forward gap as the *minimum* of `{(j - k)·α}` over `j ∈ [0,N) \ {k}`, turning
+    the gap into pure index arithmetic — the STEP A/B reduction in the
+    `exists_gap_triple` proof path.  No irrationality is needed: the `inf'`
+    attaining point lies in the orbit (`Finset.exists_mem_eq_inf'`), hence equals
+    `{jα}` for some `j ∈ range N`, and `j ≠ k` because it is `erase`d-distinct from
+    `{kα}`; the value rewrite is `fract_fract_sub_fract` exactly as in
+    `forwardGap_le`. -/
+theorem forwardGap_attained {α : ℝ} {N : ℕ} {k : ℕ}
+    (hNe : ((orbit α N).erase (Int.fract ((k : ℝ) * α))).Nonempty) :
+    ∃ j, j < N ∧ j ≠ k ∧
+      forwardGap α N (Int.fract ((k : ℝ) * α))
+        = Int.fract (((j : ℝ) - (k : ℝ)) * α) := by
+  have hfg : forwardGap α N (Int.fract ((k : ℝ) * α))
+      = ((orbit α N).erase (Int.fract ((k : ℝ) * α))).inf' hNe
+          (fun y => Int.fract (y - Int.fract ((k : ℝ) * α))) := by
+    unfold forwardGap
+    rw [dif_pos hNe]
+  obtain ⟨y, hy, hyeq⟩ :=
+    Finset.exists_mem_eq_inf'
+      (s := (orbit α N).erase (Int.fract ((k : ℝ) * α))) hNe
+      (fun y => Int.fract (y - Int.fract ((k : ℝ) * α)))
+  rw [Finset.mem_erase] at hy
+  obtain ⟨hyne, hyorb⟩ := hy
+  simp only [orbit, Finset.mem_image, Finset.mem_range] at hyorb
+  obtain ⟨j, hjN, rfl⟩ := hyorb
+  refine ⟨j, hjN, ?_, ?_⟩
+  · intro h
+    exact hyne (by rw [h])
+  · rw [hfg, hyeq]
+    show Int.fract (Int.fract ((j : ℝ) * α) - Int.fract ((k : ℝ) * α))
+        = Int.fract (((j : ℝ) - (k : ℝ)) * α)
+    rw [fract_fract_sub_fract, sub_mul]
 
 /-
     PROOF PATH for the core classification `exists_gap_triple`
