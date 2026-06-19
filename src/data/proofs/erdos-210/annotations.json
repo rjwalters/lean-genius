@@ -17,7 +17,11 @@
       "ordinary-lines",
       "discrete-geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ordinary lines through exactly two points of a point set",
+      "non-collinear finite point configurations in the plane",
+      "the Sylvester-Gallai problem and its history"
+    ]
   },
   {
     "id": "ann-210-definitions",
@@ -37,7 +41,11 @@
       "collinearity",
       "incidence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin 2) as the planar point type",
+      "collinearity via a scalar line parameter",
+      "Finset membership and incidence of points on lines"
+    ]
   },
   {
     "id": "ann-210-sylvester-gallai",
@@ -56,7 +64,11 @@
       "Gallai-1944",
       "extremal-principle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Sylvester-Gallai theorem on ordinary lines",
+      "the extremal minimum-distance point-line argument",
+      "deriving f(n) ≥ 1 as a corollary"
+    ]
   },
   {
     "id": "ann-210-motzkin",
@@ -75,7 +87,11 @@
       "divergence",
       "proved-theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Motzkin's theorem that ordinary line counts diverge",
+      "extracting a divergence statement from an axiom in Lean",
+      "the logarithmic lower bound f(n) ≥ c·log n"
+    ]
   },
   {
     "id": "ann-210-intermediate-bounds",
@@ -94,7 +110,11 @@
       "Csima-Sawyer-1993",
       "Fano-plane"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Kelly-Moser bound 7·f(n) ≥ 3n",
+      "the Csima-Sawyer bound 13·f(n) ≥ 6n",
+      "encoding rational lower bounds via integer multiplication in ℕ"
+    ]
   },
   {
     "id": "ann-210-green-tao",
@@ -113,7 +133,11 @@
       "additive-combinatorics",
       "tight-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Green-Tao tight bound f(n) ≥ n/2 for large even n",
+      "the separate odd-n bound f(n) ≥ 3⌊n/4⌋",
+      "additive combinatorics and few-ordinary-line structure theory"
+    ]
   },
   {
     "id": "ann-210-structure",
@@ -132,7 +156,11 @@
       "cubic-curves",
       "algebraic-geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Böröczky configuration achieving n/2 ordinary lines",
+      "exact small-n values such as f(7) = 3 via the Fano dual",
+      "the structure theorem placing extremal sets on a cubic curve"
+    ]
   },
   {
     "id": "ann-210-summary",
@@ -151,6 +179,10 @@
       "solved",
       "120-year-history"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "anonymous constructor proofs combining axiomatized milestones",
+      "the f_tends_to_infinity divergence lemma",
+      "the Kelly-Moser, Csima-Sawyer, and Green-Tao quantitative bounds"
+    ]
   }
 ]
