@@ -53,8 +53,6 @@ inequalities (deferred — see knowledge notes).
 
 import Mathlib
 
-open scoped EuclideanGeometry
-
 namespace ErdosMordellOQ01
 
 /-- **Erdős–Mordell algebraic reduction.**
@@ -77,11 +75,11 @@ theorem erdos_mordell_reduction
   -- Scale each key inequality by the product of the two *other* side lengths,
   -- clearing denominators to land on the common factor `a*b*c`.
   have e1 : b * c * (b * dc + c * db) ≤ b * c * (a * PA) :=
-    mul_le_mul_of_nonneg_left h1 (by positivity)
+    mul_le_mul_of_nonneg_left h1 (mul_nonneg hb.le hc.le)
   have e2 : a * c * (c * da + a * dc) ≤ a * c * (b * PB) :=
-    mul_le_mul_of_nonneg_left h2 (by positivity)
+    mul_le_mul_of_nonneg_left h2 (mul_nonneg ha.le hc.le)
   have e3 : a * b * (a * db + b * da) ≤ a * b * (c * PC) :=
-    mul_le_mul_of_nonneg_left h3 (by positivity)
+    mul_le_mul_of_nonneg_left h3 (mul_nonneg ha.le hb.le)
   -- AM–GM slack terms: `x·d·(y−z)² ≥ 0`.
   have s1 : 0 ≤ a * da * (b - c) ^ 2 :=
     mul_nonneg (mul_nonneg ha.le hda) (sq_nonneg _)
@@ -94,7 +92,7 @@ theorem erdos_mordell_reduction
   --   a·b·c·(PA+PB+PC) − a·b·c·(2(da+db+dc)) = e-slack + s1 + s2 + s3 ≥ 0.
   have key : a * b * c * (2 * (da + db + dc)) ≤ a * b * c * (PA + PB + PC) := by
     nlinarith [e1, e2, e3, s1, s2, s3]
-  exact (mul_le_mul_left habc).mp key
+  exact le_of_mul_le_mul_left key habc
 
 /-- Perpendicular distance from a point `P` to the line through two points
 `X Y`, as the distance from `P` to the affine span `line[X, Y]`. -/
