@@ -17,7 +17,11 @@
       "divisibility",
       "completeness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility and partial orders on ℕ",
+      "antichains under divisibility",
+      "the notion of a complete sequence"
+    ]
   },
   {
     "id": "ann-2",
@@ -36,7 +40,11 @@
       "prime factorization",
       "multiplicative lattice"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "3-smooth numbers 2^a·3^b",
+      "the multiplicative lattice of exponents"
+    ]
   },
   {
     "id": "ann-3",
@@ -55,7 +63,11 @@
       "induction",
       "2-adic valuation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "closure of a set under an operation",
+      "the 2-adic valuation",
+      "induction"
+    ]
   },
   {
     "id": "ann-4",
@@ -74,7 +86,11 @@
       "p-adic valuation",
       "product order"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unique factorization",
+      "p-adic valuations",
+      "the product (componentwise) order on exponents"
+    ]
   },
   {
     "id": "ann-5",
@@ -93,7 +109,11 @@
       "partial orders",
       "Dilworth's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "partial orders and antichains",
+      "incomparable pairs under divisibility",
+      "Dilworth's theorem"
+    ]
   },
   {
     "id": "ann-6",
@@ -112,7 +132,11 @@
       "logarithms",
       "floor function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powers of 3 and logarithms",
+      "the floor function",
+      "greedy extraction of the largest 3-power"
+    ]
   },
   {
     "id": "ann-7",
@@ -131,7 +155,11 @@
       "modular arithmetic",
       "induction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "parity (odd/even)",
+      "arithmetic mod 2",
+      "induction on exponents"
+    ]
   },
   {
     "id": "ann-8",
@@ -150,7 +178,11 @@
       "subtraction",
       "natural number arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "parity arguments",
+      "natural-number subtraction",
+      "even/odd case analysis"
+    ]
   },
   {
     "id": "ann-9",
@@ -169,7 +201,11 @@
       "constructive proof",
       "axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strong induction on ℕ",
+      "constructive existence proofs",
+      "axiomatizing a representation lemma"
+    ]
   },
   {
     "id": "ann-10",
@@ -199,7 +235,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "d-complete sequences",
+      "the representation axiom",
+      "assembling the main theorem in Lean"
+    ]
   },
   {
     "id": "ann-11",
@@ -218,7 +258,11 @@
       "coprimality",
       "lattice theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the gcd and coprimality",
+      "pairwise coprime sets",
+      "lattice/product structure of exponents"
+    ]
   },
   {
     "id": "ann-12",
@@ -237,7 +281,11 @@
       "generalizations",
       "Erdős"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "d-complete sequences",
+      "generalizing from base {2,3}",
+      "Erdős's open conjecture"
+    ]
   },
   {
     "id": "ann-13",
@@ -256,7 +304,11 @@
       "Erdős-Lewin",
       "residue analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "two-generator multiplicative sets",
+      "residue-class analysis",
+      "the Erdős–Lewin result"
+    ]
   },
   {
     "id": "ann-14",
@@ -275,7 +327,11 @@
       "cancellation",
       "scaling"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility a|b",
+      "cancellation in ℕ",
+      "scaling a set by a constant factor"
+    ]
   },
   {
     "id": "ann-15",
@@ -294,6 +350,10 @@
       "structure preservation",
       "Finset.image"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "antichains under divisibility",
+      "structure-preserving maps",
+      "the image of a set under doubling (Finset.image)"
+    ]
   }
 ]
