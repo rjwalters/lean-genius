@@ -16,7 +16,11 @@
       "primes",
       "arithmetic-progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Numbers",
+      "Arithmetic Progressions",
+      "Open Problems In Number Theory"
+    ]
   },
   {
     "id": "ann-e141-nth-prime",
@@ -35,7 +39,11 @@
       "mathlib",
       "nth-element"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Numbers",
+      "Noncomputable Definitions",
+      "Indexed Sequences"
+    ]
   },
   {
     "id": "ann-e141-consecutive-def",
@@ -54,7 +62,11 @@
       "sequences",
       "consecutive"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Numbers",
+      "Consecutive Primes",
+      "Finite Lists"
+    ]
   },
   {
     "id": "ann-e141-ap-def",
@@ -73,7 +85,11 @@
       "sequences",
       "common-difference"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progressions",
+      "Common Difference",
+      "Existential Predicates"
+    ]
   },
   {
     "id": "ann-e141-small-primes",
@@ -92,7 +108,11 @@
       "verification",
       "decidability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Counting Function",
+      "Nat.nth In Mathlib",
+      "Decidable Primality"
+    ]
   },
   {
     "id": "ann-e141-357-example",
@@ -111,7 +131,11 @@
       "verification",
       "arithmetic-progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Consecutive Primes",
+      "Arithmetic Progressions",
+      "Common Difference"
+    ]
   },
   {
     "id": "ann-e141-conjecture",
@@ -130,7 +154,11 @@
       "open-problem",
       "conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős Problems",
+      "Open Conjectures",
+      "Computational Verification"
+    ]
   },
   {
     "id": "ann-e141-infinite-question",
@@ -149,7 +177,11 @@
       "open-problems",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinitude Of Primes",
+      "Arithmetic Progressions",
+      "Quantifier Alternation"
+    ]
   },
   {
     "id": "ann-e141-green-tao",
@@ -168,6 +200,10 @@
       "distinction",
       "consecutive-vs-any"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Green-Tao Theorem",
+      "Primes In Arithmetic Progression",
+      "Consecutive Versus Arbitrary Primes"
+    ]
   }
 ]
