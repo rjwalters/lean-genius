@@ -16,7 +16,11 @@
       "General position",
       "Incidence geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Plane Geometry",
+      "Combinatorial Geometry",
+      "Erdos Distinct Distances Problem"
+    ]
   },
   {
     "id": "ann-e1082-point2d",
@@ -34,7 +38,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Space",
+      "Pythagorean Distance Formula",
+      "Square Roots"
+    ]
   },
   {
     "id": "ann-e1082-collinear",
@@ -53,7 +61,11 @@
       "Determinant",
       "General position"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vector Cross Product",
+      "2x2 Determinants",
+      "Coordinate Geometry"
+    ]
   },
   {
     "id": "ann-e1082-distinct-distances",
@@ -71,7 +83,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Cardinality",
+      "Pairwise Distances",
+      "Finite Sets"
+    ]
   },
   {
     "id": "ann-e1082-szemeredi",
@@ -89,7 +105,11 @@
       "Incidence geometry",
       "Distinct distances"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Incidence Geometry",
+      "Lower Bound Arguments",
+      "Double Counting"
+    ]
   },
   {
     "id": "ann-e1082-conjecture1",
@@ -107,7 +127,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "General Position",
+      "Distinct Distances",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-e1082-conjecture2",
@@ -125,7 +149,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "General Position",
+      "Existential Quantification",
+      "Logical Implication"
+    ]
   },
   {
     "id": "ann-e1082-xichuan",
@@ -143,7 +171,11 @@
       "Counterexamples",
       "Symmetric point sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Symmetric Point Configurations",
+      "Floor Function",
+      "Geometric Constructions"
+    ]
   },
   {
     "id": "ann-e1082-false",
@@ -161,7 +193,11 @@
       "proof technique",
       "proof by contradiction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proof by Contradiction",
+      "Logical Negation",
+      "Omega Tactic"
+    ]
   },
   {
     "id": "ann-e1082-status",
@@ -179,7 +215,11 @@
       "combinatorics",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical Conjectures",
+      "Lower Bounds",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-e1082-guth-katz",
@@ -197,7 +237,11 @@
       "Polynomial partitioning",
       "Incidence bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial Partitioning",
+      "Asymptotic Notation",
+      "Incidence Bounds"
+    ]
   },
   {
     "id": "ann-e1082-3d",
@@ -215,7 +259,11 @@
       "Convex position"
     ],
     "mathContext": "See annotation content for formal details of 3d generalizations",
-    "prerequisites": []
+    "prerequisites": [
+      "Three-Dimensional Geometry",
+      "Convex Polyhedra",
+      "Coplanarity"
+    ]
   },
   {
     "id": "ann-e1082-gap",
@@ -233,7 +281,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Floor Function",
+      "Tight Bounds",
+      "Counterexamples"
+    ]
   },
   {
     "id": "ann-e1082-summary",
@@ -251,6 +303,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower Bounds",
+      "Conjecture Status",
+      "General Position"
+    ]
   }
 ]
