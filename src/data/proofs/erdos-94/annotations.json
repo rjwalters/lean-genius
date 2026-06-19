@@ -17,7 +17,12 @@
       "multiplicities",
       "incidence-geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Plane",
+      "Pairwise Distances",
+      "Convex Position",
+      "Discrete Geometry"
+    ]
   },
   {
     "id": "ann-94-point-config",
@@ -37,7 +42,11 @@
       "Finset.image",
       "dist"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset",
+      "Euclidean Distance",
+      "Cartesian Product"
+    ]
   },
   {
     "id": "ann-94-multiplicity",
@@ -79,7 +88,11 @@
       "general-position",
       "convex-polygon"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Convex Hull",
+      "Collinearity",
+      "General Position"
+    ]
   },
   {
     "id": "ann-94-baseline",
