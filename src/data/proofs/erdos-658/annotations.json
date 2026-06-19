@@ -16,7 +16,11 @@
       "grid-geometry",
       "Hales-Jewett"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "additive combinatorics",
+      "discrete geometry"
+    ]
   },
   {
     "id": "ann-e658-imports",
@@ -35,7 +39,11 @@
       "product-types",
       "lattice-points"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "finite set theory"
+    ]
   },
   {
     "id": "ann-e658-grid",
@@ -54,7 +62,11 @@
       "lattice",
       "ambient-space"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Cartesian products",
+      "finite combinatorics"
+    ]
   },
   {
     "id": "ann-e658-square-def",
@@ -73,7 +85,11 @@
       "coordinates",
       "axis-aligned"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "coordinate geometry",
+      "discrete geometry",
+      "integer lattices"
+    ]
   },
   {
     "id": "ann-e658-tilted",
@@ -92,7 +108,11 @@
       "integer-lattice",
       "Pythagorean"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "coordinate geometry",
+      "linear algebra",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e658-density",
@@ -111,7 +131,11 @@
       "threshold",
       "large-N"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "real analysis",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e658-graham",
@@ -130,7 +154,11 @@
       "threshold-function",
       "Ramsey-type"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "mathematical logic",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-e658-main",
@@ -149,7 +177,11 @@
       "Hales-Jewett",
       "combinatorial-lines"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "ergodic theory",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-e658-hales-jewett",
@@ -168,7 +200,11 @@
       "combinatorial-line",
       "Furstenberg-Katznelson"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "ergodic theory",
+      "mathematical logic"
+    ]
   },
   {
     "id": "ann-e658-solymosi",
@@ -187,7 +223,11 @@
       "quantitative-bounds",
       "effective-proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "asymptotic analysis",
+      "computability"
+    ]
   },
   {
     "id": "ann-e658-small-cases",
@@ -206,7 +246,11 @@
       "counterexamples",
       "threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite combinatorics",
+      "case analysis",
+      "counting arguments"
+    ]
   },
   {
     "id": "ann-e658-generalizations",
@@ -225,7 +269,11 @@
       "hypercubes",
       "tilted-squares"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "higher-dimensional geometry",
+      "ergodic theory"
+    ]
   },
   {
     "id": "ann-e658-summary",
@@ -244,6 +292,10 @@
       "answer",
       "complete-solution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "mathematical logic",
+      "extremal combinatorics"
+    ]
   }
 ]
