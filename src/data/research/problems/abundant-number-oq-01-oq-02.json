@@ -1,8 +1,8 @@
 {
   "slug": "abundant-number-oq-01-oq-02",
   "title": "Smallest Odd Abundant Number Is 945",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: smallest_odd_abundant proved axiom-free and build-verified (PR #26159); kernel-reducible sigmaFast technique answers abundant-number-oq-01 open question.",
+    "builtItems": [
+      "sigmaFast / sigmaAux: kernel-reducible divisor sum by structural recursion on ℕ (Proofs/AbundantNumberOQ02.lean:33,39)",
+      "sigmaFast_eq_sigma: sigmaFast n = ∑_{d∣n} d for n≠0 (AbundantNumberOQ02.lean:56)",
+      "abundant_iff_sigmaFast: Nat.Abundant n ↔ 2n < sigmaFast n (AbundantNumberOQ02.lean:69)",
+      "not_abundant_odd_below_945: ∀ n<945, Odd n → sigmaFast n ≤ 2n by kernel decide (AbundantNumberOQ02.lean:89)",
+      "smallest_odd_abundant: IsLeast {n | Odd n ∧ Nat.Abundant n} 945, axiom-free (AbundantNumberOQ02.lean:96)"
+    ],
+    "insights": [
+      "The obstruction to proving 945 is the smallest odd abundant number is purely computational: Mathlib's Nat.Abundant is decidable only via Finset/Multiset divisor folds whose kernel whnf reduction blows up well before n=945, so a direct decide is infeasible.",
+      "Replacing the REPRESENTATION of sigma (not the predicate) with a structurally-recursive ℕ surrogate sigmaFast (no Finset/Multiset at reduction time) makes the bounded check ∀ n<945, Odd n → ¬Abundant n feasible by a single kernel decide, keeping it axiom-free (no native_decide / Lean.ofReduceBool).",
+      "Lean gotcha: a doc-comment /-- -/ cannot be directly followed by set_option ... in (parse error: expected lemma); set_option must precede the doc-comment.",
+      "The bounded decide over ~470 odd cases exceeds the default 200000 maxHeartbeats in the elaborator whnf check; raising maxHeartbeats (10000000) lets it complete in ~74s build."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove the odd abundant numbers are infinite (every odd multiple of 945 is abundant via abundant-number-oq-01 closure), giving an injective odd-abundant family.",
+      "Extend the kernel-reducible-σ technique to the smallest odd abundant number not divisible by 3 (5391411025) — likely out of reach for kernel decide, may need structural argument."
+    ],
     "markdown": "# Knowledge Base: abundant-number-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -42,11 +56,38 @@
     "abundant-numbers",
     "decidability"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "abundant-number-oq-01",
+    "abundant-number-oq-01-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-06-18T23:18:44-07:00"
+  "started": "2026-06-18T23:18:44-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/AbundantNumberOQ01.lean",
+      "filename": "AbundantNumberOQ01.lean",
+      "lineCount": 40,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ01.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02.lean",
+      "filename": "AbundantNumberOQ02.lean",
+      "lineCount": 108,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02.lean"
+    }
+  ]
 }
