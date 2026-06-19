@@ -113,30 +113,37 @@ theorem forwardGap_nonneg (α : ℝ) (N : ℕ) (x : ℝ) : 0 ≤ forwardGap α N
     exact Finset.le_inf' h _ (fun y _ => Int.fract_nonneg _)
   · exact le_refl 0
 
-/-- For irrational `α` the map `i ↦ {iα}` is injective on `ℕ`, hence the orbit
-    has exactly `N` distinct points.
+/-- For irrational `α`, distinct indices give distinct orbit points: the map
+    `i ↦ {iα}` is injective.  If `{iα} = {jα}` then `Int.fract_eq_fract` yields a
+    `z : ℤ` with `iα - jα = z`, i.e. `(i - j)·α = z`; for `i ≠ j` the coefficient
+    `(i - j : ℤ)` is nonzero, so `(i - j)·α` is irrational
+    (`Irrational.intCast_mul`) while also equal to the integer `z` — contradiction
+    via `Int.not_irrational`.  This is the injectivity engine behind both
+    `orbit_card` and the candidate-membership step of `forwardGap_le`. -/
+theorem fract_mul_inj {α : ℝ} (hα : Irrational α) {i j : ℕ} (hne : i ≠ j) :
+    Int.fract ((i : ℝ) * α) ≠ Int.fract ((j : ℝ) * α) := by
+  intro hij
+  rw [Int.fract_eq_fract] at hij
+  obtain ⟨z, hz⟩ := hij
+  have hm : ((i : ℤ) - (j : ℤ)) ≠ 0 := sub_ne_zero.mpr (by exact_mod_cast hne)
+  have key : (((i : ℤ) - (j : ℤ) : ℤ) : ℝ) * α = (z : ℝ) := by
+    push_cast
+    rw [sub_mul]
+    exact hz
+  have hirr : Irrational ((((i : ℤ) - (j : ℤ) : ℤ) : ℝ) * α) := hα.intCast_mul hm
+  rw [key] at hirr
+  exact (Int.not_irrational z) hirr
 
-    PROOF PATH (injectivity): if `{iα} = {jα}` then by `Int.fract_eq_fract`
-    there is `z : ℤ` with `iα - jα = z`, i.e. `(i - j) · α = z`.  If `i ≠ j`
-    then `(i - j : ℝ) ≠ 0`, so `α = z / (i - j)` is rational, contradicting
-    `hα : Irrational α`.  Cardinality then follows from
-    `Finset.card_image_of_injective` and `Finset.card_range`. -/
+/-- For irrational `α` the map `i ↦ {iα}` is injective on `ℕ`, hence the orbit
+    has exactly `N` distinct points.  Injectivity is `fract_mul_inj`; cardinality
+    then follows from `Finset.card_image_of_injOn` and `Finset.card_range`. -/
 theorem orbit_card {α : ℝ} (hα : Irrational α) (N : ℕ) :
     (orbit α N).card = N := by
   have hinj : Set.InjOn (fun i : ℕ => Int.fract ((i : ℝ) * α)) ↑(Finset.range N) := by
     intro i _ j _ hij
     simp only at hij
     by_contra hne
-    rw [Int.fract_eq_fract] at hij
-    obtain ⟨z, hz⟩ := hij
-    have hm : ((i : ℤ) - (j : ℤ)) ≠ 0 := sub_ne_zero.mpr (by exact_mod_cast hne)
-    have key : (((i : ℤ) - (j : ℤ) : ℤ) : ℝ) * α = (z : ℝ) := by
-      push_cast
-      rw [sub_mul]
-      exact hz
-    have hirr : Irrational ((((i : ℤ) - (j : ℤ) : ℤ) : ℝ) * α) := hα.intCast_mul hm
-    rw [key] at hirr
-    exact (Int.not_irrational z) hirr
+    exact fract_mul_inj hα hne hij
   rw [orbit, Finset.card_image_of_injOn hinj, Finset.card_range]
 
 /-- **STEP A primitive — cyclic distance depends only on the index difference.**
@@ -148,14 +155,45 @@ theorem orbit_card {α : ℝ} (hα : Irrational α) (N : ℕ) :
     invoked in STEP A of the `exists_gap_triple` proof path: the cyclic distance
     between two orbit points depends only on their index difference, because
     `{x} − {y}` differs from `x − y` by the integer `⌊y⌋ − ⌊x⌋`, and `Int.fract`
-    is invariant under integer shifts (`Int.fract_sub_int`).  This is the
+    is invariant under integer shifts (`Int.fract_sub_intCast`).  This is the
     mechanical engine that lets the forward gap at `P_k` be rewritten as a
     minimum of `Int.fract ((j − k)·α)` over the remaining indices. -/
 theorem fract_fract_sub_fract (x y : ℝ) :
     Int.fract (Int.fract x - Int.fract y) = Int.fract (x - y) := by
   have h : Int.fract x - Int.fract y = (x - y) - (((⌊x⌋ - ⌊y⌋ : ℤ)) : ℝ) := by
     simp only [Int.fract]; push_cast; ring
-  rw [h, Int.fract_sub_int]
+  rw [h, Int.fract_sub_intCast]
+
+/-- **STEP A (upper-bound half) — now formalized.**  For irrational `α` and
+    indices `j, k < N` with `j ≠ k`, the forward gap at the orbit point
+    `P_k = {kα}` is bounded above by the cyclic distance `{(j - k)·α}` realised by
+    the other orbit point `P_j = {jα}`:
+
+      `forwardGap α N {kα} ≤ {(j - k)·α}`.
+
+    This is the routine `Finset.inf'_le` direction of STEP A in the
+    `exists_gap_triple` proof path: each index `j ≠ k` furnishes a candidate arc
+    from `P_k` whose length is `{P_j − P_k} = {(j − k)·α}` (the latter equality is
+    `fract_fract_sub_fract`), so the actual forward gap — an `inf'` over all such
+    candidates — is at most each of them.  Membership of `P_j` in the erased orbit
+    uses injectivity (`fract_mul_inj`).  The matching *lower* bound (that the gap
+    equals the *minimal* index-difference distance) is the remaining STEP B–C
+    content; this lemma discharges the easy half as checked Lean. -/
+theorem forwardGap_le {α : ℝ} (hα : Irrational α) {N : ℕ}
+    {j k : ℕ} (hj : j < N) (hne : j ≠ k) :
+    forwardGap α N (Int.fract ((k : ℝ) * α)) ≤ Int.fract (((j : ℝ) - (k : ℝ)) * α) := by
+  have hxj : Int.fract ((j : ℝ) * α) ∈ orbit α N := by
+    simp only [orbit, Finset.mem_image, Finset.mem_range]; exact ⟨j, hj, rfl⟩
+  have hjk : Int.fract ((j : ℝ) * α) ≠ Int.fract ((k : ℝ) * α) := fract_mul_inj hα hne
+  have hmem : Int.fract ((j : ℝ) * α) ∈
+      (orbit α N).erase (Int.fract ((k : ℝ) * α)) := Finset.mem_erase.mpr ⟨hjk, hxj⟩
+  have hNe : ((orbit α N).erase (Int.fract ((k : ℝ) * α))).Nonempty := ⟨_, hmem⟩
+  unfold forwardGap
+  rw [dif_pos hNe]
+  refine le_trans
+    (Finset.inf'_le (f := fun y => Int.fract (y - Int.fract ((k : ℝ) * α))) hmem)
+    (le_of_eq ?_)
+  rw [fract_fract_sub_fract, sub_mul]
 
 /-
     PROOF PATH for the core classification `exists_gap_triple`

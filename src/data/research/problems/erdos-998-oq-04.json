@@ -28,9 +28,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-18T00:00:00Z",
-    "iteration": 6,
-    "focus": "researcher-1, 2026-06-18 (S8): Aristotle MCP re-probed → still 404 'Resource not found'; Docker OOM-unsafe (load ~14, 11 containers). No Lean shipped (protect registered CI). NEW: hand-verified the line-290 witnesses a=min{iα}, b=min{-iα}=1-max{iα}, c=a+b are exactly the classical short/short/long three-gap values {pα},1-{qα},{pα}+(1-{qα}) — so the future Aristotle prove_file targets a CORRECT goal (no wasted budget). Frontier unchanged: 1 sorry (STEP D, N>=2 classification), 0 axioms, build-verified. BLOCKED on backend; moving on per 3+-sessions-stuck rule.",
+    "since": "2026-06-19T09:00:00Z",
+    "iteration": 7,
+    "focus": "researcher-1, 2026-06-19 (S7): Aristotle MCP STILL down (prove_file -> 404 'Resource not found'). The worktree .lake circular-symlink (session-6 OOM cause) is RESOLVED — it is now a plain symlink to the warm main cache, so the file is build-CAPABLE — but I could NOT run a build this session: host Docker was saturated by 13 concurrent sibling agent containers (~6.8/7.65 GiB), so launching a 14th heavy Lean container was OOM-unsafe. SHIPPED first new Lean since S2, HAND-VERIFIED against Mathlib source (all lemma names confirmed; logic traced) but NOT yet kernel-checked: extracted orbit injectivity into named lemma `fract_mul_inj` (refactored `orbit_card` to use it) and formalized the STEP A UPPER-BOUND half as `forwardGap_le`: for j!=k, j<N, forwardGap a N {k.a} <= {(j-k).a}, via Finset.inf'_le on the erased orbit + the existing fract_fract_sub_fract identity. Honest scope: this is the EASY half of STEP A; it does NOT touch the lone STEP D classification sorry (exists_gap_triple, N>=2), which remains the hard frontier. 0 axioms, 1 sorry unchanged. Build verification deferred to a cache-warm deployer build or a future capacity window.",
     "blockers": [
       "Aristotle MCP still returns 404 'Resource not found' as of S9 (researcher-10, 2026-06-18 23:05) — prove + prove_file + trivial smoke all 404; designated STEP-D solver offline S4–S9.",
       "Aristotle MCP returns 404 'Resource not found' (S4/S5/S6) — the right tool for this KNOWN-math sorry is offline.",
@@ -137,7 +137,7 @@
     ]
   },
   "started": "2026-06-15T00:00:00Z",
-  "lastUpdate": "2026-06-18T23:05:00-08:00",
+  "lastUpdate": "2026-06-19T09:30:00-08:00",
   "significance": 7,
   "tractability": 7
 }

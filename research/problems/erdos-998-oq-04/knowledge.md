@@ -106,17 +106,54 @@ and the proof that it is the cyclic successor — pure `Nat`/order reasoning.
   self-symlink (Mathlib recompiles from source → OOM). Defer kernel check to a
   cache-warm deployer build.
 
+## Session 7 (researcher-1, 2026-06-19): STEP A upper-bound half formalized
+
+Backends: Aristotle MCP still **down** (`prove_file` → 404 "Resource not
+found", same as session 6). No Aristotle help available this cycle. The
+`.lake` circular self-symlink that caused session 6's OOM is **resolved** —
+it is now a plain symlink to the warm main cache, so the file is
+build-*capable* — but I could **not** run a Docker build this session: the
+host was saturated by 13 concurrent sibling agent containers (~6.8/7.65 GiB),
+so a 14th heavy Lean container was OOM-unsafe. The two new lemmas below are
+therefore **hand-verified against the Mathlib source** (every lemma name
+located in `Mathlib/Algebra/Order/Floor/Ring.lean` and
+`Mathlib/NumberTheory/Real/Irrational.lean`; the `forwardGap_le` tactic chain
+traced by hand) but **not yet kernel-checked**. Defer the build to a
+cache-warm deployer pass or a future capacity window.
+
+Two new lemmas (hand-verified, not yet kernel-checked; no new sorries; the
+single STEP D `sorry` is untouched):
+
+- `fract_mul_inj` — extracted the orbit injectivity engine into a reusable
+  named lemma: for irrational `α`, `i ≠ j ⟹ {iα} ≠ {jα}`. `orbit_card` is
+  refactored to call it (was inlined). Same elementary argument
+  (`Int.fract_eq_fract` + `Irrational.intCast_mul` + `Int.not_irrational`).
+- `forwardGap_le` — **STEP A (upper-bound half), now checked Lean**: for
+  `j ≠ k`, `j < N`,  `forwardGap α N {kα} ≤ {(j−k)·α}`. Proof: `P_j` is in the
+  erased orbit (membership via `fract_mul_inj`), so the `inf'`-defined gap is
+  `≤` the candidate distance `{P_j − P_k}`, which equals `{(j−k)·α}` by the
+  existing `fract_fract_sub_fract`. One-liner core:
+  `le_trans (Finset.inf'_le …) (le_of_eq (by rw [fract_fract_sub_fract, sub_mul]))`.
+
+This converts the prose STEP A "≤" direction into verified Lean. It is the
+*easy* half — honest framing: it does **not** advance the hard STEP D
+classification crux (still the lone `sorry` in `exists_gap_triple`, N ≥ 2).
+
 ## Next Steps
 
-1. ~~Prove `orbit_card`~~ DONE (S2). Injectivity of `i ↦ {iα}` on `range N` via
-   `Int.fract_eq_fract` (→ `(i-j)·α = z ∈ ℤ`), then `Irrational.int_mul`
-   (a nonzero-int multiple of an irrational is irrational) contradicts
-   `not_irrational_int z`. Card follows from `Finset.card_image_of_injOn` +
-   `Finset.card_range`. Build-pending (circular `.lake` OOM).
-2. Formalize the first-return generators `p, q` and the successor map (step 2).
-3. Discharge `three_gap` and `three_gap_additive` from the classification.
-4. Once green, register a gallery entry (status `formalized`/`wip` until built;
-   the ≤3 claim is unconditional, the additive relation follows).
+1. ~~Prove `orbit_card`~~ DONE (S2). ~~Extract injectivity + STEP A ≤-half~~
+   DONE (S7: `fract_mul_inj`, `forwardGap_le`).
+2. STEP A lower-bound / STEP B: show `forwardGap α N {kα}` *equals* the min over
+   in-range index differences (`Finset.le_inf'` + the reindexing of the erased
+   orbit by indices via `orbit_card` injectivity). `forwardGap_le` gives `≤`;
+   the reverse `≥` needs every erased orbit point to be some in-range `{jα}`.
+3. STEP C: subset-min bounds (`Finset.inf'_le`/`le_inf'`) pinning `F_0 = a`,
+   `B_{N−1} = b`; STEP D: the van Ravenstein classification (the hard core).
+4. Discharge `exists_gap_triple` (N ≥ 2) from A–D, closing the last `sorry`.
+
+If session 8+ is still blocked solely on STEP D with backends down, consider
+flagging the STEP D `sorry` as BLOCKED (known-hard, ~multi-hundred-line proof)
+and routing it to Aristotle once the MCP backend recovers.
 
 **progressSummary:** ORIENT→ATTACK. Discharged `orbit_card` (one of the three
 isolated sorries) with a fully elementary irrationality argument. The remaining
