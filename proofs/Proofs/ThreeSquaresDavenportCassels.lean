@@ -114,7 +114,10 @@ theorem exists_sq_of_scaled (n : ℤ) :
             + (w1 ^ 2 + w2 ^ 2 + w3 ^ 2 - n) ^ 2 * hfr
         have hmt : s.toNat < t := by omega
         have hcast : (s.toNat : ℤ) = s := Int.toNat_of_nonneg hs0
-        refine IH s.toNat hmt (by omega) _ _ _ ?_
+        refine IH s.toNat hmt (by omega)
+          (s * w1 + (w1 ^ 2 + w2 ^ 2 + w3 ^ 2 - n) * r1)
+          (s * w2 + (w1 ^ 2 + w2 ^ 2 + w3 ^ 2 - n) * r2)
+          (s * w3 + (w1 ^ 2 + w2 ^ 2 + w3 ^ 2 - n) * r3) ?_
         rw [hcast]; exact hV
 
 /-- **Davenport-Cassels for three squares (rational form).**
