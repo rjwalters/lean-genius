@@ -17,7 +17,11 @@
       "Axiom of choice",
       "Hamel basis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progressions",
+      "Axiom Of Choice",
+      "Hamel Basis"
+    ]
   },
   {
     "id": "ann-199-has3ap",
@@ -36,7 +40,11 @@
       "extremal problems"
     ],
     "mathContext": "See annotation content for formal details of 3-term arithmetic progression",
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progression",
+      "Real Numbers",
+      "Set Membership"
+    ]
   },
   {
     "id": "ann-199-3apfree",
@@ -54,7 +62,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "3-Term Arithmetic Progression",
+      "Sparse Sets",
+      "Stanley Sequence"
+    ]
   },
   {
     "id": "ann-199-infiniteap",
@@ -72,7 +84,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progression",
+      "Common Difference",
+      "Countable Sets"
+    ]
   },
   {
     "id": "ann-199-containsinf",
@@ -90,7 +106,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite Arithmetic Progression",
+      "Subset Relation",
+      "Set Containment"
+    ]
   },
   {
     "id": "ann-199-conjecture",
@@ -108,7 +128,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "3-AP-Free Sets",
+      "Set Complement",
+      "Van Der Waerden's Theorem"
+    ]
   },
   {
     "id": "ann-199-baumgartner",
@@ -127,7 +151,11 @@
       "Hamel basis",
       "Axiom of choice"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hamel Basis",
+      "Axiom Of Choice",
+      "Vector Space Partition"
+    ]
   },
   {
     "id": "ann-199-disproved",
@@ -145,7 +173,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Baumgartner's Partition",
+      "Counterexample",
+      "Set Complement"
+    ]
   },
   {
     "id": "ann-199-main",
@@ -163,7 +195,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "3-AP-Free Sets",
+      "Infinite Arithmetic Progression",
+      "Existential Statement"
+    ]
   },
   {
     "id": "ann-199-vdw",
@@ -182,7 +218,11 @@
       "Szemerédi's theorem",
       "Combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Theory",
+      "Finite Colorings",
+      "Arithmetic Progressions"
+    ]
   },
   {
     "id": "ann-199-example-nat",
@@ -200,7 +240,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Natural Numbers",
+      "Arithmetic Progression",
+      "Real Embedding"
+    ]
   },
   {
     "id": "ann-199-example-rat",
@@ -218,6 +262,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Rational Numbers",
+      "Infinite Arithmetic Progression",
+      "Subset Relation"
+    ]
   }
 ]
