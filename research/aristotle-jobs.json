@@ -2211,6 +2211,18 @@
       "notes": "MORE-REDUCED target than still-RUNNING 55ae116d (which works main's 2 unreduced geometric sorries). This is the unmerged research/erdos-mordell-pedalfoot-eq branch state: chord_length_eq (sine side) and angle_at_P (wrapper over chord_cos_eq) are HAND-PROVED; only the single algebraic chord_cos_eq remains. Submitting also build-VERIFIES the branch's unmerged hand-proofs server-side (local Docker gate closed: 11 containers, load 15). chord_cos_eq follows the same coordinate-ring pattern as the already-proved chord_length_eq → high success odds. MCP prove/prove_file/check_proof return 404 this session; CLI works. v4.26↔v4.28 toolchain warning noted. Poll: aristotle show 62d1066c-7edd-4419-b588-4bc430d4d4fb. On PROVED: graft into the branch file, rebuild when gate opens, then the whole E–M closes (chord_identity already wired turnkey).",
       "status": "submitted",
       "last_check": "2026-06-19T15:16Z"
+    },
+    {
+      "project_id": "d2395b8d-2153-48fd-823f-e267f93ec5d7",
+      "file": "/tmp/RationalCanonicalFormExists.lean",
+      "problem_id": "minpoly-charpoly-oq-03-oq-01",
+      "submitted": "2026-06-19T16:43:28Z",
+      "sorries": [
+        "theorem rational_canonical_form_exists"
+      ],
+      "notes": "RCF existence (invariant-factor chain): primary decomp via Module.equiv_directSum_of_isTorsion + regrouping. Never submitted before; HARD known classical result.",
+      "status": "submitted",
+      "last_check": null
     }
   ]
 }
