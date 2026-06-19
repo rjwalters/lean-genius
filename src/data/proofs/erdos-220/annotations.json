@@ -12,7 +12,11 @@
       "Euler totient",
       "Gap distribution"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Euler's totient function φ(n)",
+      "reduced residue systems mod n",
+      "asymptotic ≪ (big-O) notation"
+    ],
     "range": {
       "startLine": 41,
       "endLine": 70
@@ -31,7 +35,11 @@
       "Totient function",
       "Multiplicative group"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "modular arithmetic and coprimality (gcd)",
+      "the unit group (ℤ/nℤ)ˣ",
+      "definition of φ(n)"
+    ],
     "range": {
       "startLine": 41,
       "endLine": 70
@@ -49,7 +57,11 @@
       "Cardinality"
     ],
     "mathContext": "See annotation content for formal details of cardinality equals φ(n)",
-    "prerequisites": [],
+    "prerequisites": [
+      "definition of Euler's totient function",
+      "cardinality of finite sets",
+      "coprime residue counting"
+    ],
     "range": {
       "startLine": 41,
       "endLine": 70
@@ -67,7 +79,10 @@
       "Indexing"
     ],
     "mathContext": "See annotation content for formal details of sorted residues",
-    "prerequisites": [],
+    "prerequisites": [
+      "total orders and sorting a finite set",
+      "indexed enumeration a₁ < ⋯ < a_{φ(n)}"
+    ],
     "range": {
       "startLine": 41,
       "endLine": 70
@@ -85,7 +100,10 @@
       "Consecutive elements",
       "Difference"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "consecutive differences of a sorted sequence",
+      "ordering of reduced residues"
+    ],
     "range": {
       "startLine": 72,
       "endLine": 75
@@ -103,7 +121,10 @@
       "All gaps"
     ],
     "mathContext": "See annotation content for formal details of gap list",
-    "prerequisites": [],
+    "prerequisites": [
+      "finite sequences / lists",
+      "telescoping: the gaps sum to a_{φ(n)} − a₁"
+    ],
     "range": {
       "startLine": 72,
       "endLine": 75
@@ -121,7 +142,11 @@
       "Power sum",
       "Sum of squares"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "power sums ∑ xᵏ",
+      "moments of a gap distribution",
+      "the special case γ = 2"
+    ],
     "range": {
       "startLine": 91,
       "endLine": 130
@@ -139,7 +164,11 @@
       "Expected value",
       "Average gap squared"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "arithmetic mean / average spacing",
+      "Cauchy–Schwarz lower bound for ∑ xᵢ²",
+      "evaluation φ(n)·(n/φ(n))² = n²/φ(n)"
+    ],
     "range": {
       "startLine": 91,
       "endLine": 130
@@ -157,7 +186,11 @@
       "Asymptotic bound"
     ],
     "mathContext": "See annotation content for formal details of erdős conjecture",
-    "prerequisites": [],
+    "prerequisites": [
+      "Vinogradov ≪ / big-O notation",
+      "uniformity: constant C independent of n",
+      "the totient ratio n/φ(n)"
+    ],
     "range": {
       "startLine": 121,
       "endLine": 160
@@ -175,7 +208,11 @@
       "Generalization",
       "Power sum bound"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "ℓ^γ norms and power-mean inequalities",
+      "Hölder's inequality",
+      "interpolation between exponents"
+    ],
     "range": {
       "startLine": 121,
       "endLine": 160
@@ -193,7 +230,11 @@
       "Montgomery-Vaughan 1986",
       "Ann. of Math."
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "analytic number theory",
+      "the large sieve inequality",
+      "Montgomery–Vaughan mean-value methods (Ann. of Math. 1986)"
+    ],
     "range": {
       "startLine": 121,
       "endLine": 160
@@ -211,7 +252,11 @@
       "All powers"
     ],
     "mathContext": "See annotation content for formal details of montgomery-vaughan (general)",
-    "prerequisites": [],
+    "prerequisites": [
+      "the large sieve inequality",
+      "moment / mean-value bounds for arithmetic sequences",
+      "extension from γ = 2 to general γ ≥ 1"
+    ],
     "range": {
       "startLine": 121,
       "endLine": 160
@@ -229,7 +274,11 @@
       "Expected spacing"
     ],
     "mathContext": "See annotation content for formal details of average gap",
-    "prerequisites": [],
+    "prerequisites": [
+      "arithmetic mean of a finite set",
+      "density of reduced residues φ(n)/n",
+      "asymptotics of n/φ(n)"
+    ],
     "range": {
       "startLine": 72,
       "endLine": 75
@@ -247,7 +296,11 @@
       "Prime",
       "Unit gaps"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "primes and their reduced residue system {1,…,p−1}",
+      "φ(p) = p−1",
+      "all gaps equal to 1"
+    ],
     "range": {
       "startLine": 160,
       "endLine": 201
@@ -266,7 +319,11 @@
       "Tight bound",
       "Odd numbers"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "φ(2ᵏ) = 2^{k−1}",
+      "odd residues mod a power of two",
+      "extremal (tightness) examples"
+    ],
     "range": {
       "startLine": 160,
       "endLine": 201
@@ -285,7 +342,11 @@
       "Jacobsthal",
       "Sieve"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Jacobsthal's function g(n)",
+      "sieve methods",
+      "smallest prime not dividing n"
+    ],
     "range": {
       "startLine": 160,
       "endLine": 201
@@ -303,7 +364,11 @@
       "Logarithmic factor"
     ],
     "mathContext": "See annotation content for formal details of maximum gap bound",
-    "prerequisites": [],
+    "prerequisites": [
+      "sieve upper bounds for gaps",
+      "logarithmic factors in gap estimates",
+      "maximum vs. average gap"
+    ],
     "range": {
       "startLine": 177,
       "endLine": 189
@@ -321,7 +386,11 @@
       "Main result",
       "Resolution"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "the squared-gap bound ∑(gap)² ≪ n²/φ(n)",
+      "Vinogradov ≪ notation",
+      "combining lemmas into a main theorem"
+    ],
     "range": {
       "startLine": 41,
       "endLine": 70
@@ -340,7 +409,11 @@
       "1986"
     ],
     "mathContext": "See annotation content for formal details of problem solved",
-    "prerequisites": [],
+    "prerequisites": [
+      "history of Erdős prize problems",
+      "Montgomery–Vaughan (1986) resolution",
+      "status of solved conjectures"
+    ],
     "range": {
       "startLine": 201,
       "endLine": 227
