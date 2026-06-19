@@ -23,11 +23,7 @@
       "erdos-problems",
       "solved-problems"
     ],
-    "prerequisites": [
-      "P-smooth numbers (all prime factors lie in P)",
-      "consecutive gaps tending to infinity",
-      "Tijdeman's theorem (1973)"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-smooth-def",
@@ -52,11 +48,7 @@
       "prime-factorization",
       "number-theory"
     ],
-    "prerequisites": [
-      "prime factorization of integers",
-      "membership of prime factors in a set",
-      "smooth / friable numbers"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-one-smooth",
@@ -81,11 +73,7 @@
       "smooth-numbers",
       "base-case"
     ],
-    "prerequisites": [
-      "1 has no prime divisors",
-      "vacuous-truth proofs",
-      "the P-smooth predicate"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-enum",
@@ -110,11 +98,7 @@
       "well-ordering",
       "smooth-numbers"
     ],
-    "prerequisites": [
-      "ordered enumeration of an infinite set",
-      "monotone indexing functions ℕ → ℕ",
-      "axiomatized object properties"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-gap",
@@ -139,10 +123,7 @@
       "consecutive-integers",
       "smooth-numbers"
     ],
-    "prerequisites": [
-      "consecutive differences smoothEnum(i+1) − smoothEnum(i)",
-      "ordered enumeration of smooth numbers"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-question",
@@ -167,11 +148,7 @@
       "infinite-sets",
       "erdos-problems"
     ],
-    "prerequisites": [
-      "unbounded gaps (∀M ∃i, gap > M)",
-      "tends-to-infinity formalization",
-      "Prop-valued definitions"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-polya",
@@ -196,11 +173,7 @@
       "quadratic-polynomials",
       "number-theory"
     ],
-    "prerequisites": [
-      "Pólya's theorem (1918)",
-      "largest prime factor P(f(n)) → ∞",
-      "quadratics without repeated roots"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-finite-case",
@@ -225,11 +198,7 @@
       "quantitative-bounds",
       "gaps"
     ],
-    "prerequisites": [
-      "finite smooth sets",
-      "pigeonhole on bounded gaps",
-      "Størmer-type finiteness"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-tijdeman",
@@ -254,11 +223,7 @@
       "main-result",
       "number-theory"
     ],
-    "prerequisites": [
-      "Tijdeman's 1973 theorem",
-      "the lower bound gap ≫ aᵢ^{1−ε}",
-      "constructing infinite sets of primes"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-construction",
@@ -283,11 +248,7 @@
       "geometric-sequences",
       "examples"
     ],
-    "prerequisites": [
-      "singleton smooth sets P = {p} (powers of p)",
-      "geometric growth of gaps",
-      "rapidly growing prime sequences"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-stormer",
@@ -312,11 +273,7 @@
       "diophantine-equations",
       "number-theory"
     ],
-    "prerequisites": [
-      "Størmer's theorem",
-      "finitely many consecutive smooth integers",
-      "Pell equations / linear forms in logarithms"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-abc",
@@ -341,11 +298,7 @@
       "open-problems",
       "number-theory"
     ],
-    "prerequisites": [
-      "the ABC conjecture",
-      "radical and quality of coprime triples",
-      "consequences for smooth-number gaps"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-summary",
@@ -370,11 +323,7 @@
       "smooth-numbers",
       "tijdeman-theorem"
     ],
-    "prerequisites": [
-      "the Pólya-based finite-P bound",
-      "Tijdeman's theorem",
-      "combining lemmas into a summary theorem"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-intuition",
@@ -399,11 +348,7 @@
       "smooth-numbers",
       "number-theory"
     ],
-    "prerequisites": [
-      "density of smooth numbers",
-      "multiplicative reachability by primes in P",
-      "sparse vs. dense prime sets"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-sorry1",
@@ -428,11 +373,7 @@
       "real-analysis",
       "proof-gap"
     ],
-    "prerequisites": [
-      "gap growth of order aᵢ^{1/2}",
-      "asymptotic comparison (eventually exceeding M)",
-      "incomplete (sorry) formalization"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-sorry2",
@@ -457,11 +398,7 @@
       "proof-gap",
       "examples"
     ],
-    "prerequisites": [
-      "powers of a single prime p",
-      "gaps between consecutive p^k",
-      "geometric sequences"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-imports",
@@ -486,11 +423,7 @@
       "lean4",
       "dependencies"
     ],
-    "prerequisites": [
-      "Mathlib module structure",
-      "Nat.Prime, Data.Real.Basic",
-      "organizing Lean imports"
-    ]
+    "prerequisites": []
   },
   {
     "id": "ann-e240-progressions",
@@ -515,10 +448,6 @@
       "sieve-methods",
       "number-theory"
     ],
-    "prerequisites": [
-      "P-smooth numbers in arithmetic progressions",
-      "distribution / equidistribution results",
-      "linear forms in logarithms"
-    ]
+    "prerequisites": []
   }
 ]
