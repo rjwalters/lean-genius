@@ -23,7 +23,11 @@
       "erdos-conjecture",
       "disproved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "graph coloring",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e762-proper-coloring",
@@ -48,7 +52,11 @@
       "definition",
       "independent-set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "Mathlib SimpleGraph API"
+    ]
   },
   {
     "id": "ann-e762-cochromatic-class",
@@ -73,7 +81,11 @@
       "clique",
       "independent-set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e762-cochromatic-coloring",
@@ -98,7 +110,11 @@
       "vertex-partition",
       "definition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set partitions",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e762-proper-implies-cochromatic",
@@ -123,7 +139,11 @@
       "monotonicity",
       "theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 tactic mode",
+      "logical implication"
+    ]
   },
   {
     "id": "ann-e762-egs-conjecture",
@@ -148,7 +168,11 @@
       "cochromatic-number",
       "clique-free"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal graph theory",
+      "quantified logic in Lean 4"
+    ]
   },
   {
     "id": "ann-e762-steiner-counterexample",
@@ -173,7 +197,11 @@
       "graph-construction",
       "chromatic-number"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal combinatorics",
+      "existential statements in Lean 4"
+    ]
   },
   {
     "id": "ann-e762-conjecture-false",
@@ -198,7 +226,11 @@
       "erdos-conjecture",
       "formal-verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proof by contradiction",
+      "Lean 4 tactic mode",
+      "mathematical logic"
+    ]
   },
   {
     "id": "ann-e762-general-theorem",
@@ -223,7 +255,11 @@
       "extremal-graph-theory",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal graph theory",
+      "quantified logic in Lean 4"
+    ]
   },
   {
     "id": "ann-e762-gap-bounded",
@@ -248,7 +284,11 @@
       "derived-result"
     ],
     "mathContext": "See annotation content for formal details of gap is bounded",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "natural number arithmetic",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e762-steiner-gap",
@@ -272,7 +312,11 @@
       "extremal-graph-theory"
     ],
     "mathContext": "See annotation content for formal details of gap lower bound",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal combinatorics",
+      "existential statements in Lean 4"
+    ]
   },
   {
     "id": "ann-e762-summary",
@@ -297,6 +341,10 @@
       "formal-verification"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "mathematical logic",
+      "Lean 4 tactic mode"
+    ]
   }
 ]
