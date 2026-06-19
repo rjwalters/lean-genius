@@ -1,75 +1,83 @@
 # Current State
 
-**Phase**: ACT (S1 OBSERVE/ACT scaffold delivered)
-**Since**: 2026-05-12 (S1 iteration, researcher-1)
-**Iteration**: 1
+**Phase**: ACT (torsion deliverables proved; build-verification pending)
+**Since**: 2026-06-19 (researcher-4 — docstring/state accuracy pass)
+**Iteration**: 2
 
 ## Current Focus
 
-S1 scaffold landed: `proofs/Proofs/MinpolyCharpolyOQ03OQ01.lean` (187 lines,
-3 definitions, 3 theorems, 1 instance, 3 sorries). Gallery entry added at
-`src/data/proofs/minpoly-charpoly-oq-03-oq-01/`.
+The two structural deliverables are **proved** in
+`proofs/Proofs/MinpolyCharpolyOQ03OQ01.lean`; only the OQ-03-OQ-02 bridge
+remains a `sorry`. The file now has exactly **1 sorry**
+(`xModule_has_invariantFactorChain`, L211), not the 3 of the S1 scaffold.
 
-Deliverables fixed in API:
+Deliverables (current status):
 
-* `xModule M = Module.AEval' M.mulVecLin` (the F[X]-module synonym)
-* `xModule.instFinite : Module.Finite F[X] (xModule M)` — **unconditional**,
-  via `Module.AEval.instFinitePolynomial`. No sorry.
-* `xModule_isTorsionBy_charpoly` — Cayley-Hamilton on AEval'. Sorry-guarded.
-* `xModule_isTorsion` — the deliverable consumed by OQ-03-OQ-02. Sorry-guarded.
+* `xModule M = Module.AEval' M.mulVecLin` (the F[X]-module synonym) — def.
+* `xModule.instFinite : Module.Finite F[X] (xModule M)` — **proved**,
+  unconditional, via `Module.AEval.instFinitePolynomial`. No sorry.
+* `xModule_isTorsionBy_charpoly` — Cayley-Hamilton on AEval'. **Proved**
+  (build-pending kernel check). Route: `charpoly_mulVecLin` +
+  `(AEval'.of (endo M)).symm.injective` + `Module.AEval.of_symm_smul` +
+  `LinearMap.aeval_self_charpoly`.
+* `xModule_isTorsion` — deliverable consumed by OQ-03-OQ-02. **Proved**
+  (build-pending) from the above + `charpoly_monic ⇒ nonZeroDivisor`.
 * `xModule_has_invariantFactorChain` — bridge to parent's main theorem.
-  Sorry-guarded.
+  **Sorry** (deliberately deferred to OQ-03-OQ-02).
 
 ## Active Approach
 
 Mathlib's existing `Module.AEval'` synonym + `M.mulVecLin` gives the F[X]-module
-structure for free; the instance pipeline gives Module.Finite for free; only
-the IsTorsion proof requires manual work (Cayley-Hamilton transported across
-the standard-basis algebra equivalence).
+structure for free; the instance pipeline gives Module.Finite for free; the
+IsTorsion proof (Cayley-Hamilton transported across the `Module.AEval'`
+synonym) is now in place.
 
 ## Blockers
 
-None at the strategy level. The S2+ task is mechanical:
-
-1. Discharge `xModule_isTorsionBy_charpoly` (~30-50 lines): combine
-   `Matrix.aeval_self_charpoly` with the algebra equivalence
-   `Matrix.toLinAlgEquiv (Pi.basisFun F n) : Matrix n n F ≃ₐ[F] (n→F →ₗ[F] n→F)`.
-   Key fact: aeval commutes with algebra homomorphisms.
-2. Discharge `xModule_isTorsion` from (1) + `charpoly_monic` (~10-15 lines).
-3. Discharge `xModule_has_invariantFactorChain` from (2) +
-   `Module.equiv_directSum_of_isTorsion` (this is actually OQ-03-OQ-02
-   territory; we keep the statement here only to fix the API surface).
+* **Build verification** of the two torsion proofs is gated on the local
+  Docker container pool (each build does a fresh Mathlib clone; the gate is
+  ≤3 concurrent lean-build containers and ≥3 GiB free). When the pool frees,
+  run `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ03OQ01`.
+  All referenced Mathlib lemmas were statically confirmed present
+  (`charpoly_mulVecLin`, `Module.AEval.of_symm_smul`,
+  `LinearMap.aeval_self_charpoly`, `charpoly_monic`,
+  `mem_nonZeroDivisors_of_ne_zero`). Only residual risk: the
+  `rw [Module.AEval.of_symm_smul]` rewrite matching through `AEval'.of`.
+* The remaining `sorry` (`xModule_has_invariantFactorChain`) is **OQ-03-OQ-02
+  territory** (the `Module.equiv_directSum_of_isTorsion` regrouping
+  algorithm), not a single-session item for this sub-OQ.
 
 ## Next Action
 
-Next iteration should pick:
+1. **Build-verify** `Proofs.MinpolyCharpolyOQ03OQ01` once the container pool
+   frees (≤3 containers, ≥3 GiB). On green, mark the two torsion proofs
+   VERIFIED here and in `meta.json`. On breakage, fix the
+   `Module.AEval.of_symm_smul` API matching and rebuild.
 
-1. **S2 ACT** — discharge `xModule_isTorsionBy_charpoly` by:
-   a. Lift `Matrix.aeval_self_charpoly` across `Matrix.toLin'`'s
-      algebra-hom property to get `aeval M.mulVecLin M.charpoly = 0`
-      as a LinearMap.
-   b. Unfold `Module.AEval'`'s smul to relate it to the LinearMap action.
-   c. Conclude `M.charpoly • x = 0` for any `x : xModule M`.
-
-   Estimate: ~30-50 lines. Self-contained; no Mathlib gap.
-
-2. **S3 ACT** — discharge `xModule_isTorsion` from S2's result +
-   `Matrix.charpoly_monic`. The conversion `Monic ⇒ nonZeroDivisor` in
-   an integral domain F[X] is standard Mathlib API. Estimate: ~10-15 lines.
+2. **OQ-03-OQ-02 SCAFFOLD** — start the next sub-OQ:
 
 3. **OQ-03-OQ-02 SCAFFOLD** — start the next sub-OQ:
    `MinpolyCharpolyOQ03OQ02.lean` (~300 lines) applies
    `Module.equiv_directSum_of_isTorsion` to extract the invariant-factor
-   decomposition. Can begin in parallel with S2/S3 (statements are fixed).
+   decomposition. The two torsion statements it consumes are now proved.
 
 ## Attempt Counts
 
-- Total attempts: 1 (S1 scaffold, this session)
-- Current approach attempts: 1
-- Approaches tried: 1 (Module.AEval' + auto Module.Finite + sorry-guarded IsTorsion)
+- Total attempts: 2
+- Current approach attempts: 2
+- Approaches tried: 1 (Module.AEval' + auto Module.Finite + Cayley-Hamilton IsTorsion)
 
 ## Session Log
 
+* **S2 (researcher-4, 2026-06-19)** — accuracy pass. The two torsion
+  proofs (`xModule_isTorsionBy_charpoly`, `xModule_isTorsion`) were found
+  already discharged in the committed file (no longer `sorry`), but the
+  top docstring and this state.md still described them as sorry-guarded
+  and listed their discharge as the "Next Action". Corrected the prose to
+  reflect the true state: **1 remaining sorry**
+  (`xModule_has_invariantFactorChain`, deferred to OQ-03-OQ-02). Build
+  verification of the two proofs remains pending on the Docker container
+  pool. No proof content changed.
 * **S1 (researcher-1, 2026-05-12)** — created scaffold:
   `MinpolyCharpolyOQ03OQ01.lean` (187 lines, 3 def / 3 thm / 1 instance /
   3 sorries) + gallery entry (`meta.json` with 5 sections, `annotations.json`

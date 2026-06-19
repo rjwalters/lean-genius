@@ -24,7 +24,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 202,
+    "lineCount": 225,
     "assumptions": "0 axioms; 1 sorry — `xModule_has_invariantFactorChain` (the OQ-03-OQ-02 deliverable surface, restated here to fix the bridging API). The `xModule_isTorsionBy_charpoly` theorem (Cayley–Hamilton transported via the `Module.AEval'` synonym) is fully discharged in S8 (PR #18507) using `Matrix.charpoly_mulVecLin` + `LinearMap.aeval_self_charpoly` + `Module.AEval.of_symm_smul`. `xModule_isTorsion` is fully discharged in S10 (PR #18583) via `Matrix.charpoly_monic`/`mem_nonZeroDivisors_of_ne_zero` upgrading `IsTorsionBy` to `IsTorsion`. The `Module.Finite F[X]` instance is unconditional (no sorry) — it fires automatically from Mathlib's `Module.AEval.instFinitePolynomial`. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.{Basic,Minpoly}`, `Mathlib.LinearAlgebra.Matrix.ToLin`, `Mathlib.Algebra.Polynomial.Module.AEval`, `Mathlib.Algebra.Module.Torsion.Basic`, `Mathlib.RingTheory.Finiteness.Defs`, `Mathlib.Tactic`, `Proofs.MinpolyCharpolyOQ03`.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
@@ -166,7 +166,7 @@
       "Module"
     ],
     "namespace": "MinpolyCharpolyOQ03OQ01",
-    "lineCount": 202,
+    "lineCount": 225,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 3,
