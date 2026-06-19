@@ -29,7 +29,7 @@
     "Not present in Mathlib4 (as of v4.26.0): no `mordell` geometry result; Mathlib has Triangle, Incenter, Projection, SignedDist, angle infrastructure but no Erdős–Mordell."
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (cycle-36): cosine-side sign reduced to single ring identity [u,w][v,w]=−st[u,v]² + barycentric positivity; sine side already hypothesis-free 2D Gram. Erdős–Mordell now ring-mechanical end to end modulo extracting barycentric witness from hP. Both gates closed (Aristotle 404, build load 12.3) → math+doc PR only.",
+    "progressSummary": "PROGRESS (cycle-37): KEYSTONE pedalFoot_eq PROVED + build-verified; latent cosine-side build error fixed; companion compiles for first time. Sorries 3→2 (chord_length_eq sine-side Gram + angle_at_P cosine-side sign remain). PR #26265.",
     "builtItems": [
       "proofs/Proofs/ErdosMordellInequalityOQ01.lean: erdos_mordell_reduction — from the three key inequalities a·PA≥b·dc+c·db (cyclic), derives PA+PB+PC≥2(da+db+dc) via explicit nonnegative certificate, 0 sorry, 0 axiom (build-pending verification).",
       "Certificate: a·b·c·(PA+PB+PC) − 2abc·(da+db+dc) = a·da·(b−c)² + b·db·(a−c)² + c·dc·(a−b)² + (key-inequality slack), each summand ≥ 0; closed by mul_le_mul_of_nonneg_left scaling + nlinarith + le_of_mul_le_mul_left.",
@@ -42,7 +42,9 @@
       "key_inequality_vertex (shared geometric core, 1 sorry) + key_inequality_A/B/C now PROVED from it by relabeling, ErdosMordellInequalityOQ01.lean",
       "affineIndep_rotate / mem_interior_hull_rotate plumbing lemmas (cyclic-permutation invariance), ErdosMordellInequalityOQ01.lean",
       "ErdosMordellFeetAngleAristotle.lean (NEW, build-VERIFIED 0-sorry under LEAN_MEMORY_LIMIT=8192 docker): case-free oriented building block two_zsmul_oangle_feet_at_X : 2•∡(pedalFoot P Z X) X (pedalFoot P X Y) = 2•∡ Z X Y, for ALL triangles, no positivity/Sbtw hypothesis (only the four ≠X nondegeneracies). Proof = Collinear.two_zsmul_oangle_eq_left/right (ray-direction invariance of 2•∡ since 2•π≡0 in Real.Angle), swapping F_b↦Z and F_c↦Y.",
-      "ErdosMordellFeetAngleAristotle.lean helpers (build-verified): pedalFoot_mem_affineSpan (orthogonalProjection_mem), collinear_pedalFoot {foot,X,Y}, collinear_foot_vertex {foot,B,A} (vertex-in-middle via Set.pair_comm + collinear_insert_iff_of_mem_affineSpan)."
+      "ErdosMordellFeetAngleAristotle.lean helpers (build-verified): pedalFoot_mem_affineSpan (orthogonalProjection_mem), collinear_pedalFoot {foot,X,Y}, collinear_foot_vertex {foot,B,A} (vertex-in-middle via Set.pair_comm + collinear_insert_iff_of_mem_affineSpan).",
+      "pedalFoot_eq PROVED + build-verified (ErdosMordellChordIdentity.lean:172, Lean v4.26 7743 jobs green): pedalFoot P X Y = (⟪P−X,Y−X⟫/‖Y−X‖²)•(Y−X)+X via coe_orthogonalProjection_eq_iff_mem (membership + perpendicular residual). The keystone bridge; sorries 3→2.",
+      "Fixed latent build error in chord_length_sq_eq_of_angle_at_P (rw[hlc] dist^2 vs dist*dist + dist_comm mismatch) → hAngle/cos_pi_sub into hlc, align pow_two+dist_comm, linear_combination. Companion now compiles for the first time."
     ],
     "insights": [
       "The inequality cleanly factors: ALL the AM-GM / side-length algebra is captured by erdos_mordell_reduction (now proved), isolating the genuinely hard work into the three geometric key inequalities.",
@@ -57,7 +59,8 @@
       "Cycle-35 (researcher-9): the sine side chord_length_eq is HYPOTHESIS-FREE. Squared, it is the pure 2D Gram-determinant identity r(ab-c2)=a q2+b p2-2 c p q (a=|u|2,b=|v|2,c=<u,v>,p=<w,u>,q=<w,v>,r=|w|2; u=Y-X,v=Z-X,w=P-X) — three vectors in dim-2 are dependent. In Fin 2 coordinates it is a one-line ring identity; needs neither AffineIndependent nor P-interior. Numerically confirmed for arbitrary P incl. exterior+obtuse.",
       "Cycle-35: pedal feet in coordinates are F_b=X+(q/b).v, F_c=X+(p/a).u (orthogonalProjection onto lines ZX,XY). Then dist F_b F_c^2 = q2/b+p2/a-2pqc/(ab) directly, matching (dist X P sin)^2 = r(ab-c2)/(ab) exactly via the Gram relation.",
       "Cycle-35: angle_at_P (cosine side, supplementary angle) is EQUIVALENT to the scalar identity db.dc.cos(YXZ) = -<P-F_b,P-F_c>. Its SQUARE is hypothesis-free ring (db2 dc2 cos2 = <P-F_b,P-F_c>2, with <P-F_b,P-F_c> = r-p2/a-q2/b+pqc/(ab)). Only the SIGN needs P-interior — this is the SOLE place hP enters the entire Erdos-Mordell proof. Sign FAILS for exterior P (numerically confirmed: signErr large outside triangle, ~0 inside).",
-      "cycle-36: the cosine-side sign (the WHOLE proof's only use of P-interior) reduces to ONE ring identity [u,w]·[v,w] = −s·t·[u,v]² where w=s·u+t·v are barycentric coords (s,t>0,s+t<1), [·,·]=2D cross product. Manifestly <0 for interior P + nondegenerate triangle. Replaces vaguer convexHull/λμ<0 sketch. Numerically verified ~1e-14."
+      "cycle-36: the cosine-side sign (the WHOLE proof's only use of P-interior) reduces to ONE ring identity [u,w]·[v,w] = −s·t·[u,v]² where w=s·u+t·v are barycentric coords (s,t>0,s+t<1), [·,·]=2D cross product. Manifestly <0 for interior P + nondegenerate triangle. Replaces vaguer convexHull/λμ<0 sketch. Numerically verified ~1e-14.",
+      "The companion ErdosMordellChordIdentity.lean was NEVER build-verified before cycle-37 (unregistered, prior closed gates) — chord_length_sq_eq_of_angle_at_P carried a latent rw failure. Lesson: numerically-verified scaffolds may hide compile bugs; build-verify when the gate opens."
     ],
     "mathlibGaps": [
       "No Erdős–Mordell in Mathlib4 v4.26.0.",
@@ -89,7 +92,9 @@
       "PRIORITY when build gate opens (load<6,<3 containers): mechanize chord_length_eq via coordinates. Lemma chain: (1) pedalFoot_eq: pedalFoot P X Y = X + (inner (P-X) (Y-X)/inner (Y-X) (Y-X)) . (Y-X) [from orthogonalProjection_eq / EuclideanGeometry.orthogonalProjection on affineSpan {X,Y}]; (2) gram_two: for u v w : EuclideanSpace R (Fin 2), |w|^2*(|u|^2*|v|^2-<u,v>^2)=|u|^2*<w,v>^2+|v|^2*<w,u>^2-2*<u,v>*<w,u>*<w,v> by simp [EuclideanSpace inner, Fin.sum_univ_two]; ring; (3) assemble dist^2 then sqrt (both nonneg).",
       "For angle_at_P: prove the squared scalar identity (db dc cos)^2 = <P-F_b,P-F_c>^2 hypothesis-free by ring, then recover the sign from hP. Sign lemma: P in interior(convexHull{X,Y,Z}) => the projection scalars q/b>0 and p/a>0 on the open segments => orientation scalars of P-F_b, P-F_c are opposite (lambda*mu<0) => <P-F_b,P-F_c> and <u,v> have opposite signs. Candidate Mathlib: convexHull membership -> affine combination with positive coeffs.",
       "Retry Aristotle MCP (down/404 cycle-35) on the companion file ErdosMordellChordIdentity.lean once it recovers; both residual sorries are now coordinate-mechanical with explicit ring identities documented in their docstrings.",
-      "Prove angle_at_P via: (1) rewrite ∠ through inner-product def; (2) P−F_c=([u,w]/‖u‖²)rot90 u and P−F_b=([v,w]/‖v‖²)rot90 v by ring in Fin 2; (3) extract barycentric s,t>0 from hP (interior convexHull → positive coeffs, s+t<1); (4) ring identity [u,w][v,w]=−st[u,v]² gives sign; combine with hypothesis-free squared identity."
+      "Prove angle_at_P via: (1) rewrite ∠ through inner-product def; (2) P−F_c=([u,w]/‖u‖²)rot90 u and P−F_b=([v,w]/‖v‖²)rot90 v by ring in Fin 2; (3) extract barycentric s,t>0 from hP (interior convexHull → positive coeffs, s+t<1); (4) ring identity [u,w][v,w]=−st[u,v]² gives sign; combine with hypothesis-free squared identity.",
+      "chord_length_eq: rewrite both pedalFoot via pedalFoot_eq, square, reduce to 2D Gram det r(ab−c²)=aq²+bp²−2cpq by ring in Fin2 coords, unsquare via sqrt_inj (both sides ≥0); needs cos_angle = ⟪u,v⟫/(‖u‖‖v‖) and sin²=1−cos².",
+      "angle_at_P: with pedalFoot_eq, P−F_c=([u,w]/‖u‖²)rot90 u etc.; reduce to ⟪P−F_b,P−F_c⟫ via ring, square hypothesis-free, then sign from hP barycentric witness w=s·u+t·v (s,t>0) giving (♦) [u,w][v,w]=−st[u,v]²<0."
     ]
   }
 }
