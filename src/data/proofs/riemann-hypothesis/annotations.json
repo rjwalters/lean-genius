@@ -16,7 +16,10 @@
       "zeta function",
       "L-series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Riemann zeta function ζ(s)",
+      "Mathlib's analytic number theory library"
+    ]
   },
   {
     "id": "ann-historical",
@@ -41,7 +44,11 @@
       "birch-swinnerton-dyer",
       "navier-stokes-existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime counting function π(x)",
+      "Riemann's 1859 memoir",
+      "analytic continuation of ζ(s)"
+    ]
   },
   {
     "id": "ann-critical-line",
@@ -60,7 +67,11 @@
       "functional equation",
       "zero symmetry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex numbers and the real part Re(s)",
+      "the zeta function ζ(s)",
+      "the line Re(s) = 1/2"
+    ]
   },
   {
     "id": "ann-critical-strip",
@@ -78,7 +89,11 @@
       "zero-free region",
       "Euler product"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the strip 0 < Re(s) < 1",
+      "the Euler product (ζ ≠ 0 for Re(s) > 1)",
+      "non-trivial zeros of ζ"
+    ]
   },
   {
     "id": "ann-trivial-zeros",
@@ -96,7 +111,10 @@
       "functional equation",
       "Gamma function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the functional equation of ζ",
+      "zeros at the negative even integers"
+    ]
   },
   {
     "id": "ann-rh-statement",
@@ -120,7 +138,11 @@
       "hodge-conjecture",
       "navier-stokes-existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "non-trivial zeros of ζ(s)",
+      "the critical line Re(s) = 1/2",
+      "universal quantification over zeros"
+    ]
   },
   {
     "id": "ann-functional-equation",
@@ -139,7 +161,11 @@
       "reflection formula",
       "symmetry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the completed zeta function Λ(s)",
+      "the Gamma function Γ",
+      "the symmetry s ↔ 1 − s"
+    ]
   },
   {
     "id": "ann-robins-inequality",
@@ -158,7 +184,12 @@
       "Euler-Mascheroni",
       "colossally abundant numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sum-of-divisors function σ(n)",
+      "the Euler–Mascheroni constant γ",
+      "Robin's 1984 equivalence",
+      "sorry as a stated-but-unproved theorem"
+    ]
   },
   {
     "id": "ann-mertens",
@@ -177,7 +208,12 @@
       "prime factorization",
       "Dirichlet series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Möbius function μ(n)",
+      "the Mertens function M(x)",
+      "O(x^{1/2+ε}) growth",
+      "sorry as a stated-but-unproved theorem"
+    ]
   },
   {
     "id": "ann-prime-counting",
@@ -199,7 +235,11 @@
       "infinitude-primes",
       "bounded-prime-gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime counting function π(x)",
+      "the logarithmic integral Li(x)",
+      "the error term in the Prime Number Theorem"
+    ]
   },
   {
     "id": "ann-hardy-theorem",
@@ -218,7 +258,11 @@
       "critical zeros",
       "sign changes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "zeros on the critical line",
+      "Hardy's 1914 theorem",
+      "the infinitude of critical-line zeros"
+    ]
   },
   {
     "id": "ann-selberg",
@@ -237,7 +281,10 @@
       "Levinson",
       "Conrey"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive proportion of zeros on the critical line",
+      "the Selberg / Levinson / Conrey refinements"
+    ]
   },
   {
     "id": "ann-computational",
@@ -256,7 +303,10 @@
       "Gram points",
       "Odlyzko"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "numerical verification of zeros",
+      "the first zero at 1/2 + 14.1347…i"
+    ]
   },
   {
     "id": "ann-consequences",
@@ -278,7 +328,11 @@
       "bertrands-postulate",
       "p-vs-np"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime gaps",
+      "the Prime Number Theorem error term",
+      "results conditional on RH"
+    ]
   },
   {
     "id": "ann-sorry-meaning",
@@ -297,7 +351,10 @@
       "assumed results",
       "pedagogical scope"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sorry placeholder in Lean",
+      "theorems known true but not yet formalized"
+    ]
   },
   {
     "id": "ann-summary",
@@ -316,6 +373,10 @@
       "Millennium Prize",
       "future directions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unconditional results (Hardy, zero-free regions)",
+      "results conditional on RH",
+      "the open status of the Riemann Hypothesis"
+    ]
   }
 ]
