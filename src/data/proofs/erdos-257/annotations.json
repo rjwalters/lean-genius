@@ -16,7 +16,11 @@
       "lambert-series",
       "irrationality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Irrational Numbers",
+      "Lambert Series",
+      "Infinite Series"
+    ]
   },
   {
     "id": "ann-e257-imports",
@@ -35,7 +39,11 @@
       "infinite-sums"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Divisor Function",
+      "Irrationality Predicate",
+      "Infinite Sums"
+    ]
   },
   {
     "id": "ann-e257-lambert-sum",
@@ -54,7 +62,11 @@
       "convergence",
       "lambert-series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometric Decay",
+      "Absolute Convergence",
+      "Topological Sums"
+    ]
   },
   {
     "id": "ann-e257-divisor-sum",
@@ -73,7 +85,11 @@
       "number-theory",
       "arithmetic-functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisor Counting Function",
+      "Arithmetic Functions",
+      "Series Over Naturals"
+    ]
   },
   {
     "id": "ann-e257-identity",
@@ -92,7 +108,11 @@
       "rearrangement",
       "divisor-function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometric Series Expansion",
+      "Summation Interchange",
+      "Tonelli For Sums"
+    ]
   },
   {
     "id": "ann-e257-erdos-1948",
@@ -111,7 +131,11 @@
       "erdos",
       "analytic-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Irrationality Proofs",
+      "Lambert Series",
+      "Analytic Number Theory"
+    ]
   },
   {
     "id": "ann-e257-corollary",
@@ -130,7 +154,11 @@
       "rewriting",
       "irrationality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Rewriting Tactics",
+      "Irrationality Transfer",
+      "Series Identities"
+    ]
   },
   {
     "id": "ann-e257-open",
@@ -149,7 +177,11 @@
       "conjecture",
       "special-cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Open Conjectures",
+      "Infinite Sets",
+      "Coprime Sequences"
+    ]
   },
   {
     "id": "ann-e257-divisor-examples",
@@ -168,7 +200,11 @@
       "primes",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisor Function",
+      "Prime Numbers",
+      "Native Decide"
+    ]
   },
   {
     "id": "ann-e257-perfect",
@@ -187,7 +223,11 @@
       "highly-composite"
     ],
     "mathContext": "See annotation content for formal details of divisors of 28",
-    "prerequisites": []
+    "prerequisites": [
+      "Perfect Numbers",
+      "Divisor Set",
+      "Sum Of Divisors"
+    ]
   },
   {
     "id": "ann-e257-mersenne",
@@ -206,6 +246,10 @@
       "mersenne-primes",
       "prime-distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mersenne Numbers",
+      "Mersenne Primes",
+      "Primality Conditions"
+    ]
   }
 ]
