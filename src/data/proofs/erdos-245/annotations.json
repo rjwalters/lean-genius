@@ -16,7 +16,11 @@
       "sumsets"
     ],
     "mathContext": "See annotation content for formal details of problem overview",
-    "prerequisites": []
+    "prerequisites": [
+      "Additive combinatorics",
+      "Sumsets",
+      "Asymptotic density"
+    ]
   },
   {
     "id": "ann-counting-func",
@@ -35,7 +39,11 @@
       "density",
       "Nat.card"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set cardinality",
+      "Subtypes in Lean",
+      "Counting functions"
+    ]
   },
   {
     "id": "ann-zero-density",
@@ -54,7 +62,11 @@
       "sparse sets",
       "Filter.Tendsto"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic density",
+      "Filter limits",
+      "Convergence to zero"
+    ]
   },
   {
     "id": "ann-sumset-def",
@@ -72,7 +84,11 @@
       "Pointwise operations",
       "additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pointwise set operations",
+      "Sumsets",
+      "Set-builder notation"
+    ]
   },
   {
     "id": "ann-growth-ratio",
@@ -91,7 +107,11 @@
       "EReal",
       "Filter.limsup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limit superior",
+      "Extended real numbers",
+      "Sumsets"
+    ]
   },
   {
     "id": "ann-mann-bound",
@@ -149,7 +169,11 @@
       "Erdos problems"
     ],
     "mathContext": "See annotation content for formal details of positive answer to problem #245",
-    "prerequisites": []
+    "prerequisites": [
+      "Freiman's theorem",
+      "Zero density sets",
+      "Sumset growth"
+    ]
   },
   {
     "id": "ann-powers-infinite",
@@ -167,7 +191,11 @@
       "Set.Infinite",
       "injectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Injective functions",
+      "Infinite sets",
+      "Powers of two"
+    ]
   },
   {
     "id": "ann-optimality",
@@ -185,7 +213,11 @@
       "binary representation"
     ],
     "mathContext": "See annotation content for formal details of optimality: why 3 is best possible",
-    "prerequisites": []
+    "prerequisites": [
+      "Binary representation",
+      "Geometric progressions",
+      "Sumset counting"
+    ]
   },
   {
     "id": "ann-powers-sumset",
@@ -202,7 +234,11 @@
     "relatedConcepts": [
       "sumset membership"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sumset membership",
+      "Powers of two",
+      "Existential witnesses"
+    ]
   },
   {
     "id": "ann-diff-sets",
@@ -220,7 +256,11 @@
       "difference sets"
     ],
     "mathContext": "See annotation content for formal details of connection to problem #899",
-    "prerequisites": []
+    "prerequisites": [
+      "Difference sets",
+      "Additive combinatorics",
+      "Integer arithmetic"
+    ]
   },
   {
     "id": "ann-summary",
@@ -238,6 +278,10 @@
       "sharp bounds"
     ],
     "mathContext": "See annotation content for formal details of summary of known results",
-    "prerequisites": []
+    "prerequisites": [
+      "Sumset growth bounds",
+      "Sharp bounds",
+      "Additive number theory"
+    ]
   }
 ]
