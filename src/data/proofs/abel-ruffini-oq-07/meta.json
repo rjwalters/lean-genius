@@ -21,7 +21,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "This file proves the group-theoretic REDUCTION of Gal(X⁵−X−1) ≅ S₅, not the full unconditional statement. The two number-theoretic inputs — 5 ∣ |Gal| (from irreducibility mod 3) and the existence of a transposition in Gal (from the order-6 Frobenius at p=2) — are exposed as explicit hypotheses of gal_eq_top_of_five_dvd_and_swap, NOT as axioms. Supplying them in Lean requires the Dedekind–Frobenius bridge (factor type mod an unramified prime ⟹ a Frobenius element of matching cycle type in f.Gal), which Mathlib v4.26.0 does not provide; it is the same open bridge InverseGaloisA5.lean axiomatises as three_dvd_gal_card. All theorems in this file are fully machine-checked with 0 sorries and 0 axioms. UPDATE: the new theorem five_dvd_card_gal now derives 5 ∣ Nat.card f.Gal for the REAL Galois group f.Gal directly from Irreducible f (via Polynomial.Gal.prime_degree_dvd_card), so the order-divisibility input no longer depends on the Frobenius bridge — only on the (classical) irreducibility of f. The transposition input remains the sole genuinely Dedekind–Frobenius-dependent piece.",
+    "assumptions": "This file proves the group-theoretic REDUCTION of Gal(X⁵−X−1) ≅ S₅. The order-divisibility input 5 ∣ |Gal| is now fully discharged with NO assumptions: five_dvd_card_gal derives it for the genuine Galois group f.Gal from Irreducible f (via Polynomial.Gal.prime_degree_dvd_card), and f_irreducible supplies Irreducible f directly from Mathlib's Selmer theorem Polynomial.X_pow_sub_X_sub_one_irreducible_rat — so five_dvd_card_gal_unconditional : 5 ∣ Nat.card f.Gal holds unconditionally, axiom-free and sorry-free. The SOLE remaining hypothesis is the existence of a transposition in Gal (from the order-6 Frobenius at p=2), exposed as an explicit hypothesis of gal_eq_top_of_five_dvd_and_swap, NOT an axiom. Supplying it in Lean requires the Dedekind–Frobenius bridge (factor type mod an unramified prime ⟹ a Frobenius element of matching cycle type in f.Gal), which Mathlib v4.26.0 does not provide; it is the same open bridge InverseGaloisA5.lean axiomatises as three_dvd_gal_card. All theorems in this file are fully machine-checked with 0 sorries and 0 axioms.",
     "dateAdded": "2026-06-18",
     "mathlibDependencies": [
       {
@@ -43,6 +43,11 @@
         "theorem": "Polynomial.Gal.prime_degree_dvd_card",
         "description": "For p irreducible of prime degree over a characteristic-zero field, p.natDegree ∣ Nat.card p.Gal (the Galois group acts transitively on the roots).",
         "module": "Mathlib.FieldTheory.PolynomialGaloisGroup"
+      },
+      {
+        "theorem": "Polynomial.X_pow_sub_X_sub_one_irreducible_rat",
+        "description": "The Selmer polynomials X^n - X - 1 are irreducible over ℚ for n ≠ 1 (unit-trinomial argument + Gauss's lemma). Instantiated at n=5 to discharge Irreducible f.",
+        "module": "Mathlib.RingTheory.Polynomial.Selmer"
       }
     ],
     "originalContributions": [
@@ -54,7 +59,8 @@
       "Concrete Frobenius witness (frob2, frob2_not_mem_alternating, frob2_pow_three_eq_swap, frob2_pow_three_isSwap): exhibits a (2,3)-cycle-type element (0 1)(2 3 4) ∈ S₅ modelling a Frobenius element of f mod 2, machine-checks it is odd and that its cube is the transposition (0 1) — making the prose 'order-6 Frobenius ⟹ transposition' step into verified permutation data.",
       "Concrete p=3 Frobenius witness and capstone (frob3, frob3_pow_five, orderOf_frob3, five_dvd_card_of_frob3_mem, gal_eq_top_of_frobenii): exhibits the 5-cycle frob3 = (0 1 2 3 4) ∈ S₅ modelling a Frobenius element of f mod 3 (irreducible quintic), machine-checks orderOf frob3 = 5, and derives via Lagrange that any subgroup containing it has 5 ∣ |G| — supplying hypothesis (a) of gal_eq_top_of_five_dvd_and_swap from a single membership fact. The capstone gal_eq_top_of_frobenii assembles G = ⊤ = S₅ from both witnesses (frob3 gives 5 ∣ |G|, frob2³ gives the transposition), turning the entire prose cycle-type computation into verified permutation data modulo the open Dedekind–Frobenius bridge.",
       "Real-Galois-group order divisibility (five_dvd_card_gal): proves 5 ∣ Nat.card f.Gal for the GENUINE Galois group f.Gal of X⁵−X−1, conditional only on Irreducible f, via Polynomial.Gal.prime_degree_dvd_card. This discharges the order-divisibility half of the corrected proof WITHOUT the Dedekind–Frobenius bridge: where frob3 supplies 5 ∣ |G| for an abstract subgroup G ≤ S₅, this supplies it for the real f.Gal, reducing that half of the open bridge to the separately-classical irreducibility of f.",
-      "Unconditional generation theorem (closure_frobenii_eq_top): the two explicit permutations frob2 = (0 1)(2 3 4) and frob3 = (0 1 2 3 4) generate the whole symmetric group, Subgroup.closure {frob2, frob3} = ⊤. Specializes the conditional capstone gal_eq_top_of_frobenii to the subgroup they generate (both are members of their own closure), giving the concrete, hypothesis-free form of the S₅ criterion: the order-5 cycle forces 5 ∣ |⟨frob2,frob3⟩| and the cube of the order-6 element is the transposition, so the generated subgroup cannot be proper. (Classically, the transposition (0 1) and the 5-cycle (0 1 2 3 4) generate S₅.)"
+      "Unconditional generation theorem (closure_frobenii_eq_top): the two explicit permutations frob2 = (0 1)(2 3 4) and frob3 = (0 1 2 3 4) generate the whole symmetric group, Subgroup.closure {frob2, frob3} = ⊤. Specializes the conditional capstone gal_eq_top_of_frobenii to the subgroup they generate (both are members of their own closure), giving the concrete, hypothesis-free form of the S₅ criterion: the order-5 cycle forces 5 ∣ |⟨frob2,frob3⟩| and the cube of the order-6 element is the transposition, so the generated subgroup cannot be proper. (Classically, the transposition (0 1) and the 5-cycle (0 1 2 3 4) generate S₅.)",
+      "Unconditional order divisibility (f_irreducible, five_dvd_card_gal_unconditional): discharges the Irreducible f hypothesis of five_dvd_card_gal directly from Mathlib's Selmer theorem X_pow_sub_X_sub_one_irreducible_rat (n=5), making 5 ∣ Nat.card f.Gal an UNCONDITIONAL, axiom-free, sorry-free fact about the genuine Galois group of X⁵−X−1 — no Dedekind–Frobenius bridge and no irreducibility assumption remain on the order-divisibility half of the corrected Gal ≅ S₅ proof. Only the transposition input (∃ swap ∈ Gal, from the p=2 Frobenius) stays bridge-dependent."
     ],
     "prerequisites": [
       "Symmetric and alternating groups; permutation sign",
@@ -64,7 +70,7 @@
       "Lean 4 and Mathlib"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 316,
+    "lineCount": 348,
     "relatedProblems": [
       {
         "id": "abel-ruffini-oq-04-oq-01",
@@ -75,8 +81,8 @@
         "relationship": "Needs the SAME Dedekind–Frobenius bridge (cycle type of Frobenius from factor type mod p); closing it there supplies this file's two hypotheses."
       }
     ],
-    "theoremCount": 18,
-    "definitionCount": 4
+    "theoremCount": 21,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Paolo Ruffini (1799) and Niels Henrik Abel (1824) showed there is no general radical formula for the quintic; Évariste Galois (1831) recast solvability as a property of the equation's permutation group, making 'Gal not solvable' the modern criterion for unsolvability by radicals. A concrete unsolvable quintic therefore needs a polynomial whose Galois group is non-solvable — and the smallest non-solvable transitive subgroups of S_5 are A_5 and S_5. Ernst Selmer (1956, Math. Scand. 4) proved the trinomials X^n - X - 1 irreducible over Q for all n, making X^5 - X - 1 a natural candidate witness. The standard tool for pinning down such a Galois group is Dedekind's theorem (1880s): for a prime p not dividing the discriminant, the factorization type of f mod p equals the cycle type of a Frobenius element of Gal(f). Combined with Frobenius's density results, this turns Galois-group identification into a finite set of modular factorizations — the method underlying every computer-algebra Galois routine (GAP, PARI/GP, Magma).",
@@ -206,6 +212,16 @@
       "name": "five_dvd_card_gal",
       "type": "proved",
       "description": "5 ∣ Nat.card f.Gal for the genuine Galois group of X⁵−X−1, conditional only on Irreducible f — obtained from prime_degree_dvd_card, supplying the order-divisibility input for the REAL Galois group without the Dedekind–Frobenius bridge."
+    },
+    {
+      "name": "five_dvd_card_gal_unconditional",
+      "type": "proved",
+      "description": "UNCONDITIONAL: 5 ∣ Nat.card f.Gal for the genuine Galois group of X⁵−X−1. Combines five_dvd_card_gal with f_irreducible (Selmer), removing the last hypothesis — the order-divisibility half of the corrected S₅ proof, fully verified for the real polynomial with no axioms and no Dedekind–Frobenius bridge."
+    },
+    {
+      "name": "f_irreducible",
+      "type": "proved",
+      "description": "X⁵−X−1 is irreducible over ℚ (Selmer 1956), a direct instance of Mathlib's Polynomial.X_pow_sub_X_sub_one_irreducible_rat at n=5. Discharges the Irreducible f hypothesis."
     }
   ],
   "conclusion": {
@@ -241,7 +257,8 @@
       "Mathlib.GroupTheory.SpecificGroups.Alternating",
       "Mathlib.GroupTheory.OrderOfElement",
       "Mathlib.Tactic",
-      "Mathlib.FieldTheory.PolynomialGaloisGroup"
+      "Mathlib.FieldTheory.PolynomialGaloisGroup",
+      "Mathlib.RingTheory.Polynomial.Selmer"
     ],
     "opens": [
       "Equiv",
@@ -249,10 +266,10 @@
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ07",
-    "lineCount": 316,
+    "lineCount": 348,
     "axiomCount": 0,
-    "theoremCount": 18,
-    "definitionCount": 4,
+    "theoremCount": 21,
+    "definitionCount": 5,
     "sorries": 0,
     "path": "Proofs/AbelRuffiniOQ07.lean"
   },
