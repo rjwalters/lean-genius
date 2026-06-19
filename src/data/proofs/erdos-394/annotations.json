@@ -16,7 +16,11 @@
       "consecutive-integers",
       "asymptotic-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility of products of consecutive integers",
+      "asymptotic growth rates of summatory functions",
+      "little-o notation for comparing sums"
+    ]
   },
   {
     "id": "ann-e394-consecutive-product",
@@ -35,7 +39,11 @@
       "divisibility",
       "binomial-coefficients"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "products of consecutive integers",
+      "factorials dividing consecutive-integer products",
+      "binomial coefficients as k!·C(m+k-1, k)"
+    ]
   },
   {
     "id": "ann-e394-t-function",
@@ -54,7 +62,11 @@
       "minimization",
       "Nat.find"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility n | m(m+1)···(m+k-1)",
+      "Nat.find for selecting a least witness",
+      "existence axioms in Lean formalization"
+    ]
   },
   {
     "id": "ann-e394-t2-prime",
@@ -73,7 +85,11 @@
       "divisibility",
       "lower-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primes dividing consecutive products (p-1)·p",
+      "counting primes up to x via the Prime Number Theorem",
+      "lower bounds on summatory functions"
+    ]
   },
   {
     "id": "ann-e394-trivial-lower-bound",
@@ -91,7 +107,11 @@
       "prime-number-theorem",
       "asymptotic-bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Number Theorem density x/log x",
+      "summing primes Σ_{p≤x} p ≈ x²/(2 log x)",
+      "asymptotic lower bounds with ≫ notation"
+    ]
   },
   {
     "id": "ann-e394-erdos-hall",
@@ -110,7 +130,11 @@
       "iterated-logarithms",
       "asymptotic-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "iterated logarithms log log x and log log log x",
+      "sieve methods in analytic number theory",
+      "little-o asymptotic estimates"
+    ]
   },
   {
     "id": "ann-e394-conjecture",
@@ -129,7 +153,11 @@
       "logarithmic-bounds",
       "prime-contribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "power-saving bounds x²/(log x)^c",
+      "the constant log 2 ≈ 0.693 as an optimal threshold",
+      "the prime contribution Ω(x²/log x)"
+    ]
   },
   {
     "id": "ann-e394-hierarchy",
@@ -148,7 +176,11 @@
       "asymptotic-hierarchy",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "comparing Σ t_{k+1}(n) with Σ t_k(n)",
+      "Filter.atTop and little-o notation in Lean",
+      "divisibility in short intervals of consecutive integers"
+    ]
   },
   {
     "id": "ann-e394-factorials",
@@ -167,7 +199,11 @@
       "sharp-bounds",
       "powers-of-two"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factorial divisibility and n! as 2·3···n",
+      "2-adic valuation of n! and powers of two",
+      "sharp bounds attained at n = 2^r"
+    ]
   },
   {
     "id": "ann-e394-summary",
@@ -186,6 +222,10 @@
       "open-problems",
       "asymptotic-bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Erdős-Hall upper bound on Σ t₂(n)",
+      "the prime-based trivial lower bound",
+      "Selfridge's result for n = 10"
+    ]
   }
 ]
