@@ -67,9 +67,9 @@
       "Proofs/PicksTheoremOQ03CrossPoly.lean",
       "Proofs/PicksTheoremOQ03.lean"
     ],
-    "axiomCount": 3,
+    "axiomCount": 4,
     "lineCount": 710,
-    "assumptions": "3 axioms: ehrhart_is_polynomial (Ehrhart counting function is polynomial), ehrhart_macdonald_reciprocity (interior count via sign-change), and ehrhart_fn (Ehrhart counting function as a typed primitive, declared in PicksTheoremOQ03.lean for the d=2 Pick's-theorem specialization).",
+    "assumptions": "3 axioms: ehrhart_is_polynomial (Ehrhart counting function is polynomial), ehrhart_macdonald_reciprocity (interior count via sign-change), and ehrhart_fn (Ehrhart counting function as a typed primitive, declared in PicksTheoremOQ03.lean for the d=2 Pick's-theorem specialization). In addition, the h*-vector sum sanity checks (unitCube_hstar_sum, simplex_hstar_sum, octahedron_hstar_sum) are dispatched by native_decide, which trusts the Lean compiler's kernel reduction and so adds Lean.ofReduceBool to #print axioms; per the project's native_decide policy this is counted in meta.axiomCount (propext / Classical.choice / Quot.sound are not counted).",
     "mathlib_version": "4.26.0",
     "theoremCount": 45,
     "definitionCount": 23
@@ -196,7 +196,7 @@
       "startLine": 1,
       "endLine": 695,
       "file": "Proofs/PicksTheoremOQ03CrossPoly.lean",
-      "summary": "Complete Ehrhart theory for the cross-polytope (hyperoctahedron) family β_d in dimensions 1-3. Proves Ehrhart polynomials, Macdonald reciprocity, h*-vector palindromy (reflexivity), interior shift L*(n)=L(n-1), cube-cross duality, dimension recurrence, monotonicity, boundary counts, and the beautiful identity h*_{β_d}(z) = (1+z)^d connecting to the binomial theorem. 69 theorems, 0 sorries, 0 axioms.",
+      "summary": "Complete Ehrhart theory for the cross-polytope (hyperoctahedron) family β_d in dimensions 1-3. Proves Ehrhart polynomials, Macdonald reciprocity, h*-vector palindromy (reflexivity), interior shift L*(n)=L(n-1), cube-cross duality, dimension recurrence, monotonicity, boundary counts, and the beautiful identity h*_{β_d}(z) = (1+z)^d connecting to the binomial theorem. 69 theorems, 0 sorries, and no axiom declarations beyond the three named Ehrhart axioms (the h*-sum checks use native_decide, hence depend on Lean.ofReduceBool).",
       "mathContext": "Complete Ehrhart theory for the cross-polytope (hyperoctahedron) family β_d in dimensions 1-3."
     }
   ],
