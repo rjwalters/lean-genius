@@ -29,7 +29,8 @@ Structure (see `research/erdos-mordell-chord-identity-strategy.md`):
   `F = X + (p/a)•u` form both residual identities are stated in. `sorry` (complete
   named-lemma proof recipe in its docstring; `coe_orthogonalProjection_eq_iff_mem`).
 * `chord_length_eq` — sine side: `dist F_b F_c = dist X P · sin∠YXZ` (law of sines
-  on the pedal triangle). `sorry`.
+  on the pedal triangle). **Proved** (hypothesis-free, after squaring: `pedalFoot_eq`
+  recentres both feet, then the 2D Gram relation `gram_two` closes it by `ring`).
 * `angle_at_P` — the single residual cosine-side geometric subfact:
   `∠ F_b P F_c = π − ∠YXZ` (supplementary angle in the cyclic quadrilateral). `sorry`.
 * `chord_length_sq_eq_of_angle_at_P` — cosine side **reduced to `angle_at_P`** via the
@@ -251,7 +252,57 @@ theorem chord_length_eq
     (hXYZ : AffineIndependent ℝ ![X, Y, Z])
     (hP : P ∈ interior (convexHull ℝ {X, Y, Z})) :
     dist (pedalFoot P Z X) (pedalFoot P X Y) = dist X P * Real.sin (∠ Y X Z) := by
-  sorry
+  -- distinctness from affine independence
+  have hXY : X ≠ Y := by
+    have := hXYZ.injective.ne (show (0 : Fin 3) ≠ 1 by decide); simpa using this
+  have hXZ : X ≠ Z := by
+    have := hXYZ.injective.ne (show (0 : Fin 3) ≠ 2 by decide); simpa using this
+  have hYX : Y ≠ X := hXY.symm
+  have ha : (inner ℝ (Y - X) (Y - X) : ℝ) ≠ 0 := by
+    rw [real_inner_self_eq_norm_sq]
+    exact pow_ne_zero 2 (norm_ne_zero_iff.mpr (sub_ne_zero.mpr hYX))
+  have hb : (inner ℝ (Z - X) (Z - X) : ℝ) ≠ 0 := by
+    rw [real_inner_self_eq_norm_sq]
+    exact pow_ne_zero 2 (norm_ne_zero_iff.mpr (sub_ne_zero.mpr (Ne.symm hXZ)))
+  -- recentre `pedalFoot P Z X` at the shared vertex `X`
+  have hsc : (inner ℝ (P - Z) (X - Z) : ℝ) / ‖X - Z‖ ^ 2
+      = 1 - inner ℝ (P - X) (Z - X) / ‖Z - X‖ ^ 2 := by
+    have hb' : ‖Z - X‖ ^ 2 ≠ 0 := by rw [← real_inner_self_eq_norm_sq]; exact hb
+    rw [norm_sub_rev X Z, eq_sub_iff_add_eq, div_add_div_same, div_eq_one_iff_eq hb']
+    have e1 : (P - Z : EuclideanSpace ℝ (Fin 2)) = (P - X) - (Z - X) := by abel
+    have e2 : (X - Z : EuclideanSpace ℝ (Fin 2)) = -(Z - X) := by abel
+    rw [e1, e2, inner_sub_left, inner_neg_right, inner_neg_right, real_inner_self_eq_norm_sq]
+    ring
+  have hFb : pedalFoot P Z X
+      = (inner ℝ (P - X) (Z - X) / ‖Z - X‖ ^ 2) • (Z - X) + X := by
+    rw [pedalFoot_eq P Z X hXZ, hsc]; module
+  -- cosine of the vertex angle in coordinate form
+  have hcos : Real.cos (∠ Y X Z) = inner ℝ (Y - X) (Z - X) / (‖Y - X‖ * ‖Z - X‖) := by
+    unfold EuclideanGeometry.angle
+    rw [InnerProductGeometry.cos_angle]; simp only [vsub_eq_sub]
+  have hsin_nonneg : 0 ≤ Real.sin (∠ Y X Z) :=
+    Real.sin_nonneg_of_nonneg_of_le_pi (EuclideanGeometry.angle_nonneg Y X Z)
+      (EuclideanGeometry.angle_le_pi Y X Z)
+  -- reduce to equal squares, expand both, finish with the 2D Gram identity
+  refine (sq_eq_sq₀ dist_nonneg (mul_nonneg dist_nonneg hsin_nonneg)).mp ?_
+  rw [dist_eq_norm, hFb, pedalFoot_eq P X Y hYX]
+  have hvec : ((inner ℝ (P - X) (Z - X) / ‖Z - X‖ ^ 2) • (Z - X) + X)
+        - ((inner ℝ (P - X) (Y - X) / ‖Y - X‖ ^ 2) • (Y - X) + X)
+      = (inner ℝ (P - X) (Z - X) / ‖Z - X‖ ^ 2) • (Z - X)
+        - (inner ℝ (P - X) (Y - X) / ‖Y - X‖ ^ 2) • (Y - X) := by abel
+  rw [hvec, mul_pow, dist_eq_norm, norm_sub_rev X P,
+    show Real.sin (∠ Y X Z) ^ 2 = 1 - Real.cos (∠ Y X Z) ^ 2 from by
+      have := Real.sin_sq_add_cos_sq (∠ Y X Z); linarith,
+    hcos, div_pow, mul_pow]
+  simp only [← real_inner_self_eq_norm_sq, inner_sub_left, inner_sub_right,
+    real_inner_smul_left, real_inner_smul_right]
+  -- clear the `⟪v,v⟫`, `⟪u,u⟫` denominators, then expand every inner product into the
+  -- two `Fin 2` components; `ring` resolves inner-product commutativity and discharges the
+  -- resulting polynomial identity (the 2D Gram relation `gram_two`).
+  field_simp
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, starRingEnd_apply,
+    star_trivial]
+  ring
 
 /-- **The single residual geometric subfact of the cosine side.**
 
