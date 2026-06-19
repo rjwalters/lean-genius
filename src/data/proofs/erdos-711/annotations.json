@@ -35,7 +35,11 @@
       "asymptotic analysis",
       "two-parameter optimization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "asymptotic analysis",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e711-valid-selection",
@@ -54,7 +58,11 @@
       "injective function",
       "Fin type"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e711-fnm",
@@ -73,7 +81,11 @@
       "minimality",
       "noncomputable definition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "well-ordering principle"
+    ]
   },
   {
     "id": "ann-e711-fnn",
@@ -92,7 +104,10 @@
       "special case",
       "known bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e711-upper-bound",
@@ -111,7 +126,11 @@
       "uniform bound",
       "Erdős-Pomerance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "number theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e711-first-conj",
@@ -130,7 +149,11 @@
       "subpolynomial improvement",
       "o(1) notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "number theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e711-difference",
@@ -148,7 +171,11 @@
       "integer difference",
       "worst-case starting point"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "integer arithmetic",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e711-second-conj",
@@ -167,7 +194,11 @@
       "solved conjecture",
       "worst-case analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "logical quantifiers",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e711-van-doorn",
@@ -186,7 +217,10 @@
       "quantitative bound",
       "Integers journal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e711-why-m",
@@ -205,7 +239,11 @@
       "floor function",
       "Chinese Remainder Theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "modular arithmetic",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e711-710-bounds",
@@ -224,7 +262,10 @@
       "asymptotic comparison",
       "dominance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e711-examples",
@@ -243,7 +284,11 @@
       "Fin cases",
       "Matrix notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "Lean 4 tactic mode",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e711-summary",
@@ -262,6 +307,10 @@
       "summary theorem",
       "open question"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "asymptotic analysis",
+      "Lean 4 syntax"
+    ]
   }
 ]
