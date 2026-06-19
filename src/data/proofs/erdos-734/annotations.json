@@ -16,7 +16,11 @@
       "Combinatorial designs",
       "de Bruijn-Erdős theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "extremal set theory",
+      "history of open problems"
+    ]
   },
   {
     "id": "ann-734-2",
@@ -35,7 +39,12 @@
       "Projective planes",
       "Steiner systems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "Lean 4 structures",
+      "finite set theory",
+      "uniqueness quantifiers"
+    ]
   },
   {
     "id": "ann-734-3",
@@ -53,7 +62,11 @@
       "Degenerate cases",
       "Design existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "Lean 4 tactic mode",
+      "Mathlib Finset API"
+    ]
   },
   {
     "id": "ann-734-4",
@@ -71,7 +84,11 @@
       "Frequency distribution",
       "Block spectrum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "Mathlib Finset API",
+      "counting functions"
+    ]
   },
   {
     "id": "ann-734-5",
@@ -90,7 +107,12 @@
       "Pigeonhole principle",
       "Double counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "pigeonhole principle",
+      "double counting",
+      "incidence geometry"
+    ]
   },
   {
     "id": "ann-734-6",
@@ -109,7 +131,11 @@
       "Design existence",
       "Uniformity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "combinatorics",
+      "logical quantifiers"
+    ]
   },
   {
     "id": "ann-734-7",
@@ -128,7 +154,11 @@
       "Symmetric designs",
       "Prime power conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite geometry",
+      "field theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-734-8",
@@ -147,7 +177,11 @@
       "Pair coverage",
       "Binomial coefficients"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "double counting",
+      "binomial coefficients",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-734-9",
@@ -166,7 +200,11 @@
       "Pairwise balanced designs"
     ],
     "mathContext": "See annotation content for formal details of near-uniform designs",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "design theory",
+      "existence arguments"
+    ]
   },
   {
     "id": "ann-734-10",
@@ -185,6 +223,10 @@
       "Summary theorem",
       "Known results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "Lean 4 tactic mode",
+      "propositional logic"
+    ]
   }
 ]
