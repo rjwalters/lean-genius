@@ -43,15 +43,20 @@
       content of the correction (complex conjugation, being a double transposition,
       lies in A₅ and cannot be the transposition the curated route assumed).
     * `f_natDegree`, `f_monic`, `natDegree_prime` — anchoring numeric facts about f.
+    * `f_irreducible`, `five_dvd_card_gal_unconditional` — `X⁵−X−1` is irreducible over ℚ
+      (Selmer, from Mathlib), hence `5 ∣ |Gal(X⁵−X−1)|` *unconditionally* for the real `f.Gal`.
 
-  ## The genuinely-open gap
-  The two hypotheses `5 ∣ |Gal|` and `∃ swap ∈ Gal` are exactly the outputs of the
-  **Dedekind–Frobenius bridge** ("factor type of f mod an unramified prime p ⟹ a
-  Frobenius element of matching cycle type in `f.Gal`"), which Mathlib (pin v4.26.0)
-  does not yet provide. This is the same machinery the flagship gallery entry
-  `InverseGaloisA5.lean` axiomatises as `three_dvd_gal_card`; closing it there closes
-  this problem too. We therefore expose those two facts as *hypotheses* rather than
-  axioms — keeping this file fully verified — and document the bridge as future work.
+  ## The genuinely-open gap (now just ONE input)
+  The order-divisibility input `5 ∣ |Gal|` is now **fully discharged**: `five_dvd_card_gal`
+  derives it for the real `f.Gal` from `Irreducible f` (via `Gal.prime_degree_dvd_card`), and
+  `f_irreducible` supplies `Irreducible f` from Mathlib's Selmer theorem
+  `X_pow_sub_X_sub_one_irreducible_rat` — no Dedekind–Frobenius bridge, no axioms.  The *only*
+  remaining hypothesis is the transposition `∃ swap ∈ Gal`, which still requires the
+  **Dedekind–Frobenius bridge** ("factor type of f mod an unramified prime p ⟹ a Frobenius
+  element of matching cycle type in `f.Gal`") at `p = 2` — the same machinery the flagship
+  gallery entry `InverseGaloisA5.lean` axiomatises as `three_dvd_gal_card`; closing it there
+  closes this problem too. We expose that single fact as a *hypothesis* rather than an axiom —
+  keeping this file fully verified — and document the bridge as future work.
 
   ## References
   - Selmer, E. S. (1956). "On the irreducibility of certain trinomials." Math. Scand. 4.
@@ -63,6 +68,7 @@ import Mathlib.GroupTheory.Perm.Cycle.Type
 import Mathlib.GroupTheory.SpecificGroups.Alternating
 import Mathlib.GroupTheory.OrderOfElement
 import Mathlib.FieldTheory.PolynomialGaloisGroup
+import Mathlib.RingTheory.Polynomial.Selmer
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
 
@@ -158,27 +164,53 @@ theorem five_dvd_card_gal (hirr : Irreducible f) : 5 ∣ Nat.card f.Gal := by
   have h := Polynomial.Gal.prime_degree_dvd_card hirr natDegree_prime
   rwa [f_natDegree] at h
 
-/-! ## Toward discharging `Irreducible f`: the reduction mod 3
+/-! ## Discharging `Irreducible f` unconditionally — Selmer's theorem
 
-`five_dvd_card_gal` is conditional on `Irreducible f`.  Classically that hypothesis is
-established by **reduction mod 3**: `X⁵ − X − 1` stays degree-`5` and *irreducible* over
-the finite field `𝔽₃ = ZMod 3`, and a monic integer polynomial whose mod-`p` reduction is
-irreducible of the same degree is irreducible over `ℚ` (`Monic.irreducible_of_irreducible_map`
-to lift `𝔽₃ → ℤ`, then Gauss's lemma `ℤ → ℚ`).
+The hypothesis `Irreducible f` of `five_dvd_card_gal` is exactly Selmer's 1956 result for the
+trinomial `X⁵ − X − 1`, and Mathlib **already proves the whole Selmer family**: the unit-trinomial
+argument `Polynomial.X_pow_sub_X_sub_one_irreducible_rat` shows `Xⁿ − X − 1` is irreducible over
+`ℚ` for every `n ≠ 1` (via the Gauss-lemma lift of the corresponding `ℤ[X]` statement, itself
+proved from `Complex.UnitTrinomial`).  Instantiating at `n = 5` discharges the hypothesis with no
+assumptions, turning `five_dvd_card_gal` into the **unconditional** fact `5 ∣ |Gal(X⁵−X−1)|`. -/
 
-Irreducibility of a monic quintic over a field has two obstructions to rule out
+/-- **`f = X⁵ − X − 1` is irreducible over `ℚ`** — Selmer's theorem, from Mathlib.
+    A direct instance of `Polynomial.X_pow_sub_X_sub_one_irreducible_rat` at `n = 5`. -/
+theorem f_irreducible : Irreducible f := by
+  unfold f
+  exact X_pow_sub_X_sub_one_irreducible_rat (by norm_num)
+
+/-- **Unconditional: `5 ∣ |Gal(X⁵−X−1)|`.**
+    Feeding `f_irreducible` (Selmer) into `five_dvd_card_gal` removes the last hypothesis: five
+    divides the order of the *genuine* Galois group `f.Gal` of `X⁵ − X − 1`, with no assumptions,
+    no axioms, and no Dedekind–Frobenius bridge.  This is the order-divisibility half of the
+    corrected `Gal ≅ S₅` proof, now fully verified for the real polynomial. -/
+theorem five_dvd_card_gal_unconditional : 5 ∣ Nat.card f.Gal :=
+  five_dvd_card_gal f_irreducible
+
+/-! ## Corroborating the mod-3 cycle type: the reduction mod 3
+
+With `Irreducible f` now discharged unconditionally by Selmer's theorem above, the order-
+divisibility input `5 ∣ |Gal|` is fully verified for the real Galois group and needs no
+mod-`p` reasoning at all.  The mod-3 reduction nevertheless remains the source of the
+*concrete* `frob3` 5-cycle witness: a Frobenius element at `p = 3` is a single 5-cycle
+**precisely because** `X⁵ − X − 1` is irreducible over `𝔽₃ = ZMod 3`.
+
+Irreducibility of a monic quintic over a field rules out two obstructions
 (`Polynomial.Monic.irreducible_iff_lt_natDegree_lt`, with `natDegree / 2 = 2`):
-a **linear** factor (a root) and a **quadratic** factor.  We discharge the *linear* half
-here, completely and by `decide`: `X⁵ − X − 1` has **no root in `𝔽₃`**.  The arithmetic
-core (`no_root_mod3`) is a finite check over the three elements of `ZMod 3`; the polynomial
+a **linear** factor (a root) and a **quadratic** factor.  We verify the *linear* half here,
+completely and by `decide`: `X⁵ − X − 1` has **no root in `𝔽₃`** — already enough to exclude
+the `(1,4)`, `(1,1,3)`, … cycle types with a fixed point.  The arithmetic core
+(`no_root_mod3`) is a finite check over the three elements of `ZMod 3`; the polynomial
 restatement (`f3_no_root`) is the no-linear-factor input to the irreducibility criterion.
 
 The remaining quadratic obstruction — that none of the three monic irreducible quadratics
-over `𝔽₃` (`X²+1`, `X²+X+2`, `X²+2X+2`) divides `f` — is the only piece left before
-`five_dvd_card_gal` becomes unconditional.  It resists `decide` (polynomial `%ₘ` does not
-kernel-reduce through `Finsupp`), so it is left as documented future work, best handled by
-Aristotle (a known finite-field computation) or a hand enumeration of the nine monic
-quadratics. -/
+over `𝔽₃` (`X²+1`, `X²+X+2`, `X²+2X+2`) divides `f3` (a true finite-field fact, verified by
+hand: each leaves a nonzero remainder) — would upgrade `f3_no_root` to full irreducibility
+mod 3 and so fully justify the `(5)` cycle type of `frob3`.  A coefficient-comparison `decide`
+over the `3⁵` choices proves it, but the `ZMod 3` kernel reduction is prohibitively slow; it is
+left as documented future work (best handled by `native_decide` in a separate companion, or by
+Aristotle).  Note this is now purely *corroborative*: the headline `5 ∣ |Gal|` is already
+unconditional via Selmer, independently of any mod-3 computation. -/
 
 /-- The reduction of `X⁵ − X − 1` to `(ZMod 3)[X] = 𝔽₃[X]`. -/
 noncomputable def f3 : (ZMod 3)[X] := X ^ 5 - X - 1

@@ -182,3 +182,37 @@ too error-prone to verify. So I shipped the verified conditional theorem and lef
 executable code). Fixed; everything else elaborated cleanly. Aristotle endpoint still
 404 this session, so the irreducibility goal was not delegated. Also aligned the stale
 `leanFile` summary block in meta.json (was 257/16/3) to the authoritative 294/17/4.
+
+## Session 2026-06-19 (Session 3) — Irreducible f discharged via Selmer ⟹ unconditional 5∣|Gal|
+
+**Mode**: REVISIT | **Outcome**: progress (order-divisibility half now COMPLETE)
+
+### What I Did
+- Discovered Mathlib **already** has `Polynomial.X_pow_sub_X_sub_one_irreducible_rat`
+  (`RingTheory/Polynomial/Selmer.lean`): `Irreducible (Xⁿ − X − 1 : ℚ[X])` for all `n ≠ 1`,
+  proved via the unit-trinomial method + Gauss's lemma. The prior plan to hand-build the
+  mod-3 irreducibility check was unnecessary.
+- Added `f_irreducible := X_pow_sub_X_sub_one_irreducible_rat (by norm_num)` and
+  `five_dvd_card_gal_unconditional : 5 ∣ Nat.card f.Gal` (feeds `f_irreducible` into the
+  existing conditional `five_dvd_card_gal`). Build GREEN — `✔ [3066/3066]`, 0 sorry, 0 axiom.
+- Updated the top docstring + mod-3 section prose (the latter was stale: it claimed the
+  result was still "conditional" and the quadratic obstruction was "the only piece left").
+
+### Key Findings
+- The order-divisibility input `5 ∣ |Gal|` of the corrected `Gal ≅ S₅` proof is now
+  **fully verified and unconditional** for the genuine `f.Gal` — no axioms, no
+  Dedekind–Frobenius bridge, no irreducibility hypothesis.
+- Sole remaining open input: `∃ swap ∈ Gal` (transposition from the `p = 2` Frobenius),
+  genuinely bridge-dependent and shared with `inverse-galois-a5-oq-01`.
+- The scratch mod-3 quadratic-obstruction proof (coefficient comparison + `decide` over
+  `3⁵` cases) is correct in structure but its `ZMod 3` kernel `decide` is too slow
+  (>19 min, killed). It is now purely corroborative; would need `native_decide` (axiom cost).
+
+### Files Modified
+- proofs/Proofs/AbelRuffiniOQ07.lean (+f_irreducible, +five_dvd_card_gal_unconditional, +Selmer import, prose)
+- src/data/proofs/abel-ruffini-oq-07/meta.json
+- src/data/research/problems/abel-ruffini-oq-07.json
+
+### Next Steps
+- Transposition-in-Gal: the shared Dedekind–Frobenius bridge (open). Pursue at the bridge.
+- Optional: `f3_irreducible` via `native_decide` companion to justify `frob3`'s `(5)` cycle type.
