@@ -16,7 +16,11 @@
       "Transfinite diameter",
       "Potential theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "polynomials over the complex numbers",
+      "point-set topology (connected components)"
+    ]
   },
   {
     "id": "ann-e1042-transfinite",
@@ -35,7 +39,12 @@
       "Chebyshev constant",
       "Fekete-Szegő theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis (limits and suprema)",
+      "complex analysis",
+      "potential theory basics",
+      "Lean 4 axiom declarations"
+    ]
   },
   {
     "id": "ann-e1042-lemniscates",
@@ -54,7 +63,11 @@
       "Sublevel sets",
       "Root separation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "point-set topology (open sets, connectedness)",
+      "Lean 4 structures and dependent types"
+    ]
   },
   {
     "id": "ann-e1042-questions",
@@ -73,7 +86,11 @@
       "Component bounds",
       "Capacity constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "asymptotic notation",
+      "Lean 4 Prop and proposition-as-data"
+    ]
   },
   {
     "id": "ann-e1042-ehp",
@@ -92,7 +109,11 @@
       "Unit disc",
       "Maximum components"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "roots of unity and the geometry of the complex plane",
+      "elementary estimates of polynomial moduli"
+    ]
   },
   {
     "id": "ann-e1042-gr-solution",
@@ -111,7 +132,12 @@
       "Potential theory",
       "Component counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "potential theory (Green's function, equilibrium measure)",
+      "the argument principle",
+      "Lean 4 axiom declarations"
+    ]
   },
   {
     "id": "ann-e1042-counterexample",
@@ -130,6 +156,10 @@
       "Geometric shape",
       "Counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Chebyshev polynomials and approximation theory",
+      "potential theory (logarithmic capacity)"
+    ]
   }
 ]
