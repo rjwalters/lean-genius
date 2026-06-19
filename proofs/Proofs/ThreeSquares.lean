@@ -628,13 +628,17 @@ This directly represents ANY n (not through factorization) by finding appropriat
 For n > 1, d > 0, and p = dn - 1 a prime, if -d is a quadratic residue modulo p,
 then n can be expressed as a sum of three integer squares.
 
-**How this completes the proof**:
-For each n ≢ 0 (mod 4) that is not excluded:
-- n ≡ 1 (mod 8): Use d = 1, need -1 QR mod (n-1). Since n ≡ 1 (mod 8), n-1 ≡ 0 (mod 8).
-- n ≡ 2 (mod 8): Use d = 2, need -2 QR mod (2n-1).
-- n ≡ 3 (mod 8): Use d = 2, find suitable prime factor.
-- n ≡ 5 (mod 8): Similar to n ≡ 1.
-- n ≡ 6 (mod 8): Similar to n ≡ 2.
+**How this would complete the proof — and why `d ≤ 2` does NOT suffice**:
+For each n ≢ 0 (mod 4) that is not excluded one seeks a multiplier `d` with
+`p = d·n − 1` prime and `−d` a quadratic residue mod `p`. Crucially `d` must be
+allowed to range UNBOUNDEDLY (Dirichlet's theorem then supplies the prime): for
+many residue classes no small `d` works. E.g. for `n ≡ 1 (mod 8)`, `d = 1` gives
+`p = n − 1 ≡ 0 (mod 8)`, which is even and `> 2`, hence never prime; and `2n − 1`
+is frequently composite too. A brute-force scan finds NO `d ≤ 2` witness for
+`610` of the `999` 4-free cores `n < 2000` with `n % 8 ∈ {1,2,5,6}` (smallest
+`n = 5, 13, 17, 25`); the minimal required `d` grows (e.g. `d = 70` at `n = 1166`).
+The earlier per-class table claiming "`d = 1` for `n ≡ 1`, `d = 2` for `n ≡ 2`"
+was incorrect — see `Proofs.ThreeSquaresSufficiencyCorrected` for the full audit.
 
 The 4^a factor is handled by scaling: if 4n = (2a)² + (2b)² + (2c)², then n = a² + b² + c².
 
@@ -655,7 +659,13 @@ geometric input — a nonzero sublattice vector with `x² + d·y² + d·z² < 2p
 supplied axiom-free by `ThreeSquaresSlice.exists_dirichlet_vector_lt_two_mul`
 (slice-Minkowski, `Proofs.ThreeSquaresSliceMinkowski`). The `d ≤ 2` restriction is
 genuine (the slice volume bound `√2·π > 4` holds only for binary forms `x² + d·y²`
-with `d ≤ 2`) and harmless: the classical selection step only ever needs `d ∈ {1,2}`.
+with `d ≤ 2`, and the `interval_cases d` reconstruction `x² + d·y² = d·n − 1 ⟹
+n = a²+b²+c²` is explicit only for `d ∈ {1,2}`). It is **NOT** harmless: the
+classical multiplier selection requires unbounded `d` (see the corrected "How this
+completes the proof" note above), so `dirichlet_key_lemma` as proved here closes
+only the sub-cases where some `d ∈ {1,2}` already yields a prime witness. Lifting
+the construction to general `d` is the genuine remaining content of the sufficiency
+axiom and needs ternary-form reduction theory / Davenport–Cassels (not in Mathlib).
 -/
 
 /-! ### Infrastructure for Minkowski's Theorem Application
@@ -1809,15 +1819,22 @@ private lemma dirichletSublatticeReal_covolume {p : ℤ} (hp : 0 < p) (r : ℤ) 
 
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
-**Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.
+**Current status**: `dirichlet_key_lemma` (the geometric/descent core) is a proved
+theorem for the multipliers `d ∈ {1,2}`. Assembling it into this axiom is, however,
+NOT a `150-200`-line exercise: the `d ≤ 2` cap is intrinsic to that construction
+(its `interval_cases d` reconstruction only covers `d ∈ {1,2}`), whereas the
+classical multiplier selection `p = d·n − 1` needs UNBOUNDED `d` for residue
+classes `n % 8 ∈ {1,2,5,6}` (no `d ≤ 2` witness exists for `610/999` 4-free cores
+`n < 2000`). See `Proofs.ThreeSquaresSufficiencyCorrected` for the audit: the
+`d ≤ 2` "split witness" `DirichletWitnessNe3` is a false proposition, so that route
+is vacuous on those classes.
 
-To complete this proof, implement:
-1. Case analysis on n mod 8 to choose appropriate d
-2. Use Dirichlet's theorem (PrimesInAP, now available) to find suitable primes
-3. Apply `dirichlet_key_lemma` for each case
-4. Handle small cases (n ≤ 6) directly
-
-**Estimated remaining work**: ~150-200 lines using the Key Lemma framework above. -/
+**Genuine remaining work / blocker**: a `d`-uniform argument — Gauss reduction of
+ternary quadratic forms, or Davenport–Cassels (rational ⟹ integral representability
+of `x²+y²+z²`) plus local–global solvability of `x²+y²+z² = n`. Neither is in
+Mathlib (≫ 500 lines of new foundational infrastructure). The `n ≡ 3 (mod 8)`
+class IS handled soundly (Fermat two-square on the prime deficit, conditional on a
+thin-sequence Dirichlet input). -/
 axiom not_excluded_form_is_sum_three_sq {n : ℕ} (h : ¬IsExcludedForm n) :
     ∃ a b c : ℤ, a ^ 2 + b ^ 2 + c ^ 2 = n
 

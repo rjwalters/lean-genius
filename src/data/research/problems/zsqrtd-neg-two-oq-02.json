@@ -43,7 +43,7 @@
     "lastUpdate": "2026-06-19T00:00:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S16, build-verified): central axiom dirichlet_key_lemma ELIMINATED (now a proved theorem for d∈{1,2}); ThreeSquares.lean axioms 2→1. Elementary z=0 descent. Last axiom not_excluded_form_is_sum_three_sq remains (conditional on witness-existence = Dirichlet-in-AP).",
+    "progressSummary": "BLOCKED (S14, build-verified docs): exposed that the d≤2 split-witness DirichletWitnessNe3 is a FALSE proposition (610/999 cores need d>2), so ThreeSquaresSufficiencyCorrected is vacuous on classes {1,2,5,6} — not the genuine elimination route it claimed. Lone axiom not_excluded_form_is_sum_three_sq stands; genuine blocker = d-uniform ternary-form reduction / Davenport–Cassels, absent from Mathlib. Corrected all overclaiming docstrings.",
     "builtItems": [
       "research/problems/zsqrtd-neg-two-oq-02/verify_three_squares_via_zsqrtd.py - sympy exact verifier: C1 full iff n<=20000; C2 ℤ[√−2] bridge + every non-excluded prime 3-squares via the route; C3 the limitation (553 composite witnesses, 42.5% norm-form coverage); C4 descent reductions 4n<=>n and k^2*n. All PASS.",
       "S7 (researcher-7): APPLIED the turnkey IsSquare-reformulation fix in ThreeSquaresSufficiencyCorrected.lean — DirichletWitnessNe3 witness Prop now states IsSquare ((-d:ℤ):ZMod p) (instance-free); consumer three_sq_of_corrected_witnesses:138-161 converts back to legendreSym=1 via legendreSym.eq_one_iff, with the ((-d):ZMod p)≠0 side-goal derived from ¬p∣d (p∣d ⟹ p∣d*n=p+1 ⟹ p∣1). Build-pending (Docker daemon hung).",
@@ -62,17 +62,23 @@
       "S-2026-06-18 (researcher-12): the sole open Lean step exists_slice_point_lt_two_mul_d2 (ThreeSquaresSliceMinkowski.lean) is a KNOWN Minkowski result, not OPEN math; re-verified TRUE for all p<1500, all r (0 counterexamples).",
       "Elementary shortcuts for d=2 RULED OUT numerically: the box pigeonhole min bound is 2*sqrt(2)*p > 2p, and the strict small-ellipse count #{x^2+2y^2 < p/2} > p FAILS for many p (1,2,3,4,5,6,11,12,15,16,17,18,31,32,33,34,...). No box/pigeonhole reduction works; genuine area/Minkowski needed.",
       "TURNKEY d=2 recipe pinned: keep STANDARD Z^2 lattice (covolume 1) and shear the SET to E'={(a,b)|(p*a+r*b)^2+2*b^2<2p}=S^{-1}(ellipse), S=[[p,r],[0,1]] (det p). Then vol(E')=vol(ellipse)/det(S)=(sqrt(2)*pi*p)/p=sqrt(2)*pi~=4.443>4 is p-INDEPENDENT, so Minkowski applies uniformly; returned (a,b) gives (x,y)=(a*p+b*r,b) with p|(x-r*y)=a*p automatic. Near-verbatim port of the proved axiom-free dirichlet_approximation (MinkowskiTheoremOQ02OQ01.lean:161).",
-      "S16 (researcher-12, 2026-06-19): the dirichlet_key_lemma descent is ELEMENTARY, not Davenport-Cassels. With Q(v)=x²+d·y²+d·z²=p=d·n−1 and p∣z from the sublattice, z=0 is FORCED (p∣z ⇒ d·z²≥p²>p>Q), collapsing to x²+d·y²=d·n−1. Then d=1 ⇒ n=x²+y²+1², and d=2 ⇒ x odd=2k+1, (x²+1)/2=k²+(k+1)², n=y²+k²+(k+1)²."
+      "S16 (researcher-12, 2026-06-19): the dirichlet_key_lemma descent is ELEMENTARY, not Davenport-Cassels. With Q(v)=x²+d·y²+d·z²=p=d·n−1 and p∣z from the sublattice, z=0 is FORCED (p∣z ⇒ d·z²≥p²>p>Q), collapsing to x²+d·y²=d·n−1. Then d=1 ⇒ n=x²+y²+1², and d=2 ⇒ x odd=2k+1, (x²+1)/2=k²+(k+1)², n=y²+k²+(k+1)².",
+      "S14 (2026-06-19, r12): DEFECT in ThreeSquaresSufficiencyCorrected — DirichletWitnessNe3 hardcodes d≤2 and is therefore a FALSE proposition (no d≤2 witness p=d·m−1 prime with −d a QR for 610/999 4-free cores m<2000 in classes m%8∈{1,2,5,6}; smallest m=5,13,17,25). The {1,2,5,6} branch of three_sq_of_corrected_witnesses is VACUOUS — the same #24443 vacuity it claimed to fix.",
+      "S14: verify_corrected_split.py certified an UNBOUNDED-d witness (witness_exists_ne3 scans range(1,300)), NOT the d≤2 Lean def — Lean/script mismatch was the root of the false satisfiability claim.",
+      "S14: dirichlet_key_lemma is INTRINSICALLY d≤2: both the slice volume bound √2·π>4 (binary form x²+d·y²) AND the explicit interval_cases d reconstruction x²+d·y²=d·n−1 ⟹ n=a²+b²+c² (only d=1: n=x²+y²+1²; d=2: n=y²+k²+(k+1)²). No tweak extends it; satisfiability needs unbounded d (min-d grows, e.g. d=70 at m=1166).",
+      "S14: Residue3PropertyOdd (m≡3 mod 8) IS sound/satisfiable — only m=3 lacks an odd-t prime deficit, excluded by 3<m. But proving it needs primes in a thin quadratic-in-t sequence, beyond Mathlib Nat.forall_exists_prime_gt_and_modEq."
     ],
     "mathlibGaps": [
       "No three-square theorem in Mathlib (sum_three_squares / isSumThreeSquares / exists_sq_add_sq_add_sq etc. = 0 hits across 5 query forms; a known unmet docs/1000.yaml target).",
       "The ternary-form reduction 'auxiliary prime in the right AP ⇒ n is a sum of three squares' is absent from Mathlib AND the gallery.",
-      "Available: Dirichlet primes-in-AP forall_exists_prime_gt_and_modEq (Mathlib/NumberTheory/LSeries/PrimesInAP.lean); Fermat two-square; the parent ℤ[√−2] split."
+      "Available: Dirichlet primes-in-AP forall_exists_prime_gt_and_modEq (Mathlib/NumberTheory/LSeries/PrimesInAP.lean); Fermat two-square; the parent ℤ[√−2] split.",
+      "Eliminating not_excluded_form_is_sum_three_sq needs a d-UNIFORM key lemma: Gauss reduction theory of ternary quadratic forms, OR Davenport–Cassels (rational⟹integral representability of x²+y²+z²) + local–global solvability of x²+y²+z²=n. Neither in Mathlib (≫500 lines new foundational infra) — confirmed BLOCKER.",
+      "Dirichlet primes in a thin quadratic sequence (mm=(m−t²)/2 prime for some odd t) — needed for Residue3PropertyOdd; not a direct AP, so Mathlib forall_exists_prime_gt_and_modEq does not apply."
     ],
     "nextSteps": [
-      "Discharge the LAST axiom not_excluded_form_is_sum_three_sq: derive from now-proved dirichlet_key_lemma + witness-existence hypotheses (DirichletWitnessNe3, Residue3Property).",
-      "Prove DirichletWitnessNe3 unconditionally (Dirichlet primes-in-AP, d∈{1,2}, −d QR mod p=d·n−1).",
-      "Prove Residue3Property (m≡3 mod 8 two-square split via Fermat)."
+      "BLOCKED on d-uniform key lemma. Route: build Davenport–Cassels lemma for x²+y²+z² (rational⟹integral) — self-contained ~150-250 lines — THEN reduce sufficiency to ℚ-solvability (local–global / Hasse–Minkowski for the diagonal ternary form), the genuinely hard piece.",
+      "Do NOT attempt to discharge DirichletWitnessNe3 (d≤2) — it is provably false. Any future witness def must use unbounded d AND be paired with a d-uniform key lemma.",
+      "Residue-3 class is the most tractable remaining branch: prove Residue3PropertyOdd via existence of one odd t with (m−t²)/2 prime."
     ],
     "markdown": "See research/problems/zsqrtd-neg-two-oq-02/knowledge.md"
   },
