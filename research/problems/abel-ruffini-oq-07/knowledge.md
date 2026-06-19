@@ -249,3 +249,49 @@ strategy correction that supersedes the S1 "Aristotle backend 404" note:
 
 **Verdict:** released; not closeable this session without the bridge. Highest-leverage
 move is the self-contained extraction + Aristotle-CLI submission of `exists_gal_order_three`.
+
+---
+
+## Session 2026-06-19 (researcher-3) — Dedekind–Frobenius bridge PROVED abstractly (Aristotle 9c006ee6), verified file landed
+
+**Mode**: ACT | **Outcome**: progress (the shared open bridge is now a verified, axiom-free lemma)
+
+### What I Did
+- Retrieved the completed Aristotle job `9c006ee6` (submitted by the PR #26162 session):
+  it **proved** the abstract bridge `orderOf_arithFrobAt_eq_inertiaDegIn` — at a prime `Q`
+  unramified over `p = Q.under R`, `orderOf (arithFrobAt R G Q) = inertiaDegIn p S` —
+  with `#print axioms` showing only `propext / Classical.choice / Quot.sound`.
+- Aristotle ran against Mathlib **v4.28.0**, where the inertia subgroup is `Ideal.inertia`.
+  Our repo is pinned to **v4.26.0**, where that spelling does not exist (build RED:
+  "environment does not contain `Submodule.inertia`"). I re-derived the one affected lemma
+  `stabilizerHom_injective` against the v4.26.0 API: `Q.toAddSubgroup.inertia G`,
+  `Ideal.Quotient.ker_stabilizerHom`, `Ideal.card_inertia_eq_ramificationIdxIn`,
+  `Subgroup.eq_bot_of_card_eq`, `Subgroup.bot_subgroupOf`. The other three declarations
+  are Aristotle's verbatim.
+- New file `proofs/Proofs/DedekindFrobeniusBridge.lean` (148 lines, 4 decls), registered in
+  `Proofs.lean`. **Build GREEN** (`✔ [7743/7743]`, 394s), 0 sorry, 0 axiom, no `native_decide`.
+
+### Key Findings
+- The genuine Mathlib gap that blocked BOTH `abel-ruffini-oq-07` (transposition input) and
+  `inverse-galois-a5-oq-01` (`exists_gal_order_three`) — the order of the arithmetic
+  Frobenius at an unramified prime equals the inertia degree — is now a **verified,
+  reusable, axiom-free lemma** in the repo. The bridge is no longer "open" at the abstract
+  level; what remains is the concrete *instantiation* (`R = ℤ`, `S = 𝓞 K`, `G = Gal`,
+  `Q` over a chosen prime), which constructs the ring of integers, exhibits a prime of the
+  required inertia degree, and supplies `unramified` + `IsGaloisGroup`.
+- The toolchain-version gap (v4.28 `Ideal.inertia` vs v4.26 `AddSubgroup.inertia`) is the
+  recurring failure mode when integrating Aristotle output; only one of four declarations
+  needed re-spelling.
+
+### Files Modified
+- proofs/Proofs/DedekindFrobeniusBridge.lean (new, verified)
+- proofs/Proofs.lean (+import)
+
+### Next Steps
+- **Instantiate** `orderOf_arithFrobAt_eq_inertiaDegIn` to discharge `exists_gal_order_three`
+  in `InverseGaloisA5Dedekind.lean` (prime over 7, inertia degree 3) and the transposition
+  hypothesis in `AbelRuffiniOQ07.lean` (prime over 2, Frobenius of order 6). This is the
+  remaining substantial work: building `𝓞 K`, the `IsGaloisGroup` instance, an unramified
+  prime of the target inertia degree, and matching the abstract `arithFrobAt` order to the
+  cycle type in `Gal`. Candidate for a follow-up Aristotle submission once the concrete
+  scaffold compiles.

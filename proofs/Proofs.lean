@@ -620,6 +620,7 @@ import Proofs.DeMoivreOQ02OQ03
 import Proofs.DeMoivreOQ02OQ03UniqueAristotle
 import Proofs.DeMoivreOQ03
 import Proofs.DeMoivreOQ03OQ01
+import Proofs.DedekindFrobeniusBridge
 import Proofs.DenumerabilityRationals
 import Proofs.DenumerabilityRationalsOQ01
 import Proofs.DenumerabilityRationalsOQ02
