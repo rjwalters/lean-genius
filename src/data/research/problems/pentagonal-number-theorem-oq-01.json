@@ -11,7 +11,12 @@
       "Mathlib has Nat.Partition but neither Franklin's involution, distinct-part partitions with a parity sign, nor the formal power-series infinite product, so the deep identity has no Mathlib bearer; the index-set theory is the tractable, self-contained piece.",
       "Euler's partition recurrence is a FINITE sum because the pentagonal value grows quadratically in its index: k² ≤ g(k) (since 2g(k)-2k² = k(k-1) ≥ 0), hence |k| ≤ g(k) and only finitely many g(k) ≤ n (the contributing indices lie in [-n,n]). This finiteness is the prerequisite that lets the recurrence p(n)=∑(-1)^{k-1}p(n-g_k) be evaluated/inducted on.",
       "Mathlib v4.26.0 made the ring argument of PowerSeries.coeff and PowerSeries.C implicit (coeff (n:ℕ):R⟦X⟧→ₗ[R]R, C:R→+*R⟦X⟧); all coeff/C call sites now need (R := ℤ), and eulerPartialProd needs noncomputable (PowerSeries.instCommRing has no executable code). The whole file silently broke at the upstream bump.",
-      "The Xⁿ-coefficient of ∏(1−Xⁿ) is a SIGNED COUNT over subsets t⊆{0,…,N−1}: ∑(−1)^|t| with exponent ∑_{i∈t}(i+1). Subsets index partitions of the exponent into distinct parts; sign = parity of part-count. This is the combinatorial LHS of Euler identity on which Franklin acts."
+      "The Xⁿ-coefficient of ∏(1−Xⁿ) is a SIGNED COUNT over subsets t⊆{0,…,N−1}: ∑(−1)^|t| with exponent ∑_{i∈t}(i+1). Subsets index partitions of the exponent into distinct parts; sign = parity of part-count. This is the combinatorial LHS of Euler identity on which Franklin acts.",
+      "The open core is now an ELEMENTARY pointwise identity ∀ n, signedDistinctCount n = pentCoeff n — no power series, both sides explicit finite expressions in n. This is the canonical target for Franklin's involution.",
+      "Degree 3 is the first exponent with >1 distinct partition: {3}(−1)+{1,2}(+1)=0 — the first real sign cancellation, evidence the involution mechanism (not just isolated terms) is what is needed.",
+      "MATHLIB FRAMEWORK DISCOVERED (2026-06-19): Mathlib.Combinatorics.Enumerative.Partition.GenFun provides Nat.Partition.genFun f = PowerSeries.mk (fun n => ∑ p:n.Partition, p.parts.toFinsupp.prod f) with genFun_eq_tprod : genFun f = ∏ i, (1 + ∑ j, f(i+1)(j+1) • X^((i+1)(j+1))) in R⟦X⟧ via PowerSeries.WithPiTopology (Multipliable/HasProd). This is the canonical partition generating-function machinery the file had been hand-rolling.",
+      "BRIDGE IDENTIFIED: genFun (fun _ c => if c=1 then -1 else 0) over ℤ has inner sum = -X^(i+1), so genFun_eq_tprod gives exactly ∏(1-Xⁿ) = our eulerProduct; and coeff_genFun of this f = ∑_{distinct partitions p of n} (-1)^#parts = our signedDistinctCount n. So our two hand-built objects ARE Mathlibs genFun for the signed character — connecting the file to canonical infrastructure.",
+      "Mathlib has Glaisher.lean: Nat.Partition.distincts/odds/countRestricted (Finsets of partitions) and card_odds_eq_card_distincts (Eulers UNSIGNED distinct=odd theorem). The SIGNED version (pentagonal) and Franklins involution remain absent — the open core is unchanged."
     ],
     "builtItems": [
       "genPent, IsGenPent (def): generalized pentagonal number value and the doubling-relation membership predicate [PentagonalNumberTheoremOQ01.lean]",
@@ -26,20 +31,23 @@
       "coeff_eulerProduct_eq_signed_count (PentagonalNumberTheoremOQ01.lean): coeff n eulerProduct = ∑_{t∈powerset(range N)} if n=∑_{i∈t}(i+1) then (−1)^|t| else 0, for n≤N — the signed distinct-parts count",
       "eulerPartialProd_eq_sum_powerset (via Finset.prod_add): truncated product = ∑ over powerset of (−1)^|t| X^{∑(i+1)}",
       "eulerPartialProd_one_eq, eulerPartialProd_two_eq, coeff_eulerProduct_one(=−1), coeff_eulerProduct_two(=−1): closed-form low-degree truncations",
-      "eulerPentagonalIdentity_coeff_one, eulerPentagonalIdentity_coeff_two: Euler identity verified in degrees 1,2 (coeff_two is first negative-index check k=−1, g(−1)=2)"
+      "eulerPentagonalIdentity_coeff_one, eulerPentagonalIdentity_coeff_two: Euler identity verified in degrees 1,2 (coeff_two is first negative-index check k=−1, g(−1)=2)",
+      "signedDistinctCount (n:ℕ):ℤ — the signed count of partitions of n into distinct parts, packaged as an explicit power-series-free function (PentagonalNumberTheoremOQ01.lean Part 6b)",
+      "coeff_eulerProduct_eq_signedDistinctCount — coeff n eulerProduct = signedDistinctCount n (bridge specialised to canonical truncation N=n)",
+      "eulerPentagonalIdentity_iff — REDUCTION: eulerProduct = pentSeries ↔ ∀ n, signedDistinctCount n = pentCoeff n; strips the power-series wrapper, isolating exactly the statement Franklin proves",
+      "signedDistinctCount_three/four/five — degree 3,4,5 checks of the reduced identity (3,4 = first genuine sign cancellations; 5 = first index |k|=2, g(2)=5)"
     ],
     "mathlibGaps": [
-      "No Franklin sign-reversing involution on partitions into distinct parts.",
-      "No notion of partitions into distinct parts carrying a parity-of-part-count sign.",
-      "No formal-power-series manipulation of the infinite product ∏(1-Xⁿ) needed for the pentagonal identity itself."
+      "No Franklin sign-reversing involution on partitions into distinct parts (the open combinatorial core).",
+      "No SIGNED distinct-part partition count (parity-of-part-count sign): Mathlib has Nat.Partition.distincts as a Finset and card_odds_eq_card_distincts, but no (-1)^#parts weighting and no pentagonal/Franklin result.",
+      "CORRECTED (2026-06-19): the earlier gap 'no formal power-series infinite product of (1-X^n)' is now PARTLY FILLED upstream — Mathlib.RingTheory.PowerSeries.PiTopology + Combinatorics.Enumerative.Partition.GenFun give Multipliable/HasProd/tprod for R-power-series and genFun_eq_tprod. Our manual coefficient-stabilization eulerProduct can be replaced by / connected to Mathlib's product via genFun."
     ],
     "nextSteps": [
-      "Mathematical frontier: build Franklin's involution to reach the deep identity p_even(n)-p_odd(n) = [n=g(k)]·(-1)ᵏ.",
-      "Tractable intermediate now that pentIndices supplies a computable support: formalize the explicit finite form of Euler's recurrence p(n) = ∑_{k ∈ pentIndices' n} (-1)^{k-1} p(n-g_k) as a Finset.sum over the enumerator, or define the partition-into-distinct-parts parity sign and state the identity.",
-      "Define the partition function p(n) (or reuse Nat.Partition.card) and state — not yet prove — Euler's recurrence as a Finset.sum identity indexed by pentIndices, isolating Franklin's involution as the sole remaining gap.",
-      "The open core is now precisely: the signed distinct-parts count coeff_eulerProduct_eq_signed_count equals (−1)^k at n=g(k) and 0 otherwise. Build Franklin sign-reversing involution on distinct-part subsets (pair t with a t′ of opposite parity and equal shifted sum, fixed points only at pentagonal exponents).",
-      "Optionally extend numerical verification to degrees 3–5 by Finset-expanding coeff_eulerProduct_eq_signed_count and matching pentSeries (g(2)=5,g(−2)=7 first appear at deg 5,7)."
+      "ACT (concrete, tractable): prove the genFun bridge — (a) coeff_genFun (fun _ c => if c=1 then -1 else 0) n = signedDistinctCount n via a bijection between Nat.Partition n with all multiplicities 1 and subsets t⊆range n with shifted sum n; (b) eulerProduct = genFun signF (or redefine eulerProduct := genFun signF) via genFun_eq_tprod. This grounds the hand-built objects in Mathlibs canonical generating-function machinery.",
+      "OPEN CORE: Franklin sign-reversing involution to prove ∀ n, signedDistinctCount n = pentCoeff n (= eulerPentagonalIdentity_iff target). Pair subset t with t′ of opposite parity and equal shifted sum; fixed points only at pentagonal staircases.",
+      "Aristotle candidate: ∀ n, signedDistinctCount n = pentCoeff n is fully self-contained KNOWN mathematics (HARD). Submit as overnight companion theorem-sorry; with genFun now available, also consider asking it to prove eulerProduct = genFun signF.",
+      "Optionally extend numerical checks (signedDistinctCount at degree 7 = g(−2), first negative |k|=2) — low marginal value, only if structural routes stall."
     ],
-    "progressSummary": "PROGRESS: build restored under Mathlib v4.26.0 (coeff/C API change); open core reduced to a purely combinatorial signed distinct-parts count via coeff_eulerProduct_eq_signed_count; Euler identity machine-verified in degrees 0,1,2. Remaining gap = Franklin involution. 0 sorry/0 axiom."
+    "progressSummary": "PROGRESS: open core reduced to the elementary pointwise identity ∀ n, signedDistinctCount n = pentCoeff n (eulerPentagonalIdentity_iff); both sides explicit, power-series wrapper removed. First genuine sign cancellations verified (deg 3,4) plus first |k|=2 term (deg 5). Remaining gap = Franklin involution. 0 sorry/0 axiom (pending build verify)."
   }
 }

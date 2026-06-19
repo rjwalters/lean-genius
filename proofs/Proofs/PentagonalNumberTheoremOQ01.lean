@@ -51,6 +51,16 @@
                                `…_coeff_one`, `…_coeff_two`) against the closed-form
                                low-degree truncations — including a check at the
                                negative index `k=-1` (exponent `g(-1)=2`).
+  - `signedDistinctCount` / `eulerPentagonalIdentity_iff`
+                               — the open core stripped of the power-series wrapper:
+                               `eulerProduct = pentSeries` iff the elementary
+                               pointwise identity `∀ n, signedDistinctCount n =
+                               pentCoeff n` holds, where `signedDistinctCount n` is
+                               the signed count of partitions of `n` into distinct
+                               parts.  This is exactly the statement Franklin's
+                               involution proves.  Checked at degrees 3, 4 (the first
+                               genuine sign *cancellations*) and 5 (the first index
+                               `|k|=2`, `g(2)=5`).
 -/
 
 import Mathlib
@@ -525,6 +535,25 @@ theorem coeff_eulerProduct_eq_signed_count {n N : ℕ} (h : n ≤ N) :
     rw [map_pow, map_neg, map_one]
   rw [hC, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow, mul_ite, mul_one, mul_zero]
 
+/-- **The signed count of partitions of `n` into distinct parts.** The canonical
+combinatorial left-hand side of Euler's identity, packaged as a single explicit
+function of `n` (no power series): subsets `t ⊆ {0,…,n−1}` whose shifted sum
+`∑_{i∈t}(i+1)` is `n` index the partitions of `n` into distinct parts, each
+weighted by `(−1)^{|t|}` (so the count is `p_even(n) − p_odd(n)`).  The truncation
+`{0,…,n−1}` loses nothing: every distinct part `≤ n`, so its index `i = part−1`
+lies in `range n`. -/
+def signedDistinctCount (n : ℕ) : ℤ :=
+  ∑ t ∈ (Finset.range n).powerset,
+    if n = ∑ i ∈ t, (i + 1) then (-1 : ℤ) ^ t.card else 0
+
+/-- The `Xⁿ`-coefficient of the Euler product `∏(1−Xⁿ)` is exactly the signed
+distinct-part count `signedDistinctCount n` — the bridge of
+`coeff_eulerProduct_eq_signed_count` specialised to the canonical truncation
+`N = n`, which it captures by definition. -/
+theorem coeff_eulerProduct_eq_signedDistinctCount (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n eulerProduct = signedDistinctCount n :=
+  coeff_eulerProduct_eq_signed_count (le_refl n)
+
 /-! ## OPEN CORE: the pentagonal identity as a typed equation
 
 With **both** sides now constructed in `ℤ⟦X⟧` — the product side `eulerProduct`
@@ -537,6 +566,41 @@ power series constructed in this file: the product side `∏_{n≥1}(1−Xⁿ)` 
 lacunary side `∑_{k∈ℤ}(-1)ᵏ X^{g(k)}`.  This is the open core; see the note
 below. -/
 def eulerPentagonalIdentity : Prop := eulerProduct = pentSeries
+
+/-- **The open core, reduced to a single pointwise combinatorial identity.**
+Euler's power-series identity `eulerProduct = pentSeries` holds iff for every `n`
+the signed count of partitions of `n` into distinct parts equals the lacunary
+coefficient `pentCoeff n` (`(−1)ᵏ` at `n = g(k)`, `0` otherwise).  This strips away
+the power-series wrapper: what remains open is exactly the elementary statement
+`∀ n, signedDistinctCount n = pentCoeff n`, the equation Franklin's involution
+proves.  Both sides are now fully explicit finite expressions in `n`. -/
+theorem eulerPentagonalIdentity_iff :
+    eulerPentagonalIdentity ↔ ∀ n : ℕ, signedDistinctCount n = pentCoeff (n : ℤ) := by
+  unfold eulerPentagonalIdentity
+  rw [PowerSeries.ext_iff]
+  refine forall_congr' (fun n => ?_)
+  rw [coeff_eulerProduct_eq_signedDistinctCount, coeff_pentSeries]
+
+/-- **Degree-3 check of the reduced identity — the first genuine cancellation.**
+`signedDistinctCount 3 = 0`: the partitions of `3` into distinct parts are `{3}`
+(one part, sign `−1`) and `{1,2}` (two parts, sign `+1`), which cancel.  This is
+the first exponent where more than one distinct partition exists, so it is the
+first nontrivial instance of the sign cancellation that Franklin's involution
+explains; it matches `pentCoeff 3 = 0` since `3` is not a generalized pentagonal
+number. -/
+theorem signedDistinctCount_three : signedDistinctCount 3 = 0 := by decide
+
+/-- **Degree-4 check of the reduced identity.** `signedDistinctCount 4 = 0`: the
+distinct partitions of `4` are `{4}` (sign `−1`) and `{1,3}` (sign `+1`), again
+cancelling; matches `pentCoeff 4 = 0` (`4` is not pentagonal). -/
+theorem signedDistinctCount_four : signedDistinctCount 4 = 0 := by decide
+
+/-- **Degree-5 check of the reduced identity — the first index `|k| = 2`.**
+`signedDistinctCount 5 = 1`: the distinct partitions of `5` are `{5}` (sign `−1`),
+`{1,4}` (sign `+1`) and `{2,3}` (sign `+1`), summing to `+1`.  This matches
+`pentCoeff 5 = (−1)^|2| = 1`, since `5 = g(2)` is the generalized pentagonal number
+of index `2` — the first surviving lacunary term beyond the `|k| ≤ 1` range. -/
+theorem signedDistinctCount_five : signedDistinctCount 5 = 1 := by decide
 
 /-- A consistency check on the open core that the two constructed sides are at
 least correctly normalized: they agree at the constant coefficient (both `1`).

@@ -280,3 +280,41 @@ subsets (pair each `t` with a `t′` of opposite parity and equal shifted sum; t
 only unpaired subsets are the pentagonal ones). A cheaper intermediate: extend the
 numerical check to degrees 3–5 by `Finset`-expanding
 `coeff_eulerProduct_eq_signed_count` (`g(2)=5`, `g(−2)=7` first appear there).
+
+### 2026-06-19 (Session 7, researcher-8) — REDUCE OPEN CORE TO ELEMENTARY IDENTITY
+
+**Mode**: DEEPEN · **Outcome**: progress (build-verify pending — host gate)
+
+- **The session's deliverable: a reduction theorem.** Introduced
+  `signedDistinctCount (n : ℕ) : ℤ` — the signed count of partitions of `n` into
+  distinct parts, packaged as an explicit, *power-series-free* function (the
+  `coeff_eulerProduct_eq_signed_count` sum specialised to the canonical truncation
+  `N = n`). Then `coeff_eulerProduct_eq_signedDistinctCount` (`coeff n eulerProduct
+  = signedDistinctCount n`) and the headline `eulerPentagonalIdentity_iff`:
+
+      eulerProduct = pentSeries  ↔  ∀ n, signedDistinctCount n = pentCoeff n
+
+  via `PowerSeries.ext_iff` + the two coefficient lemmas. This **strips away the
+  power-series wrapper**: what remains open is exactly the elementary pointwise
+  identity over explicit finite expressions in `n`, the precise statement
+  Franklin's involution proves. (Structural reduction, not more examples.)
+- **First genuine sign cancellations + first |k|=2.** `signedDistinctCount_three`
+  (`= 0`: `{3}`(−1) + `{1,2}`(+1) cancel), `_four` (`= 0`: `{4}` + `{1,3}`), `_five`
+  (`= 1`: `{5}`(−1) + `{1,4}`(+1) + `{2,3}`(+1), matching `pentCoeff 5 = (−1)^|2|`
+  since `5 = g(2)`). Degree 3 is the *first* exponent with more than one distinct
+  partition, so it is the first nontrivial instance of the cancellation the
+  involution explains — qualitatively beyond the isolated-term checks at degree
+  0,1,2. Proved by `decide` (no `native_decide`, so still 0-axiom).
+- Files: `proofs/Proofs/PentagonalNumberTheoremOQ01.lean` (+`signedDistinctCount`,
+  `coeff_eulerProduct_eq_signedDistinctCount`, `eulerPentagonalIdentity_iff`,
+  `signedDistinctCount_three/four/five`; header updated).
+- **Build**: not yet re-verified this session — Docker VM was saturated (6
+  containers / 7.6 GiB, two ~1 GiB builds) and the no-force gate (≤3 ctr) was
+  closed; a gated background build is queued.
+
+**Next steps**: (1) Franklin's involution to discharge
+`∀ n, signedDistinctCount n = pentCoeff n` (= `eulerPentagonalIdentity_iff`
+target). (2) The reduced statement is now fully self-contained and is *known*
+mathematics (HARD, not OPEN) — a strong Aristotle overnight candidate via a
+companion theorem-sorry. (3) `decide`-check degree 7 (`g(−2)`, first negative
+`|k|=2`) if Franklin stays out of reach.
