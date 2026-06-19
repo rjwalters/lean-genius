@@ -16,7 +16,11 @@
       "analytic number theory",
       "sieve methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "largest prime factor function P(n)",
+      "patterns among consecutive integers",
+      "multiplicative number theory"
+    ]
   },
   {
     "id": "ann-e372-lpf-def",
@@ -35,7 +39,11 @@
       "Nat.primeFactors",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.primeFactors as the set of prime divisors",
+      "Finset.max' for the maximum of a nonempty finite set",
+      "divisibility and prime divisor membership"
+    ]
   },
   {
     "id": "ann-e372-examples",
@@ -54,7 +62,11 @@
       "primorial",
       "computational verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization of small integers",
+      "the primorial as a product of consecutive primes",
+      "native_decide for computational verification"
+    ]
   },
   {
     "id": "ann-e372-descending",
@@ -72,7 +84,11 @@
       "consecutive integers",
       "prime factor distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "largest prime factor P(n)",
+      "strict inequalities over three consecutive integers",
+      "set-builder definition of a number-theoretic property"
+    ]
   },
   {
     "id": "ann-e372-ascending",
@@ -91,7 +107,11 @@
       "Erdős-Pomerance (1978)",
       "Dickman function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "smooth numbers with only small prime factors",
+      "the Dickman function and smooth number density",
+      "axiomatizing a sieve-theoretic result"
+    ]
   },
   {
     "id": "ann-e372-balog",
@@ -110,7 +130,11 @@
       "asymptotic counting",
       "Selberg sieve"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sieve methods including the Selberg and Brun sieves",
+      "asymptotic lower bounds of order sqrt(x)",
+      "counting integers up to x by a property"
+    ]
   },
   {
     "id": "ann-e372-density",
@@ -129,7 +153,11 @@
       "permutation symmetry",
       "Filter.Tendsto"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density of an integer set",
+      "Filter.Tendsto for limits of counting ratios",
+      "symmetry heuristic over the 6 orderings of a triple"
+    ]
   },
   {
     "id": "ann-e372-summary",
@@ -147,6 +175,10 @@
       "conjunction",
       "summary theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.Infinite for descending and ascending triplet sets",
+      "combining axiomatized results by conjunction",
+      "monotone patterns in largest prime factors"
+    ]
   }
 ]
