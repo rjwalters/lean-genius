@@ -17,7 +17,12 @@
       "Connected components",
       "Metric spaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "polynomials over a field",
+      "point-set topology",
+      "metric spaces"
+    ]
   },
   {
     "id": "ann-e511-sublevel-set",
@@ -36,7 +41,12 @@
       "Open sets"
     ],
     "mathContext": "See annotation content for formal details of sublevel set (open)",
-    "prerequisites": []
+    "prerequisites": [
+      "complex modulus and absolute value",
+      "set-builder notation",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e511-closed-sublevel",
@@ -55,7 +65,12 @@
       "Topology"
     ],
     "mathContext": "See annotation content for formal details of closed sublevel set",
-    "prerequisites": []
+    "prerequisites": [
+      "point-set topology",
+      "complex analysis",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e511-polya-bound",
@@ -74,7 +89,12 @@
       "Conformal mapping",
       "Distortion theorems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "metric spaces",
+      "geometric function theory",
+      "polynomials over a field"
+    ]
   },
   {
     "id": "ann-e511-pommerenke",
@@ -93,7 +113,12 @@
       "Polynomial construction",
       "Component counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "polynomials over a field",
+      "point-set topology",
+      "metric spaces"
+    ]
   },
   {
     "id": "ann-e511-main-theorem",
@@ -112,7 +137,12 @@
       "Unbounded families"
     ],
     "mathContext": "See annotation content for formal details of erdős problem #511: disproved",
-    "prerequisites": []
+    "prerequisites": [
+      "first-order logic and quantifiers",
+      "polynomials over a field",
+      "Lean 4 tactic mode",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e511-roots-unity",
@@ -131,7 +161,12 @@
       "Symmetry"
     ],
     "mathContext": "See annotation content for formal details of roots of unity polynomial",
-    "prerequisites": []
+    "prerequisites": [
+      "polynomials over a field",
+      "complex numbers",
+      "abstract algebra",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e511-sum-diameters",
@@ -150,7 +185,12 @@
       "Tight bounds"
     ],
     "mathContext": "See annotation content for formal details of sum of diameters bound",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "metric spaces",
+      "complex analysis"
+    ]
   },
   {
     "id": "ann-e511-petal-structure",
@@ -169,7 +209,12 @@
       "Root location",
       "Connectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "point-set topology",
+      "group symmetry",
+      "polynomials over a field"
+    ]
   },
   {
     "id": "ann-e511-perturbation",
@@ -188,7 +233,12 @@
       "Bifurcation"
     ],
     "mathContext": "See annotation content for formal details of root perturbation creates components",
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "perturbation methods",
+      "point-set topology",
+      "polynomials over a field"
+    ]
   },
   {
     "id": "ann-e511-huang",
@@ -207,7 +257,11 @@
       "Literature"
     ],
     "mathContext": "See annotation content for formal details of huang's independent discovery (2025)",
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical literature and history",
+      "complex analysis",
+      "polynomials over a field"
+    ]
   },
   {
     "id": "ann-e511-sharpness",
@@ -226,6 +280,11 @@
       "Limits"
     ],
     "mathContext": "See annotation content for formal details of sharpness of the bound 4",
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "metric spaces",
+      "limits and sequences"
+    ]
   }
 ]
