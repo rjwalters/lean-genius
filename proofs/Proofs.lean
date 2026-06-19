@@ -2869,6 +2869,7 @@ import Proofs.ShannonChannelCoding
 import Proofs.ShannonChannelCodingAWGN
 import Proofs.ShannonChannelCodingBEC
 import Proofs.ShannonChannelCodingBECOQ01
+import Proofs.ShannonChannelCodingOQ01
 import Proofs.ShannonChannelCodingOQ02
 import Proofs.ShannonChannelCodingOQ02OQ01
 import Proofs.ShannonChannelCodingOQ02OQ01Aristotle
