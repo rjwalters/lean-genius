@@ -17,7 +17,11 @@
       "Beker's theorem",
       "Konieczny"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strictly increasing sequences",
+      "consecutive subsums",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-e356-subsum",
@@ -36,7 +40,11 @@
       "List.take",
       "List.sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "contiguous subsequence sums",
+      "Lean 4 List operations",
+      "List.drop and List.take"
+    ]
   },
   {
     "id": "ann-e356-sums-finset",
@@ -55,7 +63,11 @@
       "List.bind",
       "List.toFinset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive subsums",
+      "Finset deduplication",
+      "List.toFinset"
+    ]
   },
   {
     "id": "ann-e356-count",
@@ -73,7 +85,11 @@
       "Finset.card",
       "quadratic growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive sums set",
+      "Finset cardinality",
+      "quadratic growth"
+    ]
   },
   {
     "id": "ann-e356-trivial",
@@ -92,7 +108,11 @@
       "arithmetic progression",
       "baseline"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strictly increasing sequences",
+      "arithmetic progressions",
+      "List.range'"
+    ]
   },
   {
     "id": "ann-e356-trivial-fails",
@@ -111,7 +131,11 @@
       "sum collisions",
       "triangular numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "trivial sequence baseline",
+      "triangular number sums",
+      "sum collisions"
+    ]
   },
   {
     "id": "ann-e356-collision",
@@ -130,7 +154,11 @@
       "product collisions",
       "sub-quadratic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic progression structure",
+      "sum collisions",
+      "sub-quadratic growth"
+    ]
   },
   {
     "id": "ann-e356-valid",
@@ -149,7 +177,11 @@
       "monotone sequences",
       "bounded sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strictly increasing sequences",
+      "List.Pairwise",
+      "bounded sequences"
+    ]
   },
   {
     "id": "ann-e356-conjecture",
@@ -168,7 +200,11 @@
       "quadratic lower bound",
       "ℚ arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "valid sequences",
+      "existential quantification",
+      "quadratic lower bound"
+    ]
   },
   {
     "id": "ann-e356-beker",
@@ -187,7 +223,11 @@
       "constructive proof",
       "number-theoretic construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős-Graham conjecture",
+      "constructive number-theoretic proofs",
+      "collision avoidance"
+    ]
   },
   {
     "id": "ann-e356-permutation",
@@ -206,7 +246,11 @@
       "Finset equality",
       "stronger variant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "permutations of {1,...,n}",
+      "Finset equality",
+      "consecutive sums set"
+    ]
   },
   {
     "id": "ann-e356-konieczny",
@@ -225,7 +269,11 @@
       "Problem #34",
       "precursor result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "permutation variant",
+      "Erdős Problem #34",
+      "combinatorial construction"
+    ]
   },
   {
     "id": "ann-e356-construction",
@@ -244,7 +292,11 @@
       "spacing principle",
       "collision avoidance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Beker's theorem",
+      "spacing principle",
+      "collision avoidance"
+    ]
   },
   {
     "id": "ann-e356-related",
@@ -263,7 +315,11 @@
       "Problem #357",
       "variant hierarchy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "permutation variant",
+      "Erdős Problem #357",
+      "consecutive integer representation"
+    ]
   },
   {
     "id": "ann-e356-upper-bound",
@@ -282,7 +338,11 @@
       "pair counting",
       "Θ(n²) growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial pair counting",
+      "consecutive subsums",
+      "Θ(n²) growth bounds"
+    ]
   },
   {
     "id": "ann-e356-lower-bound",
@@ -301,6 +361,10 @@
       "threshold",
       "Beker construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Beker's theorem",
+      "explicit lower bounds",
+      "valid sequences"
+    ]
   }
 ]
