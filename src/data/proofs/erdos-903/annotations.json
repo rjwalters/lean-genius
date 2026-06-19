@@ -30,7 +30,11 @@
         "description": "Erdős #722 formalizes Steiner systems S(r,k,n), which are the uniform specialization of the block designs studied here"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Block designs",
+      "Projective planes",
+      "Prime powers"
+    ]
   },
   {
     "id": "ann-903-blockdesign",
@@ -63,7 +67,11 @@
         "description": "Erdős #732 studies which block-size sequences are compatible with valid PBD structure"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set systems / families of subsets",
+      "Pairwise balanced designs",
+      "2-(n,k,1) designs"
+    ]
   },
   {
     "id": "ann-903-numblocks",
@@ -81,7 +89,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Block design",
+      "Finite set cardinality",
+      "Design parameters"
+    ]
   },
   {
     "id": "ann-903-primepower",
@@ -100,7 +112,11 @@
       "prime numbers",
       "field theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime numbers",
+      "Powers p^k",
+      "Finite fields"
+    ]
   },
   {
     "id": "ann-903-projsize",
@@ -118,7 +134,11 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime powers",
+      "Projective plane order q",
+      "Counting points q²+q+1"
+    ]
   },
   {
     "id": "ann-903-debruijn",
@@ -146,7 +166,11 @@
         "description": "Erdős #734 also axiomatizes the de Bruijn-Erdős bound as the foundation for PBD block-count analysis"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Block design",
+      "Pairwise balanced designs",
+      "Lower bounds (t ≥ n)"
+    ]
   },
   {
     "id": "ann-903-minimal",
@@ -164,7 +188,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "de Bruijn-Erdős theorem",
+      "Block design",
+      "Projective planes"
+    ]
   },
   {
     "id": "ann-903-uniform",
@@ -182,7 +210,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Minimal design",
+      "Near-pencil configuration",
+      "de Bruijn-Erdős equality case"
+    ]
   },
   {
     "id": "ann-903-projplane",
@@ -215,7 +247,12 @@
         "description": "Erdős #901 uses the Fano plane (PG(2,2)) as the extremal example for m(3) = 7"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Incidence geometry",
+      "Lines and points",
+      "Order q",
+      "Fano plane"
+    ]
   },
   {
     "id": "ann-903-toblockdesign",
@@ -240,7 +277,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Projective plane structure",
+      "Block design",
+      "de Bruijn-Erdős tightness"
+    ]
   },
   {
     "id": "ann-903-efsw",
@@ -261,7 +302,11 @@
       "efsw_1985",
       "forbidden block counts"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Block design",
+      "Projective plane size n=p²+p+1",
+      "Forbidden interval / gap"
+    ]
   },
   {
     "id": "ann-903-strong",
@@ -279,7 +324,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "EFSW gap theorem",
+      "Broken projective plane",
+      "Near-pencil / line breaking"
+    ]
   },
   {
     "id": "ann-903-achievable",
@@ -297,7 +346,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Block design",
+      "Number of blocks t",
+      "Set of achievable parameters"
+    ]
   },
   {
     "id": "ann-903-gap",
@@ -325,7 +378,11 @@
         "description": "Erdős #905 studies a similar gap phenomenon for edge-triangle multiplicities above the Turán threshold"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Achievable block counts",
+      "de Bruijn-Erdős lower bound",
+      "Open interval (n, n+p)"
+    ]
   },
   {
     "id": "ann-903-firstabove",
@@ -343,7 +400,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Achievable block counts",
+      "EFSW gap theorem",
+      "Smallest value above a threshold"
+    ]
   },
   {
     "id": "ann-903-examples",
@@ -361,7 +422,11 @@
       "mathematical context",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Projective plane size",
+      "EFSW gap interval",
+      "norm_num computation"
+    ]
   },
   {
     "id": "ann-903-2design",
@@ -386,7 +451,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Block design",
+      "Uniform block size k",
+      "Balanced incomplete block design (BIBD) / Steiner 2-design"
+    ]
   },
   {
     "id": "ann-903-fisher",
@@ -404,7 +473,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "2-(v,k,1) designs",
+      "Number of blocks vs points",
+      "Linear algebra bound"
+    ]
   },
   {
     "id": "ann-903-dbfromfisher",
@@ -422,7 +495,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fisher's inequality",
+      "Uniform (2-)designs",
+      "de Bruijn-Erdős theorem"
+    ]
   },
   {
     "id": "ann-903-summary",
@@ -443,6 +520,10 @@
       "projective_plane_design",
       "efsw_1985"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "de Bruijn-Erdős theorem",
+      "Projective plane achieving t=n",
+      "EFSW gap theorem"
+    ]
   }
 ]
