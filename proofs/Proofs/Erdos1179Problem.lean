@@ -299,7 +299,7 @@ theorem main_asymptotic_derived (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
     by_cases hf_sign : 0 ≤ f
     · -- f ≥ 0: ratio - 1 ≤ C·f < C·(δ/C) = δ
       have : f < δ / C := by rwa [abs_of_nonneg hf_sign] at h_f_bound
-      have : C * f < δ := by rw [← div_lt_iff₀ hC]; exact this
+      have : C * f < δ := by rw [mul_comm]; exact (lt_div_iff₀ hC).mp this
       linarith
     · -- f < 0: ratio - 1 ≤ C·f < 0, and ratio - 1 ≥ 0, so ratio - 1 < δ
       push_neg at hf_sign
