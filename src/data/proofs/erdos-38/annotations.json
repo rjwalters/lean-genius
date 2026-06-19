@@ -16,7 +16,11 @@
       "pointwise operations",
       "set arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sets of natural numbers",
+      "pointwise / Minkowski set arithmetic (A+B)",
+      "Mathlib set operations"
+    ]
   },
   {
     "id": "ann-e38-counting",
@@ -35,7 +39,11 @@
       "cardinality",
       "ncard"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the counting function |A \u2229 [1,n]|",
+      "set cardinality (Set.ncard)",
+      "counting elements in an interval"
+    ]
   },
   {
     "id": "ann-e38-schnirelmann",
@@ -54,7 +62,11 @@
       "infimum",
       "additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the counting function A(n)",
+      "Schnirelmann density as an infimum of A(n)/n",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-e38-basis-order",
@@ -73,7 +85,11 @@
       "Waring's problem",
       "representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sumsets and k-fold sums kA",
+      "additive bases of order k",
+      "Waring's problem as an example"
+    ]
   },
   {
     "id": "ann-e38-basis-general",
@@ -92,7 +108,11 @@
       "sumset",
       "coverage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sumsets A+A+\u2026",
+      "additive bases (some kA = \u2115)",
+      "covering \u2115 by sums"
+    ]
   },
   {
     "id": "ann-e38-translate",
@@ -111,7 +131,11 @@
       "Minkowski sum",
       "shift"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "translates A+t of a set",
+      "Minkowski sums",
+      "shifting a set by a constant"
+    ]
   },
   {
     "id": "ann-e38-boost-property",
@@ -130,7 +154,11 @@
       "density improvement",
       "quantitative bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Schnirelmann density",
+      "essential components (density-boosting sets)",
+      "quantitative density-increase bounds"
+    ]
   },
   {
     "id": "ann-e38-main-problem",
@@ -149,7 +177,11 @@
       "additive basis",
       "characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "essential components",
+      "additive bases",
+      "characterizing density-boosting sets"
+    ]
   },
   {
     "id": "ann-e38-erdos-1936",
@@ -168,7 +200,11 @@
       "density",
       "additive basis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases of finite order",
+      "Schnirelmann density",
+      "Erd\u0151s's 1936 density-boost theorem"
+    ]
   },
   {
     "id": "ann-e38-linnik",
@@ -187,7 +223,11 @@
       "essential component",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "essential components",
+      "explicit constructions",
+      "Linnik's 1942 example (essential component of zero density)"
+    ]
   },
   {
     "id": "ann-e38-optimality",
@@ -206,6 +246,10 @@
       "random sets",
       "lower bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the density-increase function \u03b1(1\u2212\u03b1)",
+      "random/probabilistic sets",
+      "matching lower bounds (optimality)"
+    ]
   }
 ]
