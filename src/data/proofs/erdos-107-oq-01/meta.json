@@ -1,0 +1,180 @@
+{
+  "id": "erdos-107-oq-01",
+  "title": "Erdős #107 OQ-01: Klein's Lower Bound for f(4) = 5",
+  "slug": "erdos-107-oq-01",
+  "description": "Discharges the elementary half of Klein's theorem f(4) = 5 for the Happy Ending problem. The parent entry erdos-107 states f(4) = 5 as a single bundled axiom; this entry replaces it with the strictly weaker, sharper axiom klein_upper_bound : 5 ∈ CardSet 4 (the genuinely hard direction) and PROVES the lower bound 4 ∉ CardSet 4 outright via an explicit triangle-plus-centroid witness.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/107",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos107OQ01.lean",
+    "dateAdded": "2026-06-18",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "convex-geometry",
+      "happy-ending-problem",
+      "ramsey-theory",
+      "extension",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 284,
+    "theoremCount": 18,
+    "definitionCount": 6,
+    "erdosNumber": 107,
+    "erdosUrl": "https://erdosproblems.com/107",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "collinear_iff_of_mem",
+        "description": "Characterizes collinearity of a set through a base point as a common direction vector, used to reduce non-collinearity to a vanishing cross-product computation.",
+        "module": "Mathlib.LinearAlgebra.AffineSpace.Independent"
+      },
+      {
+        "theorem": "convex_convexHull",
+        "description": "The convex hull of a set is convex; applied twice to express the centroid as an iterated convex combination of the triangle vertices.",
+        "module": "Mathlib.Analysis.Convex.Hull"
+      },
+      {
+        "theorem": "subset_convexHull",
+        "description": "A set is contained in its convex hull, placing each triangle vertex inside the hull.",
+        "module": "Mathlib.Analysis.Convex.Hull"
+      },
+      {
+        "theorem": "Nat.sInf_mem",
+        "description": "A nonempty set of naturals contains its infimum, used to extract that f(4) = sInf(CardSet 4) itself lies in CardSet 4.",
+        "module": "Mathlib.Order.Bounds.Basic"
+      },
+      {
+        "theorem": "Nat.sInf_le",
+        "description": "The infimum is a lower bound, giving f(4) ≤ 5 from klein_upper_bound.",
+        "module": "Mathlib.Order.Bounds.Basic"
+      },
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space type for the R^2 point set; coordinates accessed via the WithLp/PiLp type-synonym layer.",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      }
+    ],
+    "originalContributions": [
+      "Splits the parent's bundled axiom f_four_eq : f 4 = 5 into two sharply separated halves",
+      "klein_upper_bound : 5 ∈ CardSet 4 — the single remaining axiom, strictly weaker than f_four_eq (the hard Klein 1931 direction)",
+      "four_notin_cardSet : 4 ∉ CardSet 4 — the lower bound, PROVED axiom-free",
+      "Explicit witness: right triangle (0,0),(6,0),(0,6) plus centroid (2,2)",
+      "Six distinctness atoms (pairwise ≠) by coordinate evaluation through the WithLp layer",
+      "Four non-collinearity atoms via collinear_iff_of_mem reduced to a vanishing cross-product norm_num contradiction",
+      "cc_mem_hull: centroid in the convex hull via the iterated combination (1/3)v0 + (2/3)((1/2)v1 + (1/2)v2)",
+      "general_position_W: all four points in general position, assembled by 4×4×4 case analysis modulo permutation invariance of Collinear",
+      "not_hasConvexNGon_W: the 4-point witness contains no convex quadrilateral (the only 4-subset is the whole set, which fails IsConvexNGon at the centroid)",
+      "f_four_eq_five: f 4 = 5 re-derived from the proved lower bound and the isolated upper-bound axiom, WITHOUT the parent's f_four_eq"
+    ],
+    "assumptions": "1 axiom declaration (klein_upper_bound : 5 ∈ CardSet 4), the hard upper-bound half of Klein's theorem (any 5 points in general position contain a convex quadrilateral; a full Lean proof needs the convex-hull vertex-count case analysis not yet in Mathlib). The lower bound and the f(4)=5 endgame are proved with 0 sorries and no native_decide. #print axioms f_four_eq_five lists only klein_upper_bound alongside propext / Classical.choice / Quot.sound.",
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Esther Klein's 1931 observation — that among any 5 points in general position four must form a convex quadrilateral — is the seed of the Happy Ending problem (Erdős #107). In the threshold language f(n), Klein's result is exactly f(4) = 5. The parent gallery entry erdos-107 records this as a single bundled axiom f_four_eq : f 4 = 5. That axiom silently conflates two facts of very different difficulty: the lower bound 4 ∉ CardSet 4 (elementary — exhibit four points with no convex quadrilateral) and the upper bound 5 ∈ CardSet 4 (Klein's genuinely hard 1931 theorem). This entry discharges the elementary half outright and isolates the hard half as a single, sharply-stated axiom.",
+    "problemStatement": "Replace the bundled axiom f_four_eq : f 4 = 5 by proving the lower bound 4 ∉ CardSet 4 and isolating the residual upper bound 5 ∈ CardSet 4 as the sole remaining assumption, then re-derive f 4 = 5.",
+    "text": "The lower bound of f(4) = 5 is elementary: four points in general position need not contain a convex quadrilateral. A triangle together with an interior point (its centroid) is such a configuration — the interior point lies in the convex hull of the other three, so the four points are not in convex position. This entry proves that lower bound and keeps only the hard upper bound 5 ∈ CardSet 4 as an axiom.",
+    "proofStrategy": "Take the right triangle v0=(0,0), v1=(6,0), v2=(0,6) and its centroid cc=(2,2) as the witness set W. The proof has three layers. (1) Geometric atoms: the four points are pairwise distinct and no three are collinear (each non-collinearity is the falsity of a 2×2 cross-product, reached through collinear_iff_of_mem and discharged by norm_num); the centroid lies in the convex hull of the vertices, written as the iterated convex combination (1/3)v0 + (2/3)((1/2)v1 + (1/2)v2). (2) Structure: W has exactly 4 points, so its only 4-element subset is W itself; since the centroid is in the hull of the remaining three, IsConvexNGon 4 W fails, giving not_hasConvexNGon_W and hence four_notin_cardSet : 4 ∉ CardSet 4. (3) Endgame: f 4 ≤ 5 from Nat.sInf_le klein_upper_bound, and 5 ≤ f 4 because sInf(CardSet 4) ∈ CardSet 4 (Nat.sInf_mem); were it < 5 it would be ≤ 4, and CardSet.mono upward-closure would force 4 ∈ CardSet 4, contradicting the witness. Combining gives f 4 = 5 without the parent's f_four_eq.",
+    "keyInsights": [
+      "**The bundled axiom is asymmetric**: f(4) = 5 packs an elementary lower bound together with Klein's hard upper bound; separating them turns half of a $500-prize building block into an actual theorem",
+      "**A triangle with its centroid is the canonical f(4) lower-bound witness** — the centroid is interior, so the four points are never in convex position",
+      "**Non-collinearity is a cross-product**: through collinear_iff_of_mem, 'no common direction' becomes (b−a)×(c−a) ≠ 0, a single norm_num check per triple",
+      "**Convex-hull membership needs no barycentric machinery**: the centroid is reached by applying convexity of the hull twice to an explicit pair of weights",
+      "**The remaining axiom is strictly weaker** than the parent's f_four_eq: it asserts only 5 ∈ CardSet 4, and #print axioms confirms f_four_eq is no longer used"
+    ],
+    "prerequisites": [
+      "Convex geometry (convex hull, convex position)",
+      "Affine collinearity and general position",
+      "Infimum of a set of naturals (sInf)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "witness-configuration",
+      "title": "Witness Configuration",
+      "startLine": 43,
+      "endLine": 60,
+      "summary": "Defines the four witness points in EuclideanSpace ℝ (Fin 2): triangle vertices v0=(0,0), v1=(6,0), v2=(0,6), the centroid cc=(2,2), the triangle tri = {v0,v1,v2}, and W = insert cc tri.",
+      "mathContext": "Fixes the explicit triangle-plus-centroid configuration used throughout."
+    },
+    {
+      "id": "geometric-atoms",
+      "title": "Geometric Atoms",
+      "startLine": 62,
+      "endLine": 193,
+      "summary": "Six distinctness lemmas (pairwise ≠ by coordinate evaluation), four non-collinearity lemmas (collinear_iff_of_mem reduced to a vanishing cross-product norm_num contradiction), and cc_mem_hull placing the centroid in the convex hull via an iterated convex combination.",
+      "mathContext": "Pure coordinate computations establishing distinctness, general position, and hull membership."
+    },
+    {
+      "id": "general-position",
+      "title": "General Position of the Witness",
+      "startLine": 195,
+      "endLine": 212,
+      "summary": "general_position_W assembles InGeneralPosition W from the four non-collinearity atoms by a 4×4×4 case analysis over ordered triples, normalising each via permutation invariance of Collinear (Set.insert_comm / Set.pair_comm).",
+      "mathContext": "Lifts the per-triple non-collinearity atoms to the general-position predicate on all four points."
+    },
+    {
+      "id": "structural-endgame",
+      "title": "Structural Endgame and Lower Bound",
+      "startLine": 214,
+      "endLine": 256,
+      "summary": "cc_notmem_tri, tri_card = 3, W_card = 4; not_hasConvexNGon_W shows the only 4-subset (W itself) fails IsConvexNGon at the centroid; four_notin_cardSet : 4 ∉ CardSet 4 is the lower bound.",
+      "mathContext": "Turns hull membership into the combinatorial statement that 4 points do not force a convex quadrilateral."
+    },
+    {
+      "id": "upper-bound-and-conclusion",
+      "title": "Klein's Upper Bound and f(4) = 5",
+      "startLine": 258,
+      "endLine": 284,
+      "summary": "Isolates the single axiom klein_upper_bound : 5 ∈ CardSet 4 (the hard Klein 1931 direction) and proves f_four_eq_five : f 4 = 5 from it together with the lower bound, via Nat.sInf_le, Nat.sInf_mem, and CardSet.mono — without the parent's f_four_eq.",
+      "mathContext": "Combines the proved lower bound with the isolated upper-bound axiom to recover Klein's value."
+    }
+  ],
+  "conclusion": {
+    "summary": "Klein's value f(4) = 5 is re-established with the elementary lower bound 4 ∉ CardSet 4 proved outright from an explicit triangle-plus-centroid witness, leaving only the genuinely hard upper bound 5 ∈ CardSet 4 as a single, sharply-stated axiom. This strictly strengthens the parent entry erdos-107, whose bundled axiom f_four_eq : f 4 = 5 is no longer used (#print axioms f_four_eq_five lists only klein_upper_bound).",
+    "implications": "Reduces the assumption footprint of the Happy Ending formalization for n = 4 to exactly its hard residual. The same witness pattern (a simplex with an interior point) generalises the lower-bound side of f(n), and the isolated upper-bound axiom marks the precise spot where a future convex-hull vertex-count case analysis in Mathlib would complete the proof.",
+    "openQuestions": [
+      "Prove klein_upper_bound : 5 ∈ CardSet 4 in Lean (any 5 points in general position contain a convex quadrilateral) via a convex-hull vertex-count case analysis",
+      "Discharge the parent's f_five_eq : f 5 = 9 (Makai–Turán) by the same lower-bound/upper-bound split",
+      "Formalize the Erdős–Szekeres 2^{n-2}+1 lower bound by generalising the interior-point witness"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Parent entry: this discharges the lower-bound half of the bundled axiom f_four_eq : f 4 = 5 stated there",
+      "targetId": "erdos-107"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Szekeres, George",
+      "title": "A combinatorial problem in geometry",
+      "year": "1935",
+      "venue": "Compositio Mathematica 2, pp. 463–470",
+      "note": "Founding paper of the Happy Ending problem; Klein's f(4) = 5 observation is the n = 4 case that motivated the general threshold function."
+    },
+    {
+      "authors": "Morris, Walter; Soltan, Valeriu",
+      "title": "The Erdős-Szekeres problem on points in convex position — a survey",
+      "year": "2000",
+      "venue": "Bulletin of the American Mathematical Society 37(4), pp. 437–458",
+      "note": "Survey covering the exact small values f(3)=3, f(4)=5, f(5)=9 and the lower-bound constructions."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "axiomCount": 1,
+    "lineCount": 284,
+    "sorries": 0,
+    "path": "Proofs/Erdos107OQ01.lean",
+    "definitionCount": 6,
+    "theoremCount": 18,
+    "additionalFiles": []
+  }
+}
