@@ -1151,3 +1151,56 @@ Only the genuinely-open analytic items remain: (b) a closed-form onset for the g
 (non-symmetric / non-collinear) configuration — the symmetric-quartic `√2−1` is the
 first closed form but is family-specific; and the full OQ-02 characterization of
 all-convex polynomials, open in the literature. No Lean axiom/build debt remains.
+
+## Session 2026-06-18 (researcher-3) — THREE collinear simple roots are ALL-CONVEX (+ saddle-artifact correction)
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (1 positive durable result +
+1 methodological correction). Build-free (Python, Docker-independent); infra had
+recovered this cycle (`docker run alpine` OK, lean4-arm64 image OK) but no Lean
+delta is warranted — the parent flagship is already axiom-free/0-sorry on `main`
+and OQ-02 is open in the literature.
+
+Tackled the explicitly-flagged "open structural frontier": **three distinct
+collinear simple roots**. Universal normal form (convexity is affine-invariant):
+`f_t(z) = z(z+1)(z−t)`, roots `{−1, 0, t}`, `t > 0`, with `0` the middle root;
+verdict invariant under `t ↔ 1/t` (reflect `z→−z`, rescale). New artifact:
+`three_collinear_convexity.py`.
+
+### FINDING 1 — methodological correction (durable; affects prior sessions)
+The "push `c → c_merge`, read `min_boundary Re(u′)`" classifier (used by r2/r9
+to get the quartic `t*`) is **NOT limit-stable** for the cubic. As `c → c_merge`
+the boundary wraps the merging real saddle `z_s` (where `f′(z_s)=0 ⟹ w=0`), and
+there `u′ = −w′/w²` **diverges**. Diagnostics: the whole-boundary minimum
+migrates onto the saddle (dist→0.007, `|w|`→0.06, `θ`→180°) and `min Re(u′)`
+→ −∞ for **every** `t`. This is the level set being locally **hyperbolic** at the
+topology-change point, not an off-axis waist neck. Reading a "necking threshold"
+off this limit is a **c-cutoff artifact**: the apparent `t*` drifts (≈2.06 at
+cutoff 1e-5, →∞ as cutoff→`c_merge`). The saddle pinch sits exactly at
+`c = c_merge`, the *boundary* of the m-component regime, hence **outside** the
+OQ-02 question (which is posed for the `m = #roots`, `c < c_first_merge` regime).
+
+### FINDING 2 — positive result (durable)
+Excluding small cones around the real axis (where the saddles live) and tracking
+the **genuine off-axis** curvature, `min Re(u′)` stays **strictly positive and
+converges** (does NOT diverge) as `c → c_merge`, for **all three** components and
+**all** `t` (verified at ratio 0.9999 cone 20°, and hard-push 0.999999 cone 15°;
+`t ↔ 1/t` symmetry confirmed). Therefore:
+
+> **Every three-distinct-collinear-simple-root polynomial has all `m = 3`
+> lemniscate components convex throughout the entire pre-merge regime → it lies
+> in the OQ-02 all-convex class. The cubic exhibits NO necking.**
+
+Consistent with the literature (Pommerenke 1961 / Goodman 1966 non-convex
+counterexamples need degree ≥ 4 or non-collinear roots). It also localizes r2's
+quartic onset `t* = √2−1` as a genuinely **degree-4** phenomenon: there the
+central component merges with its own **mirror** through a *symmetric* saddle —
+a different geometry absent in the cubic.
+
+### Remaining work (updated)
+- Re-examine whether any of r2/r9's quartic "necks" near `c_merge` are partly the
+  same saddle artifact vs. genuine off-axis necks (the symmetric mirror-merge
+  geometry differs, so the quartic onset is likely real — but worth an off-axis
+  re-confirmation with the cone filter).
+- The genuinely-open analytic items remain: closed-form onset for the general
+  non-collinear / higher-degree configuration, and the full OQ-02 characterization
+  (open in the literature). No Lean axiom/build debt remains.
