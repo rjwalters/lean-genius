@@ -16,7 +16,11 @@
       "Cycles",
       "Graph coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ramsey numbers for graph pairs",
+      "cycle graphs",
+      "two-coloring of complete graphs"
+    ]
   },
   {
     "id": "ann-e570-cycle",
@@ -35,7 +39,11 @@
       "SimpleGraph",
       "Constructive proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cycle graph C_k",
+      "modular arithmetic on Z/kZ",
+      "simple graph adjacency and irreflexivity"
+    ]
   },
   {
     "id": "ann-e570-graph-defs",
@@ -53,7 +61,11 @@
       "Degree conditions"
     ],
     "mathContext": "See annotation content for formal details of edge count and isolated vertices",
-    "prerequisites": []
+    "prerequisites": [
+      "edge set cardinality",
+      "vertex degree and isolated vertices",
+      "graph predicates"
+    ]
   },
   {
     "id": "ann-e570-ramsey",
@@ -72,7 +84,11 @@
       "Complete graphs",
       "Graph colorings"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ramsey number R(G,H)",
+      "infimum (sInf) over a set of naturals",
+      "ramsey's theorem and finiteness"
+    ]
   },
   {
     "id": "ann-e570-conjecture",
@@ -90,7 +106,11 @@
       "Ramsey bounds"
     ],
     "mathContext": "See annotation content for formal details of the conjecture statement",
-    "prerequisites": []
+    "prerequisites": [
+      "cycle-versus-graph ramsey bound",
+      "ceiling function on naturals",
+      "edge count m of H"
+    ]
   },
   {
     "id": "ann-e570-cases",
@@ -108,7 +128,11 @@
       "Case analysis",
       "Even vs odd cycles"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "even versus odd cycle dichotomy",
+      "extremal graph theory techniques",
+      "case analysis over cycle length"
+    ]
   },
   {
     "id": "ann-e570-resolved",
@@ -126,6 +150,10 @@
       "Axiomatization"
     ],
     "mathContext": "See annotation content for formal details of complete resolution",
-    "prerequisites": []
+    "prerequisites": [
+      "axiomatization of unbounded case analysis",
+      "ramsey size-linear graphs",
+      "combining proof cases to cover all k"
+    ]
   }
 ]
