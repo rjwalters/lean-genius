@@ -22,7 +22,11 @@
       "smooth-numbers",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime divisors of a natural number",
+      "largest prime factor of an integer",
+      "Erdős and Graham smooth-number problems"
+    ]
   },
   {
     "id": "ann-383-primediv",
@@ -45,7 +49,11 @@
       "mathlib",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib's Nat.primeFactors",
+      "set of prime factors of a natural number",
+      "maximal element of a finite set"
+    ]
   },
   {
     "id": "ann-383-product",
@@ -68,7 +76,11 @@
       "consecutive-integers",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite product over a range of indices",
+      "consecutive integers",
+      "perfect squares p²"
+    ]
   },
   {
     "id": "ann-383-special",
@@ -91,7 +103,11 @@
       "special-case",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "evaluating a product at k=0 and k=1",
+      "prime factorization of p²",
+      "base case of an indexed product"
+    ]
   },
   {
     "id": "ann-383-kgood",
@@ -114,7 +130,11 @@
       "core-definition",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primality predicate Nat.Prime",
+      "largest prime factor of a product",
+      "logical conjunction of conditions"
+    ]
   },
   {
     "id": "ann-383-kgoodset",
@@ -137,7 +157,11 @@
       "infinite-sets",
       "prime-classification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set-builder notation for a predicate",
+      "infinite sets of natural numbers",
+      "every prime being 0-good"
+    ]
   },
   {
     "id": "ann-383-conjecture",
@@ -161,7 +185,11 @@
       "open-problem",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "universal quantification over all k",
+      "infinitude of a set of primes",
+      "Nat.maxPrimeFac"
+    ]
   },
   {
     "id": "ann-383-partial",
@@ -185,7 +213,11 @@
       "density",
       "smooth-numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the trivial k=0 case",
+      "positive natural density",
+      "density of smooth numbers"
+    ]
   },
   {
     "id": "ann-383-problem382",
@@ -208,7 +240,11 @@
       "implication",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "maxPrimeFac of p²+1",
+      "Erdős Problem #382",
+      "specializing the k=1 case as an implication"
+    ]
   },
   {
     "id": "ann-383-smooth",
@@ -231,7 +267,11 @@
       "analytic-number-theory",
       "prime-factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "y-smooth numbers",
+      "bounding prime factors by y",
+      "equivalence of k-goodness and smoothness"
+    ]
   },
   {
     "id": "ann-383-dickman",
@@ -254,7 +294,11 @@
       "asymptotic-analysis",
       "analytic-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Dickman function ρ(u)",
+      "asymptotic density Ψ(x, x^{1/u})",
+      "value ρ(2) ≈ 0.307"
+    ]
   },
   {
     "id": "ann-383-heuristic",
@@ -277,7 +321,11 @@
       "probabilistic-argument",
       "dickman-function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic heuristic for primes",
+      "prime factors bounded by √n",
+      "Dickman density ρ(2)"
+    ]
   },
   {
     "id": "ann-383-status",
@@ -300,7 +348,11 @@
       "status",
       "conjectured-true"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open problems in number theory",
+      "heuristic versus rigorous evidence",
+      "conjectured-true status"
+    ]
   },
   {
     "id": "ann-383-formal",
@@ -324,6 +376,10 @@
       "formalization",
       "mathlib"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.maxPrimeFac",
+      "Finset.Icc interval",
+      "formal Lean statement of a conjecture"
+    ]
   }
 ]
