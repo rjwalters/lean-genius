@@ -16,7 +16,11 @@
       "Unit fractions",
       "Extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Unit Fractions",
+      "Extremal Functions"
+    ]
   },
   {
     "id": "ann-e293-defs",
@@ -35,7 +39,11 @@
       "Minimal excludant",
       "Axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset Cardinality",
+      "Minimal Excludant",
+      "Axiomatization In Lean"
+    ]
   },
   {
     "id": "ann-e293-vardi",
@@ -54,7 +62,11 @@
       "Doubly exponential growth",
       "Sylvester-Fibonacci sequence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Recurrence Relations",
+      "Sylvester's Sequence",
+      "Doubly Exponential Growth"
+    ]
   },
   {
     "id": "ann-e293-lower",
@@ -73,7 +85,11 @@
       "van Doorn-Tang 2025",
       "Factorial growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower Bound Arguments",
+      "Factorial Growth",
+      "Stirling's Approximation"
+    ]
   },
   {
     "id": "ann-e293-upper",
@@ -92,7 +108,11 @@
       "Vardi sequence",
       "Doubly exponential"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper Bound Arguments",
+      "Vardi Sequence",
+      "Greedy Decomposition"
+    ]
   },
   {
     "id": "ann-e293-conjectures",
@@ -111,6 +131,10 @@
       "Computed values",
       "Erdős conjectures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Growth Rates",
+      "Doubly Exponential Bounds",
+      "Small Case Verification"
+    ]
   }
 ]
