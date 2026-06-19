@@ -16,7 +16,11 @@
       "asymptotic growth",
       "little-o notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "powers of two",
+      "little-o asymptotic notation"
+    ]
   },
   {
     "id": "ann-e236-f-def",
@@ -35,7 +39,11 @@
       "prime checking",
       "representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting via filtering finite sets",
+      "primality testing",
+      "base-2 logarithm"
+    ]
   },
   {
     "id": "ann-e236-upper-bound",
@@ -53,7 +61,10 @@
       "upper bound",
       "logarithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "length of a filtered list",
+      "base-2 logarithm bound on the number of powers of two below n"
+    ]
   },
   {
     "id": "ann-e236-concrete",
@@ -71,7 +82,10 @@
       "computation",
       "examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "decidable primality by computation",
+      "explicit case checking of n minus 2^k"
+    ]
   },
   {
     "id": "ann-e236-all-prime-def",
@@ -89,7 +103,11 @@
       "all-prime numbers",
       "special sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "universal quantification over exponents k",
+      "primality of n minus 2^k",
+      "range constraint 1 < 2^k < n"
+    ]
   },
   {
     "id": "ann-e236-four-seven",
@@ -107,7 +125,10 @@
       "verification",
       "small cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "case analysis on the exponent k",
+      "primality of small numbers"
+    ]
   },
   {
     "id": "ann-e236-erdos-guy",
@@ -125,7 +146,11 @@
       "conjecture",
       "computational verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the all-prime property",
+      "set equality with a finite explicit set",
+      "computational verification up to a bound"
+    ]
   },
   {
     "id": "ann-e236-main-conj",
@@ -144,7 +169,11 @@
       "asymptotic",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "little-o notation in Mathlib",
+      "the natural logarithm Real.log",
+      "limiting behavior of f(n)/log(n)"
+    ]
   },
   {
     "id": "ann-e236-lower",
@@ -162,7 +191,11 @@
       "lower bound",
       "Erdős 1950"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "iterated logarithm log log n",
+      "infinitely-often (frequently in atTop) statements",
+      "lower bounds on f(n)"
+    ]
   },
   {
     "id": "ann-e236-vaughan",
@@ -181,7 +214,11 @@
       "density",
       "Vaughan 1973"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting function / density up to N",
+      "super-polynomial decay rates",
+      "sparsity of integer sets"
+    ]
   },
   {
     "id": "ann-e236-connection",
@@ -199,6 +236,10 @@
       "Problem #10",
       "existence vs counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "representation n = p + 2^k",
+      "existence versus counting of representations",
+      "the case f(n) = 0"
+    ]
   }
 ]
