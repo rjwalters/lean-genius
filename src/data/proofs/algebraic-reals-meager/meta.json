@@ -216,6 +216,18 @@
       "type": "core",
       "description": "The transcendental reals are residual (comeagre) and dense in ℝ",
       "leanType": "Dense {x : ℝ | ¬ IsAlgebraic ℚ x}"
+    },
+    {
+      "name": "transcendentalReals_residual",
+      "type": "supporting",
+      "description": "The transcendental reals are residual (comeagre): the complement of the meagre algebraic reals lies in residual ℝ — the step bridging meagreness to density",
+      "leanType": "{x : ℝ | ¬ IsAlgebraic ℚ x} ∈ residual ℝ"
+    },
+    {
+      "name": "exists_transcendental_real",
+      "type": "corollary",
+      "description": "Transcendental reals exist — the headline corollary, recovered purely from meagreness with no explicit Diophantine construction (contrast Liouville's explicit witnesses)",
+      "leanType": "∃ x : ℝ, ¬ IsAlgebraic ℚ x"
     }
   ],
   "conclusion": {
