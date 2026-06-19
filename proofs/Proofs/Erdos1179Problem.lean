@@ -44,7 +44,7 @@ import Mathlib.Tactic
 
 namespace Erdos1179
 
-open Finset Real
+open Finset Real Filter
 
 /- ## Part I: Representation Counts -/
 
@@ -131,7 +131,7 @@ theorem gEps_pos (ε : ℝ) (N : ℕ) (hε : 0 < ε) (hε1 : ε < 1) (hN : N ≥
     gEps ε N ≥ 1 := by
   have h := basic_lower_bound ε N hε hε1 hN
   have hlog : Real.logb 2 ↑N ≥ 1 := by
-    rw [Real.logb, ge_iff_le, div_le_iff₀ (Real.log_pos (by norm_num : (1:ℝ) < 2)),
+    rw [Real.logb, ge_iff_le, le_div_iff₀ (Real.log_pos (by norm_num : (1:ℝ) < 2)),
         one_mul]
     exact Real.log_le_log (by norm_num : (0:ℝ) < 2) (by exact_mod_cast hN)
   exact_mod_cast (show (1 : ℝ) ≤ ↑(gEps ε N) from le_trans hlog h)
@@ -289,7 +289,7 @@ theorem main_asymptotic_derived (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
   have h_ratio_ge : 1 ≤ (gEps ε N : ℝ) / Real.logb 2 ↑N := by
     rw [le_div_iff₀ hlog_pos, one_mul]; exact h_lower
   have h_ratio_le : (gEps ε N : ℝ) / Real.logb 2 ↑N ≤ 1 + C * f := by
-    rw [div_le_iff₀ hlog_pos]; exact h_upper
+    rw [div_le_iff₀ hlog_pos, hf_def, ← mul_div_assoc]; exact h_upper
   -- Squeeze: 0 ≤ ratio - 1 ≤ C·f(N), and C·|f(N)| < δ
   rw [abs_lt]
   constructor
