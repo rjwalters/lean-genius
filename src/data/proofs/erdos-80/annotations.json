@@ -16,7 +16,11 @@
       "Triangles",
       "Extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Triangles In Graphs",
+      "Edge Density"
+    ]
   },
   {
     "id": "ann-e80-triangle",
@@ -35,7 +39,11 @@
       "K_3"
     ],
     "mathContext": "See annotation content for formal details of triangle definition",
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Adjacency",
+      "Cliques And K_3",
+      "Vertex Sets"
+    ]
   },
   {
     "id": "ann-e80-triangle-saturated",
@@ -55,7 +63,11 @@
       "book graph",
       "Kruskal-Katona theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Triangle-Free Graphs",
+      "Graph Saturation",
+      "Edge Containment"
+    ]
   },
   {
     "id": "ann-e80-book-size",
@@ -73,7 +85,11 @@
       "formal definition",
       "ring theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Book Graphs",
+      "Shared Edges",
+      "Counting Triangles"
+    ]
   },
   {
     "id": "ann-e80-f-function",
@@ -92,7 +108,11 @@
       "ring theory",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Worst-Case Guarantees",
+      "Supremum Over Graphs",
+      "Density Parameter"
+    ]
   },
   {
     "id": "ann-e80-alon-trotter",
@@ -110,7 +130,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Notation",
+      "Graph Constructions",
+      "Upper Bounds"
+    ]
   },
   {
     "id": "ann-e80-fox-loh",
@@ -128,7 +152,11 @@
       "polynomial theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Subpolynomial Growth",
+      "Probabilistic Constructions",
+      "Little-o Notation"
+    ]
   },
   {
     "id": "ann-e80-disproved",
@@ -146,7 +174,11 @@
       "polynomial theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial Lower Bounds",
+      "Asymptotic Comparison",
+      "Disproving Conjectures"
+    ]
   },
   {
     "id": "ann-e80-linear-bound",
@@ -164,7 +196,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Linear Lower Bounds",
+      "Density Threshold",
+      "Phase Transition"
+    ]
   },
   {
     "id": "ann-e80-regularity",
@@ -182,7 +218,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Szemeredi Regularity Lemma",
+      "Tower-Type Bounds",
+      "Asymptotic Growth"
+    ]
   },
   {
     "id": "ann-e80-threshold",
@@ -200,7 +240,11 @@
       "Phase transition",
       "Turán theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Phase Transition",
+      "Turan Theorem",
+      "Critical Density"
+    ]
   },
   {
     "id": "ann-e80-log-conjecture",
@@ -218,6 +262,10 @@
       "formal definition",
       "polynomial theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logarithmic Growth",
+      "Open Problems",
+      "Asymptotic Lower Bounds"
+    ]
   }
 ]
