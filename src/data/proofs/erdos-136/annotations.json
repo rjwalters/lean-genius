@@ -16,7 +16,11 @@
       "graph-coloring",
       "complete-graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complete graphs Kₙ and edge colorings",
+      "Ramsey theory",
+      "the Erdős–Gyárfás generalized Ramsey function"
+    ]
   },
   {
     "id": "ann-e136-defs",
@@ -35,7 +39,11 @@
       "K4-subgraph",
       "injective-mapping"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "edge-colorings of a graph",
+      "the K₄ complete subgraph on 4 vertices",
+      "counting colors on a subgraph's edges"
+    ]
   },
   {
     "id": "ann-e136-f-function",
@@ -54,7 +62,11 @@
       "extremal-function",
       "noncomputable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "minimal colors needed (an extremal function)",
+      "Nat.find for least witnesses",
+      "noncomputable definitions in Lean"
+    ]
   },
   {
     "id": "ann-e136-bounds",
@@ -73,7 +85,11 @@
       "asymptotic-bounds",
       "concrete-values"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the function f(n,4,5)",
+      "asymptotic upper/lower bounds",
+      "concrete small values"
+    ]
   },
   {
     "id": "ann-e136-asymptotic",
@@ -92,7 +108,11 @@
       "asymptotic-analysis",
       "Bennett-et-al-2022"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic growth and limits (Filter.Tendsto)",
+      "the n^{5/6} growth rate",
+      "the Bennett et al. 2022 resolution"
+    ]
   },
   {
     "id": "ann-e136-why",
@@ -111,7 +131,11 @@
       "edge-counting",
       "norm_num"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting edges within K₄ subgraphs",
+      "the combinatorial constant 5/6",
+      "arithmetic verification (norm_num)"
+    ]
   },
   {
     "id": "ann-e136-values",
@@ -130,6 +154,10 @@
       "concrete-values",
       "small-cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "monotonicity of the Erdős–Gyárfás function",
+      "related parameter values f(n,p,q)",
+      "small-case computations"
+    ]
   }
 ]
