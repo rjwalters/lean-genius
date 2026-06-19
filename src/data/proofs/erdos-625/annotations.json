@@ -13,7 +13,11 @@
       "Cochromatic number",
       "Prize problems"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Simple graphs",
+      "Graph coloring",
+      "Random graphs"
+    ],
     "range": {
       "startLine": 27,
       "endLine": 60
@@ -32,7 +36,12 @@
       "Independent set",
       "Color class"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Simple graphs",
+      "Clique",
+      "Independent set",
+      "Induced subgraph"
+    ],
     "range": {
       "startLine": 27,
       "endLine": 60
@@ -51,7 +60,12 @@
       "Proper coloring",
       "Partition"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Cochromatic color class",
+      "Proper coloring",
+      "Vertex partition",
+      "Fin n indexing"
+    ],
     "range": {
       "startLine": 27,
       "endLine": 60
@@ -70,7 +84,12 @@
       "Graph invariant",
       "Minimum"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Cochromatic coloring",
+      "Chromatic number",
+      "Well-ordering / Nat.find",
+      "Graph complement"
+    ],
     "range": {
       "startLine": 27,
       "endLine": 60
@@ -89,7 +108,11 @@
       "Proper coloring",
       "Four Color Theorem"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Proper coloring",
+      "Independent set",
+      "Random graph G(n, 1/2)"
+    ],
     "range": {
       "startLine": 27,
       "endLine": 60
@@ -108,7 +131,11 @@
       "Independent set",
       "Relaxation"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Proper coloring",
+      "Cochromatic color class",
+      "Independent set"
+    ],
     "range": {
       "startLine": 27,
       "endLine": 60
@@ -127,7 +154,11 @@
       "Inequality",
       "Relaxation"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Cochromatic number",
+      "Chromatic number",
+      "Proper ⊆ cochromatic"
+    ],
     "range": {
       "startLine": 27,
       "endLine": 60
@@ -145,7 +176,11 @@
       "Complement graph",
       "Symmetry"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Graph complement",
+      "Cochromatic number",
+      "Clique/independent-set duality"
+    ],
     "range": {
       "startLine": 61,
       "endLine": 81
@@ -164,7 +199,11 @@
       "Graph symmetry",
       "Self-complementary"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Complement inequality",
+      "Graph complement",
+      "Involutive operation"
+    ],
     "range": {
       "startLine": 61,
       "endLine": 81
@@ -183,7 +222,11 @@
       "Random graph",
       "Probability"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Probability space",
+      "Independent events",
+      "Erdős–Rényi model"
+    ],
     "range": {
       "startLine": 61,
       "endLine": 81
@@ -202,7 +245,11 @@
       "High probability",
       "Limit"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Probability",
+      "Convergence / limits",
+      "High-probability events"
+    ],
     "range": {
       "startLine": 61,
       "endLine": 81
@@ -221,7 +268,12 @@
       "Clique number",
       "Independence number"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Cochromatic number",
+      "Clique number",
+      "Independence number",
+      "Almost surely"
+    ],
     "range": {
       "startLine": 61,
       "endLine": 81
@@ -240,7 +292,12 @@
       "Random graph",
       "Bollobás"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Chromatic number",
+      "Random graph G(n, 1/2)",
+      "Concentration of measure",
+      "Asymptotic o(1) notation"
+    ],
     "range": {
       "startLine": 61,
       "endLine": 81
@@ -258,7 +315,11 @@
       "Asymptotic bounds",
       "Concentration"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "ζ(G) ≤ χ(G)",
+      "Bollobás upper bound",
+      "Cochromatic lower bound"
+    ],
     "range": {
       "startLine": 83,
       "endLine": 155
@@ -277,7 +338,11 @@
       "Prize problem",
       "Erdős conjecture"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Chromatic number",
+      "Cochromatic number",
+      "Almost sure convergence"
+    ],
     "range": {
       "startLine": 83,
       "endLine": 155
@@ -296,7 +361,11 @@
       "Open problem",
       "Conditional reasoning"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Main question",
+      "Axioms in Lean",
+      "Conditional reasoning"
+    ],
     "range": {
       "startLine": 124,
       "endLine": 126
@@ -314,7 +383,9 @@
       "Erdős prizes",
       "Mathematical prizes"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Erdős problems"
+    ],
     "range": {
       "startLine": 83,
       "endLine": 155
@@ -334,7 +405,11 @@
       "Steiner",
       "2024"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Main question",
+      "Unbounded vs convergent sequences",
+      "High probability vs almost surely"
+    ],
     "range": {
       "startLine": 83,
       "endLine": 155
@@ -352,7 +427,11 @@
       "Subsequence",
       "Polynomial growth"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Subsequences",
+      "Almost surely",
+      "Polynomial vs logarithmic growth"
+    ],
     "range": {
       "startLine": 139,
       "endLine": 145
@@ -371,7 +450,11 @@
       "Generic n",
       "2024"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Natural density",
+      "Heckel-Steiner unboundedness",
+      "Asymptotic growth"
+    ],
     "range": {
       "startLine": 156,
       "endLine": 236
@@ -390,7 +473,12 @@
       "Asymptotic",
       "Heckel"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Chromatic number",
+      "Cochromatic number",
+      "Asymptotic growth rates",
+      "High probability"
+    ],
     "range": {
       "startLine": 156,
       "endLine": 236
@@ -408,7 +496,11 @@
       "Implication",
       "Strengthening"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Heckel's conjecture",
+      "Main question",
+      "Divergence to infinity"
+    ],
     "range": {
       "startLine": 156,
       "endLine": 236
@@ -427,7 +519,11 @@
       "Maximum",
       "Random graph"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Clique",
+      "Random graph G(n, 1/2)",
+      "Extremal / maximum quantity"
+    ],
     "range": {
       "startLine": 156,
       "endLine": 236
@@ -446,7 +542,11 @@
       "Complement",
       "Maximum"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Independent set",
+      "Graph complement",
+      "Clique number"
+    ],
     "range": {
       "startLine": 156,
       "endLine": 236
@@ -465,7 +565,11 @@
       "Logarithmic",
       "Random graph"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Clique number",
+      "Independence number",
+      "Concentration in random graphs"
+    ],
     "range": {
       "startLine": 156,
       "endLine": 236
@@ -483,7 +587,12 @@
       "Lower bound",
       "Covering argument"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Cochromatic number",
+      "Clique number",
+      "Independence number",
+      "Covering / pigeonhole argument"
+    ],
     "range": {
       "startLine": 237,
       "endLine": 260
@@ -502,7 +611,11 @@
       "Mean",
       "Variance"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Chromatic number",
+      "Concentration inequalities",
+      "Mean and variance"
+    ],
     "range": {
       "startLine": 194,
       "endLine": 199
@@ -520,7 +633,10 @@
       "Concentration",
       "Open question"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Cochromatic number",
+      "Concentration inequalities"
+    ],
     "range": {
       "startLine": 200,
       "endLine": 220
@@ -538,7 +654,10 @@
       "Summary",
       "Structural properties"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "ζ(G) ≤ χ(G)",
+      "ζ(G) = ζ(Gᶜ)"
+    ],
     "range": {
       "startLine": 27,
       "endLine": 60
@@ -556,7 +675,11 @@
       "Open problem",
       "Progress"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Heckel-Steiner unboundedness",
+      "Main question",
+      "Almost sure convergence"
+    ],
     "range": {
       "startLine": 242,
       "endLine": 268
@@ -575,7 +698,12 @@
       "Prize problem",
       "2024 progress"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Chromatic number",
+      "Cochromatic number",
+      "Heckel's conjecture",
+      "Erdős problems"
+    ],
     "range": {
       "startLine": 27,
       "endLine": 60
