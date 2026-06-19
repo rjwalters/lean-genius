@@ -16,7 +16,11 @@
       "odd-cycles",
       "extremal-graph-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "Graph theory",
+      "Asymptotic notation"
+    ]
   },
   {
     "id": "ann-e569-odd-cycle",
@@ -35,7 +39,11 @@
       "omega-tactic",
       "bipartite-graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cycles in graphs",
+      "Bipartite graphs",
+      "omega tactic"
+    ]
   },
   {
     "id": "ann-e569-no-isolated",
@@ -54,7 +62,11 @@
       "handshaking-lemma",
       "edgeFinset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "SimpleGraph",
+      "Handshaking lemma",
+      "Edge counting"
+    ]
   },
   {
     "id": "ann-e569-ramsey-linear",
@@ -73,7 +85,11 @@
       "LinearRamseyBound",
       "axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph homomorphisms",
+      "Edge colorings",
+      "Axiomatization"
+    ]
   },
   {
     "id": "ann-e569-known",
@@ -92,7 +108,11 @@
       "triangle-ramsey",
       "Turán-theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Linear bounds",
+      "Triangle Ramsey numbers",
+      "Turán theorem"
+    ]
   },
   {
     "id": "ann-e569-lower",
@@ -111,6 +131,10 @@
       "lower-bounds",
       "bipartite-coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete graphs",
+      "Two-colorings",
+      "Bipartite constructions"
+    ]
   }
 ]
