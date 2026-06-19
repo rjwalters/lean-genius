@@ -17,7 +17,11 @@
       "spherical-sets",
       "coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Ramsey Theory",
+      "Finite Point Configurations",
+      "Monochromatic Colorings"
+    ]
   },
   {
     "id": "ann-174-ramsey-def",
@@ -37,7 +41,11 @@
       "isometry",
       "Coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Space",
+      "Isometries And Congruence",
+      "Finite Set Colorings"
+    ]
   },
   {
     "id": "ann-174-spherical",
@@ -56,7 +64,11 @@
       "necessary-condition",
       "distance-coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Concyclic Point Sets",
+      "Distance-Based Colorings",
+      "Necessary Conditions"
+    ]
   },
   {
     "id": "ann-174-conjectures",
@@ -76,7 +88,11 @@
       "subtransitivity",
       "isometry-group"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Isometry Groups",
+      "Transitive Group Actions",
+      "Spherical Sets"
+    ]
   },
   {
     "id": "ann-174-known-ramsey",
@@ -96,7 +112,11 @@
       "Kriz-1991",
       "Kriz-1992"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Affine Independence",
+      "Regular Polytopes",
+      "Product Colorings"
+    ]
   },
   {
     "id": "ann-174-examples",
@@ -115,7 +135,11 @@
       "contrapositive",
       "concrete-examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pigeonhole Principle",
+      "Proof By Contrapositive",
+      "Collinear Point Sets"
+    ]
   },
   {
     "id": "ann-174-characterization",
@@ -134,7 +158,11 @@
       "existence-vs-construction",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Predicate Characterization",
+      "Existential Quantifiers",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-174-summary",
@@ -153,6 +181,10 @@
       "open-problem",
       "50-year-gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical Conjunction",
+      "Necessary And Sufficient Conditions",
+      "Anonymous Constructors"
+    ]
   }
 ]
