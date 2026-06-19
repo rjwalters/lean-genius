@@ -1224,10 +1224,12 @@
       "result": "clean"
     },
     "borsuk-ulam-oq-03-oq-03": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T20:23:29Z",
-      "result": "clean"
+      "agentId": "auditor-agent",
+      "auditCount": 4,
+      "lastAudited": "2026-06-19T08:07:38Z",
+      "result": "issues-found",
+      "issue": 26061,
+      "notes": "Re-audit: meta.json accurate (axiomatized/axiom, 1 axiom tucker_2d_grid, sorries 0, lineCount 2633, theoremCount 123, definitionCount 36 all match; main result borsuk_ulam_2d_corrected honestly axiomatized). Found 3 non-load-bearing auxiliary True-stub theorems with 'PROVED' docstrings (#26061, LOW severity; mechanic fix PR #26062)."
     },
     "borsuk-ulam-oq-04": {
       "auditCount": 6,
