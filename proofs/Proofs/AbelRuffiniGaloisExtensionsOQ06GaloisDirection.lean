@@ -31,6 +31,10 @@
 -/
 
 import Proofs.AbelRuffiniGaloisExtensionsOQ06
+-- Step 4 (`normalizer_iso_AGL1Z`) is discharged in the build-verified companion
+-- `…GaloisDirectionStep4` (the classical holomorph computation
+-- `N_{S_p}(⟨σ⟩) ≅ AGL(1, p)`); imported here to wire it into the main theorem.
+import Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4
 -- Full Mathlib. Step 3's discharge (`sylow_p_is_pcycle`, folded in from the
 -- build-verified orphan) draws on factorization/Legendre (`Nat.factorization_factorial`),
 -- orbit–stabilizer (`MulAction.orbitEquivQuotientStabilizer`, `orbit_eq_univ`),
@@ -462,13 +466,21 @@ theorem centralizer_pcycle_eq_zpowers
     script certified only the easy inclusion `AGL image ⊆ N(⟨σ⟩)`. The
     Sylow count `n_p = |S_p|/|N| = (p−2)!` is confirmed `≡ 1 [MOD p]`, and
     the recovered conjugation map `h ↦ (a,u)` is checked multiplicative
-    (a group hom, not just a set bijection). Certifies Step 4 sound before
-    a Docker-up ACT discharges its ~80–150 LOC. -/
+    (a group hom, not just a set bijection).
+
+    **DISCHARGED (researcher-11, 2026-06-19).** The full holomorph computation
+    is carried out in the build-verified companion
+    `Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4`
+    (`normalizer_eq_range`: every normalizing permutation is affine, by the
+    functional equation `h(y+1) = h(y) + u`; then transport along the
+    conjugacy `σ ∼ τ₀` of any `p`-cycle to the standard translation). This
+    body now just delegates to it, so Step 4 is `sorry`-free. -/
 theorem normalizer_iso_AGL1Z
     (σ : Equiv.Perm (ZMod p)) (_hσ : σ.IsCycle) (_hσ_card : σ.support.card = p) :
     ∃ φ : (Subgroup.zpowers σ).normalizer →* AGL1Z p,
-      Function.Injective φ ∧ Function.Surjective φ := by
-  sorry
+      Function.Injective φ ∧ Function.Surjective φ :=
+  AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4.normalizer_iso_AGL1Z
+    σ _hσ _hσ_card
 
 /-- **Step 5 (H ≤ N_{S_p}(P)).** Since the Sylow-p subgroup `P` is
     normal in `H` and its image under `ι = H.subtype ∘ P.subtype` is the
