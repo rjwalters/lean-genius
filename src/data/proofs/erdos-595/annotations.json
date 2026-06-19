@@ -17,7 +17,11 @@
       "Graph decomposition",
       "Chromatic theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e595-cliques",
@@ -36,7 +40,12 @@
       "Forbidden subgraphs",
       "Set.ncard"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "Lean 4 definitions",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e595-covering",
@@ -56,7 +65,11 @@
       "Decomposition",
       "Countable families"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e595-conjecture",
@@ -75,7 +88,11 @@
       "Existential quantification",
       "Graph decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "predicate logic",
+      "graph theory",
+      "Lean 4 propositions"
+    ]
   },
   {
     "id": "ann-e595-folkman",
@@ -95,7 +112,11 @@
       "Ramsey theory",
       "Nešetřil-Rödl"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-e595-gap",
@@ -115,7 +136,11 @@
       "Diagonal arguments",
       "Cardinal arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "cardinal arithmetic",
+      "mathematical logic"
+    ]
   },
   {
     "id": "ann-e595-c4free",
@@ -135,7 +160,11 @@
       "Decomposition",
       "Erdős-Hajnal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e595-summary",
@@ -154,6 +183,10 @@
       "Known results",
       "Open problem formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "Lean 4 tactic mode"
+    ]
   }
 ]
