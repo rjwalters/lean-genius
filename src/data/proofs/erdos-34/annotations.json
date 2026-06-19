@@ -22,7 +22,11 @@
       "consecutive-sums",
       "disproved-conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "permutations of {1,...,n}",
+      "consecutive (contiguous) subsequence sums",
+      "asymptotic little-o notation"
+    ]
   },
   {
     "id": "ann-e34-consecutivesum",
@@ -47,7 +51,11 @@
       "permutations",
       "interval-arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "summation over an interval of indices",
+      "0-indexed Fin n versus 1-indexed permutation values",
+      "empty-range sum convention"
+    ]
   },
   {
     "id": "ann-e34-s-function",
@@ -71,7 +79,11 @@
       "distinct-sums",
       "asymptotic-growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinality of a set of distinct values",
+      "consecutive sums over index pairs u <= v",
+      "asymptotic growth rates n^1.5 versus n^2"
+    ]
   },
   {
     "id": "ann-e34-disproved",
@@ -96,7 +108,11 @@
       "asymptotic-analysis",
       "little-o-notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "epsilon-N formulation of little-o",
+      "negation of a universally quantified statement",
+      "constant-factor lower bounds cn^2"
+    ]
   },
   {
     "id": "ann-e34-hegyvari",
@@ -120,7 +136,11 @@
       "explicit-construction",
       "quadratic-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "explicit counterexample construction",
+      "quadratic lower bound with o(1) error term",
+      "Hegyvari's 1/18 constant"
+    ]
   },
   {
     "id": "ann-e34-konieczny",
@@ -145,7 +165,11 @@
       "quadratic-growth",
       "near-maximum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lower bound S(pi) >= n^2/4",
+      "maximum number of index pairs ~n^2/2",
+      "comparison of constant factors 1/4 versus 1/18"
+    ]
   },
   {
     "id": "ann-e34-bounds",
@@ -170,7 +194,11 @@
       "extremal-combinatorics",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal maximum f(n) = max over pi of S(pi)",
+      "matching upper and lower bounds on n^2 coefficient",
+      "gap between known bounds as an open problem"
+    ]
   },
   {
     "id": "ann-e34-random",
@@ -195,7 +223,11 @@
       "expected-value",
       "concentration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "expected value of S over random permutations",
+      "the constant (1 + e^-2)/4",
+      "typical-case versus worst-case behavior"
+    ]
   },
   {
     "id": "ann-e34-identity",
@@ -220,7 +252,11 @@
       "special-case",
       "little-o-notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic progression partial sums (v-u+1)(u+v)/2",
+      "counting distinct sums of an arithmetic structure",
+      "O(n^1.5) growth for the identity permutation"
+    ]
   },
   {
     "id": "ann-e34-minimum",
@@ -244,6 +280,10 @@
       "superlinear-growth",
       "open-conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal minimum g(n) = min over pi of S(pi)",
+      "superlinear lower bound c * n^(3/2)",
+      "the n^(2-o(1)) minimum conjecture"
+    ]
   }
 ]
