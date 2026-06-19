@@ -16,7 +16,11 @@
       "Egyptian fractions",
       "Diophantine equations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit fractions",
+      "Egyptian fractions",
+      "Number theory basics"
+    ]
   },
   {
     "id": "ann-e242-core-defs",
@@ -35,7 +39,11 @@
       "Gaussian integers",
       "Sum of two squares"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit fractions",
+      "Sum of two squares",
+      "Gaussian integers"
+    ]
   },
   {
     "id": "ann-e242-fermat",
@@ -272,6 +280,9 @@
       "norm_num tactic",
       "Rational arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit fractions",
+      "Rational arithmetic"
+    ]
   }
 ]
