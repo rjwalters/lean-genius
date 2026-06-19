@@ -39,20 +39,105 @@
     plain box can return the corner difference `(±m, ±m)` with `x²+y² = 2p`, so
     we run the pigeonhole on the box with the two corners `(m,m)`, `(m,0)`
     removed, which forces a non-corner collision and hence the strict bound.
-  - `exists_slice_point_lt_two_mul_d2` (PROVED modulo its Minkowski core): the
-    `d = 2` existence, now reduced — via the proved arithmetic glue
-    `slice_point_of_sheared_d2` — to the single irreducible geometry sorry
-    `exists_sheared_point_lt_two_mul_d2` (nonzero `ℤ²` point in the sheared ellipse).
-  - `exists_slice_point_lt_two_mul` (PROVED for d=1, reduces d=2 to the above):
-    the original combined statement, dispatching on `d ∈ {1, 2}`.
+  - `exists_slice_point_lt_two_mul_d2` (PROVED): the `d = 2` existence, via the
+    arithmetic glue `slice_point_of_sheared_d2` plus the Minkowski core
+    `exists_sheared_point_lt_two_mul_d2` (nonzero `ℤ²` point in the sheared
+    ellipse), the latter discharged by Aristotle (project `8feb596c`).
+  - `exists_slice_point_lt_two_mul` (PROVED): the original combined statement,
+    dispatching on `d ∈ {1, 2}`.
   - `slice_point_to_dirichlet_vector` (PROVED): pure plumbing that lifts a 2D
     slice point `(x, y)` to the `Fin 3 → ℤ` vector `![x, y, 0]`.
 
-  NOTE: build-pending and intentionally UNregistered in `Proofs.lean` — it
-  carries one `sorry` (`exists_sheared_point_lt_two_mul_d2`, the `d = 2` Minkowski
-  core) and must not gate the deployer build.
+  STATUS: the file now builds clean with **0 sorries** (researcher-1,
+  2026-06-19; `Build completed successfully (7743 jobs)`). The `d = 2` Minkowski
+  core was proved by the Aristotle proof search system and integrated/re-verified
+  against the project's Mathlib. The `MinkowskiCore.*` declarations depend only on
+  the standard `propext` / `Classical.choice` / `Quot.sound` axioms.
 -/
 import Mathlib
+
+/-! ### Minkowski convex-body infrastructure for the `d = 2` core
+
+Supporting geometry for `exists_sheared_point_lt_two_mul_d2`: the sheared open
+ellipse `E' = {(u,v) : (p·u+r·v)² + 2v² < 2p}` is the preimage of the open unit
+disc under a determinant-`1/√2` linear map, so `vol(E') = √2·π > 4` independently
+of `p`, and Minkowski's strict convex-body theorem applies to `ℤ²` uniformly.
+
+Discharged by the Aristotle proof search system (project `8feb596c`, submitted by
+researcher-2); integrated and re-verified against the project's Mathlib by
+researcher-1. -/
+namespace MinkowskiCore
+
+open MeasureTheory Module Set
+open scoped ENNReal
+
+/-- The linear map (a shear composed with diagonal scaling) on `Fin 2 → ℝ` whose matrix is
+`!![p/√(2p), r/√(2p); 0, 1/√p]`. It sends the open unit disc onto the sheared open ellipse
+`{(u,v) : (p·u + r·v)² + 2·v² < 2p}`. Its determinant is `1/√2`. -/
+noncomputable def shearLin (p : ℕ) (r : ℤ) : (Fin 2 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) :=
+  Matrix.toLin' !![(p : ℝ) / Real.sqrt (2 * p), (r : ℝ) / Real.sqrt (2 * p); 0, 1 / Real.sqrt p]
+
+/-- The open unit disc in `Fin 2 → ℝ`. -/
+def discBall : Set (Fin 2 → ℝ) := {w | (w 0) ^ 2 + (w 1) ^ 2 < 1}
+
+/-- The sheared open ellipse `{(u,v) : (p·u + r·v)² + 2·v² < 2p}` in `Fin 2 → ℝ`. -/
+def shearedEllipse (p : ℕ) (r : ℤ) : Set (Fin 2 → ℝ) :=
+  {y | ((p : ℝ) * y 0 + (r : ℝ) * y 1) ^ 2 + 2 * (y 1) ^ 2 < 2 * p}
+
+/-- The Lebesgue volume of the open unit disc in `Fin 2 → ℝ` is `π`. -/
+lemma discBall_volume : volume discBall = ENNReal.ofReal Real.pi := by
+  have h_unit_disc_eq : discBall = (WithLp.toLp 2) ⁻¹' Metric.ball (0 : EuclideanSpace ℝ (Fin 2)) 1 := by
+    ext; simp [discBall, EuclideanSpace.norm_eq];
+    rw [ Real.sqrt_lt' ] <;> norm_num;
+  rw [ h_unit_disc_eq ];
+  convert ( EuclideanSpace.volume_ball ( Fin 2 ) 0 1 ) using 1;
+  · convert ( PiLp.volume_preserving_toLp ( Fin 2 ) ).measure_preimage ?_ using 1;
+    exact measurableSet_ball.nullMeasurableSet;
+  · norm_num [ Real.pi_pos.le ]
+
+/-- The open unit disc is convex. -/
+lemma discBall_convex : Convex ℝ discBall := by
+  refine' convex_iff_forall_pos.mpr _;
+  intro x hx y hy a b ha hb hab; simp_all +decide [ discBall ] ; ring_nf; (
+  nlinarith [ sq_nonneg ( x 0 - y 0 ), sq_nonneg ( x 1 - y 1 ), mul_pos ha hb ]);
+
+/-- The sheared ellipse is the preimage of the unit disc under `shearLin`. -/
+lemma shearedEllipse_eq (p : ℕ) (hp : 0 < p) (r : ℤ) :
+    shearedEllipse p r = (shearLin p r) ⁻¹' discBall := by
+  ext y
+  simp [shearedEllipse, shearLin, discBall];
+  field_simp;
+  norm_num [ hp.le ] ; ring_nf!
+
+/-- The determinant of `shearLin` is `1/√2`. -/
+lemma shearLin_det (p : ℕ) (hp : 0 < p) (r : ℤ) :
+    LinearMap.det (shearLin p r) = 1 / Real.sqrt 2 := by
+  have h_matrix : shearLin p r = Matrix.toLin' !![(p : ℝ) / Real.sqrt (2 * p), (r : ℝ) / Real.sqrt (2 * p); 0, 1 / Real.sqrt p] := by
+    rfl;
+  rw [ h_matrix, LinearMap.det_toLin' ] ; norm_num [ Real.sqrt_mul, hp ] ; ring_nf ;
+  norm_num [ hp.ne', mul_assoc, mul_comm, mul_left_comm ]
+
+/-- The sheared ellipse is symmetric about the origin. -/
+lemma shearedEllipse_symm (p : ℕ) (r : ℤ) :
+    ∀ y ∈ shearedEllipse p r, -y ∈ shearedEllipse p r := by
+  intro y hy
+  simp [shearedEllipse] at hy;
+  exact show ( ( p : ℝ ) * ( -y 0 ) + ( r : ℝ ) * ( -y 1 ) ) ^ 2 + 2 * ( -y 1 ) ^ 2 < 2 * p from by linarith;
+
+/-- The fundamental domain of the standard lattice `ℤ²` has volume `1`. -/
+lemma fundDomain_volume :
+    volume (ZSpan.fundamentalDomain (Pi.basisFun ℝ (Fin 2))) = 1 := by
+  convert MeasureTheory.volume_pi_pi _;
+  any_goals exact fun _ => Set.Ico 0 1;
+  · simp +decide [ Set.ext_iff, Fin.forall_fin_two ];
+  · norm_num [ Real.volume_Ico ];
+  · exact fun _ => inferInstance
+
+/-- `√2 · π > 4`, the volume bound powering Minkowski's theorem in this setting. -/
+lemma four_lt_sqrt2_pi : (4 : ℝ) < Real.sqrt 2 * Real.pi := by
+  nlinarith [ Real.pi_gt_three, Real.sqrt_nonneg 2, Real.sq_sqrt zero_le_two ]
+
+end MinkowskiCore
 
 namespace ThreeSquaresSlice
 
@@ -254,7 +339,9 @@ theorem slice_point_of_sheared_d2
   · exact ha
   · exact absurd hpz hpne
 
-/-- **The irreducible `d = 2` Minkowski core (OPEN).**
+open MeasureTheory Module Set in
+open scoped ENNReal in
+/-- **The irreducible `d = 2` Minkowski core (PROVED).**
 
 The sole geometry-of-numbers input remaining in the three-squares development: the
 standard lattice `ℤ²` contains a nonzero point `(a, b)` inside the sheared open
@@ -263,14 +350,67 @@ ellipse `E' = { (u, v) : ℝ² | (p·u + r·v)² + 2·v² < 2p }`. Because the s
 axis-aligned ellipse `{w₀² + 2·w₁² < 2p}` leaves `vol(E') = √2·π ≈ 4.443 > 4`
 *independently of `p`*, so Minkowski's strict convex-body theorem
 `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` applies uniformly
-for every `p`. The full port recipe is documented on
-`exists_slice_point_lt_two_mul_d2` below. -/
+for every `p`.
+
+Discharged by the Aristotle proof search system (project `8feb596c`, submitted by
+researcher-2) via the `MinkowskiCore` infrastructure above; integrated and
+re-verified against the project's Mathlib by researcher-1. -/
 theorem exists_sheared_point_lt_two_mul_d2
     (p : ℕ) (hp : 0 < p) (r : ℤ) :
     ∃ a b : ℤ, (a, b) ≠ (0, 0) ∧ (a * p + b * r) ^ 2 + 2 * b ^ 2 < 2 * p := by
-  sorry
+  haveI : Countable ↥(Submodule.span ℤ (Set.range ⇑(Pi.basisFun ℝ (Fin 2)))).toAddSubgroup :=
+    (inferInstance : Countable ↥(Submodule.span ℤ (Set.range ⇑(Pi.basisFun ℝ (Fin 2)))))
+  have det_ne : LinearMap.det (MinkowskiCore.shearLin p r) ≠ 0 := by
+    rw [MinkowskiCore.shearLin_det p hp r]; positivity
+  have vol_s : volume (MinkowskiCore.shearedEllipse p r)
+      = ENNReal.ofReal (Real.sqrt 2 * Real.pi) := by
+    rw [MinkowskiCore.shearedEllipse_eq p hp r,
+      MeasureTheory.Measure.addHaar_preimage_linearMap volume det_ne,
+      MinkowskiCore.discBall_volume, MinkowskiCore.shearLin_det p hp r,
+      show |((1:ℝ) / Real.sqrt 2)⁻¹| = Real.sqrt 2 by
+        rw [one_div, inv_inv, abs_of_nonneg (Real.sqrt_nonneg 2)],
+      ← ENNReal.ofReal_mul (Real.sqrt_nonneg 2)]
+  have conv : Convex ℝ (MinkowskiCore.shearedEllipse p r) := by
+    rw [MinkowskiCore.shearedEllipse_eq p hp r]
+    exact MinkowskiCore.discBall_convex.linear_preimage (MinkowskiCore.shearLin p r)
+  have fund := ZSpan.isAddFundamentalDomain' (Pi.basisFun ℝ (Fin 2)) volume
+  have hfr : finrank ℝ (Fin 2 → ℝ) = 2 := by simp
+  have key : volume (ZSpan.fundamentalDomain (Pi.basisFun ℝ (Fin 2)))
+      * 2 ^ finrank ℝ (Fin 2 → ℝ) < volume (MinkowskiCore.shearedEllipse p r) := by
+    rw [MinkowskiCore.fundDomain_volume, vol_s, hfr, one_mul]
+    have h2 : (2:ℝ≥0∞)^2 = ENNReal.ofReal 4 := by
+      rw [← ENNReal.ofReal_ofNat 2, ← ENNReal.ofReal_pow (by norm_num)]; norm_num
+    rw [h2, ENNReal.ofReal_lt_ofReal_iff_of_nonneg (by norm_num)]
+    exact MinkowskiCore.four_lt_sqrt2_pi
+  obtain ⟨x, hx0, hxs⟩ := exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure
+    fund (MinkowskiCore.shearedEllipse_symm p r) conv key
+  have hxspan : (x : Fin 2 → ℝ) ∈ Submodule.span ℤ (Set.range ⇑(Pi.basisFun ℝ (Fin 2))) := x.2
+  rw [Module.Basis.mem_span_iff_repr_mem ℤ] at hxspan
+  simp only [Pi.basisFun_repr] at hxspan
+  obtain ⟨a, ha⟩ := hxspan 0
+  obtain ⟨bb, hbb⟩ := hxspan 1
+  have hax : (x : Fin 2 → ℝ) 0 = (a : ℝ) := by rw [← ha]; simp
+  have hbx : (x : Fin 2 → ℝ) 1 = (bb : ℝ) := by rw [← hbb]; simp
+  have hmem : ((p:ℝ) * (x:Fin 2→ℝ) 0 + (r:ℝ) * (x:Fin 2→ℝ) 1)^2
+      + 2 * ((x:Fin 2→ℝ) 1)^2 < 2*p := hxs
+  rw [hax, hbx] at hmem
+  refine ⟨a, bb, ?_, ?_⟩
+  · intro hcontra
+    rw [Prod.mk.injEq] at hcontra
+    apply hx0
+    have hxz : (x : Fin 2 → ℝ) = 0 := by
+      funext i
+      rw [Pi.zero_apply]
+      fin_cases i
+      · exact hax.trans (by exact_mod_cast hcontra.1)
+      · exact hbx.trans (by exact_mod_cast hcontra.2)
+    exact Subtype.ext hxz
+  · have hgoal : (((a * p + bb * r) ^ 2 + 2 * bb ^ 2 : ℤ) : ℝ) < ((2 * p : ℤ) : ℝ) := by
+      push_cast
+      nlinarith [hmem]
+    exact_mod_cast hgoal
 
-/-- **The `d = 2` slice point (OPEN, now reduced to its Minkowski core).**
+/-- **The `d = 2` slice point (PROVED).**
 
 For any `p > 0` and any `r : ℤ`, the index-`p` sublattice
 `{(x, y) ∈ ℤ² : x ≡ r·y (mod p)}` contains a nonzero vector with `x² + 2y² < 2p`.
@@ -282,12 +422,12 @@ genuinely requires Minkowski's strict convex-body theorem on the ellipse
 `x² + 2y² < 2p` (open, area `√2·π·p`); no elementary box/pigeonhole reduction works
 (the best box bound is `2√2·p > 2p`, and the strict small-ellipse count
 `#{x²+2y² < p/2} > p` fails for many `p` — both ruled out numerically, S-2026-06-18).
-This statement is now PROVED from the arithmetic glue `slice_point_of_sheared_d2`
-plus the irreducible Minkowski core `exists_sheared_point_lt_two_mul_d2`, which is
-the sole remaining `sorry` in the three-squares development.
+PROVED from the arithmetic glue `slice_point_of_sheared_d2` plus the Minkowski
+core `exists_sheared_point_lt_two_mul_d2` (discharged by Aristotle, project
+`8feb596c`); this was the last `sorry` in the three-squares slice development.
 
-**TURNKEY RECIPE (researcher-12, 2026-06-18 — pinned, build-pending).** The clean
-route is a near-verbatim port of the proved, axiom-free `dirichlet_approximation`
+**REALIZED RECIPE (the route Aristotle's `MinkowskiCore` proof took).** A
+near-verbatim port of the proved, axiom-free `dirichlet_approximation`
 (`MinkowskiTheoremOQ02OQ01.lean:161`): keep the STANDARD lattice `ℤ²` (covolume `1`,
 basis `Pi.basisFun ℝ (Fin 2)`) and shear the *set*, rather than building a
 covolume-`p` sublattice. Concretely:
@@ -315,8 +455,9 @@ covolume-`p` sublattice. Concretely:
     and `x² + 2y² < 2p` is exactly membership in `E'`. (Numerically validated for all
     `p < 400`, all `r`.)
 
-This is a KNOWN result (Minkowski applied to a binary form) — an ideal Aristotle
-target once the backend recovers; it was build-and-Aristotle-gated this session. -/
+This is a KNOWN result (Minkowski applied to a binary form); it was discharged by
+Aristotle along essentially this recipe and re-verified against the project's
+Mathlib. -/
 theorem exists_slice_point_lt_two_mul_d2
     (p : ℕ) (hp : 0 < p) (r : ℤ) :
     ∃ x y : ℤ, (x, y) ≠ (0, 0) ∧ (p : ℤ) ∣ (x - r * y) ∧

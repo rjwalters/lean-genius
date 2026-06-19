@@ -736,3 +736,49 @@ Discharge `exists_sheared_point_lt_two_mul_d2` (Minkowski on the sheared ellipse
 `vol = √2·π > 4`, p-independent) ⇒ closes the d=2 slice ⇒ `dirichlet_key_lemma`
 axiom→theorem in `ThreeSquares.lean`. Aristotle is the intended tool (still 404
 this session); Docker is available for verifying any hand-port.
+
+---
+
+## Session 15 (researcher-1, 2026-06-19) — d=2 Minkowski core CLOSED via Aristotle; `ThreeSquaresSliceMinkowski.lean` now 0-sorry & REGISTERED
+
+**Mode**: BUILD/INTEGRATE (Docker up; Aristotle **CLI** up — MCP still 404).
+**Outcome**: the last `sorry` of the three-squares slice — the d=2 Minkowski core
+`exists_sheared_point_lt_two_mul_d2` — is **proved**. File builds clean with
+**0 sorries** and is now **registered** in `Proofs.lean`.
+
+### How
+S13 (researcher-2) submitted the core to Aristotle via the **CLI**
+(`uvx --from aristotlelib aristotle`, which works even while the MCP wrapper 404s)
+as project `8feb596c`. This session the job was **IDLE/complete**; downloaded with
+`aristotle download 8feb596c …` → `MinkowskiCore.lean` with a full proof (0 sorry,
+axioms = `propext`/`Classical.choice`/`Quot.sound` only).
+
+**Proof shape** (the realized turnkey recipe): `shearLin` = `!![p/√(2p), r/√(2p); 0,
+1/√p]` (det `1/√2`), `shearedEllipse = shearLin ⁻¹' discBall`,
+`vol(discBall)=π` (via `WithLp.toLp`/`EuclideanSpace.volume_ball`),
+`vol(shearedEllipse)=√2·π > 4` (`addHaar_preimage_linearMap`), then
+`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` on `ℤ²`, integer
+coords via `Module.Basis.mem_span_iff_repr_mem`+`Pi.basisFun_repr`.
+
+### Version-drift note (important)
+Aristotle proved it against **Mathlib v4.28.0** (it bumped its sandbox
+`lean-toolchain`), but our project is **v4.26.0**. Integrated verbatim into a
+`namespace MinkowskiCore` block + the d=2 theorem body, and it **built green on
+v4.26.0 unchanged** — every lemma used (`WithLp.toLp`,
+`PiLp.volume_preserving_toLp`, `addHaar_preimage_linearMap`,
+`Module.Basis.mem_span_iff_repr_mem`, …) already exists in v4.26.0. The only manual
+fix was syntactic: a doc-comment cannot precede `open … in`, so the two
+`open … in` lines go **before** the `/-- … -/`.
+
+### State now
+- `ThreeSquaresSliceMinkowski.lean`: **0 sorries**, registered, CI-protected.
+- d=1 (pigeonhole), d=2 (Minkowski via Aristotle), glue, bridge, combined
+  `exists_slice_point_lt_two_mul`, `slice_point_to_dirichlet_vector` — all proved.
+
+### Next open work (the real remaining target)
+`exists_slice_point_lt_two_mul` is now a usable, axiom-free tool. **Wire it into
+`ThreeSquares.lean` to discharge the `dirichlet_key_lemma` axiom** (the slice file
+was built precisely as that axiom's missing geometric input). Then derive
+`not_excluded_form_is_sum_three_sq` from it (file's line-1658 recipe) ⇒ both
+`ThreeSquares.lean` axioms eliminated ⇒ Legendre three-square theorem fully
+verified. Both steps are Docker-buildable now (no backend dependency).
