@@ -170,7 +170,33 @@ two feet of an interior point both side directions are nonzero (from `hXYZ`). -/
 theorem pedalFoot_eq (P X Y : EuclideanSpace ℝ (Fin 2)) (hY : Y ≠ X) :
     pedalFoot P X Y
       = (inner ℝ (P - X) (Y - X) / ‖Y - X‖ ^ 2) • (Y - X) + X := by
-  sorry
+  haveI : Nonempty (↥(affineSpan ℝ ({X, Y} : Set (EuclideanSpace ℝ (Fin 2))))) :=
+    ⟨⟨X, subset_affineSpan ℝ {X, Y} (by simp)⟩⟩
+  have hu : ‖Y - X‖ ^ 2 ≠ 0 :=
+    pow_ne_zero 2 (norm_ne_zero_iff.mpr (sub_ne_zero.mpr hY))
+  set t : ℝ := inner ℝ (P - X) (Y - X) / ‖Y - X‖ ^ 2 with ht
+  unfold pedalFoot
+  rw [coe_orthogonalProjection_eq_iff_mem]
+  refine ⟨?_, ?_⟩
+  · -- membership: `t • (Y - X) + X ∈ affineSpan ℝ {X, Y}`
+    have hX : X ∈ affineSpan ℝ ({X, Y} : Set (EuclideanSpace ℝ (Fin 2))) :=
+      subset_affineSpan ℝ {X, Y} (by simp)
+    have hdir : t • (Y - X) ∈
+        (affineSpan ℝ ({X, Y} : Set (EuclideanSpace ℝ (Fin 2)))).direction := by
+      rw [direction_affineSpan, vectorSpan_pair, Submodule.mem_span_singleton]
+      exact ⟨-t, by rw [vsub_eq_sub]; module⟩
+    have h := AffineSubspace.vadd_mem_of_mem_direction hdir hX
+    simpa using h
+  · -- perpendicular residual: `P −ᵥ (t • (Y - X) + X) ∈ directionᗮ`
+    rw [direction_affineSpan, vectorSpan_pair, mem_orthogonal_singleton_iff_inner_left]
+    have key : (P -ᵥ (t • (Y - X) + X) : EuclideanSpace ℝ (Fin 2))
+        = (P - X) - t • (Y - X) := by
+      rw [vsub_eq_sub]; abel
+    rw [key, vsub_eq_sub, inner_sub_left, real_inner_smul_left]
+    have hXY : (X - Y : EuclideanSpace ℝ (Fin 2)) = -(Y - X) := by abel
+    rw [hXY, inner_neg_right, inner_neg_right, real_inner_self_eq_norm_sq, ht]
+    field_simp
+    ring
 
 /-- **Chord length (the "sine side", law of sines).**
 
