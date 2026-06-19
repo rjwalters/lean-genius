@@ -17,7 +17,11 @@
       "topological embedding",
       "face enumeration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Planar Graphs",
+      "Euler's Formula",
+      "Integer Coercion"
+    ]
   },
   {
     "id": "ann-fct-edge-bound",
@@ -81,7 +85,11 @@
       "Equiv.swap",
       "injectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proper Graph Coloring",
+      "Transpositions",
+      "Function Injectivity"
+    ]
   },
   {
     "id": "ann-fct-kempe-chain-def",
@@ -213,6 +221,10 @@
       "Colorable.mono",
       "base case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Colorability",
+      "Finite Type Cardinality",
+      "Bijections Of Fintypes"
+    ]
   }
 ]
