@@ -42,7 +42,7 @@
     ],
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
-    "lineCount": 309,
+    "lineCount": 344,
     "assumptions": "1 sorry: the shared vertex key inequality key_inequality_vertex (dist Z X · lineDist P X Y + dist X Y · lineDist P Z X ≤ dist Y Z · dist P X). This single lemma is the genuine planar-geometry content (concyclic pedal feet / chord-projection argument), known classical mathematics not yet in Mathlib. The three classical cyclic key inequalities key_inequality_A/B/C are now fully proved as its relabeled instances, and everything else — side-length positivity, pedal-distance nonnegativity, and the AM–GM algebraic reduction — is fully proved.",
     "originalContributions": [
       "erdos_mordell_reduction: the geometry-free AM–GM core, proving 2(da+db+dc) ≤ PA+PB+PC from the three weighted key inequalities via an explicit nonnegative certificate (a·da·(b−c)² + ... ≥ 0). Carries no geometric hypotheses; reusable for any proof of the key inequalities.",
@@ -50,9 +50,10 @@
       "key_inequality_of_chord_and_sines: a verified, geometry-free assembly lemma that takes exactly the two geometric facts the chord identity supplies — the chord identity (PA·sin A)² = db²+dc²+2·db·dc·cos A and the law of sines a = 2R sin A, b = 2R sin B, c = 2R sin C — and derives the key inequality b·dc + c·db ≤ a·PA purely algebraically (via the trig core, collapsing √(…) to PA·sin A and scaling by 2R > 0). This sharpens each remaining geometric obligation from an opaque sorry into precisely 'supply the chord identity and law of sines for the concrete configuration'.",
       "Precise Lean statement of the geometric Erdős–Mordell inequality using Metric.infDist to the affine span (lineDist) for pedal distances.",
       "Full modular assembly of erdos_mordell: reduces the geometric theorem to exactly three separately-stated key-inequality lemmas, discharging all positivity/nonnegativity/algebra.",
-      "key_inequality_vertex with the cyclic-relabeling plumbing affineIndep_rotate and mem_interior_hull_rotate: collapses the three cyclic key inequalities to a single shared lemma by proving that affine independence and interior-of-hull membership are invariant under the rotation (X,Y,Z)↦(Y,Z,X), so key_inequality_A/B/C become its three relabeled instances. This reduces the open geometric content from three sorries to one."
+      "key_inequality_vertex with the cyclic-relabeling plumbing affineIndep_rotate and mem_interior_hull_rotate: collapses the three cyclic key inequalities to a single shared lemma by proving that affine independence and interior-of-hull membership are invariant under the rotation (X,Y,Z)↦(Y,Z,X), so key_inequality_A/B/C become its three relabeled instances. This reduces the open geometric content from three sorries to one.",
+      "key_inequality_vertex_of_los_chord: the verified geometry→algebra bridge for the shared vertex inequality, the native-EuclideanSpace specialization of key_inequality_of_chord_and_sines. Given triangle angles A,B,C, a common circumradius R>0, the law of sines in side-length form (dist YZ = 2R sin A, etc.), and the pedal-feet chord identity at the vertex ((dist P X · sin A)² = lineDist P Z X² + lineDist P X Y² + 2·…·cos A), it discharges dist Z X · lineDist P X Y + dist X Y · lineDist P Z X ≤ dist Y Z · dist P X with no further work (the pedal distances and dist P X supply their own nonnegativity). This isolates the remaining content of the lone open sorry to: exhibit A,B,C,R for the configuration and verify the two named identities — the algebraic assembly is now done and verified."
     ],
-    "theoremCount": 11,
+    "theoremCount": 12,
     "definitionCount": 1
   },
   "overview": {
@@ -155,9 +156,9 @@
     ],
     "opens": [],
     "namespace": "ErdosMordellOQ01",
-    "lineCount": 309,
+    "lineCount": 344,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 12,
     "substantiveTheoremCount": 5,
     "duplicateTheorems": 0,
     "definitionCount": 1,
