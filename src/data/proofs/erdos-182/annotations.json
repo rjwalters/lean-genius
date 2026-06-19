@@ -16,7 +16,11 @@
       "extremal-graph-theory",
       "janzer-sudakov"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Regular Graphs",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-e182-isregular",
@@ -35,7 +39,11 @@
       "neighborSet",
       "ncard"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Degree",
+      "Neighbor Set",
+      "Set Cardinality"
+    ]
   },
   {
     "id": "ann-e182-haskregular",
@@ -54,7 +62,11 @@
       "induced-subgraph",
       "Finset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Subgraph Relation",
+      "Finite Vertex Set",
+      "Simple Graphs"
+    ]
   },
   {
     "id": "ann-e182-extremal",
@@ -72,7 +84,11 @@
       "Nat.choose",
       "extremal-function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Function",
+      "Binomial Coefficient",
+      "Edge Counting"
+    ]
   },
   {
     "id": "ann-e182-basic",
@@ -91,7 +107,11 @@
       "complete-graph",
       "parity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Handshaking Lemma",
+      "Degree Sum Formula",
+      "Parity Argument"
+    ]
   },
   {
     "id": "ann-e182-janzer-sudakov",
@@ -110,7 +130,11 @@
       "iterative-argument",
       "log-log"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Edge Density Bounds",
+      "Iterative Reduction Argument",
+      "Iterated Logarithm"
+    ]
   },
   {
     "id": "ann-e182-upper-bound",
@@ -128,7 +152,11 @@
       "contrapositive",
       "upper-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Contrapositive Statement",
+      "Asymptotic Upper Bounds",
+      "Regular Subgraph Existence"
+    ]
   },
   {
     "id": "ann-e182-pyber",
@@ -147,7 +175,11 @@
       "lower-bound",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Explicit Graph Construction",
+      "Lower Bound Arguments",
+      "Degree Constraints"
+    ]
   },
   {
     "id": "ann-e182-theta",
@@ -165,7 +197,11 @@
       "big-theta",
       "asymptotic-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Big-Theta Notation",
+      "Asymptotic Analysis",
+      "Matching Bounds"
+    ]
   },
   {
     "id": "ann-e182-special-k2",
@@ -184,7 +220,11 @@
       "cycle",
       "IsAcyclic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Forests And Trees",
+      "Cycles In Graphs",
+      "Acyclic Graphs"
+    ]
   },
   {
     "id": "ann-e182-loglog",
@@ -202,6 +242,10 @@
       "iterated-logarithm",
       "iteration-depth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Iterated Logarithm",
+      "Iterative Reduction Depth",
+      "Superlinear Growth"
+    ]
   }
 ]
