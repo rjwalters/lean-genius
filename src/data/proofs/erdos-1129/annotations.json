@@ -17,7 +17,11 @@
       "Chebyshev polynomials",
       "Approximation theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial interpolation",
+      "Supremum norm",
+      "Lebesgue constant"
+    ]
   },
   {
     "id": "ann-e1129-lagrange-basis",
@@ -36,7 +40,11 @@
       "Vandermonde matrix",
       "Cardinal functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial interpolation",
+      "Distinct nodes",
+      "Products and quotients of polynomials"
+    ]
   },
   {
     "id": "ann-e1129-distinct-nodes",
@@ -54,7 +62,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lagrange basis polynomials",
+      "Division by zero",
+      "Closed interval [-1,1]"
+    ]
   },
   {
     "id": "ann-e1129-lebesgue-function",
@@ -72,7 +84,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lagrange basis polynomials",
+      "Absolute value",
+      "Finite sums"
+    ]
   },
   {
     "id": "ann-e1129-lebesgue-constant",
@@ -91,7 +107,11 @@
       "Condition number",
       "Best approximation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue function",
+      "Supremum over a compact interval",
+      "Best polynomial approximation error E_n(f)"
+    ]
   },
   {
     "id": "ann-e1129-chebyshev-nodes",
@@ -110,7 +130,11 @@
       "Minimax approximation",
       "Spectral methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chebyshev polynomials T_n",
+      "Cosine / trigonometric roots",
+      "Runge phenomenon"
+    ]
   },
   {
     "id": "ann-e1129-faber-bound",
@@ -128,7 +152,11 @@
       "polynomial theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue constant",
+      "Asymptotic ≫ / lower bounds",
+      "Logarithmic growth"
+    ]
   },
   {
     "id": "ann-e1129-erdos-bound",
@@ -146,7 +174,12 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue constant",
+      "Faber's lower bound",
+      "Sharp constant 2/π",
+      "Big-O notation"
+    ]
   },
   {
     "id": "ann-e1129-chebyshev-upper",
@@ -164,7 +197,12 @@
       "asymptotics",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chebyshev nodes",
+      "Lebesgue constant",
+      "Erdős lower bound",
+      "Asymptotic optimality"
+    ]
   },
   {
     "id": "ann-e1129-equal-height",
@@ -183,7 +221,11 @@
       "Chebyshev approximation",
       "Remez algorithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue function",
+      "Equioscillation",
+      "Subinterval maxima"
+    ]
   },
   {
     "id": "ann-e1129-kilgore-cheney",
@@ -201,7 +243,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue constant",
+      "Existence of minimizers",
+      "Compactness"
+    ]
   },
   {
     "id": "ann-e1129-kilgore-char",
@@ -219,7 +265,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Equal-height property",
+      "Kilgore-Cheney existence",
+      "Characterization of optimizers"
+    ]
   },
   {
     "id": "ann-e1129-deboor-pinkus",
@@ -237,7 +287,11 @@
       "metric spaces",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Kilgore's characterization",
+      "Symmetric (canonical) node configurations",
+      "Uniqueness of minimizers"
+    ]
   },
   {
     "id": "ann-e1129-optimal-n2",
@@ -255,7 +309,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lagrange basis polynomials",
+      "Lebesgue function",
+      "Endpoint nodes"
+    ]
   },
   {
     "id": "ann-e1129-optimal-n3",
@@ -273,7 +331,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue function",
+      "Lebesgue constant",
+      "Bernstein's interpolation bounds"
+    ]
   },
   {
     "id": "ann-e1129-optimal-n4",
@@ -291,7 +353,11 @@
       "algebra",
       "polynomial theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Equal-height property",
+      "Canonical node configuration",
+      "Algebraic constants / polynomial roots"
+    ]
   },
   {
     "id": "ann-e1129-complex-lebesgue",
@@ -309,7 +375,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue constant",
+      "Unit circle |z|=1",
+      "Complex-valued Lagrange basis"
+    ]
   },
   {
     "id": "ann-e1129-roots-unity",
@@ -327,7 +397,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complex exponential",
+      "n-th roots of unity",
+      "Uniform spacing on the unit circle"
+    ]
   },
   {
     "id": "ann-e1129-brutman",
@@ -345,7 +419,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complex Lebesgue constant",
+      "Roots of unity",
+      "Parity (odd/even n) cases"
+    ]
   },
   {
     "id": "ann-e1129-complex-conjecture",
@@ -363,7 +441,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complex Lebesgue constant",
+      "Roots of unity",
+      "Brutman / Brutman-Pinkus theorems"
+    ]
   },
   {
     "id": "ann-e1129-main",
@@ -381,7 +463,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Kilgore-Cheney existence",
+      "Erdős lower bound",
+      "Chebyshev upper bound"
+    ]
   },
   {
     "id": "ann-e1129-summary",
@@ -399,6 +485,10 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős #1129 main result",
+      "Roots of unity optimality",
+      "Real and complex Lebesgue constants"
+    ]
   }
 ]
