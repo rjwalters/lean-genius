@@ -61,6 +61,7 @@
 
 import Mathlib.GroupTheory.Perm.Cycle.Type
 import Mathlib.GroupTheory.SpecificGroups.Alternating
+import Mathlib.GroupTheory.OrderOfElement
 import Mathlib.Tactic
 
 open Equiv Equiv.Perm Polynomial
@@ -161,5 +162,66 @@ theorem frob2_pow_three_eq_swap : frob2 ^ 3 = Equiv.swap (0 : Fin 5) 1 := by dec
     by `gal_eq_top_of_five_dvd_and_swap`: `frob2 ^ 3` is a swap. -/
 theorem frob2_pow_three_isSwap : (frob2 ^ 3).IsSwap :=
   frob2_pow_three_eq_swap ▸ ⟨0, 1, by decide, rfl⟩
+
+/-! ## A concrete Frobenius witness at `p = 3`
+
+The corrected proof's *order-divisibility* input — hypothesis `(a)`,
+`5 ∣ |Gal|`, of `gal_eq_top_of_five_dvd_and_swap` — comes from the factorisation of
+`f` modulo 3:
+
+    X⁵ − X − 1  is irreducible   (mod 3).
+
+A Frobenius element of `f` at `3` therefore has cycle type `(5)`: it is a single
+`5`-cycle, an element of order `5`.  Such an element lies in the Galois group, so by
+Lagrange `5 = orderOf(Frobenius) ∣ |Gal|`.  Where the prose above only *asserts*
+"irreducible mod 3 ⟹ 5-cycle ⟹ 5 ∣ |Gal|", we now exhibit such an element
+`frob3 ∈ S₅` concretely and machine-check that it has order `5`, then derive the
+divisibility input for *any* subgroup containing it — turning the prose cycle-type
+computation into verified permutation data, exactly as `frob2` does for the swap. -/
+
+/-- A representative `5`-cycle of `S₅`, written as a product of adjacent
+    transpositions: `(0 1)(1 2)(2 3)(3 4) = (0 1 2 3 4)`.  This models a Frobenius
+    element of `f` at `p = 3`, whose factorisation type mod 3 is a single irreducible
+    quintic, i.e. one `5`-cycle. -/
+def frob3 : S5 := Equiv.swap 0 1 * (Equiv.swap 1 2 * (Equiv.swap 2 3 * Equiv.swap 3 4))
+
+/-- `frob3 ^ 5 = 1`: the `5`-cycle returns to the identity after five steps. -/
+theorem frob3_pow_five : frob3 ^ 5 = 1 := by decide
+
+/-- `frob3 ≠ 1`: it genuinely moves points (so its order is not `1`). -/
+theorem frob3_ne_one : frob3 ≠ 1 := by decide
+
+/-- The `p = 3` Frobenius `frob3` has **order `5`**.  Since `5` is prime, its order
+    divides `5` and is not `1`, hence equals `5` — the precise content of
+    "irreducible mod 3 ⟹ a `5`-cycle Frobenius". -/
+theorem orderOf_frob3 : orderOf frob3 = 5 := by
+  have hdvd : orderOf frob3 ∣ 5 := orderOf_dvd_of_pow_eq_one frob3_pow_five
+  rcases (Nat.Prime.eq_one_or_self_of_dvd (by norm_num) _ hdvd) with h | h
+  · exact absurd (orderOf_eq_one_iff.mp h) frob3_ne_one
+  · exact h
+
+/-- **The `5 ∣ |Gal|` input, made concrete.**
+    Any subgroup `G ≤ S₅` that contains the order-`5` Frobenius `frob3` has order
+    divisible by `5` (Lagrange).  This supplies hypothesis `(a)` of
+    `gal_eq_top_of_five_dvd_and_swap` from a single membership fact, replacing the
+    prose appeal to transitivity / a `5`-cycle. -/
+theorem five_dvd_card_of_frob3_mem {G : Subgroup S5} [DecidablePred (· ∈ G)]
+    (h : frob3 ∈ G) : 5 ∣ Fintype.card G := by
+  have hco : orderOf (⟨frob3, h⟩ : G) = 5 := by
+    rw [Subgroup.orderOf_mk]; exact orderOf_frob3
+  have hd : orderOf (⟨frob3, h⟩ : G) ∣ Fintype.card G := orderOf_dvd_card
+  rwa [hco] at hd
+
+/-- **Capstone: both Frobenius witnesses ⟹ the full Galois group is `S₅`.**
+    A subgroup `G ≤ S₅` containing *both* the `p = 3` Frobenius `frob3` (a `5`-cycle)
+    and the `p = 2` Frobenius `frob2` (a `(2,3)`-element) must be all of `S₅`:
+    `frob3` forces `5 ∣ |G|`, while `frob2 ^ 3 ∈ G` is the transposition.  This is the
+    corrected proof of `Gal(X⁵−X−1) ≅ S₅` assembled entirely from concrete
+    permutation data — modulo the genuinely-open Dedekind–Frobenius bridge that places
+    `frob2, frob3` (as cycle-type representatives) inside the actual Galois group. -/
+theorem gal_eq_top_of_frobenii {G : Subgroup S5} [DecidablePred (· ∈ G)]
+    (h3 : frob3 ∈ G) (h2 : frob2 ∈ G) : G = ⊤ :=
+  gal_eq_top_of_five_dvd_and_swap (five_dvd_card_of_frob3_mem h3)
+    (G.pow_mem h2 3) frob2_pow_three_isSwap
 
 end AbelRuffiniOQ07
