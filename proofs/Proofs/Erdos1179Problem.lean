@@ -241,7 +241,7 @@ theorem logloglog_div_loglog_tendsto_zero :
   rw [abs_div, abs_of_pos hll_pos]
   calc |Real.log (Real.log (Real.log ↑N))| / Real.log (Real.log ↑N)
       ≤ c / 2 * |Real.log (Real.log ↑N)| / Real.log (Real.log ↑N) := by
-        exact div_le_div_of_nonneg_right h_apply _ hll_pos.le
+        exact div_le_div_of_nonneg_right h_apply hll_pos.le
     _ = c / 2 * (|Real.log (Real.log ↑N)| / Real.log (Real.log ↑N)) := by ring
     _ = c / 2 * 1 := by rw [abs_of_pos hll_pos, div_self hll_pos.ne']
     _ = c / 2 := mul_one _
