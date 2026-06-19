@@ -16,7 +16,11 @@
       "Analytic number theory",
       "Logarithm characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive arithmetic functions",
+      "the logarithm as a number-theoretic function",
+      "asymptotic O(1) error terms"
+    ]
   },
   {
     "id": "ann-e491-additive",
@@ -35,7 +39,11 @@
       "Multiplicative functions",
       "Prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "coprimality and gcd",
+      "the fundamental theorem of arithmetic",
+      "values of arithmetic functions on prime powers"
+    ]
   },
   {
     "id": "ann-e491-completely-additive",
@@ -53,7 +61,11 @@
       "Logarithm"
     ],
     "mathContext": "See annotation content for formal details of completely additive and its relation to additive",
-    "prerequisites": []
+    "prerequisites": [
+      "additive functions on coprime arguments",
+      "the logarithm of a product",
+      "implication between weaker and stronger definitions"
+    ]
   },
   {
     "id": "ann-e491-bounded-diff",
@@ -71,7 +83,11 @@
       "Regularity conditions",
       "Bounded variation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive differences f(n+1) - f(n)",
+      "absolute value bounds",
+      "log(1 + 1/n) and its bound by log 2"
+    ]
   },
   {
     "id": "ann-e491-erdos-1946",
@@ -90,7 +106,11 @@
       "o(1) condition",
       "Monotone functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "differences tending to zero",
+      "monotone arithmetic functions",
+      "exact logarithmic characterization c·log(n)"
+    ]
   },
   {
     "id": "ann-e491-wirsing",
@@ -109,7 +129,11 @@
       "O(1) approximation",
       "Logarithm characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bounded consecutive differences hypothesis",
+      "approximation up to a bounded error M",
+      "Classical.choose for extracting an existential witness"
+    ]
   },
   {
     "id": "ann-e491-main",
@@ -127,7 +151,11 @@
       "Wirsing's theorem"
     ],
     "mathContext": "See annotation content for formal details of erdős problem #491: main theorems",
-    "prerequisites": []
+    "prerequisites": [
+      "Wirsing's theorem as the underlying result",
+      "unpacking an existential into explicit bounds",
+      "c'·log(n) plus O(1) approximation"
+    ]
   },
   {
     "id": "ann-e491-properties",
@@ -146,7 +174,11 @@
       "Complete additivity"
     ],
     "mathContext": "See annotation content for formal details of properties of the characterization",
-    "prerequisites": []
+    "prerequisites": [
+      "uniqueness of the logarithmic coefficient",
+      "monotonicity forcing a non-negative coefficient",
+      "completely additive functions matching log exactly"
+    ]
   },
   {
     "id": "ann-e491-examples",
@@ -164,7 +196,11 @@
       "Counter-examples"
     ],
     "mathContext": "See annotation content for formal details of examples and non-examples",
-    "prerequisites": []
+    "prerequisites": [
+      "the identity function f(n) = n",
+      "growth rate of n versus log(n)",
+      "norm_num verification of bounded differences"
+    ]
   },
   {
     "id": "ann-e491-prime-powers",
@@ -182,6 +218,10 @@
       "Prime factorization",
       "Fundamental theorem of arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "p-adic valuation v_p(n)",
+      "summing function values over prime divisors",
+      "constructing additive functions from values on primes"
+    ]
   }
 ]
