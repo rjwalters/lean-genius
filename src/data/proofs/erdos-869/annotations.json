@@ -16,7 +16,11 @@
       "Sumsets",
       "Bases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases of order 2",
+      "minimal additive bases",
+      "disjoint unions of sets"
+    ]
   },
   {
     "id": "ann-e869-sumset",
@@ -34,7 +38,10 @@
       "Additive number theory",
       "Representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sets of natural numbers",
+      "existential set-builder notation"
+    ]
   },
   {
     "id": "ann-e869-doubling",
@@ -52,7 +59,10 @@
       "Representation"
     ],
     "mathContext": "See annotation content for formal details of doubling (a + a)",
-    "prerequisites": []
+    "prerequisites": [
+      "the sumset A + B",
+      "pairwise sums A + A"
+    ]
   },
   {
     "id": "ann-e869-cofinite",
@@ -70,7 +80,10 @@
       "Cofinite",
       "Density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite versus cofinite sets",
+      "the set complement Sᶜ"
+    ]
   },
   {
     "id": "ann-e869-basis",
@@ -88,7 +101,10 @@
       "Waring's problem",
       "Representation theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the doubling A + A",
+      "cofinite sets (containing all large integers)"
+    ]
   },
   {
     "id": "ann-e869-essential",
@@ -106,7 +122,10 @@
       "Redundancy"
     ],
     "mathContext": "See annotation content for formal details of essential elements",
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases of order 2",
+      "representability of integers as a sum of two basis elements"
+    ]
   },
   {
     "id": "ann-e869-minimal-basis",
@@ -124,7 +143,10 @@
       "Essential elements"
     ],
     "mathContext": "See annotation content for formal details of minimal additive basis",
-    "prerequisites": []
+    "prerequisites": [
+      "essential elements",
+      "the additive basis property"
+    ]
   },
   {
     "id": "ann-e869-contains-minimal",
@@ -142,7 +164,10 @@
       "Minimal structure"
     ],
     "mathContext": "See annotation content for formal details of contains a minimal basis",
-    "prerequisites": []
+    "prerequisites": [
+      "minimal additive bases",
+      "the subset relation B ⊆ A"
+    ]
   },
   {
     "id": "ann-e869-disjoint",
@@ -160,7 +185,10 @@
       "Partition"
     ],
     "mathContext": "See annotation content for formal details of disjoint additive bases",
-    "prerequisites": []
+    "prerequisites": [
+      "disjoint sets (A₁ ∩ A₂ = ∅)",
+      "additive bases of order 2"
+    ]
   },
   {
     "id": "ann-e869-conjecture",
@@ -178,7 +206,11 @@
       "Open problems",
       "Conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "disjoint additive bases",
+      "the union A₁ ∪ A₂",
+      "containing a minimal basis"
+    ]
   },
   {
     "id": "ann-e869-hartter-nathanson",
@@ -196,7 +228,11 @@
       "Negative results",
       "Counterexamples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases of order 2",
+      "minimal sub-bases",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e869-union-theorem",
@@ -214,7 +250,11 @@
       "Monotonicity"
     ],
     "mathContext": "See annotation content for formal details of union of disjoint bases is a basis",
-    "prerequisites": []
+    "prerequisites": [
+      "disjoint additive bases",
+      "monotonicity of the basis property",
+      "the doubling of a union"
+    ]
   },
   {
     "id": "ann-e869-monotone",
@@ -232,7 +272,11 @@
       "Subset"
     ],
     "mathContext": "See annotation content for formal details of basis monotonicity",
-    "prerequisites": []
+    "prerequisites": [
+      "the additive basis property",
+      "the subset relation A ⊆ B",
+      "monotonicity of sumsets"
+    ]
   },
   {
     "id": "ann-e869-powers-of-two",
@@ -250,7 +294,11 @@
       "Non-examples"
     ],
     "mathContext": "See annotation content for formal details of powers of 2 not a basis",
-    "prerequisites": []
+    "prerequisites": [
+      "the set of powers of two {2ⁿ}",
+      "the doubling A + A",
+      "gaps between sums of two powers of two"
+    ]
   },
   {
     "id": "ann-e869-disjoint-exist",
@@ -268,7 +316,10 @@
       "Construction"
     ],
     "mathContext": "See annotation content for formal details of disjoint bases exist",
-    "prerequisites": []
+    "prerequisites": [
+      "disjoint additive bases",
+      "explicit constructions of order-2 bases"
+    ]
   },
   {
     "id": "ann-e869-cross-sums",
@@ -286,7 +337,10 @@
       "Extra structure"
     ],
     "mathContext": "See annotation content for formal details of cross-sums matter",
-    "prerequisites": []
+    "prerequisites": [
+      "disjoint sets",
+      "cross terms a₁ + a₂ across A₁ and A₂"
+    ]
   },
   {
     "id": "ann-e869-summary",
@@ -304,6 +358,10 @@
       "Known results"
     ],
     "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "existence of disjoint bases",
+      "the Hartter–Nathanson counterexample",
+      "the open union question"
+    ]
   }
 ]
