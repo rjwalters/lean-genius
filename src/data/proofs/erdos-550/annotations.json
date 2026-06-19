@@ -16,7 +16,11 @@
       "graph-coloring",
       "trees"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "extremal graph theory",
+      "graph coloring"
+    ]
   },
   {
     "id": "ann-550-tree",
@@ -35,7 +39,11 @@
       "acyclic-graphs",
       "induction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "mathematical induction",
+      "Lean 4 structure definitions"
+    ]
   },
   {
     "id": "ann-550-multipartite",
@@ -54,7 +62,11 @@
       "chromatic-number",
       "bipartite-graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "Lean 4 inductive types"
+    ]
   },
   {
     "id": "ann-550-ramsey",
@@ -73,7 +85,11 @@
       "pigeonhole",
       "graph-coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "pigeonhole principle",
+      "Lean 4 Nat.find and axioms"
+    ]
   },
   {
     "id": "ann-550-chvatal",
@@ -92,7 +108,11 @@
       "tree-embedding",
       "induction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "mathematical induction",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-550-conjecture",
@@ -111,7 +131,11 @@
       "recursive-bounds",
       "chromatic-number"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "graph coloring",
+      "asymptotic quantifiers"
+    ]
   },
   {
     "id": "ann-550-special",
@@ -130,7 +154,11 @@
       "complete-graphs",
       "bipartite-ramsey"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "graph theory",
+      "case analysis"
+    ]
   },
   {
     "id": "ann-550-paths",
@@ -149,7 +177,11 @@
       "exact-ramsey",
       "degree-constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "Lean 4 predicate definitions"
+    ]
   },
   {
     "id": "ann-550-burr",
@@ -168,6 +200,10 @@
       "linear-ramsey",
       "regularity-lemma"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "extremal graph theory",
+      "Szemerédi regularity lemma"
+    ]
   }
 ]
