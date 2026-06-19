@@ -16,7 +16,11 @@
       "additive bases",
       "Sidon sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "number theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e791-defs",
@@ -35,7 +39,11 @@
       "Finset.image",
       "sInf"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Finset operations in Mathlib",
+      "infimum and order theory"
+    ]
   },
   {
     "id": "ann-e791-trivial",
@@ -53,7 +61,11 @@
       "trivial bound",
       "basis existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural number arithmetic",
+      "Lean 4 tactic mode",
+      "Finset.range basics"
+    ]
   },
   {
     "id": "ann-e791-rohrbach",
@@ -71,7 +83,11 @@
       "counting argument",
       "arithmetic progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "pigeonhole principle",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e791-mrose",
@@ -90,7 +106,11 @@
       "Filter.atTop",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial constructions",
+      "asymptotic analysis",
+      "filters in Mathlib"
+    ]
   },
   {
     "id": "ann-e791-modern",
@@ -109,7 +129,11 @@
       "Kohonen (2017)",
       "integer encoding"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "rational and integer arithmetic encoding",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e791-main",
@@ -128,6 +152,10 @@
       "omega tactic",
       "asymptotic negation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limits and asymptotic equivalence",
+      "Lean 4 tactic mode"
+    ]
   }
 ]
