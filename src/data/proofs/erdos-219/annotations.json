@@ -16,7 +16,11 @@
       "prime numbers",
       "arithmetic progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "definition of prime numbers",
+      "arithmetic progressions of integers",
+      "Green-Tao theorem statement"
+    ]
   },
   {
     "id": "ann-e219-ap-def",
@@ -35,7 +39,11 @@
       "Finset.range",
       "common difference"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.image and Finset.range",
+      "common difference of a progression",
+      "the term formula a + i * d"
+    ]
   },
   {
     "id": "ann-e219-prime-ap",
@@ -54,7 +62,11 @@
       "structural properties",
       "conjunctions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primality predicate Nat.Prime",
+      "definition of an arithmetic progression",
+      "logical conjunction of predicates"
+    ]
   },
   {
     "id": "ann-e219-357",
@@ -73,7 +85,11 @@
       "prime gaps",
       "verified examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primality of 3, 5, and 7",
+      "common difference of an arithmetic progression",
+      "twin prime pairs"
+    ]
   },
   {
     "id": "ann-e219-511172329",
@@ -92,7 +108,11 @@
       "primorials",
       "longer progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "verifying primality with norm_num",
+      "divisibility of the common difference by 6",
+      "primorials as products of small primes"
+    ]
   },
   {
     "id": "ann-e219-question",
@@ -111,7 +131,11 @@
       "existence",
       "asymptotic behavior"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "universal and existential quantification",
+      "cardinality of a Finset",
+      "the IsPrimeAP predicate"
+    ]
   },
   {
     "id": "ann-e219-greentao",
@@ -130,7 +154,11 @@
       "ergodic theory",
       "pseudorandomness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Szemeredi's theorem on dense sets",
+      "ergodic theory methods",
+      "pseudorandomness of the primes"
+    ]
   },
   {
     "id": "ann-e219-explicit",
@@ -149,7 +177,11 @@
       "computational search",
       "explicit bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "explicit first term a and common difference d",
+      "constructive existence statements",
+      "computational search for prime progressions"
+    ]
   },
   {
     "id": "ann-e219-record",
@@ -168,7 +200,11 @@
       "primorial",
       "distributed computing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "computational records for prime APs",
+      "the primorial 23#",
+      "large first term and common difference"
+    ]
   },
   {
     "id": "ann-e219-consecutive",
@@ -187,7 +223,11 @@
       "prime gaps",
       "open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive primes and prime gaps",
+      "arithmetic progressions of primes",
+      "open problems in number theory"
+    ]
   },
   {
     "id": "ann-e219-summary",
@@ -206,6 +246,10 @@
       "summary",
       "verified facts"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axiomatized Green-Tao theorem",
+      "verified prime AP examples",
+      "logical conjunction of results"
+    ]
   }
 ]
