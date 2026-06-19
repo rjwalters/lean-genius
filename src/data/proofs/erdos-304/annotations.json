@@ -17,7 +17,11 @@
       "unit fractions",
       "iterated logarithms"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian fractions and unit-fraction sums",
+      "asymptotic order notation ≪ for upper and lower bounds",
+      "iterated logarithm log log b"
+    ]
   },
   {
     "id": "ann-e304-unit-expressible",
@@ -36,7 +40,11 @@
       "set comprehension",
       "unit fractions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset and finite sums in Lean",
+      "distinct unit fractions with denominators greater than 1",
+      "set-builder comprehension over natural numbers"
+    ]
   },
   {
     "id": "ann-e304-smallest-collection",
@@ -55,7 +63,11 @@
       "supremum",
       "decidability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "minimum and maximum of a set of naturals",
+      "axiomatizing a function when its value is not computable",
+      "decidability of Egyptian fraction representation"
+    ]
   },
   {
     "id": "ann-e304-example",
@@ -74,7 +86,11 @@
       "optimality",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "adding unit fractions over a common denominator",
+      "divisibility test for single-term representability",
+      "checking optimality of a 2-term representation"
+    ]
   },
   {
     "id": "ann-e304-erdos-lower",
@@ -93,7 +109,11 @@
       "prime factorization",
       "lower bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "iterated logarithm lower bound with positive constant c",
+      "prime factorization of denominators",
+      "Nat.log base-2 in Lean"
+    ]
   },
   {
     "id": "ann-e304-erdos-upper",
@@ -112,7 +132,11 @@
       "big-O notation",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "big-O upper bound log b / log log b",
+      "existential constant C in asymptotic statements",
+      "guarding division by zero with a +1 denominator term"
+    ]
   },
   {
     "id": "ann-e304-vose",
@@ -131,7 +155,11 @@
       "constructive proof",
       "improved bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "squared bound N(b)² ≤ C·log b rewritten as √log b",
+      "continued fractions for constructive representations",
+      "improving an earlier asymptotic upper bound"
+    ]
   },
   {
     "id": "ann-e304-conjecture",
@@ -150,7 +178,11 @@
       "tight bounds",
       "asymptotic equivalence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "formalizing an open conjecture as a Prop",
+      "asymptotic equivalence ≍ between matching bounds",
+      "encoding open-problem status via logical non-equivalence"
+    ]
   },
   {
     "id": "ann-e304-average",
@@ -169,7 +201,11 @@
       "typical behavior",
       "distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "averaging N(a,b) over all numerators a",
+      "Ω(log log b) lower bound on the average",
+      "distinguishing typical-case from worst-case complexity"
+    ]
   },
   {
     "id": "ann-e304-almost-one",
@@ -188,6 +224,10 @@
       "representations of 1",
       "missing denominators"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the fraction (b-1)/b = 1 - 1/b as a special case",
+      "noncomputable definitions in Lean",
+      "connection to Erdős #293 on representations of 1"
+    ]
   }
 ]
