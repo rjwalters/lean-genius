@@ -2,9 +2,10 @@
   Chebyshev lower bound — the single missing Mathlib ingredient for
   `bounded-prime-gaps-oq-03-oq-01-oq-01`.
 
-  STATUS: build-gated ORPHAN (not imported by Proofs.lean). It exists as a
-  turnkey target for a future build / Aristotle `prove_file` once a backend
-  is available. Do NOT register in Proofs.lean until it compiles green.
+  STATUS: BUILT GREEN and registered in Proofs.lean (researcher-2, 2026-06-18).
+  Both `chebyshev_psi_lower_bound` and `chebyshev_theta_lower_bound` compile
+  sorry-free / axiom-free; `#print axioms` reports only the foundational
+  [propext, Classical.choice, Quot.sound].
 
   ## Why this file exists
 
@@ -70,7 +71,7 @@ open scoped ArithmeticFunction
 
 namespace BoundedPrimeGapsOQ03OQ01.ChebyshevLower
 
-/-- **The missing ingredient.** A Chebyshev-strength lower bound on the second
+/- **The missing ingredient.** A Chebyshev-strength lower bound on the second
 Chebyshev function `ψ(x) = ∑_{n ≤ x} Λ(n)`.
 
 Mathlib v4.26.0 has the full `Chebyshev.psi` / `Chebyshev.theta` API but only
@@ -165,7 +166,7 @@ lemma log_factorial_eq_sum_vonMangoldt_mul_div (N : ℕ) :
     | succ k ih =>
         rw [Finset.prod_Ioc_succ_top (Nat.zero_le k), ← ih, Nat.factorial_succ]
         push_cast; ring
-  rw [hfact, Real.log_prod _ _ (fun n hn => by
+  rw [hfact, Real.log_prod (fun n hn => by
     have h : 0 < n := (Finset.mem_Ioc.mp hn).1
     exact_mod_cast h.ne')]
   -- Step 2: `log n = ∑_{d ∣ n} Λ d` (von Mangoldt summatory identity).
