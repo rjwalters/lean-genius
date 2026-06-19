@@ -16,7 +16,12 @@
       "Artin's conjecture",
       "Cyclic groups"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Definition of a prime number",
+      "Multiplicative order ord_p(g)",
+      "The multiplicative group (ℤ/pℤ)×",
+      "Notion of a primitive root modulo p"
+    ]
   },
   {
     "id": "ann-e985-primitive-root-def",
@@ -35,7 +40,12 @@
       "Generators"
     ],
     "mathContext": "See annotation content for formal details of primitive root definition",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib's orderOf for an element",
+      "ZMod p (integers modulo p)",
+      "orderOf (g : ZMod p) = p - 1",
+      "Nat.Prime predicate"
+    ]
   },
   {
     "id": "ann-e985-prime-primitive-root",
@@ -53,7 +63,12 @@
       "Primitive roots"
     ],
     "mathContext": "See annotation content for formal details of prime primitive root",
-    "prerequisites": []
+    "prerequisites": [
+      "isPrimitiveRoot g p definition",
+      "Nat.Prime predicate",
+      "Set-builder notation for subsets of ℕ",
+      "Ordering q < p on naturals"
+    ]
   },
   {
     "id": "ann-e985-basic-facts",
@@ -71,7 +86,12 @@
       "prime numbers",
       "group theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "isPrimitiveRoot definition",
+      "IsCyclic predicate on a group",
+      "Structure theorem for finite abelian groups",
+      "axiom declarations in Lean"
+    ]
   },
   {
     "id": "ann-e985-example-2-mod-3",
@@ -89,7 +109,12 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "orderOf in ZMod 3",
+      "Euler's totient φ(3) = 2",
+      "Powers of 2 modulo 3",
+      "primitiveRoot definition (ord = p-1)"
+    ]
   },
   {
     "id": "ann-e985-example-3-mod-7",
@@ -107,7 +132,12 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "orderOf in ZMod 7",
+      "Powers of 3 modulo 7",
+      "Nonzero residues of (ℤ/7ℤ)×",
+      "primitiveRoot definition (ord = p-1)"
+    ]
   },
   {
     "id": "ann-e985-not-primitive-2-mod-7",
@@ -125,7 +155,12 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "orderOf in ZMod 7",
+      "Computing 2³ ≡ 1 (mod 7)",
+      "primitiveRoot definition (ord = p-1)",
+      "primitiveRoot_3_mod_7 (existence of a primitive root mod 7)"
+    ]
   },
   {
     "id": "ann-e985-verified-cases",
@@ -143,7 +178,12 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "isPrimePrimitiveRoot definition",
+      "native_decide tactic",
+      "orderOf computation in ZMod p",
+      "Nat.Prime predicate"
+    ]
   },
   {
     "id": "ann-e985-artin-conjecture",
@@ -161,7 +201,12 @@
       "Generalized Riemann Hypothesis",
       "Prime density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Notion of a primitive root modulo p",
+      "Perfect squares and the exception a ≠ -1, 0, 1",
+      "Generalized Riemann Hypothesis (Hooley 1967)",
+      "Artin's constant and primitive-root density"
+    ]
   },
   {
     "id": "ann-e985-heath-brown",
@@ -179,7 +224,12 @@
       "Artin's conjecture",
       "Sieve methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Artin's conjecture statement",
+      "Primitive root for infinitely many primes",
+      "Sieve methods",
+      "Character sums"
+    ]
   },
   {
     "id": "ann-e985-main-conjecture",
@@ -197,7 +247,12 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "isPrimePrimitiveRoot definition",
+      "exists_primitive_root (existence of primitive roots)",
+      "heath_brown_theorem axiom",
+      "axiom declarations in Lean"
+    ]
   },
   {
     "id": "ann-e985-equivalence",
@@ -215,7 +270,12 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primesWithPrimePrimitiveRoot set",
+      "erdos_985_conjecture statement",
+      "Set equality via extensionality",
+      "Universal quantifier vs. set-membership"
+    ]
   },
   {
     "id": "ann-e985-heuristic",
@@ -233,7 +293,12 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler's totient function φ(p-1)",
+      "Prime Number Theorem (π(x) ≈ x/log x)",
+      "Growth rate φ(n) ≈ n/log log n",
+      "Notion of heuristic vs. rigorous proof"
+    ]
   },
   {
     "id": "ann-e985-artin-implies",
@@ -251,7 +316,12 @@
       "Quantitative number theory"
     ],
     "mathContext": "See annotation content for formal details of artin implies erdős 985",
-    "prerequisites": []
+    "prerequisites": [
+      "Artin's conjecture statement",
+      "erdos_985_conjecture statement",
+      "Quantitative (Linnik-type) bounds",
+      "Primitive root for infinitely many primes"
+    ]
   },
   {
     "id": "ann-e985-summary",
@@ -270,6 +340,11 @@
       "prime numbers",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Verified cases erdos985_for_3,5,7,11,13",
+      "heath_brown_theorem axiom",
+      "Heuristic argument from PNT",
+      "isPrimePrimitiveRoot definition"
+    ]
   }
 ]
