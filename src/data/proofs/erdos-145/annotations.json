@@ -16,7 +16,11 @@
       "number-theory",
       "squarefree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Squarefree Integers",
+      "Prime Factorization",
+      "ABC Conjecture"
+    ]
   },
   {
     "id": "ann-e145-infinitude",
@@ -35,7 +39,11 @@
       "infinite-sets",
       "squarefree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinitude Of Primes",
+      "Squarefree Numbers",
+      "Subset Of Infinite Set"
+    ]
   },
   {
     "id": "ann-e145-sequence",
@@ -54,7 +62,11 @@
       "nth-element",
       "squarefree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Enumeration Of Sets",
+      "Nat.nth Function",
+      "Infinite Subsets Of Naturals"
+    ]
   },
   {
     "id": "ann-e145-gap",
@@ -73,7 +85,11 @@
       "consecutive-terms",
       "distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Consecutive Terms",
+      "Squarefree Density",
+      "Sequence Differences"
+    ]
   },
   {
     "id": "ann-e145-momentsum",
@@ -92,7 +108,11 @@
       "average",
       "normalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Power Moments",
+      "Normalized Averages",
+      "Asymptotic Sums"
+    ]
   },
   {
     "id": "ann-e145-fullconj",
@@ -111,7 +131,11 @@
       "limit-existence",
       "moments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limits At Infinity",
+      "Higher Moments",
+      "ABC Conjecture"
+    ]
   },
   {
     "id": "ann-e145-erdos1951",
@@ -130,7 +154,11 @@
       "sieve-methods",
       "1951"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sieve Methods",
+      "Variance And Mean",
+      "Second Moment"
+    ]
   },
   {
     "id": "ann-e145-hooley",
@@ -149,7 +177,11 @@
       "exponential-sums",
       "1973"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Exponential Sums",
+      "Arithmetic Progressions",
+      "Equidistribution"
+    ]
   },
   {
     "id": "ann-e145-ghh",
@@ -168,7 +200,11 @@
       "exponential-sums",
       "1997"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sieve Methods",
+      "Exponential Sum Bounds",
+      "Error Term Optimization"
+    ]
   },
   {
     "id": "ann-e145-chan",
@@ -187,7 +223,11 @@
       "2023",
       "moments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Moments Of Gaps",
+      "Analytic Number Theory",
+      "Unconditional Bounds"
+    ]
   },
   {
     "id": "ann-e145-granville",
@@ -206,7 +246,11 @@
       "conditional",
       "granville"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ABC Conjecture",
+      "Radical Of Integer",
+      "Coprime Integers"
+    ]
   },
   {
     "id": "ann-e145-properties",
@@ -225,6 +269,10 @@
       "positivity",
       "sequence-properties"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Strict Monotonicity",
+      "Nat.nth_strictMono",
+      "Infinite Subsets Of Naturals"
+    ]
   }
 ]
