@@ -17,7 +17,11 @@
       "Ramsey theory",
       "Unavoidable patterns"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Permutations Of Integers",
+      "Arithmetic Progressions",
+      "Ramsey-Type Combinatorics"
+    ]
   },
   {
     "id": "ann-e195-definitions",
@@ -36,7 +40,11 @@
       "List.Chain'",
       "Arithmetic sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Bijective Functions",
+      "Arithmetic Progressions",
+      "List Chain Predicate"
+    ]
   },
   {
     "id": "ann-e195-problem",
@@ -55,7 +63,11 @@
       "Universal quantification",
       "Optimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Existential Quantifiers",
+      "Extremal Combinatorics",
+      "Universal Quantification"
+    ]
   },
   {
     "id": "ann-e195-upper-bounds",
@@ -74,7 +86,11 @@
       "Block interlacing",
       "Avoidance constructions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Explicit Combinatorial Constructions",
+      "Pattern Avoidance",
+      "Block Interlacing"
+    ]
   },
   {
     "id": "ann-e195-lower-bound",
@@ -93,7 +109,11 @@
       "Infinite combinatorics",
       "Erdős-Szekeres theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pigeonhole Principle",
+      "Erdős-Szekeres Theorem",
+      "Infinite Combinatorics"
+    ]
   },
   {
     "id": "ann-e195-gap",
@@ -112,7 +132,11 @@
       "Disjunctive formalization",
       "Classical logic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Law Of Excluded Middle",
+      "Propositional Disjunction",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-e195-examples",
@@ -131,7 +155,11 @@
       "Constructive witnesses",
       "Definition validation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Identity Function",
+      "Injectivity And Surjectivity",
+      "Constructive Witnesses"
+    ]
   },
   {
     "id": "ann-e195-summary",
@@ -150,6 +178,10 @@
       "State of knowledge",
       "Bound combination"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical Conjunction",
+      "Axiomatized Theorems",
+      "Upper And Lower Bounds"
+    ]
   }
 ]
