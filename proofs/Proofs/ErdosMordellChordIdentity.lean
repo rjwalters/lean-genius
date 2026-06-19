@@ -26,8 +26,10 @@ Structure (see `research/erdos-mordell-chord-identity-strategy.md`):
   primitive that both remaining `sorry`s are built on.
 * `pedalFoot_eq` — the foundational coordinate bridge `pedalFoot P X Y =
   (⟪P−X,Y−X⟫/‖Y−X‖²)•(Y−X) + X`, rewriting the abstract projection into the explicit
-  `F = X + (p/a)•u` form both residual identities are stated in. `sorry` (complete
-  named-lemma proof recipe in its docstring; `coe_orthogonalProjection_eq_iff_mem`).
+  `F = X + (p/a)•u` form both residual identities are stated in. **Proved (cycle-37,
+  build-verified)** via the projection's characteristic property
+  `coe_orthogonalProjection_eq_iff_mem` (membership along the direction + the
+  perpendicular residual `⟪P−q, X−Y⟫ = 0` solving for the scalar `t`).
 * `chord_length_eq` — sine side: `dist F_b F_c = dist X P · sin∠YXZ` (law of sines
   on the pedal triangle). `sorry`.
 * `angle_at_P` — the single residual cosine-side geometric subfact:
@@ -170,7 +172,37 @@ two feet of an interior point both side directions are nonzero (from `hXYZ`). -/
 theorem pedalFoot_eq (P X Y : EuclideanSpace ℝ (Fin 2)) (hY : Y ≠ X) :
     pedalFoot P X Y
       = (inner ℝ (P - X) (Y - X) / ‖Y - X‖ ^ 2) • (Y - X) + X := by
-  sorry
+  haveI : Nonempty (↥(affineSpan ℝ ({X, Y} : Set (EuclideanSpace ℝ (Fin 2))))) :=
+    ⟨⟨X, subset_affineSpan ℝ {X, Y} (by simp)⟩⟩
+  have h0 : (Y - X : EuclideanSpace ℝ (Fin 2)) ≠ 0 := sub_ne_zero.mpr hY
+  have hnorm : ‖(Y : EuclideanSpace ℝ (Fin 2)) - X‖ ^ 2 ≠ 0 :=
+    pow_ne_zero 2 (norm_ne_zero_iff.mpr h0)
+  -- Characteristic property of the orthogonal projection: a point `q` equals the
+  -- projection iff it lies on the line and `P − q` is orthogonal to the direction.
+  unfold pedalFoot
+  rw [coe_orthogonalProjection_eq_iff_mem]
+  refine ⟨?_, ?_⟩
+  · -- Membership: `q = t•(Y−X) + X` is `X` shifted along the direction `Y − X`.
+    have hX : X ∈ affineSpan ℝ ({X, Y} : Set (EuclideanSpace ℝ (Fin 2))) :=
+      subset_affineSpan ℝ {X, Y} (by simp)
+    have hdir : (inner ℝ (P - X) (Y - X) / ‖Y - X‖ ^ 2) • (Y - X)
+        ∈ (affineSpan ℝ ({X, Y} : Set (EuclideanSpace ℝ (Fin 2)))).direction := by
+      rw [direction_affineSpan, vectorSpan_pair, Submodule.mem_span_singleton]
+      refine ⟨-(inner ℝ (P - X) (Y - X) / ‖Y - X‖ ^ 2), ?_⟩
+      rw [vsub_eq_sub, neg_smul, ← smul_neg, neg_sub]
+    simpa only [vadd_eq_add] using AffineSubspace.vadd_mem_of_mem_direction hdir hX
+  · -- Perpendicular residual: `P − q ⟂ (X − Y)` is the linear equation defining `t`.
+    rw [direction_affineSpan, vectorSpan_pair,
+      Submodule.mem_orthogonal_singleton_iff_inner_left]
+    have key : (inner ℝ (Y - X) (Y - X) : ℝ) = ‖Y - X‖ ^ 2 := real_inner_self_eq_norm_sq _
+    simp only [vsub_eq_sub]
+    rw [show (X - Y : EuclideanSpace ℝ (Fin 2)) = -(Y - X) by abel,
+      show (P - ((inner ℝ (P - X) (Y - X) / ‖Y - X‖ ^ 2) • (Y - X) + X)
+            : EuclideanSpace ℝ (Fin 2))
+          = (P - X) - (inner ℝ (P - X) (Y - X) / ‖Y - X‖ ^ 2) • (Y - X) by abel,
+      inner_neg_right, inner_sub_left, real_inner_smul_left, key,
+      div_mul_cancel₀ _ hnorm]
+    ring
 
 /-- **Chord length (the "sine side", law of sines).**
 
@@ -276,9 +308,11 @@ theorem chord_length_sq_eq_of_angle_at_P
         + 2 * (lineDist P Z X) * (lineDist P X Y) * Real.cos (∠ Y X Z) := by
   have hlc := dist_sq_eq_dist_sq_add_dist_sq_sub_two_mul_dist_mul_dist_mul_cos_angle
     (pedalFoot P Z X) P (pedalFoot P X Y)
-  rw [lineDist_eq_dist_pedalFoot P Z X, lineDist_eq_dist_pedalFoot P X Y, hlc, hAngle,
-    Real.cos_pi_sub, dist_comm (pedalFoot P Z X) P, dist_comm (pedalFoot P X Y) P]
-  ring
+  rw [hAngle, Real.cos_pi_sub] at hlc
+  rw [lineDist_eq_dist_pedalFoot P Z X, lineDist_eq_dist_pedalFoot P X Y,
+    dist_comm P (pedalFoot P Z X), dist_comm P (pedalFoot P X Y)]
+  simp only [pow_two]
+  linear_combination hlc
 
 /-- **Chord length squared (the "cosine side", law of cosines).**
 
