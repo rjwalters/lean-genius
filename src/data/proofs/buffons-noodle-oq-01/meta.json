@@ -53,7 +53,7 @@
       "Additivity of expectation (no independence needed)",
       "Elementary field algebra"
     ],
-    "lineCount": 215,
+    "lineCount": 214,
     "relatedProblems": [
       {
         "id": "buffons-noodle",
@@ -72,7 +72,7 @@
   "overview": {
     "historicalContext": "Buffon (1777) computed the crossing probability of a needle on one family of parallel lines; Barbier (1860) extended it to curves (the noodle). Laplace observed that dropping on a GRID of two perpendicular families gives a better Monte-Carlo estimator of π — the Buffon–Laplace problem. This entry formalizes the grid case for polygonal noodles as a corollary of the gallery's existing polygonal noodle theorem.",
     "problemStatement": "Prove that a polygonal noodle of total length L dropped on a grid of two perpendicular line families with spacings dₕ, dᵥ has expected total crossings 2L/(πdₕ) + 2L/(πdᵥ), reducing to 4L/(πd) on a square grid.",
-    "text": "A 215-line file adding the grid expected-crossing functional and proving the Buffon–Laplace identity, its square-grid specialization, shape independence, nonnegativity, monotonicity, a Monte-Carlo π estimator, and three numerical examples — all as corollaries of the parent's buffon_noodle_polygon via additivity of expectation across the two families.",
+    "text": "A 214-line file adding the grid expected-crossing functional and proving the Buffon–Laplace identity, its square-grid specialization, shape independence, nonnegativity, monotonicity, a Monte-Carlo π estimator, and three numerical examples — all as corollaries of the parent's buffon_noodle_polygon via additivity of expectation across the two families.",
     "proofStrategy": "Additivity of expectation. Total grid crossings = horizontal-family crossings + vertical-family crossings; expectation is additive regardless of the (strong) correlation between the two tallies. So expectedGridCrossings is defined as the sum of two single-family expectations, and buffon_noodle_polygon supplies each term. Every downstream theorem is a one- or two-line rewrite through the grid theorem plus field algebra.",
     "keyInsights": [
       "**Additivity needs no independence.** The horizontal and vertical crossing counts come from the same drop of the same noodle and are strongly correlated, yet E[X+Y] = E[X] + E[Y] still holds — so the grid expectation is literally the sum of two single-family theorems.",
@@ -100,7 +100,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 215,
+    "lineCount": 214,
     "namespace": "BuffonsNoodleOQ01",
     "opens": [
       "Real",
