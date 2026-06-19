@@ -17,7 +17,11 @@
       "counterexample",
       "Tao"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "reciprocal sums of integer sets",
+      "least common multiple of two integers",
+      "asymptotic growth comparison (faster than log log x)"
+    ]
   },
   {
     "id": "ann-442-imports",
@@ -35,7 +39,11 @@
       "imports"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library organization",
+      "filters and limits in Lean"
+    ]
   },
   {
     "id": "ann-442-logplus",
@@ -54,7 +62,11 @@
       "iteration",
       "growth rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural logarithm",
+      "max function",
+      "function composition and iteration"
+    ]
   },
   {
     "id": "ann-442-logplus-props",
@@ -72,7 +84,11 @@
       "logarithm"
     ],
     "mathContext": "See annotation content for formal details of log⁺ properties",
-    "prerequisites": []
+    "prerequisites": [
+      "definition of log⁺ as max(log x, 1)",
+      "Euler's number e and log e = 1",
+      "monotonicity of logarithm"
+    ]
   },
   {
     "id": "ann-442-reciprocal-sum",
@@ -91,7 +107,11 @@
       "density",
       "Mertens theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite sums over filtered sets",
+      "harmonic series",
+      "decidability of set membership"
+    ]
   },
   {
     "id": "ann-442-lcm-sum",
@@ -110,7 +130,11 @@
       "normalization",
       "pairwise interactions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "least common multiple",
+      "summation over unordered pairs",
+      "coprimality and products"
+    ]
   },
   {
     "id": "ann-442-density",
@@ -129,7 +153,11 @@
       "primes",
       "Mertens theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "reciprocal sum growth rate",
+      "Mertens' theorem for primes",
+      "divergence to infinity of a ratio"
+    ]
   },
   {
     "id": "ann-442-conjecture",
@@ -148,7 +176,11 @@
       "counterexample",
       "disproof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "statement of the normalized LCM sum",
+      "counterexample as disproof",
+      "logical equivalence with False"
+    ]
   },
   {
     "id": "ann-442-tao-construction",
@@ -167,7 +199,11 @@
       "growth rate",
       "threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "iterated logarithms",
+      "exp and asymptotic exponents",
+      "little-o notation"
+    ]
   },
   {
     "id": "ann-442-optimality",
@@ -186,7 +222,11 @@
       "sharpness",
       "phase transition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "growth-rate thresholds",
+      "boundedness vs divergence of sequences",
+      "phase transition / sharp threshold"
+    ]
   },
   {
     "id": "ann-442-key-insight",
@@ -205,7 +245,11 @@
       "prime factorization",
       "structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization of integers",
+      "shared prime factors and gcd",
+      "smooth (friable) numbers"
+    ]
   },
   {
     "id": "ann-442-lcm-gcd",
@@ -224,7 +268,11 @@
       "gcd",
       "unique factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "p-adic valuation",
+      "unique factorization theorem",
+      "max and min over prime exponents"
+    ]
   },
   {
     "id": "ann-442-examples",
@@ -242,7 +290,11 @@
       "computation"
     ],
     "mathContext": "See annotation content for formal details of verified examples",
-    "prerequisites": []
+    "prerequisites": [
+      "factoring small integers into primes",
+      "gcd and lcm computation",
+      "decidable equality and native_decide"
+    ]
   },
   {
     "id": "ann-442-summary",
@@ -261,7 +313,11 @@
       "existence",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "negation of a proposition",
+      "existential statements in Lean",
+      "axiomatized results"
+    ]
   },
   {
     "id": "ann-442-final-notes",
@@ -281,6 +337,10 @@
       "resolution"
     ],
     "mathContext": "See annotation content for formal details of historical significance",
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős–Graham problems",
+      "history of additive/multiplicative number theory",
+      "double and triple iterated logarithms"
+    ]
   }
 ]
