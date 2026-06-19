@@ -16,7 +16,11 @@
       "subset sums",
       "reciprocal sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "dissociated sets with distinct subset sums",
+      "sum of reciprocals of a finite integer set",
+      "Erdős problems in combinatorial number theory"
+    ]
   },
   {
     "id": "ann-e350-distinct-subset-sums",
@@ -35,7 +39,11 @@
       "subset",
       "sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset subsets and their sums",
+      "injectivity of the subset-sum map",
+      "powers of 2 as a B-sequence example"
+    ]
   },
   {
     "id": "ann-e350-singleton",
@@ -54,7 +62,11 @@
       "base case",
       "subset_singleton_iff"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subsets of a singleton Finset",
+      "subset_singleton_iff lemma",
+      "case analysis over ∅ and {a}"
+    ]
   },
   {
     "id": "ann-e350-powers-of-two",
@@ -73,7 +85,11 @@
       "geometric series",
       "extremal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "uniqueness of binary representations",
+      "subset sums of {1, 2, 4, ..., 2^k}",
+      "geometric progression of powers of 2"
+    ]
   },
   {
     "id": "ann-e350-main-theorem",
@@ -92,7 +108,11 @@
       "strict bound",
       "Ryavec"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "dissociated sets of positive integers",
+      "bounding a reciprocal sum strictly below 2",
+      "Benkoski-Erdős subset-sum argument"
+    ]
   },
   {
     "id": "ann-e350-sharp-bound",
@@ -111,7 +131,11 @@
       "extremal characterization",
       "powers of 2"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal characterization A = {1, 2, ..., 2^k}",
+      "partial sum 2 - 2^{-k} of reciprocal powers of 2",
+      "equality condition in a sharp upper bound"
+    ]
   },
   {
     "id": "ann-e350-hss",
@@ -130,7 +154,11 @@
       "positive exponents",
       "geometric series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "convergent geometric series with ratio 2^{-s}",
+      "reciprocal power sums Σ 1/n^s for s > 0",
+      "Hanson-Steele-Stenger generalization of Ryavec"
+    ]
   },
   {
     "id": "ann-e350-dissociated-subset",
@@ -149,7 +177,11 @@
       "closure property",
       "hereditary"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subset relation on Finsets",
+      "hereditary closure of the dissociated property",
+      "distinct subset sums inherited by subsets"
+    ]
   },
   {
     "id": "ann-e350-sidon",
@@ -168,7 +200,11 @@
       "B₂ sequence",
       "pairwise sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets and distinct pairwise sums",
+      "B₂ sequences versus dissociated sets",
+      "counterexample {1, 2, 5, 10} Sidon but not dissociated"
+    ]
   },
   {
     "id": "ann-e350-numerical",
@@ -187,7 +223,11 @@
       "computation",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "norm_num evaluation of rational sums",
+      "partial reciprocal sums of powers of 2",
+      "comparing 15/8 against the bound 2"
+    ]
   },
   {
     "id": "ann-e350-summary",
@@ -206,6 +246,10 @@
       "verified",
       "concrete examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "dissociatedness of {1, 2}",
+      "reciprocal sum 1 + 1/2 + 1/4 + 1/8 < 2",
+      "packaging verified definitions and bounds"
+    ]
   }
 ]
