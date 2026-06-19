@@ -47,16 +47,28 @@ that OQ-03-OQ-02 will consume:
    which is monic (hence nonzero in `F[X]`). This is the Cayley–Hamilton
    contribution.
 
-## S1 Scaffold scope (deliberate boundary)
+## Current scope (deliberate boundary)
 
-The deeper theorem `xModule_isTorsion` is **stated** here but its proof
-is left as `sorry`. The proof routes through Mathlib's
-`LinearMap.aeval_self_charpoly`, plus the basis-induced compatibility
-between `Matrix.charpoly` and `LinearMap.charpoly` for the standard
-basis on `n → F`. S2+ iterations of this sub-OQ will discharge the
-sorry; the public statement is final.
+Both structural deliverables consumed by OQ-03-OQ-02 are now **proved**:
 
-The `Module.Finite F[X]` instance is provided unconditionally (no sorry).
+* `Module.Finite F[X] (xModule M)` — provided unconditionally (no sorry)
+  via `Module.AEval.instFinitePolynomial`.
+* `xModule_isTorsionBy_charpoly` and `xModule_isTorsion` — proved
+  (Cayley–Hamilton on the `Module.AEval'` synonym, routed through
+  `charpoly_mulVecLin` + `LinearMap.aeval_self_charpoly`, then upgraded
+  to torsion via `charpoly_monic ⇒ nonZeroDivisor`).
+
+The single remaining `sorry` is `xModule_has_invariantFactorChain` (the
+invariant-factor-chain bridge to the parent's strong form), which is
+**deliberately deferred to OQ-03-OQ-02**: it requires the regrouping
+algorithm of `Module.equiv_directSum_of_isTorsion`, out of scope for
+this foundational sub-OQ. Its statement is fixed here only to pin the
+bridging API surface.
+
+Note: the torsion proofs are statically complete (all referenced
+Mathlib lemmas verified present) but their final kernel check is
+**build-pending** — they have not yet been confirmed by a full Lean
+build in this environment.
 
 ## References
 
@@ -138,9 +150,9 @@ The proof routes through:
 4. Lift `IsTorsionBy F[X] (xModule M) M.charpoly` to `IsTorsion` via
    monic ⇒ nonzero ⇒ nonZeroDivisor.
 
-The lemma `xModule_isTorsionBy_charpoly` (statement) captures step 1–3;
-`xModule_isTorsion` (statement) is the deliverable consumed by
-OQ-03-OQ-02. Both are sorry-guarded in this S1 scaffold. -/
+The lemma `xModule_isTorsionBy_charpoly` captures steps 1–3;
+`xModule_isTorsion` is the deliverable consumed by OQ-03-OQ-02. Both
+are now proved (build-pending kernel verification). -/
 
 /-- The characteristic polynomial of `M` annihilates every element of
     the `F[X]`-module `xModule M`. This is Cayley–Hamilton transported
