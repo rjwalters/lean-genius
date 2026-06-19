@@ -95,9 +95,10 @@ is monotone with `ψ 2 = Real.log 2 > 0` and `ψ x / x → 1`. -/
   assembly `chebyshev_psi_lower_bound` is now PROVED in full (Mathlib-only, no
   `sorry`/`axiom`) — see the proof at the theorem below. The assembly uses the
   elementary `2n+1 ≤ 3ⁿ` size bound to obtain a SINGLE positive constant
-  `c = log(4/3)/4` valid at every real `x ≥ 2` with no "large x" caveat. The only
-  remaining `sorry` is `chebyshev_theta_lower_bound` (downstream θ bookkeeping via
-  `abs_psi_sub_theta_le_sqrt_mul_log`; not the core gap).
+  `c = log(4/3)/4` valid at every real `x ≥ 2` with no "large x" caveat. The
+  downstream θ bookkeeping `chebyshev_theta_lower_bound` (via
+  `abs_psi_sub_theta_le_sqrt_mul_log`) is ALSO now PROVED — the whole file is
+  sorry-free and axiom-free. Only the green docker build remains (build-gated).
   VERIFY-BY-CONSTRUCTION: every Mathlib lemma used by the new assembly was checked
   by name + signature against the offline checkout at build pin 2df2f0150c
   (`Chebyshev.psi_mono`, `Nat.one_le_floor_iff`, `Nat.floor_le`,
@@ -145,9 +146,10 @@ is monotone with `ψ 2 = Real.log 2 > 0` and `ψ x / x → 1`. -/
     • Nat.floor_natCast, Real.log_mul, Finset.sum_subset, Finset.Ioc_subset_Ioc_right,
       Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_le_sum, Nat.div_eq_of_lt,
       Nat.le_div_iff_mul_le, Nat.div_lt_iff_lt_mul, Nat.div_mul_le_self, Nat.div_add_mod.
-  Status: L1/L2/L3 (the genuine core) AND `chebyshev_psi_lower_bound` are fully
-  proved below; only `chebyshev_theta_lower_bound` (downstream θ bookkeeping) remains
-  a `sorry`. Build deferred under host contention (see STATUS above).
+  Status: L1/L2/L3 (the genuine core), `chebyshev_psi_lower_bound`, AND
+  `chebyshev_theta_lower_bound` (downstream θ bookkeeping) are all fully proved
+  below — the file is sorry-free and axiom-free. Build deferred under host
+  contention (see STATUS above).
 -/
 
 /-- **L1** (de Polignac / Legendre floor-sum identity). Build-pending target.
