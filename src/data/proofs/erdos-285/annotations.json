@@ -16,7 +16,11 @@
       "egyptian-fractions",
       "asymptotics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Asymptotic Growth",
+      "Erdős Problems"
+    ]
   },
   {
     "id": "ann-e285-imports",
@@ -35,7 +39,11 @@
       "asymptotics"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib Imports",
+      "Exponential Function",
+      "Little-o Notation"
+    ]
   },
   {
     "id": "ann-e285-representation",
@@ -54,7 +62,11 @@
       "unit-fractions",
       "strict-mono"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Fractions",
+      "Strict Monotonicity",
+      "Finite Sums"
+    ]
   },
   {
     "id": "ann-e285-valid",
@@ -73,7 +85,11 @@
       "representation-length",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fraction Existence",
+      "Representation Length",
+      "Set Membership"
+    ]
   },
   {
     "id": "ann-e285-f",
@@ -92,7 +108,11 @@
       "largest-denominator",
       "efficiency"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infimum",
+      "Largest Denominator",
+      "Reciprocal Sums"
+    ]
   },
   {
     "id": "ann-e285-constant",
@@ -111,7 +131,11 @@
       "harmonic-series",
       "asymptotic-constant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler's Number e",
+      "Harmonic Series",
+      "Asymptotic Constant"
+    ]
   },
   {
     "id": "ann-e285-martin",
@@ -130,7 +154,11 @@
       "asymptotic-equality",
       "upper-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Equality",
+      "Little-o Notation",
+      "Martin's Construction"
+    ]
   },
   {
     "id": "ann-e285-main",
@@ -149,7 +177,11 @@
       "erdos-problem",
       "solved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős Problem 285",
+      "Asymptotic Formula",
+      "Axiom Packaging"
+    ]
   },
   {
     "id": "ann-e285-lower",
@@ -168,7 +200,11 @@
       "harmonic-series",
       "counting-argument"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower Bound",
+      "Harmonic Series",
+      "Counting Argument"
+    ]
   },
   {
     "id": "ann-e285-gt-one",
@@ -187,7 +223,11 @@
       "constant-bounds",
       "proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Exponential Inequality",
+      "Real Division",
+      "exp(1) > 1"
+    ]
   },
   {
     "id": "ann-e285-lt-two",
@@ -206,7 +246,11 @@
       "upper-bound",
       "sorry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real Inequalities",
+      "Bounds on e",
+      "Reciprocal Bounds"
+    ]
   },
   {
     "id": "ann-e285-examples",
@@ -225,6 +269,10 @@
       "verification",
       "norm_num"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Fractions",
+      "Rational Arithmetic",
+      "norm_num Tactic"
+    ]
   }
 ]
