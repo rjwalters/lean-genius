@@ -17,7 +17,11 @@
       "odd cycles",
       "infinite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "infinite combinatorics"
+    ]
   },
   {
     "id": "ann-e594-cardinals",
@@ -37,7 +41,11 @@
       "countability",
       "aleph numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "cardinal arithmetic",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e594-colorable",
@@ -56,7 +64,11 @@
       "chromatic number",
       "SimpleGraph.Coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e594-chromatic",
@@ -75,7 +87,11 @@
       "graph coloring",
       "uncountable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "cardinal arithmetic",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e594-cycle",
@@ -95,7 +111,11 @@
       "graphs",
       "odd cycles"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "discrete mathematics"
+    ]
   },
   {
     "id": "ann-e594-large-odd",
@@ -114,7 +134,11 @@
       "cycle spectrum",
       "eventual containment"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "number theory",
+      "asymptotic reasoning"
+    ]
   },
   {
     "id": "ann-e594-main",
@@ -133,7 +157,11 @@
       "1974 result",
       "infinite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite graph theory",
+      "set theory",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e594-optimal",
@@ -152,7 +180,11 @@
       "threshold",
       "counterexamples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite combinatorics",
+      "cardinal arithmetic",
+      "counterexample construction"
+    ]
   },
   {
     "id": "ann-e594-bipartite",
@@ -171,7 +203,11 @@
       "2-colorable",
       "subgraph containment"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "subgraph embeddings"
+    ]
   },
   {
     "id": "ann-e594-thomassen",
@@ -190,7 +226,11 @@
       "edge-specific cycles",
       "1983 result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "infinite combinatorics",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e594-trianglefree",
@@ -209,7 +249,11 @@
       "Mycielski construction",
       "girth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "cardinal arithmetic",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e594-summary",
@@ -228,6 +272,10 @@
       "infinite graph theory",
       "set-theoretic methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite graph theory",
+      "set theory",
+      "Lean 4 tactic mode"
+    ]
   }
 ]
