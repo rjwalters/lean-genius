@@ -24,6 +24,10 @@ Structure (see `research/erdos-mordell-chord-identity-strategy.md`):
   the Thales cornerstone `∠ P F W = π/2`: each pedal foot sees `XP` at a right angle.
   **Proved** from `angle_self_orthogonalProjection`; this is the shared geometric
   primitive that both remaining `sorry`s are built on.
+* `pedalFoot_eq` — the foundational coordinate bridge `pedalFoot P X Y =
+  (⟪P−X,Y−X⟫/‖Y−X‖²)•(Y−X) + X`, rewriting the abstract projection into the explicit
+  `F = X + (p/a)•u` form both residual identities are stated in. `sorry` (complete
+  named-lemma proof recipe in its docstring; `coe_orthogonalProjection_eq_iff_mem`).
 * `chord_length_eq` — sine side: `dist F_b F_c = dist X P · sin∠YXZ` (law of sines
   on the pedal triangle). `sorry`.
 * `angle_at_P` — the single residual cosine-side geometric subfact:
@@ -125,6 +129,48 @@ with `angle_pedalFoot_XY_at_X` this places `F_b`, `F_c` on the circle of diamete
 theorem angle_pedalFoot_ZX_at_X (P Z X : EuclideanSpace ℝ (Fin 2)) :
     ∠ P (pedalFoot P Z X) X = Real.pi / 2 :=
   angle_pedalFoot_eq_pi_div_two P Z X X (subset_affineSpan ℝ {Z, X} (by simp))
+
+/-- **Explicit coordinate form of the pedal foot — the foundational bridge
+(cycle-37, researcher-9).**
+
+The orthogonal projection of `P` onto line `XY` is `X` displaced along `Y − X` by
+the scalar `⟪P−X, Y−X⟫ / ‖Y−X‖²`:
+
+    pedalFoot P X Y = (⟪P−X, Y−X⟫ / ‖Y−X‖²) • (Y − X) + X.
+
+This is the **single concrete bridge** that turns the abstract,
+`orthogonalProjection`-based `pedalFoot` into the six-coordinate form
+`F_c = X + (p/a)•u` (`u = Y−X`, `p = ⟪P−X,Y−X⟫`, `a = ‖u‖²`) on which *both*
+residual `ring` identities `chord_length_eq` and `angle_at_P` are phrased — once
+`pedalFoot P Z X` and `pedalFoot P X Y` are rewritten by this lemma, every remaining
+obligation is a polynomial identity in the `Fin 2` components of `u, v, w`, closable
+by `ring` (sine side, hypothesis-free) or `ring` + the sign `(♦)` (cosine side).
+
+**PROOF RECIPE (fully grounded; drop in when the build/Aristotle gate opens).**
+Apply the affine projection's characteristic property
+`EuclideanGeometry.coe_orthogonalProjection_eq_iff_mem`
+(`orthogonalProjection s p = q ↔ q ∈ s ∧ p −ᵥ q ∈ s.directionᗮ`) with
+`q = (⟪P−X,Y−X⟫/‖Y−X‖²)•(Y−X) + X =: t•(Y−X) + X`. Two goals:
+
+* **Membership** `t•(Y−X) + X ∈ affineSpan ℝ {X, Y}`: by
+  `AffineSubspace.vadd_mem_of_mem_direction` with base `X ∈ s` and
+  `t•(Y−X) ∈ s.direction`; the direction is `ℝ ∙ (X − Y)` via
+  `direction_affineSpan` + `vectorSpan_pair`, and `t•(Y−X) = (−t)•(X−Y) ∈ ℝ∙(X−Y)`
+  (`Submodule.mem_span_singleton`).
+* **Perpendicular residual** `P −ᵥ (t•(Y−X)+X) ∈ s.directionᗮ`: rewrite the direction
+  as `ℝ ∙ (X − Y)` and use
+  `Submodule.mem_orthogonal_singleton_iff_inner_left` to reduce to
+  `⟪(P−X) − t•(Y−X), X − Y⟫ = 0`. Expand with `inner_sub_left`, `inner_smul_left`,
+  `inner_neg_right`, `real_inner_self_eq_norm_sq`:
+  `⟪P−X, X−Y⟫ − t·⟪Y−X, X−Y⟫ = −⟪P−X,Y−X⟫ + t·‖Y−X‖² = 0`
+  since `t·‖Y−X‖² = ⟪P−X,Y−X⟫` (`field_simp` with `‖Y−X‖² ≠ 0` from `hY`).
+
+The hypothesis `Y ≠ X` keeps the line a genuine 1-space (so `‖Y−X‖² ≠ 0`); for the
+two feet of an interior point both side directions are nonzero (from `hXYZ`). -/
+theorem pedalFoot_eq (P X Y : EuclideanSpace ℝ (Fin 2)) (hY : Y ≠ X) :
+    pedalFoot P X Y
+      = (inner ℝ (P - X) (Y - X) / ‖Y - X‖ ^ 2) • (Y - X) + X := by
+  sorry
 
 /-- **Chord length (the "sine side", law of sines).**
 
