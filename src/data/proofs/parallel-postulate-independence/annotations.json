@@ -27,7 +27,11 @@
         "relationship": "The angle sum theorem (Wiedijk #27) depends on the parallel postulate; in hyperbolic geometry angles sum to less than π"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclid's five postulates",
+      "the notion of logical independence of an axiom",
+      "model theory and the soundness theorem"
+    ]
   },
   {
     "id": "ann-framework",
@@ -47,7 +51,11 @@
       "projective geometry",
       "affine planes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "points, lines, and the incidence relation",
+      "Hilbert's axioms for geometry",
+      "abstract axiom systems"
+    ]
   },
   {
     "id": "ann-playfair",
@@ -73,7 +81,11 @@
         "relationship": "The triangle angle sum (= π) is equivalent to the parallel postulate in neutral geometry — each implies the other"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclid's parallel postulate",
+      "Playfair's equivalent formulation (unique parallel)",
+      "logically equivalent axioms"
+    ]
   },
   {
     "id": "ann-hyperbolic",
@@ -94,7 +106,11 @@
       "angle of parallelism",
       "horocycles"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the parallel postulate and its negation",
+      "hyperbolic geometry (Lobachevsky–Bolyai)",
+      "multiple parallels through a point"
+    ]
   },
   {
     "id": "ann-neutral",
@@ -121,7 +137,11 @@
         "relationship": "In neutral geometry one can only prove angle sum ≤ π (Saccheri-Legendre); equality requires the parallel postulate"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the axioms shared by all geometries (absolute geometry)",
+      "Hilbert's / Tarski's axiom systems",
+      "Saccheri–Legendre results without the parallel postulate"
+    ]
   },
   {
     "id": "ann-euclidean",
@@ -141,7 +161,11 @@
       "analytic geometry",
       "Descartes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cartesian coordinates and analytic geometry",
+      "the standard Euclidean plane ℝ²",
+      "verifying axioms in a model"
+    ]
   },
   {
     "id": "ann-poincare",
@@ -168,7 +192,11 @@
         "relationship": "The Poincaré disk is the open unit ball in ℝ²; Brouwer's theorem applies to the closed ball, highlighting the topological distinction"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the open unit disk and conformal maps",
+      "hyperbolic distance and geodesics",
+      "Möbius transformations / the Poincaré disk model"
+    ]
   },
   {
     "id": "ann-contradiction",
@@ -187,7 +215,11 @@
       "uniqueness",
       "incompatibility of axioms"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the uniqueness clause of Playfair's axiom",
+      "the hyperbolic many-parallels property",
+      "proof by contradiction"
+    ]
   },
   {
     "id": "ann-poincare-not-euclidean",
@@ -206,7 +238,11 @@
       "model theory",
       "countermodel"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Poincaré disk model",
+      "model theory and countermodels",
+      "verifying the parallel postulate fails in a model"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -236,7 +272,11 @@
         "relationship": "Cantor's diagonal argument (1891) and the parallel postulate independence (1868) both revealed fundamental limitations on mathematical systems in the 19th century"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logical independence of an axiom from a system",
+      "constructing two models (one satisfying, one refuting)",
+      "the soundness/consistency theorems"
+    ]
   },
   {
     "id": "ann-history",
@@ -266,6 +306,10 @@
         "relationship": "The isoperimetric inequality 4πA ≤ L² holds in Euclidean geometry; its form changes in hyperbolic and spherical geometry due to curvature"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the three geometries (Euclidean, hyperbolic, elliptic)",
+      "Beltrami/Klein/Poincaré models",
+      "curvature and the Gauss–Bonnet theorem"
+    ]
   }
 ]
