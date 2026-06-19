@@ -23,7 +23,11 @@
       "extremal-combinatorics",
       "solved-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory",
+      "Chromatic number",
+      "Graph subdivisions"
+    ]
   },
   {
     "id": "ann-e717-chromatic",
@@ -47,7 +51,11 @@
       "axiomatization",
       "complexity-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph coloring",
+      "Proper coloring",
+      "Simple graphs"
+    ]
   },
   {
     "id": "ann-e717-complete",
@@ -71,7 +79,11 @@
       "definition",
       "complete-graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Simple graphs",
+      "Cliques",
+      "Adjacency"
+    ]
   },
   {
     "id": "ann-e717-subdivision",
@@ -96,7 +108,11 @@
       "graph-parameter",
       "definition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete graphs",
+      "Paths in graphs",
+      "Topological minors"
+    ]
   },
   {
     "id": "ann-e717-hajos",
@@ -121,7 +137,11 @@
       "disproved",
       "historical"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chromatic number",
+      "Graph subdivisions",
+      "Complete graphs"
+    ]
   },
   {
     "id": "ann-e717-dirac",
@@ -145,7 +165,11 @@
       "topological-graph-theory",
       "graph-coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hajós conjecture",
+      "Chromatic number",
+      "K₄ subdivisions"
+    ]
   },
   {
     "id": "ann-e717-catlin",
@@ -169,7 +193,11 @@
       "graph-coloring",
       "high-girth-graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hajós conjecture",
+      "Chromatic number",
+      "Graph girth"
+    ]
   },
   {
     "id": "ann-e717-erdos-fajtlowicz",
@@ -194,7 +222,12 @@
       "probabilistic-combinatorics",
       "extremal-combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Random graphs",
+      "Chromatic number",
+      "Graph subdivisions",
+      "Asymptotic notation"
+    ]
   },
   {
     "id": "ann-e717-question",
@@ -219,7 +252,11 @@
       "chromatic-number",
       "open-question"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chromatic number",
+      "Graph subdivisions",
+      "Asymptotic upper bounds"
+    ]
   },
   {
     "id": "ann-e717-fls",
@@ -244,7 +281,11 @@
       "resolution",
       "probabilistic-method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chromatic number",
+      "Graph subdivisions",
+      "Asymptotic notation"
+    ]
   },
   {
     "id": "ann-e717-tight",
@@ -268,7 +309,11 @@
       "asymptotic-analysis",
       "extremal-combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fox-Lee-Sudakov theorem",
+      "Erdős-Fajtlowicz lower bound",
+      "Theta notation"
+    ]
   },
   {
     "id": "ann-e717-hadwiger",
@@ -292,7 +337,11 @@
       "graph-minor-theory",
       "four-color-theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chromatic number",
+      "Graph minors",
+      "Four color theorem"
+    ]
   },
   {
     "id": "ann-e717-subdivision-minor",
@@ -316,7 +365,11 @@
       "topological-graph-theory",
       "structural-comparison"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph subdivisions",
+      "Graph minors",
+      "Hadwiger number"
+    ]
   },
   {
     "id": "ann-e717-kostochka",
@@ -340,7 +393,11 @@
       "graph-minor-theory",
       "extremal-graph-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hadwiger number",
+      "Chromatic number",
+      "Graph minors"
+    ]
   },
   {
     "id": "ann-e717-bollobas",
@@ -364,7 +421,11 @@
       "graph-minor-theory",
       "subdivision"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hadwiger number",
+      "Graph subdivisions",
+      "Graph minors"
+    ]
   },
   {
     "id": "ann-e717-historical",
@@ -388,7 +449,11 @@
       "graph-theory",
       "timeline"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hajós conjecture",
+      "Hadwiger conjecture",
+      "Chromatic number"
+    ]
   },
   {
     "id": "ann-e717-imports",
@@ -412,7 +477,11 @@
       "mathlib",
       "imports"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib",
+      "SimpleGraph"
+    ]
   },
   {
     "id": "ann-e717-random",
@@ -436,6 +505,10 @@
       "probabilistic-combinatorics",
       "erdos-renyi-model"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probability",
+      "Erdős–Rényi model",
+      "Simple graphs"
+    ]
   }
 ]
