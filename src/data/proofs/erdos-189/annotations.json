@@ -16,7 +16,11 @@
       "plane",
       "mathlib"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Space",
+      "Inner Product Space",
+      "Real Coordinate Space"
+    ]
   },
   {
     "id": "ann-e189-coloring",
@@ -35,7 +39,11 @@
       "coloring",
       "partition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Function Notation",
+      "Finite Types",
+      "Set Partition"
+    ]
   },
   {
     "id": "ann-e189-rectangle",
@@ -54,7 +62,11 @@
       "perpendicularity",
       "inner-product"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Inner Product",
+      "Perpendicular Vectors",
+      "Quadrilateral Vertices"
+    ]
   },
   {
     "id": "ann-e189-area",
@@ -73,7 +85,11 @@
       "norm",
       "geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Norm",
+      "Distance Function",
+      "Rectangle Geometry"
+    ]
   },
   {
     "id": "ann-e189-statement",
@@ -92,7 +108,11 @@
       "ramsey-type",
       "universality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nested Quantifiers",
+      "Color Classes",
+      "Ramsey-Type Statements"
+    ]
   },
   {
     "id": "ann-e189-kovac",
@@ -111,7 +131,11 @@
       "kovac",
       "25-coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Plane Colorings",
+      "Jordan Measurability",
+      "Counterexample Construction"
+    ]
   },
   {
     "id": "ann-e189-main-theorem",
@@ -130,7 +154,11 @@
       "contradiction",
       "main-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proof By Contradiction",
+      "Quantifier Instantiation",
+      "Axiomatized Hypotheses"
+    ]
   },
   {
     "id": "ann-e189-graham",
@@ -149,7 +177,11 @@
       "triangle",
       "positive-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Right-Angled Triangle",
+      "Triangle Area Formula",
+      "Euclidean Ramsey Theory"
+    ]
   },
   {
     "id": "ann-e189-parallelogram",
@@ -168,7 +200,11 @@
       "open-problem",
       "future-work"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Parallelogram Geometry",
+      "Determinant Area Formula",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-e189-historical",
@@ -187,6 +223,10 @@
       "graham-1980",
       "kovac-2023"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Jordan Measurability",
+      "Lebesgue Measure Zero",
+      "Topological Boundary"
+    ]
   }
 ]
