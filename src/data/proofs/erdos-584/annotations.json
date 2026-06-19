@@ -16,7 +16,11 @@
       "cycle connectivity",
       "graph density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "combinatorics",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e584-graph-defs",
@@ -35,7 +39,12 @@
       "edge counting",
       "simple graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "finite set cardinality",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e584-cycle-defs",
@@ -54,7 +63,11 @@
       "cycle length",
       "edge connectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "walks and paths",
+      "Lean 4 inductive definitions"
+    ]
   },
   {
     "id": "ann-e584-conjecture",
@@ -73,7 +86,11 @@
       "cycle-connected subgraphs",
       "extremal bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic notation",
+      "existential quantification in Lean 4"
+    ]
   },
   {
     "id": "ann-e584-known-results",
@@ -92,7 +109,11 @@
       "Duke-Erdős-Rödl theorem",
       "Fox-Sudakov theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Szemerédi regularity method",
+      "history of combinatorics"
+    ]
   },
   {
     "id": "ann-e584-sparse-regime",
@@ -111,7 +132,11 @@
       "regularity lemma limitations",
       "dependent random choice"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "probabilistic combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e584-summary",
@@ -130,6 +155,10 @@
       "conjecture formalization",
       "axiom combination"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "Lean 4 tactic mode",
+      "axiomatized assumptions"
+    ]
   }
 ]
