@@ -1,0 +1,52 @@
+{
+  "slug": "erdos-mordell-inequality-oq-01",
+  "title": "Erdős–Mordell inequality",
+  "problemStatement": "For a point P in the interior of triangle ABC, with da, db, dc the perpendicular distances from P to the sides BC, CA, AB, prove PA + PB + PC ≥ 2(da + db + dc), with equality iff ABC is equilateral and P is its center.",
+  "path": "full",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 5,
+  "status": "in-progress",
+  "phase": "ACT",
+  "started": "2026-06-18T23:00:00Z",
+  "lastUpdate": "2026-06-18T23:10:00Z",
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-18T23:10:00Z",
+    "iteration": 1,
+    "focus": "Proved the algebraic AM-GM reduction core; geometric key inequalities remain open."
+  },
+  "tags": ["seeker-selected", "euclidean-geometry", "triangle-geometry", "inequalities", "research"],
+  "knownResults": [
+    "Conjectured by Erdős (Amer. Math. Monthly 1935, Problem 3740); first proved by Mordell & Barrow (1937).",
+    "Multiple proofs exist: trigonometric, projection/cyclic-quadrilateral, Ptolemy-based (Avez 1993), area-based.",
+    "Not present in Mathlib4 (as of v4.26.0): no `mordell` geometry result; Mathlib has Triangle, Incenter, Projection, SignedDist, angle infrastructure but no Erdős–Mordell."
+  ],
+  "knowledge": {
+    "progressSummary": "PROGRESS (ACT): proved the geometry-free algebraic reduction (erdos_mordell_reduction); the three geometric key inequalities remain the open obligation. Reduction build-pending (fleet OOM-saturated at claim time).",
+    "builtItems": [
+      "proofs/Proofs/ErdosMordellInequalityOQ01.lean: erdos_mordell_reduction — from the three key inequalities a·PA≥b·dc+c·db (cyclic), derives PA+PB+PC≥2(da+db+dc) via explicit nonnegative certificate, 0 sorry, 0 axiom (build-pending verification).",
+      "Certificate: a·b·c·(PA+PB+PC) − 2abc·(da+db+dc) = a·da·(b−c)² + b·db·(a−c)² + c·dc·(a−b)² + (key-inequality slack), each summand ≥ 0; closed by mul_le_mul_of_nonneg_left scaling + nlinarith + le_of_mul_le_mul_left.",
+      "lineDist P X Y := Metric.infDist P (affineSpan ℝ {X,Y}); lineDist_nonneg.",
+      "Geometric main statement erdos_mordell over EuclideanSpace ℝ (Fin 2) stated (sorry on the geometric content)."
+    ],
+    "insights": [
+      "The inequality cleanly factors: ALL the AM-GM / side-length algebra is captured by erdos_mordell_reduction (now proved), isolating the genuinely hard work into the three geometric key inequalities.",
+      "The key inequality a·PA ≥ b·dc + c·db arises from the cyclic quadrilateral A–Fc–P–Fb (Fb, Fc feet of perpendiculars to the two sides at A): A,Fb,Fc,P lie on a circle of diameter PA, so the chord FbFc = PA·sin A, and projecting the pedal segment gives the bound. This is the Mathlib-infrastructure-heavy step.",
+      "Each AM-GM coefficient is t + 1/t ≥ 2 with t = ratio of two side lengths; equality forces a=b=c (equilateral), matching the known equality case.",
+      "Mathlib gap is real: formalizing the key inequality needs concyclicity / inscribed-angle (chord = diameter·sin(inscribed angle)) for the diameter-PA circle, plus distance-to-affineSpan manipulation."
+    ],
+    "mathlibGaps": [
+      "No Erdős–Mordell in Mathlib4 v4.26.0.",
+      "The chord = diameter·sin(inscribed-angle) relation for the pedal circle at a vertex is not directly packaged; would be assembled from EuclideanGeometry.Sphere + angle lemmas.",
+      "Relating Metric.infDist to affineSpan {X,Y} to an explicit foot/orthogonal-projection distance needs EuclideanGeometry.orthogonalProjection bridging lemmas."
+    ],
+    "nextSteps": [
+      "Verify erdos_mordell_reduction builds green (single quiet-gated watcher; fleet was OOM-saturated with 6 concurrent builds at claim time).",
+      "Prove key_inequality_A: a·PA ≥ b·dc + c·db. Route: set up the pedal circle through A with diameter PA, use inscribed-angle for chord FbFc = PA·sin A, then project. Candidate Mathlib: EuclideanGeometry.Sphere, oangle/angle lemmas, law of sines in Triangle.lean.",
+      "Bridge lineDist (infDist to affineSpan) to dist to orthogonalProjection foot, so the pedal distances in the key lemma match the geometric statement.",
+      "Assemble erdos_mordell from the three key lemmas + erdos_mordell_reduction; then create gallery meta (status formalized until key lemmas closed, then verified).",
+      "Consider an alternative Ptolemy-inequality route (Avez 1993) if Mathlib has/admits a short Ptolemy inequality — may shorten the key-inequality derivation."
+    ]
+  }
+}
