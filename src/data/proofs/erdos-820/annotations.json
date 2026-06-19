@@ -16,7 +16,12 @@
       "Multiplicative order",
       "Fermat's Little Theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "gcd of integers",
+      "multiplicative order mod a prime",
+      "Fermat's little theorem",
+      "iterated logarithm growth rates"
+    ]
   },
   {
     "id": "ann-e820-ncoprime",
@@ -76,7 +81,11 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.find and the well-ordering of ℕ",
+      "minimization over a decidable predicate",
+      "gcd of k^n−1 and l^n−1"
+    ]
   },
   {
     "id": "ann-e820-computed",
@@ -94,7 +103,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "computing gcd(k^n−1, l^n−1) for small n",
+      "Mersenne-type numbers 2^n−1, 3^n−1",
+      "reading a table of known values"
+    ]
   },
   {
     "id": "ann-e820-h3-equiv",
@@ -112,7 +125,11 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "gcd(2^n−1, 3^n−1)",
+      "if-and-only-if characterizations",
+      "the minimal witness k=2, l=3"
+    ]
   },
   {
     "id": "ann-e820-conjecture1",
@@ -130,7 +147,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential quantification over infinitely many n",
+      "the predicate H(n)=3",
+      "Prop-valued conjectures in Lean"
+    ]
   },
   {
     "id": "ann-e820-oeis",
@@ -148,7 +169,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "OEIS sequence A263647",
+      "coprimality gcd(2^n−1, 3^n−1)=1",
+      "infinite sets of integers"
+    ]
   },
   {
     "id": "ann-e820-lower-conj",
@@ -166,7 +191,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "iterated logarithm log log n",
+      "subexponential growth exp(n^{c/log log n})",
+      "infinitely-often lower bounds"
+    ]
   },
   {
     "id": "ann-e820-upper-conj",
@@ -184,7 +213,11 @@
       "formal definition",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subexponential upper bounds",
+      "matching upper and lower asymptotics",
+      "for-all-large-n statements"
+    ]
   },
   {
     "id": "ann-e820-erdos1974",
@@ -202,7 +235,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős's 1974 sieve/order method",
+      "iterated logarithm bounds",
+      "Remarks on some problems in number theory (Math. Balkanica 1974)"
+    ]
   },
   {
     "id": "ann-e820-vandoorn",
@@ -220,7 +257,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "van Doorn's refinement",
+      "removing the squared log log factor",
+      "infinitely-often lower bounds"
+    ]
   },
   {
     "id": "ann-e820-k-function",
@@ -238,7 +279,11 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.find minimization",
+      "gcd(k^n−1, 2^n−1)",
+      "the duality between H(n) and K(n)"
+    ]
   },
   {
     "id": "ann-e820-question3",
@@ -256,7 +301,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "upper bounds for K(n)",
+      "subexponential growth in n",
+      "open estimation questions"
+    ]
   },
   {
     "id": "ann-e820-gcd-char",
@@ -274,7 +323,11 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "multiplicative order of k mod p",
+      "primes dividing k^n−1",
+      "divisors d ∣ n and order divisibility"
+    ]
   },
   {
     "id": "ann-e820-fermat",
@@ -292,7 +345,11 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fermat's little theorem",
+      "multiplicative order mod p",
+      "the divisibility condition (p−1) ∣ n"
+    ]
   },
   {
     "id": "ann-e820-h-small",
@@ -309,7 +366,11 @@
     "relatedConcepts": [
       "Problem #770"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "pairwise coprimality of a family",
+      "Erdős Problem #770",
+      "one-pair vs all-pairs coprimality conditions"
+    ]
   },
   {
     "id": "ann-e820-h-le-h",
@@ -327,7 +388,11 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "monotonicity under weaker constraints",
+      "pairwise vs single coprimality",
+      "the inequality H(n) ≤ h(n)"
+    ]
   },
   {
     "id": "ann-e820-summary",
@@ -345,7 +410,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "van Doorn's lower bound",
+      "exp(n^{c/log log n}) growth",
+      "stating the strongest known result"
+    ]
   },
   {
     "id": "ann-e820-status",
@@ -363,6 +432,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "status of open problems",
+      "the three open questions of Problem #820",
+      "established lower bound vs. unknown upper bound"
+    ]
   }
 ]
