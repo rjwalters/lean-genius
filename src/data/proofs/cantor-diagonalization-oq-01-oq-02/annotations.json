@@ -17,7 +17,11 @@
       "Forcing",
       "Lévy-Solovay theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Continuum Hypothesis",
+      "ZFC Axioms",
+      "Independence Results"
+    ]
   },
   {
     "id": "ann-cd-oq01-oq02-inaccessible",
@@ -104,7 +108,11 @@
       "Cardinal.aleph_lt",
       "Continuum Hypothesis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cardinal Arithmetic",
+      "Aleph Numbers",
+      "Continuum Hypothesis"
+    ]
   },
   {
     "id": "ann-cd-oq01-oq02-woodin",
@@ -168,6 +176,10 @@
       "Forcing axioms",
       "Large cardinals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Large Cardinal Axioms",
+      "Forcing Axioms",
+      "Continuum Hypothesis"
+    ]
   }
 ]
