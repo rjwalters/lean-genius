@@ -117,7 +117,7 @@ theorem not_dirichletWitnessProperty : ¬ ThreeSquares.DirichletWitnessProperty 
   have hne : ¬ ThreeSquares.IsExcludedForm 11 :=
     fun hx => ThreeSquares.excluded_form_not_sum_three_sq hx h11sum
   have h4 : ¬ (4 ∣ 11) := by decide
-  obtain ⟨d, p, hd, hp, hpp, hqr⟩ := H (m := 11) hne h4 (by norm_num)
+  obtain ⟨d, p, hd, _hd2, hp, hpp, hqr⟩ := H (m := 11) hne h4 (by norm_num)
   haveI : Fact (Nat.Prime p) := ⟨hpp⟩
   have hp2 : p ≠ 2 := by intro h; subst h; omega
   have hobs : legendreSym p (-(d : ℤ)) = -1 :=
