@@ -16,7 +16,11 @@
       "Point configurations",
       "Similarity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Distinct Distances Problem",
+      "Point Configurations",
+      "Geometric Similarity"
+    ]
   },
   {
     "id": "ann-e91-point-distance",
@@ -34,7 +38,11 @@
       "Plane geometry"
     ],
     "mathContext": "See annotation content for formal details of point and distance",
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Plane",
+      "Distance Formula",
+      "Ordered Pairs"
+    ]
   },
   {
     "id": "ann-e91-distinct-distances",
@@ -52,7 +60,11 @@
       "Distance sets",
       "Combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pairwise Distances",
+      "Set Cardinality",
+      "Finite Point Sets"
+    ]
   },
   {
     "id": "ann-e91-optimal",
@@ -70,7 +82,11 @@
       "Optimization"
     ],
     "mathContext": "See annotation content for formal details of optimal configurations",
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Configurations",
+      "Minimization Problems",
+      "Distinct Distance Count"
+    ]
   },
   {
     "id": "ann-e91-similarity",
@@ -88,7 +104,11 @@
       "Similarity transformations",
       "Isometry groups"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Similarity Transformations",
+      "Rigid Motions",
+      "Uniform Scaling"
+    ]
   },
   {
     "id": "ann-e91-n3-unique",
@@ -106,7 +126,11 @@
       "Uniqueness"
     ],
     "mathContext": "See annotation content for formal details of n=3: equilateral triangle unique",
-    "prerequisites": []
+    "prerequisites": [
+      "Equilateral Triangle",
+      "Uniqueness Up To Similarity",
+      "Minimum Distinct Distances"
+    ]
   },
   {
     "id": "ann-e91-n4-two",
@@ -125,7 +149,11 @@
       "Non-uniqueness"
     ],
     "mathContext": "See annotation content for formal details of n=4: two non-similar optima",
-    "prerequisites": []
+    "prerequisites": [
+      "Square Geometry",
+      "Equilateral Triangle",
+      "Non-Similar Configurations"
+    ]
   },
   {
     "id": "ann-e91-n5-kovacs",
@@ -144,7 +172,11 @@
       "Kovács 2024",
       "Zagreb mystery"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Regular Pentagon",
+      "Optimal Configurations",
+      "Uniqueness Proofs"
+    ]
   },
   {
     "id": "ann-e91-n6to9",
@@ -162,7 +194,11 @@
       "Non-uniqueness pattern"
     ],
     "mathContext": "See annotation content for formal details of n=6-9: non-uniqueness holds",
-    "prerequisites": []
+    "prerequisites": [
+      "Optimal Point Sets",
+      "Non-Uniqueness",
+      "Small Case Analysis"
+    ]
   },
   {
     "id": "ann-e91-conjecture",
@@ -180,7 +216,11 @@
       "Open problems",
       "Asymptotic behavior"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Behavior",
+      "Open Conjectures",
+      "Non-Similar Optima"
+    ]
   },
   {
     "id": "ann-e91-summary",
@@ -198,6 +238,10 @@
       "Research frontier"
     ],
     "mathContext": "See annotation content for formal details of problem summary",
-    "prerequisites": []
+    "prerequisites": [
+      "Distinct Distances Problem",
+      "Optimal Configurations",
+      "Uniqueness And Non-Uniqueness"
+    ]
   }
 ]
