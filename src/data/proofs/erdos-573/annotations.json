@@ -17,7 +17,11 @@
       "Kővári-Sós-Turán",
       "forbidden-subgraph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turán number",
+      "Extremal graph theory",
+      "Cycle graphs C₃, C₄"
+    ]
   },
   {
     "id": "ann-573-definitions",
@@ -37,7 +41,11 @@
       "C4-free",
       "girth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Triangle-free graph",
+      "C₄-free graph"
+    ]
   },
   {
     "id": "ann-573-extremal",
@@ -56,7 +64,11 @@
       "monotonicity",
       "extremal-function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axiom declarations",
+      "Monotonicity of extremal function",
+      "Decidability of graph properties"
+    ]
   },
   {
     "id": "ann-573-kst",
@@ -75,7 +87,11 @@
       "K_{2,2}-free",
       "projective-planes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Kővári–Sós–Turán theorem",
+      "Zarankiewicz problem",
+      "Asymptotic notation"
+    ]
   },
   {
     "id": "ann-573-es",
@@ -94,7 +110,11 @@
       "forbidden-cycles",
       "asymptotic-density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős–Simonovits theorem",
+      "Turán number",
+      "Asymptotic equivalence"
+    ]
   },
   {
     "id": "ann-573-conjecture",
@@ -113,7 +133,11 @@
       "leading-constant",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic equivalence",
+      "Leading constant",
+      "Real exponentiation"
+    ]
   },
   {
     "id": "ann-573-bounds",
@@ -132,7 +156,11 @@
       "lower-bound",
       "leading-constant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper bound chaining",
+      "Θ(n^{3/2}) growth",
+      "Kővári–Sós–Turán bound"
+    ]
   },
   {
     "id": "ann-573-constructions",
@@ -152,7 +180,11 @@
       "bipartite",
       "algebraic-construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Projective plane PG(2,q)",
+      "Bipartite graphs",
+      "Polarity graphs"
+    ]
   },
   {
     "id": "ann-573-gap",
@@ -171,7 +203,11 @@
       "leading-constant-reduction",
       "odd-even-cycle-interaction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Leading constants",
+      "Asymptotic ratio",
+      "Odd vs even cycles"
+    ]
   },
   {
     "id": "ann-573-summary",
@@ -190,6 +226,10 @@
       "exact-constructor",
       "open-problem-formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Classical.em",
+      "Anonymous constructor",
+      "Open-problem formalization"
+    ]
   }
 ]
