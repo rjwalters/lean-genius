@@ -17,7 +17,11 @@
       "tao",
       "arithmetic-progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "\u00b11 sequences and colorings",
+      "arithmetic progressions",
+      "the Erd\u0151s discrepancy problem"
+    ]
   },
   {
     "id": "ann-e67-background",
@@ -36,7 +40,11 @@
       "coloring",
       "balance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "homogeneous arithmetic progressions d,2d,3d,\u2026",
+      "two-colorings of \u2115",
+      "balance / partial sums"
+    ]
   },
   {
     "id": "ann-e67-discrepancy-def",
@@ -55,7 +63,11 @@
       "absolute-value",
       "arithmetic-progression"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "partial sums over a Finset",
+      "absolute value",
+      "sums along arithmetic progressions"
+    ]
   },
   {
     "id": "ann-e67-bounded",
@@ -74,7 +86,11 @@
       "bounded",
       "impossibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the discrepancy function",
+      "universally bounded quantities",
+      "impossibility statements"
+    ]
   },
   {
     "id": "ann-e67-plusminus",
@@ -92,7 +108,11 @@
       "constraint",
       "two-coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "\u00b11 (sign) sequences",
+      "two-colorings as functions to {\u22121,+1}",
+      "sequence constraints"
+    ]
   },
   {
     "id": "ann-e67-main-theorem",
@@ -111,7 +131,11 @@
       "tao",
       "elliott-conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the discrepancy of \u00b11 sequences",
+      "the Elliott conjecture on multiplicative functions",
+      "Tao's 2015 theorem (axiom)"
+    ]
   },
   {
     "id": "ann-e67-no-bounded",
@@ -130,7 +154,11 @@
       "contradiction",
       "omega"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unbounded discrepancy",
+      "proof by contradiction",
+      "arithmetic via omega"
+    ]
   },
   {
     "id": "ann-e67-complex",
@@ -149,7 +177,11 @@
       "unit-circle",
       "generalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex numbers on the unit circle",
+      "generalizing \u00b11 to roots of unity",
+      "the complex discrepancy variant"
+    ]
   },
   {
     "id": "ann-e67-stronger",
@@ -168,7 +200,11 @@
       "logarithmic-growth",
       "quantitative"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the growth rate of discrepancy",
+      "logarithmic lower bounds",
+      "Erd\u0151s's stronger quantitative conjecture"
+    ]
   },
   {
     "id": "ann-e67-multiplicative",
@@ -187,6 +223,10 @@
       "liouville",
       "reduction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "completely multiplicative functions",
+      "the Liouville function \u03bb(n)",
+      "reduction to the multiplicative case"
+    ]
   }
 ]
