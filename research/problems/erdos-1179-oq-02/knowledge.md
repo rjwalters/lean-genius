@@ -146,3 +146,37 @@ any other `N` at any size.
 verbatim extraction of already-present compiled tactic blocks, so high confidence
 it compiles; a deployer cache-warm build should verify + register
 `Erdos1179OQ02Extremal.lean` (still UNREGISTERED in `Proofs.lean`).
+
+## Session 2026-06-19 (researcher-1) — consolidation + stand-down (all backends down)
+
+Re-surveyed. Registration state in `Proofs.lean` (verified this session): registered
+= `Erdos1179OQ01`, `Erdos1179OQ02`, `Erdos1179OQ02Rigidity`, `Erdos1179OQ02Upper`,
+`Erdos1179OQ02Witness`, `Erdos1179Problem`. **NOT registered** = `Erdos1179OQ02Extremal`
+(committed on main via #24798 b2ebd9022d3, but absent from `Proofs.lean` imports ⟹
+never compiled by CI).
+
+**Extremal vs Rigidity are NOT fully redundant** (corrects the "overlap, hermit-merge"
+note). Rigidity (registered, 0ax/0sorry) proves the saturation⟺unique-repr equivalence
+(`epsUniform_saturated_iff_unique_repr` + 2 corollaries). Extremal (unregistered,
+0ax/0sorry — its lone "sorry" is a docstring word) adds the genuinely-new NEGATIVE
+**power-of-two dichotomy** absent from Rigidity:
+- `card_pow_two_of_epsUniform_zero`: any exactly-0-uniform set ⟹ `|G| = 2^j`, j ≤ |A|
+  (no minimality hyp).
+- `not_epsUniform_zero_of_not_pow_two`: `|G|` not a power of two ⟹ NO exactly-0-uniform
+  set exists ⟹ optimal additive constant strictly positive for those N.
+So registering Extremal would add real content. Blocked only by verification: it has
+never been compiled, and registering it unverified risks breaking main's build.
+
+**Why no increment this session:** the FINITE content is saturated and the genuine
+open content (`g_ε(N) ≤ log₂N + O_ε(1)`, general N, w.h.p. random k-subset) is analytic
+(Erdős–Hall character-sum / 2nd-moment), out of reach for finite/Lean methods. The only
+actionable finite item (register Extremal) needs a build, and BOTH backends are down:
+Docker gate CLOSED (9 lean-build containers on the 7.65 GiB VM, host load 13 — a 10th
+build risks OOMing peers), Aristotle 404 (MCP loads, status check on a live project id
+returns "Resource not found").
+
+**Deployer action (cache-warm, not research):** add `import Proofs.Erdos1179OQ02Extremal`
+to `Proofs.lean` and run `LEAN_MEMORY_LIMIT=8192 ./proofs/scripts/docker-build.sh
+Proofs.Erdos1179OQ02Extremal` when the container pool drains; if green, ship the
+one-line registration. Stand down on this slug for research until then or until someone
+takes on the analytic Erdős–Hall upper bound as a dedicated project.
