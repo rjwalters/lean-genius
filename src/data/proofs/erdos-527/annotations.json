@@ -17,7 +17,12 @@
       "unit circle",
       "Rademacher series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "probability theory",
+      "harmonic analysis",
+      "measure theory"
+    ]
   },
   {
     "id": "ann-e527-definitions",
@@ -36,7 +41,12 @@
       "Complex.abs",
       "decay condition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e527-probability",
@@ -55,7 +65,11 @@
       "Rademacher variables",
       "probability-1 events"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "measure theory",
+      "probability theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e527-divergence",
@@ -74,7 +88,11 @@
       "sharp threshold",
       "generic divergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "harmonic analysis",
+      "measure theory"
+    ]
   },
   {
     "id": "ann-e527-main",
@@ -93,7 +111,11 @@
       "Hausdorff dimension",
       "fractal sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "geometric measure theory",
+      "harmonic analysis"
+    ]
   },
   {
     "id": "ann-e527-properties",
@@ -112,7 +134,11 @@
       "measure zero",
       "uncountable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "measure theory",
+      "set theory",
+      "geometric measure theory"
+    ]
   },
   {
     "id": "ann-e527-examples",
@@ -131,7 +157,11 @@
       "boundary case",
       "hypothesis verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "infinite series"
+    ]
   },
   {
     "id": "ann-e527-summary",
@@ -150,6 +180,10 @@
       "main theorem",
       "SOLVED"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "mathematical logic",
+      "Mathlib library structure"
+    ]
   }
 ]
