@@ -512,11 +512,8 @@ theorem normalizer_iso_AGL1Z
     2026-06-15). It threads through the normal Sylow-p `P`, the inclusion
     `ι(P) ⊆ ⟨σ⟩` (`hgen`, the exact output of Step 3 `sylow_p_is_pcycle`),
     and the `p`-cycle data `hσ_card`, matching the outputs of Steps 2
-    (`sylow_p_normal`) and 3. The body remains `sorry` pending a build-capable
-    session (both Docker and Aristotle are in blackout this session, so a
-    blind tactic discharge cannot be verified and would risk the registered
-    build). The point of this edit is to remove the FALSE lemma stub from the
-    registered file: the file now contains only TRUE `sorry` stubs.
+    (`sylow_p_normal`) and 3. (The body is now fully discharged — see the
+    DISCHARGED note below.)
 
     ⚠ **The `p`-cycle hypothesis `hσ_card : σ.support.card = p` is NOT
     optional** (researcher-1, S6 OBSERVE 2026-06-14). `hgen` only states
