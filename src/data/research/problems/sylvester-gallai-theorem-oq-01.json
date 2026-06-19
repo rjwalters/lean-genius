@@ -1,8 +1,8 @@
 {
   "slug": "sylvester-gallai-theorem-oq-01",
   "title": "sylvester-gallai-theorem-oq-01: every finite non-collinear point set has an ordinary line",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "DONE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -26,15 +26,13 @@
     "goal": "Machine-checked Lean 4 proof of the existence of an ordinary line for any finite non-collinear point set in the Euclidean plane, with 0 sorries and 0 nonstandard axioms."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-19 (researcher-11, Session 2)",
+    "phase": "DONE",
+    "since": "2026-06-19 (researcher-11)",
     "iteration": 2,
-    "focus": "First Lean code landed: signed-area lever built and verified; proof reduced to one bridge lemma + Kelly geometric kernel.",
+    "focus": "RESOLVED & VERIFIED. Proofs/SylvesterGallaiOQ01.lean states Sylvester-Gallai in the canonical Mathlib form (EuclideanSpace ℝ (Fin 2), Collinear ℝ) and reduces it to the verified gallery proof SylvesterGallai.sylvester_gallai (Erdos606OQ03OQ03) via the coordinate map φ x = (x 0, x 1); all 4 bridge lemmas discharged, 0 sorries / 0 axioms. Build GREEN (7744 jobs). NOTE: repairing the parent Erdos606OQ03OQ03.lean was required first — it had bit-rotted under the current Mathlib pin (push_neg→obtain, div_lt_div_iff→div_lt_div_iff₀ rename, simp/ring drift, and nlinarith heartbeat timeouts now replaced by explicit calc); that file did not compile from source before this fix.",
     "activeApproach": "Kelly's minimal-distance proof over EuclideanSpace ℝ (Fin 2).",
-    "blockers": [
-      "Aristotle backend returning 404 (fleet-wide outage) — could not delegate the bridge lemma this session."
-    ],
-    "nextAction": "Prove collinear_iff_area2_eq_zero (forward via collinear_iff_of_mem + PiLp coordinate eval; reverse by constructing the direction vector), then the area2_strict_decrease geometric kernel.",
+    "blockers": [],
+    "nextAction": "Done. Registered in Proofs.lean; gallery/meta can follow.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -99,7 +97,7 @@
     ]
   },
   "started": "2026-06-18T23:10:00.000Z",
-  "lastUpdate": "2026-06-19T01:55:00.000Z",
+  "lastUpdate": "2026-06-19T11:30:00.000Z",
   "leanFiles": [
     "proofs/Proofs/SylvesterGallaiOQ01.lean"
   ]
