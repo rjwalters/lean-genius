@@ -16,7 +16,11 @@
       "general position",
       "combinatorial geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős problems in combinatorial geometry",
+      "integer distance sets in the plane",
+      "general position (no three collinear, no four concyclic)"
+    ]
   },
   {
     "id": "ann-e213-point",
@@ -34,7 +38,11 @@
       "EuclideanSpace",
       "plane"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib's EuclideanSpace ℝ (Fin 2)",
+      "finite-dimensional Euclidean spaces",
+      "metric structure on the plane"
+    ]
   },
   {
     "id": "ann-e213-collinear",
@@ -52,7 +60,11 @@
       "general position",
       "linear dependence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "linear dependence of vector differences",
+      "scalar multiples r - p = t • (q - p)",
+      "quantifying over triples of points"
+    ]
   },
   {
     "id": "ann-e213-concyclic",
@@ -71,7 +83,11 @@
       "circumcircle",
       "general position"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "circles defined by center and radius",
+      "equidistance from a common center",
+      "quantifying over quadruples of points"
+    ]
   },
   {
     "id": "ann-e213-integer-dist",
@@ -90,7 +106,11 @@
       "integers",
       "Pythagorean"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean distance dist p q",
+      "Set.Pairwise over distinct points",
+      "integers ℤ and divisibility constraints"
+    ]
   },
   {
     "id": "ann-e213-anning",
@@ -109,7 +129,11 @@
       "Erdős",
       "finiteness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Anning-Erdős finiteness theorem",
+      "Set.Finite",
+      "axiomatizing a cited result in Lean"
+    ]
   },
   {
     "id": "ann-e213-question",
@@ -127,7 +151,11 @@
       "open problem",
       "existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "universally quantified existence statements",
+      "open problems with no known proof or disproof",
+      "the ExistsIntDistSetGP predicate"
+    ]
   },
   {
     "id": "ann-e213-harborth",
@@ -146,7 +174,11 @@
       "construction",
       "n=5"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Harborth's explicit five-point construction",
+      "Pythagorean triples",
+      "verifying integer distances in general position"
+    ]
   },
   {
     "id": "ann-e213-kreisel",
@@ -165,7 +197,11 @@
       "Kurz",
       "heptagon"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Kreisel-Kurz integral heptagon",
+      "checking all 21 pairwise distances",
+      "constructive existence for n=7"
+    ]
   },
   {
     "id": "ann-e213-derived",
@@ -184,7 +220,11 @@
       "inheritance",
       "monotonicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "predicates preserved under taking subsets",
+      "monotonicity of general position and integer distances",
+      "deriving n=4,5,6 from the n=7 construction"
+    ]
   },
   {
     "id": "ann-e213-sparsity",
@@ -203,6 +243,10 @@
       "upper bound",
       "logarithmic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Greenfeld-Iliopoulou-Peluse sparsity bound",
+      "logarithmic upper bounds O((log N)^C)",
+      "unconditional results avoiding Bombieri-Lang"
+    ]
   }
 ]
