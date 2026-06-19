@@ -358,3 +358,25 @@ The concrete oriented mechanism (sharper than "establish opposite-arc sign" abov
 Aristotle 404 (17th consecutive cycle; both `prove_file` and inline `prove`
 endpoints return `Resource not found`). Companion Lean unchanged since cycle-14
 (2-sorry known-good); cycle-17 is strategy-doc only.
+
+### 2026-06-19 (cycle 18) — stale-base rebase; Aristotle still dead
+
+This branch's merge-base had drifted four merged auditor tracker bumps behind
+`origin/main` (`#26095` cantors, `#26096` buffons, `#26097` bounded-prime-gaps,
+`#26098` erdos-1107). The accumulated diff therefore **reverted** those four
+tracker entries back to `auditor-cycle-20-batch` — a silent regression that would
+have shipped inside this research PR. Clean-rebuilt onto `c354e698c04`: saved the
+two pure artifacts (`ErdosMordellChordIdentity.lean`, this strategy doc),
+`reset --hard origin/main`, restored them, and re-added the single
+`import Proofs.ErdosMordellChordIdentity` line to `Proofs.lean`. Final diff is
+exactly three files — no `audit-tracker.json` touch. (Stale-base recurs on this
+branch every cycle: always `git diff --stat origin/main..HEAD` *first*.)
+
+Aristotle re-probed via the now-connected MCP server (inline `prove`, both sorries
+in one self-contained submission with the Thales/law-of-sines hint) — still
+`{"status":"error","message":"Resource not found."}` (18th consecutive cycle).
+The prover is not serving this fleet; the two residual sorries
+(`chord_length_eq`, `angle_at_P`) remain manual targets with the cycle-15/17 pins
+above as the concrete proof skeleton. Companion Lean unchanged from the
+known-good 2-sorry state; cycle-18 is the rebase plus this note.
+>>>>>>> 664d9991c75 (research(erdos-mordell-inequality-oq-01): rebase chord-identity companion onto current origin/main (cycle-18))
