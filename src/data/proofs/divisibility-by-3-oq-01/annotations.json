@@ -16,7 +16,11 @@
       "divisibility",
       "last digits"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positional base-b representation of integers",
+      "modular arithmetic and congruences mod m",
+      "divisibility (a | b) and remainders"
+    ]
   },
   {
     "id": "ann-power-2-5",
@@ -35,7 +39,11 @@
       "powers of 5",
       "generalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility tests by the last k digits",
+      "powers of 2 and 5 as factors of 10^k",
+      "modular arithmetic mod 2^k and 5^k"
+    ]
   },
   {
     "id": "ann-truncation-13",
@@ -54,7 +62,11 @@
       "coprimality",
       "integer arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic and congruences",
+      "coprimality (gcd = 1) and modular inverses",
+      "the truncation/seed step for divisibility by primes coprime to 10"
+    ]
   },
   {
     "id": "ann-digit-sum-general",
@@ -73,7 +85,11 @@
       "multi-digit grouping",
       "various bases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "base-b positional notation",
+      "the congruence b ≡ 1 (mod m) underlying digit-sum rules",
+      "grouping digits into blocks"
+    ]
   },
   {
     "id": "ann-casting-out",
@@ -92,7 +108,11 @@
       "arithmetic verification",
       "congruence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the digit-sum rule for 9 and 3",
+      "congruence arithmetic mod 9",
+      "using residues to check arithmetic"
+    ]
   },
   {
     "id": "ann-digital-root",
@@ -111,7 +131,11 @@
       "mod 9",
       "single digit reduction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the digit-sum rule and iterated digit sums",
+      "arithmetic mod 9",
+      "reduction to a single digit (1–9)"
+    ]
   },
   {
     "id": "ann-coprime",
@@ -130,7 +154,11 @@
       "factorization",
       "combined rules"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "coprime integers (gcd = 1)",
+      "prime factorization of the modulus",
+      "the CRT principle: m·n | x iff m|x and n|x for coprime m,n"
+    ]
   },
   {
     "id": "ann-summary",
@@ -148,6 +176,10 @@
       "verification"
     ],
     "mathContext": "See annotation content for formal details of master summary",
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic foundations",
+      "the individual divisibility rules (last-k-digits, digit-sum, truncation)",
+      "coprime factorization of moduli"
+    ]
   }
 ]
