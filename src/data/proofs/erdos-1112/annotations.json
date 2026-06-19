@@ -16,7 +16,11 @@
       "Sumsets",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "number theory",
+      "sequences and series"
+    ]
   },
   {
     "id": "ann-e1112-lacunary",
@@ -34,7 +38,11 @@
       "Exponential growth",
       "Sparse sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "real analysis",
+      "exponential growth"
+    ]
   },
   {
     "id": "ann-e1112-bounded-gaps",
@@ -52,7 +60,11 @@
       "Gap sequences"
     ],
     "mathContext": "See annotation content for formal details of bounded gap sequences",
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "arithmetic progressions",
+      "sequences"
+    ]
   },
   {
     "id": "ann-e1112-sumsets",
@@ -70,7 +82,11 @@
       "Sumsets",
       "Additive number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "set theory",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e1112-avoidance",
@@ -88,7 +104,11 @@
       "Combinatorial existence"
     ],
     "mathContext": "See annotation content for formal details of the avoidance problem",
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "set theory",
+      "existential quantifiers"
+    ]
   },
   {
     "id": "ann-e1112-erdos-graham",
@@ -106,7 +126,11 @@
       "Avoidance constructions",
       "Sumset density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "combinatorial number theory",
+      "constructive proofs"
+    ]
   },
   {
     "id": "ann-e1112-bhj",
@@ -124,7 +148,11 @@
       "Impossibility results",
       "Phase transitions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "combinatorial number theory",
+      "asymptotic density"
+    ]
   },
   {
     "id": "ann-e1112-r3-not-exists",
@@ -142,7 +170,11 @@
       "Proof by contradiction"
     ],
     "mathContext": "See annotation content for formal details of r₃(2,3) does not exist (proved)",
-    "prerequisites": []
+    "prerequisites": [
+      "proof by contradiction",
+      "Lean 4 tactic mode",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-e1112-chen",
@@ -160,7 +192,10 @@
       "Generalization",
       "Critical ratios"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "combinatorial number theory"
+    ]
   },
   {
     "id": "ann-e1112-tang-yang",
@@ -178,7 +213,10 @@
       "Non-existence landscape",
       "Parameter space"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "combinatorial number theory"
+    ]
   },
   {
     "id": "ann-e1112-main-theorem",
@@ -196,7 +234,11 @@
       "Phase transitions"
     ],
     "mathContext": "See annotation content for formal details of main theorem: the dichotomy",
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "Lean 4 syntax",
+      "mathematical logic"
+    ]
   },
   {
     "id": "ann-e1112-open-questions",
@@ -214,6 +256,10 @@
       "Open problems",
       "Research directions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "Fourier analysis",
+      "probabilistic method"
+    ]
   }
 ]
