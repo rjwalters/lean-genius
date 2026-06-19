@@ -16,7 +16,11 @@
       "Combinatorial geometry",
       "Point configurations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "Euclidean plane geometry",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e653-distance",
@@ -35,7 +39,11 @@
       "Distance set",
       "Local diversity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean geometry",
+      "set theory",
+      "Lean 4 / Mathlib Finset operations"
+    ]
   },
   {
     "id": "ann-e653-g-function",
@@ -54,7 +62,11 @@
       "R-diversity",
       "Extremal configurations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis (suprema)",
+      "extremal combinatorics",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e653-bounds",
@@ -74,7 +86,11 @@
       "Csizmadia",
       "Erdős-Fishburn"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "asymptotic analysis",
+      "incidence geometry"
+    ]
   },
   {
     "id": "ann-e653-conjecture",
@@ -93,7 +109,11 @@
       "Asymptotic analysis",
       "Almost-injectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis (limits)",
+      "mathematical logic (quantifiers)"
+    ]
   },
   {
     "id": "ann-e653-special",
@@ -113,7 +133,11 @@
       "Regular polygons",
       "Worst case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "plane geometry",
+      "group theory (symmetry)",
+      "combinatorial geometry"
+    ]
   },
   {
     "id": "ann-e653-gap",
@@ -132,7 +156,11 @@
       "Sublinear growth",
       "Geometric constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "combinatorial geometry"
+    ]
   },
   {
     "id": "ann-e653-summary",
@@ -151,6 +179,10 @@
       "Axiom composition",
       "Known results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "Lean 4 tactic mode",
+      "asymptotic analysis"
+    ]
   }
 ]
