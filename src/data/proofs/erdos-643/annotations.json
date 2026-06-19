@@ -16,7 +16,11 @@
       "hypergraphs",
       "extremal-combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "set theory",
+      "hypergraph basics"
+    ]
   },
   {
     "id": "ann-e643-hypergraph",
@@ -35,7 +39,11 @@
       "set",
       "cardinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib library structure",
+      "Finset and Set types",
+      "cardinality"
+    ]
   },
   {
     "id": "ann-e643-crossed",
@@ -54,7 +62,11 @@
       "disjoint",
       "union"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "unions and intersections",
+      "partitions"
+    ]
   },
   {
     "id": "ann-e643-extremal",
@@ -73,7 +85,11 @@
       "extremal",
       "minimum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "Nat.find well-ordering",
+      "binomial coefficients"
+    ]
   },
   {
     "id": "ann-e643-graph-case",
@@ -92,7 +108,11 @@
       "kovari-sos-turan",
       "zarankiewicz"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal graph theory",
+      "asymptotic estimates"
+    ]
   },
   {
     "id": "ann-e643-pikhurko",
@@ -111,7 +131,11 @@
       "3-uniform",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "binomial coefficients",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e643-bounds",
@@ -130,7 +154,11 @@
       "upper-bound",
       "binomial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "binomial coefficients",
+      "Lean 4 sorry and axioms"
+    ]
   },
   {
     "id": "ann-e643-conjecture",
@@ -149,7 +177,11 @@
       "tendsto",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limits and filters",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e643-sunflower",
@@ -168,7 +200,11 @@
       "construction",
       "core"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "combinatorial constructions",
+      "binomial coefficients"
+    ]
   },
   {
     "id": "ann-e643-sunflower-proof",
@@ -187,7 +223,11 @@
       "intersection",
       "core"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "proof by contradiction",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e643-small",
@@ -206,7 +246,11 @@
       "star-matching-construction",
       "small-cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "small-case enumeration",
+      "binomial coefficients"
+    ]
   },
   {
     "id": "ann-e643-erdosrado",
@@ -225,6 +269,10 @@
       "sunflower-lemma",
       "structural"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "Ramsey-type combinatorics",
+      "Lean 4 axioms"
+    ]
   }
 ]
