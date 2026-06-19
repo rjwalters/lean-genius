@@ -16,7 +16,11 @@
       "chromatic-number",
       "unit-distance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chromatic Number",
+      "Graph Coloring",
+      "Euclidean Plane"
+    ]
   },
   {
     "id": "ann-e171-unitgraph",
@@ -35,7 +39,11 @@
       "euclidean-plane",
       "distance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Simple Graph",
+      "Euclidean Distance",
+      "Metric Space"
+    ]
   },
   {
     "id": "ann-e171-coloring",
@@ -54,7 +62,11 @@
       "chromatic-number",
       "infimum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proper Coloring",
+      "Infimum (sInf)",
+      "Noncomputable Definitions"
+    ]
   },
   {
     "id": "ann-e171-moser",
@@ -73,7 +85,11 @@
       "nelson-1950",
       "lower-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Equilateral Triangle",
+      "Three-Coloring",
+      "Finite Subgraph"
+    ]
   },
   {
     "id": "ann-e171-degrey",
@@ -92,7 +108,11 @@
       "breakthrough",
       "computer-search"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Four-Coloring",
+      "Computer-Assisted Search",
+      "Algebraic Coordinates"
+    ]
   },
   {
     "id": "ann-e171-isbell",
@@ -111,7 +131,11 @@
       "hexagonal-tiling",
       "upper-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hexagonal Tiling",
+      "Plane Tessellation",
+      "Upper Bound Construction"
+    ]
   },
   {
     "id": "ann-e171-current",
@@ -130,7 +154,11 @@
       "open-question",
       "bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower And Upper Bounds",
+      "Chromatic Number",
+      "Open Problem"
+    ]
   },
   {
     "id": "ann-e171-clique",
@@ -149,7 +177,11 @@
       "clique-number",
       "equilateral-triangle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Clique Number",
+      "Equilateral Triangle",
+      "norm_num Tactic"
+    ]
   },
   {
     "id": "ann-e171-fractional",
@@ -168,7 +200,11 @@
       "placeholder",
       "linear-programming"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fractional Chromatic Number",
+      "Linear Programming",
+      "Supremum"
+    ]
   },
   {
     "id": "ann-e171-summary",
@@ -187,6 +223,10 @@
       "solved",
       "aristotle-verified"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chromatic Number Bounds",
+      "Clique Number",
+      "Fractional Chromatic Number"
+    ]
   }
 ]
