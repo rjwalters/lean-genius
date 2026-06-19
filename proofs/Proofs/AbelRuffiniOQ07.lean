@@ -126,4 +126,40 @@ theorem f_monic : f.Monic := by
 theorem natDegree_prime : Nat.Prime f.natDegree := by
   rw [f_natDegree]; norm_num
 
+/-! ## A concrete Frobenius witness at `p = 2`
+
+The corrected proof's swap input — hypothesis `(b)` of
+`gal_eq_top_of_five_dvd_and_swap` — comes from the factorisation of `f` modulo 2:
+
+    X⁵ − X − 1  ≡  (X² + X + 1)(X³ + X² + 1)   (mod 2),
+
+an irreducible quadratic times an irreducible cubic.  A Frobenius element of `f`
+at `2` therefore has cycle type `(2, 3)`: it is conjugate to a disjoint product of
+a transposition and a 3-cycle, an order-6 permutation.  Where the prose above only
+*asserts* "σ of order 6 ⟹ σ³ is a transposition", we now exhibit such an element
+`frob2 ∈ S₅` concretely and machine-check that its cube is exactly the
+transposition that input `(b)` feeds into the assembly criterion — turning the
+prose cycle-type computation into verified permutation data. -/
+
+/-- A representative `(2, 3)`-cycle-type element of `S₅`: the transposition `(0 1)`
+    times the 3-cycle `(2 3 4)`.  This models a Frobenius element of `f` at `p = 2`,
+    whose factorisation type mod 2 is (irreducible quadratic)·(irreducible cubic). -/
+def frob2 : S5 := Equiv.swap 0 1 * (Equiv.swap 2 3 * Equiv.swap 3 4)
+
+/-- `frob2` is an **odd** permutation (sign `= −1`), so a `(2, 3)`-type element lies
+    outside `A₅` — consistent with `Gal ⊄ A₅` and with the role this element plays
+    as the *odd* Frobenius the discriminant route requires. -/
+theorem frob2_not_mem_alternating : frob2 ∉ alternatingGroup (Fin 5) := by
+  rw [Equiv.Perm.mem_alternatingGroup]; decide
+
+/-- The cube of the order-6 element `frob2` is the transposition `(0 1)`: cubing
+    kills the 3-cycle part and leaves the swap.  This is precisely the order-6 ⟹
+    transposition step of the corrected proof, made concrete. -/
+theorem frob2_pow_three_eq_swap : frob2 ^ 3 = Equiv.swap (0 : Fin 5) 1 := by decide
+
+/-- Hence a `(2, 3)`-Frobenius element supplies exactly the transposition required
+    by `gal_eq_top_of_five_dvd_and_swap`: `frob2 ^ 3` is a swap. -/
+theorem frob2_pow_three_isSwap : (frob2 ^ 3).IsSwap :=
+  frob2_pow_three_eq_swap ▸ ⟨0, 1, by decide, rfl⟩
+
 end AbelRuffiniOQ07
