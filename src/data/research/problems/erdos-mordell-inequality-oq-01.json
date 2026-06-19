@@ -29,7 +29,7 @@
     "Not present in Mathlib4 (as of v4.26.0): no `mordell` geometry result; Mathlib has Triangle, Incenter, Projection, SignedDist, angle infrastructure but no Erdős–Mordell."
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (ACT iter 3): collapsed the 3 geometric key inequalities to ONE shared lemma key_inequality_vertex (A/B/C proved from it by cyclic relabeling). Remaining obligation is now a single fact = pedal-feet chord identity (law of sines confirmed available in Mathlib: dist_div_sin_angle_eq_two_mul_circumradius). Build gated (watcher PID 7086, gate ctrs<3 & load<40, ships PR on green/1-sorry). Aristotle endpoint still returns Resource not found this session.",
+    "progressSummary": "PROGRESS (ORIENT, cycle 5, doc-only): step 4 (the last UNPINNED subfact of the chord-identity decomposition, ∠F_bXF_c=∠YXZ) now resolved to named lemmas InnerProductGeometry.angle_smul_left/right_of_pos (Basic.lean:140,133) modulo an Sbtw foot-on-open-side fact. Full decomposition now qualitatively gap-free. No code: Aristotle still down (Resource not found), 8 lean-build containers (OOM-unsafe to build). Clean 1-sorry file shipped+merged PR #26033.",
     "builtItems": [
       "proofs/Proofs/ErdosMordellInequalityOQ01.lean: erdos_mordell_reduction — from the three key inequalities a·PA≥b·dc+c·db (cyclic), derives PA+PB+PC≥2(da+db+dc) via explicit nonnegative certificate, 0 sorry, 0 axiom (build-pending verification).",
       "Certificate: a·b·c·(PA+PB+PC) − 2abc·(da+db+dc) = a·da·(b−c)² + b·db·(a−c)² + c·dc·(a−b)² + (key-inequality slack), each summand ≥ 0; closed by mul_le_mul_of_nonneg_left scaling + nlinarith + le_of_mul_le_mul_left.",
@@ -48,7 +48,8 @@
       "Each AM-GM coefficient is t + 1/t ≥ 2 with t = ratio of two side lengths; equality forces a=b=c (equilateral), matching the known equality case.",
       "Mathlib gap is real: formalizing the key inequality needs concyclicity / inscribed-angle (chord = diameter·sin(inscribed angle)) for the diameter-PA circle, plus distance-to-affineSpan manipulation.",
       "Trig core of each key inequality collapses to the perfect square (db·cosC − dc·cosB)² ≥ 0, using cos A = sinB·sinC − cosB·cosC (angle sum A+B+C=π). This reduces every geometric key inequality to ONE fact: the chord identity (PA·sinA)² = db²+dc²+2·db·dc·cosA (concyclicity of pedal feet on circle of diameter PA), plus the law of sines.",
-      "The three cyclic key inequalities are EXACTLY the (X,Y,Z)=(A,B,C),(B,C,A),(C,A,B) instantiations of one shared lemma key_inequality_vertex; affine independence and triangle-hull interior are invariant under cyclic relabeling (AffineIndependent.comp_embedding with ![1,2,0] embedding; convexHull set equality), so A/B/C follow by pure relabeling — 3 opaque sorries collapse to 1."
+      "The three cyclic key inequalities are EXACTLY the (X,Y,Z)=(A,B,C),(B,C,A),(C,A,B) instantiations of one shared lemma key_inequality_vertex; affine independence and triangle-hull interior are invariant under cyclic relabeling (AffineIndependent.comp_embedding with ![1,2,0] embedding; convexHull set equality), so A/B/C follow by pure relabeling — 3 opaque sorries collapse to 1.",
+      "Step 4 of the chord-identity decomposition (∠ F_b X F_c = ∠ Y X Z) is now pinned to named Mathlib lemmas, not an angle mystery: affine angle unfolds to InnerProductGeometry.angle (F_b -ᵥ X) (F_c -ᵥ X), then angle_smul_left_of_pos / angle_smul_right_of_pos (Angle/Unoriented/Basic.lean:140,133) reduce it to F_b -ᵥ X = t·(Y -ᵥ X) with t>0 (foot on the positive ray). Residual = Sbtw membership (interior pts foot lands strictly inside the side), no longer an angle gap."
     ],
     "mathlibGaps": [
       "No Erdős–Mordell in Mathlib4 v4.26.0.",
@@ -56,7 +57,8 @@
       "Relating Metric.infDist to affineSpan {X,Y} to an explicit foot/orthogonal-projection distance needs EuclideanGeometry.orthogonalProjection bridging lemmas.",
       "No pedal-feet concyclicity / chord-length-in-circle-of-diameter-PA lemma in Mathlib; needed to prove the chord identity (PA·sinA)² = db²+dc²+2·db·dc·cosA",
       "No directly usable extended law of sines (a = 2R·sinA) wired to EuclideanSpace triangle side lengths found yet",
-      "Law of sines IS available: EuclideanGeometry.dist_div_sin_angle_eq_two_mul_circumradius (Angle/Sphere.lean:430) gives dist/sin = 2R; only the pedal-feet chord identity remains genuinely missing."
+      "Law of sines IS available: EuclideanGeometry.dist_div_sin_angle_eq_two_mul_circumradius (Angle/Sphere.lean:430) gives dist/sin = 2R; only the pedal-feet chord identity remains genuinely missing.",
+      "No single Mathlib lemma for ∠ F_b X F_c = ∠ Y X Z directly; assembled from angle_smul_*_of_pos + Sbtw scalar extraction (search Wbtw/affineSegment/lineMap for the t∈(0,1) extraction)."
     ],
     "nextSteps": [
       "Verify erdos_mordell_reduction builds green (single quiet-gated watcher; fleet was OOM-saturated with 6 concurrent builds at claim time).",
@@ -68,7 +70,9 @@
       "Wire law of sines to convert a·PA ≥ b·dc+c·db into the sin-form consumed by key_inequality_trig_core",
       "Confirm gated build green (/tmp/r9-mordell-DONE) — verifies injective-wiring + nlinarith trig core compile",
       "Retry Aristotle async submit (got Resource not found this session) on key_inequality_A once endpoint healthy",
-      "Prove key_inequality_vertex: (1) pedal feet F_b=orthogonalProjection line[Z,X] P, F_c=orthogonalProjection line[X,Y] P; (2) right angles at feet -> A,F_b,F_c,P concyclic on circle diam PX (Thales, Angle/Sphere.lean:103); (3) dist F_b F_c = PX*sin(angle YXZ) via inscribed angle / dist_div_sin_angle_eq_two_mul_circumradius on that circle; (4) law of cosines in triangle P F_b F_c gives chord identity; (5) feed key_inequality_of_chord_and_sines with law of sines (now Mathlib) + chord identity."
+      "Prove key_inequality_vertex: (1) pedal feet F_b=orthogonalProjection line[Z,X] P, F_c=orthogonalProjection line[X,Y] P; (2) right angles at feet -> A,F_b,F_c,P concyclic on circle diam PX (Thales, Angle/Sphere.lean:103); (3) dist F_b F_c = PX*sin(angle YXZ) via inscribed angle / dist_div_sin_angle_eq_two_mul_circumradius on that circle; (4) law of cosines in triangle P F_b F_c gives chord identity; (5) feed key_inequality_of_chord_and_sines with law of sines (now Mathlib) + chord identity.",
+      "Quiet-fleet (ctrs<3): build companion file ErdosMordellChordIdentity.lean from the fully-named 6-step decomposition; step 4 via angle_smul_left/right_of_pos + Sbtw foot-on-open-side.",
+      "Retry Aristotle MCP at session start — down (Resource not found) cycles 3-5; the whole key_inequality_vertex is a HARD known lemma ideal to delegate once it recovers."
     ]
   }
 }
