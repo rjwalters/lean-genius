@@ -32,11 +32,12 @@
     "iteration": 6,
     "focus": "researcher-1, 2026-06-18 (S8): Aristotle MCP re-probed → still 404 'Resource not found'; Docker OOM-unsafe (load ~14, 11 containers). No Lean shipped (protect registered CI). NEW: hand-verified the line-290 witnesses a=min{iα}, b=min{-iα}=1-max{iα}, c=a+b are exactly the classical short/short/long three-gap values {pα},1-{qα},{pα}+(1-{qα}) — so the future Aristotle prove_file targets a CORRECT goal (no wasted budget). Frontier unchanged: 1 sorry (STEP D, N>=2 classification), 0 axioms, build-verified. BLOCKED on backend; moving on per 3+-sessions-stuck rule.",
     "blockers": [
+      "Aristotle MCP still returns 404 'Resource not found' as of S9 (researcher-10, 2026-06-18 23:05) — prove + prove_file + trivial smoke all 404; designated STEP-D solver offline S4–S9.",
       "Aristotle MCP returns 404 'Resource not found' (S4/S5/S6) — the right tool for this KNOWN-math sorry is offline.",
       "Docker gated this cycle: 15 lean-build containers, ~5.7 GiB of a 7.65 GiB VM — a new build is OOM-unsafe (defer if >8 containers / >5 GiB). Cannot verify any manual Lean changes, so none were shipped.",
       "exists_gap_triple (STEP D) now stuck across sessions 3–6 → BLOCKED on backend availability, not on mathematical insight."
     ],
-    "nextAction": "Backend-up turnkey plan: land STEPS A–C as named sorry-free lemmas (manual or per-lemma Aristotle prove), then submit STEP D / the whole file to Aristotle prove_file. Re-verify with docker-build Proofs.Erdos998ThreeGapOQ04 when ≤8 containers. Once exists_gap_triple is sorry-free: flip status to verified (0 axioms) and add a gallery entry.",
+    "nextAction": "Aristotle is the designated STEP-D solver but remains 404 (confirmed S9, researcher-10). The instant `mcp__aristotle__prove` returns non-404, submit exists_gap_triple (free witnesses, the orbit/forwardGap/gapLengths defs as context) to prove_file. Manual fallback only if Aristotle stays down >1 more session: land STEPS A–C as named lemmas under a WARM-CACHE build loop (the Erdos998 mathlib cache is warm since the file already builds green), NOT during an OOM window.",
     "attemptCounts": {
       "total": 6,
       "currentApproach": 1,
@@ -97,6 +98,12 @@
           "session": 4,
           "outcome": "blocked",
           "notes": "researcher-11 2026-06-16: re-confirmed exact frontier (1 sorry @ line 183, unregistered, build unverified) and repaired metadata propagation (created this meta.json so the prioritizer sees the accumulated knowledge). No Lean shipped — dual-backend blackout (Aristotle 404, Docker exit 124)."
+        },
+        {
+          "id": "attempt-03",
+          "session": 9,
+          "outcome": "blocked",
+          "notes": "researcher-10 2026-06-18 ~23:05: frontier UNCHANGED — file Erdos998ThreeGapOQ04.lean now 366 LOC, registered in Proofs.lean, build-verified green, 1 sorry (STEP D / exists_gap_triple N>=2 classification, line 297), 0 axioms. RE-PROBED Aristotle MCP for the designated STEP-D path: prove_file AND a trivial `1+1=2` prove smoke BOTH return 404 'Resource not found' — backend still offline (S4–S9 unbroken). Drafted a clean companion (exists_gap_triple as a fresh sorry, free witnesses) to submit, but removed it since Aristotle cannot consume it and it would expose the main open conjecture (against companion-file convention). Declined to blind-write STEPS A–C manually during OOM (5 lean-build containers / 7.65 GiB VM): STEP A's forwardGap->index-min reduction needs Finset.image_erase + inf'_image + inf'_congr whose exact signatures are unverifiable without a build loop, and landing A–C does not change the file's shippable status (still 1 sorry). Released; re-attempt the instant Aristotle returns non-404."
         }
       ]
     }
@@ -130,7 +137,7 @@
     ]
   },
   "started": "2026-06-15T00:00:00Z",
-  "lastUpdate": "2026-06-18T11:08:00-08:00",
+  "lastUpdate": "2026-06-18T23:05:00-08:00",
   "significance": 7,
   "tractability": 7
 }
