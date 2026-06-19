@@ -16,7 +16,11 @@
       "local-global propagation",
       "Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Independent Sets",
+      "Ramsey Theory",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-e804-independent",
@@ -35,7 +39,11 @@
       "vertex covers",
       "graph coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Adjacency",
+      "Vertex Sets",
+      "Cliques And Stable Sets"
+    ]
   },
   {
     "id": "ann-e804-alpha",
@@ -54,7 +62,11 @@
       "chromatic number",
       "NP-completeness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Independent Set",
+      "Finset Cardinality",
+      "Maximization Over Subsets"
+    ]
   },
   {
     "id": "ann-e804-empty-independent",
@@ -73,7 +85,11 @@
       "base case",
       "Finset.not_mem_empty"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vacuous Truth",
+      "Empty Set",
+      "Universal Quantifier"
+    ]
   },
   {
     "id": "ann-e804-local-independence",
@@ -92,7 +108,11 @@
       "induced subgraphs",
       "Ramsey-type conditions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Induced Subgraphs",
+      "Independence Number",
+      "Quantification Over Subsets"
+    ]
   },
   {
     "id": "ann-e804-conjecture-1",
@@ -111,7 +131,11 @@
       "tight bounds",
       "polynomial vs polylogarithmic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Independence Number",
+      "Polynomial Versus Polylogarithmic",
+      "Little-o Notation"
+    ]
   },
   {
     "id": "ann-e804-conjecture-2",
@@ -130,7 +154,11 @@
       "false conjectures",
       "diminishing returns"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Local Independence Property",
+      "Asymptotic Growth Rates",
+      "Saturation Effects"
+    ]
   },
   {
     "id": "ann-e804-upper-bound",
@@ -149,7 +177,11 @@
       "probabilistic method",
       "G(n,p)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Random Graphs G(n,p)",
+      "Probabilistic Method",
+      "Graph Density"
+    ]
   },
   {
     "id": "ann-e804-lower-bound",
@@ -168,7 +200,11 @@
       "tight bounds",
       "log log factors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Independence Number",
+      "Extremal Combinatorics",
+      "Universal Quantification"
+    ]
   },
   {
     "id": "ann-e804-tight-bound-2",
@@ -187,7 +223,11 @@
       "asymptotic equivalence",
       "tight characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Equivalence",
+      "Independence Number",
+      "Local Window Size"
+    ]
   },
   {
     "id": "ann-e804-main-theorem",
@@ -206,7 +246,11 @@
       "disproof",
       "conjunction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Disproof By Counterexample",
+      "Logical Conjunction",
+      "Erdos-Hajnal Conjecture"
+    ]
   },
   {
     "id": "ann-e804-resolution",
@@ -225,6 +269,10 @@
       "summary theorem",
       "Alon-Sudakov 2007"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper And Lower Bounds",
+      "Tight Asymptotic Bounds",
+      "Logical Conjunction"
+    ]
   }
 ]
