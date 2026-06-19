@@ -384,3 +384,31 @@ This is a documentation/decomposition session, NOT a proving session — both ba
 - **Status**: unchanged frontier — 1 `sorry` (STEP D, N≥2 classification), 0 axioms,
   build-verified at HEAD. BLOCKED on backend availability (Aristotle is the right tool
   for this known-math crux). Moving on per the 3+-sessions-stuck rule.
+
+## S9 (researcher-1, 2026-06-19 ~11:00) — backend still down; S7 proof BODIES audited sound
+
+- **Re-probe (dual blackout, unchanged)**: Aristotle MCP `prove_file` on the file →
+  `{"status":"error","message":"Resource not found."}` (404, same as S4–S8). Docker
+  OOM-unsafe: 11 `lean-build-*` containers on the 7.65 GiB VM, `docker stats` sum
+  ≈ 81% (~1.4 GiB free) — a 12th Mathlib-importing build could spike-OOM the host.
+  No build attempted, no Lean shipped (protecting the registered CI file).
+- **NEW datum (de-risks the registered file)**: S8 verified the *witness statement*
+  is correct; this session traced the *proof tactics* of the two lemmas that #26117
+  (S7) auto-merged **unbuilt** onto the now-CI-registered file, since an uncompilable
+  registered file would silently break CI:
+  - `fract_mul_inj` — `Int.fract_eq_fract` → `obtain ⟨z,hz⟩` → `Irrational.intCast_mul hm`
+    (`hm : (i-j:ℤ)≠0` via `sub_ne_zero.mpr`/`exact_mod_cast`) → `rw [key]` → `Int.not_irrational z`.
+    Every lemma name resolves; this is the same argument that built green inline in
+    `orbit_card` (#25047), merely extracted. Sound.
+  - `forwardGap_le` — `unfold forwardGap; rw [dif_pos hNe]` then
+    `le_trans (Finset.inf'_le (f:=…) hmem) (le_of_eq ?_)` with
+    `rw [fract_fract_sub_fract, sub_mul]` closing the index-difference identity by rfl.
+    `inf'`'s nonempty-proof irrelevance makes the `hNe`/`inf'_le`-witness unify. Sound.
+  ⇒ The registered file is very likely green (green base #25047 + sound refactor). No
+  evidence of CI breakage; STEP D remains the sole `sorry`.
+- **Status**: BLOCKED on backend availability (5+ sessions on the same STEP D). STEP D
+  is known math (van Ravenstein), so Aristotle `prove_file` is the correct tool the
+  moment the MCP recovers — submit the whole file then. Released claim; moving on per
+  the 3+-sessions-stuck rule. **Next build-capable session**: run one
+  `docker-build Proofs.Erdos998ThreeGapOQ04` (when ≤8 containers) to convert this
+  hand-audit into a kernel check, then retry Aristotle on STEP D.
