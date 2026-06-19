@@ -16,7 +16,11 @@
       "density",
       "sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Integer sequences",
+      "Multiplicative structure of integers",
+      "Open problems in combinatorial number theory"
+    ]
   },
   {
     "id": "ann-421-sequence",
@@ -34,7 +38,11 @@
       "strict-mono",
       "sequence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Functions N → N",
+      "Monotonic functions",
+      "Order relations on integers"
+    ]
   },
   {
     "id": "ann-421-density",
@@ -52,7 +60,11 @@
       "natural-density",
       "asymptotic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counting function of a set",
+      "Limits of sequences",
+      "Asymptotic notation"
+    ]
   },
   {
     "id": "ann-421-product",
@@ -71,7 +83,11 @@
       "interval",
       "finset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite products (∏ notation)",
+      "Indexed families over intervals",
+      "Finset and indexing"
+    ]
   },
   {
     "id": "ann-421-distinct",
@@ -89,7 +105,11 @@
       "injective",
       "distinct"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Injective functions",
+      "Pairwise distinctness",
+      "Logical equivalence of statements"
+    ]
   },
   {
     "id": "ann-421-conjecture",
@@ -107,7 +127,11 @@
       "conjecture",
       "existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Existential quantification",
+      "Conjunction of conditions",
+      "Defining sequence properties"
+    ]
   },
   {
     "id": "ann-421-selfridge",
@@ -126,7 +150,11 @@
       "one-over-e",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Epsilon-delta limit definitions",
+      "The constant 1/e",
+      "Explicit sequence constructions"
+    ]
   },
   {
     "id": "ann-421-bounds",
@@ -144,7 +172,11 @@
       "counting",
       "constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Triangular numbers n(n+1)/2",
+      "Counting pairs (combinations)",
+      "Quadratic growth"
+    ]
   },
   {
     "id": "ann-421-examples",
@@ -163,7 +195,11 @@
       "primes",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime numbers",
+      "Density of natural numbers vs primes",
+      "Counterexamples and edge cases"
+    ]
   },
   {
     "id": "ann-421-related",
@@ -181,7 +217,11 @@
       "erdos-786",
       "selfridge"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cross-referencing Erdős problems",
+      "Selfridge's construction",
+      "1/e density bound"
+    ]
   },
   {
     "id": "ann-421-status",
@@ -200,6 +240,10 @@
       "oeis",
       "gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper and lower bounds",
+      "OEIS sequence database",
+      "Status of open conjectures"
+    ]
   }
 ]
