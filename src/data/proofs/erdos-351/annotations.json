@@ -16,7 +16,11 @@
       "completeness",
       "polynomials"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős problem 351 on completeness of polynomial sequences",
+      "the notion of strong completeness for integer sets",
+      "polynomials p(x) and the values p(n) + 1/n"
+    ]
   },
   {
     "id": "ann-e351-imports",
@@ -35,7 +39,11 @@
       "filter"
     ],
     "mathContext": "See annotation content for formal details of imports and namespace",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib's Polynomial, Finset, Filter and Set namespaces",
+      "polynomial evaluation and finite-set operations in Lean",
+      "filters for expressing eventual behavior"
+    ]
   },
   {
     "id": "ann-e351-imageset",
@@ -54,7 +62,11 @@
       "range",
       "sequence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the range of a function as a set",
+      "polynomial evaluation P.eval at natural numbers",
+      "the convention 1/0 = 0 in this image-set definition"
+    ]
   },
   {
     "id": "ann-e351-strongcomplete",
@@ -73,7 +85,11 @@
       "filter",
       "additive-combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite subset sums representing integers",
+      "the eventually (∀ᶠ ... atTop) filter predicate for sufficiently large m",
+      "set difference A \\ B removing a finite forbidden set"
+    ]
   },
   {
     "id": "ann-e351-hascomplete",
@@ -91,7 +107,11 @@
       "completeness"
     ],
     "mathContext": "See annotation content for formal details of strongly complete image",
-    "prerequisites": []
+    "prerequisites": [
+      "the imageSet {P(n) + 1/n} of a polynomial",
+      "strong completeness applied to a polynomial's image",
+      "Erdős's question about which polynomials yield complete sets"
+    ]
   },
   {
     "id": "ann-e351-open",
@@ -109,7 +129,11 @@
       "open-problem",
       "conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomials with positive leading coefficient",
+      "encoding an open problem's unknown status via a trivial axiom",
+      "the distinction between resolved special cases and the general conjecture"
+    ]
   },
   {
     "id": "ann-e351-graham",
@@ -128,7 +152,11 @@
       "partition-theory",
       "linear-polynomial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graham's 1963 result on {n + 1/n}",
+      "the linear polynomial p(x) = x as the base case",
+      "partition arguments in additive number theory"
+    ]
   },
   {
     "id": "ann-e351-alekseyev",
@@ -147,7 +175,11 @@
       "squares",
       "partition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the squared polynomial p(x) = x² and HasStronglyCompleteImage (X ^ 2)",
+      "Alekseyev's 2019 work on partitions into distinct squares",
+      "combining Graham's theorem with reciprocal-of-squares summing to 1"
+    ]
   },
   {
     "id": "ann-e351-membership",
@@ -165,7 +197,11 @@
       "membership",
       "polynomial-eval"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.mem_range to exhibit a witness n for image-set membership",
+      "evaluation of X and X² giving n and n² respectively",
+      "simplification of polynomial evaluation in Lean"
+    ]
   },
   {
     "id": "ann-e351-bounds",
@@ -183,6 +219,10 @@
       "bounds",
       "rational-arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positivity of 1/n giving the lower bound n + 1/n > n",
+      "1/n < 1 for n ≥ 2 giving the upper bound n + 1/n < n + 1",
+      "the boundary case n = 1 where 1 + 1/1 equals 2"
+    ]
   }
 ]
