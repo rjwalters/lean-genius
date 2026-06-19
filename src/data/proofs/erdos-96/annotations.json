@@ -17,7 +17,11 @@
       "Extremal combinatorics",
       "Erdős-Moser"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Distance Problem",
+      "Convex Position",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-e96-definitions",
@@ -37,7 +41,11 @@
       "dist",
       "Finset.powerset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Distance",
+      "Convex Hull",
+      "Finset Cardinality"
+    ]
   },
   {
     "id": "ann-e96-conjectures",
@@ -56,7 +64,11 @@
       "Linear bound",
       "Convex polygon"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Linear Upper Bound",
+      "Existential Quantification",
+      "Unit Distance Count"
+    ]
   },
   {
     "id": "ann-e96-upper-bounds",
@@ -76,7 +88,11 @@
       "O(n log n)",
       "Recursive counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Recursive Counting Argument",
+      "Logarithmic Factor",
+      "Axiomatized Bound"
+    ]
   },
   {
     "id": "ann-e96-lower-bound",
@@ -95,7 +111,11 @@
       "Constructive bound",
       "omega tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Construction",
+      "Convex Polygon",
+      "Omega Tactic"
+    ]
   },
   {
     "id": "ann-e96-related",
@@ -114,7 +134,11 @@
       "Sum conjecture",
       "Problem #97"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Equidistant Points",
+      "Powerset Filtering",
+      "Repeated Distances"
+    ]
   },
   {
     "id": "ann-e96-summary",
@@ -133,6 +157,10 @@
       "Open problem",
       "Proved conjunction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper And Lower Bounds",
+      "Conjunction Of Theorems",
+      "Open Problem Status"
+    ]
   }
 ]
