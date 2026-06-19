@@ -42,7 +42,11 @@
       "Set",
       "BigOperators"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean namespaces",
+      "Mathlib Finset and Set types",
+      "BigOperators summation notation"
+    ]
   },
   {
     "id": "ann-328-repr-func",
