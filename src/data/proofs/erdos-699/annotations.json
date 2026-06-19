@@ -17,7 +17,11 @@
       "prime-divisors",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "elementary combinatorics",
+      "divisibility"
+    ]
   },
   {
     "id": "ann-e699-imports",
@@ -36,7 +40,11 @@
       "imports",
       "binomial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "namespaces and open commands"
+    ]
   },
   {
     "id": "ann-e699-sylvester-schur",
@@ -55,7 +63,11 @@
       "prime-factors",
       "binomial-coefficients"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "prime distribution",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e699-definitions",
@@ -74,7 +86,11 @@
       "gcd",
       "prime-divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 definitions",
+      "predicate logic",
+      "divisibility theory"
+    ]
   },
   {
     "id": "ann-e699-statement",
@@ -93,7 +109,11 @@
       "universal-quantification",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "first-order logic",
+      "universal quantification",
+      "Lean 4 proposition syntax"
+    ]
   },
   {
     "id": "ann-e699-erdos-szekeres",
@@ -112,7 +132,11 @@
       "finite-exceptions",
       "erdos-szekeres"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "finiteness arguments",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e699-example-small",
@@ -131,7 +155,11 @@
       "native_decide",
       "gcd-computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic of binomial coefficients",
+      "gcd computation",
+      "Lean 4 decide/native_decide"
+    ]
   },
   {
     "id": "ann-e699-example-medium",
@@ -149,7 +177,11 @@
       "verification",
       "different-large-primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic of binomial coefficients",
+      "prime factorization",
+      "Lean 4 native_decide"
+    ]
   },
   {
     "id": "ann-e699-counterexample-setup",
@@ -168,7 +200,11 @@
       "factorization",
       "critical-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "integer factorization",
+      "gcd computation",
+      "Lean 4 native_decide"
+    ]
   },
   {
     "id": "ann-e699-max-prime",
@@ -187,7 +223,11 @@
       "bound",
       "1080"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "divisibility theory",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e699-weak-satisfied",
@@ -206,7 +246,11 @@
       "satisfied",
       "witness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility theory",
+      "Lean 4 existential witnesses",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e699-strong-failed",
@@ -225,7 +269,11 @@
       "strict-version",
       "proof-by-contradiction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proof by contradiction",
+      "divisibility theory",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e699-why-hard",
@@ -244,6 +292,10 @@
       "gcd-structure",
       "insight"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "gcd properties",
+      "logical reasoning"
+    ]
   }
 ]
