@@ -16,7 +16,11 @@
       "measure-theory",
       "sublevel-sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue measure of subsets of the real line",
+      "polynomial sup-norm on a bounded interval",
+      "extremal problems and suprema over function families"
+    ]
   },
   {
     "id": "ann-e1038-imports",
@@ -35,7 +39,11 @@
       "imports",
       "namespaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ENNReal arithmetic and order structure",
+      "Polynomial namespace and evaluation in Mathlib",
+      "scoped notation and Real.sqrt"
+    ]
   },
   {
     "id": "ann-e1038-monic-def",
@@ -54,7 +62,11 @@
       "polynomial-roots",
       "interval"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "leading coefficient and degree of a polynomial",
+      "multiset of roots over a field",
+      "Set.Icc closed-interval membership"
+    ]
   },
   {
     "id": "ann-e1038-sublevel",
@@ -73,7 +85,11 @@
       "preimage",
       "measurable-sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "preimage of an open set under a continuous map",
+      "absolute value as a real-valued function",
+      "Borel measurability of polynomial sublevel sets"
+    ]
   },
   {
     "id": "ann-e1038-measure",
@@ -92,7 +108,11 @@
       "volume",
       "ennreal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "countable additivity over disjoint intervals",
+      "ENNReal.ofReal coercion of interval lengths",
+      "finiteness criteria for Lebesgue measure"
+    ]
   },
   {
     "id": "ann-e1038-supremum",
@@ -111,7 +131,11 @@
       "potential-theory",
       "tao-2025"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logarithmic capacity and transfinite diameter",
+      "equilibrium measure on a compact set",
+      "limiting families of polynomials and weak convergence"
+    ]
   },
   {
     "id": "ann-e1038-lower-bound",
@@ -130,7 +154,11 @@
       "lower-bound",
       "logarithmic-potential"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logarithmic energy minimization",
+      "Frostman's theorem and equilibrium potentials",
+      "lower bounds via potential-theoretic inequalities"
+    ]
   },
   {
     "id": "ann-e1038-upper-bound",
@@ -149,6 +177,10 @@
       "upper-bound",
       "explicit-construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "explicit polynomial witness constructions",
+      "infimum as greatest lower bound over a family",
+      "numerical estimation of sublevel-set length"
+    ]
   }
 ]
