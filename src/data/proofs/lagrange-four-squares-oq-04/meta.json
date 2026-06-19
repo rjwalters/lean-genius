@@ -17,11 +17,10 @@
     "proofRepoPath": "Proofs/LagrangeFourSquaresOQ04.lean",
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 3,
-    "assumptions": "3 axioms across the chain. (1) not_obstructed_is_three_squares (main file, LagrangeFourSquaresOQ04.lean): backward direction — every number NOT of the form 4^a(8b+7) IS a sum of three squares (requires genus theory). (2) dirichlet_key_lemma (ThreeSquares.lean): Dirichlet/Minkowski lattice key lemma yielding a three-square representation from a Legendre-symbol hypothesis. (3) not_excluded_form_is_sum_three_sq (ThreeSquares.lean): a redeclaration of the backward direction under the IsExcludedForm predicate framework used by the infrastructure file. The forward direction (Legendre's mod-8 obstruction) is fully proved.",
+    "axiomCount": 2,
+    "assumptions": "2 axioms across the chain. (1) not_obstructed_is_three_squares (main file, LagrangeFourSquaresOQ04.lean): backward direction — every number NOT of the form 4^a(8b+7) IS a sum of three squares (requires genus theory). (2) not_excluded_form_is_sum_three_sq (ThreeSquares.lean): a redeclaration of the backward direction under the IsExcludedForm predicate framework used by the infrastructure file. (The former axiom dirichlet_key_lemma is no longer an assumption: it is now a proved theorem in ThreeSquares.lean for the d ≤ 2 slice — the only case the construction uses — so it no longer adds to the trusted base.) The forward direction (Legendre's mod-8 obstruction) is fully proved.",
     "axioms": [
       "not_obstructed_is_three_squares: ¬IsObstructed n → IsSumOfThreeSquares n (backward direction, requires genus theory)",
-      "dirichlet_key_lemma (ThreeSquares.lean): Minkowski/Dirichlet key lemma — produces a three-square representation of n from a Legendre-symbol hypothesis (n > 1, d > 0, p = d·n − 1 prime, legendreSym p (−d) = 1)",
       "not_excluded_form_is_sum_three_sq (ThreeSquares.lean): ¬IsExcludedForm n → ∃ a b c, a² + b² + c² = n (backward direction under the IsExcludedForm framework)"
     ],
     "originalContributions": [
@@ -30,7 +29,7 @@
       "Descent lemma: 4 | (x²+y²+z²) implies 2|x, 2|y, 2|z",
       "Full biconditional combining proved forward + axiomatized backward directions",
       "Examples: 7, 15, 28, 112 are not sums of three squares",
-      "Single-AP witness refinement (ThreeSquaresSingleAP.lean, sorry-free and axiom-free, Mathlib-only): the quadratic side-condition legendreSym p (−n) = 1 of dirichlet_key_lemma is satisfied uniformly by the single arithmetic progression p ≡ 1 (mod 4n), removing the rigid p = d·n − 1 tie and its Residue3 (n ≡ 3 mod 4) carve-out. Pure quadratic reciprocity plus Dirichlet's theorem on primes in AP; the Minkowski lattice key lemma itself remains the axiomatized component."
+      "Single-AP witness refinement (ThreeSquaresSingleAP.lean, sorry-free and axiom-free, Mathlib-only): the quadratic side-condition legendreSym p (−n) = 1 of dirichlet_key_lemma is satisfied uniformly by the single arithmetic progression p ≡ 1 (mod 4n), removing the rigid p = d·n − 1 tie and its Residue3 (n ≡ 3 mod 4) carve-out. Pure quadratic reciprocity plus Dirichlet's theorem on primes in AP. The underlying dirichlet_key_lemma is now a proved theorem (ThreeSquares.lean) for the d ≤ 2 slice the construction uses, rather than an axiom."
     ],
     "dateAdded": "2026-04-13",
     "lineCount": 226,
