@@ -16,7 +16,11 @@
       "perfect difference set",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "combinatorial number theory",
+      "mathematical conjectures"
+    ]
   },
   {
     "id": "ann-e707-imports",
@@ -35,7 +39,11 @@
       "Finset",
       "ZMod"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "modular arithmetic"
+    ]
   },
   {
     "id": "ann-e707-sidon",
@@ -54,7 +62,11 @@
       "distinct sums",
       "additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "elementary number theory",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e707-sidon-diff",
@@ -72,7 +84,11 @@
       "difference set",
       "equivalent definition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "elementary number theory",
+      "logical equivalence"
+    ]
   },
   {
     "id": "ann-e707-perfect-diff",
@@ -91,7 +107,11 @@
       "cyclic",
       "difference representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic",
+      "combinatorial design theory",
+      "finite geometry"
+    ]
   },
   {
     "id": "ann-e707-main-false",
@@ -110,7 +130,11 @@
       "negation",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "negation of quantifiers",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e707-sidon-124",
@@ -129,7 +153,11 @@
       "case analysis",
       "verified"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "case analysis",
+      "decidable arithmetic"
+    ]
   },
   {
     "id": "ann-e707-counterex-prime",
@@ -148,7 +176,11 @@
       "Mixon",
       "exhaustive search"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "modular arithmetic",
+      "computational search"
+    ]
   },
   {
     "id": "ann-e707-counterex-mc",
@@ -167,7 +199,11 @@
       "any modulus",
       "stronger result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "elementary number theory",
+      "greedy sequences"
+    ]
   },
   {
     "id": "ann-e707-counterex-hall",
@@ -186,7 +222,11 @@
       "1947",
       "historical"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "finite geometry",
+      "history of mathematics"
+    ]
   },
   {
     "id": "ann-e707-size-bound",
@@ -205,7 +245,11 @@
       "quadratic bound",
       "counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial counting",
+      "modular arithmetic",
+      "elementary inequalities"
+    ]
   },
   {
     "id": "ann-e707-singer",
@@ -224,7 +268,11 @@
       "existence",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite field theory",
+      "group theory",
+      "combinatorial design theory"
+    ]
   },
   {
     "id": "ann-e707-small",
@@ -243,7 +291,11 @@
       "positive result",
       "boundary"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "combinatorial design theory",
+      "case analysis"
+    ]
   },
   {
     "id": "ann-e707-example-7",
@@ -262,6 +314,10 @@
       "mod 7",
       "embedding"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic",
+      "additive combinatorics",
+      "finite sets"
+    ]
   }
 ]
