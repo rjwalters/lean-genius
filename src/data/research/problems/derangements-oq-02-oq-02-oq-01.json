@@ -1,7 +1,7 @@
 {
   "slug": "derangements-oq-02-oq-02-oq-01",
   "title": "Higher Moments of Fixed Points of a Random Permutation",
-  "phase": "OBSERVE",
+  "phase": "COMPLETE",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETE",
     "since": "2026-06-18T23:18:44-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Result fully proved and machine-verified; build confirmed green. Knowledge recorded.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None — completed.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SOLVED and machine-verified. The k-th factorial moment of the fixed-point count of a uniform random permutation of Fin n equals 1 for all k ≤ n. Formalized in Proofs/DerangementsOQ02OQ02OQ01.lean (183 lines, 6 theorems, 1 def, 0 sorries, 0 axioms; main result sum_descFactorial_fixedPoints_eq_factorial). Build-confirmed GREEN under the current Mathlib pin (docker-build, 3081 jobs, Azure cache) on 2026-06-19, guarding against silent badge-rot. The verified 'original' badge is defensible.",
+    "builtItems": [
+      "Proofs/DerangementsOQ02OQ02OQ01.lean — main theorem sum_descFactorial_fixedPoints_eq_factorial: ∑_{σ:Perm(Fin n)} (|Fix σ|).descFactorial k = n! for k ≤ n.",
+      "Helper def fixedEmbEquiv + lemma card_fixedBy_emb: the embeddings Fin k ↪ Fin n fixed by σ biject with Fin k ↪ {fixed points of σ}, so their count is (|Fix σ|).descFactorial k (via Fintype.card_embedding_eq).",
+      "Corollaries: sum_fixedPoints_eq_factorial_via_moment (k=1 recovers parent E[X]=1), moment_sum_eq_card_perm, sum_second_factorial_moment (k=2 ⇒ Var(X)=1), and sum_descFactorial_fixedPoints_eq_zero (k>n ⇒ sum 0)."
+    ],
+    "insights": [
+      "Burnside's lemma on the action of Perm(Fin n) on ordered injective k-tuples (Fin k ↪ Fin n, σ•f = σ∘f) is the engine: each summand (|Fix σ|)_k counts the k-tuples fixed by σ, so the moment sum is (#orbits)·|G|.",
+      "k-transitivity of the full symmetric group (Equiv.Perm.isMultiplyPretransitive) collapses the orbit count to exactly 1 whenever k ≤ n (the embedding set is nonempty via Fin.castLEOrderEmb), giving sum = 1·n! = n!.",
+      "Factorial-moment-equals-1 for every k is the finite-n signature of the Poisson(1) limit (whose factorial moments are all 1); the sharp transition at k>n (sum jumps to 0, since no permutation has >n fixed points) distinguishes the finite-n regime from the limit.",
+      "Mathlib API used: MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group (Burnside), pretransitive_iff_unique_quotient_of_nonempty (single orbit), Fintype.card_embedding_eq, Fintype.card_perm. No new infrastructure needed; maxHeartbeats 1000000 on the main theorem."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "None — result fully proved and build-verified. Mark completed."
+    ],
     "markdown": "# Knowledge Base: derangements-oq-02-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -49,5 +60,17 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-06-18T23:18:44-07:00"
+  "started": "2026-06-18T23:18:44-07:00",
+  "progressSummary": "SOLVED and machine-verified. The k-th factorial moment of the fixed-point count of a uniform random permutation of Fin n equals 1 for all k ≤ n. Formalized in Proofs/DerangementsOQ02OQ02OQ01.lean (183 lines, 6 theorems, 1 def, 0 sorries, 0 axioms; main result sum_descFactorial_fixedPoints_eq_factorial). Build-confirmed GREEN under the current Mathlib pin (docker-build, 3081 jobs, Azure cache) on 2026-06-19, guarding against silent badge-rot. The verified 'original' badge is defensible.",
+  "insights": [
+    "Burnside's lemma on the action of Perm(Fin n) on ordered injective k-tuples (Fin k ↪ Fin n, σ•f = σ∘f) is the engine: each summand (|Fix σ|)_k counts the k-tuples fixed by σ, so the moment sum is (#orbits)·|G|.",
+    "k-transitivity of the full symmetric group (Equiv.Perm.isMultiplyPretransitive) collapses the orbit count to exactly 1 whenever k ≤ n (the embedding set is nonempty via Fin.castLEOrderEmb), giving sum = 1·n! = n!.",
+    "Factorial-moment-equals-1 for every k is the finite-n signature of the Poisson(1) limit (whose factorial moments are all 1); the sharp transition at k>n (sum jumps to 0, since no permutation has >n fixed points) distinguishes the finite-n regime from the limit.",
+    "Mathlib API used: MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group (Burnside), pretransitive_iff_unique_quotient_of_nonempty (single orbit), Fintype.card_embedding_eq, Fintype.card_perm. No new infrastructure needed; maxHeartbeats 1000000 on the main theorem."
+  ],
+  "builtItems": [
+    "Proofs/DerangementsOQ02OQ02OQ01.lean — main theorem sum_descFactorial_fixedPoints_eq_factorial: ∑_{σ:Perm(Fin n)} (|Fix σ|).descFactorial k = n! for k ≤ n.",
+    "Helper def fixedEmbEquiv + lemma card_fixedBy_emb: the embeddings Fin k ↪ Fin n fixed by σ biject with Fin k ↪ {fixed points of σ}, so their count is (|Fix σ|).descFactorial k (via Fintype.card_embedding_eq).",
+    "Corollaries: sum_fixedPoints_eq_factorial_via_moment (k=1 recovers parent E[X]=1), moment_sum_eq_card_perm, sum_second_factorial_moment (k=2 ⇒ Var(X)=1), and sum_descFactorial_fixedPoints_eq_zero (k>n ⇒ sum 0)."
+  ]
 }
