@@ -94,7 +94,7 @@ instance LinearForm.decidableSolvable {n : ℕ} (L : LinearForm n) : Decidable L
 variables: solvability is a decidable predicate over all linear forms in `n` unknowns,
 for every `n`. This is the decidable boundary opposite Jones's degree-4 / 9-variable
 undecidable family in the parent file. -/
-theorem linear_h10_decidable (n : ℕ) : DecidablePred (LinearForm.Solvable (n := n)) :=
+def linear_h10_decidable (n : ℕ) : DecidablePred (LinearForm.Solvable (n := n)) :=
   fun L => L.decidableSolvable
 
 /-- Worked instance: `6x + 10y + 15z = 1` is solvable, since `gcd(6,10,15) = 1 ∣ 1`.
@@ -102,6 +102,7 @@ A concrete witness is `(1, 1, -1)`: `6 + 10 − 15 = 1`. -/
 example : (⟨![6, 10, 15], -1⟩ : LinearForm 3).Solvable :=
   ⟨![1, 1, -1], by
     norm_num [LinearForm.Solvable, Fin.sum_univ_three,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]⟩
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+      Matrix.head_cons, Matrix.tail_cons]⟩
 
 end Hilbert10OQ04OQ03
