@@ -1,0 +1,160 @@
+{
+  "id": "hilbert-10-oq-04-oq-03",
+  "title": "Hilbert's 10th OQ-04-03: Linear Diophantine Solvability is Decidable",
+  "slug": "hilbert-10-oq-04-oq-03",
+  "description": "Sharpens the degree-1 boundary of Hilbert's Tenth Problem from an existential characterization to a computable one. Proves that the linear Diophantine equation Σ aᵢxᵢ = b is solvable over ℤ iff the (computable) gcd of the coefficients divides b, replacing the parent file's existentially-quantified witness d with the concrete Finset.gcd. Derives a Decidable instance for linear-form solvability and concludes that degree-1 Hilbert's Tenth Problem is uniformly decidable in every number of variables — the decidable lower edge opposite Jones's degree-4 / 9-variable undecidable family. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-18",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/Hilbert10OQ04OQ03.lean",
+    "tags": [
+      "hilbert-10",
+      "diophantine-equations",
+      "decidability",
+      "bezout",
+      "gcd",
+      "computability",
+      "research"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 108,
+    "theoremCount": 3,
+    "definitionCount": 4,
+    "dateAdded": "2026-06-18",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.gcd_dvd",
+        "description": "The gcd of a finite family divides each member",
+        "module": "Mathlib.Algebra.GCDMonoid.Finset"
+      },
+      {
+        "theorem": "Finset.dvd_gcd",
+        "description": "A common divisor of all members divides the gcd (universal property)",
+        "module": "Mathlib.Algebra.GCDMonoid.Finset"
+      },
+      {
+        "theorem": "Ideal.mem_span_range_iff_exists_fun",
+        "description": "Membership in a finitely-generated ideal as an explicit linear combination",
+        "module": "Mathlib.RingTheory.Ideal.Operations"
+      },
+      {
+        "theorem": "Submodule.IsPrincipal.generator",
+        "description": "Generator of a principal ideal (ℤ is a PID)",
+        "module": "Mathlib.RingTheory.PrincipalIdealDomain"
+      },
+      {
+        "theorem": "Ideal.mem_span_singleton",
+        "description": "Membership in a principal ideal ↔ divisibility by the generator",
+        "module": "Mathlib.RingTheory.Ideal.Span"
+      },
+      {
+        "theorem": "decidable_of_iff'",
+        "description": "Transport a Decidable instance across a propositional equivalence",
+        "module": "Mathlib.Logic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "span_range_eq_span_gcd: the coefficient ideal Ideal.span (Set.range a) over ℤ equals Ideal.span {Finset.univ.gcd a} — the principal generator and the Finset gcd generate the same ideal",
+      "solvable_iff_gcd_dvd: explicit gcd form of n-variable Bézout — Σ aᵢxᵢ = b is solvable over ℤ iff (Finset.univ.gcd a) ∣ b, replacing the parent's existential witness d with a concrete computable value",
+      "LinearForm.solvable_iff: a linear form Σ cᵢxᵢ + c is solvable iff the gcd of its coefficients divides its constant term",
+      "LinearForm.decidableSolvable: a Decidable instance for linear Diophantine solvability — one gcd computation plus one divisibility test",
+      "linear_h10_decidable: degree-1 Hilbert's Tenth Problem is a DecidablePred over all linear forms in n unknowns, for every n — the decidable boundary of the H10 complexity hierarchy"
+    ],
+    "assumptions": "None. The file is fully machine-checked with 0 axioms and 0 sorries; #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no native_decide).",
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Hilbert's Tenth Problem asks for an algorithm deciding integer solvability of polynomial Diophantine equations; the MRDP theorem (Davis–Putnam–Robinson–Matiyasevich, 1970) shows no such algorithm exists in general, and Jones (1982) pinned the undecidable frontier at degree 4 in 9 variables. The opposite, decidable, edge of the hierarchy is classical and elementary: degree-1 (linear) equations are governed entirely by divisibility. For a single variable, ax = b is solvable iff a ∣ b; for several variables, the Bézout/gcd theorem says Σ aᵢxᵢ = b is solvable iff gcd(a₁,…,aₙ) ∣ b. The parent file Hilbert10OQ04 proved the multivariable statement, but with the gcd presented abstractly as an existentially-quantified d satisfying the gcd universal property. This follow-up replaces that abstract witness with the concrete, computable Finset gcd, making the criterion an actual decision procedure.",
+    "problemStatement": "Refine the parent file's existential n-variable Bézout characterization into a computable one, and extract the structural consequence: show that solvability of linear (degree-1) Diophantine equations is decidable uniformly in the number of variables.",
+    "proofStrategy": "The core lemma span_range_eq_span_gcd identifies two generators of the same ideal of ℤ. Over the PID ℤ, the coefficient ideal Ideal.span (Set.range a) is principal with some generator g; separately, Finset.univ.gcd a divides every coefficient (Finset.gcd_dvd) and is divisible by every common divisor (Finset.dvd_gcd). The inclusion span (range a) ⊆ span {gcd} holds because each aᵢ is a multiple of the gcd; the reverse inclusion holds because g divides each aᵢ (each aᵢ lies in span {g}), hence g divides the gcd by the universal property, putting the gcd back into span (range a). With the two ideals identified, solvability — which is exactly membership of b in the coefficient ideal (Ideal.mem_span_range_iff_exists_fun) — becomes membership of b in span {gcd}, i.e. gcd ∣ b (Ideal.mem_span_singleton). The LinearForm layer shifts the constant to the right-hand side (Σ cᵢxᵢ + c = 0 ↔ Σ cᵢxᵢ = -c) and applies dvd_neg, yielding solvable_iff. Because integer divisibility is decidable and the Finset gcd is computable, decidable_of_iff' transports decidability to LinearForm.Solvable, and linear_h10_decidable packages this as a DecidablePred for every n.",
+    "keyInsights": [
+      "The abstract gcd witness in the parent's existential characterization can be made concrete: Finset.univ.gcd a is itself a valid d, because Finset.gcd_dvd and Finset.dvd_gcd are exactly the divisibility and universal-property clauses the characterization demands.",
+      "Two ideals of a PID with the same divisibility data are equal: span (Set.range a) = span {Finset.univ.gcd a}. This is the bridge from the ideal-theoretic proof to the computable gcd.",
+      "Computability upgrades the result from a characterization to a decision procedure: solvability of a linear Diophantine equation is decided by one gcd computation and one divisibility check, both effective over ℤ.",
+      "This is the sharp decidable edge of the H10 hierarchy: degree 1 is decidable for every variable count n, in contrast to the parent file's degree-4 / 9-variable undecidable family. The decidability is uniform — a single DecidablePred covers all linear forms at once.",
+      "The result is axiom-free: unlike the parent file (which axiomatizes MRDP/Jones), the entire linear story is elementary and fully machine-checked, depending only on Mathlib's PID and Finset.gcd infrastructure."
+    ],
+    "text": "Linear Diophantine equations form the decidable base of Hilbert's Tenth Problem. The single-variable case ax = b reduces to a ∣ b; the multivariable case Σ aᵢxᵢ = b reduces to gcd(a₁,…,aₙ) ∣ b. This file proves the multivariable criterion in its explicit, computable form and reads off the consequence that degree-1 H10 is decidable in every number of variables — the elementary counterweight to the deep undecidability of the general problem."
+  },
+  "sections": [
+    {
+      "id": "span-gcd",
+      "title": "Coefficient Ideal Equals the gcd Ideal",
+      "startLine": 36,
+      "endLine": 60,
+      "summary": "span_range_eq_span_gcd: over ℤ, Ideal.span (Set.range a) = Ideal.span {Finset.univ.gcd a}.",
+      "mathContext": "ℤ is a principal ideal ring, so the coefficient ideal has a generator g. The Finset gcd divides each coefficient and is divisible by g (which divides each coefficient too), so the two principal ideals coincide."
+    },
+    {
+      "id": "bezout-gcd",
+      "title": "Explicit gcd Form of n-variable Bézout",
+      "startLine": 62,
+      "endLine": 75,
+      "summary": "solvable_iff_gcd_dvd: Σ aᵢxᵢ = b solvable over ℤ ↔ (Finset.univ.gcd a) ∣ b.",
+      "mathContext": "Solvability is membership of b in the coefficient ideal; rewriting that ideal as span {gcd} turns membership into divisibility by the computable gcd."
+    },
+    {
+      "id": "linear-form",
+      "title": "Linear Forms and the Decidability Criterion",
+      "startLine": 77,
+      "endLine": 95,
+      "summary": "LinearForm n structure, LinearForm.Solvable, and LinearForm.solvable_iff (gcd of coefficients ∣ constant).",
+      "mathContext": "A linear form Σ cᵢxᵢ + c vanishes for some x iff Σ cᵢxᵢ = -c is solvable; by dvd_neg this is gcd(c) ∣ c, a decidable condition."
+    },
+    {
+      "id": "decidability",
+      "title": "Decidable Instance and Degree-1 H10",
+      "startLine": 97,
+      "endLine": 107,
+      "summary": "LinearForm.decidableSolvable instance and linear_h10_decidable: degree-1 H10 is a DecidablePred for every n.",
+      "mathContext": "Integer divisibility is decidable and Finset.gcd is computable, so decidable_of_iff' yields a decision procedure; the predicate is decidable uniformly across all linear forms in n variables."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the decision procedure be made to also return an explicit solution witness (the extended-Euclidean cofactors) rather than only a yes/no answer?",
+      "status": "feasible",
+      "notes": "Mathlib's Int.gcdA / Int.gcdB give 2-variable cofactors; folding them across the coefficient list yields a constructive Bézout witness, turning the Decidable instance into a solution-producing algorithm (~100 lines)."
+    },
+    {
+      "id": "oq-02",
+      "question": "Does the gcd-divisibility decidability extend to systems of linear Diophantine equations (Smith normal form)?",
+      "status": "open",
+      "notes": "A finite system A x = b over ℤ is solvable iff b lies in the column lattice of A, decidable via the Smith normal form of A. Mathlib has partial SNF infrastructure; a uniform DecidablePred for linear systems would generalize linear_h10_decidable from one equation to many."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-10-oq-04",
+      "relationship": "parent",
+      "description": "Surveys the H10 complexity boundary and proves the existential n-variable Bézout characterization (linear_bezout_n). This entry sharpens that characterization to a computable gcd form and derives decidability of degree-1 H10."
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "ancestor",
+      "description": "The undecidability of general H10 (via MRDP). This entry establishes the opposite, decidable, edge: degree-1 equations are decidable in every number of variables."
+    }
+  ],
+  "conclusion": {
+    "summary": "Starting from the parent file's existential n-variable Bézout theorem, this entry pins the gcd witness to the concrete Finset.univ.gcd of the coefficients (span_range_eq_span_gcd, solvable_iff_gcd_dvd), giving a computable criterion: Σ aᵢxᵢ = b is solvable over ℤ iff gcd(a₁,…,aₙ) ∣ b. The criterion is packaged as a Decidable instance for linear-form solvability and lifted to linear_h10_decidable, a DecidablePred showing degree-1 Hilbert's Tenth Problem is decidable uniformly in the number of variables. The whole development is axiom-free and sorry-free.",
+    "implications": "The linear case is the elementary decidable counterweight to the deep undecidability of general Hilbert's Tenth Problem. Making the criterion computable (rather than merely existential) turns it into an actual decision procedure usable in computer algebra and in the analysis of Diophantine constraint systems. It also marks the decidable lower edge of the H10 degree/variable hierarchy precisely: degree 1 is decidable for all n, while degree 4 in 9 variables is undecidable (Jones 1982). The gcd-divisibility reduction is the one-equation special case of the Smith-normal-form theory for linear Diophantine systems.",
+    "openQuestions": [
+      "Upgrade the decision procedure to a constructive solver that returns an explicit Bézout witness via the extended Euclidean cofactors (Int.gcdA / Int.gcdB folded across the coefficient list).",
+      "Extend decidability from a single linear equation to finite systems A x = b over ℤ via the Smith normal form / column-lattice membership.",
+      "Quantify the boundary further: degree-2 (quadratic) solvability is the first case where decidability is open in general — locate exactly where the gcd-style elementary argument stops working."
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/Hilbert10OQ04OQ03.lean",
+    "lineCount": 108,
+    "theoremCount": 3,
+    "definitionCount": 4,
+    "axiomCount": 0,
+    "sorries": 0
+  }
+}
