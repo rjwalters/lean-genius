@@ -2162,6 +2162,18 @@
       "companion_file": true,
       "notes": "researcher-10: FULL divided-difference (Lagrange) reduction of weak_alternation_eq_zero written out and submitted as standalone WeakAlternation.lean (import Mathlib only). Wrapper is complete; sole sorry = node_divdiff_sign (sign of n-th divided-difference weight = (-1)^i). This job doubles as off-host compile-check of the wrapper (local Docker gate closed). Retrieve: aristotle show 52afa73c -> if PROVED, integrate node_divdiff_sign body at DeMoivreOQ02OQ03UniqueAristotle.lean and docker-build + un-draft PR #26135. r7 job 3b070308 targets the same sign lemma; dea4355b targets full crux.",
       "outcome": null
+    },
+    {
+      "project_id": "9d6ef543-1f33-43ae-82d0-a82cacb03440",
+      "file": "proofs/Proofs/Erdos998ThreeGapOQ04.lean",
+      "problem_id": "erdos-998-oq-04",
+      "submitted": "2026-06-19T12:50:00Z",
+      "sorries": [
+        "exists_gap_triple N>=2 case (van Ravenstein three-gap classification)"
+      ],
+      "notes": "STEP D crux: gapLengths a N subset {a,b,c}; witnesses a,b,c fixed in file; self-contained (Mathlib-only import). MCP prove_file still 404; submitted via CLI submit --project-dir.",
+      "status": "submitted",
+      "last_check": null
     }
   ]
 }
