@@ -128,6 +128,68 @@ theorem additive_kl_eq_entropy_difference
     (hY_int : Integrable (fun y => fY y * Real.log (fY y))) :
     additiveMutualInformationKL fX fZ fY
       = differentialEntropy fY - differentialEntropy fZ := by
-  sorry
+  -- Pointwise: the KL integrand splits as NOISE integrand − OUTPUT integrand
+  -- (split the logarithm; both `fZ (y-x)` and `fY y` are strictly positive).
+  have hsplit : ∀ x y, additiveKLIntegrand fX fZ fY x y
+      = fX x * fZ (y - x) * Real.log (fZ (y - x))
+        - fX x * fZ (y - x) * Real.log (fY y) := by
+    intro x y
+    unfold additiveKLIntegrand
+    rw [Real.log_div (ne_of_gt (hZ_pos (y - x))) (ne_of_gt (hY_pos y)), mul_sub]
+  -- The uncurried KL integrand is product-integrable: a.e. it equals N − O.
+  have hK_int : Integrable
+      (fun p : ℝ × ℝ => additiveKLIntegrand fX fZ fY p.1 p.2) := by
+    apply (hnoise_int.sub houtput_int).congr
+    filter_upwards with p
+    simp only [Pi.sub_apply, hsplit]
+  -- Flatten each iterated integral to a product integral (Fubini, Tonelli).
+  have eN : (∫ x, ∫ y, fX x * fZ (y - x) * Real.log (fZ (y - x)))
+      = ∫ p : ℝ × ℝ, fX p.1 * fZ (p.2 - p.1) * Real.log (fZ (p.2 - p.1)) :=
+    (MeasureTheory.integral_prod _ hnoise_int).symm
+  have eO : (∫ x, ∫ y, fX x * fZ (y - x) * Real.log (fY y))
+      = ∫ p : ℝ × ℝ, fX p.1 * fZ (p.2 - p.1) * Real.log (fY p.2) :=
+    (MeasureTheory.integral_prod _ houtput_int).symm
+  have eK : additiveMutualInformationKL fX fZ fY
+      = ∫ p : ℝ × ℝ, additiveKLIntegrand fX fZ fY p.1 p.2 := by
+    rw [additiveMutualInformationKL]
+    exact (MeasureTheory.integral_prod _ hK_int).symm
+  -- Split the KL product integral into the noise and output product integrals.
+  have hKsplit : (∫ p : ℝ × ℝ, additiveKLIntegrand fX fZ fY p.1 p.2)
+      = (∫ p : ℝ × ℝ, fX p.1 * fZ (p.2 - p.1) * Real.log (fZ (p.2 - p.1)))
+        - (∫ p : ℝ × ℝ, fX p.1 * fZ (p.2 - p.1) * Real.log (fY p.2)) := by
+    rw [← MeasureTheory.integral_sub hnoise_int houtput_int]
+    apply integral_congr_ae
+    filter_upwards with p
+    exact hsplit p.1 p.2
+  -- NOISE term collapses to −h(Z): inner y-integral is −h(Z) (translation
+  -- invariance), independent of x; averaging against f_X (∫ f_X = 1) keeps −h(Z).
+  have noise : (∫ p : ℝ × ℝ, fX p.1 * fZ (p.2 - p.1) * Real.log (fZ (p.2 - p.1)))
+      = - differentialEntropy fZ := by
+    rw [← eN]
+    have hinner : ∀ x, (∫ y, fX x * fZ (y - x) * Real.log (fZ (y - x)))
+        = (- differentialEntropy fZ) * fX x := by
+      intro x
+      have hc : (∫ y, fX x * fZ (y - x) * Real.log (fZ (y - x)))
+          = ∫ y, (fZ (y - x) * Real.log (fZ (y - x))) * fX x := by
+        apply integral_congr_ae; filter_upwards with y; ring
+      rw [hc, integral_mul_const, noise_logterm_integral]
+    simp_rw [hinner]
+    rw [integral_const_mul, hX_sum, mul_one]
+  -- OUTPUT term collapses to −h(Y): Fubini swap, then the inner x-integral is
+  -- f_Y(y) log f_Y(y) (marginalisation), whose integral is −h(Y).
+  have output : (∫ p : ℝ × ℝ, fX p.1 * fZ (p.2 - p.1) * Real.log (fY p.2))
+      = - differentialEntropy fY := by
+    rw [← eO]
+    have hswap : (∫ x, ∫ y, fX x * fZ (y - x) * Real.log (fY y))
+        = ∫ y, ∫ x, fX x * fZ (y - x) * Real.log (fY y) :=
+      MeasureTheory.integral_integral_swap houtput_int
+    rw [hswap]
+    have hinner : ∀ y, (∫ x, fX x * fZ (y - x) * Real.log (fY y))
+        = fY y * Real.log (fY y) := fun y =>
+      output_logterm_integral fX fZ fY y (hmarg y)
+    simp_rw [hinner]
+    rw [differentialEntropy, neg_neg]
+  rw [eK, hKsplit, noise, output]
+  ring
 
 end ShannonAWGNOperationalKL
