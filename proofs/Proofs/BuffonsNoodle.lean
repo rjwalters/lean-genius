@@ -410,7 +410,6 @@ theorem PolygonalNoodle.expectedCrossings_mono {m n : ℕ}
     N₁.expectedCrossings d ≤ N₂.expectedCrossings d := by
   rw [buffon_noodle_polygon N₁ d hd, buffon_noodle_polygon N₂ d hd]
   gcongr
-  linarith
 
 /-- **Additivity**: For two noodles of lengths L₁ and L₂, a noodle of total length L₁+L₂
     has expected crossings equal to the sum of their individual expected crossings.
@@ -430,7 +429,6 @@ theorem PolygonalNoodle.expectedCrossings_strictMono {m n : ℕ}
     N₁.expectedCrossings d < N₂.expectedCrossings d := by
   rw [buffon_noodle_polygon N₁ d hd, buffon_noodle_polygon N₂ d hd]
   gcongr
-  linarith
 
 /-! ## Conclusion
 
