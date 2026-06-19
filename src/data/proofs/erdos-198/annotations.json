@@ -16,7 +16,11 @@
       "arithmetic progressions",
       "complement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon Sets",
+      "Arithmetic Progressions",
+      "Set Complement"
+    ]
   },
   {
     "id": "ann-e198-sidon-def",
@@ -35,7 +39,11 @@
       "additive combinatorics",
       "sumsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pairwise Sums",
+      "Sumsets",
+      "Additive Combinatorics"
+    ]
   },
   {
     "id": "ann-e198-ap-def",
@@ -54,7 +62,11 @@
       "Szemerédi",
       "additive structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Common Difference",
+      "Set-Builder Notation",
+      "Infinite Sequences"
+    ]
   },
   {
     "id": "ann-e198-intersects",
@@ -73,7 +85,11 @@
       "complement",
       "coverage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Complement",
+      "Asymptotic Density",
+      "Arithmetic Progressions"
+    ]
   },
   {
     "id": "ann-e198-main",
@@ -92,7 +108,11 @@
       "counterexample",
       "Sidon vs AP"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon Sets",
+      "Counterexamples",
+      "Axiom Of Choice"
+    ]
   },
   {
     "id": "ann-e198-factorial",
@@ -111,7 +131,11 @@
       "factorial",
       "explicit construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Factorial Function",
+      "Modular Arithmetic",
+      "Divisibility"
+    ]
   },
   {
     "id": "ann-e198-counterexample",
@@ -130,7 +154,11 @@
       "counterexample",
       "proof structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical Conjunction",
+      "Sidon Sets",
+      "Counterexamples"
+    ]
   },
   {
     "id": "ann-e198-lacunary",
@@ -149,7 +177,11 @@
       "automatic Sidon",
       "gap condition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Exponential Growth",
+      "Disjoint Intervals",
+      "Sidon Sets"
+    ]
   },
   {
     "id": "ann-e198-baumgartner",
@@ -168,7 +200,11 @@
       "greedy algorithm",
       "Baumgartner"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Greedy Construction",
+      "Axiom Of Choice",
+      "Lacunary Sets"
+    ]
   },
   {
     "id": "ann-e198-examples",
@@ -187,6 +223,10 @@
       "computation",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Factorial Function",
+      "Native Decide",
+      "Kernel Evaluation"
+    ]
   }
 ]
