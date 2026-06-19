@@ -17,7 +17,11 @@
       "extremal-combinatorics",
       "set-mappings"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic Theta notation for matching upper and lower bounds",
+      "the probabilistic method in extremal combinatorics",
+      "worst-case (minimax) guarantees over a family of functions"
+    ]
   },
   {
     "id": "ann-1025-pair-function",
@@ -37,7 +41,11 @@
       "independent-set",
       "empty-independent"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sym2 as the type of unordered pairs",
+      "functions on finite types Fin n",
+      "membership/avoidance constraints defining valid configurations"
+    ]
   },
   {
     "id": "ann-1025-extremal",
@@ -57,7 +65,11 @@
       "worst-case-guarantee",
       "specification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infimum (sInf) over a finite family of values",
+      "independence number as a maximum over subsets",
+      "axiomatic specification of an extremal function"
+    ]
   },
   {
     "id": "ann-1025-bounds",
@@ -77,7 +89,11 @@
       "Conlon-Fox-Sudakov",
       "bound-improvement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "monotonicity of real power functions x ↦ n^x",
+      "comparing polynomial vs polylogarithmic growth rates",
+      "logarithm lower bounds (log n ≥ 1 for n ≥ 3)"
+    ]
   },
   {
     "id": "ann-1025-main-result",
@@ -97,7 +113,11 @@
       "polynomial-growth",
       "asymptotic-answer"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Theta notation as simultaneous Omega and O bounds with constants",
+      "combining two one-sided bounds via a common threshold N",
+      "instantiating a quantified statement with a specific witness h(n)=n^{1/2}"
+    ]
   },
   {
     "id": "ann-1025-set-mappings",
@@ -117,7 +137,11 @@
       "Erdos-Hajnal",
       "induced-mapping"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős-Hajnal set mappings and free sets",
+      "encoding a pair function as an element-indexed set system",
+      "property B and hypergraph 2-colorability"
+    ]
   },
   {
     "id": "ann-1025-probabilistic",
@@ -137,6 +161,10 @@
       "optimization",
       "algebraic-construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "first-moment method and expectation linearity",
+      "the alteration/deletion technique for removing bad elements",
+      "optimizing the inclusion probability p over a polynomial objective"
+    ]
   }
 ]
