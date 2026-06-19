@@ -1,10 +1,12 @@
 # Research State: erdos-1006-oq-01-oq-01
 
 ## Current State
-**Phase**: ORIENT (STEP A in flight on Aristotle)
+**Phase**: ORIENT (STEP A in flight on Aristotle — f4e7c237 ~7%, file-edit errors)
 **Path**: full
 **Since**: 2026-06-19T11:34:00Z
-**Iteration**: 3
+**Iteration**: 4
+**PR**: #26166 (S2 analysis docs; no Lean change — bug fix is build-gated)
+**Build gate**: CLOSED (host load ~11.3, 2 lean-build containers; docker-build OOM risk)
 
 ## Current Focus
 Repair the definitional soundness bug in `Proofs/Erdos1006OQ01.lean`, then
