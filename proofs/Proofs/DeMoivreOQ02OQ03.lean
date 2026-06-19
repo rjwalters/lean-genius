@@ -64,11 +64,12 @@ theorem chebyshev_eval_node (n k : ℕ) (hn : 0 < n) :
   have harg : ((n : ℤ) : ℝ) * (k * π / n) = (k : ℝ) * π := by
     push_cast
     field_simp
+    try ring
   rw [harg, Real.cos_nat_mul_pi]
 
 /-- The bound is sharp at the endpoint: `Tₙ(1) = 1`. -/
-theorem chebyshev_eval_one (n : ℕ) : (T ℝ (n : ℤ)).eval 1 = 1 :=
-  T_eval_one (n : ℤ)
+theorem chebyshev_eval_one (n : ℕ) : (T ℝ (n : ℤ)).eval 1 = 1 := by
+  rw [T_eval_one]
 
 /-! ## Part II: Degree and leading coefficient of `Tₙ` (infrastructure) -/
 
@@ -81,7 +82,7 @@ private theorem deg_lead_recurrence_step (a b : ℝ[X]) (d : ℕ) (c : ℝ)
     (2 * X * a - b).natDegree = d + 1 ∧ (2 * X * a - b).leadingCoeff = 2 * c := by
   have ha0 : a ≠ 0 := by
     intro h; rw [h, leadingCoeff_zero] at hla; exact hca hla.symm
-  have h2C : (2 : ℝ[X]) = C 2 := by simp
+  have h2C : (2 : ℝ[X]) = C 2 := by rw [C_ofNat]
   have hnd2X : ((2 : ℝ[X]) * X).natDegree = 1 := by
     rw [h2C]; exact natDegree_C_mul_X 2 (by norm_num)
   have hlc2X : ((2 : ℝ[X]) * X).leadingCoeff = 2 := by
@@ -113,12 +114,14 @@ private theorem chebyshev_deg_lead_pair : ∀ n : ℕ,
   intro n
   induction n with
   | zero =>
+    simp only [Nat.cast_zero, zero_add]
     refine ⟨⟨?_, ?_⟩, ?_, ?_⟩
-    · rw [show ((0 : ℤ) + 1) = 1 from by ring, T_one, natDegree_X]
-    · rw [show ((0 : ℤ) + 1) = 1 from by ring, T_one, leadingCoeff_X]
-    · rw [show ((0 : ℤ) + 2) = 2 from by ring, T_two]; compute_degree!
-    · rw [show ((0 : ℤ) + 2) = 2 from by ring, T_two,
-        show (2 * X ^ 2 - 1 : ℝ[X]) = C (-1) + C 2 * X ^ 2 from by simp [C_neg]; ring,
+    · rw [T_one, natDegree_X]
+    · rw [T_one, leadingCoeff_X, pow_zero]
+    · rw [T_two]; compute_degree!
+    · rw [T_two,
+        show (2 * X ^ 2 - 1 : ℝ[X]) = C (-1) + C 2 * X ^ 2 from by
+          rw [C_ofNat, C_neg, C_1]; ring,
         leadingCoeff_add_of_degree_lt, leadingCoeff_C_mul_X_pow]
       · norm_num
       · rw [degree_C_mul_X_pow 2 (two_ne_zero)]
