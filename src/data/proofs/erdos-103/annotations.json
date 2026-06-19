@@ -16,7 +16,11 @@
       "diameter",
       "congruence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite point configurations in the plane",
+      "the diameter of a point set",
+      "congruence of configurations under rigid motion"
+    ]
   },
   {
     "id": "ann-103-pointconfig",
@@ -34,7 +38,11 @@
       "euclidean-plane",
       "finite-set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Euclidean plane ℝ²",
+      "finite sets of points",
+      "Euclidean distance"
+    ]
   },
   {
     "id": "ann-103-separation",
@@ -52,7 +60,11 @@
       "packing",
       "constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "pairwise distances between points",
+      "a lower-bound (minimum separation) constraint",
+      "packing constraints"
+    ]
   },
   {
     "id": "ann-103-diameter",
@@ -70,7 +82,11 @@
       "optimization",
       "maximum-distance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "pairwise distances",
+      "the diameter (maximum pairwise distance)",
+      "optimization over configurations"
+    ]
   },
   {
     "id": "ann-103-optimal",
@@ -88,7 +104,11 @@
       "minimum",
       "optimization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the separation constraint and the diameter",
+      "minimizing the diameter subject to separation",
+      "optimal (extremal) configurations"
+    ]
   },
   {
     "id": "ann-103-isometry",
@@ -106,7 +126,11 @@
       "rigid-motion",
       "equivalence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "isometries / rigid motions of the plane",
+      "distance-preserving maps",
+      "congruence of point sets"
+    ]
   },
   {
     "id": "ann-103-equiv-props",
@@ -124,7 +148,11 @@
       "equivalence-relation",
       "quotient"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "equivalence relations (reflexive, symmetric, transitive)",
+      "congruence as an equivalence relation",
+      "quotient by congruence"
+    ]
   },
   {
     "id": "ann-103-counting",
@@ -142,7 +170,11 @@
       "counting",
       "equivalence-classes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "congruence classes of optimal configurations",
+      "the counting function h(n)",
+      "equivalence-class enumeration"
+    ]
   },
   {
     "id": "ann-103-conjecture",
@@ -160,7 +192,11 @@
       "limit",
       "unbounded"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the counting function h(n)",
+      "limits and unboundedness of a sequence",
+      "the conjecture h(n) → ∞"
+    ]
   },
   {
     "id": "ann-103-weak",
@@ -178,7 +214,11 @@
       "weak-version",
       "open-question"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the main conjecture h(n)→∞",
+      "weaker variants of a conjecture",
+      "the open-question landscape"
+    ]
   },
   {
     "id": "ann-103-small",
@@ -196,7 +236,11 @@
       "base-case",
       "uniqueness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "optimal configurations for small n",
+      "base cases and uniqueness",
+      "explicit small configurations"
+    ]
   },
   {
     "id": "ann-103-packing",
@@ -215,7 +259,11 @@
       "hexagonal-lattice",
       "thue-minkowski"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "circle packing in the plane",
+      "the hexagonal lattice",
+      "Thue–Minkowski packing density"
+    ]
   },
   {
     "id": "ann-103-status",
@@ -233,6 +281,10 @@
       "open-problem",
       "difficulty"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the difficulty of extremal/packing problems",
+      "what is known vs open for Erdős #103",
+      "open problems in discrete geometry"
+    ]
   }
 ]
