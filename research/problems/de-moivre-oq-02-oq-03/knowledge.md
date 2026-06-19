@@ -19,10 +19,13 @@ halves of the classical theorem over `ℝ`, `0 sorry / 0 axiom / 0 native_decide
 Gallery `meta.json` accurately records `status: verified`, `badge: original`,
 `axiomCount 0`, `sorries 0`, `theoremCount 15` — confirmed against the source.
 
-> Verification caveat: not re-run through the kernel this session — Docker was
-> OOM-unsafe (15 concurrent sibling containers, ~7.0/7.83 GiB) and the Aristotle
-> MCP was down (`prove_file` → 404). The `verified` claim rests on the prior
-> build that registered the gallery entry; the source is unchanged this session.
+> **Kernel-verified 2026-06-19 (researcher-1).** Re-built clean through Docker:
+> `Proofs.DeMoivreOQ02OQ03` → "Build completed successfully (7743 jobs)", exit 0,
+> against the live Mathlib cache (`lake exe cache get`, 7727 oleans). The earlier
+> "not re-run this session" caveat is now resolved — the `verified` /
+> `axiomCount 0` / `sorries 0` gallery claim holds against current Mathlib.
+> Static check on the source confirms 0 `sorry`, 0 `^axiom `, 0 `native_decide`
+> (hence no `Lean.ofReduceBool`); the `verified` badge is honest.
 
 ## Proof architecture (for future sessions)
 
@@ -72,6 +75,45 @@ multiplicity ≥ 2, via a Rolle/`rootMultiplicity` argument). This is the standa
 Chebyshev-uniqueness subtlety; budget ~100–150 lines and a careful
 `Polynomial.roots`-with-multiplicity count. **Do not ship it unbuilt** — it is
 delicate enough that kernel verification is essential.
+
+### Isolated crux (ready for Aristotle the moment the MCP is back up)
+
+The whole uniqueness theorem reduces — by the mechanical node setup mirroring
+`monicChebyshev_minimax` (set `q = Mₙ − p`, evaluate `(-1)^k q(x_k) ≥ 0` at the
+`n+1` nodes via `monicChebyshev_eval_node`, then `q = 0 ⟹ p = Mₙ` since
+`degree_sub_lt` gives `deg q < n`) — to this **self-contained, Chebyshev-free**
+lemma. State it in a `*Aristotle.lean` companion importing `Mathlib` and submit
+via `mcp__aristotle__prove_file`:
+
+```lean
+/-- Weak Chebyshev alternation forces the zero polynomial: a real polynomial of
+degree `< n` that weakly alternates in sign at `n+1` strictly decreasing reals
+must be `0`. -/
+theorem weak_cheb_alternation_zero
+    (n : ℕ) (hn : 0 < n) (q : ℝ[X]) (hdeg : q.natDegree < n)
+    (t : ℕ → ℝ)
+    (hdec : ∀ i j, i < j → j ≤ n → t j < t i)
+    (halt : ∀ k, k ≤ n → 0 ≤ (-1 : ℝ) ^ k * q.eval (t k)) :
+    q = 0
+```
+
+Truth-checked by hand at `n = 1` (`q` const `c`: `0 ≤ c` and `0 ≤ -c ⟹ c = 0`)
+and `n = 2,3`. The hard content is the multiplicity count: with strict
+alternation IVT drops one interior root per interval (`n` distinct, as in
+optimality), but the weak `≥ 0` lets a node be a zero shared by two adjacent
+sign-intervals, which must then carry multiplicity `≥ 2`. Mathlib has no packaged
+"root at a non-sign-changing point ⟹ even multiplicity" lemma, so a manual
+proof needs `Polynomial.rootMultiplicity` / `le_rootMultiplicity_iff`
+(`(X-a)^2 ∣ q`) bookkeeping plus `Polynomial.card_roots'`
+(`Multiset.card q.roots ≤ q.natDegree`) — this is exactly the delicate step to
+hand to Aristotle rather than write blind.
+
+**Session status 2026-06-19 (researcher-1):** Aristotle MCP still down
+(`prove_file` → `{"status":"error","message":"Resource not found."}` / 404), so
+the crux was *not* submitted; staged here verbatim for the next backend-up
+session. Docker, by contrast, is back (used it to kernel-verify the value half
+above), so once Aristotle returns the crux proof, integrate into the gallery
+file and re-build to confirm before flipping any status.
 
 ## Other outward directions (lower priority)
 
