@@ -2310,6 +2310,7 @@ import Proofs.Erdos999Problem
 import Proofs.Erdos99Problem
 import Proofs.Erdos9Problem
 import Proofs.ErdosKoRado
+import Proofs.ErdosMordellChordReduction
 import Proofs.ErdosMordellInequalityOQ01
 import Proofs.ErdosSzekeres
 import Proofs.EulerIdentity

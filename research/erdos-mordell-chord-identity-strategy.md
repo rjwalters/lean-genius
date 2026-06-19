@@ -14,18 +14,9 @@ fact, isolated three ways:
   identity** `(PA·sin A)² = db² + dc² + 2·db·dc·cos A`, derives the key
   inequality `b·dc + c·db ≤ a·PA`. **Proved.**
 
-The three cyclic `key_inequality_A/B/C` have now been **collapsed to a single
-shared lemma** `key_inequality_vertex (X Y Z P)` — the others are its
-`(X,Y,Z)=(A,B,C),(B,C,A),(C,A,B)` instantiations, derived by pure relabeling
-(`affineIndep_rotate`, `mem_interior_hull_rotate`: affine independence and the
-triangle-hull interior are invariant under cyclic permutation). So the **only**
-remaining sorry is `key_inequality_vertex`: supply, for the concrete Euclidean
-configuration, (i) the law of sines and (ii) the chord identity.
-
-Update: the law of sines (i) is **already in Mathlib** —
-`EuclideanGeometry.dist_div_sin_angle_eq_two_mul_circumradius`
-(`Angle/Sphere.lean:430`) gives `dist /sin = 2R`. So the genuinely missing fact
-is just the **chord identity** (ii). This note records the Mathlib path for it.
+The only remaining sorries are `key_inequality_A/B/C` — the obligation to supply,
+for the concrete Euclidean configuration, (i) the law of sines and (ii) the chord
+identity. This note records the Mathlib path for that final step.
 
 ## The chord identity, geometrically
 
@@ -65,112 +56,57 @@ gives `a = 2R·sin A`, etc. (search `circumradius`, `sin_angle`, `Sphere` for th
 exact name; if absent, derive from the inscribed-angle theorem applied to the
 circumcircle, same machinery as step 3).
 
-## 2026-06-19 update — de-risked, name-checked decomposition (no oangle needed)
+## Open risk / cost
 
-All required Mathlib lemmas were located by source grep and the heaviest
-(inscribed-angle / `oangle`) step has been **eliminated** by reusing the law of
-sines on the *pedal* triangle instead of chasing inscribed angles. Confirmed
-API (file:line in `proofs/.lake/packages/mathlib`):
+- Steps 2–3 are the heaviest: oriented-angle (`oangle`) bookkeeping and the
+  `Real.Angle`/`two_zsmul` factor-of-two are fiddly; budget several build
+  iterations.
+- `∠ F_b P F_c = π − A` (step 4) needs the cyclic-quadrilateral angle identity;
+  may be cleaner via `oangle_center_add...` than chasing unoriented angles.
+- Each of `key_inequality_B/C` is the cyclic image of `A`; once `A` is done,
+  `B/C` should follow by relabeling (consider a single private lemma parametrized
+  by the vertex/feet, instantiated three times).
 
-| Need | Lemma | Location |
-|------|-------|----------|
-| `lineDist = dist P (foot)` | `dist_orthogonalProjection_eq_infDist` | `Geometry/Euclidean/Projection.lean:300` |
-| Thales (right angle ⟺ on diameter sphere) | `thales_theorem` / `angle_eq_pi_div_two_iff_mem_sphere_of_isDiameter` | `Angle/Sphere.lean:82,107` |
-| `Sphere.ofDiameter` (center=midpoint, radius=AP/2) | `Sphere.ofDiameter` | `Sphere/Basic.lean:304` |
-| circumcenter uniqueness | `eq_circumcenter_of_dist_eq` | `Circumcenter.lean:261` |
-| **law of sines** (used TWICE) | `dist_div_sin_angle_eq_two_mul_circumradius` | `Angle/Sphere.lean:430` |
-| law of cosines | `law_cos` | `Triangle.lean:252` |
+## Why not done now (inscribed-angle route)
 
-### Key simplification: chord length without inscribed angles
+Heavy `EuclideanSpace` geometry needs many compile iterations; deferred while the
+fleet is saturated (OOM risk). The reduction + trig core + assembly are committed
+and build-green; this is the documented remaining geometric obligation.
 
-Previously step 3 (`dist F_b F_c = PA·sin A`) was the riskiest — it called for
-oriented-angle / `two_zsmul` factor-of-two bookkeeping. **Replace it** by the law
-of sines applied to the pedal triangle `△(A, F_b, F_c)`:
+## 2026-06-19 — an *elementary* route avoiding the inscribed-angle theorem
 
-1. `F_b, F_c` see `AP` at a right angle ⟹ (Thales) both lie on
-   `Sphere.ofDiameter A P` (center `m = midpoint A P`, radius `dist A P / 2`).
-2. `A, P` also lie on that sphere trivially. So `dist m A = dist m F_b =
-   dist m F_c = dist A P / 2`. By `eq_circumcenter_of_dist_eq`, `m` is the
-   circumcenter of `△(A, F_b, F_c)` and its **circumradius is `dist A P / 2`**.
-3. Law of sines on `△(A, F_b, F_c)`:
-   `dist F_b F_c / sin(∠ F_b A F_c) = 2 · circumradius = dist A P`,
-   i.e. `dist F_b F_c = PA · sin(∠ F_b A F_c)`.
-4. `∠ F_b A F_c = ∠ B A C = A` because `F_b ∈ line CA` (ray from `A` toward `C`)
-   and `F_c ∈ line AB` (ray from `A` toward `B`) — the feet lie on the two sides
-   meeting at `A`, so the angle subtended at `A` is the triangle's angle `A`.
-   (This collinearity/ray step is the one remaining genuinely geometric fact;
-   for an interior point the feet land on the open segments, so same ray.)
+The pedal-circle / inscribed-angle derivation above (steps 2–3) is the heaviest
+part (oriented `oangle`, `two_zsmul` factor of two). It can be **avoided
+entirely**. Write the vertex angle as a sum of the two sub-angles cut by `AP`:
 
-Then step 4 (law of cosines in `△ P F_b F_c`, `∠ F_b P F_c = π − A`) gives
-`dist F_b F_c² = db² + dc² + 2·db·dc·cos A`, and combining with step 3 yields the
-chord identity `(PA·sin A)² = db² + dc² + 2·db·dc·cos A` feeding
-`key_inequality_of_chord_and_sines`.
+    α := ∠ C A P,   β := ∠ B A P,   so   A = ∠ B A C = α + β   (P interior).
 
-Net: the proof now needs **only the same `dist_div_sin_angle_eq_two_mul_circumradius`
-lemma applied twice** (once to `△ABC` for `a=2R sinA`, once to the pedal triangle
-for the chord), plus Thales + circumcenter-uniqueness + law of cosines — all
-confirmed present. No `oangle` / `two_zsmul` machinery.
+Then the chord identity `(PA·sinA)² = db²+dc²+2·db·dc·cosA` follows from three
+elementary facts:
 
-### Remaining genuine work (build session, fleet quiet)
+  (i)   `db = PA · sin α`   (perpendicular leg of right triangle `A F_b P`);
+  (ii)  `dc = PA · sin β`   (same at side `AB`);
+  (iii) `α + β = A`         (`AP` between rays `AB, AC`, from interiority).
 
-1. `lineDist` ↔ `orthogonalProjection` rewrite (bridge lemma, ~10 lines).
-2. Right angle at the feet ⟹ membership on `Sphere.ofDiameter A P` (Thales).
-3. circumradius of pedal triangle `= dist A P / 2` via `eq_circumcenter_of_dist_eq`.
-4. `∠ F_b A F_c = ∠ B A C` — feet on the rays from `A` (needs interior ⟹ foot on
-   the open segment; the only step still lacking a pinned-down Mathlib lemma).
-5. Assemble chord identity, hand to `key_inequality_of_chord_and_sines`.
-6. Affine independence of the pedal triangle (needed to form `Triangle ℝ P`):
-   holds unless `db` or `dc` is zero, i.e. `P` on a side — excluded by interior.
+Given (i)–(iii) the identity is **pure trigonometry** (expand `sin(α+β)`,
+`cos(α+β)`, use `sin²+cos²=1`).
 
-Estimated 150–300 lines; step 4 is the residual risk. Build in a **separate
-companion file first** (do not re-add sorries to the clean shipped file).
+**Implemented** in `proofs/Proofs/ErdosMordellChordReduction.lean`:
+- `chord_identity_of_half_angles` — the geometry-free core: (i)+(ii)+(iii) ⟹ (★).
+  **Proved (`linear_combination`), no sorry.**
+- `lineDist_eq_dist_orthogonalProjection` — `lineDist P X Y = dist P (foot)`,
+  the bridge turning (i)/(ii) into right-triangle statements. **Proved.**
 
-### 2026-06-19 (cycle 5) — step 4 now pinned to named lemmas
+**Remaining (both strictly more elementary than the inscribed-angle theorem):**
+- (i)/(ii) `lineDist P C A = dist P A · sin (∠ C A P)`: foot `F_b` gives right
+  angle `∠ P F_b A = π/2`; `EuclideanGeometry.sin_angle_mul_dist_eq_sin_angle_mul_dist`
+  (`Triangle.lean:255`, `law_sin`) on `△ A F_b P` gives
+  `dist P F_b = dist P A · sin (∠ F_b A P)`; `F_b ∈ line CA` collinear ⟹
+  `sin (∠ F_b A P) = sin (∠ C A P)` (equal-or-supplementary, `angle_smul_left`).
+- (iii) `∠ C A P + ∠ B A P = ∠ B A C`, P interior: `EuclideanGeometry.oangle_add`
+  (`Oriented/Affine.lean:271`) is unconditional in oriented angles; interiority
+  fixes the common sign via `Sbtw.oangle_sign_eq` (`Oriented/Affine.lean:720`),
+  letting the unoriented sum be read off.
 
-The residual-risk step 4 (`∠ F_b X F_c = ∠ Y X Z`) is no longer unpinned. The
-affine angle unfolds to the vector angle
-`∠ F_b X F_c = InnerProductGeometry.angle (F_b -ᵥ X) (F_c -ᵥ X)`
-(`EuclideanGeometry.angle` def, `Angle/Unoriented/Affine.lean`), and the two
-scaling lemmas
-
-| Need | Lemma | Location |
-|------|-------|----------|
-| `angle (r•x) y = angle x y`, `r>0` | `InnerProductGeometry.angle_smul_left_of_pos`  | `Angle/Unoriented/Basic.lean:140` |
-| `angle x (r•y) = angle x y`, `r>0` | `InnerProductGeometry.angle_smul_right_of_pos` | `Angle/Unoriented/Basic.lean:133` |
-
-collapse it to a single arithmetic fact: **`F_b -ᵥ X = t · (Y -ᵥ X)` with
-`t > 0`** (and `F_c -ᵥ X = s · (Z -ᵥ X)`, `s > 0`). I.e. each pedal foot lies on
-the *positive ray* from `X` toward the adjacent vertex. Concretely:
-
-1. `F_b := orthogonalProjection (affineSpan ℝ {X,Y}) P` lies on `line[X,Y]`, so
-   `F_b -ᵥ X ∈ span ℝ {Y -ᵥ X}` ⟹ `F_b -ᵥ X = t · (Y -ᵥ X)` for some real `t`.
-2. `t > 0`: for `P` interior to the triangle, the foot of the perpendicular to a
-   side lands on the **open** segment (the side's supporting line separates the
-   apex from nothing; the interior projects strictly inside). So `Sbtw ℝ X F_b Y`,
-   giving `0 < t < 1`. (`Sbtw`/`Wbtw` → scalar in `(0,1)`; search
-   `Wbtw`/`affineSegment`/`lineMap` for the `t`-extraction lemma.)
-
-So the angle equality is now **fully named** modulo "foot of an interior point's
-perpendicular to a side lies strictly inside that side" — an `Sbtw` membership
-fact, no longer an angle mystery. This removes the last *qualitative* gap; what
-remains is routine (if laborious) `EuclideanSpace`/`Sbtw` plumbing.
-
-### 2026-06-19 (cycle 5) — why still no code
-
-Aristotle MCP **still down** (`prove` returns `"Resource not found"`, same as
-cycles 3–4). Fleet busy: **8** `lean-build` containers live (load ~22) — far
-above the OOM-safe container gate (`ctrs<3`), so a heavy multi-iteration
-`EuclideanSpace` build cannot be started safely. This cycle's progress is the
-step-4 pin above (a genuine de-risk: the last unpinned subfact now has named
-Mathlib lemmas), not a code change. The clean 1-sorry file remains shipped
-(PR #26033 **merged** 07:23Z). Next quiet-fleet session: build the companion
-file from this fully-named decomposition; retry Aristotle first (it may recover).
-
-## Why not done this session (2026-06-19)
-
-Aristotle MCP down ("Resource not found"); fleet at load ~18 with 5 lean
-containers (OOM-risk per container-count gate). A heavy multi-iteration
-`EuclideanSpace` build is unsafe to start now. The clean 1-sorry file is shipped
-(PR #26033, OPEN+MERGEABLE). This session's progress is the de-risked,
-fully name-checked decomposition above (the oangle elimination is a real
-structural simplification of the remaining obligation), not a code change.
+This route removes the circle entirely; what remains are right-triangle and
+betweenness facts. Next session: prove (i)/(ii) via `law_sin`, then (iii).
