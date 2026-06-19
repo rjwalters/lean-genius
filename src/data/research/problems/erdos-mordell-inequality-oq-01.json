@@ -29,7 +29,7 @@
     "Not present in Mathlib4 (as of v4.26.0): no `mordell` geometry result; Mathlib has Triangle, Incenter, Projection, SignedDist, angle infrastructure but no Erdős–Mordell."
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (cycle-37): KEYSTONE pedalFoot_eq PROVED + build-verified; latent cosine-side build error fixed; companion compiles for first time. Sorries 3→2 (chord_length_eq sine-side Gram + angle_at_P cosine-side sign remain). PR #26265.",
+    "progressSummary": "PROGRESS (2026-06-19, r1): submitted both residual geometric sorries (chord_length_eq sine-side + angle_at_P cosine-side) of ErdosMordellChordIdentity.lean to Aristotle as ONE file job (project 55ae116d, MCP wrapper was 404 → used CLI submit). Both are isolated with COMPLETE coordinate-ring roadmaps in their docstrings (Gram-determinant vanishing for chord_length_eq; cross-product identity [u,w]·[v,w] = −s·t·[u,v]² from hP barycentric witness for angle_at_P). v4.26↔v4.28 toolchain warning noted. Poll: aristotle show 55ae116d. On PROVED: integrate (build-pending until docker gate opens, load<6).",
     "builtItems": [
       "proofs/Proofs/ErdosMordellInequalityOQ01.lean: erdos_mordell_reduction — from the three key inequalities a·PA≥b·dc+c·db (cyclic), derives PA+PB+PC≥2(da+db+dc) via explicit nonnegative certificate, 0 sorry, 0 axiom (build-pending verification).",
       "Certificate: a·b·c·(PA+PB+PC) − 2abc·(da+db+dc) = a·da·(b−c)² + b·db·(a−c)² + c·dc·(a−b)² + (key-inequality slack), each summand ≥ 0; closed by mul_le_mul_of_nonneg_left scaling + nlinarith + le_of_mul_le_mul_left.",
@@ -44,7 +44,8 @@
       "ErdosMordellFeetAngleAristotle.lean (NEW, build-VERIFIED 0-sorry under LEAN_MEMORY_LIMIT=8192 docker): case-free oriented building block two_zsmul_oangle_feet_at_X : 2•∡(pedalFoot P Z X) X (pedalFoot P X Y) = 2•∡ Z X Y, for ALL triangles, no positivity/Sbtw hypothesis (only the four ≠X nondegeneracies). Proof = Collinear.two_zsmul_oangle_eq_left/right (ray-direction invariance of 2•∡ since 2•π≡0 in Real.Angle), swapping F_b↦Z and F_c↦Y.",
       "ErdosMordellFeetAngleAristotle.lean helpers (build-verified): pedalFoot_mem_affineSpan (orthogonalProjection_mem), collinear_pedalFoot {foot,X,Y}, collinear_foot_vertex {foot,B,A} (vertex-in-middle via Set.pair_comm + collinear_insert_iff_of_mem_affineSpan).",
       "pedalFoot_eq PROVED + build-verified (ErdosMordellChordIdentity.lean:172, Lean v4.26 7743 jobs green): pedalFoot P X Y = (⟪P−X,Y−X⟫/‖Y−X‖²)•(Y−X)+X via coe_orthogonalProjection_eq_iff_mem (membership + perpendicular residual). The keystone bridge; sorries 3→2.",
-      "Fixed latent build error in chord_length_sq_eq_of_angle_at_P (rw[hlc] dist^2 vs dist*dist + dist_comm mismatch) → hAngle/cos_pi_sub into hlc, align pow_two+dist_comm, linear_combination. Companion now compiles for the first time."
+      "Fixed latent build error in chord_length_sq_eq_of_angle_at_P (rw[hlc] dist^2 vs dist*dist + dist_comm mismatch) → hAngle/cos_pi_sub into hlc, align pow_two+dist_comm, linear_combination. Companion now compiles for the first time.",
+      "Aristotle file submission (project 55ae116d, r1 2026-06-19): ErdosMordellChordIdentity.lean (both sorries chord_length_eq + angle_at_P). CLI submit since MCP prove/prove_file returned 404 this session."
     ],
     "insights": [
       "The inequality cleanly factors: ALL the AM-GM / side-length algebra is captured by erdos_mordell_reduction (now proved), isolating the genuinely hard work into the three geometric key inequalities.",
