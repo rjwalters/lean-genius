@@ -278,4 +278,68 @@ theorem mycielskian_witness_family {V : Type u} {G : SimpleGraph V} {n : ℕ}
     (mycielskianIter G k).CliqueFree 3 ∧ (mycielskianIter G k).Colorable (n + k) :=
   ⟨mycielskianIter_cliqueFree_three htf k, mycielskianIter_colorable hcol k⟩
 
+/-! ## Exact colourability of the tower and a concrete witness over `K₂`
+
+`mycielskianIter_colorable` is only the *upper* bound `χ(mycielskianIter G k) ≤ χ(G) + k`.
+The matching lower bound is the iterated form of `mycielskian_colorable_of_succ`: an
+`(m+k)`-colouring of the `k`-fold Mycielskian descends to an `m`-colouring of the base.
+The two together pin the colourability threshold exactly, and instantiating at `K₂`
+(triangle-free, chromatic number `2`) yields explicit triangle-free graphs of chromatic
+number `k + 2` for every `k` — the constructive witnesses behind the lower-bound side of
+Erdős #1104. -/
+
+/-- **Lower bound for the tower.**  An `(m+k)`-colouring of the `k`-fold Mycielskian
+descends to an `m`-colouring of the base graph — the iterated form of
+`mycielskian_colorable_of_succ`. -/
+theorem mycielskianIter_colorable_of_add {V : Type u} {G : SimpleGraph V} {m : ℕ} :
+    ∀ k, (mycielskianIter G k).Colorable (m + k) → G.Colorable m
+  | 0     => fun h => by simpa using h
+  | k + 1 => fun h => by
+      have hk : m + (k + 1) = (m + k) + 1 := by omega
+      rw [hk] at h
+      exact mycielskianIter_colorable_of_add k
+        (mycielskian_colorable_of_succ (mycielskianIter G k) h)
+
+/-- **Exact colourability of the tower.**  The `k`-fold Mycielskian of `G` is
+`(m+k)`-colourable iff `G` itself is `m`-colourable.  Equivalently
+`χ(mycielskianIter G k) = χ(G) + k`. -/
+theorem mycielskianIter_colorable_iff {V : Type u} {G : SimpleGraph V} {m k : ℕ} :
+    (mycielskianIter G k).Colorable (m + k) ↔ G.Colorable m :=
+  ⟨mycielskianIter_colorable_of_add k, fun h => mycielskianIter_colorable h k⟩
+
+/-! ### A concrete witness: the Mycielskian tower over `K₂` -/
+
+/-- `K₂` (the complete graph on two vertices) is triangle-free: with only two vertices it
+cannot contain a `3`-clique. -/
+theorem top_fin_two_cliqueFree_three : (⊤ : SimpleGraph (Fin 2)).CliqueFree 3 := by
+  intro s hs
+  have h3 : s.card = 3 := hs.card_eq
+  have hle : s.card ≤ Fintype.card (Fin 2) := Finset.card_le_univ s
+  rw [Fintype.card_fin] at hle
+  omega
+
+/-- `K₂` is `2`-colourable: the identity colouring sends its two adjacent vertices to
+distinct colours. -/
+theorem top_fin_two_colorable_two : (⊤ : SimpleGraph (Fin 2)).Colorable 2 :=
+  ⟨Coloring.mk id (fun {_ _} h => by simpa using h)⟩
+
+/-- `K₂` is not `1`-colourable: its single edge forces two distinct colours, impossible in
+`Fin 1`. -/
+theorem top_fin_two_not_colorable_one : ¬ (⊤ : SimpleGraph (Fin 2)).Colorable 1 := by
+  rintro ⟨C⟩
+  exact C.valid (show (⊤ : SimpleGraph (Fin 2)).Adj 0 1 by decide) (Subsingleton.elim _ _)
+
+/-- **Witness tower over `K₂`.**  For every `k`, the `k`-fold Mycielskian of `K₂` is
+triangle-free, `(2+k)`-colourable, and *not* `(1+k)`-colourable — hence a triangle-free
+graph of chromatic number exactly `k + 2`.  As `k → ∞` these realise triangle-free graphs
+of arbitrarily large chromatic number, the constructive lower-bound witnesses for
+Erdős #1104. -/
+theorem exists_triangleFree_colorable_not_colorable (k : ℕ) :
+    ∃ (W : Type) (H : SimpleGraph W),
+      H.CliqueFree 3 ∧ H.Colorable (2 + k) ∧ ¬ H.Colorable (1 + k) :=
+  ⟨mycVertexIter (Fin 2) k, mycielskianIter (⊤ : SimpleGraph (Fin 2)) k,
+    mycielskianIter_cliqueFree_three top_fin_two_cliqueFree_three k,
+    mycielskianIter_colorable top_fin_two_colorable_two k,
+    fun h => top_fin_two_not_colorable_one (mycielskianIter_colorable_of_add k h)⟩
+
 end Erdos1104OQ01
