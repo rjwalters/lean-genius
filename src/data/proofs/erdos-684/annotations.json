@@ -16,7 +16,11 @@
       "binomial-coefficients",
       "prime-factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "analytic number theory",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-684-smooth",
@@ -34,7 +38,11 @@
       "smooth-numbers",
       "factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "p-adic valuation"
+    ]
   },
   {
     "id": "ann-684-binomial",
@@ -52,7 +60,11 @@
       "binomial",
       "smooth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "combinatorics",
+      "elementary divisibility"
+    ]
   },
   {
     "id": "ann-684-f",
@@ -70,7 +82,11 @@
       "minimum",
       "threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "real analysis",
+      "extremal definitions"
+    ]
   },
   {
     "id": "ann-684-mahler",
@@ -88,7 +104,11 @@
       "ineffective",
       "asymptotic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic analysis",
+      "effective vs ineffective bounds"
+    ]
   },
   {
     "id": "ann-684-tang",
@@ -106,7 +126,11 @@
       "upper-bound",
       "explicit"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic notation",
+      "exponential sums"
+    ]
   },
   {
     "id": "ann-684-rh",
@@ -124,7 +148,11 @@
       "riemann-hypothesis",
       "conditional"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "Riemann zeta function",
+      "prime distribution"
+    ]
   },
   {
     "id": "ann-684-heuristic",
@@ -142,7 +170,11 @@
       "heuristic",
       "density-one"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic number theory",
+      "density of integers",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-684-kummer",
@@ -161,7 +193,11 @@
       "carries",
       "legendre"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "base-p representation",
+      "p-adic valuation"
+    ]
   },
   {
     "id": "ann-684-prime",
@@ -179,7 +215,11 @@
       "prime-divisibility",
       "lucas"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "modular arithmetic",
+      "elementary divisibility"
+    ]
   },
   {
     "id": "ann-684-general",
@@ -197,7 +237,11 @@
       "generalization",
       "constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "real analysis",
+      "extremal definitions"
+    ]
   },
   {
     "id": "ann-684-oeis",
@@ -215,7 +259,10 @@
       "oeis",
       "sequence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "integer sequences"
+    ]
   },
   {
     "id": "ann-684-status",
@@ -233,6 +280,10 @@
       "open-problem",
       "bounds-gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic notation",
+      "open problems in number theory"
+    ]
   }
 ]
