@@ -1,0 +1,73 @@
+{
+  "slug": "brianchon-theorem-oq-01",
+  "title": "Brianchon's Theorem (projective dual of Pascal)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "A hexagon circumscribed about a conic (each side tangent) has its three main diagonals joining opposite vertices concurrent. The projective dual of Pascal's hexagon theorem.",
+    "plain": "If a six-sided figure has all six sides touching one conic, the three long diagonals connecting opposite corners all pass through a single point (the Brianchon point).",
+    "whyMatters": [
+      "Completes the classic Pascal/Brianchon duality pair already partly present in the gallery",
+      "Exercises pole–polar duality / cofactor matrix algebra formally",
+      "Answers an open question recorded in the pascals-hexagon gallery entry"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Brianchon's theorem is formalized and machine-verified in BrianchonTheorem.lean (0 sorries).",
+      "The duality bridge concurrent_brianchon_of_collinear_pascal is axiom-free (only propext/Classical.choice/Quot.sound).",
+      "Pascal's hexagon theorem is in the gallery (pascals-hexagon) as the dual statement."
+    ],
+    "open": [
+      "The shared conic_implies_pascal axiom (Cayley–Bacharach / Sylvester reduction) is not yet eliminated — a Pascal-side problem.",
+      "Adding nondegeneracy to recover the genuine Brianchon point (validity of the diagonals) and the converse."
+    ],
+    "goal": "Formalize Brianchon's theorem by dualizing the existing Pascal proof via the conic's polarity, introducing no new axiom."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-19",
+    "iteration": 2,
+    "focus": "Proved Brianchon from Pascal via pole–polar duality in the homogeneous ℝ³ model. Self-contained file (PascalsHexagon.lean does not currently build). Status axiomatized: 1 axiom (conic_implies_pascal), 0 sorries."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Brianchon's theorem proved as the projective dual of Pascal's theorem. Axiom-free duality bridge + unconditional theorem using only the shared Pascal axiom. Gallery entry added.",
+    "builtItems": [
+      "proofs/Proofs/BrianchonTheorem.lean (293 lines, 0 sorries, builds via docker-build.sh)",
+      "crossProduct_mulMatrix: cofactor identity (M·u)×(M·v) = (adj M)ᵀ·(u×v), by ring",
+      "det_threeVectorMatrix_mulMatrix: det(M·u, M·v, M·w) = det M · det(u,v,w)",
+      "dual_matrix_eq: ((adj C)ᵀ adj)ᵀ = det C • C for symmetric 3×3",
+      "diag_eq: each Brianchon diagonal = (det C • C)·(corresponding Pascal point)",
+      "concurrent_brianchon_of_collinear_pascal: axiom-free, sorry-free duality bridge",
+      "brianchon_theorem: unconditional Brianchon's theorem (1 axiom, conic_implies_pascal)",
+      "Gallery entry src/data/proofs/brianchon-theorem-oq-01/meta.json"
+    ],
+    "insights": [
+      "The gallery's projective ℝ³ model is self-dual: collinear (of points) and concurrent (of lines) are the same determinant predicate.",
+      "One cofactor cross-product identity drives the entire duality; applying it twice + adjugate_adjugate (det C • C for 3×3) reduces each diagonal to a fixed linear image of a Pascal point.",
+      "Determinant transport (det(M·rows) = det M · det rows) needs no nondegeneracy: 0 times anything is 0, so Pascal collinearity forces Brianchon concurrency.",
+      "Brianchon introduces no axiom beyond the one Pascal already needs."
+    ],
+    "mathlibGaps": [
+      "Mathlib lacks the cofactor cross-product identity (M·u)×(M·v) = (adj M)ᵀ·(u×v); proved locally via adjugate_fin_three. Candidate for upstreaming."
+    ],
+    "nextSteps": [
+      "Eliminate the shared conic_implies_pascal axiom (Cayley–Bacharach or Sylvester reduction) — Pascal-side work.",
+      "Add nondegeneracy to recover the genuine Brianchon point and the converse.",
+      "Formalize the degenerate/point-at-infinity cases explicitly."
+    ]
+  },
+  "tags": [
+    "projective-geometry",
+    "conics",
+    "duality",
+    "concurrency",
+    "classic"
+  ],
+  "started": "2026-06-16",
+  "lastUpdate": "2026-06-19",
+  "significance": 6,
+  "tractability": 7
+}
