@@ -17,7 +17,11 @@
       "tower-function",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "hypergraph ramsey numbers",
+      "monochromatic complete hypergraph",
+      "tower-type exponential growth"
+    ]
   },
   {
     "id": "ann-e564-imports",
@@ -36,7 +40,11 @@
       "imports",
       "filter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lean 4 mathlib namespaces",
+      "filter.atTop and eventually quantifier",
+      "finset representation of finite sets"
+    ]
   },
   {
     "id": "ann-e564-hypergraph-defs",
@@ -55,7 +63,11 @@
       "k-uniform",
       "colouring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "k-element subsets of a vertex set",
+      "k-uniform hypergraphs",
+      "two-colouring of edges"
+    ]
   },
   {
     "id": "ann-e564-ramsey-property",
@@ -74,7 +86,11 @@
       "monochromatic",
       "clique"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "edge 2-colouring",
+      "monochromatic clique",
+      "complete k-uniform hypergraph on n vertices"
+    ]
   },
   {
     "id": "ann-e564-ramsey-function",
@@ -93,7 +109,11 @@
       "axiom",
       "minimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ramsey number as minimal threshold",
+      "erdos-rado hypergraph ramsey theorem",
+      "axiomatization of an existence result"
+    ]
   },
   {
     "id": "ann-e564-ehr-bounds",
@@ -112,7 +132,11 @@
       "erdos-hajnal-rado",
       "tower-height"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "singly vs doubly exponential growth",
+      "erdos-hajnal-rado bounds",
+      "tower height of a bound"
+    ]
   },
   {
     "id": "ann-e564-conjecture",
@@ -131,7 +155,11 @@
       "prize",
       "filter-eventually"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "filter.atTop eventually quantifier",
+      "doubly exponential lower bound 2^{2^{cn}}",
+      "open problem formalization"
+    ]
   },
   {
     "id": "ann-e564-tower-def",
@@ -150,7 +178,11 @@
       "knuth-arrow",
       "exponential-hierarchy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "iterated exponentiation",
+      "knuth up-arrow notation",
+      "recursive natural-number definition"
+    ]
   },
   {
     "id": "ann-e564-tower-theorems",
@@ -169,7 +201,11 @@
       "induction",
       "positivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "definitional equality and rfl",
+      "induction on natural numbers",
+      "positivity of powers of two"
+    ]
   },
   {
     "id": "ann-e564-small-values",
@@ -188,7 +224,11 @@
       "exact-values",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "exhaustive case analysis",
+      "small ramsey number values",
+      "monochromatic triangle in triple colouring"
+    ]
   },
   {
     "id": "ann-e564-graph-comparison",
@@ -207,7 +247,11 @@
       "erdos-szekeres",
       "exponential-growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph ramsey numbers",
+      "erdos-szekeres exponential bounds",
+      "exponential vs tower growth hierarchy"
+    ]
   },
   {
     "id": "ann-e564-four-colour",
@@ -226,6 +270,10 @@
       "evidence",
       "ehmr84"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "multicolour ramsey problems",
+      "doubly exponential lower bounds",
+      "erdos-hajnal-mate-rado 1984 result"
+    ]
   }
 ]
