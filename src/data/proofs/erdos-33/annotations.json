@@ -16,7 +16,11 @@
       "filters",
       "topology"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib library structure and namespaces",
+      "Filter limsup and liminf notation",
+      "Set.ncard for finite-set cardinality"
+    ]
   },
   {
     "id": "ann-e33-complement-def",
@@ -35,7 +39,11 @@
       "squares",
       "covering sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "perfect squares n²",
+      "sumset representations a + n²",
+      "covering every natural number"
+    ]
   },
   {
     "id": "ann-e33-counting",
@@ -54,7 +62,11 @@
       "counting function",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting function over an interval [1,N]",
+      "√N normalization for square density",
+      "asymptotic density of a set"
+    ]
   },
   {
     "id": "ann-e33-existence",
@@ -73,7 +85,11 @@
       "limsup",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limsup of a real sequence",
+      "additive complement property",
+      "residue classes covered by squares"
+    ]
   },
   {
     "id": "ann-e33-moser",
@@ -92,7 +108,11 @@
       "liminf",
       "Moser"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "liminf of normalized density",
+      "lower bounds on covering sets",
+      "Moser's 1965 result"
+    ]
   },
   {
     "id": "ann-e33-cilleruelo",
@@ -111,7 +131,11 @@
       "quadratic residues",
       "theta function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fourier analysis on ℤ/nℤ",
+      "quadratic residue distribution",
+      "Jacobi theta function"
+    ]
   },
   {
     "id": "ann-e33-golden-ratio",
@@ -130,7 +154,11 @@
       "Fibonacci",
       "algebraic identity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "golden ratio φ = (1 + √5)/2",
+      "the quadratic x² − x − 1 = 0",
+      "sq_sqrt and ring_nf tactics"
+    ]
   },
   {
     "id": "ann-e33-vandoorn",
@@ -149,7 +177,11 @@
       "construction",
       "greedy algorithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "greedy construction of complements",
+      "Fibonacci-like patterns",
+      "the constant 2φ^(5/2)"
+    ]
   },
   {
     "id": "ann-e33-open-minimum",
@@ -168,7 +200,11 @@
       "optimization",
       "extremal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infimum of achievable limsup values",
+      "known bounds 1 and 2φ^(5/2)",
+      "extremal optimization over complements"
+    ]
   },
   {
     "id": "ann-e33-derived-theorem",
@@ -187,6 +223,10 @@
       "linarith",
       "transitivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the 4/π lower bound on liminf",
+      "the inequality 4/π > 1",
+      "linarith for chaining inequalities"
+    ]
   }
 ]
