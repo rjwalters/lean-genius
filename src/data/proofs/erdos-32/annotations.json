@@ -16,7 +16,11 @@
       "prime numbers",
       "density bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive complement of a set",
+      "prime numbers and their density",
+      "Erdos problem #32"
+    ]
   },
   {
     "id": "ann-e32-primes",
@@ -35,7 +39,11 @@
       "prime counting function",
       "PNT"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.Prime predicate",
+      "prime counting function pi(N)",
+      "Prime Number Theorem"
+    ]
   },
   {
     "id": "ann-e32-counting",
@@ -54,7 +62,11 @@
       "asymptotic growth",
       "set cardinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set intersection with an interval",
+      "cardinality of finite sets",
+      "asymptotic density"
+    ]
   },
   {
     "id": "ann-e32-complement",
@@ -73,7 +85,11 @@
       "additive representation",
       "exceptional sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sumset representation n = p + a",
+      "sufficiently large quantifiers",
+      "finite exceptional sets"
+    ]
   },
   {
     "id": "ann-e32-log-squared",
@@ -92,7 +108,11 @@
       "asymptotic bounds",
       "Erdos 1954"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "big-O notation",
+      "logarithm growth rates",
+      "Erdos 1954 construction"
+    ]
   },
   {
     "id": "ann-e32-log-density",
@@ -111,7 +131,11 @@
       "optimal density",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logarithmic density bound C*log N",
+      "open problems and prize questions",
+      "asymptotic upper bounds"
+    ]
   },
   {
     "id": "ann-e32-erdos-bound",
@@ -130,7 +154,11 @@
       "covering problems",
       "Erdos 1954"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "greedy covering algorithm",
+      "existence of additive complements",
+      "Lorentz's log-cubed bound"
+    ]
   },
   {
     "id": "ann-e32-kolountzakis",
@@ -149,7 +177,11 @@
       "log log factor",
       "near-optimal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "iterated logarithm log log N",
+      "near-optimal density bounds",
+      "Kolountzakis 1996 result"
+    ]
   },
   {
     "id": "ann-e32-ruzsa-upper",
@@ -168,7 +200,11 @@
       "probabilistic method",
       "Tendsto"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "functions tending to infinity",
+      "probabilistic construction",
+      "Tendsto and Filter.atTop"
+    ]
   },
   {
     "id": "ann-e32-euler-gamma",
@@ -187,7 +223,11 @@
       "Mertens theorem",
       "e^gamma"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler-Mascheroni constant gamma",
+      "the constant e^gamma",
+      "Mertens' theorems over primes"
+    ]
   },
   {
     "id": "ann-e32-ruzsa-lower",
@@ -206,7 +246,11 @@
       "Filter.atTop",
       "lower bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limit inferior of a sequence",
+      "Filter.atTop and frequently quantifier",
+      "prime gap distribution"
+    ]
   },
   {
     "id": "ann-e32-fifty-dollar",
@@ -225,7 +269,11 @@
       "Erdos conjecture",
       "$50 prize"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "propositions stating open problems",
+      "logarithmic density O(log N)",
+      "Erdos conjecture"
+    ]
   },
   {
     "id": "ann-e32-goldbach",
@@ -244,7 +292,11 @@
       "even numbers",
       "self-complementing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Goldbach's conjecture",
+      "even versus odd decomposition",
+      "self-complementing sets"
+    ]
   },
   {
     "id": "ann-e32-summary",
@@ -263,6 +315,10 @@
       "complete picture",
       "state of the art"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "upper and lower density bounds",
+      "existence results via construction",
+      "current state of Erdos #32"
+    ]
   }
 ]
