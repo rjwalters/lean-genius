@@ -17,7 +17,11 @@
       "finite-dimensional approximation",
       "functional analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Brouwer Fixed Point Theorem",
+      "Compact Sets",
+      "Convex Hull"
+    ]
   },
   {
     "id": "ann-convex-hull-compactness",
@@ -37,7 +41,11 @@
       "Caratheodory theorem",
       "finite-dimensional topology"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Convex Hull",
+      "Compactness In Normed Spaces",
+      "Caratheodory Theorem"
+    ]
   },
   {
     "id": "ann-bump-function-def",
@@ -57,7 +65,11 @@
       "Lipschitz continuity",
       "piecewise-linear functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Norm On Normed Spaces",
+      "Open Balls",
+      "Piecewise-Linear Functions"
+    ]
   },
   {
     "id": "ann-bump-properties",
