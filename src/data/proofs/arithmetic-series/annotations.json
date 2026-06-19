@@ -14,6 +14,11 @@
     "relatedConcepts": [
       "Finset.range",
       "Finset.sum_range_id"
+    ],
+    "prerequisites": [
+      "summation notation Σ and finite sums",
+      "Mathlib's Finset.range n = {0,1,…,n−1}",
+      "closed-form vs iterated sums"
     ]
   },
   {
@@ -30,6 +35,11 @@
     "significance": "key",
     "relatedConcepts": [
       "Gauss schoolboy anecdote",
+      "triangular numbers"
+    ],
+    "prerequisites": [
+      "the 0-indexed Gauss sum n(n−1)/2",
+      "reindexing a finite sum (range n vs range (n+1))",
       "triangular numbers"
     ]
   },
@@ -48,6 +58,11 @@
     "relatedConcepts": [
       "bijective argument",
       "symmetric sum"
+    ],
+    "prerequisites": [
+      "commutativity and associativity of addition",
+      "bijections and reindexing a sum (i ↦ n−i)",
+      "the Gauss closed-form n(n+1)/2"
     ]
   },
   {
@@ -65,6 +80,11 @@
     "relatedConcepts": [
       "arithmetic progression",
       "first term and common difference"
+    ],
+    "prerequisites": [
+      "arithmetic progressions (first term a, common difference d)",
+      "the Gauss sum of consecutive integers",
+      "distributing a sum over addition (linearity of Σ)"
     ]
   },
   {
@@ -82,6 +102,10 @@
     "relatedConcepts": [
       "Gauss anecdote",
       "native_decide"
+    ],
+    "prerequisites": [
+      "the classical Gauss formula n(n+1)/2",
+      "kernel decision procedures (native_decide) for concrete arithmetic"
     ]
   },
   {
@@ -99,6 +123,11 @@
     "relatedConcepts": [
       "perfect squares",
       "L-shaped gnomon"
+    ],
+    "prerequisites": [
+      "odd numbers 2k+1 and their finite sums",
+      "perfect squares n²",
+      "proof by induction on n"
     ]
   },
   {
@@ -116,6 +145,11 @@
     "relatedConcepts": [
       "even numbers",
       "arithmetic series"
+    ],
+    "prerequisites": [
+      "even numbers 2k and their finite sums",
+      "factoring a constant out of a sum",
+      "the Gauss sum of consecutive integers"
     ]
   },
   {
@@ -133,6 +167,11 @@
     "relatedConcepts": [
       "figurate numbers",
       "binomial coefficients"
+    ],
+    "prerequisites": [
+      "figurate (triangular) numbers",
+      "the closed form Tₙ = n(n+1)/2",
+      "binomial coefficient C(n+1,2)"
     ]
   },
   {
@@ -150,6 +189,11 @@
     "relatedConcepts": [
       "recurrence relation",
       "inductive definition"
+    ],
+    "prerequisites": [
+      "recurrence relations and inductive definitions",
+      "the triangular numbers Tₙ",
+      "the identity Tₙ = Tₙ₋₁ + n"
     ]
   }
 ]
