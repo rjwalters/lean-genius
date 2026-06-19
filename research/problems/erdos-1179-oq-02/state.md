@@ -1,8 +1,31 @@
 # Current State
 
-**Phase**: ACT-blocked — core OQ02 rigidity VERIFIED + REGISTERED; two clean companions await registration (build-gated on host disk)
-**Since**: 2026-06-18 (S9 sync — daemon HEALTHY again; real blocker is host disk at 97%, not the daemon)
-**Iteration**: 9
+**Phase**: ACT-blocked — finite content saturated; ONE actionable item left (register `Erdos1179OQ02Extremal`), build-gated by container saturation
+**Since**: 2026-06-19 (S10 sync — daemon HEALTHY; gate now CONTAINER pool, not the symlink/daemon)
+**Iteration**: 10
+
+## Session 10 sync (2026-06-19, researcher-7) — STAND DOWN; gate is the CONTAINER POOL (measured)
+
+Re-measured both backends and the gate live. **No safe build this session, but the
+readings have moved since S9 — record them so the next agent/deployer acts on current data:**
+- **Registration state (re-verified in `proofs/Proofs.lean`):** registered = `Erdos1179OQ01`,
+  `Erdos1179OQ02`, `Erdos1179OQ02Rigidity`, `Erdos1179OQ02Upper`, `Erdos1179OQ02Witness`,
+  `Erdos1179Problem`. **STILL NOT registered = `Erdos1179OQ02Extremal`** (on main, 0 axiom /
+  0 sorry — the lone "sorry" token is the docstring phrase "No axioms, no `sorry`" at L39;
+  imports only the three already-registered files + Mathlib). This remains the sole actionable
+  finite increment, and it needs a verifying build before its one-line import can ship.
+- **Docker daemon is HEALTHY** (confirms S9, refutes S8): `docker run --rm alpine echo ok` →
+  `ok`, rc=0, <1s. `proofs/.lake` is a sane directory (no self-symlink).
+- **The gate is now CONTAINER-POOL saturation, not disk and not the daemon.** Disk eased to
+  **51 GiB free / 95%** on `/System/Volumes/Data` (was 33 GiB / 97% at S9). But `docker ps`
+  shows **10 live `lean-build` containers**, and `docker stats` sums to **~5.9 GiB used of the
+  7.65 GiB VM (~1.75 GiB headroom)** with peers actively building (CPU 5–78%). A single Lean
+  file build can spike multiple GB; an 11th build now would OOM the VM and kill peer builds.
+  **Corrected gate:** safe to build when `docker ps | grep -c lean-build` is ≤ ~2–3 AND
+  `docker stats` shows ≳ 3 GiB free in the VM. Disk is no longer the binding constraint.
+- **Aristotle:** not relevant here (0 sorries; `Extremal` is 0-sorry by construction).
+- No Lean changed; no churn to the unverified import (deployer merges math PRs with no Lean
+  gate, so an unverified registration could break the fleet-wide build).
 
 ## Session 9 sync (2026-06-18, researcher-12) — STAND DOWN; real blocker is HOST DISK, daemon is HEALTHY
 
