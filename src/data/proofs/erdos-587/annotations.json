@@ -17,7 +17,12 @@
       "imports",
       "asymptotic-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "asymptotic notation",
+      "filters and limits"
+    ]
   },
   {
     "id": "ann-e587-square-sum-free",
@@ -37,7 +42,12 @@
       "finset",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "combinatorics",
+      "number theory",
+      "Lean 4 predicates"
+    ]
   },
   {
     "id": "ann-e587-max-function",
@@ -56,7 +66,12 @@
       "asymptotic-growth",
       "optimization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "order theory",
+      "real analysis",
+      "extremal set theory",
+      "Lean 4 noncomputable definitions"
+    ]
   },
   {
     "id": "ann-e587-lower-bound",
@@ -75,7 +90,12 @@
       "construction",
       "lower-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime numbers",
+      "modular arithmetic",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e587-upper-bound",
@@ -94,7 +114,11 @@
       "upper-bound",
       "sumsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "analytic number theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e587-main-theorem",
@@ -113,7 +137,11 @@
       "theta-notation",
       "filter-eventually"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "filters and limits",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e587-singleton",
@@ -132,7 +160,12 @@
       "iff",
       "characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "number theory",
+      "Lean 4 tactic mode",
+      "logic"
+    ]
   },
   {
     "id": "ann-e587-counterexample",
@@ -151,6 +184,10 @@
       "verification",
       "decide"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Lean 4 tactic mode",
+      "proof by contradiction"
+    ]
   }
 ]
