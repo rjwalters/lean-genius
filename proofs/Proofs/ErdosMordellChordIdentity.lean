@@ -172,8 +172,8 @@ theorem pedalFoot_eq (P X Y : EuclideanSpace ℝ (Fin 2)) (hY : Y ≠ X) :
       = (inner ℝ (P - X) (Y - X) / ‖Y - X‖ ^ 2) • (Y - X) + X := by
   haveI : Nonempty (↥(affineSpan ℝ ({X, Y} : Set (EuclideanSpace ℝ (Fin 2))))) :=
     ⟨⟨X, subset_affineSpan ℝ {X, Y} (by simp)⟩⟩
-  have hu : ‖Y - X‖ ^ 2 ≠ 0 :=
-    pow_ne_zero 2 (norm_ne_zero_iff.mpr (sub_ne_zero.mpr hY))
+  have hu0 : ‖Y - X‖ ≠ 0 := norm_ne_zero_iff.mpr (sub_ne_zero.mpr hY)
+  have hu : ‖Y - X‖ ^ 2 ≠ 0 := pow_ne_zero 2 hu0
   set t : ℝ := inner ℝ (P - X) (Y - X) / ‖Y - X‖ ^ 2 with ht
   unfold pedalFoot
   rw [coe_orthogonalProjection_eq_iff_mem]
@@ -188,7 +188,7 @@ theorem pedalFoot_eq (P X Y : EuclideanSpace ℝ (Fin 2)) (hY : Y ≠ X) :
     have h := AffineSubspace.vadd_mem_of_mem_direction hdir hX
     simpa using h
   · -- perpendicular residual: `P −ᵥ (t • (Y - X) + X) ∈ directionᗮ`
-    rw [direction_affineSpan, vectorSpan_pair, mem_orthogonal_singleton_iff_inner_left]
+    rw [direction_affineSpan, vectorSpan_pair, Submodule.mem_orthogonal_singleton_iff_inner_left]
     have key : (P -ᵥ (t • (Y - X) + X) : EuclideanSpace ℝ (Fin 2))
         = (P - X) - t • (Y - X) := by
       rw [vsub_eq_sub]; abel
@@ -197,6 +197,24 @@ theorem pedalFoot_eq (P X Y : EuclideanSpace ℝ (Fin 2)) (hY : Y ≠ X) :
     rw [hXY, inner_neg_right, inner_neg_right, real_inner_self_eq_norm_sq, ht]
     field_simp
     ring
+
+/-- **2D Gram identity (the dimension-2 core).** For any three vectors in the plane
+the `3×3` Gram determinant vanishes — any three vectors of a 2-dimensional space are
+linearly dependent — which is exactly the polynomial relation
+
+    ‖w‖²·(‖u‖²·‖v‖² − ⟪u,v⟫²) = ‖u‖²·⟪w,v⟫² + ‖v‖²·⟪w,u⟫² − 2·⟪u,v⟫·⟪w,u⟫·⟪w,v⟫.
+
+This is the *single* place dimension `2` enters the pedal-feet chord identity: once
+both feet are rewritten by `pedalFoot_eq`, the squared sine-side identity
+`chord_length_eq` (with `u = Y−X`, `v = Z−X`, `w = P−X`) is precisely this relation.
+Proved by expanding every inner product into the two `Fin 2` components and `ring`. -/
+theorem gram_two (u v w : EuclideanSpace ℝ (Fin 2)) :
+    ‖w‖ ^ 2 * (‖u‖ ^ 2 * ‖v‖ ^ 2 - inner ℝ u v ^ 2)
+      = ‖u‖ ^ 2 * inner ℝ w v ^ 2 + ‖v‖ ^ 2 * inner ℝ w u ^ 2
+        - 2 * inner ℝ u v * inner ℝ w u * inner ℝ w v := by
+  simp only [← real_inner_self_eq_norm_sq, PiLp.inner_apply, Fin.sum_univ_two,
+    RCLike.inner_apply, starRingEnd_apply, star_trivial]
+  ring
 
 /-- **Chord length (the "sine side", law of sines).**
 
@@ -302,9 +320,10 @@ theorem chord_length_sq_eq_of_angle_at_P
         + 2 * (lineDist P Z X) * (lineDist P X Y) * Real.cos (∠ Y X Z) := by
   have hlc := dist_sq_eq_dist_sq_add_dist_sq_sub_two_mul_dist_mul_dist_mul_cos_angle
     (pedalFoot P Z X) P (pedalFoot P X Y)
-  rw [lineDist_eq_dist_pedalFoot P Z X, lineDist_eq_dist_pedalFoot P X Y, hlc, hAngle,
-    Real.cos_pi_sub, dist_comm (pedalFoot P Z X) P, dist_comm (pedalFoot P X Y) P]
-  ring
+  rw [hAngle, Real.cos_pi_sub] at hlc
+  rw [lineDist_eq_dist_pedalFoot P Z X, lineDist_eq_dist_pedalFoot P X Y,
+    dist_comm P (pedalFoot P Z X), dist_comm P (pedalFoot P X Y)]
+  linear_combination hlc
 
 /-- **Chord length squared (the "cosine side", law of cosines).**
 
