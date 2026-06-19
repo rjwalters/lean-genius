@@ -362,7 +362,7 @@ theorem pentSeriesCoeff_one : pentSeriesCoeff 1 = -1 := by
   rw [genPent_one] at h
   rw [h]; rfl
 
-/-! ## OPEN CORE (not formalized here)
+/-! ## OPEN CORE (not formalized here) — sharply reduced by Mathlib's `Partition.genFun`
 
 The deep content of the pentagonal number theorem is the *identity*
 
@@ -374,10 +374,42 @@ where `p_even`/`p_odd` count partitions of `n` into an even/odd number of
 on partitions into distinct parts, whose only fixed points are the staircase
 partitions of generalized pentagonal numbers.
 
-Mathlib (as of this writing) has `Nat.Partition` but neither partitions into
-distinct parts with a parity sign, nor Franklin's involution, nor the requisite
-formal-power-series infinite-product manipulation.  Building that is a
-multi-file development; this file supplies the index-set theory it would consume
-(notably `isGenPent_iff_isSquare` and `genPent_injective`). -/
+**UPDATE (Session 5, 2026-06-19): the formal-power-series scaffolding now EXISTS in
+Mathlib** (it did not when the paragraph below was first written).
+`Mathlib.Combinatorics.Enumerative.Partition.GenFun` (Weiyi Wang, 2025) defines the
+partition generating function `Nat.Partition.genFun f : R⟦X⟧` with the *proved*
+product form
+
+    `genFun_eq_tprod : genFun f = ∏' i, (1 + ∑' j, f (i+1) (j+1) • X^((i+1)*(j+1)))`
+
+and coefficient formula
+
+    `coeff_genFun : (genFun f).coeff n = ∑ p : n.Partition, p.parts.toFinsupp.prod f`,
+
+while `Partition.Basic` supplies `distincts n` / `odds n` and `Partition.Glaisher`
+the companion product identities (`powerSeriesMk_card_restricted_eq_tprod`,
+`card_odds_eq_card_distincts`).  Instantiating the character
+`f i c = if c = 1 then (-1 : ℤ) else 0` makes each inner term `1 - X^{i+1}`, so
+
+    `genFun (fun i c => if c = 1 then (-1 : ℤ) else 0) = ∏_{m≥1} (1 - Xᵐ)`        (PRODUCT side)
+
+is now free from Mathlib, and `coeff_genFun` evaluates the SAME series' `n`-th
+coefficient to `∑_{p : n.Partition} ∏_i f(i, #i) = ∑_{p ∈ distincts n} (-1)^{p.parts.card}`
+(the weight is `0` on any partition with a repeated part and `(-1)^{#parts}` on a
+distinct-part partition) — exactly `p_even(n) - p_odd(n)`.
+
+Hence both the product `∏(1-Xⁿ)` AND its combinatorial coefficient are already
+available; the ENTIRE remaining open core collapses to the single identity
+
+    `∑_{p ∈ distincts n} (-1)^{p.parts.card} = pentSeriesCoeff (n : ℤ)`           (FRANKLIN)
+
+— Franklin's sign-reversing involution (pair the smallest part with the longest
+terminal staircase; fixed points ⟺ pentagonal staircases) — plus the bookkeeping
+that aligns this file's `ℤ`-valued `pentSeriesCoeff` / `genPent` index theory
+(`isGenPent_iff_isSquare`, `genPent_injective`, `pentSeriesCoeff_genPent`) with the
+`ℕ`-indexed `genFun` coefficient.  Franklin's involution itself is still absent from
+Mathlib and remains the deep, multi-file development; this file supplies the
+index-set theory it consumes (notably `isGenPent_iff_isSquare` and
+`genPent_injective`). -/
 
 end PentagonalNumberTheoremOQ01

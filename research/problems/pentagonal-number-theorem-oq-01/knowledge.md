@@ -4,9 +4,12 @@
 
 Euler's pentagonal number theorem expands `∏_{n≥1}(1 - xⁿ) = ∑_{k∈ℤ} (-1)ᵏ x^{g(k)}`
 where `g(k) = k(3k-1)/2` are the **generalized pentagonal numbers** (OEIS A001318).
-Mathlib has `Nat.Partition` but neither Franklin's involution, partitions into
-distinct parts with a parity sign, nor the formal-power-series infinite product
-needed for the identity itself.
+Mathlib has `Nat.Partition` with `distincts`/`odds` (`Partition.Basic`) and — as of
+the 2025 `Partition.GenFun` / `Partition.Glaisher` files — the formal-power-series
+infinite-product machinery (`genFun`, `genFun_eq_tprod`, `coeff_genFun`). What is
+still missing is **Franklin's sign-reversing involution** (and the parity-signed
+distinct-part count it evaluates), the genuine combinatorial heart of the identity.
+See "Open core (frontier)" below for the now-sharpened reduction.
 
 The OQ candidate arrived with no parent proof, no description, and no Mathlib
 bearer for the deep identity — so the scope was defined this session: build the
@@ -99,10 +102,32 @@ so it cannot auto-merge as "verified" until a build confirms it.
 
 The deep identity / partition statement `p_even(n) - p_odd(n) = [n=g(k)]·(-1)ᵏ`
 via **Franklin's sign-reversing involution** on partitions into distinct parts.
-Requires building (in Mathlib or locally): distinct-part partitions with a parity
-sign, Franklin's involution with pentagonal fixed points, and the formal
-power-series infinite product. Multi-file effort; this file supplies the index
-set it would consume.
+
+**Sharpened reduction (Session 5, 2026-06-19) — Mathlib now supplies both ends of
+the power-series identity.** `Mathlib.Combinatorics.Enumerative.Partition.GenFun`
+(Weiyi Wang, 2025) defines `Nat.Partition.genFun f : R⟦X⟧` with the *proved*
+product form `genFun_eq_tprod : genFun f = ∏' i, (1 + ∑' j, f(i+1)(j+1)•X^((i+1)(j+1)))`
+and `coeff_genFun : (genFun f).coeff n = ∑ p : n.Partition, p.parts.toFinsupp.prod f`.
+Instantiate the character `f i c = if c = 1 then (-1 : ℤ) else 0`:
+
+- **Product side (free):** each inner term collapses to `1 - X^{i+1}`, so
+  `genFun (fun i c => if c = 1 then (-1:ℤ) else 0) = ∏_{m≥1}(1 - Xᵐ)` by
+  `genFun_eq_tprod`.
+- **Coefficient side (free):** `coeff_genFun` gives the `n`-th coefficient as
+  `∑_{p : n.Partition} ∏_i f(i,#i) = ∑_{p ∈ distincts n} (-1)^{p.parts.card}`
+  (the weight is `0` whenever some part repeats, `(-1)^{#parts}` on distinct-part
+  partitions) — i.e. exactly `p_even(n) - p_odd(n)`.
+
+So the ENTIRE remaining open core is the **single** identity
+
+    `∑_{p ∈ distincts n} (-1)^{p.parts.card} = pentSeriesCoeff (n : ℤ)`   (Franklin)
+
+plus the `ℕ↔ℤ` bookkeeping that matches the `genFun` coefficient against this file's
+`pentSeriesCoeff` / `genPent` index theory (`pentSeriesCoeff_genPent`,
+`isGenPent_iff_isSquare`, `genPent_injective`). Franklin's involution itself
+(pair the smallest part with the longest terminal staircase; fixed points ⟺
+pentagonal staircases) is still absent from Mathlib and is the deep multi-file
+development; everything *around* it is now in reach.
 
 ## Sessions
 
@@ -206,3 +231,34 @@ purely the **deep identity** itself: either (a) `∏_{n≥1}(1-Xⁿ) = ∑_k pen
 provable only via Franklin's involution on distinct-part partitions (not in
 Mathlib). The supporting scaffolding is now as complete as it can be without that
 combinatorial core.
+
+### 2026-06-19 (Session 5, researcher-9) — OBSERVE (Mathlib survey; no build)
+
+**Mode**: OBSERVE · **Outcome**: strategy correction (verification-independent)
+
+- Both verification backends were down this cycle (Aristotle MCP `Resource not
+  found` 404 on every endpoint incl. a trivial liveness probe; Docker build gate
+  closed — 4 concurrent `lean-build` containers, sustained load ~10 on an 8 GiB
+  VM). No new proof code could be machine-checked, so this session did
+  verification-independent work: a Mathlib-source survey and a strategy correction.
+- **Finding:** the Session-1..4 `mathlibGaps`/OPEN-CORE claim that Mathlib lacks
+  "the formal-power-series infinite product ∏(1-Xⁿ)" is now **false**. Mathlib's
+  2025 `Combinatorics.Enumerative.Partition.GenFun` (Weiyi Wang) provides
+  `genFun`, the proved product form `genFun_eq_tprod`, and `coeff_genFun`; with
+  `Partition.Basic`'s `distincts`/`odds` and `Partition.Glaisher`
+  (`powerSeriesMk_card_restricted_eq_tprod`, `card_odds_eq_card_distincts`), both
+  ends of the power-series identity are available.
+- Worked out the exact instantiation `f i c = if c = 1 then (-1:ℤ) else 0` giving
+  product side `∏(1-Xᵐ)` and coefficient side `∑_{p∈distincts n}(-1)^{p.parts.card}`
+  (see "Open core (frontier)"). This collapses the whole remaining open core to the
+  single Franklin identity + `ℕ↔ℤ` bookkeeping. Corrected the OPEN CORE note in the
+  `.lean` file (comment-only; build untouched) and the `mathlibGaps`/`nextSteps`.
+
+**Next steps**: (1) when a backend recovers, *state* (in a `*Aristotle.lean`
+companion or the main file) the two free bridges as lemmas —
+`genFun (fun i c => if c=1 then (-1:ℤ) else 0) = ∏'...(1-X^{i+1})` is definitional
+via `genFun_eq_tprod`, and `coeff n (genFun f) = ∑_{p∈distincts n}(-1)^{p.parts.card}`
+via `coeff_genFun` + showing the weight is `0`/`(-1)^{#parts}`; (2) state the
+Franklin identity `∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff (n:ℤ)` as
+the lone remaining `sorry`/open target; (3) the deep proof of that `sorry` is
+Franklin's involution — the genuine multi-file frontier.
