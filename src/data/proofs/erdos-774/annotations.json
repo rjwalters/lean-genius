@@ -16,7 +16,11 @@
       "Harmonic analysis",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Additive combinatorics",
+      "Subset sums",
+      "Sidon sets"
+    ]
   },
   {
     "id": "ann-774-dissociated",
@@ -35,7 +39,11 @@
       "Subset sums",
       "B-sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Subset sums",
+      "Finite sets",
+      "Distinct subset sums"
+    ]
   },
   {
     "id": "ann-774-dissociatedset",
@@ -53,7 +61,11 @@
       "Sparse sets",
       "Lacunary sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dissociated sets",
+      "Infinite sets",
+      "Finite subsets"
+    ]
   },
   {
     "id": "ann-774-uniquesums",
@@ -72,7 +84,11 @@
       "Sumsets",
       "Collision-free"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dissociated sets",
+      "Subset sums",
+      "Contrapositive reasoning"
+    ]
   },
   {
     "id": "ann-774-powers2",
@@ -90,7 +106,11 @@
       "Binary representation",
       "Positional numeral systems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binary representation",
+      "Dissociated sets",
+      "Geometric sequences"
+    ]
   },
   {
     "id": "ann-774-lacunary",
@@ -109,7 +129,11 @@
       "Growth conditions",
       "Hadamard gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometric growth",
+      "Partial sums",
+      "Dissociated sets"
+    ]
   },
   {
     "id": "ann-774-propdiss",
@@ -128,7 +152,11 @@
       "Local structure",
       "Ramsey-type properties"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dissociated sets",
+      "Subset density",
+      "Infinite sets"
+    ]
   },
   {
     "id": "ann-774-dissisprop",
@@ -146,7 +174,11 @@
       "Implication",
       "Decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dissociated sets",
+      "Proportionately dissociated sets",
+      "Logical implication"
+    ]
   },
   {
     "id": "ann-774-sidonharmonic",
@@ -165,7 +197,11 @@
       "Lacunary series",
       "Rudin-Shapiro"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fourier analysis",
+      "Bounded functions",
+      "Trigonometric series"
+    ]
   },
   {
     "id": "ann-774-pisier",
@@ -184,7 +220,11 @@
       "Banach spaces",
       "Rudin's problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proportionately dissociated sets",
+      "Sidon sets (harmonic)",
+      "Functional analysis"
+    ]
   },
   {
     "id": "ann-774-sidonadd",
@@ -203,7 +243,11 @@
       "Sum-free sets",
       "Erdős-Turán conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pairwise sums",
+      "B₂ sequences",
+      "Additive combinatorics"
+    ]
   },
   {
     "id": "ann-774-sidonimpliesdiss",
@@ -221,7 +265,11 @@
       "Set hierarchy",
       "Counterexamples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets (additive)",
+      "Dissociated sets",
+      "Subset sums"
+    ]
   },
   {
     "id": "ann-774-finiteunion",
@@ -240,7 +288,11 @@
       "Partition",
       "Covering"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dissociated sets",
+      "Set partitions",
+      "Finite unions"
+    ]
   },
   {
     "id": "ann-774-conjecture",
@@ -259,7 +311,11 @@
       "Ramsey theory",
       "Structure theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proportionately dissociated sets",
+      "Finite union of dissociated sets",
+      "Local-global principles"
+    ]
   },
   {
     "id": "ann-774-alon",
@@ -278,7 +334,10 @@
       "Graph theory",
       "Additive number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős Conjecture #774",
+      "Additive combinatorics"
+    ]
   },
   {
     "id": "ann-774-propsidon",
@@ -297,7 +356,11 @@
       "Sidon sets",
       "Proportional property"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets (additive)",
+      "Proportionately dissociated sets",
+      "Subset density"
+    ]
   },
   {
     "id": "ann-774-sidonanalogue",
@@ -315,7 +378,11 @@
       "Parallel questions",
       "Hierarchy of notions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proportionately Sidon sets",
+      "Finite union of Sidon sets",
+      "Erdős Conjecture #774"
+    ]
   },
   {
     "id": "ann-774-nrs",
@@ -334,6 +401,10 @@
       "Counterexample",
       "Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proportionately Sidon sets",
+      "Probabilistic method",
+      "Counterexamples"
+    ]
   }
 ]
