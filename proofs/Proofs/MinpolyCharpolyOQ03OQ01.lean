@@ -1,6 +1,7 @@
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
 import Mathlib.LinearAlgebra.Matrix.ToLin
+import Mathlib.LinearAlgebra.Charpoly.ToMatrix
 import Mathlib.Algebra.Polynomial.Module.AEval
 import Mathlib.Algebra.Module.Torsion.Basic
 import Mathlib.RingTheory.Finiteness.Defs
@@ -58,17 +59,25 @@ Both structural deliverables consumed by OQ-03-OQ-02 are now **proved**:
   `charpoly_mulVecLin` + `LinearMap.aeval_self_charpoly`, then upgraded
   to torsion via `charpoly_monic ⇒ nonZeroDivisor`).
 
-The single remaining `sorry` is `xModule_has_invariantFactorChain` (the
-invariant-factor-chain bridge to the parent's strong form), which is
-**deliberately deferred to OQ-03-OQ-02**: it requires the regrouping
-algorithm of `Module.equiv_directSum_of_isTorsion`, out of scope for
-this foundational sub-OQ. Its statement is fixed here only to pin the
-bridging API surface.
+This file retains **exactly one** deliberate `sorry`: the
+invariant-factor-chain bridge `xModule_has_invariantFactorChain`. Its
+statement is identical to the parent's strong-form
+`rational_canonical_form_exists`, so it *could* be closed in one line by
+delegating to the parent — but the parent theorem is itself unproven (its
+RCF-existence proof is the running Aristotle job `d2395b8d`). Delegating
+now would only relocate the assumption while making this file's automated
+sorry-count read 0, overclaiming verification of a result not yet proved
+anywhere. The explicit `sorry` is kept until the parent's RCF-existence
+proof lands (see the honesty note at the theorem). The regrouping
+algorithm of `Module.equiv_directSum_of_isTorsion` remains the parent's
+OQ-03-OQ-02 work item.
 
-Note: the torsion proofs are statically complete (all referenced
-Mathlib lemmas verified present) but their final kernel check is
-**build-pending** — they have not yet been confirmed by a full Lean
-build in this environment.
+Build status (S5, researcher-9): the torsion proofs were **confirmed by a
+full Docker Lean build** this session. The earlier "statically complete"
+claim was wrong — the file referenced LinearMap-side charpoly lemmas
+(`LinearMap.aeval_self_charpoly`, `Matrix.charpoly_mulVecLin`) without the
+`Mathlib.LinearAlgebra.Charpoly.ToMatrix` import; adding it fixes the
+build. The only remaining gap is the single deliberate `sorry` above.
 
 ## References
 
@@ -186,7 +195,7 @@ theorem xModule_isTorsion (M : Matrix n n F) :
   have hne : M.charpoly ≠ 0 := (charpoly_monic M).ne_zero
   have hnzd : M.charpoly ∈ nonZeroDivisors F[X] :=
     mem_nonZeroDivisors_of_ne_zero hne
-  exact ⟨⟨M.charpoly, hnzd⟩, xModule_isTorsionBy_charpoly M x⟩
+  exact ⟨⟨M.charpoly, hnzd⟩, xModule_isTorsionBy_charpoly M (x := x)⟩
 
 /-! ## Part 4: Deliverable surface for OQ-03-OQ-02 (statement only)
 
@@ -216,7 +225,20 @@ The chain is packaged as the parent's `InvariantFactorChain` structure
     minpoly F M` forces the genuine invariant-factor decomposition
     (`minpoly = charpoly` holds only for non-derogatory `M`), restoring
     the claimed mutual-derivability with the parent. The proof remains
-    deferred to the OQ-03-OQ-02 regrouping algorithm. -/
+    deferred to the OQ-03-OQ-02 regrouping algorithm.
+
+    *Honesty note (S5, researcher-9).* This statement is identical to the
+    parent's strong-form `rational_canonical_form_exists`, so the bridge
+    *could* be closed in one line by `exact
+    MinpolyCharpolyOQ03.rational_canonical_form_exists M`. We deliberately
+    keep the explicit `sorry` instead: the parent theorem is itself
+    unproven (its RCF-existence proof is the running Aristotle job
+    `d2395b8d`), so delegating now would only relocate the assumption while
+    making this file's automated sorry-count read 0 — overclaiming
+    verification of a result that is not yet proved anywhere. The glue is
+    correct to apply only *after* the parent's RCF-existence proof lands
+    (nextStep #1); until then the explicit `sorry` keeps the accounting
+    honest. -/
 theorem xModule_has_invariantFactorChain (M : Matrix n n F) :
     ∃ c : MinpolyCharpolyOQ03.InvariantFactorChain F,
       c.prodFactors = M.charpoly ∧ c.lastFactor = minpoly F M := by
