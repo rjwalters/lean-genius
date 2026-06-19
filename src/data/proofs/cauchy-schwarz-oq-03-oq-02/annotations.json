@@ -14,6 +14,11 @@
       "Young's inequality",
       "Riesz representation theorem"
     ],
+    "prerequisites": [
+      "H\u00f6lder's inequality and conjugate exponents 1/p + 1/q = 1",
+      "Lp norms and spaces",
+      "the triangle inequality"
+    ],
     "content": "This file completes the answer to the open question from CauchySchwarzOQ03.lean: can Minkowski be derived from H\u00f6lder? Yes. The full chain Young \u2192 H\u00f6lder \u2192 Cauchy-Schwarz \u2192 Minkowski \u2192 Lp Banach space is now formally established across 4 files with 0 sorries and 0 axioms.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
     "range": {
@@ -36,6 +41,11 @@
       "abs_add",
       "sum monotonicity"
     ],
+    "prerequisites": [
+      "the triangle inequality |a+b| \u2264 |a| + |b|",
+      "finite sums over a Finset and their monotonicity",
+      "NNReal (nonnegative reals)"
+    ],
     "content": "Establishes the base case p=1 in two forms. The NNReal version minkowski_p1_nnreal is a one-liner (Finset.sum_add_distrib), showing that p=1 Minkowski is trivial for nonnegative values. The real case requires the triangle inequality for absolute values, making it the first genuine inequality in the file.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
     "range": {
@@ -56,6 +66,11 @@
       "H\u00f6lder's inequality",
       "conjugate exponents",
       "Finset Lp norm"
+    ],
+    "prerequisites": [
+      "H\u00f6lder's inequality for finite sums",
+      "conjugate exponents p and q",
+      "the discrete Lp norm on a Finset"
     ],
     "content": "The central theorem. This one-line proof formally confirms that Mathlib's NNReal.Lp_add_le \u2014 which is itself proved via H\u00f6lder \u2014 makes Minkowski an immediate consequence. The NNReal case is the foundation: all other variants (real, p=2, inner product, Lp integral) either specialize or lift from this.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
@@ -79,6 +94,11 @@
       "nnnorm_add_le",
       "NNReal.rpow_le_rpow"
     ],
+    "prerequisites": [
+      "the NNReal version of Minkowski",
+      "lifting real inequalities to NNReal via nnnorm",
+      "monotonicity of rpow (NNReal.rpow_le_rpow)"
+    ],
     "content": "The lifting strategy: real-valued Minkowski reduces to NNReal Minkowski. The key bridge is nnnorm_add_le, which transfers the absolute value triangle inequality to the NNReal setting. The lp_sum_mono lemma is independently useful: Lp norms are monotone in the function values.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
     "range": {
@@ -100,6 +120,11 @@
       "norm_num",
       "Cauchy-Schwarz duality",
       "L2 norm"
+    ],
+    "prerequisites": [
+      "the Euclidean (L\u00b2) norm",
+      "the general Minkowski inequality at p = 2",
+      "the Cauchy\u2013Schwarz inequality"
     ],
     "content": "Illustrates the specialization pattern: the general Minkowski framework subsumes the familiar Euclidean geometry. The one-line proof from the general case is a demonstration of the power of abstract inequality theory. The conceptual parallel to Cauchy-Schwarz at p=q=2 makes the H\u00f6lder\u2013Minkowski duality concrete.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
@@ -123,6 +148,11 @@
       "nlinarith",
       "inner product expansion"
     ],
+    "prerequisites": [
+      "inner product spaces and the induced norm",
+      "the Cauchy\u2013Schwarz inequality",
+      "expanding \u2016x+y\u2016\u00b2 via the inner product"
+    ],
     "content": "Closes the proof chain: H\u00f6lder \u2192 Cauchy-Schwarz \u2192 inner product triangle inequality. This is the abstract version of Minkowski: any inner product space satisfies \u2016u+v\u2016 \u2264 \u2016u\u2016+\u2016v\u2016. The nlinarith proof of norm_add_sq_le shows how algebraic manipulations of norms in Lean avoid manual case splits.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
     "range": {
@@ -145,6 +175,11 @@
       "NormedAddCommGroup",
       "integral norm"
     ],
+    "prerequisites": [
+      "measure spaces and the Lebesgue integral",
+      "the Lp space of p-integrable functions",
+      "normed additive commutative groups"
+    ],
     "content": "Shows that once Mathlib's Lp spaces are established as NormedAddCommGroup (which requires Minkowski in the construction), the triangle inequality is automatic. The Fact (1 \u2264 p) typeclass pattern encodes the hypothesis p \u2265 1 as a typeclass constraint, enabling instance inference. The integral case connects to the finite-sum case via density arguments in Mathlib.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
     "range": {
@@ -166,6 +201,11 @@
       "dual spaces",
       "Riesz representation",
       "functional analysis"
+    ],
+    "prerequisites": [
+      "H\u00f6lder's inequality (NNReal.inner_le_Lp_mul_Lq)",
+      "Minkowski's inequality",
+      "duality of Lp and Lq spaces (Riesz representation)"
     ],
     "content": "Formalizes the H\u00f6lder\u2013Minkowski duality: H\u00f6lder bounds the bilinear pairing \u27e8f,g\u27e9 = \u2211f_i\u00b7g_i while Minkowski bounds the norm \u2016f+g\u2016_p. Together they establish Lp and Lq as a dual pair \u2014 the foundation for the Riesz representation theorem (Lp)* \u2245 Lq and the entire edifice of functional analysis.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
