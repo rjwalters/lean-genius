@@ -36,6 +36,11 @@
         "theorem": "mul_left_cancel₀",
         "description": "a ≠ 0 → a*b = a*c → b = c — cancels the factor 12 to read off the pentagonal index from 12·(2m)=12·k(3k-1)",
         "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      },
+      {
+        "theorem": "Even.neg_one_pow / Odd.neg_one_pow",
+        "description": "(-1)^n = 1 for even n, -1 for odd n — gives the ±1-valuedness of the pentagonal sign pentSign k = (-1)^|k|",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
       }
     ],
     "originalContributions": [
@@ -46,14 +51,15 @@
       "Concrete values g(0..±4) = 0,1,2,5,7,12,15,22,26 matching OEIS A001318, with a sanity check that 12 = g(3) and 24·12+1 = 17²",
       "Index-bound theory making Euler partition recurrence a finite sum: genPent_sq_le_self (k^2 <= g(k), quadratic growth), abs_index_le_genPent (|k| <= g(k)), and indexSet_finite ({k | g(k) <= n} is finite, contained in [-n,n])",
       "A computable enumerator pentIndices (def): the explicit Finset of indices k with g(k) <= n, filtered from [-n,n], with mem_pentIndices (membership iff g(k) <= n) and coe_pentIndices (realizing the abstract set {k | g(k) <= n}), so the finite sum in Euler's recurrence can be evaluated",
-      "genPent_neg: the +/-k pairing g(-k) = g(k) + k of Euler's recurrence, relating the two pentagonal shifts g(k) and g(-k) that occur together at each level"
+      "genPent_neg: the +/-k pairing g(-k) = g(k) + k of Euler's recurrence, relating the two pentagonal shifts g(k) and g(-k) that occur together at each level",
+      "pentSeriesCoeff: an explicit construction of the right-hand side of Euler's identity — the coefficient [Xⁿ] of the lacunary series ∑_{k∈ℤ}(-1)ᵏ X^{g(k)}, made well-defined by genPent_injective (each exponent is hit by at most one index). pentSeriesCoeff_genPent gives the value (-1)ᵏ at g(k); pentSeriesCoeff_ne_zero_iff shows the support is exactly the generalized pentagonal numbers; pentSeriesCoeff_eq_zero_or bounds every coefficient to 0/±1; concrete [X⁰]=+1, [X¹]=-1 match the leading 1 and -X of ∏(1-Xⁿ). The pentagonal sign pentSign k = (-1)^|k| is recorded with its ±1-valuedness, nonvanishing, and pairing invariance pentSign(-k)=pentSign k."
     ],
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
-    "lineCount": 241,
-    "assumptions": "None: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. Machine-verified — the file compiles cleanly under the docker Lean build against Mathlib (Built Proofs.PentagonalNumberTheoremOQ01, 7743 jobs, exit 0, warning-clean).",
-    "theoremCount": 23,
-    "definitionCount": 2
+    "lineCount": 383,
+    "assumptions": "None counted: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. pentSeriesCoeff is a noncomputable def using Classical.choice (a foundational axiom that the project's axiom policy does not count toward axiomCount). Machine-verified — the file compiles cleanly under the docker Lean build against Mathlib (Built Proofs.PentagonalNumberTheoremOQ01, 7743 jobs, exit 0).",
+    "theoremCount": 35,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Euler discovered the pentagonal number theorem in 1740s correspondence with Goldbach and proved it in 1750: the infinite product ∏_{n≥1}(1-xⁿ) equals the lacunary series ∑_{k∈ℤ}(-1)ᵏ x^{k(3k-1)/2}. The exponents are the generalized pentagonal numbers (OEIS A001318), and the theorem yields Euler's celebrated recurrence for the partition function p(n). Franklin (1881) gave the bijective proof via a sign-reversing involution on partitions into distinct parts. Mathlib formalizes Nat.Partition but not the distinct-partition parity machinery, Franklin's involution, or the formal power-series infinite product, so the deep identity remains unformalized; this entry supplies the index-set theory that any such formalization consumes.",
