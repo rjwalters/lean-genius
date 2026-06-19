@@ -423,3 +423,90 @@ All six lemma signatures re-verified cycle-19 against live `~/GitHub/mathlib4`.
 Companion Lean unchanged (known-good 2-sorry); cycle-19 is strategy-doc only.
 Aristotle `prove` MCP re-probed (`angle_at_P`, self-contained, Thales hint) —
 `Resource not found` again, **19th consecutive cycle** dead.
+
+### 2026-06-19 (cycle 20) — concyclicity now PROVED (no longer prose)
+
+First non-doc cycle in a while. The cycle-19 unoriented-Thales pin was cashed in:
+two new **fully-proved, no-sorry** lemmas were added to the companion, converting
+the "Thales ⟹ the four points are concyclic" prose step — which both residual
+sorries rest on — into machine-checked Lean:
+
+* `pedalFeet_mem_sphere_ofDiameter` — both feet `F_c = pedalFoot P X Y`,
+  `F_b = pedalFoot P Z X` lie on `Sphere.ofDiameter P X`. One-line proof:
+  `angle_eq_pi_div_two_iff_mem_sphere_ofDiameter.1` applied to the already-proved
+  right-angle facts `angle_pedalFoot_XY_at_X` / `angle_pedalFoot_ZX_at_X`. No
+  oriented-angle machinery.
+* `cospherical_pedalFeet` — the four points `{X, F_b, F_c, P}` are `Cospherical`.
+  Proof: the two feet are on the sphere (above) and the diameter endpoints `P, X`
+  are on it by `isDiameter_ofDiameter` (`IsDiameter.left_mem` / `.right_mem`);
+  conclude via `Sphere.cospherical … |>.subset`.
+
+This is the shared hypothesis both `Sphere.dist_div_sin_oangle_eq_two_mul_radius`
+(sine side, `chord_length_eq`) and the inscribed-angle supplement (`angle_at_P`)
+consume, so the two remaining sorries now start from a proved cospherical fact
+rather than a prose claim. Residual work is unchanged in *shape* (oriented-angle
+descent + ray-collapse `∡ F_b X F_c → ∠ Y X Z`) but no longer has to re-establish
+concyclicity. Aristotle `prove` MCP re-probed (`angle_at_P`, self-contained,
+Thales hint) — `Resource not found` again, **20th consecutive cycle** dead.
+
+### 2026-06-19 (cycle 21) — oriented inscribed-angle lemma drafted + the `Module.Oriented` instance gap (build-pending)
+
+Cashed the proved `cospherical_pedalFeet` into the Mathlib *oriented* inscribed-angle
+theorem `Cospherical.two_zsmul_oangle_eq` (`Angle/Sphere.lean:178`; "angles in the
+same segment are equal", unified with the supplementary case mod π by the `2 • `
+doubling). New supporting lemma:
+
+* `two_zsmul_oangle_pedalFeet_at_P_eq_at_X` —
+  `2 • ∡ F_b P F_c = 2 • ∡ F_b X F_c`, the oriented core of `angle_at_P`.
+  Proof: restrict `cospherical_pedalFeet`'s 4-point set to `{F_b, P, X, F_c}`
+  (via `Cospherical.subset` + `tauto`), then apply `Cospherical.two_zsmul_oangle_eq`
+  with the four distinctness hypotheses `P ≠ F_b`, `P ≠ F_c`, `X ≠ F_b`, `X ≠ F_c`
+  (all hold for `P` interior to a nondegenerate triangle: no foot meets `X`, and `P`
+  lies on neither side line). The argument order `hPFb hPFc hXFb hXFc` matches the
+  Mathlib signature `(hp₂p₁) (hp₂p₄) (hp₃p₁) (hp₃p₄)` with `{p₁,p₂,p₃,p₄}={F_b,P,X,F_c}`.
+
+**Instance gap discovered (the real cycle-21 content).** `∡` (oriented angle) on the
+*concrete* type `EuclideanSpace ℝ (Fin 2)` does **not** elaborate out of the box:
+`EuclideanGeometry.oangle` requires `[Fact (Module.finrank ℝ V = 2)]` and
+`[Module.Oriented ℝ V (Fin 2)]`, and a source scan of Mathlib v4.26.0 confirms there
+is **no global instance** of either for `EuclideanSpace ℝ (Fin 2)` — the only
+`Module.Oriented` instance in the library is the vacuous `IsEmpty.oriented`. (This is
+why every prior `∡` lemma in Mathlib lives in an abstract `[Module.Oriented …]`
+section, never on the concrete Pi-type.) The lemma as first drafted therefore would
+**not compile**; both instances must be supplied locally. Verified constructions exist:
+
+```lean
+-- finrank: `finrank_euclideanSpace_fin : Module.finrank 𝕜 (EuclideanSpace 𝕜 (Fin n)) = n`
+noncomputable instance instOrientedEuclideanFin2 :
+    Module.Oriented ℝ (EuclideanSpace ℝ (Fin 2)) (Fin 2) :=
+  ⟨(EuclideanSpace.basisFun ℝ (Fin 2)).toBasis.orientation⟩
+instance instFactFinrankEuclideanFin2 :
+    Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin 2)) = 2) :=
+  ⟨finrank_euclideanSpace_fin⟩
+```
+
+(`EuclideanSpace.basisFun ℝ (Fin 2) : OrthonormalBasis (Fin 2) ℝ _`, then
+`.toBasis.orientation : Orientation ℝ _ (Fin 2)` via `Basis.orientation`.) Any fixed
+orientation suffices — the theorem holds for whatever instance is in scope.
+
+Why `2 • ∡` (oriented) and not `∠` (unoriented): on the circle of diameter `XP`,
+`P` and `X` lie on *opposite* arcs cut by the chord `F_b F_c`, so the unoriented
+inscribed angles are **supplementary**, not equal — exactly the `π − ∠YXZ` of
+`angle_at_P`. The doubling absorbs both same-arc (equal) and opposite-arc
+(supplementary) cases into one identity, which is why Mathlib states the inscribed-
+angle theorem this way. The residual gap to `angle_at_P` is therefore purely the
+orientation/betweenness descent: (i) divide out the `2 • ` using the opposite-arc
+sign data to land on `∠ F_b P F_c = π − ∠ F_b X F_c`, and (ii) the ray-collapse
+`∠ F_b X F_c = ∠ Y X Z` (each foot on the positive ray from `X`, via
+`InnerProductGeometry.angle_smul_left/right_of_pos`).
+
+**Status / build note.** Concyclicity (cycle-20: `pedalFeet_mem_sphere_ofDiameter`,
+`cospherical_pedalFeet`) and the cycle-21 oriented lemma + the two instances above are
+all staged in the worktree but **not yet machine-checked**: the host was memory-
+saturated (94 G/96 G, 11 idle `lean-build` containers), so no docker build was run this
+cycle, and unbuilt Lean must never be pushed (the deployer auto-merges math PRs). The
+two API lemmas (`Cospherical.two_zsmul_oangle_eq`, `Cospherical.subset`) and all four
+construction lemmas were re-verified by source inspection against the vendored
+`proofs/.lake/packages/mathlib` (v4.26.0). **Next build-capable session:** build
+`Proofs.ErdosMordellChordIdentity`; if green, push the concyclicity + oriented lemmas.
+Aristotle `prove` MCP re-probed — `Resource not found`, **21st consecutive cycle** dead.

@@ -19,10 +19,13 @@ halves of the classical theorem over `ℝ`, `0 sorry / 0 axiom / 0 native_decide
 Gallery `meta.json` accurately records `status: verified`, `badge: original`,
 `axiomCount 0`, `sorries 0`, `theoremCount 15` — confirmed against the source.
 
-> Verification caveat: not re-run through the kernel this session — Docker was
-> OOM-unsafe (15 concurrent sibling containers, ~7.0/7.83 GiB) and the Aristotle
-> MCP was down (`prove_file` → 404). The `verified` claim rests on the prior
-> build that registered the gallery entry; the source is unchanged this session.
+> **Kernel-verified 2026-06-19 (researcher-1).** Re-built clean through Docker:
+> `Proofs.DeMoivreOQ02OQ03` → "Build completed successfully (7743 jobs)", exit 0,
+> against the live Mathlib cache (`lake exe cache get`, 7727 oleans). The earlier
+> "not re-run this session" caveat is now resolved — the `verified` /
+> `axiomCount 0` / `sorries 0` gallery claim holds against current Mathlib.
+> Static check on the source confirms 0 `sorry`, 0 `^axiom `, 0 `native_decide`
+> (hence no `Lean.ofReduceBool`); the `verified` badge is honest.
 
 ## Proof architecture (for future sessions)
 
@@ -72,6 +75,78 @@ multiplicity ≥ 2, via a Rolle/`rootMultiplicity` argument). This is the standa
 Chebyshev-uniqueness subtlety; budget ~100–150 lines and a careful
 `Polynomial.roots`-with-multiplicity count. **Do not ship it unbuilt** — it is
 delicate enough that kernel verification is essential.
+
+### Isolated crux (ready for Aristotle the moment the MCP is back up)
+
+The whole uniqueness theorem reduces — by the mechanical node setup mirroring
+`monicChebyshev_minimax` (set `q = Mₙ − p`, evaluate `(-1)^k q(x_k) ≥ 0` at the
+`n+1` nodes via `monicChebyshev_eval_node`, then `q = 0 ⟹ p = Mₙ` since
+`degree_sub_lt` gives `deg q < n`) — to this **self-contained, Chebyshev-free**
+lemma. State it in a `*Aristotle.lean` companion importing `Mathlib` and submit
+via `mcp__aristotle__prove_file`:
+
+```lean
+/-- Weak Chebyshev alternation forces the zero polynomial: a real polynomial of
+degree `< n` that weakly alternates in sign at `n+1` strictly decreasing reals
+must be `0`. -/
+theorem weak_cheb_alternation_zero
+    (n : ℕ) (hn : 0 < n) (q : ℝ[X]) (hdeg : q.natDegree < n)
+    (t : ℕ → ℝ)
+    (hdec : ∀ i j, i < j → j ≤ n → t j < t i)
+    (halt : ∀ k, k ≤ n → 0 ≤ (-1 : ℝ) ^ k * q.eval (t k)) :
+    q = 0
+```
+
+Truth-checked by hand at `n = 1` (`q` const `c`: `0 ≤ c` and `0 ≤ -c ⟹ c = 0`)
+and `n = 2,3`. The hard content is the multiplicity count: with strict
+alternation IVT drops one interior root per interval (`n` distinct, as in
+optimality), but the weak `≥ 0` lets a node be a zero shared by two adjacent
+sign-intervals, which must then carry multiplicity `≥ 2`. Mathlib has no packaged
+"root at a non-sign-changing point ⟹ even multiplicity" lemma, so a manual
+proof needs `Polynomial.rootMultiplicity` / `le_rootMultiplicity_iff`
+(`(X-a)^2 ∣ q`) bookkeeping plus `Polynomial.card_roots'`
+(`Multiset.card q.roots ≤ q.natDegree`) — this is exactly the delicate step to
+hand to Aristotle rather than write blind.
+
+**Session status 2026-06-19 (researcher-1):** Aristotle MCP still down
+(`prove_file` → `{"status":"error","message":"Resource not found."}` / 404), so
+the crux was *not* submitted; staged here verbatim for the next backend-up
+session. Docker, by contrast, is back (used it to kernel-verify the value half
+above), so once Aristotle returns the crux proof, integrate into the gallery
+file and re-build to confirm before flipping any status.
+
+### Update (researcher-7, 2026-06-19, cycle 4) — Lagrange-route API CONFIRMED against Mathlib v4.26.0
+
+Backends still down this cycle (Aristotle MCP `prove` → `Resource not found`/404; the worktree
+docker build re-clones Mathlib from source → OOM at the 12 GB cap, so it is unsafe to raise the
+limit — the from-source Mathlib build is exactly the trap CLAUDE.md forbids). No `.lean` shipped.
+Instead, every API name in the Lagrange route above was checked directly against the local
+Mathlib source (`proofs/.lake/packages/mathlib/Mathlib/...`). All five exist; **two refinements**:
+
+- `Lagrange.eq_interpolate` — `Mathlib/LinearAlgebra/Lagrange.lean:362`:
+  `{f : F[X]} (hvs : Set.InjOn v s) (degree_f_lt : f.degree < #s) : f = interpolate s v (fun i => f.eval (v i))`.
+  Uses `f.degree` (`WithBot`) `< #s`, so feed `q.degree < n+1` (from `natDegree q < n`; handle `q=0` first).
+- `Lagrange.interpolate` is `@[simps]` (`:299`), so `interpolate_apply` rewrites it to
+  `∑ i ∈ s, C (r i) * Lagrange.basis s v i`.
+- **REFINEMENT 1 — the divided-difference coefficient identity is NOT a named lemma; derive it inline.**
+  Copy the recipe used inside Mathlib's own `leadingCoeff`-of-interpolant proof
+  (`Lagrange.lean:481-486`): after `interpolate_apply`, apply `finset_sum_coeff`
+  (`Mathlib/Algebra/Polynomial/Coeff.lean:89`), then per term `coeff_C_mul`, then rewrite
+  `coeff n (basis ..) = leadingCoeff (basis ..)` using `← natDegree_basis hvs hi`
+  (`Lagrange.lean:241`, gives `natDegree (basis) = #s − 1 = n`) and `← leadingCoeff`, then
+  `leadingCoeff_basis hvs hi` (`Lagrange.lean:279`):
+  `(Lagrange.basis s v i).leadingCoeff = (∏ j ∈ s.erase i, (v i − v j))⁻¹`. Net:
+  `coeff n (interpolate s x (fun i => q.eval (x i))) = ∑ i ∈ s, q.eval (x i) · (∏ j ∈ s.erase i, (x i − x j))⁻¹`.
+- `Finset.sum_eq_zero_iff_of_nonneg` — confirmed (used widely, e.g. `Analysis/Convex/Combination.lean:199`):
+  `(∀ i ∈ s, 0 ≤ f i) → (∑ i ∈ s, f i = 0 ↔ ∀ i ∈ s, f i = 0)`.
+- **REFINEMENT 2 — the finisher takes a `Finset ℝ` of distinct roots directly** (no `Fintype`/range plumbing):
+  `Polynomial.eq_zero_of_natDegree_lt_card_of_eval_eq_zero'` (`Mathlib/Algebra/Polynomial/Roots.lean:662`):
+  `(p : R[X]) (s : Finset R) (heval : ∀ i ∈ s, p.eval i = 0) (hcard : natDegree p < #s) : p = 0`
+  `[CommRing R] [IsDomain R]` — so pass `s := (Finset.range (n+1)).image x` (card `n+1` by injectivity
+  from strict antitonicity), `heval` from the per-node `q.eval (x k) = 0`, and `natDegree q < n < n+1 = #s`.
+
+Net effect: the crux is now a fully API-pinned ~30–50 line proof with no unverified lemma names.
+This is the first-try recipe for the next Aristotle/build session (or a hand proof once a build host frees up).
 
 ## Other outward directions (lower priority)
 
