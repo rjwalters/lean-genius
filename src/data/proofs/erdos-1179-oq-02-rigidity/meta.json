@@ -63,7 +63,8 @@
       "The equality case of an information-theoretic covering bound is a perfect-packing condition: 2^|A| subsets must cover all N group elements, and equality N = 2^|A| means the covering is exact — each element is hit exactly once",
       "Only counting is needed, no probability: the rigidity is the elementary fact that N nonnegative integers each ≥ 1 summing to N must all equal 1, expressed cleanly by Finset.sum_eq_sum_iff_of_le",
       "The extremal sets are precisely the perfectly 0-uniform (unique-representation) configurations — the same ones the deterministic 𝔽₂^m basis construction of the companion Upper entry exhibits, so the lower-bound rigidity and the upper-bound construction describe the same objects from two sides",
-      "ε < 1 (not small ε) is all the rigidity uses: ε-uniformity is needed only to guarantee spanning (F_A(g) ≥ 1); once spanning holds, the equality analysis is uniformity-quality-independent"
+      "ε < 1 (not small ε) is all the rigidity uses: ε-uniformity is needed only to guarantee spanning (F_A(g) ≥ 1); once spanning holds, the equality analysis is uniformity-quality-independent",
+      "Unique representation is exactly the statement that the subset-sum map 2^A → G (a subset ↦ the sum of its elements) is a bijection: the 2^|A| subsets land on distinct elements and cover all of G. The equality case therefore recasts an extremal counting inequality as the existence of a perfect subset-sum parametrization of the entire group — and it forces N = 2^|A| to be a power of two, so only groups of 2-power order admit extremal ε-uniform sets"
     ]
   },
   "sections": [
