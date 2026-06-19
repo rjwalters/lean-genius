@@ -241,9 +241,39 @@ a transposition and a 3-cycle, an order-6 permutation.  Where the prose above on
 transposition that input `(b)` feeds into the assembly criterion — turning the
 prose cycle-type computation into verified permutation data. -/
 
+/-- The reduction of `X⁵ − X − 1` to `(ZMod 2)[X] = 𝔽₂[X]`.  Over `𝔽₂` we have
+    `−1 = 1`, so `f` reduces to `X⁵ + X + 1`. -/
+noncomputable def f2 : (ZMod 2)[X] := X ^ 5 - X - 1
+
+/-- **The mod-2 factorisation, machine-checked.**
+    `X⁵ − X − 1 ≡ (X² + X + 1)(X³ + X² + 1)` over `𝔽₂` — an (irreducible quadratic)·
+    (irreducible cubic).  Where the prose above only *asserts* this factorisation, we
+    now verify it as a polynomial identity in `𝔽₂[X]`: expanding the right-hand side
+    gives `X⁵ + 2X⁴ + 2X³ + 2X² + X + 1`, and the `2`-coefficients vanish in
+    characteristic `2`, leaving `X⁵ + X + 1 = X⁵ − X − 1 = f2`.  This is the arithmetic
+    that *justifies* the `(2,3)` cycle type modelled by `frob2`. -/
+theorem f2_factorization :
+    f2 = (X ^ 2 + X + 1) * (X ^ 3 + X ^ 2 + 1) := by
+  have h2 : (2 : (ZMod 2)[X]) = 0 := by
+    simpa using CharP.cast_eq_zero ((ZMod 2)[X]) 2
+  unfold f2
+  linear_combination (-(X ^ 4 + X ^ 3 + X ^ 2 + X + 1)) * h2
+
+/-- The quadratic factor `X² + X + 1` has **no root in `𝔽₂`** (a two-element check:
+    `0 ↦ 1`, `1 ↦ 1`).  A degree-`2` polynomial with no root is irreducible, so this
+    factor is one of the two irreducible factors of the `(2,3)` decomposition. -/
+theorem quad_no_root_mod2 : ∀ x : ZMod 2, x ^ 2 + x + 1 ≠ 0 := by decide
+
+/-- The cubic factor `X³ + X² + 1` has **no root in `𝔽₂`** (`0 ↦ 1`, `1 ↦ 1`).  A
+    degree-`3` polynomial with no root is irreducible, completing the verification that
+    the mod-2 factorisation is into an irreducible quadratic times an irreducible cubic
+    — exactly the `(2,3)` factor type that forces `frob2`'s cycle structure. -/
+theorem cubic_no_root_mod2 : ∀ x : ZMod 2, x ^ 3 + x ^ 2 + 1 ≠ 0 := by decide
+
 /-- A representative `(2, 3)`-cycle-type element of `S₅`: the transposition `(0 1)`
     times the 3-cycle `(2 3 4)`.  This models a Frobenius element of `f` at `p = 2`,
-    whose factorisation type mod 2 is (irreducible quadratic)·(irreducible cubic). -/
+    whose factorisation type mod 2 is (irreducible quadratic)·(irreducible cubic)
+    (verified in `f2_factorization`, `quad_no_root_mod2`, `cubic_no_root_mod2`). -/
 def frob2 : S5 := Equiv.swap 0 1 * (Equiv.swap 2 3 * Equiv.swap 3 4)
 
 /-- `frob2` is an **odd** permutation (sign `= −1`), so a `(2, 3)`-type element lies
