@@ -59,6 +59,7 @@
       "Second-moment / Fourier-analytic estimates on representation-function uniformity in finite abelian groups are not readily available in Mathlib."
     ],
     "nextSteps": [
+      "FINDING (researcher-2 2026-06-19): the orphan Erdos1179OQ02Rigidity.lean (3 thm, sorry/axiom-free, rigidity/equality case = extremal sets are exactly unique-representation sets) is verified CLEAN as written (Mathlib hooks Finset.sum_eq_sum_iff_of_le + Nat.clog_pow + cross-file epsUniform_spanning/total_reprCount all confirmed at pin) but CANNOT be registered: its dependency Proofs/Erdos1179Problem.lean (REGISTERED on main) does not compile at the current Mathlib pin (6 dead names div_*_iff/Real.isLittleO_log_rpow_atTop + L104 type mismatch + asymptotic-proof unsolved goals; never built green, 'build-free' commit). Filed issue #26038 for Mechanic — fixing that one file unblocks the whole Erdos1179 family AND Rigidity registration. Did NOT ship a broken registration.",
       "Literature: check whether the Erdős–Hall log log log N / log log N term is known to be improvable, and whether the additive-constant form is explicitly conjectured.",
       "Experiment: extend the script to (ℤ/2)^m vs ℤ/N at matched N to probe the single-group caveat.",
       "Formalization (Docker-gated): if pursued, state g_ε(N) ≤ log₂N + O_ε(1) as an axiomatized target alongside the parent, since proving it is out of reach."
