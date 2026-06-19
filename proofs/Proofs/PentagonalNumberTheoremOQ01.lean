@@ -28,6 +28,10 @@
   - `isGenPent_iff_isSquare` — HEADLINE: pentagonality ⟺ `24m+1` a perfect square
   - `isGenPent_nonneg`       — generalized pentagonal numbers are nonnegative
   - `genPent_injective`      — distinct indices give distinct pentagonal numbers
+  - `genPent_neg`            — exact reflection gap `g(-k) = g(k) + k`
+  - `genPent_succ_sub_neg`   — exact successor gap `g(k+1) = g(-k) + (2k+1)`
+  - `genPent_zigzag_step`    — the enumeration order `g(k) < g(-k) < g(k+1)` (k≥1)
+  - `genPent_strictMono_pos` — `g` strictly increasing on the positive branch
   - concrete values `g(0..±4) = 0,1,2,5,7,12,15,22,26` matching the OEIS A001318.
 -/
 
@@ -138,6 +142,80 @@ theorem genPent_injective : Function.Injective genPent := by
   rcases mul_eq_zero.mp hfac with h | h
   · linarith
   · omega
+
+/-! ## Part 3b: The enumeration order (the "zigzag" `0 < g(1) < g(-1) < g(2) < …`)
+
+Euler's partition recurrence sums over the generalized pentagonal numbers in the
+order obtained by reading the index `k` as `0, 1, -1, 2, -2, 3, -3, …`, and the
+sum is finite precisely because the values strictly increase along that zigzag
+(so all but finitely many terms exceed `n` and drop out).  We prove this from two
+*exact* difference identities — the quadratic part cancels in each difference, so
+both are clean linear facts:
+
+* `genPent_neg`           — `g(-k) = g(k) + k`            (gap `g(-k) - g(k) = k`)
+* `genPent_succ_sub_neg`  — `g(k+1) = g(-k) + (2k+1)`     (gap `2k+1`)
+
+From these the strict zigzag and positivity follow by `omega`. -/
+
+/-- Every generalized pentagonal number is nonnegative (convenience wrapper). -/
+theorem genPent_nonneg (k : ℤ) : 0 ≤ genPent k :=
+  isGenPent_nonneg (genPent_isGenPent k)
+
+/-- **Exact reflection gap.** `g(-k) = g(k) + k`.  The quadratic terms cancel:
+`2·g(-k) - 2·g(k) = (-k)(-3k-1) - k(3k-1) = 2k`. -/
+theorem genPent_neg (k : ℤ) : genPent (-k) = genPent k + k := by
+  have key : 2 * genPent (-k) = 2 * genPent k + 2 * k := by
+    linear_combination two_mul_genPent (-k) - two_mul_genPent k
+  omega
+
+/-- **Exact successor gap across the reflection.** `g(k+1) = g(-k) + (2k+1)`.
+Again the quadratic part cancels: `2·g(k+1) - 2·g(-k) = (k+1)(3k+2) - k(3k+1) =
+4k+2`. -/
+theorem genPent_succ_sub_neg (k : ℤ) : genPent (k + 1) = genPent (-k) + (2 * k + 1) := by
+  have key : 2 * genPent (k + 1) = 2 * genPent (-k) + 2 * (2 * k + 1) := by
+    linear_combination two_mul_genPent (k + 1) - two_mul_genPent (-k)
+  omega
+
+/-- For a nonzero index the pentagonal value is strictly positive: `g(k) = 0`
+forces `k(3k-1) = 0`, i.e. `k = 0`. -/
+theorem genPent_pos {k : ℤ} (hk : k ≠ 0) : 1 ≤ genPent k := by
+  have hnn := genPent_nonneg k
+  have hne : genPent k ≠ 0 := by
+    intro h0
+    have h := two_mul_genPent k
+    rw [h0, mul_zero] at h
+    rcases mul_eq_zero.mp h.symm with h1 | h1
+    · exact hk h1
+    · omega
+  omega
+
+/-- The reflection step strictly increases the value for positive indices:
+`g(k) < g(-k)` when `1 ≤ k`. -/
+theorem genPent_lt_genPent_neg {k : ℤ} (hk : 1 ≤ k) : genPent k < genPent (-k) := by
+  have := genPent_neg k; omega
+
+/-- The successor step strictly increases the value: `g(-k) < g(k+1)` when
+`0 ≤ k`. -/
+theorem genPent_neg_lt_genPent_succ {k : ℤ} (hk : 0 ≤ k) :
+    genPent (-k) < genPent (k + 1) := by
+  have := genPent_succ_sub_neg k; omega
+
+/-- **Strict monotonicity on the positive branch.** `g` is strictly increasing on
+`{k ≥ 1}`: for `1 ≤ a < b`, `g(a) < g(b)`.  The difference factors as
+`2·g(b) - 2·g(a) = (b-a)(3(a+b)-1)`, a product of two positive integers. -/
+theorem genPent_strictMono_pos {a b : ℤ} (ha : 1 ≤ a) (hab : a < b) :
+    genPent a < genPent b := by
+  have key : 2 * genPent b - 2 * genPent a = (b - a) * (3 * (b + a) - 1) := by
+    linear_combination two_mul_genPent b - two_mul_genPent a
+  have hpos : 0 < (b - a) * (3 * (b + a) - 1) := mul_pos (by omega) (by omega)
+  omega
+
+/-- The full zigzag is strictly increasing at every step: `0 = g(0) < g(1)` and,
+for `1 ≤ k`, `g(k) < g(-k) < g(k+1)`.  Together with `genPent_strictMono_pos`
+this is the well-ordering that makes Euler's pentagonal recurrence a finite sum. -/
+theorem genPent_zigzag_step {k : ℤ} (hk : 1 ≤ k) :
+    genPent k < genPent (-k) ∧ genPent (-k) < genPent (k + 1) :=
+  ⟨genPent_lt_genPent_neg hk, genPent_neg_lt_genPent_succ (by omega)⟩
 
 /-! ## Part 4: Concrete values (OEIS A001318)
 

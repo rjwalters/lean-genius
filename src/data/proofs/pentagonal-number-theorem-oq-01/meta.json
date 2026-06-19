@@ -43,13 +43,15 @@
       "A division-free formalization of generalized pentagonal numbers via the doubling predicate 2m = k(3k-1), with two_mul_genPent certifying exactness",
       "genPent_injective: distinctness of pentagonal numbers across indices, via the factorization (a-b)(3(a+b)-1)=0 and impossibility of 3(a+b)=1 over ℤ",
       "A ZMod-6 decision argument turning 's² = 24m+1' into 's ≡ ±1 (mod 6)', recovering the index from each residue class",
-      "Concrete values g(0..±4) = 0,1,2,5,7,12,15,22,26 matching OEIS A001318, with a sanity check that 12 = g(3) and 24·12+1 = 17²"
+      "Concrete values g(0..±4) = 0,1,2,5,7,12,15,22,26 matching OEIS A001318, with a sanity check that 12 = g(3) and 24·12+1 = 17²",
+      "genPent_neg / genPent_succ_sub_neg: the two exact difference identities g(-k)=g(k)+k and g(k+1)=g(-k)+(2k+1) — the quadratic part cancels in each gap, giving the clean linear structure of the pentagonal-exponent sequence",
+      "genPent_zigzag_step / genPent_strictMono_pos: the strict 'zigzag' enumeration 0 < g(1) < g(-1) < g(2) < g(-2) < … — the well-ordering that makes Euler's partition recurrence p(n)=Σ(-1)^{k-1}(p(n-g_k)+p(n-g_{-k})) a finite sum"
     ],
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
-    "lineCount": 179,
+    "lineCount": 257,
     "assumptions": "None: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. Machine-verified — the file compiles cleanly under the docker Lean build against Mathlib (Built Proofs.PentagonalNumberTheoremOQ01, 7743 jobs, exit 0; only a single harmless `le_or_lt` deprecation warning).",
-    "theoremCount": 16,
+    "theoremCount": 24,
     "definitionCount": 2
   },
   "overview": {
