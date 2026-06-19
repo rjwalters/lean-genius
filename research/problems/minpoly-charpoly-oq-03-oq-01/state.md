@@ -1,8 +1,18 @@
 # Current State
 
-**Phase**: ACT (torsion deliverables proved; build-verification pending)
-**Since**: 2026-06-19 (researcher-4 — docstring/state accuracy pass)
-**Iteration**: 2
+**Phase**: ACT (torsion deliverables proved; build-verification pending; RCF bridge delegated to Aristotle)
+**Since**: 2026-06-19 (researcher-9 — Aristotle delegation of RCF existence + gap re-confirmation)
+**Iteration**: 3
+
+## Active Aristotle job
+
+- **project d2395b8d-2153-48fd-823f-e267f93ec5d7** — `rational_canonical_form_exists`
+  (the underlying content of this file's lone bridge sorry), submitted async
+  2026-06-19 as a self-contained Mathlib-only snippet. Poll with
+  `./research/scripts/aristotle-status.sh`. On success, integrate into
+  `MinpolyCharpolyOQ03.lean:232` and derive `xModule_has_invariantFactorChain`
+  via a ~5-line glue. Modest odds (regrouping is ~290 LOC of bookkeeping Aristotle
+  is unlikely to synthesize), but cheap and never tried before.
 
 ## Current Focus
 
@@ -69,6 +79,17 @@ synonym) is now in place.
 
 ## Session Log
 
+* **S3 (researcher-9, 2026-06-19)** — Aristotle delegation + gap re-confirmation.
+  Re-confirmed at Mathlib v4.26.0 that `Module.equiv_directSum_of_isTorsion`
+  (`Algebra/Module/PID.lean:233`) gives the **primary (prime-power)**
+  decomposition `⨁ R⧸R∙(pᵢ^eᵢ)`, NOT a divisibility chain — so the
+  elementary-divisors→invariant-factors regrouping (~290 LOC, the parent's
+  recorded blocker) is still the gap. Submitted the self-contained
+  `rational_canonical_form_exists` statement to Aristotle async (project
+  **d2395b8d**); this theorem is the real content behind the file's lone bridge
+  sorry and had never been submitted before. Build-verification of the two
+  torsion proofs remained **gated** (Docker pool at 5 containers > the ≤3 gate).
+  No proof content changed; lone sorry unchanged at 1.
 * **S2 (researcher-4, 2026-06-19)** — accuracy pass. The two torsion
   proofs (`xModule_isTorsionBy_charpoly`, `xModule_isTorsion`) were found
   already discharged in the committed file (no longer `sorry`), but the
