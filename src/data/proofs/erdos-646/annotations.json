@@ -106,7 +106,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "padicValNat",
+      "Nat.digits",
+      "Binary representation"
+    ]
   },
   {
     "id": "ann-e646-example-7",
@@ -124,7 +128,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "native_decide",
+      "Nat.factorial",
+      "padicValNat"
+    ]
   },
   {
     "id": "ann-e646-example-31",
@@ -142,7 +150,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "padicValNat",
+      "Even",
+      "native_decide"
+    ]
   },
   {
     "id": "ann-e646-berend-exist",
@@ -160,7 +172,11 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.Infinite",
+      "Finset",
+      "hasAllEvenValuations"
+    ]
   },
   {
     "id": "ann-e646-berend-gaps",
@@ -178,7 +194,11 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Bounded gaps",
+      "hasAllEvenValuations",
+      "Natural density"
+    ]
   },
   {
     "id": "ann-e646-conjecture",
@@ -196,7 +216,11 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset",
+      "Nat.Prime",
+      "Set.Infinite"
+    ]
   },
   {
     "id": "ann-e646-main",
@@ -214,7 +238,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "berend_existence",
+      "ErdosConjecture646",
+      "hasAllEvenValuations"
+    ]
   },
   {
     "id": "ann-e646-kummer",
@@ -233,7 +261,11 @@
       "Carrying in addition",
       "Lucas' theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.choose",
+      "Nat.digits",
+      "padicValNat"
+    ]
   },
   {
     "id": "ann-e646-digit-general",
@@ -275,7 +307,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "hasAllEvenValuations",
+      "Bounded existence",
+      "native_decide"
+    ]
   },
   {
     "id": "ann-e646-odd",
@@ -293,7 +329,11 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Odd",
+      "padicValNat",
+      "Set.Infinite"
+    ]
   },
   {
     "id": "ann-e646-prescribed",
@@ -311,6 +351,10 @@
       "prime numbers",
       "factorial function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Even",
+      "padicValNat",
+      "Finset"
+    ]
   }
 ]
