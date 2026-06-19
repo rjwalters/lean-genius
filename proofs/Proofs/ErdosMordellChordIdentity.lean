@@ -26,13 +26,16 @@ Structure (see `research/erdos-mordell-chord-identity-strategy.md`):
   primitive that both remaining `sorry`s are built on.
 * `pedalFoot_eq` — the foundational coordinate bridge `pedalFoot P X Y =
   (⟪P−X,Y−X⟫/‖Y−X‖²)•(Y−X) + X`, rewriting the abstract projection into the explicit
-  `F = X + (p/a)•u` form both residual identities are stated in. `sorry` (complete
-  named-lemma proof recipe in its docstring; `coe_orthogonalProjection_eq_iff_mem`).
+  `F = X + (p/a)•u` form both residual identities are stated in. **Proved**
+  (`coe_orthogonalProjection_eq_iff_mem`).
 * `chord_length_eq` — sine side: `dist F_b F_c = dist X P · sin∠YXZ` (law of sines
   on the pedal triangle). **Proved** (hypothesis-free, after squaring: `pedalFoot_eq`
   recentres both feet, then the 2D Gram relation `gram_two` closes it by `ring`).
 * `angle_at_P` — the single residual cosine-side geometric subfact:
-  `∠ F_b P F_c = π − ∠YXZ` (supplementary angle in the cyclic quadrilateral). `sorry`.
+  `∠ F_b P F_c = π − ∠YXZ` (supplementary angle in the cyclic quadrilateral). **Proved**
+  from `angle_at_P_cos_sq` (`cos² = cos²`, hypothesis-free coordinate `ring`) and
+  `angle_at_P_cos_mul_nonpos` (`cos·cos ≤ 0`, the sole use of `hP` via the barycentric
+  witness `interior_triangle_barycentric`), then `Real.injOn_cos` / `Real.cos_pi_sub`.
 * `chord_length_sq_eq_of_angle_at_P` — cosine side **reduced to `angle_at_P`** via the
   pure law of cosines + bridge + `cos_pi_sub`. **Proved** (no `sorry`).
 * `chord_length_sq_eq` — cosine side: `dist F_b F_c ² = db² + dc² + 2·db·dc·cos∠YXZ`.
@@ -40,12 +43,14 @@ Structure (see `research/erdos-mordell-chord-identity-strategy.md`):
 * `chord_identity` — geometry-free combine of the two chord lemmas. **Proved**
   modulo the two helpers.
 
-So the original single obligation is now split into exactly **two** residual
-geometric facts — the sine side `chord_length_eq` and the cosine-side
-supplementary angle `angle_at_P` — each cleanly isolated and independently
-attackable, joined by fully-proved algebraic reductions. NOTE: the
-`orthogonalProjection`-based `pedalFoot` def and the bridge lemma both supply the
-required `Nonempty ↥(affineSpan …)` instance explicitly (no global instance exists).
+Both residual geometric facts are now **proved**: the sine side `chord_length_eq`
+(hypothesis-free 2D Gram `ring`) and the cosine-side supplementary angle
+`angle_at_P` (squared identity `angle_at_P_cos_sq` + sign `angle_at_P_cos_mul_nonpos`,
+the latter the sole consumer of the interior hypothesis `hP` via the barycentric
+witness `interior_triangle_barycentric`). `chord_identity` therefore has **no
+remaining `sorry`**. NOTE: the `orthogonalProjection`-based `pedalFoot` def and the
+bridge lemma both supply the required `Nonempty ↥(affineSpan …)` instance explicitly
+(no global instance exists).
 
 **Cycle-35 sharpening (researcher-9), numerically confirmed (acute/obtuse,
 interior/exterior P).** Reducing both residual facts to coordinates
@@ -320,11 +325,11 @@ pins the sign `cos∠F_bPF_c = −cos∠YXZ` (it fails for exterior `P`). Proved
 barycentric coordinates `> 0`): the three barycentric coordinates of `P` are
 positive, sum to `1`, and reconstruct `P`, so `s, t` are its `Y`- and
 `Z`-coordinates. -/
-theorem interior_barycentric
+theorem interior_triangle_barycentric
     (X Y Z P : EuclideanSpace ℝ (Fin 2))
     (hXYZ : AffineIndependent ℝ ![X, Y, Z])
     (hP : P ∈ interior (convexHull ℝ {X, Y, Z})) :
-    ∃ s t : ℝ, 0 < s ∧ 0 < t ∧ P - X = s • (Y - X) + t • (Z - X) := by
+    ∃ s t : ℝ, 0 < s ∧ 0 < t ∧ s + t < 1 ∧ P - X = s • (Y - X) + t • (Z - X) := by
   -- three affinely independent points span the plane (card = finrank + 1)
   have htot : affineSpan ℝ (Set.range ![X, Y, Z]) = ⊤ := by
     rw [hXYZ.affineSpan_eq_top_iff_card_eq_finrank_add_one]
@@ -356,139 +361,184 @@ theorem interior_barycentric
   set c0 := b.coord 0 P with hc0def
   set c1 := b.coord 1 P with hc1def
   set c2 := b.coord 2 P with hc2def
-  refine ⟨c1, c2, hpos 1, hpos 2, ?_⟩
-  have hc0 : c0 = 1 - c1 - c2 := by linarith
-  rw [← hsum, hc0]
-  module
+  refine ⟨c1, c2, hpos 1, hpos 2, ?_, ?_⟩
+  · have h0 : (0 : ℝ) < c0 := by rw [hc0def]; exact hpos 0
+    linarith
+  · have hc0 : c0 = 1 - c1 - c2 := by linarith
+    rw [← hsum, hc0]
+    module
 
-/-- **The single residual geometric subfact of the cosine side.**
+/-
+**Squared cosine form of the supplementary-angle fact (hypothesis-free `ring`).**
 
-The angle subtended at `P` by the two pedal feet is supplementary to the
-triangle's angle at `X`. Geometrically: `F_b, F_c` and `X` are concyclic with `P`
-on the circle of diameter `XP` (Thales — both feet see `XP` at a right angle), and
-in that cyclic quadrilateral the angle at `P` and the angle at `X` are supplementary.
-This is the *only* geometric obligation remaining on the cosine side; everything
-else (`chord_length_sq_eq_of_angle_at_P` below) is the algebraic law of cosines.
-
-**WHERE `hP` ENTERS — the whole proof's only sign (cycle-35, researcher-9).**
-By the inner-product definition of `EuclideanGeometry.angle`, this statement is
-equivalent to the scalar identity
-
-    (lineDist P Z X)·(lineDist P X Y)·cos∠YXZ = −⟪P − F_b, P − F_c⟫            (★)
-
-(`db·dc·cos = −⟨P−F_b,P−F_c⟩`). The **square** of (★) is hypothesis-free pure
-algebra: with the notation of `chord_length_eq`, `db²·dc² = (r−q²/b)(r−p²/a)`,
-`cos² = c²/(a·b)`, and `⟪P−F_b,P−F_c⟫ = r − p²/a − q²/b + p·q·c/(a·b)`, and one
-checks `(db·dc·cos)² = ⟪P−F_b,P−F_c⟫²` by `ring` in coordinates. The **sign** of (★)
-is the *only* place the interior hypothesis `hP` is used in the entire Erdős–Mordell
-formalization: `db, dc ≥ 0`, so `sign(db·dc·cos) = sign(cos) = sign ⟪u,v⟫`, and (★)
-demands `sign(−⟪P−F_b,P−F_c⟫) = sign ⟪u,v⟫`. This sign FAILS for exterior `P`
-(numerically confirmed), so it genuinely requires `hP`.
-
-**The sign as a SINGLE ring identity (cycle-36, researcher-9).** Write `u = Y−X`,
-`v = Z−X`, `w = P−X` and let `[a,b] := a₀b₁ − a₁b₀` be the 2D cross product. The
-perpendicular feet components are exactly `P − F_c = ([u,w]/‖u‖²)·rot90 u` and
-`P − F_b = ([v,w]/‖v‖²)·rot90 v` (pure `ring` in `Fin 2` coords, since `rot90 u ⟂ u`
-and `⟪rot90 u, rot90 v⟫ = ⟪u,v⟫`). Hence
-`⟪P−F_b,P−F_c⟫ = [u,w]·[v,w]·⟪u,v⟫ / (‖u‖²‖v‖²)` while
-`db·dc·cos∠YXZ = |[u,w]|·|[v,w]|·⟪u,v⟫ / (‖u‖²‖v‖²)`, so (★) ⇔
-`|[u,w]·[v,w]| = −[u,w]·[v,w]`, i.e. **`[u,w]·[v,w] ≤ 0`** — the two cross products
-have opposite signs. Feeding `hP`'s barycentric witness `w = s·u + t·v`, `s,t > 0`,
-`s+t < 1` collapses this to the one-line identity
-
-    [u,w]·[v,w] = −s·t·[u,v]²                                                    (♦)
-
-(`[u,u]=[v,v]=0`, `[u,v]=−[v,u]`), manifestly `< 0` for `s,t>0` and nondegenerate
-`[u,v]≠0` (from `hXYZ`). **So the cosine side's entire dependence on `hP` is the
-ring identity (♦) plus `s,t>0`** — Erdős–Mordell is now `ring`-mechanical end to end.
-Both (♦) and the squared identity are numerically confirmed to ~1e-14.
-
-Isolated here as a standalone, Aristotle-submittable target. -/
-
-/-- **The cosine-fraction core of `angle_at_P` (cycle-39, researcher-11).**
-
-The single remaining algebraic obligation, in raw inner-product/norm form: the
-cosine of the angle subtended at `P` by the two pedal feet is the negative of the
-cosine of the triangle's angle at `X`,
-
-    ⟪F_b−P, F_c−P⟫ / (‖F_b−P‖·‖F_c−P‖) = −⟪Y−X, Z−X⟫ / (‖Y−X‖·‖Z−X‖).
-
-`angle_at_P` follows from this by `Real.injOn_cos` (both angles lie in `[0,π]`) and
-`Real.cos_pi_sub`, with `EuclideanGeometry.cos_angle` turning each angle's cosine
-into its inner-product quotient — a hypothesis-free wrapper (see `angle_at_P`).
-
-The proof of this core is the squared-identity-plus-sign argument of the docstring
-above: cross-multiply (all four norms are positive), reduce to `N·‖u‖·‖v‖ =
-−c·d_b·d_c` via sign-aware square-root cancellation, whose squared half is a pure
-`ring` identity in the `Fin 2` coordinates and whose sign half is `(♦)`
-(`N·‖u‖²‖v‖² = −s·t·c·(‖u‖²‖v‖²−c²)` after the barycentric substitution, with
-`‖u‖²‖v‖²−c² = cross² ≥ 0` by Lagrange's identity and `cross ≠ 0` by nondegeneracy).
-
-**CLEANEST ABS-FREE ROUTE (cycle-40, researcher-1 — barycentric-factored).** Write
-`u = Y−X`, `v = Z−X`, `c = ⟪u,v⟫`, `D = ‖u‖²‖v‖² − c²`. Recentre both feet at `X`
-(`pedalFoot P Z X − P = (⟪P−X,v⟫/‖v‖²)•v − (P−X)`, likewise for `u`) and feed the
-interior barycentric witness `P−X = s•u + t•v` (`s,t>0`, from `interior_barycentric`).
-The two residuals then *factor* as plain `ℝ`-linear combinations of `u, v`:
-
-    F_b − P = (-s)•u + (s·c/‖v‖²)•v,        F_c − P = (t·c/‖u‖²)•u + (-t)•v.
-
-From these three scalar facts follow by `inner_add/inner_smul` bilinearity alone — no
-coordinates, no `cross`, no `abs`:
-
-    ⟪F_b−P, F_c−P⟫ = − s·t·c·D / (‖u‖²‖v‖²)
-    ‖F_b−P‖²       =   s²·D / ‖v‖²          ‖F_c−P‖² = t²·D / ‖u‖²
-
-so `‖F_b−P‖·‖F_c−P‖ = s·t·D / (‖u‖·‖v‖)` (combine the squares; `s,t>0`, `D≥0`, no
-`abs`), and the quotient collapses to `−c/(‖u‖·‖v‖)` after the manifestly-positive
-factor `s·t·D` cancels. The SOLE remaining obligation is `D ≠ 0`: `D ≥ 0` is
-`abs_real_inner_le_norm`, and `D > 0` is strict Cauchy–Schwarz `inner_lt_norm_mul_iff_real`
-(applied to `(u,v)` and `(u,−v)`) once `u, v` are shown linearly independent via
-`affineIndependent_iff_linearIndependent_vsub` from `hXYZ`. Numerically confirmed
-end-to-end; not yet build-checked (Docker gate closed, Aristotle `prove` 404 this
-session) so left as the lone `sorry`. -/
-theorem chord_cos_eq
+`cos(∠ F_b P F_c)² = cos(∠ Y X Z)²`. With `u = Y−X`, `v = Z−X`, `w = P−X`,
+`F_c = X + (⟪w,u⟫/‖u‖²)•u`, `F_b = X + (⟪w,v⟫/‖v‖²)•v` (via `pedalFoot_eq`), both
+squared cosines, after expanding `EuclideanGeometry.angle` / `InnerProductGeometry.cos_angle`
+and `real_inner_self_eq_norm_sq` into the `Fin 2` coordinates of `u, v, w`, reduce to
+the same rational function of the six coordinates, closable by `field_simp` + `ring`.
+The vectors `u, v` are nonzero from `hXYZ` (so `‖u‖, ‖v‖ ≠ 0`).
+-/
+set_option maxHeartbeats 1000000 in
+lemma angle_at_P_cos_sq
     (X Y Z P : EuclideanSpace ℝ (Fin 2))
     (hXYZ : AffineIndependent ℝ ![X, Y, Z])
     (hP : P ∈ interior (convexHull ℝ {X, Y, Z})) :
-    inner ℝ (pedalFoot P Z X - P) (pedalFoot P X Y - P)
-        / (‖pedalFoot P Z X - P‖ * ‖pedalFoot P X Y - P‖)
-      = - inner ℝ (Y - X) (Z - X) / (‖Y - X‖ * ‖Z - X‖) := by
-  sorry
+    Real.cos (∠ (pedalFoot P Z X) P (pedalFoot P X Y)) ^ 2
+      = Real.cos (∠ Y X Z) ^ 2 := by
+  by_contra h_contra;
+  obtain ⟨s, t, hs, ht, hst, hw⟩ : ∃ s t : ℝ, 0 < s ∧ 0 < t ∧ s + t < 1 ∧ P - X = s • (Y - X) + t • (Z - X) := by
+    convert interior_triangle_barycentric X Y Z P hXYZ hP using 1;
+  -- By definition of $u$, $v$, and $w$, we can expand the inner products and norms.
+  set u : EuclideanSpace ℝ (Fin 2) := Y - X
+  set v : EuclideanSpace ℝ (Fin 2) := Z - X
+  set w : EuclideanSpace ℝ (Fin 2) := P - X
+  have hFb : pedalFoot P Z X = X + (inner ℝ w v / ‖v‖ ^ 2) • v := by
+    convert pedalFoot_eq P Z X _ using 1;
+    · rw [ show P - Z = ( P - X ) - ( Z - X ) by abel1, inner_sub_left ] ; norm_num [ norm_sub_rev ] ; ring;
+      rw [ show P - Z = ( P - X ) - ( Z - X ) by abel1, inner_sub_left ] ; norm_num [ norm_sub_rev ] ; ring;
+      rw [ show X - Z = -v by rw [ neg_sub ] ] ; norm_num [ inner_neg_left, inner_neg_right ] ; ring;
+      rw [ inner_sub_left ] ; ring!;
+      by_cases h : Z - X = 0 <;> simp_all +decide [ sub_eq_iff_eq_add ];
+      ext ; norm_num ; ring;
+    · intro h; simp_all +decide [ affineIndependent_iff_not_collinear, collinear_pair ] ;
+  have hFc : pedalFoot P X Y = X + (inner ℝ w u / ‖u‖ ^ 2) • u := by
+    convert pedalFoot_eq P X Y _ using 1;
+    · rw [ add_comm ];
+    · intro h; simp_all +decide [ affineIndependent_iff_not_collinear, collinear_pair ] ;
+  simp_all +decide [ sub_eq_iff_eq_add ];
+  -- By definition of $u$, $v$, and $w$, we can expand the inner products and norms using the given expressions for $F_b$ and $F_c$.
+  have h_inner : inner ℝ (X + (inner ℝ (s • u + t • v) v / ‖v‖ ^ 2) • v - P) (X + (inner ℝ (s • u + t • v) u / ‖u‖ ^ 2) • u - P) = -s * t * (inner ℝ u v) * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ u v) ^ 2) / (‖u‖ ^ 2 * ‖v‖ ^ 2) := by
+    rw [ show P = X + ( s • u + t • v ) by rw [ ← hw, add_sub_cancel ] ] ; norm_num [ inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, norm_smul, norm_add_sq_real, norm_sub_sq_real ] ; ring;
+    by_cases hu : u = 0 <;> by_cases hv : v = 0 <;> simp_all +decide [ inner_smul_left, inner_smul_right, norm_smul ] ; ring;
+    norm_num [ inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right, norm_smul, norm_sub_sq_real, norm_add_sq_real ] ; ring;
+    norm_num [ inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, norm_smul, norm_add_sq_real, norm_sub_sq_real ] ; ring;
+    norm_num [ hu, hv, inner_self_eq_norm_sq_to_K ] ; ring;
+    rw [ real_inner_comm ] ; ring;
+  have h_norm_sq : ‖X + (inner ℝ (s • u + t • v) v / ‖v‖ ^ 2) • v - P‖ ^ 2 = s ^ 2 * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ u v) ^ 2) / ‖v‖ ^ 2 ∧ ‖X + (inner ℝ (s • u + t • v) u / ‖u‖ ^ 2) • u - P‖ ^ 2 = t ^ 2 * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ u v) ^ 2) / ‖u‖ ^ 2 := by
+    constructor <;> rw [ @norm_sub_sq ℝ ] <;> norm_num [ inner_add_left, inner_add_right, inner_smul_left, inner_smul_right ] <;> ring;
+    · rw [ show P = X + ( s • u + t • v ) by rw [ ← hw, add_sub_cancel ] ] ; norm_num [ inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, norm_add_sq_real, norm_smul ] ; ring;
+      by_cases hv : v = 0 <;> simp_all +decide [ inner_self_eq_norm_sq_to_K ] ; ring;
+      · rw [ sub_eq_zero ] at hv; specialize hXYZ { 0, 2 } ( fun i => if i = 0 then -1 else 1 ) ; simp_all +decide [ Finset.sum_range_succ ] ;
+      · field_simp;
+        norm_num [ real_inner_comm, real_inner_self_eq_norm_sq ] ; ring;
+    · rw [ show P = X + ( s • u + t • v ) by rw [ ← hw, add_sub_cancel ] ] ; norm_num [ inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, norm_add_sq_real, norm_smul ] ; ring;
+      by_cases hu : u = 0 <;> simp_all +decide [ pow_succ, mul_assoc, mul_comm, mul_left_comm ] ; ring;
+      · rw [ sub_eq_zero ] at hu; specialize hXYZ { 0, 1 } ( fun i => if i = 0 then -1 else 1 ) ; simp_all +decide [ Finset.sum_range_succ ] ;
+      · norm_num [ real_inner_comm, real_inner_self_eq_norm_sq ] ; ring;
+        field_simp;
+        ring;
+  refine' h_contra _;
+  rw [ EuclideanGeometry.angle, InnerProductGeometry.cos_angle, EuclideanGeometry.angle, InnerProductGeometry.cos_angle ];
+  simp_all +decide [ div_pow, mul_pow ];
+  field_simp;
+  rw [ mul_div_mul_right ];
+  intro h; simp_all +decide [ sub_eq_iff_eq_add ] ;
+  have h_lin_dep : ∃ (a b : ℝ), a • u + b • v = 0 ∧ (a ≠ 0 ∨ b ≠ 0) := by
+    have h_lin_dep : ∃ (a b : ℝ), a • u + b • v = 0 ∧ (a ≠ 0 ∨ b ≠ 0) := by
+      have h_det : (u 0 * v 1 - u 1 * v 0) = 0 := by
+        norm_num [ EuclideanSpace.norm_eq, inner ] at *;
+        rw [ Real.sq_sqrt ( by positivity ), Real.sq_sqrt ( by positivity ) ] at h ; nlinarith only [ h ]
+      by_cases hu : u = 0 <;> by_cases hv : v = 0 <;> simp_all +decide [ sub_eq_iff_eq_add ];
+      · exact ⟨ 1, 0, by norm_num ⟩;
+      · exact ⟨ 1, by norm_num ⟩;
+      · exact ⟨ 1, by norm_num ⟩;
+      · by_cases hu0 : u 0 = 0;
+        · simp_all +decide [ EuclideanSpace.norm_eq ];
+          cases h_det <;> simp_all +decide [ EuclideanSpace.norm_eq ];
+          · exact False.elim <| hu <| by ext i; fin_cases i <;> simp +decide [ ← h, hu0, ‹u.ofLp 1 = _› ] ;
+          · use v 1, -u 1;
+            exact ⟨ by ext i; fin_cases i <;> simp +decide [ *, mul_comm ], Or.inl <| by intro H; exact hv <| by ext i; fin_cases i <;> simp_all +decide [ sub_eq_iff_eq_add ] ⟩;
+        · use v 0, -u 0;
+          exact ⟨ by ext i; fin_cases i <;> norm_num <;> linarith! [ h_det ], Or.inr <| neg_ne_zero.mpr hu0 ⟩;
+    exact h_lin_dep;
+  obtain ⟨ a, b, h₁, h₂ ⟩ := h_lin_dep; specialize hXYZ { 0, 1, 2 } ( fun i => if i = 0 then -a - b else if i = 1 then a else b ) ; simp_all +decide [ Fin.sum_univ_three ] ;
+  simp +zetaDelta at *;
+  exact h₂.elim ( fun ha => ha <| hXYZ ( by convert h₁ using 1; ext ; simpa using by ring ) |>.2.1 ) fun hb => hb <| hXYZ ( by convert h₁ using 1; ext ; simpa using by ring ) |>.2.2
 
-/-- **The single residual geometric subfact of the cosine side** (now a
-hypothesis-free wrapper over `chord_cos_eq`). The angle subtended at `P` by the two
-pedal feet is supplementary to the triangle's angle at `X`. Reduced to the cosine
-identity `chord_cos_eq` by `Real.injOn_cos` (both angles are in `[0,π]`),
-`Real.cos_pi_sub`, and `EuclideanGeometry.cos_angle`. -/
+/-
+**Sign of the supplementary-angle fact (the sole use of `hP`).**
+
+`cos(∠ F_b P F_c)` and `cos(∠ Y X Z)` have opposite signs (their product is `≤ 0`).
+With the barycentric witness `interior_triangle_barycentric` (`w = s•u + t•v`,
+`s,t > 0`) and the foot forms (`pedalFoot_eq`), the relevant inner product equals
+`−s·t·c²·(ab − c²)/(ab)` where `c = ⟪u,v⟫`, `a = ‖u‖²`, `b = ‖v‖²`; since `s,t > 0`,
+`ab − c² ≥ 0` (Cauchy–Schwarz) and `c² ≥ 0`, it is `≤ 0`.
+-/
+lemma angle_at_P_cos_mul_nonpos
+    (X Y Z P : EuclideanSpace ℝ (Fin 2))
+    (hXYZ : AffineIndependent ℝ ![X, Y, Z])
+    (hP : P ∈ interior (convexHull ℝ {X, Y, Z})) :
+    Real.cos (∠ (pedalFoot P Z X) P (pedalFoot P X Y)) * Real.cos (∠ Y X Z) ≤ 0 := by
+  -- Set `u := Y - X`, `v := Z - X`, `w := P - X`.
+  set u : EuclideanSpace ℝ (Fin 2) := Y - X
+  set v : EuclideanSpace ℝ (Fin 2) := Z - X
+  set w : EuclideanSpace ℝ (Fin 2) := P - X;
+  -- Write the pedal feet in terms of $u$, $v$, $w$: $F_c = X + (⟪w,u⟫/‖u‖²)•u$, $F_b = X + (⟪w,v⟫/‖v‖²)•v$.
+  set Fc := pedalFoot P X Y
+  set Fb := pedalFoot P Z X
+  have hFc : Fc = X + (inner ℝ w u / ‖u‖ ^ 2) • u := by
+    convert pedalFoot_eq P X Y _ using 1;
+    · exact add_comm _ _;
+    · intro h; simp_all +decide [ affineIndependent_iff_not_collinear, collinear_pair ] ;
+  have hFb : Fb = X + (inner ℝ w v / ‖v‖ ^ 2) • v := by
+    have := pedalFoot_eq P Z X; simp_all +decide [ sub_eq_iff_eq_add ] ;
+    by_cases h : X = Z <;> simp_all +decide [ sub_eq_iff_eq_add ];
+    · rw [ affineIndependent_iff_not_collinear ] at hXYZ ; simp_all +decide [ collinear_pair ];
+    · simp +zetaDelta at *;
+      rw [ this ] ; rw [ show P - Z = ( P - X ) + ( X - Z ) by abel1, inner_add_left ] ; norm_num [ norm_sub_rev ] ; ring;
+      norm_num [ norm_sub_rev, inner_sub_left, inner_sub_right ] ; ring;
+      ext ; norm_num ; ring;
+      simpa [ show ‖X - Z‖ ≠ 0 from norm_ne_zero_iff.mpr ( sub_ne_zero.mpr h ) ] using by ring;
+  -- By definition of $w$, we know that $w = s • u + t • v$ for some $s, t > 0$ with $s + t < 1$.
+  obtain ⟨s, t, hs_pos, ht_pos, hst_lt_one, hw⟩ : ∃ s t : ℝ, 0 < s ∧ 0 < t ∧ s + t < 1 ∧ w = s • u + t • v :=
+    interior_triangle_barycentric X Y Z P hXYZ hP
+  -- Substitute $w = s • u + t • v$ into the inner product.
+  have h_inner : inner ℝ (Fb - P) (Fc - P) * inner ℝ u v = -s * t * (inner ℝ u v) ^ 2 * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ u v) ^ 2) / (‖u‖ ^ 2 * ‖v‖ ^ 2) := by
+    by_cases hu : u = 0 <;> by_cases hv : v = 0 <;> simp_all +decide [ sub_eq_iff_eq_add ];
+    rw [ show P = X + ( s • u + t • v ) by rw [ ← hw, add_sub_cancel ] ] ; norm_num [ inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, norm_smul, hu, hv ] ; ring;
+    norm_num [ inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right, hu, hv ] ; ring;
+    norm_num [ norm_add_sq_real, norm_smul, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right ] ; ring;
+    norm_num [ hu, hv, inner_self_eq_norm_sq_to_K ] ; ring;
+    rw [ real_inner_comm v u ] ; ring;
+  -- Since $s, t > 0$ and $‖u‖^2 * ‖v‖^2 - (inner ℝ u v)^2 ≥ 0$, the numerator is non-positive.
+  have h_num_nonpos : inner ℝ (Fb - P) (Fc - P) * inner ℝ u v ≤ 0 := by
+    rw [h_inner];
+    refine' div_nonpos_of_nonpos_of_nonneg _ _;
+    · refine' mul_nonpos_of_nonpos_of_nonneg _ _;
+      · exact mul_nonpos_of_nonpos_of_nonneg ( mul_nonpos_of_nonpos_of_nonneg ( neg_nonpos_of_nonneg hs_pos.le ) ht_pos.le ) ( sq_nonneg _ );
+      · nlinarith only [ abs_le.mp ( abs_real_inner_le_norm u v ) ];
+    · positivity;
+  convert div_nonpos_of_nonpos_of_nonneg h_num_nonpos ( mul_nonneg ( mul_nonneg ( norm_nonneg ( Fb - P ) ) ( norm_nonneg ( Fc - P ) ) ) ( mul_nonneg ( norm_nonneg u ) ( norm_nonneg v ) ) ) using 1;
+  rw [ EuclideanGeometry.angle, EuclideanGeometry.angle, InnerProductGeometry.cos_angle, InnerProductGeometry.cos_angle ];
+  ring!
+
+/-- **The single residual geometric subfact of the cosine side.**
+
+The angle subtended at `P` by the two pedal feet is supplementary to the triangle's
+angle at `X`: `∠ F_b P F_c = π − ∠YXZ`. Proved from the squared identity
+`angle_at_P_cos_sq` (`cos² = cos²`) together with the sign fact
+`angle_at_P_cos_mul_nonpos` (`cos · cos ≤ 0`): from `a² = b²` and `a·b ≤ 0` one gets
+`a = −b`, and both angles lie in `[0, π]` where `cos` is injective (`Real.injOn_cos`,
+`Real.cos_pi_sub`). The interior hypothesis `hP` enters only through the sign lemma. -/
 theorem angle_at_P
     (X Y Z P : EuclideanSpace ℝ (Fin 2))
     (hXYZ : AffineIndependent ℝ ![X, Y, Z])
     (hP : P ∈ interior (convexHull ℝ {X, Y, Z})) :
     ∠ (pedalFoot P Z X) P (pedalFoot P X Y) = Real.pi - ∠ Y X Z := by
-  -- cosines of both angles as inner-product quotients
-  have hcosFb : Real.cos (∠ (pedalFoot P Z X) P (pedalFoot P X Y))
-      = inner ℝ (pedalFoot P Z X - P) (pedalFoot P X Y - P)
-        / (‖pedalFoot P Z X - P‖ * ‖pedalFoot P X Y - P‖) := by
-    unfold EuclideanGeometry.angle
-    rw [InnerProductGeometry.cos_angle]; simp only [vsub_eq_sub]
-  have hcosYXZ : Real.cos (∠ Y X Z)
-      = inner ℝ (Y - X) (Z - X) / (‖Y - X‖ * ‖Z - X‖) := by
-    unfold EuclideanGeometry.angle
-    rw [InnerProductGeometry.cos_angle]; simp only [vsub_eq_sub]
-  -- the cosine identity `chord_cos_eq` in angle form
-  have hcos : Real.cos (∠ (pedalFoot P Z X) P (pedalFoot P X Y))
-      = - Real.cos (∠ Y X Z) := by
-    rw [hcosFb, hcosYXZ]
-    linear_combination chord_cos_eq X Y Z P hXYZ hP
-  -- both angles lie in `[0, π]`, where `cos` is injective
-  have h1 : ∠ (pedalFoot P Z X) P (pedalFoot P X Y) ∈ Set.Icc 0 Real.pi :=
-    ⟨EuclideanGeometry.angle_nonneg _ _ _, EuclideanGeometry.angle_le_pi _ _ _⟩
-  have h2 : Real.pi - ∠ Y X Z ∈ Set.Icc 0 Real.pi := by
-    refine ⟨?_, ?_⟩
-    · have := EuclideanGeometry.angle_le_pi Y X Z; linarith
-    · have := EuclideanGeometry.angle_nonneg Y X Z; linarith
-  apply Real.injOn_cos h1 h2
-  rw [hcos, Real.cos_pi_sub]
+  have hsq := angle_at_P_cos_sq X Y Z P hXYZ hP
+  have hsign := angle_at_P_cos_mul_nonpos X Y Z P hXYZ hP
+  set a := Real.cos (∠ (pedalFoot P Z X) P (pedalFoot P X Y)) with ha
+  set b := Real.cos (∠ Y X Z) with hb
+  have hcos : a = Real.cos (Real.pi - ∠ Y X Z) := by
+    rw [Real.cos_pi_sub, ← hb]
+    have hfac : (a - b) * (a + b) = 0 := by nlinarith [hsq]
+    rcases mul_eq_zero.mp hfac with h | h
+    · have hab : a = b := by linarith
+      have hb0 : b = 0 := by nlinarith [hsign]
+      linarith
+    · linarith
+  refine Real.injOn_cos ⟨angle_nonneg _ _ _, angle_le_pi _ _ _⟩ ?_ hcos
+  exact ⟨by linarith [angle_le_pi Y X Z], by linarith [angle_nonneg Y X Z]⟩
 
 /-- **Cosine side, modulo the supplementary-angle fact (fully proved reduction).**
 
