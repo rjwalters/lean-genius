@@ -125,6 +125,47 @@ confirmed present. No `oangle` / `two_zsmul` machinery.
 Estimated 150–300 lines; step 4 is the residual risk. Build in a **separate
 companion file first** (do not re-add sorries to the clean shipped file).
 
+### 2026-06-19 (cycle 5) — step 4 now pinned to named lemmas
+
+The residual-risk step 4 (`∠ F_b X F_c = ∠ Y X Z`) is no longer unpinned. The
+affine angle unfolds to the vector angle
+`∠ F_b X F_c = InnerProductGeometry.angle (F_b -ᵥ X) (F_c -ᵥ X)`
+(`EuclideanGeometry.angle` def, `Angle/Unoriented/Affine.lean`), and the two
+scaling lemmas
+
+| Need | Lemma | Location |
+|------|-------|----------|
+| `angle (r•x) y = angle x y`, `r>0` | `InnerProductGeometry.angle_smul_left_of_pos`  | `Angle/Unoriented/Basic.lean:140` |
+| `angle x (r•y) = angle x y`, `r>0` | `InnerProductGeometry.angle_smul_right_of_pos` | `Angle/Unoriented/Basic.lean:133` |
+
+collapse it to a single arithmetic fact: **`F_b -ᵥ X = t · (Y -ᵥ X)` with
+`t > 0`** (and `F_c -ᵥ X = s · (Z -ᵥ X)`, `s > 0`). I.e. each pedal foot lies on
+the *positive ray* from `X` toward the adjacent vertex. Concretely:
+
+1. `F_b := orthogonalProjection (affineSpan ℝ {X,Y}) P` lies on `line[X,Y]`, so
+   `F_b -ᵥ X ∈ span ℝ {Y -ᵥ X}` ⟹ `F_b -ᵥ X = t · (Y -ᵥ X)` for some real `t`.
+2. `t > 0`: for `P` interior to the triangle, the foot of the perpendicular to a
+   side lands on the **open** segment (the side's supporting line separates the
+   apex from nothing; the interior projects strictly inside). So `Sbtw ℝ X F_b Y`,
+   giving `0 < t < 1`. (`Sbtw`/`Wbtw` → scalar in `(0,1)`; search
+   `Wbtw`/`affineSegment`/`lineMap` for the `t`-extraction lemma.)
+
+So the angle equality is now **fully named** modulo "foot of an interior point's
+perpendicular to a side lies strictly inside that side" — an `Sbtw` membership
+fact, no longer an angle mystery. This removes the last *qualitative* gap; what
+remains is routine (if laborious) `EuclideanSpace`/`Sbtw` plumbing.
+
+### 2026-06-19 (cycle 5) — why still no code
+
+Aristotle MCP **still down** (`prove` returns `"Resource not found"`, same as
+cycles 3–4). Fleet busy: **8** `lean-build` containers live (load ~22) — far
+above the OOM-safe container gate (`ctrs<3`), so a heavy multi-iteration
+`EuclideanSpace` build cannot be started safely. This cycle's progress is the
+step-4 pin above (a genuine de-risk: the last unpinned subfact now has named
+Mathlib lemmas), not a code change. The clean 1-sorry file remains shipped
+(PR #26033 **merged** 07:23Z). Next quiet-fleet session: build the companion
+file from this fully-named decomposition; retry Aristotle first (it may recover).
+
 ## Why not done this session (2026-06-19)
 
 Aristotle MCP down ("Resource not found"); fleet at load ~18 with 5 lean
