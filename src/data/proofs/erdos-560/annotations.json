@@ -16,7 +16,11 @@
       "Graph coloring",
       "Bipartite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "size ramsey numbers",
+      "ramsey theory",
+      "edge complexity bounds"
+    ]
   },
   {
     "id": "ann-e560-edge-coloring",
@@ -35,7 +39,11 @@
       "Boolean functions"
     ],
     "mathContext": "See annotation content for formal details of edge coloring",
-    "prerequisites": []
+    "prerequisites": [
+      "graph edge sets",
+      "2-coloring of graphs",
+      "boolean functions"
+    ]
   },
   {
     "id": "ann-e560-bipartite",
@@ -54,7 +62,11 @@
       "Complete graphs",
       "Sum types"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complete bipartite graphs",
+      "sum types",
+      "simple graph adjacency"
+    ]
   },
   {
     "id": "ann-e560-monochromatic",
@@ -73,7 +85,11 @@
       "Ramsey numbers",
       "Optimization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph embeddings",
+      "monochromatic subgraphs",
+      "size ramsey numbers"
+    ]
   },
   {
     "id": "ann-e560-lower-bound",
@@ -92,7 +108,11 @@
       "Probabilistic method",
       "Erdos-Rousseau"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "exponential lower bounds",
+      "counting arguments"
+    ]
   },
   {
     "id": "ann-e560-upper-bound",
@@ -111,7 +131,11 @@
       "Constructive proofs",
       "EFRS"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "explicit graph constructions",
+      "asymptotic upper bounds",
+      "ramsey theory"
+    ]
   },
   {
     "id": "ann-e560-combined-bounds",
@@ -129,7 +153,11 @@
       "Asymptotic gaps"
     ],
     "mathContext": "See annotation content for formal details of combined size ramsey bounds",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic bound analysis",
+      "exponential growth rates",
+      "size ramsey numbers"
+    ]
   },
   {
     "id": "ann-e560-cfw-general",
@@ -148,7 +176,11 @@
       "Modern results",
       "CFW paper"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "tight ramsey bounds",
+      "complete bipartite graphs"
+    ]
   },
   {
     "id": "ann-e560-conjecture",
@@ -167,7 +199,11 @@
       "Asymptotic bounds",
       "Open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic order notation",
+      "open problems in ramsey theory",
+      "size ramsey numbers"
+    ]
   },
   {
     "id": "ann-e560-properties",
@@ -186,7 +222,11 @@
       "Path graphs"
     ],
     "mathContext": "See annotation content for formal details of basic properties",
-    "prerequisites": []
+    "prerequisites": [
+      "subgraph monotonicity",
+      "trivial edge bounds",
+      "path graphs"
+    ]
   },
   {
     "id": "ann-e560-classical",
@@ -205,7 +245,11 @@
       "Complete graphs",
       "Efficiency"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "classical ramsey numbers",
+      "complete graphs",
+      "binomial coefficients"
+    ]
   },
   {
     "id": "ann-e560-gap",
@@ -224,7 +268,11 @@
       "Linear factors"
     ],
     "mathContext": "See annotation content for formal details of bounds gap analysis",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic gap analysis",
+      "ratio of bounds",
+      "big-O notation"
+    ]
   },
   {
     "id": "ann-e560-summary",
@@ -243,6 +291,10 @@
       "All bounds"
     ],
     "mathContext": "See annotation content for formal details of main results summary",
-    "prerequisites": []
+    "prerequisites": [
+      "size ramsey numbers",
+      "exponential bounds",
+      "subgraph monotonicity"
+    ]
   }
 ]
