@@ -16,7 +16,11 @@
       "inner product space"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Space",
+      "Finite Index Types (Fin)",
+      "Inner Product Spaces"
+    ]
   },
   {
     "id": "ann-e1086-trianglearea",
@@ -36,7 +40,11 @@
       "signed area"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "2x2 Determinants",
+      "Cartesian Coordinates",
+      "Absolute Value"
+    ]
   },
   {
     "id": "ann-e1086-triangle",
@@ -55,7 +63,11 @@
       "triangleArea"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean Structures",
+      "Inequality of Points (Ne)",
+      "Non-degeneracy and Collinearity"
+    ]
   },
   {
     "id": "ann-e1086-counting",
@@ -75,7 +87,11 @@
       "Finset.card"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Sets and Subsets",
+      "Suprema (sSup)",
+      "Combinations and Cardinality"
+    ]
   },
   {
     "id": "ann-e1086-lower",
@@ -95,7 +111,11 @@
       "Ramsey theory"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Notation",
+      "Probabilistic Method",
+      "Logarithms"
+    ]
   },
   {
     "id": "ann-e1086-upper-bounds",
@@ -114,7 +134,11 @@
       "szemeredi_trotter_bound"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Incidence Geometry",
+      "Szemerédi-Trotter Theorem",
+      "Real Power Functions (rpow)"
+    ]
   },
   {
     "id": "ann-e1086-conjecture",
@@ -134,7 +158,11 @@
       "extremal combinatorics"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Big-Theta Notation",
+      "Polylogarithmic Factors",
+      "Extremal Combinatorics"
+    ]
   },
   {
     "id": "ann-e1086-gdim",
@@ -154,7 +182,11 @@
       "g2_is_g"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Simplices and Volume",
+      "Higher-Dimensional Euclidean Space",
+      "Suprema over Configurations"
+    ]
   },
   {
     "id": "ann-e1086-higherdim-bounds",
@@ -174,6 +206,10 @@
       "Real.rpow"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Upper and Lower Bounds",
+      "Simplex Volume in R^d",
+      "Geometric Constructions"
+    ]
   }
 ]
