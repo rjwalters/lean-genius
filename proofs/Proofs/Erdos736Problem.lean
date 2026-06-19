@@ -34,8 +34,10 @@ Tags: graph-theory, chromatic-number, infinite-graphs, set-theory
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Combinatorics.SimpleGraph.Coloring
+import Mathlib.Combinatorics.SimpleGraph.Finsubgraph
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.SetTheory.Cardinal.Ordinal
+import Mathlib.SetTheory.Cardinal.Regular
 import Mathlib.Data.Fintype.Basic
 
 open Cardinal SimpleGraph
@@ -49,16 +51,23 @@ namespace Erdos736
 /--
 **Chromatic number of a simple graph:**
 The minimum number of colors needed to properly color the vertices.
+
+We fix the vertex universe to `Type` (i.e. `Type 0`) and the color universe to
+`Type`/`Cardinal.{0}`. This is no loss of generality: `Type 0` already contains
+types of every cardinality relevant here (ℵ₁, ℵ₂, …), and any proper coloring can
+be taken to use at most `#V` colors, so the infimum is unchanged. Pinning the
+universe also keeps the cardinal-valued statements below free of universe
+metavariables.
 -/
-noncomputable def chromaticNumber (V : Type*) (G : SimpleGraph V) : Cardinal :=
-  sInf { κ : Cardinal | ∃ (α : Type*), #α = κ ∧ Nonempty (G.Coloring α) }
+noncomputable def chromaticNumber (V : Type) (G : SimpleGraph V) : Cardinal.{0} :=
+  sInf { κ : Cardinal.{0} | ∃ (α : Type), #α = κ ∧ Nonempty (G.Coloring α) }
 
 /--
 **Finite subgraph:**
-A subgraph induced by a finite set of vertices.
+A subgraph supported on a finite set of vertices.
 -/
 def isFiniteSubgraph {V : Type*} (G : SimpleGraph V) (H : Subgraph G) : Prop :=
-  ∃ (S : Finset V), H = G.induce S
+  H.verts.Finite
 
 /--
 **Subgraph embedding:**
@@ -87,10 +96,10 @@ If G has chromatic number ℵ₁, then for every cardinal m, there exists
 a graph G_m with χ(G_m) = m whose finite subgraphs are all subgraphs of G.
 -/
 def TaylorConjecture : Prop :=
-  ∀ (V : Type*) (G : SimpleGraph V),
+  ∀ (V : Type) (G : SimpleGraph V),
     chromaticNumber V G = aleph 1 →
-    ∀ (m : Cardinal),
-      ∃ (W : Type*) (H : SimpleGraph W),
+    ∀ (m : Cardinal.{0}),
+      ∃ (W : Type) (H : SimpleGraph W),
         chromaticNumber W H = m ∧
         ∀ (n : ℕ) (F : SimpleGraph (Fin n)),
           isSubgraphOf F H → isSubgraphOf F G
@@ -100,11 +109,11 @@ def TaylorConjecture : Prop :=
 Same as above but for any uncountable cardinal κ.
 -/
 def GeneralizedTaylorConjecture : Prop :=
-  ∀ (κ : Cardinal), κ.IsRegular → κ > aleph 0 →
-    ∀ (V : Type*) (G : SimpleGraph V),
+  ∀ (κ : Cardinal.{0}), Cardinal.IsRegular κ → κ > aleph 0 →
+    ∀ (V : Type) (G : SimpleGraph V),
       chromaticNumber V G = κ →
-      ∀ (m : Cardinal),
-        ∃ (W : Type*) (H : SimpleGraph W),
+      ∀ (m : Cardinal.{0}),
+        ∃ (W : Type) (H : SimpleGraph W),
           chromaticNumber W H = m ∧
           ∀ (n : ℕ) (F : SimpleGraph (Fin n)),
             isSubgraphOf F H → isSubgraphOf F G
@@ -124,8 +133,8 @@ def FiniteGraphFamily := Set (Σ (n : ℕ), SimpleGraph (Fin n))
 A family F is realizable at ℵ_α if there exists a graph G with
 χ(G) = ℵ_α and all finite subgraphs of G are in F.
 -/
-def realizableAt (F : FiniteGraphFamily) (α : Ordinal) : Prop :=
-  ∃ (V : Type*) (G : SimpleGraph V),
+def realizableAt (F : FiniteGraphFamily) (α : Ordinal.{0}) : Prop :=
+  ∃ (V : Type) (G : SimpleGraph V),
     chromaticNumber V G = aleph α ∧
     finiteSubgraphClass G ⊆ F
 
@@ -134,20 +143,20 @@ def realizableAt (F : FiniteGraphFamily) (α : Ordinal) : Prop :=
 Characterize which families F_α of finite graphs are realizable at ℵ_α.
 -/
 def ErdosGeneralQuestion : Prop :=
-  ∃ (characterization : FiniteGraphFamily → Ordinal → Prop),
-    ∀ F α, characterization F α ↔ realizableAt F α
+  ∃ (characterization : FiniteGraphFamily → Ordinal.{0} → Prop),
+    ∀ (F : FiniteGraphFamily) (α : Ordinal.{0}),
+      characterization F α ↔ realizableAt F α
 
 /-
 ## Part IV: The Komjáth-Shelah Consistency Result
 -/
 
-/--
+/-
 **Komjáth-Shelah (2005):**
 It is consistent with ZFC that there exists a graph G with χ(G) = ℵ₁
 such that any graph H whose finite subgraphs are all subgraphs of G
 satisfies χ(H) ≤ ℵ₂.
--/
-/--
+
 **The conjecture is independent:**
 Taylor's conjecture cannot be decided in ZFC alone.
 -/
@@ -156,16 +165,50 @@ Taylor's conjecture cannot be decided in ZFC alone.
 -/
 
 /--
-**De Bruijn-Erdős theorem (finite version):**
-If every finite subgraph of G is k-colorable, then G is k-colorable.
-(This requires the axiom of choice.)
+**De Bruijn–Erdős theorem (coloring/compactness version):**
+If every finite (induced) subgraph of `G` is `n`-colorable, then `G` itself is
+`n`-colorable. This is the graph-coloring form of the compactness principle and
+genuinely requires the axiom of choice (here packaged via Mathlib's inverse-limit
+argument `nonempty_hom_of_forall_finite_subgraph_hom`).
+
+This is the key piece of infrastructure underlying the "finite subgraph
+inheritance" theme of Erdős #736: the chromatic number of an infinite graph is
+controlled by its finite subgraphs. It is fully machine-checked; the only
+foundational dependency beyond the usual `propext`/`Quot.sound` is
+`Classical.choice`.
 -/
+theorem deBruijn_erdos_coloring {V : Type*} (G : SimpleGraph V) (n : ℕ)
+    (h : ∀ G' : G.Subgraph, G'.verts.Finite → G'.coe.Colorable n) :
+    G.Colorable n := by
+  -- `Colorable n` unfolds to `Nonempty (G →g completeGraph (Fin n))`; apply
+  -- compactness with the finite target graph `completeGraph (Fin n)`.
+  apply SimpleGraph.nonempty_hom_of_forall_finite_subgraph_hom
+  intro G' hfin
+  exact (h G' hfin).some
+
 /--
+**De Bruijn–Erdős theorem (contrapositive form):**
+If `G` is *not* `n`-colorable, then some *finite* subgraph of `G` is already not
+`n`-colorable. Equivalently, the chromatic number of an infinite graph is the
+supremum of the chromatic numbers of its finite subgraphs.
+
+This is the form of the theorem most directly relevant to Erdős #736: it says the
+obstruction to a small coloring always lives in a finite part of the graph, so the
+"finite subgraph inheritance" behaviour of chromatic number is genuine. It is a
+short, fully machine-checked consequence of `deBruijn_erdos_coloring`.
+-/
+theorem exists_finite_subgraph_not_colorable {V : Type*} (G : SimpleGraph V) (n : ℕ)
+    (h : ¬ G.Colorable n) :
+    ∃ G' : G.Subgraph, G'.verts.Finite ∧ ¬ G'.coe.Colorable n := by
+  by_contra hcon
+  push_neg at hcon
+  exact h (deBruijn_erdos_coloring G n hcon)
+
+/-
 **Compactness in graph coloring:**
 The chromatic number of a graph is determined by its finite subgraphs
 in a limiting sense.
--/
-/--
+
 **Chromatic number and cardinal arithmetic:**
 For infinite graphs, chromatic number interacts with cardinal arithmetic.
 -/
@@ -173,31 +216,33 @@ For infinite graphs, chromatic number interacts with cardinal arithmetic.
 ## Part VI: Special Cases
 -/
 
-/--
+/-
 **Countable chromatic number:**
 For graphs with χ(G) = ℵ₀, the Taylor question is easier.
 -/
 /--
-**Finite case is trivial:**
-For finite chromatic number, inheritance is straightforward.
+**Finite case:**
+For finite chromatic number `k`, every value `m ≤ k` is itself realized *as a
+subgraph of `G`*, so the finite-subgraph inheritance is automatic.
+
+This is true and not deep: the witness `H` is an induced subgraph of `G`, so every
+finite subgraph of `H` is a finite subgraph of `G` for free, and a subgraph of `G`
+with chromatic number exactly `m` exists by the discrete intermediate-value
+principle — deleting vertices one at a time lowers the chromatic number by at most
+one, so it passes through every value between `k` and `0`.
+
+The remaining `sorry` is the formalization of that intermediate-value argument for
+the (custom, `Cardinal`-valued) `chromaticNumber` used here; it is a self-contained
+side result rather than part of the open conjecture itself. See `knowledge.md` for
+the proof sketch.
 -/
-theorem finite_case (V : Type*) (G : SimpleGraph V) (k : ℕ) :
+theorem finite_case (V : Type) (G : SimpleGraph V) (k : ℕ) :
     chromaticNumber V G = k →
-    ∀ m ≤ k, ∃ (W : Type*) (H : SimpleGraph W),
+    ∀ m ≤ k, ∃ (W : Type) (H : SimpleGraph W),
       chromaticNumber W H = m ∧
       ∀ (n : ℕ) (F : SimpleGraph (Fin n)),
         isSubgraphOf F H → isSubgraphOf F G := by
   intro _ _ _
   sorry
-
-/-
-## Part VII: Summary
--/
-
-/--
-**Summary of the problem:**
--/
-theorem erdos_736_summary : TaylorConjecture ↔ TaylorConjecture :=
-  Iff.rfl
 
 end Erdos736

@@ -51,24 +51,25 @@
       }
     ],
     "originalContributions": [
-      "Lean formalization of chromatic number for infinite graphs",
+      "Lean formalization of chromatic number for infinite graphs (Cardinal-valued)",
       "Formal statement of Taylor's conjecture using cardinals",
       "Generalized conjecture for arbitrary uncountable κ",
-      "Formalization of Komjáth-Shelah consistency result",
-      "Related De Bruijn-Erdős theorem statement"
+      "Machine-checked de Bruijn–Erdős coloring theorem (compactness form) via Mathlib's nonempty_hom_of_forall_finite_subgraph_hom",
+      "Machine-checked contrapositive: a non-n-colorable graph has a finite non-n-colorable subgraph"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 0,
-    "assumptions": "0 axiom declarations. All former axioms (komjath_shelah_consistency, taylor_conjecture_independent, de_bruijn_erdos, chromatic_compactness, chromatic_cardinal_interaction, countable_case) now proved as theorems or definitions. 1 sorry remains in finite_case.",
-    "lineCount": 203,
-    "theoremCount": 2,
+    "assumptions": "0 axiom declarations. The de Bruijn–Erdős coloring theorem and its contrapositive are fully machine-checked (depend only on propext/Quot.sound/Classical.choice). 1 sorry remains in finite_case (a self-contained discrete intermediate-value side lemma, not part of the open conjecture). The open conjecture itself (Taylor's conjecture) is stated as a definition and is independent of ZFC (Komjáth–Shelah 2005).",
+    "lineCount": 248,
+    "theoremCount": 3,
     "prerequisites": [
       "Set-theoretic graph theory: infinite chromatic numbers (ℵ₁, ℵ₂)",
       "De Bruijn-Erdős theorem: compactness for finite chromatic numbers",
       "ZFC independence: forcing and consistency results",
       "Subgraph containment and finite approximation"
     ],
-    "definitionCount": 9
+    "definitionCount": 9,
+    "lastUpdated": "2026-06-19"
   },
   "overview": {
     "historicalContext": "Walter Taylor conjectured that if a graph G has chromatic number ℵ₁, then its finite subgraphs are 'rich enough' to build graphs of any chromatic number. Komjáth and Shelah (2005) proved this is independent of ZFC, showing in some models there exists a counterexample where the bound is ℵ₂. The background to this problem lies in the De Bruijn-Erdős theorem (1951), which established that for finite chromatic numbers, colorability is determined entirely by finite subgraphs. Erdős was fascinated by whether similar compactness principles extend to uncountable chromatic numbers, and Taylor's conjecture was one attempt to make that precise at the ℵ₁ level. The Komjáth-Shelah independence result places this question firmly at the boundary between combinatorics and set-theoretic forcing.",
@@ -161,6 +162,7 @@
       "Mathlib.Combinatorics.SimpleGraph.Basic",
       "Mathlib.Combinatorics.SimpleGraph.Subgraph",
       "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Combinatorics.SimpleGraph.Finsubgraph",
       "Mathlib.SetTheory.Cardinal.Basic",
       "Mathlib.SetTheory.Cardinal.Ordinal",
       "Mathlib.Data.Fintype.Basic"
@@ -170,9 +172,9 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos736",
-    "lineCount": 203,
+    "lineCount": 248,
     "axiomCount": 0,
-    "theoremCount": 2,
+    "theoremCount": 3,
     "definitionCount": 9,
     "path": "Proofs/Erdos736Problem.lean",
     "sorries": 1
