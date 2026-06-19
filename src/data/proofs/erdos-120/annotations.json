@@ -16,7 +16,11 @@
       "Lebesgue measure",
       "Steinhaus theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "similarity (scaling + translation) transformations",
+      "Lebesgue measure on ℝ",
+      "the Steinhaus theorem on difference sets"
+    ]
   },
   {
     "id": "erdos-120-similar",
@@ -35,7 +39,11 @@
       "set image",
       "pattern containment"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "affine maps x ↦ ax+b",
+      "images of sets under a map",
+      "containing a similar copy of a pattern"
+    ]
   },
   {
     "id": "erdos-120-universal",
@@ -54,7 +62,11 @@
       "MeasurableSet",
       "universality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue measurable sets of positive measure",
+      "similar copies of a set",
+      "universal vs avoidable patterns"
+    ]
   },
   {
     "id": "erdos-120-steinhaus",
@@ -73,7 +85,11 @@
       "difference set",
       "finite patterns"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the difference set A−A",
+      "the Steinhaus theorem (A−A contains an interval)",
+      "finite point patterns"
+    ]
   },
   {
     "id": "erdos-120-known",
@@ -92,7 +108,11 @@
       "density",
       "Bornology.IsBounded"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bounded sets (Bornology.IsBounded)",
+      "Lebesgue density",
+      "which infinite sets are avoidable"
+    ]
   },
   {
     "id": "erdos-120-conjecture",
@@ -111,7 +131,11 @@
       "$100 prize",
       "infinite combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "universal vs avoidable sets",
+      "infinite combinatorics",
+      "the $100 Erdős conjecture statement"
+    ]
   },
   {
     "id": "erdos-120-geometric",
@@ -130,7 +154,11 @@
       "Ben Green Problem 94",
       "bounded convergent"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "geometric sequences (e.g. 2^{-n})",
+      "bounded convergent sequences",
+      "Ben Green's Problem 94 (the open geometric case)"
+    ]
   },
   {
     "id": "erdos-120-ratio",
@@ -149,7 +177,11 @@
       "cross-ratio",
       "ring_nf tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "affine maps and their invariants",
+      "ratios/cross-ratio preserved by similarities",
+      "algebraic verification via ring_nf"
+    ]
   },
   {
     "id": "erdos-120-tools",
@@ -168,7 +200,11 @@
       "Lebesgue density",
       "measure theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Steinhaus theorem",
+      "the Lebesgue density theorem",
+      "measure-theoretic methods"
+    ]
   },
   {
     "id": "erdos-120-duality",
@@ -187,7 +223,11 @@
       "equivalent formulations",
       "by_contra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "universal vs avoidable as dual notions",
+      "logically equivalent formulations",
+      "proof by contradiction (by_contra)"
+    ]
   },
   {
     "id": "erdos-120-summary",
@@ -206,6 +246,10 @@
       "known results",
       "Erdős prize"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the similarity problem and its conjecture",
+      "known partial results",
+      "the Erdős prize problem status"
+    ]
   }
 ]
