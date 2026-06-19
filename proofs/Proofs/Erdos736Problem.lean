@@ -56,10 +56,10 @@ noncomputable def chromaticNumber (V : Type*) (G : SimpleGraph V) : Cardinal :=
 
 /--
 **Finite subgraph:**
-A subgraph induced by a finite set of vertices.
+A subgraph supported on a finite set of vertices.
 -/
 def isFiniteSubgraph {V : Type*} (G : SimpleGraph V) (H : Subgraph G) : Prop :=
-  ∃ (S : Finset V), H = G.induce S
+  H.verts.Finite
 
 /--
 **Subgraph embedding:**
@@ -90,8 +90,8 @@ a graph G_m with χ(G_m) = m whose finite subgraphs are all subgraphs of G.
 def TaylorConjecture : Prop :=
   ∀ (V : Type*) (G : SimpleGraph V),
     chromaticNumber V G = aleph 1 →
-    ∀ (m : Cardinal),
-      ∃ (W : Type*) (H : SimpleGraph W),
+    ∀ (m : Cardinal.{0}),
+      ∃ (W : Type) (H : SimpleGraph W),
         chromaticNumber W H = m ∧
         ∀ (n : ℕ) (F : SimpleGraph (Fin n)),
           isSubgraphOf F H → isSubgraphOf F G
@@ -101,11 +101,11 @@ def TaylorConjecture : Prop :=
 Same as above but for any uncountable cardinal κ.
 -/
 def GeneralizedTaylorConjecture : Prop :=
-  ∀ (κ : Cardinal), κ.IsRegular → κ > aleph 0 →
+  ∀ (κ : Cardinal.{0}), Cardinal.IsRegular κ → κ > aleph 0 →
     ∀ (V : Type*) (G : SimpleGraph V),
       chromaticNumber V G = κ →
-      ∀ (m : Cardinal),
-        ∃ (W : Type*) (H : SimpleGraph W),
+      ∀ (m : Cardinal.{0}),
+        ∃ (W : Type) (H : SimpleGraph W),
           chromaticNumber W H = m ∧
           ∀ (n : ℕ) (F : SimpleGraph (Fin n)),
             isSubgraphOf F H → isSubgraphOf F G
@@ -125,7 +125,7 @@ def FiniteGraphFamily := Set (Σ (n : ℕ), SimpleGraph (Fin n))
 A family F is realizable at ℵ_α if there exists a graph G with
 χ(G) = ℵ_α and all finite subgraphs of G are in F.
 -/
-def realizableAt (F : FiniteGraphFamily) (α : Ordinal) : Prop :=
+def realizableAt (F : FiniteGraphFamily) (α : Ordinal.{0}) : Prop :=
   ∃ (V : Type*) (G : SimpleGraph V),
     chromaticNumber V G = aleph α ∧
     finiteSubgraphClass G ⊆ F
@@ -135,20 +135,20 @@ def realizableAt (F : FiniteGraphFamily) (α : Ordinal) : Prop :=
 Characterize which families F_α of finite graphs are realizable at ℵ_α.
 -/
 def ErdosGeneralQuestion : Prop :=
-  ∃ (characterization : FiniteGraphFamily → Ordinal → Prop),
-    ∀ F α, characterization F α ↔ realizableAt F α
+  ∃ (characterization : FiniteGraphFamily → Ordinal.{0} → Prop),
+    ∀ (F : FiniteGraphFamily) (α : Ordinal.{0}),
+      characterization F α ↔ realizableAt F α
 
 /-
 ## Part IV: The Komjáth-Shelah Consistency Result
 -/
 
-/--
+/-
 **Komjáth-Shelah (2005):**
 It is consistent with ZFC that there exists a graph G with χ(G) = ℵ₁
 such that any graph H whose finite subgraphs are all subgraphs of G
 satisfies χ(H) ≤ ℵ₂.
--/
-/--
+
 **The conjecture is independent:**
 Taylor's conjecture cannot be decided in ZFC alone.
 -/
@@ -178,12 +178,11 @@ theorem deBruijn_erdos_coloring {V : Type*} (G : SimpleGraph V) (n : ℕ)
   intro G' hfin
   exact (h G' hfin).some
 
-/--
+/-
 **Compactness in graph coloring:**
 The chromatic number of a graph is determined by its finite subgraphs
 in a limiting sense.
--/
-/--
+
 **Chromatic number and cardinal arithmetic:**
 For infinite graphs, chromatic number interacts with cardinal arithmetic.
 -/
@@ -191,7 +190,7 @@ For infinite graphs, chromatic number interacts with cardinal arithmetic.
 ## Part VI: Special Cases
 -/
 
-/--
+/-
 **Countable chromatic number:**
 For graphs with χ(G) = ℵ₀, the Taylor question is easier.
 -/
