@@ -17,7 +17,11 @@
       "Egyptian fractions",
       "Exponential bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unit fractions and Egyptian fraction representations",
+      "subset sums of reciprocals",
+      "exponential versus polynomial error bounds"
+    ]
   },
   {
     "id": "ann-e312-reciprocal-sum",
@@ -36,7 +40,11 @@
       "Inverse",
       "Harmonic series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.sum over Fin n",
+      "real reciprocals 1/a(i) of positive integers",
+      "the harmonic series as a canonical reciprocal sum"
+    ]
   },
   {
     "id": "ann-e312-subset-algebra",
@@ -56,7 +64,11 @@
       "Disjoint union",
       "Finitely additive"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "monotonicity of nonnegative finite sums over subsets",
+      "Finset.sum_insert and sum over disjoint unions",
+      "the subset lattice of Fin n"
+    ]
   },
   {
     "id": "ann-e312-exponential-precision",
@@ -75,7 +87,11 @@
       "Half-open intervals",
       "Precision bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the real exponential Real.exp and exp(-cK)",
+      "half-open intervals (1 - ε, 1]",
+      "existential quantification over subsets"
+    ]
   },
   {
     "id": "ann-e312-main-conjecture",
@@ -94,7 +110,11 @@
       "Quantifier structure",
       "Sufficiently large"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "nested quantifier structure with a universal c and K-dependent threshold N₀",
+      "encoding open conjectures as a Prop",
+      "sufficiently-large multiset hypotheses"
+    ]
   },
   {
     "id": "ann-e312-polynomial",
@@ -114,7 +134,11 @@
       "Greedy algorithms",
       "Axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Erdős-Graham polynomial bound c/K²",
+      "axiom declarations standing in for unformalized analytic number theory",
+      "greedy approximation of reciprocal subset sums"
+    ]
   },
   {
     "id": "ann-e312-relationship",
@@ -157,7 +181,11 @@
       "Tendsto",
       "Monotonicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "monotonicity of the saturating exponential g(K) = 1 - exp(-cK)",
+      "Real.exp_le_exp and limits of exp(-cK)",
+      "Tendsto and convergence as K → ∞"
+    ]
   },
   {
     "id": "ann-e312-poly-gap",
@@ -177,7 +205,11 @@
       "Inverse-square decay",
       "div_le_div_of_nonneg_right"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "antitone behaviour of c/K² as K grows",
+      "tendsto_inv_atTop_zero and inverse-square decay",
+      "comparing exponential and polynomial decay rates"
+    ]
   },
   {
     "id": "ann-e312-taylor",
@@ -197,7 +229,11 @@
       "Convexity of exp",
       "one_div_le_one_div_of_le"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the convexity inequalities 1 - x ≤ exp(-x) ≤ 1/(1+x)",
+      "Real.add_one_le_exp as a first-order Taylor bound",
+      "rational sandwich estimates cK/(1+cK) ≤ 1 - exp(-cK) ≤ cK"
+    ]
   },
   {
     "id": "ann-e312-harmonic",
@@ -217,7 +253,11 @@
       "Divergence",
       "Oresme"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "harmonic numbers H_n and divergence of the harmonic series",
+      "Real.tendsto_sum_range_one_div_nat_succ_atTop",
+      "the Euler-Mascheroni constant and Oresme's divergence proof"
+    ]
   },
   {
     "id": "ann-e312-structural",
@@ -237,7 +277,11 @@
       "Existence of witnesses",
       "Upper bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existence of witness multisets with reciprocal sum > K",
+      "non-vacuity and well-posedness of the hypothesis",
+      "lower and upper bounds on reciprocal sums"
+    ]
   },
   {
     "id": "ann-e312-greedy",
@@ -278,7 +322,11 @@
       "State of knowledge",
       "Open vs proved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "separating the open conjecture from the established Erdős-Graham theorem",
+      "summary theorems referencing an axiom via exact",
+      "asymptotic strength of exponential over polynomial precision"
+    ]
   },
   {
     "id": "ann-e312-sieve",
