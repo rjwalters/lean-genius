@@ -150,7 +150,11 @@
     "content": "Five concrete witnesses: 2, 5, 11, 17, 23 are all primes congruent to 2 mod 3. Verified by decide or rfl. The sequence continues: 29, 41, 47, 53, ... These are OEIS A003627 (primes of the form 3n-1).",
     "mathContext": "First primes $\\equiv 2 \\pmod{3}$: $2, 5, 11, 17, 23, 29, 41, 47, \\ldots$ By Dirichlet's density theorem, they comprise exactly $1/\\phi(3) = 1/2$ of all primes (asymptotically).",
     "significance": "supporting",
-    "prerequisites": [],
+    "prerequisites": [
+      "Modular Arithmetic",
+      "Prime Numbers",
+      "Dirichlet Density Theorem"
+    ],
     "relatedConcepts": [
       "decide tactic",
       "Nat.prime_two",
