@@ -16,7 +16,11 @@
       "Turán numbers",
       "Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal combinatorics",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-e614-degree",
@@ -35,7 +39,11 @@
       "graph degree",
       "Finset.filter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Mathlib SimpleGraph API",
+      "Finset operations"
+    ]
   },
   {
     "id": "ann-e614-maxdegree",
@@ -54,7 +62,11 @@
       "Finset.sup'",
       "graph invariants"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Finset suprema",
+      "Lean 4 noncomputable definitions"
+    ]
   },
   {
     "id": "ann-e614-induced",
@@ -73,7 +85,11 @@
       "SimpleGraph.comap",
       "Subtype.val"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Mathlib SimpleGraph API",
+      "subtype and coercion"
+    ]
   },
   {
     "id": "ann-e614-inducedmaxdeg",
@@ -92,7 +108,11 @@
       "induced subgraph degree",
       "Finset.sup'"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Finset operations",
+      "case analysis in Lean 4"
+    ]
   },
   {
     "id": "ann-e614-propertyp",
@@ -111,7 +131,11 @@
       "universal graph property",
       "Ramsey conditions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "first-order logic quantifiers",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e614-edgecount",
@@ -130,7 +154,11 @@
       "extremal function",
       "existence predicate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "finite type cardinality",
+      "existential quantification"
+    ]
   },
   {
     "id": "ann-e614-bounds",
@@ -149,7 +177,11 @@
       "complete graph",
       "double counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "double counting",
+      "complete graphs"
+    ]
   },
   {
     "id": "ann-e614-special",
@@ -168,7 +200,11 @@
       "complete graphs",
       "Turán numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Turán-type problems",
+      "triangle-free graphs"
+    ]
   },
   {
     "id": "ann-e614-mono",
@@ -187,7 +223,11 @@
       "property inclusion",
       "extremal functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "monotonicity arguments",
+      "subset reasoning"
+    ]
   },
   {
     "id": "ann-e614-open",
@@ -206,7 +246,11 @@
       "extremal graph theory",
       "existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic analysis",
+      "open problems in combinatorics"
+    ]
   },
   {
     "id": "ann-e614-summary",
@@ -225,6 +269,10 @@
       "conjunction",
       "Erdős Problem #614"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Lean 4 structured proofs",
+      "logical conjunction"
+    ]
   }
 ]
