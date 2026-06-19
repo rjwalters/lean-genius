@@ -20,7 +20,11 @@
       "formal definition",
       "metric spaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "coordinate geometry",
+      "metric spaces"
+    ]
   },
   {
     "id": "ann-e604-pinned-distances",
@@ -45,7 +49,11 @@
       "combinatorial-geometry",
       "pinned-distances"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite set theory",
+      "combinatorial geometry",
+      "Mathlib Finset operations"
+    ]
   },
   {
     "id": "ann-e604-pinned-count",
@@ -68,7 +76,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite set cardinality",
+      "combinatorial geometry",
+      "discrete geometry"
+    ]
   },
   {
     "id": "ann-e604-weak-conjecture",
@@ -92,7 +104,11 @@
       "asymptotic-bounds",
       "pinned-distances"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "combinatorial geometry",
+      "quantifier logic"
+    ]
   },
   {
     "id": "ann-e604-strong-conjecture",
@@ -116,7 +132,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "combinatorial geometry"
+    ]
   },
   {
     "id": "ann-e604-katz-tardos-exponent",
@@ -139,7 +159,11 @@
       "crossing-number",
       "szemeredi-trotter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "incidence geometry",
+      "graph theory",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e604-katz-tardos-theorem",
@@ -163,7 +187,11 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "incidence geometry",
+      "extremal combinatorics",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e604-trivial-lower",
@@ -186,7 +214,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite set theory",
+      "elementary logic",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e604-upper-bound",
@@ -209,7 +241,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite set cardinality",
+      "Mathlib Finset lemmas",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e604-lattice",
@@ -234,7 +270,11 @@
       "extremal-construction",
       "sums-of-squares"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "asymptotic analysis",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-e604-sum-conjecture",
@@ -257,7 +297,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "combinatorial geometry",
+      "summation over finite sets"
+    ]
   },
   {
     "id": "ann-e604-all-distances",
@@ -280,7 +324,11 @@
       "pairwise-distances"
     ],
     "mathContext": "See annotation content for formal details of all distinct distances",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "finite set theory",
+      "metric spaces"
+    ]
   },
   {
     "id": "ann-e604-subset-relation",
@@ -303,7 +351,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Mathlib Finset operations",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e604-open-statement",
@@ -326,6 +378,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "propositional logic",
+      "Lean 4 syntax",
+      "combinatorial geometry"
+    ]
   }
 ]
