@@ -93,6 +93,12 @@ theorem key (s t u : ℝ) (hs : s ^ 2 = 2) (ht : t ^ 2 = 3) (hu : u ^ 2 = 5) :
       (((s + t + u) ^ 2 - 10) ^ 2 - 124 + 8 * (s * t * u) * (s + t + u)) * hB
         + 64 * (s + t + u) ^ 2 * h3
   -- Finish: m(a) = ((a²-10)²-124)² - 1920 a²  is a ring identity equal to 0.
+  -- Abbreviate a := s+t+u first so the final `linear_combination` runs `ring` on the
+  -- *univariate* degree-8 identity in `a` (≈9 coefficients) rather than re-expanding the
+  -- trivariate degree-8 form in s,t,u (45+ monomials) — a large peak-memory reduction
+  -- that matters under the constrained build VM.
+  set a := s + t + u with ha
+  clear_value a
   linear_combination hC
 
 /-! ## Part II: Consequences for θ = √2 + √3 + √5 -/
@@ -117,7 +123,10 @@ theorem aeval_theta :
   simp only [map_sub, map_add, map_pow, map_mul, map_one, aeval_X, map_ofNat,
              Polynomial.aeval_one]
   push_cast
-  linear_combination theta_root
+  -- After `simp`+`push_cast` the goal is syntactically `theta_root` (a linear combination
+  -- of the atoms θ^8, θ^6, θ^4, θ^2, 1), so `linarith` closes it by matching coefficients
+  -- without the expensive real degree-8 `ring` re-expansion that `linear_combination` forces.
+  linarith [theta_root]
 
 /-- `m` has degree 8: the leading `X^8` dominates the lower-degree tail. -/
 theorem m_natDegree : m.natDegree = 8 := by

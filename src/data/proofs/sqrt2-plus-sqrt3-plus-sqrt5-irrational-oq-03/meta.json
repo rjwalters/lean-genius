@@ -1,0 +1,58 @@
+{
+  "id": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-03",
+  "title": "Minimal Polynomial of √2 + √3 + √5 over ℚ",
+  "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-03",
+  "description": "Constructs the explicit monic degree-8 integer polynomial m(X) = X⁸ − 40X⁶ + 352X⁴ − 960X² + 576 and proves it annihilates θ = √2 + √3 + √5 (OQ-03 of the parent sqrt2-plus-sqrt3-plus-sqrt5-irrational entry, asking *how* irrational θ is — its minimal polynomial). m(X) is the product over the eight sign choices ε ∈ {±1}³ of (X − ε₁√2 − ε₂√3 − ε₃√5); expanding cancels every radical and leaves integer coefficients. The annihilation m(θ) = 0 is proved abstractly — for ANY reals s,t,u with s²=2, t²=3, u²=5 — via a staged radical-elimination tower (a² = 10 + 2P; P² = 31 + 2·stu·a; (stu)² = 30; then two squarings) whose every linear_combination cofactor was computed by Gröbner reduction and verified exactly in sympy. Consequences: m is monic of degree 8 (compute_degree!, monicity!), θ is integral over ℚ, and [ℚ(θ):ℚ] ≤ 8 via minpoly.min. Goals (i) annihilation and (ii) integer/rational coefficients are COMPLETE and sorry-free; goal (iii) irreducibility (which would upgrade m to the minimal polynomial and the degree bound to an equality) remains OPEN — the field-tower route via [ℚ(√2,√3,√5):ℚ] = 8 is documented. 7 theorems, 1 definition, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-18",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ03.lean",
+    "tags": [
+      "irrationality",
+      "minimal-polynomial",
+      "algebraic-numbers",
+      "multiquadratic",
+      "field-theory",
+      "square-roots",
+      "number-theory",
+      "research",
+      "open-problem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-18",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-checked: 0 sorries, 0 axioms, no native_decide. Uses Mathlib's polynomial and field-theory API — Polynomial.aeval, compute_degree!, monicity!, Real.sq_sqrt, IsIntegral, minpoly.min, IntermediateField.adjoin.finrank, Module.finrank, natDegree_le_natDegree. The annihilation identity reduces to ring/linear_combination over ℝ. Note: this entry proves m is a degree-8 annihilator and [ℚ(θ):ℚ] ≤ 8; it does NOT yet prove m is irreducible (that θ has degree exactly 8), which remains an open goal.",
+    "lineCount": 178,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "originalContributions": [
+      "key: the abstract radical-elimination identity — for ANY reals s,t,u with s²=2, t²=3, u²=5, m(s+t+u) = 0 where m(X) = X⁸ − 40X⁶ + 352X⁴ − 960X² + 576. Proved by a staged linear_combination tower (h1: a²=10+2P; h2: P²=31+2·stu·a; h3: (stu)²=30; hA/hB/hC squarings) with every Gröbner cofactor verified exactly in sympy. This is the only step requiring genuine radical algebra.",
+      "theta_root: m(θ) = 0 as a plain real-number equation for θ = √2+√3+√5, instantiating `key` at the three concrete radicals via Real.sq_sqrt.",
+      "aeval_theta: aeval θ m = 0 — the Polynomial[ℚ] framing of the annihilation, bridging the real identity to the algebraic-number API by push_cast + linear_combination.",
+      "m_monic / m_natDegree: m is monic of degree 8 (monicity! and compute_degree!), certifying m as a genuine degree-8 monic witness.",
+      "theta_isIntegral: θ is integral over ℚ, witnessed by the monic m.",
+      "theta_finrank_le: [ℚ(θ):ℚ] ≤ 8 — combining IntermediateField.adjoin.finrank with minpoly.min (the minimal polynomial cannot exceed a known monic annihilator in degree)."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The number $\\theta=\\sqrt2+\\sqrt3+\\sqrt5$ is the standard textbook example of a primitive element of a multiquadratic field: $\\mathbb{Q}(\\theta)=\\mathbb{Q}(\\sqrt2,\\sqrt3,\\sqrt5)$, a degree-8 extension of $\\mathbb{Q}$ with Galois group $(\\mathbb{Z}/2)^3$. Its minimal polynomial is the degree-8 $m(X)=\\prod_{\\varepsilon\\in\\{\\pm1\\}^3}(X-\\varepsilon_1\\sqrt2-\\varepsilon_2\\sqrt3-\\varepsilon_3\\sqrt5)$, the product over the eight Galois conjugates. The parent entry shows $\\theta$ is merely irrational (via iterated squaring reducing to $\\sqrt{30}$); OQ-03 asks the sharper question — *how* irrational, i.e. what is the smallest-degree polynomial it satisfies. The general structural fact (degree $2^n$ for $n$ distinct squarefree radicals) is Besicovitch's 1940 linear-independence theorem, addressed in the sibling OQ-02.",
+    "problemStatement": "Determine the minimal polynomial of $\\theta=\\sqrt2+\\sqrt3+\\sqrt5$ over $\\mathbb{Q}$: the monic $m(X)=\\prod_{\\varepsilon\\in\\{\\pm1\\}^3}(X-\\varepsilon_1\\sqrt2-\\varepsilon_2\\sqrt3-\\varepsilon_3\\sqrt5)\\in\\mathbb{Q}[X]$. Establish (i) that $m$ annihilates $\\theta$, (ii) that its coefficients are integers, and (iii) that $m$ is irreducible (so $\\deg_\\mathbb{Q}\\theta=8$).",
+    "text": "Writing $a=s+t+u$ and $P=st+tu+us$ for symbolic radicals with $s^2=2,t^2=3,u^2=5$, the radicals are eliminated by a four-step tower: $a^2=10+2P$, then $P^2=31+2\\,stu\\,a$ and $(stu)^2=30$, then squaring $a^2-10=2P$ gives $(a^2-10)^2=4P^2=124+8\\,stu\\,a$, and squaring once more with $(stu)^2=30$ gives $((a^2-10)^2-124)^2=1920\\,a^2$. Rearranged this is exactly $m(a)=0$ with $m(X)=X^8-40X^6+352X^4-960X^2+576$. Instantiating at $s=\\sqrt2,t=\\sqrt3,u=\\sqrt5$ yields $m(\\theta)=0$; casting into $\\mathbb{Q}[X]$ gives $\\mathrm{aeval}\\,\\theta\\,m=0$. Since $m$ is monic of degree 8, $\\theta$ is integral over $\\mathbb{Q}$ and $[\\mathbb{Q}(\\theta):\\mathbb{Q}]\\le 8$ by minpoly.min. Irreducibility (goal iii) — which would force equality — is left open with the field-tower route documented.",
+    "proofStrategy": "Abstract-then-instantiate. The genuine algebra lives in `key`, stated for arbitrary $s,t,u$ satisfying the three square relations, so the radical cancellation is a sequence of polynomial identities discharged by `linear_combination` with explicit Gröbner cofactors (verified in sympy) rather than by ad-hoc real-number manipulation. Concrete consequences for $\\theta$ then follow mechanically: `Real.sq_sqrt` to instantiate, `push_cast`/`linear_combination` to enter $\\mathbb{Q}[X]$, `compute_degree!`/`monicity!` for the degree and monicity, and `minpoly.min` + `IntermediateField.adjoin.finrank` for the degree bound. This isolates the only creative step (the elimination tower) from the routine API plumbing.",
+    "keyInsights": [
+      "Eight conjugates, one ring identity. The product $\\prod_{\\varepsilon}(X-\\varepsilon_1\\sqrt2-\\varepsilon_2\\sqrt3-\\varepsilon_3\\sqrt5)$ over the Galois orbit is symmetric in each sign, so all radicals cancel and the coefficients are integers $(-40,352,-960,576)$. Rather than expand the 8-fold product, the proof reaches $m$ by squaring out one radical at a time — three squarings collapse $\\{s,t,u\\}$ to a single relation in $a=s+t+u$.",
+      "Abstractness is what makes it machine-checkable. By proving the identity for any $s,t,u$ with $s^2=2,t^2=3,u^2=5$, each step becomes a pure polynomial consequence of the hypotheses, so `linear_combination` with a precomputed cofactor closes it by `ring`. The real-number instantiation at $\\sqrt2,\\sqrt3,\\sqrt5$ then costs only three `Real.sq_sqrt` calls.",
+      "A monic annihilator bounds the degree for free. Once $m$ is a monic degree-8 polynomial with $m(\\theta)=0$, `minpoly.min` gives $\\deg(\\mathrm{minpoly}_\\mathbb{Q}\\theta)\\le 8$ and hence $[\\mathbb{Q}(\\theta):\\mathbb{Q}]\\le 8$ — no irreducibility needed for the upper bound.",
+      "The open frontier is irreducibility. Upgrading $\\le 8$ to $=8$ requires showing $m$ is irreducible over $\\mathbb{Q}$. The clean route is the multiquadratic tower $\\mathbb{Q}\\subset\\mathbb{Q}(\\sqrt2)\\subset\\mathbb{Q}(\\sqrt2,\\sqrt3)\\subset\\mathbb{Q}(\\sqrt2,\\sqrt3,\\sqrt5)$, each step degree 2, giving $[\\mathbb{Q}(\\sqrt2,\\sqrt3,\\sqrt5):\\mathbb{Q}]=8$; since $\\theta$ generates this field, $m=\\mathrm{minpoly}_\\mathbb{Q}\\theta$ and is therefore irreducible. This step shares its core (a radical is not a square in the previous field) with sibling OQ-02's Besicovitch induction."
+    ],
+    "prerequisites": [
+      "linear_combination / ring : discharging polynomial identities from the square relations s²=2, t²=3, u²=5",
+      "Real.sq_sqrt : (√x)² = x for x ≥ 0, to instantiate the abstract identity at the concrete radicals",
+      "Polynomial.aeval, compute_degree!, Polynomial.Monic / monicity! : the ℚ[X] framing, degree, and monicity of m",
+      "IsIntegral, minpoly.min : a monic annihilator bounds the minimal-polynomial degree",
+      "IntermediateField.adjoin.finrank, Module.finrank : converting the degree bound into [ℚ(θ):ℚ] ≤ 8"
+    ]
+  }
+}
