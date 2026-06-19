@@ -17,7 +17,11 @@
       "Mertens' theorem",
       "Von Mangoldt function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic notation",
+      "prime number theory"
+    ]
   },
   {
     "id": "ann-e1196-primitive",
@@ -37,7 +41,11 @@
       "Prime numbers",
       "Erdos primitive set conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "divisibility and order theory",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e1196-erdossum",
@@ -56,7 +64,11 @@
       "Prime reciprocal sums",
       "Convergence of series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "infinite series convergence",
+      "analytic number theory"
+    ]
   },
   {
     "id": "ann-e1196-markov",
@@ -76,7 +88,11 @@
       "Markov chains",
       "Transition kernels"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "analytic number theory",
+      "Dirichlet series and arithmetic functions"
+    ]
   },
   {
     "id": "ann-e1196-submarkov",
@@ -96,7 +112,11 @@
       "Hitting probabilities",
       "Novel proof technique"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "functional analysis",
+      "probability theory",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e1196-hitting",
@@ -116,7 +136,11 @@
       "Primitivity as antichain",
       "Asymptotic bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "asymptotic analysis",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e1196-maintheorem",
@@ -136,7 +160,11 @@
       "Erdos sum optimization",
       "58-year-old conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic analysis",
+      "Lean 4 filters and Mathlib"
+    ]
   },
   {
     "id": "ann-e1196-bridge",
@@ -156,6 +184,10 @@
       "Global vs local bounds",
       "AI-assisted proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "Dirichlet convolution",
+      "combinatorics"
+    ]
   }
 ]
