@@ -404,12 +404,68 @@ ring identity (♦) plus `s,t>0`** — Erdős–Mordell is now `ring`-mechanical
 Both (♦) and the squared identity are numerically confirmed to ~1e-14.
 
 Isolated here as a standalone, Aristotle-submittable target. -/
+
+/-- **The cosine-fraction core of `angle_at_P` (cycle-39, researcher-11).**
+
+The single remaining algebraic obligation, in raw inner-product/norm form: the
+cosine of the angle subtended at `P` by the two pedal feet is the negative of the
+cosine of the triangle's angle at `X`,
+
+    ⟪F_b−P, F_c−P⟫ / (‖F_b−P‖·‖F_c−P‖) = −⟪Y−X, Z−X⟫ / (‖Y−X‖·‖Z−X‖).
+
+`angle_at_P` follows from this by `Real.injOn_cos` (both angles lie in `[0,π]`) and
+`Real.cos_pi_sub`, with `EuclideanGeometry.cos_angle` turning each angle's cosine
+into its inner-product quotient — a hypothesis-free wrapper (see `angle_at_P`).
+
+The proof of this core is the squared-identity-plus-sign argument of the docstring
+above: cross-multiply (all four norms are positive), reduce to `N·‖u‖·‖v‖ =
+−c·d_b·d_c` via sign-aware square-root cancellation, whose squared half is a pure
+`ring` identity in the `Fin 2` coordinates and whose sign half is `(♦)`
+(`N·‖u‖²‖v‖² = −s·t·c·(‖u‖²‖v‖²−c²)` after the barycentric substitution, with
+`‖u‖²‖v‖²−c² = cross² ≥ 0` by Lagrange's identity and `cross ≠ 0` by nondegeneracy). -/
+theorem chord_cos_eq
+    (X Y Z P : EuclideanSpace ℝ (Fin 2))
+    (hXYZ : AffineIndependent ℝ ![X, Y, Z])
+    (hP : P ∈ interior (convexHull ℝ {X, Y, Z})) :
+    inner ℝ (pedalFoot P Z X - P) (pedalFoot P X Y - P)
+        / (‖pedalFoot P Z X - P‖ * ‖pedalFoot P X Y - P‖)
+      = - inner ℝ (Y - X) (Z - X) / (‖Y - X‖ * ‖Z - X‖) := by
+  sorry
+
+/-- **The single residual geometric subfact of the cosine side** (now a
+hypothesis-free wrapper over `chord_cos_eq`). The angle subtended at `P` by the two
+pedal feet is supplementary to the triangle's angle at `X`. Reduced to the cosine
+identity `chord_cos_eq` by `Real.injOn_cos` (both angles are in `[0,π]`),
+`Real.cos_pi_sub`, and `EuclideanGeometry.cos_angle`. -/
 theorem angle_at_P
     (X Y Z P : EuclideanSpace ℝ (Fin 2))
     (hXYZ : AffineIndependent ℝ ![X, Y, Z])
     (hP : P ∈ interior (convexHull ℝ {X, Y, Z})) :
     ∠ (pedalFoot P Z X) P (pedalFoot P X Y) = Real.pi - ∠ Y X Z := by
-  sorry
+  -- cosines of both angles as inner-product quotients
+  have hcosFb : Real.cos (∠ (pedalFoot P Z X) P (pedalFoot P X Y))
+      = inner ℝ (pedalFoot P Z X - P) (pedalFoot P X Y - P)
+        / (‖pedalFoot P Z X - P‖ * ‖pedalFoot P X Y - P‖) := by
+    unfold EuclideanGeometry.angle
+    rw [InnerProductGeometry.cos_angle]; simp only [vsub_eq_sub]
+  have hcosYXZ : Real.cos (∠ Y X Z)
+      = inner ℝ (Y - X) (Z - X) / (‖Y - X‖ * ‖Z - X‖) := by
+    unfold EuclideanGeometry.angle
+    rw [InnerProductGeometry.cos_angle]; simp only [vsub_eq_sub]
+  -- the cosine identity `chord_cos_eq` in angle form
+  have hcos : Real.cos (∠ (pedalFoot P Z X) P (pedalFoot P X Y))
+      = - Real.cos (∠ Y X Z) := by
+    rw [hcosFb, hcosYXZ]
+    linear_combination chord_cos_eq X Y Z P hXYZ hP
+  -- both angles lie in `[0, π]`, where `cos` is injective
+  have h1 : ∠ (pedalFoot P Z X) P (pedalFoot P X Y) ∈ Set.Icc 0 Real.pi :=
+    ⟨EuclideanGeometry.angle_nonneg _ _ _, EuclideanGeometry.angle_le_pi _ _ _⟩
+  have h2 : Real.pi - ∠ Y X Z ∈ Set.Icc 0 Real.pi := by
+    refine ⟨?_, ?_⟩
+    · have := EuclideanGeometry.angle_le_pi Y X Z; linarith
+    · have := EuclideanGeometry.angle_nonneg Y X Z; linarith
+  apply Real.injOn_cos h1 h2
+  rw [hcos, Real.cos_pi_sub]
 
 /-- **Cosine side, modulo the supplementary-angle fact (fully proved reduction).**
 
