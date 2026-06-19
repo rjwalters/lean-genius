@@ -17,7 +17,11 @@
       "egyptian-fractions",
       "partition-regularity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory and finite colourings of the integers",
+      "unit fractions and the Egyptian fraction equation 1/a = 1/b + 1/c",
+      "partition regularity of equations"
+    ]
   },
   {
     "id": "ann-e303-imports",
@@ -36,7 +40,11 @@
       "set-theory",
       "imports"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib Set.range as the image of a function",
+      "Set.Finite for finiteness of a set",
+      "List.Nodup for distinctness conditions"
+    ]
   },
   {
     "id": "ann-e303-equation",
@@ -55,7 +63,11 @@
       "algebraic-identity",
       "rational-equations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real-valued division to express 1/a = 1/b + 1/c",
+      "clearing denominators by multiplying through by abc",
+      "the equivalent algebraic form bc = a(b+c)"
+    ]
   },
   {
     "id": "ann-e303-examples",
@@ -74,7 +86,11 @@
       "examples",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the norm_num tactic for exact arithmetic verification",
+      "the solution pattern (n, n+1, n(n+1)) for n >= 2",
+      "adding unit fractions over a common denominator"
+    ]
   },
   {
     "id": "ann-e303-colouring",
@@ -94,7 +110,11 @@
       "ramsey-theory",
       "partition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "a colouring as a function 𝓒 : ℤ → α with finite range",
+      "monochromatic triples where 𝓒(a) = 𝓒(b) = 𝓒(c)",
+      "characterising equality via a singleton image set"
+    ]
   },
   {
     "id": "ann-e303-valid",
@@ -113,7 +133,11 @@
       "distinctness",
       "nonzero"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "nonzero hypotheses to keep 1/a, 1/b, 1/c well-defined",
+      "pairwise distinctness of a, b, c",
+      "bundling constraints into a single ValidSolution predicate"
+    ]
   },
   {
     "id": "ann-e303-theorem",
@@ -132,7 +156,11 @@
       "ramsey-theorem",
       "partition-regularity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Brown-Rödl 1991 partition regularity result",
+      "stating an unformalized theorem as an axiom",
+      "the formal-conjectures phrasing via List.Nodup and Set.Subsingleton"
+    ]
   },
   {
     "id": "ann-e303-infinite",
@@ -151,7 +179,11 @@
       "pigeonhole",
       "algebraic-identity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the identity 1/n = 1/(n+1) + 1/(n(n+1))",
+      "pigeonhole over infinitely many solutions in a k-colouring",
+      "combining over the common denominator n(n+1)"
+    ]
   },
   {
     "id": "ann-e303-distinct",
@@ -170,7 +202,11 @@
       "omega",
       "algebraic-proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factoring n(n+1) - (n+1) = (n-1)(n+1) to force n = 1",
+      "the omega tactic for integer inequalities",
+      "the assumption n >= 2 ruling out n = 0 and n = 1"
+    ]
   },
   {
     "id": "ann-e303-density",
@@ -190,6 +226,10 @@
       "furstenberg-correspondence",
       "ramsey-density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive upper density of a set A ⊆ ℤ",
+      "Erdős Problem #302 as the density version",
+      "Furstenberg's correspondence principle linking density to colouring"
+    ]
   }
 ]
