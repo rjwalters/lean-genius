@@ -16,7 +16,11 @@
       "independence-number",
       "K4-free"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey–Turán theory",
+      "the independence number α(G)",
+      "K₄-free graphs"
+    ]
   },
   {
     "id": "ann-e22-background",
@@ -35,7 +39,11 @@
       "ramsey-theory",
       "turan-graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turán's theorem and the Turán graph",
+      "Ramsey theory",
+      "extremal edge counts"
+    ]
   },
   {
     "id": "ann-e22-graphdef",
@@ -54,7 +62,11 @@
       "adjacency",
       "symmetric-relation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "simple graphs and adjacency",
+      "symmetric irreflexive relations",
+      "graph structure in Lean"
+    ]
   },
   {
     "id": "ann-e22-independent",
@@ -73,7 +85,11 @@
       "np-hard",
       "graph-invariant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "independent sets",
+      "the independence number as a graph invariant",
+      "NP-hardness of α"
+    ]
   },
   {
     "id": "ann-e22-clique",
@@ -92,7 +108,11 @@
       "clique",
       "forbidden-subgraph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complete graphs / cliques",
+      "K₄ (the 4-clique)",
+      "forbidden-subgraph conditions"
+    ]
   },
   {
     "id": "ann-e22-rt",
@@ -111,7 +131,11 @@
       "ramsey-turan-number",
       "optimization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Ramsey–Turán number RT(n,K₄,o(n))",
+      "extremal functions",
+      "maximizing edges with small independence number"
+    ]
   },
   {
     "id": "ann-e22-turan",
@@ -130,7 +154,11 @@
       "turan-graph",
       "extremal-number"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Turán graph T(n,r)",
+      "Turán's theorem",
+      "the extremal number ex(n,Kᵣ)"
+    ]
   },
   {
     "id": "ann-e22-conjecture",
@@ -149,7 +177,11 @@
       "conjecture",
       "edge-density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "edge density of K₄-free graphs",
+      "the Ramsey–Turán density",
+      "the Bollobás–Erdős conjecture"
+    ]
   },
   {
     "id": "ann-e22-flz",
@@ -168,7 +200,11 @@
       "pseudorandom",
       "polylogarithmic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "pseudorandom graphs",
+      "polylogarithmic factors",
+      "the Fox–Loh–Zhao 2015 theorem"
+    ]
   },
   {
     "id": "ann-e22-proof",
@@ -187,6 +223,10 @@
       "linarith",
       "resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the (¼+o(1))n²/2 extremal value",
+      "the resolution of the conjecture",
+      "arithmetic verification (linarith)"
+    ]
   }
 ]
