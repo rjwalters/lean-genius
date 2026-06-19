@@ -17,7 +17,11 @@
       "Anticomplete sets",
       "Graph coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal combinatorics",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-e1111-anticomplete",
@@ -36,7 +40,11 @@
       "Graph adjacency",
       "Independent sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e1111-chromatic-clique",
@@ -55,7 +63,11 @@
       "Induced subgraph"
     ],
     "mathContext": "See annotation content for formal details of chromatic and clique numbers",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorial optimization",
+      "induced subgraphs"
+    ]
   },
   {
     "id": "ann-e1111-property",
@@ -74,7 +86,11 @@
       "Chromatic threshold",
       "Extremal function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal function notation",
+      "logical quantifiers"
+    ]
   },
   {
     "id": "ann-e1111-small-cases",
@@ -92,7 +108,11 @@
       "Triangle-free graphs",
       "Exact computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "case analysis",
+      "triangle-free graph theory"
+    ]
   },
   {
     "id": "ann-e1111-wagon",
@@ -111,7 +131,11 @@
       "Upper bound",
       "Recursive bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "binomial coefficients",
+      "mathematical induction"
+    ]
   },
   {
     "id": "ann-e1111-reduction",
@@ -129,7 +153,11 @@
       "Problem reduction",
       "Cubic bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "proof reduction techniques",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e1111-nss",
@@ -148,7 +176,11 @@
       "Structural strengthening",
       "2024 result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "degree sequences",
+      "structural graph theory"
+    ]
   },
   {
     "id": "ann-e1111-connections",
@@ -167,7 +199,11 @@
       "Chi-boundedness",
       "Graph structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "chi-boundedness theory",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e1111-summary",
@@ -185,6 +221,10 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal combinatorics",
+      "asymptotic analysis"
+    ]
   }
 ]
