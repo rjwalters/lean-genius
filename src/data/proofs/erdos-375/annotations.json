@@ -16,7 +16,11 @@
       "Hall's marriage theorem",
       "Consecutive composites"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive composite numbers",
+      "distinct prime divisor assignment",
+      "prime gaps and Legendre's conjecture"
+    ]
   },
   {
     "id": "ann-e375-composite",
@@ -34,7 +38,11 @@
       "Consecutive integers"
     ],
     "mathContext": "See annotation content for formal details of composite numbers and blocks",
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "composite natural numbers",
+      "blocks of consecutive integers"
+    ]
   },
   {
     "id": "ann-e375-assignment",
@@ -52,7 +60,11 @@
       "Injective functions"
     ],
     "mathContext": "See annotation content for formal details of prime divisor assignments",
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility of integers by primes",
+      "injective functions for distinctness",
+      "indexing with Fin k"
+    ]
   },
   {
     "id": "ann-e375-conjecture",
@@ -70,7 +82,11 @@
       "Open problems",
       "Number theory conjectures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "composite blocks of length k",
+      "existence of a valid prime divisor assignment",
+      "open conjectures in number theory"
+    ]
   },
   {
     "id": "ann-e375-trivial",
@@ -88,7 +104,11 @@
       "Consecutive integers"
     ],
     "mathContext": "See annotation content for formal details of trivial cases: k <= 2",
-    "prerequisites": []
+    "prerequisites": [
+      "prime factors of a composite",
+      "coprimality of consecutive integers",
+      "greatest common divisor"
+    ]
   },
   {
     "id": "ann-e375-partial",
@@ -106,7 +126,11 @@
       "Asymptotic bounds",
       "Historical progress"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic notation and log log n bounds",
+      "axiomatized partial results",
+      "Ramachandra-Shorey-Tijdeman theorem"
+    ]
   },
   {
     "id": "ann-e375-prime-gaps",
@@ -124,7 +148,11 @@
       "Prime gaps",
       "Legendre's conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bounds on prime gaps p_{n+1} minus p_n",
+      "Legendre's conjecture on primes between squares",
+      "conjectural implications"
+    ]
   },
   {
     "id": "ann-e375-example-24",
@@ -142,7 +170,11 @@
       "Verification"
     ],
     "mathContext": "See annotation content for formal details of example: 24, 25, 26",
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization of small integers",
+      "verifying distinct prime divisors",
+      "consecutive composites between primes"
+    ]
   },
   {
     "id": "ann-e375-example-90",
@@ -160,7 +192,11 @@
       "Small prime factors"
     ],
     "mathContext": "See annotation content for formal details of example: 90-95",
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization of a run of composites",
+      "selecting distinct primes despite shared small factors",
+      "longer composite runs"
+    ]
   },
   {
     "id": "ann-e375-counting",
@@ -178,7 +214,11 @@
       "Small primes"
     ],
     "mathContext": "See annotation content for formal details of counting arguments",
-    "prerequisites": []
+    "prerequisites": [
+      "distinct prime factors and the log_2 bound",
+      "small prime divisors below sqrt(n)",
+      "pigeonhole pressure on distinctness"
+    ]
   },
   {
     "id": "ann-e375-hall",
@@ -197,7 +237,11 @@
       "Bipartite matching",
       "Graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bipartite graphs and perfect matchings",
+      "Hall's marriage theorem and Hall's condition",
+      "neighborhood sets of subsets"
+    ]
   },
   {
     "id": "ann-e375-summary",
@@ -215,7 +259,11 @@
       "Open problems"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "trivial cases versus general conjecture",
+      "the RST asymptotic bound",
+      "conjunction of partial and open statements"
+    ]
   },
   {
     "id": "ann-e375-difficulty",
@@ -233,6 +281,10 @@
       "Problem difficulty",
       "Implications"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Grimm implies Legendre's conjecture",
+      "long prime gaps yielding long composite runs",
+      "growing distinctness requirement with k"
+    ]
   }
 ]
