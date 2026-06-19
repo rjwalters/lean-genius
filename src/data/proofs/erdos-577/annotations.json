@@ -258,7 +258,11 @@
       "Hamiltonian cycle",
       "Ore's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dirac's theorem",
+      "Hamiltonian cycle",
+      "Minimum degree"
+    ]
   },
   {
     "id": "ann-577-elzahar",
@@ -277,7 +281,11 @@
       "generalized cycle partition",
       "Dirac-type conditions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "El-Zahar's conjecture",
+      "Vertex-disjoint cycles",
+      "Corrádi–Hajnal theorem"
+    ]
   },
   {
     "id": "ann-577-corradi",
@@ -296,7 +304,11 @@
       "triangle partition",
       "cycle partition program"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Corrádi–Hajnal theorem",
+      "Vertex-disjoint triangles",
+      "Minimum degree threshold"
+    ]
   },
   {
     "id": "ann-577-technique",
@@ -315,6 +327,10 @@
       "neighborhood analysis",
       "greedy algorithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Minimal counterexample method",
+      "Neighborhood analysis",
+      "Greedy extraction"
+    ]
   }
 ]
