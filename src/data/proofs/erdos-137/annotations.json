@@ -16,7 +16,11 @@
       "powerful numbers",
       "consecutive integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "products of consecutive integers n(n+1)…",
+      "powerful numbers",
+      "the Erdős–Selfridge theorem"
+    ]
   },
   {
     "id": "ann-e137-powerful-def",
@@ -35,7 +39,11 @@
       "squarefree",
       "perfect powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "powerful numbers (p|n ⇒ p²|n)",
+      "perfect powers and squarefree numbers"
+    ]
   },
   {
     "id": "ann-e137-one-powerful",
@@ -53,7 +61,11 @@
       "vacuous truth",
       "prime divisors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime divisors of 1 (none)",
+      "vacuous truth",
+      "the definition of powerful"
+    ]
   },
   {
     "id": "ann-e137-sq-powerful",
@@ -71,7 +83,11 @@
       "perfect powers",
       "prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "perfect squares n²",
+      "prime factorization with even exponents",
+      "powerful numbers"
+    ]
   },
   {
     "id": "ann-e137-squarefree-not-powerful",
@@ -90,7 +106,11 @@
       "IsUnit",
       "prime characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "squarefree numbers (no repeated prime)",
+      "units (IsUnit) in ℕ",
+      "why squarefree >1 fails the powerful condition"
+    ]
   },
   {
     "id": "ann-e137-consecutive-product",
@@ -109,7 +129,11 @@
       "BigOperators",
       "product notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the half-open interval product (Finset.Ioc)",
+      "product notation (BigOperators)",
+      "products of consecutive integers"
+    ]
   },
   {
     "id": "ann-e137-erdos-selfridge",
@@ -128,7 +152,11 @@
       "prime factorization",
       "axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "products of consecutive integers being a perfect power",
+      "prime factorization",
+      "axiomatizing the Erdős–Selfridge theorem"
+    ]
   },
   {
     "id": "ann-e137-main-conjecture",
@@ -147,7 +175,11 @@
       "powerful numbers",
       "k ≥ 3 threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powerful numbers",
+      "products of k consecutive integers",
+      "the k ≥ 3 threshold conjecture"
+    ]
   },
   {
     "id": "ann-e137-72-powerful",
@@ -166,7 +198,11 @@
       "prime factorization",
       "72 = 2³ × 3²"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the factorization 72 = 2³·3²",
+      "the powerful condition",
+      "8×9 as a worked example"
+    ]
   },
   {
     "id": "ann-e137-k2-fails",
@@ -185,6 +221,10 @@
       "k = 2 vs k ≥ 3",
       "Problem #364"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the k=2 product n(n+1)",
+      "why consecutive n, n+1 are coprime",
+      "Problem #364 and the boundary case"
+    ]
   }
 ]
