@@ -16,7 +16,11 @@
       "rational distances",
       "dense sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős-Ulam rational distance problem",
+      "dense subsets of the Euclidean plane",
+      "pairwise rational distances"
+    ]
   },
   {
     "id": "ann-e212-rational-def",
@@ -35,7 +39,11 @@
       "distance",
       "rational numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean distance between points",
+      "rational numbers",
+      "Pairwise predicate on sets"
+    ]
   },
   {
     "id": "ann-e212-conjecture",
@@ -54,7 +62,11 @@
       "conjecture",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "dense sets and topological closure",
+      "Ulam's conjecture",
+      "negation of existential statements"
+    ]
   },
   {
     "id": "ann-e212-classical",
@@ -72,7 +84,11 @@
       "excluded middle",
       "classical logic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "law of excluded middle",
+      "classical logic",
+      "decidability of propositions"
+    ]
   },
   {
     "id": "ann-e212-bombieri-lang",
@@ -91,7 +107,11 @@
       "varieties",
       "rational points"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Bombieri-Lang conjecture",
+      "rational points on varieties of general type",
+      "axiomatization as a placeholder Prop"
+    ]
   },
   {
     "id": "ann-e212-tao-shaffaf",
@@ -110,7 +130,11 @@
       "Shaffaf",
       "conditional proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "conditional implication from Bombieri-Lang",
+      "rational points constrained to algebraic varieties",
+      "Tao and Shaffaf result"
+    ]
   },
   {
     "id": "ann-e212-algebraic-curve",
@@ -129,7 +153,11 @@
       "polynomial",
       "zero set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real algebraic curves as polynomial zero sets",
+      "MvPolynomial in two variables",
+      "polynomial evaluation in Mathlib"
+    ]
   },
   {
     "id": "ann-e212-curves-unconditional",
@@ -148,7 +176,11 @@
       "finite union",
       "unconditional"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Shaffaf-Tao unconditional structure theorem",
+      "finite unions of real algebraic curves",
+      "containment of rational distance sets"
+    ]
   },
   {
     "id": "ann-e212-solymosi",
@@ -167,7 +199,11 @@
       "de Zeeuw",
       "finiteness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Solymosi-de Zeeuw finiteness theorem",
+      "lines and circles within algebraic curves",
+      "rational distance sets on a curve"
+    ]
   },
   {
     "id": "ann-e212-summary",
@@ -185,6 +221,10 @@
       "summary",
       "combined results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "conditional Bombieri-Lang implication",
+      "containment in finite unions of curves",
+      "combining conditional and unconditional results"
+    ]
   }
 ]
