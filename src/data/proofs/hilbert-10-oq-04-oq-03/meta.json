@@ -81,6 +81,14 @@
   },
   "sections": [
     {
+      "id": "header-h10-boundary",
+      "title": "Hilbert's Tenth Problem and the Decidable Boundary",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Module docstring situating the file at the decidable edge of the H10 hierarchy: degree-1 equations are decidable for every n (gcd divisibility), opposite Jones's degree-4 / 9-variable undecidable family; follow-up to the parent Hilbert10OQ04 that discharged the linear_bezout_n axiom.",
+      "mathContext": "H10 is undecidable in general (MRDP, 1970); the undecidable frontier reaches degree 4 in 9 variables (Jones 1982). This file proves the opposite edge: $\\sum_i a_i x_i = b$ is decidable for all $n$ via $\\gcd(a_1,\\dots,a_n) \\mid b$. Axiom-free, unlike the parent's axiomatized undecidability inputs."
+    },
+    {
       "id": "span-gcd",
       "title": "Coefficient Ideal Equals the gcd Ideal",
       "startLine": 36,

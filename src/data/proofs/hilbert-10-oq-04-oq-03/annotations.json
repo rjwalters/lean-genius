@@ -45,7 +45,7 @@
     "id": "h10oq0403-ann-03",
     "proofId": "hilbert-10-oq-04-oq-03",
     "range": { "startLine": 77, "endLine": 95 },
-    "type": "theorem",
+    "type": "concept",
     "title": "Linear Forms and the Decidability Criterion",
     "content": "The LinearForm n structure bundles coefficients (Fin n → ℤ) with a constant term, and LinearForm.Solvable asks for an integer assignment making Σ coeffsᵢ·xᵢ + const vanish. LinearForm.solvable_iff reduces this to (Finset.univ.gcd coeffs) ∣ const. The proof shifts the constant to the right-hand side — Σ coeffsᵢ·xᵢ + const = 0 is equivalent to Σ coeffsᵢ·xᵢ = -const (linarith in both directions) — then applies solvable_iff_gcd_dvd and dvd_neg (a ∣ -c ↔ a ∣ c). This is the form needed for a decision procedure, since both the gcd and the divisibility test are effective over ℤ.",
     "mathContext": "A linear form $\\sum_i c_i x_i + c$ vanishes for some integer point iff $\\gcd(c_1,\\dots,c_n) \\mid c$. The sign flip on the constant is immaterial because $a \\mid -c \\iff a \\mid c$.",
@@ -79,6 +79,49 @@
       "the Decidable typeclass in Lean",
       "decidability of integer divisibility",
       "the linear-form solvability criterion"
+    ]
+  },
+  {
+    "id": "h10oq0403-ann-05",
+    "proofId": "hilbert-10-oq-04-oq-03",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "context",
+    "title": "Hilbert's Tenth Problem and the Decidable–Undecidable Boundary",
+    "content": "Hilbert's Tenth Problem (1900) asked for an algorithm to decide whether an arbitrary Diophantine equation P(x₁,…,xₙ) = 0 has an integer solution. The Matiyasevich–Robinson–Davis–Putnam (MRDP) theorem (1970) answered it negatively: the solution sets of Diophantine equations are exactly the recursively enumerable sets, so no such algorithm exists — undecidability is inherited from the halting problem. Undecidability persists even under sharp bounds on the degree and number of variables: Jones (1982) exhibited an undecidable family of degree 4 in just 9 variables. This file occupies the opposite, DECIDABLE edge of that hierarchy: degree 1 (linear) equations are decidable for EVERY number of variables n, via a single gcd computation and one divisibility test. It is the follow-up (oq-03) to the parent Hilbert10OQ04, which discharged the former linear_bezout_n axiom into a proved theorem; this file upgrades that existential characterization to a computable one and packages it as a Lean Decidable instance. Notably, the whole development is sorry-free and axiom-free (only propext/Classical.choice/Quot.sound, no Lean.ofReduceBool), unlike the parent file whose MRDP/Jones undecidability inputs are axiomatized.",
+    "mathContext": "H10 in general is undecidable (MRDP, 1970); the recursively enumerable sets coincide with the Diophantine sets. The undecidable frontier reaches degree 4 / 9 variables (Jones 1982). The decidable frontier established here is degree 1 / arbitrary $n$: $\\sum_i a_i x_i = b$ is solvable over $\\mathbb{Z}$ iff $\\gcd(a_1,\\dots,a_n) \\mid b$. The status of intermediate degrees 2–3 (and small variable counts) is partly open.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Hilbert's Tenth Problem",
+      "MRDP theorem",
+      "Diophantine sets and recursive enumerability",
+      "Jones's degree-4 / 9-variable undecidable family",
+      "decidability hierarchy"
+    ],
+    "prerequisites": [
+      "Diophantine equations",
+      "computability and undecidability",
+      "recursively enumerable sets"
+    ]
+  },
+  {
+    "id": "h10oq0403-ann-06",
+    "proofId": "hilbert-10-oq-04-oq-03",
+    "range": { "startLine": 100, "endLine": 107 },
+    "type": "example",
+    "title": "Worked Instance: 6x + 10y + 15z = 1",
+    "content": "A concrete sanity check that the decision criterion fires correctly. The linear form ⟨![6, 10, 15], -1⟩ encodes 6x + 10y + 15z − 1 = 0, i.e. 6x + 10y + 15z = 1. Since gcd(6, 10, 15) = 1 and 1 ∣ 1, solvable_iff predicts solvability, and the explicit witness (x, y, z) = (1, 1, −1) confirms it: 6 + 10 − 15 = 1. The proof supplies the witness vector ![1, 1, -1] and closes the arithmetic with norm_num after unfolding the three-term Fin sum (Fin.sum_univ_three) and the matrix-literal accessors. Note that no two of the coefficients are coprime (gcd(6,10)=2, gcd(6,15)=3, gcd(10,15)=5), yet the full triple has gcd 1 — illustrating that multivariable Bézout genuinely needs all coefficients together, not just pairwise.",
+    "mathContext": "$\\gcd(6,10,15) = 1$, and $1 \\mid 1$, so $6x + 10y + 15z = 1$ is solvable; witness $(1,1,-1)$ gives $6 + 10 - 15 = 1$. Pairwise gcds are $2, 3, 5$ — none equal to 1 — so the example shows the criterion is a property of the whole coefficient family.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multivariable Bézout",
+      "gcd of three integers",
+      "explicit Diophantine witness",
+      "norm_num evaluation"
+    ],
+    "prerequisites": [
+      "the gcd solvability criterion",
+      "Fin.sum_univ_three",
+      "matrix literal notation in Lean"
     ]
   }
 ]
