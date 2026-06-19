@@ -1,0 +1,116 @@
+[
+  {
+    "id": "qgss-oq01-ann-setup",
+    "proofId": "quadratic-gauss-sum-square-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "type": "insight",
+    "title": "What the Square Identity Leaves Open",
+    "content": "The module imports the parent `Proofs.QuadraticGaussSumSquare`, whose headline result is g² = (-1)^((p-1)/2)·p for the quadratic Gauss sum g = gaussSum (chiC p) ψ. That identity determines g only up to sign: it gives four candidate points, ±√p when p ≡ 1 (mod 4) and ±i√p when p ≡ 3 (mod 4). Gauss's hard theorem fixes the leading sign (g = +√p resp. g = +i√p) via Schur's eigenvalue argument or Dirichlet's analytic evaluation, and that part is deliberately NOT formalized here. This file isolates the elementary complement — the real/imaginary dichotomy and the magnitude — everything that follows from the square identity by complex arithmetic alone.",
+    "mathContext": "$g^2 = (-1)^{(p-1)/2}\\,p$ pins $g$ to $\\{\\pm\\sqrt p\\}$ when $p\\equiv 1$ and to $\\{\\pm i\\sqrt p\\}$ when $p\\equiv 3 \\pmod 4$; only the leading $\\pm$ remains.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "quadratic Gauss sum",
+      "Gauss sign theorem",
+      "primitive additive character"
+    ],
+    "prerequisites": [
+      "gaussSum",
+      "QuadraticGaussSumSquare.gaussSum_quadratic_sq"
+    ]
+  },
+  {
+    "id": "qgss-oq01-ann-pos-real-axis",
+    "proofId": "quadratic-gauss-sum-square-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 53
+    },
+    "type": "theorem",
+    "title": "A Square that is a Positive Real Forces the Real Axis",
+    "content": "`im_eq_zero_of_sq_eq_pos_real`: if z² = r with r > 0 real, then z.im = 0. The proof takes real and imaginary parts of the hypothesis via `congrArg` and `Complex.mul_re`/`Complex.mul_im`: the imaginary part gives 2·Re(z)·Im(z) = 0 and the real part gives Re(z)² − Im(z)² = r. From the product Re(z)·Im(z) = 0 there are two cases; the branch Re(z) = 0 would force −Im(z)² = r > 0, contradicting `mul_self_nonneg`, so it is killed by `nlinarith` and only Im(z) = 0 survives. No square roots or argument function are invoked — the axis is selected purely by the sign of the square.",
+    "mathContext": "If $z^2 = r \\in \\mathbb{R}_{>0}$ then $2\\,\\mathrm{Re}(z)\\,\\mathrm{Im}(z)=0$ and $\\mathrm{Re}(z)^2-\\mathrm{Im}(z)^2=r$; ruling out $\\mathrm{Re}(z)=0$ (else $-\\mathrm{Im}(z)^2=r>0$) gives $\\mathrm{Im}(z)=0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complex multiplication",
+      "real and imaginary parts",
+      "sign analysis"
+    ],
+    "prerequisites": [
+      "Complex.mul_re",
+      "Complex.mul_im",
+      "mul_self_nonneg"
+    ]
+  },
+  {
+    "id": "qgss-oq01-ann-neg-real-axis",
+    "proofId": "quadratic-gauss-sum-square-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 69
+    },
+    "type": "theorem",
+    "title": "The Mirror Lemma: a Negative-Real Square Forces the Imaginary Axis",
+    "content": "`re_eq_zero_of_sq_eq_neg_real` is the exact mirror of the previous lemma: if z² = r with r < 0, then z.re = 0. The same extraction of real and imaginary parts yields Re(z)·Im(z) = 0, and this time the excluded branch is Im(z) = 0 — which would force Re(z)² = r < 0, impossible by `mul_self_nonneg`. The two lemmas together encode the elementary geometric fact that the complex square map sends the real axis to the nonnegative reals and the imaginary axis to the nonpositive reals, and these are the only preimages of nonzero reals.",
+    "mathContext": "If $z^2 = r \\in \\mathbb{R}_{<0}$ then $\\mathrm{Re}(z)\\,\\mathrm{Im}(z)=0$ and $\\mathrm{Re}(z)^2-\\mathrm{Im}(z)^2=r$; ruling out $\\mathrm{Im}(z)=0$ (else $\\mathrm{Re}(z)^2=r<0$) gives $\\mathrm{Re}(z)=0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complex squaring map",
+      "coordinate axes",
+      "sign analysis"
+    ],
+    "prerequisites": [
+      "Complex.mul_re",
+      "Complex.mul_im",
+      "mul_self_nonneg"
+    ]
+  },
+  {
+    "id": "qgss-oq01-ann-dichotomy",
+    "proofId": "quadratic-gauss-sum-square-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 95
+    },
+    "type": "theorem",
+    "title": "The Dichotomy: Parity of (p−1)/2 Decides the Axis",
+    "content": "The two dichotomy theorems feed the parent's `gaussSum_quadratic_sq` into the arithmetic lemmas, with the parity of (p−1)/2 as the hinge. For p ≡ 1 (mod 4), `Nat.even_iff` plus `omega` give `Even ((p-1)/2)`, so `Even.neg_one_pow` collapses the sign factor to +1 and g² = +p is a positive real — `im_eq_zero_of_sq_eq_pos_real` then yields g.im = 0. For p ≡ 3 (mod 4) the exponent is odd, `Odd.neg_one_pow` gives −1, g² = −p is a negative real, and `re_eq_zero_of_sq_eq_neg_real` yields g.re = 0. The residue p mod 4 thus literally chooses which coordinate axis the Gauss sum lives on, making the first supplement to quadratic reciprocity geometrically visible in ℂ.",
+    "mathContext": "$p\\equiv 1\\ (4)\\Rightarrow (-1)^{(p-1)/2}=+1\\Rightarrow g^2=+p\\Rightarrow \\mathrm{Im}\\,g=0$; $\\quad p\\equiv 3\\ (4)\\Rightarrow (-1)^{(p-1)/2}=-1\\Rightarrow g^2=-p\\Rightarrow \\mathrm{Re}\\,g=0$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "quadratic reciprocity first supplement",
+      "parity of (p-1)/2",
+      "Even.neg_one_pow"
+    ],
+    "prerequisites": [
+      "Nat.even_iff",
+      "Odd.neg_one_pow",
+      "gaussSum_quadratic_sq"
+    ]
+  },
+  {
+    "id": "qgss-oq01-ann-magnitude",
+    "proofId": "quadratic-gauss-sum-square-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 116
+    },
+    "type": "theorem",
+    "title": "Magnitude ‖g‖² = p from Multiplicativity of normSq",
+    "content": "`gaussSum_normSq_eq` extracts the absolute value |g| = √p independently of the residue mod 4 and of the open leading sign. Applying the multiplicative `Complex.normSq` to g² = (-1)^((p-1)/2)·p and using `map_pow`/`map_mul` gives normSq(g)² = normSq(−1)^(p−1) · normSq(p) = p², since normSq(−1) = 1 and `Complex.normSq_natCast` gives normSq(p) = p². Both normSq(g) and p are nonnegative (`Complex.normSq_nonneg`, `positivity`), so `nlinarith` selects the positive square root: normSq(g) = p. This is the Parseval/orthogonality content of the Gauss sum made explicit, and combined with the dichotomy it confines g to exactly the four points ±√p and ±i√p.",
+    "mathContext": "$\\mathrm{normSq}(g)^2 = \\mathrm{normSq}(g^2) = \\mathrm{normSq}\\big((-1)^{(p-1)/2}p\\big) = p^2 \\Rightarrow \\lVert g\\rVert^2 = \\mathrm{normSq}(g) = p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.normSq multiplicativity",
+      "Parseval / character orthogonality",
+      "absolute value of Gauss sums"
+    ],
+    "prerequisites": [
+      "Complex.normSq",
+      "Complex.normSq_natCast",
+      "Complex.normSq_nonneg"
+    ]
+  }
+]
