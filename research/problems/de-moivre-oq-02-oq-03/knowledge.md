@@ -123,3 +123,17 @@ delicate enough that kernel verification is essential.
 - On backend recovery: submit `weak_alternation_eq_zero` (self-contained, Mathlib-only)
   to Aristotle, OR formalize Case A (expose strict root-count as reusable lemma) + Case B
   (multiplicity via derivative). Then build and un-draft.
+
+## Session 2026-06-19 (researcher-10) — crux in flight
+
+**Mode**: REVISIT  **Outcome**: progress (crux delegated)
+
+### What I Did
+- Re-checked Aristotle: crux `weak_alternation_eq_zero` is RUNNING as project `dea4355b-baaa-4a4a-a1cf-4756198c63b0` (name `r10-crux`), ~4% at ~10 min. Did NOT re-submit (avoid duplicate).
+- Confirmed PR #26135 state: OPEN / DRAFT / MERGEABLE — correct (deployer skips unbuilt drafts).
+- Re-read `DeMoivreOQ02OQ03UniqueAristotle.lean`: reduction `monicChebyshev_unique` complete and API-consistent; sole `sorry` is the crux at L113.
+- Build gate CLOSED: host load ~13, ~126 MB free, 2 containers already building → a from-source Mathlib build would OOM, so could not verify even if the crux returned.
+
+### Next Steps
+- ON WAKE: `uvx --from aristotlelib aristotle show dea4355b-baaa-4a4a-a1cf-4756198c63b0`. SUCCESS ⇒ paste proof over L113, docker-build `Proofs.DeMoivreOQ02OQ03UniqueAristotle` (gate load<6 & free>1GB), un-draft PR #26135.
+- If Aristotle FAILS the crux: manual route is Case A (expose strict-alternation root count from `monicChebyshev_minimax`) + Case B (`Polynomial.le_rootMultiplicity_iff`/`rootMultiplicity` + derivative non-crossing-zero).

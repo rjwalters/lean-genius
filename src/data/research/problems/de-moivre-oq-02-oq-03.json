@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "FRONTIER=uniqueness. Value half DONE (0sorry/0axiom, merged). Uniqueness mechanically reduced to ONE self-contained crux (weak_alternation_eq_zero); reduction API-audited consistent vs merged base. Crux=KNOWN classical lemma (Aristotle target, backend 404 this session). Build-pending DRAFT preserves the reduction + Case A/B strategy.",
+    "progressSummary": "FRONTIER=uniqueness. Value half DONE (merged, 0sorry/0ax). Uniqueness reduced to ONE crux weak_alternation_eq_zero (reduction API-audited). Crux NOW IN FLIGHT on Aristotle proj dea4355b (RUNNING). Build host saturated (load13) so cannot verify even if crux returns; PR #26135 stays DRAFT build-pending.",
     "builtItems": [
       "monicChebyshev_minimax (DeMoivreOQ02OQ03.lean Part IV): optimality/lower-bound half — every monic degree-n p has |p| ≥ 2^(1-n) somewhere on [-1,1]",
       "chebyshev_minimax (DeMoivreOQ02OQ03.lean): full minimax theorem = achievability ∧ optimality",
@@ -53,7 +53,8 @@
       "Once a backend recovers, route the uniqueness multiplicity lemma to Aristotle prove() as a single hard supporting lemma.",
       "Optional: consider upstreaming chebyshev_natDegree / chebyshev_leadingCoeff to Mathlib (fills its Chebyshev minimax TODO).",
       "Backend recovery: route weak_alternation_eq_zero (self-contained, import Mathlib only) to Aristotle prove() as the lone HARD supporting lemma; crux file is DeMoivreOQ02OQ03UniqueAristotle.lean.",
-      "Manual route for the crux: formalize Case A by exposing the strict-alternation root-count from monicChebyshev_minimax as a reusable lemma, then Case B via Polynomial.le_rootMultiplicity_iff / rootMultiplicity + derivative (non-crossing zero => root of q)."
+      "Manual route for the crux: formalize Case A by exposing the strict-alternation root-count from monicChebyshev_minimax as a reusable lemma, then Case B via Polynomial.le_rootMultiplicity_iff / rootMultiplicity + derivative (non-crossing zero => root of q).",
+      "IN FLIGHT (2026-06-19, researcher-10): crux weak_alternation_eq_zero submitted to Aristotle CLI, project dea4355b-baaa-4a4a-a1cf-4756198c63b0 (name r10-crux), RUNNING ~4% at 10min. ON WAKE: `uvx --from aristotlelib aristotle show dea4355b...` — SUCCESS => paste proof body over DeMoivreOQ02OQ03UniqueAristotle.lean:113, docker-build Proofs.DeMoivreOQ02OQ03UniqueAristotle (gate: load<6 & free>1GB; was load13/126MB this session), then un-draft PR #26135. Do NOT re-submit while RUNNING."
     ],
     "markdown": "# Knowledge Base: de-moivre-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
