@@ -157,6 +157,38 @@ theorem fract_fract_sub_fract (x y : ℝ) :
     simp only [Int.fract]; push_cast; ring
   rw [h, Int.fract_sub_int]
 
+/-- **STEP A primitive — index → orbit-point injectivity.**  For irrational `α`
+    the map `i ↦ {iα}` is injective on all of `ℕ` (not merely on `range N`): the
+    `Set.InjOn` argument inside `orbit_card` never used the range bound, so it
+    upgrades to genuine `Function.Injective`.  This is the form needed to push
+    `Finset.erase` through the orbit `image`. -/
+theorem orbit_index_injective {α : ℝ} (hα : Irrational α) :
+    Function.Injective (fun i : ℕ => Int.fract ((i : ℝ) * α)) := by
+  intro i j hij
+  by_contra hne
+  simp only at hij
+  rw [Int.fract_eq_fract] at hij
+  obtain ⟨z, hz⟩ := hij
+  have hm : ((i : ℤ) - (j : ℤ)) ≠ 0 := sub_ne_zero.mpr (by exact_mod_cast hne)
+  have key : (((i : ℤ) - (j : ℤ) : ℤ) : ℝ) * α = (z : ℝ) := by
+    push_cast; rw [sub_mul]; exact hz
+  have hirr : Irrational ((((i : ℤ) - (j : ℤ) : ℤ) : ℝ) * α) := hα.intCast_mul hm
+  rw [key] at hirr
+  exact (Int.not_irrational z) hirr
+
+/-- **STEP A primitive — the punctured orbit is the image of the other indices.**
+    Removing the orbit point `{kα}` from the `N`-point orbit leaves exactly the
+    images of the remaining indices `range N \ {k}`.  Immediate from
+    `orbit_index_injective` via `Finset.image_erase`; this is what lets the
+    forward-gap minimum at `{kα}` be transported from orbit points to index
+    differences in STEP A. -/
+theorem orbit_erase_eq {α : ℝ} (hα : Irrational α) (N k : ℕ) :
+    (orbit α N).erase (Int.fract ((k : ℝ) * α)) =
+      ((Finset.range N).erase k).image (fun i : ℕ => Int.fract ((i : ℝ) * α)) := by
+  rw [orbit,
+    show (Int.fract ((k : ℝ) * α)) = (fun i : ℕ => Int.fract ((i : ℝ) * α)) k from rfl,
+    ← Finset.image_erase (orbit_index_injective hα)]
+
 /-
     PROOF PATH for the core classification `exists_gap_triple`
     (van Ravenstein / Sós, elementary).  Session 6 (researcher-1, 2026-06-18)
