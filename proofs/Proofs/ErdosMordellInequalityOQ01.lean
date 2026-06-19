@@ -41,15 +41,19 @@ The standard proof factors into two independent pieces:
 - [x] `key_inequality_trig_core` — geometry-free trig bound, PROVED.
 - [x] `key_inequality_of_chord_and_sines` — verified assembly: from the chord
   identity + law of sines, derives the key inequality `b·dc + c·db ≤ a·PA`, PROVED.
-- [ ] `key_inequality_*` — the three geometric key inequalities (OPEN / hard);
-  each now reduces to supplying the chord identity and the law of sines for the
-  concrete Euclidean configuration (see `key_inequality_of_chord_and_sines`).
-- [ ] `erdos_mordell` — assembled geometric statement (depends on the above).
+- [ ] `key_inequality_vertex` — the **single** geometry-bearing obligation (OPEN /
+  hard); it reduces to supplying the pedal-feet chord identity and the law of sines
+  for the concrete Euclidean configuration (see `key_inequality_of_chord_and_sines`).
+- [x] `key_inequality_A/B/C` — the three classical cyclic key inequalities, now
+  PROVED as the three relabelings of `key_inequality_vertex` (no extra geometry).
+- [x] `erdos_mordell` — assembled geometric statement, PROVED modulo
+  `key_inequality_vertex`.
 
 The reduction, the trig core, and the chord-to-key assembly are the reusable,
-Mathlib-independent heart of the argument; the remaining work is purely the
-planar-geometry derivation of the chord identity and law of sines (deferred —
-see knowledge notes).
+Mathlib-independent heart of the argument. The three cyclic key inequalities have
+been collapsed to a single shared lemma, so the *entire* remaining work is one
+planar-geometry fact: the chord identity (plus the now Mathlib-available law of
+sines, `EuclideanGeometry.dist_div_sin_angle_eq_two_mul_circumradius`).
 
 ## References
 - P. Erdős, *Problem 3740*, Amer. Math. Monthly 42 (1935), 396.
@@ -195,37 +199,71 @@ theorem lineDist_nonneg (P X Y : EuclideanSpace ℝ (Fin 2)) :
     0 ≤ lineDist P X Y :=
   Metric.infDist_nonneg
 
-/-- **Erdős–Mordell key inequality at vertex `A`.**
+/-- Affine independence is invariant under the cyclic relabeling
+`(X, Y, Z) ↦ (Y, Z, X)`. Plumbing for instantiating the shared key-inequality
+lemma at all three vertices. -/
+private theorem affineIndep_rotate {X Y Z : EuclideanSpace ℝ (Fin 2)}
+    (h : AffineIndependent ℝ ![X, Y, Z]) : AffineIndependent ℝ ![Y, Z, X] := by
+  have he : ![Y, Z, X] = ![X, Y, Z] ∘ (⟨![1, 2, 0], by decide⟩ : Fin 3 ↪ Fin 3) := by
+    funext i
+    fin_cases i <;>
+      simp [Function.comp, Function.Embedding.coeFn_mk, Matrix.cons_val_zero,
+        Matrix.cons_val_one, Matrix.head_cons]
+  rw [he]; exact h.comp_embedding _
 
-`a · PA ≥ b · dc + c · db`, with `a = BC`, `b = CA`, `c = AB`, `db = dist(P, CA)`,
-`dc = dist(P, AB)`. Geometrically: the feet of the perpendiculars from `P` to the
-two sides meeting at `A` are concyclic with `A` and `P` on a circle of diameter
-`PA`; projecting the chord between the feet gives this bound.
+/-- The interior of the triangle hull is invariant under the cyclic relabeling
+`(X, Y, Z) ↦ (Y, Z, X)` (the vertex set is unchanged). -/
+private theorem mem_interior_hull_rotate {X Y Z P : EuclideanSpace ℝ (Fin 2)}
+    (h : P ∈ interior (convexHull ℝ {X, Y, Z})) :
+    P ∈ interior (convexHull ℝ {Y, Z, X}) := by
+  have hs : ({Y, Z, X} : Set (EuclideanSpace ℝ (Fin 2))) = {X, Y, Z} := by
+    ext q; simp only [Set.mem_insert_iff, Set.mem_singleton_iff]; tauto
+  rw [hs]; exact h
 
-This is the geometry-bearing obligation (OPEN / hard to formalize); the other two
-are its cyclic images. -/
+/-- **Erdős–Mordell key inequality at a generic vertex `X`** (shared geometric core).
+
+For `P` interior to the nondegenerate triangle `X Y Z`, with adjacent sides `XY`
+and `ZX` and opposite side `YZ`,
+    `dist Z X · dist(P, line XY) + dist X Y · dist(P, line ZX) ≤ dist Y Z · dist P X`.
+
+This is the single geometry-bearing obligation. The three classical cyclic key
+inequalities `key_inequality_A/B/C` are *exactly* its three instantiations
+`(X, Y, Z) = (A, B, C), (B, C, A), (C, A, B)`, so proving this one fact discharges
+all three. Geometrically: the feet of the perpendiculars from `P` to the two sides
+meeting at `X` are concyclic with `X` and `P` on a circle of diameter `PX`; the
+pedal-feet chord identity plus the law of sines (`key_inequality_of_chord_and_sines`)
+then give the bound. -/
+theorem key_inequality_vertex
+    (X Y Z P : EuclideanSpace ℝ (Fin 2))
+    (hXYZ : AffineIndependent ℝ ![X, Y, Z])
+    (hP : P ∈ interior (convexHull ℝ {X, Y, Z})) :
+    dist Z X * lineDist P X Y + dist X Y * lineDist P Z X ≤ dist Y Z * dist P X := by
+  sorry
+
+/-- **Erdős–Mordell key inequality at vertex `A`** (instance of `key_inequality_vertex`). -/
 theorem key_inequality_A
     (A B C P : EuclideanSpace ℝ (Fin 2))
     (hABC : AffineIndependent ℝ ![A, B, C])
     (hP : P ∈ interior (convexHull ℝ {A, B, C})) :
-    dist C A * lineDist P A B + dist A B * lineDist P C A ≤ dist B C * dist P A := by
-  sorry
+    dist C A * lineDist P A B + dist A B * lineDist P C A ≤ dist B C * dist P A :=
+  key_inequality_vertex A B C P hABC hP
 
-/-- **Erdős–Mordell key inequality at vertex `B`** (cyclic image of `key_inequality_A`). -/
+/-- **Erdős–Mordell key inequality at vertex `B`** (cyclic instance of `key_inequality_vertex`). -/
 theorem key_inequality_B
     (A B C P : EuclideanSpace ℝ (Fin 2))
     (hABC : AffineIndependent ℝ ![A, B, C])
     (hP : P ∈ interior (convexHull ℝ {A, B, C})) :
-    dist A B * lineDist P B C + dist B C * lineDist P A B ≤ dist C A * dist P B := by
-  sorry
+    dist A B * lineDist P B C + dist B C * lineDist P A B ≤ dist C A * dist P B :=
+  key_inequality_vertex B C A P (affineIndep_rotate hABC) (mem_interior_hull_rotate hP)
 
-/-- **Erdős–Mordell key inequality at vertex `C`** (cyclic image of `key_inequality_A`). -/
+/-- **Erdős–Mordell key inequality at vertex `C`** (cyclic instance of `key_inequality_vertex`). -/
 theorem key_inequality_C
     (A B C P : EuclideanSpace ℝ (Fin 2))
     (hABC : AffineIndependent ℝ ![A, B, C])
     (hP : P ∈ interior (convexHull ℝ {A, B, C})) :
-    dist B C * lineDist P C A + dist C A * lineDist P B C ≤ dist A B * dist P C := by
-  sorry
+    dist B C * lineDist P C A + dist C A * lineDist P B C ≤ dist A B * dist P C :=
+  key_inequality_vertex C A B P (affineIndep_rotate (affineIndep_rotate hABC))
+    (mem_interior_hull_rotate (mem_interior_hull_rotate hP))
 
 /-- **Erdős–Mordell inequality** (geometric statement).
 

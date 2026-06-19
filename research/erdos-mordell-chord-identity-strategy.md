@@ -14,9 +14,18 @@ fact, isolated three ways:
   identity** `(PA·sin A)² = db² + dc² + 2·db·dc·cos A`, derives the key
   inequality `b·dc + c·db ≤ a·PA`. **Proved.**
 
-The only remaining sorries are `key_inequality_A/B/C` — the obligation to supply,
-for the concrete Euclidean configuration, (i) the law of sines and (ii) the chord
-identity. This note records the Mathlib path for that final step.
+The three cyclic `key_inequality_A/B/C` have now been **collapsed to a single
+shared lemma** `key_inequality_vertex (X Y Z P)` — the others are its
+`(X,Y,Z)=(A,B,C),(B,C,A),(C,A,B)` instantiations, derived by pure relabeling
+(`affineIndep_rotate`, `mem_interior_hull_rotate`: affine independence and the
+triangle-hull interior are invariant under cyclic permutation). So the **only**
+remaining sorry is `key_inequality_vertex`: supply, for the concrete Euclidean
+configuration, (i) the law of sines and (ii) the chord identity.
+
+Update: the law of sines (i) is **already in Mathlib** —
+`EuclideanGeometry.dist_div_sin_angle_eq_two_mul_circumradius`
+(`Angle/Sphere.lean:430`) gives `dist /sin = 2R`. So the genuinely missing fact
+is just the **chord identity** (ii). This note records the Mathlib path for it.
 
 ## The chord identity, geometrically
 
