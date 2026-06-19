@@ -4,7 +4,7 @@
   "slug": "chebyshev-pnt-bridge-oq-01",
   "description": "Proves the prime power factorization bound for central binomial coefficients: p^{v_p(C(2n,n))} ≤ 2n. Key ingredient in Chebyshev's proof of Bertrand's postulate. Uses the carry-counting interpretation of Kummer's theorem.",
   "meta": {
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ChebyshevPNTBridgeOQ01.lean",
     "tags": [
       "number-theory",
@@ -13,11 +13,11 @@
       "Chebyshev",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 210,
-    "assumptions": "0 axioms, 0 sorries. Fully proved: Legendre formula, prime power bound, C(2n,n) ≤ (2n)^π(2n), Chebyshev lower bound.",
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. Credited theorems include computational/numerical checks discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this entry is therefore `axiomatized` with meta.axiomCount 1 (`Lean.ofReduceBool`). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted. Core lemmas (Legendre formula, prime power bound, C(2n,n) <= (2n)^pi(2n), Chebyshev lower bound) are proved from Mathlib.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0",
     "originalContributions": [

@@ -7,7 +7,7 @@
     "author": "Vandermonde (1772), generating function proof",
     "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
     "date": "1772",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean",
     "tags": [
       "combinatorics",
@@ -16,11 +16,11 @@
       "vandermonde",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 207,
-    "assumptions": "No axioms. All results proved from Mathlib. The generating function proof is an alternative to the inductive proof in the parent file.",
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. Credited theorems include computational/numerical checks discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this entry is therefore `axiomatized` with meta.axiomCount 1 (`Lean.ofReduceBool`). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted. Formula-level results are proved from Mathlib. The generating function proof is an alternative to the inductive proof in the parent file.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
