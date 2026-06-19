@@ -1,0 +1,128 @@
+{
+  "id": "fermat-defect-one-oq-03",
+  "title": "Fermat Defect-One OQ-03: The Minimal n = 3 Defect-One Witness",
+  "slug": "fermat-defect-one-oq-03",
+  "description": "A sharp, fully-verified answer to the minimal-witness question for the Fermat defect-one equation |aⁿ + bⁿ − cⁿ| = 1 at exponent n = 3. The parent entry exhibits the witnesses 6³+8³+1 = 9³ (negative defect) and 9³+10³ = 12³+1 (positive defect) but does not bound how small a witness can be; the sibling OQ-04 proves bounded non-existence for n ∈ {4,5,6} up to c ≤ 100. This entry settles the n = 3 minimum: there is no primitive nontrivial defect-one witness with all coordinates below 9 (no_small_witness_n3), and (6,8,9) is the unique witness with all coordinates below 10 (unique_small_witness_n3). Hence (6,8,9) is the smallest defect-one witness at n = 3 and c = 9 is the least possible third coordinate. All three theorems are discharged by kernel-checked tactics — `interval_cases` enumerates the finitely many ordered triples 2 ≤ a ≤ b < c, and `omega` closes each — with no `native_decide`, so the file is verified with 0 axioms and introduces no Lean.ofReduceBool, unlike OQ-04 whose c ≤ 100 searches require native_decide. (A direct kernel `decide` over the full 9³/10³ box is prohibitively slow — the Nat.decidableBallLT reduction times out — so the ordering bounds are used to restrict the enumeration.)",
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": null,
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FermatDefectOneOQ03.lean",
+    "tags": [
+      "number-theory",
+      "diophantine",
+      "fermat",
+      "defect-one",
+      "bounded-search",
+      "minimal-witness",
+      "decidability"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "no_small_witness_n3: there is NO Fermat defect-one witness at n = 3 with all of a, b, c below 9 (equivalently c ≤ 8). Proved by `interval_cases` over the ordered triples 2 ≤ a ≤ b < c (coordinates below 9), each closed by `omega`, establishing that the smallest possible third coordinate is at least 9.",
+      "unique_small_witness_n3: the ONLY defect-one witness at n = 3 with all of a, b, c below 10 is (6, 8, 9). Combined with the non-existence below 9, this shows (6,8,9) is the unique witness with c ≤ 9.",
+      "fermat_defect_three_minimal: the packaged minimality theorem — (6,8,9) is a witness (6³+8³+1 = 9³, proved by `norm_num`/`decide`), nothing smaller works, and it is the unique witness with all coordinates below 10. Establishes (6,8,9) as THE minimal defect-one witness at n = 3, with least third coordinate c = 9.",
+      "0-axiom strengthening of OQ-04's approach: where OQ-04 proves bounded non-existence for n ∈ {4,5,6} up to c ≤ 100 via native_decide (which introduces Lean.ofReduceBool), this n = 3 minimality result is proved by kernel-checked `interval_cases` + `omega` and so depends on no extra axioms; OQ-04 only shows (6,8,9) lies inside the c ≤ 100 box, never that it is minimal."
+    ],
+    "dateAdded": "2026-06-18",
+    "relatedProblems": [
+      {
+        "id": "fermat-defect-one",
+        "relationship": "Parent entry: defines FermatDefectWitness and the defect-one conjecture, and exhibits the n = 3 witnesses without bounding their size. This OQ-03 answers its bounded-non-existence open question at n = 3 in sharp form (minimal witness)."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 104,
+    "assumptions": "0 axioms, 0 sorries. All three theorems are discharged by kernel-checked tactics: `interval_cases` enumerates the finitely many ordered triples 2 ≤ a ≤ b < c below 9 and 10, and `omega` closes each leaf. No `native_decide`, hence no Lean.ofReduceBool is introduced. (A single `decide` over the full box is too slow for the kernel, so the primitivity bounds are used to prune the search.) The result is a finite computational fact about exponent n = 3 only; it does not address the open asymptotic conjecture (M(n) → ∞) or existence for general n. It reuses the parent's FermatDefectWitness predicate.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "After Fermat's Last Theorem closes the zero-defect case aⁿ + bⁿ = cⁿ for n > 2, the immediate next question is the Pillai-type 'defect one' equation |aⁿ + bⁿ − cⁿ| = 1. The parent gallery entry records that n = 3 admits primitive witnesses of both signs — 6³ + 8³ + 1 = 9³ and 9³ + 10³ = 12³ + 1 — but says nothing about how small such a witness can be. The sibling entry OQ-04 attacks general n by bounded search, showing no witness exists for n ∈ {4,5,6} below c = 100 and noting that the minimal-witness question is OQ-03. This entry resolves that question at n = 3.",
+    "problemStatement": "For the defect-one equation $|a^3 + b^3 - c^3| = 1$ over primitive nontrivial triples ($2 \\le a \\le b < c$, $\\gcd(a,b,c) = 1$), what is the smallest witness? We show: no witness has all coordinates below $9$, and $(6,8,9)$ is the unique witness with all coordinates below $10$. Hence $(6,8,9)$ — realising $6^3 + 8^3 + 1 = 9^3$ — is the minimal defect-one witness at $n = 3$, with least third coordinate $c = 9$.",
+    "text": "The parent exhibits (6,8,9) as a witness; here we prove it is the smallest. The proof is an exhaustive case analysis over the finitely many ordered triples 2 ≤ a ≤ b < c with coordinates below 9 (non-existence) and below 10 (uniqueness) — enumerated by `interval_cases` and closed by `omega` — so the file is verified with no axioms — in particular it avoids the Lean.ofReduceBool dependency that the larger c ≤ 100 searches of OQ-04 incur through native_decide.",
+    "proofStrategy": "Each theorem extracts the primitivity bounds 2 ≤ a ≤ b < c from FermatDefectWitness (which unfolds to those bounds, gcd primitivity, and the Nat-disjunction a³+b³+1 = c³ ∨ a³+b³ = c³+1), rewrites the cubes x³ = x·x·x (so `omega` can see them), and then runs `interval_cases a <;> interval_cases b <;> interval_cases c <;> omega`. Crucially, `interval_cases` uses the ordering bounds to enumerate only the few dozen ordered triples rather than the full 9³/10³ box, and `omega` refutes (no_small_witness_n3) or pins to (6,8,9) (unique_small_witness_n3) each leaf arithmetically. This replaces a single `decide`, whose Nat.decidableBallLT kernel reduction over the full box is pathologically slow (it does not terminate within a 60-minute build). fermat_defect_three_minimal packages the existence witness 6³+8³+1 = 9³ (by `norm_num`/`decide`) with both bounds. Every tactic is kernel-checked, so no native compilation and no extra axioms are needed.",
+    "keyInsights": [
+      "**Existence does not bound minimality**: the parent (and OQ-04) only certify that (6,8,9) is *a* witness lying in some box; minimality requires the complementary non-existence statement 'nothing below 9 works', which is what is proved here",
+      "**Kernel-checked and axiom-free**: the search is done by `interval_cases` + `omega` (the primitivity bounds prune it to a few dozen ordered triples; a raw `decide` over the full box is too slow for the kernel), with no `native_decide` — so unlike OQ-04's c ≤ 100 native_decide searches no Lean.ofReduceBool is introduced",
+      "**Uniqueness sharpens minimality**: not only is there no smaller witness, (6,8,9) is the *only* witness with coordinates below 10, so the minimum is attained uniquely and the negative-defect witness 6³+8³+1 = 9³ is canonical at n = 3",
+      "**The least third coordinate is exactly 9**: combining existence at c = 9 with non-existence for c ≤ 8 pins the optimum, turning the parent's qualitative 'there is a witness' into the quantitative 'the smallest witness has c = 9'"
+    ],
+    "prerequisites": [
+      "The parent FermatDefectOne predicate FermatDefectWitness and its Nat-disjunction encoding of |aⁿ+bⁿ−cⁿ| = 1",
+      "Finite case analysis over bounded Nat triples via `interval_cases`, with `omega` discharging the arithmetic",
+      "The distinction between kernel-checked tactics (axiom-free) and `native_decide` (depends on Lean.ofReduceBool)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview-and-setup",
+      "title": "Module Overview and Setup",
+      "startLine": 1,
+      "endLine": 41,
+      "mathContext": "Goal: at $n = 3$, determine the smallest primitive defect-one witness of $|a^3+b^3-c^3| = 1$, where the parent exhibits $(6,8,9)$ but does not bound it below.",
+      "summary": "The module docstring frames OQ-03 as the minimal-witness question left open by the parent and the sibling OQ-04, states the three results (non-existence below 9, uniqueness below 10, packaged minimality), and stresses that only kernel-checked tactics (`interval_cases` + `omega`) are used so the file is 0-axiom (no Lean.ofReduceBool). Followed by `import Mathlib`, `import Proofs.FermatDefectOne`, `namespace FermatDefectOneOQ03`, and `open FermatDefectOne` to reuse the parent's FermatDefectWitness predicate."
+    },
+    {
+      "id": "no-small-witness",
+      "title": "Non-Existence Below 9",
+      "startLine": 43,
+      "endLine": 47,
+      "mathContext": "$\\forall a,b,c < 9:\\ \\neg\\,\\mathrm{FermatDefectWitness}\\ 3\\ a\\ b\\ c$.",
+      "summary": "`no_small_witness_n3`: `interval_cases` over the ordered triples 2 ≤ a ≤ b < c (closed by `omega`) shows no defect-one witness at n = 3 has all coordinates below 9, so the smallest third coordinate is at least 9."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness Below 10",
+      "startLine": 48,
+      "endLine": 54,
+      "mathContext": "$\\forall a,b,c < 10:\\ \\mathrm{FermatDefectWitness}\\ 3\\ a\\ b\\ c \\Rightarrow (a,b,c) = (6,8,9)$.",
+      "summary": "`unique_small_witness_n3`: `interval_cases` + `omega` over the ordered triples below 10 shows (6,8,9) is the only defect-one witness with all coordinates below 10; combined with the previous theorem, (6,8,9) is the unique witness with c ≤ 9."
+    },
+    {
+      "id": "minimal-witness",
+      "title": "The Minimal n = 3 Witness",
+      "startLine": 55,
+      "endLine": 69,
+      "mathContext": "$(6,8,9)$ is a witness, none is smaller (all coords $< 9$), and it is unique below 10 — so it is the minimal $n=3$ defect-one witness with $c = 9$.",
+      "summary": "`fermat_defect_three_minimal`: packages existence (6³+8³+1 = 9³, by `norm_num`) with the non-existence and uniqueness bounds, establishing (6,8,9) as THE minimal defect-one witness at n = 3 and c = 9 as the least possible third coordinate."
+    }
+  ],
+  "conclusion": {
+    "summary": "At exponent n = 3 the Fermat defect-one equation |a³+b³−c³| = 1 has (6,8,9) as its minimal primitive nontrivial witness: no witness has all coordinates below 9, and (6,8,9) is the unique witness with all coordinates below 10. The least possible third coordinate is therefore exactly 9, attained by the negative-defect identity 6³+8³+1 = 9³. All proofs are kernel-checked `interval_cases` + `omega` case analyses over the finitely many ordered triples, so the entry is verified with 0 axioms and no Lean.ofReduceBool — sharpening the parent's bare existence claim and complementing the sibling OQ-04, which only places (6,8,9) inside a c ≤ 100 box.",
+    "implications": "Minimality turns the qualitative parent statement ('n = 3 admits a defect-one witness') into the quantitative 'the smallest one is (6,8,9) with c = 9'. The `interval_cases` + `omega` route shows that for small exponents the minimal-witness question is fully and axiom-freely decidable, in contrast to the larger native_decide searches needed at n ∈ {4,5,6}. This pins the n = 3 base case for any future study of how the minimal witness grows with n.",
+    "openQuestions": [
+      "What is the minimal defect-one witness at n = 4, 5, 6? OQ-04 shows none exists below c = 100; is the true minimum (if any) attainable by a kernel-`decide`-sized search, or does it require native_decide / a structural argument?",
+      "Does the minimal third coordinate c_min(n) of a defect-one witness grow with n, and is there an effective lower bound (e.g. via abc / Stewart–Yu) below which no witness can occur?",
+      "Is (6,8,9) also extremal in other senses at n = 3 — e.g. the unique witness minimising a + b + c, or minimising c, among all (not just small) primitive witnesses?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fermat-defect-one",
+      "relationship": "extends",
+      "description": "Parent entry defining FermatDefectWitness and exhibiting the n = 3 witnesses 6³+8³+1 = 9³ and 9³+10³ = 12³+1 without bounding their size. This OQ-03 proves the first is minimal."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/FermatDefectOneOQ03.lean",
+    "imports": [
+      "Mathlib",
+      "Proofs.FermatDefectOne"
+    ],
+    "opens": [
+      "FermatDefectOne"
+    ],
+    "namespace": "FermatDefectOneOQ03",
+    "lineCount": 104,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 3
+  },
+  "sorries": 0
+}
