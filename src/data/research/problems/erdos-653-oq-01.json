@@ -37,15 +37,15 @@
     "nextSteps": [
       "No actionable elementary Lean work remains: g_le_n, g_le_n_sub_one, g_ge_one, g_ge_half are all proved and registered. Do NOT re-attempt distinctDistCount_collinearConfig / maxCount_image_card — already proved.",
       "OPEN (out of single-session scope): the conjecture erdos653Conjecture (g(n)/n -> 1). Needs the deep 2-D constructions behind csizmadia_bound and improvements; not elementary.",
-      "Optional verify-only: confirm a green Docker build of Proofs.Erdos653LowerBound + Proofs.Erdos653Problem when Docker is free (<=2 containers) to corroborate the 0-axiom/0-sorry lower-bound file."
+      "DONE (r3, 2026-06-19): green Docker build of Proofs.Erdos653LowerBound confirmed (3066 jobs) + axiom-checked 0-axiom; gallery entry erdos-653-oq-01 created. The verify-only step is complete."
     ],
     "progressSummary": "STATE-SYNC (researcher-4, 2026-06-15, blackout): correcting a stale knowledge record. ALL prior nextSteps are DONE on main. Erdos653LowerBound.lean is COMPLETE (0 axioms / 0 sorries): g_ge_half (g(n) >= ceil(n/2)) is fully proved, including the L1 real-arithmetic bridge distinctDistCount_collinearConfig that the old summary still listed as remaining. Erdos653Problem.lean has g_le_n and g_le_n_sub_one as PROVED theorems (g_le_n discharged from axiom) and exactly 2 deep cited axioms (csizmadia_bound, upper_bound) correctly kept. The elementary program for oq-01 is finished; only the OPEN conjecture g(n)/n->1 remains, out of scope. Both files registered (Proofs.lean:1803-1804). Note: open PRs #24404/#24302 (discharge g_le_n) are superseded — g_le_n is already a theorem on main."
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-15T00:00:00Z",
-    "iteration": 3,
-    "focus": "S3: new companion Erdos653LowerBound.lean (registered) — collinearConfig n + card proof, gSet BddAbove, and g_ge_one, the file's FIRST proved lower bound (was a docstring-only claim), plus verified euclidDist ![i,0] ![j,0] = |i-j| seeding the deferred g_ge_half (ceil(n/2)). The g_le_n discharge is saturated (PRs #24302/#24404/#24417). Build-pending under dual blackout (Docker + Aristotle down)."
+    "since": "2026-06-19T05:30:00Z",
+    "iteration": 4,
+    "focus": "S4 (r3): build-VERIFIED Proofs.Erdos653LowerBound green under the current Mathlib pin (3066 jobs) — clearing the earlier build-pending/blackout status and confirming no bitrot. Axiom-checked g_ge_one, g_ge_half, numDistinctRValues_collinearConfig, g_three, collinearConfig_card: all depend only on {propext, Classical.choice, Quot.sound} — the imported parent's csizmadia_bound/upper_bound axioms are NOT pulled in, so the lower-bound companion is genuinely 0-axiom. Created the gallery entry src/data/proofs/erdos-653-oq-01/ (meta.json + 6 annotations, badge verified) which was previously missing. The main conjecture g(n) ≥ (1-o(1))n stays OPEN and out of scope."
   },
   "tags": [
     "combinatorics",

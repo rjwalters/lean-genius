@@ -1,0 +1,132 @@
+{
+  "id": "erdos-653-oq-01",
+  "title": "Erdős #653 OQ-01: Elementary Lower Bounds for g(n)",
+  "slug": "erdos-653-oq-01",
+  "description": "Erdős problem #653 asks for g(n), the maximum number of distinct R-values (R(xᵢ) = number of distinct distances from xᵢ) over n-point planar configurations; the main conjecture g(n) ≥ (1-o(1))n is OPEN. This companion to the parent entry supplies the verified elementary lower-bound side, axiom-free: the explicit collinear configuration (0,0),…,(n-1,0), the supremum framing of g, the first proved bound g(n) ≥ 1, the sharper g(n) ≥ ⌈n/2⌉ from counting distinct distances on the x-axis, and the exact small values g(0)=0, g(1)=1, g(2)=1, g(3)=2 obtained where the lower bounds meet the parent's upper bounds g(n) ≤ n-1. 17 theorems, 2 definitions, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "date": "1980s (Erdős)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos653LowerBound.lean",
+    "tags": [
+      "combinatorics",
+      "discrete-geometry",
+      "distinct-distances",
+      "erdos-problems",
+      "incidence-geometry"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-19",
+    "axiomCount": 0,
+    "assumptions": "None. Every theorem in this file is fully machine-verified with 0 sorries and 0 axiom declarations. The file imports Erdos653Problem (which axiomatizes the deep literature bounds csizmadia_bound and upper_bound for the parent entry), but the lower-bound theorems here are independent of those axioms — they are constructive (le_csSup applied to the explicit collinear configuration). The open conjecture g(n) ≥ (1-o(1))n is OUT OF SCOPE and not assumed.",
+    "lineCount": 293,
+    "theoremCount": 17,
+    "definitionCount": 2,
+    "originalContributions": [
+      "collinearConfig / collinearConfig_card: the explicit n-point configuration (0,0),(1,0),…,(n-1,0) on the x-axis, proved to have exactly n distinct points — the reusable witness for any elementary lower bound on g",
+      "gSet / gSet_bddAbove / g_eq_sSup: the supremum-set framing of g(n), shown bounded above so that le_csSup applies",
+      "g_ge_one: the first PROVED lower bound g(n) ≥ 1 for n ≥ 1 (previously only asserted in a docstring)",
+      "numDistinctRValues_collinearConfig / g_ge_half: the sharper bound g(n) ≥ ⌈n/2⌉, from the verified fact that the i-th x-axis point sees max(i, n-1-i) distinct distances",
+      "g_zero, g_one, g_two, g_three: the first formalized EXACT values of g — 0, 1, 1, 2 — pinned down where these lower bounds meet the parent's upper bounds g(n) ≤ n-1"
+    ],
+    "sourceUrl": "https://erdosproblems.com/653"
+  },
+  "overview": {
+    "historicalContext": "Erdős problem #653 concerns the diversity of local distance-counts in a finite planar point set. For each point xᵢ let R(xᵢ) be the number of distinct distances from xᵢ to the other points; g(n) is the maximum, over all n-point configurations, of the number of distinct values among R(x₁),…,R(xₙ). Erdős conjectured g(n) ≥ (1-o(1))n — that one can make almost all the local distance-counts distinct. The problem remains open; the best known bounds are 0.7n < g(n) < n - c·n^(2/3) (Csizmadia for the lower side). This entry formalizes the elementary lower-bound end of that range.",
+    "problemStatement": "Determine g(n), the maximum number of distinct R-values over n-point planar configurations, where R(xᵢ) counts distinct distances from xᵢ. Main conjecture: g(n) ≥ (1-o(1))n (OPEN).",
+    "text": "The collinear configuration (0,0),(1,0),…,(n-1,0) is the natural elementary witness. On it, the distance from the i-th point to the j-th is |i-j|, so the i-th point sees exactly max(i, n-1-i) distinct distances. As i ranges over 0,…,n-1 these counts take ⌈n/2⌉ distinct values, giving g(n) ≥ ⌈n/2⌉. This is far from the conjectured (1-o(1))n but is fully constructive and axiom-free. Where it meets the parent file's upper bound g(n) ≤ n-1, the exact values g(2)=1 and g(3)=2 are pinned down; g(0),g(1) follow from g(n) ≤ n. The exact value g(4)=3 is NOT settled by these bounds (they give only 2 ≤ g(4) ≤ 3) and would need a certified 4-point construction.",
+    "proofStrategy": "Frame g(n) as sSup of the set gSet n of achievable distinct-R-value counts, show it is bounded above (so csSup behaves), then apply le_csSup with the explicit collinearConfig witness. The bound g(n) ≥ ⌈n/2⌉ reduces to counting the image of i ↦ max(i, n-1-i), done with Finset.image cardinality lemmas. Exact small values are one-line omega corollaries combining these lower bounds with the parent's g_le_n / g_le_n_sub_one upper bounds.",
+    "keyInsights": [
+      "The collinear configuration is the universal elementary witness: distances |i-j| make the distinct-distance count from each point explicit",
+      "The i-th of n collinear points sees max(i, n-1-i) distinct distances, and these counts realize exactly ⌈n/2⌉ distinct values",
+      "g is a supremum over configurations: lower bounds come from exhibiting ONE good configuration (le_csSup), upper bounds constrain ALL of them",
+      "Exact values of g emerge only where a lower-bound construction meets an upper-bound argument; g(4)=3 already escapes the elementary bounds",
+      "Importing a file with axioms does not contaminate axiom-free theorems: the constructive lower bounds never invoke csizmadia_bound"
+    ],
+    "prerequisites": [
+      "Conditionally complete lattices: sSup, le_csSup, BddAbove",
+      "Finset cardinality and image lemmas",
+      "Euclidean distance in ℝ² and the |i-j| formula for collinear points"
+    ]
+  },
+  "conclusion": {
+    "summary": "Verified, axiom-free elementary lower bounds for Erdős #653: g(n) ≥ 1, g(n) ≥ ⌈n/2⌉ via the explicit collinear configuration, and the exact values g(0)=0, g(1)=1, g(2)=1, g(3)=2. 17 theorems, 293 lines, 0 axioms, 0 sorries.",
+    "implications": "Establishes the constructive lower-bound floor for g(n) and the first formalized exact values, complementing the parent entry's upper bounds and axiomatized literature results. Provides reusable infrastructure (collinearConfig, the sSup framing) for any future elementary bound.",
+    "openQuestions": [
+      "The main conjecture g(n) ≥ (1-o(1))n (OPEN) — the elementary collinear construction gives only ⌈n/2⌉",
+      "Formalize the exact value g(4) = 3 via a certified 4-point construction (the elementary bounds give only 2 ≤ g(4) ≤ 3)",
+      "Formalize Csizmadia's g(n) > 0.7n lower bound, currently axiomatized in the parent file",
+      "Close the gap to the upper bound g(n) < n - c·n^(2/3)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "Erdos653",
+    "lineCount": 293,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos653LowerBound.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib.Tactic",
+      "Proofs.Erdos653Problem"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-653",
+      "relationship": "extends",
+      "description": "Parent entry: states g(n) ≤ n and the sharper g(n) ≤ n-1, plus the axiomatized literature bounds. This OQ-01 companion supplies the verified, axiom-free lower-bound side and the exact small values."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-01-construction",
+      "title": "The Collinear Configuration",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Header scoping the file to the elementary lower bound (the open conjecture is out of scope). collinearConfig n = the n points (0,0),…,(n-1,0); collinearConfig_card proves it has exactly n distinct points; collinearConfig_exists packages nonemptiness — the reusable witness for any lower bound on g."
+    },
+    {
+      "id": "sec-02-sup-framing",
+      "title": "Supremum Framing of g",
+      "startLine": 61,
+      "endLine": 94,
+      "summary": "gSet n is the set of achievable distinct-R-value counts; mem_gSet, g_eq_sSup, and gSet_bddAbove establish that g(n) = sSup (gSet n) with the set bounded above, so le_csSup applies. numDistinctRValues_pos gives positivity from any nonempty configuration."
+    },
+    {
+      "id": "sec-03-g-ge-one",
+      "title": "First Proved Lower Bound: g(n) ≥ 1",
+      "startLine": 95,
+      "endLine": 109,
+      "summary": "g_ge_one proves g(n) ≥ 1 for n ≥ 1 — the file's first proved lower bound, witnessed by any nonempty configuration with no appeal to distance values. Previously only a docstring claim in the parent file."
+    },
+    {
+      "id": "sec-04-distance-counts",
+      "title": "Distinct Distances on the x-axis",
+      "startLine": 110,
+      "endLine": 218,
+      "summary": "euclidDist_collinearPoint verifies dist = |i-j| for x-axis points; maxCount_image_card, absDiff_image_eq, and distinctDistCount_collinearConfig count the distinct distances from the i-th point as max(i, n-1-i) via Finset.image cardinality."
+    },
+    {
+      "id": "sec-05-g-ge-half",
+      "title": "Sharper Bound: g(n) ≥ ⌈n/2⌉",
+      "startLine": 219,
+      "endLine": 268,
+      "summary": "numDistinctRValues_collinearConfig assembles the per-point counts into ⌈n/2⌉ distinct R-values overall, and g_ge_half concludes g(n) ≥ (n+1)/2 via le_csSup on the collinear witness."
+    },
+    {
+      "id": "sec-06-exact-values",
+      "title": "Exact Small Values of g",
+      "startLine": 269,
+      "endLine": 293,
+      "summary": "g_zero, g_one, g_two, g_three pin g(0)=0, g(1)=1, g(2)=1, g(3)=2 where the lower bounds meet the parent's upper bounds (one-line omega corollaries). g(4) is noted to escape the elementary bounds (only 2 ≤ g(4) ≤ 3)."
+    }
+  ],
+  "sorries": 0
+}
