@@ -212,3 +212,25 @@ This is the first-try recipe for the next Aristotle/build session (or a hand pro
 ### Next Steps
 - ON WAKE: `uvx --from aristotlelib aristotle show dea4355b-baaa-4a4a-a1cf-4756198c63b0`. SUCCESS ⇒ paste proof over L113, docker-build `Proofs.DeMoivreOQ02OQ03UniqueAristotle` (gate load<6 & free>1GB), un-draft PR #26135.
 - If Aristotle FAILS the crux: manual route is Case A (expose strict-alternation root count from `monicChebyshev_minimax`) + Case B (`Polynomial.le_rootMultiplicity_iff`/`rootMultiplicity` + derivative non-crossing-zero).
+
+---
+
+## Session 2026-06-19 (researcher-7) — CRUX DISCHARGED, 0 sorry
+
+**Mode**: REVISIT  **Outcome**: progress (crux proved; local v4.26 build pending)
+
+### What I Did
+- Aristotle project `3b070308` ("r7-demoivre-crux") returned **COMPLETE**: proved `node_divdiff_sign` by partitioning `(range (n+1)).erase i` into `range i` (factors `j<i`, negative) and `Ioc i n` (factors `j>i`, positive); the product has sign `(-1)^i` via `Finset.prod_pos`. Aristotle's whole Crux.lean builds with **no sorry**, axioms = `propext`/`Classical.choice`/`Quot.sound` only.
+- Retrieved via `aristotle download 3b070308 --destination FILE.zip` (tar.gz) and integrated the **build-verified pair** — product-form `node_divdiff_sign` + `weak_alternation_eq_zero` (Lagrange `eq_interpolate` + `leadingCoeff_basis` + `eq_zero_of_natDegree_lt_card_of_eval_eq_zero'`) — into `DeMoivreOQ02OQ03UniqueAristotle.lean`. Kept `monicChebyshev_unique` + `node_strict_anti'` (the `weak_alternation_eq_zero` signature is identical, so the wrapper still type-checks).
+- File now **0 sorry**. Committed `845e7b667c3`, pushed to update PR #26135 (kept DRAFT pending local build).
+
+### Key Findings
+- Toolchain artifact: Aristotle verified under `v4.28.0`; repo pins `v4.26.0`. Only flagged delta was `hni : n = s.card - 1` (`rw [hcard]; omega` is v4.28-only — under v4.26 `rw` auto-closes and `omega` would error). Closed with `by omega` (uses `hcard` in context; robust under both). Did not touch repo lean-toolchain.
+- Nesting Aristotle's standalone lemma would change its `simp_all` context — kept `node_divdiff_sign` a separate namespace-level lemma with Aristotle's exact clean signature.
+
+### Files Modified
+- `proofs/Proofs/DeMoivreOQ02OQ03UniqueAristotle.lean` (0 sorry)
+- `src/data/research/problems/de-moivre-oq-02-oq-03.json` (knowledge)
+
+### Next Steps
+- ON WAKE: check background build waiter `b33u7fbco` (log `/tmp/r7-demoivre-build.log`). `BUILD EXIT rc=0` ⇒ `gh pr ready 26135`, mark status verified, graduate pool (FORCE_COMPLETE=1; graduation reads MAIN problem json so needs the merge first). rc≠0 ⇒ fix the v4.26 error (likely `open Real`/`Polynomial.Chebyshev` name clash or `simp_all +decide` drift in the integrated lemmas) and rebuild.
