@@ -17,7 +17,11 @@
       "Graph coloring",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ramsey theory",
+      "k4-free graphs",
+      "monochromatic subgraphs"
+    ]
   },
   {
     "id": "ann-e582-clique",
@@ -36,7 +40,11 @@
       "Cliques",
       "Forbidden subgraphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cliques in graphs",
+      "complete graphs",
+      "forbidden subgraphs"
+    ]
   },
   {
     "id": "ann-e582-coloring",
@@ -54,7 +62,11 @@
       "Graph coloring",
       "Ramsey partitions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "edge 2-colorings",
+      "graph edge sets",
+      "monochromatic subgraphs"
+    ]
   },
   {
     "id": "ann-e582-ramsey-prop",
@@ -72,7 +84,11 @@
       "Monochromatic subgraphs"
     ],
     "mathContext": "See annotation content for formal details of the ramsey property",
-    "prerequisites": []
+    "prerequisites": [
+      "edge 2-colorings",
+      "monochromatic triangles",
+      "ramsey property"
+    ]
   },
   {
     "id": "ann-e582-folkman-graph",
@@ -90,7 +106,11 @@
       "Folkman numbers",
       "Extremal graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "k4-free graphs",
+      "ramsey property",
+      "folkman numbers"
+    ]
   },
   {
     "id": "ann-e582-existence",
@@ -108,7 +128,11 @@
       "Existence proofs",
       "Non-constructive methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "non-constructive existence proofs",
+      "k4-free ramsey graphs",
+      "folkman's theorem"
+    ]
   },
   {
     "id": "ann-e582-bounds",
@@ -127,7 +151,11 @@
       "Upper bounds",
       "Exact values"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lower and upper bounds",
+      "folkman number f(2,3,4)",
+      "extremal graph theory"
+    ]
   },
   {
     "id": "ann-e582-timeline",
@@ -145,7 +173,11 @@
       "Bound improvements"
     ],
     "mathContext": "See annotation content for formal details of historical timeline",
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "folkman number bounds",
+      "explicit graph constructions"
+    ]
   },
   {
     "id": "ann-e582-ramsey-r33",
@@ -164,7 +196,11 @@
       "R(3,3)",
       "Complete graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ramsey number R(3,3)",
+      "pigeonhole principle",
+      "monochromatic triangles"
+    ]
   },
   {
     "id": "ann-e582-f233",
@@ -182,7 +218,11 @@
       "Triangle-free graphs",
       "Degenerate cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "triangle-free graphs",
+      "subgraph monochromaticity",
+      "degenerate folkman cases"
+    ]
   },
   {
     "id": "ann-e582-constructions",
@@ -201,7 +241,11 @@
       "Probabilistic method",
       "Computer verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cayley graphs over finite fields",
+      "probabilistic method",
+      "computer-assisted verification"
+    ]
   },
   {
     "id": "ann-e582-summary",
@@ -219,6 +263,10 @@
       "Main results"
     ],
     "mathContext": "See annotation content for formal details of main results summary",
-    "prerequisites": []
+    "prerequisites": [
+      "folkman number f(2,3,4)",
+      "existence and bounds",
+      "radziszowski-xu conjecture"
+    ]
   }
 ]
