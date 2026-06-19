@@ -30,7 +30,7 @@
   re-verified true for all `p < 1500` (all `r`) and the two elementary shortcuts
   (box bound, strict small-ellipse count) re-confirmed insufficient. Remaining work
   is purely the measure-theory port (2D ellipse volume + the `Measure.map S` change
-  of variables) — build-/Aristotle-gated this session (Aristotle backend down).
+  of variables) — build-and-Aristotle-gated this session (Aristotle backend down).
 
   Three pieces:
   - `exists_slice_point_lt_two_mul_d1` (PROVED): the `d = 1` pure 2D
@@ -56,6 +56,7 @@ import Mathlib
 
 namespace ThreeSquaresSlice
 
+set_option maxHeartbeats 800000 in
 /-- **The `d = 1` slice point (PROVED).**
 
 For any `p > 0` and any `r : ℤ`, the index-`p` sublattice
@@ -79,7 +80,7 @@ theorem exists_slice_point_lt_two_mul_d1
     rw [hm]; simpa [Nat.succ_eq_add_one] using Nat.lt_succ_sqrt p
   set box : Finset (ℕ × ℕ) := Finset.range (m + 1) ×ˢ Finset.range (m + 1) with hbox
   have hbox_card : box.card = (m + 1) * (m + 1) := by
-    rw [hbox, Finset.card_product, Finset.card_range, Finset.card_range]
+    simp [hbox, Finset.card_range]
   have mem_box : ∀ a b : ℕ, a ≤ m → b ≤ m → (a, b) ∈ box := by
     intro a b ha hb
     rw [hbox]
@@ -98,7 +99,8 @@ theorem exists_slice_point_lt_two_mul_d1
         (by rw [Finset.card_range]; exact hcard)
         (by
           intro ab _
-          rw [Finset.mem_range]
+          simp only [Finset.coe_range, Set.mem_Iio]
+          show (((ab.1 : ℤ) - r * (ab.2 : ℤ)) % (p : ℤ)).toNat < p
           have h0 : (0 : ℤ) ≤ ((ab.1 : ℤ) - r * (ab.2 : ℤ)) % (p : ℤ) :=
             Int.emod_nonneg _ (by exact_mod_cast hp.ne')
           have h1 : ((ab.1 : ℤ) - r * (ab.2 : ℤ)) % (p : ℤ) < (p : ℤ) :=
@@ -138,11 +140,14 @@ theorem exists_slice_point_lt_two_mul_d1
       rw [Finset.insert_subset_iff, Finset.singleton_subset_iff]
       exact ⟨mem_box m m (le_refl m) (le_refl m), mem_box m 0 (le_refl m) (Nat.zero_le m)⟩
     have hcorners_card : ({(m, m), (m, 0)} : Finset (ℕ × ℕ)).card = 2 := by
-      rw [Finset.card_insert_of_not_mem (by simp only [Finset.mem_singleton, Prod.mk.injEq];
-        omega), Finset.card_singleton]
+      have hne_c : ((m, m) : ℕ × ℕ) ≠ (m, 0) := by
+        intro h; rw [Prod.mk.injEq] at h; omega
+      rw [Finset.card_pair hne_c]
     have hBcard : p < B.card := by
+      have hinter : (({(m, m), (m, 0)} : Finset (ℕ × ℕ)) ∩ box) = {(m, m), (m, 0)} :=
+        Finset.inter_eq_left.mpr hcorners_sub
       have h2 : B.card = (m + 1) * (m + 1) - 2 := by
-        rw [hB, Finset.card_sdiff hcorners_sub, hbox_card, hcorners_card]
+        rw [hB, Finset.card_sdiff, hinter, hbox_card, hcorners_card]
       have hexp : (m + 1) * (m + 1) = m * m + 2 * m + 1 := by ring
       rw [h2]
       omega
@@ -311,7 +316,7 @@ covolume-`p` sublattice. Concretely:
     `p < 400`, all `r`.)
 
 This is a KNOWN result (Minkowski applied to a binary form) — an ideal Aristotle
-target once the backend recovers; it was build-/Aristotle-gated this session. -/
+target once the backend recovers; it was build-and-Aristotle-gated this session. -/
 theorem exists_slice_point_lt_two_mul_d2
     (p : ℕ) (hp : 0 < p) (r : ℤ) :
     ∃ x y : ℤ, (x, y) ≠ (0, 0) ∧ (p : ℤ) ∣ (x - r * y) ∧
