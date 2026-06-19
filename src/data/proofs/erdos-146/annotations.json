@@ -17,7 +17,11 @@
       "Extremal graph theory",
       "Bipartite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turán Numbers",
+      "Graph Degeneracy",
+      "Bipartite Graphs"
+    ]
   },
   {
     "id": "ann-146-2",
@@ -36,7 +40,11 @@
       "Minimum degree",
       "Induced subgraph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Minimum Degree",
+      "Induced Subgraph",
+      "Vertex Neighborhood"
+    ]
   },
   {
     "id": "ann-146-3",
@@ -55,7 +63,11 @@
       "Forbidden subgraph",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Forbidden Subgraph",
+      "Edge Counting",
+      "Turán's Theorem"
+    ]
   },
   {
     "id": "ann-146-4",
@@ -74,7 +86,11 @@
       "Big-O",
       "Extremal exponent"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Upper Bound",
+      "Big-O Notation",
+      "Extremal Exponent"
+    ]
   },
   {
     "id": "ann-146-5",
@@ -93,7 +109,11 @@
       "Probabilistic method",
       "Asymptotic bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Dependent Random Choice",
+      "Common Neighborhoods"
+    ]
   },
   {
     "id": "ann-146-6",
@@ -112,7 +132,11 @@
       "Maximum degree",
       "K_{r,s}"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Bipartition",
+      "Maximum Degree",
+      "Complete Bipartite Graph"
+    ]
   },
   {
     "id": "ann-146-7",
@@ -131,7 +155,11 @@
       "Asymptotic gap",
       "Linear arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Inequality Manipulation",
+      "Linear Arithmetic",
+      "Reciprocal Comparison"
+    ]
   },
   {
     "id": "ann-146-8",
@@ -150,7 +178,11 @@
       "Kővári-Sós-Turán theorem",
       "Fin type"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete Bipartite Graph",
+      "Kővári-Sós-Turán Theorem",
+      "Fin Type"
+    ]
   },
   {
     "id": "ann-146-9",
@@ -169,6 +201,10 @@
       "Bondy-Simonovits",
       "2-degenerate graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "4-Cycle",
+      "Bondy-Simonovits Theorem",
+      "Incidence Geometry"
+    ]
   }
 ]
