@@ -16,7 +16,11 @@
       "Consecutive products",
       "Smooth numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime divisors of integer products",
+      "the natural logarithm and its growth rate",
+      "products of consecutive integers"
+    ]
   },
   {
     "id": "ann-e457-consec-product",
@@ -35,7 +39,11 @@
       "Binomial coefficients",
       "Factorial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "products of consecutive integers (rising factorial)",
+      "binomial coefficients and factorials",
+      "finite products over an index set"
+    ]
   },
   {
     "id": "ann-e457-small-primes",
@@ -54,7 +62,11 @@
       "Residue classes",
       "Divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the pigeonhole principle",
+      "residue classes modulo a prime",
+      "divisibility among consecutive integers"
+    ]
   },
   {
     "id": "ann-e457-q-def",
@@ -73,7 +85,11 @@
       "Prime factorization",
       "Minimal witness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "least element of a set of natural numbers (Nat.find)",
+      "prime factorization of finite products",
+      "existence of arbitrarily large primes"
+    ]
   },
   {
     "id": "ann-e457-q-properties",
@@ -92,7 +108,11 @@
       "Well-definedness",
       "Lower bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "minimality of a witness",
+      "prime divisibility",
+      "well-defined functions on the naturals"
+    ]
   },
   {
     "id": "ann-e457-conjecture",
@@ -111,7 +131,11 @@
       "Prime number theorem",
       "Sieve methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite sets of integers",
+      "the prime number theorem",
+      "the Chinese remainder theorem and sieve heuristics"
+    ]
   },
   {
     "id": "ann-e457-equivalence",
@@ -129,7 +153,11 @@
       "Equivalent formulations",
       "Logical equivalence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logical equivalence of statements",
+      "least prime non-divisor characterization",
+      "ordering primes below a threshold"
+    ]
   },
   {
     "id": "ann-e457-construction",
@@ -148,7 +176,11 @@
       "Prime product",
       "Asymptotic notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Chinese remainder theorem",
+      "products of primes in a range",
+      "little-o asymptotic notation"
+    ]
   },
   {
     "id": "ann-e457-upper",
@@ -167,7 +199,11 @@
       "Eventually",
       "Order of growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the eventually filter at infinity (Filter.atTop)",
+      "counting distinct prime factors",
+      "asymptotic order of growth"
+    ]
   },
   {
     "id": "ann-e457-smooth",
@@ -186,6 +222,10 @@
       "Dickman function",
       "Sieve of Eratosthenes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "y-smooth numbers",
+      "Dickman's function",
+      "the sieve of Eratosthenes"
+    ]
   }
 ]
