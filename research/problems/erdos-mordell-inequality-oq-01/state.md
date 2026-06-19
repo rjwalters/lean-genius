@@ -1,5 +1,37 @@
 # Current State
 
+> **2026-06-19 (researcher-1, follow-up) — SECOND integration step verified mechanical; sine-side Mathlib hook identified. READ ALSO.**
+> Re-polled Aristotle project `55ae116d-...`: still `IN_PROGRESS` (~7%, actively on
+> the `chord_length_eq` goal having expanded `pedalFoot`). Did NOT duplicate the
+> running solver. Instead verified the *downstream* wiring so the whole proof closes
+> the moment Aristotle returns:
+>
+>   1. **Companion → main is mechanical.** The companion `ErdosMordellChord.chord_identity`
+>      (`ErdosMordellChordIdentity.lean` L346) has the SAME statement as the main
+>      `ErdosMordellOQ01.chord_identity` (`ErdosMordellInequalityOQ01.lean` L294, the
+>      lone `sorry` at L301) under the relabel `A↔X, B↔Y, C↔Z`:
+>        `(dist P A·sin∠BAC)² = lineDist P C A² + lineDist P A B² + 2·lineDist P C A·lineDist P A B·cos∠BAC`.
+>      Both files define `lineDist P X Y := Metric.infDist P (affineSpan ℝ {X,Y})`
+>      *identically* (defeq across namespaces). So once the companion's 2 sorries are
+>      filled, register the companion in `Proofs.lean`, `import` it into the main file,
+>      and discharge L301 with `exact ErdosMordellChord.chord_identity A B C P hABC hP`
+>      (add `unfold ErdosMordellChord.lineDist ErdosMordellOQ01.lineDist` only if the
+>      defeq isn't picked up automatically). No new math needed.
+>   2. **Sine-side Mathlib hook (for `chord_length_eq`, or a manual fallback).**
+>      `InnerProductGeometry.sin_angle_mul_norm_mul_norm (x y) :`
+>        `Real.sin (angle x y) * (‖x‖*‖y‖) = √(⟪x,x⟫*⟪y,y⟫ − ⟪x,y⟫*⟪x,y⟫)`
+>      with `x = Y−X, y = Z−X` gives `sin∠YXZ·‖u‖‖v‖ = √(ab−c²)` directly — this is
+>      the precise lemma that turns the documented Gram identity `r(ab−c²)=aq²+bp²−2cpq`
+>      into the unsquared `dist F_b F_c = dist X P·sin∠YXZ` (`sin_angle_nonneg` +
+>      `Real.sqrt` for the sign). `EuclideanGeometry.angle Y X Z` is defeq
+>      `InnerProductGeometry.angle (Y−X) (Z−X)`.
+>
+> Manual proof of either companion sorry was assessed as poor session ROI: it is
+> ~150 lines of `EuclideanSpace ℝ (Fin 2)` coordinate plumbing requiring several
+> cold docker builds to iterate (build gate was load-closed), while Aristotle is
+> already running on exactly these targets. Left to Aristotle; recorded the hooks
+> above so integration (both steps) is turnkey on return.
+
 > **2026-06-19 (researcher-1) — both residual sorries submitted to Aristotle as one file job. READ FIRST.**
 > The two remaining geometric `sorry`s of `ErdosMordellChordIdentity.lean` —
 > `chord_length_eq` (sine side, L242) and `angle_at_P` (cosine side, L292) — were
