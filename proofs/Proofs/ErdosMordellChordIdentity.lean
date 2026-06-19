@@ -567,9 +567,9 @@ theorem chord_length_sq_eq_of_angle_at_P
 With `db = lineDist P Z X = dist P F_b` and `dc = lineDist P X Y = dist P F_c`
 (the bridge lemma `lineDist_eq_dist_pedalFoot`), the law of cosines in the pedal
 triangle `△(P, F_b, F_c)` gives `dist F_b F_c ² = db² + dc² + 2·db·dc·cos∠YXZ`.
-Now obtained by feeding the isolated `angle_at_P` fact into the proved reduction
-`chord_length_sq_eq_of_angle_at_P` — so the only `sorry` left on the cosine side is
-`angle_at_P` itself. -/
+Now obtained by feeding the proved `angle_at_P` fact into the proved reduction
+`chord_length_sq_eq_of_angle_at_P` — the cosine side is therefore fully discharged
+(no remaining `sorry`). -/
 theorem chord_length_sq_eq
     (X Y Z P : EuclideanSpace ℝ (Fin 2))
     (hXYZ : AffineIndependent ℝ ![X, Y, Z])
