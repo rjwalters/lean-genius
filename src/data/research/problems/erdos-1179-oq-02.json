@@ -44,18 +44,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: existence witness for the conditional siblings shipped (PR #26045, verified 0-axiom/0-sorry). Additive constant 0 attained on N=2^m. Headline asymptotic (gₑ(N) ≤ log₂N + Oₑ(1) for ALL N) remains OPEN.",
+    "progressSummary": "PROGRESS: rigidity/equality case of the trivial lower bound build-verified, registered, and shipped to gallery (erdos-1179-oq-02-rigidity, verified 0-axiom). Headline OQ-02 additive Oₑ(1) UPPER bound for all N remains OPEN.",
     "builtItems": [
       "research/problems/erdos-1179-oq-02/verify_uniform_subset_sums.py — reproducible small-N experiment (identity check + lower-bound check + additive-gap table), ALL CHECKS PASSED.",
       "Proofs/Erdos1179OQ02.lean (S2, researcher-8) — epsUniform_spanning (hypothesis-free), card_le_two_pow_of_epsUniform (N <= 2^|A|), clog_le_card_of_epsUniform (ceil(log2 N) <= |A|); 0 sorry/0 axiom.",
       "Proofs/Erdos1179OQ02Witness.lean: stdBasis_unique_repr, stdBasis_spanning, exists_unique_repr_set, stdBasis_epsUniform_zero, additive_constant_zero_attained (build green 7745 jobs; #print axioms = propext/Classical.choice/Quot.sound only — 0 axioms, 0 sorries)",
-      "Build fixes to parent Proofs/Erdos1179Problem.lean so it compiles under current Mathlib pin (Filter open, le_div_iff₀/lt_div_iff₀, mul_div_assoc, tendsto_atTop_atTop, div_le_div_of_nonneg_right arity)"
+      "Build fixes to parent Proofs/Erdos1179Problem.lean so it compiles under current Mathlib pin (Filter open, le_div_iff₀/lt_div_iff₀, mul_div_assoc, tendsto_atTop_atTop, div_le_div_of_nonneg_right arity)",
+      "Build-verified + registered Erdos1179OQ02Rigidity.lean (was committed build-pending #24632, unregistered): epsUniform_saturated_iff_unique_repr — N=2^|A| ⇔ ∀g reprCount A g=1; 3 thms, 0 sorries, 0 axioms; ✔ Built (7745 jobs, researcher-8)"
     ],
     "insights": [
       "ε-uniformity with ε<1 forces every F_A(g)>0, so 2^k=Σ_g F_A(g)≥N gives the trivial lower bound g_ε(N)≥log₂N for free from the parent definitions.",
       "The open gap is between Erdős–Hall's MULTIPLICATIVE (1+o(1)) factor and a conjectured ADDITIVE O_ε(1) constant; the slowly-growing log log log N / log log N error is exactly the kind that resists being shown bounded or unbounded.",
       "Small-N data on ℤ/N is consistent with a bounded additive gap but is not evidence: N≤12 is far from asymptotic, and the OQ ranges over ALL abelian G (elementary-abelian 2-groups, where subset sums are XORs, can differ structurally).",
-      "Witness shipped (PR #26045): the standard basis of (Fin m → ZMod 2) is a unique-representation set — proved axiom-free that reprCount (stdBasis m) g = 1 for all g, discharging the existence hypothesis the conditional Upper/Extremal/Rigidity siblings assumed but never constructed. Additive constant 0 is attained deterministically on the family N = 2^m."
+      "Witness shipped (PR #26045): the standard basis of (Fin m → ZMod 2) is a unique-representation set — proved axiom-free that reprCount (stdBasis m) g = 1 for all g, discharging the existence hypothesis the conditional Upper/Extremal/Rigidity siblings assumed but never constructed. Additive constant 0 is attained deterministically on the family N = 2^m.",
+      "Rigidity/equality case of the trivial lower bound is pure counting (no probability): N summands each ≥1 (epsUniform_spanning) summing to N (total_reprCount) force each =1, via Finset.sum_eq_sum_iff_of_le. ε<1 used only for spanning."
     ],
     "mathlibGaps": [
       "No probabilistic 'with high probability over random subsets' framework targeted here; the parent axiomatizes the Erdős–Hall bound rather than proving it.",
@@ -65,7 +67,8 @@
       "FINDING (researcher-2 2026-06-19): the orphan Erdos1179OQ02Rigidity.lean (3 thm, sorry/axiom-free, rigidity/equality case = extremal sets are exactly unique-representation sets) is verified CLEAN as written (Mathlib hooks Finset.sum_eq_sum_iff_of_le + Nat.clog_pow + cross-file epsUniform_spanning/total_reprCount all confirmed at pin) but CANNOT be registered: its dependency Proofs/Erdos1179Problem.lean (REGISTERED on main) does not compile at the current Mathlib pin (6 dead names div_*_iff/Real.isLittleO_log_rpow_atTop + L104 type mismatch + asymptotic-proof unsolved goals; never built green, 'build-free' commit). Filed issue #26038 for Mechanic — fixing that one file unblocks the whole Erdos1179 family AND Rigidity registration. Did NOT ship a broken registration.",
       "Literature: check whether the Erdős–Hall log log log N / log log N term is known to be improvable, and whether the additive-constant form is explicitly conjectured.",
       "Experiment: extend the script to (ℤ/2)^m vs ℤ/N at matched N to probe the single-group caveat.",
-      "Formalization (Docker-gated): if pursued, state g_ε(N) ≤ log₂N + O_ε(1) as an axiomatized target alongside the parent, since proving it is out of reach."
+      "Formalization (Docker-gated): if pursued, state g_ε(N) ≤ log₂N + O_ε(1) as an axiomatized target alongside the parent, since proving it is out of reach.",
+      "Ship gallery entry erdos-1179-oq-02-rigidity (done this session). Optionally also register/verify Erdos1179OQ02Extremal.lean (sibling, still unregistered). Headline OQ-02 additive Oₑ(1) upper bound remains OPEN."
     ]
   },
   "tags": [
