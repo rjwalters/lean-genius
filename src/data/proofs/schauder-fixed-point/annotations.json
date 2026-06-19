@@ -16,7 +16,11 @@
       "fixed point"
     ],
     "mathContext": "See annotation content for formal details of from finite to infinite dimensions",
-    "prerequisites": []
+    "prerequisites": [
+      "Brouwer Fixed Point Theorem",
+      "Compactness",
+      "Convex Sets"
+    ]
   },
   {
     "id": "ann-projection-lemma",
@@ -35,7 +39,11 @@
       "compact set",
       "convex hull"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Compact Sets",
+      "Partition Of Unity",
+      "Convex Hull"
+    ]
   },
   {
     "id": "ann-schauder-main",
@@ -116,7 +124,11 @@
       "closed interval"
     ],
     "mathContext": "See annotation content for formal details of interval fixed point: fully proved via ivt",
-    "prerequisites": []
+    "prerequisites": [
+      "Intermediate Value Theorem",
+      "Continuous Functions",
+      "Closed Interval"
+    ]
   },
   {
     "id": "ann-banach",
@@ -135,7 +147,11 @@
       "Cauchy sequence",
       "completeness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Contraction Mapping",
+      "Complete Metric Space",
+      "Cauchy Sequences"
+    ]
   },
   {
     "id": "ann-counterexample",
@@ -154,6 +170,10 @@
       "infinite-dimensional analysis"
     ],
     "mathContext": "See annotation content for formal details of why compactness is necessary",
-    "prerequisites": []
+    "prerequisites": [
+      "Riesz's Lemma",
+      "Compactness In Normed Spaces",
+      "The Sequence Space Ell-2"
+    ]
   }
 ]
