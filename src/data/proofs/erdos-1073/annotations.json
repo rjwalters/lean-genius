@@ -19,7 +19,11 @@
       "modular arithmetic"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "Wilson's Theorem",
+      "Factorials",
+      "Composite Numbers"
+    ]
   },
   {
     "id": "erdos-1073-divisibility",
@@ -38,7 +42,11 @@
       "existential quantifier",
       "factorial function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisibility",
+      "Existential Quantifiers",
+      "Factorial Function"
+    ]
   },
   {
     "id": "erdos-1073-counting",
@@ -57,7 +65,11 @@
       "subpolynomial growth",
       "o(1) notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counting Functions",
+      "Set Cardinality",
+      "Asymptotic Growth"
+    ]
   },
   {
     "id": "erdos-1073-conjecture",
@@ -76,7 +88,11 @@
       "subpolynomial growth",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Subpolynomial Growth",
+      "Epsilon-Delta Bounds",
+      "Multiplicative Number Theory"
+    ]
   },
   {
     "id": "erdos-1073-wilson",
@@ -96,7 +112,11 @@
       "Lagrange",
       "primality characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Modular Arithmetic",
+      "Multiplicative Inverses",
+      "Finite Fields (ZMod)"
+    ]
   },
   {
     "id": "erdos-1073-composite25",
@@ -115,7 +135,11 @@
       "native_decide",
       "computational verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Powers",
+      "Factorial Computation",
+      "Computational Verification"
+    ]
   },
   {
     "id": "erdos-1073-composite437",
@@ -134,7 +158,11 @@
       "Wilson's theorem",
       "numerical coincidence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Semiprimes",
+      "Wilson's Theorem",
+      "Prime Factorization"
+    ]
   },
   {
     "id": "erdos-1073-coprime",
@@ -154,7 +182,11 @@
       "Bezout's identity",
       "consecutive integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Greatest Common Divisor",
+      "Bezout's Identity",
+      "Consecutive Integers"
+    ]
   },
   {
     "id": "erdos-1073-primefactors",
@@ -173,7 +205,11 @@
       "factorial divisibility",
       "proof by contradiction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Factorization",
+      "Factorial Divisibility",
+      "Proof By Contradiction"
+    ]
   },
   {
     "id": "erdos-1073-fourknown",
@@ -192,6 +228,10 @@
       "sparse sets",
       "enumeration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Composite Numbers",
+      "Computational Search",
+      "Sparse Sets"
+    ]
   }
 ]
