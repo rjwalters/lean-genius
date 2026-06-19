@@ -37,14 +37,15 @@
     ],
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
-    "lineCount": 180,
+    "lineCount": 222,
     "assumptions": "3 sorries: the three geometric key inequalities key_inequality_A/B/C (a·PA ≥ b·dc + c·db and cyclic). These are the genuine planar-geometry content (concyclic pedal feet / chord-projection argument), known classical mathematics not yet in Mathlib. Everything else — side-length positivity, pedal-distance nonnegativity, and the AM–GM algebraic reduction — is fully proved.",
     "originalContributions": [
       "erdos_mordell_reduction: the geometry-free AM–GM core, proving 2(da+db+dc) ≤ PA+PB+PC from the three weighted key inequalities via an explicit nonnegative certificate (a·da·(b−c)² + ... ≥ 0). Carries no geometric hypotheses; reusable for any proof of the key inequalities.",
+      "key_inequality_trig_core: a geometry-free proof that sin B·dc + sin C·db ≤ √(db²+dc²+2·db·dc·cos A) for triangle angles, collapsing each key inequality (modulo the chord identity (PA·sin A)² = db²+dc²+2·db·dc·cos A and the law of sines) to the perfect square (db·cos C − dc·cos B)² ≥ 0. Isolates the single remaining geometric obligation.",
       "Precise Lean statement of the geometric Erdős–Mordell inequality using Metric.infDist to the affine span (lineDist) for pedal distances.",
       "Full modular assembly of erdos_mordell: reduces the geometric theorem to exactly three separately-stated key-inequality lemmas, discharging all positivity/nonnegativity/algebra."
     ],
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 1
   },
   "overview": {
@@ -73,24 +74,31 @@
       "summary": "erdos_mordell_reduction: from the three weighted key inequalities and side-length positivity/pedal nonnegativity, derive 2(da+db+dc) ≤ PA+PB+PC via an explicit nonnegative certificate (nlinarith)."
     },
     {
+      "id": "trig-core",
+      "title": "Trigonometric Core of the Key Inequality (Proved)",
+      "startLine": 97,
+      "endLine": 137,
+      "summary": "key_inequality_trig_core: geometry-free proof that sin B·dc + sin C·db ≤ √(db²+dc²+2·db·dc·cos A), collapsing to the perfect square (db·cos C − dc·cos B)² via cos A = sin B sin C − cos B cos C; isolates the chord identity as the sole remaining geometric input."
+    },
+    {
       "id": "pedal-distance",
       "title": "Pedal Distance Definition",
-      "startLine": 97,
-      "endLine": 105,
+      "startLine": 139,
+      "endLine": 147,
       "summary": "lineDist: distance from P to the affine span of two points (Metric.infDist), with lineDist_nonneg."
     },
     {
       "id": "key-inequalities",
       "title": "Geometric Key Inequalities (Open)",
-      "startLine": 107,
-      "endLine": 150,
+      "startLine": 149,
+      "endLine": 179,
       "summary": "key_inequality_A/B/C: the three cyclic side-length-weighted key inequalities (sorry-deferred; the genuine planar-geometry content)."
     },
     {
       "id": "assembly",
       "title": "Assembled Geometric Statement",
-      "startLine": 151,
-      "endLine": 180,
+      "startLine": 181,
+      "endLine": 222,
       "summary": "erdos_mordell: the full geometric inequality, assembled from the reduction plus the three key inequalities, with side-length positivity (affine independence) and pedal nonnegativity fully discharged."
     }
   ],
@@ -109,10 +117,10 @@
     ],
     "opens": [],
     "namespace": "ErdosMordellOQ01",
-    "lineCount": 180,
+    "lineCount": 222,
     "axiomCount": 0,
-    "theoremCount": 6,
-    "substantiveTheoremCount": 3,
+    "theoremCount": 7,
+    "substantiveTheoremCount": 4,
     "duplicateTheorems": 0,
     "definitionCount": 1,
     "path": "Proofs/ErdosMordellInequalityOQ01.lean",

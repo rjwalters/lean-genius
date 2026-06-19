@@ -94,6 +94,48 @@ theorem erdos_mordell_reduction
     nlinarith [e1, e2, e3, s1, s2, s3]
   exact le_of_mul_le_mul_left key habc
 
+/-- **Trigonometric core of the key inequality** (geometry-free).
+
+For triangle angles `A, B, C` (so `A + B + C = π`) with `sin B, sin C ≥ 0`, and
+nonnegative pedal distances `db, dc`,
+    `sin B · dc + sin C · db ≤ √(db² + dc² + 2·db·dc·cos A)`.
+
+The right-hand side is exactly `PA · sin A` once the geometric *chord identity*
+`(PA · sin A)² = db² + dc² + 2·db·dc·cos A` (concyclicity of the pedal feet on
+the circle of diameter `PA`) is established; combined with the law of sines
+`a = 2R sin A`, `b = 2R sin B`, `c = 2R sin C`, this lemma yields the key
+inequality `a·PA ≥ b·dc + c·db`.
+
+The whole estimate collapses to the perfect square `(db·cos C − dc·cos B)² ≥ 0`
+after substituting `cos A = sin B sin C − cos B cos C` (valid since `A = π−B−C`).
+This isolates the *single* remaining geometric obligation (the chord identity);
+everything trigonometric is proved here. -/
+theorem key_inequality_trig_core
+    {A B C db dc : ℝ}
+    (hsum : A + B + C = Real.pi)
+    (hdb : 0 ≤ db) (hdc : 0 ≤ dc)
+    (hsB : 0 ≤ Real.sin B) (hsC : 0 ≤ Real.sin C) :
+    Real.sin B * dc + Real.sin C * db
+      ≤ Real.sqrt (db ^ 2 + dc ^ 2 + 2 * db * dc * Real.cos A) := by
+  -- The angle-sum identity gives `cos A` in terms of `B, C`.
+  have hcosA : Real.cos A = Real.sin B * Real.sin C - Real.cos B * Real.cos C := by
+    have hA : A = Real.pi - (B + C) := by linarith
+    rw [hA, Real.cos_pi_sub, Real.cos_add]; ring
+  -- The left-hand side is nonnegative.
+  have hLHS : 0 ≤ Real.sin B * dc + Real.sin C * db :=
+    add_nonneg (mul_nonneg hsB hdc) (mul_nonneg hsC hdb)
+  -- Squared comparison reduces to a perfect square via `sin² + cos² = 1`.
+  have hsq : (Real.sin B * dc + Real.sin C * db) ^ 2
+      ≤ db ^ 2 + dc ^ 2 + 2 * db * dc * Real.cos A := by
+    rw [hcosA]
+    nlinarith [sq_nonneg (db * Real.cos C - dc * Real.cos B),
+               Real.sin_sq_add_cos_sq B, Real.sin_sq_add_cos_sq C,
+               mul_nonneg hdb hdc]
+  -- Take square roots.
+  calc Real.sin B * dc + Real.sin C * db
+      = Real.sqrt ((Real.sin B * dc + Real.sin C * db) ^ 2) := (Real.sqrt_sq hLHS).symm
+    _ ≤ Real.sqrt (db ^ 2 + dc ^ 2 + 2 * db * dc * Real.cos A) := Real.sqrt_le_sqrt hsq
+
 /-- Perpendicular distance from a point `P` to the line through two points
 `X Y`, as the distance from `P` to the affine span `line[X, Y]`. -/
 noncomputable def lineDist (P X Y : EuclideanSpace ℝ (Fin 2)) : ℝ :=
