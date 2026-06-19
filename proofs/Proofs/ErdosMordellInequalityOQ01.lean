@@ -104,20 +104,77 @@ theorem lineDist_nonneg (P X Y : EuclideanSpace ℝ (Fin 2)) :
     0 ≤ lineDist P X Y :=
   Metric.infDist_nonneg
 
+/-- **Erdős–Mordell key inequality at vertex `A`.**
+
+`a · PA ≥ b · dc + c · db`, with `a = BC`, `b = CA`, `c = AB`, `db = dist(P, CA)`,
+`dc = dist(P, AB)`. Geometrically: the feet of the perpendiculars from `P` to the
+two sides meeting at `A` are concyclic with `A` and `P` on a circle of diameter
+`PA`; projecting the chord between the feet gives this bound.
+
+This is the geometry-bearing obligation (OPEN / hard to formalize); the other two
+are its cyclic images. -/
+theorem key_inequality_A
+    (A B C P : EuclideanSpace ℝ (Fin 2))
+    (hABC : AffineIndependent ℝ ![A, B, C])
+    (hP : P ∈ interior (convexHull ℝ {A, B, C})) :
+    dist C A * lineDist P A B + dist A B * lineDist P C A ≤ dist B C * dist P A := by
+  sorry
+
+/-- **Erdős–Mordell key inequality at vertex `B`** (cyclic image of `key_inequality_A`). -/
+theorem key_inequality_B
+    (A B C P : EuclideanSpace ℝ (Fin 2))
+    (hABC : AffineIndependent ℝ ![A, B, C])
+    (hP : P ∈ interior (convexHull ℝ {A, B, C})) :
+    dist A B * lineDist P B C + dist B C * lineDist P A B ≤ dist C A * dist P B := by
+  sorry
+
+/-- **Erdős–Mordell key inequality at vertex `C`** (cyclic image of `key_inequality_A`). -/
+theorem key_inequality_C
+    (A B C P : EuclideanSpace ℝ (Fin 2))
+    (hABC : AffineIndependent ℝ ![A, B, C])
+    (hP : P ∈ interior (convexHull ℝ {A, B, C})) :
+    dist B C * lineDist P C A + dist C A * lineDist P B C ≤ dist A B * dist P C := by
+  sorry
+
 /-- **Erdős–Mordell inequality** (geometric statement).
 
 For `P` interior to a nondegenerate triangle `A B C` in the Euclidean plane,
 the sum of distances to the vertices is at least twice the sum of distances to
 the sides.
 
-The proof is `erdos_mordell_reduction` applied to the three geometric key
-inequalities; those key inequalities are the remaining open obligation. -/
+The proof is fully assembled: positivity of the side lengths (from affine
+independence), nonnegativity of the pedal distances, and the AM–GM algebra are
+all discharged here via `erdos_mordell_reduction`. The *only* remaining inputs
+are the three geometric `key_inequality_*` lemmas. -/
 theorem erdos_mordell
     (A B C P : EuclideanSpace ℝ (Fin 2))
     (hABC : AffineIndependent ℝ ![A, B, C])
     (hP : P ∈ interior (convexHull ℝ {A, B, C})) :
     2 * (lineDist P B C + lineDist P C A + lineDist P A B)
       ≤ dist P A + dist P B + dist P C := by
-  sorry
+  -- Vertices are pairwise distinct (affine independence ⟹ injective indexing).
+  have hinj := hABC.injective
+  have hBC : B ≠ C := by
+    intro h
+    have h12 : (1 : Fin 3) = 2 := hinj (by simpa using h)
+    exact absurd h12 (by decide)
+  have hCA : C ≠ A := by
+    intro h
+    have h20 : (2 : Fin 3) = 0 := hinj (by simpa using h)
+    exact absurd h20 (by decide)
+  have hAB : A ≠ B := by
+    intro h
+    have h01 : (0 : Fin 3) = 1 := hinj (by simpa using h)
+    exact absurd h01 (by decide)
+  -- Side lengths are strictly positive.
+  have ha : 0 < dist B C := dist_pos.mpr hBC
+  have hb : 0 < dist C A := dist_pos.mpr hCA
+  have hc : 0 < dist A B := dist_pos.mpr hAB
+  -- Assemble via the algebraic reduction.
+  exact erdos_mordell_reduction ha hb hc
+    (lineDist_nonneg P B C) (lineDist_nonneg P C A) (lineDist_nonneg P A B)
+    (key_inequality_A A B C P hABC hP)
+    (key_inequality_B A B C P hABC hP)
+    (key_inequality_C A B C P hABC hP)
 
 end ErdosMordellOQ01
