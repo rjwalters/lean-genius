@@ -16,7 +16,11 @@
       "Extremal graph theory",
       "Logarithmic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Graph Degree Sequence",
+      "Edge Density"
+    ]
   },
   {
     "id": "ann-e803-balanced-defs",
@@ -35,7 +39,11 @@
       "Regular graphs",
       "Almost-regular graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Degree",
+      "Finset Sup And Inf",
+      "Regular Graphs"
+    ]
   },
   {
     "id": "ann-e803-balance-proofs",
@@ -54,7 +62,11 @@
       "Monotonicity",
       "Filtration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Inequality Monotonicity",
+      "Regular Graphs",
+      "Natural Number Arithmetic"
+    ]
   },
   {
     "id": "ann-e803-density",
@@ -73,7 +85,11 @@
       "Logarithmic threshold",
       "Random graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Edge Count",
+      "Logarithmic Functions",
+      "Random Graph Model"
+    ]
   },
   {
     "id": "ann-e803-conjecture",
@@ -92,7 +108,11 @@
       "Disproved conjecture",
       "Subgraph embedding"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nested Quantifiers",
+      "Subgraph Embedding",
+      "Balanced Subgraphs"
+    ]
   },
   {
     "id": "ann-e803-alon",
@@ -111,7 +131,11 @@
       "Probabilistic method",
       "Upper bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Upper Bound Construction",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-e803-positive",
@@ -130,6 +154,10 @@
       "Janzer-Sudakov 2023",
       "Phase transition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial Density",
+      "Szemerédi Regularity Lemma",
+      "Phase Transition"
+    ]
   }
 ]
