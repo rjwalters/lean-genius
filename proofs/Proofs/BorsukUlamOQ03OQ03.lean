@@ -2149,29 +2149,36 @@ theorem total_triangles (N : ℕ) :
     ∃ count : ℕ, count = 2 * (2 * N) * (2 * N) :=
   ⟨2 * (2 * N) * (2 * N), rfl⟩
 
-/-- **PROVED: Grid edges in gridEdgesTriFin are exactly the edges of grid triangles.**
+/-- **Stated (not formalized):** Grid edges in gridEdgesTriFin are exactly the edges of grid triangles.
 
-Every edge in gridEdgesTriFin N belongs to at least one GridTriangle. -/
+Every edge in gridEdgesTriFin N belongs to at least one GridTriangle.
+This auxiliary fact is documentation-only: the body proves `True` and plays
+no role in the main proof, which short-circuits the combinatorial chain via
+the disclosed axiom `tucker_2d_grid`. -/
 theorem gridEdgesTriFin_from_triangles (N : ℕ)
     (u v : Fin (2 * N + 1) × Fin (2 * N + 1))
     (he : (u, v) ∈ gridEdgesTriFin N) :
     True :=  -- ∃ t : GridTriangle N, (u,v) is an edge of t
   trivial
 
-/-- **PROVED: Boundary edges belong to exactly one triangle.**
+/-- **Stated (not formalized):** Boundary edges belong to exactly one triangle.
 
 An edge on the boundary of the grid is a face of exactly one triangle
-(the triangle is "inside" the grid, the other side is exterior). -/
+(the triangle is "inside" the grid, the other side is exterior).
+This auxiliary fact is documentation-only: the body proves `True` and plays
+no role in the main proof. -/
 theorem boundary_edge_one_triangle (N : ℕ) :
     True :=  -- Each boundary edge ∈ exactly 1 triangle
   trivial
 
-/-- **PROVED: Interior edges belong to exactly two triangles.**
+/-- **Stated (not formalized):** Interior edges belong to exactly two triangles.
 
 An interior edge of the triangulated grid is shared by exactly two
 triangles. This is because each interior edge either:
 - Is a horizontal/vertical edge shared by upper/lower triangles of adjacent cells
-- Is a diagonal edge shared by the two triangles within the same cell -/
+- Is a diagonal edge shared by the two triangles within the same cell
+This auxiliary fact is documentation-only: the body proves `True` and plays
+no role in the main proof. -/
 theorem interior_edge_two_triangles (N : ℕ) :
     True :=  -- Each interior edge ∈ exactly 2 triangles
   trivial
