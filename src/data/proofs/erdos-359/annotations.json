@@ -17,7 +17,11 @@
       "consecutive-sums",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "MacMahon's sequence of prime numbers of measurement",
+      "greedy construction by smallest non-representable integer",
+      "OEIS A002048"
+    ]
   },
   {
     "id": "ann-e359-consecutive-sum",
@@ -36,7 +40,10 @@
       "sum",
       "intervals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sums over a contiguous index interval Finset.Icc",
+      "distinction between consecutive sums and subset sums"
+    ]
   },
   {
     "id": "ann-e359-achievable",
@@ -55,7 +62,11 @@
       "membership",
       "greedy-selection"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sets of integers representable as consecutive sums",
+      "greedy selection of the least unachievable term",
+      "growth of the achievable set as k increases"
+    ]
   },
   {
     "id": "ann-e359-isgoodfor",
@@ -74,7 +85,11 @@
       "recursion",
       "uniqueness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib's IsLeast for the smallest element satisfying a predicate",
+      "recursive definition of a strictly increasing sequence",
+      "uniqueness of a sequence from its starting value"
+    ]
   },
   {
     "id": "ann-e359-macmahon",
@@ -93,7 +108,11 @@
       "uniqueness",
       "definition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the unique sequence good for 1",
+      "Percy MacMahon's prime numbers of measurement",
+      "OEIS A002048"
+    ]
   },
   {
     "id": "ann-e359-basic-props",
@@ -112,7 +131,11 @@
       "first-term",
       "singleton"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strict monotonicity of the sequence",
+      "a term as its own singleton consecutive sum",
+      "consequences of the greedy recursive definition"
+    ]
   },
   {
     "id": "ann-e359-values",
@@ -131,7 +154,11 @@
       "concrete-values",
       "gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "first eight MacMahon terms 1, 2, 4, 5, 8, 10, 14, 15",
+      "integers skipped because achievable as consecutive sums",
+      "gaps in the sequence"
+    ]
   },
   {
     "id": "ann-e359-skip-examples",
@@ -150,7 +177,11 @@
       "consecutive-sum",
       "concrete"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "3 = 1 + 2 and 6 = 2 + 4 as consecutive sums",
+      "the Finset.sum_Icc_succ_top lemma for computing interval sums",
+      "membership in the achievable set"
+    ]
   },
   {
     "id": "ann-e359-growth-conjectures",
@@ -169,7 +200,11 @@
       "asymptotic",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "superlinear and subpolynomial growth via Tendsto limits",
+      "Andrews' conjecture a_k ~ (k log k)/(log log k)",
+      "intermediate asymptotic growth rate"
+    ]
   },
   {
     "id": "ann-e359-porubsky-upper",
@@ -188,7 +223,10 @@
       "partial-result",
       "1977"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Porubsky's 1977 upper bound holding infinitely often",
+      "partial evidence toward Andrews' conjectured rate"
+    ]
   },
   {
     "id": "ann-e359-counting",
@@ -207,7 +245,11 @@
       "primes",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting function for terms up to x",
+      "prime counting function pi(x)",
+      "comparing sequence density to the primes"
+    ]
   },
   {
     "id": "ann-e359-porubsky-density",
@@ -226,7 +268,11 @@
       "prime-comparison",
       "density-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limit superior of the density ratio A(x)/pi(x)",
+      "lower bound 1/log(2) on relative density",
+      "comparison with the prime counting function"
+    ]
   },
   {
     "id": "ann-e359-general-n",
@@ -245,6 +291,10 @@
       "starting-value",
       "superlinear"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sequences good for an arbitrary starting value n",
+      "conjectured superlinear growth for general n",
+      "generalization beyond the n = 1 case"
+    ]
   }
 ]
