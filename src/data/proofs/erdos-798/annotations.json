@@ -16,7 +16,11 @@
       "Line geometry",
       "Covering problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lattice Points",
+      "Discrete Geometry",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-e798-lattice-grid",
@@ -57,7 +61,11 @@
       "Parametric lines"
     ],
     "mathContext": "See annotation content for formal details of line through points",
-    "prerequisites": []
+    "prerequisites": [
+      "Collinearity",
+      "Parametric Line Equation",
+      "Affine Combination"
+    ]
   },
   {
     "id": "ann-e798-covering",
@@ -75,7 +83,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Cover",
+      "Existential Quantification",
+      "Lines Through Points"
+    ]
   },
   {
     "id": "ann-e798-t-function",
@@ -93,7 +105,11 @@
       "formal definition",
       "ring theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Covering Number",
+      "Line Counting",
+      "Extremal Combinatorics"
+    ]
   },
   {
     "id": "ann-e798-erdos-purdy",
@@ -111,7 +127,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Double Counting",
+      "Lower Bound Argument",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-e798-alon-upper",
@@ -129,7 +149,11 @@
       "ring theory",
       "algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Algebraic Curves",
+      "Upper Bound Construction"
+    ]
   },
   {
     "id": "ann-e798-alon-construction",
@@ -147,7 +171,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Derandomization",
+      "Explicit Construction"
+    ]
   },
   {
     "id": "ann-e798-tight-bounds",
@@ -187,7 +215,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Little-o Notation",
+      "Asymptotic Growth Rates",
+      "Limit Comparison"
+    ]
   },
   {
     "id": "ann-e798-examples",
@@ -205,7 +237,11 @@
       "proof technique",
       "ring theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Small Case Analysis",
+      "Lattice Points",
+      "Line Covering"
+    ]
   },
   {
     "id": "ann-e798-exponent",
@@ -223,7 +259,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Balancing",
+      "Order Of Magnitude",
+      "Coverage Trade-off"
+    ]
   },
   {
     "id": "ann-e798-main-theorem",
@@ -241,7 +281,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Theta Notation",
+      "Matching Bounds",
+      "Lattice Covering"
+    ]
   },
   {
     "id": "ann-e798-summary",
@@ -259,6 +303,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Bounds",
+      "Little-o Notation",
+      "Logarithmic Gap"
+    ]
   }
 ]
