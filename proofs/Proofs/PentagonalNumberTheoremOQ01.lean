@@ -39,9 +39,18 @@
                                coefficient pinned down
   - `eulerProduct`            — the product LHS `∏_{n≥1} (1 − Xⁿ)`, defined by
                                coefficient stabilization (`coeff_eulerProduct_of_le`)
+  - `coeff_eulerProduct_eq_signed_count`
+                               — the structural bridge: the `Xⁿ`-coefficient of
+                               `∏(1−Xⁿ)` equals the signed count `∑(−1)^{|t|}` over
+                               subsets `t` (partitions into distinct parts) whose
+                               shifted sum is `n` — the combinatorial side on which
+                               Franklin's involution acts.
   - `eulerPentagonalIdentity` — the open core, now a single typed equation
-                               `eulerProduct = pentSeries`, verified at the constant
-                               coefficient (`eulerPentagonalIdentity_constantCoeff`).
+                               `eulerProduct = pentSeries`, verified in degrees
+                               0, 1 and 2 (`eulerPentagonalIdentity_constantCoeff`,
+                               `…_coeff_one`, `…_coeff_two`) against the closed-form
+                               low-degree truncations — including a check at the
+                               negative index `k=-1` (exponent `g(-1)=2`).
 -/
 
 import Mathlib
@@ -333,13 +342,13 @@ noncomputable def pentSeries : PowerSeries ℤ :=
   PowerSeries.mk fun n => pentCoeff (n : ℤ)
 
 @[simp] theorem coeff_pentSeries (n : ℕ) :
-    PowerSeries.coeff ℤ n pentSeries = pentCoeff (n : ℤ) := by
+    PowerSeries.coeff (R := ℤ) n pentSeries = pentCoeff (n : ℤ) := by
   rw [pentSeries, PowerSeries.coeff_mk]
 
 /-- **Lacunary coefficients of the RHS, at the pentagonal exponents.** The
 coefficient of `X^{g(k₀)}` in `pentSeries` is `(-1)^|k₀|`. -/
 theorem coeff_pentSeries_genPent (k₀ : ℤ) :
-    PowerSeries.coeff ℤ (genPent k₀).toNat pentSeries = (-1 : ℤ) ^ k₀.natAbs := by
+    PowerSeries.coeff (R := ℤ) (genPent k₀).toNat pentSeries = (-1 : ℤ) ^ k₀.natAbs := by
   have hnn : 0 ≤ genPent k₀ := isGenPent_nonneg (genPent_isGenPent k₀)
   rw [coeff_pentSeries, Int.toNat_of_nonneg hnn]
   exact pentCoeff_genPent k₀
@@ -347,7 +356,7 @@ theorem coeff_pentSeries_genPent (k₀ : ℤ) :
 /-- **Lacunary coefficients of the RHS, off the pentagonal exponents.** If `n` is
 not a generalized pentagonal number, the coefficient of `Xⁿ` in `pentSeries` is `0`. -/
 theorem coeff_pentSeries_eq_zero {n : ℕ} (h : ¬ IsGenPent (n : ℤ)) :
-    PowerSeries.coeff ℤ n pentSeries = 0 := by
+    PowerSeries.coeff (R := ℤ) n pentSeries = 0 := by
   rw [coeff_pentSeries]
   refine pentCoeff_eq_zero fun k hk => ?_
   exact h ((isGenPent_iff_exists_genPent _).mpr ⟨k, hk⟩)
@@ -368,7 +377,7 @@ define `eulerProduct` by reading it off there (`eulerProduct`,
 honest equation `eulerProduct = pentSeries` between two fully constructed objects. -/
 
 /-- The truncated Euler product `∏_{n=1}^{N} (1 − Xⁿ)` in `ℤ⟦X⟧`. -/
-def eulerPartialProd (N : ℕ) : PowerSeries ℤ :=
+noncomputable def eulerPartialProd (N : ℕ) : PowerSeries ℤ :=
   ∏ n ∈ Finset.range N, (1 - (PowerSeries.X : PowerSeries ℤ) ^ (n + 1))
 
 /-- Truncating one factor further multiplies by `1 − X^{N+1}`. -/
@@ -382,16 +391,16 @@ theorem eulerPartialProd_succ (N : ℕ) :
 `1 − X^{N+1}` does not change the coefficient of `Xᵐ`, since `X^{N+1}` lives in
 degrees `≥ N+1 > m`. -/
 theorem coeff_eulerPartialProd_succ {m N : ℕ} (h : m ≤ N) :
-    PowerSeries.coeff ℤ m (eulerPartialProd (N + 1))
-      = PowerSeries.coeff ℤ m (eulerPartialProd N) := by
+    PowerSeries.coeff (R := ℤ) m (eulerPartialProd (N + 1))
+      = PowerSeries.coeff (R := ℤ) m (eulerPartialProd N) := by
   rw [eulerPartialProd_succ, mul_sub, mul_one, map_sub,
     PowerSeries.coeff_mul_X_pow', if_neg (by omega : ¬ (N + 1 ≤ m)), sub_zero]
 
 /-- **Coefficient stabilization.** For every `N ≥ m`, the `m`-th coefficient of the
 truncated product has already reached its final value (that of `eulerPartialProd m`). -/
 theorem coeff_eulerPartialProd_stable {m N : ℕ} (h : m ≤ N) :
-    PowerSeries.coeff ℤ m (eulerPartialProd N)
-      = PowerSeries.coeff ℤ m (eulerPartialProd m) := by
+    PowerSeries.coeff (R := ℤ) m (eulerPartialProd N)
+      = PowerSeries.coeff (R := ℤ) m (eulerPartialProd m) := by
   induction N, h using Nat.le_induction with
   | base => rfl
   | succ n hn ih => rw [coeff_eulerPartialProd_succ hn, ih]
@@ -400,11 +409,11 @@ theorem coeff_eulerPartialProd_stable {m N : ℕ} (h : m ≤ N) :
 defined by reading off each coefficient from a truncation long enough to have
 stabilized. -/
 noncomputable def eulerProduct : PowerSeries ℤ :=
-  PowerSeries.mk fun m => PowerSeries.coeff ℤ m (eulerPartialProd m)
+  PowerSeries.mk fun m => PowerSeries.coeff (R := ℤ) m (eulerPartialProd m)
 
 @[simp] theorem coeff_eulerProduct (m : ℕ) :
-    PowerSeries.coeff ℤ m eulerProduct
-      = PowerSeries.coeff ℤ m (eulerPartialProd m) := by
+    PowerSeries.coeff (R := ℤ) m eulerProduct
+      = PowerSeries.coeff (R := ℤ) m (eulerPartialProd m) := by
   unfold eulerProduct
   rw [PowerSeries.coeff_mk]
 
@@ -412,18 +421,109 @@ noncomputable def eulerProduct : PowerSeries ℤ :=
 sufficiently long truncation `eulerPartialProd N` (`N ≥ m`).  This is the precise
 sense in which `eulerProduct` *is* the infinite product `∏(1−Xⁿ)`. -/
 theorem coeff_eulerProduct_of_le {m N : ℕ} (h : m ≤ N) :
-    PowerSeries.coeff ℤ m eulerProduct
-      = PowerSeries.coeff ℤ m (eulerPartialProd N) := by
+    PowerSeries.coeff (R := ℤ) m eulerProduct
+      = PowerSeries.coeff (R := ℤ) m (eulerPartialProd N) := by
   rw [coeff_eulerProduct, ← coeff_eulerPartialProd_stable h]
 
 /-- The Euler product is normalized: its constant term is `1` (the empty
 truncation `eulerPartialProd 0 = 1`). -/
 @[simp] theorem coeff_eulerProduct_zero :
-    PowerSeries.coeff ℤ 0 eulerProduct = 1 := by
+    PowerSeries.coeff (R := ℤ) 0 eulerProduct = 1 := by
   rw [coeff_eulerProduct]
   unfold eulerPartialProd
   rw [Finset.range_zero, Finset.prod_empty]
   simp
+
+/-! ### Low-degree truncations, in closed form
+
+To compare the product side against the lacunary side beyond the constant term we
+write out the first two nontrivial truncations as explicit polynomials.  Because
+the `m`-th coefficient of `eulerProduct` already equals that of `eulerPartialProd m`
+(`coeff_eulerProduct_of_le`), these closed forms read off the degree-1 and degree-2
+coefficients of the infinite product directly. -/
+
+/-- The level-1 truncation is `1 − X`. -/
+theorem eulerPartialProd_one_eq :
+    eulerPartialProd 1 = 1 - (PowerSeries.X : PowerSeries ℤ) := by
+  unfold eulerPartialProd
+  rw [Finset.prod_range_one]
+  ring
+
+/-- The level-2 truncation is `(1 − X)(1 − X²) = 1 − X − X² + X³`. -/
+theorem eulerPartialProd_two_eq :
+    eulerPartialProd 2
+      = 1 - (PowerSeries.X : PowerSeries ℤ) - PowerSeries.X ^ 2 + PowerSeries.X ^ 3 := by
+  unfold eulerPartialProd
+  rw [Finset.prod_range_succ, Finset.prod_range_one]
+  ring
+
+/-- **Degree-1 coefficient of the Euler product is `−1`** (the `−X` term of
+`1 − X`). -/
+theorem coeff_eulerProduct_one :
+    PowerSeries.coeff (R := ℤ) 1 eulerProduct = -1 := by
+  rw [coeff_eulerProduct_of_le (le_refl 1), eulerPartialProd_one_eq]
+  simp [map_sub, PowerSeries.coeff_one, PowerSeries.coeff_X]
+
+/-- **Degree-2 coefficient of the Euler product is `−1`** (the `−X²` term of
+`1 − X − X² + X³`). -/
+theorem coeff_eulerProduct_two :
+    PowerSeries.coeff (R := ℤ) 2 eulerProduct = -1 := by
+  rw [coeff_eulerProduct_of_le (le_refl 2), eulerPartialProd_two_eq]
+  simp [map_sub, map_add, PowerSeries.coeff_one, PowerSeries.coeff_X,
+    PowerSeries.coeff_X_pow]
+
+/-! ## Part 6b: The product coefficient as a signed count over distinct parts
+
+Expanding the finite truncation `∏_{m=1}^{N}(1 − Xᵐ)` over the powerset of
+`{0,…,N−1}` via `Finset.prod_add` exhibits the `Xⁿ`-coefficient of the Euler
+product as a **signed enumeration of partitions into distinct parts**: a subset
+`t ⊆ {0,…,N−1}` corresponds to the distinct parts `{i+1 : i ∈ t}`, contributing
+sign `(−1)^{|t|}` to the coefficient of `X^{∑_{i∈t}(i+1)}`.  This is the
+combinatorial left-hand side of Euler's identity — the side on which Franklin's
+sign-reversing involution acts.  With this in hand the open core is *precisely*
+the assertion that this signed count equals `(−1)ᵏ` at `n = g(k)` and `0`
+otherwise; the number-theoretic index theory above identifies the surviving
+exponents, and a (still missing) involution would supply the cancellation. -/
+
+/-- **Subset expansion of the truncated Euler product.** Expanding the product of
+`1 − X^{i+1}` over `i < N` gives a signed sum over subsets `t ⊆ {0,…,N−1}`, the
+term of `t` being `(−1)^{|t|} X^{∑_{i∈t}(i+1)}`.  The exponent `∑_{i∈t}(i+1)` is
+the sum of the distinct parts `{i+1 : i ∈ t}`, so the subsets index exactly the
+partitions of that exponent into distinct parts. -/
+theorem eulerPartialProd_eq_sum_powerset (N : ℕ) :
+    eulerPartialProd N
+      = ∑ t ∈ (Finset.range N).powerset,
+          (-1 : PowerSeries ℤ) ^ t.card * PowerSeries.X ^ (∑ i ∈ t, (i + 1)) := by
+  unfold eulerPartialProd
+  have hfac : ∀ i ∈ Finset.range N,
+      (1 - (PowerSeries.X : PowerSeries ℤ) ^ (i + 1))
+        = (-(PowerSeries.X : PowerSeries ℤ) ^ (i + 1)) + 1 := fun i _ => by ring
+  rw [Finset.prod_congr rfl hfac, Finset.prod_add]
+  refine Finset.sum_congr rfl (fun t _ => ?_)
+  rw [Finset.prod_const_one, mul_one]
+  have hneg : ∀ i ∈ t,
+      (-(PowerSeries.X : PowerSeries ℤ) ^ (i + 1))
+        = (-1 : PowerSeries ℤ) * PowerSeries.X ^ (i + 1) := fun i _ => by ring
+  rw [Finset.prod_congr rfl hneg, Finset.prod_mul_distrib, Finset.prod_const,
+    Finset.prod_pow_eq_pow_sum]
+
+/-- **The Euler product coefficient is a signed count of distinct partitions.** For
+`N ≥ n`, the coefficient of `Xⁿ` in `∏_{m≥1}(1 − Xᵐ)` equals `∑ (−1)^{|t|}` over
+subsets `t ⊆ {0,…,N−1}` whose shifted sum `∑_{i∈t}(i+1)` is `n` — that is, the
+signed count of partitions of `n` into distinct parts (`+` for an even number of
+parts, `−` for odd).  Euler's pentagonal number theorem is exactly the assertion
+that this signed count is `(−1)ᵏ` when `n = g(k)` and `0` otherwise, and the
+combinatorial content of that assertion is Franklin's involution. -/
+theorem coeff_eulerProduct_eq_signed_count {n N : ℕ} (h : n ≤ N) :
+    PowerSeries.coeff (R := ℤ) n eulerProduct
+      = ∑ t ∈ (Finset.range N).powerset,
+          if n = ∑ i ∈ t, (i + 1) then (-1 : ℤ) ^ t.card else 0 := by
+  rw [coeff_eulerProduct_of_le h, eulerPartialProd_eq_sum_powerset, map_sum]
+  refine Finset.sum_congr rfl (fun t _ => ?_)
+  have hC : ((-1 : PowerSeries ℤ) ^ t.card)
+      = (PowerSeries.C (R := ℤ) ((-1 : ℤ) ^ t.card)) := by
+    rw [map_pow, map_neg, map_one]
+  rw [hC, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow, mul_ite, mul_one, mul_zero]
 
 /-! ## OPEN CORE: the pentagonal identity as a typed equation
 
@@ -444,10 +544,31 @@ least correctly normalized: they agree at the constant coefficient (both `1`).
 constant term `(-1)^|0| = 1` at the exponent `g(0) = 0`.  This verifies the
 identity in degree `0` only — it does not prove `eulerPentagonalIdentity`. -/
 theorem eulerPentagonalIdentity_constantCoeff :
-    PowerSeries.coeff ℤ 0 eulerProduct = PowerSeries.coeff ℤ 0 pentSeries := by
+    PowerSeries.coeff (R := ℤ) 0 eulerProduct = PowerSeries.coeff (R := ℤ) 0 pentSeries := by
   have h := coeff_pentSeries_genPent 0
   rw [genPent_zero] at h
   rw [coeff_eulerProduct_zero]
+  simpa using h.symm
+
+/-- **Euler's identity holds in degree 1.** Both sides have `X`-coefficient `−1`:
+the product `∏(1−Xⁿ)` from its `−X` term, the lacunary series from its term at the
+pentagonal exponent `g(1) = 1` with sign `(-1)^|1| = -1`. -/
+theorem eulerPentagonalIdentity_coeff_one :
+    PowerSeries.coeff (R := ℤ) 1 eulerProduct = PowerSeries.coeff (R := ℤ) 1 pentSeries := by
+  rw [coeff_eulerProduct_one]
+  have h := coeff_pentSeries_genPent 1
+  rw [genPent_one] at h
+  simpa using h.symm
+
+/-- **Euler's identity holds in degree 2.** Both sides have `X²`-coefficient `−1`:
+the product from its `−X²` term, the lacunary series from its term at the
+pentagonal exponent `g(-1) = 2` with sign `(-1)^|-1| = -1`.  This is the first
+check at a *negative* index `k`, exercising the `(-1)^|k|` sign convention. -/
+theorem eulerPentagonalIdentity_coeff_two :
+    PowerSeries.coeff (R := ℤ) 2 eulerProduct = PowerSeries.coeff (R := ℤ) 2 pentSeries := by
+  rw [coeff_eulerProduct_two]
+  have h := coeff_pentSeries_genPent (-1)
+  rw [genPent_neg_one] at h
   simpa using h.symm
 
 /-! ## On the remaining open content (Franklin's involution)
