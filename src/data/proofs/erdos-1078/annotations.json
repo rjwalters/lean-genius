@@ -16,7 +16,11 @@
       "multipartite-graphs",
       "minimum-degree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal graph theory",
+      "Complete graphs (cliques)",
+      "Asymptotic notation"
+    ]
   },
   {
     "id": "ann-e1078-rpartite",
@@ -34,7 +38,11 @@
       "graph-partition",
       "balanced-multipartite"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph partitions",
+      "Simple graphs",
+      "Vertex set indexing"
+    ]
   },
   {
     "id": "ann-e1078-mindegree",
@@ -52,7 +60,11 @@
       "graph-degree",
       "extremal-conditions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex degree",
+      "Infimum over finite sets",
+      "Decidable adjacency"
+    ]
   },
   {
     "id": "ann-e1078-containskr",
@@ -71,7 +83,11 @@
       "rainbow-clique",
       "transversal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cliques and complete subgraphs",
+      "Adjacency relation",
+      "Transversal selection"
+    ]
   },
   {
     "id": "ann-e1078-besconjecture",
@@ -89,7 +105,11 @@
       "conjecture",
       "minimum-degree-threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Minimum degree conditions",
+      "Real-valued thresholds",
+      "Multipartite graphs"
+    ]
   },
   {
     "id": "ann-e1078-threshold-tight",
@@ -107,7 +127,11 @@
       "extremal-construction",
       "tightness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal constructions",
+      "Parity arguments",
+      "Lower-bound tightness"
+    ]
   },
   {
     "id": "ann-e1078-haxell",
@@ -125,7 +149,11 @@
       "list-coloring",
       "proof-by-reduction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "List coloring theory",
+      "Proof by reduction",
+      "Auxiliary graphs"
+    ]
   },
   {
     "id": "ann-e1078-sharp",
@@ -144,7 +172,11 @@
       "extremal-construction",
       "parity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Floor and ceiling functions",
+      "Parity of integers",
+      "Integer arithmetic approximation"
+    ]
   },
   {
     "id": "ann-e1078-special",
@@ -162,7 +194,11 @@
       "bipartite-graphs",
       "tripartite-graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Bipartite graphs",
+      "Tripartite graphs",
+      "Formula specialization"
+    ]
   },
   {
     "id": "ann-e1078-transversal",
@@ -180,7 +216,11 @@
       "independent-transversal",
       "extremal-construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Independent sets",
+      "Duality of clique and independence",
+      "List coloring"
+    ]
   },
   {
     "id": "ann-e1078-summary",
@@ -198,6 +238,10 @@
       "problem-resolution",
       "complete-answer"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical conjunction",
+      "Threshold theorems",
+      "Counterexample constructions"
+    ]
   }
 ]
