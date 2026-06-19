@@ -264,11 +264,91 @@ theorem genPent_neg_four : genPent (-4) = 26 := by have := two_mul_genPent (-4);
 theorem twelve_isGenPent : IsGenPent 12 :=
   (isGenPent_iff_isSquare 12).mpr ⟨17, by norm_num⟩
 
+/-! ## Part 5: The right-hand side of Euler's identity as a formal power series
+
+The pentagonal number theorem asserts the identity in `ℤ⟦X⟧`
+
+    `∏_{n≥1} (1 - Xⁿ) = ∑_{k∈ℤ} (-1)ᵏ X^{g(k)}`.
+
+Here we construct the **right-hand side** as an honest object `pentSeries : ℤ⟦X⟧`
+and pin down *all* of its coefficients, leaving only the product side and the
+combinatorial equality (Franklin's involution) for the open core.
+
+The sign `(-1)ᵏ` is realized as `(-1)^|k|`, which agrees with `(-1)ᵏ` in `ℤ`
+because `|k|` and `k` have the same parity.  The coefficient of `Xⁿ` is assembled
+as a finite sum over the computable enumerator `pentIndices n`: every index `k`
+with `g(k) = n` automatically satisfies `g(k) ≤ n`, so it lies in `pentIndices n`,
+and by `genPent_injective` at most one term survives.  The upshot
+(`pentCoeff_genPent`, `pentCoeff_eq_zero`) is the lacunary structure: the
+coefficient is `(-1)^|k|` at a generalized pentagonal number `g(k)` and `0`
+everywhere else. -/
+
+/-- The coefficient of `Xⁿ` in `∑_{k∈ℤ} (-1)ᵏ X^{g(k)}`, evaluated over the finite
+contributing index set `pentIndices n`.  Any index with `g(k) = n` lies in
+`pentIndices n` (since `g(k) = n ≤ n`), so this finite sum captures the full
+(a priori infinite) lacunary sum. -/
+def pentCoeff (n : ℤ) : ℤ :=
+  ∑ k ∈ pentIndices n, if genPent k = n then (-1 : ℤ) ^ k.natAbs else 0
+
+/-- `IsGenPent` is exactly "is a value of `g`": `2m = k(3k-1)` iff `m = g(k)`,
+using the exact doubling relation `two_mul_genPent` to avoid integer division. -/
+theorem isGenPent_iff_exists_genPent (m : ℤ) :
+    IsGenPent m ↔ ∃ k : ℤ, genPent k = m := by
+  constructor
+  · rintro ⟨k, hk⟩
+    exact ⟨k, by have := two_mul_genPent k; omega⟩
+  · rintro ⟨k, rfl⟩
+    exact genPent_isGenPent k
+
+/-- **Coefficient at a pentagonal exponent.** At `n = g(k₀)` the lacunary sum has
+exactly one surviving term, the sign `(-1)^|k₀|`; uniqueness is `genPent_injective`. -/
+theorem pentCoeff_genPent (k₀ : ℤ) :
+    pentCoeff (genPent k₀) = (-1 : ℤ) ^ k₀.natAbs := by
+  have hk₀ : k₀ ∈ pentIndices (genPent k₀) := mem_pentIndices.mpr le_rfl
+  rw [pentCoeff, Finset.sum_eq_single_of_mem k₀ hk₀]
+  · rw [if_pos rfl]
+  · intro k _ hne
+    have hk : genPent k ≠ genPent k₀ := fun h => hne (genPent_injective h)
+    rw [if_neg hk]
+
+/-- **Vanishing away from pentagonal exponents.** If `n` is not a value of `g`,
+every term of the lacunary sum vanishes, so the coefficient is `0`. -/
+theorem pentCoeff_eq_zero {n : ℤ} (h : ∀ k : ℤ, genPent k ≠ n) : pentCoeff n = 0 := by
+  rw [pentCoeff]
+  refine Finset.sum_eq_zero fun k _ => ?_
+  rw [if_neg (h k)]
+
+/-- The right-hand side `∑_{k∈ℤ} (-1)ᵏ X^{g(k)}` of Euler's pentagonal number
+theorem, as a formal power series in `ℤ⟦X⟧`. -/
+noncomputable def pentSeries : PowerSeries ℤ :=
+  PowerSeries.mk fun n => pentCoeff (n : ℤ)
+
+@[simp] theorem coeff_pentSeries (n : ℕ) :
+    PowerSeries.coeff ℤ n pentSeries = pentCoeff (n : ℤ) := by
+  rw [pentSeries, PowerSeries.coeff_mk]
+
+/-- **Lacunary coefficients of the RHS, at the pentagonal exponents.** The
+coefficient of `X^{g(k₀)}` in `pentSeries` is `(-1)^|k₀|`. -/
+theorem coeff_pentSeries_genPent (k₀ : ℤ) :
+    PowerSeries.coeff ℤ (genPent k₀).toNat pentSeries = (-1 : ℤ) ^ k₀.natAbs := by
+  have hnn : 0 ≤ genPent k₀ := isGenPent_nonneg (genPent_isGenPent k₀)
+  rw [coeff_pentSeries, Int.toNat_of_nonneg hnn]
+  exact pentCoeff_genPent k₀
+
+/-- **Lacunary coefficients of the RHS, off the pentagonal exponents.** If `n` is
+not a generalized pentagonal number, the coefficient of `Xⁿ` in `pentSeries` is `0`. -/
+theorem coeff_pentSeries_eq_zero {n : ℕ} (h : ¬ IsGenPent (n : ℤ)) :
+    PowerSeries.coeff ℤ n pentSeries = 0 := by
+  rw [coeff_pentSeries]
+  refine pentCoeff_eq_zero fun k hk => ?_
+  exact h ((isGenPent_iff_exists_genPent _).mpr ⟨k, hk⟩)
+
 /-! ## OPEN CORE (not formalized here)
 
-The deep content of the pentagonal number theorem is the *identity*
+With `pentSeries` (Part 5) realizing the **right-hand side**, the pentagonal
+number theorem reduces to the single identity in `ℤ⟦X⟧`
 
-    `∏_{n≥1} (1 - Xⁿ) = ∑_{k∈ℤ} (-1)ᵏ X^{g(k)}`   (in `ℤ⟦X⟧`),
+    `∏_{n≥1} (1 - Xⁿ) = pentSeries`,
 
 equivalently the partition statement `p_even(n) - p_odd(n) = [n = g(k)]·(-1)ᵏ`,
 where `p_even`/`p_odd` count partitions of `n` into an even/odd number of
@@ -279,7 +359,8 @@ partitions of generalized pentagonal numbers.
 Mathlib (as of this writing) has `Nat.Partition` but neither partitions into
 distinct parts with a parity sign, nor Franklin's involution, nor the requisite
 formal-power-series infinite-product manipulation.  Building that is a
-multi-file development; this file supplies the index-set theory it would consume
-(notably `isGenPent_iff_isSquare` and `genPent_injective`). -/
+multi-file development; this file supplies both the index-set theory it would
+consume (notably `isGenPent_iff_isSquare` and `genPent_injective`) and the fully
+characterized target series `pentSeries`. -/
 
 end PentagonalNumberTheoremOQ01

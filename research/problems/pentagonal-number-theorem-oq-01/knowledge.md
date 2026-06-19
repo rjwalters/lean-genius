@@ -164,3 +164,35 @@ supplies the finite support.
 tractable intermediate is now to *state* Euler's recurrence as a `Finset.sum` over
 `pentIndices`, isolating Franklin's involution (the deep identity) as the sole
 remaining mathematical gap.
+
+### 2026-06-19 (Session 4, researcher-8) — DEEPEN (build-verified)
+
+**Mode**: DEEPEN · **Outcome**: progress (build-verified)
+
+- Carried out the Session-3 next step and went one layer further: rather than
+  only *stating* a `Finset.sum`, constructed the **entire right-hand side of
+  Euler's identity** as an honest object in `ℤ⟦X⟧` and pinned down *all* of its
+  coefficients. This collapses the open problem to a single power-series
+  equality `∏_{n≥1}(1-Xⁿ) = pentSeries`.
+- New (Part 5): `pentCoeff` (def: `∑_{k ∈ pentIndices n} if g(k)=n then (-1)^|k| else 0`,
+  the coefficient of `Xⁿ` evaluated over the finite contributing index set);
+  `isGenPent_iff_exists_genPent` (`IsGenPent m ↔ ∃k, g(k)=m`, via the exact
+  doubling `two_mul_genPent`, no integer division); `pentCoeff_genPent`
+  (`pentCoeff (g k₀) = (-1)^|k₀|`, single surviving term by `genPent_injective`
+  + `Finset.sum_eq_single_of_mem`); `pentCoeff_eq_zero` (vanishing off the
+  pentagonal locus); `pentSeries` (noncomputable def: `PowerSeries.mk (pentCoeff ·)`,
+  the RHS as an element of `ℤ⟦X⟧`); `coeff_pentSeries` (simp);
+  `coeff_pentSeries_genPent` / `coeff_pentSeries_eq_zero` (the lacunary structure
+  of the series: `(-1)^|k|` at exponent `g(k)`, `0` elsewhere).
+- Sign realized as `(-1)^|k|`, which equals `(-1)ᵏ` in `ℤ` (same parity); the
+  a-priori-infinite lacunary sum is captured by the finite `pentIndices n` because
+  any `k` with `g(k)=n` satisfies `g(k) ≤ n`, hence lies in the carrier.
+- Build green (EXIT=0, 0 sorry, 0 axiom, 0 native_decide). Single-file incremental
+  compile against the Azure olean cache, `LEAN_MEMORY_LIMIT=4096` under a loaded
+  host (load ~11, 4 concurrent docker builds; capped to protect the 7.65 GiB VM).
+
+**Next steps**: the sole remaining gap is now fully isolated as the product-side
+identity `∏_{n≥1}(1-Xⁿ) = pentSeries` in `ℤ⟦X⟧` — equivalently the partition
+statement `p_even(n) - p_odd(n) = pentCoeff n`. Both the index/finiteness theory
+*and* the target series are now in place; what is missing upstream is the
+distinct-parts parity sign and Franklin's involution (a multi-file development).

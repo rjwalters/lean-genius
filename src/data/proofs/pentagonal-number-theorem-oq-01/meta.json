@@ -46,14 +46,15 @@
       "Concrete values g(0..±4) = 0,1,2,5,7,12,15,22,26 matching OEIS A001318, with a sanity check that 12 = g(3) and 24·12+1 = 17²",
       "Index-bound theory making Euler partition recurrence a finite sum: genPent_sq_le_self (k^2 <= g(k), quadratic growth), abs_index_le_genPent (|k| <= g(k)), and indexSet_finite ({k | g(k) <= n} is finite, contained in [-n,n])",
       "A computable enumerator pentIndices (def): the explicit Finset of indices k with g(k) <= n, filtered from [-n,n], with mem_pentIndices (membership iff g(k) <= n) and coe_pentIndices (realizing the abstract set {k | g(k) <= n}), so the finite sum in Euler's recurrence can be evaluated",
-      "genPent_neg: the +/-k pairing g(-k) = g(k) + k of Euler's recurrence, relating the two pentagonal shifts g(k) and g(-k) that occur together at each level"
+      "genPent_neg: the +/-k pairing g(-k) = g(k) + k of Euler's recurrence, relating the two pentagonal shifts g(k) and g(-k) that occur together at each level",
+      "pentSeries (noncomputable def): the right-hand side sum_{k in Z} (-1)^k X^{g(k)} of Euler's identity realized as an honest formal power series in Z[[X]], with every coefficient pinned down — pentCoeff_genPent shows the coefficient at a pentagonal exponent g(k0) is exactly (-1)^|k0| (uniqueness via genPent_injective), and coeff_pentSeries_eq_zero shows it vanishes off the pentagonal exponents, exhibiting the lacunary structure; this reduces the full theorem to the single product-side identity prod(1-X^n) = pentSeries documented as the open core"
     ],
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
-    "lineCount": 241,
-    "assumptions": "None: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. Machine-verified — the file compiles cleanly under the docker Lean build against Mathlib (Built Proofs.PentagonalNumberTheoremOQ01, 7743 jobs, exit 0, warning-clean).",
-    "theoremCount": 23,
-    "definitionCount": 2
+    "lineCount": 366,
+    "assumptions": "None: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. Machine-verified — the file compiles cleanly under the docker Lean build against Mathlib (Built Proofs.PentagonalNumberTheoremOQ01, exit 0, warning-clean).",
+    "theoremCount": 32,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Euler discovered the pentagonal number theorem in 1740s correspondence with Goldbach and proved it in 1750: the infinite product ∏_{n≥1}(1-xⁿ) equals the lacunary series ∑_{k∈ℤ}(-1)ᵏ x^{k(3k-1)/2}. The exponents are the generalized pentagonal numbers (OEIS A001318), and the theorem yields Euler's celebrated recurrence for the partition function p(n). Franklin (1881) gave the bijective proof via a sign-reversing involution on partitions into distinct parts. Mathlib formalizes Nat.Partition but not the distinct-partition parity machinery, Franklin's involution, or the formal power-series infinite product, so the deep identity remains unformalized; this entry supplies the index-set theory that any such formalization consumes.",
