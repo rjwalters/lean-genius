@@ -18,7 +18,9 @@ missing infrastructure from the De Moivre identity `Tₙ(cos θ) = cos (n θ)` a
 the two-term recurrence `T_{n+2} = 2 X T_{n+1} - Tₙ`, and assembles the
 achievability half of the minimax theorem: the monic Chebyshev polynomial is
 monic of degree `n`, has sup-norm `2^(1-n)` on `[-1,1]`, and equioscillates
-between `±2^(1-n)` at the `n+1` extreme nodes.
+between `±2^(1-n)` at the `n+1` extreme nodes.  It then proves the optimality
+(lower-bound) half by the classical equioscillation argument, giving the full
+minimax theorem `chebyshev_minimax`.
 
 ## Results
 
@@ -36,6 +38,11 @@ Monic normalization and the achievability half of the minimax:
 * `monicChebyshev_monic`      : it is monic of degree `n`.
 * `monicChebyshev_abs_le`     : its sup-norm on `[-1,1]` is `≤ 2^(1-n)`.
 * `monicChebyshev_eval_node`  : it equioscillates between `±2^(1-n)`.
+
+Optimality (lower-bound) half and the full theorem:
+* `monicChebyshev_minimax`    : every monic degree-`n` `p` has `|p| ≥ 2^(1-n)`
+  somewhere on `[-1,1]` (equioscillation + IVT root-count argument).
+* `chebyshev_minimax`         : the full minimax theorem (achievability ∧ optimality).
 -/
 
 open Polynomial Polynomial.Chebyshev Real
@@ -196,5 +203,176 @@ theorem monicChebyshev_eval_node (n k : ℕ) (hn : 0 < n) :
     (monicChebyshev n).eval (Real.cos (k * π / n)) =
       (-1) ^ k * ((2 : ℝ) ^ (n - 1))⁻¹ := by
   rw [monicChebyshev, eval_mul, eval_C, chebyshev_eval_node n k hn]; ring
+
+/-! ## Part IV: The optimality (lower-bound) half of the minimax theorem
+
+The deep direction: *no* monic polynomial of degree `n` can have sup-norm on
+`[-1,1]` smaller than `Mₙ`'s value `2^(1-n)`.  The proof is the classical
+equioscillation argument.  If a monic `p` of degree `n` had `‖p‖∞ < 2^(1-n)`,
+then `q = Mₙ - p` would inherit the sign of `Mₙ` at each of the `n+1` extreme
+nodes `cos(kπ/n)` (strict alternation), so by the intermediate value theorem `q`
+would have a root strictly between every pair of consecutive nodes — `n` distinct
+roots.  But `q` is a difference of two monic degree-`n` polynomials, hence has
+degree `< n`; a nonzero polynomial of degree `< n` cannot have `n` roots. -/
+
+/-- Strict monotonicity of the Chebyshev extreme nodes `cos(kπ/n)`: over
+`0 ≤ k ≤ n` they strictly decrease in `k`. -/
+private theorem node_strict_anti (n : ℕ) (hn : 0 < n) {i j : ℕ} (hj : j ≤ n)
+    (hij : i < j) : Real.cos (j * π / n) < Real.cos (i * π / n) := by
+  have hn' : (0 : ℝ) < n := by exact_mod_cast hn
+  have hpi := Real.pi_pos
+  have hi_le : (i : ℝ) ≤ n := by exact_mod_cast (le_of_lt (lt_of_lt_of_le hij hj))
+  have hj_le : (j : ℝ) ≤ n := by exact_mod_cast hj
+  apply Real.strictAntiOn_cos
+  · refine ⟨div_nonneg (mul_nonneg (Nat.cast_nonneg i) hpi.le) hn'.le, ?_⟩
+    rw [div_le_iff₀ hn']; nlinarith [hpi, hi_le]
+  · refine ⟨div_nonneg (mul_nonneg (Nat.cast_nonneg j) hpi.le) hn'.le, ?_⟩
+    rw [div_le_iff₀ hn']; nlinarith [hpi, hj_le]
+  · rw [div_lt_div_iff_of_pos_right hn']
+    have hij' : (i : ℝ) < j := by exact_mod_cast hij
+    nlinarith [hpi]
+
+/-- Non-strict (antitone) version of `node_strict_anti`. -/
+private theorem node_anti (n : ℕ) (hn : 0 < n) {i j : ℕ} (hj : j ≤ n)
+    (hij : i ≤ j) : Real.cos (j * π / n) ≤ Real.cos (i * π / n) := by
+  rcases eq_or_lt_of_le hij with h | h
+  · exact le_of_eq (by rw [h])
+  · exact (node_strict_anti n hn hj h).le
+
+set_option maxHeartbeats 800000 in
+/-- **Optimality (lower-bound) half of the Chebyshev minimax theorem.**
+Every monic real polynomial of degree `n ≥ 1` attains absolute value at least
+`2^(1-n)` somewhere on `[-1,1]`; equivalently, its sup-norm there is `≥ 2^(1-n)`,
+so it cannot beat the monic Chebyshev polynomial. -/
+theorem monicChebyshev_minimax (p : ℝ[X]) (hp : p.Monic) (n : ℕ) (hn : 0 < n)
+    (hpdeg : p.natDegree = n) :
+    ∃ x ∈ Set.Icc (-1 : ℝ) 1, ((2 : ℝ) ^ (n - 1))⁻¹ ≤ |p.eval x| := by
+  classical
+  by_contra hcon
+  push_neg at hcon
+  set M : ℝ := ((2 : ℝ) ^ (n - 1))⁻¹ with hM_def
+  have hMpos : 0 < M := by rw [hM_def]; positivity
+  set q : ℝ[X] := monicChebyshev n - p with hq_def
+  -- Strict sign alternation of `q` at the extreme nodes: `(-1)^k · q(cos kπ/n) > 0`.
+  have halt : ∀ k : ℕ, k ≤ n → 0 < (-1 : ℝ) ^ k * q.eval (Real.cos (k * π / n)) := by
+    intro k hk
+    have hmem : Real.cos (k * π / n) ∈ Set.Icc (-1 : ℝ) 1 :=
+      ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩
+    have hev : q.eval (Real.cos (k * π / n)) = (-1) ^ k * M - p.eval (Real.cos (k * π / n)) := by
+      rw [hq_def, eval_sub, monicChebyshev_eval_node n k hn, ← hM_def]
+    have hsq : (-1 : ℝ) ^ k * (-1) ^ k = 1 := by
+      rw [← pow_add]; exact Even.neg_one_pow ⟨k, by ring⟩
+    have hpb : (-1 : ℝ) ^ k * p.eval (Real.cos (k * π / n)) < M := by
+      calc (-1 : ℝ) ^ k * p.eval (Real.cos (k * π / n))
+          ≤ |(-1 : ℝ) ^ k * p.eval (Real.cos (k * π / n))| := le_abs_self _
+        _ = |p.eval (Real.cos (k * π / n))| := by rw [abs_mul]; simp [abs_pow]
+        _ < M := hcon _ hmem
+    have hcalc : (-1 : ℝ) ^ k * q.eval (Real.cos (k * π / n))
+        = ((-1) ^ k * (-1) ^ k) * M - (-1) ^ k * p.eval (Real.cos (k * π / n)) := by
+      rw [hev]; ring
+    rw [hcalc, hsq, one_mul]; linarith
+  -- `q ≠ 0`: it is strictly positive at the `k = 0` node.
+  have hq_ne : q ≠ 0 := by
+    intro h
+    have h0 := halt 0 (Nat.zero_le n)
+    rw [h] at h0; simp at h0
+  -- `q` has degree `< n` (difference of two monic degree-`n` polynomials).
+  have hdeg : q.natDegree < n := by
+    have hpne : p ≠ 0 := hp.ne_zero
+    have hMcne : monicChebyshev n ≠ 0 := (monicChebyshev_monic n hn).ne_zero
+    have hdegM : (monicChebyshev n).degree = (n : WithBot ℕ) := by
+      rw [degree_eq_natDegree hMcne, monicChebyshev_natDegree]
+    have hdegp : p.degree = (n : WithBot ℕ) := by
+      rw [degree_eq_natDegree hpne, hpdeg]
+    have hlc : (monicChebyshev n).leadingCoeff = p.leadingCoeff := by
+      rw [Monic.def.1 (monicChebyshev_monic n hn), Monic.def.1 hp]
+    have hsub : (monicChebyshev n - p).degree < (monicChebyshev n).degree :=
+      degree_sub_lt (by rw [hdegM, hdegp]) hMcne hlc
+    rw [hdegM, ← hq_def] at hsub
+    exact (natDegree_lt_iff_degree_lt hq_ne).mpr hsub
+  -- For each consecutive pair of nodes, `q` has a root strictly between them.
+  have hroot : ∀ k : Fin n, ∃ r, Real.cos ((k.val + 1) * π / n) < r ∧
+      r < Real.cos (k.val * π / n) ∧ q.eval r = 0 := by
+    intro k
+    have hkn : k.val < n := k.isLt
+    have hk1_le : k.val + 1 ≤ n := hkn
+    have hlt : Real.cos ((k.val + 1) * π / n) < Real.cos (k.val * π / n) := by
+      have h := node_strict_anti n hn hk1_le (Nat.lt_succ_self k.val)
+      rwa [Nat.cast_add, Nat.cast_one] at h
+    have s0 := halt k.val (le_of_lt hkn)
+    have s1 := halt (k.val + 1) hk1_le
+    rw [Nat.cast_add, Nat.cast_one] at s1
+    have hne0 : q.eval (Real.cos (k.val * π / n)) ≠ 0 := by
+      intro h; rw [h, mul_zero] at s0; exact lt_irrefl 0 s0
+    have hne1 : q.eval (Real.cos ((k.val + 1) * π / n)) ≠ 0 := by
+      intro h; rw [h, mul_zero] at s1; exact lt_irrefl 0 s1
+    have hmem0 : (0 : ℝ) ∈ Set.uIcc (q.eval (Real.cos ((k.val + 1) * π / n)))
+        (q.eval (Real.cos (k.val * π / n))) := by
+      rcases Nat.even_or_odd k.val with he | ho
+      · have e0 : (-1 : ℝ) ^ k.val = 1 := he.neg_one_pow
+        have e1 : (-1 : ℝ) ^ (k.val + 1) = -1 := by rw [pow_succ, e0]; ring
+        rw [e0, one_mul] at s0; rw [e1] at s1
+        exact Set.mem_uIcc_of_le (by linarith) (by linarith)
+      · have e0 : (-1 : ℝ) ^ k.val = -1 := ho.neg_one_pow
+        have e1 : (-1 : ℝ) ^ (k.val + 1) = 1 := by rw [pow_succ, e0]; ring
+        rw [e0] at s0; rw [e1, one_mul] at s1
+        exact Set.mem_uIcc_of_ge (by linarith) (by linarith)
+    have hcont : ContinuousOn (fun x => q.eval x)
+        (Set.uIcc (Real.cos ((k.val + 1) * π / n)) (Real.cos (k.val * π / n))) :=
+      (Polynomial.continuous q).continuousOn
+    obtain ⟨r, hr_mem, hr_eq⟩ := intermediate_value_uIcc hcont hmem0
+    rw [Set.uIcc_of_le hlt.le] at hr_mem
+    obtain ⟨hr1, hr2⟩ := hr_mem
+    refine ⟨r, ?_, ?_, hr_eq⟩
+    · rcases eq_or_lt_of_le hr1 with h | h
+      · rw [← h] at hr_eq; exact absurd hr_eq hne1
+      · exact h
+    · rcases eq_or_lt_of_le hr2 with h | h
+      · rw [h] at hr_eq; exact absurd hr_eq hne0
+      · exact h
+  -- Collect one root per interval into an injective family `f : Fin n → ℝ`.
+  let f : Fin n → ℝ := fun k => Classical.choose (hroot k)
+  have hf : ∀ k : Fin n, Real.cos ((k.val + 1) * π / n) < f k ∧
+      f k < Real.cos (k.val * π / n) ∧ q.eval (f k) = 0 :=
+    fun k => Classical.choose_spec (hroot k)
+  have hf_root : ∀ k : Fin n, f k ∈ q.roots.toFinset := by
+    intro k; rw [Multiset.mem_toFinset, mem_roots']; exact ⟨hq_ne, (hf k).2.2⟩
+  have hf_inj : Function.Injective f := by
+    have hanti : StrictAnti f := by
+      intro a b hab
+      have hab' : a.val < b.val := hab
+      have hb1 : f b < Real.cos (b.val * π / n) := (hf b).2.1
+      have ha0 : Real.cos ((a.val + 1) * π / n) < f a := (hf a).1
+      have hstep : Real.cos (b.val * π / n) ≤ Real.cos ((a.val + 1) * π / n) := by
+        have h := node_anti n hn (le_of_lt b.isLt) (show a.val + 1 ≤ b.val by omega)
+        rwa [Nat.cast_add, Nat.cast_one] at h
+      linarith
+    exact hanti.injective
+  -- `n` distinct roots, but `q ≠ 0` has at most `natDegree q < n` roots.
+  have hcard : (Finset.univ.image f).card = n := by
+    rw [Finset.card_image_of_injective _ hf_inj, Finset.card_univ, Fintype.card_fin]
+  have hsubset : Finset.univ.image f ⊆ q.roots.toFinset := by
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨k, _, rfl⟩ := hx
+    exact hf_root k
+  have hle : n ≤ q.natDegree :=
+    calc n = (Finset.univ.image f).card := hcard.symm
+      _ ≤ q.roots.toFinset.card := Finset.card_le_card hsubset
+      _ ≤ Multiset.card q.roots := Multiset.toFinset_card_le _
+      _ ≤ q.natDegree := card_roots' q
+  omega
+
+/-- **Chebyshev minimax theorem (full statement).** Among monic real polynomials
+of degree `n ≥ 1`, the monic Chebyshev polynomial `Mₙ` minimizes the sup-norm on
+`[-1,1]` and the minimal value is exactly `2^(1-n)`: `Mₙ` stays within `2^(1-n)`
+everywhere (achievability), while every monic degree-`n` polynomial reaches at
+least `2^(1-n)` somewhere (optimality). -/
+theorem chebyshev_minimax (n : ℕ) (hn : 0 < n) :
+    (∀ x ∈ Set.Icc (-1 : ℝ) 1, |(monicChebyshev n).eval x| ≤ ((2 : ℝ) ^ (n - 1))⁻¹) ∧
+      (∀ p : ℝ[X], p.Monic → p.natDegree = n →
+        ∃ x ∈ Set.Icc (-1 : ℝ) 1, ((2 : ℝ) ^ (n - 1))⁻¹ ≤ |p.eval x|) :=
+  ⟨fun _ hx => monicChebyshev_abs_le n hx,
+    fun p hp hpd => monicChebyshev_minimax p hp n hn hpd⟩
 
 end DeMoivreOQ0203
