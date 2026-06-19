@@ -101,4 +101,51 @@ theorem clog_le_card_of_epsUniform {G : Type*} [AddCommGroup G] [Fintype G]
   (Nat.le_pow_iff_clog_le (by norm_num)).mp
     (card_le_two_pow_of_epsUniform A ε hε1 hunif)
 
+/-! ### Structural properties of ε-uniformity
+
+A few elementary structural facts about the `IsEpsUniform` predicate and the
+lower bound above, recorded here as reusable API: the uniformity classes are
+nested in `ε`, the count is bounded on BOTH sides (the lower-side spanning
+`epsUniform_spanning` has a matching upper companion), and — as the
+contrapositive of the lower bound — a set smaller than `⌈log₂ N⌉` cannot be
+ε-uniform for any `ε < 1`. -/
+
+/-- The expected representation count `μ = 2^k / N` is nonnegative. -/
+theorem expectedReprCount_nonneg (k N : ℕ) :
+    0 ≤ expectedReprCount k N := by
+  unfold expectedReprCount
+  exact div_nonneg (by positivity) (by positivity)
+
+/-- **Monotonicity in `ε`.**  The ε-uniformity classes are nested: if `A` is
+ε-uniform and `ε ≤ ε'`, then `A` is also ε'-uniform.  Immediate from
+`|F_A(g) − μ| ≤ ε·μ ≤ ε'·μ`, using `μ ≥ 0`. -/
+theorem epsUniform_mono {G : Type*} [AddCommGroup G] [Fintype G] [DecidableEq G]
+    (A : Finset G) (ε ε' : ℝ) (hle : ε ≤ ε') (hunif : IsEpsUniform A ε) :
+    IsEpsUniform A ε' := by
+  intro g
+  refine le_trans (hunif g) ?_
+  exact mul_le_mul_of_nonneg_right hle (expectedReprCount_nonneg _ _)
+
+/-- **Upper companion of spanning.**  ε-uniformity bounds each representation
+count from above as well: `F_A(g) ≤ (1 + ε)·μ`.  This is the upper side of the
+defining inequality `|F_A(g) − μ| ≤ ε·μ`, dual to the lower side used in
+`epsUniform_spanning`. -/
+theorem epsUniform_count_upper {G : Type*} [AddCommGroup G] [Fintype G]
+    [DecidableEq G] (A : Finset G) (ε : ℝ) (hunif : IsEpsUniform A ε) (g : G) :
+    (reprCount A g : ℝ)
+      ≤ (1 + ε) * expectedReprCount A.card (Fintype.card G) := by
+  have h := (abs_le.mp (hunif g)).2
+  nlinarith [h]
+
+/-- **Contrapositive of the lower bound.**  A subset strictly smaller than
+`⌈log₂ N⌉` cannot be ε-uniform for any `ε < 1`: there is no slack below the
+trivial lower bound `g_ε(N) ≥ log₂ N`. -/
+theorem not_epsUniform_of_card_lt_clog {G : Type*} [AddCommGroup G] [Fintype G]
+    [DecidableEq G] (A : Finset G) (ε : ℝ) (hε1 : ε < 1)
+    (hlt : A.card < Nat.clog 2 (Fintype.card G)) :
+    ¬ IsEpsUniform A ε := by
+  intro hunif
+  have hge := clog_le_card_of_epsUniform A ε hε1 hunif
+  omega
+
 end Erdos1179
