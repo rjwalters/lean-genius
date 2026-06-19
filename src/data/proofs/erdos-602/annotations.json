@@ -16,7 +16,11 @@
       "coloring",
       "infinite-sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Property B",
+      "Set.Countable",
+      "Hypergraph 2-coloring"
+    ]
   },
   {
     "id": "ann-602-family",
@@ -35,7 +39,11 @@
       "countable",
       "aleph0"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Indexed family of sets",
+      "Cardinal.aleph0",
+      "Set.Countable"
+    ]
   },
   {
     "id": "ann-602-intersection",
@@ -54,7 +62,11 @@
       "finite",
       "almost-disjoint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.Finite",
+      "Almost-disjoint family",
+      "Set intersection cardinality"
+    ]
   },
   {
     "id": "ann-602-coloring",
@@ -73,7 +85,11 @@
       "monochromatic",
       "property-b"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "2-coloring",
+      "Monochromatic set",
+      "Property B"
+    ]
   },
   {
     "id": "ann-602-family-b",
@@ -91,7 +107,11 @@
       "valid-coloring",
       "family"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proper 2-coloring",
+      "Monochromatic set",
+      "Constraint satisfaction"
+    ]
   },
   {
     "id": "ann-602-conjecture",
@@ -109,7 +129,11 @@
       "conjecture",
       "property-b"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Property B",
+      "Contrapositive",
+      "Counterexample vs existence"
+    ]
   },
   {
     "id": "ann-602-conditions",
@@ -127,7 +151,11 @@
       "conditions",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pigeonhole principle",
+      "Cardinal.aleph0",
+      "Almost-disjoint family"
+    ]
   },
   {
     "id": "ann-602-komjath",
@@ -145,7 +173,11 @@
       "komjath",
       "attribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Property B",
+      "Infinite combinatorics",
+      "Set systems"
+    ]
   },
   {
     "id": "ann-602-special",
@@ -164,7 +196,11 @@
       "almost-disjoint",
       "special-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pairwise-disjoint family",
+      "Almost-disjoint family",
+      "Property B"
+    ]
   },
   {
     "id": "ann-602-obstruction",
@@ -182,7 +218,11 @@
       "counterexample",
       "forcing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proper coloring obstruction",
+      "Negation of conjecture",
+      "Forced monochromatic set"
+    ]
   },
   {
     "id": "ann-602-status",
@@ -201,6 +241,10 @@
       "set-theory",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite set theory",
+      "Combinatorial coloring",
+      "Open problem"
+    ]
   }
 ]
