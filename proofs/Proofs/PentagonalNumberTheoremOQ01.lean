@@ -61,6 +61,14 @@
                                involution proves.  Checked at degrees 3, 4 (the first
                                genuine sign *cancellations*) and 5 (the first index
                                `|k|=2`, `g(2)=5`).
+  - `signedDistinctCount_eq_sum_distincts`
+                               — bridge to Mathlib's partition library:
+                               `signedDistinctCount n = ∑_{p ∈ Nat.Partition.distincts n}
+                               (-1)^{#p.parts}`, via a `Finset.sum_bij'` bijection
+                               `t ↦ {i+1 : i∈t}`.  Recasts the open core into the
+                               Mathlib-native statement `∀ n,
+                               ∑_{p∈distincts n}(-1)^{#p.parts} = pentCoeff n` — the
+                               standard domain on which Franklin's involution is defined.
 -/
 
 import Mathlib
@@ -553,6 +561,86 @@ distinct-part count `signedDistinctCount n` — the bridge of
 theorem coeff_eulerProduct_eq_signedDistinctCount (n : ℕ) :
     PowerSeries.coeff (R := ℤ) n eulerProduct = signedDistinctCount n :=
   coeff_eulerProduct_eq_signed_count (le_refl n)
+
+/-- **Bridge to Mathlib's partition library.** The hand-built signed distinct-part
+count `signedDistinctCount n` equals the parity-weighted count over Mathlib's
+`Nat.Partition.distincts n` (partitions of `n` into pairwise-distinct parts):
+
+    `signedDistinctCount n = ∑_{p ∈ distincts n} (-1)^{#p.parts}`.
+
+The bijection sends a subset `t ⊆ {0,…,n−1}` with shifted sum `∑_{i∈t}(i+1) = n`
+to the distinct partition with parts `{i+1 : i ∈ t}`, and back via `part ↦ part−1`
+(well-defined since every part is `≥ 1`).  This identifies the combinatorial
+left-hand side of Euler's identity with the *standard* object Franklin's
+sign-reversing involution acts on, so the open core
+`∀ n, signedDistinctCount n = pentCoeff n` becomes the Mathlib-native statement
+`∀ n, ∑_{p ∈ distincts n} (-1)^{#p.parts} = pentCoeff n`. -/
+theorem signedDistinctCount_eq_sum_distincts (n : ℕ) :
+    signedDistinctCount n
+      = ∑ p ∈ Nat.Partition.distincts n, (-1 : ℤ) ^ p.parts.card := by
+  -- Undo the `(·-1)` shift on a multiset of positive parts: `((m-1)+1) = m`.
+  have key : ∀ (m : Multiset ℕ), (∀ x ∈ m, 0 < x) →
+      (m.map (· - 1)).map (· + 1) = m := by
+    intro m hm
+    rw [Multiset.map_map]
+    conv_rhs => rw [← Multiset.map_id m]
+    exact Multiset.map_congr rfl (fun x hx => by
+      have := hm x hx
+      simp only [Function.comp_apply, id_eq]; omega)
+  rw [signedDistinctCount, ← Finset.sum_filter]
+  refine Finset.sum_bij'
+    (fun u hu => ({
+        parts := u.val.map (· + 1)
+        parts_pos := by
+          intro m hm
+          rw [Multiset.mem_map] at hm
+          obtain ⟨x, _, rfl⟩ := hm; omega
+        parts_sum := by
+          have h2 := (Finset.mem_filter.mp hu).2
+          exact h2.symm } : Nat.Partition n))
+    (fun p hp => (⟨p.parts.map (· - 1), by
+        have hnd : p.parts.Nodup := by
+          simp only [Nat.Partition.distincts, Finset.mem_filter,
+            Finset.mem_univ, true_and] at hp
+          exact hp
+        exact hnd.map_on (fun x hx y hy h => by
+          have := p.parts_pos hx; have := p.parts_pos hy; omega)⟩ : Finset ℕ))
+    ?_ ?_ ?_ ?_ ?_
+  · -- forward map lands in `distincts n`
+    intro u hu
+    simp only [Nat.Partition.distincts, Finset.mem_filter, Finset.mem_univ, true_and]
+    exact u.nodup.map (fun a b h => by omega)
+  · -- backward map lands in the support of `signedDistinctCount`
+    intro p hp
+    simp only [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, ?_⟩
+    · intro a ha
+      simp only [Finset.mem_mk, Multiset.mem_map] at ha
+      obtain ⟨x, hx, rfl⟩ := ha
+      rw [Finset.mem_range]
+      have h1 := p.parts_pos hx
+      have h2 := Nat.Partition.le_of_mem_parts hx
+      omega
+    · show n = ((p.parts.map (· - 1)).map (· + 1)).sum
+      rw [key p.parts (fun x hx => p.parts_pos hx)]
+      exact p.parts_sum.symm
+  · -- left inverse: subset → partition → subset
+    intro u hu
+    apply Finset.val_inj.mp
+    show (u.val.map (· + 1)).map (· - 1) = u.val
+    rw [Multiset.map_map]
+    conv_rhs => rw [← Multiset.map_id u.val]
+    exact Multiset.map_congr rfl (fun x _ => by
+      simp only [Function.comp_apply, id_eq]; omega)
+  · -- right inverse: partition → subset → partition
+    intro p hp
+    apply Nat.Partition.ext
+    show (p.parts.map (· - 1)).map (· + 1) = p.parts
+    exact key p.parts (fun x hx => p.parts_pos hx)
+  · -- the parity signs agree
+    intro u hu
+    show (-1 : ℤ) ^ u.card = (-1 : ℤ) ^ (u.val.map (· + 1)).card
+    rw [Multiset.card_map, Finset.card_def]
 
 /-! ## OPEN CORE: the pentagonal identity as a typed equation
 

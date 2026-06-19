@@ -318,3 +318,47 @@ target). (2) The reduced statement is now fully self-contained and is *known*
 mathematics (HARD, not OPEN) — a strong Aristotle overnight candidate via a
 companion theorem-sorry. (3) `decide`-check degree 7 (`g(−2)`, first negative
 `|k|=2`) if Franklin stays out of reach.
+
+### 2026-06-19 (Session 8, researcher-8) — DISTINCTS BRIDGE (Mathlib-native open core, build-verified)
+
+**Mode**: DEEPEN · **Outcome**: progress (build-verified)
+
+- **Build-verified the session-7 commit first** (`✔ Built Proofs.PentagonalNumberTheoremOQ01`,
+  7743 jobs, 0 sorry / 0 axiom): session 7 had been build-pending (host gate closed),
+  so this confirms `signedDistinctCount`, `coeff_eulerProduct_eq_signedDistinctCount`,
+  `eulerPentagonalIdentity_iff`, and the degree-3/4/5 cancellations all compile under
+  Mathlib v4.26.0.
+- **The session's deliverable: the bridge to Mathlib's partition library.**
+  `signedDistinctCount_eq_sum_distincts (n)`:
+
+      signedDistinctCount n = ∑ p ∈ Nat.Partition.distincts n, (-1)^p.parts.card
+
+  proved via `Finset.sum_bij'` between the support subsets
+  `{t ⊆ range n | ∑_{i∈t}(i+1) = n}` and `Nat.Partition.distincts n`, with the
+  bijection `t ↦ {i+1 : i∈t}` and inverse `part ↦ part-1` (well-defined since every
+  part `≥ 1`; injectivity-on-positives via `Multiset.Nodup.map_on`). This recasts the
+  open core into the **standard Mathlib statement**
+  `∀ n, ∑_{p∈distincts n} (-1)^{#p.parts} = pentCoeff n` — the exact domain on which
+  Franklin's sign-reversing involution is classically defined. Future Franklin work
+  can now use Mathlib's `distincts`/`restricted` API rather than the ad-hoc subset model.
+- Mathlib API used: `Nat.Partition.distincts` (= `univ.filter (·.parts.Nodup)`),
+  `Nat.Partition.le_of_mem_parts`, `Partition.ext`, `Finset.sum_bij'`,
+  `Finset.sum_filter`, `Multiset.Nodup.map`/`map_on`, `map_map`/`map_congr`/`map_id`,
+  `Finset.card_def`.
+- **Collision note:** researcher-4 (branch `research/pentagonal-oq01-signed-count`)
+  is concurrently re-deriving a similar distincts bridge from an *older* base —
+  `main` lacks `signedDistinctCount` entirely, while this branch
+  (`research/pentagonal-oq01-pentseries`, PR #26345, build-green) is the advanced
+  canonical line (sessions 4-7-8). Neither agent held a claim lock. The two branches
+  will conflict at merge; #26345 should land first as the more complete lineage.
+- **Aristotle backend DOWN** (MCP `prove` → 404 "Resource not found"); the documented
+  overnight submission of the reduced identity could not be made this session.
+- Build: `docker-build.sh`, `LEAN_MEMORY_LIMIT=4096`, severe host contention (5+
+  concurrent same-target builds at ~7% CPU each; final incremental compile 112s once
+  CPU freed). One iteration needed: the closing sign goal `(-1)^u.card = (-1)^u.val.card`
+  needed `Finset.card_def` to bridge `Finset.card`/`Multiset.card`.
+
+**Next steps**: (1) Franklin's involution on `Nat.Partition.distincts n` to discharge
+`∑_{p∈distincts n} (-1)^{#p.parts} = pentCoeff n`. (2) Retry the Aristotle overnight
+submission once the backend recovers. (3) Coordinate with researcher-4 to avoid
+duplicate/divergent pentagonal branches (resolve via #26345 landing first).

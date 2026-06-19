@@ -16,7 +16,10 @@
       "Degree 3 is the first exponent with >1 distinct partition: {3}(−1)+{1,2}(+1)=0 — the first real sign cancellation, evidence the involution mechanism (not just isolated terms) is what is needed.",
       "MATHLIB FRAMEWORK DISCOVERED (2026-06-19): Mathlib.Combinatorics.Enumerative.Partition.GenFun provides Nat.Partition.genFun f = PowerSeries.mk (fun n => ∑ p:n.Partition, p.parts.toFinsupp.prod f) with genFun_eq_tprod : genFun f = ∏ i, (1 + ∑ j, f(i+1)(j+1) • X^((i+1)(j+1))) in R⟦X⟧ via PowerSeries.WithPiTopology (Multipliable/HasProd). This is the canonical partition generating-function machinery the file had been hand-rolling.",
       "BRIDGE IDENTIFIED: genFun (fun _ c => if c=1 then -1 else 0) over ℤ has inner sum = -X^(i+1), so genFun_eq_tprod gives exactly ∏(1-Xⁿ) = our eulerProduct; and coeff_genFun of this f = ∑_{distinct partitions p of n} (-1)^#parts = our signedDistinctCount n. So our two hand-built objects ARE Mathlibs genFun for the signed character — connecting the file to canonical infrastructure.",
-      "Mathlib has Glaisher.lean: Nat.Partition.distincts/odds/countRestricted (Finsets of partitions) and card_odds_eq_card_distincts (Eulers UNSIGNED distinct=odd theorem). The SIGNED version (pentagonal) and Franklins involution remain absent — the open core is unchanged."
+      "Mathlib has Glaisher.lean: Nat.Partition.distincts/odds/countRestricted (Finsets of partitions) and card_odds_eq_card_distincts (Eulers UNSIGNED distinct=odd theorem). The SIGNED version (pentagonal) and Franklins involution remain absent — the open core is unchanged.",
+      "Session 8: build-verified the session-7 commit (was build-pending): signedDistinctCount, coeff_eulerProduct_eq_signedDistinctCount, eulerPentagonalIdentity_iff, deg-3/4/5 cancellations all compile (7743 jobs, 0 sorry/0 axiom).",
+      "Session 8: proved signedDistinctCount_eq_sum_distincts — our subset-model signed count equals the sum over Nat.Partition.distincts n of (-1)^p.parts.card. Bijection via Finset.sum_bij (t to {i+1:i in t}, inverse part to part-1, injectivity-on-positives via Multiset.Nodup.map_on). Recasts open core into Mathlib-native form, the standard Franklin domain. Build-verified.",
+      "Session 8: COLLISION — researcher-4 (branch research/pentagonal-oq01-signed-count) concurrently re-deriving a distincts bridge from older base (main lacks signedDistinctCount); this branch research/pentagonal-oq01-pentseries (PR #26345) is the advanced canonical line. No claim locks held. Resolve by landing #26345 first."
     ],
     "builtItems": [
       "genPent, IsGenPent (def): generalized pentagonal number value and the doubling-relation membership predicate [PentagonalNumberTheoremOQ01.lean]",
@@ -35,19 +38,20 @@
       "signedDistinctCount (n:ℕ):ℤ — the signed count of partitions of n into distinct parts, packaged as an explicit power-series-free function (PentagonalNumberTheoremOQ01.lean Part 6b)",
       "coeff_eulerProduct_eq_signedDistinctCount — coeff n eulerProduct = signedDistinctCount n (bridge specialised to canonical truncation N=n)",
       "eulerPentagonalIdentity_iff — REDUCTION: eulerProduct = pentSeries ↔ ∀ n, signedDistinctCount n = pentCoeff n; strips the power-series wrapper, isolating exactly the statement Franklin proves",
-      "signedDistinctCount_three/four/five — degree 3,4,5 checks of the reduced identity (3,4 = first genuine sign cancellations; 5 = first index |k|=2, g(2)=5)"
+      "signedDistinctCount_three/four/five — degree 3,4,5 checks of the reduced identity (3,4 = first genuine sign cancellations; 5 = first index |k|=2, g(2)=5)",
+      "signedDistinctCount_eq_sum_distincts (bridge to Nat.Partition.distincts, build-verified) in PentagonalNumberTheoremOQ01.lean"
     ],
     "mathlibGaps": [
       "No Franklin sign-reversing involution on partitions into distinct parts (the open combinatorial core).",
       "No SIGNED distinct-part partition count (parity-of-part-count sign): Mathlib has Nat.Partition.distincts as a Finset and card_odds_eq_card_distincts, but no (-1)^#parts weighting and no pentagonal/Franklin result.",
-      "CORRECTED (2026-06-19): the earlier gap 'no formal power-series infinite product of (1-X^n)' is now PARTLY FILLED upstream — Mathlib.RingTheory.PowerSeries.PiTopology + Combinatorics.Enumerative.Partition.GenFun give Multipliable/HasProd/tprod for R-power-series and genFun_eq_tprod. Our manual coefficient-stabilization eulerProduct can be replaced by / connected to Mathlib's product via genFun."
+      "CORRECTED (2026-06-19): the earlier gap 'no formal power-series infinite product of (1-X^n)' is now PARTLY FILLED upstream — Mathlib.RingTheory.PowerSeries.PiTopology + Combinatorics.Enumerative.Partition.GenFun give Multipliable/HasProd/tprod for R-power-series and genFun_eq_tprod. Our manual coefficient-stabilization eulerProduct can be replaced by / connected to Mathlib's product via genFun.",
+      "Aristotle MCP backend DOWN this session (prove -> 404 Resource not found); reduced-identity overnight submission deferred until recovery."
     ],
     "nextSteps": [
-      "ACT (concrete, tractable): prove the genFun bridge — (a) coeff_genFun (fun _ c => if c=1 then -1 else 0) n = signedDistinctCount n via a bijection between Nat.Partition n with all multiplicities 1 and subsets t⊆range n with shifted sum n; (b) eulerProduct = genFun signF (or redefine eulerProduct := genFun signF) via genFun_eq_tprod. This grounds the hand-built objects in Mathlibs canonical generating-function machinery.",
-      "OPEN CORE: Franklin sign-reversing involution to prove ∀ n, signedDistinctCount n = pentCoeff n (= eulerPentagonalIdentity_iff target). Pair subset t with t′ of opposite parity and equal shifted sum; fixed points only at pentagonal staircases.",
-      "Aristotle candidate: ∀ n, signedDistinctCount n = pentCoeff n is fully self-contained KNOWN mathematics (HARD). Submit as overnight companion theorem-sorry; with genFun now available, also consider asking it to prove eulerProduct = genFun signF.",
-      "Optionally extend numerical checks (signedDistinctCount at degree 7 = g(−2), first negative |k|=2) — low marginal value, only if structural routes stall."
+      "OPEN CORE: Franklin sign-reversing involution on Nat.Partition.distincts n to prove sum over distincts of (-1)^#parts = pentCoeff n. With signedDistinctCount_eq_sum_distincts the target is now Mathlib-native.",
+      "Retry Aristotle overnight submission of the reduced identity once backend recovers.",
+      "Coordinate with researcher-4 to avoid duplicate divergent pentagonal branches (land #26345 first)."
     ],
-    "progressSummary": "PROGRESS: open core reduced to the elementary pointwise identity ∀ n, signedDistinctCount n = pentCoeff n (eulerPentagonalIdentity_iff); both sides explicit, power-series wrapper removed. First genuine sign cancellations verified (deg 3,4) plus first |k|=2 term (deg 5). Remaining gap = Franklin involution. 0 sorry/0 axiom (pending build verify)."
+    "progressSummary": "PROGRESS (session 8): open core bridged to Mathlib-native form via build-verified signedDistinctCount_eq_sum_distincts (= sum over Nat.Partition.distincts n of (-1)^#parts = pentCoeff n). Sole remaining gap = Franklin involution. 0 sorry/0 axiom. Aristotle backend down."
   }
 }
