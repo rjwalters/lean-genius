@@ -16,7 +16,11 @@
       "subgraphs",
       "degree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Simple Graphs",
+      "Vertex Degree",
+      "Finite Sets"
+    ]
   },
   {
     "id": "ann-e1077-header",
@@ -35,7 +39,11 @@
       "balanced graphs",
       "dense graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Edge Density",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-e1077-balanced-def",
@@ -54,7 +62,11 @@
       "regularity",
       "extremal graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Degree",
+      "Regular Graphs",
+      "Complete Bipartite Graphs"
+    ]
   },
   {
     "id": "ann-e1077-min-max-degree",
@@ -72,7 +84,11 @@
       "degree sequence",
       "graph invariants"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Degree",
+      "Degree Sequence",
+      "Finset Min And Max"
+    ]
   },
   {
     "id": "ann-e1077-regular",
@@ -90,7 +106,11 @@
       "regular graphs",
       "characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Degree",
+      "Minimum And Maximum Degree",
+      "Logical Equivalence"
+    ]
   },
   {
     "id": "ann-e1077-original",
@@ -108,7 +128,11 @@
       "problem formulation",
       "typos in literature"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Edge Density",
+      "Asymptotic Exponents"
+    ]
   },
   {
     "id": "ann-e1077-resolution-intro",
@@ -126,7 +150,11 @@
       "resolution",
       "tight bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete Bipartite Graphs",
+      "Asymptotic Bounds",
+      "Subgraphs"
+    ]
   },
   {
     "id": "ann-e1077-upper-bound",
@@ -144,7 +172,11 @@
       "complete bipartite",
       "extremal examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete Bipartite Graphs",
+      "Vertex Degree",
+      "Big-O Notation"
+    ]
   },
   {
     "id": "ann-e1077-lower-bound",
@@ -163,7 +195,11 @@
       "iterative methods",
       "explicit constants"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Edge Density",
+      "Iterative Vertex Removal",
+      "Asymptotic Lower Bounds"
+    ]
   },
   {
     "id": "ann-e1077-main-theorem",
@@ -182,7 +218,11 @@
       "disproved conjectures",
       "extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Matching Upper And Lower Bounds",
+      "Theta Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-e1077-notes",
@@ -200,6 +240,10 @@
       "historical context",
       "problem clarification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Asymptotic Exponents",
+      "Edge Density"
+    ]
   }
 ]
