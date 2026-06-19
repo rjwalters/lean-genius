@@ -120,8 +120,8 @@ private theorem chebyshev_deg_lead_pair : ∀ n : ℕ,
     · rw [T_one, leadingCoeff_X, pow_zero]
     · rw [T_two]; compute_degree!
     · rw [T_two,
-        show (2 * X ^ 2 - 1 : ℝ[X]) = C (-1) + C 2 * X ^ 2 from by
-          rw [C_ofNat, C_neg, C_1]; ring,
+        show (2 * X ^ 2 - 1 : ℝ[X]) = Polynomial.C (-1) + Polynomial.C 2 * X ^ 2 from by
+          rw [C_ofNat, Polynomial.C_neg, Polynomial.C_1]; ring,
         leadingCoeff_add_of_degree_lt, leadingCoeff_C_mul_X_pow]
       · norm_num
       · rw [degree_C_mul_X_pow 2 (two_ne_zero)]
