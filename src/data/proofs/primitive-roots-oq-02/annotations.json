@@ -109,7 +109,11 @@
       "Nat.minFac_prime",
       "Nat.minFac_dvd"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Factorization",
+      "Nat.minFac",
+      "Existential Elimination In Lean"
+    ]
   },
   {
     "id": "ann-nat-div-arithmetic",
@@ -128,7 +132,11 @@
       "Nat.eq_of_mul_eq_mul_left",
       "natural number division"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Natural Number Division",
+      "Divisibility",
+      "Cancellation Law"
+    ]
   },
   {
     "id": "ann-concrete-tests",
@@ -147,6 +155,10 @@
       "primeFactors",
       "Nat.primeFactors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Factorization",
+      "Modular Exponentiation",
+      "native_decide Tactic"
+    ]
   }
 ]
