@@ -106,7 +106,7 @@ theorem gaussSum_normSq_eq (hp2 : p ≠ 2) {ψ : AddChar (ZMod p) ℂ}
   -- normSq (-1) = 1 and normSq (p : ℂ) = p²
   have hneg : Complex.normSq (-1 : ℂ) = 1 := by simp
   have hpc : Complex.normSq (p : ℂ) = (p : ℝ) ^ 2 := by
-    simp [Complex.normSq_apply]; ring
+    rw [Complex.normSq_natCast]; ring
   rw [hneg, one_pow, one_mul, hpc] at h
   -- h : (normSq g)² = p²; both sides nonneg ⟹ equal
   have hnn : (0 : ℝ) ≤ Complex.normSq (gaussSum (chiC p) ψ) := Complex.normSq_nonneg _
