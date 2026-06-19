@@ -16,7 +16,11 @@
       "divisor-function",
       "infinite-series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Irrational Numbers",
+      "Divisor Function",
+      "Infinite Series"
+    ]
   },
   {
     "id": "ann-e258-imports",
@@ -35,7 +39,11 @@
       "infinite-sums",
       "irrationality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib Library",
+      "Tsum Notation",
+      "Irrationality Predicate"
+    ]
   },
   {
     "id": "ann-e258-tau-def",
@@ -54,7 +62,11 @@
       "multiplicative-functions",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Positive Divisors",
+      "Finset Cardinality",
+      "Multiplicative Functions"
+    ]
   },
   {
     "id": "ann-e258-product-prefix",
@@ -73,7 +85,11 @@
       "sequences",
       "factorials"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Products",
+      "Integer Sequences",
+      "Finset.prod"
+    ]
   },
   {
     "id": "ann-e258-general-term",
@@ -92,7 +108,11 @@
       "real-numbers",
       "division"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real Division",
+      "Type Casting",
+      "Noncomputable Definitions"
+    ]
   },
   {
     "id": "ann-e258-tau-examples",
@@ -111,7 +131,11 @@
       "computation",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisor Counting",
+      "native_decide Tactic",
+      "Decidable Equality"
+    ]
   },
   {
     "id": "ann-e258-monotone-axiom",
@@ -130,7 +154,11 @@
       "erdos-straus",
       "irrationality-proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Monotone Sequences",
+      "Axioms In Lean",
+      "Irrationality Proofs"
+    ]
   },
   {
     "id": "ann-e258-power-axiom",
@@ -149,7 +177,11 @@
       "power-series",
       "erdos-1948"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometric Series",
+      "Lambert Series",
+      "Divisibility Arguments"
+    ]
   },
   {
     "id": "ann-e258-open-conjecture",
@@ -168,6 +200,10 @@
       "conjectures",
       "generalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Open Conjectures",
+      "Propositions In Lean",
+      "Sequence Limits"
+    ]
   }
 ]
