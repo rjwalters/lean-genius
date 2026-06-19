@@ -9,12 +9,12 @@
   "status": "in-progress",
   "phase": "ACT",
   "started": "2026-06-18T23:00:00Z",
-  "lastUpdate": "2026-06-18T23:35:00Z",
+  "lastUpdate": "2026-06-19T15:16:00Z",
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-18T23:35:00Z",
-    "iteration": 2,
-    "focus": "Added verified chord-to-key assembly lemma (key_inequality_of_chord_and_sines); each remaining geometric sorry now reduces to supplying the chord identity + law of sines. Aristotle endpoint down (Resource not found)."
+    "since": "2026-06-19T15:16:00Z",
+    "iteration": 3,
+    "focus": "Branch research/erdos-mordell-pedalfoot-eq reduces all of E–M to ONE algebraic sorry chord_cos_eq (chord_length_eq + angle_at_P now hand-proved). Submitted to Aristotle as project 62d1066c (CLI; MCP 404). Local build gate closed; submission build-verifies the hand-proofs server-side."
   },
   "tags": [
     "seeker-selected",
@@ -29,7 +29,7 @@
     "Not present in Mathlib4 (as of v4.26.0): no `mordell` geometry result; Mathlib has Triangle, Incenter, Projection, SignedDist, angle infrastructure but no Erdős–Mordell."
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-06-19, r1): submitted both residual geometric sorries (chord_length_eq sine-side + angle_at_P cosine-side) of ErdosMordellChordIdentity.lean to Aristotle as ONE file job (project 55ae116d, MCP wrapper was 404 → used CLI submit). Both are isolated with COMPLETE coordinate-ring roadmaps in their docstrings (Gram-determinant vanishing for chord_length_eq; cross-product identity [u,w]·[v,w] = −s·t·[u,v]² from hP barycentric witness for angle_at_P). v4.26↔v4.28 toolchain warning noted. Poll: aristotle show 55ae116d. On PROVED: integrate (build-pending until docker gate opens, load<6).",
+    "progressSummary": "PROGRESS (2026-06-19, researcher-1): the unmerged branch research/erdos-mordell-pedalfoot-eq has HAND-PROVED chord_length_eq (sine side, 2D Gram via coordinate ring) AND angle_at_P (now a wrapper over a single new algebraic core chord_cos_eq), reducing the ENTIRE Erdős–Mordell formalization to ONE pure inner-product/Fin-2 coordinate identity: chord_cos_eq. Submitted that reduced file to Aristotle (CLI) as project 62d1066c-7edd-4419-b588-4bc430d4d4fb — a strictly EASIER target than the still-RUNNING 55ae116d (which works main's 2 unreduced geometric sorries, ~15% at 51min). The submission also build-verifies the branch's unmerged hand-proofs server-side (local Docker gate closed: 11 containers, load 15). chord_cos_eq follows the SAME proof pattern as the already-proved chord_length_eq (recenter, sq_eq_sq, field_simp, PiLp.inner_apply expansion, ring) so success odds are high. MCP prove/check_proof 404 this session; CLI works. Poll: aristotle show 62d1066c. On PROVED: graft into the pedalfoot-eq branch file, rebuild when gate opens (load<6), and the whole proof closes (chord_identity already wired turnkey).",
     "builtItems": [
       "proofs/Proofs/ErdosMordellInequalityOQ01.lean: erdos_mordell_reduction — from the three key inequalities a·PA≥b·dc+c·db (cyclic), derives PA+PB+PC≥2(da+db+dc) via explicit nonnegative certificate, 0 sorry, 0 axiom (build-pending verification).",
       "Certificate: a·b·c·(PA+PB+PC) − 2abc·(da+db+dc) = a·da·(b−c)² + b·db·(a−c)² + c·dc·(a−b)² + (key-inequality slack), each summand ≥ 0; closed by mul_le_mul_of_nonneg_left scaling + nlinarith + le_of_mul_le_mul_left.",
@@ -45,7 +45,8 @@
       "ErdosMordellFeetAngleAristotle.lean helpers (build-verified): pedalFoot_mem_affineSpan (orthogonalProjection_mem), collinear_pedalFoot {foot,X,Y}, collinear_foot_vertex {foot,B,A} (vertex-in-middle via Set.pair_comm + collinear_insert_iff_of_mem_affineSpan).",
       "pedalFoot_eq PROVED + build-verified (ErdosMordellChordIdentity.lean:172, Lean v4.26 7743 jobs green): pedalFoot P X Y = (⟪P−X,Y−X⟫/‖Y−X‖²)•(Y−X)+X via coe_orthogonalProjection_eq_iff_mem (membership + perpendicular residual). The keystone bridge; sorries 3→2.",
       "Fixed latent build error in chord_length_sq_eq_of_angle_at_P (rw[hlc] dist^2 vs dist*dist + dist_comm mismatch) → hAngle/cos_pi_sub into hlc, align pow_two+dist_comm, linear_combination. Companion now compiles for the first time.",
-      "Aristotle file submission (project 55ae116d, r1 2026-06-19): ErdosMordellChordIdentity.lean (both sorries chord_length_eq + angle_at_P). CLI submit since MCP prove/prove_file returned 404 this session."
+      "Aristotle file submission (project 55ae116d, r1 2026-06-19): ErdosMordellChordIdentity.lean (both sorries chord_length_eq + angle_at_P). CLI submit since MCP prove/prove_file returned 404 this session.",
+      "Aristotle submission (project 62d1066c-7edd-4419-b588-4bc430d4d4fb, researcher-1 2026-06-19, CLI): the research/erdos-mordell-pedalfoot-eq reduced ErdosMordellChordIdentity.lean (single sorry chord_cos_eq). MORE-reduced than 55ae116d: chord_length_eq and angle_at_P are hand-proved on that branch; only the algebraic cosine-side core chord_cos_eq remains. Also build-verifies the branch hand-proofs server-side (Docker gate closed locally)."
     ],
     "insights": [
       "The inequality cleanly factors: ALL the AM-GM / side-length algebra is captured by erdos_mordell_reduction (now proved), isolating the genuinely hard work into the three geometric key inequalities.",

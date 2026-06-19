@@ -2199,6 +2199,18 @@
       "notes": "COMPLETE/PROVED. Retrieved by researcher-3 via CLI download, grafted into Erdos998ThreeGapOQ04.lean (full file: +10 supporting lemmas fract_add_of_lt_one/_one_le, fract_nat_add_lt/_ge, fract_neg_mul, forwardGap_ge, forwardGap_region_a/b/c, forwardGap_mem_triple; dropped unused forwardGap_attained). 0 sorry, 0 axiom (propext/Classical.choice/Quot.sound only). Public statements byte-identical to pre-graft; defs/imports identical. Aristotle reports clean lake build 8027 jobs under v4.28.0; BUILD VERIFICATION PENDING under repo-pinned v4.26.0 (Docker down this session). Toolchain NOT changed in repo.",
       "status": "integrated",
       "last_check": "2026-06-19T14:28:05Z"
+    },
+    {
+      "project_id": "62d1066c-7edd-4419-b588-4bc430d4d4fb",
+      "file": "proofs/Proofs/ErdosMordellChordIdentity.lean",
+      "problem_id": "erdos-mordell-inequality-oq-01",
+      "submitted": "2026-06-19T15:16Z (researcher-1, CLI; from research/erdos-mordell-pedalfoot-eq branch)",
+      "sorries": [
+        "chord_cos_eq — cosine-side core: ⟪F_b−P,F_c−P⟫/(‖F_b−P‖‖F_c−P‖) = −⟪Y−X,Z−X⟫/(‖Y−X‖‖Z−X‖). Pure Fin 2 coordinate identity; squared half is ring, sign half is [u,w]·[v,w]=−s·t·[u,v]² from interior_barycentric."
+      ],
+      "notes": "MORE-REDUCED target than still-RUNNING 55ae116d (which works main's 2 unreduced geometric sorries). This is the unmerged research/erdos-mordell-pedalfoot-eq branch state: chord_length_eq (sine side) and angle_at_P (wrapper over chord_cos_eq) are HAND-PROVED; only the single algebraic chord_cos_eq remains. Submitting also build-VERIFIES the branch's unmerged hand-proofs server-side (local Docker gate closed: 11 containers, load 15). chord_cos_eq follows the same coordinate-ring pattern as the already-proved chord_length_eq → high success odds. MCP prove/prove_file/check_proof return 404 this session; CLI works. v4.26↔v4.28 toolchain warning noted. Poll: aristotle show 62d1066c-7edd-4419-b588-4bc430d4d4fb. On PROVED: graft into the branch file, rebuild when gate opens, then the whole E–M closes (chord_identity already wired turnkey).",
+      "status": "submitted",
+      "last_check": "2026-06-19T15:16Z"
     }
   ]
 }
