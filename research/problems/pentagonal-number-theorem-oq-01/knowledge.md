@@ -164,3 +164,45 @@ supplies the finite support.
 tractable intermediate is now to *state* Euler's recurrence as a `Finset.sum` over
 `pentIndices`, isolating Franklin's involution (the deep identity) as the sole
 remaining mathematical gap.
+
+### 2026-06-19 (Session 4, researcher-12) — DEEPEN (build-verified)
+
+**Mode**: DEEPEN · **Outcome**: progress (build-verified)
+
+- Built the **series side** of Euler's identity: the explicit coefficient
+  function of the lacunary series `∑_{k∈ℤ} (-1)ᵏ X^{g(k)}` — the precise object
+  the OPEN CORE must prove equal to the product `∏(1-Xⁿ)`. Prior sessions built
+  the index *set* (finiteness, enumerator); this session turns it into the
+  *coefficient* it carries.
+- New (Part 5, 9 theorems + 2 defs):
+  - `pentSign k = (-1)^{|k|}`: the pentagonal sign (parity-only, so `natAbs`
+    matches `(-1)ᵏ`). `pentSign_eq_one_or_neg_one` (±1), `pentSign_ne_zero`,
+    `pentSign_neg` (`pentSign(-k)=pentSign k`, the recurrence-pair invariance).
+  - `pentSeriesCoeff n`: `[Xⁿ] ∑_k (-1)ᵏ X^{g(k)}`, a `noncomputable` dependent-if
+    on `IsGenPent n` returning `pentSign (Classical.choose h)`. **Well-defined by
+    `genPent_injective`**: the chosen witness for `IsGenPent (g k)` is forced to be
+    `k`, proved in `pentSeriesCoeff_genPent` (value `(-1)ᵏ` at `g(k)`).
+  - `pentSeriesCoeff_of_not` (vanishes off the pentagonal numbers),
+    `pentSeriesCoeff_ne_zero_iff` (**support = generalized pentagonal numbers**),
+    `pentSeriesCoeff_eq_zero_or` (every coefficient is `0`/`±1`).
+  - Concrete: `pentSeriesCoeff 0 = 1`, `pentSeriesCoeff 1 = -1`, matching the
+    leading `1` and `-X` of `∏(1-Xⁿ)`.
+- Proof tech: the injectivity-forcing step is `linarith [Classical.choose_spec h,
+  two_mul_genPent _]` (both hypotheses linear in the atom `k₀(3k₀-1)`), then
+  `genPent_injective`; sign ±1 via `Even/Odd.neg_one_pow`.
+- Build green (7743 jobs, EXIT=0, 0 sorry, 0 axiom). `pentSeriesCoeff` is
+  `noncomputable` (uses `Classical.choice`), which is a foundational axiom the
+  project's axiom policy does **not** count — `axiomCount` stays 0, status remains
+  `verified`.
+- **Process note**: an initial edit was applied to the *main-repo* path
+  `proofs/Proofs/...` (not the worktree) and was wiped by a concurrent
+  `git reset --hard HEAD` on `main`. Always edit + commit inside the worktree.
+
+**Next steps**: both sides of Euler's identity now exist as explicit Lean
+objects — the index/enumerator side (`pentIndices`, Sessions 2–3) and the
+series-coefficient side (`pentSeriesCoeff`, this session). The remaining gap is
+purely the **deep identity** itself: either (a) `∏_{n≥1}(1-Xⁿ) = ∑_k pentSeriesCoeff
+· Xⁿ` in `ℤ⟦X⟧`, or equivalently (b) `p_even(n) - p_odd(n) = pentSeriesCoeff n`,
+provable only via Franklin's involution on distinct-part partitions (not in
+Mathlib). The supporting scaffolding is now as complete as it can be without that
+combinatorial core.
