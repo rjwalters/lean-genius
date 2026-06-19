@@ -16,7 +16,11 @@
       "primorial",
       "erdos-graham"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Factorials and binomial arithmetic",
+      "Logarithmic growth rates",
+      "Erdős problem conventions"
+    ]
   },
   {
     "id": "ann-e401-primes",
@@ -35,7 +39,11 @@
       "primorial",
       "product"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime numbers and ordering",
+      "Indexed finite products",
+      "Mathlib Nat.nth enumeration"
+    ]
   },
   {
     "id": "ann-e401-divides",
@@ -54,7 +62,11 @@
       "factorial",
       "constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisibility in the integers",
+      "Factorial function",
+      "Propositions as predicates in Lean"
+    ]
   },
   {
     "id": "ann-e401-baseline",
@@ -73,7 +85,11 @@
       "baseline",
       "logarithmic-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Big-O / asymptotic notation",
+      "Natural logarithm",
+      "Axioms as stated hypotheses"
+    ]
   },
   {
     "id": "ann-e401-conjecture",
@@ -92,7 +108,11 @@
       "frequently",
       "conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filters and limits at infinity",
+      "Existential and universal quantifiers",
+      "Real-valued sequences"
+    ]
   },
   {
     "id": "ann-e401-proof",
@@ -111,7 +131,11 @@
       "ai-assisted",
       "proved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Axiom vs theorem distinction",
+      "Re-exporting results in Lean",
+      "Existence constructions"
+    ]
   },
   {
     "id": "ann-e401-counterexample",
@@ -130,7 +154,11 @@
       "counterexample",
       "quantifier-sensitivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Quantifier order semantics",
+      "Prime powers",
+      "Negation of statements"
+    ]
   },
   {
     "id": "ann-e401-consequences",
@@ -149,7 +177,11 @@
       "tendsto",
       "complete-resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limits diverging to infinity",
+      "Logical conjunction",
+      "Deriving corollaries from axioms"
+    ]
   },
   {
     "id": "ann-e401-legendre",
@@ -168,7 +200,11 @@
       "p-adic-valuation",
       "digit-sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "p-adic valuation of integers",
+      "Base-p digit representation",
+      "Factorial prime factorization"
+    ]
   },
   {
     "id": "ann-e401-g2",
@@ -187,7 +223,11 @@
       "supremum",
       "excess"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Supremum of a real set",
+      "Set-builder notation",
+      "Factorial divisibility constraints"
+    ]
   },
   {
     "id": "ann-e401-summary",
@@ -206,6 +246,10 @@
       "proved",
       "axiom-budget"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic upper bounds",
+      "Quantifier sensitivity",
+      "Counting axiomatic assumptions"
+    ]
   }
 ]
