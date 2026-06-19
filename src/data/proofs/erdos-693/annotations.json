@@ -23,7 +23,11 @@
       "open-problem",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "divisor theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "erdos-693-definitions",
@@ -48,7 +52,11 @@
       "set-theory",
       "definitions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility",
+      "set theory",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "erdos-693-gaps",
@@ -73,7 +81,11 @@
       "sorting",
       "definitions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "Lean 4 syntax",
+      "functional list operations"
+    ]
   },
   {
     "id": "erdos-693-conjecture",
@@ -98,7 +110,11 @@
       "polylogarithmic",
       "conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "filters and limits"
+    ]
   },
   {
     "id": "erdos-693-properties",
@@ -122,7 +138,11 @@
       "set-membership",
       "cardinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility",
+      "set theory",
+      "finite cardinality"
+    ]
   },
   {
     "id": "erdos-693-bounds",
@@ -146,7 +166,11 @@
       "upper-bounds",
       "gap-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "pigeonhole principle",
+      "elementary inequalities"
+    ]
   },
   {
     "id": "erdos-693-density",
@@ -171,7 +195,11 @@
       "counting",
       "heuristics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "real analysis",
+      "probabilistic heuristics"
+    ]
   },
   {
     "id": "erdos-693-alternative",
@@ -195,7 +223,11 @@
       "uniform-bounds",
       "gap-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "logical equivalence",
+      "order theory"
+    ]
   },
   {
     "id": "erdos-693-connections",
@@ -219,7 +251,11 @@
       "hooley-divisor-function",
       "cross-references"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "sieve theory",
+      "divisor distribution"
+    ]
   },
   {
     "id": "erdos-693-summary",
@@ -243,6 +279,10 @@
       "summary",
       "divisor-gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logical equivalence",
+      "Lean 4 tactic mode",
+      "asymptotic analysis"
+    ]
   }
 ]
