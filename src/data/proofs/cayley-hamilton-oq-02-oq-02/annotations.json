@@ -1,0 +1,168 @@
+[
+  {
+    "id": "ann-ch0202-background",
+    "proofId": "cayley-hamilton-oq-02-oq-02",
+    "range": {
+      "startLine": 6,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Sylvester Interpolation: The Explicit Diagonalizable Form of Cayley-Hamilton Reduction",
+    "content": "The module docstring frames Sylvester's formula as the sharp, explicit form of the parent file's Cayley-Hamilton polynomial reduction. Where the parent reduces f(A) modulo the characteristic polynomial, Sylvester's formula evaluates f(A) directly from the spectrum: f(A) = ∑_λ f(λ)·Z_λ. The matrices Z_λ — the Frobenius covariants — are the spectral projections onto the eigenspaces and are intrinsic to A, so changing f only re-weights the fixed projections. Diagonalizability is encoded as the explicit similarity data A = U·diagonal(d)·V with U·V = V·U = 1, which keeps the entire development elementary: no spectral-theorem or eigenspace machinery is required, only the algebra of diagonal indicators and the single cancellation V·U = 1.",
+    "mathContext": "For a diagonalizable $A$ with distinct eigenvalues $\\lambda_1,\\dots,\\lambda_k$, $f(A) = \\sum_j f(\\lambda_j) Z_j$ where $Z_j = \\prod_{m\\ne j}\\frac{A-\\lambda_m I}{\\lambda_j-\\lambda_m}$. The $Z_j$ satisfy $Z_j^2 = Z_j$, $Z_j Z_m = 0\\ (j\\ne m)$, $\\sum_j Z_j = I$, and $A Z_j = \\lambda_j Z_j$. This is the finite-dimensional, diagonalizable case of the holomorphic functional calculus.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sylvester interpolation formula",
+      "Frobenius covariants",
+      "spectral projections",
+      "holomorphic functional calculus",
+      "Lagrange interpolation"
+    ],
+    "prerequisites": [
+      "polynomial functional calculus (aeval)",
+      "diagonal matrix algebra",
+      "Cayley-Hamilton polynomial reduction"
+    ]
+  },
+  {
+    "id": "ann-ch0202-conj",
+    "proofId": "cayley-hamilton-oq-02-oq-02",
+    "range": {
+      "startLine": 64,
+      "endLine": 90
+    },
+    "type": "insight",
+    "title": "Conjugation Commutes with the Functional Calculus",
+    "content": "Two lemmas establish that the polynomial functional calculus respects similarity. `conj_pow` proves (U·A·V)^k = U·A^k·V by induction on k, the inductive step cancelling the inner V·U = 1; the base case k = 0 uses U·V = 1. `aeval_conj` then lifts this from powers to arbitrary polynomials by `Polynomial.induction_on'`: the additive case is immediate, and the monomial case a·X^k reduces to conj_pow together with the centrality of scalar matrices (algebraMap a commutes with everything, handled by rewriting algebraMap·x as a • x and sliding the scalar past the conjugation with mul_smul_comm / smul_mul_assoc). Proving this directly avoids packaging an inner-automorphism AlgEquiv, keeping the dependency surface minimal.",
+    "mathContext": "If $UV = VU = I$ then $\\mathrm{aeval}(UAV)\\,p = U\\,(\\mathrm{aeval}\\,A\\,p)\\,V$. Equivalently, conjugation by $U$ is an algebra automorphism of $M_n(\\Bbbk)$, and any algebra homomorphism transports $\\mathrm{aeval}$: $\\phi(p(A)) = p(\\phi(A))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "similarity invariance",
+      "algebra homomorphism",
+      "Polynomial.induction_on'",
+      "centrality of scalar matrices"
+    ],
+    "prerequisites": [
+      "Polynomial.aeval",
+      "aeval_monomial",
+      "Algebra.smul_def"
+    ]
+  },
+  {
+    "id": "ann-ch0202-diagonal",
+    "proofId": "cayley-hamilton-oq-02-oq-02",
+    "range": {
+      "startLine": 91,
+      "endLine": 107
+    },
+    "type": "insight",
+    "title": "The Functional Calculus on a Diagonal Matrix is Diagonal",
+    "content": "`aeval_diagonal` computes the polynomial functional calculus of a diagonal matrix entrywise: aeval (diagonal d) p = diagonal (i ↦ p.eval (d i)). The proof is again `Polynomial.induction_on'`; the additive case is verified entrywise, and the monomial case uses `diagonal_pow` (diagonal d ^ k = diagonal (d^k)) and `diagonal_smul` (scalars pass through diagonal). This is the diagonal-basis half of Sylvester's formula: in the eigenbasis, applying f to A amounts to applying f to each eigenvalue independently.",
+    "mathContext": "For $D = \\mathrm{diag}(d_1,\\dots,d_n)$ and a polynomial $p$, $p(D) = \\mathrm{diag}(p(d_1),\\dots,p(d_n))$. This is the elementary fact that polynomials act coordinatewise on a diagonal matrix.",
+    "significance": "key",
+    "relatedConcepts": [
+      "diagonal matrix",
+      "spectral mapping",
+      "diagonal_pow",
+      "diagonal_smul"
+    ],
+    "prerequisites": [
+      "diagonal matrix algebra",
+      "Polynomial.induction_on'"
+    ]
+  },
+  {
+    "id": "ann-ch0202-covariants",
+    "proofId": "cayley-hamilton-oq-02-oq-02",
+    "range": {
+      "startLine": 108,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Frobenius Covariants and Coordinate Projections",
+    "content": "`coordProj d μ` is the diagonal indicator E_μ with a 1 in each position where d i = μ (the coordinate projection onto the μ-eigenspace), and `frobeniusCovariant U V d μ = U·E_μ·V` conjugates it back to the original basis. Three supporting lemmas establish the indicator algebra that drives everything downstream: `coordProj_mul_self` (E_μ² = E_μ, idempotent), `coordProj_mul_other` (E_μ E_ν = 0 for μ ≠ ν, since a coordinate cannot carry two distinct eigenvalues), and `diag_mul_coordProj` (diagonal d · E_μ = μ • E_μ, the eigen-scaling). All three reduce, via `diagonal_mul_diagonal`, to pointwise facts about indicators.",
+    "mathContext": "$E_\\mu = \\mathrm{diag}(\\mathbb{1}[d_i = \\mu])$ satisfies $E_\\mu^2 = E_\\mu$, $E_\\mu E_\\nu = 0\\ (\\mu\\ne\\nu)$, and $D E_\\mu = \\mu E_\\mu$. Conjugating by the similarity, $Z_\\mu = U E_\\mu V$ inherits these as the spectral projections of $A$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "spectral projection",
+      "idempotent",
+      "orthogonal projections",
+      "diagonal_mul_diagonal"
+    ],
+    "prerequisites": [
+      "diagonal matrix algebra",
+      "indicator functions"
+    ]
+  },
+  {
+    "id": "ann-ch0202-spectral-decomp",
+    "proofId": "cayley-hamilton-oq-02-oq-02",
+    "range": {
+      "startLine": 157,
+      "endLine": 175
+    },
+    "type": "insight",
+    "title": "Spectral Decomposition of a Diagonal Matrix",
+    "content": "`diagonal_eq_sum_coordProj` is the combinatorial heart of the formula: for any scalar function g, diagonal (i ↦ g(d i)) = ∑_μ g(μ) • E_μ, summed over the distinct eigenvalues μ ∈ Finset.univ.image d. The proof is entrywise (Matrix.ext): off the diagonal both sides vanish; on the diagonal, `Finset.sum_eq_single (d i)` isolates the unique surviving term at μ = d i. Two instantiations power the rest of the file — g = p.eval gives Sylvester's formula, and g = 1 gives the resolution of the identity ∑_μ Z_μ = I.",
+    "mathContext": "$\\mathrm{diag}(g(d_1),\\dots,g(d_n)) = \\sum_{\\mu\\in\\mathrm{im}(d)} g(\\mu)\\,E_\\mu$. The sum ranges over distinct values; each diagonal entry $g(d_i)$ is selected by the single projection $E_{d_i}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "spectral decomposition",
+      "resolution of the identity",
+      "Finset.sum_eq_single",
+      "partition by eigenvalue"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "Finset.sum_eq_single",
+      "Matrix.ext"
+    ]
+  },
+  {
+    "id": "ann-ch0202-sylvester",
+    "proofId": "cayley-hamilton-oq-02-oq-02",
+    "range": {
+      "startLine": 176,
+      "endLine": 195
+    },
+    "type": "insight",
+    "title": "Sylvester's Interpolation Formula",
+    "content": "The main theorem `sylvester` assembles the pieces: aeval (U·diagonal(d)·V) p = ∑_μ p.eval μ • frobeniusCovariant U V d μ. The proof chains the three transport lemmas — aeval_conj moves the functional calculus inside the conjugation, aeval_diagonal evaluates it on the diagonal, and diagonal_eq_sum_coordProj (with g = p.eval) splits the result over the distinct eigenvalues — then pushes the conjugation through the finite sum using Finset.mul_sum, Finset.sum_mul, and mul_smul_comm / smul_mul_assoc to land on the Frobenius covariants. The dependence of f(A) on f is entirely through the scalars p.eval μ.",
+    "mathContext": "$f(A) = \\sum_{\\mu} f(\\mu)\\,Z_\\mu$ with $Z_\\mu = U E_\\mu V$. Since the $Z_\\mu$ depend only on $A$, $f(A)$ and $g(A)$ share the same projections and differ only by the scalar weights — the Lagrange-interpolation viewpoint on matrix functions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylvester interpolation",
+      "matrix function",
+      "Lagrange interpolation",
+      "spectral decomposition"
+    ],
+    "prerequisites": [
+      "aeval_conj",
+      "aeval_diagonal",
+      "diagonal_eq_sum_coordProj"
+    ]
+  },
+  {
+    "id": "ann-ch0202-covariant-properties",
+    "proofId": "cayley-hamilton-oq-02-oq-02",
+    "range": {
+      "startLine": 196,
+      "endLine": 243
+    },
+    "type": "insight",
+    "title": "The Frobenius Covariants are Spectral Projections",
+    "content": "Four theorems characterize the covariants Z_μ = U·E_μ·V as genuine spectral projections. `frobenius_idem` (Z_μ² = Z_μ) and `frobenius_orthogonal` (Z_μ Z_ν = 0 for μ ≠ ν) follow by cancelling the inner V·U = 1 and applying the indicator algebra. `frobenius_complete` (∑_μ Z_μ = I) is exactly the g = 1 instance of the spectral decomposition, conjugated. `frobenius_eigen` (A·Z_μ = μ • Z_μ) shows each covariant lands in the μ-eigenspace, using diag_mul_coordProj. Together these are the matrix form of the spectral theorem for a diagonalizable operator: an orthogonal idempotent resolution of the identity with A = ∑_μ μ Z_μ.",
+    "mathContext": "$Z_\\mu^2 = Z_\\mu$, $Z_\\mu Z_\\nu = 0\\ (\\mu\\ne\\nu)$, $\\sum_\\mu Z_\\mu = I$, $A Z_\\mu = \\mu Z_\\mu$. Consequently $A = \\sum_\\mu \\mu Z_\\mu$ and $f(A) = \\sum_\\mu f(\\mu) Z_\\mu$ for every $f$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "spectral theorem",
+      "resolution of the identity",
+      "orthogonal idempotents",
+      "eigenspace projection"
+    ],
+    "prerequisites": [
+      "coordProj algebra",
+      "diagonal_eq_sum_coordProj"
+    ]
+  }
+]
