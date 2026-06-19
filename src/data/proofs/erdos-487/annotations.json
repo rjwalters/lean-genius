@@ -23,7 +23,11 @@
       "density",
       "lcm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density of a subset of the integers",
+      "least common multiple and prime factorization",
+      "Kleitman's theorem on union-free set collections"
+    ]
   },
   {
     "id": "ann-e487-density",
@@ -48,7 +52,11 @@
       "asymptotic"
     ],
     "mathContext": "See annotation content for formal details of density definitions",
-    "prerequisites": []
+    "prerequisites": [
+      "limit superior and limit inferior of a sequence",
+      "counting density |A ∩ [1,n]| / n",
+      "asymptotic lower bounds of the form |A ∩ [1,n]| ≥ δn"
+    ]
   },
   {
     "id": "ann-e487-lcm-triple",
@@ -71,7 +79,11 @@
       "number-theory"
     ],
     "mathContext": "See annotation content for formal details of lcm triple",
-    "prerequisites": []
+    "prerequisites": [
+      "least common multiple of two natural numbers",
+      "distinctness conditions a ≠ b, b ≠ c, a ≠ c",
+      "why lcm(a,a) = a makes distinctness essential"
+    ]
   },
   {
     "id": "ann-e487-div-chain",
@@ -95,7 +107,11 @@
       "number-theory"
     ],
     "mathContext": "See annotation content for formal details of divisibility chain",
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility relation f(i) | f(j)",
+      "strictly increasing infinite sequences",
+      "Davenport-Erdős chains in dense sets"
+    ]
   },
   {
     "id": "ann-e487-union-free",
@@ -119,7 +135,11 @@
       "definition",
       "set-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set union A ∪ B = C",
+      "union-free families of sets",
+      "correspondence between LCM-free and union-free collections"
+    ]
   },
   {
     "id": "ann-e487-factorization",
@@ -143,7 +163,11 @@
       "definition",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "fundamental theorem of arithmetic",
+      "prime-exponent representation of a positive integer",
+      "lcm as max exponents and gcd as min exponents"
+    ]
   },
   {
     "id": "ann-e487-davenport",
@@ -168,7 +192,11 @@
       "classical-result",
       "coprimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive upper density implying infinite divisibility chains",
+      "coprimality and Nat.Coprime.lcm_eq_mul",
+      "constructing the LCM triple (a·k, a·m, a·k·m)"
+    ]
   },
   {
     "id": "ann-e487-kleitman",
@@ -192,7 +220,11 @@
       "classical-result",
       "binomial-coefficients"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "central binomial coefficient C(n, ⌊n/2⌋)",
+      "asymptotic C(n, n/2) ≈ 2^n / √n",
+      "little-o bound |F| / 2^n < ε for union-free families"
+    ]
   },
   {
     "id": "ann-e487-main",
@@ -217,7 +249,11 @@
       "combinatorics"
     ],
     "mathContext": "See annotation content for formal details of main theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "positive upper density hypothesis",
+      "existence of an LCM triple lcm(a,b) = c",
+      "extending one triple to infinitely many"
+    ]
   },
   {
     "id": "ann-e487-example-6",
@@ -240,7 +276,11 @@
       "lcm"
     ],
     "mathContext": "See annotation content for formal details of example: multiples of 6",
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic progression of multiples of 6",
+      "checking lcm(12, 18) = 36",
+      "native_decide computational verification"
+    ]
   },
   {
     "id": "ann-e487-example-pow2",
@@ -264,7 +304,11 @@
       "density",
       "lcm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powers of 2 as a sparse set of density zero",
+      "lcm(2^i, 2^j) = 2^(max i j)",
+      "case analysis on the maximum exponent"
+    ]
   },
   {
     "id": "ann-e487-example-even",
@@ -287,7 +331,11 @@
       "lcm"
     ],
     "mathContext": "See annotation content for formal details of example: even numbers",
-    "prerequisites": []
+    "prerequisites": [
+      "even numbers as a set of density 1/2",
+      "checking lcm(4, 6) = 12",
+      "explicit LCM triple within a dense set"
+    ]
   },
   {
     "id": "ann-e487-proof-outline",
@@ -311,7 +359,11 @@
       "density",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proof by contradiction from a density-δ assumption",
+      "mapping A to a union-free collection via prime factorization",
+      "deriving δN ≤ o(N) from Kleitman's bound"
+    ]
   },
   {
     "id": "ann-e487-summary",
@@ -335,6 +387,10 @@
       "density"
     ],
     "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "main result that dense sets contain LCM triples",
+      "Kleitman's bound as the combinatorial tool",
+      "affirmative resolution of Erdős Problem #487"
+    ]
   }
 ]
