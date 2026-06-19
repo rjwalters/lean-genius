@@ -16,7 +16,11 @@
       "continuous functions"
     ],
     "mathContext": "See annotation content for formal details of hilbert's 13th problem",
-    "prerequisites": []
+    "prerequisites": [
+      "continuous functions of several variables",
+      "function composition and superposition",
+      "Hilbert's 1900 list of problems"
+    ]
   },
   {
     "id": "ann-representation",
@@ -35,7 +39,11 @@
       "universal functions",
       "composition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "functions of several variables",
+      "composition of univariate (single-variable) functions",
+      "sums of compositions (superposition)"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -54,7 +62,11 @@
       "Arnold",
       "representation theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "continuous functions on the cube [0,1]ⁿ",
+      "the superposition representation f(x)=Σ Φ(Σ ψ(xᵢ))",
+      "existence (non-constructive) representation theorems"
+    ]
   },
   {
     "id": "ann-septic",
@@ -73,7 +85,11 @@
       "Abel-Ruffini"
     ],
     "mathContext": "See annotation content for formal details of the septic connection",
-    "prerequisites": []
+    "prerequisites": [
+      "solving polynomial equations by radicals",
+      "the Bring–Jerrard / Tschirnhaus reduction of the quintic and septic",
+      "the algebraic form of Hilbert's 13th"
+    ]
   },
   {
     "id": "ann-vitushkin",
@@ -92,7 +108,11 @@
       "smooth functions",
       "differentiability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "smooth (differentiable) vs merely continuous functions",
+      "superposition representations",
+      "obstructions for the smooth category"
+    ]
   },
   {
     "id": "ann-universal",
@@ -111,7 +131,11 @@
       "space-filling curves",
       "Arnold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "universal / space-filling constructions",
+      "continuous functions and composition",
+      "Arnold's universal functions"
+    ]
   },
   {
     "id": "ann-neural",
@@ -130,7 +154,11 @@
       "KANs"
     ],
     "mathContext": "See annotation content for formal details of neural network connection",
-    "prerequisites": []
+    "prerequisites": [
+      "the Kolmogorov–Arnold superposition representation",
+      "feedforward neural networks and approximation",
+      "the universal approximation theorem"
+    ]
   },
   {
     "id": "ann-history",
@@ -149,7 +177,11 @@
       "history"
     ],
     "mathContext": "See annotation content for formal details of historical timeline",
-    "prerequisites": []
+    "prerequisites": [
+      "Hilbert's 1900 ICM address",
+      "the Kolmogorov–Arnold resolution (1956–57)",
+      "20th-century Soviet analysis"
+    ]
   },
   {
     "id": "ann-summary",
@@ -168,6 +200,10 @@
       "classification"
     ],
     "mathContext": "See annotation content for formal details of problem status",
-    "prerequisites": []
+    "prerequisites": [
+      "the continuous-case resolution of Hilbert's 13th",
+      "the open smooth/analytic versions",
+      "classification of which superpositions are possible"
+    ]
   }
 ]
