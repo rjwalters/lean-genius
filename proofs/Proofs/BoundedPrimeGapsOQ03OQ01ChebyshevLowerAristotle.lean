@@ -14,10 +14,11 @@
   STATUS: build-gated ORPHAN (not imported by Proofs.lean). Do NOT register until it
   compiles green with all sorries discharged.
 
-  PROGRESS (researcher-2): L1 (`log_factorial_eq_sum_vonMangoldt_mul_div`), L2
-  (`log_centralBinom_le_psi`) and L3 (`log_four_le_log_centralBinom`) are now fully
-  proved; only the final real-analysis assembly (`chebyshev_psi_lower_bound`) remains
-  `sorry`. The L1/L2 proofs are written but UNVERIFIED — docker build infra is down
+  PROGRESS (researcher-2): ALL FOUR obligations are now proved — L1
+  (`log_factorial_eq_sum_vonMangoldt_mul_div`), L2 (`log_centralBinom_le_psi`),
+  L3 (`log_four_le_log_centralBinom`) and the final real-analysis assembly
+  (`chebyshev_psi_lower_bound`, with explicit constant `c = (log 2)/4`). The file is
+  now `sorry`-free. The proofs are written but UNVERIFIED — docker build infra is down
   (daemon unresponsive, mem=0; Aristotle backend 404), so they have not been compiled.
   Verify before relying on them. The L2 derivation is the genuine combinatorial gap:
   `log C(2n,n) = log(2n)! − 2·log n! = ∑_{d≤2n} Λ d·(⌊2n/d⌋ − 2⌊n/d⌋) ≤ ∑_{d≤2n} Λ d = ψ(2n)`,
@@ -197,13 +198,71 @@ theorem log_four_le_log_centralBinom (n : ℕ) (hn : 0 < n) :
   rw [Real.log_pow, Real.log_mul (ne_of_gt h2n) (ne_of_gt hcb)] at hlog
   linarith
 
-/-- **Assembly — the missing ingredient.** A Chebyshev-strength lower bound on `ψ`.
+/-- **Assembly — the missing ingredient.** A Chebyshev-strength lower bound on `ψ`,
+with the explicit constant `c = (log 2)/4`.
 
-From L2 ∘ L3: `ψ(2n) ≥ n·log 4 − log(2n)`. Since `log(2n) = o(n)`, for a small positive
-constant `c` (e.g. `c = (log 4)/4`) we get `c·(2n) ≤ ψ(2n)` for all `n ≥ 1`; monotonicity
-of `ψ` (`Chebyshev.psi_mono`) plus `ψ x ≥ ψ(2⌊x/2⌋)` lifts this to every real `x ≥ 2`. -/
+Combine L3 then L2 to get `ψ(2n) ≥ n·log 4 − log(2n)`. The elementary estimate
+`2n ≤ 2ⁿ` (hence `log(2n) ≤ n·log 2`) collapses the right side to
+`n·log 4 − n·log 2 = n·log 2`, so `ψ(2n) ≥ n·log 2` for every `n ≥ 1` — no asymptotics
+needed. For real `x ≥ 2` put `n = ⌊x/2⌋ ≥ 1`; then `2n ≤ x` (so `ψ(2n) ≤ ψ x` by
+`Chebyshev.psi_mono`) and `n ≥ x/4` (a single linear combination of `n ≥ 1` and
+`x/2 < n + 1`), giving `(log 2 / 4)·x = log 2·(x/4) ≤ n·log 2 ≤ ψ(2n) ≤ ψ x`. -/
 theorem chebyshev_psi_lower_bound :
     ∃ c : ℝ, 0 < c ∧ ∀ x : ℝ, 2 ≤ x → c * x ≤ Chebyshev.psi x := by
-  sorry
+  have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  -- Self-contained: `2m ≤ 2^m` for `m ≥ 1`.
+  have h2npow : ∀ m : ℕ, 1 ≤ m → 2 * m ≤ 2 ^ m := by
+    intro m
+    induction m with
+    | zero => intro h; omega
+    | succ k ih =>
+      intro _
+      rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+      · subst hk0; decide
+      · have hih := ih hkpos
+        rw [pow_succ]
+        nlinarith [hih, hkpos]
+  -- The combined integer bound: `ψ(2n) ≥ n·log 2` for `n ≥ 1`.
+  have key : ∀ n : ℕ, 0 < n → (n : ℝ) * Real.log 2 ≤ Chebyshev.psi (2 * n) := by
+    intro n hn
+    have hL2 := log_centralBinom_le_psi n
+    have hL3 := log_four_le_log_centralBinom n hn
+    -- `log(2n) ≤ n·log 2`, from `2n ≤ 2^n`.
+    have hcast : ((2 * n : ℕ) : ℝ) ≤ (2 : ℝ) ^ n := by
+      calc ((2 * n : ℕ) : ℝ) ≤ ((2 ^ n : ℕ) : ℝ) := by exact_mod_cast h2npow n hn
+        _ = (2 : ℝ) ^ n := by push_cast; ring
+    have h2npos : (0 : ℝ) < ((2 * n : ℕ) : ℝ) := by exact_mod_cast (show 0 < 2 * n by omega)
+    have hlog2n : Real.log (2 * (n : ℝ)) ≤ (n : ℝ) * Real.log 2 := by
+      have h1 : Real.log ((2 * n : ℕ) : ℝ) ≤ Real.log ((2 : ℝ) ^ n) :=
+        Real.log_le_log h2npos hcast
+      rw [Real.log_pow] at h1
+      have hcast2 : ((2 * n : ℕ) : ℝ) = 2 * (n : ℝ) := by push_cast; ring
+      rw [hcast2] at h1
+      linarith
+    have hlog4 : Real.log 4 = 2 * Real.log 2 := by
+      rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; push_cast; ring
+    have hlog4n : (n : ℝ) * Real.log 4 = 2 * ((n : ℝ) * Real.log 2) := by
+      rw [hlog4]; ring
+    linarith [hL2, hL3, hlog2n, hlog4n]
+  refine ⟨Real.log 2 / 4, by linarith, ?_⟩
+  intro x hx
+  set n := ⌊x / 2⌋₊ with hn_def
+  have hxhalf : (0 : ℝ) ≤ x / 2 := by linarith
+  have hn1 : 1 ≤ n := by
+    rw [hn_def]; apply Nat.le_floor; push_cast; linarith
+  have hnpos : 0 < n := hn1
+  have hfloor_le : (n : ℝ) ≤ x / 2 := by rw [hn_def]; exact Nat.floor_le hxhalf
+  have h2nx : 2 * (n : ℝ) ≤ x := by linarith
+  have hlt_floor : x / 2 < (n : ℝ) + 1 := by
+    rw [hn_def]; exact Nat.lt_floor_add_one (x / 2)
+  have hn_ge_1R : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn1
+  have hge : x / 4 ≤ (n : ℝ) := by linarith
+  have hk := key n hnpos
+  have hpsi_mono : Chebyshev.psi (2 * (n : ℝ)) ≤ Chebyshev.psi x := Chebyshev.psi_mono h2nx
+  calc Real.log 2 / 4 * x = Real.log 2 * (x / 4) := by ring
+    _ ≤ Real.log 2 * (n : ℝ) := mul_le_mul_of_nonneg_left hge (le_of_lt hlog2pos)
+    _ = (n : ℝ) * Real.log 2 := by ring
+    _ ≤ Chebyshev.psi (2 * (n : ℝ)) := hk
+    _ ≤ Chebyshev.psi x := hpsi_mono
 
 end BoundedPrimeGapsOQ03OQ01.ChebyshevLowerDecomp

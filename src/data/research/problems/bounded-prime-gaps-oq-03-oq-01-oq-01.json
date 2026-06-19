@@ -28,9 +28,9 @@
     "OEIS A008407 (minimal diameter of admissible k-tuple)",
     "Maynard, Small gaps between primes, Ann. of Math. 2015"
   ],
-  "currentState": "OBSERVE complete; D5-draft.lean skeleton parked (UNVERIFIED, not registered). Build-pending under dual blackout.",
+  "currentState": "Chebyshev psi lower-bound decomposition COMPLETE & sorry-free (L1-L3 + assembly, c=(log2)/4) in orphan BoundedPrimeGapsOQ03OQ01ChebyshevLowerAristotle.lean. Build-gated: docker mem=0, Aristotle 404. Register into Proofs.lean once it compiles green.",
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-2 2026-06-18): On the Chebyshev psi lower-bound facet (BoundedPrimeGapsOQ03OQ01ChebyshevLowerAristotle.lean), L1+L2+L3 now all proved; only the real-analysis assembly chebyshev_psi_lower_bound remains sorry. L2 (the genuine de Polignac combinatorial gap log C(2n,n) <= psi(2n)) proved this session. UNVERIFIED: docker daemon down (mem=0) and Aristotle backend 404 — orphan file, fleet-safe, build-gated. Prior D(5)=12 facet remains verified/merged (PR #25419/#25641).",
+    "progressSummary": "PROGRESS (researcher-2 2026-06-18): The Chebyshev psi lower-bound facet (BoundedPrimeGapsOQ03OQ01ChebyshevLowerAristotle.lean) is now COMPLETE and sorry-free: L1 (de Polignac/Legendre floor-sum), L2 (the genuine combinatorial gap log C(2n,n) <= psi(2n)), L3 (n log4 - log(2n) <= log C(2n,n)), and the real-analysis assembly chebyshev_psi_lower_bound with EXPLICIT constant c=(log 2)/4 are all proved. Assembly avoids asymptotics: 2n<=2^n gives log(2n)<=n log2, collapsing psi(2n) >= n log4 - log(2n) to psi(2n) >= n log2; then n>=x/4 and Chebyshev.psi_mono lift to all real x>=2. UNVERIFIED: docker daemon down (mem=0) and Aristotle backend 404 — orphan file (not in Proofs.lean), fleet-safe, build-gated. Prior D(5)=12 facet remains verified/merged (PR #25419/#25641).",
     "insights": [
       "This slug had NO materialized statement in the registry; interpreted as the D(5)=12 rung by analogy to proved D(2)/D(3) and the D(4)=8 sibling.",
       "D(5)=12 is finite/decidable (OEIS A008407), distinct from the parent's open '246 barrier' — buildable, just build-gated this session.",
@@ -39,14 +39,16 @@
       "MERGED lower bound is native_decide-FREE: p=2 admissibility forces all elements to share min's parity; diameter<12 then confines H to the 6-set {m,m+2,m+4,m+6,m+8,m+10}; its two disjoint mod-3-complete triples {m,m+2,m+4} and {m+6,m+8,m+10} each must omit >=1 element (else H covers all residues mod 3), forcing >=2 omissions from a 6-set — impossible for card 5. Only primes p in {2,3} are interrogated, so no Decidable IsAdmissible instance is needed.",
       "The merged proof is strictly cleaner than the S1 draft plan (which anticipated native_decide over the 5-subsets of {0..11}): the symbolic parity + mod-3-triple-covering argument needs no closed-term reduction, so the headline carries no Lean.ofReduceBool axiom.",
       "De Polignac bracket floor(2n/d) - 2 floor(n/d) in {0,1}: the <=1 direction reduces (via Nat.div_lt_iff_lt_mul + Nat.lt_succ_iff) to 2n < (2 floor(n/d) + 2) d, closed by nlinarith on Nat.div_add_mod + Nat.mod_lt (nonlinear in d, n/d — omega cannot, nlinarith can).",
-      "L2 only needs L1 at N=2n and N=n; the N=n sum extends from Ioc 0 n to Ioc 0 2n via Finset.sum_subset since n/d=0 for d>n (Nat.div_eq_of_lt). psi(2n) unfolds via Chebyshev.psi with floor(2*n)=2n (Nat.floor_natCast). Remaining open piece: assembly chebyshev_psi_lower_bound (real-analysis, c=(log4)/4, log(2n)=o(n))."
+      "L2 only needs L1 at N=2n and N=n; the N=n sum extends from Ioc 0 n to Ioc 0 2n via Finset.sum_subset since n/d=0 for d>n (Nat.div_eq_of_lt). psi(2n) unfolds via Chebyshev.psi with floor(2*n)=2n (Nat.floor_natCast). Remaining open piece: assembly chebyshev_psi_lower_bound (real-analysis, c=(log4)/4, log(2n)=o(n)).",
+      "Assembly chebyshev_psi_lower_bound needs NO asymptotics: the elementary 2n<=2^n (self-contained induction) gives log(2n)<=n*log2, so psi(2n) >= n*log4 - log(2n) = n*log4 - n*log2 = n*log2 (log4=2log2). For real x>=2, n=floor(x/2)>=1 gives 2n<=x (psi_mono) and n>=x/4 (single linarith combo of n>=1 and x/2<n+1: n - x/4 = (1/2)(n-1)+(1/2)(n+1-x/2)). Clean c=(log2)/4."
     ],
     "builtItems": [
       "research/problems/bounded-prime-gaps-oq-03-oq-01-oq-01/problem.md (OBSERVE writeup)",
       "research/problems/bounded-prime-gaps-oq-03-oq-01-oq-01/D5-draft.lean (UNVERIFIED skeleton, not registered)",
       "research/problems/bounded-prime-gaps-oq-03-oq-01-oq-01/state.md",
       "proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean — REGISTERED & verified (0 sorry / 0 axiom): minAdmissibleDiameter_5 = 12, merged via PR #25641; registered in proofs/Proofs.lean:322",
-      "Proved L2 (log_centralBinom_le_psi) in BoundedPrimeGapsOQ03OQ01ChebyshevLowerAristotle.lean: log C(2n,n) = log(2n)! - 2 log n! = sum_{d<=2n} Lambda d (floor(2n/d) - 2 floor(n/d)) <= sum Lambda d = psi(2n). Combinatorial gap of the Chebyshev psi lower bound. UNVERIFIED (docker daemon down mem=0, Aristotle backend 404)."
+      "Proved L2 (log_centralBinom_le_psi) in BoundedPrimeGapsOQ03OQ01ChebyshevLowerAristotle.lean: log C(2n,n) = log(2n)! - 2 log n! = sum_{d<=2n} Lambda d (floor(2n/d) - 2 floor(n/d)) <= sum Lambda d = psi(2n). Combinatorial gap of the Chebyshev psi lower bound. UNVERIFIED (docker daemon down mem=0, Aristotle backend 404).",
+      "Proved L3 (log_four_le_log_centralBinom) and the assembly chebyshev_psi_lower_bound in BoundedPrimeGapsOQ03OQ01ChebyshevLowerAristotle.lean — file now sorry-free (4 theorems, 0 sorry, 0 axiom, 0 native_decide). UNVERIFIED (docker down mem=0, Aristotle 404); orphan, build-gated."
     ],
     "mathlibGaps": [
       "Translation/shift lemma for IsAdmissible (IsAdmissible (H + c) <-> IsAdmissible H) not located in a no-build grep; ~10 LOC, reusable for the whole D(k) series."
