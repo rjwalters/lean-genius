@@ -905,6 +905,7 @@ import Proofs.Erdos1077Problem
 import Proofs.Erdos1078Problem
 import Proofs.Erdos1079Problem
 import Proofs.Erdos107Aristotle
+import Proofs.Erdos107OQ01
 import Proofs.Erdos107Problem
 import Proofs.Erdos1080Problem
 import Proofs.Erdos1081Problem
