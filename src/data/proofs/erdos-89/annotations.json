@@ -17,7 +17,11 @@
       "combinatorial-geometry",
       "guth-katz"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Plane",
+      "Asymptotic Notation",
+      "Extremal Combinatorics"
+    ]
   },
   {
     "id": "ann-e89-background",
@@ -36,7 +40,11 @@
       "sums-of-squares",
       "extremal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Integer Lattice",
+      "Sums Of Two Squares",
+      "Landau-Ramanujan Constant"
+    ]
   },
   {
     "id": "ann-e89-dist-def",
@@ -55,7 +63,11 @@
       "finset",
       "offDiag"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Distance",
+      "Finset Image",
+      "Off-Diagonal Pairs"
+    ]
   },
   {
     "id": "ann-e89-min-def",
@@ -74,7 +86,11 @@
       "infimum",
       "noncomputable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Function",
+      "Infimum",
+      "Point Set Cardinality"
+    ]
   },
   {
     "id": "ann-e89-conjecture",
@@ -93,7 +109,11 @@
       "asymptotic",
       "eventually"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Lower Bound",
+      "Eventually Filter",
+      "Existential Quantifier"
+    ]
   },
   {
     "id": "ann-e89-guthkatz",
@@ -112,7 +132,11 @@
       "guth-katz",
       "polynomial-method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial Partitioning",
+      "Incidence Geometry",
+      "Lean Axioms"
+    ]
   },
   {
     "id": "ann-e89-grid",
@@ -132,7 +156,11 @@
       "integer-grid",
       "sums-of-squares"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sums Of Two Squares",
+      "Landau-Ramanujan Constant",
+      "Asymptotic Upper Bound"
+    ]
   },
   {
     "id": "ann-e89-implies",
@@ -151,7 +179,11 @@
       "filter_upwards",
       "calc"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Eventually Filter",
+      "Calc Proofs",
+      "Logarithmic Growth"
+    ]
   },
   {
     "id": "ann-e89-history",
@@ -171,7 +203,11 @@
       "tardos",
       "bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Distinct Distances Problem",
+      "Polynomial Bounds",
+      "Asymptotic Exponents"
+    ]
   },
   {
     "id": "ann-e89-related",
@@ -190,6 +226,10 @@
       "604",
       "single-point"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Distinct Distances Problem",
+      "Rich Point",
+      "Conjecture Implication"
+    ]
   }
 ]
