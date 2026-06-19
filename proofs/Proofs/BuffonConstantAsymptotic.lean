@@ -278,6 +278,40 @@ lemma sqrt_mul_buffonConstant_sq_bounds (n : ℕ) (hn : 3 ≤ n) :
           mul_le_mul_of_nonneg_left hbounds.2 hc
       _ = (2 / π) * ((n : ℝ) / ((n : ℝ) - 1)) := by field_simp; ring
 
+/-- **Explicit `O(1/n)` convergence rate** for the squared target to its limit `2/π`.
+For every `n ≥ 3`,
+`|(√n · buffonConstant n)^2 - 2/π| ≤ (2/π)/(n-1)`.
+This is the quantitative companion to `sqrt_mul_buffonConstant_tendsto`: it turns the
+two-sided envelope `sqrt_mul_buffonConstant_sq_bounds` into a single explicit error term,
+making the rate of convergence to `2/π` manifest. The upper envelope contributes a
+deviation `(2/π)·n/(n-1) - 2/π = (2/π)/(n-1)`, while the lower envelope's deviation
+`2/π - (2/π)·n(n-2)/(n-1)^2 = (2/π)/(n-1)^2` is even smaller (since `(n-1)^2 ≥ (n-1)`),
+so the symmetric bound `(2/π)/(n-1)` covers both sides. -/
+lemma sqrt_mul_buffonConstant_sq_rate (n : ℕ) (hn : 3 ≤ n) :
+    |(Real.sqrt (n : ℝ) * buffonConstant n) ^ 2 - 2 / π|
+      ≤ (2 / π) / ((n : ℝ) - 1) := by
+  have hncast : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have hn1 : (0 : ℝ) < (n : ℝ) - 1 := by linarith
+  have hn1ne : ((n : ℝ) - 1) ≠ 0 := ne_of_gt hn1
+  have hpine : (π : ℝ) ≠ 0 := ne_of_gt pi_pos
+  have hpos : (0 : ℝ) < 2 / π := by positivity
+  obtain ⟨hlo, hhi⟩ := sqrt_mul_buffonConstant_sq_bounds n hn
+  -- rewrite both envelopes as `2/π ± (2/π)/(n-1)^k`
+  have hloeq : (2 / π) * ((n : ℝ) * ((n : ℝ) - 2) / ((n : ℝ) - 1) ^ 2)
+      = 2 / π - (2 / π) / ((n : ℝ) - 1) ^ 2 := by
+    field_simp; ring
+  have hhieq : (2 / π) * ((n : ℝ) / ((n : ℝ) - 1))
+      = 2 / π + (2 / π) / ((n : ℝ) - 1) := by
+    field_simp; ring
+  rw [hloeq] at hlo
+  rw [hhieq] at hhi
+  -- the lower deviation `(2/π)/(n-1)^2` is dominated by `(2/π)/(n-1)`
+  have hsq : (2 / π) / ((n : ℝ) - 1) ^ 2 ≤ (2 / π) / ((n : ℝ) - 1) := by
+    rw [div_le_div_iff (by positivity) hn1]
+    nlinarith [mul_pos hpos hn1, hn1, hpos, hncast]
+  rw [abs_le]
+  exact ⟨by linarith, by linarith⟩
+
 /-- `(s n)^2 / n → 1/2`, by squeezing `s_sq_bounds` (divided by `n`) between
 `((n-2)/2)/n = 1/2 - 1/n` and `((n-1)/2)/n = 1/2 - 1/(2n)`, both `→ 1/2`. -/
 lemma s_sq_div_tendsto :
