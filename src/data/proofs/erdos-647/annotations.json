@@ -16,7 +16,11 @@
       "divisor-function",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "arithmetic functions",
+      "open problems in mathematics"
+    ]
   },
   {
     "id": "ann-e647-tau",
@@ -35,7 +39,11 @@
       "multiplicative",
       "native-decide"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "multiplicative functions"
+    ]
   },
   {
     "id": "ann-e647-mplustau",
@@ -53,7 +61,11 @@
       "maximum",
       "native-decide"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "arithmetic functions",
+      "Lean 4 function definitions"
+    ]
   },
   {
     "id": "ann-e647-condition",
@@ -72,7 +84,11 @@
       "supremum",
       "finset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "Finset operations in Mathlib",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e647-n24",
@@ -91,7 +107,11 @@
       "native-decide",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "decidable propositions",
+      "finite case analysis"
+    ]
   },
   {
     "id": "ann-e647-fails",
@@ -110,7 +130,11 @@
       "highly-composite",
       "omega"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "inequalities",
+      "counterexample construction"
+    ]
   },
   {
     "id": "ann-e647-question",
@@ -129,7 +153,11 @@
       "prize",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "open problems in mathematics",
+      "existential quantifiers"
+    ]
   },
   {
     "id": "ann-e647-asymptotic",
@@ -148,7 +176,11 @@
       "tendsto",
       "finite"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "limits and divergence"
+    ]
   },
   {
     "id": "ann-e647-hc",
@@ -167,7 +199,11 @@
       "obstruction",
       "Ramanujan"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "divisor counting",
+      "extremal sequences"
+    ]
   },
   {
     "id": "ann-e647-obstruction",
@@ -186,7 +222,11 @@
       "shadow",
       "blocking"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "inequalities",
+      "combinatorial reasoning"
+    ]
   },
   {
     "id": "ann-e647-omega",
@@ -205,7 +245,11 @@
       "omega",
       "Omega"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "multiplicative functions"
+    ]
   },
   {
     "id": "ann-e647-related",
@@ -224,6 +268,10 @@
       "implication",
       "tao"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "arithmetic functions",
+      "inequalities"
+    ]
   }
 ]
