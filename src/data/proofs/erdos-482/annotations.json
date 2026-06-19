@@ -17,7 +17,11 @@
       "nonlinear-recurrence",
       "algebraic-numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binary expansion of an irrational number",
+      "floor function as a rounding operation",
+      "nonlinear integer recurrences"
+    ]
   },
   {
     "id": "ann-e482-sequence",
@@ -36,7 +40,11 @@
       "floor-function",
       "sqrt-2"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "structural recursion in Lean",
+      "Int.floor mapping reals to integers",
+      "computing floor of √2 times a value"
+    ]
   },
   {
     "id": "ann-e482-main",
@@ -55,7 +63,11 @@
       "binary-expansion",
       "floor-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binary digits as values in {0, 1}",
+      "multiplication by 2 as a binary shift",
+      "interaction of floor with multiplication by √2"
+    ]
   },
   {
     "id": "ann-e482-properties",
@@ -74,7 +86,11 @@
       "asymptotic-ratio",
       "irrational-approximation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "numerical bounds on √2",
+      "convergence of consecutive term ratios",
+      "O(1/n) asymptotic error estimates"
+    ]
   },
   {
     "id": "ann-e482-stoll",
@@ -93,7 +109,11 @@
       "pisot-numbers",
       "algebraic-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "quadratic irrationals as roots of aα² + bα + c = 0",
+      "square-free integers and √m",
+      "Pisot-Vijayaraghavan numbers"
+    ]
   },
   {
     "id": "ann-e482-nonperiodic",
@@ -112,7 +132,11 @@
       "periodic-sequences",
       "binary-expansion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "eventually periodic binary expansions of rationals",
+      "irrationality of √2",
+      "proof by contradiction"
+    ]
   },
   {
     "id": "ann-e482-summary",
@@ -131,6 +155,10 @@
       "definitional-equality",
       "problem-resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "definitional equality proved by rfl",
+      "conjunction via anonymous constructor",
+      "axiomatized digit-extraction result"
+    ]
   }
 ]
