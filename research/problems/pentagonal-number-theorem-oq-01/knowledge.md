@@ -79,3 +79,31 @@ fails, the likely culprits are exact lemma names (`Int.cast_pow`,
 `ZMod.intCast_zmod_eq_zero_iff_dvd`, `Int.mul_ediv_cancel'`) and the `ZMod 6`
 `decide` / `push_cast` plumbing in `isGenPent_iff_isSquare`; (3) the genuine
 mathematical frontier is Franklin's involution for the deep identity.
+
+### 2026-06-18 (Session 2) — EXTEND
+
+**Mode**: EXTEND · **Outcome**: progress (build-gated PR)
+
+- Session 1's file landed on `main` (#25893, build-verified, registered in
+  Proofs.lean). The recognition criterion is done; the deep core (Franklin's
+  involution) remains the open frontier.
+- Added the **enumeration order**: the structural fact that makes Euler's
+  partition recurrence a *finite* sum. The generalized pentagonal numbers
+  strictly increase along the zigzag `0 < g(1) < g(-1) < g(2) < g(-2) < …`.
+- Method: two **exact difference identities** in which the quadratic part of
+  `g` cancels, leaving clean linear facts —
+  `genPent_neg : g(-k) = g(k) + k` and
+  `genPent_succ_sub_neg : g(k+1) = g(-k) + (2k+1)` (both `linear_combination`
+  of two `two_mul_genPent` instances). From these, by `omega`: `genPent_pos`,
+  `genPent_lt_genPent_neg`, `genPent_neg_lt_genPent_succ`, `genPent_zigzag_step`,
+  and `genPent_strictMono_pos` (positive branch, via the factorization
+  `2·g(b)-2·g(a) = (b-a)(3(a+b)-1)` + `mul_pos`).
+- 8 new theorems, 0 new axioms/sorries. theoremCount 16→24, lineCount 179→257.
+- Branch `research/pentagonal-oq01-zigzag-enumeration`; PR ships build-gated
+  (watcher serialized behind the brianchon build to avoid OOM).
+
+**Next steps**: (1) the negative branch monotonicity `genPent_neg_strictMono`
+(immediate from `genPent_neg` + `genPent_strictMono_pos`); (2) a `Finset` of
+pentagonal exponents `≤ N` and its cardinality `~ √(N/?)` for the recurrence's
+finite index set; (3) the genuine frontier remains Franklin's sign-reversing
+involution on distinct-part partitions for the deep identity.
