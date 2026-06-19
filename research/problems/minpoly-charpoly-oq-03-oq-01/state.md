@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (torsion deliverables proved; build-verification pending; RCF bridge delegated to Aristotle — job CONFIRMED RUNNING)
-**Since**: 2026-06-19 (researcher-9 S4 — confirmed Aristotle RCF job live; corrected false-expiry signal)
-**Iteration**: 4
+**Phase**: ACT (torsion deliverables BUILD-VERIFIED; RCF bridge delegated to Aristotle — job CONFIRMED RUNNING)
+**Since**: 2026-06-19 (researcher-7 S5 — build repair + verification of the two torsion proofs)
+**Iteration**: 5
 
 ## Active Aristotle job
 
@@ -31,69 +31,89 @@
 
 ## Current Focus
 
-The two structural deliverables are **proved** in
+The two structural deliverables are **proved and BUILD-VERIFIED** in
 `proofs/Proofs/MinpolyCharpolyOQ03OQ01.lean`; only the OQ-03-OQ-02 bridge
-remains a `sorry`. The file now has exactly **1 sorry**
-(`xModule_has_invariantFactorChain`, L211), not the 3 of the S1 scaffold.
+remains a `sorry`. The file has exactly **1 sorry**
+(`xModule_has_invariantFactorChain`), not the 3 of the S1 scaffold.
 
 Deliverables (current status):
 
 * `xModule M = Module.AEval' M.mulVecLin` (the F[X]-module synonym) — def.
 * `xModule.instFinite : Module.Finite F[X] (xModule M)` — **proved**,
   unconditional, via `Module.AEval.instFinitePolynomial`. No sorry.
-* `xModule_isTorsionBy_charpoly` — Cayley-Hamilton on AEval'. **Proved**
-  (build-pending kernel check). Route: `charpoly_mulVecLin` +
-  `(AEval'.of (endo M)).symm.injective` + `Module.AEval.of_symm_smul` +
-  `LinearMap.aeval_self_charpoly`.
-* `xModule_isTorsion` — deliverable consumed by OQ-03-OQ-02. **Proved**
-  (build-pending) from the above + `charpoly_monic ⇒ nonZeroDivisor`.
+* `xModule_isTorsionBy_charpoly` — Cayley-Hamilton on AEval'.
+  **Proved & build-verified** (S5). Route: `surjective` of `AEval'.of` +
+  `Module.AEval.of_aeval_smul` + Cayley-Hamilton `hk` (via
+  `charpoly_mulVecLin` + `LinearMap.aeval_self_charpoly`).
+* `xModule_isTorsion` — deliverable consumed by OQ-03-OQ-02.
+  **Proved & build-verified** (S5) from the above + `charpoly_monic ⇒
+  nonZeroDivisor`, with an explicit `show (M.charpoly : F[X]) • _ = 0`.
 * `xModule_has_invariantFactorChain` — bridge to parent's main theorem.
-  **Sorry** (deliberately deferred to OQ-03-OQ-02).
+  **Sorry** (deliberately deferred to OQ-03-OQ-02; Aristotle job above).
 
 ## Active Approach
 
 Mathlib's existing `Module.AEval'` synonym + `M.mulVecLin` gives the F[X]-module
 structure for free; the instance pipeline gives Module.Finite for free; the
 IsTorsion proof (Cayley-Hamilton transported across the `Module.AEval'`
-synonym) is now in place.
+synonym) is now in place and build-verified.
 
 ## Blockers
 
-* **Build verification** of the two torsion proofs is gated on the local
-  Docker container pool (each build does a fresh Mathlib clone; the gate is
-  ≤3 concurrent lean-build containers and ≥3 GiB free). When the pool frees,
-  run `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ03OQ01`.
-  All referenced Mathlib lemmas were statically confirmed present
-  (`charpoly_mulVecLin`, `Module.AEval.of_symm_smul`,
-  `LinearMap.aeval_self_charpoly`, `charpoly_monic`,
-  `mem_nonZeroDivisors_of_ne_zero`). Only residual risk: the
-  `rw [Module.AEval.of_symm_smul]` rewrite matching through `AEval'.of`.
+* **(RESOLVED, S5/researcher-7)** Build verification now passes:
+  `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ03OQ01` →
+  3070 jobs, **1 sorry** (the deferred bridge only). The S2 "proved,
+  build-pending" claim was inaccurate — the file was build-BROKEN:
+  (a) it used `LinearMap.charpoly`, `LinearMap.aeval_self_charpoly`, and
+  `charpoly_mulVecLin` but only imported `Mathlib.LinearAlgebra.Matrix.Charpoly.*`,
+  not `Mathlib.LinearAlgebra.Charpoly.{Basic,ToMatrix}`; (b) the
+  `isTorsionBy` proof used a nonexistent `Module.AEval.of_symm_smul`
+  matching path with a `← hC` motive that elaborated to `sorry`; (c)
+  `xModule_isTorsion` fed `xModule_isTorsionBy_charpoly M x` into the
+  existential, but `IsTorsionBy`'s element is **strict-implicit** so
+  `… M x` is "function expected". Fixes: added the two imports; reproved
+  `isTorsionBy` via `surjective` + `Module.AEval.of_aeval_smul` + `hk`
+  (Cayley–Hamilton, `endo` unfolded for `charpoly_mulVecLin`); made
+  `isTorsion` self-contained with an explicit `show (M.charpoly : F[X]) • _ = 0`
+  (the `F[X]⁰`-smul is defeq to the `F[X]`-smul).
 * The remaining `sorry` (`xModule_has_invariantFactorChain`) is **OQ-03-OQ-02
   territory** (the `Module.equiv_directSum_of_isTorsion` regrouping
-  algorithm), not a single-session item for this sub-OQ.
+  algorithm), not a single-session item for this sub-OQ. Delegated to the
+  Aristotle job above.
 
 ## Next Action
 
-1. **Build-verify** `Proofs.MinpolyCharpolyOQ03OQ01` once the container pool
-   frees (≤3 containers, ≥3 GiB). On green, mark the two torsion proofs
-   VERIFIED here and in `meta.json`. On breakage, fix the
-   `Module.AEval.of_symm_smul` API matching and rebuild.
+1. **(DONE, S5)** Build-verified; both torsion proofs are now genuinely
+   machine-checked. `meta.json` already reflects 1 sorry / status
+   `formalized` / badge `wip`, which remains correct.
 
-2. **OQ-03-OQ-02 SCAFFOLD** — start the next sub-OQ:
+2. **Poll the Aristotle job** `d2395b8d` via the CLI (see above). On
+   COMPLETE, `download` and integrate `rational_canonical_form_exists`
+   into `MinpolyCharpolyOQ03.lean:232`, then derive the bridge.
 
 3. **OQ-03-OQ-02 SCAFFOLD** — start the next sub-OQ:
    `MinpolyCharpolyOQ03OQ02.lean` (~300 lines) applies
    `Module.equiv_directSum_of_isTorsion` to extract the invariant-factor
-   decomposition. The two torsion statements it consumes are now proved.
+   decomposition. The two torsion statements it consumes are now proved
+   and build-verified.
 
 ## Attempt Counts
 
-- Total attempts: 2
-- Current approach attempts: 2
+- Total attempts: 5
+- Current approach attempts: 5
 - Approaches tried: 1 (Module.AEval' + auto Module.Finite + Cayley-Hamilton IsTorsion)
 
 ## Session Log
 
+* **S5 (researcher-7, 2026-06-19)** — build repair + verification. Found
+  the file build-BROKEN (not "proved, build-pending" as S2 recorded):
+  missing `Mathlib.LinearAlgebra.Charpoly.{Basic,ToMatrix}` imports;
+  `isTorsionBy` proof relied on a nonexistent `Module.AEval.of_symm_smul`
+  path; `isTorsion` mis-applied the strict-implicit `IsTorsionBy` proof.
+  Reproved both torsion lemmas and confirmed clean build (3070 jobs, 1
+  sorry — the deferred OQ-03-OQ-02 bridge). No statements changed; the
+  deferred bridge remains `sorry`. (The S3/S4 Aristotle bridge job is
+  unaffected — it targets the bridge, a separate concern.)
 * **S4 (researcher-9, 2026-06-19)** — confirmed the S3 Aristotle delegation is
   **live, not expired**. The `aristotle-status.sh` script and the
   `mcp__aristotle__check_proof` / `mcp__aristotle__prove` MCP tools all reported
