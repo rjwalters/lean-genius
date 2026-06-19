@@ -160,3 +160,77 @@ This is the first-try recipe for the next Aristotle/build session (or a hand pro
 - The inner-product/orthogonality route to optimality (Approach B in
   `problem.md`) was not needed — the sign-change/IVT route (Approach A) carried
   the whole proof and is the cleaner Lean path.
+
+## Session 2026-06-19 (researcher-10) — uniqueness reduction: API audit + tracking
+
+**Mode**: REVISIT  **Outcome**: progress (decomposition + preservation; build-pending)
+
+### What I Did
+- Located researcher-7's untracked uniqueness reduction (`DeMoivreOQ02OQ03UniqueAristotle.lean`)
+  sitting in an ephemeral worktree, at risk of loss.
+- **Build-free API audit**: confirmed the mechanical reduction `monicChebyshev_unique`
+  is fully consistent with the *merged* base file `Proofs.DeMoivreOQ02OQ03` — every
+  referenced lemma exists with the exact signature used (`monicChebyshev` def L178,
+  `monicChebyshev_monic n hn` L182, `monicChebyshev_natDegree n` L187,
+  `monicChebyshev_eval_node n k hn` L202). `node_strict_anti` is `private`, so the
+  companion correctly re-derives `node_strict_anti'`. The reduction half is therefore
+  sound; the **sole** remaining obligation is the crux `weak_alternation_eq_zero`.
+- Upgraded the crux docstring with a concrete **Case A / Case B** decomposition (see below).
+- Preserved the reduction in a tracked **DRAFT** branch (build-pending) so it survives.
+
+### Key Findings
+- The crux splits cleanly: **Case A** (no node is a root) reduces *verbatim* to the
+  already-verified strict argument in `monicChebyshev_minimax` (n distinct simple roots
+  vs deg < n; no multiplicity). **Case B** (a node is a root) is the only genuinely new
+  part — a non-crossing node-zero is a local extremum hence a root of `q'` (Rolle), so
+  the root count *with multiplicity* still reaches n. Mathlib hooks:
+  `Polynomial.le_rootMultiplicity_iff`, `Polynomial.card_roots'`, derivative-of-root.
+
+### Backends
+- Aristotle: **down** (404 "Resource not found") — crux not submittable this session.
+- Docker host: saturated (load ~16, ~100 MB free, 9 lean containers) — kernel build OOM-unsafe.
+
+### Files Modified
+- `proofs/Proofs/DeMoivreOQ02OQ03UniqueAristotle.lean` (new, build-pending)
+- `src/data/research/problems/de-moivre-oq-02-oq-03.json` (knowledge)
+
+### Next Steps
+- On backend recovery: submit `weak_alternation_eq_zero` (self-contained, Mathlib-only)
+  to Aristotle, OR formalize Case A (expose strict root-count as reusable lemma) + Case B
+  (multiplicity via derivative). Then build and un-draft.
+
+## Session 2026-06-19 (researcher-10) — crux in flight
+
+**Mode**: REVISIT  **Outcome**: progress (crux delegated)
+
+### What I Did
+- Re-checked Aristotle: crux `weak_alternation_eq_zero` is RUNNING as project `dea4355b-baaa-4a4a-a1cf-4756198c63b0` (name `r10-crux`), ~4% at ~10 min. Did NOT re-submit (avoid duplicate).
+- Confirmed PR #26135 state: OPEN / DRAFT / MERGEABLE — correct (deployer skips unbuilt drafts).
+- Re-read `DeMoivreOQ02OQ03UniqueAristotle.lean`: reduction `monicChebyshev_unique` complete and API-consistent; sole `sorry` is the crux at L113.
+- Build gate CLOSED: host load ~13, ~126 MB free, 2 containers already building → a from-source Mathlib build would OOM, so could not verify even if the crux returned.
+
+### Next Steps
+- ON WAKE: `uvx --from aristotlelib aristotle show dea4355b-baaa-4a4a-a1cf-4756198c63b0`. SUCCESS ⇒ paste proof over L113, docker-build `Proofs.DeMoivreOQ02OQ03UniqueAristotle` (gate load<6 & free>1GB), un-draft PR #26135.
+- If Aristotle FAILS the crux: manual route is Case A (expose strict-alternation root count from `monicChebyshev_minimax`) + Case B (`Polynomial.le_rootMultiplicity_iff`/`rootMultiplicity` + derivative non-crossing-zero).
+
+---
+
+## Session 2026-06-19 (researcher-7) — CRUX DISCHARGED, 0 sorry
+
+**Mode**: REVISIT  **Outcome**: progress (crux proved; local v4.26 build pending)
+
+### What I Did
+- Aristotle project `3b070308` ("r7-demoivre-crux") returned **COMPLETE**: proved `node_divdiff_sign` by partitioning `(range (n+1)).erase i` into `range i` (factors `j<i`, negative) and `Ioc i n` (factors `j>i`, positive); the product has sign `(-1)^i` via `Finset.prod_pos`. Aristotle's whole Crux.lean builds with **no sorry**, axioms = `propext`/`Classical.choice`/`Quot.sound` only.
+- Retrieved via `aristotle download 3b070308 --destination FILE.zip` (tar.gz) and integrated the **build-verified pair** — product-form `node_divdiff_sign` + `weak_alternation_eq_zero` (Lagrange `eq_interpolate` + `leadingCoeff_basis` + `eq_zero_of_natDegree_lt_card_of_eval_eq_zero'`) — into `DeMoivreOQ02OQ03UniqueAristotle.lean`. Kept `monicChebyshev_unique` + `node_strict_anti'` (the `weak_alternation_eq_zero` signature is identical, so the wrapper still type-checks).
+- File now **0 sorry**. Committed `845e7b667c3`, pushed to update PR #26135 (kept DRAFT pending local build).
+
+### Key Findings
+- Toolchain artifact: Aristotle verified under `v4.28.0`; repo pins `v4.26.0`. Only flagged delta was `hni : n = s.card - 1` (`rw [hcard]; omega` is v4.28-only — under v4.26 `rw` auto-closes and `omega` would error). Closed with `by omega` (uses `hcard` in context; robust under both). Did not touch repo lean-toolchain.
+- Nesting Aristotle's standalone lemma would change its `simp_all` context — kept `node_divdiff_sign` a separate namespace-level lemma with Aristotle's exact clean signature.
+
+### Files Modified
+- `proofs/Proofs/DeMoivreOQ02OQ03UniqueAristotle.lean` (0 sorry)
+- `src/data/research/problems/de-moivre-oq-02-oq-03.json` (knowledge)
+
+### Next Steps
+- ON WAKE: check background build waiter `b33u7fbco` (log `/tmp/r7-demoivre-build.log`). `BUILD EXIT rc=0` ⇒ `gh pr ready 26135`, mark status verified, graduate pool (FORCE_COMPLETE=1; graduation reads MAIN problem json so needs the merge first). rc≠0 ⇒ fix the v4.26 error (likely `open Real`/`Polynomial.Chebyshev` name clash or `simp_all +decide` drift in the integrated lemmas) and rebuild.

@@ -2152,6 +2152,16 @@
       "companion_file": false,
       "notes": "researcher-2: sole sorry exists_sheared_point_lt_two_mul_d2 (d=2 Minkowski core) submitted via CLI as standalone snippet MinkowskiCore.lean. MCP wrapper 404 this session; CLI reachable. Retrieve: uvx --from aristotlelib aristotle show 8feb596c... ; if PROVED integrate proof body into ThreeSquaresSliceMinkowski.lean line 263-266.",
       "outcome": null
+    },
+    {
+      "project_id": "52afa73c-792e-49c8-99fd-6b543d8e6af7",
+      "file": "proofs/Proofs/DeMoivreOQ02OQ03UniqueAristotle.lean",
+      "problem_id": "de-moivre-oq-02-oq-03",
+      "submitted": "2026-06-19T11:35:00Z",
+      "status": "submitted",
+      "companion_file": true,
+      "notes": "researcher-10: FULL divided-difference (Lagrange) reduction of weak_alternation_eq_zero written out and submitted as standalone WeakAlternation.lean (import Mathlib only). Wrapper is complete; sole sorry = node_divdiff_sign (sign of n-th divided-difference weight = (-1)^i). This job doubles as off-host compile-check of the wrapper (local Docker gate closed). Retrieve: aristotle show 52afa73c -> if PROVED, integrate node_divdiff_sign body at DeMoivreOQ02OQ03UniqueAristotle.lean and docker-build + un-draft PR #26135. r7 job 3b070308 targets the same sign lemma; dea4355b targets full crux.",
+      "outcome": null
     }
   ]
 }
