@@ -17,7 +17,11 @@
       "dependent function types",
       "ZMod"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "residue classes modulo a prime",
+      "dependent function types",
+      "modular congruence notation"
+    ]
   },
   {
     "id": "erdos-467-partition",
@@ -36,7 +40,11 @@
       "Boolean classification",
       "non-emptiness witness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "partitioning a set into two disjoint subsets",
+      "Boolean-valued classifier functions",
+      "existential non-emptiness witnesses"
+    ]
   },
   {
     "id": "erdos-467-coverage-defs",
@@ -55,7 +63,11 @@
       "exact covering systems",
       "Helly-type conditions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "covering systems of congruences",
+      "existential and universal quantifiers",
+      "membership in a partition class"
+    ]
   },
   {
     "id": "erdos-467-conjecture",
@@ -75,7 +87,11 @@
       "Lovász Local Lemma",
       "prime harmonic series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdos covering congruence problems",
+      "divergence of the prime harmonic series",
+      "nested existential and universal quantifier statements"
+    ]
   },
   {
     "id": "erdos-467-residue-basics",
@@ -93,7 +109,11 @@
       "mathematical insight",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the modulo operation on natural numbers",
+      "divisibility and prime factors",
+      "smallest prime factor of an integer"
+    ]
   },
   {
     "id": "erdos-467-zero-assignment",
@@ -111,7 +131,11 @@
       "mathematical insight",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility by a prime",
+      "smallest prime factor",
+      "coverage as a modular congruence condition"
+    ]
   },
   {
     "id": "erdos-467-partition-props",
@@ -130,7 +154,11 @@
       "prime numbers",
       "ring theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "disjoint partition of primes into two classes",
+      "extracting existential witnesses from a conjunction",
+      "dual covering condition"
+    ]
   },
   {
     "id": "erdos-467-residue-periodicity",
@@ -148,7 +176,11 @@
       "mathematical insight",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "periodicity of residues modulo p",
+      "the modulo operation and remainders",
+      "density of a residue class among integers"
+    ]
   },
   {
     "id": "erdos-467-crt",
@@ -166,7 +198,11 @@
       "mathematical insight",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Chinese Remainder Theorem",
+      "coprime moduli and distinct primes",
+      "independence of congruence conditions"
+    ]
   },
   {
     "id": "erdos-467-mertens",
@@ -185,6 +221,10 @@
       "prime numbers",
       "probability theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mertens' third theorem",
+      "the Euler-Mascheroni constant",
+      "Euler product over primes"
+    ]
   }
 ]
