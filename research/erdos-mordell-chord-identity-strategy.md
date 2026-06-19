@@ -379,4 +379,47 @@ The prover is not serving this fleet; the two residual sorries
 (`chord_length_eq`, `angle_at_P`) remain manual targets with the cycle-15/17 pins
 above as the concrete proof skeleton. Companion Lean unchanged from the
 known-good 2-sorry state; cycle-18 is the rebase plus this note.
->>>>>>> 664d9991c75 (research(erdos-mordell-inequality-oq-01): rebase chord-identity companion onto current origin/main (cycle-18))
+
+### 2026-06-19 (cycle 19) — sharper Thales pin (unoriented iff); Aristotle 19th-dead
+
+Re-surveyed live `~/GitHub/mathlib4` for both residual sorries. The decisive new
+find shortens the concyclicity step of **both** obligations:
+
+* **`EuclideanGeometry.Sphere.angle_eq_pi_div_two_iff_mem_sphere_ofDiameter`**
+  (`Mathlib/Geometry/Euclidean/Angle/Sphere.lean:103`):
+  `∠ p₁ p₂ p₃ = π/2 ↔ p₂ ∈ Sphere.ofDiameter p₁ p₃`. This is the Thales criterion
+  on the **unoriented** angle `∠`, valued in `[0,π]` — no oriented `∡`/`two_zsmul`
+  bookkeeping needed to *establish concyclicity*. The companion already proves
+  exactly its left-hand side for both feet: `angle_pedalFoot_XY_at_X` and
+  `angle_pedalFoot_ZX_at_X` give `∠ P F_• X = π/2`, hence (after the symmetry
+  `angle_comm`, since `ofDiameter` is symmetric in its endpoints up to `midpoint`)
+  `F_b, F_c ∈ Sphere.ofDiameter X P` directly. `Sphere.ofDiameter p₁ p₂`
+  (`Sphere/Basic.lean:304`) `= ⟨midpoint ℝ p₁ p₂, dist p₁ p₂ / 2⟩` — radius
+  `dist X P / 2`, exactly the circumradius the law of sines wants.
+
+Residual oriented machinery (still the genuine remaining work):
+
+* **Obligation B (`chord_length_eq`)** — once `X, F_b, F_c, P` are seen cospherical
+  via `cospherical_iff_exists_sphere` (`Sphere/Basic.lean:152`) from the two
+  `ofDiameter` memberships, apply **`Sphere.dist_div_sin_oangle_eq_two_mul_radius`**
+  (`Angle/Sphere.lean:298`): `dist p₁ p₃ / |Real.Angle.sin (∡ p₁ p₂ p₃)| = 2·radius`.
+  Rearranged on chord `F_b F_c` with apex `X`, radius `dist X P/2`, gives
+  `dist F_b F_c = dist X P · |sin (∡ F_b X F_c)|`; the open-segment ray facts collapse
+  `∡ F_b X F_c` onto `∠ Y X Z` and `Real.Angle.sin_toReal` (`…/Angle.lean:608`) +
+  `EuclideanGeometry.angle_eq_abs_oangle_toReal` (`Angle/Oriented/Affine.lean:346`)
+  discharge the `|·|`/unoriented bridge. (The unoriented packaging
+  `Affine.Triangle.dist_div_sin_angle_eq_two_mul_circumradius`, `Angle/Sphere.lean:430`,
+  is the alternative but forces a `Triangle ℝ` repackaging.)
+
+* **Obligation A (`angle_at_P`)** — supplementary inscribed angle. Bridge stays
+  `angle_eq_abs_oangle_toReal` (unoriented `∠ F_b P F_c` ↔ `|(∡ F_b P F_c).toReal|`),
+  with the supplement supplied either by
+  `Sphere.two_zsmul_oangle_center_add_two_zsmul_oangle_eq_pi` (`Angle/Sphere.lean:203`,
+  central+inscribed = π) or `Cospherical.two_zsmul_oangle_eq` (`:178`), then
+  `Real.sin_pi_sub` to land the sine. This descent (oriented `2 • ∡` → unoriented
+  `∠ = π − ∠`) is the one step Aristotle would most help with.
+
+All six lemma signatures re-verified cycle-19 against live `~/GitHub/mathlib4`.
+Companion Lean unchanged (known-good 2-sorry); cycle-19 is strategy-doc only.
+Aristotle `prove` MCP re-probed (`angle_at_P`, self-contained, Thales hint) —
+`Resource not found` again, **19th consecutive cycle** dead.
