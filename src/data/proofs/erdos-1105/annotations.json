@@ -16,7 +16,11 @@
       "rainbow-coloring",
       "extremal-graph-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-1105-graph",
@@ -34,7 +38,11 @@
       "complete-graph",
       "edge-count"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-1105-paths",
@@ -53,7 +61,10 @@
       "cycle",
       "edge-count"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "finite combinatorics"
+    ]
   },
   {
     "id": "ann-1105-embedding",
@@ -72,7 +83,11 @@
       "homomorphism",
       "injection"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "injective functions",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-1105-rainbow",
@@ -91,7 +106,11 @@
       "distinct-colors",
       "coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "edge colorings",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-1105-ar",
@@ -110,7 +129,11 @@
       "supremum",
       "coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "Ramsey theory",
+      "order theory"
+    ]
   },
   {
     "id": "ann-1105-cycle-conj",
@@ -129,7 +152,11 @@
       "linear-growth",
       "triangle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic analysis",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-1105-path-conj",
@@ -148,7 +175,11 @@
       "binomial",
       "parity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "enumerative combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-1105-bounds",
@@ -167,7 +198,11 @@
       "monotonicity",
       "trivial-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "order theory"
+    ]
   },
   {
     "id": "ann-1105-turan",
@@ -186,7 +221,11 @@
       "extremal",
       "h-free"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Turan-type problems",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-1105-special",
@@ -204,7 +243,10 @@
       "small-cases",
       "exact-values"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-1105-status",
@@ -222,6 +264,10 @@
       "open-problem",
       "partial-progress"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Ramsey theory",
+      "mathematical research literature"
+    ]
   }
 ]
