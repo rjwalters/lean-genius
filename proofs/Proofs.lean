@@ -2310,6 +2310,7 @@ import Proofs.Erdos998ThreeGapOQ04
 import Proofs.Erdos999Problem
 import Proofs.Erdos99Problem
 import Proofs.Erdos9Problem
+import Proofs.ErdosDivisibilityPigeonhole
 import Proofs.ErdosKoRado
 import Proofs.ErdosMordellChordIdentity
 import Proofs.ErdosMordellChordReduction
