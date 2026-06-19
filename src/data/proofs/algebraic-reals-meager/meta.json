@@ -113,25 +113,41 @@
       "id": "overview",
       "title": "Overview: Meagreness of the Algebraic Reals",
       "startLine": 1,
-      "endLine": 65,
-      "summary": "File docstring and imports. States the open question — strengthen the countability of the algebraic reals to the Baire-category statement that they are meagre — and situates it against the three independent smallness notions (cardinality, measure, category). Quotes the companion nested-interval entry's flagged follow-up that this entry resolves.",
+      "endLine": 59,
+      "summary": "File docstring and imports. States the open question — strengthen the countability of the algebraic reals to the Baire-category statement that they are meagre — and situates it against the three independent smallness notions (cardinality, measure, category). Quotes the companion nested-interval entry's flagged follow-up that this entry resolves, and previews the strategy: a point is nowhere dense in a perfect T1 space, so a countable set is a countable union of nowhere-dense singletons.",
       "mathContext": "A set is meagre iff it is a countable union of nowhere-dense sets; in a perfect space every singleton is nowhere dense, so every countable set is meagre."
     },
     {
+      "id": "building-blocks",
+      "title": "Building Blocks: Nowhere-Dense ⇒ Meagre, and the Nowhere-Dense Singleton",
+      "startLine": 61,
+      "endLine": 79,
+      "summary": "Opens the namespace and proves the two atomic lemmas. isMeagre_of_isNowhereDense covers a nowhere-dense set by the one-element family {t} (trivially countable) to make it meagre. isNowhereDense_singleton carries all the topological content: in a T1 space {x} is closed, and PerfectSpace supplies interior {x} = ∅ (x is not isolated), so {x} is nowhere dense.",
+      "mathContext": "$t$ nowhere dense $\\Rightarrow t = \\bigcup_{u\\in\\{t\\}} u$ is meagre; and $\\overline{\\{x\\}}=\\{x\\}$ ($T_1$) with $\\operatorname{int}\\{x\\}=\\varnothing$ (perfect) $\\Rightarrow \\{x\\}$ nowhere dense."
+    },
+    {
       "id": "abstract-lemma",
-      "title": "Countable Sets are Meagre in a Perfect Space",
-      "startLine": 66,
-      "endLine": 99,
-      "summary": "Proves the three building blocks: isMeagre_of_isNowhereDense (a nowhere-dense set is meagre via its singleton family), isNowhereDense_singleton (a singleton is closed with empty interior in a T1 perfect space), and countable_isMeagre (a countable set is a countable union of singletons, hence meagre).",
-      "mathContext": "{x} is closed and interior{x} = ∅ ⇒ {x} nowhere dense; s = ⋃_{x ∈ s} {x} with s countable ⇒ IsMeagre s."
+      "title": "countable_isMeagre: Countable Sets are Meagre in a Perfect Space",
+      "startLine": 81,
+      "endLine": 92,
+      "summary": "The headline abstract lemma flagged as an unformalized follow-up by the companion nested-interval entry. A countable set s is written as the union of its singletons (Set.biUnion_of_singleton), countability is promoted to a Countable subtype instance, and isMeagre_iUnion combines the meagre singletons. No completeness or metric hypothesis is needed for meagreness; the lemma holds in any T1 perfect topological space.",
+      "mathContext": "$s$ countable $\\wedge\\ T_1 \\wedge\\ \\text{Perfect} \\Rightarrow s = \\bigcup_{x\\in s}\\{x\\}$ is a countable union of nowhere-dense singletons $\\Rightarrow \\operatorname{IsMeagre} s$."
     },
     {
       "id": "application",
-      "title": "Algebraic Reals Meagre, Transcendentals Comeagre",
-      "startLine": 100,
-      "endLine": 136,
-      "summary": "Instantiates the abstract lemma: algebraicReals_isMeagre (the algebraic reals are meagre), transcendentalReals_residual (their complement is residual), transcendentalReals_dense (hence dense), and algebraicReals_ne_univ / exists_transcendental_real (transcendentals exist, from meagreness alone).",
-      "mathContext": "{x | IsAlgebraic ℚ x} meagre ⇒ {x | ¬IsAlgebraic ℚ x} ∈ residual ℝ ⇒ dense; univ not meagre ⇒ algebraic ≠ univ."
+      "title": "The Algebraic Reals are Meagre",
+      "startLine": 94,
+      "endLine": 102,
+      "summary": "Instantiates the abstract lemma at ℝ: algebraicReals_isMeagre feeds the countability of {x : ℝ | IsAlgebraic ℚ x} — Mathlib's Algebraic.countable, reused via AlgebraicNumbersCountable.algebraic_reals_countable from the grandparent gallery entry — into countable_isMeagre. The typeclass resolver discharges T1Space ℝ and PerfectSpace ℝ automatically, so the step is a one-liner that strengthens 'countable' to 'meagre'.",
+      "mathContext": "$\\{x\\in\\mathbb{R}:\\operatorname{IsAlgebraic}_{\\mathbb{Q}}x\\}$ countable and $\\mathbb{R}$ perfect $T_1$ $\\Rightarrow \\operatorname{IsMeagre}\\{x\\in\\mathbb{R}:\\operatorname{IsAlgebraic}_{\\mathbb{Q}}x\\}$."
+    },
+    {
+      "id": "transcendental-corollaries",
+      "title": "Transcendentals: Residual, Dense, and Existent",
+      "startLine": 104,
+      "endLine": 139,
+      "summary": "The comeagre dual and the existence corollaries. transcendentalReals_residual unfolds IsMeagre (the complement lies in residual ℝ); transcendentalReals_dense applies dense_of_mem_residual in the Baire space ℝ; algebraicReals_ne_univ and exists_transcendental_real recover the existence of a transcendental purely from meagreness (a nonempty Baire space is not meagre in itself), with no explicit construction. Closes with #print axioms confirming 0 axioms.",
+      "mathContext": "$\\operatorname{IsMeagre}A \\iff A^c\\in\\operatorname{residual}$, dense in a Baire space; $\\neg\\operatorname{IsMeagre}(\\operatorname{univ})$ $\\Rightarrow$ algebraic $\\subsetneq\\mathbb{R}$ $\\Rightarrow \\exists x,\\ \\neg\\operatorname{IsAlgebraic}_{\\mathbb{Q}}x$."
     }
   ],
   "crossReferences": [
