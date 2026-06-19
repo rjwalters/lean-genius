@@ -1,0 +1,22 @@
+{
+  "id": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
+  "title": "Algebraic Reals Are Meager (Baire Category Transcendence)",
+  "status": "completed",
+  "knowledge": {
+    "insights": [
+      "The named target (algebraic reals are meagre in ℝ) was ALREADY solved before this session: gallery entry `algebraic-reals-meager` / Proofs/AlgebraicRealsMeager.lean proves meagreness, residual/comeagre transcendentals, density, and existence of transcendentals (0 sorries, 0 axioms, verified, badge=original). The candidate-pool entry was a stale Seeker re-selection of a completed problem.",
+      "The entry's own conclusion.openQuestions flagged the natural follow-up: the ABSTRACT Baire Category Theorem (a nonempty perfect T1 Baire space is uncountable), which countable_isMeagre nearly proves and which subsumes the companion nested-interval entry algebraic-numbers-countable-oq-02-oq-02.",
+      "That follow-up is a ~10-line direct abstraction of the already-verified algebraicReals_ne_univ proof in the same file: assume univ countable -> countable_isMeagre gives IsMeagre univ -> contradiction with not_isMeagre_of_isOpen isOpen_univ Set.univ_nonempty (a nonempty Baire space is not meagre in itself)."
+    ],
+    "builtItems": [
+      "not_countable_of_perfect_t1_baire (Proofs/AlgebraicRealsMeager.lean:145): a nonempty T1 PerfectSpace BaireSpace is uncountable -- the abstract Baire Category Theorem flagged by the companion nested-interval entry, isolated to purely topological hypotheses (no metric/completeness beyond BaireSpace).",
+      "not_countable_real (Proofs/AlgebraicRealsMeager.lean:157): ¬ (Set.univ : Set ℝ).Countable, recovering Cantor uncountability of ℝ abstractly (no diagonal / nested-interval argument), subsuming algebraic-numbers-countable-oq-02-oq-02."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "BUILD-VERIFY: when the Docker gate opens (it was saturated at 5 lean-build containers on an 8GB host this session), run ./proofs/scripts/docker-build.sh Proofs.AlgebraicRealsMeager and confirm #print axioms shows only propext/Classical.choice/Quot.sound for not_countable_of_perfect_t1_baire and not_countable_real. Then mark the draft PR ready.",
+      "Optional next OQ: package the full Baire Category Theorem for an arbitrary perfect Polish space by pairing not_countable_of_perfect_t1_baire with completeness; or exhibit the comeagre transcendental complement as an explicit dense Gδ; or formalize independence of the three smallness notions (a meagre full-measure set / a null comeagre set) per the entry's remaining open questions."
+    ],
+    "progressSummary": "COMPLETE: named target (algebraic reals meagre) verified in gallery; extended with abstract Baire-category uncountability theorem (draft PR, build-verification pending due to saturated Docker gate)."
+  }
+}
