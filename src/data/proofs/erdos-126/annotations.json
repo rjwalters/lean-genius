@@ -17,7 +17,11 @@
       "extremal functions",
       "additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization and the number of distinct prime factors",
+      "pairwise sums of a set of integers",
+      "extremal functions in additive combinatorics"
+    ]
   },
   {
     "id": "ann-e126-extremal-def",
@@ -37,7 +41,11 @@
       "IsGreatest",
       "minimax"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the off-diagonal pairs of a set (Finset.offDiag)",
+      "distinct prime factors (Nat.primeFactors)",
+      "minimax / IsGreatest extremal definitions"
+    ]
   },
   {
     "id": "ann-e126-conjecture",
@@ -57,7 +65,11 @@
       "asymptotic growth rates",
       "omega notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limits of sequences (Filter.Tendsto, atTop)",
+      "asymptotic growth rates",
+      "the ratio f(n)/log n → ∞"
+    ]
   },
   {
     "id": "ann-e126-lower-bound",
@@ -76,7 +88,11 @@
       "sieve methods",
       "pigeonhole principle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Big-O / ≪ notation",
+      "the pigeonhole principle",
+      "sieve methods (Erdős–Turán lower bound)"
+    ]
   },
   {
     "id": "ann-e126-upper-bound",
@@ -95,7 +111,11 @@
       "Big-O notation",
       "extremal constructions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime number theorem",
+      "Big-O asymptotics",
+      "extremal constructions (Erdős–Turán upper bound)"
+    ]
   },
   {
     "id": "ann-e126-littleo",
@@ -114,7 +134,11 @@
       "tightness of bounds",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "little-o notation",
+      "tightness of asymptotic bounds",
+      "the gap between lower and upper bounds"
+    ]
   },
   {
     "id": "ann-e126-trivial-bound",
@@ -133,7 +157,11 @@
       "explicit construction",
       "prime number theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime counting function π(n)",
+      "the prime number theorem",
+      "explicit set constructions"
+    ]
   },
   {
     "id": "ann-e126-monotonicity",
@@ -152,7 +180,11 @@
       "subset properties",
       "extremal functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "monotone functions",
+      "subsets and inherited extremal values",
+      "why f is nondecreasing"
+    ]
   },
   {
     "id": "ann-e126-consequence",
@@ -171,6 +203,10 @@
       "open problems",
       "formalization strategy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the bounds and conjecture for f(n)",
+      "axiomatizing known results",
+      "the formalization strategy"
+    ]
   }
 ]
