@@ -16,7 +16,11 @@
       "Euler's number",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Asymptotic Growth Rates",
+      "Euler's Number"
+    ]
   },
   {
     "id": "ann-e295-imports",
@@ -35,7 +39,11 @@
       "filters"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Real Analysis Basics",
+      "Filters And Limits",
+      "Finite Sum Notation"
+    ]
   },
   {
     "id": "ann-e295-background",
@@ -54,7 +62,11 @@
       "rational arithmetic",
       "history of mathematics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Fractions",
+      "Rational Number Arithmetic",
+      "Distinct Sum Decomposition"
+    ]
   },
   {
     "id": "ann-e295-existence",
@@ -73,7 +85,11 @@
       "constructive existence",
       "unit fractions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Greedy Algorithm",
+      "Unit Fractions",
+      "Constructive Existence Proofs"
+    ]
   },
   {
     "id": "ann-e295-k-definition",
@@ -92,7 +108,11 @@
       "optimization",
       "growth rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Minimization Over Sets",
+      "Unit Fractions",
+      "Function Definition In Lean"
+    ]
   },
   {
     "id": "ann-e295-k-achieves",
@@ -110,7 +130,11 @@
       "achievability"
     ],
     "mathContext": "See annotation content for formal details of k(n) achieves a representation",
-    "prerequisites": []
+    "prerequisites": [
+      "Existential Quantifiers",
+      "Strictly Increasing Sequences",
+      "Reciprocal Sums"
+    ]
   },
   {
     "id": "ann-e295-k-minimal",
@@ -128,7 +152,11 @@
       "lower bound"
     ],
     "mathContext": "See annotation content for formal details of minimality of k(n)",
-    "prerequisites": []
+    "prerequisites": [
+      "Lower Bound Arguments",
+      "Minimality Conditions",
+      "Universal Quantifiers"
+    ]
   },
   {
     "id": "ann-e295-erdos-straus",
@@ -148,7 +176,11 @@
       "asymptotic bounds",
       "analytic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Harmonic Series Asymptotics",
+      "Big-O Notation",
+      "Euler's Number"
+    ]
   },
   {
     "id": "ann-e295-conjecture",
@@ -167,7 +199,11 @@
       "limits",
       "filter topology"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto",
+      "Limits At Infinity",
+      "Open Conjectures"
+    ]
   },
   {
     "id": "ann-e295-example-n2",
@@ -186,7 +222,11 @@
       "rational arithmetic",
       "concrete examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Fractions",
+      "Rational Arithmetic",
+      "norm_num Tactic"
+    ]
   },
   {
     "id": "ann-e295-example-n2-alt",
@@ -204,7 +244,11 @@
       "alternative representations"
     ],
     "mathContext": "See annotation content for formal details of alternative example: n = 2",
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fraction Representations",
+      "Non-Uniqueness Of Decompositions",
+      "Unit Fractions"
+    ]
   },
   {
     "id": "ann-e295-example-n3",
@@ -222,7 +266,11 @@
       "larger N behavior"
     ],
     "mathContext": "See annotation content for formal details of example: n = 3",
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Fractions",
+      "Constraint Satisfaction",
+      "Reciprocal Sums"
+    ]
   },
   {
     "id": "ann-e295-e-positive",
@@ -241,6 +289,10 @@
       "Euler's number",
       "basic inequalities"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Exponential Function",
+      "Monotonicity Of Functions",
+      "Basic Inequalities"
+    ]
   }
 ]
