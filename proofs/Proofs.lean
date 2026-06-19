@@ -1056,6 +1056,7 @@ import Proofs.Erdos1178Problem
 import Proofs.Erdos1179OQ01
 import Proofs.Erdos1179OQ02
 import Proofs.Erdos1179OQ02Upper
+import Proofs.Erdos1179OQ02Witness
 import Proofs.Erdos1179Problem
 import Proofs.Erdos117OQ01
 import Proofs.Erdos117OQ01Aristotle
