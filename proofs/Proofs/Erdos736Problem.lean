@@ -36,6 +36,7 @@ import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.SetTheory.Cardinal.Ordinal
+import Mathlib.SetTheory.Cardinal.Regular
 import Mathlib.Data.Fintype.Basic
 
 open Cardinal SimpleGraph
@@ -50,21 +51,21 @@ namespace Erdos736
 **Chromatic number of a simple graph:**
 The minimum number of colors needed to properly color the vertices.
 -/
-noncomputable def chromaticNumber (V : Type*) (G : SimpleGraph V) : Cardinal :=
-  sInf { κ : Cardinal | ∃ (α : Type*), #α = κ ∧ Nonempty (G.Coloring α) }
+noncomputable def chromaticNumber (V : Type) (G : SimpleGraph V) : Cardinal :=
+  sInf { κ : Cardinal | ∃ (α : Type), #α = κ ∧ Nonempty (G.Coloring α) }
 
 /--
 **Finite subgraph:**
-A subgraph induced by a finite set of vertices.
+The subgraph of `G` induced by a finite set of vertices.
 -/
-def isFiniteSubgraph {V : Type*} (G : SimpleGraph V) (H : Subgraph G) : Prop :=
-  ∃ (S : Finset V), H = G.induce S
+def isFiniteSubgraph {V : Type} (G : SimpleGraph V) (H : Subgraph G) : Prop :=
+  ∃ (S : Finset V), H = (⊤ : G.Subgraph).induce (↑S : Set V)
 
 /--
 **Subgraph embedding:**
 H is isomorphic to a subgraph of G.
 -/
-def isSubgraphOf {V W : Type*} (H : SimpleGraph V) (G : SimpleGraph W) : Prop :=
+def isSubgraphOf {V W : Type} (H : SimpleGraph V) (G : SimpleGraph W) : Prop :=
   ∃ (f : V → W), Function.Injective f ∧
     ∀ v₁ v₂ : V, H.Adj v₁ v₂ → G.Adj (f v₁) (f v₂)
 
@@ -72,7 +73,7 @@ def isSubgraphOf {V W : Type*} (H : SimpleGraph V) (G : SimpleGraph W) : Prop :=
 **Finite subgraph class:**
 The class of all finite subgraphs of a graph G.
 -/
-def finiteSubgraphClass {V : Type*} (G : SimpleGraph V) :
+def finiteSubgraphClass {V : Type} (G : SimpleGraph V) :
     Set (Σ (n : ℕ), SimpleGraph (Fin n)) :=
   { ⟨n, H⟩ | ∃ (S : Finset V) (e : S ≃ Fin n),
     ∀ i j : Fin n, H.Adj i j ↔ G.Adj (e.symm i) (e.symm j) }
@@ -87,10 +88,10 @@ If G has chromatic number ℵ₁, then for every cardinal m, there exists
 a graph G_m with χ(G_m) = m whose finite subgraphs are all subgraphs of G.
 -/
 def TaylorConjecture : Prop :=
-  ∀ (V : Type*) (G : SimpleGraph V),
+  ∀ (V : Type) (G : SimpleGraph V),
     chromaticNumber V G = aleph 1 →
     ∀ (m : Cardinal),
-      ∃ (W : Type*) (H : SimpleGraph W),
+      ∃ (W : Type) (H : SimpleGraph W),
         chromaticNumber W H = m ∧
         ∀ (n : ℕ) (F : SimpleGraph (Fin n)),
           isSubgraphOf F H → isSubgraphOf F G
@@ -100,11 +101,11 @@ def TaylorConjecture : Prop :=
 Same as above but for any uncountable cardinal κ.
 -/
 def GeneralizedTaylorConjecture : Prop :=
-  ∀ (κ : Cardinal), κ.IsRegular → κ > aleph 0 →
-    ∀ (V : Type*) (G : SimpleGraph V),
+  ∀ (κ : Cardinal), Cardinal.IsRegular κ → κ > aleph 0 →
+    ∀ (V : Type) (G : SimpleGraph V),
       chromaticNumber V G = κ →
       ∀ (m : Cardinal),
-        ∃ (W : Type*) (H : SimpleGraph W),
+        ∃ (W : Type) (H : SimpleGraph W),
           chromaticNumber W H = m ∧
           ∀ (n : ℕ) (F : SimpleGraph (Fin n)),
             isSubgraphOf F H → isSubgraphOf F G
@@ -125,7 +126,7 @@ A family F is realizable at ℵ_α if there exists a graph G with
 χ(G) = ℵ_α and all finite subgraphs of G are in F.
 -/
 def realizableAt (F : FiniteGraphFamily) (α : Ordinal) : Prop :=
-  ∃ (V : Type*) (G : SimpleGraph V),
+  ∃ (V : Type) (G : SimpleGraph V),
     chromaticNumber V G = aleph α ∧
     finiteSubgraphClass G ⊆ F
 
@@ -141,49 +142,64 @@ def ErdosGeneralQuestion : Prop :=
 ## Part IV: The Komjáth-Shelah Consistency Result
 -/
 
-/--
+/-
 **Komjáth-Shelah (2005):**
 It is consistent with ZFC that there exists a graph G with χ(G) = ℵ₁
 such that any graph H whose finite subgraphs are all subgraphs of G
 satisfies χ(H) ≤ ℵ₂.
--/
-/--
+
 **The conjecture is independent:**
 Taylor's conjecture cannot be decided in ZFC alone.
--/
-/-
-## Part V: Related Concepts
+
+(These are meta-mathematical consistency/independence results, not ZFC
+theorems; they are recorded here as prose rather than as Lean declarations.)
 -/
 
-/--
+/-
+## Part V: Related Concepts
+
 **De Bruijn-Erdős theorem (finite version):**
 If every finite subgraph of G is k-colorable, then G is k-colorable.
-(This requires the axiom of choice.)
--/
-/--
+(This requires the axiom of choice.) Mathlib does not currently provide
+this compactness theorem; it is the key missing ingredient for `finite_case`.
+
 **Compactness in graph coloring:**
 The chromatic number of a graph is determined by its finite subgraphs
 in a limiting sense.
--/
-/--
+
 **Chromatic number and cardinal arithmetic:**
 For infinite graphs, chromatic number interacts with cardinal arithmetic.
 -/
+
 /-
 ## Part VI: Special Cases
--/
 
-/--
 **Countable chromatic number:**
 For graphs with χ(G) = ℵ₀, the Taylor question is easier.
+
+**Finite case is trivial (informal):**
+For finite chromatic number, inheritance is straightforward in principle —
+see `finite_case` below for the precise statement.
 -/
 /--
-**Finite case is trivial:**
-For finite chromatic number, inheritance is straightforward.
+**Finite chromatic number case.**
+If `χ(G) = k` (finite), then for every `m ≤ k` there is a graph `H` with
+`χ(H) = m` all of whose finite subgraphs embed into `G`.
+
+The mathematically clean construction takes `H` to be an induced subgraph of
+`G` on a suitable vertex subset `S`, so that finite subgraphs of `H` embed
+into `G` for free. The remaining content is an *intermediate-value* property:
+some induced subgraph attains chromatic number exactly `m` for each
+`0 ≤ m ≤ k`. Establishing this needs (i) a finite subgraph witnessing
+`χ = k`, which is the **de Bruijn-Erdős compactness theorem** (not yet in
+Mathlib), and (ii) a vertex-deletion continuity step. The boundary cases
+`m = 0` (`H = ⊥` on an empty type) and `m = k` (`H = G`) are immediate; the
+intermediate cases are the obstruction. Left as `sorry` pending the missing
+compactness infrastructure.
 -/
-theorem finite_case (V : Type*) (G : SimpleGraph V) (k : ℕ) :
+theorem finite_case (V : Type) (G : SimpleGraph V) (k : ℕ) :
     chromaticNumber V G = k →
-    ∀ m ≤ k, ∃ (W : Type*) (H : SimpleGraph W),
+    ∀ m ≤ k, ∃ (W : Type) (H : SimpleGraph W),
       chromaticNumber W H = m ∧
       ∀ (n : ℕ) (F : SimpleGraph (Fin n)),
         isSubgraphOf F H → isSubgraphOf F G := by

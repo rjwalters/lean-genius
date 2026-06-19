@@ -1,39 +1,64 @@
 {
   "slug": "erdos-736-incomplete-01",
   "title": "Erdős #736: Chromatic Numbers and Finite Subgraph Inheritance (1 sorry)",
-  "phase": "NEW",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in graph theory: Erdős #736: Chromatic Numbers and Finite Subgraph Inheritance (1 sorry).",
-    "whyMatters": []
+    "formal": "\\chi(G) = \\aleph_1 \\implies \\forall m,\\ \\exists G_m:\\ \\chi(G_m) = m \\wedge (\\text{every finite subgraph of } G_m \\text{ is a subgraph of } G)",
+    "plain": "Taylor's conjecture: if a graph G has chromatic number ℵ₁, then for every cardinal m there is a graph of chromatic number m whose finite subgraphs all embed into G. Komjáth-Shelah (2005) showed this is independent of ZFC.",
+    "whyMatters": [
+      "Sits at the boundary between finite combinatorics and set-theoretic forcing.",
+      "Sharpens the contrast with de Bruijn-Erdős: finite chromatic number is determined by finite subgraphs, uncountable chromatic number is not."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "finite_case statement is mathematically true (intermediate-value of chromatic number over induced subgraphs), but left as a documented sorry pending de Bruijn-Erdős compactness."
+    ],
+    "open": [
+      "Taylor's conjecture (independent of ZFC per Komjáth-Shelah 2005).",
+      "Erdős's general characterization of realizable finite-graph families at each ℵ_α."
+    ],
+    "goal": "Maintain a clean, compiling formalization of the problem statements; discharge finite_case once compactness infrastructure exists."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-03T22:29:17.628Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ORIENT",
+    "since": "2026-06-19T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Repaired the non-compiling gallery file; finite_case isolated as the sole sorry, blocked on de Bruijn-Erdős compactness (absent from Mathlib).",
+    "blockers": [
+      "de Bruijn-Erdős graph-coloring compactness theorem is not in Mathlib.",
+      "No bridge between the custom Cardinal-valued chromatic number and Mathlib's ℕ∞-valued chromaticNumber/Colorable API."
+    ],
+    "nextAction": "Build or locate de Bruijn-Erdős compactness (universe 0), then prove the chromatic intermediate-value lemma for induced subgraphs to discharge finite_case.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "2026-06-19 (researcher-2): The gallery file Erdos736Problem.lean did NOT compile -- it carried 6 pre-existing elaboration errors despite meta.json claiming status 'formalized, 1 sorry'. Repaired all 6 and the file now builds cleanly (verified via docker-build) with exactly 1 sorry in `finite_case`. Fixes: (1) `isFiniteSubgraph` compared a Subgraph to `G.induce S`, which is a SimpleGraph on a subtype, not a `G.Subgraph` -- replaced with `(⊤ : G.Subgraph).induce ↑S`; (2) universe-inference failures on bare `Cardinal`/`Ordinal` binders in TaylorConjecture / GeneralizedTaylorConjecture / realizableAt / ErdosGeneralQuestion -- resolved by scoping vertex types to `Type` and cardinals to `Cardinal.{0}` (universe 0, the standard combinatorial setting); (3) `κ.IsRegular` dot notation failed (κ is a Quot) AND `Cardinal.IsRegular`'s module was unimported -- added `import Mathlib.SetTheory.Cardinal.Regular` and used `Cardinal.IsRegular κ`; (4) six orphaned `/-- -/` doc comments (documenting deleted axioms) converted to `/- -/` prose blocks; (5) `Iff.rfl` for erdos_736_summary then went through once TaylorConjecture elaborated.",
+    "builtItems": [
+      "Erdos736Problem.lean now compiles (was previously broken with 6 errors); 9 defs + 2 theorems, 0 axioms, 1 sorry"
+    ],
+    "insights": [
+      "The main Taylor conjecture and Erdős's general question are OPEN and, per Komjáth-Shelah (2005), independent of ZFC -- not provable in Lean. They are correctly stated as `def ... : Prop` (problem statements), not theorems.",
+      "The only computational obligation, `finite_case`, is TRUE but its clean proof needs the de Bruijn-Erdős compactness theorem (every finite subgraph k-colorable ⇒ G k-colorable), which Mathlib does NOT currently provide (no 'Bruijn' lemma in Mathlib.Combinatorics).",
+      "Proof sketch for finite_case: take H to be an induced subgraph of G on a vertex subset S, so finite subgraphs of H embed into G for free; the residual content is an intermediate-value property -- some induced subgraph has chromatic number exactly m for each 0 ≤ m ≤ k. Boundary cases m=0 (H=⊥ on empty type) and m=k (H=G) are immediate; intermediate m needs a finite χ=k witness (de Bruijn-Erdős) plus vertex-deletion continuity.",
+      "The file's custom Cardinal-valued `chromaticNumber` is disconnected from Mathlib's ℕ∞-valued `SimpleGraph.chromaticNumber` / `Colorable` API; bridging them is itself prerequisite infrastructure for any real proof."
+    ],
+    "mathlibGaps": [
+      "de Bruijn-Erdős compactness theorem for graph colorings is absent from Mathlib (Mathlib.Combinatorics.SimpleGraph.Coloring has Colorable/chromaticNumber but no compactness result).",
+      "No bridge lemma between a Cardinal-valued infinite chromatic number and Mathlib's ℕ∞-valued chromaticNumber."
+    ],
+    "nextSteps": [
+      "To discharge finite_case: first build (or locate) de Bruijn-Erdős compactness in the universe-0 setting, then prove a chromatic intermediate-value lemma for induced subgraphs. This is a multi-session infrastructure project (~200+ lines, Zorn/ultrafilter compactness argument).",
+      "Alternatively, restate finite_case against Mathlib's `SimpleGraph.Colorable`/`chromaticNumber` to reuse the finite coloring API, at the cost of a definition-bridging lemma.",
+      "Lower-risk interim: leave finite_case as a documented sorry (now that the file compiles) and treat the main conjectures as the intended open-problem statements."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -47,12 +72,19 @@
     "erdos-736"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Komjáth, Péter and Shelah, Saharon, 'Finite subgraphs of uncountably chromatic graphs', J. Graph Theory (2005), 28-38."
+    ],
+    "urls": [
+      "https://erdosproblems.com/736"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Coloring (Colorable, chromaticNumber)",
+      "Mathlib.SetTheory.Cardinal.Regular (Cardinal.IsRegular)"
+    ]
   },
   "started": "2026-04-03T22:29:17.628Z",
-  "lastUpdate": "2026-04-03T22:29:17.628Z",
+  "lastUpdate": "2026-06-19T00:00:00.000Z",
   "significance": 7,
   "tractability": 5
 }
