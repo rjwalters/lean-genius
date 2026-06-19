@@ -27,7 +27,11 @@
         "relationship": "Abel-Ruffini shows degree ≥ 5 polynomials over ℚ have no radical formula; Puiseux series provide an alternative solution format over Laurent series"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "formal power series and Laurent series",
+      "algebraically closed fields",
+      "fractional (Puiseux) exponents"
+    ]
   },
   {
     "id": "ann-puiseux-series",
@@ -47,7 +51,11 @@
       "ramification index",
       "totally ramified extension"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hahn series and their support",
+      "the ramification index n in x^{1/n}",
+      "totally ramified field extensions"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -73,7 +81,11 @@
         "relationship": "FTA proves ℂ = algebraic closure of ℝ; Puiseux proves ℂ{{x}} = algebraic closure of ℂ((x)) — both are explicit algebraic closure results"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the field of Laurent series over ℂ",
+      "algebraic closure (IsAlgClosed)",
+      "characteristic-zero fields"
+    ]
   },
   {
     "id": "ann-newton-puiseux",
@@ -99,7 +111,11 @@
         "relationship": "Cardano's formula gives explicit roots of cubics over ℚ; Newton-Puiseux gives explicit series roots of all polynomials over K((x))"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Newton polygon and its lower convex hull",
+      "iterative root refinement",
+      "characteristic/indicial equations"
+    ]
   },
   {
     "id": "ann-applications",
@@ -120,7 +136,11 @@
       "monodromy",
       "intersection multiplicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "plane curve singularities and branches",
+      "Puiseux parametrization of a branch",
+      "tropical geometry and monodromy"
+    ]
   },
   {
     "id": "ann-galois",
@@ -147,7 +167,11 @@
         "relationship": "De Moivre's theorem gives nth roots of unity ζₙ = e^{2πi/n}; these roots of unity generate the Galois action on Puiseux series"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Galois groups of field extensions",
+      "inverse limits and profinite groups",
+      "roots of unity μ_n"
+    ]
   },
   {
     "id": "ann-examples",
@@ -167,7 +191,11 @@
       "cube root",
       "Newton polygon computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Newton polygon computation",
+      "fractional power series like √x, ∛x",
+      "cusp curves y²=x³"
+    ]
   },
   {
     "id": "ann-hensel",
@@ -188,7 +216,11 @@
       "uniformizer",
       "Levi-Civita field"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complete valued fields and uniformizers",
+      "Hensel's lemma for lifting roots",
+      "the analogy with p-adic numbers"
+    ]
   },
   {
     "id": "ann-char-zero",
@@ -208,7 +240,11 @@
       "wild ramification",
       "inseparability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "characteristic p fields",
+      "Artin–Schreier extensions and wild ramification",
+      "separability and inseparability"
+    ]
   },
   {
     "id": "ann-significance",
@@ -235,6 +271,10 @@
         "relationship": "Vieta's formulas relate polynomial coefficients to symmetric functions of roots; for Puiseux roots, these become identities in the Puiseux series field"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "local analysis of algebraic curves",
+      "constructive/algorithmic root-finding",
+      "computer algebra and tropical geometry"
+    ]
   }
 ]
