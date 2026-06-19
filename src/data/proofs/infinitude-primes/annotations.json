@@ -11,7 +11,11 @@
     "content": "This proof uses Mathlib's established definitions for primes and factorials. `Nat.Prime` provides a robust prime definition, `Nat.factorial` gives the factorial function with all its key properties already proven, and `Nat.exists_prime_and_dvd` guarantees that every integer $\\geq 2$ has a prime divisor — the existence result that makes Euclid's construction work.",
     "mathContext": "Mathlib provides `Nat.Prime p` ($p \\geq 2$ and $p$'s only divisors are $1$ and $p$), `n.factorial` ($n! = 1 \\cdot 2 \\cdots n$), `Nat.dvd_factorial` ($0 < k \\leq n \\Rightarrow k \\mid n!$), and `Nat.exists_prime_and_dvd` ($n \\geq 2 \\Rightarrow \\exists p$ prime, $p \\mid n$).",
     "significance": "supporting",
-    "prerequisites": [],
+    "prerequisites": [
+      "Prime Numbers",
+      "Factorial Function",
+      "Divisibility"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "prime definition",
@@ -30,7 +34,11 @@
     "content": "This theorem appears in Euclid's *Elements* (Book IX, Proposition 20), written around 300 BCE. It is one of the oldest theorems whose proof is still taught essentially unchanged. The module docstring documents both the approach (factorial-based variant of Euclid's argument) and the Mathlib dependencies. Euclid's original used the product of the first $n$ primes plus 1; the factorial version is a modern simplification that avoids needing to enumerate primes explicitly, since $n!$ is divisible by every integer from 1 to $n$, hence by every prime $\\leq n$.",
     "mathContext": "Euclid's construction: $p_1 \\cdot p_2 \\cdots p_k + 1$. Modern variant: $n! + 1$. Both work because adding 1 shifts away from all 'small' divisors: if $p \\leq n$, then $p \\mid n!$ but $p \\nmid (n! + 1)$.",
     "significance": "key",
-    "prerequisites": [],
+    "prerequisites": [
+      "Euclid's Elements",
+      "Infinitude Of Primes",
+      "Proof By Contradiction"
+    ],
     "relatedConcepts": [
       "Euclid's Elements",
       "mathematical history",
