@@ -16,7 +16,11 @@
       "Density arguments",
       "Unit fractions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unit fractions",
+      "Egyptian fractions",
+      "natural density of integer sets"
+    ]
   },
   {
     "id": "ann-e310-unit-fraction-sum",
@@ -35,7 +39,11 @@
       "Rational arithmetic",
       "Finset.sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unit fractions",
+      "rational arithmetic",
+      "finite sums over Finsets"
+    ]
   },
   {
     "id": "ann-e310-is-dense",
@@ -54,7 +62,11 @@
       "Subset cardinality",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set cardinality and density",
+      "subsets of {1,...,N}",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-e310-bounded-denom",
@@ -72,7 +84,11 @@
       "Denominator bounds"
     ],
     "mathContext": "See annotation content for formal details of bounded denominator property",
-    "prerequisites": []
+    "prerequisites": [
+      "rational numbers in lowest terms",
+      "numerator and denominator",
+      "asymptotic O-notation"
+    ]
   },
   {
     "id": "ann-e310-conjecture",
@@ -91,7 +107,11 @@
       "Unit fractions",
       "Density methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "alpha-density condition",
+      "unit fraction sums",
+      "quantifier alternation in formal statements"
+    ]
   },
   {
     "id": "ann-e310-liu-sawhney",
@@ -110,7 +130,11 @@
       "Optimal bounds",
       "Unit fractions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdos-Graham conjecture statement",
+      "exponential bounds exp(O(1/alpha))",
+      "density of representable integers"
+    ]
   },
   {
     "id": "ann-e310-bloom",
@@ -129,7 +153,11 @@
       "Density",
       "Number representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive natural density",
+      "Egyptian fractions summing to 1",
+      "integer representation theory"
+    ]
   },
   {
     "id": "ann-e310-classic-egyptian",
@@ -147,7 +175,10 @@
       "Unit fraction sums"
     ],
     "mathContext": "See annotation content for formal details of classic egyptian fraction",
-    "prerequisites": []
+    "prerequisites": [
+      "unit fractions",
+      "rational addition with common denominators"
+    ]
   },
   {
     "id": "ann-e310-examples",
@@ -165,7 +196,10 @@
       "Unit fractions"
     ],
     "mathContext": "See annotation content for formal details of unit fraction sum examples",
-    "prerequisites": []
+    "prerequisites": [
+      "unit fraction sums",
+      "rational arithmetic"
+    ]
   },
   {
     "id": "ann-e310-full-density",
@@ -183,7 +217,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "density 1 (full sets)",
+      "Egyptian fraction representation of 1",
+      "trivial base case reasoning"
+    ]
   },
   {
     "id": "ann-e310-sharpness",
@@ -201,7 +239,11 @@
       "Lower bounds",
       "Optimal results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lower bound constructions",
+      "optimality of bounds",
+      "exponential dependence on 1/alpha"
+    ]
   },
   {
     "id": "ann-e310-egyptian-exists",
@@ -219,7 +261,11 @@
       "Greedy algorithm",
       "Rational representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive rationals",
+      "greedy algorithm for Egyptian fractions",
+      "distinct unit fraction decomposition"
+    ]
   },
   {
     "id": "ann-e310-erdos-straus",
@@ -238,7 +284,11 @@
       "Unit fractions",
       "Number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unit fractions",
+      "three-term unit fraction representations",
+      "open conjectures in number theory"
+    ]
   },
   {
     "id": "ann-e310-straus-examples",
@@ -256,7 +306,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdos-Straus conjecture",
+      "explicit unit fraction decompositions"
+    ]
   },
   {
     "id": "ann-e310-main-theorem",
@@ -274,7 +327,11 @@
       "Problem resolution",
       "Case analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Liu-Sawhney theorem",
+      "Erdos-Graham conjecture",
+      "case analysis and density monotonicity"
+    ]
   },
   {
     "id": "ann-e310-answer",
@@ -292,7 +349,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential statements in Lean",
+      "Erdos-Graham conjecture resolution"
+    ]
   },
   {
     "id": "ann-e310-croot",
@@ -311,6 +371,10 @@
       "Egyptian fractions",
       "Sum equals 1"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive density of integer sets",
+      "reciprocals summing to 1",
+      "Egyptian fractions"
+    ]
   }
 ]
