@@ -16,7 +16,11 @@
       "B2 sequences",
       "additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets",
+      "additive combinatorics",
+      "asymptotic density"
+    ]
   },
   {
     "id": "ann-e329-imports",
@@ -36,7 +40,11 @@
       "limsup",
       "Set.ncard"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib",
+      "filters and limsup"
+    ]
   },
   {
     "id": "ann-e329-sidon-def",
@@ -55,7 +63,11 @@
       "additive structure",
       "distinct sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets",
+      "B_2 sequences",
+      "distinct sums"
+    ]
   },
   {
     "id": "ann-e329-partial-density",
@@ -74,7 +86,11 @@
       "normalization",
       "asymptotic growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic density",
+      "square-root normalization",
+      "Erdős-Turán bound"
+    ]
   },
   {
     "id": "ann-e329-upper-density",
@@ -93,7 +109,11 @@
       "asymptotic density",
       "Filter.atTop"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limit superior",
+      "filters",
+      "asymptotic density"
+    ]
   },
   {
     "id": "ann-e329-perfect-diff",
@@ -112,7 +132,11 @@
       "difference sets",
       "optimal structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "difference sets",
+      "projective planes",
+      "finite geometry"
+    ]
   },
   {
     "id": "ann-e329-main-question",
@@ -131,7 +155,11 @@
       "open problem",
       "density bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "supremum",
+      "Sidon sets",
+      "open problems"
+    ]
   },
   {
     "id": "ann-e329-erdos-lower",
@@ -150,7 +178,11 @@
       "construction",
       "historical"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "quadratic residues",
+      "Sidon constructions",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e329-kruckeberg",
@@ -169,7 +201,11 @@
       "best known bound",
       "1961"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "algebraic number theory",
+      "Sidon constructions",
+      "density bounds"
+    ]
   },
   {
     "id": "ann-e329-corollary",
@@ -188,7 +224,11 @@
       "existence",
       "ge_of_eq"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "supremum",
+      "existence proofs",
+      "inequalities"
+    ]
   },
   {
     "id": "ann-e329-upper-bound",
@@ -207,7 +247,11 @@
       "upper bound",
       "Erdos-Turan 1941"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting arguments",
+      "Erdős-Turán theorem",
+      "quadratic inequalities"
+    ]
   },
   {
     "id": "ann-e329-le-one",
@@ -226,7 +270,11 @@
       "universal bound",
       "destructuring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set membership",
+      "universal bounds",
+      "destructuring proofs"
+    ]
   },
   {
     "id": "ann-e329-conditional",
@@ -245,14 +293,18 @@
       "embedding",
       "perfect difference sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logical equivalence",
+      "embeddings",
+      "perfect difference sets"
+    ]
   },
   {
     "id": "ann-e329-empty",
     "proofId": "erdos-329",
     "range": {
-      "startLine": 158,
-      "endLine": 163
+      "startLine": 148,
+      "endLine": 151
     },
     "type": "concept",
     "title": "Empty Set is Sidon",
@@ -264,7 +316,11 @@
       "empty set",
       "base case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "vacuous truth",
+      "empty set",
+      "Sidon sets"
+    ]
   },
   {
     "id": "ann-e329-singleton",
@@ -283,7 +339,11 @@
       "trivial case",
       "simp"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "singleton sets",
+      "trivial cases",
+      "Sidon sets"
+    ]
   },
   {
     "id": "ann-e329-example",
@@ -302,7 +362,11 @@
       "verification",
       "four-element Sidon set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "concrete examples",
+      "Sidon sets",
+      "verification"
+    ]
   },
   {
     "id": "ann-e329-verified",
@@ -321,14 +385,18 @@
       "computation",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "native_decide",
+      "computational verification",
+      "distinct sums"
+    ]
   },
   {
     "id": "ann-e329-summary",
     "proofId": "erdos-329",
     "range": {
-      "startLine": 197,
-      "endLine": 198
+      "startLine": 191,
+      "endLine": 195
     },
     "type": "concept",
     "title": "Summary Theorem",
@@ -340,6 +408,10 @@
       "state of the art",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets",
+      "density bounds",
+      "theorem composition"
+    ]
   }
 ]
