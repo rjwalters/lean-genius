@@ -17,7 +17,11 @@
       "products",
       "Erdős-prize"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "divisibility and prime factorization",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-708-defs",
@@ -37,7 +41,11 @@
       "Finset.map",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset operations in Mathlib",
+      "Lean 4 definitions",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-708-gfunction",
@@ -57,7 +65,12 @@
       "noncomputable",
       "sup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "classical logic and choice",
+      "Nat.find and well-ordering",
+      "Lean 4 noncomputable definitions",
+      "predicate logic"
+    ]
   },
   {
     "id": "ann-708-values",
@@ -76,7 +89,10 @@
       "Erdős-Surányi-1959",
       "exact-values"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "divisibility of consecutive integers"
+    ]
   },
   {
     "id": "ann-708-bounds",
@@ -95,7 +111,11 @@
       "prime-pair-construction",
       "asymptotic-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "prime distribution",
+      "asymptotic estimates"
+    ]
   },
   {
     "id": "ann-708-conjecture",
@@ -114,7 +134,11 @@
       "asymptotic-equivalence",
       "Erdős-prize"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "epsilon-delta limits",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-708-variant",
@@ -133,7 +157,11 @@
       "Problem-709",
       "variant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "optimization",
+      "number theory"
+    ]
   },
   {
     "id": "ann-708-summary",
@@ -152,6 +180,10 @@
       "open-problem",
       "60-year-gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "anonymous constructor syntax",
+      "number theory"
+    ]
   }
 ]
