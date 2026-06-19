@@ -323,11 +323,11 @@ private lemma noDivides_upper_kfold (k n : ℕ) (hk : 1 ≤ k) :
       have hmem : a * j / a ∈ Finset.Icc 2 (n / a) := by
         rw [Finset.mem_Icc, hjval]
         refine ⟨?_, ?_⟩
-        · rcases Nat.lt_or_ge j 2 with hj | hj
-          · interval_cases j
-            · simp only [Nat.mul_zero] at hb1; omega
-            · simp only [Nat.mul_one] at hne; exact absurd rfl hne
-          · exact hj
+        · -- `j ≥ 2`: `j ≠ 0` (else the multiple is `0 < n/(k+1)+1`) and `j ≠ 1`
+          -- (else the multiple equals `a`, contradicting `a ≠ b`).
+          have hj0 : j ≠ 0 := by rintro rfl; simp at hb1
+          have hj1 : j ≠ 1 := by rintro rfl; rw [Nat.mul_one] at hne; exact hne rfl
+          omega
         · rw [Nat.le_div_iff_mul_le ha0, Nat.mul_comm j a]; exact hb2
       simpa using hmem
     · intro b1 hb1 b2 hb2 heq
