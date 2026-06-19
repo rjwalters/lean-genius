@@ -16,7 +16,11 @@
       "Bipartite graphs",
       "Cycle forcing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Bipartite Graphs",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-e1080-bipartition",
@@ -35,7 +39,11 @@
       "Graph partitions",
       "Two-coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Simple Graphs",
+      "Set Theory Basics",
+      "Graph Adjacency"
+    ]
   },
   {
     "id": "ann-e1080-edges-between",
@@ -53,7 +61,11 @@
       "proof technique",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Bipartite Graphs",
+      "Graph Edges and Adjacency",
+      "Set Partitions"
+    ]
   },
   {
     "id": "ann-e1080-cycle-def",
@@ -72,7 +84,11 @@
       "Paths",
       "Girth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Walks and Paths",
+      "Closed Walks",
+      "Cycle Length"
+    ]
   },
   {
     "id": "ann-e1080-cycle-free",
@@ -91,7 +107,11 @@
       "Turan-type problems"
     ],
     "mathContext": "See annotation content for formal details of cycle-free predicates",
-    "prerequisites": []
+    "prerequisites": [
+      "Forbidden Subgraphs",
+      "Complete Bipartite Graphs",
+      "Graph Girth"
+    ]
   },
   {
     "id": "ann-e1080-extremal-function",
@@ -110,7 +130,11 @@
       "Extremal graph theory",
       "Zarankiewicz problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turan-Type Problems",
+      "Zarankiewicz Problem",
+      "Forbidden Subgraphs"
+    ]
   },
   {
     "id": "ann-e1080-upper-bound",
@@ -128,7 +152,11 @@
       "Probabilistic method",
       "Double counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Double Counting",
+      "Probabilistic Method",
+      "Big-O Asymptotics"
+    ]
   },
   {
     "id": "ann-e1080-lower-bound",
@@ -146,7 +174,11 @@
       "mathematical context",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Growth Rates",
+      "Superlinear Functions",
+      "Big-Omega Notation"
+    ]
   },
   {
     "id": "ann-e1080-lazebnik",
@@ -165,7 +197,11 @@
       "Generalized polygons",
       "Finite geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Geometry",
+      "Generalized Polygons",
+      "Incidence Graphs"
+    ]
   },
   {
     "id": "ann-e1080-disproof",
@@ -184,7 +220,11 @@
       "graph theory",
       "proof by contradiction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proof by Contradiction",
+      "Asymptotic Comparison",
+      "Extremal Function Bounds"
+    ]
   },
   {
     "id": "ann-e1080-main-theorem",
@@ -202,7 +242,11 @@
       "proof technique",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical Equivalence",
+      "Existential Quantification",
+      "Edge Density Thresholds"
+    ]
   },
   {
     "id": "ann-e1080-c8-observation",
@@ -221,7 +265,11 @@
       "Girth",
       "Even cycles in bipartite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Even Cycles in Bipartite Graphs",
+      "Cycle Forcing Thresholds",
+      "Edge Counting"
+    ]
   },
   {
     "id": "ann-e1080-kovari",
@@ -240,7 +288,11 @@
       "Complete bipartite graphs",
       "Turan numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete Bipartite Subgraphs",
+      "Zarankiewicz Problem",
+      "Edge-Count Bounds"
+    ]
   },
   {
     "id": "ann-e1080-c4-k22",
@@ -258,7 +310,11 @@
       "proof technique",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete Bipartite Graph K_{2,2}",
+      "4-Cycles",
+      "Subgraph Characterization"
+    ]
   },
   {
     "id": "ann-e1080-summary",
@@ -276,6 +332,10 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cycle Forcing",
+      "Edge Density Conditions",
+      "Logical Conjunction"
+    ]
   }
 ]
