@@ -16,7 +16,11 @@
       "multisets",
       "set reconstruction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite sets in the complex plane",
+      "multisets of k-element sums",
+      "additive combinatorics and set reconstruction"
+    ]
   },
   {
     "id": "ann-e494-summultiset",
@@ -35,7 +39,11 @@
       "Multiset",
       "sums of subsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.powersetCard for k-element subsets",
+      "summing elements of a finite subset",
+      "multisets allowing repeated sum values"
+    ]
   },
   {
     "id": "ann-e494-ksumdetermines",
@@ -54,7 +62,11 @@
       "injectivity",
       "reconstruction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset cardinality",
+      "equality of sum multisets",
+      "set determination from equal-cardinality reconstruction"
+    ]
   },
   {
     "id": "ann-e494-k2case",
@@ -73,7 +85,11 @@
       "power of 2",
       "pairwise sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Selfridge-Straus characterization for pairwise sums",
+      "powers of 2 as cardinalities",
+      "addition in characteristic 2 and polynomials over F_2"
+    ]
   },
   {
     "id": "ann-e494-k34cases",
@@ -91,7 +107,11 @@
       "threshold function",
       "small set counterexamples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "threshold bounds for k = 3 and k = 4",
+      "counting equations from the k-sum multiset",
+      "small-set counterexamples from symmetry"
+    ]
   },
   {
     "id": "ann-e494-primecriterion",
@@ -110,7 +130,11 @@
       "Newton's identities",
       "symmetric polynomials"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factors of the cardinality exceeding k",
+      "Newton's identities for power sums",
+      "elementary symmetric polynomials"
+    ]
   },
   {
     "id": "ann-e494-kruyt",
@@ -129,7 +153,11 @@
       "centroid",
       "reflection"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "centroid of a finite set",
+      "reflection through the centroid",
+      "the single k-sum when |A| = k"
+    ]
   },
   {
     "id": "ann-e494-tao",
@@ -148,7 +176,11 @@
       "zero-sum sets",
       "complementation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "negation of a set and zero-sum condition",
+      "complementary k-subsets summing to opposite values",
+      "k-sum multiset invariance under negation"
+    ]
   },
   {
     "id": "ann-e494-gfs",
@@ -167,7 +199,11 @@
       "eventually",
       "symmetric polynomials"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.atTop and eventual properties",
+      "elementary symmetric polynomial e_k",
+      "recovering symmetric polynomials for large sets"
+    ]
   },
   {
     "id": "ann-e494-products",
@@ -186,7 +222,11 @@
       "product version",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "6th roots of unity",
+      "k-product multiset instead of sums",
+      "explicit counterexample sets A and B"
+    ]
   },
   {
     "id": "ann-e494-summary",
@@ -205,6 +245,10 @@
       "conjunction",
       "main result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "packaging axioms into a conjunction",
+      "the k = 2 power-of-2 dichotomy",
+      "eventual uniqueness for k > 2"
+    ]
   }
 ]
