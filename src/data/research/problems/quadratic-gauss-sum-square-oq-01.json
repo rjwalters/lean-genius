@@ -1,0 +1,31 @@
+{
+  "id": "quadratic-gauss-sum-square-oq-01",
+  "name": "Sign of the quadratic Gauss sum (Gauss's hard theorem)",
+  "phase": "ORIENT",
+  "knowledge": {
+    "insights": [
+      "The gallery slug `quadratic-gauss-sum-square-oq-01` already proves (verified, 0 sorries) the elementary half: the real/imaginary DICHOTOMY (g.im=0 for p≡1, g.re=0 for p≡3) plus magnitude ‖g‖²=p. The pool candidate with the same id is the strictly harder follow-up: fixing the LEADING SIGN (g=+√p resp. g=+i√p), i.e. Gauss's hard theorem.",
+      "Dichotomy + magnitude pin g to exactly four points: ±√p (p≡1 mod 4) or ±i√p (p≡3 mod 4). Proved sorry-free in QuadraticGaussSumSignReduction.gaussSum_eq_pm_sqrt / gaussSum_eq_pm_I_sqrt by extracting g.re²=p (resp g.im²=p) from normSq and splitting |·|=√p via abs_eq.",
+      "KEY REDUCTION: Gauss's hard sign theorem is EQUIVALENT to a single real positivity. g=√p ↔ 0<g.re (p≡1 mod 4); g=i√p ↔ 0<g.im (p≡3 mod 4). Proved sorry-free (gaussSum_eq_sqrt_iff_re_pos / gaussSum_eq_I_sqrt_iff_im_pos). This isolates the entire open content into one inequality.",
+      "Mathlib (v4.26.x) has NO sign determination for the quadratic Gauss sum and no finite-Fourier-transform determinant infrastructure. NumberTheory/GaussSum.lean stops at gaussSum_sq (the square identity); there is nothing about Re(g)>0 or the DFT eigenvalue multiplicities."
+    ],
+    "builtItems": [
+      "QuadraticGaussSumSignReduction.gaussSum_eq_pm_sqrt — g=±√p for p≡1 mod 4 (sorry-free)",
+      "QuadraticGaussSumSignReduction.gaussSum_eq_pm_I_sqrt — g=±i√p for p≡3 mod 4 (sorry-free)",
+      "QuadraticGaussSumSignReduction.gaussSum_eq_sqrt_iff_re_pos — sign theorem ⟺ 0<Re g (p≡1) (sorry-free)",
+      "QuadraticGaussSumSignReduction.gaussSum_eq_I_sqrt_iff_im_pos — sign theorem ⟺ 0<Im g (p≡3) (sorry-free)"
+    ],
+    "mathlibGaps": [
+      "No formalization of the sign of the quadratic Gauss sum (g=√p for p≡1, g=i√p for p≡3).",
+      "No finite/discrete Fourier transform determinant or eigenvalue-multiplicity computation needed for Schur's argument.",
+      "No analytic Gauss sum evaluation (Poisson summation / theta transformation) needed for Dirichlet's route."
+    ],
+    "nextSteps": [
+      "Prove the single open crux 0 < Re(gaussSum (chiC p) ψ) for p≡1 mod 4 (and 0 < Im for p≡3). Both classical routes target exactly this.",
+      "Schur route: build the n×n finite Fourier matrix F (entries ζ^{jk}), show F has known eigenvalue multiplicities (1,−1,i,−i with counts depending on n mod 4), and identify Re(g) with trace/√n. Estimate >1000 lines given no Mathlib DFT-spectrum infra → likely BLOCKED short-term.",
+      "Dirichlet route: needs Poisson summation / theta functional equation; heavy real-analysis infra. Estimate >1000 lines.",
+      "Cross-check magnitude ‖g‖²=p via character orthogonality (Parseval) independently of the square identity."
+    ],
+    "progressSummary": "PROGRESS (ORIENT): reduced Gauss's hard sign theorem to a single positivity (0<Re g resp 0<Im g) and strengthened the dichotomy to the exact four-point pinning g=±√p / ±i√p — all sorry-free. The positivity crux itself remains open; both classical proofs (Schur, Dirichlet) need >1000 lines of Mathlib-absent infrastructure (BLOCKED short-term)."
+  }
+}
