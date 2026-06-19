@@ -17,7 +17,11 @@
       "Anti-Ramsey theory",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Turán's Theorem",
+      "Anti-Ramsey Theory"
+    ]
   },
   {
     "id": "ann-e809-graph-defs",
@@ -37,7 +41,11 @@
       "Bipartite graphs",
       "Edge counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Simple Graphs",
+      "Complete Bipartite Graphs",
+      "Edge Counting"
+    ]
   },
   {
     "id": "ann-e809-odd-cycle-coloring",
@@ -56,7 +64,11 @@
       "Odd cycles",
       "Graph coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Edge Colorings",
+      "Odd Cycles",
+      "Graph Subgraphs"
+    ]
   },
   {
     "id": "ann-e809-rainbow",
@@ -75,7 +87,11 @@
       "Cycle graphs",
       "Rainbow subgraphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Injective Functions",
+      "Finset Cardinality",
+      "Cycle Graphs"
+    ]
   },
   {
     "id": "ann-e809-axiom-f",
@@ -94,7 +110,11 @@
       "Nat.find",
       "Axiomatization patterns"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Axiomatization in Lean",
+      "Extremal Functions",
+      "Nat.find"
+    ]
   },
   {
     "id": "ann-e809-conjecture",
@@ -113,7 +133,11 @@
       "Epsilon-delta definitions",
       "Extremal thresholds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Equivalence",
+      "Epsilon-Delta Definitions",
+      "Limit of Ratios"
+    ]
   },
   {
     "id": "ann-e809-bounds",
@@ -132,7 +156,11 @@
       "Asymptotic constants",
       "Extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Bounds",
+      "Big-O Notation",
+      "Quadratic Growth"
+    ]
   },
   {
     "id": "ann-e809-turan",
@@ -152,7 +180,11 @@
       "Bipartite graphs",
       "Omega tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turán's Theorem",
+      "Bipartite Graphs",
+      "Omega Tactic"
+    ]
   },
   {
     "id": "ann-e809-summary",
@@ -171,6 +203,10 @@
       "Known bounds",
       "Open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower And Upper Bounds",
+      "Open Conjectures",
+      "Proof Pairing"
+    ]
   }
 ]
