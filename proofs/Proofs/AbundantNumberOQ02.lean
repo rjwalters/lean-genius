@@ -72,18 +72,20 @@ theorem abundant_iff_sigmaFast {n : ℕ} (hn : n ≠ 0) :
     Nat.sum_divisors_eq_sum_properDivisors_add_self]
   omega
 
+set_option maxRecDepth 4000 in
 /-- **945 is abundant.** `σ(945) = 1920 > 1890 = 2·945`. The single divisor-sum
 `sigmaFast 945` reduces in the kernel. -/
-set_option maxRecDepth 4000 in
 theorem abundant_945 : Nat.Abundant 945 :=
   (abundant_iff_sigmaFast (by norm_num)).mpr (by decide)
 
+set_option maxHeartbeats 10000000 in
+set_option maxRecDepth 10000 in
 /-- **No odd number below 945 is abundant.** The bounded quantifier is decidable
 via `Nat.decidableBallLT`; for each *odd* `n < 945` the kernel reduces the fast
 divisor sum `sigmaFast n` and checks `sigmaFast n ≤ 2n` (even `n` are discharged
 without computing any sum, since `Odd n` is false). This is the step that the
-direct `Finset`-based `decide` cannot perform at this scale. -/
-set_option maxRecDepth 10000 in
+direct `Finset`-based `decide` cannot perform at this scale; the raised
+`maxHeartbeats` covers the elaborator's whnf check of the ~470 odd-case sum. -/
 theorem not_abundant_odd_below_945 : ∀ n < 945, Odd n → sigmaFast n ≤ 2 * n := by
   decide
 
