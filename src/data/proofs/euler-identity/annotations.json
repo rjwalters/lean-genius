@@ -11,7 +11,11 @@
     "content": "Euler's Identity $e^{i\\pi} + 1 = 0$ is often called the most beautiful equation in mathematics. It connects five fundamental constants that arise from completely different areas of mathematics:\n\n- **e** from calculus and continuous growth\n- **i** from algebra and complex numbers\n- **$\\pi$** from geometry and circles\n- **1** the multiplicative identity\n- **0** the additive identity\n\nThe fact that these five constants, discovered independently, combine so simply suggests a deep underlying unity in mathematics.",
     "mathContext": "$e^{i\\pi} + 1 = 0$, where $e \\approx 2.718$, $i = \\sqrt{-1}$, $\\pi \\approx 3.14159$",
     "significance": "key",
-    "prerequisites": [],
+    "prerequisites": [
+      "Mathematical Constants",
+      "Complex Exponential",
+      "Real Numbers"
+    ],
     "relatedConcepts": [
       "fundamental constants",
       "mathematical beauty",
@@ -30,7 +34,11 @@
     "content": "A **complex number** is a pair of real numbers $(a, b)$ written as $a + bi$, where $i = \\sqrt{-1}$.\n\n- $a$ is the **real part** (Re)\n- $b$ is the **imaginary part** (Im)\n\nComplex numbers extend the reals to solve equations like $x^2 + 1 = 0$ (solution: $x = \\pm i$). They form a field, meaning we can add, subtract, multiply, and divide them (except by zero).",
     "mathContext": "$z = a + bi$ where $a, b \\in \\mathbb{R}$; in Lean: `Complex.mk a b : ℂ` with `Complex.re` and `Complex.im` projections",
     "significance": "key",
-    "prerequisites": [],
+    "prerequisites": [
+      "Real Numbers",
+      "Field Axioms",
+      "Square Roots"
+    ],
     "relatedConcepts": [
       "imaginary unit",
       "complex plane",
@@ -74,7 +82,11 @@
     "content": "The proof hinges on two fundamental facts about trigonometric functions at $\\pi$ radians (180°):\n\n$$\\cos(\\pi) = -1$$\n$$\\sin(\\pi) = 0$$\n\nGeometrically: at angle $\\pi$, we're at the leftmost point of the unit circle, which is $(-1, 0)$.\n\nThese values follow from the unit circle definition of sine and cosine, where $\\cos(\\theta)$ is the x-coordinate and $\\sin(\\theta)$ is the y-coordinate.",
     "mathContext": "$(\\cos \\pi, \\sin \\pi) = (-1, 0)$; Lean: `Real.cos_pi : cos π = -1`, `Real.sin_pi : sin π = 0` from `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic`",
     "significance": "key",
-    "prerequisites": [],
+    "prerequisites": [
+      "Unit Circle",
+      "Sine And Cosine",
+      "Radian Measure"
+    ],
     "relatedConcepts": [
       "unit circle",
       "radian measure",
