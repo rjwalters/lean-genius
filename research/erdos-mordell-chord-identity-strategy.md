@@ -269,3 +269,49 @@ fleet at load ~20 (build gate `load<16` closed). Introducing an unverifiable
 multi-step proof body would risk turning the known-buildable companion red when
 the build watcher fires. The companion is left in its known-good 2-sorry state;
 the watcher ships it as a typechecked PR on the next quiet window.
+
+## 2026-06-19 (cycle 15) — sharper Mathlib pins for the two residual sorries
+
+Read-only verification against the live `.lake/packages/mathlib` source. Both
+remaining sorries get a cleaner pin than the doc previously carried:
+
+**Sine side (`chord_length_eq`).** Prefer the *Sphere* form over the
+`Triangle ℝ P` / `Fin 3` form (`dist_div_sin_angle_eq_two_mul_circumradius`,
+`Angle/Sphere.lean:430`), which forces constructing a `Triangle` value and index
+juggling. Instead use
+
+    EuclideanGeometry.Sphere.dist_div_sin_oangle_eq_two_mul_radius   -- Angle/Sphere.lean:298
+      {s : Sphere P} (hp₁ : p₁ ∈ s) (hp₂ : p₂ ∈ s) (hp₃ : p₃ ∈ s)
+      (hp₁p₂ : p₁ ≠ p₂) (hp₁p₃ : p₁ ≠ p₃) (hp₂p₃ : p₂ ≠ p₃) :
+      dist p₁ p₃ / |Real.Angle.sin (∡ p₁ p₂ p₃)| = 2 * s.radius
+
+  Take `s := Sphere.ofDiameter X P` (radius `dist X P / 2`, so `2*radius = dist X P`),
+  `p₁ := F_b`, `p₂ := X`, `p₃ := F_c`. Membership of `F_b, F_c, X` comes from the
+  already-PROVED right-angle facts `angle_pedalFoot_{ZX,XY}_at_X` fed through
+  `angle_eq_pi_div_two_iff_mem_sphere_ofDiameter` (`Angle/Sphere.lean:103`); `X ∈ s`
+  is an endpoint of the diameter. Residual bridge: `|Real.Angle.sin (∡ F_b X F_c)|
+  = Real.sin (∠ F_b X F_c)` (unoriented `∠ ∈ [0,π]` ⟹ nonneg sin; `∠ = |(∡).toReal|`),
+  then `∠ F_b X F_c = ∠ Y X Z` via the positive-ray collapse
+  (`InnerProductGeometry.angle_smul_left/right_of_pos`, feet on the open sides).
+
+**Cosine side (`angle_at_P`).** The cyclic-quadrilateral supplementary fact is the
+*oriented* inscribed-angle identity, mod π:
+
+    EuclideanGeometry.Sphere.two_zsmul_oangle_eq           -- Angle/Sphere.lean:164
+    EuclideanGeometry.Cospherical.two_zsmul_oangle_eq      -- Angle/Sphere.lean:178
+      : (2:ℤ) • ∡ p₁ p₂ p₄ = (2:ℤ) • ∡ p₁ p₃ p₄   (same chord p₁p₄, apexes p₂,p₃ on s)
+
+  With chord `F_b F_c` and apexes `X` (giving `∡ = ∠YXZ` class) and `P`, the genuine
+  remaining work is the oriented→unoriented descent: `2 • ∡ = 2 • ∡` only pins the
+  angles mod π, and X, P lie on *opposite* arcs of chord `F_b F_c`, so the unoriented
+  representatives are supplementary (`∠ + ∠ = π`) rather than equal. Establish
+  opposite-arc / orientation sign before collapsing — this is the one non-mechanical
+  step left on the cosine side. Concyclicity itself is free from the two Thales right
+  angles via `cospherical_of_two_zsmul_oangle_eq_of_not_collinear` (`Angle/Sphere.lean:449`)
+  or directly `Sphere.ofDiameter` membership.
+
+Aristotle 404 (14th consecutive cycle). Companion left in known-good 2-sorry state;
+watcher (PID 13290) ships the cycle-14 commit (new Thales lemma
+`angle_pedalFoot_eq_pi_div_two`, signature re-verified against
+`Angle/Unoriented/Projection.lean:28`) as a fresh PR on the next quiet build window
+— the prior PR #26042 merged, so a NEW PR is required.
