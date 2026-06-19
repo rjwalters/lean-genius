@@ -17,7 +17,11 @@
       "graph density",
       "forbidden subgraphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Turán-type problems",
+      "graph density"
+    ]
   },
   {
     "id": "ann-e766-graph-abbrev",
@@ -36,7 +40,11 @@
       "undirected graphs"
     ],
     "mathContext": "See annotation content for formal details of graph abbreviation",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib SimpleGraph",
+      "Lean 4 type abbreviations",
+      "finite types (Fintype)"
+    ]
   },
   {
     "id": "ann-e766-num-edges",
@@ -55,7 +63,11 @@
       "complete graphs",
       "sparse graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib SimpleGraph",
+      "Finset cardinality",
+      "edge sets of graphs"
+    ]
   },
   {
     "id": "ann-e766-subgraph",
@@ -74,7 +86,11 @@
       "induced subgraph",
       "embedding"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph homomorphisms",
+      "injective functions in Lean",
+      "subgraph embeddings"
+    ]
   },
   {
     "id": "ann-e766-hfree",
@@ -93,7 +109,11 @@
       "Turán problem",
       "bipartite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "forbidden subgraphs",
+      "subgraph containment",
+      "Turán-type problems"
+    ]
   },
   {
     "id": "ann-e766-turan-def",
@@ -112,7 +132,11 @@
       "Mantel's theorem",
       "Kővári-Sós-Turán theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turán number ex(n;H)",
+      "H-free graphs",
+      "supremum over finite sets (sSup)"
+    ]
   },
   {
     "id": "ann-e766-f-def",
@@ -131,7 +155,11 @@
       "extremal combinatorics",
       "graph isomorphism classes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turán number ex(n;H)",
+      "infimum over sets (sInf)",
+      "minimax / extremal optimization"
+    ]
   },
   {
     "id": "ann-e766-bipartite-threshold",
@@ -151,7 +179,11 @@
       "odd cycles",
       "graph coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complete bipartite graphs",
+      "floor function ⌊k²/4⌋",
+      "bipartite vs odd-cycle structure"
+    ]
   },
   {
     "id": "ann-e766-range",
@@ -170,7 +202,11 @@
       "threshold phenomena"
     ],
     "mathContext": "See annotation content for formal details of range of interest",
-    "prerequisites": []
+    "prerequisites": [
+      "bipartite threshold k²/4",
+      "graph edge density regimes",
+      "threshold phenomena"
+    ]
   },
   {
     "id": "ann-e766-dirac-erdos",
@@ -189,7 +225,11 @@
       "triangle-free graphs",
       "Turán graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mantel's theorem",
+      "triangle-free graphs",
+      "bipartite threshold k²/4"
+    ]
   },
   {
     "id": "ann-e766-turan-theorem",
@@ -208,7 +248,11 @@
       "complete partite graphs",
       "Szemerédi regularity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turán's theorem",
+      "Turán graphs T(n,r-1)",
+      "complete multipartite graphs"
+    ]
   },
   {
     "id": "ann-e766-monotonicity-question",
@@ -227,7 +271,11 @@
       "ordering problems",
       "extremal graph families"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the function f(n;k,l)",
+      "strict vs weak monotonicity",
+      "open problems in extremal graph theory"
+    ]
   },
   {
     "id": "ann-e766-nondecreasing",
@@ -245,7 +293,11 @@
       "non-strict inequality"
     ],
     "mathContext": "See annotation content for formal details of f is non-decreasing",
-    "prerequisites": []
+    "prerequisites": [
+      "the function f(n;k,l)",
+      "monotone functions",
+      "non-strict inequalities"
+    ]
   },
   {
     "id": "ann-e766-bounds",
@@ -264,7 +316,11 @@
       "lower bounds",
       "path graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turán number bounds",
+      "tree extremal numbers (Erdős–Sós)",
+      "complete bipartite Turán graphs"
+    ]
   },
   {
     "id": "ann-e766-triangle",
@@ -283,7 +339,11 @@
       "triangle-free graphs",
       "bipartite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mantel's theorem",
+      "triangle-free graphs",
+      "the function f(n;k,l)"
+    ]
   },
   {
     "id": "ann-e766-c4",
@@ -302,6 +362,10 @@
       "complete bipartite",
       "Zarankiewicz problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Kővári–Sós–Turán theorem",
+      "complete bipartite graphs K_{s,t}",
+      "Zarankiewicz problem"
+    ]
   }
 ]
