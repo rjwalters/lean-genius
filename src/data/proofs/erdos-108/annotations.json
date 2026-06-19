@@ -16,7 +16,11 @@
       "graph coloring",
       "Rödl"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph coloring and the chromatic number",
+      "the girth of a graph (shortest cycle length)",
+      "Erdős-style existence problems"
+    ]
   },
   {
     "id": "ann-e108-imports",
@@ -35,7 +39,11 @@
       "graph theory",
       "imports"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "simple graphs in Mathlib",
+      "graph-theory basics",
+      "Lean import structure"
+    ]
   },
   {
     "id": "ann-e108-overview",
@@ -54,7 +62,11 @@
       "girth",
       "tree-like graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the chromatic number χ(G)",
+      "girth and locally tree-like (sparse) graphs",
+      "high chromatic number despite no short cycles"
+    ]
   },
   {
     "id": "ann-e108-namespace",
@@ -73,7 +85,11 @@
       "type classes",
       "decidability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean namespaces and typeclasses",
+      "decidability instances for finite graphs",
+      "setup boilerplate"
+    ]
   },
   {
     "id": "ann-e108-main-axiom",
@@ -92,7 +108,11 @@
       "probabilistic method",
       "Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the probabilistic method in combinatorics",
+      "Ramsey theory",
+      "the Erdős–Hajnal–Rödl existence theorem (as an axiom)"
+    ]
   },
   {
     "id": "ann-e108-main-theorem",
@@ -111,7 +131,11 @@
       "existence theorems",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "high-chromatic large-girth graphs",
+      "existence theorems",
+      "applying the main axiom to answer #108"
+    ]
   },
   {
     "id": "ann-e108-rodl-theorem",
@@ -130,7 +154,11 @@
       "triangle-free graphs",
       "Mycielski construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "triangle-free graphs (girth ≥ 4)",
+      "Rödl's r=4 construction",
+      "the Mycielski construction"
+    ]
   },
   {
     "id": "ann-e108-remark",
@@ -149,6 +177,10 @@
       "triangle-free",
       "explicit constructions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Mycielskian of a graph",
+      "triangle-free graphs with high chromatic number",
+      "explicit vs probabilistic constructions"
+    ]
   }
 ]
