@@ -16,7 +16,11 @@
       "covering",
       "projective-planes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "intersecting families of sets",
+      "covering / transversal conditions",
+      "projective planes"
+    ]
   },
   {
     "id": "ann-e21-background",
@@ -35,7 +39,11 @@
       "combinatorial-geometry",
       "spread"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "covering codes and combinatorial geometry",
+      "the spread of a set system",
+      "covering properties"
+    ]
   },
   {
     "id": "ann-e21-intersecting",
@@ -54,7 +62,11 @@
       "Nonempty",
       "pairwise-intersection"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Erdős–Ko–Rado theorem",
+      "pairwise-intersecting families",
+      "nonempty intersections"
+    ]
   },
   {
     "id": "ann-e21-covers",
@@ -73,7 +85,11 @@
       "covering-condition",
       "universal-coverage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "disjointness of sets",
+      "a family covering all small sets",
+      "universal coverage conditions"
+    ]
   },
   {
     "id": "ann-e21-uniform",
@@ -92,7 +108,11 @@
       "uniform-family",
       "cardinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "k-uniform hypergraphs",
+      "families where all sets have the same size",
+      "cardinality constraints"
+    ]
   },
   {
     "id": "ann-e21-coveringfamily",
@@ -111,7 +131,11 @@
       "bundled-type",
       "constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "intersecting + covering families",
+      "bundling constraints into a structure",
+      "the covering-family object"
+    ]
   },
   {
     "id": "ann-e21-function-f",
@@ -130,7 +154,11 @@
       "extremal-function",
       "minimum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal (minimum) functions",
+      "the function f(n) for covering families",
+      "axiomatizing the extremal quantity"
+    ]
   },
   {
     "id": "ann-e21-known-values",
@@ -149,7 +177,11 @@
       "computational-bounds",
       "pattern"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "small exact values of f(n)",
+      "computational bounds",
+      "patterns in the data"
+    ]
   },
   {
     "id": "ann-e21-erdos-lovasz-lower",
@@ -168,7 +200,11 @@
       "counting-argument",
       "coefficient"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting arguments",
+      "binomial coefficient estimates",
+      "the Erdős–Lovász lower bound"
+    ]
   },
   {
     "id": "ann-e21-erdos-lovasz-upper",
@@ -187,7 +223,11 @@
       "projective-plane",
       "historical"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "projective planes of order q",
+      "constructing covering families",
+      "the Erdős–Lovász upper bound"
+    ]
   },
   {
     "id": "ann-e21-kahn-1992",
@@ -206,7 +246,11 @@
       "coupon-collector",
       "improvement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the probabilistic method",
+      "the coupon-collector heuristic",
+      "Kahn's 1992 improvement"
+    ]
   },
   {
     "id": "ann-e21-kahn-1994",
@@ -225,6 +269,10 @@
       "linear-bound",
       "erdos-prize"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the linear bound f(n) = Θ(n)",
+      "probabilistic constructions",
+      "Kahn's 1994 resolution (Erdős prize)"
+    ]
   }
 ]
