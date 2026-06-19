@@ -889,6 +889,7 @@ import Proofs.Erdos105Problem
 import Proofs.Erdos1060Problem
 import Proofs.Erdos1061Problem
 import Proofs.Erdos1062Problem
+import Proofs.Erdos1062OQ04
 import Proofs.Erdos1063Problem
 import Proofs.Erdos1064Problem
 import Proofs.Erdos1065BatemanHorn
