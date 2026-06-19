@@ -16,7 +16,11 @@
       "probabilistic method",
       "additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Abelian groups",
+      "Subset sums",
+      "Probabilistic method"
+    ]
   },
   {
     "id": "ann-e543-subset-sums",
@@ -35,7 +39,11 @@
       "group generation",
       "additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Subset sum problem",
+      "Group generation",
+      "Boolean coefficients"
+    ]
   },
   {
     "id": "ann-e543-f-def",
@@ -54,7 +62,11 @@
       "worst-case analysis",
       "Nat.find"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Threshold functions",
+      "Nat.find",
+      "Worst-case analysis"
+    ]
   },
   {
     "id": "ann-e543-erdos-renyi",
@@ -73,7 +85,11 @@
       "union bound",
       "birthday paradox"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Union bound",
+      "Logarithms",
+      "Birthday paradox"
+    ]
   },
   {
     "id": "ann-e543-conjecture-disproof",
@@ -92,7 +108,11 @@
       "disproof",
       "finite fields"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Quantifier negation",
+      "Finite fields",
+      "Logical equivalence"
+    ]
   },
   {
     "id": "ann-e543-lower-bounds",
@@ -111,6 +131,10 @@
       "counting lower bounds",
       "Erdős-Hall theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Information theory",
+      "Counting arguments",
+      "Entropy lower bounds"
+    ]
   }
 ]
