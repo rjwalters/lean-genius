@@ -24,6 +24,13 @@
   a part divisible by `3` forces a `3`, leaving sum `≤ 2`, so a single `2`; `6 ∉ {2..5}`).
   An element of cycle type `(2,3)` is `c₂ · c₃` (disjoint), whose cube is `c₂ · c₃³ = c₂`,
   a transposition.  Hence `orderOf σ = 6 ⟹ (σ ^ 3).IsSwap`.
+
+  ## Axiom disclosure
+  `orderOf_eq_six_pow_three_isSwap` closes the finite `S₅` case-check with `native_decide`,
+  which trusts the compiler's kernel reduction and therefore depends on `Lean.ofReduceBool`
+  (and `Lean.trustCompiler`) in addition to the usual `propext`/`Classical.choice`/`Quot.sound`.
+  This companion is NOT axiom-free; an integration into the verified gallery reduction
+  (`AbelRuffiniOQ07.lean`) would need a `decide`-free re-proof to preserve its 0-axiom status.
 -/
 import Mathlib
 
@@ -39,7 +46,11 @@ namespace AbelRuffiniOQ07Order6
     discharges the last open input of `abel-ruffini-oq-07`. -/
 theorem orderOf_eq_six_pow_three_isSwap
     (σ : Equiv.Perm (Fin 5)) (hσ : orderOf σ = 6) : (σ ^ 3).IsSwap := by
-  sorry
+  revert σ
+  simp +decide [orderOf_eq_iff]
+  intro σ hσ hσ'
+  simp_all +decide [Equiv.Perm.IsSwap]
+  native_decide +revert
 
 /-- **Consumer assembly variant (real Galois-group facing).**
     A subgroup `G ≤ S₅` with `5 ∣ |G|` that contains an order-6 element equals `⊤`.
@@ -51,6 +62,11 @@ theorem gal_eq_top_of_five_dvd_and_order6
     (h5 : 5 ∣ Fintype.card G)
     {σ : Equiv.Perm (Fin 5)} (hσG : σ ∈ G) (hσ : orderOf σ = 6) :
     G = ⊤ := by
-  sorry
+  obtain ⟨τ, hτ⟩ : ∃ τ : Equiv.Perm (Fin 5), τ ∈ G ∧ τ.IsSwap := by
+    exact ⟨σ ^ 3, pow_mem hσG 3, orderOf_eq_six_pow_three_isSwap σ hσ⟩
+  obtain ⟨a, b, hab⟩ : ∃ a b : Fin 5, a ≠ b ∧ τ = swap a b := hτ.2
+  apply Equiv.Perm.subgroup_eq_top_of_swap_mem
+  all_goals norm_num [hab]
+  exacts [h5, hτ.1, hτ.2]
 
 end AbelRuffiniOQ07Order6
