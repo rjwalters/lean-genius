@@ -16,7 +16,11 @@
       "prime numbers",
       "infinite series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Irrational numbers",
+      "Prime numbers",
+      "Convergence of series"
+    ]
   },
   {
     "id": "ann-e251-nthprime",
@@ -35,7 +39,11 @@
       "Mathlib",
       "noncomputable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime numbers",
+      "Sequence enumeration",
+      "Noncomputable definitions"
+    ]
   },
   {
     "id": "ann-e251-erdosterm",
@@ -53,7 +61,11 @@
       "series terms",
       "geometric decay"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime numbers",
+      "Powers of two",
+      "Series terms"
+    ]
   },
   {
     "id": "ann-e251-erdossum",
@@ -72,7 +84,11 @@
       "tsum",
       "convergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite series",
+      "Topological sums (tsum)",
+      "Real numbers"
+    ]
   },
   {
     "id": "ann-e251-summable",
@@ -91,7 +107,11 @@
       "prime number theorem",
       "ratio test"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ratio test",
+      "Prime number theorem",
+      "Geometric series"
+    ]
   },
   {
     "id": "ann-e251-partialsum",
@@ -110,7 +130,11 @@
       "norm_num",
       "computational verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Partial sums",
+      "Rational arithmetic",
+      "Series tail bounds"
+    ]
   },
   {
     "id": "ann-e251-conjecture",
@@ -129,7 +153,11 @@
       "open problem",
       "Erdős"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Irrational numbers",
+      "Rational numbers",
+      "Open problems"
+    ]
   },
   {
     "id": "ann-e251-factorial",
@@ -148,7 +176,11 @@
       "tail bounds",
       "irrationality proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Factorial growth",
+      "Tail estimates",
+      "Irrationality proofs"
+    ]
   },
   {
     "id": "ann-e251-general",
@@ -166,7 +198,11 @@
       "generalization",
       "powers of primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime powers",
+      "Infinite series",
+      "Conjecture generalization"
+    ]
   },
   {
     "id": "ann-e251-difficulty",
@@ -185,7 +221,11 @@
       "irrationality proofs",
       "prime irregularity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Irrationality proofs",
+      "Liouville approximation",
+      "Transcendence theory"
+    ]
   },
   {
     "id": "ann-e251-oeis",
@@ -204,7 +244,11 @@
       "numerical bounds",
       "decimal expansion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Numerical bounds",
+      "Decimal expansions",
+      "Series tail estimation"
+    ]
   },
   {
     "id": "ann-e251-explicit",
@@ -223,6 +267,10 @@
       "exact arithmetic",
       "partial sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Rational arithmetic",
+      "Partial sums",
+      "Computational verification"
+    ]
   }
 ]
