@@ -16,7 +16,11 @@
       "Lebesgue measure",
       "triangle area"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue measure of planar sets",
+      "area of a triangle in the plane",
+      "geometric measure theory"
+    ]
   },
   {
     "id": "ann-e352-imports",
@@ -35,7 +39,11 @@
       "MeasureTheory",
       "volume"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "MeasureTheory.volume as Lebesgue measure on R^n",
+      "inner product spaces and Euclidean structure",
+      "determinant and cross product area formula"
+    ]
   },
   {
     "id": "ann-e352-cross2d",
@@ -54,7 +62,11 @@
       "wedge product",
       "determinant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "wedge product of two planar vectors",
+      "signed area of a parallelogram",
+      "z-component of the 3D cross product"
+    ]
   },
   {
     "id": "ann-e352-triangle-area",
@@ -73,7 +85,11 @@
       "area",
       "signed area"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "2D cross product cross2D",
+      "absolute value as unsigned area",
+      "signed area and vertex orientation"
+    ]
   },
   {
     "id": "ann-e352-antisymm",
@@ -92,7 +108,11 @@
       "permutation",
       "cyclic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "antisymmetry of the cross product",
+      "cyclic permutation of triangle vertices",
+      "axiomatizing permutation invariance of unsigned area"
+    ]
   },
   {
     "id": "ann-e352-main-property",
@@ -111,7 +131,11 @@
       "unit area",
       "configuration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential quantification over points in a set",
+      "triangle of a prescribed area",
+      "the triangleArea formula"
+    ]
   },
   {
     "id": "ann-e352-main-question",
@@ -130,7 +154,11 @@
       "threshold",
       "existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axiomatizing an unresolved statement as a Prop",
+      "measure threshold c for guaranteed unit triangles",
+      "ContainsUnitTriangle predicate"
+    ]
   },
   {
     "id": "ann-e352-constant",
@@ -149,7 +177,11 @@
       "pi",
       "sqrt(27)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the constant 4pi/sqrt(27)",
+      "area of the critical circle",
+      "largest inscribed triangle approaching unit area"
+    ]
   },
   {
     "id": "ann-e352-conjecture",
@@ -168,7 +200,11 @@
       "optimal",
       "tight bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the conjectured threshold 4pi/sqrt(27)",
+      "tightness and optimality of a bound",
+      "epsilon-close counterexamples from the critical circle"
+    ]
   },
   {
     "id": "ann-e352-infinite",
@@ -187,7 +223,11 @@
       "unbounded",
       "density theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue density theorem",
+      "density points of a measurable set",
+      "sets of infinite or unbounded positive measure"
+    ]
   },
   {
     "id": "ann-e352-freiling",
@@ -206,7 +246,11 @@
       "Mauldin",
       "compact convex"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the 2002 Freiling-Mauldin theorem",
+      "compact convex sets",
+      "outer measure exceeding 4pi/sqrt(27)"
+    ]
   },
   {
     "id": "ann-e352-critical-radius",
@@ -225,7 +269,11 @@
       "witness",
       "circle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the critical radius 2*3^(-3/4)",
+      "area of a circle as pi r^2",
+      "manipulating powers of 3 to reach 4pi/sqrt(27)"
+    ]
   },
   {
     "id": "ann-e352-max-inscribed",
@@ -244,7 +292,11 @@
       "equilateral",
       "maximum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "maximal triangle inscribed in a circle",
+      "equilateral triangle area (3*sqrt(3)/4)*r^2",
+      "boundary case yielding area exactly 1"
+    ]
   },
   {
     "id": "ann-e352-reduction",
@@ -263,7 +315,11 @@
       "finite union",
       "convex interior"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mauldin's reduction to finite unions",
+      "interiors of compact convex sets",
+      "verified cases for small n"
+    ]
   },
   {
     "id": "ann-e352-summary",
@@ -282,6 +338,10 @@
       "example",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positivity of the conjectured constant",
+      "the cross2D-based triangle area formula",
+      "worked example triangle (0,0),(2,0),(1,1)"
+    ]
   }
 ]
