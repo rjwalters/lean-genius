@@ -1,0 +1,52 @@
+{
+  "slug": "cayley-hamilton-oq-02-oq-02",
+  "title": "Sylvester Matrix Interpolation via Frobenius Covariants",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Z_j \\;=\\; \\prod_{i \\ne j} \\frac{A - \\lambda_i I}{\\lambda_j - \\lambda_i}.",
+    "plain": "For a diagonalizable matrix, any (matrix) function can be written as a weighted sum of fixed \"projection\" matrices $Z_j$ — one per eigenvalue — weighted by the scalar values $f(\\lambda_j)$. The $Z_j$ are Lagrange-interpolation polynomials in $A$ and act as projectors onto the eigenspaces. We want a formal proof of this representation.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-18T23:18:44-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: cayley-hamilton-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "linear-algebra",
+    "cayley-hamilton",
+    "matrix-functions",
+    "spectral-projection"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-18T23:18:44-07:00"
+}

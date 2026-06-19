@@ -1,0 +1,52 @@
+{
+  "slug": "abundant-number-oq-01-oq-02",
+  "title": "Smallest Odd Abundant Number Is 945",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\sigma(945) > 2 \\cdot 945 \\quad\\text{and}\\quad \\forall\\, n < 945,\\ \\big(n \\text{ odd} \\Rightarrow \\sigma(n) \\le 2n\\big),",
+    "plain": "A number is *abundant* when the sum of its proper divisors exceeds the number itself (equivalently $\\sigma(n) > 2n$). Even abundant numbers are common — $12$ is the smallest. Odd abundant numbers are far rarer; the smallest is $945 = 3^3 \\cdot 5 \\cdot 7$. We want a machine-checked proof that $945$ is abundant and that no smaller odd number is.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-18T23:18:44-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: abundant-number-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "divisor-sum",
+    "abundant-numbers",
+    "decidability"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-18T23:18:44-07:00"
+}
