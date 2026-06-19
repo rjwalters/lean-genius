@@ -239,3 +239,44 @@ absent from Mathlib (a multi-file development). A tractable intermediate is to
 verify `eulerPentagonalIdentity` in further low degrees (degree 1, 2) by
 `decide`/`Finset`-expansion of `eulerPartialProd`, giving incremental numerical
 evidence while the involution layer is built.
+
+### 2026-06-19 (Session 6, researcher-8) — DEEPEN + BUILD REPAIR (build-verified)
+
+**Mode**: DEEPEN · **Outcome**: progress (build-verified)
+
+- **Critical-path build repair.** The file was *fully broken* against the current
+  Azure cache: Mathlib v4.26.0 made the ring argument of `PowerSeries.coeff` and
+  `PowerSeries.C` **implicit** (`coeff (n : ℕ) : R⟦X⟧ →ₗ[R] R`, `C : R →+* R⟦X⟧`).
+  Every `PowerSeries.coeff ℤ n` was being parsed as "coeff applied to ℤ as the
+  `ℕ` index" → 30+ errors across committed code (Session-5 'green' predated the
+  bump). Fixed all 22 call sites to `PowerSeries.coeff (R := ℤ)` / `PowerSeries.C
+  (R := ℤ)`, and marked `eulerPartialProd` `noncomputable` (its `CommRing`
+  instance now has no executable code, failing the IR check).
+- **Signed-count bridge (the session's mathematical core).**
+  `coeff_eulerProduct_eq_signed_count {n N} (h : n ≤ N)`: the `Xⁿ`-coefficient of
+  `∏(1−Xⁿ)` equals `∑_{t ∈ powerset(range N)} if n = ∑_{i∈t}(i+1) then (−1)^|t|
+  else 0` — a **signed count of partitions of `n` into distinct parts** (`+` even
+  #parts, `−` odd). Built on `eulerPartialProd_eq_sum_powerset` (expand the finite
+  truncation over the powerset via `Finset.prod_add`; each subset `t` contributes
+  `(−1)^|t| X^{∑(i+1)}`). This exhibits the *combinatorial LHS* of Euler's
+  identity explicitly — the side Franklin's involution acts on — so the open core
+  is now precisely "this signed count = `(−1)ᵏ` at `n=g(k)`, `0` else".
+- **Low-degree verification.** `eulerPartialProd_one_eq` (`= 1−X`),
+  `eulerPartialProd_two_eq` (`= 1−X−X²+X³`); `coeff_eulerProduct_one`/`_two`
+  (both `−1`); `eulerPentagonalIdentity_coeff_one`/`_coeff_two` machine-check the
+  identity in degrees 1 and 2. The degree-2 check is the first at a **negative
+  index** (`k=−1`, `g(−1)=2`), exercising the `(−1)^|k|` sign convention. (The
+  degree-1/2 RHS proofs mirror the working `…_constantCoeff` pattern:
+  `coeff_pentSeries_genPent k` + `simpa`, which absorbs the `↑n`/`toNat` casts.)
+- Build green (EXIT=0, 7743 jobs, 0 sorry, 0 axiom, 0 `native_decide`).
+  `docker-build.sh`, `LEAN_MEMORY_LIMIT=4096` under heavy host contention (10+
+  concurrent 32 GB builds — the default-limit builds OOM-evicted; the 4 GB
+  single-file incremental against the Azure olean cache completed in ~150s compile).
+
+**Next steps**: the open core is now a single combinatorial statement — the signed
+distinct-parts count equals `(−1)ᵏ` at the pentagonal exponents and `0` elsewhere.
+The remaining content is **Franklin's sign-reversing involution** on distinct-part
+subsets (pair each `t` with a `t′` of opposite parity and equal shifted sum; the
+only unpaired subsets are the pentagonal ones). A cheaper intermediate: extend the
+numerical check to degrees 3–5 by `Finset`-expanding
+`coeff_eulerProduct_eq_signed_count` (`g(2)=5`, `g(−2)=7` first appear there).

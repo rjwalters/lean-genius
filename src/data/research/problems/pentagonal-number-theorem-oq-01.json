@@ -9,7 +9,9 @@
       "The converse rests on a modular fact decidable in ZMod 6: a square s² = 24m+1 satisfies s² ≡ 1 (mod 6), which holds only for s ≡ ±1 (mod 6); each residue class yields an explicit index k with 6k-1 = ±s.",
       "Working with the doubling relation 2m = k(3k-1) as the membership predicate (instead of g(k)=k(3k-1)/2) sidesteps integer division entirely; exactness of the division is a one-line even/odd case split.",
       "Mathlib has Nat.Partition but neither Franklin's involution, distinct-part partitions with a parity sign, nor the formal power-series infinite product, so the deep identity has no Mathlib bearer; the index-set theory is the tractable, self-contained piece.",
-      "Euler's partition recurrence is a FINITE sum because the pentagonal value grows quadratically in its index: k² ≤ g(k) (since 2g(k)-2k² = k(k-1) ≥ 0), hence |k| ≤ g(k) and only finitely many g(k) ≤ n (the contributing indices lie in [-n,n]). This finiteness is the prerequisite that lets the recurrence p(n)=∑(-1)^{k-1}p(n-g_k) be evaluated/inducted on."
+      "Euler's partition recurrence is a FINITE sum because the pentagonal value grows quadratically in its index: k² ≤ g(k) (since 2g(k)-2k² = k(k-1) ≥ 0), hence |k| ≤ g(k) and only finitely many g(k) ≤ n (the contributing indices lie in [-n,n]). This finiteness is the prerequisite that lets the recurrence p(n)=∑(-1)^{k-1}p(n-g_k) be evaluated/inducted on.",
+      "Mathlib v4.26.0 made the ring argument of PowerSeries.coeff and PowerSeries.C implicit (coeff (n:ℕ):R⟦X⟧→ₗ[R]R, C:R→+*R⟦X⟧); all coeff/C call sites now need (R := ℤ), and eulerPartialProd needs noncomputable (PowerSeries.instCommRing has no executable code). The whole file silently broke at the upstream bump.",
+      "The Xⁿ-coefficient of ∏(1−Xⁿ) is a SIGNED COUNT over subsets t⊆{0,…,N−1}: ∑(−1)^|t| with exponent ∑_{i∈t}(i+1). Subsets index partitions of the exponent into distinct parts; sign = parity of part-count. This is the combinatorial LHS of Euler identity on which Franklin acts."
     ],
     "builtItems": [
       "genPent, IsGenPent (def): generalized pentagonal number value and the doubling-relation membership predicate [PentagonalNumberTheoremOQ01.lean]",
@@ -20,7 +22,11 @@
       "genPent_sq_le_self (k²≤g(k)), index_le_genPent / neg_index_le_genPent / abs_index_le_genPent (|k|≤g(k)), mul_pred_nonneg / mul_succ_nonneg (consecutive-integer products ≥0) [PentagonalNumberTheoremOQ01.lean]",
       "indexSet_finite: for any n, {k | g(k) ≤ n} is finite (⊆ [-n,n]) — Euler's recurrence is a finite sum [PentagonalNumberTheoremOQ01.lean]",
       "pentIndices (def) + mem_pentIndices + coe_pentIndices: COMPUTABLE Finset enumerator of contributing indices {k | g(k) ≤ n} filtered from [-n,n]; membership ⟺ g(k) ≤ n, and its Set coercion is exactly the index set indexSet_finite proves finite [PentagonalNumberTheoremOQ01.lean]",
-      "genPent_neg: the ±k pairing g(-k) = g(k) + k of Euler's recurrence (the two shifts g(k), g(-k) appearing together differ by exactly k) [PentagonalNumberTheoremOQ01.lean]"
+      "genPent_neg: the ±k pairing g(-k) = g(k) + k of Euler's recurrence (the two shifts g(k), g(-k) appearing together differ by exactly k) [PentagonalNumberTheoremOQ01.lean]",
+      "coeff_eulerProduct_eq_signed_count (PentagonalNumberTheoremOQ01.lean): coeff n eulerProduct = ∑_{t∈powerset(range N)} if n=∑_{i∈t}(i+1) then (−1)^|t| else 0, for n≤N — the signed distinct-parts count",
+      "eulerPartialProd_eq_sum_powerset (via Finset.prod_add): truncated product = ∑ over powerset of (−1)^|t| X^{∑(i+1)}",
+      "eulerPartialProd_one_eq, eulerPartialProd_two_eq, coeff_eulerProduct_one(=−1), coeff_eulerProduct_two(=−1): closed-form low-degree truncations",
+      "eulerPentagonalIdentity_coeff_one, eulerPentagonalIdentity_coeff_two: Euler identity verified in degrees 1,2 (coeff_two is first negative-index check k=−1, g(−1)=2)"
     ],
     "mathlibGaps": [
       "No Franklin sign-reversing involution on partitions into distinct parts.",
@@ -30,8 +36,10 @@
     "nextSteps": [
       "Mathematical frontier: build Franklin's involution to reach the deep identity p_even(n)-p_odd(n) = [n=g(k)]·(-1)ᵏ.",
       "Tractable intermediate now that pentIndices supplies a computable support: formalize the explicit finite form of Euler's recurrence p(n) = ∑_{k ∈ pentIndices' n} (-1)^{k-1} p(n-g_k) as a Finset.sum over the enumerator, or define the partition-into-distinct-parts parity sign and state the identity.",
-      "Define the partition function p(n) (or reuse Nat.Partition.card) and state — not yet prove — Euler's recurrence as a Finset.sum identity indexed by pentIndices, isolating Franklin's involution as the sole remaining gap."
+      "Define the partition function p(n) (or reuse Nat.Partition.card) and state — not yet prove — Euler's recurrence as a Finset.sum identity indexed by pentIndices, isolating Franklin's involution as the sole remaining gap.",
+      "The open core is now precisely: the signed distinct-parts count coeff_eulerProduct_eq_signed_count equals (−1)^k at n=g(k) and 0 otherwise. Build Franklin sign-reversing involution on distinct-part subsets (pair t with a t′ of opposite parity and equal shifted sum, fixed points only at pentagonal exponents).",
+      "Optionally extend numerical verification to degrees 3–5 by Finset-expanding coeff_eulerProduct_eq_signed_count and matching pentSeries (g(2)=5,g(−2)=7 first appear at deg 5,7)."
     ],
-    "progressSummary": "BUILD-VERIFIED (Session 3, 2026-06-19): foundation file (headline 24m+1-square recognition criterion) merged via PR #25893; Session 2 added the index-bound/finiteness layer (k²≤g(k), |k|≤g(k), indexSet_finite). Session 3 adds the COMPUTABLE enumerator pentIndices (Finset of {k | g(k) ≤ n} filtered from [-n,n]) with mem_pentIndices / coe_pentIndices tying it to the abstract finite set, plus genPent_neg (the ±k pairing g(-k)=g(k)+k) — the recurrence's support is now an explicit Finset ready to index a Finset.sum. Build green (7743 jobs), 0 sorry, 0 axiom, warning-clean. Deep identity (Franklin's involution) remains the open core."
+    "progressSummary": "PROGRESS: build restored under Mathlib v4.26.0 (coeff/C API change); open core reduced to a purely combinatorial signed distinct-parts count via coeff_eulerProduct_eq_signed_count; Euler identity machine-verified in degrees 0,1,2. Remaining gap = Franklin involution. 0 sorry/0 axiom."
   }
 }
