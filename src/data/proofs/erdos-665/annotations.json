@@ -16,7 +16,11 @@
       "projective planes"
     ],
     "mathContext": "See annotation content for formal details of problem overview",
-    "prerequisites": []
+    "prerequisites": [
+      "Pairwise balanced designs",
+      "Projective planes",
+      "Asymptotic notation O(1)"
+    ]
   },
   {
     "id": "ann-e665-pbd",
@@ -35,7 +39,11 @@
       "BIBD",
       "covering designs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset",
+      "Block designs (BIBD)",
+      "Pair-covering condition"
+    ]
   },
   {
     "id": "ann-e665-question",
@@ -53,7 +61,11 @@
       "optimization over designs"
     ],
     "mathContext": "See annotation content for formal details of the erdős question and h(n)",
-    "prerequisites": []
+    "prerequisites": [
+      "Square-root growth √n",
+      "Infimum over a set",
+      "Deficiency function h(n)"
+    ]
   },
   {
     "id": "ann-e665-erdos-larson",
@@ -71,7 +83,11 @@
       "Erdős-Larson 1982",
       "unconditional bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic upper bounds",
+      "Little-o notation o(√n)",
+      "Erdős–Larson 1982"
+    ]
   },
   {
     "id": "ann-e665-projective",
@@ -90,7 +106,11 @@
       "Shrikhande-Singhi 1985",
       "prime power conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Projective plane of order q",
+      "Prime power conjecture",
+      "Shrikhande–Singhi embedding"
+    ]
   },
   {
     "id": "ann-e665-prime-gaps",
@@ -109,7 +129,11 @@
       "Cramér's conjecture",
       "affine planes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime gaps",
+      "Cramér's conjecture",
+      "Affine plane AG(2,q)"
+    ]
   },
   {
     "id": "ann-e665-special",
@@ -128,7 +152,11 @@
       "optimal constructions"
     ],
     "mathContext": "See annotation content for formal details of special case constructions",
-    "prerequisites": []
+    "prerequisites": [
+      "Affine plane AG(2,q)",
+      "Perfect square n = q²",
+      "Design deficiency"
+    ]
   },
   {
     "id": "ann-e665-summary",
@@ -147,6 +175,10 @@
       "prime numbers",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Axiomatized theorem assembly",
+      "Prime power planes obstruction",
+      "Prime gap correlation bound"
+    ]
   }
 ]
