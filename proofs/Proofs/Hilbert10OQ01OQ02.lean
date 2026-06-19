@@ -2916,6 +2916,86 @@ theorem mazur_implies_sigma2_strict_above_codiophantine_at_complement_integers :
              mazur_implies_not_codiophantine_complement hM⟩
 
 -- ============================================================
+-- Part VIII.29 (iter 28): the third Boolean operation —
+--   relative complement (set difference) closure across all four classes
+-- ============================================================
+
+/-
+The Boolean closure grid built in iters 9–25 covers the two *positive*
+Boolean operations — binary union (`∪`) and binary intersection (`∩`) — at
+every level (Σ₁, Π₁, Σ₂, Π₂). The remaining Boolean operation is the
+**relative complement** (set difference)
+
+    S \ T  :=  fun q => S q ∧ ¬ T q.
+
+It is NOT closed *within* a single class: `S \ T = S ∩ Tᶜ`, and a class is
+closed under complement only by passing to its dual (`Σ₁ᶜ = Π₁`, `Σ₂ᶜ = Π₂`).
+So set difference is governed by the *mixed* rule "subtract from a class the
+dual of that class": removing a `Π₁` set from a `Σ₁` set lands back in `Σ₁`,
+and symmetrically at every level. Each proof is pure glue: rewrite `Tᶜ` into
+the subtracting class's dual via the iter-5 / iter-7 complement equivalences,
+then apply the matching binary-intersection closure (iters 12 / 9 / 20 / 24a).
+No new axioms; the four lemmas finish the Boolean algebra of each definability
+level. -/
+
+/-- **Iter 28 (Σ₁ set difference)**: `Σ₁ \ Π₁ ⊆ Σ₁`.
+
+    If `S` is Diophantine (Σ₁) and `T` is co-Diophantine (Π₁), then the
+    relative complement `S \ T = {q | S q ∧ ¬ T q}` is Diophantine. The
+    subtracted `T` being Π₁ makes its complement `¬ T` Σ₁
+    (`codiophantine_iff_diophantine_complement`), and `Σ₁ ∩ Σ₁ ⊆ Σ₁`
+    (`intersection_isDiophantineDefinition`) finishes. -/
+theorem sdiff_diophantine_codiophantine_isDiophantineDefinition
+    {S T : RatSubset}
+    (hS : IsDiophantineDefinition S) (hT : IsCoDiophantineDefinition T) :
+    IsDiophantineDefinition (fun q => S q ∧ ¬ T q) :=
+  intersection_isDiophantineDefinition hS
+    ((codiophantine_iff_diophantine_complement T).mp hT)
+
+/-- **Iter 28 (Π₁ set difference)**: `Π₁ \ Σ₁ ⊆ Π₁`.
+
+    Dual of `sdiff_diophantine_codiophantine_isDiophantineDefinition`. If `S`
+    is Π₁ and `T` is Σ₁, then `¬ T` is Π₁
+    (`diophantine_iff_codiophantine_complement`) and
+    `Π₁ ∩ Π₁ ⊆ Π₁` (`intersection_isCoDiophantineDefinition`) gives
+    `S \ T` ∈ Π₁. -/
+theorem sdiff_codiophantine_diophantine_isCoDiophantineDefinition
+    {S T : RatSubset}
+    (hS : IsCoDiophantineDefinition S) (hT : IsDiophantineDefinition T) :
+    IsCoDiophantineDefinition (fun q => S q ∧ ¬ T q) :=
+  intersection_isCoDiophantineDefinition hS
+    ((diophantine_iff_codiophantine_complement T).mp hT)
+
+/-- **Iter 28 (Σ₂ set difference)**: `Σ₂ \ Π₂ ⊆ Σ₂`.
+
+    Level-2 analog. If `S` is Σ₂ and the subtracted `T` is Π₂, then `¬ T` is
+    Σ₂ (`universalExistential_iff_existentialUniversal_complement`) and
+    `Σ₂ ∩ Σ₂ ⊆ Σ₂` (`sigma2_intersection_isExistentialUniversalDefinition`)
+    lands `S \ T` back in Σ₂. -/
+theorem sdiff_sigma2_pi2_isExistentialUniversalDefinition
+    {S T : RatSubset}
+    (hS : IsExistentialUniversalDefinition S)
+    (hT : IsUniversalExistentialDefinition T) :
+    IsExistentialUniversalDefinition (fun q => S q ∧ ¬ T q) :=
+  sigma2_intersection_isExistentialUniversalDefinition hS
+    ((universalExistential_iff_existentialUniversal_complement T).mp hT)
+
+/-- **Iter 28 (Π₂ set difference)**: `Π₂ \ Σ₂ ⊆ Π₂`.
+
+    Dual of `sdiff_sigma2_pi2_isExistentialUniversalDefinition`, and the
+    level-2 analog of the Π₁ case. If `S` is Π₂ and `T` is Σ₂, then `¬ T` is
+    Π₂ (`existentialUniversal_iff_universalExistential_complement`) and
+    `Π₂ ∩ Π₂ ⊆ Π₂` (`pi2_intersection_isUniversalExistentialDefinition`)
+    completes the Boolean algebra of all four levels. -/
+theorem sdiff_pi2_sigma2_isUniversalExistentialDefinition
+    {S T : RatSubset}
+    (hS : IsUniversalExistentialDefinition S)
+    (hT : IsExistentialUniversalDefinition T) :
+    IsUniversalExistentialDefinition (fun q => S q ∧ ¬ T q) :=
+  pi2_intersection_isUniversalExistentialDefinition hS
+    ((existentialUniversal_iff_universalExistential_complement T).mp hT)
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -3139,6 +3219,10 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `mazur_implies_pi2_strict_above_sigma1_at_integers` (Mazur + Koenigsmann ⟹ Π₂(ℤ) ∧ ¬Σ₁(ℤ) — Σ₁ ⊊ Π₂ non-trivial at ℤ under Mazur, iter 27a-δ)
   - `h10_decidable_implies_pi2_strict_above_sigma1_at_integers` (H10/ℚ decidable + Koenigsmann ⟹ Π₂(ℤ) ∧ ¬Σ₁(ℤ) — same Σ₁ ⊊ Π₂ non-collapse from a different conditional antecedent, iter 27a-δ)
   - `mazur_implies_sigma2_strict_above_codiophantine_at_complement_integers` (Mazur + Koenigsmann/duality ⟹ Σ₂(ℚ\ℤ) ∧ ¬Π₁(ℚ\ℤ) — Π₁ ⊊ Σ₂ non-trivial at ℚ\ℤ under Mazur, iter 27a-δ)
+  - `sdiff_diophantine_codiophantine_isDiophantineDefinition` (Σ₁ \ Π₁ ⊆ Σ₁ — relative complement, the third Boolean operation, iter 28)
+  - `sdiff_codiophantine_diophantine_isCoDiophantineDefinition` (Π₁ \ Σ₁ ⊆ Π₁, dual at level 1, iter 28)
+  - `sdiff_sigma2_pi2_isExistentialUniversalDefinition` (Σ₂ \ Π₂ ⊆ Σ₂, level-2 analog, iter 28)
+  - `sdiff_pi2_sigma2_isUniversalExistentialDefinition` (Π₂ \ Σ₂ ⊆ Π₂, level-2 dual — Boolean algebra of all four levels complete, iter 28)
 -/
 
 #check @IsDiophantineDefinition
@@ -3224,5 +3308,9 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @mazur_implies_pi2_strict_above_sigma1_at_integers
 #check @h10_decidable_implies_pi2_strict_above_sigma1_at_integers
 #check @mazur_implies_sigma2_strict_above_codiophantine_at_complement_integers
+#check @sdiff_diophantine_codiophantine_isDiophantineDefinition
+#check @sdiff_codiophantine_diophantine_isCoDiophantineDefinition
+#check @sdiff_sigma2_pi2_isExistentialUniversalDefinition
+#check @sdiff_pi2_sigma2_isUniversalExistentialDefinition
 
 end Hilbert10Rationals
