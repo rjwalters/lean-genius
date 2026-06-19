@@ -16,7 +16,11 @@
       "least prime divisor",
       "OEIS A322292"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "composite numbers and the least prime divisor p(m)",
+      "Erdős–Eggleton–Selfridge maximization F(n) = max{m + p(m)}",
+      "open conjectures about F(n) exceeding n"
+    ]
   },
   {
     "id": "ann-e385-imports",
@@ -35,7 +39,11 @@
       "Lean 4",
       "namespace"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.minFac for least prime divisor",
+      "Filter.atTop for eventual statements",
+      "Real.sqrt and Lean 4 namespaces"
+    ]
   },
   {
     "id": "ann-e385-composite",
@@ -53,7 +61,11 @@
       "primality",
       "factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primality of natural numbers",
+      "definition n > 1 and not prime",
+      "non-trivial factorization"
+    ]
   },
   {
     "id": "ann-e385-least-prime",
@@ -72,7 +84,11 @@
       "prime divisor",
       "square root bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib's minFac",
+      "smallest prime divisor of a composite",
+      "the bound p(m) ≤ √m via minimality"
+    ]
   },
   {
     "id": "ann-e385-function-f",
@@ -91,7 +107,11 @@
       "optimization",
       "composite structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.sup' as a nonempty supremum",
+      "Finset.range for composites below n",
+      "least prime factor p(m)"
+    ]
   },
   {
     "id": "ann-e385-upper-bound",
@@ -110,7 +130,11 @@
       "square root",
       "asymptotic tightness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the bound p(m) ≤ √m for composites",
+      "monotonicity of Nat.sqrt",
+      "Erdős's conjectured tightness n + (1-o(1))√n"
+    ]
   },
   {
     "id": "ann-e385-question1",
@@ -129,7 +153,11 @@
       "Filter.atTop",
       "Problem #430"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the 'eventually' quantifier ∀ᶠ in Filter.atTop",
+      "F(n) exceeding n for large n",
+      "equivalence with Erdős Problem #430"
+    ]
   },
   {
     "id": "ann-e385-question2",
@@ -148,7 +176,11 @@
       "divergence",
       "integer subtraction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto to atTop (divergence)",
+      "integer subtraction to avoid Nat truncation",
+      "Question 2 implying Question 1"
+    ]
   },
   {
     "id": "ann-e385-connection430",
@@ -167,7 +199,11 @@
       "logical implication",
       "Adenwalla"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős Problem #430 and Adenwalla's equivalence",
+      "logical implication q2_implies_q1",
+      "divergence forcing eventual positivity"
+    ]
   },
   {
     "id": "ann-e385-lower-bound",
@@ -186,7 +222,11 @@
       "o(1) notation",
       "real analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic lower bound F(n) ≥ n + (1-o(1))√n",
+      "o(1) notation and real-valued arithmetic",
+      "eventually-in-atTop quantification over ε > 0"
+    ]
   },
   {
     "id": "ann-e385-examples",
@@ -205,7 +245,11 @@
       "omega",
       "concrete verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "decidability of primality via decide",
+      "omega for the n > 1 condition",
+      "concrete composite witnesses for F(n)"
+    ]
   },
   {
     "id": "ann-e385-derived",
@@ -224,6 +268,10 @@
       "eventually",
       "Filter semantics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the contrapositive of eventual positivity",
+      "Set.Finite for the exception set {n | F n ≤ n}",
+      "Filter.Eventually semantics for atTop"
+    ]
   }
 ]
