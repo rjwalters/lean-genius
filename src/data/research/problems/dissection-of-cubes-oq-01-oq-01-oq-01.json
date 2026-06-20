@@ -1,7 +1,7 @@
 {
   "slug": "dissection-of-cubes-oq-01-oq-01-oq-01",
   "title": "Geometric Cube Tiling with Verified Coverage",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -23,12 +23,12 @@
     "goal": "Identify and verify a concrete geometric cube dissection, such as a 2x2x2 example, that has HasMinimalCollision under real unit-cube coverage."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-04T02:41:26-07:00",
-    "iteration": 1,
-    "focus": "Replace the True covers_unit_cube placeholder with real geometric coverage for an explicit cube tiling.",
+    "iteration": 2,
+    "focus": "Replaced covers_unit_cube:True with genuine volumetric coverage (sum side^3 = 1); proved the OQ-01-01 minimal-collision witness fails it.",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "Open: whether ANY genuine volume-filling dissection achieves exactly 2 colliding cubes (Littlewood cascade).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -36,17 +36,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Initial OBSERVE state only. The problem asks whether the minimal-collision construction survives replacing the True coverage placeholder with real geometric coverage.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Genuine volumetric coverage predicate formalized (GeoCubeDissection). Unit cube satisfies it with 0 collisions; the published 2-collision witness {A,B,C} has volume 59/864 != 1, so it is NOT geometric. Core open question (genuine tiling with exactly 2 collisions) unresolved.",
+    "builtItems": [
+      "GeoCubeDissection structure with volume_fills : sum c.side^3 = 1 (DissectionOfCubesOQ01OQ01OQ01.lean)",
+      "unitGeoDissection: unit cube is a genuine volume-filling dissection with 0 colliding cubes",
+      "exampleCubes_volume_ne_one: OQ-01-01 witness volume = 59/864 != 1",
+      "no_geo_with_exampleCubes: no GeoCubeDissection has the minimal-collision cube set"
+    ],
     "insights": [
       "The key gap is geometric coverage verification for covers_unit_cube.",
-      "A concrete small example, such as a 2x2x2 cube dissection, is the suggested first target."
+      "A concrete small example, such as a 2x2x2 cube dissection, is the suggested first target.",
+      "The covers_unit_cube:True placeholder masked a real obstruction: the minimal-collision witness fills under 7 percent of the unit cube.",
+      "Volumetric coverage sum side^3 = 1 is the right machine-checkable surrogate (necessary for tiling; measure-sufficient with interior-disjointness).",
+      "Combinatorial achievability and geometric achievability of 2 collisions are genuinely distinct; only the former is proved."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Read the existing axiomatized proof dissection-of-cubes-oq-01-oq-01.",
-      "Clarify the meanings of HasMinimalCollision and covers_unit_cube.",
-      "Identify a concrete small geometric example, for example a 2x2x2 cube dissection."
+      "Attempt a genuine multi-cube tiling and count its collisions (e.g. the 2x2x2 uniform tiling: volume 1, all 8 cubes collide).",
+      "Investigate whether sum side^3 = 1 + interior-disjointness forces more than 2 colliding cubes.",
+      "Formalize a quantitative version of the Littlewood cascade lower bound."
     ],
     "markdown": "# Knowledge Base: dissection-of-cubes-oq-01-oq-01-oq-01\n\n## Problem Understanding\n\nThis problem asks whether the minimal-collision result for cube dissections can be proved for a genuine geometric cube tiling. The current gallery proof uses `covers_unit_cube` as a `True` placeholder, so the missing work is to replace that with real unit-cube coverage using explicit tile coordinates.\n\n## Insights\n\n- The source problem is `dissection-of-cubes-oq-01-oq-01`, described as Minimal Collision is Achievable in Cube Dissections.\n- The local notes classify this as a challenging combinatorial-geometry extension because geometric coverage is hard to formalize.\n- A concrete small example, such as a 2x2x2 cube dissection, is the suggested first target.\n\n## Dead Ends\n\nNo dead ends are recorded in the local notes.\n"
   },
@@ -72,7 +80,7 @@
     "mathlib": []
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-04-04T09:42:47.024Z",
+  "lastUpdate": "2026-06-20T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/DissectionOfCubes.lean",
