@@ -249,6 +249,21 @@
       "targetId": "hilbert-4",
       "relationship": "related",
       "description": "Hilbert's 4th problem asks for all metrics on a projective space where straight lines are geodesics — a question about projective geometry, the same framework in which Desargues's theorem lives. Desargues's theorem characterizes which projective planes can be coordinatized over division rings (Desarguesian planes), while Hilbert's 4th problem characterizes which metrics respect the projective line structure. Both reveal the deep interplay between algebraic structure and geometric axioms in projective spaces"
+    },
+    {
+      "targetId": "desargues-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "Completes the full algebraic proof of Desargues's theorem over an arbitrary commutative ring without sorries, using a custom cross product (replacing the deprecated Mathlib CrossProduct) and the Lagrange identity."
+    },
+    {
+      "targetId": "desargues-theorem-oq-02",
+      "relationship": "extended-by",
+      "description": "Maps the sharp boundary of the theorem: constructs the non-Desarguesian Moulton plane and a concrete 6-point counterexample where two triangles are perspective from a point but not from a line."
+    },
+    {
+      "targetId": "desargues-theorem-oq-04",
+      "relationship": "extended-by",
+      "description": "Formalizes the self-duality of Desargues's theorem over commutative rings: collinearity and concurrence are the same predicate in homogeneous coordinates (rfl), so the dual configuration reproduces the original statement."
     }
   ],
   "mainTheorems": [
