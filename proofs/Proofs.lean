@@ -743,6 +743,7 @@ import Proofs.DescartesRuleOfSignsOQ04
 import Proofs.DetConjugateTransposeOQ01
 import Proofs.DilworthMirskyHardOQ01
 import Proofs.DilworthTheoremOQ01
+import Proofs.DiniTheorem
 import Proofs.DirichletApproximation
 import Proofs.DirichletApproximationOQ01
 import Proofs.DirichletApproximationOQ02
