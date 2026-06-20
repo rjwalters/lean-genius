@@ -1,0 +1,112 @@
+{
+  "id": "combinations-formula-oq-08",
+  "title": "Fibonacci Numbers as Shallow-Diagonal Sums of Pascal's Triangle",
+  "slug": "combinations-formula-oq-08",
+  "description": "Formalizes Lucas's classical identity that Fibonacci numbers are the sums of binomial coefficients along the shallow diagonals of Pascal's triangle. Starting from Mathlib's antidiagonal form Nat.fib_succ_eq_sum_choose, we reindex into the two textbook presentations: the range form fib(n+1) = ∑_{k=0}^{n} C(n-k, k), and its truncation to the genuinely nonzero range fib(n+1) = ∑_{k=0}^{⌊n/2⌋} C(n-k, k).",
+  "meta": {
+    "author": "Lean Genius researcher-10",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ08.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 102,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "assumptions": "None. All identities hold for every natural number n and are fully machine-checked. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms).",
+    "tags": [
+      "combinatorics",
+      "fibonacci",
+      "pascals-triangle",
+      "binomial-coefficients",
+      "finset-sums",
+      "number-theory"
+    ],
+    "dateAdded": "2026-06-19",
+    "originalContributions": [
+      "fib_eq_sum_range_choose: the shallow-diagonal formula as a single range sum fib(n+1) = ∑_{k<n+1} C(n-k, k), reindexed from Mathlib's antidiagonal form via sum_antidiagonal_eq_sum_range_succ and sum_range_reflect",
+      "choose_shallow_eq_zero: the tail-vanishing lemma C(n-k, k) = 0 for k > ⌊n/2⌋, the combinatorial reason the diagonal sum is finite",
+      "fib_eq_sum_range_half_choose: the truncated textbook form fib(n+1) = ∑_{k≤⌊n/2⌋} C(n-k, k), restricting to the nonzero terms via Finset.sum_subset",
+      "Worked verification fib 6 = C(5,0)+C(4,1)+C(3,2) = 1+4+3 = 8 from the truncated formula"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ08.lean",
+    "namespace": "CombinationsFormulaOQ08",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 102,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The appearance of Fibonacci numbers as sums along the diagonals of Pascal's triangle is attributed to Édouard Lucas (1876), who systematized many Fibonacci identities. The shallow diagonals of Pascal's triangle — the lines of slope obtained by stepping one row up and one column right — sum precisely to the Fibonacci sequence. The identity is a discrete shadow of the generating-function relation between the Fibonacci recurrence and the binomial expansion, and is a standard exercise illustrating the interplay between linear recurrences and binomial coefficients.",
+    "problemStatement": "Open Question OQ-08: Formalize that the Fibonacci numbers are the sums of binomial coefficients along the shallow diagonals of Pascal's triangle. Mathlib provides the antidiagonal form $\\mathrm{fib}(n+1) = \\sum_{(i,j):\\,i+j=n} \\binom{i}{j}$; the task is to reindex it into the textbook single-sum presentations $\\mathrm{fib}(n+1) = \\sum_{k=0}^{n} \\binom{n-k}{k} = \\sum_{k=0}^{\\lfloor n/2 \\rfloor} \\binom{n-k}{k}$.",
+    "proofStrategy": "Begin from Mathlib's Nat.fib_succ_eq_sum_choose, which expresses fib(n+1) as a sum of choose p.1 p.2 over Finset.antidiagonal n. Apply Finset.Nat.sum_antidiagonal_eq_sum_range_succ to evaluate the antidiagonal pair (i,j) as (k, n-k) over k ∈ range(n+1), giving ∑ C(k, n-k). Then Finset.sum_range_reflect reverses the index k ↦ n-k; a sum_congr with Nat.sub_sub_self turns the surviving summand into the textbook C(n-k, k). For the truncated form, choose_shallow_eq_zero shows C(n-k, k) = 0 whenever k > ⌊n/2⌋ (since then n-k < k), and Finset.sum_subset discards those vanishing tail terms, restricting the index set to range(⌊n/2⌋+1).",
+    "keyInsights": [
+      "The 'shallow diagonal' indexing hidden inside Mathlib's antidiagonal pair (i,j) with i+j=n becomes visible once reindexed: the k-th diagonal term is C(n-k, k), the entry k steps up the diagonal.",
+      "Finset.sum_range_reflect is the precise tool for the symmetry k ↦ n-k that converts C(k, n-k) (the direct antidiagonal evaluation) into the conventional C(n-k, k).",
+      "The diagonal sum is automatically finite because C(n-k, k) vanishes once k exceeds ⌊n/2⌋: at that point the lower index k overtakes the upper index n-k, and Nat.choose_eq_zero_of_lt applies.",
+      "omega handles the division-by-two reasoning (n/2 < k ⟹ n - k < k) needed to locate the vanishing tail, keeping the truncation argument fully automatic."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Mathematical Context",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Header stating OQ-08: Fibonacci numbers as shallow-diagonal sums of Pascal's triangle. Explains the relationship to Mathlib's antidiagonal form and the two reindexed presentations (range form and truncated form) that constitute the contribution."
+    },
+    {
+      "id": "anchor",
+      "title": "Anchor: Antidiagonal Form",
+      "startLine": 56,
+      "endLine": 63,
+      "summary": "fib_eq_sum_antidiagonal_choose: restates Mathlib's Nat.fib_succ_eq_sum_choose, fib(n+1) = ∑ over antidiagonal n of C(p.1, p.2), as the starting point for the reindexed forms."
+    },
+    {
+      "id": "range-form",
+      "title": "Shallow-Diagonal Range Form",
+      "startLine": 65,
+      "endLine": 74,
+      "summary": "fib_eq_sum_range_choose: fib(n+1) = ∑_{k<n+1} C(n-k, k). Proved by rewriting with the antidiagonal-to-range lemma, reflecting the index via Finset.sum_range_reflect, and a sum_congr using Nat.sub_sub_self."
+    },
+    {
+      "id": "tail-vanishing",
+      "title": "Tail-Vanishing Lemma",
+      "startLine": 76,
+      "endLine": 79,
+      "summary": "choose_shallow_eq_zero: for k > ⌊n/2⌋, C(n-k, k) = 0. omega derives n-k < k from n/2 < k, then Nat.choose_eq_zero_of_lt finishes."
+    },
+    {
+      "id": "truncated-form",
+      "title": "Truncated Textbook Form",
+      "startLine": 81,
+      "endLine": 93,
+      "summary": "fib_eq_sum_range_half_choose: fib(n+1) = ∑_{k≤⌊n/2⌋} C(n-k, k). Uses Finset.sum_subset to discard the vanishing tail terms from the range form."
+    },
+    {
+      "id": "verification",
+      "title": "Worked Verification",
+      "startLine": 95,
+      "endLine": 99,
+      "summary": "example: fib 6 = 8 recovered from the truncated formula as C(5,0)+C(4,1)+C(3,2) = 1+4+3."
+    }
+  ],
+  "conclusion": {
+    "summary": "4 theorems, 0 sorries, 0 axioms. Lucas's shallow-diagonal identity for Fibonacci numbers is formalized in both its range form fib(n+1) = ∑_{k<n+1} C(n-k, k) and its truncated textbook form fib(n+1) = ∑_{k≤⌊n/2⌋} C(n-k, k), reindexed from Mathlib's antidiagonal presentation.",
+    "implications": "This turns Mathlib's somewhat opaque antidiagonal identity into the presentation actually used in combinatorics texts, making the 'diagonals of Pascal's triangle' picture literal in Lean. The reindexing pattern (sum_antidiagonal_eq_sum_range_succ followed by sum_range_reflect, then sum_subset to drop vanishing tail terms) is reusable for any antidiagonal binomial identity that one wishes to present as a single bounded sum.",
+    "openQuestions": [
+      "Can the companion Lucas identity for the partial sums ∑_{i<n} fib(i) = fib(n+1) - 1 be linked to the diagonal sums to give a generating-function-free proof of the Fibonacci recurrence from binomial coefficients?",
+      "Does the analogous shallow-diagonal sum with a fixed stride s (stepping s columns per row) recover the s-bonacci / higher-order recurrence numbers, and can that be formalized uniformly?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-02",
+      "relationship": "ancestor — the core combinations formula entry providing binomial coefficient context"
+    }
+  ],
+  "sorries": 0
+}
