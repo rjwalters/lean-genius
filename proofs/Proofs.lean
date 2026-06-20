@@ -414,6 +414,7 @@ import Proofs.CantorDiagonalizationOQ04OQ01
 import Proofs.CantorDiagonalizationOQ04OQ01OQ03
 import Proofs.CantorDiagonalizationOQ04OQ03
 import Proofs.CantorDiagonalizationOQ04OQ03Aristotle
+import Proofs.CantorDiagonalizationOQ05
 import Proofs.CantorDiagonalizationOQ06
 import Proofs.CantorDiagonalizationOQ07
 import Proofs.CantorsTheorem
