@@ -3,13 +3,13 @@
   "title": "Dirichlet's approximation theorem via Minkowski's convex-body theorem",
   "problemStatement": "Re-derive the gallery's pigeonhole Dirichlet bound |qα − p| ≤ 1/N (with 1 ≤ q ≤ N) from Minkowski's convex-body theorem (geometry of numbers), applied to the symmetric convex region K(α,N) = {(x,y) ∈ ℝ² : |x| ≤ N, |αx − y| ≤ 1/N}, a parallelogram of area exactly 4 = 2²·covol(ℤ²). A secondary question asks whether Mathlib's continued-fraction development already subsumes the bound.",
   "status": "active",
-  "phase": "RESEARCH",
+  "phase": "VERIFICATION",
   "tier": "B",
   "significance": 6,
   "tractability": 6,
   "path": "full",
   "started": "2026-06-19",
-  "lastUpdate": "2026-06-19",
+  "lastUpdate": "2026-06-20",
   "tags": [
     "number-theory",
     "diophantine-approximation",
@@ -19,11 +19,11 @@
     "lattice"
   ],
   "currentState": {
-    "summary": "Full unconditional proof DRAFTED, sorry-free and axiom-free by source inspection (18 theorems/defs, 0 sorry, 0 axiom declarations, no native_decide/decide). The complete geometry-of-numbers derivation of Dirichlet's bound is in place: the symmetric convex body K(alpha,N), its symmetry/convexity/compactness, the volume computation volume(K) = 4 via the determinant-(-1) shear (x,y) -> (x, alpha*x - y) mapping the box [-N,N] x [-1/N,1/N] onto K (body_eq_image, box_volume, body_volume), the arithmetic bridge (nonzero integer point of K => Dirichlet approximation with 1 <= q <= N and the q = 0 boundary excluded for N >= 2), and the unconditional capstone dirichlet_via_minkowski feeding exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure against the standard lattice ZZ^2 = span ZZ (range (Pi.basisFun RR (Fin 2))) of covolume 1. BUILD UNVERIFIED THIS SESSION: the Docker build daemon was unresponsive (docker version/ps hung), so the sorry/axiom-free and elaboration claims rest on source inspection only; a successful docker build of Proofs.DirichletApproximationOQ03 is required before this is machine-checked.",
+    "summary": "Full unconditional proof DRAFTED, sorry-free and axiom-free by source inspection (18 theorems/defs, 0 sorry, 0 axiom declarations, no native_decide/decide). The complete geometry-of-numbers derivation of Dirichlet's bound is in place: the symmetric convex body K(alpha,N), its symmetry/convexity/compactness, the volume computation volume(K) = 4 via the determinant-(-1) shear (x,y) -> (x, alpha*x - y) mapping the box [-N,N] x [-1/N,1/N] onto K (body_eq_image, box_volume, body_volume), the arithmetic bridge (nonzero integer point of K => Dirichlet approximation with 1 <= q <= N and the q = 0 boundary excluded for N >= 2), and the unconditional capstone dirichlet_via_minkowski feeding exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure against the standard lattice ZZ^2 = span ZZ (range (Pi.basisFun RR (Fin 2))) of covolume 1. BUILD VERIFIED (2026-06-20): single-file elaboration via `lake env lean Proofs/DirichletApproximationOQ03.lean` against the pinned Mathlib v4.26.0 oleans type-checks cleanly with 0 errors/warnings/sorries. This check caught 7 real compile errors that the earlier source-inspection had missed (Matrix.dotProduct -> dotProduct, addHaar_image_linearMap -> Measure.addHaar_image_linearMap, a natAbs cast using the real instead of integer abs hypothesis, fin_cases index normalisation in shear_involutive, redundant tauto/ring/push_cast steps), all now fixed. `#print axioms dirichlet_via_minkowski` reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool — so the proof is genuinely axiom-free / verified.",
     "leanFile": "proofs/Proofs/DirichletApproximationOQ03.lean",
     "sorries": 0,
     "axioms": 0,
-    "buildVerified": false
+    "buildVerified": true
   },
   "knowledge": {
     "insights": [
@@ -50,18 +50,18 @@
       "The remaining volume computation volume(body α N) = 4 has no off-the-shelf lemma; it requires building the shear LinearMap on Fin 2 → ℝ, its det via Matrix.det_fin_two, the box volume via volume_pi/Real.volume_Icc, and the set equality body = T '' box, then addHaar_image_linearMap."
     ],
     "nextSteps": [
-      "VERIFY THE BUILD: run ./proofs/scripts/docker-build.sh Proofs.DirichletApproximationOQ03 once Docker is back up. The risk surface is Mathlib lemma-name/signature drift in the unconditional assembly (ZSpan.isAddFundamentalDomain', exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure, ZSpan.fundamentalDomain_pi_basisFun, addHaar_image_linearMap, Basis.mem_span_iff_repr_mem) — fix any drift and rebuild.",
-      "Once build-verified, promote this to a gallery entry (src/data/proofs/) with status verified / badge original (0 sorry, 0 axiom, no Lean.ofReduceBool) and cross-reference the pigeonhole dirichlet-approximation-theorem entry it re-derives.",
+      "DONE — build verified via single-file `lake env lean` against pinned Mathlib v4.26.0 (0 errors/warnings/sorries; #print axioms clean). A full docker build of Proofs.DirichletApproximationOQ03 remains a nice-to-have CI confirmation but is no longer blocking.",
+      "Promote this to a gallery entry (src/data/proofs/) with status verified / badge original (0 sorry, 0 axiom, no Lean.ofReduceBool) and cross-reference the pigeonhole dirichlet-approximation-theorem entry it re-derives.",
       "Settle the subsumption question via continued-fraction convergent selection (abs_sub_convergents_le', choosing the convergent with B_n <= N < B_{n+1}), or record that pigeonhole / Minkowski / continued fractions all give the same 1/N strength.",
       "Optionally sharpen to the strict < 1/N via the open-boundary refinement (area > 4 variant of the convex body)."
     ],
-    "progressSummary": "COMPLETE (drafted, build-unverified): the Minkowski re-derivation of Dirichlet's bound is now a full unconditional proof, sorry-free and axiom-free by source inspection. The remaining volume computation volume(K) = 4 was discharged via the determinant-(-1) shear, and dirichlet_via_minkowski assembles the unconditional bound from Mathlib's compact convex-body theorem. The only outstanding item is BUILD VERIFICATION: Docker was unresponsive this session, so the elaboration/axiom-free claims rest on inspection and must be confirmed by a docker build before being treated as machine-checked."
+    "progressSummary": "COMPLETE and BUILD VERIFIED: the Minkowski re-derivation of Dirichlet's bound is a full unconditional proof, sorry-free and axiom-free, now machine-checked. Single-file elaboration (`lake env lean Proofs/DirichletApproximationOQ03.lean`) against pinned Mathlib v4.26.0 type-checks with 0 errors/warnings/sorries, and #print axioms reports only [propext, Classical.choice, Quot.sound]. The check caught and fixed 7 real lemma-name/tactic drifts that earlier source-inspection had missed. The volume computation volume(K) = 4 is discharged via the determinant-(-1) shear, and dirichlet_via_minkowski assembles the unconditional bound from Mathlib's compact convex-body theorem. Remaining optional work: the continued-fraction subsumption question and a strict-inequality sharpening; neither is required for the core result. Ready to promote to a gallery entry."
   },
   "approaches": [
     {
       "name": "Minkowski convex-body theorem on K(α,N) = {|x| ≤ N, |αx − y| ≤ 1/N}",
-      "outcome": "success (build-unverified)",
-      "notes": "Full unconditional proof drafted sorry-free and axiom-free: body_symm/convex/isClosed/isCompact (geometry), body_eq_image + box_volume + body_volume (volume(K) = 4 via the det -1 shear and addHaar_image_linearMap), dirichlet_of_lattice_point (arithmetic bridge with sign normalisation and q=0 boundary), and dirichlet_via_minkowski (unconditional capstone via exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure). Build UNVERIFIED this session (Docker daemon down); needs a docker build to confirm Mathlib lemma names elaborate."
+      "outcome": "success (build-verified)",
+      "notes": "Full unconditional proof, sorry-free and axiom-free and now BUILD VERIFIED (single-file `lake env lean` against pinned Mathlib v4.26.0, 0 errors/warnings/sorries; #print axioms = [propext, Classical.choice, Quot.sound]): body_symm/convex/isClosed/isCompact (geometry), body_eq_image + box_volume + body_volume (volume(K) = 4 via the det -1 shear and Measure.addHaar_image_linearMap), dirichlet_of_lattice_point (arithmetic bridge with sign normalisation and q=0 boundary), and dirichlet_via_minkowski (unconditional capstone via exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure). The type-check surfaced and fixed 7 Mathlib lemma-name/tactic drifts the prior source-inspection missed."
     },
     {
       "name": "Continued-fraction subsumption",

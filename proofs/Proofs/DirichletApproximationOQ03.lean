@@ -81,7 +81,6 @@ theorem body_convex : Convex ℝ (body α N) := by
     ext v
     simp only [body, mem_setOf_eq, mem_inter_iff, mem_preimage, mem_Icc, abs_le,
       LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.proj_apply, smul_eq_mul]
-    tauto
   rw [e]
   exact ((convex_Icc _ _).linear_preimage _).inter ((convex_Icc _ _).linear_preimage _)
 
@@ -95,7 +94,6 @@ theorem body_isClosed : IsClosed (body α N) := by
     ext v
     simp only [body, mem_setOf_eq, mem_inter_iff, mem_preimage, mem_Icc, abs_le,
       LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.proj_apply, smul_eq_mul]
-    tauto
   rw [e]
   exact (isClosed_Icc.preimage (LinearMap.continuous_of_finiteDimensional _)).inter
     (isClosed_Icc.preimage (LinearMap.continuous_of_finiteDimensional _))
@@ -132,7 +130,7 @@ theorem dirichlet_of_lattice_point (hN : 2 ≤ N) {q₀ p₀ : ℤ}
   · -- q₀ < 0: take q = |q₀|, p = -p₀.
     have hqR : (q₀ : ℝ) < 0 := by exact_mod_cast hneg
     have hnat : (q₀.natAbs : ℝ) = -(q₀ : ℝ) := by
-      rw [Int.cast_natAbs, abs_of_neg hqR]
+      rw [Nat.cast_natAbs, abs_of_neg hneg]; push_cast; ring
     refine ⟨-p₀, q₀.natAbs, hqpos, ?_, ?_⟩
     · have h := hx; rw [abs_of_neg hqR] at h
       have : (q₀.natAbs : ℝ) ≤ (N : ℝ) := by rw [hnat]; exact h
@@ -144,7 +142,7 @@ theorem dirichlet_of_lattice_point (hN : 2 ≤ N) {q₀ p₀ : ℤ}
   · -- q₀ > 0: take q = |q₀|, p = p₀.
     have hqR : (0 : ℝ) < (q₀ : ℝ) := by exact_mod_cast hpos
     have hnat : (q₀.natAbs : ℝ) = (q₀ : ℝ) := by
-      rw [Int.cast_natAbs, abs_of_pos hqR]
+      rw [Nat.cast_natAbs, abs_of_pos hpos]
     refine ⟨p₀, q₀.natAbs, hqpos, ?_, ?_⟩
     · have h := hx; rw [abs_of_pos hqR] at h
       have : (q₀.natAbs : ℝ) ≤ (N : ℝ) := by rw [hnat]; exact h
@@ -193,18 +191,23 @@ def box : Set (Fin 2 → ℝ) := {v | |v 0| ≤ (N : ℝ) ∧ |v 1| ≤ 1 / (N :
 
 theorem shear_apply_zero (v : Fin 2 → ℝ) : shear α v 0 = v 0 := by
   show (Matrix.toLin' !![1, 0; α, -1]) v 0 = v 0
-  simp [Matrix.toLin'_apply, Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_two] <;> ring
+  rw [Matrix.toLin'_apply]
+  simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
 
 theorem shear_apply_one (v : Fin 2 → ℝ) : shear α v 1 = α * v 0 - v 1 := by
   show (Matrix.toLin' !![1, 0; α, -1]) v 1 = α * v 0 - v 1
-  simp [Matrix.toLin'_apply, Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_two] <;> ring
+  rw [Matrix.toLin'_apply]
+  simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+  ring
 
 /-- The shear is an involution: `T ∘ T = id`. -/
 theorem shear_involutive (w : Fin 2 → ℝ) : shear α (shear α w) = w := by
   funext i
   fin_cases i
-  · rw [shear_apply_zero, shear_apply_zero]
-  · rw [shear_apply_one, shear_apply_one, shear_apply_zero]; ring
+  · show shear α (shear α w) 0 = w 0
+    rw [shear_apply_zero, shear_apply_zero]
+  · show shear α (shear α w) 1 = w 1
+    rw [shear_apply_one, shear_apply_one, shear_apply_zero]; ring
 
 /-- The body `K(α, N)` is the shear image of the axis-aligned box. -/
 theorem body_eq_image : body α N = ⇑(shear α) '' box N := by
@@ -224,7 +227,7 @@ theorem box_eq_Icc :
     box N = Set.Icc (![-(N : ℝ), -(1 / (N : ℝ))] : Fin 2 → ℝ) ![(N : ℝ), 1 / (N : ℝ)] := by
   ext v
   simp only [box, Set.mem_setOf_eq, Set.mem_Icc, abs_le, Pi.le_def, Fin.forall_fin_two,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    Matrix.cons_val_zero, Matrix.cons_val_one]
   tauto
 
 theorem box_isCompact : IsCompact (box N) := by
@@ -238,8 +241,8 @@ theorem body_isCompact : IsCompact (body α N) := by
 theorem box_volume (hN : 1 ≤ N) : volume (box N) = 4 := by
   have hN0 : (N : ℝ) ≠ 0 := by positivity
   rw [box_eq_Icc, ← pi_univ_Icc, volume_pi_pi, Fin.prod_univ_two]
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Real.volume_Icc]
-  rw [← ENNReal.ofReal_mul (by positivity)]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Real.volume_Icc]
+  rw [← ENNReal.ofReal_mul (by have : (0 : ℝ) ≤ (N : ℝ) := Nat.cast_nonneg N; linarith)]
   rw [show ((N : ℝ) - -(N : ℝ)) * (1 / (N : ℝ) - -(1 / (N : ℝ))) = 4 from by field_simp; ring]
   norm_num
 
@@ -249,7 +252,7 @@ theorem body_volume (hN : 1 ≤ N) : volume (body α N) = 4 := by
   have hdet : LinearMap.det (shear α) = -1 := by
     show LinearMap.det (Matrix.toLin' !![1, 0; α, -1]) = -1
     rw [LinearMap.det_toLin', Matrix.det_fin_two_of]; ring
-  rw [body_eq_image, addHaar_image_linearMap, hdet, box_volume N hN, abs_neg, abs_one,
+  rw [body_eq_image, Measure.addHaar_image_linearMap, hdet, box_volume N hN, abs_neg, abs_one,
     ENNReal.ofReal_one, one_mul]
 
 /-- **Dirichlet's approximation theorem via Minkowski's convex-body theorem — unconditional.**
