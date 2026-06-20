@@ -2,7 +2,7 @@
   "id": "dissection-of-cubes-oq-01-oq-01",
   "title": "Minimal Collision is Achievable in Cube Dissections",
   "slug": "dissection-of-cubes-oq-01-oq-01",
-  "description": "Proves that HasMinimalCollision is achievable: there exists a CubeDissection with exactly 2 colliding cubes. This shows the lower bound of 2 (from OQ-01) is tight within the formalization. Three axis-aligned cubes — two of size 1/4 and one of size 1/3 — form the explicit witness, with the two equal-size cubes as the unique collision pair.",
+  "description": "Proves that HasMinimalCollision is achievable within the combinatorial formalization: there exists a CubeDissection — whose covering/tiling condition is encoded as a placeholder `covers_unit_cube : True` — with exactly 2 colliding cubes. This shows the lower bound of 2 (from OQ-01) is tight within the formalization. Three axis-aligned cubes — two of size 1/4 and one of size 1/3 — satisfy containment and pairwise-disjointness (but do not tile the unit cube), with the two equal-size cubes as the unique collision pair. Whether a genuine geometric tiling achieves this minimum remains open.",
   "meta": {
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
@@ -46,6 +46,7 @@
       "lower_bound_tight: the lower bound from OQ-01 is exactly achieved"
     ],
     "dateAdded": "2026-04-03",
+    "assumptions": "The `CubeDissection` structure encodes the covering/tiling condition as a placeholder field `covers_unit_cube : True`; only containment in the unit cube and pairwise interior-disjointness are formalized. The witness is therefore a combinatorial (not geometric) dissection — its three cubes do not actually tile the unit cube. The combinatorial achievability result (3 pairwise-disjoint, contained cubes with exactly one repeated size ⇒ collision count = 2) is fully machine-checked with 0 axioms, but whether a genuine geometric tiling of the unit cube achieves this minimum of 2 colliding cubes remains an open question.",
     "axiomCount": 0,
     "lineCount": 324,
     "theoremCount": 29,
