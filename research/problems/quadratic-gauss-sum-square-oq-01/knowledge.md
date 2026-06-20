@@ -91,3 +91,40 @@ both routes, so it is reusable groundwork rather than throwaway.
 
 ### Next steps
 - `p = 7` (next `p ≡ 3 mod 4`) as a further witness, or pivot to the general DFT route.
+
+## Session 2026-06-19 (Session 4) — diagonal representation g = ∑ ψ(k²)
+
+**Mode:** FRESH (depth-first on existing MODERATE knowledge) · **Outcome:** progress (verified reusable infrastructure)
+
+### What I did
+- New companion file `Proofs/QuadraticGaussSumDiagonal.lean` (verified, axiom-free):
+  - `card_sqrts_cast` — `(#{x : ZMod p | x² = t}.card : ℂ) = chiC p t + 1`, the ℂ-transport
+    of Mathlib's `quadraticChar_card_sqrts` through the ring hom `ℤ → ℂ` defining `chiC`.
+  - `gaussSum_chiC_eq_sum_sq` — **`gaussSum (chiC p) ψ = ∑ k, ψ(k²)`** for any primitive
+    additive character `ψ`. Proof: `Finset.sum_fiberwise_of_maps_to` groups `∑ ψ(k²)` by the
+    value `t = k²`; the fibre `{k : k² = t}` has size `χ(t)+1`, so
+    `∑ ψ(k²) = ∑ (χ(t)+1)·ψ(t) = gaussSum + ∑ ψ(t)`, and `∑ ψ(t) = 0`
+    (`AddChar.sum_eq_zero_of_ne_one`, since primitivity ⟹ `ψ ≠ 1` via `mulShift_one`).
+  - Verified by single-file olean-chain compile (Docker host-blocked); `#print axioms` =
+    `[propext, Classical.choice, Quot.sound]` only (axiom-free).
+
+### Key findings
+- The diagonal form is the **universal starting point** of every classical proof of the
+  sign theorem (Gauss/Schur/Dirichlet/Kronecker), and it was absent from Mathlib (which has
+  `gaussSum_sq` and `quadraticChar_card_sqrts` but never combines them into the `k²` form).
+- It strips the Legendre-symbol weighting: with the standard character `ψ(x)=ζ_p^x` it is
+  literally `g = ∑ ζ_p^{k²}`, so the open crux `0 < Re g` becomes positivity of
+  `∑ cos(2π k²/p)`.
+- It does NOT make `p = 7` tractable: `∑ζ^{k²} = 1 + 2ζ + 2ζ² + 2ζ⁴` still requires the
+  cubic-irrational value `cos(2π/7)`, unlike the quadratic-radical values at `p = 3, 5`.
+  The next genuine advance is the general DFT-spectrum content, still >1000 lines.
+
+### Files modified
+- `proofs/Proofs/QuadraticGaussSumDiagonal.lean` (new, verified)
+- `proofs/Proofs.lean` (import)
+- `src/data/research/problems/quadratic-gauss-sum-square-oq-01.json` (knowledge)
+
+### Next steps
+- Reframe `0 < Re(∑ ζ_p^{k²})` and look for a positivity argument that avoids full
+  eigenvalue-multiplicity computation (e.g. pairing `k` with `p−k`, partial-sum bounds).
+- Consider upstreaming `gaussSum_chiC_eq_sum_sq` to Mathlib's `NumberTheory/GaussSum.lean`.
