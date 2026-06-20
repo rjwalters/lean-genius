@@ -185,6 +185,16 @@
       "targetId": "fermat-two-squares",
       "relationship": "related",
       "description": "The factorization of x^2 + y^2 over the Gaussian integers and resulting norm identities are instances of Vieta-type relations for quadratic norms"
+    },
+    {
+      "targetId": "vietas-formulas-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends the coefficient/root relations to Newton's identities, linking power sums pₖ = Σxᵢᵏ to the elementary symmetric polynomials eₖ for 2 and 3 variables, including the cube-sum factorization and the Vieta–Newton bridge from coefficients to power sums."
+    },
+    {
+      "targetId": "vietas-formulas-oq-03",
+      "relationship": "extended-by",
+      "description": "Generalizes Newton's identities to 2, 3, and 4 variables in recursive form pₖ = Σ(−1)^{i−1} eᵢ pₖ₋ᵢ + (−1)^{k−1} k eₖ, plus inversion formulas recovering each eₖ from power sums, with applications to discriminants."
     }
   ],
   "references": [
