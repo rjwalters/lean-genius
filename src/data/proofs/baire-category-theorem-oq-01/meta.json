@@ -1,0 +1,128 @@
+{
+  "id": "baire-category-theorem-oq-01",
+  "slug": "baire-category-theorem-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Topology"
+    ],
+    "namespace": "BaireCategoryTheoremOQ01",
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/BaireCategoryTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Baire Category Theorem and the Uncountability of ℝ",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BaireCategoryTheoremOQ01.lean",
+    "tags": [
+      "topology",
+      "baire-category",
+      "complete-metric-space",
+      "meagre-set",
+      "functional-analysis",
+      "uncountability",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 119,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "baire_dense_iInter: dense-Gδ form of Baire's theorem — in any BaireSpace a countable intersection of dense open sets is dense (re-export of dense_iInter_of_isOpen)",
+      "baire_nonempty_interior: category form — if countably many closed sets cover a nonempty Baire space, one of them has nonempty interior (re-export of nonempty_interior_of_iUnion_of_closed)",
+      "baire_not_iUnion_empty_interior: contrapositive category form absent from Mathlib — a nonempty Baire space is NOT a countable union of closed sets all with empty interior, the precise 'not meagre in itself' statement",
+      "baire_univ_not_meagre: the whole nonempty Baire space is non-meagre (it is not a countable union of nowhere-dense sets), via not_isMeagre_of_isOpen on the universal set",
+      "baireSpace_real: ℝ is a BaireSpace, resolved automatically from BaireSpace.of_completelyPseudoMetrizable (every complete metrizable space is Baire)",
+      "isMeagre_singleton_real: every singleton in ℝ is meagre — it is closed with empty interior (interior_singleton, ℝ has no isolated points), hence nowhere dense",
+      "isMeagre_of_countable_real: every countable subset of ℝ is meagre, written as a countable union of nowhere-dense singletons",
+      "real_uncountable: the classical uncountability of ℝ derived from Baire — a countable ℝ would be meagre in itself, contradicting baire_univ_not_meagre",
+      "real_not_iUnion_singletons: concrete restatement through the category form — ℝ is never the union of countably many singletons ⋃ n, {g n}"
+    ],
+    "prerequisites": [
+      "BaireSpace typeclass and the abstract Baire lemmas in Mathlib.Topology.Baire (dense_iInter_of_isOpen, nonempty_interior_of_iUnion_of_closed, not_isMeagre_of_isOpen)",
+      "BaireSpace.of_completelyPseudoMetrizable: every complete (pseudo)metrizable space, in particular ℝ, is a Baire space",
+      "IsMeagre and IsNowhereDense (Mathlib.Topology.GDelta.Basic), with isMeagre_iff_countable_union_isNowhereDense and IsClosed.isNowhereDense_iff",
+      "interior_singleton: in a space with no isolated points (NeBot (𝓝[≠] x), true for ℝ) a singleton has empty interior"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "dense_iInter_of_isOpen",
+        "description": "Baire's theorem in dense-open form: a countable intersection of dense open sets is dense in any BaireSpace. Re-exported as baire_dense_iInter.",
+        "module": "Mathlib.Topology.Baire.Lemmas"
+      },
+      {
+        "theorem": "nonempty_interior_of_iUnion_of_closed",
+        "description": "Category form: a countable closed cover of a nonempty Baire space has a member with nonempty interior. Re-exported as baire_nonempty_interior and used for baire_not_iUnion_empty_interior.",
+        "module": "Mathlib.Topology.Baire.Lemmas"
+      },
+      {
+        "theorem": "not_isMeagre_of_isOpen",
+        "description": "Every nonempty open set in a Baire space is non-meagre; specialised to the universal set in baire_univ_not_meagre.",
+        "module": "Mathlib.Topology.Baire.Lemmas"
+      },
+      {
+        "theorem": "BaireSpace.of_completelyPseudoMetrizable",
+        "description": "Every complete metrizable space is a Baire space — the instance that makes ℝ a BaireSpace (baireSpace_real).",
+        "module": "Mathlib.Topology.Baire.CompleteMetrizable"
+      },
+      {
+        "theorem": "isMeagre_iff_countable_union_isNowhereDense / IsClosed.isNowhereDense_iff",
+        "description": "Characterise meagre sets as countable unions of nowhere-dense sets, and closed nowhere-dense sets by empty interior — used to show singletons and countable sets in ℝ are meagre.",
+        "module": "Mathlib.Topology.GDelta.Basic"
+      },
+      {
+        "theorem": "interior_singleton",
+        "description": "A singleton has empty interior in a space with no isolated points (NeBot (𝓝[≠] x)); supplies the nowhere-density of points in ℝ.",
+        "module": "Mathlib.Topology.ClusterPt"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "baire-category-theorem-oq-01-oq-01",
+      "question": "Derive the Banach–Steinhaus (uniform boundedness) principle from the category form of Baire's theorem: a pointwise-bounded family of continuous linear maps between Banach spaces is uniformly bounded.",
+      "significance": "high"
+    },
+    {
+      "id": "baire-category-theorem-oq-01-oq-02",
+      "question": "Show that a complete metric space with no isolated points has cardinality at least that of the continuum, sharpening the uncountability of ℝ obtained here.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [],
+  "references": [
+    {
+      "title": "René-Louis Baire, Sur les fonctions de variables réelles",
+      "author": "R. Baire",
+      "year": "1899",
+      "venue": "Annali di Matematica Pura ed Applicata",
+      "description": "Origin of the category theorem, the foundational 'large set' principle for complete metric spaces."
+    },
+    {
+      "title": "Mathlib4: Topology.Baire",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of dense_iInter_of_isOpen, nonempty_interior_of_iUnion_of_closed, not_isMeagre_of_isOpen and the BaireSpace.of_completelyPseudoMetrizable instance re-exported in this entry."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The Baire category theorem states that a complete (pseudo)metric space — more generally any BaireSpace — is 'large': a countable intersection of dense open sets is dense (baire_dense_iInter), and dually a countable closed cover of a nonempty space has a member with nonempty interior (baire_nonempty_interior). This entry re-exports those abstract forms from Mathlib and adds the content the gallery lacked: the contrapositive 'not meagre in itself' statement that a nonempty Baire space is never a countable union of closed sets with empty interior (baire_not_iUnion_empty_interior), the non-meagreness of the whole space (baire_univ_not_meagre), the BaireSpace instance for ℝ (baireSpace_real), and a concrete application chain — singletons in ℝ are meagre (isMeagre_singleton_real), hence every countable subset is meagre (isMeagre_of_countable_real), so ℝ is uncountable (real_uncountable) and is never a countable union of singletons (real_not_iUnion_singletons). 119 lines, 9 theorems, 0 axioms, 0 sorries.",
+    "implications": "The abstract theorem is delegated to Mathlib; the new content is the packaging of its dual forms together with a self-contained Baire proof of the uncountability of ℝ — the textbook 'a perfect complete metric space is uncountable' argument made fully explicit through the meagre/nowhere-dense API. Baire is the engine behind the Banach–Steinhaus, open mapping and closed graph theorems, recorded as the lead open question.",
+    "openQuestions": [
+      "Derive Banach–Steinhaus (uniform boundedness) from the category form.",
+      "Sharpen uncountability to a continuum-cardinality lower bound for perfect complete metric spaces."
+    ]
+  }
+}
