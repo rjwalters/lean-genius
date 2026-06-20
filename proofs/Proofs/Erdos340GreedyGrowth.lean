@@ -234,4 +234,132 @@ theorem greedy_count_ge {n N : ℕ} (hN : 2 * (n + 1) ^ 3 ≤ N) :
   calc n + 1 = (greedySeqSet n).card := (greedySeqSet_card n).symm
     _ ≤ _ := Finset.card_le_card hsub
 
+/- ## Analytic phrasing: the `Ω(N^{1/3})` density lower bound
+
+`greedy_count_ge` is already the rigorous lower-bound direction of Erdős #340, but stated
+as a *discrete* window inequality (`N ≥ 2k³ ⇒ A(N) ≥ k`).  Here we invert it into the
+asymptotic-density form mathematicians recognize: there is a constant `C > 0` with
+`C · N^{1/3} ≤ A(N)` for all `N ≥ 1`, i.e. `A(N) = Ω(N^{1/3})`. -/
+
+/-- **The greedy Sidon counting function** `A(N)` — the number of greedy terms in `[1, N]`.
+We count over the prefix `greedySeqSet N = {a₀, …, a_N}`; since `greedySidonSeq` is strictly
+increasing from `a₀ = 1` we have `k ≤ a_k`, so every greedy term `≤ N` already has index
+`≤ N` and this set is exactly `{k : a_k ≤ N}`. -/
+noncomputable def greedyCount (N : ℕ) : ℕ :=
+  ((Finset.Icc 1 N).filter (fun x => x ∈ greedySeqSet N)).card
+
+/-- `greedySeqSet` is monotone in its index: a longer prefix contains a shorter one. -/
+theorem greedySeqSet_mono {a b : ℕ} (h : a ≤ b) : greedySeqSet a ⊆ greedySeqSet b := by
+  intro x hx
+  rw [greedySeqSet_eq_image, Finset.mem_image] at hx
+  obtain ⟨k, hk, rfl⟩ := hx
+  rw [Finset.mem_range] at hk
+  rw [greedySeqSet_eq_image, Finset.mem_image]
+  exact ⟨k, Finset.mem_range.mpr (by omega), rfl⟩
+
+/-- Cube then cube-root collapses: `(x^{1/3})³ = x` for `x ≥ 0`. -/
+private theorem cube_cubrt {x : ℝ} (hx : 0 ≤ x) : (x ^ ((1:ℝ)/3)) ^ (3:ℕ) = x := by
+  rw [← Real.rpow_natCast (x ^ ((1:ℝ)/3)) 3, ← Real.rpow_mul hx]
+  norm_num
+
+/-- Cube-root then cube collapses: `(y³)^{1/3} = y` for `y ≥ 0`. -/
+private theorem cubrt_cube {y : ℝ} (hy : 0 ≤ y) : (y ^ (3:ℕ)) ^ ((1:ℝ)/3) = y := by
+  rw [← Real.rpow_natCast y 3, ← Real.rpow_mul hy]
+  norm_num
+
+/-- **Analytic `Ω(N^{1/3})` lower bound for the greedy Sidon counting function.**
+There is a constant `C > 0` with `C · N^{1/3} ≤ A(N)` for every `N ≥ 1`, where `A(N)` is the
+number of greedy terms in `[1, N]` (`greedyCount`).
+
+This is the asymptotic-density phrasing of the discrete bound `greedy_count_ge`
+(`N ≥ 2k³ ⇒ A(N) ≥ k`).  Inverting the cubic window with `k = ⌊(N/2)^{1/3}⌋` gives
+`2k³ ≤ N` (so `A(N) ≥ k`) and, by maximality, `N < 16k³` (so `k > 16^{-1/3}·N^{1/3}`); hence
+`C = 16^{-1/3}` works.  Crucially the constant is uniform — the `1/3`→`1/2` exponent
+improvement remains the OPEN part of Erdős #340 and is *not* addressed here. -/
+theorem greedy_count_omega_cubrt :
+    ∃ C : ℝ, 0 < C ∧ ∀ N : ℕ, 0 < N → C * (N : ℝ) ^ ((1:ℝ)/3) ≤ (greedyCount N : ℝ) := by
+  refine ⟨(1/16 : ℝ) ^ ((1:ℝ)/3), Real.rpow_pos_of_pos (by norm_num) _, ?_⟩
+  intro N hN
+  set m : ℕ := ⌊((N:ℝ)/2) ^ ((1:ℝ)/3)⌋₊ with hm
+  have hbase : (0:ℝ) ≤ (N:ℝ)/2 := by positivity
+  have hfloor_le : (m:ℝ) ≤ ((N:ℝ)/2) ^ ((1:ℝ)/3) := Nat.floor_le (by positivity)
+  have hlt_floor : ((N:ℝ)/2) ^ ((1:ℝ)/3) < m + 1 := Nat.lt_floor_add_one _
+  -- `1 = a₀` is always counted, so `A(N) ≥ 1`.
+  have h10 : (1:ℕ) ∈ greedySeqSet 0 := greedySidonSeq_mem 0
+  have h1mem : (1:ℕ) ∈ (Finset.Icc 1 N).filter (fun x => x ∈ greedySeqSet N) := by
+    rw [Finset.mem_filter, Finset.mem_Icc]
+    exact ⟨⟨le_refl 1, hN⟩, greedySeqSet_mono (Nat.zero_le N) h10⟩
+  have hge1 : 1 ≤ greedyCount N := by
+    rw [greedyCount]; exact Finset.card_pos.mpr ⟨1, h1mem⟩
+  by_cases hm0 : m = 0
+  · -- small-`N` region: `m = 0 ⇔ N = 1`, handled by `A(1) ≥ 1 ≥ C`.
+    have hNlt2 : N < 2 := by
+      by_contra hcon
+      push_neg at hcon
+      have h1le : (1:ℝ) ≤ (N:ℝ)/2 := by
+        have : (2:ℝ) ≤ N := by exact_mod_cast hcon
+        linarith
+      have hge : (1:ℝ) ≤ ((N:ℝ)/2) ^ ((1:ℝ)/3) := by
+        calc (1:ℝ) = (1:ℝ) ^ ((1:ℝ)/3) := (Real.one_rpow _).symm
+          _ ≤ ((N:ℝ)/2) ^ ((1:ℝ)/3) := by gcongr
+      have : 1 ≤ m := by rw [hm]; exact Nat.le_floor (by exact_mod_cast hge)
+      omega
+    interval_cases N
+    · have e1 : ((1:ℕ):ℝ) ^ ((1:ℝ)/3) = 1 := by rw [Nat.cast_one, Real.one_rpow]
+      rw [e1, mul_one]
+      have hC1 : (1/16:ℝ) ^ ((1:ℝ)/3) ≤ 1 :=
+        Real.rpow_le_one (by norm_num) (by norm_num) (by norm_num)
+      have hgc : (1:ℝ) ≤ (greedyCount 1 : ℝ) := by exact_mod_cast hge1
+      linarith
+  · -- main region `m ≥ 1`.
+    have hm1 : 1 ≤ m := Nat.one_le_iff_ne_zero.mpr hm0
+    -- `2m³ ≤ N` from `m ≤ (N/2)^{1/3}`.
+    have hcube_le : (m:ℝ)^3 ≤ (N:ℝ)/2 := by
+      have hstep : (m:ℝ)^3 ≤ (((N:ℝ)/2) ^ ((1:ℝ)/3))^(3:ℕ) := by gcongr
+      rwa [cube_cubrt hbase] at hstep
+    have h2m3 : 2 * m^3 ≤ N := by
+      have hr : (2:ℝ) * (m:ℝ)^3 ≤ (N:ℝ) := by linarith
+      exact_mod_cast hr
+    -- `A(N) ≥ m`, via `greedy_count_ge` at `n = m-1` lifted along the prefix chain.
+    have hmN : m - 1 ≤ N := by
+      have h1 : m ≤ m^3 := Nat.le_self_pow (by norm_num) m
+      omega
+    have hmcount : m ≤ greedyCount N := by
+      have hkey := greedy_count_ge (n := m - 1) (N := N) (by
+        rw [show (m-1)+1 = m from by omega]; exact h2m3)
+      rw [show (m-1)+1 = m from by omega] at hkey
+      have hsub : greedySeqSet (m-1) ⊆ greedySeqSet N := greedySeqSet_mono hmN
+      have hfsub : ((Finset.Icc 1 N).filter (fun x => x ∈ greedySeqSet (m-1)))
+          ⊆ ((Finset.Icc 1 N).filter (fun x => x ∈ greedySeqSet N)) := by
+        intro x hx
+        rw [Finset.mem_filter] at hx ⊢
+        exact ⟨hx.1, hsub hx.2⟩
+      calc m ≤ ((Finset.Icc 1 N).filter (fun x => x ∈ greedySeqSet (m-1))).card := hkey
+        _ ≤ ((Finset.Icc 1 N).filter (fun x => x ∈ greedySeqSet N)).card :=
+            Finset.card_le_card hfsub
+        _ = greedyCount N := rfl
+    -- `N < 16m³` from maximality of the floor `(N/2)^{1/3} < m+1 ≤ 2m`.
+    have hlt : ((N:ℝ)/2) ^ ((1:ℝ)/3) < 2 * (m:ℝ) := by
+      have h2m : (m:ℝ) + 1 ≤ 2 * m := by
+        have : (1:ℝ) ≤ m := by exact_mod_cast hm1
+        linarith
+      linarith [hlt_floor]
+    have hcube : (N:ℝ)/2 < (2*(m:ℝ))^(3:ℕ) := by
+      have hstep : (((N:ℝ)/2) ^ ((1:ℝ)/3))^(3:ℕ) < (2*(m:ℝ))^(3:ℕ) := by gcongr
+      rwa [cube_cubrt hbase] at hstep
+    have hN16 : (N:ℝ) ≤ 16 * (m:ℝ)^3 := by
+      have hexp : (2*(m:ℝ))^(3:ℕ) = 8 * (m:ℝ)^3 := by ring
+      rw [hexp] at hcube; linarith
+    -- combine: `C·N^{1/3} = (N/16)^{1/3} ≤ (m³)^{1/3} = m ≤ A(N)`.
+    have hmul : (1/16:ℝ) ^ ((1:ℝ)/3) * (N:ℝ) ^ ((1:ℝ)/3) = ((N:ℝ)/16) ^ ((1:ℝ)/3) := by
+      rw [← Real.mul_rpow (by norm_num) (by positivity)]
+      congr 1; ring
+    have hle : (N:ℝ)/16 ≤ (m:ℝ)^3 := by linarith
+    have hfin : (1/16:ℝ) ^ ((1:ℝ)/3) * (N:ℝ) ^ ((1:ℝ)/3) ≤ (m:ℝ) := by
+      rw [hmul]
+      calc ((N:ℝ)/16) ^ ((1:ℝ)/3) ≤ ((m:ℝ)^3) ^ ((1:ℝ)/3) := by gcongr
+        _ = m := cubrt_cube (by positivity)
+    have hmR : (m:ℝ) ≤ (greedyCount N : ℝ) := by exact_mod_cast hmcount
+    linarith
+
 end Erdos340

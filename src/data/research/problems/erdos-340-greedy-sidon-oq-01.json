@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (verified, 0-axiom): the KNOWN N^(1/3) lower-bound direction of Erdős #340 is now complete in BOTH discrete (greedy_count_ge) and analytic rpow (greedyCount_rpow_lower: ∃C>0, C·N^(1/3)≤A(N), C=2^(-4/3)) form. The cubic growth bound aₙ≤(n+1)+(n+1)³ drives both. The 1/3→1/2 improvement remains OPEN.",
+    "progressSummary": "PROGRESS (verified, 0-axiom): the known direction of Erdős #340 now carries BOTH its discrete (greedy_count_ge) and analytic-density (greedy_count_omega_cubrt: ∃C>0, C·N^(1/3) ≤ A(N), uniform C) phrasings. Remaining: two parent axioms (def-bridge greedy_sidon_lower_bound; Erdős–Turán upper bound) and the OPEN 1/3→1/2 exponent improvement.",
     "builtItems": [
       "Turnkey BUILD-PENDING draft: research/problems/erdos-340-greedy-sidon-oq-01/construction-draft.lean — forbidden set + forbidden_card_le (≤|A|^3) + forbidden_mono with real proofs; crux/existence/gSet recursion/covering/inversion/parent-axiom-rebuild as structured statements with sorry+precise proof comments. Only mem_forbidden_of_not_sidon_insert is genuinely technical (Aristotle target); rest is induction+omega+card arithmetic.",
       "PR #24965 (research label): corrected parent inline sketch O(n^2)→O(n^3) with covering argument + the 1/3-vs-1/2 OPEN-conjecture distinction. Comment-only, build-neutral.",
@@ -40,7 +40,10 @@
       "Erdos340GreedyGrowth.lean supporting verified lemmas: forbidden (def) + forbidden_card_le (≤ |A|³) + forbidden_mono + not_sidon_insert_forbidden (crux) + greedy_covering (induction) + greedy_skip_not_sidon (Nat.find minimality) + greedySeqSet_card/greedySeqSet_le/greedySeqSet_subset_Icc/greedySidonSeq_le_two_mul_cubic/one_le_greedySidonSeq.",
       "greedyCount (Erdos340GreedyRpowBound.lean): index-based counting function A(N)=#{k:aₖ≤N}, with greedyCount_ge_index (2(n+1)³≤N ⟹ n+1≤A(N)) and one_le_greedyCount",
       "lt_two_mul_succ_cube (Erdos340GreedyRpowBound.lean): N<2(A(N)+1)³ — contrapositive inversion turning the cubic upper bound on values into a lower bound on the count",
-      "greedyCount_rpow_lower (Erdos340GreedyRpowBound.lean): ∃C>0 ∀N>0, C·N^(1/3)≤A(N) with explicit C=2^(-4/3) — the analytic rpow form of the known N^(1/3) lower bound, 0-axiom"
+      "greedyCount_rpow_lower (Erdos340GreedyRpowBound.lean): ∃C>0 ∀N>0, C·N^(1/3)≤A(N) with explicit C=2^(-4/3) — the analytic rpow form of the known N^(1/3) lower bound, 0-axiom",
+      "greedyCount (Erdos340GreedyGrowth.lean): the greedy Sidon counting function A(N) = #{greedy terms in [1,N]}, counted over the prefix greedySeqSet N (justified since k ≤ a_k).",
+      "greedy_count_omega_cubrt (Erdos340GreedyGrowth.lean): the analytic Ω(N^(1/3)) density bound ∃C>0, ∀N≥1, C·N^(1/3) ≤ A(N), with explicit uniform C = 16^(-1/3); the asymptotic-density phrasing of the discrete greedy_count_ge (verified, 0-axiom).",
+      "greedySeqSet_mono + cube_cubrt/cubrt_cube helpers (Erdos340GreedyGrowth.lean): prefix monotonicity and the (x^(1/3))^3 = x collapses used in the inversion."
     ],
     "insights": [
       "StrictMono + IsSidon do NOT imply N^(1/3) growth: counterexample a_n=2^n is Sidon, strictly increasing, but counting function is only log2(N). So the growth axiom is independent of the other three greedySidonSeq axioms and unprovable for the opaque object.",
@@ -53,7 +56,8 @@
       "The global covering is cleanest as plain induction on n of: ∀ p∈[1,aₙ], p ∈ Aₙ ∨ p ∈ forbidden(Aₙ). The min-index / skipped-value bookkeeping is handled automatically by the successor case: p≤aₙ → IH + monotone lift; p=a_{n+1} → ∈A; aₙ<p<a_{n+1} → skipped, so Nat.find_min gives ¬IsSidon(insert p Aₙ) → forbidden.",
       "Defeq facts that make it go through: greedySeqSet (n+1) = insert (greedySidonSeq (n+1)) (greedySeqSet n) by rfl, and greedySidonSeq (n+1) = nextSidon (greedySeqSet n) (greedySidonSeq n) by rfl — the latter exposes Nat.find for the minimality argument.",
       "The analytic rpow lower bound needs NO floor/cube-root inversion: from N<2(A+1)³ and A≥1 ⟹ N<16A³, then a single rpow(1/3) (monotone) with Real.pow_rpow_inv_natCast gives N^(1/3)≤2^(4/3)·A directly — explicit constant C=2^(-4/3).",
-      "Real.pow_rpow_inv_natCast (hx:0≤x)(hn:n≠0):(x^n)^(n⁻¹:ℝ)=x is the clean cube-root tool; rewrite (1/3)=((3:ℕ):ℝ)⁻¹ by norm_num to match. Packaging B=2^(4/3)·A with B³=16A³ avoids mul_rpow gymnastics on 16."
+      "Real.pow_rpow_inv_natCast (hx:0≤x)(hn:n≠0):(x^n)^(n⁻¹:ℝ)=x is the clean cube-root tool; rewrite (1/3)=((3:ℕ):ℝ)⁻¹ by norm_num to match. Packaging B=2^(4/3)·A with B³=16A³ avoids mul_rpow gymnastics on 16.",
+      "The analytic Ω(N^(1/3)) form is obtained from the discrete window bound by inverting at m = ⌊(N/2)^(1/3)⌋: Nat.floor_le gives 2m³ ≤ N (so A(N) ≥ m via greedy_count_ge lifted along the prefix chain greedySeqSet_mono), and maximality (Nat.lt_floor_add_one with m+1 ≤ 2m) gives N < 16m³ (so m > 16^(-1/3)·N^(1/3)). The constant is UNIFORM — no per-N tuning. rpow is kept out of the proof core: both floor bounds are cubed to ℕ-power inequalities and the cube root is applied exactly once at the end (cube_cubrt/cubrt_cube)."
     ],
     "mathlibGaps": [
       "No foundational Mathlib gap: the N^(1/3) bound is elementary Finset/Nat counting on top of the parents IsSidon API. Blocker is the missing local greedy construction, not Mathlib."
