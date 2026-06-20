@@ -1,0 +1,159 @@
+{
+  "id": "nakayama-lemma-oq-01",
+  "title": "Nakayama's Lemma: the local-ring forms and lifting of generators",
+  "slug": "nakayama-lemma-oq-01",
+  "description": "Mathlib proves the general Jacobson-radical statements of Nakayama's lemma (Stacks 00DV (2), (4), (8)) but states none of them for the maximal ideal of a local ring — the form every commutative-algebra course actually quotes. This entry derives the textbook local-ring specializations: a finitely generated submodule N with N ≤ 𝔪·N vanishes; a finitely generated module with 𝔪·M = M is zero (equivalently, a nonzero one has 𝔪·M ≠ M); and the generators corollary, that elements generating N modulo 𝔪N already generate N — the statement used to lift a basis of the residue vector space M/𝔪M to a generating set of M.",
+  "meta": {
+    "author": "Tadashi Nakayama / Wolfgang Krull / Azumaya (1951); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NakayamaLemmaOQ01.lean",
+    "tags": [
+      "algebra",
+      "commutative-algebra",
+      "module-theory",
+      "local-ring",
+      "nakayama",
+      "jacobson-radical",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Submodule.eq_bot_of_le_smul_of_le_jacobson_bot",
+        "description": "Nakayama's lemma, Jacobson form (Stacks 00DV (2)): a finitely generated submodule N with N ≤ I•N and I ≤ jacobson ⊥ is the zero submodule",
+        "module": "Mathlib.RingTheory.Nakayama"
+      },
+      {
+        "theorem": "Submodule.le_of_le_smul_of_le_jacobson_bot",
+        "description": "Nakayama's lemma, statement (4) form: if N' is finitely generated, I ≤ jacobson ⊥, and N' ≤ N ⊔ I•N', then N' ≤ N — the engine behind the generators corollary",
+        "module": "Mathlib.RingTheory.Nakayama"
+      },
+      {
+        "theorem": "IsLocalRing.maximalIdeal_le_jacobson",
+        "description": "In a local ring the maximal ideal is contained in the Jacobson radical of every ideal; specialized to ⊥ it gives 𝔪 ≤ jacobson ⊥, the bridge from the Jacobson forms to the local-ring forms",
+        "module": "Mathlib.RingTheory.LocalRing.MaximalIdeal.Basic"
+      },
+      {
+        "theorem": "Module.Finite.fg_top",
+        "description": "A finite module has finitely generated top submodule: (⊤ : Submodule R M).FG; supplies the finite-generation hypothesis for the whole-module forms",
+        "module": "Mathlib.RingTheory.Finiteness.Defs"
+      }
+    ],
+    "originalContributions": [
+      "nakayama_jacobson: the Jacobson-form headline (Stacks 00DV (2)) restated as the baseline for the local specializations",
+      "nakayama_local: the textbook local-ring form — over a local ring, a finitely generated submodule N with N ≤ 𝔪·N vanishes; derived from the Jacobson form via 𝔪 ≤ jacobson ⊥, a specialization Mathlib does not state",
+      "nakayama_local_top: the vanishing form — a finitely generated module with 𝔪·M = M is the zero module (Subsingleton M)",
+      "nakayama_local_top_ne: the nonvanishing form — a nonzero finitely generated module satisfies 𝔪·M ≠ M, so the cotangent space M/𝔪M is itself nonzero",
+      "nakayama_generators: the generators corollary — over a local ring, N ≤ span t ⊔ 𝔪·N forces N ≤ span t; generators modulo 𝔪N are generators of N",
+      "nakayama_span_of_span_quotient: lifting a generating set — for finite M, a set spanning M modulo 𝔪M spans M, the source of 'minimal number of generators = dim_{R/𝔪} M/𝔪M'"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 115,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Nakayama's lemma — independently due to Krull, Azumaya, and Nakayama around 1950 — is the single most-used technical tool in commutative algebra and algebraic geometry. Its archetypal statement is for a local ring (R, 𝔪): a finitely generated module M with 𝔪M = M must be zero. The lemma underlies the theory of minimal generators (their number equals dim_{R/𝔪} M/𝔪M), the behaviour of coherent sheaves near a point, and countless descent and lifting arguments. The general form, valid for the Jacobson radical of any ring, is the version Mathlib records following the Stacks Project (tag 00DV).",
+    "problemStatement": "Mathlib's `RingTheory/Nakayama.lean` proves the Jacobson-radical statements of the lemma (Stacks 00DV (2), (4), (8)) for an arbitrary commutative ring, but states none of them for the maximal ideal of a local ring, and provides no ready-made 'generators lift from M/𝔪M' corollary. Can the textbook local-ring forms — the ones actually quoted in practice — be derived cleanly from the Jacobson statements?\n\n**Answer:** Yes. Because 𝔪 ≤ jacobson ⊥ in a local ring (`IsLocalRing.maximalIdeal_le_jacobson`), each Jacobson form specializes directly to its local counterpart, and the generators corollary falls out of statement (4).",
+    "text": "The local-ring forms of Nakayama's lemma (N ≤ 𝔪N ⟹ N = 0; 𝔪M = M ⟹ M = 0; generators modulo 𝔪N generate N; a set spanning M/𝔪M spans M) are derived from Mathlib's general Jacobson-radical statements via 𝔪 ≤ jacobson ⊥, verified in Lean with no axioms.",
+    "proofStrategy": "1. nakayama_jacobson: restate Mathlib's `eq_bot_of_le_smul_of_le_jacobson_bot` as the baseline.\n2. nakayama_local: apply the Jacobson form with I = 𝔪, discharging I ≤ jacobson ⊥ by `IsLocalRing.maximalIdeal_le_jacobson ⊥`.\n3. nakayama_local_top: apply nakayama_local to N = ⊤ with `Module.Finite.fg_top`; from ⊤ = ⊥ every pair of elements lies in ⊥, hence equals 0, giving Subsingleton M.\n4. nakayama_local_top_ne: contrapositive of (3) — 𝔪·⊤ = ⊤ would force Subsingleton M, contradicting Nontrivial M via `not_subsingleton`.\n5. nakayama_generators: apply `le_of_le_smul_of_le_jacobson_bot` with N' = N, the ambient submodule = span t, I = 𝔪.\n6. nakayama_span_of_span_quotient: specialize (5) to N = ⊤ (finite M) and read span t = ⊤ off `top_le_iff`.",
+    "keyInsights": [
+      "**One bridge lemma does all the work**: every local-ring form is its Jacobson counterpart composed with the single inclusion 𝔪 ≤ jacobson ⊥ (`IsLocalRing.maximalIdeal_le_jacobson`). The mathematical content lives in Mathlib's Jacobson statements; the contribution is exhibiting the textbook forms as their immediate specializations.",
+      "**The vanishing form needs a type-level translation**: Nakayama outputs the submodule equation ⊤ = ⊥, but the quotable statement is Subsingleton M. The two are bridged elementarily — membership in ⊥ pins every element to 0.",
+      "**Generators corollary = statement (4), not (2)**: lifting generators is governed by `le_of_le_smul_of_le_jacobson_bot` (the sup/comparison form), with the candidate submodule taken to be span t; statement (2) alone does not see the generating set.",
+      "**Why M/𝔪M controls generation**: `nakayama_span_of_span_quotient` is the precise sense in which the residue vector space M/𝔪M determines M's generators — a set spanning the quotient spans the whole module, so dim_{R/𝔪} M/𝔪M bounds (in fact equals, for a minimal set) the number of generators."
+    ],
+    "prerequisites": [
+      "Commutative rings, ideals, and modules; finitely generated submodules",
+      "Local rings and their unique maximal ideal 𝔪",
+      "The Jacobson radical and the inclusion 𝔪 ≤ jacobson ⊥ for local rings",
+      "Quotient modules and the residue field R/𝔪"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Statement",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "File-level docstring framing the gap: Mathlib proves the Jacobson-radical Nakayama statements but not the local-ring forms practitioners quote. Lists the five derived forms and their relation to Mathlib. Imports `RingTheory.Nakayama` and the local-ring maximal-ideal API.",
+      "mathContext": "Nakayama's lemma over a local ring (R, 𝔪) and its corollaries about generators."
+    },
+    {
+      "id": "jacobson-baseline",
+      "title": "The Jacobson-Form Baseline",
+      "startLine": 58,
+      "endLine": 70,
+      "summary": "nakayama_jacobson restates Mathlib's `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot` (Stacks 00DV (2)): a finitely generated N with N ≤ I•N and I ≤ jacobson ⊥ is ⊥. This is the engine specialized below.",
+      "mathContext": "General Jacobson-radical Nakayama for an arbitrary commutative ring."
+    },
+    {
+      "id": "local-forms",
+      "title": "The Local-Ring Forms",
+      "startLine": 72,
+      "endLine": 97,
+      "summary": "Under [IsLocalRing R]: nakayama_local (N ≤ 𝔪·N ⟹ N = ⊥, via 𝔪 ≤ jacobson ⊥); nakayama_local_top (finite M with M ≤ 𝔪·M is Subsingleton, translating ⊤ = ⊥ to a type-level triviality); nakayama_local_top_ne (the contrapositive: nonzero finite M has 𝔪·M ≠ M).",
+      "mathContext": "Textbook local Nakayama: 𝔪M = M ⟹ M = 0, and M/𝔪M ≠ 0 for M ≠ 0 finitely generated."
+    },
+    {
+      "id": "generators",
+      "title": "Generators and Lifting from M/𝔪M",
+      "startLine": 99,
+      "endLine": 115,
+      "summary": "nakayama_generators: over a local ring, N ≤ span t ⊔ 𝔪·N forces N ≤ span t (generators modulo 𝔪N generate N), from `le_of_le_smul_of_le_jacobson_bot`. nakayama_span_of_span_quotient: for finite M, a set spanning M modulo 𝔪M spans M — lifting a residue-field basis to a generating set.",
+      "mathContext": "Minimal generators of M correspond to a basis of the R/𝔪-vector space M/𝔪M."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Atiyah, Michael F.; Macdonald, Ian G.",
+      "title": "Introduction to Commutative Algebra",
+      "year": "1969",
+      "note": "Proposition 2.6 and Corollary 2.7 (Nakayama's lemma and its generators corollary over a local ring)"
+    },
+    {
+      "authors": "The Stacks Project Authors",
+      "title": "Stacks Project, Tag 00DV (Nakayama's Lemma)",
+      "year": "2024",
+      "note": "The Jacobson-radical statements (2), (4), (8) formalized in Mathlib and specialized here"
+    },
+    {
+      "authors": "Matsumura, Hideyuki",
+      "title": "Commutative Ring Theory",
+      "year": "1986",
+      "note": "Theorem 2.2 and the role of M/𝔪M in counting minimal generators"
+    }
+  ],
+  "crossReferences": [],
+  "conclusion": {
+    "summary": "The textbook local-ring forms of Nakayama's lemma — N ≤ 𝔪·N ⟹ N = 0 (nakayama_local), 𝔪·M = M ⟹ M = 0 (nakayama_local_top), the nonvanishing 𝔪·M ≠ M (nakayama_local_top_ne), the generators corollary (nakayama_generators), and the lifting of a generating set from M/𝔪M (nakayama_span_of_span_quotient) — are derived from Mathlib's general Jacobson-radical statements through the single inclusion 𝔪 ≤ jacobson ⊥. All results are verified with 0 axioms and 0 sorries.",
+    "implications": "Supplies the commutative-algebra-course versions of Nakayama's lemma that Mathlib's general Jacobson formulation leaves implicit, including the precise sense in which the residue vector space M/𝔪M governs the generators of M.",
+    "openQuestions": [
+      "Can the minimal-generator count itself be formalized — that the least cardinality of a generating set of a finite module over a local ring equals dim_{R/𝔪} M/𝔪M — building on nakayama_span_of_span_quotient?",
+      "Does the graded analogue (a graded Nakayama lemma over a graded ring with irrelevant ideal in place of 𝔪) follow from the same Jacobson machinery?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Nakayama",
+      "Mathlib.RingTheory.LocalRing.MaximalIdeal.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Submodule",
+      "IsLocalRing"
+    ],
+    "namespace": "NakayamaLemma",
+    "lineCount": 115,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/NakayamaLemmaOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
