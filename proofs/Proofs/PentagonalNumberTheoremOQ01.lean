@@ -35,6 +35,10 @@
   - `pentSeriesCoeff`        — the RHS coefficient `[Xⁿ] ∑ₖ(-1)ᵏ X^{g(k)}`, well
                                defined by injectivity; supported on the pentagonal
                                numbers, value `(-1)ᵏ` at `g(k)`, everywhere `0`/`±1`
+  - `genFun_pent_eq_tprod`   — both ends of Euler's identity via Mathlib's `genFun`:
+                               the PRODUCT side `genFun pentChar = ∏_{m≥1}(1 - Xᵐ)`
+  - `coeff_genFun_pent`      — the COEFFICIENT side `[Xⁿ] genFun pentChar =
+                               ∑_{p∈distincts n}(-1)^{#parts} = p_even(n)-p_odd(n)`
   - concrete values `g(0..±4) = 0,1,2,5,7,12,15,22,26` matching the OEIS A001318.
 -/
 
@@ -304,6 +308,7 @@ in a recurrence pair carry the same `(-1)ᵏ`), since `|-k| = |k|`. -/
 @[simp] theorem pentSign_neg (k : ℤ) : pentSign (-k) = pentSign k := by
   unfold pentSign; rw [Int.natAbs_neg]
 
+open Classical in
 /-- **The coefficient of `Xⁿ` in `∑_{k∈ℤ} (-1)ᵏ X^{g(k)}`.**  If `n` is a
 generalized pentagonal number it equals `pentSign k` for the unique index `k` with
 `g(k) = n`; otherwise it is `0`.  Well-defined by `genPent_injective`. -/
@@ -362,6 +367,86 @@ theorem pentSeriesCoeff_one : pentSeriesCoeff 1 = -1 := by
   rw [genPent_one] at h
   rw [h]; rfl
 
+/-! ## Part 6: The Mathlib power-series bridges (both ends of Euler's identity)
+
+Mathlib's 2025 `Combinatorics.Enumerative.Partition.GenFun` (Weiyi Wang) supplies
+the partition generating function `Nat.Partition.genFun f : R⟦X⟧` with the proved
+product form `genFun_eq_tprod` and coefficient formula `coeff_genFun`.  We
+instantiate the **Euler character** `f i c = if c = 1 then (-1 : ℤ) else 0` and
+recover BOTH ends of Euler's pentagonal identity as fully machine-checked facts:
+
+* `genFun_pent_eq_tprod` — the PRODUCT side `∏_{m≥1}(1 - Xᵐ)` (each inner factor
+  collapses to `1 - X^{i+1}` because the character is supported on multiplicity `1`);
+* `coeff_genFun_pent`     — the COEFFICIENT side `∑_{p∈distincts n}(-1)^{#parts}`,
+  i.e. `p_even(n) - p_odd(n)` (a partition with a repeated part has a `0` factor and
+  drops out; a distinct-part partition contributes `(-1)^{#parts}`).
+
+With both ends now verified here, the entire pentagonal number theorem collapses to
+the single identity `∑_{p∈distincts n}(-1)^{#parts} = pentSeriesCoeff (n : ℤ)` —
+Franklin's involution — recorded in the OPEN CORE note below. -/
+
+section Bridges
+
+open PowerSeries Finset
+open scoped PowerSeries.WithPiTopology
+
+/-- The Euler character driving `∏(1-Xⁿ)`: weight `-1` on a part used exactly once,
+`0` on any part used more than once. -/
+private def pentChar : ℕ → ℕ → ℤ := fun _ c => if c = 1 then (-1 : ℤ) else 0
+
+/-- **Product side of Euler's identity (free from Mathlib's `genFun`).**  With the
+Euler character, Mathlib's partition generating function is exactly Euler's product
+`∏_{m≥1}(1 - Xᵐ)`. -/
+theorem genFun_pent_eq_tprod :
+    Nat.Partition.genFun pentChar = ∏' i : ℕ, (1 - (X : ℤ⟦X⟧) ^ (i + 1)) := by
+  rw [Nat.Partition.genFun_eq_tprod]
+  refine tprod_congr (fun i => ?_)
+  have hsingle :
+      (∑' j : ℕ, pentChar (i + 1) (j + 1) • (X : ℤ⟦X⟧) ^ ((i + 1) * (j + 1)))
+        = -(X : ℤ⟦X⟧) ^ (i + 1) := by
+    rw [tsum_eq_single 0]
+    · simp [pentChar]
+    · intro b hb
+      simp only [pentChar]
+      rw [if_neg (show ¬ (b + 1 = 1) by omega), zero_smul]
+  rw [hsingle]; ring
+
+/-- **Coefficient side of Euler's identity.**  The `n`-th coefficient of the same
+generating function is the signed count of partitions of `n` into distinct parts,
+`∑_{p∈distincts n}(-1)^{#parts} = p_even(n) - p_odd(n)`. -/
+theorem coeff_genFun_pent (n : ℕ) :
+    (Nat.Partition.genFun pentChar).coeff n
+      = ∑ p ∈ Nat.Partition.distincts n, (-1 : ℤ) ^ p.parts.card := by
+  rw [Nat.Partition.coeff_genFun]
+  -- A distinct-part partition contributes `(-1)^{#parts}`...
+  have hdist : ∀ p : n.Partition, p.parts.Nodup →
+      p.parts.toFinsupp.prod pentChar = (-1 : ℤ) ^ p.parts.card := by
+    intro p hp
+    simp only [Finsupp.prod, Multiset.toFinsupp_support]
+    have hval : ∀ a ∈ p.parts.toFinset, pentChar a (p.parts.toFinsupp a) = (-1 : ℤ) := by
+      intro a ha
+      have hcount : p.parts.count a = 1 :=
+        Multiset.count_eq_one_of_mem hp (Multiset.mem_toFinset.mp ha)
+      simp [pentChar, Multiset.toFinsupp_apply, hcount]
+    rw [Finset.prod_congr rfl hval, Finset.prod_const,
+      Multiset.toFinset_card_of_nodup hp]
+  -- ...while a partition with a repeated part has a `0` factor and drops out.
+  have hnodup : ∀ p : n.Partition, ¬ p.parts.Nodup →
+      p.parts.toFinsupp.prod pentChar = 0 := by
+    intro p hp
+    simp only [Finsupp.prod, Multiset.toFinsupp_support]
+    rw [Multiset.nodup_iff_count_eq_one] at hp
+    push_neg at hp
+    obtain ⟨a, ha_mem, ha_count⟩ := hp
+    refine Finset.prod_eq_zero (Multiset.mem_toFinset.mpr ha_mem) ?_
+    simp [pentChar, Multiset.toFinsupp_apply, ha_count]
+  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun p => p.parts.Nodup)]
+  rw [Finset.sum_eq_zero (fun p hp => hnodup p (Finset.mem_filter.mp hp).2), add_zero,
+    Nat.Partition.distincts]
+  exact Finset.sum_congr rfl (fun p hp => hdist p (Finset.mem_filter.mp hp).2)
+
+end Bridges
+
 /-! ## OPEN CORE (not formalized here) — sharply reduced by Mathlib's `Partition.genFun`
 
 The deep content of the pentagonal number theorem is the *identity*
@@ -374,11 +459,11 @@ where `p_even`/`p_odd` count partitions of `n` into an even/odd number of
 on partitions into distinct parts, whose only fixed points are the staircase
 partitions of generalized pentagonal numbers.
 
-**UPDATE (Session 5, 2026-06-19): the formal-power-series scaffolding now EXISTS in
-Mathlib** (it did not when the paragraph below was first written).
-`Mathlib.Combinatorics.Enumerative.Partition.GenFun` (Weiyi Wang, 2025) defines the
-partition generating function `Nat.Partition.genFun f : R⟦X⟧` with the *proved*
-product form
+**UPDATE (Session 6, 2026-06-19): both ends of Euler's identity are now MACHINE-
+CHECKED in this file** (Part 6 above), building on Mathlib's 2025
+`Mathlib.Combinatorics.Enumerative.Partition.GenFun` (Weiyi Wang).  That module
+defines the partition generating function `Nat.Partition.genFun f : R⟦X⟧` with the
+proved product form
 
     `genFun_eq_tprod : genFun f = ∏' i, (1 + ∑' j, f (i+1) (j+1) • X^((i+1)*(j+1)))`
 
@@ -386,20 +471,17 @@ and coefficient formula
 
     `coeff_genFun : (genFun f).coeff n = ∑ p : n.Partition, p.parts.toFinsupp.prod f`,
 
-while `Partition.Basic` supplies `distincts n` / `odds n` and `Partition.Glaisher`
-the companion product identities (`powerSeriesMk_card_restricted_eq_tprod`,
-`card_odds_eq_card_distincts`).  Instantiating the character
-`f i c = if c = 1 then (-1 : ℤ) else 0` makes each inner term `1 - X^{i+1}`, so
+while `Partition.Basic` supplies `distincts n` / `odds n`.  Instantiating the
+character `pentChar i c = if c = 1 then (-1 : ℤ) else 0`, Part 6 proves
 
-    `genFun (fun i c => if c = 1 then (-1 : ℤ) else 0) = ∏_{m≥1} (1 - Xᵐ)`        (PRODUCT side)
+    `genFun_pent_eq_tprod : genFun pentChar = ∏_{m≥1} (1 - Xᵐ)`                   (PRODUCT side)
+    `coeff_genFun_pent : (genFun pentChar).coeff n
+                            = ∑_{p ∈ distincts n} (-1)^{p.parts.card}`           (COEFFICIENT side)
 
-is now free from Mathlib, and `coeff_genFun` evaluates the SAME series' `n`-th
-coefficient to `∑_{p : n.Partition} ∏_i f(i, #i) = ∑_{p ∈ distincts n} (-1)^{p.parts.card}`
-(the weight is `0` on any partition with a repeated part and `(-1)^{#parts}` on a
-distinct-part partition) — exactly `p_even(n) - p_odd(n)`.
+— the second being exactly `p_even(n) - p_odd(n)`.
 
-Hence both the product `∏(1-Xⁿ)` AND its combinatorial coefficient are already
-available; the ENTIRE remaining open core collapses to the single identity
+Hence both the product `∏(1-Xⁿ)` AND its combinatorial coefficient are now verified
+here; the ENTIRE remaining open core collapses to the single identity
 
     `∑_{p ∈ distincts n} (-1)^{p.parts.card} = pentSeriesCoeff (n : ℤ)`           (FRANKLIN)
 
