@@ -1,0 +1,106 @@
+{
+  "id": "basel-problem-oq-10",
+  "slug": "basel-problem-oq-10",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "BigOperators",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "BaselOQ10",
+    "lineCount": 93,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/BaselProblemOQ10.lean",
+    "sorries": 0
+  },
+  "title": "Leibniz's Series for π — and Why It Is Only Conditional",
+  "description": "The Leibniz–Madhava–Gregory series 1 − 1/3 + 1/5 − 1/7 + ⋯ converges to π/4, but only as an ordered limit of partial sums. The series is conditionally (not absolutely) convergent, so its Mathlib tsum/HasSum value is 0, not π/4 — a subtlety this entry makes precise.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BaselProblemOQ10.lean",
+    "tags": [
+      "analysis",
+      "infinite-series",
+      "conditional-convergence",
+      "leibniz-formula",
+      "pi",
+      "arctangent",
+      "summability",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 93,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "not_summable_leibniz: the Leibniz family (-1)^k/(2k+1) is NOT Summable — its absolute values 1/(2k+1) dominate the divergent half-harmonic series, so convergence is only conditional. This is the substantive new lemma.",
+      "tsum_leibniz_eq_zero: as a consequence, the unconditional tsum ∑' k, (-1)^k/(2k+1) equals the junk value 0, not π/4",
+      "tsum_leibniz_ne_pi_div_four: the naive 'unconditional' reading 1 − 1/3 + 1/5 − ⋯ = π/4 is false (0 ≠ π/4); only the ordered limit holds",
+      "leibniz_tendsto_pi_div_four: the correct statement — the ordered partial sums ∑_{i<k} (-1)^i/(2i+1) converge to π/4 (re-exporting Mathlib's tendsto_sum_pi_div_four)"
+    ],
+    "prerequisites": [
+      "Mathlib's tendsto_sum_pi_div_four (Leibniz series via Abel's theorem on arctan)",
+      "summable_abs_iff: in ℝ, summability is equivalent to absolute summability",
+      "not_summable_one_div_natCast: the harmonic series ∑ 1/n diverges",
+      "Summable.of_nonneg_of_le (comparison test) and summable_nat_add_iff (index shift)",
+      "Parent: basel-problem (∑ 1/n² = π²/6)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "tendsto_sum_pi_div_four",
+        "description": "The ordered partial sums ∑_{i<k} (-1)^i/(2i+1) tend to π/4; proved in Mathlib via Abel's limit theorem applied to the arctan Maclaurin series at x = 1, with arctan 1 = π/4.",
+        "module": "Mathlib.Analysis.Real.Pi.Leibniz"
+      },
+      {
+        "theorem": "summable_abs_iff",
+        "description": "For real-valued families, Summable f ↔ Summable |f|; the bridge that turns the conditional-convergence question into a question about the harmonic-type series of absolute values.",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Order"
+      },
+      {
+        "theorem": "not_summable_one_div_natCast",
+        "description": "The harmonic series ∑ 1/n diverges (¬ Summable (fun n => 1/n : ℕ → ℝ)); the divergent minorant behind non-summability.",
+        "module": "Mathlib.Analysis.PSeries"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "basel-problem-oq-10-oq-01",
+      "question": "Quantify the conditional convergence: prove the alternating-series error bound |∑_{i<k} (-1)^i/(2i+1) − π/4| ≤ 1/(2k+1), giving an explicit (slow) rate for the Leibniz approximation of π/4.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "basel-problem",
+      "relationship": "extends",
+      "description": "Companion to the Basel cluster. Where ζ(2) = ∑ 1/n² = π²/6 is absolutely convergent, the Leibniz series for π/4 is only conditionally convergent — this entry highlights the contrast and the resulting tsum subtlety."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.Real.Pi.Leibniz",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of tendsto_sum_pi_div_four, the ordered-partial-sum form of the Leibniz series for π/4."
+    },
+    {
+      "title": "Leibniz formula for π",
+      "author": "Gottfried Wilhelm Leibniz (also Madhava, Gregory)",
+      "year": "1676",
+      "venue": "Classical",
+      "description": "1 − 1/3 + 1/5 − 1/7 + ⋯ = π/4, the arctangent series at x = 1; convergence is conditional."
+    }
+  ]
+}
