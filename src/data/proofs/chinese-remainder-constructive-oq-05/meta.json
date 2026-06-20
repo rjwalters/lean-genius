@@ -1,0 +1,154 @@
+{
+  "id": "chinese-remainder-constructive-oq-05",
+  "title": "The Unit-Group Chinese Remainder Isomorphism $(\\mathbb{Z}/mn)^\\times \\cong (\\mathbb{Z}/m)^\\times \\times (\\mathbb{Z}/n)^\\times$",
+  "slug": "chinese-remainder-constructive-oq-05",
+  "description": "Gives the structural form of the Chinese Remainder Theorem on unit groups, the layer above the sibling ring-isomorphism bridge. Sibling ChineseRemainderConstructiveOQ04OQ02 already connects the existential CRT solver to Mathlib's ring isomorphism ZMod.chineseRemainder h : ZMod (m*n) ≃+* ZMod m × ZMod n. This entry develops the induced multiplicative-group isomorphism on units, which Mathlib does NOT package as a named object: unitsChineseRemainder h : (ZMod (m*n))ˣ ≃* (ZMod m)ˣ × (ZMod n)ˣ. Mathlib uses this equivalence only inline and anonymously inside the proof of Nat.totient_mul (Units.mapEquiv (ZMod.chineseRemainder h).toMulEquiv composed with MulEquiv.prodUnits); here it is exposed as a first-class MulEquiv, characterised by the reduction map (unitsChineseRemainder_coe / _symm_coe, both by rfl), with the trivial-unit reflection unitsChineseRemainder_eq_one_iff and the order-multiplicativity corollary card_units_mul : Nat.card (ZMod (m*n))ˣ = Nat.card (ZMod m)ˣ * Nat.card (ZMod n)ˣ. The cardinality result is stated at the level of the unit groups themselves — deliberately not in terms of Euler's totient (that multiplicativity, Nat.totient_mul, lives in the euler-totient family) — isolating the group-theoretic content that underlies it. Fully machine-checked: 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Sunzi (c. 3rd–5th century); ring/unit-group form formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem",
+    "date": "1801",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChineseRemainderConstructiveOQ05.lean",
+    "tags": [
+      "number-theory",
+      "chinese-remainder-theorem",
+      "ring-isomorphism",
+      "unit-groups",
+      "group-theory",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 79,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Rests on Mathlib's ring CRT isomorphism ZMod.chineseRemainder, the units functor Units.mapEquiv, and the product-of-units splitting MulEquiv.prodUnits; no decide/native_decide. The only axioms are the foundational propext, Classical.choice, Quot.sound.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.chineseRemainder",
+        "description": "`Nat.Coprime m n → (ZMod (m*n) ≃+* ZMod m × ZMod n)`, the ring isomorphism form of CRT. The unit-group isomorphism is the units functor applied to this.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Units.mapEquiv",
+        "description": "`(M ≃* N) → (Mˣ ≃* Nˣ)`, the action of the units functor on a multiplicative isomorphism. Applied to `(ZMod.chineseRemainder h).toMulEquiv` to move from the ring iso to a unit-group iso onto the units of the product.",
+        "module": "Mathlib.Algebra.Group.Units.Equiv"
+      },
+      {
+        "theorem": "MulEquiv.prodUnits",
+        "description": "`(M × N)ˣ ≃* Mˣ × Nˣ`, the canonical splitting of the units of a product ring/monoid. Composed after `Units.mapEquiv` to land in the product of the two unit groups.",
+        "module": "Mathlib.Algebra.Group.Units.Equiv"
+      },
+      {
+        "theorem": "Nat.card_congr",
+        "description": "`α ≃ β → Nat.card α = Nat.card β`, used with `Nat.card_prod` to turn the unit-group isomorphism into the order-multiplicativity statement `card_units_mul`.",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      }
+    ],
+    "originalContributions": [
+      "`unitsChineseRemainder`: the named multiplicative isomorphism (ZMod (m*n))ˣ ≃* (ZMod m)ˣ × (ZMod n)ˣ for coprime m, n — the units functor applied to the ring CRT isomorphism, then split by MulEquiv.prodUnits. Mathlib uses this equivalence only inline and unnamed inside the proof of Nat.totient_mul; this exposes it as a reusable first-class object.",
+      "`unitsChineseRemainder_coe` and `unitsChineseRemainder_symm_coe`: the characterisation of the iso (and its inverse) by the underlying ring CRT reduction map, both proved definitionally (rfl), certifying that the abstract unit iso IS the concrete reduce-mod-m / reduce-mod-n map.",
+      "`card_units_mul`: order-multiplicativity of the unit groups, Nat.card (ZMod (m*n))ˣ = Nat.card (ZMod m)ˣ * Nat.card (ZMod n)ˣ, the group-theoretic content underlying Euler-totient multiplicativity but stated purely about the unit groups.",
+      "`unitsChineseRemainder_eq_one_iff`: a unit of ZMod (m*n) is trivial iff both CRT components are trivial, an immediate injectivity consequence packaging the iso for downstream use."
+    ],
+    "prerequisites": [
+      "Chinese Remainder Theorem (ring isomorphism form)",
+      "Unit groups of ZMod n and the units functor on (multiplicative) isomorphisms",
+      "Units of a product ring split as a product of unit groups",
+      "Cardinality of finite types and Nat.card"
+    ],
+    "dateAdded": "2026-06-19",
+    "relatedProblems": [
+      {
+        "id": "chinese-remainder-constructive",
+        "relationship": "Parent: the gallery family on the constructive CRT (existence, uniqueness, RNS bases, list solver). This entry contributes the structural unit-group isomorphism, the layer above the existential and ring-isomorphism forms."
+      },
+      {
+        "id": "chinese-remainder-constructive-oq-04-oq-02",
+        "relationship": "Sibling: oq-04-oq-02 bridges the existential CRT solver to Mathlib's ring isomorphism ZMod.chineseRemainder. This entry takes the next structural step — the induced multiplicative isomorphism on unit groups."
+      },
+      {
+        "id": "euler-totient-oq-06",
+        "relationship": "Related: the euler-totient family handles φ as a function (parity, multiplicativity); this entry isolates the unit-group order-multiplicativity that underlies φ(mn) = φ(m)φ(n) without restating the totient identity."
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 79,
+    "path": "Proofs/ChineseRemainderConstructiveOQ05.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 4
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "The Chinese Remainder Theorem, traced to Sunzi Suanjing (c. 3rd–5th century CE), is classically an existence-and-uniqueness statement about simultaneous congruences. Its modern algebraic distillation, sharpened by Gauss (Disquisitiones, 1801) and the structural algebra of the 20th century, is an isomorphism of rings: for coprime m, n, reduction gives ZMod (mn) ≅ ZMod m × ZMod n. Passing to multiplicative units — the invertible residues — yields a parallel isomorphism of abelian groups, (ZMod (mn))ˣ ≅ (ZMod m)ˣ × (ZMod n)ˣ, because an element is a unit in a product ring iff each component is a unit. This unit-group decomposition is exactly why Euler's totient (the order of (ZMod n)ˣ) is multiplicative on coprime arguments, and it is the structural heart of much of elementary number theory mod n. Mathlib proves the ring isomorphism and uses the unit-group consequence implicitly, but does not name the unit-group isomorphism itself.",
+    "problemStatement": "**Open Question (chinese-remainder-constructive-oq-05):** give the structural CRT — the canonical isomorphism witnessing the decomposition, beyond the existential solver. This entry exposes the unit-group isomorphism (ZMod (mn))ˣ ≃* (ZMod m)ˣ × (ZMod n)ˣ and its order-multiplicativity corollary.",
+    "text": "For coprime m, n the unit groups satisfy (ZMod (mn))ˣ ≅ (ZMod m)ˣ × (ZMod n)ˣ, a named multiplicative isomorphism; in particular the unit-group orders multiply.",
+    "proofStrategy": "Compose two Mathlib equivalences. The ring CRT iso ZMod.chineseRemainder h : ZMod (mn) ≃+* ZMod m × ZMod n, viewed multiplicatively (.toMulEquiv), is pushed through the units functor Units.mapEquiv to give (ZMod (mn))ˣ ≃* (ZMod m × ZMod n)ˣ; MulEquiv.prodUnits then splits the units of the product as (ZMod m)ˣ × (ZMod n)ˣ. The composite is unitsChineseRemainder. Its action and that of its inverse coincide with the ring reduction map by rfl (unitsChineseRemainder_coe / _symm_coe). Transporting cardinality across the iso (Nat.card_congr, Nat.card_prod) gives card_units_mul; map_one plus injectivity gives the trivial-unit reflection.",
+    "keyInsights": [
+      "**Units of a product split.** An element (a,b) of a product ring is invertible iff a and b are each invertible, so (R × S)ˣ ≅ Rˣ × Sˣ (MulEquiv.prodUnits). This is the only extra ingredient beyond the ring CRT iso.",
+      "**The functorial route names the map for free.** Applying the units functor to the ring iso (Units.mapEquiv) and then splitting (MulEquiv.prodUnits) produces the unit-group iso compositionally — no element-chasing, and the reduction-map characterisation is then definitional (rfl).",
+      "**It is the source of totient multiplicativity.** Taking orders, |(ZMod (mn))ˣ| = |(ZMod m)ˣ|·|(ZMod n)ˣ|; since |(ZMod n)ˣ| = φ(n), this is exactly why φ(mn) = φ(m)φ(n). Stating it at the unit-group level isolates that structural cause from the totient bookkeeping.",
+      "**Coprimality is essential and localized.** It enters once, as the hypothesis of ZMod.chineseRemainder; everything downstream (units functor, product split, cardinality) is formal and hypothesis-free."
+    ],
+    "prerequisites": [
+      "Ring isomorphism form of the Chinese Remainder Theorem",
+      "Unit groups Rˣ and the units functor on isomorphisms",
+      "Units of a product ring (R × S)ˣ ≅ Rˣ × Sˣ",
+      "Cardinality transport along equivalences (Nat.card)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The unit-group Chinese Remainder isomorphism (ZMod (mn))ˣ ≃* (ZMod m)ˣ × (ZMod n)ˣ is exposed as a named MulEquiv, characterised by the ring reduction map (by rfl), with the order-multiplicativity corollary Nat.card (ZMod (mn))ˣ = Nat.card (ZMod m)ˣ · Nat.card (ZMod n)ˣ and a trivial-unit reflection. 1 definition, 4 theorems, 79 lines, 0 sorries, 0 axioms.",
+    "implications": "The named iso is directly reusable wherever the multiplicative structure mod a composite is analysed component-wise: orders of elements, square roots of unity, primitive roots, Carmichael's function, and the multiplicativity of Euler's totient (whose proof in Mathlib uses precisely this equivalence anonymously). Exposing it removes the need to re-derive the composition each time.",
+    "openQuestions": [
+      "Iterate to a finite family: (ZMod (∏ mᵢ))ˣ ≃* ∏ (ZMod mᵢ)ˣ for pairwise-coprime moduli, via Nat.chineseRemainderOfList / a Pi version of prodUnits, generalizing the two-factor case.",
+      "Derive structural corollaries that need the iso (not just its cardinality): multiplicativity of the count of square roots of unity, and the CRT description of the 2-torsion subgroup of (ZMod n)ˣ governing solvability of x² ≡ 1.",
+      "Connect to primitive roots: (ZMod n)ˣ is cyclic iff n ∈ {1,2,4,p^k,2p^k}, a statement whose proof factors through this unit-group decomposition and the non-cyclicity of products of even-order groups."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Overview, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring positioning the entry as the unit-group structural layer above the sibling ring-isomorphism bridge, noting that Mathlib uses the unit-group iso only inline inside Nat.totient_mul, with imports (`Mathlib.Data.ZMod.Basic`, `Mathlib.Data.Nat.Totient`, `Mathlib.Tactic`) and the namespace declaration."
+    },
+    {
+      "id": "the-iso",
+      "title": "The Unit-Group Isomorphism and Its Characterisation",
+      "startLine": 42,
+      "endLine": 66,
+      "summary": "`unitsChineseRemainder` (the named MulEquiv (ZMod (mn))ˣ ≃* (ZMod m)ˣ × (ZMod n)ˣ, built as Units.mapEquiv of the ring CRT iso followed by MulEquiv.prodUnits) together with `unitsChineseRemainder_coe` and `unitsChineseRemainder_symm_coe`, which identify the iso and its inverse with the ring reduction map, both by rfl."
+    },
+    {
+      "id": "corollaries",
+      "title": "Order Multiplicativity and Trivial-Unit Reflection",
+      "startLine": 67,
+      "endLine": 79,
+      "summary": "`card_units_mul` (Nat.card (ZMod (mn))ˣ = Nat.card (ZMod m)ˣ · Nat.card (ZMod n)ˣ, by transporting cardinality across the iso) and `unitsChineseRemainder_eq_one_iff` (a unit is trivial iff both CRT components are, from map_one and injectivity)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "parent",
+      "description": "The parent family develops the constructive CRT (existence, uniqueness, residue number systems, list solver). This entry adds the structural unit-group isomorphism that sits above those existential forms."
+    },
+    {
+      "targetId": "chinese-remainder-constructive-oq-04-oq-02",
+      "relationship": "sibling",
+      "description": "oq-04-oq-02 bridges the existential CRT solver to Mathlib's ring isomorphism ZMod.chineseRemainder. This entry pushes that ring iso through the units functor to obtain and name the unit-group isomorphism."
+    },
+    {
+      "targetId": "euler-totient-oq-06",
+      "relationship": "related",
+      "description": "The euler-totient family studies φ as a function. This entry isolates the unit-group order-multiplicativity |(ZMod (mn))ˣ| = |(ZMod m)ˣ|·|(ZMod n)ˣ| that underlies φ(mn) = φ(m)φ(n), without restating the totient identity."
+    }
+  ]
+}
