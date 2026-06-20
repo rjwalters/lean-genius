@@ -213,6 +213,21 @@
       "targetId": "chinese-remainder-non-coprime-oq-01",
       "relationship": "parent",
       "description": "Open question extending this entry: investigates computational efficiency of non-coprime CRT for large moduli, including Garner's mixed-radix decomposition"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-02",
+      "relationship": "extended-by",
+      "description": "Euclidean-domain / polynomial-ring generalization: lifts the non-coprime CRT to Euclidean domains (necessity, sufficiency, uniqueness via Bezout), polynomial rings (Lagrange interpolation as a CRT specialization), and PIDs via ideal theory."
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-03",
+      "relationship": "extended-by",
+      "description": "Three-moduli extension: generalizes the non-coprime CRT from 2 to 3 moduli in any Euclidean domain, with solvability iff gcd(m_i,m_j) divides (a_i-a_j) for all pairs, via iterated 2-moduli reduction."
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-04",
+      "relationship": "extended-by",
+      "description": "Dirichlet's approximation theorem and lattice connections: proves the 1842 approximation theorem via pigeonhole on fractional parts, with mediant/Stern-Brocot and lattice-point links to CRT structure."
     }
   ],
   "leanFile": {
