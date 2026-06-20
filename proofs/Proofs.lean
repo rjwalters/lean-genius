@@ -1870,6 +1870,7 @@ import Proofs.Erdos659Problem
 import Proofs.Erdos65OQ03
 import Proofs.Erdos65Problem
 import Proofs.Erdos660Aristotle
+import Proofs.Erdos660Convexity
 import Proofs.Erdos660Problem
 import Proofs.Erdos660ProblemAristotle
 import Proofs.Erdos661Problem
