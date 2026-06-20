@@ -1,0 +1,124 @@
+{
+  "id": "gram-linear-independence-iff-oq-01",
+  "slug": "gram-linear-independence-iff-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "RCLike",
+      "ComplexOrder",
+      "InnerProductSpace"
+    ],
+    "namespace": "GramLinearIndependenceOQ01",
+    "lineCount": 116,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/GramLinearIndependenceOQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Gram Matrix and the Gramian Determinant Criterion for Linear Independence",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GramLinearIndependenceOQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "inner-product-space",
+      "gram-matrix",
+      "positive-definite",
+      "determinant",
+      "linear-independence",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 116,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "posDef_gram_iff_linearIndependent: stable re-export of Mathlib's headline characterisation — the Gram matrix gram 𝕜 v is positive definite iff the family v is linearly independent (Matrix.posDef_gram_iff_linearIndependent), with the structural facts gram_isHermitian and gram_posSemidef",
+      "gram_det_nonneg: the Gramian (Gram determinant) is always ≥ 0, being the determinant of a positive semidefinite matrix",
+      "gram_mulVec_eq_zero_of_dependent: kernel identity — a linear dependence ∑ j, g j • v j = 0 is exactly a null vector of the Gram matrix (gram 𝕜 v *ᵥ g = 0), via the one-line computation (gram 𝕜 v *ᵥ g) i = ⟪v i, ∑ j, g j • v j⟫ using linearity of the inner product in its second argument",
+      "gram_det_eq_zero_of_not_linearIndependent: a linearly dependent family has a singular Gram matrix (Gramian = 0), obtained from the kernel identity via Matrix.exists_mulVec_eq_zero_iff",
+      "linearIndependent_iff_gram_det_pos: the Gramian determinant criterion — v is linearly independent iff its Gram determinant is strictly positive",
+      "gram_det_eq_zero_iff_not_linearIndependent: the Gramian vanishes iff the family is linearly dependent",
+      "linearIndependent_iff_gram_det_ne_zero: linear independence is equivalent to a nonzero Gramian"
+    ],
+    "prerequisites": [
+      "Gram matrix Matrix.gram 𝕜 v with entries ⟪v i, v j⟫ over an RCLike field 𝕜",
+      "Mathlib's Matrix.posDef_gram_iff_linearIndependent, isHermitian_gram, posSemidef_gram",
+      "Determinant sign for (semi)definite matrices: Matrix.PosDef.det_pos and Matrix.PosSemidef.det_nonneg",
+      "Matrix.exists_mulVec_eq_zero_iff: a square matrix over a domain maps some nonzero vector to 0 iff its determinant vanishes",
+      "Fintype.not_linearIndependent_iff: a finite family is dependent iff some nontrivial combination vanishes"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.posDef_gram_iff_linearIndependent",
+        "description": "The Gram matrix gram 𝕜 v is positive definite iff v is linearly independent — the headline characterisation re-exported here.",
+        "module": "Mathlib.Analysis.InnerProductSpace.GramMatrix"
+      },
+      {
+        "theorem": "Matrix.posSemidef_gram / Matrix.isHermitian_gram",
+        "description": "A Gram matrix is always Hermitian and positive semidefinite; supplies gram_det_nonneg and the always-true side of the criterion.",
+        "module": "Mathlib.Analysis.InnerProductSpace.GramMatrix"
+      },
+      {
+        "theorem": "Matrix.PosDef.det_pos / Matrix.PosSemidef.det_nonneg",
+        "description": "The determinant of a positive definite matrix is strictly positive, and of a positive semidefinite matrix is nonnegative (over an RCLike field with the ComplexOrder).",
+        "module": "Mathlib.Analysis.Matrix.PosDef"
+      },
+      {
+        "theorem": "Matrix.exists_mulVec_eq_zero_iff",
+        "description": "Over an integral domain, a square matrix sends some nonzero vector to 0 iff its determinant is 0 — converts the Gram kernel vector into the vanishing of the Gramian.",
+        "module": "Mathlib.LinearAlgebra.Matrix.ToLinearEquiv"
+      },
+      {
+        "theorem": "Fintype.not_linearIndependent_iff",
+        "description": "A finite family is linearly dependent iff there is a nontrivial vanishing linear combination — the source of the dependence coefficients used in the kernel argument.",
+        "module": "Mathlib.LinearAlgebra.LinearIndependent.Defs"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "gram-linear-independence-iff-oq-01-oq-01",
+      "question": "Quantify the Gramian beyond positivity: prove Hadamard's inequality det(gram 𝕜 v) ≤ ∏ i, ‖v i‖² with equality iff the vectors are pairwise orthogonal, exhibiting the Gram determinant as a squared volume.",
+      "significance": "medium"
+    },
+    {
+      "id": "gram-linear-independence-iff-oq-01-oq-02",
+      "question": "Identify √(det gram) with the volume of the parallelepiped spanned by v (the k-dimensional content), connecting the Gramian criterion to the Cauchy–Binet / exterior-power picture of independence.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.InnerProductSpace.GramMatrix",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Matrix.gram, posDef_gram_iff_linearIndependent, isHermitian_gram and posSemidef_gram, the Gram matrix API underlying this entry."
+    },
+    {
+      "title": "Jørgen Pedersen Gram, Über die Entwickelung reeller Functionen in Reihen",
+      "author": "J. P. Gram",
+      "year": "1883",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "description": "Origin of the Gram matrix and the Gram determinant as a test for linear independence of a system of functions/vectors."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For a finite family of vectors v : n → E in an inner product space over an RCLike field 𝕜, Mathlib's Matrix.posDef_gram_iff_linearIndependent characterises linear independence by positive definiteness of the Gram matrix gram 𝕜 v (entries ⟪v i, v j⟫), which is always Hermitian and positive semidefinite. This entry re-exports that headline (mathlib badge) and derives the classical Gramian determinant test absent from Mathlib: the Gram determinant is always ≥ 0 (gram_det_nonneg); a dependence ∑ g j • v j = 0 is exactly a null vector of the Gram matrix via the kernel identity (gram 𝕜 v *ᵥ g) i = ⟪v i, ∑ g j • v j⟫ (gram_mulVec_eq_zero_of_dependent); hence a dependent family has a singular Gram matrix (gram_det_eq_zero_of_not_linearIndependent); and the family is independent iff its Gramian is strictly positive (linearIndependent_iff_gram_det_pos), equivalently nonzero (linearIndependent_iff_gram_det_ne_zero), while the Gramian vanishes iff the family is dependent (gram_det_eq_zero_iff_not_linearIndependent). 116 lines, 9 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The positive-definiteness criterion is delegated to Mathlib; the genuine new content is the determinant formulation — the Gramian determinant criterion together with the elementary kernel identity that realises a linear dependence as a null vector of the Gram matrix. This packages the textbook 'Gram determinant test' in machine-checked form, uniformly over real and complex inner product spaces, and sets up the volumetric refinements (Hadamard's inequality, parallelepiped volume) recorded as open questions.",
+    "openQuestions": [
+      "Prove Hadamard's inequality det(gram) ≤ ∏ ‖v i‖² with equality iff pairwise orthogonal.",
+      "Identify √(det gram) with the volume of the parallelepiped spanned by v."
+    ]
+  }
+}
