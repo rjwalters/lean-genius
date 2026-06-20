@@ -1,0 +1,140 @@
+{
+  "id": "hilbert-10-oq-04-oq-03-oq-02",
+  "title": "Hilbert's 10th OQ-04-03-02: Linear Systems Reduce to Column-Lattice Membership",
+  "slug": "hilbert-10-oq-04-oq-03-oq-02",
+  "description": "First structural step toward deciding solvability of a linear Diophantine SYSTEM A x = b over ℤ (generalizing the parent's single-equation gcd test). Reduces system solvability to membership of b in the ℤ-span of the columns of A — a finitely generated submodule of Fin m → ℤ, the exact object Mathlib's Smith-normal-form structure theory (Module.Basis.SmithNormalForm) operates on. Establishes solvable_iff_mem_range and the column-span bridge solvable_iff_mem_colSpan (a specialization of Matrix.range_mulVecLin), and shows the m = 1 case collapses to the parent's scalar equation Σ aⱼxⱼ = b. This is the reduction a Decidable instance would build on; the full decision procedure (turning column-span membership into invariant-factor divisibility via SNF) is NOT claimed here and remains open. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-19",
+    "status": "verified",
+    "badge": "mathlib",
+    "proofRepoPath": "Proofs/Hilbert10OQ04OQ03OQ02.lean",
+    "tags": [
+      "hilbert-10",
+      "diophantine-equations",
+      "linear-systems",
+      "smith-normal-form",
+      "linear-algebra",
+      "research"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 94,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "dateAdded": "2026-06-19",
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.range_mulVecLin",
+        "description": "The range of x ↦ A *ᵥ x equals the span of the columns of A",
+        "module": "Mathlib.LinearAlgebra.Matrix.ToLin"
+      },
+      {
+        "theorem": "Matrix.mulVecLin_apply",
+        "description": "The linear map A.mulVecLin agrees with matrix–vector multiplication A *ᵥ x",
+        "module": "Mathlib.LinearAlgebra.Matrix.ToLin"
+      },
+      {
+        "theorem": "LinearMap.mem_range",
+        "description": "Membership in the range of a linear map as an existential preimage",
+        "module": "Mathlib.Algebra.Module.Submodule.Range"
+      },
+      {
+        "theorem": "Module.Basis.SmithNormalForm",
+        "description": "Smith normal form of a submodule of a free module over a PID — the structure that would turn column-span membership into a decision procedure (referenced as the target, not invoked here)",
+        "module": "Mathlib.LinearAlgebra.FreeModule.PID"
+      }
+    ],
+    "originalContributions": [
+      "solvable_iff_mem_range: solvability of the system A x = b over ℤ is membership of b in LinearMap.range A.mulVecLin",
+      "solvable_iff_mem_colSpan: the column-span bridge — A x = b is solvable over ℤ iff b ∈ Submodule.span ℤ (Set.range A.col); the right-hand side is the finitely generated ℤ-submodule on which Smith normal form operates",
+      "solvable_single_row_iff_sum: for m = 1 the matrix system (of fun _ => a) *ᵥ x = (fun _ => b) is solvable iff the scalar equation Σ aⱼxⱼ = b is, recovering the hypothesis form of the parent's solvable_iff_gcd_dvd",
+      "Worked 2×2 instance (x + 2y = 5, 3x + 4y = 11; witness (1,2)) confirming the system statement is non-vacuous"
+    ],
+    "assumptions": "None. The file is fully machine-checked with 0 axioms and 0 sorries; #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no native_decide). NOTE on scope: this entry establishes the REDUCTION of linear-system solvability to column-lattice membership; it does NOT supply a Decidable instance for systems. The decision step (invariant-factor divisibility via Smith normal form) is the still-open part of parent open question oq-02.",
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Hilbert's Tenth Problem is undecidable in general (MRDP, 1970), with Jones (1982) locating the undecidable frontier at degree 4 in 9 variables. The opposite, decidable, edge is elementary. The parent file Hilbert10OQ04OQ03 decided a single linear Diophantine equation Σ aᵢxᵢ = b over ℤ by one gcd-divisibility test and packaged it as a Decidable instance. Its open question oq-02 asks whether this extends to whole systems A x = b. The classical answer is yes — via the Smith normal form U A V = D over the PID ℤ, the system is solvable iff each invariant factor dᵢ divides the corresponding entry of U b — but bridging Mathlib's submodule-level SNF theory to a concrete matrix decision procedure is substantial. This entry takes the first, fully verified step of that program: it reduces system solvability to the column-lattice membership question that SNF is designed to answer.",
+    "problemStatement": "Reduce solvability of a linear Diophantine system A x = b (A : Matrix (Fin m) (Fin n) ℤ, b : Fin m → ℤ) to a membership question in a finitely generated ℤ-submodule, the form on which Mathlib's Smith-normal-form structure theory operates, and confirm the reduction specializes correctly to the parent's single-equation criterion.",
+    "proofStrategy": "Solvability ∃ x, A *ᵥ x = b is, by definition of LinearMap.range and the identification A.mulVecLin x = A *ᵥ x (Matrix.mulVecLin_apply), exactly b ∈ LinearMap.range A.mulVecLin (solvable_iff_mem_range). Mathlib's Matrix.range_mulVecLin rewrites that range as Submodule.span ℤ (Set.range A.col), giving the column-span bridge solvable_iff_mem_colSpan. The span of the columns is a finitely generated submodule of Fin m → ℤ — precisely the object Module.Basis.SmithNormalForm decomposes. For consistency with the parent, the single-row case is unfolded: A *ᵥ x = b for a one-row matrix is the scalar equation Σ aⱼxⱼ = b (solvable_single_row_iff_sum, via congrFun / fin_cases on Fin 1), the hypothesis form of solvable_iff_gcd_dvd; composing with the parent recovers the gcd ∣ b test. A worked 2×2 example exhibits an explicit witness.",
+    "keyInsights": [
+      "System solvability is a submodule-membership question: ∃ x, A *ᵥ x = b iff b lies in the ℤ-span of the columns of A (the column lattice). This is the reformulation Smith normal form is built to decide.",
+      "The bridge is a clean specialization of an existing Mathlib lemma (Matrix.range_mulVecLin), not new deep mathematics — the contribution is identifying and recording the correct reduction so the decidability program has a verified starting point.",
+      "The single-equation parent is the m = 1 slice: a one-row system unfolds to the scalar equation Σ aⱼxⱼ = b, so the system criterion and the parent's gcd criterion agree on their overlap.",
+      "The honest scope boundary: reducing to column-lattice membership is verified here; turning that membership into an effective yes/no answer (invariant-factor divisibility from SNF) is the still-open decidability step of parent oq-02."
+    ],
+    "text": "Linear Diophantine systems A x = b over ℤ are solvable exactly when b lies in the column lattice of A — the ℤ-span of its columns. This entry records that reduction in Lean as a specialization of Mathlib's range-of-mulVecLin lemma, checks it specializes to the parent's single-equation gcd criterion when there is one row, and identifies the resulting finitely generated submodule as the input to Smith-normal-form theory. It is the verified first step of the still-open program to decide linear systems uniformly."
+  },
+  "sections": [
+    {
+      "id": "header-systems",
+      "title": "From Single Equations to Linear Systems",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring: the parent decided one linear equation by a gcd test; this file reduces a whole system A x = b to column-lattice membership, the form Smith normal form operates on. States explicitly that the full Decidable instance is not claimed.",
+      "mathContext": "A system $A x = b$ over $\\mathbb{Z}$ is solvable iff $b$ lies in the $\\mathbb{Z}$-span of the columns of $A$. This entry establishes that reduction; the decision procedure (invariant-factor divisibility via $U A V = D$) remains open."
+    },
+    {
+      "id": "range-membership",
+      "title": "Solvability as Range Membership",
+      "startLine": 45,
+      "endLine": 51,
+      "summary": "solvable_iff_mem_range: ∃ x, A *ᵥ x = b ↔ b ∈ LinearMap.range A.mulVecLin.",
+      "mathContext": "By Matrix.mulVecLin_apply the linear map A.mulVecLin is matrix–vector multiplication, so solvability is membership of $b$ in its range — the definitional entry point to the reformulation."
+    },
+    {
+      "id": "colspan-bridge",
+      "title": "The Column-Span Bridge",
+      "startLine": 53,
+      "endLine": 60,
+      "summary": "solvable_iff_mem_colSpan: ∃ x, A *ᵥ x = b ↔ b ∈ span ℤ (range A.col), via Matrix.range_mulVecLin.",
+      "mathContext": "The range of $x \\mapsto A x$ is the span of the columns of $A$ (Matrix.range_mulVecLin). The right-hand side is a finitely generated submodule of $\\mathbb{Z}^m$, the object Module.Basis.SmithNormalForm decomposes."
+    },
+    {
+      "id": "single-row",
+      "title": "Single-Row Consistency with the Parent",
+      "startLine": 62,
+      "endLine": 92,
+      "summary": "solvable_single_row_iff_sum reduces the one-row matrix system to the scalar equation Σ aⱼxⱼ = b (the parent's hypothesis form); a worked 2×2 example exhibits an explicit witness.",
+      "mathContext": "For $m = 1$, $A x = b$ unfolds to $\\sum_j a_j x_j = b$, the hypothesis of the parent's solvable_iff_gcd_dvd; composing recovers $\\gcd(a) \\mid b$. The $2 \\times 2$ example $x+2y=5,\\,3x+4y=11$ has witness $(1,2)$."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Assemble a Decidable instance for ∃ x, A x = b by turning column-lattice membership into invariant-factor divisibility via the Smith normal form U A V = D.",
+      "status": "open",
+      "notes": "This is the decision step the column-span bridge feeds into, and the still-open core of parent oq-02. Requires bridging Mathlib's submodule-level Module.Basis.SmithNormalForm to a concrete matrix algorithm (compute U, V, the invariant factors dᵢ, and check dᵢ ∣ (U b)ᵢ plus vanishing of surplus rows)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-10-oq-04-oq-03",
+      "relationship": "parent",
+      "description": "Decides a single linear Diophantine equation Σ aᵢxᵢ = b over ℤ via a gcd-divisibility test. Its open question oq-02 asks for the extension to systems; this entry supplies the verified reduction (column-lattice membership) that the extension starts from, and recovers the parent's criterion as the m = 1 case."
+    },
+    {
+      "targetId": "hilbert-10-oq-04-oq-03-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling extension of the same parent: builds a constructive Bézout witness for the single-equation case. This entry instead generalizes the equation count from one to many, reducing system solvability to column-lattice membership."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry reduces solvability of a linear Diophantine system A x = b over ℤ to membership of b in the ℤ-span of the columns of A (solvable_iff_mem_range, then the bridge solvable_iff_mem_colSpan via Matrix.range_mulVecLin), and verifies the reduction specializes to the parent's single-equation criterion when there is one row (solvable_single_row_iff_sum). The right-hand side of the bridge is the finitely generated submodule on which Mathlib's Smith-normal-form theory operates, making this the verified first step of the program to decide linear systems. The development is axiom-free and sorry-free.",
+    "implications": "Recasting system solvability as column-lattice membership is the standard textbook entry point to deciding linear Diophantine systems via Smith normal form. By recording the reduction in Lean as a clean specialization of existing Mathlib infrastructure, this entry gives the eventual Decidable instance a verified foundation and pins the remaining work precisely: convert submodule-level SNF into an effective invariant-factor divisibility test. The single-row consistency check ties the system story back to the parent's gcd criterion, confirming the two gallery entries agree where they overlap.",
+    "openQuestions": [
+      "Build the Decidable instance for ∃ x, A x = b from the Smith normal form U A V = D: compute the invariant factors and check divisibility of the transformed right-hand side U b.",
+      "Generalize linear_h10_decidable from one equation to a uniform DecidablePred over all systems A x = b in (m, n)."
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/Hilbert10OQ04OQ03OQ02.lean",
+    "lineCount": 94,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "axiomCount": 0,
+    "sorries": 0
+  }
+}
