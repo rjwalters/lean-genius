@@ -1,0 +1,46 @@
+[
+  {
+    "id": "banach-fixed-point-oq-01-module-header",
+    "proofId": "banach-fixed-point-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "title": "Module Header: The Contraction Mapping Principle",
+    "content": "A **contraction** on a metric space is a self-map $f$ with $d(f x, f y) \\le K\\, d(x, y)$ for some $K < 1$. Banach's 1922 theorem says that on a **nonempty complete** metric space such an $f$ has a **unique** fixed point $p$, and that the Picard iterates $f^n x$ converge to $p$ from any seed, with the geometric error bound\n$$d(f^n x, p) \\le d(x, f x)\\,\\frac{K^n}{1-K}.$$\n\nMathlib bundles the hypothesis as `ContractingWith K f` ($K < 1$ together with $K$-Lipschitzness). This file states the theorem in textbook form over that bundle, then **verifies the hypotheses** for a concrete map: the affine contraction $x \\mapsto x/2 + c$ on $\\mathbb{R}$, whose fixed point is $2c$."
+  },
+  {
+    "id": "banach-fixed-point-oq-01-existence-uniqueness",
+    "proofId": "banach-fixed-point-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 45,
+      "endLine": 57
+    },
+    "title": "Existence and Uniqueness",
+    "content": "`exists_fixedPoint`: a contraction on a nonempty complete metric space has a fixed point — the limit of the Cauchy sequence of iterates, supplied by `ContractingWith.fixedPoint` together with `fixedPoint_isFixedPt`.\n\n`fixedPoint_unique_of_isFixedPt`: any two fixed points coincide. This needs **neither completeness nor nonemptiness** — if $f x = x$ and $f y = y$ then $d(x,y) = d(f x, f y) \\le K\\,d(x,y)$ with $K < 1$ forces $d(x,y) = 0$. The `omit [CompleteSpace α] [Nonempty α]` makes that explicit."
+  },
+  {
+    "id": "banach-fixed-point-oq-01-iteration-estimates",
+    "proofId": "banach-fixed-point-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 58,
+      "endLine": 74
+    },
+    "title": "Picard Iteration and Error Estimates",
+    "content": "`tendsto_iterate`: from any starting point $x$, the iterates $f^n x$ converge to the fixed point — the theorem's **constructive** content.\n\n`apriori_estimate`: the geometric bound $d(f^n x, p) \\le d(x, f x)\\,K^n/(1-K)$, known *before* iterating, certifying the error after $n$ steps.\n\n`aposteriori_estimate`: the one-step bound $d(x, p) \\le d(x, f x)/(1-K)$, computable from a single application of $f$ — the basis of practical stopping criteria. The factor $1/(1-K)$ is the geometric-series sum of the step sizes $K^n d(x, f x)$."
+  },
+  {
+    "id": "banach-fixed-point-oq-01-concrete",
+    "proofId": "banach-fixed-point-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 77,
+      "endLine": 121
+    },
+    "title": "A Concrete Contraction on ℝ",
+    "content": "The affine map $x \\mapsto x/2 + c$ instantiates the whole machinery.\n\n`contractAffine_contracting`: it is a $(1/2)$-contraction. The ratio $1/2 < 1$ is immediate, and $(1/2)$-Lipschitzness reduces — via `LipschitzWith.of_dist_le_mul`, `Real.dist_eq`, and $(x/2 + c) - (y/2 + c) = (x-y)/2$ — to $|x-y|/2 \\le \\tfrac12|x-y|$, closed by `linarith`.\n\n`contractAffine_fixedPoint`: solving $x = x/2 + c$ gives $x = 2c$; the witness $(2c)/2 + c = 2c$ is identified with Mathlib's `fixedPoint` by uniqueness.\n\n`contractAffine_tendsto` / `contractAffine_apriori`: the iterates converge to $2c$ with the error **halving at each step** — the abstract theorems specialized, with the fixed point rewritten to $2c$."
+  }
+]

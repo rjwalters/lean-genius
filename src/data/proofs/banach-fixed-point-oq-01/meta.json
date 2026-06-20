@@ -1,0 +1,159 @@
+{
+  "id": "banach-fixed-point-oq-01",
+  "title": "Banach Fixed-Point Theorem with Geometric Convergence",
+  "slug": "banach-fixed-point-oq-01",
+  "description": "The Contraction Mapping Principle: a contraction f (with d(f x, f y) ≤ K·d(x,y), K < 1) on a nonempty complete metric space has a UNIQUE fixed point p, and from any seed the Picard iterates fⁿx converge to p with the geometric a-priori bound d(fⁿx, p) ≤ d(x, f x)·Kⁿ/(1−K) and the one-step a-posteriori bound d(x, p) ≤ d(x, f x)/(1−K). The abstract theorem is stated in textbook form over Mathlib's ContractingWith, and its hypotheses are then verified for a concrete map — the affine contraction x ↦ x/2 + c on ℝ, whose unique fixed point is 2c, reached geometrically at rate 1/2. 8 theorems, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Banach_fixed-point_theorem",
+    "date": "Stefan Banach, 1922",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "metric-spaces",
+      "fixed-point",
+      "contraction-mapping",
+      "iteration",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/BanachFixedPointOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 8 theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). No native_decide is used anywhere.",
+    "originalContributions": [
+      "exists_fixedPoint / fixedPoint_unique_of_isFixedPt: existence and uniqueness of the fixed point of a contraction on a nonempty complete metric space",
+      "tendsto_iterate: Picard iteration fⁿx converges to the fixed point from any starting point",
+      "apriori_estimate: the geometric error bound d(fⁿx, p) ≤ d(x, f x)·Kⁿ/(1−K), computable before iterating",
+      "aposteriori_estimate: the one-step bound d(x, p) ≤ d(x, f x)/(1−K)",
+      "contractAffine_contracting / _fixedPoint / _tendsto / _apriori: a fully verified CONCRETE instance — x ↦ x/2 + c is a (1/2)-contraction on ℝ with unique fixed point 2c and explicit geometric convergence"
+    ],
+    "dateAdded": "2026-06-20",
+    "lineCount": 121,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Stefan Banach proved the contraction mapping principle in his 1922 doctoral thesis. It is the workhorse existence-and-uniqueness theorem of analysis: it powers the Picard–Lindelöf theorem on ODEs, the inverse and implicit function theorems, the existence of solutions to integral equations, and a host of numerical fixed-point iterations. Its appeal is that it is simultaneously an existence theorem, a uniqueness theorem, and a constructive algorithm with an a-priori error bound.",
+    "problemStatement": "**Open Question (OQ-01, Banach fixed point)**: Formalize the metric contraction mapping principle with its explicit geometric convergence rate — not merely the existence of a fixed point, but uniqueness, the convergence of Picard iterates from an arbitrary seed, and the quantitative a-priori / a-posteriori error estimates — and instantiate it on a concrete contraction.\n\n**Formalized**: exists_fixedPoint, fixedPoint_unique_of_isFixedPt, tendsto_iterate, apriori_estimate, aposteriori_estimate (abstract), and the concrete affine contraction x ↦ x/2 + c on ℝ (contractAffine_contracting, _fixedPoint, _tendsto, _apriori).",
+    "text": "A 121-line formalization of the Banach fixed-point theorem. The contraction hypothesis is bundled as Mathlib's ContractingWith K f (K < 1 together with K-Lipschitzness); over a nonempty complete metric space this yields a unique fixed point fixedPoint f hf, convergence of the iterates fⁿx → p, and the geometric a-priori and one-step a-posteriori error bounds. The abstract theorems are then made concrete: the affine map x ↦ x/2 + c is shown to be a (1/2)-contraction on ℝ, its unique fixed point is computed to be 2c, and the iterates are shown to converge to it with rate 1/2. All 8 theorems compile with 0 sorries and 0 axioms, with no native_decide.",
+    "proofStrategy": "**Abstract layer**: Each statement is the textbook face of a ContractingWith lemma — existence from fixedPoint_isFixedPt, uniqueness from fixedPoint_unique', convergence from tendsto_iterate_fixedPoint, and the estimates from apriori_dist_iterate_fixedPoint_le and dist_fixedPoint_le. The uniqueness statement is proved with the hypotheses [CompleteSpace] and [Nonempty] omitted, since two fixed points already determine each other in any metric space.\n\n**Concrete layer**: contractAffine_contracting verifies ContractingWith (1/2) (x ↦ x/2 + c): the ratio 1/2 < 1 is immediate, and (1/2)-Lipschitzness reduces (via LipschitzWith.of_dist_le_mul, Real.dist_eq, and the algebraic identity (x/2+c) − (y/2+c) = (x−y)/2) to |x−y|/2 ≤ (1/2)|x−y|, closed by linarith. The fixed point is pinned to 2c by fixedPoint_unique applied to the verified IsFixedPt witness (2c)/2 + c = 2c. Convergence and the geometric bound then specialize the abstract theorems with the fixed point rewritten to 2c.",
+    "keyInsights": [
+      "**Three theorems in one**: a single contraction hypothesis yields existence, uniqueness, AND a convergent algorithm — the iterates fⁿx approach the fixed point no matter where you start.",
+      "**Geometric rate is explicit**: the a-priori bound d(fⁿx, p) ≤ d(x, f x)·Kⁿ/(1−K) is known before any iteration, turning the abstract theorem into a usable numerical method with a guaranteed error after n steps.",
+      "**A-posteriori from one step**: d(x, p) ≤ d(x, f x)/(1−K) bounds the distance to the (a priori unknown) fixed point using only a single application of f — the basis of stopping criteria in practice.",
+      "**Hypotheses matter**: existence needs completeness (so Cauchy iterates converge) and nonemptiness (so there is a seed); uniqueness needs neither, as the contraction inequality alone forces two fixed points to coincide — reflected in the omit on the uniqueness lemma.",
+      "**Concrete witness**: x ↦ x/2 + c is the simplest non-trivial contraction; verifying ContractingWith for it and computing its fixed point 2c shows the abstract machinery running end-to-end, with the Lipschitz estimate discharged by elementary real arithmetic.",
+      "**0-axiom, no native_decide**: every result is kernel-checked, depending only on propext / Classical.choice / Quot.sound, which do not count as assumptions."
+    ],
+    "prerequisites": [
+      "Metric and complete metric spaces; Cauchy sequences and their limits",
+      "Lipschitz maps and the contraction condition d(f x, f y) ≤ K·d(x, y) with K < 1 (Mathlib LipschitzWith, ContractingWith)",
+      "Picard iteration fⁿx and convergence in a metric space (Filter.Tendsto, nhds)",
+      "Geometric series / the factor 1/(1−K) controlling the accumulated step sizes",
+      "Real distance dist x y = |x − y| and elementary real arithmetic (Real.dist_eq)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Brouwer's theorem is the topological fixed-point principle (continuous self-map of a compact convex set), giving existence without uniqueness or a rate. The Banach principle is metric: it trades the convex/compact hypothesis for a contraction condition and in return gets uniqueness and an explicit geometric convergence rate."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "BanachFixedPointOQ01",
+    "lineCount": 121,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/BanachFixedPointOQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "exists_fixedPoint",
+      "type": "core",
+      "statement": "$f$ a contraction on a nonempty complete metric space $\\Rightarrow$ $\\exists p,\\ f(p) = p$",
+      "significance": "Existence half of the Banach fixed-point theorem: a contraction on a nonempty complete metric space always has a fixed point. The fixed point is produced as the limit of the Cauchy sequence of Picard iterates.",
+      "description": "A contraction has a fixed point."
+    },
+    {
+      "name": "fixedPoint_unique_of_isFixedPt",
+      "type": "core",
+      "statement": "$f(x) = x \\wedge f(y) = y \\Rightarrow x = y$",
+      "significance": "Uniqueness half: any two fixed points of a contraction coincide. Needs neither completeness nor nonemptiness — the contraction inequality d(x,y) = d(f x, f y) ≤ K·d(x,y) with K < 1 forces d(x,y) = 0.",
+      "description": "The fixed point is unique."
+    },
+    {
+      "name": "tendsto_iterate",
+      "type": "core",
+      "statement": "$\\mathrm{Tendsto}\\,(n \\mapsto f^{[n]}(x))\\ \\mathrm{atTop}\\ (\\mathcal N\\,p)$",
+      "significance": "Picard iteration: from ANY starting point x, the iterates fⁿx converge to the fixed point p. This is what makes the theorem constructive — the fixed point is computable to any precision by iterating f.",
+      "description": "Picard iterates converge to the fixed point."
+    },
+    {
+      "name": "apriori_estimate",
+      "type": "core",
+      "statement": "$d(f^{[n]}(x), p) \\le d(x, f(x)) \\cdot K^n / (1 - K)$",
+      "significance": "The geometric a-priori error bound: the distance from the n-th iterate to the fixed point decays like Kⁿ, with a constant known before iterating. Converts the existence theorem into a numerical method with a guaranteed error after n steps.",
+      "description": "Geometric convergence with rate K."
+    },
+    {
+      "name": "aposteriori_estimate",
+      "type": "supporting",
+      "statement": "$d(x, p) \\le d(x, f(x)) / (1 - K)$",
+      "significance": "The one-step a-posteriori bound: a single application of f bounds the distance from x to the fixed point — the basis of practical stopping criteria for fixed-point iteration.",
+      "description": "One step bounds the distance to the fixed point."
+    },
+    {
+      "name": "contractAffine_contracting",
+      "type": "supporting",
+      "statement": "$\\mathrm{ContractingWith}\\,(1/2)\\,(x \\mapsto x/2 + c)$",
+      "significance": "Verifies the contraction hypothesis for a concrete map: x ↦ x/2 + c is (1/2)-Lipschitz on ℝ. The estimate reduces to |x−y|/2 ≤ (1/2)|x−y|, closing the abstract theorem's premise with elementary real arithmetic.",
+      "description": "x ↦ x/2 + c is a (1/2)-contraction on ℝ."
+    },
+    {
+      "name": "contractAffine_fixedPoint",
+      "type": "supporting",
+      "statement": "$\\mathrm{fixedPoint}\\,(x \\mapsto x/2 + c) = 2c$",
+      "significance": "Computes the concrete fixed point: solving x = x/2 + c gives x = 2c, verified as the IsFixedPt witness and identified with Mathlib's fixedPoint by uniqueness.",
+      "description": "The fixed point of x ↦ x/2 + c is 2c."
+    },
+    {
+      "name": "contractAffine_apriori",
+      "type": "supporting",
+      "statement": "$d(f^{[n]}(x), 2c) \\le d(x, f(x)) \\cdot (1/2)^n / (1 - 1/2)$",
+      "significance": "The abstract geometric bound made fully concrete on ℝ: the iterates of x ↦ x/2 + c approach 2c with error halving at each step. Together with contractAffine_tendsto, shows the whole Banach machinery running on an explicit example.",
+      "description": "Explicit geometric error bound for the concrete map."
+    }
+  ],
+  "references": [
+    {
+      "text": "Banach, S. (1922). Sur les opérations dans les ensembles abstraits et leur application aux équations intégrales. Fundamenta Mathematicae 3, 133–181. The original contraction mapping principle.",
+      "url": "https://en.wikipedia.org/wiki/Banach_fixed-point_theorem"
+    },
+    {
+      "text": "Rudin, W. Principles of Mathematical Analysis. The contraction principle and its use in the inverse function theorem and ODE existence.",
+      "url": "https://en.wikipedia.org/wiki/Contraction_mapping"
+    },
+    {
+      "text": "Mathlib4: ContractingWith (Topology/MetricSpace/Contracting.lean) — fixedPoint, fixedPoint_isFixedPt, fixedPoint_unique', tendsto_iterate_fixedPoint, apriori_dist_iterate_fixedPoint_le, dist_fixedPoint_le; LipschitzWith.of_dist_le_mul.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the Banach fixed-point theorem with its quantitative content: existence (exists_fixedPoint) and uniqueness (fixedPoint_unique_of_isFixedPt) of the fixed point of a contraction on a nonempty complete metric space, convergence of Picard iterates from any seed (tendsto_iterate), and the geometric a-priori (apriori_estimate) and one-step a-posteriori (aposteriori_estimate) error bounds. The abstract theorem is then instantiated on the affine contraction x ↦ x/2 + c on ℝ (contractAffine_contracting, _fixedPoint, _tendsto, _apriori), whose unique fixed point is 2c reached at rate 1/2. All 8 theorems verified with 0 sorries and 0 axioms, no native_decide.",
+    "implications": "The contraction mapping principle is the existence-uniqueness engine behind Picard–Lindelöf for ODEs, the inverse and implicit function theorems, and the convergence of countless numerical iterations. The explicit geometric rate makes it a quantitative tool: the a-priori bound certifies an error after a prescribed number of steps, and the a-posteriori bound furnishes computable stopping criteria. The concrete affine instance shows the machinery instantiated end-to-end on the real line.",
+    "openQuestions": [
+      "Instantiate the principle on a Lipschitz integral operator to derive Picard–Lindelöf existence for an ODE initial-value problem",
+      "Add the Newton/parametrized variant: continuity of the fixed point in a parameter (Mathlib's fixedPoint_lipschitz_in_map) and a worked example",
+      "Formalize the converse-flavoured refinements — contractions of an iterate fⁿ, or eventual contractions — and a concrete higher-dimensional contraction on ℝᵈ"
+    ]
+  },
+  "sorries": 0
+}
