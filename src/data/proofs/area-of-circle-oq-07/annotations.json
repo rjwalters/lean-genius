@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-aoc07-context",
+    "proofId": "area-of-circle-oq-07",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "The Gaussian Integral and Its Place in the Gallery",
+    "content": "This entry answers open question 7 of the `area-of-circle` parent: the total integral of the Gaussian bell curve `e^{-x²}` over all of ℝ is `√π`. Rather than redo the classical squaring-and-polar-coordinates evaluation, it specializes Mathlib's already-proved parametrized Gaussian integral `integral_gaussian (b) : ∫ x, exp (-b·x²) = √(π/b)` at `b = 1`. This is deliberately a *routine specialization* — the analytic content lives entirely inside Mathlib — but it is the iconic case: `√π` is the normalization constant of the standard normal distribution and the simplest definite integral whose value carries a factor of π with no circle in sight.",
+    "mathContext": "The classical evaluation, due to Laplace and Poisson, computes $I = \\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx$ by squaring: $I^2 = \\int\\!\\!\\int_{\\mathbb R^2} e^{-(x^2+y^2)}\\,dx\\,dy$, then switching to polar coordinates $x = r\\cos\\theta,\\ y = r\\sin\\theta$ with Jacobian $r$, giving $I^2 = \\int_0^{2\\pi}\\!\\!\\int_0^\\infty e^{-r^2} r\\,dr\\,d\\theta = \\pi$, hence $I = \\sqrt{\\pi}$. The factor of $\\pi$ enters through exactly the circle-area Jacobian studied in the parent entry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gaussian integral",
+      "normal distribution normalization",
+      "polar-coordinate evaluation",
+      "circle-area Jacobian r dr dθ"
+    ],
+    "prerequisites": [
+      "Lebesgue integral over ℝ",
+      "Mathlib integral_gaussian",
+      "parent area-of-circle (polar Jacobian)"
+    ]
+  },
+  {
+    "id": "ann-aoc07-main",
+    "proofId": "area-of-circle-oq-07",
+    "range": { "startLine": 31, "endLine": 35 },
+    "type": "technique",
+    "title": "Specializing integral_gaussian at b = 1",
+    "content": "The whole proof is two lines. `have h := integral_gaussian 1` instantiates Mathlib's lemma to `∫ x, exp (-1 * x ^ 2) = √(π / 1)`. The goal differs only cosmetically: its integrand is `exp (-x ^ 2)` and its value is `√π`. `simpa only [neg_one_mul, div_one] using h` closes the gap — `neg_one_mul` rewrites `-1 * x ^ 2` to `-(x ^ 2)` (definitionally `-x ^ 2`, since `^` binds tighter than unary `-`), and `div_one` rewrites `π / 1` to `π`. No measure-theoretic reasoning is reproduced here; it is inherited wholesale from `integral_gaussian`.",
+    "mathContext": "Specialization of a parametrized result is the cheapest possible kind of formal proof, but it is only valid when the syntactic match is exact. The only real obligations are the coefficient `1 *` in the exponent and the `/ 1` in the value — both discharged by `simp` normal-form lemmas.",
+    "significance": "important",
+    "relatedConcepts": ["parametrized lemma specialization", "neg_one_mul", "div_one", "simpa"],
+    "prerequisites": ["integral_gaussian", "simp normal forms"]
+  },
+  {
+    "id": "ann-aoc07-sq",
+    "proofId": "area-of-circle-oq-07",
+    "range": { "startLine": 37, "endLine": 41 },
+    "type": "technique",
+    "title": "The Squared Identity (∫ e^{-x²})² = π",
+    "content": "`gaussian_integral_sq` records the value that the classical polar-coordinate computation actually produces: the *square* of the integral is exactly `π`. It follows immediately from the main theorem by `rw [gaussian_integral_eq_sqrt_pi, Real.sq_sqrt Real.pi_nonneg]`, since `√π ^ 2 = π` whenever `π ≥ 0`. This is the algebraic heart of the squaring argument — the step where, in the from-scratch derivation, the two-dimensional integral over ℝ² in polar coordinates evaluates to `π` via the `r dr dθ` Jacobian of the parent `area-of-circle` entry.",
+    "mathContext": "Squaring is the natural object: $I^2$ is a genuine planar integral that polar coordinates evaluate cleanly, whereas $I$ itself has no elementary antiderivative. Stating the squared identity separately makes the connection to the parent's circle-area Jacobian explicit and isolates the one place a factor of $\\pi$ is created.",
+    "significance": "important",
+    "relatedConcepts": ["Real.sq_sqrt", "squaring the Gaussian integral", "polar-coordinate Jacobian"],
+    "prerequisites": ["gaussian_integral_eq_sqrt_pi", "Real.sq_sqrt", "Real.pi_nonneg"]
+  }
+]
