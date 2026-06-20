@@ -3318,6 +3318,7 @@ import Proofs.TestZeroStrip
 import Proofs.TestZetaNonzero
 import Proofs.ThreePlaceIdentity
 import Proofs.ThreePlaceIdentityOQ02
+import Proofs.ThreeSubgroupsLemmaOQ01
 import Proofs.ThreeSquares
 import Proofs.ThreeSquaresDavenportCassels
 import Proofs.ThreeSquaresResidue3

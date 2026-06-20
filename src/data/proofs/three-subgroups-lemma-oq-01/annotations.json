@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ann-hall-witt-identity",
+    "proofId": "three-subgroups-lemma-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "The Hall–Witt Identity and Element-Level Rotation (hall_witt_identity, commutatorElement_eq_one_of_rotate)",
+    "content": "The Hall–Witt identity is the commutator analogue of the Jacobi identity: the product of the three cyclic conjugates of a double commutator, (b⁻¹⁅⁅b,a⁻¹⁆,c⁻¹⁆b)(c⁻¹⁅⁅c,b⁻¹⁆,a⁻¹⁆c)(a⁻¹⁅⁅a,c⁻¹⁆,b⁻¹⁆a), equals 1 in every group. It is a true identity in the free group on a, b, c, so after simp only [commutatorElement_def] the `group` decision procedure discharges it. Mathlib uses exactly this rearrangement inside its three subgroups proof but never records the identity. From it, commutatorElement_eq_one_of_rotate reads off the element-level core of the lemma: if ⁅⁅y⁻¹,z⁆,x⁻¹⁆ = 1 and ⁅⁅z⁻¹,x⁻¹⁆,y⁆ = 1 then ⁅⁅x,y⁆,z⁆ = 1. The proof rewrites the two vanishing inner brackets (commutatorElement_eq_one_iff_commute, applied twice) into the Hall–Witt rearrangement of the target double commutator and telescopes the surviving factors with `group`.",
+    "mathContext": "$(b^{-1}\\lbrack\\lbrack b,a^{-1}\\rbrack,c^{-1}\\rbrack b)(c^{-1}\\lbrack\\lbrack c,b^{-1}\\rbrack,a^{-1}\\rbrack c)(a^{-1}\\lbrack\\lbrack a,c^{-1}\\rbrack,b^{-1}\\rbrack a) = 1$; hence $\\lbrack\\lbrack y^{-1},z\\rbrack,x^{-1}\\rbrack = 1 \\wedge \\lbrack\\lbrack z^{-1},x^{-1}\\rbrack,y\\rbrack = 1 \\Rightarrow \\lbrack\\lbrack x,y\\rbrack,z\\rbrack = 1$.",
+    "prerequisites": [
+      "The element commutator ⁅x,y⁆ = x y x⁻¹ y⁻¹ (commutatorElement_def) and the `group` decision procedure",
+      "commutatorElement_eq_one_iff_commute (a commutator is trivial iff the elements commute)"
+    ],
+    "relatedConcepts": [
+      "Hall–Witt identity",
+      "Jacobi identity",
+      "commutator calculus",
+      "three subgroups lemma"
+    ],
+    "significance": "The named element-level Hall–Witt identity that Mathlib leaves buried inside an unnamed inline rearrangement. Naming it, and the element-level rotation lemma it implies, makes the engine of the three subgroups lemma reusable and exhibits exactly where the commutator-Jacobi structure enters."
+  },
+  {
+    "id": "ann-subgroup-bot-form",
+    "proofId": "three-subgroups-lemma-oq-01",
+    "range": {
+      "startLine": 107,
+      "endLine": 124
+    },
+    "type": "theorem",
+    "title": "The Subgroup = ⊥ Form via the Named Element Lemma (threeSubgroupsLemma)",
+    "content": "threeSubgroupsLemma is the subgroup bottom case — ⁅⁅H₂,H₃⁆,H₁⁆ = ⊥ and ⁅⁅H₃,H₁⁆,H₂⁆ = ⊥ imply ⁅⁅H₁,H₂⁆,H₃⁆ = ⊥ — re-derived so that its only group-element computation is delegated to the named commutatorElement_eq_one_of_rotate rather than to Mathlib's inline proof. A simp_rw with Subgroup.commutator_eq_bot_iff_le_centralizer, Subgroup.commutator_le and Subgroup.mem_centralizer_iff_commutator_eq_one reduces the subgroup equality to a pointwise commutator-equals-one statement; the element lemma closes it on the inverted generators (using H.inv_mem for membership of the inverses).",
+    "mathContext": "$\\lbrack\\lbrack H_2,H_3\\rbrack,H_1\\rbrack = \\bot \\;\\wedge\\; \\lbrack\\lbrack H_3,H_1\\rbrack,H_2\\rbrack = \\bot \\;\\Rightarrow\\; \\lbrack\\lbrack H_1,H_2\\rbrack,H_3\\rbrack = \\bot$.",
+    "prerequisites": [
+      "commutatorElement_eq_one_of_rotate (the named element-level lemma)",
+      "Subgroup.commutator_eq_bot_iff_le_centralizer, Subgroup.commutator_le, Subgroup.mem_centralizer_iff_commutator_eq_one"
+    ],
+    "relatedConcepts": [
+      "three subgroups lemma",
+      "centralizer",
+      "commutator subgroup"
+    ],
+    "significance": "Shows the subgroup form factoring cleanly through the named element identity: the centralizer characterizations strip the subgroup wrapper, leaving exactly the element-level rotation lemma to apply. This makes the dependence on the Hall–Witt rearrangement explicit instead of hidden."
+  },
+  {
+    "id": "ann-normal-form",
+    "proofId": "three-subgroups-lemma-oq-01",
+    "range": {
+      "startLine": 126,
+      "endLine": 146
+    },
+    "type": "theorem",
+    "title": "The Normal-Subgroup ≤ N Form (commutator_le_of_rotate)",
+    "content": "The classical ≤ N form, which Mathlib lacks: for N normal, ⁅⁅H,K⁆,L⁆ ≤ N and ⁅⁅K,L⁆,H⁆ ≤ N imply ⁅⁅L,H⁆,K⁆ ≤ N. The proof is a quotient transport. First rewrite each `_ ≤ N` as `_ ≤ (QuotientGroup.mk' N).ker` using QuotientGroup.ker_mk' (the kernel of the canonical projection is exactly N), then as `(QuotientGroup.mk' N).map _ = ⊥` using Subgroup.map_eq_bot_iff. The simp lemma Subgroup.map_commutator distributes the projection through both nested brackets, turning each hypothesis and the goal into a statement about the images ⁅⁅map f H, map f K⁆, map f L⁆ in G ⧸ N. The named threeSubgroupsLemma then closes the goal in the quotient group.",
+    "mathContext": "$\\lbrack\\lbrack H,K\\rbrack,L\\rbrack \\le N \\;\\wedge\\; \\lbrack\\lbrack K,L\\rbrack,H\\rbrack \\le N \\;\\Rightarrow\\; \\lbrack\\lbrack L,H\\rbrack,K\\rbrack \\le N$, for $N \\trianglelefteq G$.",
+    "prerequisites": [
+      "QuotientGroup.mk' N and QuotientGroup.ker_mk' (kernel of the projection equals N)",
+      "Subgroup.map_eq_bot_iff (X.map f = ⊥ ⟺ X ≤ f.ker) and Subgroup.map_commutator (map distributes over the bracket)",
+      "threeSubgroupsLemma (the named = ⊥ subgroup form)"
+    ],
+    "relatedConcepts": [
+      "three subgroups lemma",
+      "quotient group transport",
+      "lower central series",
+      "commutator calculus"
+    ],
+    "significance": "The classical ≤ N form of the three subgroups lemma, which Mathlib lacks. This is the version used inductively to prove ⁅γᵢ,γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₎ for the lower central series; obtaining it from the = ⊥ form by a quotient argument is a central piece of the entry's original content."
+  },
+  {
+    "id": "ann-cyclic-and-symmetric",
+    "proofId": "three-subgroups-lemma-oq-01",
+    "range": {
+      "startLine": 148,
+      "endLine": 177
+    },
+    "type": "theorem",
+    "title": "Cyclic Symmetry and Inner-Bracket Notation (commutator_le_of_rotate₂/₃, commutator_le_of_rotate_symm)",
+    "content": "The statement is invariant under the cyclic relabelling (H,K,L) ↦ (K,L,H), so the single lemma supplies all three implications among ⁅⁅H,K⁆,L⁆, ⁅⁅K,L⁆,H⁆, ⁅⁅L,H⁆,K⁆: any two lying in N force the third. commutator_le_of_rotate₂ derives ⁅⁅H,K⁆,L⁆ ≤ N from the other two, commutator_le_of_rotate₃ derives ⁅⁅K,L⁆,H⁆ ≤ N; each is the main lemma with arguments permuted. commutator_le_of_rotate_symm rephrases the lemma in the textbook bracket order ⁅H,⁅K,L⁆⁆: since the commutator of subgroups is symmetric (Subgroup.commutator_comm), rewriting each bracket reduces it to the main lemma.",
+    "mathContext": "Any two of $\\lbrack\\lbrack H,K\\rbrack,L\\rbrack, \\lbrack\\lbrack K,L\\rbrack,H\\rbrack, \\lbrack\\lbrack L,H\\rbrack,K\\rbrack$ in $N$ force the third; and $\\lbrack L,\\lbrack H,K\\rbrack\\rbrack \\le N \\wedge \\lbrack H,\\lbrack K,L\\rbrack\\rbrack \\le N \\Rightarrow \\lbrack K,\\lbrack L,H\\rbrack\\rbrack \\le N$.",
+    "prerequisites": [
+      "commutator_le_of_rotate (the main lemma)",
+      "Subgroup.commutator_comm (symmetry of the bracket on subgroups)"
+    ],
+    "relatedConcepts": [
+      "cyclic symmetry",
+      "three subgroups lemma"
+    ],
+    "significance": "Exposes the lemma's full symmetry and its textbook inner-bracket-first notation, so it can be applied in whichever of the three orientations a downstream proof needs without re-deriving the quotient argument."
+  },
+  {
+    "id": "ann-consistency-and-corollary",
+    "proofId": "three-subgroups-lemma-oq-01",
+    "range": {
+      "startLine": 179,
+      "endLine": 214
+    },
+    "type": "theorem",
+    "title": "Bottom Case and Centralizing Corollary (commutator_eq_bot_of_rotate, commutator_commutator_le_of_both)",
+    "content": "commutator_eq_bot_of_rotate specialises N = ⊥, collapsing ≤ ⊥ to = ⊥ (le_bot_iff), and a consistency `example` checks the = ⊥ form against Mathlib's Subgroup.commutator_commutator_eq_bot_of_rotate verbatim, confirming the generalization is faithful. commutator_commutator_le_of_both is the standard corollary: if, modulo the normal N, H commutes with both K and L (⁅H,K⁆ ≤ N and ⁅H,L⁆ ≤ N), then H commutes with ⁅K,L⁆ modulo N. The proof forces ⁅⁅H,K⁆,L⁆ ≤ ⁅N,L⁆ ≤ N and ⁅⁅L,H⁆,K⁆ ≤ ⁅N,K⁆ ≤ N (commutator_mono together with Subgroup.commutator_le_left, the containment ⁅N,·⁆ ≤ N for normal N), and invokes the lemma for the third, ⁅⁅K,L⁆,H⁆ = ⁅H,⁅K,L⁆⁆ ≤ N.",
+    "mathContext": "$N = \\bot$ recovers Mathlib's lemma; and $\\lbrack H,K\\rbrack \\le N \\wedge \\lbrack H,L\\rbrack \\le N \\Rightarrow \\lbrack H,\\lbrack K,L\\rbrack\\rbrack \\le N$.",
+    "prerequisites": [
+      "le_bot_iff (≤ ⊥ collapses to = ⊥) and Subgroup.commutator_commutator_eq_bot_of_rotate (for the consistency check)",
+      "Subgroup.commutator_mono, Subgroup.commutator_le_left (⁅N,C⁆ ≤ N for normal N), Subgroup.commutator_comm"
+    ],
+    "relatedConcepts": [
+      "three subgroups lemma",
+      "centralizer",
+      "nilpotent groups"
+    ],
+    "significance": "Confirms faithfulness against Mathlib's statement and demonstrates the standard payoff: 'H centralizes both K and L modulo N' really does force 'H centralizes ⁅K,L⁆ modulo N', the form of the lemma most often invoked in nilpotency arguments."
+  }
+]
