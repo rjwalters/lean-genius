@@ -3051,6 +3051,7 @@ import Proofs.SubsetCountOQ02
 import Proofs.SubsetCountOQ02OQ01
 import Proofs.SumOfDivisors
 import Proofs.SumOfDivisorsOQ02
+import Proofs.SumOfDivisorsOQ04
 import Proofs.SumOfKthPowers
 import Proofs.SumOfKthPowersOQ01
 import Proofs.SumOfKthPowersOQ02
