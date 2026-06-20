@@ -174,3 +174,46 @@ sidesteps exact radicals entirely.
 ### Next steps
 - `p = 13` / `p = 17` as further `p ≡ 1 (mod 4)` witnesses, or pivot to the general
   DFT-spectrum route once (or if) Mathlib gains finite-Fourier eigenvalue infrastructure.
+
+## Session 2026-06-19 (Session 6) — p = 11 witness (third `p ≡ 3 mod 4` case)
+
+**Mode:** depth-first · **Outcome:** progress (new sorry-free, axiom-free witness)
+
+### What I did
+- New companion file `Proofs/QuadraticGaussSumSignSmallEleven.lean` (verified): the next
+  prime on the `p ≡ 3 (mod 4)` branch after `p = 3, 7`, mirroring the p=3/5/7 files.
+  - `gaussSum_eleven_eq` — eleven-term enumeration over `ZMod 11` collapses to
+    `ζ − ζ² + ζ³ + ζ⁴ + ζ⁵ − ζ⁶ − ζ⁷ − ζ⁸ + ζ⁹ − ζ¹⁰` (quadratic residues mod 11 are
+    `{1,3,4,5,9}`). Character values via `quadraticChar (ZMod 11) k = ±1 → chiC 11 k = ±1`,
+    each branch discharged by `decide`.
+  - `sin_fold_12/14/16/18/20` — fold the upper-half sines via `sin(x+π)=−sin x`
+    (`Real.sin_add` + `Real.cos_pi`/`Real.sin_pi`) and `sin(π−x)=sin x`
+    (`Real.sin_pi_sub`).
+  - `gaussSum_eleven_im` — `Im g = 2·sin(2π/11) − 2·sin(4π/11) + 2·sin(6π/11)
+    + 2·sin(8π/11) + 2·sin(10π/11)`.
+  - `gaussSum_eleven_im_pos` — **`0 < Im g`** from coarse signs only: three sines
+    `sin(2π/11), sin(8π/11), sin(10π/11)` are positive (angles in `(0,π)`); the lone
+    negative term `−sin(4π/11)` is dominated by `sin(6π/11) = sin(5π/11) > sin(4π/11)`
+    (`Real.strictMonoOn_sin`, both angles in `(0,π/2)`). No exact (cubic-irrational)
+    radical values needed.
+  - `gaussSum_eleven_eq_I_sqrt_eleven` — feeds the positivity into the reduction lemma
+    `gaussSum_eq_I_sqrt_iff_im_pos` (with `11 % 4 = 3`) to get the FULL determination
+    `gaussSum (chiC 11) ψ₁₁ = +i·√11` (not `−i·√11`).
+
+### Key findings
+- The `p = 7` two-sine comparison method scales to `p = 11` essentially unchanged: with
+  more terms there are several unconditionally-positive sines and a single dominated
+  negative term, so the coarse-sign argument stays a one-line `linarith` after isolating
+  `sin(4π/11) < sin(5π/11) = sin(6π/11)`.
+- The `p ≡ 3 (mod 4)` branch now has three machine-checked witnesses (`p = 3, 7, 11`); the
+  general `0 < Im g` remains the open DFT-spectrum crux.
+
+### Files modified
+- `proofs/Proofs/QuadraticGaussSumSignSmallEleven.lean` (new, verified)
+- `proofs/Proofs.lean` (import)
+- `src/data/research/problems/quadratic-gauss-sum-square-oq-01.json` (new knowledge)
+
+### Next steps
+- `p = 13` / `p = 17` as further `p ≡ 1 (mod 4)` witnesses (the dominated-term count grows,
+  but the coarse-sign template is unchanged), or pivot to the general DFT-spectrum route
+  once (or if) Mathlib gains finite-Fourier eigenvalue infrastructure.
