@@ -1,0 +1,64 @@
+{
+  "id": "quadratic-gauss-sum-square-oq-02",
+  "title": "Equidistribution of Quadratic Residues and Non-Residues mod p",
+  "slug": "quadratic-gauss-sum-square-oq-02",
+  "description": "For an odd prime p, the quadratic (Legendre) character χ = quadraticChar (ZMod p) satisfies the orthogonality identity ∑ₐ χ(a) = 0 (Mathlib's quadraticChar_sum_zero). This entry draws the elementary counting consequence: the nonzero quadratic residues {a : χ(a) = 1} and the non-residues {a : χ(a) = -1} are equinumerous, each class containing exactly (p−1)/2 elements. Because χ is a quadratic character it takes only the values 0, 1, −1, so the character sum equals #{χ = 1} − #{χ = -1}; vanishing of the sum forces the two counts to agree, and χ(a) = 0 ⟺ a = 0 means they partition the p−1 nonzero elements. This is the orthogonality/equidistribution side of the Gauss-sum story, logically independent of the parent's algebraic square identity g² = (−1)^((p−1)/2)·p.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-20",
+    "status": "verified",
+    "proofRepoPath": "Proofs/QuadraticGaussSumSquareOQ02.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-residue",
+      "legendre-symbol",
+      "quadratic-character",
+      "gauss-sum",
+      "counting",
+      "zmod"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 134,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "assumptions": ""
+  },
+  "overview": {
+    "historicalContext": "That exactly half of the nonzero residues mod an odd prime are squares is one of the oldest facts in number theory, classically proved by pairing $a$ with $-a$ or by noting the squaring map $x \\mapsto x^2$ on $(\\mathbb{Z}/p)^\\times$ is two-to-one onto its image. The quadratic character $\\chi$ packages this: $\\chi(a) = +1$ on residues, $-1$ on non-residues, $0$ at zero. Its total sum $\\sum_a \\chi(a) = 0$ is the simplest instance of character orthogonality — the same orthogonality that underlies the evaluation of Gauss sums and the functional equations of Dirichlet $L$-functions. This entry isolates the counting content of that vanishing sum, separate from the deeper algebraic identity $g^2 = (-1)^{(p-1)/2} p$ studied in the parent.",
+    "problemStatement": "Let $p$ be an odd prime and $\\chi = \\operatorname{quadraticChar}(\\mathbb{Z}/p\\mathbb{Z})$ the quadratic character. Granting the orthogonality identity $\\sum_{a \\in \\mathbb{Z}/p} \\chi(a) = 0$, prove that the set of nonzero quadratic residues $\\{a : \\chi(a) = 1\\}$ and the set of non-residues $\\{a : \\chi(a) = -1\\}$ have equal cardinality, and that this common cardinality is exactly $(p-1)/2$.",
+    "proofStrategy": "Three steps. (1) `quadraticChar_sum_eq_zero` specialises Mathlib's `quadraticChar_sum_zero` to $\\mathbb{Z}/p$, discharging the characteristic hypothesis $\\operatorname{ringChar} \\ne 2$ from $p \\ne 2$ via `ZMod.ringChar_zmod_n`. (2) `sum_eq_card_sub_card` rewrites each value $\\chi(a)$ as $[\\chi(a)=1] - [\\chi(a)=-1]$ — valid because `quadraticChar_isQuadratic` says $\\chi(a) \\in \\{0,1,-1\\}$ — and applies `Finset.sum_boole` to turn the two indicator sums into the cardinalities of the residue and non-residue filters; so $\\sum_a \\chi(a) = \\#\\text{residues} - \\#\\text{nonresidues}$. Combining (1) and (2), `card_residues_eq_card_nonresidues` concludes the two counts are equal. (3) `card_residues_add_card_nonresidues` shows the two filters are disjoint and their union is exactly the nonzero elements (using $\\chi(a) = 0 \\iff a = 0$, `quadraticChar_eq_zero_iff`), whose count is $p-1$ by `ZMod.card` and `Finset.card_erase_of_mem`. Equal halves summing to $p-1$ give $(p-1)/2$ each by `omega`.",
+    "keyInsights": [
+      "The vanishing character sum $\\sum_a \\chi(a) = 0$ is exactly a signed count: residues contribute $+1$, non-residues $-1$, and zero contributes $0$, so the sum literally equals $\\#\\text{residues} - \\#\\text{nonresidues}$. Equidistribution is therefore not an extra theorem but a direct reading of orthogonality.",
+      "`quadraticChar_isQuadratic` — the statement that $\\chi$ takes only the values $0, 1, -1$ — is the structural fact that lets each summand be replaced by a difference of Boolean indicators, after which `Finset.sum_boole` converts indicator sums to filter cardinalities mechanically.",
+      "The partition into residues, non-residues, and $\\{0\\}$ rests on two clean iff-lemmas: $\\chi(a) = 0 \\iff a = 0$ pins the single excluded element, and quadraticity forbids any fourth value, so the nonzero elements split exactly into the two $\\pm 1$ classes.",
+      "The result is logically independent of the parent's square identity $g^2 = (-1)^{(p-1)/2} p$: that identity is the algebraic-square side of Gauss sums, whereas equidistribution is the orthogonality side, requiring only that the total character sum vanishes."
+    ]
+  },
+  "conclusion": {
+    "summary": "For every odd prime $p$, the nonzero quadratic residues and the non-residues mod $p$ are machine-verified to be equinumerous, each class having exactly $(p-1)/2$ elements. The proof reads the count off Mathlib's vanishing quadratic-character sum $\\sum_a \\chi(a) = 0$ together with the quadraticity of $\\chi$, with no axioms and no sorries.",
+    "implications": "Equidistribution of residues is the input to many elementary arguments: the existence of non-residues, the multiplicativity bookkeeping behind the Legendre symbol, and the $\\pm 1$ balance that makes character sums tractable. Here it is derived purely from orthogonality, complementing the parent's algebraic square identity and giving a self-contained counting companion to the Gauss-sum family.",
+    "openQuestions": [
+      "Can the same vanishing-sum/quadraticity mechanism be used to count residues in a class field $\\mathbb{F}_q$ with $q$ an odd prime power, giving $(q-1)/2$ nonzero squares directly from `quadraticChar_sum_zero` over $\\mathbb{F}_q$?",
+      "Does the signed-indicator decomposition extend to higher-order characters (cubic, quartic) to count the fibres of $x \\mapsto x^k$ from the corresponding character orthogonality relations?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "quadratic-gauss-sum-square",
+      "relationship": "related",
+      "description": "The parent establishes the algebraic square identity g² = (-1)^((p-1)/2)·p for the quadratic Gauss sum. This entry develops the complementary orthogonality side — the vanishing total character sum and its counting consequence — independently of the square identity."
+    },
+    {
+      "proofId": "quadratic-gauss-sum-square-oq-01",
+      "relationship": "related",
+      "description": "The sibling oq-01 extracts the real/imaginary dichotomy and magnitude ‖g‖²=p from the square identity. This entry instead uses the character sum ∑ₐ χ(a)=0 to count residues, a parallel elementary consequence of the same quadratic character."
+    },
+    {
+      "proofId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Equidistribution of residues and non-residues is part of the elementary theory of the Legendre symbol that underlies quadratic reciprocity."
+    }
+  ]
+}
