@@ -1,0 +1,126 @@
+{
+  "id": "fatou-lemma-oq-01",
+  "slug": "fatou-lemma-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Integral.Lebesgue.Add",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Filter",
+      "Set",
+      "Topology"
+    ],
+    "namespace": "FatouLemma",
+    "lineCount": 142,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/FatouLemma.lean",
+    "sorries": 0
+  },
+  "title": "Fatou's Lemma and the Strictness of the Liminf Inequality",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FatouLemma.lean",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "integration",
+      "convergence",
+      "real-analysis",
+      "fatou",
+      "lebesgue-integral",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 142,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "badge": "mathlib",
+    "originalContributions": [
+      "fatou_strict_on_escaping: the headline result — Fatou's inequality is GENUINELY STRICT. On the escaping-mass example ∫⁻ liminfₙ escaping n = 0 < 1 = liminfₙ ∫⁻ escaping n, so the unit mass of each bump survives in every integral but vanishes from the pointwise liminf. This is exactly why Fatou is only an inequality and why the monotone/dominated convergence theorems need their extra hypotheses to obtain equality. Mathlib records the inequality lintegral_liminf_le but no witness that it is strict.",
+      "escaping: the marching-indicator sequence escaping n = 𝟙_[n,n+1) on the real line — a unit bump escaping to +∞. The mechanism of mass loss in the limit, not formalized in Mathlib.",
+      "escaping_liminf_zero: at every point x the sequence n ↦ escaping n x is eventually 0 (once n > x we have x ∉ [n,n+1)), hence liminfₙ escaping n x = 0 — the pointwise-liminf computation driving the strict gap, via Tendsto.liminf_eq on an eventually-zero sequence.",
+      "escaping_lintegral: each bump carries unit Lebesgue mass ∫⁻ escaping n = 1 (lintegral_indicator_one on [n,n+1) of length 1), the conserved quantity that escapes to infinity.",
+      "fatou_lintegral_liminf_le / fatou_lintegral_liminf_le': clean restatements of Mathlib's Fatou inequality in the Measurable and AEMeasurable forms, the headline statements for the gallery."
+    ],
+    "prerequisites": [
+      "MeasureTheory.lintegral_liminf_le: Fatou's lemma in Mathlib (∫⁻ of a pointwise liminf ≤ liminf of the ∫⁻, for nonnegative measurable functions)",
+      "MeasureTheory.lintegral_indicator_one: ∫⁻ of the indicator of a measurable set equals the measure of the set",
+      "Real.volume_Ico: the Lebesgue measure of [a,b) is ENNReal.ofReal (b - a)",
+      "Filter.Tendsto.liminf_eq: a convergent sequence in a complete linear order has liminf equal to its limit",
+      "Nat.lt_floor_add_one: x < ⌊x⌋₊ + 1, used to show each point eventually leaves the marching interval"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.lintegral_liminf_le",
+        "description": "Fatou's lemma: for measurable fₙ : α → ℝ≥0∞, ∫⁻ liminfₙ fₙ ≤ liminfₙ ∫⁻ fₙ. Re-exported as fatou_lintegral_liminf_le and shown to be strict on the escaping-mass example.",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue.Add"
+      },
+      {
+        "theorem": "MeasureTheory.lintegral_liminf_le'",
+        "description": "The AEMeasurable form of Fatou's lemma, re-exported as fatou_lintegral_liminf_le'.",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue.Add"
+      },
+      {
+        "theorem": "MeasureTheory.lintegral_indicator_one",
+        "description": "∫⁻ a, s.indicator 1 a ∂μ = μ s for measurable s. Computes ∫⁻ escaping n = vol[n,n+1) = 1.",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto.liminf_eq",
+        "description": "In a conditionally complete linear order with order topology, a sequence converging to a has liminf equal to a. Applied to the eventually-zero sequence n ↦ escaping n x to compute its liminf as 0.",
+        "module": "Mathlib.Topology.Order.LiminfLimsup"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "fatou-lemma-oq-01-oq-01",
+      "question": "Formalize the reverse Fatou lemma (limsupₙ ∫⁻ fₙ ≤ ∫⁻ limsupₙ fₙ when the fₙ are dominated by a fixed integrable g) and exhibit the matching strict witness, completing the liminf/limsup pair that brackets the dominated convergence theorem.",
+      "significance": "medium"
+    },
+    {
+      "id": "fatou-lemma-oq-01-oq-02",
+      "question": "Derive the dominated convergence theorem from Fatou's lemma applied to g + fₙ and g - fₙ, making the classical Fatou ⇒ DCT route explicit, and show the escaping-mass example violates the domination hypothesis (no integrable majorant), explaining why DCT does not apply there.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "egorov-theorem-oq-01",
+      "relationship": "related",
+      "description": "The Egorov entry's follow-up question egorov-theorem-oq-01-oq-01 asks for exactly the marching-indicator sequence 1_[n,n+1] on ℝ as the witness that a.e./everywhere convergence need not be almost-uniform on an infinite-measure space. This entry formalizes that escaping-mass sequence and uses it to exhibit the strict gap in Fatou's lemma — the same loss-of-mass-to-infinity phenomenon, here measured by the integral rather than uniform convergence."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: MeasureTheory.Integral.Lebesgue.Add",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of MeasureTheory.lintegral_liminf_le and lintegral_liminf_le', the Measurable and AEMeasurable forms of Fatou's lemma."
+    },
+    {
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "author": "Folland",
+      "year": "1999",
+      "venue": "Wiley",
+      "description": "Standard reference for Fatou's lemma (Thm 2.18), the strictness of the inequality, the escaping-mass example, and the Fatou ⇒ dominated convergence route."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Fatou's lemma states that for nonnegative measurable functions fₙ, the integral of the pointwise liminf is at most the liminf of the integrals: ∫⁻ liminfₙ fₙ ≤ liminfₙ ∫⁻ fₙ. The inequality itself is Mathlib's MeasureTheory.lintegral_liminf_le, restated here in Measurable and AEMeasurable forms as fatou_lintegral_liminf_le / fatou_lintegral_liminf_le'. The entry's substance is the escaping-mass witness proving the inequality is genuinely STRICT: escaping n = 𝟙_[n,n+1) is a unit bump marching to +∞, escaping_lintegral shows each has integral 1, escaping_liminf_zero shows the pointwise liminf is 0 everywhere (each point eventually leaves the interval), and fatou_strict_on_escaping concludes ∫⁻ liminf = 0 < 1 = liminf ∫⁻. 144 lines, 6 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "The abstract Fatou inequality is delegated to Mathlib (hence the mathlib badge); the new content is the formalized strict witness, which Mathlib does not record. It makes precise why Fatou is only an inequality — mass can escape to infinity and be lost in the pointwise liminf — and thereby motivates the stronger hypotheses of the monotone and dominated convergence theorems that recover equality.",
+    "openQuestions": [
+      "Formalize the reverse Fatou lemma (dominated limsup form) with a matching strict witness.",
+      "Derive the dominated convergence theorem from Fatou and show the escaping-mass example fails its domination hypothesis."
+    ]
+  }
+}
