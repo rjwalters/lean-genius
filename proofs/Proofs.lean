@@ -2474,6 +2474,7 @@ import Proofs.GeometricSeriesOQ02
 import Proofs.GeometricSeriesOQ02OQ03
 import Proofs.GeometricSeriesOQ02OQ05
 import Proofs.GeometricSeriesOQ03
+import Proofs.GeometricSeriesOQ06
 import Proofs.GnedenkoKolmogorov
 import Proofs.GodelFirstIncompletenessOQ01
 import Proofs.GodelFirstIncompletenessOQ01OQ01
