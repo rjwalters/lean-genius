@@ -13,7 +13,9 @@
     ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "`greedyCount_le_sqrt` / `greedyCount_bracket` (Erdos340GreedyCountUpper.lean, verified 0-axiom): the greedy Sidon counting function is bracketed `C·N^(1/3) ≤ greedyCount N ≤ √N + ⁴√N + 2`. Upper bound is the Erdős–Turán/Lindström bound `sidon_card_le_sqrt` applied to the (Sidon, ⊆[0,N]) value image of the counted indices; lower bound is the existing `greedyCount_rpow_lower`. The 1/3-vs-1/2 exponent gap between the two bookends IS Erdős #340."
+    ],
     "open": [],
     "goal": ""
   },
@@ -31,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (verified, 0-axiom): the known direction of Erdős #340 now carries BOTH its discrete (greedy_count_ge) and analytic-density (greedy_count_omega_cubrt: ∃C>0, C·N^(1/3) ≤ A(N), uniform C) phrasings. Remaining: two parent axioms (def-bridge greedy_sidon_lower_bound; Erdős–Turán upper bound) and the OPEN 1/3→1/2 exponent improvement.",
+    "progressSummary": "PROGRESS (verified, 0-axiom): both bookends of the Erdős #340 growth bracket are now formalized — the analytic lower bound `greedyCount_rpow_lower` (∃C>0, C·N^(1/3) ≤ A(N)) and the Erdős–Turán upper bound `greedyCount_le_sqrt` (A(N) ≤ √N + ⁴√N + 2), combined in `greedyCount_bracket`. The upper bound follows from the window-inequality optimisation `sidon_card_le_sqrt` (Erdos340SidonErdosTuran.lean). Remaining OPEN: the 1/3→1/2 exponent improvement (the open problem itself) and the parent def-bridge axiom `greedy_sidon_lower_bound`.",
     "builtItems": [
       "Turnkey BUILD-PENDING draft: research/problems/erdos-340-greedy-sidon-oq-01/construction-draft.lean — forbidden set + forbidden_card_le (≤|A|^3) + forbidden_mono with real proofs; crux/existence/gSet recursion/covering/inversion/parent-axiom-rebuild as structured statements with sorry+precise proof comments. Only mem_forbidden_of_not_sidon_insert is genuinely technical (Aristotle target); rest is induction+omega+card arithmetic.",
       "PR #24965 (research label): corrected parent inline sketch O(n^2)→O(n^3) with covering argument + the 1/3-vs-1/2 OPEN-conjecture distinction. Comment-only, build-neutral.",
@@ -90,11 +92,12 @@
     "mathlib": []
   },
   "started": "2026-06-16T04:40:01.684Z",
-  "lastUpdate": "2026-06-19",
+  "lastUpdate": "2026-06-20",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     "proofs/Proofs/Erdos340GreedyGrowth.lean",
-    "proofs/Proofs/Erdos340GreedySidon.lean"
+    "proofs/Proofs/Erdos340GreedySidon.lean",
+    "proofs/Proofs/Erdos340GreedyCountUpper.lean"
   ]
 }

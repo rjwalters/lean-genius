@@ -1434,6 +1434,7 @@ import Proofs.Erdos338Problem
 import Proofs.Erdos339Aristotle
 import Proofs.Erdos339Problem
 import Proofs.Erdos33Problem
+import Proofs.Erdos340GreedyCountUpper
 import Proofs.Erdos340GreedyExtension
 import Proofs.Erdos340GreedyGrowth
 import Proofs.Erdos340GreedyRpowBound
