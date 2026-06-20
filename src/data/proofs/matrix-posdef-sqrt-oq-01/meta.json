@@ -18,7 +18,7 @@
     "namespace": "MatrixPosDefSqrtOQ01",
     "lineCount": 140,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/MatrixPosDefSqrtOQ01.lean",
     "sorries": 0
@@ -52,7 +52,7 @@
     "lineCount": 140,
     "assumptions": "0 axioms, 0 sorries, no native_decide, no Lean.ofReduceBool. All theorems depend only on the foundational propext / Classical.choice / Quot.sound. The square root is Mathlib's CFC.sqrt (continuous functional calculus over a C⋆-algebra); on Matrix n n 𝕜 with RCLike 𝕜 the relevant nonnegativity is the scoped MatrixOrder order, where Matrix.nonneg_iff_posSemidef gives 0 ≤ A ↔ A.PosSemidef and Matrix.PosSemidef.nonneg is the forward direction. The defining property re-exports CFC.sqrt_mul_sqrt_self / CFC.sq_sqrt; structure uses CFC.sqrt_nonneg with LE.le.posSemidef and Matrix.PosSemidef.isHermitian; uniqueness re-exports CFC.sqrt_unique (b·b = a, 0 ≤ b ⟹ √a = b); the corollaries (√0, √1, √(A²)) and the concrete diagonal instance are uniqueness applied to explicit candidates, with Matrix.PosSemidef.diagonal for diag(2,3) ⪰ 0 and diagonal_mul_diagonal for the squaring. The determinant shadow uses Matrix.det_pow. The genuine hypotheses are the domain conditions A.PosSemidef / B.PosSemidef.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 0
   },
   "overview": {
