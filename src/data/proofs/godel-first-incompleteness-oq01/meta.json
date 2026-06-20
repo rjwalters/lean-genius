@@ -137,6 +137,21 @@
       "targetId": "godel-incompleteness",
       "relationship": "companion",
       "description": "Pedagogical scaffold using Provable := fun _ => False; proofs hold vacuously. This file provides the non-vacuous axiomatic version."
+    },
+    {
+      "targetId": "godel-first-incompleteness-oq01-oq-01",
+      "relationship": "extended-by",
+      "description": "Rosser's 1936 improvement, which strengthens this entry by replacing the ω-consistency hypothesis with plain consistency. The Rosser sentence encodes a proof-length comparison ('every proof of me has an equally short or shorter disproof'), eliminating the asymmetry that forced ω-consistency here."
+    },
+    {
+      "targetId": "godel-first-incompleteness-oq01-oq-04",
+      "relationship": "foundational",
+      "description": "The Diagonal (Fixed-Point) Lemma, which supplies the self-referential sentence G this entry takes as an axiom. That entry constructs G as a genuine fixed point rather than assuming it for the specific formula G = ⟨42⟩, then re-derives the First Incompleteness Theorem from the lemma."
+    },
+    {
+      "targetId": "godel-second-incompleteness-oq02",
+      "relationship": "extended-by",
+      "description": "Gödel's Second Incompleteness Theorem builds directly on this formalization (GodelFirstIncompletenessOQ01), adding the Hilbert-Bernays-Löb derivability conditions to show no consistent system satisfying them can prove its own consistency."
     }
   ],
   "mainTheorems": [
