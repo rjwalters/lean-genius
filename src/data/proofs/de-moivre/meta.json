@@ -154,6 +154,21 @@
       "targetId": "angle-trisection",
       "relationship": "related",
       "description": "De Moivre's theorem shows cos(θ/3) satisfies a cubic equation, providing the algebraic framework for proving the impossibility of angle trisection by ruler and compass."
+    },
+    {
+      "targetId": "de-moivre-oq-01",
+      "relationship": "extended-by",
+      "description": "Carries out the first open question above: extracting explicit polynomial expressions for cos(nθ) and sin(nθ) by comparing the real and imaginary parts of the binomial expansion of (cos θ + i sin θ)^n. This turns De Moivre's identity into the concrete multiple-angle formulas (cos 2θ = cos²θ − sin²θ, cos 3θ = 4cos³θ − 3cos θ, …) that the parent only asserts abstractly."
+    },
+    {
+      "targetId": "de-moivre-oq-02",
+      "relationship": "extended-by",
+      "description": "Resolves the second open question: the multiple-angle polynomials of De Moivre are exactly the Chebyshev polynomials T_n via T_n(cos θ) = cos(nθ). This child formalizes the composition law T_m(T_n(cos θ)) = T_{mn}(cos θ) and the product-to-sum identities, exposing the semigroup structure hidden inside De Moivre's theorem."
+    },
+    {
+      "targetId": "de-moivre-oq-03",
+      "relationship": "extended-by",
+      "description": "Addresses the third open question by extending De Moivre's theorem from integer to fractional exponents z^{p/q}, where the formula becomes multi-valued. The child proves root enumeration, distinctness of the q roots, and consistency with the principal value, connecting De Moivre directly to the roots-of-unity and cyclotomic structure."
     }
   ],
   "conclusion": {
