@@ -52,3 +52,41 @@ picked this RICH-knowledge surveyed open problem instead).
 ### Honesty note
 This is the **known** lower-bound direction (cubic ⇒ N^(1/3)). The 1/3→1/2 exponent
 improvement is the OPEN part of Erdős #340 and is NOT addressed.
+
+## Session 2026-06-20 (Session N+1) - Analytic rpow lower bound
+
+**Mode**: REVISIT (depth-over-breadth follow-up)
+**Outcome**: progress (verified, 0-axiom)
+
+### What I Did
+- Built `proofs/Proofs/Erdos340GreedyRpowBound.lean` (new, ~165 lines, 0-axiom) on top of
+  the just-merged `Erdos340GreedyGrowth.lean` (PR #27012).
+- Defined the index-based counting function `greedyCount N = #{ k ≤ N : aₖ ≤ N }` and proved
+  `greedyCount_ge_index` (`2(n+1)³ ≤ N ⟹ n+1 ≤ A(N)`) and `one_le_greedyCount`.
+- Proved the inversion `lt_two_mul_succ_cube : N < 2·(A(N)+1)³` (contrapositive of the count
+  bound at `n = A(N)`).
+- Proved the headline `greedyCount_rpow_lower : ∃ C>0, ∀ N>0, C·N^(1/3) ≤ A(N)` with explicit
+  `C = 2^(-4/3)` — the analytic `rpow` form matching the literature / the
+  `greedy_sidon_lower_bound` axiom in `Erdos340Problem.lean`.
+
+### Key Findings
+- No floor / real cube-root inversion is needed: `N < 2(A+1)³` together with `A ≥ 1` gives
+  `N < 16 A³`, and a single monotone `rpow (1/3)` finishes it.
+- `Real.pow_rpow_inv_natCast (0≤x) (n≠0) : (x^n)^(n⁻¹:ℝ) = x` is the clean cube-root lemma;
+  rewrite `(1/3) = ((3:ℕ):ℝ)⁻¹` (`by norm_num`) to match. Packaging `B = 2^(4/3)·A` with
+  `B³ = 16 A³` sidesteps `mul_rpow` on the constant `16`.
+- The constant collapses via `← Real.rpow_add`: `2^(-4/3) · 2^(4/3) = 2^0 = 1`.
+
+### Files Modified
+- `proofs/Proofs/Erdos340GreedyRpowBound.lean` (new, 0-axiom)
+- `proofs/Proofs.lean` (import)
+- `src/data/research/problems/erdos-340-greedy-sidon-oq-01.json` (knowledge)
+
+### Next Steps
+- Discharge the `greedy_sidon_lower_bound` axiom in the *separate* `Erdos340Problem.lean` by
+  bridging its `sInf`-based `greedySidon` to the `Nat.find`-based `greedySidonSeq`.
+- Parent's remaining axiom: Erdős–Turán upper bound `sidon_upper_bound`.
+
+### Honesty note
+This is still the **known** lower-bound direction, now in its polished analytic form. The
+1/3→1/2 exponent improvement is the OPEN part of Erdős #340 and is NOT addressed.
