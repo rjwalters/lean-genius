@@ -71,28 +71,12 @@ theorem quadCharC_isQuadratic : (quadCharC p).IsQuadratic :=
 
 /-- For odd prime p, the quadratic character is nontrivial. -/
 theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
-  have hqc_ne : quadraticChar (ZMod p) ≠ 1 :=
-    quadraticChar_ne_one (ringChar_ne_two p hodd)
-  intro heq
-  apply hqc_ne
-  ext a
-  -- MulChar.one_apply : (1:MulChar R M) a = if IsUnit a then 1 else 0
-  have ha : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = (1 : MulChar (ZMod p) ℂ) a := by
-    show quadCharC p a = _; rw [heq]
-  rw [MulChar.one_apply] at ha  -- ha: Int.cast(quadraticChar a) = if IsUnit a then 1 else 0
-  rw [MulChar.one_apply]        -- goal: quadraticChar a = if IsUnit a then 1 else 0
-  rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · rw [hv] at ha; norm_cast at ha  -- ha: (0:ℂ) = if IsUnit a then 1 else 0
-    split_ifs at ha ⊢ with hu
-    · exact absurd ha one_ne_zero.symm   -- IsUnit: ha:(0:ℂ)=1 → False
-    · exact hv                           -- ¬IsUnit: goal quadraticChar a = 0, hv: = 0
-  · rw [hv] at ha; norm_cast at ha  -- ha: (1:ℂ) = if IsUnit a then 1 else 0
-    split_ifs at ha ⊢ with hu
-    · exact hv                           -- IsUnit: goal quadraticChar a = 1, hv: = 1
-    · exact absurd ha one_ne_zero  -- ha : 1=0, one_ne_zero : 1≠0
-  · rw [hv] at ha; push_cast at ha  -- ha: (-1:ℂ) = if IsUnit a then 1 else 0
-    exfalso
-    split_ifs at ha with hu <;> norm_num at ha
+  -- `ringHomComp` by an injective ring hom preserves nontriviality (Mathlib
+  -- `MulChar.ringHomComp_ne_one_iff`); `Int.castRingHom ℂ` is injective since ℂ
+  -- has characteristic zero.
+  rw [quadCharC,
+    MulChar.ringHomComp_ne_one_iff (RingHom.injective_int (Int.castRingHom ℂ))]
+  exact quadraticChar_ne_one (ringChar_ne_two p hodd)
 
 -- ============================================================================
 -- The Classical Gauss Sum
@@ -124,7 +108,7 @@ theorem gauss_sum_squared (hodd : p ≠ 2) :
     classicalGaussSum p ^ 2 = (-1 : ℂ) ^ (p / 2) * (p : ℂ) := by
   unfold classicalGaussSum
   haveI : NeZero p := ⟨Nat.pos_iff_ne_zero.mp hp.out.pos⟩
-  have hψ : (ZMod.stdAddChar (N := p)).IsPrimitive := ZMod.isPrimitive_stdAddChar
+  have hψ : (ZMod.stdAddChar (N := p)).IsPrimitive := ZMod.isPrimitive_stdAddChar p
   have hχ_ne : quadCharC p ≠ 1 := quadCharC_ne_one p hodd
   have hχ_q : (quadCharC p).IsQuadratic := quadCharC_isQuadratic p
   rw [gaussSum_sq hχ_ne hχ_q hψ]
@@ -203,6 +187,8 @@ example : ∃ τ : ℂ, τ ^ 2 = (-1 : ℂ) ^ (7 / 2) * (7 : ℂ) :=
 /-- p = 13 (≡ 1 mod 4): τ² = 13. -/
 example : ∃ τ : ℂ, τ ^ 2 = (-1 : ℂ) ^ (13 / 2) * (13 : ℂ) :=
   gauss_sum_squared_exists 13 (by norm_num)
+
+end
 
 end GaussSumSquaredQR
 

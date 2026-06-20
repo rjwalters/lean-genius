@@ -21,7 +21,7 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 252,
+    "lineCount": 243,
     "theoremCount": 11,
     "definitionCount": 1,
     "dateAdded": "2026-05-07",
@@ -83,10 +83,13 @@
       "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
       "Mathlib.Tactic"
     ],
-    "opens": ["MulChar", "ZMod"],
+    "opens": [
+      "MulChar",
+      "ZMod"
+    ],
     "namespace": "GaussSumFullAssembly",
     "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean",
-    "lineCount": 252,
+    "lineCount": 243,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 1,
