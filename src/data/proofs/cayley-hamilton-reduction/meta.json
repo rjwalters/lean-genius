@@ -199,6 +199,16 @@
       "targetId": "inverse-galois",
       "relationship": "related",
       "description": "The characteristic polynomial of a matrix determines a field extension via its splitting field; the Galois group of this extension governs the algebraic structure of the matrix's eigenvalues and Jordan form"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-01",
+      "relationship": "extended-by",
+      "description": "Extended by an efficient Cayley-Hamilton reduction specialized to sparse matrices."
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-02",
+      "relationship": "extended-by",
+      "description": "Extended by a refinement reducing via the minimal polynomial in place of the characteristic polynomial."
     }
   ],
   "references": [
