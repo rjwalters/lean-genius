@@ -1,0 +1,172 @@
+{
+  "id": "chebyshev-sum-inequality-oq-01",
+  "title": "Chebyshev's Sum Inequality in Classical Monotone-Sequence Form",
+  "slug": "chebyshev-sum-inequality-oq-01",
+  "description": "Mathlib states Chebyshev's sum inequality only through the order-correlation predicates MonovaryOn / AntivaryOn (MonovaryOn.sum_mul_sum_le_card_mul_sum), never in the form in which it is usually quoted — for two real sequences sorted the same way, (∑ aᵢ)(∑ bᵢ) ≤ n·∑ aᵢbᵢ, with the inequality reversing for oppositely-sorted sequences. We package exactly that classical statement: the similarly-sorted bound and its oppositely-sorted reverse for monotone/antitone sequences over range n, the equivalent averaged form (the mean of the products dominates the product of the means), the Cauchy–Schwarz-type square corollary, and the general MonotoneOn version over an arbitrary finite index set — by feeding the Monotone/Antitone ⇒ Monovary/Antivary bridges into the Mathlib lemmas.",
+  "meta": {
+    "author": "Classical (Chebyshev); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Order/Chebyshev.html",
+    "date": "1882",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "inequalities",
+      "order",
+      "chebyshev-sum-inequality",
+      "monotone",
+      "analysis"
+    ],
+    "proofRepoPath": "Proofs/ChebyshevSumMonotoneOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 100,
+    "mathlibDependencies": [
+      {
+        "theorem": "MonovaryOn.sum_mul_sum_le_card_mul_sum",
+        "description": "Chebyshev's sum inequality in Mathlib for monovarying f, g: (∑ f)(∑ g) ≤ #s · ∑ f·g — the abstract form we specialise to monotone sequences",
+        "module": "Mathlib.Algebra.Order.Chebyshev"
+      },
+      {
+        "theorem": "AntivaryOn.card_mul_sum_le_sum_mul_sum",
+        "description": "The reverse Chebyshev bound for antivarying f, g — specialised to monotone-vs-antitone sequences",
+        "module": "Mathlib.Algebra.Order.Chebyshev"
+      },
+      {
+        "theorem": "sq_sum_le_card_mul_sum_sq",
+        "description": "The square corollary (∑ f)² ≤ #s · ∑ f² (self-monovarying case) — Cauchy–Schwarz/Chebyshev consequence",
+        "module": "Mathlib.Algebra.Order.Chebyshev"
+      },
+      {
+        "theorem": "Monotone.monovary",
+        "description": "Two monotone functions monovary — the bridge from the monotone hypothesis to MonovaryOn",
+        "module": "Mathlib.Order.Monotone.Monovary"
+      },
+      {
+        "theorem": "Monotone.antivary",
+        "description": "A monotone and an antitone function antivary — the bridge for the reverse inequality",
+        "module": "Mathlib.Order.Monotone.Monovary"
+      },
+      {
+        "theorem": "MonotoneOn.monovaryOn / MonotoneOn.antivaryOn",
+        "description": "The on-a-set versions of the monotone ⇒ monovary bridges, used for the general finite-index-set statement",
+        "module": "Mathlib.Order.Monotone.Monovary"
+      }
+    ],
+    "originalContributions": [
+      "chebyshev_monotone: the textbook similarly-sorted statement (∑ f)(∑ g) ≤ n·∑ fg for monotone real sequences over range n — the named form Mathlib never states",
+      "chebyshev_antitone: the reverse inequality n·∑ fg ≤ (∑ f)(∑ g) for a monotone and an antitone sequence",
+      "chebyshev_mean: the averaged form — the mean of the products dominates the product of the means, ((∑ f)/n)((∑ g)/n) ≤ (∑ fg)/n",
+      "sq_sum_le: the Cauchy–Schwarz-type corollary (∑ f)² ≤ n·∑ f² packaged in the sequence narrative",
+      "chebyshev_monotoneOn / chebyshev_antitoneOn: the general statement over an arbitrary finite index set with MonotoneOn / AntitoneOn hypotheses"
+    ],
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Pafnuty Chebyshev's sum inequality (1880s) states that for two real sequences sorted in the same order the average of their products dominates the product of their averages: (1/n)∑ aᵢbᵢ ≥ ((1/n)∑ aᵢ)((1/n)∑ bᵢ). It is the discrete shadow of the fact that two comonotone random variables have nonnegative covariance, and it descends from the rearrangement inequality by summing over the n cyclic shifts of one sequence. Mathlib formalises the inequality abstractly through the order-correlation predicates MonovaryOn / AntivaryOn, but never records the classical statement quoted in textbooks — the one phrased directly for monotone sequences and equipped with its reverse and its averaged form.",
+    "problemStatement": "For monotone real sequences $f, g$ and $n \\ge 0$,\n\n$$\\Big(\\sum_{i<n} f_i\\Big)\\Big(\\sum_{i<n} g_i\\Big) \\;\\le\\; n \\sum_{i<n} f_i g_i,$$\n\nequivalently $\\big(\\tfrac1n\\sum f_i\\big)\\big(\\tfrac1n\\sum g_i\\big) \\le \\tfrac1n\\sum f_i g_i$; and when $g$ is antitone instead the inequality reverses,\n\n$$n \\sum_{i<n} f_i g_i \\;\\le\\; \\Big(\\sum_{i<n} f_i\\Big)\\Big(\\sum_{i<n} g_i\\Big).$$\n\nProvide the named monotone-sequence form (over range n and over an arbitrary finite index set), the averaged version, and the Cauchy–Schwarz square corollary $(\\sum f_i)^2 \\le n\\sum f_i^2$.",
+    "proofStrategy": "Each statement is the corresponding Mathlib bound composed with a monotonicity bridge.\n\n1. chebyshev_monotone: Monotone.monovary turns the two monotone hypotheses into Monovary f g, whose .monovaryOn ↑(range n) feeds MonovaryOn.sum_mul_sum_le_card_mul_sum; simpa rewrites #(range n) = n and the cast.\n\n2. chebyshev_antitone: identically with Monotone.antivary and AntivaryOn.card_mul_sum_le_sum_mul_sum.\n\n3. sq_sum_le: the self-monovarying special case sq_sum_le_card_mul_sum_sq specialised to range n.\n\n4. chebyshev_mean: from chebyshev_monotone, divide through by n² > 0; div_mul_div_comm and div_le_div_iff₀ reduce the averaged inequality to the partial-sum bound, closed by nlinarith.\n\n5. chebyshev_monotoneOn / chebyshev_antitoneOn: the same bridges in their on-a-set form (MonotoneOn.monovaryOn, MonotoneOn.antivaryOn) applied directly to the Finset bound, with no specialisation needed.",
+    "keyInsights": [
+      "Mathlib deliberately states Chebyshev through MonovaryOn (order correlation, no order on the index needed); the classical reading for monotone sequences is a thin but genuinely missing bridge — Monotone.monovary / Monotone.antivary are exactly the glue.",
+      "The same Mathlib lemma yields both directions: monotone+monotone monovary (≥-form), monotone+antitone antivary (reverse), so the reverse inequality is not a separate theorem but the antivary instance.",
+      "The averaged form ((∑ f)/n)((∑ g)/n) ≤ (∑ fg)/n is the statement people actually quote ('mean of products ≥ product of means'); it follows from the partial-sum bound by a single division by n².",
+      "The square corollary (∑ f)² ≤ n·∑ f² is the f = g self-monovarying case, the discrete Cauchy–Schwarz/variance bound.",
+      "Stating the inequality over an arbitrary finite index set with MonotoneOn keeps the full generality of Mathlib's Finset form while exposing the textbook monotone hypothesis."
+    ],
+    "prerequisites": [
+      "Finite sums over Finset (Finset.range, Finset.card)",
+      "Monotone / Antitone functions and the MonovaryOn / AntivaryOn order-correlation predicates",
+      "Chebyshev's sum inequality and its relation to the rearrangement inequality and to covariance",
+      "Basic ordered-field manipulation (division by a positive quantity)"
+    ]
+  },
+  "conclusion": {
+    "summary": "We packaged Chebyshev's sum inequality in the classical monotone-sequence form that Mathlib omits: the similarly-sorted bound (∑ f)(∑ g) ≤ n·∑ fg, its oppositely-sorted reverse, the averaged 'mean of products ≥ product of means' version, the Cauchy–Schwarz square corollary, and the general MonotoneOn statement over an arbitrary finite index set. All six results are fully machine-checked and depend only on the foundational axioms (0 sorries, 0 axioms).",
+    "implications": "This is the textbook-facing interface to Mathlib's abstract Chebyshev inequality: a user with monotone sequences no longer has to manufacture a MonovaryOn proof by hand. It complements the equality-case companion (rearrangement-inequality-oq-01), which characterises when equality holds; together they give the full inequality-plus-rigidity picture for the monotone case.",
+    "openQuestions": [
+      "Derive the weighted Chebyshev sum inequality for monotone sequences from a weighted monovariance hypothesis.",
+      "Combine with the equality case (rearrangement-inequality-oq-01) to give a single strict monotone-sequence statement: strict inequality unless f or g is constant.",
+      "Extend the averaged form to the continuous (integral) Chebyshev inequality for monotone functions on an interval."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Imports, an expository docstring contrasting Mathlib's MonovaryOn formulation with the classical monotone-sequence statement, and namespace setup."
+    },
+    {
+      "id": "sequences",
+      "title": "Real Sequences over range n",
+      "startLine": 35,
+      "endLine": 72,
+      "summary": "chebyshev_monotone, chebyshev_antitone, sq_sum_le, and the averaged chebyshev_mean — the textbook forms for monotone/antitone real sequences indexed by range n."
+    },
+    {
+      "id": "general",
+      "title": "Arbitrary Finite Index Sets",
+      "startLine": 74,
+      "endLine": 90,
+      "summary": "chebyshev_monotoneOn and chebyshev_antitoneOn — the general statement over an arbitrary finite index set with MonotoneOn / AntitoneOn hypotheses."
+    },
+    {
+      "id": "worked-instance",
+      "title": "Worked Instance",
+      "startLine": 92,
+      "endLine": 100,
+      "summary": "A concrete numerical instance (0,1,2): (0+1+2)² ≤ 3·(0²+1²+2²), i.e. 9 ≤ 15, obtained from sq_sum_le."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "rearrangement-inequality-oq-01",
+      "relationship": "related",
+      "description": "Equality case of Chebyshev's sum inequality via the discrete covariance identity (rigidity companion)"
+    },
+    {
+      "targetId": "chebyshev-sum-inequality",
+      "relationship": "extends",
+      "description": "Chebyshev's Sum Inequality"
+    },
+    {
+      "targetId": "amgm-inequality-oq-05",
+      "relationship": "related",
+      "description": "Young's inequality equality case (inequality from the same circle of ideas)"
+    }
+  ],
+  "references": [
+    {
+      "text": "Hardy, G. H., Littlewood, J. E., Pólya, G. (1952). Inequalities, 2nd ed., Cambridge University Press (Chebyshev's inequality and the rearrangement inequality).",
+      "url": "https://archive.org/details/Inequalities_201705"
+    },
+    {
+      "text": "Chebyshev's sum inequality.",
+      "url": "https://en.wikipedia.org/wiki/Chebyshev%27s_sum_inequality"
+    },
+    {
+      "text": "Mathlib4: Algebra.Order.Chebyshev and Order.Monotone.Monovary.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Order/Chebyshev.html"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "ChebyshevSumMonotone",
+    "lineCount": 100,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/ChebyshevSumMonotoneOQ01.lean",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "sorries": 0
+}
