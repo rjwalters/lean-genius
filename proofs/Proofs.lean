@@ -30,6 +30,7 @@ import Proofs.AbelRuffiniOQ04OQ09Cyclic
 import Proofs.AbelRuffiniOQ07
 import Proofs.AbelRuffiniOQ07ComplexConj
 import Proofs.AbelRuffiniOQ07Discriminant
+import Proofs.AbelRuffiniOQ07NotSolvable
 import Proofs.AbelRuffiniOQ07Order6
 import Proofs.AbelRuffiniOQ09
 import Proofs.AbelRuffiniOQ10
@@ -3329,6 +3330,7 @@ import Proofs.ThreeSquaresSquarefreeReduction
 import Proofs.ThreeSquaresSufficiency
 import Proofs.ThreeSquaresSufficiencyCorrected
 import Proofs.ThreeSquaresWitnessObstruction
+import Proofs.ThreeSubgroupsLemmaOQ01
 import Proofs.ThueMorse
 import Proofs.TractatusOntology
 import Proofs.TractatusOntologyEquiv
