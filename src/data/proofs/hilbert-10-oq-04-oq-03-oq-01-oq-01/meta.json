@@ -2,6 +2,22 @@
   "id": "hilbert-10-oq-04-oq-03-oq-01-oq-01",
   "title": "Hilbert's 10th Problem OQ-04·OQ-03·OQ-01·OQ-01: The Constructive Bézout Solver Matches Mathlib's Finset.gcd",
   "slug": "hilbert-10-oq-04-oq-03-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Hilbert10OQ04OQ03OQ01"
+    ],
+    "opens": [
+      "Hilbert10OQ04OQ03OQ01"
+    ],
+    "namespace": "Hilbert10OQ04OQ03OQ01OQ01",
+    "lineCount": 113,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/Hilbert10OQ04OQ03OQ01OQ01.lean",
+    "sorries": 0
+  },
   "description": "Answers open question oq-01 of the parent (hilbert-10-oq-04-oq-03-oq-01): reconcile the parent's hand-rolled recursive fold vecGcd with Mathlib's abstract normalized Finset.gcd. The bridge vecGcd_eq_finset_gcd proves vecGcd n a = Finset.univ.gcd a by matching the Fin (n+1) decomposition univ = cons 0 (map succ univ) against the recursion clause of vecGcd. As a consequence the divisibility criterion Finset.univ.gcd a ∣ c becomes provably equivalent to solvability of ∑ aᵢxᵢ = c — the forward (hard) direction discharged verbatim by the parent's constructive exists_vec_combo, the reverse by the standard 'gcd divides each coefficient'. This unifies the project's explicit-Bézout-witness construction with Mathlib's abstract invariant-factor divisibility criterion.",
   "meta": {
     "author": "Lean Genius Research",

@@ -2,6 +2,25 @@
   "id": "ptolemys-theorem-oq-04",
   "title": "Power of a Point: Intersecting Chords, Secants, and the Power Invariant",
   "slug": "ptolemys-theorem-oq-04",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Euclidean.Sphere.Power",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "EuclideanGeometry",
+      "RealInnerProductSpace",
+      "Real"
+    ],
+    "namespace": "PowerOfPointOQ04",
+    "lineCount": 165,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "path": "Proofs/PtolemysTheoremOQ04.lean",
+    "sorries": 0
+  },
   "description": "A coordinate-free Power of a Point package over an arbitrary real inner-product space, built on Mathlib's Sphere.power API. For a point P and a sphere, the power of P is dist(P,center)² − radius²; for any line through P meeting the sphere at A, B the product PA·PB equals |power P|, hence is independent of the chosen line. This single invariant unifies the Intersecting Chords Theorem (Freek No. 55), the Intersecting Secants Theorem, the Tangent–Secant relation, and the Equal Tangents Theorem. Distinct from the gallery's additive Ptolemy entry and its 2D-coordinate (Vec2) chord-product proof: it uses the product/power family of Mathlib lemmas (previously unused in the gallery) and works in any dimension. Includes a concrete witness: two perpendicular diameters of the unit circle in ℂ crossing at the centre.",
   "meta": {
     "author": "Lean Genius Researcher",

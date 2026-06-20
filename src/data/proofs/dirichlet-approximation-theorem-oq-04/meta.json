@@ -3,7 +3,21 @@
   "title": "Dirichlet Approximation OQ-04: Kronecker's Density Theorem",
   "slug": "dirichlet-approximation-theorem-oq-04",
   "description": "Kronecker's density theorem and its homogeneous Diophantine corollary. For a real number a, the integer multiples {n·a : n ∈ ℤ}, viewed on the circle ℝ/ℤ = AddCircle 1, are dense if and only if a is irrational: DenseRange (n ↦ n • a) ↔ Irrational a. Equivalently, an irrational rotation of the circle is minimal (every orbit dense), while a rational a = p/q gives a finite, evenly spaced orbit of q points. The topological statement is the qualitative precursor of equidistribution underlying the whole dirichlet-approximation family — oq-01 counts the ~1/q² good approximations, oq-03 re-derives Dirichlet's bound via Minkowski's geometry of numbers, oq-05 proves the dual sharpness statement for the golden ratio, and this entry supplies the orbit-density seed. From density at the point 0 the entry derives the homogeneous form of Dirichlet's approximation theorem: for irrational a and every ε > 0 there is a positive integer n with |n·a − round(n·a)| < ε, i.e. the fractional parts {n·a} accumulate at 0. The density iff is the period-1 specialisation of Mathlib's AddCircle.denseRange_zsmul_coe_iff (multiples of a dense on the circle of length p iff a/p irrational), using a/1 = a; the corollary feeds density a punctured ball B(0,ε) ∖ {0}, reads the circle-norm ‖(x : AddCircle 1)‖ back as distance-to-nearest-integer |x − round x| (AddCircle.norm_eq), and handles the sign so the witness multiplier is a positive natural.",
-  "leanFile": "Proofs/DirichletApproximationOQ04.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Metric"
+    ],
+    "namespace": "DirichletApproximationOQ04",
+    "lineCount": 107,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/DirichletApproximationOQ04.lean",
+    "sorries": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",

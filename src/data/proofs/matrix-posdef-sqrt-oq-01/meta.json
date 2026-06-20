@@ -3,7 +3,26 @@
   "title": "The Positive Semidefinite Square Root of a Matrix: Existence, Structure, and Uniqueness",
   "slug": "matrix-posdef-sqrt-oq-01",
   "description": "Every positive semidefinite matrix A over 𝕜 = ℝ or ℂ (RCLike 𝕜) has a positive semidefinite square root, supplied by modern Mathlib through the continuous functional calculus as CFC.sqrt A (the matrix-specific Matrix.PosSemidef.sqrt was deprecated in favour of this C⋆-algebra version), with the scoped MatrixOrder instances giving 0 ≤ A ↔ A.PosSemidef. The gallery had no entry on the operator square root — a different object from the Gram/positive-definite material and the determinant identities. The packaged content is the full characterization: (1) defining property √A·√A = A and (√A)² = A; (2) structure — √A is again positive semidefinite, hence Hermitian, so the square root stays inside the cone; (3) uniqueness — √A is the only PSD matrix B with B·B = A, the non-trivial half that makes 'the' square root well defined; (4) corollaries read off from uniqueness: √0 = 0, √1 = 1, and √(A²) = A for PSD A; (5) determinant shadow det(√A)² = det A, exhibiting det A as a square; (6) a concrete instance √diag(4,9) = diag(2,3), cross-checking the abstract functional calculus against the elementary entrywise square root. The PSD square root underlies the polar decomposition A = (PSD)·(unitary), the operator absolute value |A| = √(AᴴA), and the whitening transform in statistics.",
-  "leanFile": "Proofs/MatrixPosDefSqrtOQ01.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Matrix.Order",
+      "Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "MatrixOrder",
+      "ComplexOrder"
+    ],
+    "namespace": "MatrixPosDefSqrtOQ01",
+    "lineCount": 140,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/MatrixPosDefSqrtOQ01.lean",
+    "sorries": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",

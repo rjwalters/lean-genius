@@ -3,7 +3,23 @@
   "title": "Three Subgroups Lemma OQ-01: Normal-Subgroup Form via the Quotient",
   "slug": "three-subgroups-lemma-oq-01",
   "description": "The three subgroups lemma states that for subgroups H, K, L of a group G the three iterated commutators ⁅⁅H,K⁆,L⁆, ⁅⁅K,L⁆,H⁆, ⁅⁅L,H⁆,K⁆ are cyclically interchangeable modulo a normal subgroup N: if any two of them lie in N, so does the third. Mathlib records only the bottom case (N = ⊥): Subgroup.commutator_commutator_eq_bot_of_rotate, obtained from the Hall–Witt identity. This entry derives the classical ≤ N statement — the form actually used to build the lower central series and prove ⁅Gᵢ,Gⱼ⁆ ≤ G₍ᵢ₊ⱼ₎ — which Mathlib does not contain. The bridge is to pass to the quotient G ⧸ N: under the projection f = QuotientGroup.mk' N (whose kernel is exactly N), the inclusion X ≤ N is equivalent to X.map f = ⊥ (Subgroup.map_eq_bot_iff with QuotientGroup.ker_mk'), and map distributes over the commutator bracket (Subgroup.map_commutator). The three ≤ N hypotheses thereby become three = ⊥ statements in G ⧸ N, where Mathlib's lemma applies verbatim, and the conclusion pulls back along f. The entry packages the full cyclic symmetry (all three implications), the symmetric inner-bracket-first notation ⁅H,⁅K,L⁆⁆, the recovery of Mathlib's = ⊥ lemma as the case N = ⊥, and the standard corollary that if H commutes with both K and L modulo N then H commutes with ⁅K,L⁆ modulo N.",
-  "leanFile": "Proofs/ThreeSubgroupsLemmaOQ01.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Commutator.Basic",
+      "Mathlib.GroupTheory.QuotientGroup.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Subgroup"
+    ],
+    "namespace": "ThreeSubgroupsLemmaOQ01",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/ThreeSubgroupsLemmaOQ01.lean",
+    "sorries": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",

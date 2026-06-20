@@ -3,7 +3,21 @@
   "title": "Euler Identity OQ-05: Four-Square Identity and Multiplicative Closure",
   "slug": "euler-identity-oq-05",
   "description": "Euler's four-square identity and the multiplicative closure of sums of four squares. The identity (x₁²+x₂²+x₃²+x₄²)(y₁²+y₂²+y₃²+y₄²) = (x₁y₁−x₂y₂−x₃y₃−x₄y₄)² + (x₁y₂+x₂y₁+x₃y₄−x₄y₃)² + (x₁y₃−x₂y₄+x₃y₁+x₄y₂)² + (x₁y₄+x₂y₃−x₃y₂+x₄y₁)² expresses the product of two sums of four squares as itself a sum of four squares — the algebraic engine that reduces Lagrange's four-square theorem to the prime case. Mathlib proves the bare polynomial identity (euler_four_squares, sum_four_sq_mul_sum_four_sq, both by ring) and Lagrange's theorem (Nat.sum_four_squares), and for TWO squares it additionally packages the multiplicative closure as sq_add_sq_mul; but it provides no four-square analogue of that closure lemma. This entry supplies it: a predicate IsSumFourSq a := ∃ x y z w, a = x²+y²+z²+w² over an arbitrary commutative ring, together with the proof that the sums of four squares are closed under multiplication (IsSumFourSq.mul, witnesses read straight off Euler's identity), contain 0 and 1 and every square, and are closed under finite products and powers — i.e. they form a multiplicative submonoid. It also records the embedding of two-square sums into four-square sums and concrete worked examples (3 = 1²+1²+1², 7 = 2²+1²+1²+1², and 21 = 3·7 with witnesses produced mechanically by the closure theorem). The conceptual content Euler's identity provides — multiplicative structure — is thereby made explicit beyond the raw ring equation.",
-  "leanFile": "Proofs/EulerIdentityOQ05.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.SumFourSquares",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "EulerIdentityOQ05",
+    "lineCount": 145,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/EulerIdentityOQ05.lean",
+    "sorries": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",

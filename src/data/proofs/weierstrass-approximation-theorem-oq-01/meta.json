@@ -3,7 +3,26 @@
   "title": "The Weierstrass Approximation Theorem",
   "slug": "weierstrass-approximation-theorem-oq-01",
   "description": "Karl Weierstrass's 1885 approximation theorem: every real-valued function continuous on a closed bounded interval [a,b] is a uniform limit of polynomials. This entry assembles the theorem in four complementary forms and finishes with Weierstrass's own non-smooth witness |x|. (1) EPSILON FORM weierstrass_epsilon: for every ε>0 there is a polynomial p with |p(x)−f(x)| < ε for all x ∈ [a,b]. (2) SEQUENCE FORM exists_polynomial_seq_tendstoUniformlyOn — the textbook statement and the mathematical heart of the file: a SINGLE sequence of polynomials pₙ converging UNIFORMLY to f on [a,b] (TendstoUniformlyOn), built from the epsilon form by choosing pₙ within 1/(n+1) of f and proving the resulting sequence meets the uniform-convergence predicate. (3) DENSITY FORM weierstrass_density: the subalgebra of polynomial functions is topologically dense in C([a,b],ℝ), i.e. its closure is ⊤. (4) CONSTRUCTIVE FORM bernstein_tendstoUniformly: on [0,1] the explicit Bernstein polynomials ∑ₖ f(k/n)·C(n,k)·xᵏ·(1−x)^(n−k) converge uniformly to f — an effective approximating sequence, not a mere existence statement. (5) CONCRETE INSTANCE exists_polynomial_near_abs / exists_polynomial_seq_abs: the absolute-value function |x|, Weierstrass's own example of a continuous but non-differentiable function, is uniformly approximable by polynomials on [−1,1] — both the ε-form and a uniformly convergent sequence. Mathlib proves the theorem behind the epsilon and density forms (exists_polynomial_near_of_continuousOn, polynomialFunctions_closure_eq_top) and the Bernstein convergence (bernsteinApproximation_uniform); what is NOT in Mathlib and is the genuine contribution here is the packaging into the single uniformly-convergent sequence of polynomials (TendstoUniformlyOn) that IS the textbook statement, plus the worked |x| instance. A grep of proofs/Proofs for exists_polynomial_near / polynomialFunctions / bernsteinApproximation returned zero prior formalization; the gallery had only incidental prose mentions. Foundational: underlies approximation theory, numerical analysis, Fourier/orthogonal-polynomial theory, and the Stone–Weierstrass generalization.",
-  "leanFile": "Proofs/WeierstrassApproximationTheoremOQ01.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.ContinuousMap.Weierstrass",
+      "Mathlib.Analysis.SpecialFunctions.Bernstein",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "unitInterval",
+      "Polynomial"
+    ],
+    "namespace": "WeierstrassApproximation",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/WeierstrassApproximationTheoremOQ01.lean",
+    "sorries": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",

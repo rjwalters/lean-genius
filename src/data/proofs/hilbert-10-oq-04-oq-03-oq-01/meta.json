@@ -2,6 +2,19 @@
   "id": "hilbert-10-oq-04-oq-03-oq-01",
   "title": "Hilbert's 10th Problem OQ-04·OQ-03·OQ-01: A Constructive Bézout Solver",
   "slug": "hilbert-10-oq-04-oq-03-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Hilbert10OQ04OQ03OQ01",
+    "lineCount": 150,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 3,
+    "path": "Proofs/Hilbert10OQ04OQ03OQ01.lean",
+    "sorries": 0
+  },
   "description": "Answers the open question of the parent entry (hilbert-10-oq-04-oq-03): the linear-Diophantine decision procedure can be upgraded from a yes/no test into a constructive solver that returns an explicit witness. Where the parent proves solvability of ∑ aᵢxᵢ = c non-constructively (via the principal coefficient ideal and Classical.choice), this entry builds the solution vector explicitly from the extended-Euclidean Bézout cofactors Int.gcdA / Int.gcdB, scaled by c / gcd, and folded over the coefficient vector by recursion on the number of variables. Every solution component is a closed-form, computable integer.",
   "meta": {
     "author": "Lean Genius Research",

@@ -2,6 +2,22 @@
   "id": "spherical-law-of-cosines-oq-05",
   "title": "Spherical Law of Cosines OQ-05: the Haversine Formula",
   "slug": "spherical-law-of-cosines-oq-05",
+  "leanFile": {
+    "imports": [
+      "Proofs.SphericalLawOfCosines"
+    ],
+    "opens": [
+      "Real",
+      "SphericalLawOfCosines"
+    ],
+    "namespace": "SphericalLawOfCosinesOQ05",
+    "lineCount": 689,
+    "axiomCount": 0,
+    "theoremCount": 37,
+    "definitionCount": 1,
+    "path": "Proofs/SphericalLawOfCosinesOQ05.lean",
+    "sorries": 0
+  },
   "description": "Formal entry for OQ-05 of the parent gallery entry `spherical-law-of-cosines`: the haversine formula $\\text{hav}(c) = \\text{hav}(a-b) + \\sin(a)\\sin(b)\\,\\text{hav}(C)$ — the numerically stable version of the spherical law of cosines used in navigation and GPS great-circle distance computations. Establishes the haversine function, proves the pure algebraic identity (from the planar SLC hypothesis) and the `SphericalTriangle` version (closed at S2 via the projection-inner-product bridge), then develops the inverse haversine formula, strict monotonicity/injectivity, and the $[0,\\pi] \\simeq [0,1]$ bijection. Fully Docker-verified end-to-end: 37 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Todhunter, Sigl",

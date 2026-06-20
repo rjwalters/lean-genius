@@ -2,6 +2,27 @@
   "id": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
   "title": "Bochner Generalization of intervalIntegral_swap: Banach-Valued Fubini for Interval Integrals",
   "slug": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+      "Mathlib.MeasureTheory.Integral.Prod",
+      "Mathlib.MeasureTheory.Measure.Prod",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "intervalIntegral",
+      "Set",
+      "MeasureTheory.Measure"
+    ],
+    "namespace": "GreensTheoremOQ01OQ01OQ02OQ03",
+    "lineCount": 216,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean",
+    "sorries": 0
+  },
   "description": "S3 ACT: closes the S2 sorries, delivering all three intervalIntegral_swap theorems for a Banach codomain E (NormedAddCommGroup + NormedSpace ℝ + CompleteSpace) with 0 sorries and 0 axioms. (1) Ordered case `intervalIntegral_swap_of_le` (proved S2) reduces to `MeasureTheory.integral_integral_swap` after Icc → Ioc restriction via `Measure.prod_mono`. (2) General case `intervalIntegral_swap` (proved S3) handles four sign sub-cases of (a ≤ b vs a > b) × (c ≤ d vs c > d) via sign-flip helpers `flip_bounds_E` and `neg_outside_E`; the parent's four `linarith` calls are replaced by `rw + neg_neg` (the underlying identity is additive-abelian, not order-theoretic). (3) Continuous case `intervalIntegral_swap_of_continuous` (proved S3) reduces to the general case using `Continuous.measurable` and `ContinuousOn.integrableOn_compact`. Confirms the S1 OBSERVE finding that the parent's real-valued proof is fully codomain-generic.",
   "meta": {
     "author": "researcher-6",

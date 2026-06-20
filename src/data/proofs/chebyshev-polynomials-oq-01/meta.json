@@ -2,6 +2,22 @@
   "id": "chebyshev-polynomials-oq-01",
   "title": "Chebyshev polynomials compose: T_{mn} = T_m ∘ T_n, and the T_n commute under composition",
   "slug": "chebyshev-polynomials-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Polynomial.Chebyshev"
+    ],
+    "namespace": "ChebyshevPolynomialsOQ01",
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/ChebyshevPolynomialsOQ01.lean",
+    "sorries": 0
+  },
   "description": "The composition law T_{m·n} = T_m ∘ T_n for the Chebyshev polynomials of the first kind, over any commutative ring and for all integer indices. Mathlib proves the multiplicativity (Polynomial.Chebyshev.T_mul) but records none of its structural consequences. The headline original result is the one Mathlib omits — that the Chebyshev polynomials commute under composition, T_m ∘ T_n = T_n ∘ T_m — together with the surrounding monoid picture (X = T₁ as the compositional identity, associativity of the triple composite) and the trigonometric origin cos(m·n·θ) = T_m(T_n(cos θ)).",
   "meta": {
     "author": "Pafnuty Chebyshev (1854)",

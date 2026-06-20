@@ -2,6 +2,23 @@
   "id": "thue-morse-oq-01",
   "title": "The Thue-Morse Sequence",
   "slug": "thue-morse-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Digits.Defs",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "BigOperators"
+    ],
+    "namespace": "ThueMorse",
+    "lineCount": 144,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 1,
+    "path": "Proofs/ThueMorse.lean",
+    "sorries": 0
+  },
   "description": "The Thue-Morse sequence, defined as the parity of the binary digit sum, satisfies the bit-flip recurrences t(2n)=t(n), t(2n+1)=t(n)+1, takes value 1 at every power of two, and exhibits the four-term Prouhet-Tarry-Escott block structure t(4n)=t(4n+3), t(4n+1)=t(4n+2).",
   "meta": {
     "author": "Eugene Prouhet (1851), Axel Thue (1906), Marston Morse (1921)",

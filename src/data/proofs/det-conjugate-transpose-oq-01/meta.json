@@ -3,7 +3,24 @@
   "title": "Determinant of the Conjugate Transpose: det Mᴴ = star (det M), with the Hermitian and Unitary Corollaries",
   "slug": "det-conjugate-transpose-oq-01",
   "description": "Over a StarRing R — canonically R = ℂ with star the complex conjugate — taking the conjugate transpose of a square matrix conjugates its determinant: det Mᴴ = star (det M). This base identity is Mathlib's Matrix.det_conjTranspose (the gallery had no entry on it; it is distinct from det_mul / det_transpose). The substantive content is the pair of structural corollaries it powers, tying the adjoint/spectral structure of complex matrices to the single scalar invariant det. (1) Hermitian ⟹ self-adjoint determinant: if Mᴴ = M then star (det M) = det M, i.e. the determinant is fixed by conjugation; over ℂ this says the determinant of a Hermitian matrix is real — (det M).im = 0, equivalently det M = (r : ℂ) for some r : ℝ — the scalar shadow of the real-spectrum property of Hermitian operators. (2) Unitary ⟹ determinant on the unit circle: if Uᴴ * U = 1 then applying det to both sides gives star (det U) * det U = 1, hence ‖det U‖ = 1 — the det : U(n) → U(1) homomorphism in one line. The identity matrix witnesses both: det 1 = 1 is real and has modulus one.",
-  "leanFile": "Proofs/DetConjugateTransposeOQ01.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Hermitian",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix"
+    ],
+    "namespace": "DetConjugateTransposeOQ01",
+    "lineCount": 113,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/DetConjugateTransposeOQ01.lean",
+    "sorries": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",

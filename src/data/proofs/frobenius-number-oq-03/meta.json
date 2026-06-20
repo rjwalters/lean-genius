@@ -2,6 +2,21 @@
   "id": "frobenius-number-oq-03",
   "title": "Frobenius Number — Three Generators (Foundation)",
   "slug": "frobenius-number-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Lattice",
+      "Proofs.FrobeniusNumber"
+    ],
+    "opens": [],
+    "namespace": "FrobeniusOQ03",
+    "lineCount": 440,
+    "axiomCount": 0,
+    "theoremCount": 27,
+    "definitionCount": 2,
+    "path": "Proofs/FrobeniusNumberOQ03.lean",
+    "sorries": 0
+  },
   "description": "Three-generator Frobenius number foundation: defines $\\text{Representable3}\\;a\\;b\\;c\\;n := \\exists x, y, z \\in \\mathbb{N}.\\; n = ax + by + cz$ and develops a layered structural API. S2 establishes seven canonical closure lemmas (representable3_zero, representable3_a/b/c, representable3_add_a/b/c). S3a defines $\\text{frobeniusNumber3}\\;a\\;b\\;c := \\sup\\{n \\mid \\neg\\,\\text{Representable3}\\;a\\;b\\;c\\;n\\}$ with structural API (bounded-above suprema, abstract upper bound from $\\subseteq \\text{Iio}\\,K$, sSup-attainment). S3b lifts the 2-generator Sylvester bound to 3 generators via the bridge `large_representable3_via_two_gen` (witness with $z = 0$). S3c combines S3a + S3b to give the concrete loose Sylvester bound $\\text{frobeniusNumber3}\\,a\\,b\\,c \\le (a-1)(b-1)$ for coprime $a, b$. S4 derives finiteness of the non-representable set. S4a tightens S3c to $\\le (a-1)(b-1) - 1$, matching the classical Sylvester identity $g(a, b) = ab - a - b$. S5 specializes the S3b bridge to the three-consecutive family $(n, n+1, n+2)$ via `Nat.coprime_self_add_right`: every $m \\ge (n-1)\\cdot n$ is `Representable3 n (n+1) (n+2) m` (loose vs Roberts' tight $\\approx n^2/2$). Foundation for Roberts-1956 closed forms (S6+). 17 theorems, 2 definitions, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
