@@ -1,0 +1,247 @@
+{
+  "id": "abel-ruffini-oq-07-discriminant-cauchy",
+  "title": "Cauchy Reduction of the Discriminant Route to S₅ for X⁵ − X − 1",
+  "slug": "abel-ruffini-oq-07-discriminant-cauchy",
+  "description": "A machine-verified strengthening of the discriminant-route assembler for Gal(X⁵−X−1/ℚ) ≅ S₅ (sibling: abel-ruffini-oq-07-discriminant). That route takes 'Gal contains a 3-cycle' as a hypothesis; classically the 3-cycle is not exhibited explicitly but extracted from the divisibility 3 ∣ |Gal| via Cauchy's theorem. This entry supplies the missing combinatorial bridge isThreeCycle_of_orderOf_eq_three: on at most 5 points, every permutation of order 3 is automatically a 3-cycle (there is no room for two disjoint 3-cycles), proven from the cycle-type calculus (each cycle length divides orderOf g = 3 and is ≥ 2, hence = 3; the support bound 3k ≤ 5 with g ≠ 1 forces a single 3-cycle). Combining it with Cauchy (exists_prime_orderOf_dvd_card) gives gal_eq_top_of_three_dvd_card_transitive_odd: a transitive G ≤ S₅ with 3 ∣ |G| and ANY odd permutation equals ⊤ — the classical Selmer criterion in its sharpest form, with the 3-cycle now produced internally. Everything is fully machine-checked with 0 sorries and 0 axioms (only propext, Classical.choice, Quot.sound; no native_decide).",
+  "meta": {
+    "author": "Selmer (1956); Jordan (1873); Cauchy (1845)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Galois_group",
+    "date": "1956",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ07DiscriminantCauchy.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "galois-theory",
+      "symmetric-group",
+      "alternating-group",
+      "abel-ruffini",
+      "discriminant",
+      "jordan-theorem",
+      "cauchy-theorem",
+      "cycle-type",
+      "quintic"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "This file strengthens the discriminant-route reduction of Gal(X⁵−X−1) ≅ S₅ by discharging its 3-cycle hypothesis via Cauchy's theorem. The combinatorial bridge isThreeCycle_of_orderOf_eq_three (on ≤ 5 points, order 3 ⟹ 3-cycle) is unconditional and uses only Mathlib's cycle-type API. The final assembler gal_eq_top_of_three_dvd_card_transitive_odd takes two hypotheses: (i) the Galois action is transitive on the 5 roots (from irreducibility, Selmer 1956); (ii) Gal contains an odd permutation (from Δ = 2869 not being a square) — and the divisibility datum 3 ∣ |Gal|, from which Cauchy internally produces the order-3 element. It concludes Gal = ⊤ = S₅. These inputs are explicit HYPOTHESES, not axioms: the bridges that produce '3 ∣ |Gal|', transitivity, and the odd permutation in full generality (Dedekind–Frobenius cycle types; the discriminant criterion 'Gal ⊆ A_n ⟺ disc is a square') are not present in Mathlib v4.26.0. Every theorem is fully machine-checked with 0 sorries and 0 axioms (only propext, Classical.choice, Quot.sound; no native_decide, so no Lean.ofReduceBool).",
+    "dateAdded": "2026-06-19",
+    "mathlibDependencies": [
+      {
+        "theorem": "exists_prime_orderOf_dvd_card",
+        "description": "Cauchy's theorem: for a prime p dividing the order of a finite group, there is an element of order p",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      },
+      {
+        "theorem": "Equiv.Perm.lcm_cycleType",
+        "description": "The lcm of a permutation's cycle type equals its order",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      },
+      {
+        "theorem": "Equiv.Perm.two_le_of_mem_cycleType",
+        "description": "Every entry of a permutation's cycle type is at least 2",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      },
+      {
+        "theorem": "Equiv.Perm.sum_cycleType_le",
+        "description": "The sum of a permutation's cycle type is at most the cardinality of the underlying type",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      },
+      {
+        "theorem": "Equiv.Perm.card_cycleType_pos",
+        "description": "A permutation has nonempty cycle type iff it is not the identity",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      },
+      {
+        "theorem": "Equiv.Perm.alternatingGroup_le_of_isPreprimitive_of_isThreeCycle_mem",
+        "description": "Jordan's theorem: a primitive subgroup of Perm α containing a 3-cycle contains the alternating group",
+        "module": "Mathlib.GroupTheory.GroupAction.Jordan"
+      },
+      {
+        "theorem": "MulAction.IsPreprimitive.of_prime_card",
+        "description": "A pretransitive action on a set of prime cardinality is preprimitive",
+        "module": "Mathlib.GroupTheory.GroupAction.Primitive"
+      },
+      {
+        "theorem": "Subgroup.orderOf_coe",
+        "description": "The order of a subgroup element equals the order of its image in the ambient group",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      }
+    ],
+    "originalContributions": [
+      "isThreeCycle_of_orderOf_eq_three: a reusable group-theory lemma that on a type of cardinality ≤ 5 every permutation of order 3 is a 3-cycle, proven from the cycle-type calculus (divides-orderOf + support bound), 0 sorry / 0 axiom. This is the bridge classically taken for granted in 'a 3-cycle from 3 ∣ |Gal|'.",
+      "gal_eq_top_of_transitive_orderThree_odd: the discriminant-route assembler with the 3-cycle hypothesis weakened to the order condition orderOf g = 3.",
+      "gal_eq_top_of_three_dvd_card_transitive_odd: the classical Selmer criterion in its sharpest verified form — a transitive G ≤ S₅ with 3 ∣ |G| and any odd permutation equals ⊤ — with the order-3 element extracted internally by Cauchy's theorem (exists_prime_orderOf_dvd_card)."
+    ],
+    "prerequisites": [
+      "Symmetric and alternating groups; the sign homomorphism and index-2 maximality of A_n",
+      "Cycle type of a permutation; lcm/sum of the cycle type and their relation to order and support",
+      "Cauchy's theorem (a prime dividing |G| yields an element of that order)",
+      "Primitive permutation groups; Jordan's theorem",
+      "Lean 4 and Mathlib permutation/group-action API"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 129,
+    "relatedProblems": [
+      "abel-ruffini-oq-07-discriminant",
+      "abel-ruffini-oq-07",
+      "abel-ruffini-oq-04-oq-01",
+      "abel-ruffini"
+    ],
+    "theoremCount": 4,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Galois (1831) reduced solvability by radicals to solvability of a polynomial's permutation group, and X⁵ − X − 1 (irreducible by Selmer 1956) is a standard unsolvable witness with Galois group S₅. Two routes pin S₅ down: the discriminant (Gal ⊆ A_n iff disc is a square) and Jordan's 1873 theorem (primitive + 3-cycle ⟹ ⊇ alternating). The sibling entry assembles these from a 3-cycle taken as given; but a 3-cycle is classically obtained not by exhibiting a permutation, only from the divisibility 3 ∣ |Gal| and Cauchy's 1845 theorem. The last combinatorial step — that an order-3 element of S₅ must be a 3-cycle — is the small fact this entry formalizes and uses to close the gap.",
+    "problemStatement": "Strengthen the discriminant-route reduction Gal(X⁵−X−1) ≅ S₅ by replacing the explicit '3-cycle in Gal' hypothesis with the weaker, classically-available divisibility 3 ∣ |Gal|, extracting the 3-cycle internally via Cauchy's theorem.",
+    "text": "This entry machine-verifies, with 0 sorries and 0 axioms, the combinatorial bridge isThreeCycle_of_orderOf_eq_three (on at most 5 points, order 3 forces a 3-cycle) and uses it to reduce the discriminant assembler's hypotheses. The final theorem gal_eq_top_of_three_dvd_card_transitive_odd states that a transitive subgroup G ≤ S₅ with 3 ∣ |G| and containing some odd permutation equals all of S₅, with the order-3 (hence 3-cycle) element produced by Cauchy's theorem rather than supplied by hand.",
+    "proofStrategy": "Work in S₅ = Equiv.Perm (Fin 5). (1) Bridge: for g with orderOf g = 3, every entry n of cycleType g divides lcm(cycleType g) = orderOf g = 3 (lcm_cycleType) and satisfies 2 ≤ n (two_le_of_mem_cycleType), so n = 3; hence cycleType g = replicate k 3. The sum of the cycle type is 3k and is ≤ card α ≤ 5 (sum_cycleType_le), while g ≠ 1 gives k ≥ 1 (card_cycleType_pos); thus k = 1 and cycleType g = {3}, i.e. g.IsThreeCycle. (2) Assembler over order: feed the bridge into the prime-degree/Jordan/index-2 argument to weaken IsThreeCycle to orderOf g = 3. (3) Cauchy: from 3 ∣ |G|, exists_prime_orderOf_dvd_card yields x : G with orderOf x = 3; transfer the order to the ambient group via Subgroup.orderOf_coe and apply the order-based assembler.",
+    "keyInsights": [
+      "On fewer than 6 points there is no room for two disjoint 3-cycles, so an order-3 permutation is forced to be a single 3-cycle — the small combinatorial fact that lets Cauchy's element double as Jordan's 3-cycle.",
+      "lcm(cycleType) = orderOf and sum(cycleType) = |support| together turn 'order 3 on ≤ 5 points' into a one-line constraint: parts all 3, total ≤ 5, nonempty ⟹ exactly one part.",
+      "The divisibility 3 ∣ |Gal| is the genuinely available number-theoretic datum (it is unconditional for X⁵ − X − 1); exhibiting an explicit 3-cycle is not, so routing through Cauchy is the faithful formalization.",
+      "The reduction excludes the Frobenius group F₂₀ (order 20, no element of order 3) directly: 3 ∣ |G| is exactly what fails for F₂₀, leaving S₅ as the only transitive option with an odd element."
+    ],
+    "prerequisites": [
+      "Symmetric and alternating groups; the sign homomorphism",
+      "Cycle type, order, and support of a permutation",
+      "Cauchy's theorem",
+      "Primitive permutation groups and Jordan's theorem",
+      "Lean 4 and Mathlib group-action API"
+    ],
+    "relatedConcepts": [
+      "Abel-Ruffini theorem",
+      "Galois group of a quintic",
+      "Cauchy's theorem",
+      "Jordan's theorem on primitive groups",
+      "cycle type of a permutation"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Statement and the Cauchy Reduction",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Documents the goal: discharge the '3-cycle in Gal' hypothesis of the sibling discriminant entry via Cauchy's theorem plus the fact that on ≤ 5 points an order-3 permutation is a 3-cycle. Lists the three machine-checked results and the still-open number-theoretic bridges.",
+      "mathContext": "Classically a 3-cycle in Gal comes from 3 ∣ |Gal| (Cauchy) plus 'order 3 ⟹ 3-cycle on 5 points', not from an explicit permutation.",
+      "relatedConcepts": [
+        "Cauchy's theorem",
+        "discriminant criterion",
+        "Jordan's theorem"
+      ]
+    },
+    {
+      "id": "bridge",
+      "title": "The Combinatorial Bridge: order 3 ⟹ 3-cycle",
+      "startLine": 51,
+      "endLine": 95,
+      "summary": "isThreeCycle_of_orderOf_eq_three: on a finite type of cardinality ≤ 5, orderOf g = 3 implies g.IsThreeCycle. Each cycle length divides orderOf g = 3 and is ≥ 2, hence equals 3, so cycleType g = replicate k 3; the support bound 3k ≤ 5 together with g ≠ 1 forces k = 1, i.e. cycleType g = {3}.",
+      "mathContext": "lcm(cycleType g) = orderOf g = 3 ⟹ parts ∈ {3}; sum(cycleType g) = |support| ≤ 5 ⟹ at most one part; g ≠ 1 ⟹ at least one part.",
+      "relatedConcepts": [
+        "cycle type",
+        "order of a permutation",
+        "three-cycle"
+      ]
+    },
+    {
+      "id": "assemblers",
+      "title": "The Strengthened Assemblers",
+      "startLine": 96,
+      "endLine": 129,
+      "summary": "gal_eq_top_of_transitive_orderThree_odd weakens the 3-cycle hypothesis to orderOf g = 3 (via the bridge), routing through prime-degree primitivity, Jordan's theorem and index-2 maximality of A₅. gal_eq_top_of_three_dvd_card_transitive_odd then extracts the order-3 element from 3 ∣ |G| via Cauchy (exists_prime_orderOf_dvd_card), transferring its order with Subgroup.orderOf_coe.",
+      "mathContext": "Cauchy: prime p ∣ |G| ⟹ ∃ element of order p; here p = 3, and on Fin 5 that element is a 3-cycle, so Jordan applies.",
+      "relatedConcepts": [
+        "Cauchy's theorem",
+        "Jordan's theorem",
+        "index-2 subgroup"
+      ]
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "isThreeCycle_of_orderOf_eq_three",
+      "type": "core",
+      "description": "On a finite type of cardinality at most 5, every permutation of order 3 is a 3-cycle. Proven from the cycle-type calculus: parts divide orderOf g = 3 and are ≥ 2 hence = 3, and the support bound 3k ≤ 5 with g ≠ 1 forces a single part. The reusable bridge classically taken for granted when passing from '3 ∣ |Gal|' to 'a 3-cycle in Gal'."
+    },
+    {
+      "name": "gal_eq_top_of_three_dvd_card_transitive_odd",
+      "type": "core",
+      "description": "The Selmer criterion in its sharpest verified form: a transitive subgroup G ≤ S₅ with 3 ∣ |G| and containing some odd permutation equals all of S₅. The order-3 (hence 3-cycle) element is extracted internally by Cauchy's theorem, so only transitivity, 3 ∣ |G|, and an odd permutation remain as hypotheses."
+    },
+    {
+      "name": "gal_eq_top_of_transitive_orderThree_odd",
+      "type": "proved",
+      "description": "The discriminant-route assembler with the 3-cycle hypothesis weakened to orderOf g = 3, via isThreeCycle_of_orderOf_eq_three, prime-degree primitivity, Jordan's theorem and index-2 maximality of A₅."
+    },
+    {
+      "name": "card_fin5_prime",
+      "type": "proved",
+      "description": "The degree Nat.card (Fin 5) = 5 is prime — the structural hypothesis that upgrades the transitive Galois action to a primitive one, enabling Jordan's theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry machine-verifies, with 0 sorries and 0 axioms, the combinatorial bridge that on at most 5 points an order-3 permutation is a 3-cycle, and uses it together with Cauchy's theorem to strengthen the discriminant-route reduction of Gal(X⁵−X−1/ℚ) = S₅. The final assembler needs only transitivity, 3 ∣ |Gal|, and some odd permutation — the genuinely available classical data — rather than an explicitly exhibited 3-cycle.",
+    "implications": "1. Faithful reduction: 3 ∣ |Gal| (not an explicit 3-cycle) is the datum the Selmer/discriminant argument actually supplies; routing through Cauchy makes the formalization match the textbook proof.\n\n2. Reusable lemma: isThreeCycle_of_orderOf_eq_three is a clean, self-contained group-theory fact useful for any prime-degree-5 Galois argument or small-symmetric-group analysis.\n\n3. Sharper assembler: gal_eq_top_of_three_dvd_card_transitive_odd packages the entire group-theoretic content of the discriminant route into a single theorem consuming only divisibility and parity data.\n\n4. Honest axiom accounting: the remaining hypotheses isolate exactly the number-theoretic bridges still absent from Mathlib (Dedekind–Frobenius cycle types and the discriminant criterion), keeping the file axiom-free.",
+    "openQuestions": [
+      "Discharge the '3 ∣ |Gal|' hypothesis by formalizing that the Galois group of an irreducible quintic with the right modular factorization contains an element of order 3 (Dedekind–Frobenius at a suitable prime).",
+      "Generalize isThreeCycle_of_orderOf_eq_three to: on a type of cardinality < 2p, an element of prime order p is a single p-cycle — the natural statement behind 'prime order ⟹ cycle' in small symmetric groups.",
+      "Combine this assembler with a formal discriminant criterion (Gal ⊆ A_n ⟺ disc a square) so that disc_not_square from the sibling entry discharges the odd-permutation hypothesis automatically."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-oq-07-discriminant",
+      "relationship": "extends",
+      "description": "The sibling discriminant entry proves the assembler 'transitive + 3-cycle + odd ⟹ S₅' with the 3-cycle taken as a hypothesis. This entry discharges that hypothesis: on ≤ 5 points order 3 forces a 3-cycle, and Cauchy's theorem supplies the order-3 element from 3 ∣ |Gal|, yielding the sharper criterion that needs only 3 ∣ |G| and an odd permutation."
+    },
+    {
+      "targetId": "abel-ruffini-oq-07",
+      "relationship": "complementary",
+      "description": "The original OQ-07 entry uses a distinguished transposition (the cube of the order-6 Frobenius at p=2). This entry instead routes through Cauchy and Jordan, consuming the divisibility 3 ∣ |Gal| and any odd permutation."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "extends",
+      "description": "A second concrete Abel–Ruffini witness quintic, X⁵−X−1, unsolvable by radicals because (modulo the modular inputs) its Galois group is S₅."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.GroupAction.Jordan",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.GroupTheory.Perm.Cycle.Type",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MulAction",
+      "Equiv",
+      "Equiv.Perm"
+    ],
+    "namespace": "",
+    "lineCount": 129,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "sorries": 0,
+    "path": "Proofs/AbelRuffiniOQ07DiscriminantCauchy.lean"
+  },
+  "references": [
+    {
+      "key": "Selmer56",
+      "citation": "Selmer, E. S. (1956). 'On the irreducibility of certain trinomials.' Mathematica Scandinavica 4, 287-302. Proves Xⁿ − X − 1 irreducible over ℚ for all n.",
+      "type": "article"
+    },
+    {
+      "key": "Jordan1873",
+      "citation": "Jordan, C. (1873). Sur la limite de transitivité des groupes non alternés. Establishes that a primitive permutation group containing a 3-cycle contains the alternating group.",
+      "type": "article"
+    },
+    {
+      "key": "DummitFoote",
+      "citation": "Dummit, D. S. and Foote, R. M., Abstract Algebra (3rd ed.), Wiley (2004). Section 14.6–14.8: discriminant criterion and Galois groups of quintics; Cauchy's theorem in Section 3.",
+      "type": "book"
+    }
+  ]
+}
