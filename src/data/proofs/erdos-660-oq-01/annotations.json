@@ -1,0 +1,72 @@
+[
+  {
+    "id": "erdos-660-oq-01-ann-intro",
+    "proofId": "erdos-660-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Affine independence ⟹ convex independence: a Mathlib TODO",
+    "content": "A family of points is **affinely independent** when the only affine dependence among them is trivial; it is **convex independent** when no point lies in the convex hull of the others (equivalently, every point is an extreme point of the hull). Affine independence is strictly stronger — affine combinations permit any real coefficients summing to $1$, convex combinations only nonnegative ones — so affine independence implies convex independence, with the simplex on affinely independent vertices as the canonical example.\n\nMathlib formalizes both `AffineIndependent` and `ConvexIndependent` but leaves the implication as an explicit TODO in the module docstring of `Analysis/Convex/Independent.lean`: *'Prove `AffineIndependent.convexIndependent`. This requires some glue between `affineCombination` and `Finset.centerMass`.'* This entry supplies the lemma by a shorter route, and uses it to certify the regular-tetrahedron vertex set of Erdős #660 as genuine convex-polyhedron vertices.",
+    "mathContext": "`AffineIndependent 𝕜 p → ConvexIndependent 𝕜 p`. Stated in the `AffineIndependent` namespace as a drop-in for the Mathlib gap, over any linearly ordered field.",
+    "significance": "key",
+    "prerequisites": [
+      "affine independence and affine spans",
+      "convex hulls and extreme points"
+    ],
+    "relatedConcepts": [
+      "affine independence",
+      "convex independence",
+      "extreme point",
+      "simplex",
+      "Mathlib TODO"
+    ]
+  },
+  {
+    "id": "erdos-660-oq-01-ann-main",
+    "proofId": "erdos-660-oq-01",
+    "range": {
+      "startLine": 40,
+      "endLine": 53
+    },
+    "type": "insight",
+    "title": "The proof: route the convex hull through the affine span",
+    "content": "The TODO anticipates glue between `affineCombination` and `Finset.centerMass`, but that bookkeeping is avoidable. Convex independence is rewritten by `convexIndependent_iff_notMem_convexHull_diff` into: for each index $i$ and finite set $s$ of other indices, $p_i \\notin \\operatorname{convexHull}_{\\Bbbk}(p\\,''\\,(s \\setminus \\{i\\}))$.\n\nNow the inclusion of structures finishes it. `convexHull_subset_affineSpan` gives $\\operatorname{convexHull}_{\\Bbbk} T \\subseteq \\operatorname{affineSpan}_{\\Bbbk} T$, so if $p_i$ were in the convex hull of the others it would lie in their affine span — but `AffineIndependent.notMem_affineSpan_diff` says exactly that an affinely independent $p_i$ is **not** in $\\operatorname{affineSpan}_{\\Bbbk}(p\\,''\\,(s\\setminus\\{i\\}))$. Composing the two discharges the goal in one line: `hp.notMem_affineSpan_diff i s (convexHull_subset_affineSpan _ h)`.",
+    "mathContext": "Because the convex hull lies inside the affine span, a point ruled out of the affine span is a fortiori ruled out of the convex hull — the convex-coefficient case is never examined.",
+    "significance": "key",
+    "prerequisites": [
+      "convexIndependent_iff_notMem_convexHull_diff",
+      "convexHull_subset_affineSpan",
+      "AffineIndependent.notMem_affineSpan_diff"
+    ],
+    "relatedConcepts": [
+      "affine span",
+      "convex hull containment",
+      "non-membership"
+    ]
+  },
+  {
+    "id": "erdos-660-oq-01-ann-setforms",
+    "proofId": "erdos-660-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "Set-indexed corollaries and the Erdős #660 use",
+    "content": "Two restatements make the lemma directly applicable. `convexIndependent_of_affineIndependent_set` specializes the main theorem to the coercion family $(\\uparrow) : s \\to E$ of an affinely independent **set** $s$. `notMem_convexHull_diff_of_affineIndependent_set` unfolds this to the concrete form: for $x \\in s$, $x \\notin \\operatorname{convexHull}_{\\Bbbk}(s \\setminus \\{x\\})$.\n\nThat last form is exactly what certifies a simplex as a convex polyhedron: the four vertices of a regular tetrahedron are affinely independent, so every vertex fails to lie in the convex hull of the other three, i.e. each is an extreme point — `IsConvexPolyhedronVertices` holds. This is the certification the Platonic-solid constructions of Erdős #660 require for their simplex case.",
+    "mathContext": "`notMem_convexHull_diff_of_affineIndependent_set : AffineIndependent 𝕜 ((↑) : s → E) → x ∈ s → x ∉ convexHull 𝕜 (s \\ {x})` — extremality of each vertex of an affinely independent set.",
+    "significance": "standard",
+    "prerequisites": [
+      "set coercion families in Mathlib",
+      "IsConvexPolyhedronVertices (Erdős #660)"
+    ],
+    "relatedConcepts": [
+      "simplex",
+      "regular tetrahedron",
+      "extreme point",
+      "convex polyhedron vertices"
+    ]
+  }
+]
