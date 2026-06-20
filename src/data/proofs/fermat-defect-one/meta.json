@@ -69,6 +69,7 @@
       "defect_pos_witnesses_infinite (FermatDefectOneFamilies.lean): the positive-defect family (9s^3+1, 9s^4, 9s^4+3s) gives infinitely many primitive witnesses at n=3 (set of attainable c is infinite, via a strictly-monotone injection)",
       "defect_neg_witnesses_infinite (FermatDefectOneNegInfinitude.lean): the negative-defect family (9t^3-1, 9t^4-3t, 9t^4) gives infinitely many primitive witnesses at n=3, closing the sign symmetry — both signs occur infinitely often at n=3",
       "no_small_witness_4/5/6 and no_defect_one_eqn_below_4/5/6 (FermatDefectOneOQ04.lean): a verified no-small-witness lower bound M(n) ≥ 2 inside the box c ≤ 100 for n ∈ {4,5,6}, both signs, via native_decide — strengthening the parent's sorry'd no_witness_n_eq_4_below_20 (c ≤ 20, n=4) to c ≤ 100 across n ∈ {4,5,6}; stated without a gcd hypothesis since defect one forces primitivity, with defect_one_three_in_box exhibiting (6,8,9) at n=3 to show the n ≥ 4 vanishing is an exponent effect",
+      "box_min_defect_nonmonotone and box_min_defect_n4/n5/n6 + achiever_n4/n5/n6 (FermatDefectOneOQ03.lean): the box-restricted minimal defect m₁₀₀(n) computed exactly for n in {3,4,5,6} as 1, 46, 12, 601 (matching native_decide lower bounds + explicit achievers), proving the box proxy is NON-MONOTONE (m₁₀₀(4)=46 > 12=m₁₀₀(5), via the near-miss 13^5+16^5=17^5+12) — so any growth of the global M(n) cannot be exhibited via a monotone finite minimum and must be argued globally (abc / Fermat–Catalan)",
       "fermat_defect_one_exists: headline open conjecture stated as a sorry'd target for all n ≥ 3"
     ]
   },
@@ -290,6 +291,15 @@
         "axioms": 0,
         "sorries": 0,
         "description": "OQ-04 — a verified no-small-witness lower bound on the minimal defect M(n). For each n in {4,5,6}, NO triple 2 ≤ a ≤ b < c ≤ 100 has defect one in either sign (a^n+b^n+1=c^n or a^n+b^n=c^n+1), so M(n) ≥ 2 inside the box (no_defect_one_eqn_below_4/5/6). Restated without a gcd hypothesis (no_small_defect_one_4/5/6) — defect one forces primitivity (d^n | 1 ⇒ d=1) — and specialized to the parent predicate (no_small_witness_4/5/6: no FermatDefectWitness n a b c with c ≤ 100). defect_one_three_in_box exhibits (6,8,9) at n=3 inside the same box, showing the vanishing for n ≥ 4 is an exponent effect, not a bound artifact. Strengthens the parent's sorry'd no_witness_n_eq_4_below_20 (c ≤ 20, n=4) to c ≤ 100 across n in {4,5,6}. 10 theorems, 0 axioms, 0 sorries; the three headline non-existence theorems are discharged by native_decide (Nat.decidableBallLT enumeration), which introduces Lean.ofReduceBool. Namespace FermatDefectOne.OQ04; imports parent Proofs.FermatDefectOne."
+      },
+      {
+        "path": "Proofs/FermatDefectOneOQ03.lean",
+        "lineCount": 169,
+        "theorems": 12,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "OQ-03 — does the minimal defect M(n) grow with n? Supplies the finite, machine-checkable proxy m_N(n) := min{|a^n+b^n-c^n| : 2 ≤ a ≤ b < c ≤ N} and computes it exactly over the box N=100 for n in {3,4,5,6}: m₁₀₀ = 1, 46, 12, 601 (each pinned as a matching pair — a native_decide lower bound 'every box triple has defect ≥ K' together with an explicit achiever of defect exactly K). Headline result box_min_defect_nonmonotone: the box proxy is NON-MONOTONE, m₁₀₀(4) = 46 > 12 = m₁₀₀(5), driven by the genuinely small primitive near-miss 13^5 + 16^5 = 17^5 + 12 (gcd(13,16,17)=1, achiever_n5). Consequence: growth of the true global M(n), if it holds, is invisible to the obvious bounded computation and must be argued globally (abc / Fermat–Catalan), not by exhibiting a monotone finite minimum. 12 theorems, 0 axioms, 0 sorries; the three box lower bounds and the primitivity check are discharged by native_decide (bounded ∀ enumeration), which introduces Lean.ofReduceBool. Namespace FermatDefectOne.OQ03; imports parent Proofs.FermatDefectOne."
       }
     ]
   },
