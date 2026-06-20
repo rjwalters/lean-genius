@@ -568,6 +568,7 @@ import Proofs.ChebyshevBoundsOQ04
 import Proofs.ChebyshevBoundsOQ04Aristotle
 import Proofs.ChebyshevBoundsOQ04OQ01
 import Proofs.ChebyshevBoundsOQ04OQ01OQ01WeakMertensStatementOnly
+import Proofs.ChebyshevPolynomialsOQ01
 import Proofs.ChebyshevSumMonotoneOQ01
 import Proofs.ChebyshevPNTBridge
 import Proofs.ChebyshevPNTBridgeOQ01
