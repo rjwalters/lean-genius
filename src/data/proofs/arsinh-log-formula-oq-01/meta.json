@@ -1,0 +1,122 @@
+{
+  "id": "arsinh-log-formula-oq-01",
+  "slug": "arsinh-log-formula-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "ArsinhLogFormulaOQ01",
+    "lineCount": 108,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/ArsinhLogFormulaOQ01.lean",
+    "sorries": 0
+  },
+  "title": "Inverse Hyperbolic Sine: Logarithmic Form and Addition Law",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArsinhLogFormulaOQ01.lean",
+    "tags": [
+      "analysis",
+      "special-functions",
+      "hyperbolic-functions",
+      "inverse-hyperbolic",
+      "arsinh",
+      "logarithm",
+      "addition-formula",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 108,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "arsinh_eq_log: the closed logarithmic form arsinh x = log(x + √(1 + x²)) named as a stable lemma (Mathlib carries this only as the definition body and via exp_arsinh, not as a named closed-form theorem)",
+      "arsinh_add: the ADDITION LAW arsinh x + arsinh y = arsinh(x·√(1+y²) + y·√(1+x²)) — the inverse-hyperbolic analogue of the arctangent addition formula, absent from Mathlib; proved by applying arsinh to sinh(arsinh x + arsinh y) and expanding via sinh_add, sinh_arsinh, cosh_arsinh",
+      "arsinh_sub: the SUBTRACTION LAW arsinh x − arsinh y = arsinh(x·√(1+y²) − y·√(1+x²)), derived from arsinh_add and oddness",
+      "two_arsinh: the DOUBLING LAW 2·arsinh x = arsinh(2x·√(1+x²)), the diagonal corollary of the addition law",
+      "arsinh_three_quarters: the concrete closed-form value arsinh(3/4) = log 2 (since √(1+(3/4)²) = 5/4 and 3/4 + 5/4 = 2)",
+      "arsinh_four_thirds: the concrete closed-form value arsinh(4/3) = log 3 (since √(1+(4/3)²) = 5/3 and 4/3 + 5/3 = 3)",
+      "exp_arsinh' / sinh_arsinh' / arsinh_sinh' / cosh_arsinh' / arsinh_neg': stable re-exports of Mathlib's exponential form, inverse-pair, Pythagorean companion cosh(arsinh x) = √(1+x²), and oddness, providing the supporting API the addition law is built on"
+    ],
+    "prerequisites": [
+      "Inverse hyperbolic sine Real.arsinh and its definition arsinh x = log(x + √(1 + x²))",
+      "Mathlib's inverse-pair lemmas Real.sinh_arsinh, Real.arsinh_sinh",
+      "The hyperbolic addition formula Real.sinh_add and the Pythagorean companion Real.cosh_arsinh",
+      "Real.sqrt_sq for evaluating the concrete closed-form values"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.arsinh (definition)",
+        "description": "arsinh x = log(x + √(1 + x²)); the closed form arsinh_eq_log is this definition unfolded and named.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Arsinh"
+      },
+      {
+        "theorem": "Real.sinh_arsinh / Real.arsinh_sinh",
+        "description": "The inverse-pair identities sinh(arsinh x) = x and arsinh(sinh x) = x; arsinh_sinh is the key step turning the addition law into an identity about arsinh.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Arsinh"
+      },
+      {
+        "theorem": "Real.cosh_arsinh",
+        "description": "cosh(arsinh x) = √(1 + x²), the Pythagorean companion used to expand sinh(arsinh x + arsinh y).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Arsinh"
+      },
+      {
+        "theorem": "Real.sinh_add",
+        "description": "sinh(a + b) = sinh a · cosh b + cosh a · sinh b, the hyperbolic addition formula driving arsinh_add.",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "arsinh-log-formula-oq-01-oq-01",
+      "question": "Establish the integral identity ∫ 1/√(1 + x²) dx = arsinh x + C from Mathlib's hasDerivAt_arsinh, exhibiting arsinh as the antiderivative underlying the catenary arc length.",
+      "significance": "medium"
+    },
+    {
+      "id": "arsinh-log-formula-oq-01-oq-02",
+      "question": "Prove the companion arcosh logarithmic form arcosh x = log(x + √(x² − 1)) for x ≥ 1 and its addition law, the cosh-side counterpart to this entry.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ptolemys-theorem-oq-01-oq-02",
+      "relationship": "related",
+      "description": "That entry uses arctanh in the Poincaré-disk metric; this entry adds the other inverse-hyperbolic function arsinh with its explicit logarithmic closed form and a full addition/subtraction/doubling calculus, a domain otherwise absent from the gallery."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Arsinh",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.arsinh, its definition arsinh x = log(x + √(1 + x²)), and the inverse-pair / Pythagorean lemmas."
+    },
+    {
+      "title": "Handbook of Mathematical Functions (Abramowitz & Stegun), §4.6 Inverse Hyperbolic Functions",
+      "author": "Milton Abramowitz, Irene Stegun",
+      "year": "1964",
+      "venue": "historical",
+      "description": "Standard reference for the logarithmic form and addition formulas of the inverse hyperbolic functions."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The inverse hyperbolic sine arsinh x = log(x + √(1 + x²)) is given a named closed-form lemma and a full addition calculus. The addition law arsinh x + arsinh y = arsinh(x·√(1+y²) + y·√(1+x²)) — the inverse-hyperbolic analogue of arctangent's addition formula and absent from Mathlib — is proved by applying arsinh to sinh(arsinh x + arsinh y) and expanding via sinh_add together with the inverse-pair and Pythagorean identities; the subtraction and doubling laws follow as corollaries. Two concrete closed-form values, arsinh(3/4) = log 2 and arsinh(4/3) = log 3, exhibit the formula on rational arguments. 108 lines, 11 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The headline closed form is the Mathlib definition unfolded (hence the mathlib badge); the genuine new content is the addition / subtraction / doubling calculus for arsinh and the concrete logarithmic values, none of which Mathlib records. The entry introduces the inverse hyperbolic sine to the gallery — a domain previously represented only by arctanh — with its elementary logarithmic form and the addition structure that underlies the rapidity-addition picture in special relativity.",
+    "openQuestions": [
+      "Establish ∫ 1/√(1 + x²) dx = arsinh x + C from hasDerivAt_arsinh.",
+      "Prove the arcosh logarithmic form arcosh x = log(x + √(x² − 1)) and its addition law."
+    ]
+  }
+}
