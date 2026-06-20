@@ -1,0 +1,118 @@
+[
+  {
+    "id": "ann-euler-theorem",
+    "proofId": "euler-totient-oq-05",
+    "range": {
+      "startLine": 44,
+      "endLine": 49
+    },
+    "type": "theorem",
+    "title": "Euler's Theorem a^φ(n) ≡ 1 (mod n)",
+    "content": "For gcd(a,n) = 1, the φ(n)-th power of a is congruent to 1 modulo n. This is the totient generalization of Fermat's little theorem, obtained from Mathlib's Nat.ModEq.pow_totient. Structurally it is Lagrange's theorem applied to the unit group (ℤ/nℤ)ˣ, whose order is φ(n): the multiplicative order of a divides φ(n), so a^φ(n) is the identity.",
+    "mathContext": "$\\gcd(a,n)=1 \\Rightarrow a^{\\varphi(n)} \\equiv 1 \\pmod n$. The order of $a$ in $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ divides $\\varphi(n) = |(\\mathbb{Z}/n\\mathbb{Z})^\\times|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's totient",
+      "Fermat's little theorem",
+      "Lagrange's theorem",
+      "multiplicative order"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "Nat.ModEq",
+      "Nat.ModEq.pow_totient"
+    ]
+  },
+  {
+    "id": "ann-exponent-reduction",
+    "proofId": "euler-totient-oq-05",
+    "range": {
+      "startLine": 51,
+      "endLine": 73
+    },
+    "type": "theorem",
+    "title": "Exponent Reduction: a^k ≡ a^(k mod φ(n))",
+    "content": "The exponent-reduction corollary: for a base coprime to n > 1, a^k depends only on the exponent modulo φ(n), so a^k ≡ a^(k mod φ(n)) (mod n). This is the ModEq reading of Mathlib's Nat.pow_totient_mod. The general congruence form pow_congr_of_modEq_totient (k ≡ j (mod φ(n)) ⟹ a^k ≡ a^j) follows by a three-step calc through the reduced exponents, and pow_add_totient gives the single-period step a^(k+φ(n)) ≡ a^k. This periodicity is the arithmetic that makes fast modular exponentiation and RSA decryption correct.",
+    "mathContext": "$a^k \\equiv a^{k \\bmod \\varphi(n)} \\pmod n$; more generally $k \\equiv j \\pmod{\\varphi(n)} \\Rightarrow a^k \\equiv a^j \\pmod n$. The map $k \\mapsto a^k \\bmod n$ is periodic with period dividing $\\varphi(n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular exponentiation",
+      "RSA",
+      "periodicity",
+      "exponent reduction"
+    ],
+    "prerequisites": [
+      "Nat.pow_totient_mod",
+      "Nat.ModEq",
+      "Nat.pow_add_totient_mod_eq"
+    ]
+  },
+  {
+    "id": "ann-fermat-little",
+    "proofId": "euler-totient-oq-05",
+    "range": {
+      "startLine": 75,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "Fermat's Little Theorem as the Prime Case",
+    "content": "Fermat's little theorem a^(p-1) ≡ 1 (mod p) for prime p and a coprime to p is recovered as the special case of Euler's theorem where φ(p) = p − 1. The Lean proof rewrites p − 1 as φ(p) via Nat.totient_prime and applies euler_theorem.",
+    "mathContext": "$\\varphi(p) = p - 1$ for prime $p$, so Euler's theorem specializes to $a^{p-1} \\equiv 1 \\pmod p$ for $\\gcd(a,p) = 1$.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "Fermat's little theorem",
+      "prime totient",
+      "specialization"
+    ],
+    "prerequisites": [
+      "Nat.totient_prime",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-unit-group-form",
+    "proofId": "euler-totient-oq-05",
+    "range": {
+      "startLine": 84,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "Unit-Group Form and Agreement",
+    "content": "The same theorem in the unit group: every u ∈ (ℤ/nℤ)ˣ satisfies u^φ(n) = 1 (euler_units = ZMod.pow_totient), which is Lagrange's pow_card statement since |(ℤ/nℤ)ˣ| = φ(n). The bridge euler_theorem_via_units re-derives the ℕ-ModEq form by pushing a coprime base a into (ℤ/nℤ)ˣ through ZMod.unitOfCoprime and applying the group statement, demonstrating that the number-theoretic and group-theoretic forms are one theorem.",
+    "mathContext": "In $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ of order $\\varphi(n)$, $u^{\\varphi(n)} = 1$ for every unit $u$. Via $\\mathtt{unitOfCoprime}$, the coprime base $a$ maps to a unit, recovering $a^{\\varphi(n)} \\equiv 1 \\pmod n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unit group",
+      "Lagrange's theorem",
+      "pow_card",
+      "ZMod.unitOfCoprime"
+    ],
+    "prerequisites": [
+      "ZMod.pow_totient",
+      "ZMod.unitOfCoprime",
+      "ZMod.natCast_eq_natCast_iff"
+    ]
+  },
+  {
+    "id": "ann-concrete-checks",
+    "proofId": "euler-totient-oq-05",
+    "range": {
+      "startLine": 101,
+      "endLine": 111
+    },
+    "type": "example",
+    "title": "Concrete Verifications (axiom-free)",
+    "content": "Worked instances closed by decide (not native_decide, so no Lean.ofReduceBool axiom): 3^φ(10) = 3^4 = 81 ≡ 1 (mod 10); 2^φ(9) = 2^6 = 64 ≡ 1 (mod 9); and exponent reduction 7^100 ≡ 7^(100 mod φ(12)) = 7^0 = 1 (mod 12), since φ(12) = 4 divides 100.",
+    "mathContext": "$3^{\\varphi(10)} = 81 \\equiv 1 \\pmod{10}$; $2^{\\varphi(9)} = 64 \\equiv 1 \\pmod 9$; $7^{100} \\equiv 7^{100 \\bmod 4} = 7^0 = 1 \\pmod{12}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decidability",
+      "concrete verification",
+      "totient values"
+    ],
+    "prerequisites": [
+      "decide",
+      "Nat.totient"
+    ]
+  }
+]

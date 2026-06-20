@@ -1,0 +1,133 @@
+{
+  "id": "euler-totient-oq-05",
+  "title": "Euler's Theorem: a^φ(n) ≡ 1 (mod n)",
+  "slug": "euler-totient-oq-05",
+  "description": "Proves the Fermat–Euler theorem a^φ(n) ≡ 1 (mod n) for gcd(a,n)=1, with the exponent-reduction corollary a^k ≡ a^(k mod φ(n)) (mod n) that underpins modular exponentiation and RSA. Recovers Fermat's little theorem as the φ(p)=p-1 case and exhibits the equivalent unit-group form u^φ(n)=1 in (ℤ/n)ˣ. 7 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-19",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ05.lean",
+    "tags": [
+      "number-theory",
+      "euler-totient",
+      "modular-arithmetic",
+      "fermat-little-theorem",
+      "rsa"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-19",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified against Mathlib's Nat.ModEq.pow_totient, Nat.pow_totient_mod, Nat.totient_prime, and ZMod.pow_totient. Concrete checks use decide (no native_decide), so the file is axiom-free.",
+    "lineCount": 113,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "originalContributions": [
+      "pow_mod_totient: exponent reduction a^k ≡ a^(k mod φ(n)) (mod n) in clean ModEq form — the identity that makes modular exponentiation work",
+      "pow_congr_of_modEq_totient: k ≡ j (mod φ(n)) ⟹ a^k ≡ a^j (mod n), the general exponent-congruence consequence",
+      "pow_add_totient: a^(k+φ(n)) ≡ a^k (mod n), the period of k ↦ a^k mod n divides φ(n)",
+      "fermat_little: a^(p-1) ≡ 1 (mod p) recovered as the φ(p)=p-1 instance via Nat.totient_prime",
+      "euler_theorem_via_units: bridge re-deriving the ModEq form from the unit-group form u^φ(n)=1 through ZMod.unitOfCoprime"
+    ],
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Pierre de Fermat stated his 'little theorem' a^(p-1) ≡ 1 (mod p) for prime p in a 1640 letter to Frénicle de Bessy, without proof. Leonhard Euler gave the first published proof in 1736 and, in 1763, introduced the totient function φ(n) precisely to generalize the result to composite moduli: a^φ(n) ≡ 1 (mod n) whenever gcd(a,n) = 1. Euler's totient φ(n) counts the integers in {1,…,n} coprime to n, equivalently the order of the unit group (ℤ/nℤ)ˣ.\n\nThe modern structural view places Euler's theorem as a special case of Lagrange's theorem: in any finite group G, g^|G| = 1, and applying this to the unit group (ℤ/nℤ)ˣ of order φ(n) gives the result immediately. Fermat's little theorem is in turn the prime case, since φ(p) = p − 1. The exponent-reduction corollary a^k ≡ a^(k mod φ(n)) is the computational heart of the result: it says the map k ↦ a^k mod n is periodic with period dividing φ(n), which is exactly what allows fast modular exponentiation and the correctness of RSA decryption (where the decryption exponent d satisfies ed ≡ 1 (mod φ(n)), so m^(ed) ≡ m).\n\nThis entry frames the theorem directly through φ — distinguishing it from the gallery's Carmichael-λ entry (oq-01), which proves the sharper a^λ(n) ≡ 1 with λ(n) | φ(n), and from the abstract group-exponent derivation in lagrange-theorem-oq-07. The novel emphasis here is the exponent-reduction corollary and its congruence form, which the sibling entries do not state.",
+    "problemStatement": "Prove a^φ(n) ≡ 1 (mod n) for gcd(a,n) = 1 (Euler's theorem), together with the exponent-reduction corollary a^k ≡ a^(k mod φ(n)) (mod n); recover Fermat's little theorem a^(p-1) ≡ 1 (mod p) and the unit-group form u^φ(n) = 1 in (ℤ/n)ˣ.",
+    "text": "Euler's theorem is obtained from Mathlib's Nat.ModEq.pow_totient. The exponent-reduction corollary pow_mod_totient is the ModEq reading of Nat.pow_totient_mod (a^k % n = a^(k % φ n) % n), and the general congruence pow_congr_of_modEq_totient follows by a three-step calc: a^k ≡ a^(k mod φ n) = a^(j mod φ n) ≡ a^j, using k ≡ j (mod φ n) to rewrite the reduced exponents. Periodicity pow_add_totient = Nat.pow_add_totient_mod_eq. Fermat's little theorem is the φ(p) = p − 1 substitution via Nat.totient_prime. The unit-group form euler_units = ZMod.pow_totient, and euler_theorem_via_units bridges the two by pushing a coprime base into (ℤ/n)ˣ through ZMod.unitOfCoprime and applying the group statement.",
+    "proofStrategy": "Cite Nat.ModEq.pow_totient for the main theorem; unfold Nat.pow_totient_mod to the ModEq form for exponent reduction; chain a calc for the congruence corollary; substitute Nat.totient_prime for Fermat; and connect the ℕ-ModEq and (ℤ/n)ˣ statements via ZMod.unitOfCoprime / ZMod.natCast_eq_natCast_iff.",
+    "keyInsights": [
+      "Euler's theorem a^φ(n) ≡ 1 (mod n) is the unit-group instance of Lagrange's theorem, since |(ℤ/nℤ)ˣ| = φ(n)",
+      "The exponent-reduction corollary a^k ≡ a^(k mod φ(n)) is the periodicity that makes modular exponentiation and RSA decryption correct",
+      "Fermat's little theorem is the prime case: φ(p) = p − 1 turns Euler into a^(p-1) ≡ 1 (mod p)",
+      "The general congruence k ≡ j (mod φ(n)) ⟹ a^k ≡ a^j (mod n) is the clean statement of exponent periodicity, derived in one calc",
+      "The ℕ-ModEq form and the (ℤ/n)ˣ group form u^φ(n) = 1 are the same theorem, bridged by ZMod.unitOfCoprime",
+      "Concrete checks (3^φ(10) ≡ 1 mod 10, 2^φ(9) ≡ 1 mod 9) close by decide, keeping the file axiom-free"
+    ],
+    "prerequisites": [
+      "Euler's totient function: Nat.totient, Nat.Coprime",
+      "Modular congruence: Nat.ModEq, Nat.ModEq.pow_totient",
+      "Exponent reduction: Nat.pow_totient_mod, Nat.pow_add_totient_mod_eq",
+      "Unit group of ZMod n: ZMod.pow_totient, ZMod.unitOfCoprime"
+    ]
+  },
+  "conclusion": {
+    "summary": "Euler's theorem a^φ(n) ≡ 1 (mod n) for coprime a, with the exponent-reduction corollary a^k ≡ a^(k mod φ(n)), the congruence consequence k ≡ j (mod φ(n)) ⟹ a^k ≡ a^j, Fermat's little theorem as the prime case, and the equivalent unit-group form. 7 theorems, 0 axioms, 113 lines.",
+    "implications": "The exponent-reduction corollary is the arithmetic basis of modular exponentiation and RSA: decryption works because the exponent can be reduced modulo φ(n). Framing through φ keeps the entry distinct from the sharper Carmichael-λ statement and the abstract group-exponent derivation.",
+    "openQuestions": [
+      "Strengthen to the Carmichael bound a^λ(n) ≡ 1 (mod n) with λ(n) | φ(n) and exhibit a base of exact order λ(n) (already partly in oq-01)",
+      "Formalize the RSA correctness statement m^(ed) ≡ m (mod n) for ed ≡ 1 (mod φ(n)), covering the gcd(m,n) > 1 cases via CRT"
+    ]
+  },
+  "leanFile": {
+    "namespace": "EulerTotientOQ05",
+    "lineCount": 113,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/EulerTotientOQ05.lean",
+    "sorries": 0,
+    "additionalFiles": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient-oq-01",
+      "relationship": "related",
+      "description": "oq-01 proves the sharper Carmichael statement a^λ(n) ≡ 1 with λ(n) | φ(n); this entry targets the classical φ-exponent theorem and its exponent-reduction corollary"
+    },
+    {
+      "targetId": "lagrange-theorem-oq-07",
+      "relationship": "related",
+      "description": "lagrange-theorem-oq-07 derives Euler/Fermat abstractly from g^|G|=1 in a finite group; this entry works directly with Nat.ModEq and φ and adds the exponent-reduction corollary"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Parent formalization of Euler's totient function φ; oq-05 proves the theorem that motivated Euler's introduction of φ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "euler-theorem",
+      "title": "Euler's Theorem (ModEq form)",
+      "summary": "euler_theorem: a.Coprime n → a^φ(n) ≡ 1 (mod n), the totient generalization of Fermat's little theorem, from Nat.ModEq.pow_totient.",
+      "startLine": 44,
+      "endLine": 49,
+      "mathContext": "For $\\gcd(a,n)=1$, $a^{\\varphi(n)} \\equiv 1 \\pmod n$. The order of $a$ in $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ divides $|(\\mathbb{Z}/n\\mathbb{Z})^\\times| = \\varphi(n)$, so the $\\varphi(n)$-th power is the identity."
+    },
+    {
+      "id": "exponent-reduction",
+      "title": "The Exponent-Reduction Corollary",
+      "summary": "pow_mod_totient: a^k ≡ a^(k mod φ(n)) (mod n); pow_congr_of_modEq_totient: k ≡ j (mod φ(n)) ⟹ a^k ≡ a^j; pow_add_totient: a^(k+φ(n)) ≡ a^k.",
+      "startLine": 51,
+      "endLine": 73,
+      "mathContext": "The map $k \\mapsto a^k \\bmod n$ is periodic with period dividing $\\varphi(n)$: $a^k \\equiv a^{k \\bmod \\varphi(n)} \\pmod n$. Hence exponents may be reduced modulo $\\varphi(n)$ — the identity behind fast modular exponentiation and RSA decryption, where $ed \\equiv 1 \\pmod{\\varphi(n)}$ gives $m^{ed} \\equiv m$."
+    },
+    {
+      "id": "fermat-little",
+      "title": "Fermat's Little Theorem as the Prime Case",
+      "summary": "fermat_little: for prime p and a coprime to p, a^(p-1) ≡ 1 (mod p), via the substitution φ(p) = p − 1 (Nat.totient_prime).",
+      "startLine": 75,
+      "endLine": 82,
+      "mathContext": "Since $\\varphi(p) = p-1$ for prime $p$, Euler's theorem specializes to Fermat's little theorem $a^{p-1} \\equiv 1 \\pmod p$ for $\\gcd(a,p)=1$."
+    },
+    {
+      "id": "unit-group-form",
+      "title": "Unit-Group Form and Agreement",
+      "summary": "euler_units: u^φ(n) = 1 in (ℤ/n)ˣ (= ZMod.pow_totient, the Lagrange/pow_card statement); euler_theorem_via_units bridges it back to the ℕ-ModEq form via ZMod.unitOfCoprime.",
+      "startLine": 84,
+      "endLine": 99,
+      "mathContext": "In the finite group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ of order $\\varphi(n)$, every unit satisfies $u^{\\varphi(n)} = 1$ (Lagrange). Pushing a coprime base $a$ into this group via $\\mathtt{unitOfCoprime}$ recovers the number-theoretic congruence, showing the two forms are one theorem."
+    },
+    {
+      "id": "concrete-checks",
+      "title": "Concrete Verifications",
+      "summary": "decide-checks: 3^φ(10) ≡ 1 (mod 10), 2^φ(9) ≡ 1 (mod 9), and 7^100 ≡ 7^(100 mod φ(12)) (mod 12). Uses decide (not native_decide), so axiom-free.",
+      "startLine": 101,
+      "endLine": 111,
+      "mathContext": "Worked instances: $3^{\\varphi(10)} = 3^4 = 81 \\equiv 1 \\pmod{10}$; $2^{\\varphi(9)} = 2^6 = 64 \\equiv 1 \\pmod 9$; and exponent reduction $7^{100} \\equiv 7^{100 \\bmod 4} = 7^0 = 1 \\pmod{12}$."
+    }
+  ],
+  "sorries": 0
+}

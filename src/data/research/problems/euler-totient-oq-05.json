@@ -1,0 +1,200 @@
+{
+  "slug": "euler-totient-oq-05",
+  "title": "Euler's Theorem: a^φ(n) ≡ 1 (mod n) for gcd(a,n)=1",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\gcd(a,n)=1 \\;\\Rightarrow\\; a^{\\varphi(n)} \\equiv 1 \\pmod{n}",
+    "plain": "Euler's theorem: whenever $a$ and $n$ are coprime, $a^{\\varphi(n)} \\equiv 1 \\pmod n$, where $\\varphi$ is Euler's totient. It generalizes Fermat's little theorem ($a^{p-1} \\equiv 1 \\pmod p$, since $\\varphi(p)=p-1$) to arbitrary moduli, and yields the exponent-reduction corollary $a^k \\equiv a^{k \\bmod \\varphi(n)} \\pmod n$. We want a machine-checked proof framed via $\\varphi$, distinct from the existing Carmichael-$\\lambda$ entry.",
+    "whyMatters": [
+      "It is the arithmetic engine behind RSA and modular exponentiation.",
+      "It is the units-group instance of Lagrange's theorem, with |(ℤ/n)ˣ| = φ(n)."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": "Machine-checked proof of a^φ(n) ≡ 1 (mod n) for coprime a, plus the exponent-reduction corollary, via Nat.ModEq.pow_totient."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-19T22:27:34-07:00",
+    "iteration": 2,
+    "focus": "Shipped verified, axiom-free entry EulerTotientOQ05.lean (7 theorems).",
+    "blockers": [],
+    "nextAction": "Entry complete; optional follow-up = RSA correctness m^(ed)≡m via CRT, or Carmichael sharpening.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: shipped verified, axiom-free EulerTotientOQ05.lean (7 theorems, 113 lines). Euler's theorem a^φ(n)≡1 (Nat.ModEq.pow_totient), exponent-reduction corollary a^k≡a^(k mod φn) (ModEq reading of Nat.pow_totient_mod) + general congruence + period step, Fermat's little theorem via Nat.totient_prime, unit-group form ZMod.pow_totient with a unitOfCoprime bridge.",
+    "builtItems": [
+      "EulerTotientOQ05.euler_theorem — a^φ(n)≡1 [MOD n] for coprime a (Nat.ModEq.pow_totient)",
+      "EulerTotientOQ05.pow_mod_totient — exponent reduction a^k≡a^(k%φn) [MOD n] (ModEq form of Nat.pow_totient_mod)",
+      "EulerTotientOQ05.pow_congr_of_modEq_totient — k≡j [MOD φn] ⟹ a^k≡a^j [MOD n] via calc",
+      "EulerTotientOQ05.pow_add_totient — a^(k+φn)≡a^k [MOD n] (period divides φn)",
+      "EulerTotientOQ05.fermat_little — a^(p-1)≡1 [MOD p] for prime p via Nat.totient_prime",
+      "EulerTotientOQ05.euler_units — u^φ(n)=1 in (ZMod n)ˣ (ZMod.pow_totient)",
+      "EulerTotientOQ05.euler_theorem_via_units — bridge ℕ-ModEq ⟵ unit-group form via ZMod.unitOfCoprime"
+    ],
+    "insights": [
+      "Euler's theorem a^φ(n)≡1 is Nat.ModEq.pow_totient; the unit-group form u^φ(n)=1 is ZMod.pow_totient (Lagrange/pow_card with |(ZMod n)ˣ|=φ(n)).",
+      "Exponent reduction is the ModEq reading of Nat.pow_totient_mod (a^k % n = a^(k%φn) % n IS Nat.ModEq n (a^k) (a^(k%φn)) definitionally), so pow_mod_totient is a direct restatement.",
+      "Nat.ModEq is def-equal to (a % n = b % n) but `rw` on a ModEq hypothesis fails — extract `have : k%φn = j%φn := hkj` first, then rw.",
+      "Fermat's little theorem is the φ(p)=p-1 case: rw [← Nat.totient_prime hp] then apply euler_theorem.",
+      "Bridge ℕ↔units cleanly via one rw chain: ZMod.natCast_eq_natCast_iff, Nat.cast_pow, ← ZMod.coe_unitOfCoprime, ← Units.val_pow_eq_pow_val, ZMod.pow_totient, Units.val_one.",
+      "decide (not native_decide) closes small a^φ(n)≡1 [MOD n] checks → stays axiom-free (no Lean.ofReduceBool)."
+    ],
+    "mathlibGaps": [
+      "None for this statement — coverage gap only. Mathlib has Nat.ModEq.pow_totient, Nat.pow_totient_mod family, ZMod.pow_totient."
+    ],
+    "nextSteps": [
+      "RSA correctness m^(ed)≡m (mod n) for ed≡1 (mod φ(n)), including gcd(m,n)>1 via CRT.",
+      "Carmichael sharpening a^λ(n)≡1 with λ(n)|φ(n) and a base of exact order λ(n) (overlaps oq-01)."
+    ],
+    "markdown": "# Knowledge Base: euler-totient-oq-05\n\nInsights accumulated during research on this problem.\n"
+  },
+  "tags": [
+    "number-theory",
+    "euler-totient",
+    "modular-arithmetic",
+    "fermat-little-theorem"
+  ],
+  "relatedProofs": [
+    "euler-totient",
+    "euler-totient-oq-01",
+    "euler-totient-oq-01-oq-03",
+    "euler-totient-oq-02",
+    "euler-totient-oq-02-oq-01",
+    "euler-totient-oq-03",
+    "euler-totient-oq-04",
+    "lagrange-theorem-oq-07"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Nat.ModEq.pow_totient",
+      "Nat.pow_totient_mod_eq_one",
+      "Nat.pow_add_totient_mod_eq"
+    ]
+  },
+  "started": "2026-06-19T22:27:34-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerTotient.lean",
+      "filename": "EulerTotient.lean",
+      "lineCount": 136,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotient.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ01.lean",
+      "filename": "EulerTotientOQ01.lean",
+      "lineCount": 88,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ01OQ01.lean",
+      "filename": "EulerTotientOQ01OQ01.lean",
+      "lineCount": 77,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ01OQ03.lean",
+      "filename": "EulerTotientOQ01OQ03.lean",
+      "lineCount": 240,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ01OQ03Minimal.lean",
+      "filename": "EulerTotientOQ01OQ03Minimal.lean",
+      "lineCount": 55,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01OQ03Minimal.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ02.lean",
+      "filename": "EulerTotientOQ02.lean",
+      "lineCount": 173,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ02.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ02OQ01.lean",
+      "filename": "EulerTotientOQ02OQ01.lean",
+      "lineCount": 208,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ03.lean",
+      "filename": "EulerTotientOQ03.lean",
+      "lineCount": 209,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ03.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ04.lean",
+      "filename": "EulerTotientOQ04.lean",
+      "lineCount": 232,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ04OQ01.lean",
+      "filename": "EulerTotientOQ04OQ01.lean",
+      "lineCount": 165,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04OQ01.lean"
+    }
+  ]
+}
