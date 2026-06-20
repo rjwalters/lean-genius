@@ -18,15 +18,20 @@ instead handled by Fermat's two-square theorem (`Nat.Prime.sq_add_sq`):
   given an odd `t` with `t² ≤ m` and `mm = (m − t²)/2` a prime with `mm % 4 ≠ 3`,
   write `mm = a² + b²`; then `m = t² + (a+b)² + (a−b)²`.
 
-The two theorems below are the *algebraic reduction* — fully proved, 0 axioms,
-0 sorry.  They isolate the genuine number-theoretic input (existence of the prime
-deficit `mm`, which needs Dirichlet primes in AP, already imported as
-`Mathlib.NumberTheory.LSeries.PrimesInAP`) as a clean hypothesis, exactly
-mirroring the reduction style of #24443 but for the class #24443 misses.
+The theorems below are the *algebraic reduction* — fully proved, 0 axioms,
+0 sorry.  They isolate the genuine number-theoretic input as a clean hypothesis,
+exactly mirroring the reduction style of #24443 but for the class #24443 misses.
+The general entry point `three_sq_of_residue3_twoSq` requires only that the
+deficit `mm` be a *sum of two squares* (Fermat's two-square criterion: no prime
+factor `≡ 3 (mod 4)` to an odd power); `three_sq_of_residue3_prime` is the prime
+special case (via `Nat.Prime.sq_add_sq`, needing Dirichlet primes in AP, already
+imported as `Mathlib.NumberTheory.LSeries.PrimesInAP`).
 
-NOTE: build-pending — written under a Docker blackout (host `lake`/Docker
-unavailable). Not registered in `Proofs.lean`; harmless to the build until a
-post-blackout session verifies it via `./proofs/scripts/docker-build.sh`.
+NOTE: the `three_sq_of_residue3_twoSq` generalization + delegation refactor was
+added under a Docker blackout (host `lake`/Docker unavailable) and is therefore
+build-pending; it reuses only tactics already build-verified elsewhere in this
+file. This file IS registered in `Proofs.lean`, so the next Docker-up session
+must confirm via `./proofs/scripts/docker-build.sh Proofs.ThreeSquaresResidue3`.
 -/
 
 namespace ThreeSquaresResidue3
@@ -38,20 +43,42 @@ theorem three_sq_of_two_sq_decomp {m t mm a b : ℤ}
     t ^ 2 + (a + b) ^ 2 + (a - b) ^ 2 = m := by
   rw [hm, hmm]; ring
 
+/-- **Residue-3 two-square route — general form.** Given a deficit `mm` that is a
+sum of two *integer* squares and the decomposition `m = t² + 2·mm`, the natural
+number `m` is a sum of three integer squares.
+
+This is the mathematically correct hypothesis: the algebraic identity needs only
+that `mm` is *representable* as a sum of two squares, never that it is prime. It
+strictly generalizes `three_sq_of_residue3_prime` below (primality is only one
+sufficient condition for two-square representability, via `Nat.Prime.sq_add_sq`).
+Isolating the input this way matters because exhibiting an odd `t` whose deficit
+`(m − t²)/2` is *prime* is a thin-sequence statement strictly stronger than what
+the reduction requires — a deficit free of prime factors `≡ 3 (mod 4)` to an odd
+power (Fermat's two-square criterion) already suffices. -/
+theorem three_sq_of_residue3_twoSq {m t mm : ℕ}
+    (hsum2 : ∃ a b : ℤ, (mm : ℤ) = a ^ 2 + b ^ 2)
+    (hdecomp : m = t ^ 2 + 2 * mm) :
+    ∃ x y z : ℤ, x ^ 2 + y ^ 2 + z ^ 2 = (m : ℤ) := by
+  obtain ⟨a, b, hab⟩ := hsum2
+  refine ⟨(t : ℤ), a + b, a - b, ?_⟩
+  have hmZ : (m : ℤ) = (t : ℤ) ^ 2 + 2 * (a ^ 2 + b ^ 2) := by
+    rw [← hab]; exact_mod_cast hdecomp
+  rw [hmZ]; ring
+
 /-- Residue-3 two-square route. Given `t, mm : ℕ` with `mm` prime, `mm % 4 ≠ 3`,
 and the deficit identity `m = t² + 2·mm`, the natural number `m` is a sum of
 three integer squares.  Discharges the `m ≡ 3 (mod 8)` core that
-`dirichlet_key_lemma` cannot reach. -/
+`dirichlet_key_lemma` cannot reach.
+
+A corollary of `three_sq_of_residue3_twoSq`: primality with `mm % 4 ≠ 3` is just
+one way to obtain a two-square representation of the deficit (`Nat.Prime.sq_add_sq`). -/
 theorem three_sq_of_residue3_prime {m t mm : ℕ} [Fact (Nat.Prime mm)]
     (hp : mm % 4 ≠ 3) (hdecomp : m = t ^ 2 + 2 * mm) :
-    ∃ x y z : ℤ, x ^ 2 + y ^ 2 + z ^ 2 = (m : ℤ) := by
-  obtain ⟨a, b, hab⟩ := Nat.Prime.sq_add_sq (p := mm) hp
-  refine ⟨(t : ℤ), (a : ℤ) + b, (a : ℤ) - b, ?_⟩
-  have hmZ : (m : ℤ) = (t : ℤ) ^ 2 + 2 * ((a : ℤ) ^ 2 + (b : ℤ) ^ 2) := by
-    have : ((mm : ℤ)) = (a : ℤ) ^ 2 + (b : ℤ) ^ 2 := by exact_mod_cast hab.symm
-    rw [this.symm]
-    exact_mod_cast hdecomp
-  rw [hmZ]; ring
+    ∃ x y z : ℤ, x ^ 2 + y ^ 2 + z ^ 2 = (m : ℤ) :=
+  three_sq_of_residue3_twoSq
+    (by obtain ⟨a, b, hab⟩ := Nat.Prime.sq_add_sq (p := mm) hp
+        exact ⟨(a : ℤ), (b : ℤ), by exact_mod_cast hab.symm⟩)
+    hdecomp
 
 /-- The `mm % 4 ≠ 3` obligation of `three_sq_of_residue3_prime` is **automatic**
 given the residue structure of the deficit decomposition. For `m ≡ 3 (mod 8)`
