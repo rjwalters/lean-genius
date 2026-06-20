@@ -1,0 +1,122 @@
+{
+  "id": "lagrange-theorem-oq-02-oq-01-oq-02",
+  "slug": "lagrange-theorem-oq-02-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.GroupAction.Quotient",
+      "Mathlib.Algebra.BigOperators.Finprod",
+      "Mathlib.SetTheory.Cardinal.Finite",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MulAction"
+    ],
+    "namespace": "StabilizerSum",
+    "lineCount": 94,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 1,
+    "path": "Proofs/LagrangeTheoremOQ02OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "title": "The Stabilizer Sum: ∑ₓ |Stab(x)| = |X/G| · |G|",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ02OQ01OQ02.lean",
+    "tags": [
+      "group-theory",
+      "orbit-counting",
+      "stabilizer",
+      "burnside",
+      "mulaction",
+      "fixed-pairs",
+      "nat-card",
+      "finsum",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 94,
+    "theoremCount": 2,
+    "definitionCount": 1,
+    "badge": "mathlib",
+    "originalContributions": [
+      "stabSigmaEquivFixedBySigma: the explicit transposition (Σ x : X, stabilizer G x) ≃ (Σ g : G, fixedBy X g) of the fixed-pair set {(g,x) : g•x=x}, built from the defeq of mem_stabilizer_iff and mem_fixedBy (both g•x=x)",
+      "sum_card_stabilizer_eq_card_orbits_mul_card_group_of_finite: ∑ᶠ x, Nat.card (stabilizer G x) = Nat.card (X⧸G) · Nat.card G over Finite G, X — the point-side dual of Burnside, proved by composing the transposition with sigmaFixedByEquivOrbitsProdGroup (never passing through Burnside's group-side sum)",
+      "sum_card_stabilizer_eq_card_orbits_mul_card_group: the bundled Fintype form ∑ x, Fintype.card (stabilizer G x) = Fintype.card (X⧸G) · Fintype.card G, matching the shape of Mathlib's sum_card_fixedBy_eq_card_orbits_mul_card_group"
+    ],
+    "prerequisites": [
+      "Group actions and stabilizers (MulAction.stabilizer)",
+      "Fixed-point sets (MulAction.fixedBy)",
+      "Mathlib's orbit-counting bijection sigmaFixedByEquivOrbitsProdGroup",
+      "Nat.card / finsum bookkeeping (Nat.card_sigma, Nat.card_prod, Nat.card_congr, finsum_eq_sum_of_fintype)",
+      "Parent: lagrange-theorem (group order divisibility) and the orbit-stabilizer theorem"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "MulAction.sigmaFixedByEquivOrbitsProdGroup",
+        "description": "The finiteness-free bijection (Σ g : G, fixedBy X g) ≃ (X⧸G) × G underlying Burnside's lemma. Composed with the stabilizer-side transposition to count the fixed pairs as |X⧸G|·|G|.",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "MulAction.mem_stabilizer_iff",
+        "description": "g ∈ stabilizer G a ↔ g • a = a. Together with mem_fixedBy this is the defeq that makes the transposition stabSigmaEquivFixedBySigma well-defined.",
+        "module": "Mathlib.GroupTheory.GroupAction.Defs"
+      },
+      {
+        "theorem": "MulAction.mem_fixedBy",
+        "description": "a ∈ fixedBy α m ↔ m • a = a. The fixed-point membership condition matched against the stabilizer condition in the transposition.",
+        "module": "Mathlib.GroupTheory.GroupAction.Defs"
+      },
+      {
+        "theorem": "Nat.card_sigma",
+        "description": "Nat.card (Σ i, f i) = ∑ i, Nat.card (f i) — converts the stabilizer-sum into the cardinality of the fixed-pair sigma type.",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "lagrange-theorem-oq-02-oq-01-oq-02-oq-01",
+      "question": "Derive the two-sided averaging identity directly: combine the stabilizer sum ∑ₓ |Stab(x)| and Burnside's ∑_g |Fix(g)| into a single statement ∑ₓ |Stab(x)| = ∑_g |Fix(g)| as an explicit Fubini theorem on the fixed-pair set, and deduce the Burnside orbit-count average |X⧸G| = (1/|G|) ∑_g |Fix(g)| from it.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling. That entry proves the group-side Burnside sum ∑_g |Fix(g)| = |X⧸G|·|G| over Finite via the same sigmaFixedByEquivOrbitsProdGroup bijection; this entry proves the point-side dual ∑ₓ |Stab(x)| = |X⧸G|·|G|. Both count the fixed pairs {(g,x) : g•x=x}; together they give ∑ₓ |Stab(x)| = ∑_g |Fix(g)|."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "extends",
+      "description": "Parent. The orbit-stabilizer theorem |orbit x|·|Stab x| = |G| is the per-point form of Lagrange's theorem; summing it over the orbit decomposition of X gives this entry's ∑ₓ |Stab(x)| = |X⧸G|·|G|."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: GroupTheory.GroupAction.Quotient",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of sigmaFixedByEquivOrbitsProdGroup and the orbit-stabilizer theorem card_orbit_mul_card_stabilizer_eq_card_group."
+    },
+    {
+      "title": "Théorie des substitutions et des équations algébriques",
+      "author": "William Burnside / Augustin-Louis Cauchy / Ferdinand Frobenius",
+      "year": "1897",
+      "venue": "orbit-counting lemma (Cauchy–Frobenius)",
+      "description": "The classical orbit-counting lemma whose point-side dual is formalized here."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For a finite group G acting on a finite set X, the sum of stabilizer orders over the points of X equals the number of orbits times the group order: ∑ₓ |Stab(x)| = |X⧸G|·|G|. This is the point-side dual of Burnside's group-side sum ∑_g |Fix(g)| = |X⧸G|·|G|, and the proof makes the duality explicit: both sums count the fixed-pair set {(g,x) : g•x=x}, related by the transposition Equiv stabSigmaEquivFixedBySigma, which composed with Mathlib's sigmaFixedByEquivOrbitsProdGroup gives |X⧸G|·|G| directly — never invoking Burnside's sum as an intermediate. Stated over Finite with Nat.card and finsum, with the bundled Fintype form recovered as a corollary. 94 lines, 1 definition, 2 theorems, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "The honest content is the transposition of summation order on the fixed pairs — the rest is inherited from Mathlib's finiteness-free Burnside bijection. Its value is to complete the orbit-counting picture with the point-indexed sum, exhibiting ∑ₓ |Stab(x)| = ∑_g |Fix(g)| as two readings of the same fixed-pair count, and to do so without taking Burnside's sum as a black box (the pool's stated requirement: 'without Burnside as intermediate').",
+    "openQuestions": [
+      "State the Fubini identity ∑ₓ |Stab(x)| = ∑_g |Fix(g)| directly and derive the Burnside orbit-count average |X⧸G| = (1/|G|) ∑_g |Fix(g)| from it."
+    ]
+  }
+}

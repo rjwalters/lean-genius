@@ -1,0 +1,59 @@
+[
+  {
+    "id": "ann-lag020102-context",
+    "proofId": "lagrange-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 49 },
+    "type": "concept",
+    "title": "The Stabilizer Sum as the Dual of Burnside",
+    "content": "Burnside's lemma sums fixed-point counts over the group: ∑_g |Fix(g)| = |X⧸G|·|G|. This entry proves the dual that sums stabilizer orders over the points: ∑ₓ |Stab(x)| = |X⧸G|·|G|. The two are equal because both count the single set of fixed pairs {(g,x) : g•x=x} — reading it column-by-column (fix g, count fixed x) gives Burnside, reading it row-by-row (fix x, count stabilizing g) gives this sum. The pool's requirement was to obtain |X⧸G|·|G| 'without Burnside as intermediate', so the proof routes through the orbit-counting bijection directly rather than citing Burnside's value.",
+    "mathContext": "For a finite group action, $\\sum_{x\\in X}|\\mathrm{Stab}(x)| = \\#\\{(g,x): g\\cdot x = x\\} = \\sum_{g\\in G}|\\mathrm{Fix}(g)| = |X/G|\\cdot|G|$. The middle equality is Fubini on a finite double-indexed set; the last is the orbit-counting (Cauchy–Frobenius) lemma. Dividing by $|G|$ recovers the orbit-count average $|X/G| = \\frac{1}{|G|}\\sum_g|\\mathrm{Fix}(g)|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "orbit-counting lemma",
+      "Cauchy–Frobenius / Burnside",
+      "stabilizer vs fixed-point duality",
+      "Fubini on fixed pairs"
+    ],
+    "prerequisites": [
+      "group action stabilizer and fixed-point sets",
+      "orbit space X⧸G",
+      "Mathlib sigmaFixedByEquivOrbitsProdGroup"
+    ]
+  },
+  {
+    "id": "ann-lag020102-equiv",
+    "proofId": "lagrange-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 51, "endLine": 64 },
+    "type": "technique",
+    "title": "The Transposition Equiv stabSigmaEquivFixedBySigma",
+    "content": "The heart of the proof is the bijection (Σ x : X, stabilizer G x) ≃ (Σ g : G, fixedBy X g) that transposes a fixed pair: (x, ⟨g, hg⟩) ↦ (g, ⟨x, hx⟩). The membership proofs convert via `(mem_fixedBy).2 ((mem_stabilizer_iff).1 hg)` — but since both `g ∈ stabilizer G x` and `x ∈ fixedBy X g` unfold to the same proposition `g • x = x`, the round-trips `left_inv` and `right_inv` are closed by `rfl`. This is the formal content of 'swap the order of summation'.",
+    "mathContext": "Transposing the indexing of a sum over a product/relation is the categorical statement of Fubini for counting measures. Here the relation is the graph of the action's fixed pairs; its two projections give the stabilizer sum and the fixed-point sum.",
+    "significance": "important",
+    "relatedConcepts": ["Equiv on sigma types", "mem_stabilizer_iff", "mem_fixedBy", "definitional equality"],
+    "prerequisites": ["sigma types", "subtype membership defeq"]
+  },
+  {
+    "id": "ann-lag020102-main",
+    "proofId": "lagrange-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 66, "endLine": 81 },
+    "type": "technique",
+    "title": "Counting the Fixed Pairs over Finite",
+    "content": "`sum_card_stabilizer_eq_card_orbits_mul_card_group_of_finite` is stated with the instance-free `Nat.card` and a `finsum` (∑ᶠ), the canonical 'sum over a Finite type' idiom (matching the sibling BurnsideFinite entry). After `cases nonempty_fintype X` supplies a non-constructive Fintype, the single rewrite chain does it all: `finsum_eq_sum_of_fintype` turns ∑ᶠ into a Finset sum, `← Nat.card_sigma` folds it into `Nat.card (Σ x, stabilizer G x)`, `Nat.card_congr (stabSigmaEquivFixedBySigma.trans sigmaFixedByEquivOrbitsProdGroup)` transports along the composed bijection to `Nat.card ((X⧸G) × G)`, and `Nat.card_prod` splits the product. Burnside's group-side sum is never formed.",
+    "mathContext": "The composition stabSigmaEquivFixedBySigma ≫ sigmaFixedByEquivOrbitsProdGroup is a single bijection (Σ x, Stab x) ≃ (X⧸G) × G; taking cardinalities is the whole proof. Working with Nat.card avoids any Fintype-instance diamond and keeps the statement at the Finite level of generality.",
+    "significance": "important",
+    "relatedConcepts": ["Nat.card_sigma", "Nat.card_congr", "Nat.card_prod", "finsum_eq_sum_of_fintype"],
+    "prerequisites": ["sigmaFixedByEquivOrbitsProdGroup", "Nat.card API"]
+  },
+  {
+    "id": "ann-lag020102-recovered",
+    "proofId": "lagrange-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 83, "endLine": 92 },
+    "type": "technique",
+    "title": "The Bundled Fintype Corollary",
+    "content": "`sum_card_stabilizer_eq_card_orbits_mul_card_group` restates the identity with explicit Fintype instances and `Fintype.card`, matching the shape of Mathlib's `sum_card_fixedBy_eq_card_orbits_mul_card_group`. It is recovered from the Finite version by `finsum_eq_sum_of_fintype` and `simpa only [Nat.card_eq_fintype_card]`, certifying that the Nat.card statement subsumes the bundled one.",
+    "mathContext": "Recovering the Fintype.card form confirms no generality was lost: the Finite/Nat.card statement specializes to the classical finite-group form by supplying the (constructive) instances.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.card_eq_fintype_card", "Fintype vs Finite", "simpa"],
+    "prerequisites": ["Fintype.card", "Nat.card_eq_fintype_card"]
+  }
+]
