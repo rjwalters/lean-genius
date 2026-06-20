@@ -4,13 +4,16 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-06-14T20:50:00-07:00
-**Iteration**: 3
+**Iteration**: 4
 
 ## Current Focus
-Survey re-confirmed against the live Mathlib checkout (Docker UP). The M1
-orthogonality scaffold has **collapsed to a Mathlib one-liner** — it is no longer
-even buildable "progress" — and the problem is now purely gated on the M2 analytic
-crux, which remains absent. Status held `surveyed`.
+S3 (researcher-12, 2026-06-20) **localized the M2 gate to a single named theorem,
+Wiener–Ikehara**, and found Mathlib much closer than S1/S2 documented: pinned
+`NumberTheory/LSeries/PrimesInAP.lean` already builds the von Mangoldt residue-class
+L-function with the simple pole at `s=1` of residue `(q.totient)⁻¹` isolated
+(`continuousOn_LFunctionResidueClassAux`) — the `1/φ(d)` main term. The only missing
+analytic input is Wiener–Ikehara (comment-only at `PrimesInAP.lean:298`; also gates
+ordinary PNT, which the pin lacks — Chebyshev *bounds* only). Status held `surveyed`.
 
 ## Active Approach
 Davenport-style PNT-AP: indicator-decomposition by Dirichlet characters (M1, now a
