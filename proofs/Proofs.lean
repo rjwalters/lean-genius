@@ -1436,6 +1436,7 @@ import Proofs.Erdos340GreedyExtension
 import Proofs.Erdos340GreedyGrowth
 import Proofs.Erdos340GreedySidon
 import Proofs.Erdos340GreedySidonOQ02
+import Proofs.Erdos340SidonErdosTuran
 import Proofs.Erdos340Problem
 import Proofs.Erdos341Problem
 import Proofs.Erdos342Problem
