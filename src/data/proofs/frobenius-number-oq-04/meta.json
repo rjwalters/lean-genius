@@ -16,7 +16,8 @@
       "additive-submonoid",
       "research"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
+    "packagingNote": "Tier B Mathlib wrapper. Every theorem is a one-line re-export, trivial unpacking, or numeric specialization of existing named Mathlib results — principally `frobeniusNumber_pair` (the two-coin Sylvester–Frobenius theorem) and `AddSubmonoid.mem_closure_pair` (closure-membership as a ℕ-linear combination), split via `frobeniusNumber_iff`. The mathematical substance lives entirely in Mathlib; this entry restates it on the canonical `FrobeniusNumber`/`AddSubmonoid.closure` footing and bridges back to the elementary `a*m + b*n` form. Badge is `mathlib` (faithful re-export), not `verified`/original — there is no novel derivation. Status remains `verified` (0 sorries, 0 axioms, builds clean).",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 122,
