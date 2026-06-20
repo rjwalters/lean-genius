@@ -3030,6 +3030,7 @@ import Proofs.PythagoreanTriplesOQ04
 import Proofs.PythagoreanTriplesOQ05
 import Proofs.PythagoreanTriplesOQ06
 import Proofs.PythagoreanTriplesOQ07
+import Proofs.PythagoreanTriplesOQ08
 import Proofs.PythagoreanTriplesOQ09
 import Proofs.QuadraticGaussSumDiagonal
 import Proofs.QuadraticGaussSumNormParseval
