@@ -1,0 +1,57 @@
+[
+  {
+    "id": "primitive-roots-oq-03-module-header",
+    "proofId": "primitive-roots-oq-03",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 39
+    },
+    "title": "Module Header: From Generators to the Full Order Distribution",
+    "content": "The base Primitive-Roots entry counts only the **generators** of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ — the elements of the single order $p-1$, of which there are $\\varphi(p-1)$.\n\nThis file gives the **full order distribution**: for *every* divisor $d$ of $p-1$,\n$$\\#\\{g \\in (\\mathbb{Z}/p\\mathbb{Z})^\\times : \\mathrm{ord}(g) = d\\} = \\varphi(d).$$\n\nSumming over all divisors tiles the group, and since the orders partition the $p-1$ units, this recovers **Gauss's identity** $\\sum_{d \\mid p-1} \\varphi(d) = p-1$ from the group-theoretic side. The engine is Mathlib's `IsCyclic.card_orderOf_eq_totient`, specialized to the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$."
+  },
+  {
+    "id": "primitive-roots-oq-03-setup",
+    "proofId": "primitive-roots-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 47,
+      "endLine": 53
+    },
+    "title": "Cyclicity and Order of the Unit Group",
+    "content": "$(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is **cyclic** because any finite multiplicative subgroup of an integral domain is cyclic — and $\\mathbb{Z}/p\\mathbb{Z}$ is a field for prime $p$ (`isCyclic_of_subgroup_isDomain` with the injectivity `Units.coeHom_injective`).\n\n`card_units`: its order is $p-1$, via `ZMod.card_units_eq_totient` (giving $\\varphi(p)$) and `Nat.totient_prime` (giving $p-1$). This is the input that converts the hypothesis $d \\mid p-1$ into $d \\mid |\\text{group}|$ for the distribution theorem."
+  },
+  {
+    "id": "primitive-roots-oq-03-distribution",
+    "proofId": "primitive-roots-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 55,
+      "endLine": 69
+    },
+    "title": "The Full Order Distribution",
+    "content": "`card_orderOf_eq_totient`: for every divisor $d$ of $p-1$, the unit group has exactly $\\varphi(d)$ elements of order $d$.\n\n**Proof.** Lift $d \\mid p-1$ to $d \\mid \\mathrm{Fintype.card}\\,(\\mathbb{Z}/p\\mathbb{Z})^\\times$ via `card_units`, then apply Mathlib's `IsCyclic.card_orderOf_eq_totient`, which gives $\\#\\{g \\mid \\mathrm{ord}(g) = d\\} = \\varphi(d)$ in any cyclic group. A `convert ... using 2` matches the set-builder count to the `Finset.filter` cardinality. This is the all-$d$ strengthening of the base entry's single $d = p-1$ count."
+  },
+  {
+    "id": "primitive-roots-oq-03-existence",
+    "proofId": "primitive-roots-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 71,
+      "endLine": 89
+    },
+    "title": "Existence of Each Order, and the Generator Count",
+    "content": "`exists_orderOf_eq`: for every $d \\mid p-1$ there exists a unit of order exactly $d$. Since $d$ is a positive divisor of $p-1 > 0$ we have $d \\ge 1$, so $\\varphi(d) > 0$ and the order-$d$ class is nonempty.\n\n`card_generators`: the $d = p-1$ case recovers the classical count $\\#\\text{generators} = \\varphi(p-1)$ — the base entry's `card_primitiveRoots`, now a one-line specialization of the general distribution."
+  },
+  {
+    "id": "primitive-roots-oq-03-tiling-gauss",
+    "proofId": "primitive-roots-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 91,
+      "endLine": 115
+    },
+    "title": "Tiling and Gauss's Divisor Sum",
+    "content": "`sum_card_orderOf`: the order classes **tile** the group — summing $\\#\\{g \\mid \\mathrm{ord}(g) = d\\}$ over all $d \\mid p-1$ gives $p-1$. Each summand is $\\varphi(d)$ by `card_orderOf_eq_totient`, and the resulting $\\sum_{d \\mid p-1} \\varphi(d)$ equals $p-1$ by `Nat.sum_totient`.\n\n`gauss_divisor_sum`: Gauss's identity $\\sum_{d \\mid p-1} \\varphi(d) = p-1$ stated in the primitive-root setting. The two readings — counting units by order vs. the number-theoretic divisor sum — are the same partition of the $p-1$ units, giving a group-theoretic proof of Gauss's classical identity."
+  }
+]
