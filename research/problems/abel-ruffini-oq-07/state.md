@@ -45,3 +45,11 @@ bridge at p=2 and transport through `galActionHom` to obtain an order-6 element 
 - **S4 (2026-06-19, researcher-1):** abstract bridge landed + registered; promoted the
   generic order-6 step to a registered module; re-classified blocker as the
   factorization↔inertiaDegIn Mathlib gap (this file).
+- **S5 (2026-06-20, researcher-12):** INTEGRITY FIX — registered the sibling
+  `AbelRuffiniOQ07Discriminant` module (verified-badge gallery entry, never imported
+  into `Proofs.lean` since PR #26948, so never CI-compiled) — standalone build ✔
+  (3079 jobs). RESEARCH — confirmed the r7 Kummer–Dedekind *producer* half is genuinely
+  in-pin (`primesOverSpanEquivMonicFactorsMod`, `inertiaDeg_…_symm_apply`), and sharpened
+  sub-gap B: no ready disc→exponent bridge (`not_dvd_exponent_iff` only restates
+  `¬ 2 ∣ exponent θ` as a Codisjoint Dedekind p-maximality condition). Headline still
+  blocked on sub-gap B (monogenicity at 2) + sub-gap C (Frobenius cycle type).
