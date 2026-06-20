@@ -40,7 +40,7 @@ open scoped Nat
 For any natural base `a`, prime `p`, exponent `e ≥ 1` and any `k ≥ e`, adding
 `φ (pᵉ)` to the exponent leaves `aᵏ` unchanged modulo `pᵉ` — *even when `p ∣ a`*,
 the case Euler's theorem does not cover. -/
-theorem pow_add_totient_modEq_primePow {p a k e : ℕ} (hp : p.Prime) (he : 1 ≤ e)
+theorem pow_add_totient_modEq_primePow {p a k e : ℕ} (hp : p.Prime) (_he : 1 ≤ e)
     (hk : e ≤ k) : a ^ (k + totient (p ^ e)) ≡ a ^ k [MOD p ^ e] := by
   by_cases hpa : p ∣ a
   · -- `p ∣ a`: both powers vanish mod `pᵉ`, so they are congruent (to `0`).
@@ -65,7 +65,7 @@ included). -/
 theorem pow_add_mul_totient_modEq_primePow {p a k e : ℕ} (hp : p.Prime) (he : 1 ≤ e)
     (hk : e ≤ k) (l : ℕ) : a ^ (k + l * totient (p ^ e)) ≡ a ^ k [MOD p ^ e] := by
   induction l with
-  | zero => simp
+  | zero => simpa using Nat.ModEq.refl (a ^ k)
   | succ l ih =>
     have hstep : a ^ ((k + l * totient (p ^ e)) + totient (p ^ e))
         ≡ a ^ (k + l * totient (p ^ e)) [MOD p ^ e] :=
