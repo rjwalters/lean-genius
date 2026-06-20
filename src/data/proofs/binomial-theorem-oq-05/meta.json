@@ -60,7 +60,7 @@
     "lineCount": 109,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on propext, Classical.choice, Quot.sound). The base inequality (`bernoulli`) and the `aⁿ` form (`bernoulli_pow`) are thin re-exports of Mathlib's `one_add_mul_le_pow` / `one_add_mul_sub_le_pow`; the strict ℕ-power inequality (`bernoulli_strict`, by induction) and the divergence packaging are the original content. Badge `mathlib` reflects the headline result coming via a Mathlib bridge.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8,
+    "theoremCount": 7,
     "definitionCount": 0
   },
   "overview": {
@@ -157,7 +157,7 @@
     "namespace": "BinomialTheoremOQ05",
     "lineCount": 109,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 7,
     "definitionCount": 0,
     "path": "Proofs/BinomialTheoremOQ05.lean",
     "sorries": 0
