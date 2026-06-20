@@ -340,8 +340,12 @@ classify_error() {
         return
     fi
 
-    # Rate limit (429) — transient, retry with backoff
-    if echo "$output" | grep -qi "rate.limit\|too.many.requests\|429"; then
+    # Rate limit (429) — transient, retry with backoff.
+    # Require a nonzero exit: a genuine API 429 fails the CLI, whereas an agent
+    # merely *mentioning* a rate limit in prose on a successful exit-0 turn (e.g.
+    # the Herald noting its Mastodon daily post limit while standing down) must
+    # NOT be misclassified as an API error and counted as a consecutive failure.
+    if [[ "$exit_code" -ne 0 ]] && echo "$output" | grep -qi "rate.limit\|too.many.requests\|429"; then
         echo "RECOVERABLE"
         return
     fi
