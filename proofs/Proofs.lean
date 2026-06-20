@@ -2841,6 +2841,7 @@ import Proofs.PellEquationOQ06
 import Proofs.PentagonalNumberTheoremOQ01
 import Proofs.PerfectNumbers
 import Proofs.PerfectNumbersOQ03
+import Proofs.PerfectNumbersOQ06
 import Proofs.PiTranscendental
 import Proofs.PicksTheorem
 import Proofs.PicksTheoremOQ01
