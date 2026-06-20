@@ -3328,6 +3328,7 @@ import Proofs.ThreeSquaresSquarefreeReduction
 import Proofs.ThreeSquaresSufficiency
 import Proofs.ThreeSquaresSufficiencyCorrected
 import Proofs.ThreeSquaresWitnessObstruction
+import Proofs.ThreeSubgroupsLemmaOQ01
 import Proofs.ThueMorse
 import Proofs.TractatusOntology
 import Proofs.TractatusOntologyEquiv
