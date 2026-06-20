@@ -693,6 +693,7 @@ import Proofs.DirichletApproximation
 import Proofs.DirichletApproximationOQ01
 import Proofs.DirichletApproximationOQ02
 import Proofs.DirichletApproximationOQ03
+import Proofs.DirichletApproximationOQ04
 import Proofs.DirichletApproximationOQ05
 import Proofs.DirichletsTheorem
 import Proofs.DirichletsTheoremOQ01
@@ -2370,6 +2371,7 @@ import Proofs.ErdosMordellChordIdentity
 import Proofs.ErdosMordellChordReduction
 import Proofs.ErdosMordellInequalityOQ01
 import Proofs.ErdosSzekeres
+import Proofs.EulerCriterionSquaresOQ01
 import Proofs.EulerIdentity
 import Proofs.EulerIdentityOQ01
 import Proofs.EulerIdentityOQ01OQ01
@@ -2746,6 +2748,7 @@ import Proofs.LebesgueMeasureOQ03OQ01
 import Proofs.LebesgueMeasureOQ05
 import Proofs.LebesgueMeasureOQ06
 import Proofs.LebesgueMeasureOQ06Aristotle
+import Proofs.LegendreFactorialFormulaOQ01
 import Proofs.LegendreGapEquivalence
 import Proofs.LegendrePartial
 import Proofs.LegendrePrimeGapSqrtBoundSuffices
@@ -2754,6 +2757,7 @@ import Proofs.LeibnizPiOQ01OQ01
 import Proofs.LeibnizPiOQ02
 import Proofs.LeibnizPiOQ02Aristotle
 import Proofs.LeibnizPiOQ03
+import Proofs.LiftingTheExponentOQ01
 import Proofs.LiouvilleTheorem
 import Proofs.LiouvilleTheoremOQ04
 import Proofs.LiouvilleTheoremOQ05
@@ -2870,6 +2874,7 @@ import Proofs.PompeiuTheorem
 import Proofs.PowerMeanCrossZeroOQ
 import Proofs.PowerMeanLimitOQ
 import Proofs.PowerMeanMonotoneOQ
+import Proofs.PSeriesConvergenceOQ01
 import Proofs.PrimeGapBounds
 import Proofs.PrimeGapBoundsOQ01
 import Proofs.PrimeNumberTheorem
