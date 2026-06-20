@@ -237,6 +237,21 @@
       "targetId": "prime-reciprocal-divergence",
       "relationship": "extends",
       "description": "Euler's proof that $\\sum 1/p$ diverges over primes uses the Euler product $\\zeta(s) = \\prod_p (1 - p^{-s})^{-1}$, where each factor is a geometric series $\\sum p^{-ks}$. The divergence of the prime reciprocal series follows from the divergence of $\\log \\zeta(s)$ as $s \\to 1^+$, connecting geometric series directly to the distribution of primes"
+    },
+    {
+      "targetId": "geometric-series-oq-01",
+      "relationship": "extended-by",
+      "description": "An open-question extension probing the critical boundary $|r| = 1$ that the parent formula excludes. At $r = 1$ the partial sums $\\sum_{k=0}^{n} 1 = n+1$ grow without bound; at $r = -1$ they oscillate between $0$ and $1$ (Grandi's series $1 - 1 + 1 - \\cdots$); and for every $|r| \\geq 1$ the terms fail to approach $0$, so the necessary condition for convergence breaks down. This entry sharpens the parent's $|r| < 1$ hypothesis into an exact dichotomy at the radius of convergence"
+    },
+    {
+      "targetId": "geometric-series-oq-02",
+      "relationship": "extended-by",
+      "description": "The Neumann series $\\sum_{n} T^n = (1 - T)^{-1}$ generalizes the scalar geometric series to elements $T$ of a complete normed ring with $\\|T\\| < 1$, covering matrices and bounded operators. The condition $\\|T\\| < 1$ plays exactly the role of $|r| < 1$, and the resolvent $(1 - T)^{-1}$ is the operator-theoretic analogue of $1/(1-r)$ — the foundation of perturbation theory and the Neumann method for solving $(I - T)x = b$ by iteration"
+    },
+    {
+      "targetId": "geometric-series-oq-03",
+      "relationship": "extended-by",
+      "description": "The Euler product $\\zeta(s) = \\prod_p (1 - p^{-s})^{-1}$ realizes each local factor as a geometric series $\\sum_{k} p^{-ks}$ in the variable $p^{-s}$, valid for $\\mathrm{Re}(s) > 1$. Multiplying these geometric series over all primes and expanding recovers $\\sum_n n^{-s}$ by unique factorization, turning the parent's elementary summation formula into the analytic gateway between the geometric series and the distribution of primes"
     }
   ],
   "leanFile": {
