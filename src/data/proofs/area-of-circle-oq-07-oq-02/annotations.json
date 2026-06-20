@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-aoc0702-context",
+    "proofId": "area-of-circle-oq-07-oq-02",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "concept",
+    "title": "The Half-Line Gaussian and Its Place in the Gallery",
+    "content": "The parent entry `area-of-circle-oq-07` evaluates the full-line Gaussian `∫_ℝ e^{-x²} = √π`. This entry records its half-line companion `∫_{(0,∞)} e^{-b x²} = √(π/b)/2`, which Mathlib already proves as `integral_gaussian_Ioi`. The value √π/2 (at b = 1) is the normalization constant of the half-normal distribution. The deliberately substantive part is the even-symmetry bridge: because `e^{-x²}` is even, the full-line integral is exactly twice the half-line integral, so the parent's √π and this entry's √π/2 form a consistent pair related by the factor 2.",
+    "mathContext": "For an even integrable function $f$, $\\int_{\\mathbb R} f = \\int_{-\\infty}^{0} f + \\int_{0}^{\\infty} f = 2\\int_{0}^{\\infty} f$, since the reflection $x\\mapsto -x$ carries the left half onto the right. Applied to $f(x)=e^{-x^2}$ this gives $\\sqrt\\pi = 2\\cdot\\tfrac{\\sqrt\\pi}{2}$. Here the relation is verified by matching the two known closed forms rather than re-deriving the symmetry from scratch.",
+    "significance": "key",
+    "relatedConcepts": [
+      "half-line Gaussian integral",
+      "half-normal distribution",
+      "even-symmetry doubling",
+      "set-restricted integral over Ioi 0"
+    ],
+    "prerequisites": [
+      "set-restricted Lebesgue integral",
+      "Mathlib integral_gaussian_Ioi",
+      "parent area-of-circle-oq-07 (full-line value √π)"
+    ]
+  },
+  {
+    "id": "ann-aoc0702-main",
+    "proofId": "area-of-circle-oq-07-oq-02",
+    "range": { "startLine": 40, "endLine": 50 },
+    "type": "technique",
+    "title": "Applying integral_gaussian_Ioi and Specializing at b = 1",
+    "content": "`gaussian_integral_Ioi` is `integral_gaussian_Ioi b` verbatim — the half-line value `√(π/b)/2` holds for every real b with no positivity hypothesis (for b ≤ 0 both sides are 0, since the integrand is non-integrable on (0,∞) and Mathlib returns 0). The b = 1 case `gaussian_integral_Ioi_one` collapses `exp (-1 · x²)` to `exp (-x²)` via `neg_one_mul` and `√(π/1)/2` to `√π/2` via `div_one`, discharged by `simpa only [neg_one_mul, div_one]`.",
+    "mathContext": "The half-line value `√(π/b)/2` is exactly half the full-line value `√(π/b)` from `integral_gaussian`; the factor 1/2 is the even-symmetry split of the full real line into its two half-lines.",
+    "significance": "important",
+    "relatedConcepts": ["parametrized lemma specialization", "neg_one_mul", "div_one", "simpa"],
+    "prerequisites": ["integral_gaussian_Ioi", "simp normal forms"]
+  },
+  {
+    "id": "ann-aoc0702-bridge",
+    "proofId": "area-of-circle-oq-07-oq-02",
+    "range": { "startLine": 52, "endLine": 56 },
+    "type": "technique",
+    "title": "The Even-Symmetry Bridge: full = 2 · half",
+    "content": "`gaussian_integral_eq_two_mul_Ioi` states `∫_ℝ e^{-x²} = 2 ∫_{(0,∞)} e^{-x²}`. The proof reduces the full-line side to `√π` (via `integral_gaussian 1`, the same specialization the parent uses) and the half-line side to `√π/2` (via `gaussian_integral_Ioi_one`), then closes `√π = 2 · (√π/2)` with `ring`. This verifies the evenness consequence through the closed forms; deriving the factor 2 structurally from the reflection x ↦ -x is left as the entry's follow-up open question.",
+    "mathContext": "The identity is the simplest quantitative manifestation of the integrand's evenness. Its honest status: we confirm consistency of two independently-known values, not a fresh symmetry argument — hence the open question asking for the structural derivation via `∫_{Iic 0} + ∫_{Ioi 0}` and the reflection.",
+    "significance": "important",
+    "relatedConcepts": ["even function integral", "half-line vs full-line", "ring", "closed-form consistency"],
+    "prerequisites": ["integral_gaussian", "gaussian_integral_Ioi_one"]
+  }
+]

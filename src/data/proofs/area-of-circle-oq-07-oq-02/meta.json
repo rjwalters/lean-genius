@@ -1,0 +1,109 @@
+{
+  "id": "area-of-circle-oq-07-oq-02",
+  "slug": "area-of-circle-oq-07-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "",
+    "lineCount": 56,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ07OQ02.lean",
+    "sorries": 0
+  },
+  "title": "The Half-Line Gaussian Integral Equals √(π/b)/2",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ02.lean",
+    "tags": [
+      "analysis",
+      "gaussian-integral",
+      "special-functions",
+      "probability",
+      "measure-theory",
+      "even-symmetry",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 56,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "gaussian_integral_Ioi: ∫_{(0,∞)} e^{-b x²} dx = √(π/b)/2 for every real b — the half-line companion of the parent's full-line Gaussian, obtained directly from Mathlib's integral_gaussian_Ioi (no positivity hypothesis needed; for b ≤ 0 both sides vanish)",
+      "gaussian_integral_Ioi_one: the b = 1 case ∫_{(0,∞)} e^{-x²} dx = √π/2, the half-line normalization constant",
+      "gaussian_integral_eq_two_mul_Ioi: the even-symmetry bridge ∫_ℝ e^{-x²} = 2 ∫_{(0,∞)} e^{-x²}, reducing both sides to √π and √π/2 to exhibit the parent's √π as exactly twice this entry's half-line value"
+    ],
+    "prerequisites": [
+      "Lebesgue integration over ℝ and set-restricted integrals (MeasureTheory)",
+      "Mathlib's half-line Gaussian integral integral_gaussian_Ioi",
+      "Mathlib's full-line Gaussian integral integral_gaussian",
+      "Real.sqrt and Real.pi API",
+      "Parent: area-of-circle-oq-07 (the full-line value √π)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_gaussian_Ioi",
+        "description": "∫ x in Ioi 0, exp (-b * x ^ 2) = √(π / b) / 2 for every real b — the half-line Gaussian integral. Used verbatim for gaussian_integral_Ioi and at b = 1 for gaussian_integral_Ioi_one.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "integral_gaussian",
+        "description": "∫ x : ℝ, exp (-b * x ^ 2) = √(π / b) for every real b — the full-line Gaussian integral. Specialized at b = 1 to supply the value √π in the even-symmetry bridge.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "area-of-circle-oq-07-oq-02-oq-01",
+      "question": "Derive the even-symmetry bridge gaussian_integral_eq_two_mul_Ioi structurally rather than by closed-form bookkeeping: prove ∫_ℝ e^{-x²} = 2 ∫_{(0,∞)} e^{-x²} from the evenness of the integrand (e.g. via integral over Iic 0 plus Ioi 0 and the reflection x ↦ -x), so the factor of 2 is produced by symmetry rather than by matching √π against √π/2.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "extends",
+      "description": "Parent. That entry evaluates the full-line Gaussian ∫_ℝ e^{-x²} = √π; this entry records the half-line companion ∫_{(0,∞)} e^{-x²} = √π/2 and ties the two together via even symmetry (gaussian_integral_eq_two_mul_Ioi: full = 2 · half)."
+    },
+    {
+      "targetId": "gaussian-integral",
+      "relationship": "related",
+      "description": "The general Gaussian integral ∫ e^{-b x²} = √(π/b). The half-line version evaluated here is √(π/b)/2, its restriction to (0, ∞)."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_gaussian_Ioi (b : ℝ) : ∫ x in Ioi 0, exp (-b * x ^ 2) = √(π / b) / 2, used here directly and at b = 1."
+    },
+    {
+      "title": "Théorie analytique des probabilités",
+      "author": "Pierre-Simon Laplace",
+      "year": "1812",
+      "venue": "Courcier, Paris",
+      "description": "Classical home of the Gaussian integral; the half-line value √π/2 is the half-normal distribution's normalization."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The half-line Gaussian integral ∫_{(0,∞)} e^{-b x²} dx equals √(π/b)/2 for every real b, a one-step application of Mathlib's integral_gaussian_Ioi; the b = 1 case gives ∫_{(0,∞)} e^{-x²} dx = √π/2. The entry's substantive content is the even-symmetry bridge gaussian_integral_eq_two_mul_Ioi, which records that the parent's full-line value √π is exactly twice this half-line value, verified by reducing both sides to closed form. 56 lines, 3 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This is an honest, routine specialization rather than original analysis — Mathlib already contains the half-line evaluation. Its value to the gallery is twofold: it completes the parent's full-line Gaussian with its half-line companion (the half-normal distribution's normalization constant √π/2), and it makes explicit the even-symmetry consistency full = 2 · half that the two closed forms encode. The integrand's evenness is exactly the structural reason the half-line carries half the mass.",
+    "openQuestions": [
+      "Prove full = 2 · half structurally from the integrand's evenness (reflection x ↦ -x over Iic 0 plus Ioi 0) rather than by matching the closed forms √π and √π/2."
+    ]
+  }
+}
