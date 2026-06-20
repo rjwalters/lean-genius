@@ -2559,6 +2559,7 @@ import Proofs.GreensTheoremOQ03
 import Proofs.GreensTheoremOQ03OQ04
 import Proofs.GreensTheoremOQ04
 import Proofs.HadamardThreeLines
+import Proofs.HallsTheoremOQ01
 import Proofs.HaltingProblem
 import Proofs.HarmonicDivergence
 import Proofs.HarmonicDivergenceOQ01
