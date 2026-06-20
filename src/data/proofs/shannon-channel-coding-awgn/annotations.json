@@ -10,7 +10,7 @@
     "title": "AWGN Capacity C(P, N)",
     "content": "Defines awgnCapacity P N = ½ · log(1 + P/N), the Shannon capacity of the additive white Gaussian noise channel as a function of signal power P and noise power N.",
     "mathContext": "$C(P, N) = \\tfrac12\\log\\!\\left(1 + \\frac{P}{N}\\right)$",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "channel capacity",
       "signal-to-noise ratio",
@@ -33,7 +33,7 @@
     "title": "The Entropy-Difference Identity",
     "content": "awgn_log_identity proves ½ log(2πe(P+N)) - ½ log(2πe N) = ½ log(1 + P/N). The two differential entropies differ only in their variance argument; via Real.log_div the 2πe factors cancel and the ratio (P+N)/N becomes 1 + P/N. This is the algebraic heart of the capacity.",
     "mathContext": "$\\tfrac12\\log(2\\pi e(P+N)) - \\tfrac12\\log(2\\pi e N) = \\tfrac12\\log\\!\\left(1+\\tfrac{P}{N}\\right)$",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "differential entropy",
       "logarithm of a quotient"
@@ -55,7 +55,7 @@
     "title": "Achievability via a Gaussian Input",
     "content": "awgn_capacity_achieved shows that a Gaussian input of power P produces a Gaussian output of power P + N, whose differential entropy ½ log(2πe(P+N)) minus the noise entropy ½ log(2πe N) is exactly the capacity ½ log(1 + P/N). The two entropies are the proven gaussianDifferentialEntropy instantiated at σ = √(P+N) and σ = √N.",
     "mathContext": "$h(Y) - h(Z) = \\tfrac12\\log\\!\\left(1+\\tfrac{P}{N}\\right)$",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "Gaussian differential entropy",
       "capacity-achieving input"
@@ -77,7 +77,7 @@
     "title": "Converse via Maximum Entropy",
     "content": "awgn_capacity_upper_bound applies the Gaussian maximum-entropy theorem (gaussian_max_entropy) at σ = √(P+N): any output density f whose variance is bounded by the output power P + N has differential entropy ≤ ½ log(2πe(P+N)), so subtracting the noise entropy gives h(f) - h(Z) ≤ ½ log(1 + P/N). The average-power constraint E[Y²] ≤ P + N enters as the hypothesis hvar.",
     "mathContext": "$h(f) - h(Z) \\le \\tfrac12\\log\\!\\left(1+\\tfrac{P}{N}\\right)$",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "maximum entropy",
       "converse bound",

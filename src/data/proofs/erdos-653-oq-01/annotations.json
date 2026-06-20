@@ -33,7 +33,7 @@
     "title": "g as a Supremum: Lower Bounds via le_csSup",
     "content": "`gSet n` is the set of all achievable distinct-R-value counts for n-point configurations, and `g_eq_sSup` establishes g(n) = sSup (gSet n). `gSet_bddAbove` shows this set is bounded above (by n, since there are only n points), so the conditionally-complete-lattice machinery applies. The payoff is `le_csSup`: to prove g(n) ≥ k it suffices to exhibit a single configuration realizing k distinct R-values. This converts every lower bound in the file into a construction-plus-count, and is the structural reason the collinear witness suffices.",
     "mathContext": "$g(n) = \\sup\\, \\mathrm{gSet}(n)$, with $\\mathrm{gSet}(n)$ bounded above; hence $k \\in \\mathrm{gSet}(n) \\Rightarrow k \\le g(n)$ (`le_csSup`).",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "conditionally complete lattice",
       "sSup / le_csSup",
@@ -56,7 +56,7 @@
     "title": "g(n) ≥ 1: The First Proved Lower Bound",
     "content": "`g_ge_one` proves g(n) ≥ 1 for n ≥ 1. In the parent file this was only asserted in a docstring; here it is witnessed by any nonempty configuration (`numDistinctRValues_pos`), needing no distance values at all — a single point already has a well-defined R-value, so at least one distinct R-value exists. Trivial mathematically, but it is the base case of the lower-bound ladder and the first place le_csSup is applied to the collinear witness.",
     "mathContext": "$n \\ge 1 \\Rightarrow g(n) \\ge 1$.",
-    "significance": "medium",
+    "significance": "supporting",
     "relatedConcepts": [
       "nonempty configuration",
       "base case",
@@ -79,7 +79,7 @@
     "title": "Counting Distinct Distances from a Collinear Point",
     "content": "The technical heart of the ⌈n/2⌉ bound. `euclidDist_collinearPoint` verifies that the Euclidean distance between the i-th and j-th x-axis points is |i-j|. Then `absDiff_image_eq` and `maxCount_image_card` show that the set of distances {|i-j| : j ≠ i} from the i-th point has cardinality max(i, n-1-i) — the farther of the two endpoints determines how many distinct gaps appear. `distinctDistCount_collinearConfig` packages this as R(xᵢ) = max(i, n-1-i) for the collinear configuration.",
     "mathContext": "For collinear points, $\\mathrm{dist}(x_i, x_j) = |i-j|$ and $R(x_i) = \\#\\{|i-j| : j \\ne i\\} = \\max(i,\\, n-1-i)$.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "Euclidean distance",
       "Finset.image cardinality",
@@ -125,7 +125,7 @@
     "title": "Exact Values: Where Lower Meets Upper",
     "content": "`g_zero`, `g_one`, `g_two`, `g_three` pin down g(0)=0, g(1)=1, g(2)=1, g(3)=2 — the first formalized exact values of g. Each is a one-line `omega` corollary combining a lower bound from this file (g_ge_one or g_ge_half) with an upper bound from the parent (g_le_n or the sharper g_le_n_sub_one). The bounds coincide only at these smallest arguments: g(4) already escapes, with g_le_n_sub_one giving g(4) ≤ 3 but g_ge_half giving only g(4) ≥ 2, so pinning g(4)=3 needs a certified 4-point construction.",
     "mathContext": "$g(0)=0,\\; g(1)=1,\\; g(2)=1,\\; g(3)=2$; the elementary bounds give only $2 \\le g(4) \\le 3$.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "exact extremal values",
       "matching bounds",

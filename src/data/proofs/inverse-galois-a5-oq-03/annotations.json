@@ -34,7 +34,7 @@
     },
     "title": "RealizableOverRat.congr: realizability transports along isomorphisms",
     "content": "If `G ≃* H` and `G` is realizable over `ℚ`, then so is `H`. The proof destructures the realization of `G` to extract the field `K` and the isomorphism `φ : G ≃* (K ≃ₐ[ℚ] K)`, then reuses the *same* field `K`, composing `e.symm.trans φ : H ≃* (K ≃ₐ[ℚ] K)`.\n\nThis is the trivial-but-essential observation that realizability is a property of the *isomorphism class* of a group, not of any particular presentation. It is the lemma that lets the quotient theorem's output `G ⧸ N` be re-identified with whatever concrete group (e.g. `ℤ/2`) one actually cares about.",
-    "significance": "important",
+    "significance": "key",
     "mathContext": "If $K/\\mathbb{Q}$ witnesses $G \\cong \\mathrm{Gal}(K/\\mathbb{Q})$ and $e : G \\cong H$, then the *same* field witnesses $H$ via $e^{-1}$ followed by the original isomorphism: $H \\xrightarrow{e^{-1}} G \\xrightarrow{\\sim} \\mathrm{Gal}(K/\\mathbb{Q})$.",
     "relatedConcepts": [
       "isomorphism invariance",
@@ -83,7 +83,7 @@
     },
     "title": "le_alternatingGroup_iff_forall_sign: the abstract square-discriminant criterion",
     "content": "A subgroup `G ≤ Perm α` is contained in the alternating group `Aₙ = alternatingGroup α` iff every element of `G` is an even permutation (`sign σ = 1`). The proof is a clean two-way unfolding through `Equiv.Perm.mem_alternatingGroup` (`σ ∈ Aₙ ↔ sign σ = 1`).\n\nThis is the *permutation-group shadow* of the classical square-discriminant criterion. When `G` is the Galois group of a polynomial `f` acting on its roots, the left side `Gal(f) ⊆ Aₙ` holds exactly when `disc f` is a square in the base field, because the sign of `σ` equals `σ`'s action on the Vandermonde element `Δ = ∏_{i<j}(αᵢ - αⱼ)` and `disc f = Δ²`. Lifting this to the `Polynomial.Gal` level is itself a current Mathlib gap, so the entry isolates the purely group-theoretic core.",
-    "significance": "important",
+    "significance": "key",
     "mathContext": "For a separable polynomial $f$ with roots $\\alpha_i$, the discriminant is $\\mathrm{disc}(f) = \\Delta^2$ where $\\Delta = \\prod_{i<j}(\\alpha_i - \\alpha_j)$. A Galois automorphism $\\sigma$ acts by $\\sigma(\\Delta) = \\mathrm{sgn}(\\sigma)\\,\\Delta$, so $\\mathrm{Gal}(f) \\subseteq A_n \\iff \\sigma(\\Delta) = \\Delta\\ \\forall\\sigma \\iff \\Delta \\in \\text{base field} \\iff \\mathrm{disc}(f)$ is a square.",
     "relatedConcepts": [
       "sign homomorphism",
@@ -158,7 +158,7 @@
     },
     "title": "The easy half of IGP + the quotient consistency check",
     "content": "The headline conclusions and one genuinely-derived corollary:\n\n- **`symmetricGroup_isGaloisGroup`** / **`alternatingGroup_isGaloisGroup`**: every `Sₙ` and every `Aₙ` is a Galois group over `ℚ`. These are *restatements* of the two axioms — their entire mathematical weight lives in the assumptions, which is why the entry is honestly labelled `axiomatized`, not `verified`.\n- **`quotient_Sn_An_realizableOverRat`**: the order-2 group `Sₙ ⧸ Aₙ` is realizable over `ℚ`. Crucially this is **not** a fresh assumption: it is obtained by applying the *proved* `RealizableOverRat.quotient` to the `Sₙ` axiom. It serves as a non-vacuity / consistency check — the realizability framework genuinely meshes with Mathlib's fundamental theorem of Galois theory, and the quotient machinery produces new realizations from old.\n\nThe contrast between the two restatement theorems (which carry axiom weight) and the genuinely-derived quotient corollary makes the proved-vs-assumed boundary precise.",
-    "significance": "important",
+    "significance": "key",
     "mathContext": "Hilbert's theorem: $S_n$ and $A_n$ are Galois groups over $\\mathbb{Q}$ for all $n$. Since $S_n/A_n \\cong \\mathbb{Z}/2$, the proved quotient theorem yields $\\mathbb{Z}/2$ as a Galois group over $\\mathbb{Q}$ for free — consistent with the elementary fact that $\\mathbb{Q}(\\sqrt{d})/\\mathbb{Q}$ realizes $\\mathbb{Z}/2$.",
     "relatedConcepts": [
       "easy half of the inverse Galois problem",
