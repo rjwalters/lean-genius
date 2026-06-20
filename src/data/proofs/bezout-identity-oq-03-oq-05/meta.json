@@ -1,0 +1,214 @@
+{
+  "id": "bezout-identity-oq-03-oq-05",
+  "title": "Garner's Algorithm: Mixed-Radix CRT Reconstruction",
+  "slug": "bezout-identity-oq-03-oq-05",
+  "description": "Extends the two-modulus Bézout CRT solver (crtInt) to k pairwise-coprime moduli by formalizing Garner's algorithm — the classical mixed-radix reconstruction — and proving it returns the unique canonical CRT solution in [0, ∏ mᵢ).",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem#Garner's_algorithm",
+    "date": "1959 (Garner; formalized 2026)",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "crt",
+      "bezout",
+      "mixed-radix",
+      "garner"
+    ],
+    "proofRepoPath": "Proofs/BezoutIdentityOQ03OQ05.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.gcd_eq_gcd_ab",
+        "description": "Bézout's identity for integers: gcd(a,b) = a * gcdA + b * gcdB — the cofactor gcdA P m is used as the modular inverse of P modulo m",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.gcdA",
+        "description": "First Bézout coefficient for integers, reused as the running modular inverse in each Garner digit",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.modEq_iff_dvd",
+        "description": "Integer modular congruence iff divisibility: a ≡ b [ZMOD n] ↔ n ∣ b - a",
+        "module": "Mathlib.Data.Int.ModEq"
+      },
+      {
+        "theorem": "Int.emod_nonneg / Int.emod_lt_of_pos",
+        "description": "Bounds 0 ≤ x % m < m for m > 0, giving the genuine mixed-radix digit range",
+        "module": "Mathlib.Data.Int.Order"
+      },
+      {
+        "theorem": "IsCoprime.mul_dvd",
+        "description": "Coprime divisors multiply: lifts each modulus dividing (garner − y) to their product dividing it, driving uniqueness",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "IsCoprime.mul_left / IsCoprime.mul_right",
+        "description": "Coprimality distributes over products, used to maintain coprimality of the running partial product against the remaining moduli",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "First formalization of Garner's mixed-radix CRT reconstruction over ℤ as a single left-to-right sweep (garnerAux) carrying only the running value and partial product",
+      "Realizes the per-step modular inverse without any ZMod.inv plumbing — the Bézout cofactor Int.gcdA P m already inverts P mod m, the very identity behind the parent crtInt",
+      "garner_modEq: every system congruence is satisfied, proved via a preservation lemma (garnerAux_modEq_self) showing the sweep never disturbs already-accumulated residues",
+      "garner_range: the genuine mixed-radix bound 0 ≤ x < ∏ mᵢ, the defining feature distinguishing Garner's form from a raw CRT sum",
+      "garner_unique: Garner returns THE canonical CRT solution, via list-prod coprimality (isCoprime_list_prod_right) and IsCoprime.mul_dvd"
+    ],
+    "dateAdded": "2026-06-19",
+    "axiomCount": 0,
+    "lineCount": 272,
+    "assumptions": "0 axioms, 0 sorries. Built entirely on Mathlib's Int.gcd_eq_gcd_ab (Bézout) and IsCoprime.mul_dvd; only Lean's foundational axioms (propext, Classical.choice, Quot.sound).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "The two-modulus Chinese Remainder Theorem reconstructs a residue from a pair of coprime moduli; for k moduli the naive approach computes one large modular inverse against the full product. **Garner's algorithm** (Harvey L. Garner, *The residue number system*, 1959) instead builds the answer in **mixed-radix** form by a single left-to-right sweep, carrying only the running value and a running partial product. It is the workhorse behind residue number system (RNS) arithmetic and big-integer CRT reconstruction. This entry extends the gallery's integer-native two-modulus solver `crtInt` (bezout-identity-oq-03) to arbitrarily many pairwise-coprime moduli, proving the sweep both correct and canonical.",
+    "keyInsight": "Garner's per-step modular inverse needs no dedicated inversion machinery: the Bézout cofactor `Int.gcdA P m` already satisfies `P · gcdA P m ≡ 1 [ZMOD m]` whenever `m` is coprime to the partial product `P`. This is exactly the identity that powers `crtInt`, so the multi-modulus algorithm reuses the parent's single arithmetic fact. The `% m` reduction of each digit is what keeps the running value bounded in `[0, ∏ mᵢ)` — the defining feature of *Garner's* mixed-radix form.",
+    "approach": "Define the Garner `digit`, the sweep accumulator `garnerAux` (carrying value `x` and partial product `P`), and the public `garner` (sweeping from `(0,1)`). Prove three results: (1) `garner_modEq` — correctness against every congruence, leaning on a preservation lemma that the sweep never disturbs earlier residues; (2) `garner_range` — the mixed-radix bound `0 ≤ x < ∏ mᵢ`; (3) `garner_unique` — any representative in range satisfying all congruences equals `garner`, via pairwise-coprimality lifting divisibility to the product."
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports",
+      "startLine": 1,
+      "endLine": 2,
+      "summary": "Imports the full Mathlib for Bézout coefficients (Int.gcdA), integer modular congruence (Int.ModEq), and coprimality lemmas (IsCoprime.mul_dvd).",
+      "mathContext": "The single arithmetic ingredient is `Int.gcd_eq_gcd_ab : (Int.gcd a b : ℤ) = a * Int.gcdA a b + b * Int.gcdB a b`, Mathlib's formalized Bézout identity."
+    },
+    {
+      "id": "module-docstring",
+      "title": "Module Documentation",
+      "startLine": 3,
+      "endLine": 45,
+      "summary": "States the open question (extend crtInt to k moduli), describes Garner's mixed-radix sweep, the per-step digit formula, and why the Bézout cofactor serves as the modular inverse.",
+      "mathContext": "Garner builds x = v₁ + v₂·m₁ + v₃·m₁m₂ + ⋯ + v_k·m₁⋯m_{k-1} with digit vⱼ = (rⱼ − x)·(P⁻¹ mod mⱼ) reduced into [0, mⱼ), where P = m₁⋯m_{j-1}."
+    },
+    {
+      "id": "definitions",
+      "title": "Garner Digit and Sweep",
+      "startLine": 49,
+      "endLine": 60,
+      "summary": "`digit` computes (r − x)·(gcdA P m) % m; `garnerAux` carries (x, P) left-to-right across the (modulus, residue) list; `garner` sweeps from (0, 1).",
+      "mathContext": "The accumulator update is x ← x + digit·P, P ← P·m. Carrying only x and P makes the sweep a single linear pass with no precomputed product-inverses."
+    },
+    {
+      "id": "digit-facts",
+      "title": "Digit Facts",
+      "startLine": 62,
+      "endLine": 71,
+      "summary": "digit_nonneg and digit_lt give 0 ≤ digit < m (from Int.emod bounds); digit_modEq relates the reduced digit to its un-reduced Bézout form mod m.",
+      "mathContext": "0 ≤ x % m < m for m > 0 is what bounds every mixed-radix digit; digit ≡ (r − x)·gcdA P m [ZMOD m] lets the % m reduction drop out of all congruence reasoning."
+    },
+    {
+      "id": "bookkeeping",
+      "title": "Running Product",
+      "startLine": 73,
+      "endLine": 82,
+      "summary": "garnerAux_snd: after the sweep the second component equals the starting P times the product of all moduli — pinning the mixed-radix modulus to ∏ mᵢ.",
+      "mathContext": "(garnerAux x P pairs).2 = P · ∏ (pairs.map fst). Starting from P = 1 this is exactly the CRT modulus ∏ mᵢ."
+    },
+    {
+      "id": "bezout-inverse",
+      "title": "Modular Inverse from Bézout",
+      "startLine": 84,
+      "endLine": 103,
+      "summary": "gcdA_mul_modEq_one: the Bézout cofactor inverts P modulo any coprime m. isCoprime_list_prod_right: coprimality distributes over a list product.",
+      "mathContext": "From gcd(P,m)=1 and 1 = P·gcdA + m·gcdB we get P·gcdA ≡ 1 [ZMOD m]. This is the single arithmetic fact reused from crtInt — no ZMod.inv needed."
+    },
+    {
+      "id": "preservation",
+      "title": "Residue Preservation",
+      "startLine": 105,
+      "endLine": 132,
+      "summary": "garnerAux_modEq_self: after processing the remaining pairs from (x, P), the result is still ≡ x [ZMOD P]. This protects the residues of all earlier moduli (each divides P).",
+      "mathContext": "Each subsequent increment is a multiple of the current P, so the running value stays fixed modulo P — the invariant that keeps already-solved congruences solved."
+    },
+    {
+      "id": "correctness",
+      "title": "Correctness of Every Congruence",
+      "startLine": 134,
+      "endLine": 175,
+      "summary": "garnerAux_modEq: the swept value satisfies p.2 ≡ value [ZMOD p.1] for every pair. The head step uses the Bézout inverse; the tail uses preservation + induction.",
+      "mathContext": "Head: x + digit·P ≡ r [ZMOD m] because digit·P ≡ (r − x)·(P·gcdA) ≡ (r − x) [ZMOD m]. Tail residues survive by garnerAux_modEq_self applied at modulus m ∣ P·m."
+    },
+    {
+      "id": "range",
+      "title": "Mixed-Radix Range",
+      "startLine": 177,
+      "endLine": 201,
+      "summary": "garnerAux_range: 0 ≤ value < running product, by induction maintaining 0 ≤ x < P and using 0 ≤ digit < m with x + digit·P < P·m.",
+      "mathContext": "The bound x + (m−1)·P + P = P·m shows each step's value stays below the new product P·m — the genuine mixed-radix bound 0 ≤ x < ∏ mᵢ."
+    },
+    {
+      "id": "public-interface",
+      "title": "Public Interface",
+      "startLine": 203,
+      "endLine": 271,
+      "summary": "garner_modEq (solves every congruence), garner_range (canonical representative in [0, ∏ mᵢ)), and garner_unique (any in-range solution equals garner) — Garner returns THE CRT solution.",
+      "mathContext": "Uniqueness: each mᵢ divides garner − y; pairwise coprimality lifts this (isCoprime_list_prod_right + IsCoprime.mul_dvd) to ∏ mᵢ ∣ garner − y, and two representatives in [0, ∏) forced equal by |c| < 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization extends the gallery's two-modulus Bézout CRT solver to k pairwise-coprime moduli via Garner's mixed-radix algorithm, fully machine-checked at 0 sorries and 0 axioms. The key economy is that the per-step modular inverse is the Bézout cofactor Int.gcdA — the same single arithmetic fact behind crtInt — so the multi-modulus reconstruction needs no new inversion machinery. The three headline results establish that the single left-to-right sweep is correct (solves every congruence), bounded (genuine mixed-radix range), and canonical (returns the unique CRT solution).",
+    "futureWork": "Specialize garner to concrete RNS bases and prove an efficiency/bit-bound; relate garner to Mathlib's ZMod.chineseRemainder; extend to the non-coprime case by pre-reducing to coprime prime-power moduli."
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-03",
+      "relationship": "extends",
+      "description": "Parent two-modulus integer CRT solver crtInt — Garner's algorithm generalizes its single Bézout step to k moduli, reusing Int.gcdA as the per-step modular inverse"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "related",
+      "description": "The foundational Bézout identity gcd(a,b)=ax+by whose cofactors serve as the modular inverses driving each Garner digit"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "complementary",
+      "description": "Natural-number CRT via Nat.chineseRemainder — Garner's mixed-radix sweep is the integer-level multi-modulus alternative"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Garner, H. L.",
+      "title": "The residue number system",
+      "year": "1959",
+      "venue": "IRE Transactions on Electronic Computers, EC-8(2), 140–147",
+      "note": "Introduces the mixed-radix reconstruction algorithm formalized here"
+    },
+    {
+      "authors": "Knuth, D. E.",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1998",
+      "venue": "Addison-Wesley, 3rd ed.",
+      "note": "Section 4.3.2 presents Garner's algorithm and mixed-radix representations for CRT reconstruction"
+    },
+    {
+      "authors": "Ireland, K. and Rosen, M.",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer Graduate Texts in Mathematics, 2nd ed.",
+      "note": "Chapter 1 develops the Bézout identity and CRT over the integers in the style formalized here"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "BezoutIdentityOQ03OQ05",
+    "lineCount": 272,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "path": "Proofs/BezoutIdentityOQ03OQ05.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
