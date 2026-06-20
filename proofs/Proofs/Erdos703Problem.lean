@@ -30,8 +30,8 @@ References:
 Formalization note.
 This file formalizes the structural statement and the trivial case `T(n,0) = 2^{n-1}`
 completely (no `sorry`). The deep Frankl-Rödl exponential bound (the answer to the
-main question) is recorded as the axiom `frankl_rodl_1987`; the unit-distance
-chromatic number is recorded as the opaque `chromaticNumber`. The `T(n,0)` proof
+main question) is recorded as the axiom `frankl_rodl_1987`; this is the sole
+assumption in the file. The `T(n,0)` proof
 below is fully machine-checked: it pairs each subset of `[n]` with its complement
 to bound any `0`-avoiding (intersecting) family by `2^{n-1}`, and exhibits the
 star family of all sets through a fixed point as an extremal example.
@@ -296,15 +296,11 @@ axiom frankl_rodl_1987 : mainQuestion
 The affirmative answer to the main question implies that `χ(n)`, the chromatic
 number of the unit-distance graph in `ℝ^n`, grows exponentially in `n` (also
 proved by Frankl-Wilson (1981) via the Frankl-Wilson theorem on set systems
-avoiding fixed intersection sizes mod `p`).
--/
+avoiding fixed intersection sizes mod `p`). This geometric consequence is
+recorded here informally; it requires the chromatic number of an infinite
+unit-distance graph, which is not yet available in Mathlib, so no opaque symbol
+is introduced for it.
 
-/--
-**Chromatic number** of the unit-distance graph in `ℝ^n` (recorded opaquely).
--/
-axiom chromaticNumber (n : ℕ) : ℕ
-
-/-
 ## Part VII: The Frankl-Wilson Theorem
 -/
 
