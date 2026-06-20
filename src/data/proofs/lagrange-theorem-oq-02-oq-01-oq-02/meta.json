@@ -1,0 +1,167 @@
+{
+  "id": "lagrange-theorem-oq-02-oq-01-oq-02",
+  "title": "Sum of Stabilizer Sizes Equals Orbits Times Group Order",
+  "slug": "lagrange-theorem-oq-02-oq-01-oq-02",
+  "description": "Proves the orbit-counting identity Σ_{x∈X} |Stab(x)| = |X/G| · |G| directly from the orbit-stabilizer theorem, without routing through Burnside's lemma. The disjoint union of stabilizers over all points is shown equinumerous with (X/G) × G via the stabilizer half of Mathlib's Burnside bijection.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Burnside%27s_lemma",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ02OQ01OQ02.lean",
+    "tags": [
+      "group-theory",
+      "group-actions",
+      "orbit-stabilizer",
+      "burnside",
+      "counting",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MulAction.selfEquivSigmaOrbits",
+        "description": "A G-set decomposes as the disjoint union of its orbits indexed by X/G",
+        "module": "Mathlib.GroupTheory.GroupAction.Defs"
+      },
+      {
+        "theorem": "MulAction.orbitProdStabilizerEquivGroup",
+        "description": "Orbit-stabilizer theorem as an equivalence: orbit(b) × Stab(b) ≃ G",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "MulAction.stabilizerEquivStabilizerOfOrbitRel",
+        "description": "Stabilizers of points in the same orbit are isomorphic (conjugate)",
+        "module": "Mathlib.GroupTheory.GroupAction.Basic"
+      },
+      {
+        "theorem": "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group",
+        "description": "Burnside's lemma; the fixed-point analogue of this entry's stabilizer-side identity",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      }
+    ],
+    "originalContributions": [
+      "sigmaStabilizerEquivOrbitsProdGroup: the stabilizer half of the Burnside bijection, isolated as a standalone equivalence (Σ x : X, Stab(x)) ≃ (X/G) × G — Mathlib only exposes the combined fixed-point/orbit bijection sigmaFixedByEquivOrbitsProdGroup",
+      "sum_card_stabilizer_eq_card_orbits_mul_card_group: the point-side counting identity Σ_x |Stab(x)| = |X/G| · |G|, obtained by taking cardinalities of the equivalence — a direct orbit-stabilizer derivation that does not pass through Burnside"
+    ],
+    "dateAdded": "2026-06-19",
+    "prerequisites": [
+      "Group actions, orbits and stabilizers",
+      "Orbit-stabilizer theorem",
+      "Orbit decomposition of a G-set (quotient by orbitRel)",
+      "Cardinality of sigma and product types"
+    ],
+    "relatedProblems": [
+      {
+        "id": "lagrange-theorem-oq-02-oq-01",
+        "relationship": "Parent: Burnside's counting lemma via explicit double-counting"
+      },
+      {
+        "id": "lagrange-theorem-oq-02-oq-02-oq-01",
+        "relationship": "Sibling: Burnside's lemma over Finite (off Fintype)"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 76,
+    "assumptions": "0 axioms, 0 sorries. The noncomputable equivalence uses Classical.choice (a foundational axiom counted by #print axioms but not an added assumption). Built on Mathlib's orbit-stabilizer infrastructure.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "For a finite group G acting on a finite set X, the number of orbits |X/G| is governed by two classical counting identities obtained by double-counting the incidence set {(g, x) : g·x = x}. Counting by group element gives Σ_g |Fix(g)|; counting by point gives Σ_x |Stab(x)|. Both equal |X/G|·|G|, the statement Σ_g |Fix(g)| = |X/G|·|G| being Burnside's lemma (Cauchy-Frobenius). The point-side identity Σ_x |Stab(x)| = |X/G|·|G| follows even more directly: each orbit O contributes |O|·(|G|/|O|) = |G| by the orbit-stabilizer theorem, and there are |X/G| orbits. This is the cleanest manifestation of orbit-stabilizer as a counting principle.",
+    "problemStatement": "Prove Σ_{x∈X} |Stab(x)| = |X/G| · |G| directly from the orbit-stabilizer theorem, without first establishing Burnside's lemma.",
+    "text": "Proves Σ_x |Stab(x)| = |X/G| · |G| directly from orbit-stabilizer. The disjoint union of stabilizers over all points is equinumerous with (X/G) × G.",
+    "proofStrategy": "Build the equivalence (Σ x : X, Stab(x)) ≃ (X/G) × G by decomposing X into orbits (selfEquivSigmaOrbits), replacing each point's stabilizer by that of the orbit representative (stabilizerEquivStabilizerOfOrbitRel), recombining each orbit's contribution as orbit × stabilizer, and collapsing it to G via orbitProdStabilizerEquivGroup. This is the stabilizer half of Mathlib's Burnside bijection. Taking cardinalities (Fintype.card_sigma, Fintype.card_prod, Fintype.card_congr) yields the identity.",
+    "keyInsights": [
+      "Counting {(g,x) : g·x = x} by point gives Σ_x |Stab(x)|; orbit-stabilizer makes each orbit contribute exactly |G|",
+      "The disjoint union of stabilizers over a single orbit is orbit × Stab(rep) ≃ G",
+      "The full identity needs only the orbit decomposition plus orbit-stabilizer — Burnside is not required",
+      "Mathlib's Burnside bijection passes through Σ_x Stab(x) as an intermediate; isolating that intermediate gives this result",
+      "This is the stabilizer-side twin of Mathlib's sum_card_fixedBy_eq_card_orbits_mul_card_group"
+    ],
+    "prerequisites": [
+      "Group actions, orbits and stabilizers",
+      "Orbit-stabilizer theorem",
+      "Orbit decomposition of a G-set (quotient by orbitRel)",
+      "Cardinality of sigma and product types"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Documentation and Setup",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Header stating the point-side counting identity and contrasting it with the parent's Burnside-based route. Sets up a group α acting on a set β with Ω = X/G the orbit quotient.",
+      "mathContext": "The setup `{α} [Group α] {β} [MulAction α β]` with `Ω = Quotient (orbitRel α β)` is the standard Mathlib group-action context; |X/G| = Fintype.card Ω."
+    },
+    {
+      "id": "stabilizer-bijection",
+      "title": "Stabilizer Half of the Burnside Bijection",
+      "startLine": 42,
+      "endLine": 64,
+      "summary": "sigmaStabilizerEquivOrbitsProdGroup : (Σ b : β, stabilizer α b) ≃ Ω × α, built as the calc chain orbit-decompose → conjugate stabilizers to the representative → recombine as orbit × stabilizer → collapse to G via orbit-stabilizer.",
+      "mathContext": "The disjoint union of stabilizers over all points splits orbit by orbit; on each orbit it is orbit(rep) × Stab(rep) ≃ G, so the whole union is (X/G) × G."
+    },
+    {
+      "id": "counting-identity",
+      "title": "The Counting Identity",
+      "startLine": 66,
+      "endLine": 76,
+      "summary": "sum_card_stabilizer_eq_card_orbits_mul_card_group : Σ_b |Stab(b)| = |Ω| · |α|, by taking cardinalities of the equivalence (Fintype.card_sigma / card_prod / card_congr).",
+      "mathContext": "Cardinality is multiplicative across the bijection: |Σ_x Stab(x)| = |(X/G) × G| = |X/G| · |G|."
+    }
+  ],
+  "conclusion": {
+    "summary": "The point-side orbit-counting identity Σ_x |Stab(x)| = |X/G| · |G| is proved directly from the orbit-stabilizer theorem by isolating the stabilizer half of Mathlib's Burnside bijection and taking cardinalities. Fully verified: 0 sorries, 0 added axioms.",
+    "implications": "Provides the stabilizer-side twin of Mathlib's Burnside lemma and a self-contained orbit-stabilizer counting principle, completing the parent's double-counting picture without circular dependence on Burnside.",
+    "openQuestions": [
+      "Derive Burnside's lemma by equating this identity with the fixed-point sum via the incidence-set bijection.",
+      "State the Nat.card / Finite version without Fintype instances."
+    ]
+  },
+  "status": "verified",
+  "badge": "mathlib",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MulAction"
+    ],
+    "namespace": "LagrangeTheoremOQ02OQ01OQ02",
+    "lineCount": 76,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "definitionCount": 1,
+    "path": "Proofs/LagrangeTheoremOQ02OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent: Burnside's counting lemma via explicit double-counting; this entry proves the point-side identity directly from orbit-stabilizer."
+    },
+    {
+      "targetId": "lagrange-theorem-oq-02-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Sibling: Burnside's lemma generalised over Finite (off Fintype)."
+    }
+  ],
+  "references": [
+    {
+      "key": "Ro95",
+      "citation": "Rotman, J.J., An Introduction to the Theory of Groups, 4th ed., Springer GTM 148 (1995), Chapter 3: orbits, stabilizers and counting.",
+      "type": "book"
+    },
+    {
+      "key": "DF04",
+      "citation": "Dummit, D.S. and Foote, R.M., Abstract Algebra, 3rd ed., Wiley (2004), Section 4.3: the class equation and Burnside's lemma.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}
