@@ -2787,6 +2787,7 @@ import Proofs.MeanValueTheoremOQ02OQ04
 import Proofs.MeanValueTheoremOQ02OQ04OQ01
 import Proofs.MeanValueTheoremOQ03
 import Proofs.MeanValueTheoremOQ04
+import Proofs.MatrixSimilarityInvariantsOQ01
 import Proofs.MeanValueTheoremOQ05
 import Proofs.MidyTheorem
 import Proofs.MinkowskiFundamentalTheorem
