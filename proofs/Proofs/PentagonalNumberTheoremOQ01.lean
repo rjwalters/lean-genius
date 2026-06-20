@@ -445,6 +445,39 @@ theorem coeff_genFun_pent (n : ℕ) :
     Nat.Partition.distincts]
   exact Finset.sum_congr rfl (fun p hp => hdist p (Finset.mem_filter.mp hp).2)
 
+/-- **Both ends joined — the directly-citable headline.**  Composing the product
+side `genFun_pent_eq_tprod` with the coefficient side `coeff_genFun_pent`, the
+`n`-th coefficient of Euler's product `∏_{m≥1}(1 - Xᵐ)` is itself the signed count
+of partitions of `n` into distinct parts, with no `genFun` intermediary visible:
+`[Xⁿ] ∏(1-Xᵐ) = ∑_{p∈distincts n}(-1)^{#parts}`. -/
+theorem coeff_tprod_pent (n : ℕ) :
+    (∏' i : ℕ, (1 - (X : ℤ⟦X⟧) ^ (i + 1))).coeff n
+      = ∑ p ∈ Nat.Partition.distincts n, (-1 : ℤ) ^ p.parts.card := by
+  rw [← genFun_pent_eq_tprod, coeff_genFun_pent]
+
+/-- **The coefficient is literally `p_even(n) - p_odd(n)`.**  Splitting the signed
+sum by the parity of the number of parts, the coefficient of `∏(1-Xᵐ)` equals the
+number of distinct-part partitions of `n` with an even number of parts minus those
+with an odd number of parts — Euler's `p_even(n) - p_odd(n)` made explicit. -/
+theorem coeff_tprod_pent_eq_evenOdd_diff (n : ℕ) :
+    (∏' i : ℕ, (1 - (X : ℤ⟦X⟧) ^ (i + 1))).coeff n
+      = ((Nat.Partition.distincts n).filter (fun p => Even p.parts.card)).card
+        - ((Nat.Partition.distincts n).filter (fun p => Odd p.parts.card)).card := by
+  rw [coeff_tprod_pent, ← Finset.sum_filter_add_sum_filter_not
+    (Nat.Partition.distincts n) (fun p => Even p.parts.card)]
+  have heven : ∑ p ∈ (Nat.Partition.distincts n).filter (fun p => Even p.parts.card),
+      (-1 : ℤ) ^ p.parts.card
+      = ((Nat.Partition.distincts n).filter (fun p => Even p.parts.card)).card := by
+    rw [Finset.sum_congr rfl fun p hp => (Finset.mem_filter.mp hp).2.neg_one_pow,
+      Finset.sum_const, nsmul_eq_mul, mul_one]
+  have hodd : ∑ p ∈ (Nat.Partition.distincts n).filter (fun p => ¬ Even p.parts.card),
+      (-1 : ℤ) ^ p.parts.card
+      = -((Nat.Partition.distincts n).filter (fun p => Odd p.parts.card)).card := by
+    rw [Finset.filter_congr fun p _ => Nat.not_even_iff_odd,
+      Finset.sum_congr rfl fun p hp => (Finset.mem_filter.mp hp).2.neg_one_pow,
+      Finset.sum_const, nsmul_eq_mul, mul_neg_one]
+  rw [heven, hodd, sub_eq_add_neg]
+
 end Bridges
 
 /-! ## OPEN CORE (not formalized here) — sharply reduced by Mathlib's `Partition.genFun`
