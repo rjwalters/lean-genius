@@ -21,16 +21,19 @@ can be solved by radicals using Ferrari's method (1540).
   2. Introduce auxiliary parameter m and rewrite as difference of squares
   3. Solve the resolvent cubic for m
   4. Factor quartic into two quadratics and apply quadratic formula
-- **Status:** The algebraic manipulations are verified. The connection to the
-  resolvent cubic formula (Wiedijk #37) is shown. Proof gaps are captured via
-  documented axioms pending formal verification of algebraic identities.
+- **Status:** Axiom-free. All algebraic manipulations are verified, and the
+  three former structural axioms (`quartic_has_four_roots`, `biquadratic_forward`,
+  `biquadratic_backward`) are now discharged as theorems from Mathlib's FTA
+  infrastructure and the complex quadratic formula. The connection to the
+  resolvent cubic formula (Wiedijk #37) is shown.
 
 ## Status
 - [x] Depressed quartic reduction theorem
 - [x] Ferrari's resolvent cubic derivation
 - [x] Factorization into quadratics (given m)
-- [ ] Explicit solution using cubic formula (depends on #244)
-- [ ] Complete verification of all four roots
+- [x] Four-roots existence via FTA (`quartic_has_four_roots`, no axiom)
+- [x] Biquadratic (q = 0) case solved by radicals (no axiom)
+- [x] 0 axioms, 0 sorries — fully machine-checked
 
 ## Mathematical Background
 
@@ -96,11 +99,13 @@ noncomputable def depressionCoeffs (a b c d : ℂ) : ℂ × ℂ × ℂ :=
   let r := d - a * c / 4 + a^2 * b / 16 - 3 * a^4 / 256
   (p, q, r)
 
-/-! ## Proved Results and Remaining Axioms
+/-! ## Proved Results (formerly Axioms)
 
 The depressed quartic forward/backward transformations and the resolvent cubic existence
-have been fully proved. The remaining axioms capture Ferrari's factorization and the
-biquadratic special case, which require more intricate algebraic manipulation. -/
+are proved by ring identities and the Fundamental Theorem of Algebra. The structural
+results that were once axioms — `quartic_has_four_roots` (FTA), `biquadratic_forward`,
+and `biquadratic_backward` (the complex quadratic formula) — are now all discharged as
+theorems, so this file is axiom-free. -/
 
 /-- **Depressed Quartic Forward** (formerly axiom, now proved)
 The substitution y = x + a/4 transforms the general quartic x^4 + ax^3 + bx^2 + cx + d = 0
@@ -261,29 +266,76 @@ theorem resolvent_cubic_has_root (p q r : ℂ) :
   intro h0
   exact hcoeff (by rw [Polynomial.eq_C_of_degree_le_zero (le_of_eq h0)]; simp [Polynomial.coeff_C])
 
-/-- **Axiom: Quartic Has Four Roots**
-By the Fundamental Theorem of Algebra, a degree 4 polynomial over ℂ has exactly 4 roots
-(counted with multiplicity). These roots can be expressed in terms of radicals via
-Ferrari's method. -/
-axiom quartic_has_four_roots (a b c d : ℂ) :
+/-- **Theorem: Quartic Has Four Roots**
+By the Fundamental Theorem of Algebra (ℂ is algebraically closed), the monic
+degree-4 polynomial `quarticPoly a b c d` has a root multiset of cardinality 4.
+Listing its (not necessarily distinct) roots `r₁,r₂,r₃,r₄`, a complex number is a
+root of the quartic iff it equals one of them. Previously an axiom; now discharged
+from Mathlib's FTA infrastructure (`splits_iff_card_roots`, `mem_roots`). -/
+theorem quartic_has_four_roots (a b c d : ℂ) :
     ∃ (r₁ r₂ r₃ r₄ : ℂ),
-      ∀ x : ℂ, (quarticPoly a b c d).eval x = 0 ↔ (x = r₁ ∨ x = r₂ ∨ x = r₃ ∨ x = r₄)
+      ∀ x : ℂ, (quarticPoly a b c d).eval x = 0 ↔ (x = r₁ ∨ x = r₂ ∨ x = r₃ ∨ x = r₄) := by
+  have hmonic : (quarticPoly a b c d).Monic := by unfold quarticPoly; monicity!
+  have hdeg : (quarticPoly a b c d).natDegree = 4 := by unfold quarticPoly; compute_degree!
+  set P := quarticPoly a b c d with hP
+  have hPne : P ≠ 0 := hmonic.ne_zero
+  have hsplits : P.Splits := IsAlgClosed.splits P
+  have hcard4 : Multiset.card P.roots = 4 := by
+    rw [Polynomial.splits_iff_card_roots.mp hsplits, hdeg]
+  obtain ⟨r₁, hr₁mem⟩ := Multiset.card_pos_iff_exists_mem.mp (by rw [hcard4]; norm_num)
+  have hcard3 : Multiset.card (P.roots.erase r₁) = 3 := by
+    rw [Multiset.card_erase_of_mem hr₁mem, hcard4]; rfl
+  obtain ⟨r₂, r₃, r₄, herase⟩ := Multiset.card_eq_three.mp hcard3
+  refine ⟨r₁, r₂, r₃, r₄, fun x => ?_⟩
+  constructor
+  · intro hx
+    have hmem : x ∈ P.roots := (Polynomial.mem_roots hPne).mpr hx
+    rw [← Multiset.cons_erase hr₁mem, herase] at hmem
+    simp only [Multiset.insert_eq_cons, Multiset.mem_cons, Multiset.mem_singleton] at hmem
+    tauto
+  · intro hx
+    have hmem : x ∈ P.roots := by
+      rw [← Multiset.cons_erase hr₁mem, herase]
+      simp only [Multiset.insert_eq_cons, Multiset.mem_cons, Multiset.mem_singleton]
+      tauto
+    exact (Polynomial.mem_roots hPne).mp hmem
 
-/-- **Axiom: Biquadratic Forward**
-When q = 0, the depressed quartic y^4 + py^2 + r = 0 reduces to a quadratic in z = y^2.
-The solutions z = y^2 are given by the quadratic formula. -/
-axiom biquadratic_forward (p r y : ℂ)
+/-- **Theorem: Biquadratic Forward**
+When q = 0, the depressed quartic y⁴ + py² + r = 0 reduces to a quadratic in z = y².
+Setting `s = √(p²−4r)` (the principal complex square root, `s² = p²−4r` even when the
+radicand is 0), the identity `(2y²+p−s)(2y²+p+s) = 4(y⁴+py²+r) + (p²−4r−s²)` shows the
+product vanishes, so `y²` equals one of `(−p±s)/2`. Previously an axiom. -/
+theorem biquadratic_forward (p r y : ℂ)
     (h : y^4 + p * y^2 + 0 * y + r = 0) :
     (y^2 = (-p + Complex.cpow (p^2 - 4*r) (1/2 : ℂ)) / 2) ∨
-    (y^2 = (-p - Complex.cpow (p^2 - 4*r) (1/2 : ℂ)) / 2)
+    (y^2 = (-p - Complex.cpow (p^2 - 4*r) (1/2 : ℂ)) / 2) := by
+  have hs2 : (Complex.cpow (p^2 - 4*r) (1/2 : ℂ)) ^ 2 = p^2 - 4*r := by
+    have hh := Complex.cpow_nat_inv_pow (p^2 - 4*r) (n := 2) (by norm_num)
+    rwa [show ((2 : ℕ) : ℂ)⁻¹ = (1/2 : ℂ) by norm_num] at hh
+  set s := Complex.cpow (p^2 - 4*r) (1/2 : ℂ)
+  have key : (2 * y^2 + p - s) * (2 * y^2 + p + s) = 0 := by
+    have hexp : (2 * y^2 + p - s) * (2 * y^2 + p + s)
+        = 4 * (y^4 + p * y^2 + 0 * y + r) + (p^2 - 4*r - s^2) := by ring
+    rw [hexp, h, hs2]; ring
+  rcases mul_eq_zero.mp key with h1 | h1
+  · left; linear_combination h1 / 2
+  · right; linear_combination h1 / 2
 
-/-- **Axiom: Biquadratic Backward**
-If y^2 equals one of the two solutions from the quadratic formula, then y is a root
-of the biquadratic y^4 + py^2 + r = 0. -/
-axiom biquadratic_backward (p r y : ℂ)
+/-- **Theorem: Biquadratic Backward**
+If `y²` equals one of `(−p±√(p²−4r))/2`, then `y` is a root of the biquadratic
+y⁴ + py² + r = 0. The converse of `biquadratic_forward`; proved by substituting each
+value and using `s² = p²−4r`. Previously an axiom. -/
+theorem biquadratic_backward (p r y : ℂ)
     (h : (y^2 = (-p + Complex.cpow (p^2 - 4*r) (1/2 : ℂ)) / 2) ∨
          (y^2 = (-p - Complex.cpow (p^2 - 4*r) (1/2 : ℂ)) / 2)) :
-    y^4 + p * y^2 + 0 * y + r = 0
+    y^4 + p * y^2 + 0 * y + r = 0 := by
+  have hs2 : (Complex.cpow (p^2 - 4*r) (1/2 : ℂ)) ^ 2 = p^2 - 4*r := by
+    have hh := Complex.cpow_nat_inv_pow (p^2 - 4*r) (n := 2) (by norm_num)
+    rwa [show ((2 : ℕ) : ℂ)⁻¹ = (1/2 : ℂ) by norm_num] at hh
+  set s := Complex.cpow (p^2 - 4*r) (1/2 : ℂ)
+  have hy4 : y^4 + p * y^2 + 0 * y + r = (y^2)^2 + p * (y^2) + r := by ring
+  rw [hy4]
+  rcases h with h1 | h1 <;> rw [h1] <;> linear_combination hs2 / 4
 
 /-- Any general quartic can be reduced to depressed form via substitution. -/
 theorem quartic_to_depressed (a b c d : ℂ) :
@@ -297,12 +349,12 @@ theorem quartic_to_depressed (a b c d : ℂ) :
              eval_pow, eval_X, eval_C]
   constructor
   · intro h
-    -- Apply axiom for forward direction
+    -- Apply forward direction
     have := depressed_quartic_forward a b c d x
     simp only [quarticPoly, eval_add, eval_mul, eval_pow, eval_X, eval_C] at this
     exact this h
   · intro h
-    -- Apply axiom for backward direction
+    -- Apply backward direction
     have := depressed_quartic_backward a b c d (x + a / 4)
     simp only [depressedQuartic, depressionCoeffs, eval_add, eval_mul, eval_pow, eval_X, eval_C] at this
     have h2 := this h
@@ -475,10 +527,10 @@ theorem biquadratic_simple (p r : ℂ) :
   simp only [depressedQuartic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
   constructor
   · intro h
-    -- Apply axiom for forward direction (biquadratic case is q = 0)
+    -- Apply forward direction (biquadratic case is q = 0)
     exact biquadratic_forward p r y h
   · intro h
-    -- Apply axiom for backward direction
+    -- Apply backward direction
     exact biquadratic_backward p r y h
 
 /-! ## Part VI.5: Biquadratic-Limit Removable Singularity (OQ-02.c)
