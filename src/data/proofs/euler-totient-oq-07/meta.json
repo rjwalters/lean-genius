@@ -1,0 +1,150 @@
+{
+  "id": "euler-totient-oq-07",
+  "title": "Coprimality of Two Totients: $\\gcd(\\varphi(m),\\varphi(n))=1$ Iff One Argument Lies in $\\{1,2\\}$",
+  "slug": "euler-totient-oq-07",
+  "description": "Answers the open question on the `euler-totient` gallery family: characterise when the Euler totients of two numbers are coprime. Mathlib supplies the biconditional `Nat.totient_coprime_totient_iff : (φ m).Coprime (φ n) ↔ (m = 1 ∨ m = 2) ∨ (n = 1 ∨ n = 2)`, which holds because φ(k) is even for every k > 2 (`Nat.totient_even`, via the order-2 unit −1 ∈ (ℤ/kℤ)ˣ and Lagrange): as soon as both arguments are ≥ 3 the totients share the factor 2 and cannot be coprime, while φ = 1 at 1 and 2 is coprime to everything. Rather than restate the one-line iff, this file packages the structural consequence Mathlib does not state: for m, n ≥ 3 the totients are never coprime, and in fact `2 ∣ gcd(φ m, φ n)`, giving the concrete lower bound `2 ≤ gcd(φ m, φ n)`. This turns the abstract characterisation into a quotable shared-structure bound on distinct totients. Fully machine-checked: 0 sorries, 0 axioms (the `decide` calls are kernel reductions over concrete small naturals, not `native_decide`).",
+  "meta": {
+    "author": "Euler (1763); coprimality characterization formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_totient_function",
+    "date": "1763",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ07.lean",
+    "tags": [
+      "number-theory",
+      "euler-totient",
+      "coprimality",
+      "gcd",
+      "parity",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 106,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The coprimality biconditional is `Nat.totient_coprime_totient_iff` from Mathlib (whose engine is `Nat.totient_even`: −1 of order 2 in the unit group plus Lagrange); the structural consequences add only elementary divisibility reasoning. The `decide` calls evaluate `φ` at concrete naturals (3, 4, 9, 15) in the kernel (not `native_decide`), so the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient_coprime_totient_iff",
+        "description": "`(φ m).Coprime (φ n) ↔ (m = 1 ∨ m = 2) ∨ (n = 1 ∨ n = 2)`. The full characterization of when two totients are coprime; re-exported as the flagship statement and used in its gcd form.",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_even",
+        "description": "`2 < n → Even n.totient`. Supplies the shared factor 2 for both arguments when m, n ≥ 3, the engine behind the never-coprime consequence and the `2 ∣ gcd` divisibility.",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.dvd_gcd",
+        "description": "`k ∣ m → k ∣ n → k ∣ gcd m n`. Combines the two evenness facts into `2 ∣ gcd(φ m, φ n)`.",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.not_coprime_of_dvd_of_dvd",
+        "description": "`1 < k → k ∣ m → k ∣ n → ¬ Nat.Coprime m n`. Gives the headline `not_coprime_totient_of_three_le` directly from the shared factor 2.",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      }
+    ],
+    "originalContributions": [
+      "`gcd_totient_eq_one_iff`: the explicit gcd form `gcd(φ m, φ n) = 1 ↔ (m = 1 ∨ m = 2) ∨ (n = 1 ∨ n = 2)` of the coprimality characterization, spelling out `Nat.Coprime` as `gcd = 1`.",
+      "`two_dvd_gcd_totient_of_three_le`: the new divisibility fact `2 ∣ gcd(φ m, φ n)` for m, n ≥ 3 — the explicit shared factor Mathlib's biconditional only implies, not states.",
+      "`two_le_gcd_totient_of_three_le`: the quantitative lower bound `2 ≤ gcd(φ m, φ n)` for m, n ≥ 3, turning 'not coprime' into a concrete numeric floor on the common structure.",
+      "`not_coprime_totient_of_three_le`: the genuinely informative half of the characterization stated as a clean implication — totients of two numbers ≥ 3 are never coprime because they share the factor 2."
+    ],
+    "prerequisites": [
+      "Euler's totient function φ(n) = |(ℤ/nℤ)ˣ|",
+      "Parity of φ: φ(n) is even for n > 2 (the unit −1 of order 2 plus Lagrange)",
+      "Coprimality and gcd of naturals (Nat.Coprime is gcd = 1)",
+      "Divisibility reasoning (dvd_gcd, le_of_dvd)"
+    ],
+    "dateAdded": "2026-06-20",
+    "relatedProblems": [
+      {
+        "id": "euler-totient",
+        "relationship": "Parent: the gallery family on Euler's totient and his generalization of Fermat's little theorem; this entry settles the open question of when two totients are coprime and extracts the shared-factor lower bound."
+      },
+      {
+        "id": "euler-totient-oq-06",
+        "relationship": "Sibling: oq-06 establishes the parity classification φ(n) even ⟺ n ∉ {1, 2}. This entry applies that exact evenness to a pair of arguments, deriving that distinct large totients always share the factor 2 and hence are never coprime."
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 106,
+    "path": "Proofs/EulerTotientOQ07.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 5
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Leonhard Euler introduced the totient function φ(n) — the order of the unit group (ℤ/nℤ)ˣ — in his 1763 generalization of Fermat's little theorem. A recurring question when manipulating totients (e.g. in cyclotomic field theory or order computations) is whether φ(m) and φ(n) can be coprime. The answer is sharply constrained by parity: φ(k) is even for every k > 2 (the element −1 ∈ (ℤ/kℤ)ˣ has order 2 for k > 2, so Lagrange forces 2 ∣ φ(k)). Consequently the only way two totients avoid the common factor 2 is for one argument to be 1 or 2, where φ = 1 is coprime to everything. Mathlib packages the resulting biconditional as `Nat.totient_coprime_totient_iff`; the explicit shared-factor consequence — the gcd is always ≥ 2 when both arguments exceed 2 — is the structural picture this entry records.",
+    "problemStatement": "**Open Question (euler-totient-oq-07):** characterise when the Euler totients of two numbers are coprime, i.e. for which m, n we have gcd(φ(m), φ(n)) = 1.",
+    "text": "gcd(φ(m), φ(n)) = 1 exactly when at least one of m, n lies in {1, 2}; whenever both are ≥ 3 the totients share the factor 2, so 2 ≤ gcd(φ(m), φ(n)) and they are never coprime.",
+    "proofStrategy": "The characterization is `Nat.totient_coprime_totient_iff`, restated in gcd form via the definitional identity `Nat.Coprime = (gcd = 1)`. The informative consequences follow from parity: `two_dvd_gcd_totient_of_three_le` applies `Nat.totient_even` to each argument (m, n ≥ 3 ⟹ both totients even) and combines via `Nat.dvd_gcd`; `two_le_gcd_totient_of_three_le` upgrades this to a numeric bound using `Nat.le_of_dvd` on the positive gcd; `not_coprime_totient_of_three_le` reads off non-coprimality directly via `Nat.not_coprime_of_dvd_of_dvd`. Worked examples evaluate φ at 3, 4, 9, 15 by kernel `decide`.",
+    "keyInsights": [
+      "**The obstruction to coprime totients is the shared factor 2.** Once both arguments exceed 2, evenness of both totients is automatic, so 2 is a guaranteed common divisor — coprimality is impossible without an argument in {1, 2}.",
+      "**The biconditional only implies the shared factor; the gcd bound makes it explicit.** Mathlib states 'coprime ⟺ some argument ∈ {1,2}', but `two_le_gcd_totient_of_three_le` records the quantitative floor gcd ≥ 2 that the abstract iff leaves implicit.",
+      "**Coprimality of m and n is irrelevant.** φ 9 and φ 15 are not coprime even though 9 and 15 are themselves coprime — the totient destroys coprimality of the arguments because parity is a uniform obstruction independent of the prime factorizations.",
+      "**The {1, 2} escape hatch is exactly the odd-totient set.** φ is odd only at 1 and 2 (where it equals 1), so the coprime case is precisely when one argument hits the unique odd-totient values — tying this result to the parity classification of euler-totient-oq-06."
+    ],
+    "prerequisites": [
+      "Euler's totient φ and the unit group (ℤ/nℤ)ˣ",
+      "Parity of the totient (φ(n) even for n > 2) and divisibility by 2",
+      "gcd and coprimality of naturals",
+      "Finite evaluation by kernel `decide`"
+    ]
+  },
+  "conclusion": {
+    "summary": "Two Euler totients φ(m), φ(n) are coprime iff at least one argument lies in {1, 2}; for m, n ≥ 3 they always share the factor 2, so 2 ≤ gcd(φ(m), φ(n)) and they are never coprime. 5 theorems, 106 lines, 0 sorries, 0 axioms; the characterization rests on Mathlib's `Nat.totient_coprime_totient_iff` and the consequences on `Nat.totient_even` plus elementary divisibility.",
+    "implications": "The explicit shared-factor bound is the practically useful form: any argument that needs the totients of two numbers ≥ 3 to be coprime is doomed, and the gcd is at least 2. This recurs in computations where products of totients or coprimality of orders are required (e.g. CRT-style decompositions of unit groups, cyclotomic degree arguments), where the parity obstruction is the first thing to check.",
+    "openQuestions": [
+      "Sharpen the lower bound: when both arguments are ≥ 3, is gcd(φ(m), φ(n)) ≥ 4 unless one argument has totient exactly 2 (i.e. n ∈ {3, 4, 6})? Characterize the cases where the gcd equals exactly 2.",
+      "Determine the exact value of gcd(φ(m), φ(n)) in terms of the factorizations of m and n via the multiplicative formula φ(n) = ∏ p^(k−1)(p−1).",
+      "Generalize to finite families: when is the family {φ(n_i)} pairwise coprime, and when is gcd of the whole family equal to a fixed power of 2?"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Overview, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring framing the goal — characterise coprimality of two totients and extract the shared-factor consequence — with imports (`Mathlib.Data.Nat.Totient`, `Mathlib.Tactic`), the contents list, and the namespace opening `Nat` (so `φ` denotes `Nat.totient`). Includes `totient_coprime_iff`, the re-exported Mathlib biconditional."
+    },
+    {
+      "id": "gcd-form-and-consequences",
+      "title": "gcd Form and Shared-Factor Consequences",
+      "startLine": 42,
+      "endLine": 82,
+      "summary": "`gcd_totient_eq_one_iff` (the gcd-form of the characterization), `two_dvd_gcd_totient_of_three_le` (`2 ∣ gcd(φ m, φ n)` for m, n ≥ 3 via `Nat.dvd_gcd` and `Nat.totient_even`), `two_le_gcd_totient_of_three_le` (the lower bound `2 ≤ gcd` via `Nat.le_of_dvd`), and `not_coprime_totient_of_three_le` (the headline never-coprime implication via `Nat.not_coprime_of_dvd_of_dvd`)."
+    },
+    {
+      "id": "worked-examples",
+      "title": "Worked Examples",
+      "startLine": 83,
+      "endLine": 106,
+      "summary": "Concrete witnesses: φ 1 = φ 2 = 1 (the odd-totient escape hatch); φ 2 coprime to φ 100 (the m = 2 branch); φ 3 = φ 4 = 2 with gcd 2; and the headline applied to φ 9, φ 15 (not coprime though 9, 15 are coprime, gcd = 2)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "parent",
+      "description": "The parent gallery family develops Euler's totient and his generalization of Fermat's little theorem. This entry settles its open question on when two totients are coprime and records the explicit shared-factor lower bound."
+    },
+    {
+      "targetId": "euler-totient-oq-06",
+      "relationship": "sibling",
+      "description": "oq-06 proves the parity classification φ(n) even ⟺ n ∉ {1, 2}. This entry applies that evenness to a pair of arguments: when both exceed 2 the totients share the factor 2, so they are never coprime — the {1, 2} escape hatch is exactly the odd-totient set."
+    },
+    {
+      "targetId": "euler-totient-oq-05",
+      "relationship": "related",
+      "description": "oq-05 is Euler's theorem a^φ(n) ≡ 1 (mod n), using φ as an exponent. This entry studies the arithmetic of φ itself — coprimality of distinct totients — an orthogonal structural property."
+    }
+  ]
+}
