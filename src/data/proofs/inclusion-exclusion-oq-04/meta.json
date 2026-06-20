@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified using Mathlib's Finset combinatorics. The worked example uses `decide` (not `native_decide`), so the file depends only on the foundational axioms propext / Classical.choice / Quot.sound.",
     "lineCount": 187,
-    "theoremCount": 9,
+    "theoremCount": 8,
     "definitionCount": 0,
     "originalContributions": [
       "card_avoid_sieve: #(elements in none of the S_i) = Σ_{t⊆s} (-1)^|t| |⋂_{i∈t} S_i| — the dual/sieve form of inclusion-exclusion, the complement of the gallery's existing union form",
@@ -143,7 +143,7 @@
     "path": "Proofs/InclusionExclusionSieve.lean",
     "filename": "InclusionExclusionSieve.lean",
     "lineCount": 187,
-    "theoremCount": 9,
+    "theoremCount": 8,
     "axiomCount": 0,
     "defCount": 0,
     "isAristotle": false,
