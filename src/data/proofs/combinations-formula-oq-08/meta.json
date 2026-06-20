@@ -7,7 +7,7 @@
     "author": "Lean Genius researcher-10",
     "status": "verified",
     "proofRepoPath": "Proofs/CombinationsFormulaOQ08.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 102,
@@ -28,6 +28,28 @@
       "choose_shallow_eq_zero: the tail-vanishing lemma C(n-k, k) = 0 for k > ⌊n/2⌋, the combinatorial reason the diagonal sum is finite",
       "fib_eq_sum_range_half_choose: the truncated textbook form fib(n+1) = ∑_{k≤⌊n/2⌋} C(n-k, k), restricting to the nonzero terms via Finset.sum_subset",
       "Worked verification fib 6 = C(5,0)+C(4,1)+C(3,2) = 1+4+3 = 8 from the truncated formula"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib_succ_eq_sum_choose",
+        "description": "Fibonacci as a sum over the antidiagonal: fib (n+1) = ∑ p ∈ antidiagonal n, choose p.1 p.2. Re-exported as fib_eq_sum_antidiagonal_choose and the core of the shallow-diagonal range form.",
+        "module": "Mathlib.Combinatorics.Choose.Sum"
+      },
+      {
+        "theorem": "Finset.Nat.sum_antidiagonal_eq_sum_range_succ",
+        "description": "Reindexes an antidiagonal sum over n as a range sum over k ∈ range (n+1) with j = n - k; converts the antidiagonal Fibonacci form to a single range sum.",
+        "module": "Mathlib.Algebra.BigOperators.NatAntidiagonal"
+      },
+      {
+        "theorem": "Finset.sum_range_reflect",
+        "description": "Reverses the summation index k ↦ n - k over range (n+1); turns the surviving summand into the textbook shallow-diagonal term C(n-k, k).",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Nat.choose_eq_zero_of_lt",
+        "description": "C(a, b) = 0 when a < b; supplies the tail-vanishing lemma choose_shallow_eq_zero used to truncate the sum at ⌊n/2⌋.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
     ]
   },
   "leanFile": {
