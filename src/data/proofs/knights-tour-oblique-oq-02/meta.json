@@ -7,7 +7,7 @@
     "author": "Donald E. Knuth (8×8 oblique result), structural formalization by Lean Genius",
     "sourceUrl": "https://online.stanford.edu/events/202412/donald-knuths-annual-christmas-lecture-2025",
     "date": "2025",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/KnightsTourObliqueOQ02.lean",
     "additionalFiles": [
       "Proofs/KnightsTourObliqueOQ02Reverse.lean"
@@ -20,12 +20,12 @@
       "Knuth",
       "symmetry"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "None beyond Lean's foundational axioms. The Fintype and DecidableEq instances for ClosedTour are noncomputable (built via Fintype.ofInjective / Classical.decEq), so the development uses Classical.choice — a standard foundational axiom (like propext and Quot.sound) that does not count toward axiomCount under the project's axiom-integrity policy. No native_decide is used in either file; every distribution, group-action, and reversal result is proved algebraically (omega, fin_cases, simp, List lemmas). The companion file's reversal results (reverseTour involution, isOblique_comm, isOblique_neg_neg) are fully verified; the full count-invariance capstone obliqueCount (reverseTour t) = obliqueCount t is the documented next step (see open questions).",
+    "axiomCount": 1,
+    "assumptions": "1 effective assumption: Lean.ofReduceBool. The support lower bound obliqueDistribution_zero_below_four lifts the parent's oblique_lower_bound (obliqueCount t ≥ 4), which is established in the base file KnightsTourOblique.lean via native_decide (corner-adjacency case analysis). native_decide trusts the compiler's kernel reduction and therefore depends on Lean.ofReduceBool (confirmed by #print axioms), so this entry transitively carries that assumption and is classified axiomatized per the project's axiom-integrity policy. It does NOT depend on the base file's knuth_unique_four_oblique axiom. The Fintype and DecidableEq instances for ClosedTour are noncomputable (built via Fintype.ofInjective / Classical.decEq), so the development also uses Classical.choice — a standard foundational axiom (like propext and Quot.sound) that does not count toward axiomCount. The D4 group-action results (composition, associativity, identities, inverses) and the companion file's reversal results (reverseTour involution, isOblique_comm, isOblique_neg_neg) are proved algebraically (omega, fin_cases, simp, List lemmas) and are ofReduceBool-free; the full count-invariance capstone obliqueCount (reverseTour t) = obliqueCount t is the documented next step (see open questions).",
     "dateAdded": "2026-06-19",
-    "lineCount": 706,
+    "lineCount": 695,
     "mathlibDependencies": [
       {
         "theorem": "Fintype.ofInjective",
@@ -183,7 +183,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 706,
+    "lineCount": 695,
     "path": "Proofs/KnightsTourObliqueOQ02.lean",
     "axiomCount": 0,
     "sorries": 0,
