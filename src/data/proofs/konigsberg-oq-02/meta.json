@@ -75,6 +75,21 @@
       "targetId": "konigsberg",
       "relationship": "extends",
       "description": "Undirected Königsberg bridges (Wiedijk #53); this file proves the directed analogue"
+    },
+    {
+      "targetId": "konigsberg-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Hierholzer's Algorithm — Directed Eulerian Circuit (Corrected) — the **constructive companion** to this entry's existence characterization, and a direct correction to it. This entry proves the *criterion* (a weakly connected digraph has an Eulerian circuit iff indegree = outdegree at every vertex) non-constructively; the child entry exhibits the *witness* by fully formalizing Hierholzer's algorithm, which greedily extends and splices closed trails until all arcs are consumed. It explicitly corrects a bug in this file's `directed_euler_circuit` development, so the pair documents both the theorem and the repaired algorithmic realization — existence here, computation there."
+    },
+    {
+      "targetId": "konigsberg-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Eulerian Paths in Directed Graphs — a **parallel formalization** of the same directed Euler theorem, developed from the circuit side of the family tree (under konigsberg-oq-01) rather than the path side here. Comparing the two gives two independent Lean routes to the indegree=outdegree characterization: this entry frames the path version (exactly one vertex with outdeg−indeg = 1 as source, one with indeg−outdeg = 1 as sink), while that entry centers the circuit version (balanced at every vertex). Together they triangulate the directed analogue of Euler's 1736 Königsberg theorem."
+    },
+    {
+      "targetId": "konigsberg-oq-04",
+      "relationship": "related",
+      "description": "Counting Eulerian Circuits: the BEST Theorem — the **enumeration layer** built atop the existence result proved here. Once this entry guarantees *that* a directed Eulerian circuit exists (balanced indegree/outdegree on a connected digraph), the BEST theorem (de Bruijn–van Aardenne-Ehrenfest–Smith–Tutte) counts *how many*: $\\text{ec}(G) = t_w(G)\\prod_v (\\deg^+(v)-1)!$, where $t_w(G)$ is the number of arborescences rooted at any fixed vertex. The pairing illustrates the decision-vs-counting complexity gap — existence is polynomial-time (this entry's degree check), while the count is given by a determinant (Matrix-Tree) yet the associated decision variants become hard."
     }
   ],
   "sections": [
