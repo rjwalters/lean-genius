@@ -664,6 +664,7 @@ import Proofs.DilworthTheoremOQ01
 import Proofs.DirichletApproximation
 import Proofs.DirichletApproximationOQ01
 import Proofs.DirichletApproximationOQ02
+import Proofs.DirichletApproximationOQ03
 import Proofs.DirichletsTheorem
 import Proofs.DirichletsTheoremOQ01
 import Proofs.DirichletsTheoremOQ01OQ01
