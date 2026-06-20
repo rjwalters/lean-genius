@@ -22042,11 +22042,12 @@
     },
     {
       "slug": "cauchy-schwarz-oq-03-oq-02-oq-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-06-16T04:40:01.644Z",
-      "status": "active",
-      "lastUpdate": "2026-06-16T04:40:01.731Z"
+      "status": "graduated",
+      "lastUpdate": "2026-06-20T07:15:24.163Z",
+      "completed": "2026-06-20T07:15:24.163Z"
     },
     {
       "slug": "cramers-rule-oq-04-oq-01",
@@ -23561,8 +23562,8 @@
       "phase": "OBSERVE",
       "path": "fast",
       "started": "2026-06-20T05:40:20.628Z",
-      "status": "active",
-      "lastUpdate": "2026-06-20T05:40:20.659Z"
+      "status": "blocked",
+      "lastUpdate": "2026-06-20T07:15:24.411Z"
     },
     {
       "slug": "combinations-formula-oq-05",
@@ -23694,7 +23695,8 @@
       "phase": "OBSERVE",
       "path": "full",
       "started": "2026-06-19T22:45:55-07:00",
-      "status": "active"
+      "status": "blocked",
+      "lastUpdate": "2026-06-20T07:15:24.416Z"
     },
     {
       "slug": "divisibility-rules-oq-04",
@@ -23727,16 +23729,17 @@
       "phase": "OBSERVE",
       "path": "fast",
       "started": "2026-06-20T06:13:37.053Z",
-      "status": "active",
-      "lastUpdate": "2026-06-20T06:13:37.082Z"
+      "status": "blocked",
+      "lastUpdate": "2026-06-20T07:15:24.417Z"
     },
     {
       "slug": "cantors-theorem-oq-05",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-06-20T06:13:37.053Z",
-      "status": "active",
-      "lastUpdate": "2026-06-20T06:13:37.082Z"
+      "status": "graduated",
+      "lastUpdate": "2026-06-20T07:15:24.417Z",
+      "completed": "2026-06-20T07:15:24.417Z"
     },
     {
       "slug": "denumerability-rationals-oq-05",
@@ -23776,35 +23779,39 @@
     },
     {
       "slug": "sylvester-sequence-oq-02",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-06-20T06:15:27.317Z",
-      "status": "active",
-      "lastUpdate": "2026-06-20T06:15:27.368Z"
+      "status": "graduated",
+      "lastUpdate": "2026-06-20T07:15:24.419Z",
+      "completed": "2026-06-20T07:15:24.419Z"
     },
     {
       "slug": "repunit-oq-02",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-06-20T06:15:27.317Z",
-      "status": "active",
-      "lastUpdate": "2026-06-20T06:15:27.368Z"
+      "status": "graduated",
+      "lastUpdate": "2026-06-20T07:15:24.419Z",
+      "completed": "2026-06-20T07:15:24.419Z"
     },
     {
       "slug": "sum-of-divisors-oq-04",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-06-20T06:15:27.317Z",
-      "status": "active",
-      "lastUpdate": "2026-06-20T06:15:27.369Z"
+      "status": "graduated",
+      "lastUpdate": "2026-06-20T07:15:24.419Z",
+      "completed": "2026-06-20T07:15:24.419Z"
     },
     {
       "slug": "niven-theorem-oq-02",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-06-20T06:15:27.317Z",
-      "status": "active",
-      "lastUpdate": "2026-06-20T06:15:27.369Z"
+      "status": "graduated",
+      "lastUpdate": "2026-06-20T07:15:24.420Z",
+      "completed": "2026-06-20T07:15:24.420Z"
     },
     {
       "slug": "stirling-formula-oq-03",
@@ -23813,6 +23820,292 @@
       "started": "2026-06-20T06:15:27.317Z",
       "status": "active",
       "lastUpdate": "2026-06-20T06:15:27.370Z"
+    },
+    {
+      "slug": "combinations-formula-oq-09",
+      "phase": "COMPLETED",
+      "path": "full",
+      "started": "2026-06-20T07:15:24.420Z",
+      "status": "graduated",
+      "lastUpdate": "2026-06-20T07:15:24.420Z",
+      "completed": "2026-06-20T07:15:24.420Z"
+    },
+    {
+      "slug": "dirichlet-approximation-theorem-oq-04",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.421Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.421Z"
+    },
+    {
+      "slug": "dirichlet-approximation-theorem-oq-05",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-06-20T07:15:24.421Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.421Z"
+    },
+    {
+      "slug": "burnside-counting-oq-05",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-06-20T07:15:24.421Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.421Z"
+    },
+    {
+      "slug": "denumerability-rationals-oq-06",
+      "phase": "COMPLETED",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.422Z",
+      "status": "graduated",
+      "lastUpdate": "2026-06-20T07:15:24.422Z",
+      "completed": "2026-06-20T07:15:24.422Z"
+    },
+    {
+      "slug": "denumerability-rationals-oq-07",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.422Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.422Z"
+    },
+    {
+      "slug": "pythagorean-triples-oq-08",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.422Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.422Z"
+    },
+    {
+      "slug": "pythagorean-triples-oq-09",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.422Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.422Z"
+    },
+    {
+      "slug": "perfect-numbers-oq-05",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.422Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.422Z"
+    },
+    {
+      "slug": "perfect-numbers-oq-06",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.422Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.422Z"
+    },
+    {
+      "slug": "sophie-germain-oq-04",
+      "phase": "COMPLETED",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.423Z",
+      "status": "graduated",
+      "lastUpdate": "2026-06-20T07:15:24.423Z",
+      "completed": "2026-06-20T07:15:24.423Z"
+    },
+    {
+      "slug": "sum-of-kth-powers-oq-05",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.423Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.423Z"
+    },
+    {
+      "slug": "triangular-reciprocals-oq-04",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.423Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.423Z"
+    },
+    {
+      "slug": "niven-theorem-oq-03",
+      "phase": "COMPLETED",
+      "path": "full",
+      "started": "2026-06-20T07:15:24.423Z",
+      "status": "graduated",
+      "lastUpdate": "2026-06-20T07:15:24.423Z",
+      "completed": "2026-06-20T07:15:24.423Z"
+    },
+    {
+      "slug": "mean-value-theorem-oq-05",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.423Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.423Z"
+    },
+    {
+      "slug": "triangle-inequality-oq-05",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.424Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.424Z"
+    },
+    {
+      "slug": "liouville-theorem-oq-05",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.424Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.424Z"
+    },
+    {
+      "slug": "sum-of-divisors-oq-05",
+      "phase": "COMPLETED",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.424Z",
+      "status": "graduated",
+      "lastUpdate": "2026-06-20T07:15:24.424Z",
+      "completed": "2026-06-20T07:15:24.424Z"
+    },
+    {
+      "slug": "sum-of-divisors-oq-06",
+      "phase": "COMPLETED",
+      "path": "full",
+      "started": "2026-06-20T07:15:24.424Z",
+      "status": "graduated",
+      "lastUpdate": "2026-06-20T07:15:24.424Z",
+      "completed": "2026-06-20T07:15:24.424Z"
+    },
+    {
+      "slug": "fibonacci-identities-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.424Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.424Z"
+    },
+    {
+      "slug": "fibonacci-identities-oq-02",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.424Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.424Z"
+    },
+    {
+      "slug": "fibonacci-identities-oq-03",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.425Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.425Z"
+    },
+    {
+      "slug": "pell-equation-oq-06",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.425Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.425Z"
+    },
+    {
+      "slug": "stirling-second-kind-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.425Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.425Z"
+    },
+    {
+      "slug": "stirling-first-kind-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.425Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.425Z"
+    },
+    {
+      "slug": "bell-numbers-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.425Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.425Z"
+    },
+    {
+      "slug": "schroder-numbers-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.425Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.425Z"
+    },
+    {
+      "slug": "banach-fixed-point-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.426Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.426Z"
+    },
+    {
+      "slug": "amgm-inequality-oq-05",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.426Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.426Z"
+    },
+    {
+      "slug": "law-of-cosines-oq-07",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.426Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.426Z"
+    },
+    {
+      "slug": "ptolemys-theorem-oq-04",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.426Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.426Z"
+    },
+    {
+      "slug": "primitive-roots-oq-03",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.426Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.426Z"
+    },
+    {
+      "slug": "quadratic-gauss-sum-square-oq-02",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.426Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.426Z"
+    },
+    {
+      "slug": "cyclotomic-polynomials-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.427Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.427Z"
+    },
+    {
+      "slug": "cyclotomic-polynomials-oq-02",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-06-20T07:15:24.427Z",
+      "status": "active",
+      "lastUpdate": "2026-06-20T07:15:24.427Z"
     }
   ],
   "config": {
