@@ -2991,6 +2991,7 @@ import Proofs.SolutionOfCubicOQ05
 import Proofs.SophieGermain
 import Proofs.SophieGermainOQ01
 import Proofs.SophieGermainOQ02
+import Proofs.SophieGermainOQ04
 import Proofs.SpernerFreudenthal
 import Proofs.SpernerFreudenthalAristotle
 import Proofs.SpernerFreudenthalSimplex
