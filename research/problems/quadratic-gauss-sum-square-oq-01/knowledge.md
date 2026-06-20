@@ -128,3 +128,49 @@ both routes, so it is reusable groundwork rather than throwaway.
 - Reframe `0 < Re(∑ ζ_p^{k²})` and look for a positivity argument that avoids full
   eigenvalue-multiplicity computation (e.g. pairing `k` with `p−k`, partial-sum bounds).
 - Consider upstreaming `gaussSum_chiC_eq_sum_sq` to Mathlib's `NumberTheory/GaussSum.lean`.
+## Session 2026-06-19 (Session 5) — p = 7 witness (second `p ≡ 3 mod 4` case)
+
+Note: the Session-4 diagonal note remarked that the *diagonal* form `∑ζ^{k²}` does not
+make `p = 7` tractable (it needs the cubic value `cos(2π/7)`). This session shows the
+*Legendre-weighted* form does: comparing two folded sines (`sin(4π/7) > sin(6π/7)`)
+sidesteps exact radicals entirely.
+
+**Mode:** depth-first · **Outcome:** progress (new sorry-free, axiom-free witness)
+
+### What I did
+- New companion file `Proofs/QuadraticGaussSumSignSmallSeven.lean` (verified): the next
+  prime on the `p ≡ 3 (mod 4)` branch after `p = 3`, mirroring the p=3/p=5 files.
+  - `gaussSum_seven_eq` — seven-term enumeration over `ZMod 7` collapses to
+    `ζ + ζ² − ζ³ + ζ⁴ − ζ⁵ − ζ⁶` (`quadraticChar (ZMod 7)` = `0,1,1,-1,1,-1,-1`; the
+    quadratic residues mod 7 are `1,2,4`). Used `quadraticChar_one_iff_isSquare` for the
+    residues (+1) and `quadraticChar_neg_one_iff_not_isSquare` for the non-residues (−1),
+    each `IsSquare`/`¬IsSquare` discharged by `decide`.
+  - `sin_eight/ten/twelve_pi_div_seven` — fold the upper-half sines via
+    `sin(x+π)=−sin x` (`Real.sin_add_pi`) and `sin(π−x)=sin x` (`Real.sin_pi_sub`):
+    `sin(8π/7)=−sin(6π/7)`, `sin(10π/7)=−sin(4π/7)`, `sin(12π/7)=−sin(2π/7)`.
+  - `gaussSum_seven_im` — `Im g = 2·sin(2π/7) + 2·sin(4π/7) − 2·sin(6π/7)`.
+  - `gaussSum_seven_im_pos` — **`0 < Im g`** from coarse signs only: `sin(2π/7) > 0`
+    (`sin_pos_of_pos_of_lt_pi`) and `sin(4π/7) > sin(6π/7)` (fold to `sin(3π/7) > sin(π/7)`
+    via `Real.strictMonoOn_sin` on `[-π/2, π/2]`). No exact radical values needed.
+  - `gaussSum_seven_eq_I_sqrt_seven` — feeds the positivity into the reduction lemma
+    `gaussSum_eq_I_sqrt_iff_im_pos` (with `7 % 4 = 3`) to get the FULL determination
+    `gaussSum (chiC 7) ψ₇ = +i·√7` (not `−i·√7`).
+  - Verified by single-file olean-chain compile (Docker host-blocked); `#print axioms`
+    on both `gaussSum_seven_eq_I_sqrt_seven` and `gaussSum_seven_im_pos` =
+    `[propext, Classical.choice, Quot.sound]` only (axiom-free).
+
+### Key findings
+- The `p = 5` coarse-sign method (compare two cosines/sines, sidestepping exact radicals)
+  generalises cleanly to `p = 7`: the only new ingredient is the strict monotonicity of
+  `sin` on `[-π/2, π/2]` to compare two sines after folding both into that interval.
+- The `p ≡ 3 (mod 4)` branch now has two machine-checked witnesses (`p = 3`, `p = 7`); the
+  general `0 < Im g` remains the open DFT-spectrum crux (>1000 lines either route).
+
+### Files modified
+- `proofs/Proofs/QuadraticGaussSumSignSmallSeven.lean` (new, verified)
+- `proofs/Proofs.lean` (import)
+- `src/data/research/problems/quadratic-gauss-sum-square-oq-01.json` (new knowledge)
+
+### Next steps
+- `p = 13` / `p = 17` as further `p ≡ 1 (mod 4)` witnesses, or pivot to the general
+  DFT-spectrum route once (or if) Mathlib gains finite-Fourier eigenvalue infrastructure.
