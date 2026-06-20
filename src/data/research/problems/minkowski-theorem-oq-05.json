@@ -26,12 +26,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROOF COMPLETE, BUILD PENDING. MinkowskiTheoremOQ05.lean (4 theorems, 0 def, 0 sorry, 0 axiom by construction) written and registered in Proofs.lean; gallery meta.json + annotations.json drafted at formalized/wip. Headline: 2^(p−1) = IsLeast { C | ∀ a b ≥ 0, (a+b)^p ≤ C(a^p+b^p) } — i.e. the optimal constant in the two-term power-sum convexity bound. Build verification blocked by the 2026-06-20 Docker harness blackout.",
+    "progressSummary": "VERIFIED. MinkowskiTheoremOQ05.lean (4 theorems, 0 def, 0 sorry, 0 axiom) builds green via Docker (7743/7743, 2026-06-20) and #print axioms confirms all four theorems depend only on [propext, Classical.choice, Quot.sound]. Gallery promoted to verified/original. Headline: 2^(p−1) = IsLeast { C | ∀ a b ≥ 0, (a+b)^p ≤ C(a^p+b^p) } — the optimal constant in the two-term power-sum convexity bound, real-valued nonnegative form + optimality both absent from Mathlib (which has only the ℝ≥0/ℝ≥0∞ inequality).",
     "builtItems": [
       "MinkowskiTheoremOQ05.rpow_add_le_two_rpow_sub_one_mul — real-valued bound (a+b)^p ≤ 2^(p−1)(a^p+b^p) for a,b ≥ 0, p ≥ 1, via ℝ≥0 transport (MinkowskiTheoremOQ05.lean:62)",
       "MinkowskiTheoremOQ05.rpow_add_self_eq — diagonal equality (a+a)^p = 2^(p−1)(a^p+a^p), all real p (MinkowskiTheoremOQ05.lean:76)",
       "MinkowskiTheoremOQ05.two_rpow_sub_one_le_of_forall — optimality lower bound C ≥ 2^(p−1) from test point a=b=1 (MinkowskiTheoremOQ05.lean:91)",
-      "MinkowskiTheoremOQ05.isLeast_two_rpow_sub_one — 2^(p−1) is the least admissible constant (MinkowskiTheoremOQ05.lean:112)"
+      "MinkowskiTheoremOQ05.isLeast_two_rpow_sub_one — 2^(p−1) is the least admissible constant (MinkowskiTheoremOQ05.lean:112)",
+      "BUILD VERIFIED 2026-06-20: docker-build.sh Proofs.MinkowskiTheoremOQ05 succeeded (7743/7743); #print axioms = [propext, Classical.choice, Quot.sound] for all 4 theorems — genuine 0-axiom verified, no Lean.ofReduceBool/sorryAx."
     ],
     "insights": [
       "The ℝ≥0 inequality itself is verbatim in Mathlib (NNReal.rpow_add_le_mul_rpow_add_rpow, MeanInequalitiesPow.lean:117); the genuine content is the real-valued nonnegative form (absent) plus the optimality of the constant 2^(p−1) (absent).",
