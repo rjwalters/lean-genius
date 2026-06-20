@@ -20,9 +20,30 @@
       "circle-rotation",
       "topological-dynamics"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-06-20",
+    "originalContributions": [
+      "denseRange_iff_irrational: Kronecker's density theorem on the unit circle — multiples {n•a} are dense in AddCircle 1 iff a is irrational — the period-1 specialisation of Mathlib's AddCircle.denseRange_zsmul_coe_iff (a/1 = a)",
+      "exists_pos_nat_mul_sub_round_lt: the homogeneous Dirichlet/Kronecker corollary (genuine derived content absent from Mathlib) — for irrational a and every ε > 0 there is a positive integer n with |n·a − round(n·a)| < ε, via a punctured-ball density extraction, a small nonzero circle point construction, and a sign normalisation reading the circle norm back as distance to the nearest integer"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "AddCircle.denseRange_zsmul_coe_iff",
+        "description": "Multiples of a are dense on the circle of length p iff a/p is irrational. Specialised at p = 1 (a/1 = a) to give denseRange_iff_irrational — the entry's named headline.",
+        "module": "Mathlib.Dynamics.Circle.RotationNumber.TranslationNumber"
+      },
+      {
+        "theorem": "AddCircle.norm_eq / AddCircle.norm_coe_eq_abs_iff / AddCircle.coe_neg",
+        "description": "The AddCircle normed-group API: ‖(x : AddCircle 1)‖ = |x − round x|, the norm-of-coe characterisation, and coe-negation; used to build a small nonzero circle point and read the norm back as distance to the nearest integer.",
+        "module": "Mathlib.Topology.Instances.AddCircle"
+      },
+      {
+        "theorem": "DenseRange.exists_mem_open",
+        "description": "A dense range meets every nonempty open set; applied to the punctured ball B(0,ε) ∖ {0} to extract the approximating multiple.",
+        "module": "Mathlib.Topology.DenseEmbedding"
+      }
+    ],
     "relatedProblems": [
       {
         "id": "dirichlet-approximation-theorem",
