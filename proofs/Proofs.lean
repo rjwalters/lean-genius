@@ -202,6 +202,7 @@ import Proofs.BaselProblemOQ04
 import Proofs.BaselProblemOQ04OQ03
 import Proofs.BaselProblemOQ05
 import Proofs.BaselProblemOQ08
+import Proofs.BaselProblemOQ12
 import Proofs.BertrandsPostulate
 import Proofs.BertrandsPostulateOQ03
 import Proofs.BertrandsPostulateOQ03OQ04
