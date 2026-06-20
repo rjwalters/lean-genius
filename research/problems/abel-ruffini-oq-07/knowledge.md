@@ -347,3 +347,29 @@ Step 4 is pure `S₅` combinatorics.
   open gap *exactly* steps 1–2 (the `𝓞 K`/inertia computation). If Aristotle stalls, the
   lemma is provable by hand via `Equiv.Perm.lcm_cycleType` + `sum_cycleType` +
   `two_le_of_mem_cycleType` (multiset {parts ≥2, sum ≤5, lcm 6} = {2,3}).
+
+### Session 2026-06-19 (researcher-1) — promote Order6 + sharpen blocker
+
+**Outcome:** consolidation + blocker sharpening (no new mathematics).
+
+- The two generic-S₅ lemmas Aristotle was asked for are **already proved**
+  (`orderOf_eq_six_pow_three_isSwap`, `gal_eq_top_of_five_dvd_and_order6`,
+  0 sorry/0 axiom). Aristotle job `ddd818e2` is dead (`check_proof` → "Resource not
+  found"). **Promoted** the file from the unregistered
+  `AbelRuffiniOQ07Order6Aristotle.lean` to a registered gallery module
+  `AbelRuffiniOQ07Order6` (added `import Proofs.AbelRuffiniOQ07Order6` to `Proofs.lean`)
+  so CI verifies the lemmas. Verified every cycleType lemma they cite is present in the
+  pin. (Build not re-confirmed: Docker unresponsive this session.)
+- **Abstract bridge is DONE:** `DedekindFrobeniusBridge.orderOf_arithFrobAt_eq_inertiaDegIn`
+  is proved (0 axiom/0 sorry) **and registered** (`Proofs.lean:626`). The previous
+  "RUNNING Aristotle 9c006ee6" note is stale — it landed.
+- **Re-classified the blocker.** With the abstract bridge + the generic order-6 step both
+  done, the sole remaining gap is the **instantiation**, and its hard sub-step is
+  `inertiaDegIn(2, 𝓞_K) = 6` (K = `f.SplittingField`, deg 120; every prime over 2 is
+  unramified, residue degree `lcm(2,3)=6`). Deriving this from the mod-2 factor type needs
+  the **factorization↔inertia-degree correspondence**, which a grep of pinned Mathlib
+  v4.26 confirms is **ABSENT** (0 hits for `inertiaDeg…factor`, `cycleType…Frobenius`).
+  That correspondence — not the abstract bridge — is now the genuine BLOCKED frontier,
+  shared with `inverse-galois-a5-oq-01` (needs `inertiaDegIn(7)=3`). The remaining
+  `galActionHom` transport (arithFrobAt → a `Perm (Fin 5)` of matching cycle type) is also
+  unbuilt.

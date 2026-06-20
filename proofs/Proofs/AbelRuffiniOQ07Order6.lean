@@ -1,5 +1,9 @@
 /-
-  Aristotle companion for `abel-ruffini-oq-07` (Gal(X⁵ − X − 1) ≅ S₅).
+  Order-6 ⟹ transposition infrastructure for `abel-ruffini-oq-07` (Gal(X⁵ − X − 1) ≅ S₅).
+
+  (Originally an Aristotle target; both lemmas are now proved, so this file has been
+  promoted to a registered gallery module — `import Proofs.AbelRuffiniOQ07Order6` in
+  `Proofs.lean` — so CI verifies it like any other gallery proof.)
 
   ## Why this file exists
   The gallery entry `AbelRuffiniOQ07.lean` is a fully verified (0 sorry / 0 axiom)

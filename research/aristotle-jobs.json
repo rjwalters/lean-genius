@@ -2177,7 +2177,7 @@
     },
     {
       "project_id": "ddd818e2-e934-4fd9-b389-15d56a22b49a",
-      "file": "proofs/Proofs/AbelRuffiniOQ07Order6Aristotle.lean",
+      "file": "proofs/Proofs/AbelRuffiniOQ07Order6.lean",
       "problem_id": "abel-ruffini-oq-07",
       "submitted": "2026-06-19T13:20:00Z",
       "sorries": [
@@ -2185,8 +2185,9 @@
         "gal_eq_top_of_five_dvd_and_order6 : 5∣|G| ∧ ∃ order-6 elem → G=⊤"
       ],
       "notes": "Generic S5 order-6→swap step. Consumes the now-PROVED Dedekind-Frobenius bridge (DedekindFrobeniusBridge.lean) output: bridge gives orderOf(arithFrobAt)=inertiaDegIn=6 at a prime over 2 of the splitting field, this turns it into the swap the verified reduction gal_eq_top_of_five_dvd_and_swap consumes. Self-contained Mathlib-only companion (NOT registered in Proofs.lean). CLI submit; v4.26 vs Aristotle v4.28 warning (Perm(Fin5) API stable).",
-      "status": "submitted",
-      "last_check": null
+      "status": "integrated",
+      "last_check": null,
+      "outcome": "Both lemmas (orderOf_eq_six_pow_three_isSwap, gal_eq_top_of_five_dvd_and_order6) proved 0-sorry/0-axiom; file promoted from *Aristotle.lean scratch to registered module AbelRuffiniOQ07Order6 (in Proofs.lean). Aristotle project expired (Resource not found)."
     },
     {
       "project_id": "f3b4620d-814e-430d-97a8-c40321b48abf",
