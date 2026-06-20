@@ -54,10 +54,10 @@ theorem psum_two_eq :
     psum σ R 2 = esymm σ R 1 ^ 2 - 2 * esymm σ R 2 := by
   have h1 : psum σ R 1 = esymm σ R 1 := psum_one_eq_esymm_one σ R
   rw [MvPolynomial.psum_eq_mul_esymm_sub_sum σ R 2 two_pos]
-  have hfilt : (Finset.antidiagonal 2).filter (fun a : ℕ × ℕ => a.1 ∈ Ioo 0 2) =
+  have hfilt : (Finset.antidiagonal 2).filter (fun a : ℕ × ℕ => a.1 ∈ Set.Ioo 0 2) =
                {(1, 1)} := by
     ext ⟨a, b⟩
-    simp only [Finset.mem_filter, Finset.Nat.mem_antidiagonal, mem_Ioo,
+    simp only [Finset.mem_filter, Finset.mem_antidiagonal, Set.mem_Ioo,
                Finset.mem_singleton, Prod.mk.injEq]
     omega
   simp only [hfilt, Finset.sum_singleton, h1]
@@ -78,10 +78,10 @@ theorem psum_three_eq :
     psum σ R 3 =
       esymm σ R 1 * psum σ R 2 - esymm σ R 2 * psum σ R 1 + 3 * esymm σ R 3 := by
   rw [MvPolynomial.psum_eq_mul_esymm_sub_sum σ R 3 (by norm_num)]
-  have hfilt : (Finset.antidiagonal 3).filter (fun a : ℕ × ℕ => a.1 ∈ Ioo 0 3) =
+  have hfilt : (Finset.antidiagonal 3).filter (fun a : ℕ × ℕ => a.1 ∈ Set.Ioo 0 3) =
                {(1, 2), (2, 1)} := by
     ext ⟨a, b⟩
-    simp only [Finset.mem_filter, Finset.Nat.mem_antidiagonal, mem_Ioo,
+    simp only [Finset.mem_filter, Finset.mem_antidiagonal, Set.mem_Ioo,
                Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
     omega
   simp only [hfilt, Finset.sum_insert (by decide : (1, 2) ∉ ({(2, 1)} : Finset (ℕ × ℕ))),
