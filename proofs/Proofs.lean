@@ -734,6 +734,7 @@ import Proofs.DescartesRuleOfSignsOQ02OQ01OQ02
 import Proofs.DescartesRuleOfSignsOQ02Parity
 import Proofs.DescartesRuleOfSignsOQ03
 import Proofs.DescartesRuleOfSignsOQ04
+import Proofs.DetConjugateTransposeOQ01
 import Proofs.DilworthMirskyHardOQ01
 import Proofs.DilworthTheoremOQ01
 import Proofs.DirichletApproximation
