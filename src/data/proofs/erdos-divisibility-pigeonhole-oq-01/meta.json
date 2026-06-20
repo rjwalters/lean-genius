@@ -74,6 +74,50 @@
       "Elementary divisibility and natural-number arithmetic"
     ]
   },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Problem Statement & Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring stating the extremal form of the Erdős divisibility pigeonhole — the largest divisibility-antichain in {1,…,2n} has exactly n elements. Imports Mathlib and the parent entry ErdosDivisibilityPigeonhole (which supplies the pigeonhole core and the sharp witness), and opens Finset."
+    },
+    {
+      "id": "antichain-predicate",
+      "title": "The Divisibility-Antichain Predicate",
+      "startLine": 46,
+      "endLine": 63,
+      "summary": "IsDivAntichain n S defines a divisibility-antichain: S ⊆ {1,…,2n} with no two distinct members related by divisibility. The lemma isDivAntichain_iff shows this bespoke predicate is exactly Mathlib's order-theoretic IsAntichain (· ∣ ·) on S, connecting the entry to the general library notion."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound: at Most n Elements",
+      "startLine": 65,
+      "endLine": 74,
+      "summary": "antichain_card_le proves any divisibility-antichain in {1,…,2n} has card ≤ n. By contradiction: a set of size ≥ n+1 triggers the parent's erdos_divisibility_pigeonhole, forcing a divisible pair a ∣ b with a ≠ b — contradicting the antichain hypothesis."
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Form: the Maximum Is Exactly n",
+      "startLine": 76,
+      "endLine": 87,
+      "summary": "max_antichain_card packages the result as IsGreatest { k | ∃ S, IsDivAntichain n S ∧ S.card = k } n: n is achievable (via the sharp block witness from the parent) and, by antichain_card_le, an upper bound on every achievable size — pinning the maximum at exactly n."
+    },
+    {
+      "id": "explicit-witness",
+      "title": "Explicit Extremal Witness {n+1, …, 2n}",
+      "startLine": 89,
+      "endLine": 111,
+      "summary": "block_isDivAntichain verifies the canonical witness directly: the top block {n+1,…,2n} lies in {1,…,2n}, is an antichain (if a ∣ b with a<b then b ≥ 2a > 2n, impossible), and has cardinality n — so the maximum n is genuinely attained by an explicit set."
+    },
+    {
+      "id": "axiom-audit",
+      "title": "Axiom Audit",
+      "startLine": 113,
+      "endLine": 118,
+      "summary": "#print axioms max_antichain_card confirms the extremal result rests only on the standard foundational axioms (propext, Classical.choice, Quot.sound) — no Lean.ofReduceBool (no native_decide) and no sorryAx, so the entry is genuinely verified."
+    }
+  ],
   "conclusion": {
     "summary": "The extremal form of the Erdős divisibility pigeonhole is formalized with zero sorries and zero axioms: the maximum size of a divisibility-antichain in {1,…,2n} is exactly n (max_antichain_card, an IsGreatest), with the upper bound n derived as the contrapositive of the parent pigeonhole theorem and the value attained by the explicit block {n+1,…,2n}. The bespoke antichain predicate is identified with Mathlib's IsAntichain (· ∣ ·), exposing the Dilworth/Sperner reading of the result.",
     "implications": "Recasting the pigeonhole gem as an IsGreatest optimum makes its real content — the *number* n, not merely the existence of a divisible pair — the formal object. This is the extremal/optimization viewpoint Erdős championed: a one-sided combinatorial bound paired with a matching construction becomes a sharp theorem. Concretely, the result computes the largest primitive subset of {1,…,2n} (a primitive set being one with no member dividing another), the n = N/2 instance of the classical max-primitive-subset value ⌈N/2⌉ for {1,…,N}. Identifying IsDivAntichain with Mathlib's IsAntichain (· ∣ ·) also makes the theorem a ready building block: it is the Dilworth/Mirsky optimum for the divisibility poset on {1,…,2n}, whose chain decomposition (one chain o, 2o, 4o, … per odd part o ≤ 2n) has exactly n chains, so 'largest antichain = number of chains' here is min–max duality made concrete.",
