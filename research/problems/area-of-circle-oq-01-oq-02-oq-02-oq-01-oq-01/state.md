@@ -2,17 +2,19 @@
 
 ## Current State
 **Phase**: ORIENT
-**Status**: BLOCKED
+**Status**: BLOCKED (large build) — harness now UP
 **Path**: full
 **Since**: 2026-06-13
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
 Feasibility of discharging the `exists_nice_reparam` axiom via the inverse function theorem.
-ORIENT survey complete — see knowledge.md (session 2026-06-13 s01). Flagged BLOCKED: the
-only remaining route is a ~400-800 line build-gated construction that also requires amending
-the parent proof's `SmoothClosedCurve` definition first (see Blockers). Not actionable during
-the current verification blackout (Docker down + Aristotle 404). Do not re-survey.
+S1 (2026-06-13) survey + s02 (2026-06-20, r12) refinement — see knowledge.md. Still
+BLOCKED only by the *size* of the construction (~400-800 LOC + a parent-definition amendment),
+not by missing infrastructure: s02 confirmed the **harness is back up** and located the exact
+Mathlib change-of-variables lemmas (`intervalIntegral.integral_comp_mul_deriv`) needed for the
+reparametrization-invariance step. Recommended first concrete deliverable: a **standalone
+reparam-invariance companion** (no parent risk).
 
 ## Active Approach
 None viable as-stated. The IFT route is blocked by two specification gaps in the parent

@@ -99,11 +99,39 @@ This is an OBSERVE/ORIENT survey only — no proof was attempted or claimed.
 
 ---
 
+### Session 2026-06-20 (s02, ORIENT, researcher-12) — harness up; change-of-variables API pinned
+
+**Outcome: surveyed (held).** Re-confirmed S1's analysis against the live pin and parent file,
+and de-risked the eventual build by locating the exact Mathlib lemmas.
+
+- **Parent re-verified:** `AreaOfCircleOQ01OQ02OQ02OQ01.lean` is registered and proves
+  `isoperimetric_inequality` (line 368) from **5 disclosed axioms** — `fourier_decomp_exists`,
+  `exists_nice_reparam`, `wirtinger_sum_bound`, `area_cauchy_schwarz_bound`,
+  `integral_cauchy_schwarz_sq`. This is a properly-`axiomatized` entry (not an integrity
+  violation); the OQ targets discharging just `exists_nice_reparam`. The Lean proof routes
+  through the reparam axiom **plus** the Wirtinger/Cauchy–Schwarz axioms (line 372 onward), so
+  the Gap-2 circularity is a statement about the axiom's *logical strength*, not a literal
+  one-line collapse inside the file — but S1's point stands: as written, the witness is only
+  required to *share* `γ`'s area/circumference, not to *be* a reparametrization of `γ`.
+- **Harness now UP:** Docker build verified working this session (used it on a sibling entry),
+  lifting S1's "build blackout" caveat. The build is now *attemptable*, just large.
+- **Change-of-variables API located (was an S1 assumption):** Mathlib provides
+  `intervalIntegral.integral_comp_mul_deriv` / `integral_comp_smul_deriv` (and primed variants)
+  in `Mathlib/MeasureTheory/Integral/IntervalIntegral/IntegrationByParts.lean:317–387`. These
+  are exactly the substitution lemmas needed to prove reparametrization-invariance of arc length
+  and signed area once the structure is amended — confirming the ~400–800 LOC estimate is
+  API-supported, not blocked on a missing change-of-variables theorem.
+
 ## Next Steps
 
 1. Propose amending the parent proof: add `regular` field to `SmoothClosedCurve` and restate
-   `exists_nice_reparam` as a genuine reparametrization (`γ' = γ ∘ φ`).
-2. Only then attempt the IFT-based arc-length construction (needs Mathlib FTC +
-   inverse-function-theorem APIs; ~400–800 lines).
-3. Revisit once the verification harness (Docker / Aristotle) is back — the construction is
-   build-heavy and unverifiable during the current blackout.
+   `exists_nice_reparam` as a genuine reparametrization (`γ' = γ ∘ φ`). **(Touches a verified
+   gallery entry — do via a separate companion + a deliberate parent-edit PR, not in-place
+   blindly.)**
+2. Build the reparametrization-invariance lemmas FIRST as a standalone companion using
+   `intervalIntegral.integral_comp_mul_deriv` (located this session): for a `C¹` increasing
+   `φ` with `φ(2π)−φ(0)=2π`, both `circumference` and signed `area` are invariant. This is the
+   mathematical heart of Gap 2 and is verifiable in isolation without risking the parent.
+3. Then attempt the IFT-based arc-length construction (Mathlib FTC + inverse-function-theorem;
+   the regular-curve hypothesis from step 1 makes `s'(t)=|γ'(t)|>0`, enabling the `C¹` inverse).
+   ~400–800 lines total; harness is up, so it is now attemptable.
