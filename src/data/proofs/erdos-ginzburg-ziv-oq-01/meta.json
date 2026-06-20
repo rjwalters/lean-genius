@@ -1,0 +1,171 @@
+{
+  "id": "erdos-ginzburg-ziv-oq-01",
+  "title": "Erdős–Ginzburg–Ziv: the zero-sum theorem and the sharpness of its threshold",
+  "slug": "erdos-ginzburg-ziv-oq-01",
+  "description": "The Erdős–Ginzburg–Ziv theorem (1961) states that among any 2n−1 integers some n have a sum divisible by n; equivalently every length-(2n−1) sequence in ℤ/nℤ has a zero-sum subsequence of length exactly n. Mathlib proves the theorem (Int/ZMod and multiset forms) but states no optimality result. This entry repackages the theorem and proves that the threshold 2n−1 is best possible: for every n ≥ 2 the configuration of n−1 zeros and n−1 ones gives a length-(2n−2) sequence with NO zero-sum subsequence of length n — pinning the Erdős–Ginzburg–Ziv constant of ℤ/nℤ at exactly 2n−1.",
+  "meta": {
+    "author": "Paul Erdős, Abraham Ginzburg, Abraham Ziv (1961); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ErdosGinzburgZivOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "additive-combinatorics",
+      "number-theory",
+      "zero-sum",
+      "erdos",
+      "ZMod",
+      "extremal",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.erdos_ginzburg_ziv",
+        "description": "The Erdős–Ginzburg–Ziv theorem over ℤ: any family with 2*n-1 ≤ #s has a subset t ⊆ s with #t = n and n ∣ ∑_{i∈t} a i",
+        "module": "Mathlib.Combinatorics.Additive.ErdosGinzburgZiv"
+      },
+      {
+        "theorem": "ZMod.erdos_ginzburg_ziv",
+        "description": "The Erdős–Ginzburg–Ziv theorem over ZMod n: any family with 2*n-1 ≤ #s has a length-n subset summing to 0",
+        "module": "Mathlib.Combinatorics.Additive.ErdosGinzburgZiv"
+      },
+      {
+        "theorem": "Int.erdos_ginzburg_ziv_multiset",
+        "description": "Multiset form over ℤ: a multiset of card ≥ 2*n-1 has a length-n submultiset whose sum is divisible by n",
+        "module": "Mathlib.Combinatorics.Additive.ErdosGinzburgZiv"
+      },
+      {
+        "theorem": "ZMod.erdos_ginzburg_ziv_multiset",
+        "description": "Multiset form over ZMod n: a multiset of card ≥ 2*n-1 has a length-n submultiset summing to 0",
+        "module": "Mathlib.Combinatorics.Additive.ErdosGinzburgZiv"
+      },
+      {
+        "theorem": "Finset.sum_boole",
+        "description": "∑_{x∈s} (if p x then 1 else 0) = #(s.filter p) cast into the ring; turns the 0/1 witness sum into the count of chosen 'one' indices",
+        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+      },
+      {
+        "theorem": "Finset.filter_card_add_filter_neg_card_eq_card",
+        "description": "#(s.filter p) + #(s.filter (¬p ·)) = #s; the counting identity supplying the lower bound on the number of chosen ones in the sharpness proof",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "(a : ZMod b) = 0 ↔ b ∣ a; used to show a count k with 1 ≤ k ≤ n-1 is a nonzero residue mod n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "egz_int / egz_zmod: the Erdős–Ginzburg–Ziv theorem over ℤ and ZMod n restated as the baseline (Mathlib headlines)",
+      "egz_int_multiset / egz_zmod_multiset: the multiset forms of the theorem, the natural setting for sequences with repetitions",
+      "egz_three_integers: the explicit n=2 instance — among any three integers, some two have an even sum (the historical pigeonhole-on-parity case) read off from the general theorem",
+      "egz_sharp: the sharpness/optimality result — for every n ≥ 2 there is a length-(2n−2) sequence in ZMod n with NO zero-sum subsequence of length n, namely n−1 zeros and n−1 ones, proving the threshold 2n−1 is best possible. Mathlib has no such optimality lemma; this is the new content."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 140,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "In 1961 Paul Erdős, Abraham Ginzburg, and Abraham Ziv proved that any 2n−1 integers contain n whose sum is divisible by n. It is the founding theorem of the theory of zero-sum sequences in finite abelian groups: the Erdős–Ginzburg–Ziv constant s(G) is the least N such that every length-N sequence over G has a zero-sum subsequence of length exp(G), and the EGZ theorem is precisely the computation s(ℤ/nℤ) = 2n−1. The result and its many generalizations (Davenport constant, Kemnitz's conjecture for ℤ/nℤ × ℤ/nℤ) are central to additive combinatorics.",
+    "problemStatement": "Mathlib's `Combinatorics/Additive/ErdosGinzburgZiv.lean` proves the theorem itself in the ℤ and ZMod n forms (and the multiset variants), but records no statement that the bound 2n−1 is optimal. Can the optimality be formalized — exhibiting a length-(2n−2) sequence that admits no zero-sum subsequence of length n?\n\n**Answer:** Yes. The configuration of n−1 zeros and n−1 ones works: an n-element subset must use between 1 and n−1 of the ones (only n−1 zeros are available), so its sum is a nonzero residue mod n. Together with the theorem this pins the EGZ constant of ℤ/nℤ at exactly 2n−1.",
+    "text": "The Erdős–Ginzburg–Ziv theorem (any 2n−1 elements of ℤ/nℤ contain a length-n zero-sum subsequence) is restated from Mathlib in its integer, modular, and multiset forms, the n=2 toy case is read off explicitly, and — the new content — the threshold 2n−1 is shown best possible via the extremal n−1 zeros / n−1 ones configuration, verified in Lean with no axioms.",
+    "proofStrategy": "1. egz_int, egz_zmod, egz_int_multiset, egz_zmod_multiset: restate Mathlib's four headline statements as the baseline.\n2. egz_three_integers: instantiate Int.erdos_ginzburg_ziv at n=2 and simplify 2*2-1 = 3.\n3. egz_sharp: take s = range (2n−2) and a i = (if n−1 ≤ i then 1 else 0) over ZMod n. For an n-element t ⊆ s, write k = #{i ∈ t | n−1 ≤ i}. By Finset.sum_boole the subsequence sum equals (k : ZMod n). The 'ones' available in s number n−1, so k ≤ n−1 (subset of Ico (n−1) (2n−2)); the 'zeros' number n−1 and #t = n, so by filter_card_add_filter_neg_card_eq_card the count of zeros chosen is ≤ n−1 forcing k ≥ 1. A natural number k with 1 ≤ k ≤ n−1 < n is a nonzero residue mod n (ZMod.natCast_eq_zero_iff plus Nat.le_of_dvd), so the sum is nonzero.",
+    "keyInsights": [
+      "**The theorem is one lemma away, the sharpness is the work**: the four EGZ statements are direct re-exports of Mathlib, so the genuine mathematical contribution is the optimality witness, which Mathlib does not provide.",
+      "**The extremal configuration is forced by a counting balance**: with exactly n−1 zeros and n−1 ones, any n chosen elements must borrow between 1 and n−1 ones — never 0 (too few zeros) and never n (too few ones) — so the sum lands strictly between 0 and n in ℤ/nℤ.",
+      "**0/1 sums become cardinalities**: `Finset.sum_boole` converts the indicator sum into the count of chosen ones, turning the algebraic non-vanishing goal into the elementary arithmetic fact 1 ≤ k ≤ n−1 < n.",
+      "**Why n ≥ 2 is needed**: in ℤ/1ℤ every element is 0, so the optimality statement is only meaningful (and the residue k genuinely nonzero) once n ≥ 2."
+    ],
+    "prerequisites": [
+      "Finite sequences and subsequences (Finsets and their cardinality)",
+      "The ring ℤ/nℤ (ZMod n) and the divisibility criterion (k : ZMod n) = 0 ↔ n ∣ k",
+      "Zero-sum sequences and the Erdős–Ginzburg–Ziv / Davenport constants",
+      "Elementary counting identities for filtered Finsets"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Statement",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "File-level docstring framing the result: Mathlib proves the EGZ theorem but states no optimality. Lists the baseline re-exports, the n=2 instance, and the sharpness contribution. Imports the Mathlib EGZ file and Tactic.",
+      "mathContext": "The Erdős–Ginzburg–Ziv theorem and the optimality of its 2n−1 threshold."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Theorem: ℤ, ZMod n, and Multiset Forms",
+      "startLine": 55,
+      "endLine": 79,
+      "summary": "egz_int and egz_zmod restate the integer and modular Erdős–Ginzburg–Ziv theorems; egz_int_multiset and egz_zmod_multiset give the multiset forms. All are direct re-exports of the Mathlib headlines.",
+      "mathContext": "Any 2n−1 elements of ℤ (resp. ZMod n) contain n whose sum is divisible by n (resp. is 0)."
+    },
+    {
+      "id": "concrete-instance",
+      "title": "The n = 2 Instance",
+      "startLine": 81,
+      "endLine": 87,
+      "summary": "egz_three_integers specializes the integer theorem to n=2: among any three integers, some two have an even sum — the elementary pigeonhole-on-parity case.",
+      "mathContext": "EGZ at n=2 recovers the parity pigeonhole on three integers."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness of the Threshold",
+      "startLine": 89,
+      "endLine": 140,
+      "summary": "egz_sharp builds the length-(2n−2) configuration of n−1 zeros and n−1 ones and proves no n-element subset is zero-sum: the sum equals the count k of chosen ones (Finset.sum_boole), bounded 1 ≤ k ≤ n−1 < n by elementary Finset counting, hence a nonzero residue. This proves 2n−1 is best possible.",
+      "mathContext": "The extremal n−1 zeros / n−1 ones sequence shows the EGZ constant s(ℤ/nℤ) = 2n−1 is tight."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Ginzburg, Abraham; Ziv, Abraham",
+      "title": "Theorem in the additive number theory",
+      "year": "1961",
+      "note": "Bull. Research Council Israel 10F, 41–43 — the original theorem that any 2n−1 integers contain n with sum divisible by n"
+    },
+    {
+      "authors": "Gao, Weidong; Geroldinger, Alfred",
+      "title": "Zero-sum problems in finite abelian groups: a survey",
+      "year": "2006",
+      "note": "Expositio Mathematica 24, 337–369 — the EGZ constant s(G), Davenport constant, and the optimality of the 2n−1 bound"
+    },
+    {
+      "authors": "Nathanson, Melvyn B.",
+      "title": "Additive Number Theory: Inverse Problems and the Geometry of Sumsets",
+      "year": "1996",
+      "note": "Chapter on the Erdős–Ginzburg–Ziv theorem and the extremal configuration of n−1 zeros and n−1 ones"
+    }
+  ],
+  "crossReferences": [],
+  "conclusion": {
+    "summary": "The Erdős–Ginzburg–Ziv theorem is restated from Mathlib in its integer, modular, and multiset forms (egz_int, egz_zmod, egz_int_multiset, egz_zmod_multiset), the n=2 case is made explicit (egz_three_integers), and the threshold 2n−1 is proved best possible (egz_sharp) via the extremal configuration of n−1 zeros and n−1 ones. All results are verified with 0 axioms and 0 sorries.",
+    "implications": "Supplies the optimality half of the Erdős–Ginzburg–Ziv constant computation s(ℤ/nℤ) = 2n−1 that Mathlib's theorem leaves implicit, making the sharpness of the bound a machine-checked statement.",
+    "openQuestions": [
+      "Can the EGZ constant be formalized abstractly — defining s(G) as the least N forcing a length-exp(G) zero-sum subsequence and proving s(ℤ/nℤ) = 2n−1 by combining egz_zmod with egz_sharp?",
+      "Does the Davenport constant D(ℤ/nℤ) = n admit a similar packaged formalization, and can the EGZ multiset form be used to derive it?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Additive.ErdosGinzburgZiv",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "ErdosGinzburgZivOQ01",
+    "lineCount": 140,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/ErdosGinzburgZivOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
