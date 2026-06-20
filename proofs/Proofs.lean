@@ -3196,6 +3196,7 @@ import Proofs.SumOfDivisorsOQ02
 import Proofs.SumOfDivisorsOQ04
 import Proofs.SumOfDivisorsOQ05
 import Proofs.SumOfDivisorsOQ06
+import Proofs.SumOfDivisorsOQ07
 import Proofs.SumOfKthPowers
 import Proofs.SumOfKthPowersOQ01
 import Proofs.SumOfKthPowersOQ02
