@@ -2650,6 +2650,7 @@ import Proofs.IsoperimetricTheoremOQ01
 import Proofs.IsoperimetricTheoremOQ02
 import Proofs.IsoscelesTriangle
 import Proofs.IsoscelesTriangleOQ01
+import Proofs.JacobiSymbolOQ01
 import Proofs.KaprekarConstantOQ01
 import Proofs.KeithNumberOQ01
 import Proofs.KeplerConjecture
