@@ -56,43 +56,30 @@ theorem legendreCharQ_isQuadratic : (legendreCharQ (p := p) (q := q)).IsQuadrati
 /-- legendreCharQ is nontrivial for odd primes p and q. -/
 theorem legendreCharQ_ne_one (hp2 : p ≠ 2) (hq2 : q ≠ 2) :
     legendreCharQ (p := p) (q := q) ≠ 1 := by
+  -- Mathlib drift: `MulChar.ext` now quantifies over units, so it suffices to
+  -- evaluate on a unit `a : (ZMod p)ˣ`, where `(1 : MulChar ..) ↑a = 1`
+  -- (`MulChar.one_apply_coe`). The Int.cast ℤ → ZMod q is injective on the
+  -- value set {0, 1, -1} of the quadratic character because `q` is an odd prime.
   have hqc_ne : quadraticChar (ZMod p) ≠ 1 := quadraticChar_ne_one (ringChar_ne_two hp2)
   intro heq
   apply hqc_ne
   ext a
-  -- ha with Int.cast explicitly for syntactic rewrites after MulChar.one_apply
-  have ha : (Int.cast (quadraticChar (ZMod p) a) : ZMod q) = (1 : MulChar (ZMod p) (ZMod q)) a := by
-    have h : legendreCharQ (p := p) (q := q) a = (1 : MulChar (ZMod p) (ZMod q)) a := by rw [heq]
-    simp only [legendreCharQ, MulChar.ringHomComp_apply] at h; exact h
-  rw [MulChar.one_apply] at ha  -- ha : Int.cast(quadraticChar a) = if IsUnit a then 1 else 0
-  rw [MulChar.one_apply]        -- goal : quadraticChar a = if IsUnit a then 1 else 0
-  rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · rw [hv] at ha; norm_cast at ha  -- ha : (0 : ZMod q) = if IsUnit a then 1 else 0
-    split_ifs at ha ⊢ with hu
-    · exact absurd ha one_ne_zero.symm
-    · exact hv
-  · rw [hv] at ha; norm_cast at ha
-    split_ifs at ha ⊢ with hu
-    · exact hv
-    · exact absurd ha one_ne_zero  -- ha : 1=0, one_ne_zero : 1≠0
-  · rw [hv] at ha; push_cast at ha  -- ha : (-1 : ZMod q) = if IsUnit a then 1 else 0
-    exfalso
-    split_ifs at ha with hu
-    · -- ha : (-1 : ZMod q) = 1, contradiction with q ≠ 2
-      have h2 : (2 : ZMod q) = 0 := by
-        calc (2 : ZMod q) = 1 + 1 := by norm_num
-          _ = -1 + 1 := by rw [ha]
-          _ = 0 := by ring
-      rw [show (2 : ZMod q) = ((2 : ℕ) : ZMod q) from by norm_cast] at h2
-      rw [ZMod.natCast_eq_zero_iff_dvd] at h2
-      have hq_le : q ≤ 2 := Nat.le_of_dvd (by norm_num) h2
-      omega
-    · -- ha : (-1 : ZMod q) = 0, contradiction
-      have h1 : (1 : ZMod q) = 0 := by
-        calc (1 : ZMod q) = -(-1 : ZMod q) := by ring
-          _ = -(0 : ZMod q) := by rw [ha]
-          _ = 0 := neg_zero
-      exact one_ne_zero h1
+  rw [MulChar.one_apply_coe]
+  -- From `heq`, the cast of `quadraticChar (ZMod p) ↑a` to ZMod q equals 1.
+  have hval : ((quadraticChar (ZMod p) (a : ZMod p) : ℤ) : ZMod q) = 1 := by
+    have h : legendreCharQ (p := p) (q := q) (a : ZMod p)
+        = (1 : MulChar (ZMod p) (ZMod q)) (a : ZMod p) := by rw [heq]
+    rw [MulChar.one_apply_coe] at h
+    simpa only [legendreCharQ, MulChar.ringHomComp_apply, eq_intCast] using h
+  -- The quadratic character is nonzero on a unit, so its value is 1 or -1.
+  rcases quadraticChar_isQuadratic (ZMod p) (a : ZMod p) with hv | hv | hv
+  · exact absurd (quadraticChar_eq_zero_iff.mp hv) a.ne_zero
+  · exact hv
+  · exfalso
+    haveI : Fact (2 < q) := ⟨lt_of_le_of_ne hq.out.two_le (fun h => hq2 h.symm)⟩
+    rw [hv] at hval
+    simp only [Int.cast_neg, Int.cast_one] at hval
+    exact ZMod.neg_one_ne_one hval
 
 -- ============================================================================
 -- Part II: Evaluations of legendreCharQ
@@ -111,7 +98,8 @@ theorem legendreCharQ_neg_one (hp2 : p ≠ 2) :
       · exact absurd h' (by norm_num)
       · exact hp2 h'.symm
     omega
-  rw [χ₄_eq_neg_one_pow hodd_mod]; push_cast; ring
+  rw [χ₄_eq_neg_one_pow hodd_mod]
+  simp only [map_pow, map_neg, map_one]
 
 /-- χ(q) = legendreSym p q cast to ZMod q. -/
 theorem legendreCharQ_eval_q (hpq : p ≠ q) :
@@ -172,8 +160,9 @@ theorem gauss_sum_zmod_qr (hp2 : p ≠ 2) (hq2 : q ≠ 2) (hpq : p ≠ q) :
     Step 4 applies `Char.card_pow_card` (Mathlib) to combine them.
     The integer QR formula follows from `legendreSym.quadratic_reciprocity`. -/
 theorem gauss_sum_qr_assembled (hp2 : p ≠ 2) (hq2 : q ≠ 2) (hpq : p ≠ q) :
-    legendreSym p ↑q * legendreSym q ↑p = (-1) ^ (p / 2 * (q / 2)) :=
-  legendreSym.quadratic_reciprocity hp2 hq2 hpq
+    legendreSym p ↑q * legendreSym q ↑p = (-1) ^ (p / 2 * (q / 2)) := by
+  rw [mul_comm]
+  exact legendreSym.quadratic_reciprocity hp2 hq2 hpq
 
 -- ============================================================================
 -- Part VI: Explicit Citations of the Four Steps
@@ -223,6 +212,8 @@ example : legendreSym 7 5 * legendreSym 5 7 = (-1) ^ (7 / 2 * (5 / 2)) := by nat
 /-- p=11, q=13: (11/13)·(13/11) = 1. ✓ -/
 example : legendreSym 13 11 * legendreSym 11 13 = (-1) ^ (13 / 2 * (11 / 2)) := by
   native_decide
+
+end
 
 end GaussSumFullAssembly
 
