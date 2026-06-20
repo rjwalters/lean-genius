@@ -2,7 +2,7 @@
   "id": "infinitude-primes-4k3-oq-02",
   "title": "Exact Equidistribution of Reduced Residues — the Elementary Skeleton of Density 1/φ(d)",
   "slug": "infinitude-primes-4k3-oq-02",
-  "description": "Addresses OQ-02 from infinitude-primes-4k3 (equidistribution: primes ≡ a mod d have density 1/φ(d) among all primes). The full prime statement is the Prime Number Theorem for arithmetic progressions and is not available in Mathlib. This entry formalizes the exact, elementary skeleton it refines: over any whole number N of periods [0, N·d), every residue class mod d contains exactly N integers, the integers coprime to d number exactly N·φ(d), and hence each reduced residue class carries the exact relative density 1/φ(d) — for every finite N, not merely asymptotically. 4 theorems, 0 axioms, 0 sorries.",
+  "description": "Addresses OQ-02 from infinitude-primes-4k3 (equidistribution: primes ≡ a mod d have density 1/φ(d) among all primes). The full prime statement is the Prime Number Theorem for arithmetic progressions and is not available in Mathlib. This entry formalizes the exact, elementary skeleton it refines: over any whole number N of periods [0, N·d), every residue class mod d contains exactly N integers, the integers coprime to d number exactly N·φ(d), and hence each reduced residue class carries the exact relative density 1/φ(d) — for every finite N, not merely asymptotically. The session adds the sharp equipartition: each *reduced* class contains exactly N integers that are *both* coprime to d and in that class, the coprime integers partition (disjointly, via fiberwise count along x ↦ x % d) into the φ(d) reduced classes, the coprime count N·φ(d) is re-derived independently of the block induction, and the honest relative density 1/φ(d) is obtained with the numerator restricted to coprime integers. 9 theorems, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions",
@@ -20,7 +20,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 9,
     "newAxiomCount": 0,
     "mathlibDependencies": [
       {
@@ -38,11 +38,16 @@
       "count_class_eq: for 0 < d, exactly N of the integers in [0, N·d) are ≡ v (mod d), for EVERY residue v — exact equidistribution of single classes over whole periods",
       "count_coprime_eq: for 0 < d, exactly N·φ(d) of the integers in [0, N·d) are coprime to d — proved by induction assembling the per-block totient count over N blocks",
       "class_subset_coprime: when gcd(v,d)=1, the residue class v within the window consists entirely of integers coprime to d (residue-invariance of coprimality)",
-      "reduced_class_density: the exact relative density — for 0 < d, N ≥ 1, the proportion of coprime integers in [0, N·d) lying in a fixed class v equals 1/φ(d) (as a rational), independent of N and v"
+      "reduced_class_density: the exact relative density — for 0 < d, N ≥ 1, the proportion of coprime integers in [0, N·d) lying in a fixed class v equals 1/φ(d) (as a rational), independent of N and v",
+      "coprime_class_card_eq: the sharp equipartition — for 0 < d and gcd(v,d)=1, exactly N of the integers in [0, N·d) are BOTH coprime to d AND ≡ v (mod d); every reduced class is equally populated by coprimes (the coprime constraint is automatic on a reduced class, via class_subset_coprime)",
+      "coprime_partition_card: the coprime integers in [0, N·d) decompose as the disjoint union over the φ(d) reduced residues v (mod d) of the per-class coprime counts — a card_eq_sum_card_fiberwise partition along x ↦ x % d",
+      "coprime_card_eq_totient_mul: #coprime = φ(d)·N re-derived INDEPENDENTLY of count_coprime_eq's block induction, via the equipartition (φ(d) classes × N coprimes each)",
+      "reduced_class_density_coprime: the HONEST relative density — restricting the numerator to integers that are both coprime to d and ≡ v (mod d), the proportion of coprimes in class v is exactly 1/φ(d), sharpening reduced_class_density whose numerator counted all integers in class v regardless of coprimality",
+      "count_class_card_eq: Finset.card form of count_class_eq, bridging Nat.count to filtered-range cardinalities"
     ],
     "dateAdded": "2026-06-20",
-    "lineCount": 128,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (the example `decide` is absent; all examples discharge by applying the proved theorems). Builds on two Mathlib counting lemmas (Nat.count_modEq_card, Nat.filter_coprime_Ico_eq_totient); the synthesis into exact equidistribution and the relative density 1/φ(d) is the original content. The DEEP statement of OQ-02 — that the PRIMES (not all coprime integers) ≡ a mod d have density 1/φ(d), i.e. the Prime Number Theorem for arithmetic progressions — is NOT proved here and is not available in Mathlib; this entry formalizes the elementary combinatorial skeleton it refines and states the gap explicitly.",
+    "lineCount": 264,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The theorems are axiom-free; the worked examples discharge by applying the proved theorems, with `decide` used only on small closed coprimality side-goals like `(4).Coprime 3` (kernel `decide`, NOT `native_decide`, so no Lean.ofReduceBool — the entry remains axiom-free). Builds on Mathlib counting/partition lemmas (Nat.count_modEq_card, Nat.filter_coprime_Ico_eq_totient, Finset.card_eq_sum_card_fiberwise, Nat.gcd_rec); the synthesis into exact equidistribution, the sharp coprime equipartition (each reduced class carries exactly N coprimes), and the relative density 1/φ(d) is the original content. The DEEP statement of OQ-02 — that the PRIMES (not all coprime integers) ≡ a mod d have density 1/φ(d), i.e. the Prime Number Theorem for arithmetic progressions — is NOT proved here and is not available in Mathlib; this entry formalizes the elementary combinatorial skeleton it refines and states the gap explicitly.",
     "definitionCount": 0
   },
   "overview": {
@@ -94,6 +99,34 @@
       "statement": "0 < d → 1 ≤ N → ∀ v, (count (· ≡ v [MOD d]) (N·d) : ℚ) / (#{x ∈ range (N·d) | d.Coprime x} : ℚ) = 1 / φ(d)",
       "significance": "The headline result: the exact relative density 1/φ(d) of a residue class among the coprime integers, valid for EVERY finite N ≥ 1 and every v — independent of both. Obtained by substituting the two counts (N and N·φ(d)) and cancelling N. This is the precise, elementary, machine-checked meaning of 'density 1/φ(d)' for coprime integers; the OQ-02 prime statement is the same density with 'coprime integers' replaced by 'primes', which requires the unformalized analytic input.",
       "description": "Each reduced class has exact relative density 1/φ(d) among coprimes, for all finite N."
+    },
+    {
+      "name": "coprime_class_card_eq",
+      "type": "core",
+      "statement": "0 < d → gcd(d,v) = 1 → ∀ N, #{x ∈ range (N·d) | d.Coprime x ∧ x ≡ v [MOD d]} = N",
+      "significance": "The sharp equipartition: for a REDUCED residue v, exactly N of the integers in [0, N·d) are both coprime to d and ≡ v (mod d). Because a reduced class lies entirely inside the coprime integers (class_subset_coprime), the extra coprimality conjunct is automatic, so the count reduces to count_class_card_eq = N. Every reduced class is populated by exactly the same number N of coprimes — the honest 'equal pieces' statement that reduced_class_density only expressed as a ratio.",
+      "description": "Each reduced class contains exactly N integers that are both coprime to d and in the class."
+    },
+    {
+      "name": "coprime_partition_card",
+      "type": "core",
+      "statement": "0 < d → ∀ N, #{x ∈ range (N·d) | d.Coprime x} = ∑ v ∈ {v ∈ range d | d.Coprime v}, #{x ∈ range (N·d) | d.Coprime x ∧ x ≡ v [MOD d]}",
+      "significance": "The coprime integers in [0, N·d) decompose as the disjoint union, over the φ(d) reduced residues v (mod d), of the integers coprime and ≡ v (mod d). Proved by Finset.card_eq_sum_card_fiberwise along the map x ↦ x % d (residues preserve coprimality, gcd d (x%d) = gcd d x), then matching each fiber x % d = v to the congruence x ≡ v (mod d) for v < d. This packages count_class_eq, class_subset_coprime and count_coprime_eq into a single partition — directly answering the open question posed in the original entry.",
+      "description": "The coprime integers partition into the φ(d) reduced residue classes (fiberwise along x ↦ x % d)."
+    },
+    {
+      "name": "coprime_card_eq_totient_mul",
+      "type": "supporting",
+      "statement": "0 < d → ∀ N, #{x ∈ range (N·d) | d.Coprime x} = φ(d) · N",
+      "significance": "An INDEPENDENT re-derivation of the coprime count N·φ(d): combining coprime_partition_card (split into reduced classes) with coprime_class_card_eq (each class has exactly N) gives a constant sum φ(d) × N — totient_eq_card_coprime supplying the φ(d) count of summands. This recovers count_coprime_eq's result via the φ(d)-fold equipartition rather than the block induction, a cross-check by an essentially different route.",
+      "description": "#coprime = φ(d)·N, re-derived via equipartition (φ(d) classes × N each)."
+    },
+    {
+      "name": "reduced_class_density_coprime",
+      "type": "core",
+      "statement": "0 < d → 1 ≤ N → gcd(d,v) = 1 → (#{x ∈ range (N·d) | d.Coprime x ∧ x ≡ v [MOD d]} : ℚ) / (#{x ∈ range (N·d) | d.Coprime x} : ℚ) = 1 / φ(d)",
+      "significance": "The HONEST relative density: restricting the numerator to integers that are both coprime to d AND ≡ v (mod d) (with gcd(v,d)=1), the proportion of coprimes lying in reduced class v is exactly 1/φ(d). This sharpens reduced_class_density, whose numerator counted ALL integers in class v regardless of coprimality — here numerator and denominator both range over coprimes, the mathematically faithful form of 'fraction of the coprime integers landing in class v'.",
+      "description": "Honest relative density 1/φ(d): both numerator and denominator restricted to coprime integers."
     }
   ],
   "references": [
@@ -170,11 +203,19 @@
       "mathContext": "(N : ℚ)/(N·φ(d)) = 1/φ(d); exact for every finite N, the elementary form of OQ-02's density for coprime integers."
     },
     {
+      "id": "coprime-equipartition",
+      "title": "Exact Finite Equipartition of the Coprime Integers",
+      "startLine": 132,
+      "endLine": 231,
+      "summary": "Sharpens the density ratio into the equal-pieces statement. count_class_card_eq: Finset.card form of count_class_eq. coprime_class_card_eq: for gcd(v,d)=1, exactly N integers in [0,N·d) are both coprime and ≡ v (mod d) (the coprimality conjunct is automatic on a reduced class). coprime_partition_card: the coprimes partition over the φ(d) reduced residues via card_eq_sum_card_fiberwise along x ↦ x%d. coprime_card_eq_totient_mul: #coprime = φ(d)·N re-derived from the equipartition. reduced_class_density_coprime: honest density 1/φ(d) with the numerator restricted to coprimes.",
+      "mathContext": "Each reduced class carries EXACTLY N coprimes; the coprime integers split into φ(d) equinumerous classes — the finite, exact avatar of 'density 1/φ(d)', resolving the partition open question of the original entry."
+    },
+    {
       "id": "worked-examples",
       "title": "Worked Examples: modulus d = 4",
-      "startLine": 118,
-      "endLine": 128,
-      "summary": "Modulus 4 (φ(4)=2, reduced residues 1,3): class 3 (mod 4) has exactly 5 members in [0,20); 10 coprime integers total; relative density 1/φ(4)=1/2. Each example discharges by applying the proved theorems.",
+      "startLine": 233,
+      "endLine": 264,
+      "summary": "Modulus 4 (φ(4)=2, reduced residues 1,3): class 3 (mod 4) has exactly 5 members in [0,20); 10 coprime integers total; relative density 1/φ(4)=1/2; and the equipartition form — exactly 5 integers in [0,20) are both coprime to 4 and ≡ 3 (mod 4) (namely 3,7,11,15,19), honest density 1/2. Examples discharge by applying the proved theorems (small coprimality side-goals by kernel `decide`).",
       "mathContext": "The two reduced classes ≡ 1, 3 (mod 4) of the parent entry each carry density 1/2 among coprime integers; the prime analogue is the deep PNT-for-APs statement."
     }
   ],
@@ -185,7 +226,7 @@
       "The deep statement of OQ-02 itself: formalize that the PRIMES ≡ a (mod d) have asymptotic density 1/φ(d) among primes (PNT for arithmetic progressions). This requires Dirichlet L-functions, their non-vanishing on Re(s) = 1, and a Tauberian theorem — substantial analytic infrastructure not yet assembled in Mathlib for the AP case.",
       "An intermediate target: formalize the Dirichlet (analytic / logarithmic) density 1/φ(d) of primes ≡ a (mod d), which follows from L(1, χ) ≠ 0 alone (Mathlib's Dirichlet-theorem proof already establishes this non-vanishing) without the full Tauberian PNT — a strictly easier milestone than natural density.",
       "Quantify the prefix/window dependence: give explicit elementary bounds on #{p ≤ x prime, p ≡ a (mod d)} purely from the coprime-integer skeleton (e.g. a Brun–Titchmarsh-style upper bound), isolating how much can be said about primes without L-functions.",
-      "Generalize count_coprime_eq to a sum-over-reduced-classes partition theorem: prove directly that the coprime integers in [0, N·d) decompose as a disjoint union of exactly φ(d) classes each of size N, packaging count_class_eq, class_subset_coprime, and count_coprime_eq into a single equidistribution statement."
+      "RESOLVED this session: the sum-over-reduced-classes partition theorem. coprime_partition_card decomposes the coprime integers in [0, N·d) as the disjoint union of the φ(d) reduced classes (fiberwise along x ↦ x % d), coprime_class_card_eq shows each carries exactly N, and coprime_card_eq_totient_mul re-derives #coprime = φ(d)·N from the equipartition — packaging count_class_eq, class_subset_coprime and count_coprime_eq into a single statement."
     ]
   },
   "crossReferences": [
@@ -207,9 +248,9 @@
   ],
   "leanFile": {
     "namespace": "InfinitudePrimes4k3OQ02",
-    "lineCount": 128,
+    "lineCount": 264,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 9,
     "definitionCount": 0,
     "path": "Proofs/InfinitudePrimes4k3OQ02.lean",
     "sorries": 0
