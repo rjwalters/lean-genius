@@ -1,0 +1,144 @@
+{
+  "id": "integral-root-theorem-oq-01",
+  "title": "The Rational Root Theorem and Integrality of Monic Roots",
+  "slug": "integral-root-theorem-oq-01",
+  "description": "The Rational Root Theorem: if r = a/b (lowest terms) is a rational root of an integer polynomial p, then the numerator a divides the constant term p(0) and the denominator b divides the leading coefficient. Consequently the rational roots of a MONIC integer polynomial are integers. This is the engine of the classic irrationality proofs: √2 is irrational because it would be an integer root of the monic X² − 2, and no integer squares to 2. 6 theorems, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Rational_root_theorem",
+    "date": "Classical (consequence of Gauss's lemma)",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "number-theory",
+      "irrationality",
+      "ring-theory",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/IntegralRootTheoremOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 6 theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). No native_decide is used anywhere.",
+    "originalContributions": [
+      "num_dvd_of_root: the numerator of a rational root divides the constant term of an integer polynomial",
+      "den_dvd_of_root: the denominator of a rational root divides the leading coefficient",
+      "isInteger_of_monic_root / monic_root_isInteger: rational roots of a MONIC integer polynomial are integers (r = z for some z : ℤ)",
+      "no_int_sq_eq_two: no integer squares to 2 (∀ z : ℤ, z² ≠ 2)",
+      "no_rat_sq_eq_two: √2 is irrational — no rational squares to 2 — derived from the monic-roots-are-integers corollary applied to X² − 2"
+    ],
+    "dateAdded": "2026-06-20",
+    "lineCount": 79,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The rational root theorem is the classical test for rational roots of integer (or rational) polynomials, a direct consequence of Gauss's lemma on primitive polynomials. It is the standard route to irrationality results — √2, ∛2, and more generally ⁿ√m for non-perfect-powers m — and to bounding the search for rational roots in elementary algebra. The monic special case (rational roots are integers) is the statement that ℤ is integrally closed in ℚ.",
+    "problemStatement": "**Open Question (OQ-01, integral/rational root theorem)**: Formalize the rational root theorem over ℤ ⊂ ℚ — numerator divides the constant term, denominator divides the leading coefficient — and the monic corollary that rational roots are integers, with a worked irrationality application.\n\n**Formalized**: num_dvd_of_root, den_dvd_of_root, isInteger_of_monic_root, monic_root_isInteger, and the irrationality of √2 (no_rat_sq_eq_two via no_int_sq_eq_two).",
+    "text": "A 79-line formalization. The two divisibility statements (num_dvd_of_root, den_dvd_of_root) specialize Mathlib's integrally-closed-domain results to ℤ ⊂ ℚ. The monic corollary monic_root_isInteger unpacks IsLocalization.IsInteger to give an explicit integer z with (z : ℚ) = r. As an application, no_rat_sq_eq_two proves √2 irrational: a rational r with r² = 2 is a root of the monic X² − 2, hence an integer z with z² = 2, contradicting no_int_sq_eq_two. All 6 theorems compile with 0 sorries and 0 axioms; no native_decide is used.",
+    "proofStrategy": "**Divisibility (num/den)**: direct specializations of Polynomial.num_dvd_of_is_root and den_dvd_of_is_root (which hold over any integrally closed domain with its fraction field) to A = ℤ, K = ℚ, using IsFractionRing.num / .den.\n\n**Monic ⇒ integer (monic_root_isInteger)**: isInteger_of_is_root_of_monic gives IsLocalization.IsInteger ℤ r, i.e. r ∈ range (algebraMap ℤ ℚ); destructuring yields z : ℤ with algebraMap z = r, and algebraMap ℤ ℚ z = (z : ℚ).\n\n**Irrationality (no_rat_sq_eq_two)**: a rational r with r² = 2 satisfies aeval r (X² − C 2) = 0; X² − C 2 is monic (monic_X_pow_sub_C), so r = z for an integer z, whence z² = 2 by casting — ruled out by no_int_sq_eq_two, proved by bounding −2 < z < 2 (nlinarith with sq_nonneg) and interval_cases.",
+    "keyInsights": [
+      "**Roots are constrained by the end coefficients**: a rational root a/b is forced to have a ∣ (constant term) and b ∣ (leading coefficient) — a finite, checkable list of candidates, the basis of the rational-root search.",
+      "**Monic ⇒ integer roots = ℤ is integrally closed**: when the leading coefficient is 1 the denominator divides 1, so every rational root is an integer. This is exactly the integral-closedness of ℤ in ℚ.",
+      "**Irrationality for free**: √2 is irrational because X² − 2 is monic with no integer root (no integer squares to 2). The same template gives ⁿ√p irrational for any prime p — the rational root theorem mechanizes a whole family of irrationality proofs.",
+      "**Reduction to a finite integer check**: the only work in no_rat_sq_eq_two beyond the theorem is ruling out integer solutions of z² = 2, which is a bounded search (−2 < z < 2) closed by interval_cases.",
+      "**0-axiom, no native_decide**: every step, including the integer non-existence, is kernel-checked, depending only on propext / Classical.choice / Quot.sound."
+    ],
+    "prerequisites": [
+      "Polynomial rings ℤ[X], evaluation aeval, coefficients and leading coefficient",
+      "Fraction fields and IsFractionRing.num / .den of a rational number (Mathlib)",
+      "Integrally closed domains and IsLocalization.IsInteger (membership in the image of algebraMap)",
+      "Polynomial.num_dvd_of_is_root, den_dvd_of_is_root, isInteger_of_is_root_of_monic (RationalRoot.lean)",
+      "Basic integer reasoning: bounding and interval_cases, casting ℤ → ℚ"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "eisenstein-criterion-oq-01",
+      "relationship": "related",
+      "description": "Two complementary tools for integer polynomials: Eisenstein's criterion certifies irreducibility (no factorization), while the rational root theorem constrains and rules out roots (no linear factors). Both feed into Gauss's lemma and the study of irreducibility over ℚ; the X² − 2 example is irreducible by either route."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "IntegralRootTheoremOQ01",
+    "lineCount": 79,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/IntegralRootTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "monic_root_isInteger",
+      "type": "core",
+      "statement": "$p$ monic over $\\mathbb{Z}$, $\\mathrm{aeval}\\,r\\,p = 0$ $\\Rightarrow$ $\\exists z \\in \\mathbb{Z},\\ (z : \\mathbb{Q}) = r$",
+      "significance": "The headline corollary: rational roots of a monic integer polynomial are integers — equivalently, ℤ is integrally closed in ℚ. This is what powers the irrationality applications.",
+      "description": "Rational roots of monic integer polynomials are integers."
+    },
+    {
+      "name": "num_dvd_of_root",
+      "type": "core",
+      "statement": "$\\mathrm{aeval}\\,r\\,p = 0$ $\\Rightarrow$ $\\mathrm{num}(r) \\mid p.\\mathrm{coeff}\\,0$",
+      "significance": "The numerator half of the rational root theorem: the numerator of a rational root divides the constant term — half the candidate-restricting test.",
+      "description": "Numerator of a root divides the constant term."
+    },
+    {
+      "name": "den_dvd_of_root",
+      "type": "core",
+      "statement": "$\\mathrm{aeval}\\,r\\,p = 0$ $\\Rightarrow$ $\\mathrm{den}(r) \\mid p.\\mathrm{leadingCoeff}$",
+      "significance": "The denominator half: the denominator of a rational root divides the leading coefficient — together with num_dvd_of_root this pins rational roots to a finite candidate list.",
+      "description": "Denominator of a root divides the leading coefficient."
+    },
+    {
+      "name": "no_rat_sq_eq_two",
+      "type": "core",
+      "statement": "$\\forall r \\in \\mathbb{Q},\\ r^2 \\ne 2$",
+      "significance": "√2 is irrational, derived from the rational root theorem: a rational square root of 2 would be an integer root of the monic X² − 2, and no integer squares to 2. The flagship application.",
+      "description": "√2 is irrational (no rational squares to 2)."
+    },
+    {
+      "name": "isInteger_of_monic_root",
+      "type": "supporting",
+      "statement": "$p$ monic, $\\mathrm{aeval}\\,r\\,p = 0$ $\\Rightarrow$ $\\mathrm{IsInteger}\\,\\mathbb{Z}\\,r$",
+      "significance": "The integrality of monic roots in Mathlib's IsLocalization.IsInteger form, before unpacking to an explicit integer.",
+      "description": "A monic root is integral over ℤ."
+    },
+    {
+      "name": "no_int_sq_eq_two",
+      "type": "supporting",
+      "statement": "$\\forall z \\in \\mathbb{Z},\\ z^2 \\ne 2$",
+      "significance": "No integer squares to 2 — the finite integer check (−2 < z < 2 by interval_cases) that completes the irrationality of √2.",
+      "description": "No integer squares to 2."
+    }
+  ],
+  "references": [
+    {
+      "text": "Rational root theorem — a/b in lowest terms a root of an integer polynomial forces a ∣ constant term and b ∣ leading coefficient.",
+      "url": "https://en.wikipedia.org/wiki/Rational_root_theorem"
+    },
+    {
+      "text": "Dummit, D. & Foote, R. Abstract Algebra. The rational root theorem, Gauss's lemma, and integral closure of ℤ in ℚ.",
+      "url": "https://en.wikipedia.org/wiki/Gauss%27s_lemma_(polynomials)"
+    },
+    {
+      "text": "Mathlib4: Polynomial.num_dvd_of_is_root, Polynomial.den_dvd_of_is_root, Polynomial.isInteger_of_is_root_of_monic (RingTheory/Polynomial/RationalRoot.lean); IsFractionRing.num / .den; IsLocalization.IsInteger.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the rational root theorem over ℤ ⊂ ℚ — the numerator of a rational root divides the constant term (num_dvd_of_root) and the denominator divides the leading coefficient (den_dvd_of_root) — and the monic corollary that rational roots are integers (monic_root_isInteger). As an application it proves √2 irrational (no_rat_sq_eq_two), via the monic polynomial X² − 2 and the finite check that no integer squares to 2 (no_int_sq_eq_two). All 6 theorems verified with 0 sorries and 0 axioms, no native_decide.",
+    "implications": "The rational root theorem restricts rational roots of integer polynomials to a finite, computable candidate set, and its monic case expresses the integral closedness of ℤ in ℚ. It mechanizes a whole family of irrationality proofs (√2, ∛2, ⁿ√p) and complements Eisenstein's criterion: one rules out roots, the other certifies irreducibility.",
+    "openQuestions": [
+      "Generalize the irrationality application to ⁿ√p for an arbitrary prime p and n ≥ 2 via the monic Xⁿ − p",
+      "State the full candidate-enumeration corollary: a rational root a/b has a ∣ p.coeff 0 and b ∣ p.leadingCoeff with gcd(a,b) = 1",
+      "Connect to Gauss's lemma and Eisenstein: a monic integer polynomial with no rational root and degree ≤ 3 is irreducible over ℚ"
+    ]
+  },
+  "sorries": 0
+}
