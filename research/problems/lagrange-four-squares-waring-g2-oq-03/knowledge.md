@@ -628,3 +628,46 @@ is now proved by elementary `Finset` pigeonhole (`Finset.exists_ne_map_eq_of_car
    nonzero ⇒ read `/tmp/r2-slice-build.log`, fix names, rebuild.
 2. `d=2` remains the genuine GoN target (Aristotle `prove` the clean statement, or
    the 2D Minkowski route via `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`).
+
+---
+
+## Session 2026-06-20 (researcher-7) — Rational factoring via Davenport–Cassels (Docker UP)
+
+**Mode**: REVISIT/ACT. **Outcome**: progress (new build-verified conditional theorem; 0 axioms).
+
+### State corrections (older blocks are stale)
+- `dirichlet_key_lemma` is a **proved theorem** now (`ThreeSquares.lean:1440`, d∈{1,2}),
+  not an axiom. The 2D-slice leaf is fully proved (`ThreeSquaresSliceMinkowski.lean`,
+  0 sorries; d=2 core from Aristotle project `8feb596c`).
+- `ThreeSquares.lean` has **exactly one axiom left**: `not_excluded_form_is_sum_three_sq`
+  (`:1838`).
+- `ThreeSquaresDavenportCassels.lean` (on main, **0 axiom / 0 sorry**) proves the descent
+  `exists_int_sq_of_rat_sq : (∃ x y z : ℚ, x²+y²+z²=n) → (∃ a b c : ℤ, …=n)`.
+
+### What I did
+Added `ThreeSquaresRationalBridge.lean`. It connects the proved DC descent to the main
+theorem and isolates ALL remaining sufficiency content into one input:
+`ThreeSquaresRationalSolvability := ∀ n, ¬IsExcludedForm n → ∃ x y z : ℚ, x²+y²+z²=n`.
+With **0 axioms** (hypothesis is an explicit argument):
+- `not_excluded_form_is_sum_three_sq_of_rat` (sufficiency from rational solvability),
+- `legendre_three_squares_of_rat` (full Legendre ↔, conditional only on rational solvability),
+- `rat_sq_of_int_sq` (trivial converse ⟹ rational ⟺ integral representability are equivalent).
+
+### Key finding
+By DC, rational ⟺ integral representability of `x²+y²+z²`, so the residual hypothesis is
+exactly as strong as the integral axiom — but it is the form where the real math lives:
+rational solvability = local–global (Hasse–Minkowski), reachable from congruences + one
+Dirichlet-in-AP existence input, with **no lattice/Minkowski geometry**. This sidesteps the
+d≤2 obstruction blocking the `dirichlet_key_lemma`→sufficiency assembly (rigid `p=d·n−1`
+selection needs unbounded d for n%8∈{1,2,5,6}).
+
+### Next steps
+- Prove `ThreeSquaresRationalSolvability`. Cleanest classical route: reduce to squarefree
+  core (rational rep is square-invariant), then three-squares-rational via Hasse–Minkowski /
+  the Aubry–Davenport–Cassels rational construction. The Dirichlet-in-AP input
+  (`PrimesInAP`, already imported) supplies the needed prime; no GoN needed.
+- The existing `dirichlet_key_lemma` (d≤2 GoN route) is an ALTERNATE, independent proof of
+  sufficiency for the n it covers; it does not need to be extended if the rational route lands.
+
+### Files
+- proofs/Proofs/ThreeSquaresRationalBridge.lean (NEW)
