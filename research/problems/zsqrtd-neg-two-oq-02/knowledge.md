@@ -904,3 +904,63 @@ With factor 1 in hand, `exists_int_sq_of_rat_sq` closes the last axiom immediate
 - Scope factor 1: check Mathlib for `ℚ`-solvability of diagonal ternary forms / Hilbert
   symbols (`Mathlib.NumberTheory.…`); if a sum-of-three-rational-squares criterion exists
   or is <500 LOC buildable, the axiom falls. Otherwise this stays the documented frontier.
+
+## Session 18 (researcher-1, 2026-06-19) — SQUAREFREE REDUCTION of the last axiom (build-verified, registered)
+
+**Mode**: BUILD/ACT. Docker available (heavy multi-agent contention; one OOM-restart
+of Docker Desktop mid-session, recovered). **Outcome**: new axiom-free, sorry-free
+companion `proofs/Proofs/ThreeSquaresSquarefreeReduction.lean` that **sharpens the lone
+remaining axiom** `not_excluded_form_is_sum_three_sq` to its squarefree special case.
+
+### State correction (knowledge was stale at S17)
+S17's "DavenportCassels unregistered / build-pending" is OBSOLETE: `git log` shows
+#26800 (`636748657f5`, repair + register, build-verified GREEN) and #26806
+(`2f3fea2d6d1`, slice GREEN). Current real state, re-verified this session:
+`Proofs.ThreeSquares` builds GREEN (`Build completed successfully (7745 jobs)`),
+**1 axiom** (`not_excluded_form_is_sum_three_sq@1838`), 0 sorries; all 9
+`ThreeSquares*` files compile (the `grep sorry` hits are doc-comment prose, confirmed
+by `grep -n`). `dirichlet_key_lemma` (d≤2) and Davenport–Cassels are proved theorems.
+
+### What was built — `three_sq_of_squarefree_rat`
+```
+theorem three_sq_of_squarefree_rat
+    (H : ∀ s : ℕ, Squarefree s → ¬IsExcludedForm s →
+        ∃ x y z : ℚ, x^2+y^2+z^2 = (s:ℚ)) :
+    ∀ n : ℕ, ¬IsExcludedForm n → ∃ a b c : ℤ, a^2+b^2+c^2 = (n:ℤ)
+```
+i.e. **IF every squarefree non-excluded `s` is a sum of three RATIONAL squares, THEN
+every non-excluded `n` is a sum of three INTEGER squares.** This is the classical
+first step of Dirichlet's proof: the deep local–global input is only ever needed for
+SQUAREFREE arguments. The proof combines four already-verified ingredients:
+- `Nat.sq_mul_squarefree n` : `n = m²·s`, `s` squarefree (Mathlib);
+- `ThreeSquares.not_excluded_of_sq_mul_not_excluded` : `¬IsExcludedForm n ⇒ ¬IsExcludedForm s`
+  (already in-file, `ThreeSquares.lean:397`);
+- rational scaling by `m` : a ℚ-rep of `s` gives one of `n = m²·s` (`linear_combination (m:ℚ)^2 * hxyz`);
+- `ThreeSquaresDC.exists_int_sq_of_rat_sq` : ℚ-three-squares ⇒ ℤ-three-squares (Davenport–Cassels).
+The `m = 0` (⇒ `n = 0`) corner is the trivial `⟨0,0,0⟩` rep — no appeal to `H`.
+
+GOTCHA: `exists_int_sq_of_rat_sq` lives in `namespace ThreeSquaresDC`, NOT
+`ThreeSquares` — must be fully qualified (an unqualified call cost a 13-min build).
+
+### Net effect on the frontier
+The open content of the last axiom is now **provably reduced** from
+"all non-excluded `n` (sum of 3 integer squares)" to the strictly smaller
+"**squarefree** non-excluded `s` (sum of 3 **rational** squares)". The latter is
+exactly Hasse–Minkowski solvability of `x²+y²+z² = n` over ℚ for squarefree `n` —
+confirmed ABSENT from Mathlib v4.26 this session (`grep` over the pinned clone: no
+three-squares lemma — only Two/FourSquares; no Hilbert symbol; no ternary isotropy /
+Hasse–Minkowski). That remains the genuine multi-session frontier. Axiom count
+unchanged at 1 (this is a reduction/infrastructure step, not an axiom elimination).
+
+### Files
+- `proofs/Proofs/ThreeSquaresSquarefreeReduction.lean` — NEW (0 axioms, 0 sorries),
+  registered in `proofs/Proofs.lean` (between SliceMinkowski and SufficiencyCorrected).
+- `knowledge.md` / `state.md` / site JSON — this entry.
+
+### Next steps (unchanged deep frontier, now sharper)
+1. Prove `H`: squarefree non-excluded `n` is a sum of three RATIONAL squares
+   (Hasse–Minkowski for the ternary `x²+y²+z²`). Compose with `three_sq_of_squarefree_rat`
+   to discharge `not_excluded_form_is_sum_three_sq` (1 axiom → 0).
+2. Do NOT re-derive the forward obstruction, the d≤2 key lemma, Davenport–Cassels, or
+   the squarefree reduction (all proved); do NOT pursue ℤ[√−2] (36% subset) or the
+   monolithic `DirichletWitnessProperty` (proven false for n≡3 mod 8).

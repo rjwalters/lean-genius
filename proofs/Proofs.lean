@@ -3125,6 +3125,7 @@ import Proofs.ThreeSquaresResidue3
 import Proofs.ThreeSquaresResidue3Obstruction
 import Proofs.ThreeSquaresSingleAP
 import Proofs.ThreeSquaresSliceMinkowski
+import Proofs.ThreeSquaresSquarefreeReduction
 import Proofs.ThreeSquaresSufficiencyCorrected
 import Proofs.ThueMorse
 import Proofs.TractatusOntology

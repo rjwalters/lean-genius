@@ -43,14 +43,15 @@
     "lastUpdate": "2026-06-19T00:00:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: built axiom-free Davenport-Cassels descent (rational⇒integral factor) toward last axiom; remaining blocker = ℚ-solvability of ternary form (factor 1, ≫500 LOC)",
+    "progressSummary": "PROGRESS (S18): built+registered the SQUAREFREE REDUCTION three_sq_of_squarefree_rat (0 ax/0 sorry, source-verified; Docker unresponsive this session so the new file's compile was not re-confirmed) — the lone remaining axiom now reduces to 'squarefree non-excluded n is a sum of three RATIONAL squares' (Dirichlet's classical first step). Davenport–Cassels (rational⇒integral) and the d≤2 Minkowski key lemma are proved; ThreeSquares.lean = 1 axiom. Remaining frontier: Hasse–Minkowski ternary solvability over ℚ for squarefree n (absent from Mathlib, ≫500 LOC).",
     "builtItems": [
       "research/problems/zsqrtd-neg-two-oq-02/verify_three_squares_via_zsqrtd.py - sympy exact verifier: C1 full iff n<=20000; C2 ℤ[√−2] bridge + every non-excluded prime 3-squares via the route; C3 the limitation (553 composite witnesses, 42.5% norm-form coverage); C4 descent reductions 4n<=>n and k^2*n. All PASS.",
       "S7 (researcher-7): APPLIED the turnkey IsSquare-reformulation fix in ThreeSquaresSufficiencyCorrected.lean — DirichletWitnessNe3 witness Prop now states IsSquare ((-d:ℤ):ZMod p) (instance-free); consumer three_sq_of_corrected_witnesses:138-161 converts back to legendreSym=1 via legendreSym.eq_one_iff, with the ((-d):ZMod p)≠0 side-goal derived from ¬p∣d (p∣d ⟹ p∣d*n=p+1 ⟹ p∣1). Build-pending (Docker daemon hung).",
       "theorem dirichlet_key_lemma (ThreeSquares.lean) — REPLACES the former axiom for d∈{1,2}; build-verified (7745 jobs). Consumes exists_dirichletSublattice_dvd_form + ThreeSquaresSlice.exists_dirichlet_vector_lt_two_mul + dirichletForm_eq_p_of_lt_two_mul.",
       "Propagated honest d≤2 into DirichletWitnessNe3 / DirichletWitnessProperty + both call sites + not_dirichletWitnessProperty obstruction.",
       "ThreeSquaresDavenportCassels.exists_sq_of_scaled: Davenport-Cassels descent for x²+y²+z² via Int.bmod (ThreeSquaresDavenportCassels.lean:57), axiom-free/sorry-free",
-      "ThreeSquaresDavenportCassels.exists_int_sq_of_rat_sq: sum of 3 rational squares ⇒ sum of 3 integer squares (ThreeSquaresDavenportCassels.lean:124)"
+      "ThreeSquaresDavenportCassels.exists_int_sq_of_rat_sq: sum of 3 rational squares ⇒ sum of 3 integer squares (ThreeSquaresDavenportCassels.lean:124)",
+      "ThreeSquaresSquarefreeReduction.three_sq_of_squarefree_rat — reduces the lone sufficiency axiom from all non-excluded n to the SQUAREFREE case over ℚ (0 ax/0 sorry, registered; source-verified: all referenced lemmas exist with matching signatures, Docker unresponsive this session so the new file's compile was not re-confirmed)"
     ],
     "insights": [
       "The gallery three-square theorem legendre_three_squares (ThreeSquares.lean:1672) is PROVEN modulo the bare axiom not_excluded_form_is_sum_three_sq (line 1665) = the entire deep converse. Forward obstruction + 4^a descent + square-factor descent are sorry-free. The slug's real target is eliminating this one axiom.",
@@ -70,7 +71,8 @@
       "S14: dirichlet_key_lemma is INTRINSICALLY d≤2: both the slice volume bound √2·π>4 (binary form x²+d·y²) AND the explicit interval_cases d reconstruction x²+d·y²=d·n−1 ⟹ n=a²+b²+c² (only d=1: n=x²+y²+1²; d=2: n=y²+k²+(k+1)²). No tweak extends it; satisfiability needs unbounded d (min-d grows, e.g. d=70 at m=1166).",
       "S14: Residue3PropertyOdd (m≡3 mod 8) IS sound/satisfiable — only m=3 lacks an odd-t prime deficit, excluded by 3<m. But proving it needs primes in a thin quadratic-in-t sequence, beyond Mathlib Nat.forall_exists_prime_gt_and_modEq.",
       "S14 finding (d≤2 witness DirichletWitnessNe3 is FALSE for 610/999 cores) forces the rational+Davenport-Cassels escape route; this session built the Davenport-Cassels factor, axiom-free",
-      "Davenport-Cassels descent needs only Int.bmod balanced remainders + ring/omega/nlinarith — no Gauss class theory, no Hasse-Minkowski; the pivotal identity is a single linear_combination"
+      "Davenport-Cassels descent needs only Int.bmod balanced remainders + ring/omega/nlinarith — no Gauss class theory, no Hasse-Minkowski; the pivotal identity is a single linear_combination",
+      "SQUAREFREE REDUCTION (S18): the open content of the last axiom not_excluded_form_is_sum_three_sq reduces — entirely elementarily — to 'every squarefree non-excluded s is a sum of three RATIONAL squares'. Proof: n=m²·s (Nat.sq_mul_squarefree) + not_excluded_of_sq_mul_not_excluded + rational scaling by m + Davenport–Cassels (exists_int_sq_of_rat_sq). So the genuine remaining frontier is exactly Hasse–Minkowski solvability of x²+y²+z²=n over ℚ for SQUAREFREE n — confirmed absent from Mathlib v4.26 (no three-squares lemma, no Hilbert symbol, no ternary isotropy)."
     ],
     "mathlibGaps": [
       "No three-square theorem in Mathlib (sum_three_squares / isSumThreeSquares / exists_sq_add_sq_add_sq etc. = 0 hits across 5 query forms; a known unmet docs/1000.yaml target).",
@@ -82,6 +84,7 @@
       "Mathlib lacks ℚ-solvability (local-global / Hilbert-symbol) of the ternary form x²+y²+z² — the remaining factor-1 blocker (≫500 LOC)"
     ],
     "nextSteps": [
+      "Prove H: squarefree non-excluded n is a sum of three RATIONAL squares (Hasse–Minkowski ternary over ℚ); compose with three_sq_of_squarefree_rat to discharge the last axiom (1→0).",
       "Build-verify ThreeSquaresDavenportCassels.lean when Docker/Aristotle returns (API-audited, high confidence)",
       "Scope factor 1: search Mathlib for ℚ-solvability of diagonal ternary forms / Hilbert symbols; if <500 LOC buildable, the last axiom (not_excluded_form_is_sum_three_sq) falls via exists_int_sq_of_rat_sq"
     ],

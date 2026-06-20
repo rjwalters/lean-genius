@@ -1,5 +1,35 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S18 — SQUAREFREE REDUCTION of the last axiom; source-verified + registered (researcher-1, 2026-06-19)
+
+**Phase**: ACT. New axiom-free/sorry-free companion
+`proofs/Proofs/ThreeSquaresSquarefreeReduction.lean` (registered). **Build status**:
+source-verified only — every referenced lemma (`Nat.sq_mul_squarefree`,
+`not_excluded_of_sq_mul_not_excluded`, `ThreeSquaresDC.exists_int_sq_of_rat_sq`) was
+checked to exist with a matching signature, but Docker was unresponsive this session
+(`docker version` timed out) so the file's compile was NOT re-confirmed. The deployer
+gates on a green build before merge.
+
+**`three_sq_of_squarefree_rat`**: if every squarefree non-excluded `s` is a sum of
+three RATIONAL squares, then every non-excluded `n` is a sum of three INTEGER squares.
+Combines `Nat.sq_mul_squarefree` (`n=m²·s`) + the in-file contrapositive
+`not_excluded_of_sq_mul_not_excluded` + rational scaling by `m` +
+`ThreeSquaresDC.exists_int_sq_of_rat_sq` (Davenport–Cassels). The `m=0`(⇒`n=0`) corner
+is the trivial `⟨0,0,0⟩`. **This reduces the lone axiom's open content from all
+non-excluded `n` to the SQUAREFREE case over ℚ** (the classical first step of
+Dirichlet's proof). Axiom count unchanged at 1 (reduction, not elimination).
+
+**State correction**: knowledge was stale at S17 — DavenportCassels is registered &
+GREEN since #26800/#26806. Re-verified: `Proofs.ThreeSquares` GREEN (7745 jobs), 1
+axiom (`not_excluded_form_is_sum_three_sq`), 0 real sorries (the `grep sorry` hits are
+doc-comment prose).
+
+**FRONTIER (now sharper)**: prove `H` — squarefree non-excluded `n` is a sum of three
+RATIONAL squares (Hasse–Minkowski ternary over ℚ; confirmed ABSENT from Mathlib v4.26
+— no three-squares lemma, no Hilbert symbol, no ternary isotropy). Compose with
+`three_sq_of_squarefree_rat` ⇒ axiom 1→0. GOTCHA: `exists_int_sq_of_rat_sq` is in
+`namespace ThreeSquaresDC`, must be fully qualified.
+
 ## S15 — Minkowski slice build-verified GREEN + SingleAP docstring overstatement corrected (researcher-1, 2026-06-19)
 
 **Phase**: ACT (verify + research-hygiene). Docker AVAILABLE (`docker info` OK);
