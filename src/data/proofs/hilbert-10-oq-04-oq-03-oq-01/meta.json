@@ -115,8 +115,8 @@
     {
       "id": "oq-01",
       "question": "Can vecGcd be reconciled with Finset.univ.gcd so the constructive solver discharges the forward direction of the parent's solvable_iff_gcd_dvd verbatim?",
-      "status": "feasible",
-      "notes": "vecGcd and Finset.univ.gcd are both gcds of the coefficient set, hence associated over ℤ, so vecGcd n a ∣ c ↔ (Finset.univ.gcd a : ℤ) ∣ c. Proving this bridge would let exists_vec_combo replace the non-constructive forward direction of solvable_iff_gcd_dvd directly."
+      "status": "resolved",
+      "notes": "Answered by hilbert-10-oq-04-oq-03-oq-01-oq-01: vecGcd_eq_finset_gcd proves vecGcd n a = Finset.univ.gcd a on the nose (both are normalized non-negative gcds), and solvable_iff_finset_gcd_dvd packages the resulting equivalence (∃ x, ∑ aᵢxᵢ = c) ↔ Finset.univ.gcd a ∣ c, with exists_vec_combo discharging the forward direction verbatim."
     },
     {
       "id": "oq-02",
