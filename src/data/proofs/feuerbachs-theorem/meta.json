@@ -176,6 +176,21 @@
       "targetId": "triangle-angle-sum",
       "relationship": "foundational",
       "description": "The angle sum property is the most basic constraint on triangle geometry, while Feuerbach's theorem is one of the deepest — both concern the rigid geometric structure of triangles"
+    },
+    {
+      "targetId": "feuerbachs-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "Complete distance relations: proves all 8 axioms of the main formalization by coordinate computation — altitude feet on the nine-point circle, equilateral R = 2r, and the four Feuerbach tangency relations (incircle and three excircles)."
+    },
+    {
+      "targetId": "feuerbachs-theorem-oq-02",
+      "relationship": "extended-by",
+      "description": "3D analogue for tetrahedra: the natural candidate sphere (center = midpoint(O,M), radius R/3) is refuted for orthocentric tetrahedra by an explicit closed-form counterexample, identifying the correct analogue."
+    },
+    {
+      "targetId": "feuerbachs-theorem-oq-05",
+      "relationship": "extended-by",
+      "description": "Inversive-geometry framework: defines the Feuerbach point, proves it lies on both circles, and shows inversion at that point sends both circles to parallel lines — the synthetic foundation of Feuerbach's theorem."
     }
   ],
   "mainTheorems": [
