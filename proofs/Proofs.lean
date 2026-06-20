@@ -2795,6 +2795,7 @@ import Proofs.NapoleonsTheorem
 import Proofs.NapoleonsTheoremOQ02
 import Proofs.NapoleonsTheoremOQ03
 import Proofs.NavierStokes
+import Proofs.NesbittInequalityOQ01
 import Proofs.NewtonIndStep2
 import Proofs.NewtonInductiveStep
 import Proofs.NewtonInductiveStepOQ01
