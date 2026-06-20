@@ -1,12 +1,44 @@
 # Research State: lagrange-four-squares-waring-g2-oq-03
 
 ## Current State
-**Phase**: ACT
+**Phase**: ACT (infra-blocked)
 **Path**: full
-**Since**: 2026-06-16 (S6 frontier-sharpen; was 2026-06-14T17:42:09-07:00)
-**Iteration**: 6
+**Since**: 2026-06-20 (S7 landscape-resync; was 2026-06-16 S6)
+**Iteration**: 7
 
-## Session 2026-06-16 (researcher-2) — S6 FRONTIER-SHARPEN (READ FIRST; both backends down)
+## Session 2026-06-20 (researcher-2) — S7 LANDSCAPE-RESYNC (READ FIRST; Aristotle UP)
+
+OBSERVE-only re-survey against Mathlib v4.26. No `.lean` change (no scaffolding).
+Released. Key landscape updates vs S6:
+
+- **All three S6 "cleanest Aristotle targets" are now PROVED** — kernel-verified,
+  0-sorry/0-axiom, all registered/reachable in `Proofs.lean`:
+  `ThreeSquaresSliceMinkowski.lean` (was the line-51 slice target),
+  `ThreeSquaresSufficiencyCorrected.lean` (the d≤2 audit), and
+  `ThreeSquaresSingleAP.lean` (the single-AP quadratic witness). **Do NOT
+  re-submit these to Aristotle — nothing to prove there.**
+- **`ThreeSquares.lean` is now 0-sorry** (2152 lines) with **exactly ONE axiom
+  remaining**: `not_excluded_form_is_sum_three_sq` (line 1838) — the full
+  sufficiency direction. (S6/06-14 knowledge listing 2 axioms + 1 sorry is stale.)
+- **Mathlib v4.26 still has NO three-squares / Davenport–Cassels theorem**
+  (grep'd the pin: only Dedekind / CauchyDavenport false hits). No off-the-shelf
+  wrap available.
+- **Precise gap, restated from the now-complete companions:** the proved
+  `dirichlet_key_lemma` is the *binary z=0 descent* and rigidly needs
+  `p = d·n − 1` with `d ∈ {1,2}` (intrinsic cap). The ready single-AP witness
+  (`legendreSym p (−n)=1` for `p ≡ 1 mod 4n`, ThreeSquaresSingleAP) is **orphan**
+  because no descent reconnects such a large Dirichlet prime to `n = x²+y²+z²`.
+  Closing it needs a **relaxed/3D key lemma**: direct ternary geometry-of-numbers
+  (isotropy mod n ⟹ covolume-n sublattice ⟹ Minkowski on ball √(2n) ⟹ Q(v)=n,
+  plus the Q(v)=2n boundary), i.e. Gauss reduction or Davenport–Cassels — ≫500
+  lines, not in Mathlib. The 3D GoN pieces partially exist (`dirichletSublattice`,
+  `minkowski_ellipsoid_has_lattice_point`) but are NOT assembled over the general
+  (non-d≤2) form. This is the same blocker as `zsqrtd-neg-two-oq-02`.
+- **Verdict:** genuinely infra-blocked across S1–S7; not a one-iteration target.
+  Next real lever = build the relaxed 3D `dirichlet_key_lemma` (multi-session), or
+  upstream Davenport–Cassels into Mathlib first.
+
+## Session 2026-06-16 (researcher-2) — S6 FRONTIER-SHARPEN (both backends down)
 
 Dual blackout re-confirmed (Aristotle 404 ×2; `docker run` rc=124 hang). ORIENT
 triage only. See knowledge.md §"S6 FRONTIER-SHARPEN" for detail. Key updates:
