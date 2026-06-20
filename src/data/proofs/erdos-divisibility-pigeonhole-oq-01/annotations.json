@@ -1,0 +1,111 @@
+[
+  {
+    "id": "ann-erdos-div-pigeon-oq01-isdivantichain",
+    "proofId": "erdos-divisibility-pigeonhole-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Divisibility-Antichain on the Interval",
+    "content": "IsDivAntichain n S bundles the two conditions defining the objects whose size we are maximizing: S is drawn from {1,…,2n} (S ⊆ Finset.Icc 1 (2*n)) and no two distinct members are related by divisibility (∀ a ∈ S, ∀ b ∈ S, a ≠ b → ¬ a ∣ b). Keeping it as a bespoke Finset predicate — rather than inlining Mathlib's IsAntichain — makes the IsGreatest statement read cleanly; isDivAntichain_iff then certifies the two are the same notion.",
+    "mathContext": "A divisibility-antichain is an antichain of the poset $(\\{1,\\dots,2n\\}, \\mid)$: a set of pairwise incomparable elements under divisibility.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "antichain",
+      "divisibility poset",
+      "Finset.Icc"
+    ],
+    "prerequisites": [
+      "partial orders and antichains",
+      "Finset membership"
+    ]
+  },
+  {
+    "id": "ann-erdos-div-pigeon-oq01-isantichain-bridge",
+    "proofId": "erdos-divisibility-pigeonhole-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 66
+    },
+    "type": "technique",
+    "title": "Identifying the Predicate with Mathlib's IsAntichain",
+    "content": "isDivAntichain_iff proves IsDivAntichain n S ↔ (S ⊆ {1,…,2n} ∧ IsAntichain (· ∣ ·) (S : Set ℕ)). After unfolding IsDivAntichain, the interval-membership conjunct is shared (and_congr_right), and the remaining equivalence is just the definitional unfolding of IsAntichain as Set.Pairwise (fun a b => ¬ a ∣ b) — the Finset and coerced-Set membership are definitionally interchangeable. This places the result inside Mathlib's general antichain theory.",
+    "mathContext": "$\\mathrm{IsAntichain}\\ r\\ s := s.\\mathrm{Pairwise}\\ (\\lambda a\\,b,\\ \\lnot\\, r\\,a\\,b)$. For $r = (\\mid)$ this is exactly the divisibility-antichain condition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsAntichain",
+      "Set.Pairwise",
+      "coercion Finset → Set"
+    ],
+    "prerequisites": [
+      "Mathlib order/antichain API"
+    ]
+  },
+  {
+    "id": "ann-erdos-div-pigeon-oq01-upper-bound",
+    "proofId": "erdos-divisibility-pigeonhole-oq-01",
+    "range": {
+      "startLine": 69,
+      "endLine": 77
+    },
+    "type": "technique",
+    "title": "Upper Bound as a Contrapositive of Pigeonhole",
+    "content": "antichain_card_le turns the parent's pigeonhole theorem into the antichain bound |S| ≤ n. The proof is by_contra: assuming |S| ≥ n+1 (push_neg on ¬ |S| ≤ n), erdos_divisibility_pigeonhole applied to S ⊆ {1,…,2n} produces distinct a, b ∈ S with a ∣ b, which directly contradicts the antichain conjunct hS.2. No new combinatorics — the entire content is the parent theorem transported across the logical equivalence 'every (n+1)-set has a divisible pair' ⟺ 'every antichain has ≤ n elements'.",
+    "mathContext": "If a divisibility-antichain had $\\ge n+1$ elements, the Erdős pigeonhole would force a comparable pair, contradicting antichainness; hence its size is $\\le n$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "contrapositive",
+      "extremal upper bound"
+    ],
+    "prerequisites": [
+      "erdos_divisibility_pigeonhole (parent)"
+    ]
+  },
+  {
+    "id": "ann-erdos-div-pigeon-oq01-isgreatest",
+    "proofId": "erdos-divisibility-pigeonhole-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 90
+    },
+    "type": "key-insight",
+    "title": "The Extremal Optimum: IsGreatest = n",
+    "content": "max_antichain_card is the headline: IsGreatest { k | ∃ S, IsDivAntichain n S ∧ S.card = k } n. IsGreatest splits into membership and upper-bound. Membership: instantiate the parent's erdos_divisibility_pigeonhole_sharp, whose explicit witness {n+1,…,2n} is a divisibility-antichain of size n, so n is an achievable size. Upper bound: rintro the achieving set S and apply antichain_card_le. Thus the two one-sided facts of the parent — a bound and a witness — assemble into a single optimality statement: the maximum divisibility-antichain in {1,…,2n} has size exactly n.",
+    "mathContext": "$\\max\\{|S| : S \\text{ a divisibility-antichain in } \\{1,\\dots,2n\\}\\} = n$, the extremal value of the Erdős pigeonhole gem.",
+    "significance": "central",
+    "relatedConcepts": [
+      "IsGreatest",
+      "extremal optimum",
+      "Dilworth/Mirsky"
+    ],
+    "prerequisites": [
+      "IsGreatest / upperBounds",
+      "antichain_card_le",
+      "erdos_divisibility_pigeonhole_sharp (parent)"
+    ]
+  },
+  {
+    "id": "ann-erdos-div-pigeon-oq01-block-witness",
+    "proofId": "erdos-divisibility-pigeonhole-oq-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 114
+    },
+    "type": "technique",
+    "title": "The Top Block Attains the Maximum",
+    "content": "block_isDivAntichain certifies the witness explicitly: {n+1,…,2n} is a divisibility-antichain of size n. Membership in {1,…,2n} and the cardinality (Nat.card_Icc gives 2n − (n+1) + 1 = n, closed by omega) are immediate; the antichain property reuses the parent's sharpness argument — a ∣ b with a ≠ b forces b = a·c with c ≥ 2, hence b ≥ 2a ≥ 2(n+1) > 2n, impossible inside the block. This makes the maximum n of max_antichain_card genuinely attained by a concrete set rather than only existentially.",
+    "mathContext": "For $a, b \\in \\{n+1,\\dots,2n\\}$ with $a \\mid b$ and $a \\ne b$: $b \\ge 2a \\ge 2n+2 > 2n$, a contradiction. So the block is divisibility-free and has $n$ elements.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extremal witness",
+      "Nat.card_Icc",
+      "divisibility bound"
+    ],
+    "prerequisites": [
+      "natural-number arithmetic",
+      "Finset.Icc cardinality"
+    ]
+  }
+]

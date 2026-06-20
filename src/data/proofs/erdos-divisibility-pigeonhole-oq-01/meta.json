@@ -1,0 +1,109 @@
+{
+  "id": "erdos-divisibility-pigeonhole-oq-01",
+  "title": "Erdős Divisibility Pigeonhole — extremal form: the largest divisibility-antichain in {1,…,2n} has size exactly n",
+  "slug": "erdos-divisibility-pigeonhole-oq-01",
+  "description": "The parent entry proves the Erdős divisibility pigeonhole (any n+1 elements of {1,…,2n} contain a pair a ∣ b) and its sharpness (the block {n+1,…,2n} is divisibility-free). This entry packages the two halves into the single extremal statement they jointly prove: the maximum size of a divisibility-antichain in {1,…,2n} — a subset no two distinct members of which are related by divisibility — is exactly n. The upper bound n is the contrapositive of the pigeonhole theorem; the lower bound is the explicit n-element block {n+1,…,2n}. Stated as an IsGreatest, with the bespoke Finset predicate identified with Mathlib's order-theoretic IsAntichain (· ∣ ·). Formalized over Mathlib with zero sorries and zero axioms, built entirely from the parent's verified theorems.",
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pigeonhole_principle",
+    "date": "folklore",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ErdosDivisibilityPigeonholeOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "number-theory",
+      "pigeonhole-principle",
+      "divisibility",
+      "antichain",
+      "extremal",
+      "erdos"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsAntichain",
+        "description": "Mathlib's order-theoretic antichain predicate: IsAntichain r s ↔ s.Pairwise (fun a b => ¬ r a b). Identifying the bespoke Finset predicate IsDivAntichain with IsAntichain (· ∣ ·) (S : Set ℕ) connects the extremal statement to the general theory of antichains in a poset (here {1,…,2n} under divisibility).",
+        "module": "Mathlib.Order.Antichain"
+      },
+      {
+        "theorem": "IsGreatest",
+        "description": "IsGreatest s a means a ∈ s ∧ a ∈ upperBounds s. Used to state that n is exactly the maximum of the set of achievable divisibility-antichain sizes — membership from the sharp block, upper bound from the pigeonhole theorem.",
+        "module": "Mathlib.Order.Bounds.Basic"
+      }
+    ],
+    "originalContributions": [
+      "max_antichain_card: the extremal form of the Erdős divisibility pigeonhole — IsGreatest { k | ∃ S, IsDivAntichain n S ∧ S.card = k } n — packaging the parent's upper bound and sharpness witness into a single optimality statement (the maximum divisibility-antichain in {1,…,2n} has size exactly n).",
+      "antichain_card_le: the clean upper bound |S| ≤ n for any divisibility-antichain S ⊆ {1,…,2n}, derived as the contrapositive of the parent's erdos_divisibility_pigeonhole.",
+      "IsDivAntichain together with isDivAntichain_iff: a reusable Finset predicate for divisibility-antichains in the interval, proved equivalent to Mathlib's IsAntichain (· ∣ ·) — making the Dilworth/Sperner reading of the pigeonhole gem explicit.",
+      "block_isDivAntichain: the explicit witness {n+1,…,2n} is a divisibility-antichain of size n, certifying that the maximum n is genuinely attained."
+    ],
+    "dateAdded": "2026-06-19",
+    "relatedProblems": [
+      {
+        "id": "erdos-divisibility-pigeonhole",
+        "relationship": "Parent. Supplies both ingredients this extremal statement combines: erdos_divisibility_pigeonhole (upper bound) and erdos_divisibility_pigeonhole_sharp (attained lower bound)."
+      },
+      {
+        "id": "dilworth-theorem-oq-01",
+        "relationship": "The maximum-antichain quantity is exactly the Dilworth/Mirsky optimum: {1,…,2n} partitions into n divisibility chains (one per odd part), so the largest antichain has size n."
+      }
+    ],
+    "lineCount": 118,
+    "assumptions": "0 axioms, 0 sorries. Built entirely from the parent file's two verified theorems (erdos_divisibility_pigeonhole and erdos_divisibility_pigeonhole_sharp) plus foundational Mathlib order lemmas (IsAntichain, IsGreatest). The only hypotheses are structural: membership in {1,…,2n} and the antichain property, both part of the statement. Badge is 'original' because the extremal/optimality packaging is formalized from first principles on top of the original parent proof; Mathlib does not contain this application.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The Erdős divisibility pigeonhole — popularized by Paul Erdős, who reportedly posed it to the young Lajos Pósa — asks for the maximum size of a subset of {1,…,2n} containing no pair related by divisibility. The pigeonhole argument (classify by odd part; there are exactly n odd parts) shows n+1 elements always force a divisible pair, and the top block {n+1,…,2n} shows n is achievable. The optimal value n is the extremal content of the result, and it coincides with the Dilworth/Mirsky optimum for the divisibility poset on {1,…,2n}, which decomposes into exactly n chains (one chain o, 2o, 4o, … per odd part o ≤ 2n).",
+    "problemStatement": "Let $n \\ge 0$. Call $S \\subseteq \\{1, \\dots, 2n\\}$ a *divisibility-antichain* if no two distinct $a, b \\in S$ satisfy $a \\mid b$. Then $\\max\\{|S| : S \\text{ a divisibility-antichain in } \\{1,\\dots,2n\\}\\} = n$, attained by $\\{n+1, \\dots, 2n\\}$.",
+    "text": "The maximum size of a divisibility-antichain in $\\{1,\\dots,2n\\}$ is exactly $n$. The upper bound $|S| \\le n$ is the contrapositive of the pigeonhole theorem: a set of size $\\ge n+1$ contains a divisible pair, so cannot be an antichain. The block $\\{n+1,\\dots,2n\\}$ attains $n$: any proper multiple of $a \\ge n+1$ exceeds $2n$.",
+    "proofStrategy": "State the maximum as IsGreatest over the set of achievable sizes { k | ∃ S, IsDivAntichain n S ∧ S.card = k }. Membership of n: instantiate the parent's erdos_divisibility_pigeonhole_sharp, whose witness {n+1,…,2n} is a divisibility-antichain of size n. Upper bound: for any achievable size coming from an antichain S, antichain_card_le shows |S| ≤ n by contradiction — if |S| ≥ n+1, erdos_divisibility_pigeonhole produces a pair a ∣ b inside S, contradicting the antichain property. The bridge isDivAntichain_iff records that IsDivAntichain is exactly IsAntichain (· ∣ ·) restricted to the interval.",
+    "keyInsights": [
+      "**Two one-sided facts become one optimum**: the parent's pigeonhole bound (no antichain of size n+1) and its sharpness witness (an antichain of size n) are precisely the upper bound and the attainment needed for IsGreatest. The extremal value n is what the gem is really about.",
+      "**The upper bound is a pure contrapositive**: 'every (n+1)-set has a divisible pair' is logically identical to 'every divisibility-antichain has ≤ n elements'. antichain_card_le is the one-line transport of erdos_divisibility_pigeonhole across this equivalence.",
+      "**It is the divisibility poset's Dilworth optimum**: {1,…,2n} splits into n chains (o, 2o, 4o, … for each odd o ≤ 2n), so the largest antichain has size n. The pigeonhole 'n+1 elements share a chain' is exactly Dilworth/Mirsky for this poset, and the extremal value n is the number of chains.",
+      "**Order-theoretic packaging**: identifying the bespoke IsDivAntichain with Mathlib's IsAntichain (· ∣ ·) (isDivAntichain_iff) places the result inside the general theory of antichains, making it reusable and the Sperner-flavoured reading explicit."
+    ],
+    "prerequisites": [
+      "The Erdős divisibility pigeonhole theorem and its sharpness (the parent entry)",
+      "Mathlib's IsAntichain and IsGreatest / upperBounds",
+      "Elementary divisibility and natural-number arithmetic"
+    ]
+  },
+  "conclusion": {
+    "summary": "The extremal form of the Erdős divisibility pigeonhole is formalized with zero sorries and zero axioms: the maximum size of a divisibility-antichain in {1,…,2n} is exactly n (max_antichain_card, an IsGreatest), with the upper bound n derived as the contrapositive of the parent pigeonhole theorem and the value attained by the explicit block {n+1,…,2n}. The bespoke antichain predicate is identified with Mathlib's IsAntichain (· ∣ ·), exposing the Dilworth/Sperner reading of the result.",
+    "futureDirections": "Generalize from the interval {1,…,2n} to the maximum primitive subset of {1,…,N} for arbitrary N (the largest antichain in the divisibility poset on {1,…,N}), and connect to Mathlib's developing antichain/Sperner infrastructure."
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-divisibility-pigeonhole",
+      "relationship": "extends",
+      "description": "Packages the parent's upper bound (erdos_divisibility_pigeonhole) and sharpness witness (erdos_divisibility_pigeonhole_sharp) into the single extremal optimum: the maximum divisibility-antichain in {1,…,2n} has size exactly n."
+    },
+    {
+      "targetId": "dilworth-theorem-oq-01",
+      "relationship": "uses-similar-technique",
+      "description": "The maximum-antichain value n is the Dilworth/Mirsky optimum for the divisibility poset on {1,…,2n}, which decomposes into n chains (one per odd part)."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/ErdosDivisibilityPigeonholeOQ01.lean",
+    "imports": [
+      "Mathlib",
+      "Proofs.ErdosDivisibilityPigeonhole"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "ErdosDivisibilityPigeonhole",
+    "lineCount": 118,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 4
+  },
+  "sorries": []
+}
