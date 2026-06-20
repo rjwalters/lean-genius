@@ -2371,6 +2371,7 @@ import Proofs.ErdosMordellChordIdentity
 import Proofs.ErdosMordellChordReduction
 import Proofs.ErdosMordellInequalityOQ01
 import Proofs.ErdosSzekeres
+import Proofs.EulerCriterionSquaresOQ01
 import Proofs.EulerIdentity
 import Proofs.EulerIdentityOQ01
 import Proofs.EulerIdentityOQ01OQ01
