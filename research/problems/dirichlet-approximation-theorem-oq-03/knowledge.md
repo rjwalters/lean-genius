@@ -66,3 +66,25 @@ of area exactly `4 = 2²·covol(ℤ²)`.
    `dirichlet-approximation-theorem` entry.
 3. Settle the subsumption question via the continued-fraction convergent selection, or record that
    pigeonhole/Minkowski/CF give the same `1/N` strength.
+
+## Session 2026-06-19 — gallery promotion
+
+**Mode:** REVISIT (problem already COMPLETE + build-verified) · **Outcome:** completed (published to gallery)
+
+### What I did
+- Re-verified `Proofs/DirichletApproximationOQ03.lean` compiles cleanly via single-file
+  `lake env lean` against pinned Mathlib v4.26.0 (exit 0, 0 errors); `#print axioms
+  dirichlet_via_minkowski` = `[propext, Classical.choice, Quot.sound]` (axiom-free).
+- Authored the gallery entry `src/data/proofs/dirichlet-approximation-theorem-oq-03/`
+  (`meta.json` + `annotations.json`): status `verified`, badge `original`, 6 sections,
+  5 annotations, cross-references to the parent and the oq-02 sibling.
+- `pnpm annotations:validate` does not flag this entry (anchors resolve cleanly).
+
+### Files modified
+- `src/data/proofs/dirichlet-approximation-theorem-oq-03/meta.json` (new)
+- `src/data/proofs/dirichlet-approximation-theorem-oq-03/annotations.json` (new)
+- `src/data/research/problems/dirichlet-approximation-theorem-oq-03.json` (knowledge)
+
+### Next steps
+- Optional sharpenings only: strict `< 1/N` via the open-boundary (area > 4) refinement;
+  simultaneous (oq-02) via Minkowski instead of torus pigeonhole; reusable shear-volume lemma.
