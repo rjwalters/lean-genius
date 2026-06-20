@@ -55,3 +55,8 @@ theorem gamma_one_half_eq_two_mul_gaussian_Ioi :
   simp only [neg_one_mul, div_one] at h
   rw [h]
   ring
+
+/-- **The squared half-value `Γ(1/2)² = π`.** The Gamma-function counterpart of
+the parent entry's squared Gaussian identity `(∫_ℝ e^{-x²})² = π`. -/
+theorem gamma_one_half_sq : Real.Gamma (1 / 2) ^ 2 = Real.pi := by
+  rw [gamma_one_half_eq_sqrt_pi, Real.sq_sqrt Real.pi_pos.le]
