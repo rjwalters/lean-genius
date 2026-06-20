@@ -2956,6 +2956,7 @@ import Proofs.RandomizedMaxCut
 import Proofs.RandomizedMaxcutOQ02
 import Proofs.RandomizedMaxcutOQ04
 import Proofs.RationalCanonicalFormExists
+import Proofs.RearrangementChebyshevEqOQ01
 import Proofs.RelativizedHalting
 import Proofs.RelativizedHaltingBridge
 import Proofs.RepunitDivisibilityOQ01
