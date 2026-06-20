@@ -1,0 +1,111 @@
+{
+  "id": "matrix-posdef-sqrt-oq-01",
+  "title": "The Positive Semidefinite Square Root of a Matrix: Existence, Structure, and Uniqueness",
+  "slug": "matrix-posdef-sqrt-oq-01",
+  "description": "Every positive semidefinite matrix A over 𝕜 = ℝ or ℂ (RCLike 𝕜) has a positive semidefinite square root, supplied by modern Mathlib through the continuous functional calculus as CFC.sqrt A (the matrix-specific Matrix.PosSemidef.sqrt was deprecated in favour of this C⋆-algebra version), with the scoped MatrixOrder instances giving 0 ≤ A ↔ A.PosSemidef. The gallery had no entry on the operator square root — a different object from the Gram/positive-definite material and the determinant identities. The packaged content is the full characterization: (1) defining property √A·√A = A and (√A)² = A; (2) structure — √A is again positive semidefinite, hence Hermitian, so the square root stays inside the cone; (3) uniqueness — √A is the only PSD matrix B with B·B = A, the non-trivial half that makes 'the' square root well defined; (4) corollaries read off from uniqueness: √0 = 0, √1 = 1, and √(A²) = A for PSD A; (5) determinant shadow det(√A)² = det A, exhibiting det A as a square; (6) a concrete instance √diag(4,9) = diag(2,3), cross-checking the abstract functional calculus against the elementary entrywise square root. The PSD square root underlies the polar decomposition A = (PSD)·(unitary), the operator absolute value |A| = √(AᴴA), and the whitening transform in statistics.",
+  "leanFile": "Proofs/MatrixPosDefSqrtOQ01.lean",
+  "sorries": 0,
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Square_root_of_a_matrix",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MatrixPosDefSqrtOQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "matrix",
+      "positive-semidefinite",
+      "square-root",
+      "continuous-functional-calculus",
+      "c-star-algebra",
+      "loewner-order"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "relatedProblems": [
+      {
+        "id": "det-conjugate-transpose-oq-01",
+        "relationship": "Sibling complex-matrix structure: det-conjugate-transpose-oq-01 studies how the determinant transforms under the adjoint (Hermitian ⟹ real det, unitary ⟹ unit-circle det); this entry studies the positive semidefinite square root as an operator, with det(√A)² = det A as its determinant shadow."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 140,
+    "assumptions": "0 axioms, 0 sorries, no native_decide, no Lean.ofReduceBool. All theorems depend only on the foundational propext / Classical.choice / Quot.sound. The square root is Mathlib's CFC.sqrt (continuous functional calculus over a C⋆-algebra); on Matrix n n 𝕜 with RCLike 𝕜 the relevant nonnegativity is the scoped MatrixOrder order, where Matrix.nonneg_iff_posSemidef gives 0 ≤ A ↔ A.PosSemidef and Matrix.PosSemidef.nonneg is the forward direction. The defining property re-exports CFC.sqrt_mul_sqrt_self / CFC.sq_sqrt; structure uses CFC.sqrt_nonneg with LE.le.posSemidef and Matrix.PosSemidef.isHermitian; uniqueness re-exports CFC.sqrt_unique (b·b = a, 0 ≤ b ⟹ √a = b); the corollaries (√0, √1, √(A²)) and the concrete diagonal instance are uniqueness applied to explicit candidates, with Matrix.PosSemidef.diagonal for diag(2,3) ⪰ 0 and diagonal_mul_diagonal for the squaring. The determinant shadow uses Matrix.det_pow. The genuine hypotheses are the domain conditions A.PosSemidef / B.PosSemidef.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "A positive semidefinite matrix is the matrix analogue of a nonnegative real number, and just as every nonnegative real has a unique nonnegative square root, every positive semidefinite matrix has a unique positive semidefinite square root. This operator square root is one of the workhorses of applied and pure linear algebra: it gives the polar decomposition A = P·U (a PSD factor times a unitary), the operator absolute value |A| = √(AᴴA), the geometric mean of positive operators, and the whitening / Mahalanobis transform of statistics. Mathlib originally carried a bespoke Matrix.PosSemidef.sqrt built from the spectral theorem, but in 2025 it was deprecated in favour of the C⋆-algebraic CFC.sqrt from the continuous functional calculus, of which the matrix square root is now a special case via the Loewner-order instances on matrices.",
+    "problemStatement": "For a positive semidefinite matrix $A$ over $\\mathbb R$ or $\\mathbb C$, prove that its square root $\\sqrt A$ (the continuous functional calculus square root) satisfies $\\sqrt A\\cdot\\sqrt A = A$, is again positive semidefinite (hence Hermitian), and is the *unique* positive semidefinite $B$ with $B\\cdot B = A$. Derive the corollaries $\\sqrt 0 = 0$, $\\sqrt 1 = 1$, $\\sqrt{A^2} = A$, and $\\det(\\sqrt A)^2 = \\det A$, and verify the concrete instance $\\sqrt{\\operatorname{diag}(4,9)} = \\operatorname{diag}(2,3)$.",
+    "text": "Mathlib provides the C⋆-algebraic square root CFC.sqrt and its core lemmas, but the gallery had no entry on the matrix square root as an object. This entry packages the three pillars — existence/defining property, structure (staying in the PSD cone), and uniqueness — and reads off the standard corollaries from uniqueness, closing with a concrete diagonal computation that ties the abstract functional calculus to the elementary fact √4 = 2, √9 = 3. The mathematically substantive half is uniqueness: it is what licenses the notation 'the' square root and what every downstream corollary actually uses.",
+    "keyInsights": [
+      "**Existence and the defining property are a functional-calculus identity**: over a C⋆-algebra the continuous functional calculus applied to the real square root function gives an element CFC.sqrt A with CFC.sqrt A · CFC.sqrt A = A whenever 0 ≤ A. On Matrix n n 𝕜 the hypothesis 0 ≤ A is exactly A.PosSemidef (Matrix.nonneg_iff_posSemidef), so the abstract statement specializes to the matrix square root with no extra work.",
+      "**The square root stays inside the cone**: CFC.sqrt is built from the ℝ≥0 functional calculus, so its output is unconditionally nonnegative — √A is positive semidefinite (and therefore Hermitian) for any A, without assuming A itself is PSD. This is the 'structure' pillar: the square root does not leave the class of objects it acts on.",
+      "**Uniqueness is the load-bearing content**: among positive semidefinite matrices, B·B = A has at most one solution, so the PSD square root is genuinely 'the' square root. Every corollary here — √0 = 0, √1 = 1, √(A²) = A — is this single uniqueness statement applied to an obvious candidate B (namely 0, 1, A), rather than a separate computation.",
+      "**The determinant is a multiplicative shadow of the square root**: applying det to (√A)² = A and using det(Mⁿ) = (det M)ⁿ gives det(√A)² = det A. Over ℝ this exhibits det A as a perfect square, recovering det A ≥ 0 for real PSD matrices as a one-line consequence.",
+      "**The concrete diagonal instance pins the abstraction down**: CFC.sqrt is noncomputable and defined spectrally, so √diag(4,9) cannot be evaluated by reduction; instead uniqueness identifies it with diag(2,3), since diag(2,3) is PSD and squares (via diagonal_mul_diagonal) to diag(4,9). The abstract object and the entrywise square root agree."
+    ],
+    "prerequisites": [
+      "Positive semidefinite matrices Matrix.PosSemidef and the Loewner order: the scoped MatrixOrder instances with Matrix.nonneg_iff_posSemidef (0 ≤ A ↔ A.PosSemidef)",
+      "The continuous functional calculus square root CFC.sqrt and its lemmas CFC.sqrt_mul_sqrt_self, CFC.sq_sqrt, CFC.sqrt_nonneg, CFC.sqrt_unique",
+      "Matrix.PosSemidef.isHermitian, Matrix.PosSemidef.diagonal, and Matrix.diagonal_mul_diagonal",
+      "Matrix.det_pow for the determinant corollary"
+    ]
+  },
+  "sections": [
+    {
+      "id": "defining-property",
+      "title": "Defining Property: √A is a Square Root of A",
+      "startLine": 56,
+      "endLine": 66,
+      "mathContext": "$\\sqrt A\\cdot\\sqrt A = A$ and $(\\sqrt A)^2 = A$ for PSD $A$.",
+      "summary": "sqrt_mul_self and sq_sqrt re-export the functional-calculus identities CFC.sqrt_mul_sqrt_self and CFC.sq_sqrt: under the PSD hypothesis (0 ≤ A via PosSemidef.nonneg), the square root multiplied by itself returns A. This is the existence/defining-property pillar."
+    },
+    {
+      "id": "structure",
+      "title": "Structure: the Square Root Stays in the PSD Cone",
+      "startLine": 68,
+      "endLine": 81,
+      "mathContext": "$\\sqrt A \\succeq 0$ and $(\\sqrt A)^{\\mathsf H} = \\sqrt A$.",
+      "summary": "sqrt_posSemidef shows √A is positive semidefinite for ANY A (CFC.sqrt_nonneg is unconditional, since the square root is built from the ℝ≥0 functional calculus), and sqrt_isHermitian deduces √A is Hermitian as a special case. The square root never leaves the cone."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness: √A is the Unique PSD Square Root",
+      "startLine": 83,
+      "endLine": 91,
+      "mathContext": "$B\\succeq 0,\\ B\\cdot B = A \\Rightarrow B = \\sqrt A$.",
+      "summary": "sqrt_unique re-exports CFC.sqrt_unique: if B is positive semidefinite and B·B = A then B is √A. Combined with the defining property and structure, this establishes that the PSD square root exists and is unique — the load-bearing content powering every corollary."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries from Uniqueness",
+      "startLine": 93,
+      "endLine": 107,
+      "mathContext": "$\\sqrt 0 = 0$, $\\sqrt 1 = 1$, $\\sqrt{A^2} = A$.",
+      "summary": "sqrt_zero, sqrt_one, and sqrt_sq are each uniqueness applied to an obvious candidate: 0·0 = 0 with 0 PSD, 1·1 = 1 with 1 PSD, and A·A = A² with A PSD. The square root inverts squaring on the PSD cone."
+    },
+    {
+      "id": "determinant-shadow",
+      "title": "Determinant Shadow: det(√A)² = det A",
+      "startLine": 109,
+      "endLine": 116,
+      "mathContext": "$\\det(\\sqrt A)^2 = \\det A$.",
+      "summary": "det_sqrt_sq applies det to (√A)² = A and uses Matrix.det_pow (det(Mⁿ) = (det M)ⁿ) to get det(√A)² = det A. Over ℝ this exhibits det A as a square, recovering det A ≥ 0 for real PSD matrices."
+    },
+    {
+      "id": "concrete-instance",
+      "title": "Concrete Instance: √diag(4,9) = diag(2,3)",
+      "startLine": 118,
+      "endLine": 139,
+      "mathContext": "$\\sqrt{\\operatorname{diag}(4,9)} = \\operatorname{diag}(2,3)$.",
+      "summary": "diag_two_three_posSemidef establishes diag(2,3) ⪰ 0 via Matrix.PosSemidef.diagonal, and sqrt_diag_four_nine concludes from uniqueness: diag(2,3) is PSD and squares to diag(4,9) (diagonal_mul_diagonal plus the entrywise check 2·2 = 4, 3·3 = 9). The abstract CFC.sqrt agrees with the elementary entrywise square root."
+    }
+  ],
+  "conclusion": "The positive semidefinite square root is formalised sorry-free and axiom-free as the three pillars existence/defining-property, structure, and uniqueness, with the standard corollaries (√0 = 0, √1 = 1, √(A²) = A), the determinant shadow det(√A)² = det A, and a concrete diagonal computation √diag(4,9) = diag(2,3). The square root itself is Mathlib's C⋆-algebraic CFC.sqrt; the original content is the matrix-level packaging — pinning the existence/structure/uniqueness triad together and reading the corollaries off uniqueness. Natural follow-ups: the polar decomposition A = P·U with P = √(AᴴA) PSD and U unitary; the operator absolute value |A| = √(AᴴA) and the identity ‖A x‖ = ‖|A| x‖; or the Loewner-monotonicity of the square root, 0 ⪯ A ⪯ B ⟹ √A ⪯ √B, the operator-monotone half of the theory.",
+  "crossReferences": [
+    "det-conjugate-transpose-oq-01"
+  ]
+}

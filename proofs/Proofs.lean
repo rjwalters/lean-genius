@@ -2862,6 +2862,7 @@ import Proofs.MantelTheoremUniqueness
 import Proofs.MathematicalInduction
 import Proofs.MathematicalInductionOQ01
 import Proofs.MathematicalInductionOQ03
+import Proofs.MatrixPosDefSqrtOQ01
 import Proofs.MatrixSimilarityInvariantsOQ01
 import Proofs.MeanValueTheorem
 import Proofs.MeanValueTheoremOQ02
