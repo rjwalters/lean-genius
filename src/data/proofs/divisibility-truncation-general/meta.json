@@ -186,6 +186,16 @@
       "targetId": "chinese-remainder-constructive",
       "relationship": "foundational",
       "description": "The IsCoprime condition (gcd(d,10)=1) enabling the key cancellation step is the same coprimality machinery used in the Chinese Remainder Theorem"
+    },
+    {
+      "targetId": "divisibility-truncation-general-oq-01",
+      "relationship": "extended-by",
+      "description": "The Unified Osculator Theorem merges the positive and negative osculator cases into one signed-osculator statement over ℤ, deriving the negative case as a corollary via c ↦ −c and proving the dual relationship between paired osculators — generalizing the osculator c (with d | 10c−1) used in this truncation rule."
+    },
+    {
+      "targetId": "divisibility-truncation-general-oq-03",
+      "relationship": "extended-by",
+      "description": "Identifies where the osculator comes from: it proves the divisibility osculator (the integer c with d | 10c−1) is canonically the Bézout coefficient gcdA(10,d) from the extended Euclidean algorithm, making the truncation rule's key constant constructive rather than guessed."
     }
   ],
   "mainTheorems": [
