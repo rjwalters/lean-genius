@@ -605,6 +605,7 @@ import Proofs.ChebyshevPNTBridgeOQ01OQ02
 import Proofs.ChebyshevPNTBridgeOQ02
 import Proofs.ChebyshevPolynomialsOQ01
 import Proofs.ChebyshevSumMonotoneOQ01
+import Proofs.ChevalleyWarningTheoremOQ01
 import Proofs.ChineseRemainderConstructive
 import Proofs.ChineseRemainderConstructiveOQ03
 import Proofs.ChineseRemainderConstructiveOQ03OQ03
