@@ -130,6 +130,11 @@
       "targetId": "dilworth-theorem-oq-01",
       "relationship": "uses-similar-technique",
       "description": "Both invoke Finset.exists_ne_map_eq_of_card_lt_of_maps_to. The divisibility poset on {1,…,2n} decomposes into n chains (one per odd part); a set larger than the number of chains must put two elements in a common chain — the pigeonhole/Dilworth picture behind this theorem."
+    },
+    {
+      "targetId": "erdos-divisibility-pigeonhole-oq-01",
+      "relationship": "extended-by",
+      "description": "Packages this entry's two halves — the pigeonhole upper bound (`erdos_divisibility_pigeonhole`: any $n+1$ elements of $\\{1,\\dots,2n\\}$ contain a divisible pair) and the sharpness witness (`erdos_divisibility_pigeonhole_sharp`: the block $\\{n+1,\\dots,2n\\}$ is divisibility-free) — into the single extremal optimum they jointly prove: the maximum size of a divisibility-antichain in $\\{1,\\dots,2n\\}$ is exactly $n$. The upper bound is the contrapositive of the pigeonhole theorem; the lower bound is the explicit $n$-element block. Stated as an `IsGreatest`, with the bespoke Finset predicate identified with Mathlib's order-theoretic `IsAntichain (· ∣ ·)`. Built entirely from this entry's verified theorems over Mathlib, with zero sorries and zero axioms (118 lines, 4 theorems)."
     }
   ],
   "leanFile": {
