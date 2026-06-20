@@ -2809,6 +2809,7 @@ import Proofs.NewtonInductiveStepOQ01Aristotle
 import Proofs.NewtonInductiveStepOQ02
 import Proofs.NewtonInductiveStepOQ03
 import Proofs.NewtonLogConcavity
+import Proofs.NewtonPowerSumIdentitiesOQ01
 import Proofs.NivenTheorem
 import Proofs.NivenTheoremOQ02
 import Proofs.NivenTheoremOQ03
