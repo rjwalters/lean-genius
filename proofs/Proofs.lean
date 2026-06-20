@@ -2861,6 +2861,7 @@ import Proofs.PompeiuTheorem
 import Proofs.PowerMeanCrossZeroOQ
 import Proofs.PowerMeanLimitOQ
 import Proofs.PowerMeanMonotoneOQ
+import Proofs.PSeriesConvergenceOQ01
 import Proofs.PrimeGapBounds
 import Proofs.PrimeGapBoundsOQ01
 import Proofs.PrimeNumberTheorem

@@ -1,0 +1,80 @@
+{
+  "slug": "p-series-convergence-oq-01",
+  "title": "The p-Series Convergence Test: ∑ 1/nᵖ Converges iff p > 1",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "started": "2026-06-20T09:20:00Z",
+  "lastUpdate": "2026-06-20T09:20:00Z",
+  "tags": [
+    "analysis",
+    "series",
+    "convergence",
+    "p-series",
+    "harmonic-series",
+    "summability",
+    "seeker-selected",
+    "research"
+  ],
+  "tractability": 9,
+  "significance": 7,
+  "problemStatement": {
+    "formal": "For a real exponent $p$, the p-series $\\sum_{n} 1/n^{p}$ is summable if and only if $1 < p$. The boundary case $p = 1$ (the harmonic series) diverges, and every $p > 1$ (e.g. the Basel exponent $p = 2$) converges. The same threshold holds for natural-number exponents and for the two-sided $\\mathbb{Z}$-indexed series.",
+    "plain": "The p-series 1 + 1/2ᵖ + 1/3ᵖ + … converges exactly when p > 1. At p = 1 it is the harmonic series, which famously diverges — so the test is sharp: the inequality cannot be relaxed to p ≥ 1. For p = 2 one recovers the convergent Basel series ∑ 1/n².",
+    "whyMatters": [
+      "The p-series test is the canonical comparison yardstick of first-year analysis and the workhorse for the comparison/limit-comparison tests.",
+      "It pins down the exact convergence threshold (1 < p) as a clean biconditional, with the harmonic series sitting precisely on the boundary.",
+      "Mathlib has the underlying summability lemmas (Real.summable_one_div_nat_rpow and friends), but the gallery did not expose the p-series convergence dichotomy as a named, reader-facing statement. The existing harmonic-divergence entry covers only the log-weighted/p=1 object, not the general p threshold."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "pSeries_summable_iff_one_lt: Summable (fun n => 1/(n:ℝ)^p) ↔ 1 < p for real exponent p (rpow form, the sharp threshold).",
+      "pSeries_nat_summable_iff_one_lt: same biconditional for a natural-number exponent.",
+      "pSeries_int_summable_iff_one_lt: two-sided ℤ-indexed version, summable ↔ 1 < p.",
+      "harmonic_not_summable: the harmonic series ∑ 1/n diverges (boundary case p = 1), so 1 < p cannot be weakened to 1 ≤ p.",
+      "pSeries_summable_of_one_lt and pSeries_basel_summable: convergence for 1 < p and for the Basel exponent p = 2. Axiom-free, no native_decide."
+    ],
+    "open": [
+      "Cauchy condensation / Schlömilch perspective as a derivation engine rather than a black box.",
+      "Boundary-refinement series ∑ 1/(n (log n)ᵖ) (Bertrand series) and the iterated-logarithm hierarchy."
+    ],
+    "goal": "Expose the p-series convergence test (the sharp 1 < p threshold, harmonic boundary, Basel corollary) in the gallery, axiom-free, on top of Mathlib's PSeries summability lemmas."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-20T09:20:00Z",
+    "iteration": 1,
+    "focus": "ACT: shipped Proofs/PSeriesConvergenceOQ01.lean — real/nat/ℤ threshold biconditionals, harmonic divergence, Basel convergence, axiom-free, sorry-free.",
+    "blockers": [],
+    "nextAction": "Optional: Bertrand series ∑ 1/(n (log n)ᵖ) threshold, or surface the Cauchy condensation engine. Core p-series test complete and verified.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 ACT (researcher-3, 2026-06-20): Built Proofs/PSeriesConvergenceOQ01.lean surfacing the p-series convergence test as reader-facing statements over Mathlib's PSeries API. pSeries_summable_iff_one_lt = Real.summable_one_div_nat_rpow (real exponent, rpow); pSeries_nat_summable_iff_one_lt = Real.summable_one_div_nat_pow; pSeries_int_summable_iff_one_lt = Real.summable_one_div_int_pow (GOTCHA: the int-pow lemma lives in namespace Real, like the nat lemmas, so it needs the Real. prefix despite the grep line not showing it). harmonic_not_summable = `simpa using Real.not_summable_one_div_natCast` (boundary p=1). pSeries_basel_summable from the nat threshold at p=2 via norm_num. Axiom-free (propext/Classical.choice/Quot.sound); no native_decide. Distinct from harmonic-divergence-oq-02 (log-weighted object, p=1 only). Build note: shared Mathlib .lake churned by fleet — used LAKE_UNSAFE=1 lake env lean retry-until-clean-window."
+  },
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Harmonic_series_(mathematics)#p-series"
+    ],
+    "mathlib": [
+      "Real.summable_one_div_nat_rpow, Real.summable_one_div_nat_pow, Real.summable_one_div_int_pow, Real.not_summable_one_div_natCast (Analysis/PSeries.lean)"
+    ]
+  },
+  "relatedProofs": [],
+  "leanFiles": [
+    {
+      "path": "proofs/Proofs/PSeriesConvergenceOQ01.lean",
+      "status": "verified",
+      "axiomCount": 0,
+      "sorryCount": 0
+    }
+  ],
+  "significanceNote": "The sharp p-series convergence threshold (1 < p), with the harmonic series on the boundary and the Basel exponent as corollary — surfaced in the gallery as a named biconditional; absent before."
+}
