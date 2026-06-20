@@ -1,0 +1,129 @@
+{
+  "id": "tietze-extension-theorem-oq-01",
+  "slug": "tietze-extension-theorem-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Topology"
+    ],
+    "namespace": "TietzeExtensionTheoremOQ01",
+    "lineCount": 174,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/TietzeExtensionTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Tietze Extension Theorem and Urysohn's Lemma Derived From It",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/TietzeExtensionTheoremOQ01.lean",
+    "tags": [
+      "topology",
+      "separation-axioms",
+      "normal-space",
+      "tietze-extension",
+      "urysohns-lemma",
+      "continuous-function",
+      "extension-theorem",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 174,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "tietze_extension: stable re-export of Mathlib's Tietze extension theorem — in a NormalSpace, a continuous map on a closed set valued in any TietzeExtension space extends to the whole space (ContinuousMap.exists_restrict_eq)",
+      "tietze_extension_real: the real-valued specialization, every continuous f : C(s, ℝ) on a closed s extends to g : C(X, ℝ) with g.restrict s = f (ℝ is a TietzeExtension space)",
+      "tietze_extension_Icc: the range-constrained (bounded) form — an [a,b]-valued continuous function on a closed set extends to an [a,b]-valued continuous function on all of X (exists_restrict_eq_forall_mem_of_closed with t = Set.Icc a b, OrdConnected)",
+      "tietze_extension_abs_le: sharp sup-norm-preserving extension — if |f| ≤ M on the closed set then f extends with |g| ≤ M everywhere, obtained from the [-M, M] bounded form via abs_le",
+      "tietze_extension_closedEmbedding: the coordinate-free closed-embedding packaging — along a closed embedding e : X₁ → X the function extends with g ∘ e = f (ContinuousMap.exists_extension)",
+      "urysohn_of_tietze: NEW CONTENT — Urysohn's lemma derived from Tietze. For disjoint closed s, t the indicator '1 on t, 0 on s' is continuous on the closed set s ∪ t because t is clopen there (closed as a preimage; open because its complement in s ∪ t is exactly s); the bounded Tietze theorem extends it into [0,1] to a Urysohn separator. This is the reverse of the usual Urysohn ⟹ Tietze direction, exhibiting the two as equivalent over normality",
+      "urysohn_point_of_tietze: functional separation of a point from a disjoint closed set in a normal T1 space, obtained by applying urysohn_of_tietze to the closed singleton {x₀}"
+    ],
+    "prerequisites": [
+      "Normal topological spaces and the bundled continuous-map type C(X, ℝ)",
+      "Mathlib's TietzeExtension class and the Real.instTietzeExtension instance",
+      "ContinuousMap.exists_restrict_eq, ContinuousMap.exists_extension, and ContinuousMap.exists_restrict_eq_forall_mem_of_closed",
+      "Subspace topology and clopen sets: IsClosed.preimage, isClosed_compl_iff, IsClopen",
+      "LocallyConstant.ofIsClopen and IsLocallyConstant.continuous: a function factoring through a clopen indicator is continuous",
+      "Set.OrdConnected (Icc a b) and abs_le for the bounded / sup-norm forms"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "ContinuousMap.exists_restrict_eq",
+        "description": "Tietze extension theorem for TietzeExtension-valued maps on a closed set; re-exported as tietze_extension and tietze_extension_real.",
+        "module": "Mathlib.Topology.TietzeExtension"
+      },
+      {
+        "theorem": "ContinuousMap.exists_restrict_eq_forall_mem_of_closed",
+        "description": "Range-constrained Tietze extension into an OrdConnected target; supplies the bounded form tietze_extension_Icc and the [0,1] extension behind urysohn_of_tietze.",
+        "module": "Mathlib.Topology.TietzeExtension"
+      },
+      {
+        "theorem": "ContinuousMap.exists_extension",
+        "description": "Tietze extension along a closed embedding; re-exported as tietze_extension_closedEmbedding.",
+        "module": "Mathlib.Topology.TietzeExtension"
+      },
+      {
+        "theorem": "LocallyConstant.ofIsClopen / IsLocallyConstant.continuous",
+        "description": "The locally constant Fin 2 indicator of a clopen set and continuity of locally constant maps — the engine making the {0,1} boundary function on s ∪ t continuous in urysohn_of_tietze.",
+        "module": "Mathlib.Topology.LocallyConstant.Basic"
+      },
+      {
+        "theorem": "IsClosed.preimage / isClosed_compl_iff",
+        "description": "Used to show that t is clopen in the subspace s ∪ t (closed as a preimage of t, open because its complement is the closed set s).",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "tietze-extension-theorem-oq-01-oq-01",
+      "question": "Formalize the simultaneous (parametrized) Tietze extension: a continuous family of functions on a closed set extends to a continuous family on the whole space, e.g. as a continuous map into the space of extensions.",
+      "significance": "medium"
+    },
+    {
+      "id": "tietze-extension-theorem-oq-01-oq-02",
+      "question": "Prove the converse characterization: a T1 space in which every continuous real function on a closed set extends to the whole space is normal, completing the equivalence 'normal ⟺ Tietze ⟺ Urysohn'.",
+      "significance": "high"
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "urysohns-lemma-oq-01",
+      "note": "Companion separation theorem. This entry answers its recorded open question by deriving Urysohn separation from Tietze (urysohn_of_tietze), the reverse of the usual Urysohn ⟹ Tietze implication."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Topology.TietzeExtension",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of ContinuousMap.exists_restrict_eq, exists_extension, and exists_restrict_eq_forall_mem_of_closed, the abstract Tietze statements re-exported in this entry."
+    },
+    {
+      "title": "Heinrich Tietze, Über Funktionen, die auf einer abgeschlossenen Menge stetig sind",
+      "author": "H. Tietze",
+      "year": "1915",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "description": "Origin of the extension theorem for continuous functions on closed sets of a metric space; extended to general normal spaces by Urysohn (1925)."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The Tietze extension theorem states that in a normal space a continuous real-valued function on a closed subset extends continuously to the whole space, with control over its range. This entry re-exports Mathlib's abstract statements — the general TietzeExtension-valued form (tietze_extension), its real specialization (tietze_extension_real), the closed-embedding packaging (tietze_extension_closedEmbedding), and the range-constrained interval form (tietze_extension_Icc) — and adds the sharp sup-norm-preserving corollary (tietze_extension_abs_le: |f| ≤ M extends to |g| ≤ M). The genuine new content is urysohn_of_tietze, which derives Urysohn's lemma from Tietze: for disjoint closed sets s, t the indicator that is 1 on t and 0 on s is continuous on the closed set s ∪ t because t is clopen in that subspace (closed as a preimage, open because its complement is the closed set s), and the bounded Tietze theorem extends it into [0,1] to a Urysohn separator. The point-from-closed-set corollary urysohn_point_of_tietze follows. 173 lines, 7 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The abstract extension theorem is delegated to Mathlib; the original content is the clopen boundary-function construction realising the reverse implication Tietze ⟹ Urysohn, complementing the companion entry urysohns-lemma-oq-01 (which provides Urysohn directly and an explicit metric witness). Together they exhibit Urysohn's lemma and the Tietze extension theorem as the two equivalent functional expressions of normality, and set up the converse characterization 'normal ⟺ Tietze' recorded as an open question.",
+    "openQuestions": [
+      "Formalize the parametrized (simultaneous) Tietze extension of a continuous family.",
+      "Prove that a T1 space with the Tietze extension property is normal, closing the equivalence with normality and Urysohn's lemma."
+    ]
+  }
+}
