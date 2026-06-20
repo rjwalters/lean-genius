@@ -21,7 +21,10 @@ set -euo pipefail
 # Config
 MASTODON_INSTANCE="https://mathstodon.xyz"
 MAX_CHARS=500
-MAX_DAILY_POSTS=8
+# Backstop only — the herald's significance bar (see .lean/roles/herald.md) is the
+# real gate. Standing down for lack of noteworthy results should be the common case;
+# this cap should rarely be the binding constraint.
+MAX_DAILY_POSTS=2
 
 # Colors
 RED='\033[0;31m'
