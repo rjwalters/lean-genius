@@ -2420,6 +2420,7 @@ import Proofs.FeuerbachsTheoremOQ01Aristotle
 import Proofs.FeuerbachsTheoremOQ01OQ03
 import Proofs.FeuerbachsTheoremOQ02
 import Proofs.FeuerbachsTheoremOQ02Aristotle
+import Proofs.FibonacciIdentitiesOQ01
 import Proofs.StatementOnly_FeuerbachOQ02Murakami_GraceTrirectangular
 import Proofs.FeuerbachsTheoremOQ05
 import Proofs.FiveColorTheorem
