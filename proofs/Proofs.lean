@@ -3251,6 +3251,7 @@ import Proofs.TwinPrimesSpecialOQ01
 import Proofs.UnitDistanceHN7
 import Proofs.UnitDistanceHN7Aristotle
 import Proofs.UnitDistanceIndependence
+import Proofs.VandermondeInterpolationOQ01
 import Proofs.VarignonTheorem
 import Proofs.VietasFormulas
 import Proofs.VietasFormulasOQ02
