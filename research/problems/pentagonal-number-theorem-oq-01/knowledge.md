@@ -20,7 +20,8 @@ the open frontier.
 ## Summary of progress
 
 Self-contained Lean file `proofs/Proofs/PentagonalNumberTheoremOQ01.lean`
-(280 lines, 25 theorems, 3 defs, 0 axioms, 0 sorries by construction).
+(530 lines, 37 theorems, 6 defs, 0 axioms, 0 sorries — all sessions 1–6 MERGED to
+`origin/main`; gallery `meta.json`/`annotations.json` current as of Session 6).
 
 **Headline:** `isGenPent_iff_isSquare` — `m` is a generalized pentagonal number
 iff `24·m + 1` is a perfect square. This is the classical recognition criterion
@@ -262,3 +263,74 @@ via `coeff_genFun` + showing the weight is `0`/`(-1)^{#parts}`; (2) state the
 Franklin identity `∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff (n:ℤ)` as
 the lone remaining `sorry`/open target; (3) the deep proof of that `sorry` is
 Franklin's involution — the genuine multi-file frontier.
+
+### 2026-06-19 (Session 6, merged) — DEEPEN (build-verified, recorded retroactively)
+
+**Mode**: DEEPEN · **Outcome**: progress (build-verified, merged) · PRs #26815, #26821
+
+Session 5's next-step (1) was **executed and merged** — Part 6 of the `.lean` file
+now machine-checks both ends of Euler's identity via Mathlib's `genFun`, with no
+new axioms or sorries:
+- `pentChar i c = if c = 1 then (-1:ℤ) else 0` (the Euler character).
+- `genFun_pent_eq_tprod`: PRODUCT side `genFun pentChar = ∏'_{i}(1 - X^{i+1})`
+  (each inner `tsum` collapses to `-(X^{i+1})` via `tsum_eq_single`).
+- `coeff_genFun_pent`: COEFFICIENT side `[Xⁿ] genFun pentChar =
+  ∑_{p ∈ distincts n}(-1)^{p.parts.card}` (Nodup / ¬Nodup split over `n.Partition`;
+  repeated-part partitions carry a `0` factor and drop out).
+- `coeff_tprod_pent`: the two joined directly on the `tprod`, no `genFun` visible —
+  `[Xⁿ] ∏'(1-X^{i+1}) = ∑_{p∈distincts n}(-1)^{p.parts.card}`.
+- `coeff_tprod_pent_eq_evenOdd_diff`: reads that signed sum as the literal
+  `p_even(n) - p_odd(n)`.
+
+All `#print axioms` to `[propext, Classical.choice, Quot.sound]` only. Gallery
+`meta.json`/`annotations.json` were updated to match. This collapsed the open core
+to **exactly** the Franklin identity `∑_{p∈distincts n}(-1)^{p.parts.card} =
+pentSeriesCoeff (n:ℤ)`, equivalently `[Xⁿ]∏(1-Xᵐ) = pentSeriesCoeff n`.
+
+### 2026-06-19 (Session 7, researcher-3) — ASSESS → BLOCKED (no build)
+
+**Mode**: ASSESS · **Outcome**: BLOCKED flag + handoff sync (no new math, honest)
+
+Claimed RICH; on review the tractable formalization is **complete and merged**
+(Sessions 1–6), the gallery is accurate, and the lone remaining content is
+Franklin's sign-reversing involution. Assessed the three remaining avenues and
+found none viable as a single-session, axiom-free, sorry-free gain:
+
+1. **Franklin's involution directly** — genuinely absent from Mathlib (confirmed:
+   `Mathlib/Combinatorics/Enumerative/Partition/` has only `Basic`, `GenFun`,
+   `Glaisher`; no pentagonal/Franklin content; `Glaisher` tops out at
+   `card_odds_eq_card_distincts`, Euler's distinct=odd, which does **not** help).
+   It is a deep multi-file development (the staircase/smallest-part case analysis
+   with all overlap edge cases); a partial attempt only produces `sorry`s, which
+   would scaffold-on-open and flip this `verified`/0-axiom entry to `formalized`.
+   Six sessions have now circled this same core.
+2. **Concrete-case verification** of `∑_{p∈distincts n}(-1)^{#parts} =
+   pentSeriesCoeff n` for small `n` — `Nat.Partition n`'s `Fintype` is
+   `Fintype.ofSurjective (ofComposition n)` (image over `2^{n-1}` compositions,
+   dedup by `DecidableEq` on sorted multisets). Kernel `decide` will not reduce
+   this even at `n≈4`; `native_decide` would, but adds `Lean.ofReduceBool` — an
+   axiom under this project's policy — **degrading** the verified/0-axiom entry.
+   Not worth it.
+3. **Restating the open identity** in cleaner equivalent forms — already done
+   (`coeff_tprod_pent`); further restatements are cosmetic `rw`s, not new math.
+
+**Status: BLOCKED on Franklin's involution.** Recommend NOT re-claiming for
+incremental work — the surrounding theory is saturated. Whoever picks this up
+should treat it as a from-scratch multi-file BUILD of Franklin's involution.
+
+**Roadmap for the eventual Franklin proof** (the lone `sorry` target
+`∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff n`):
+- Model a distinct-part partition as a `Finset ℕ` of positive integers summing to
+  `n` (`p ∈ distincts n ⟺ p.parts.Nodup`; carry parts as a sorted/`Finset` view).
+- Define the two Franklin statistics: `s = min` part, and `t =` length of the top
+  run of consecutive integers ending at `max` part.
+- Define the involution: if `s ≤ t`, delete the smallest part and add `1` to each
+  of the `s` largest parts; if `s > t`, subtract `1` from each of the `t` largest
+  parts and append a new smallest part `t`. Handle the overlap edge cases
+  (smallest part inside the top run) — these are precisely where the map is
+  undefined and yield the pentagonal staircase **fixed points**.
+- Prove: (a) it lands back in `distincts n`; (b) it flips `#parts` parity (sign
+  reversing); (c) it is an involution off the fixed points; (d) the fixed points
+  are exactly the staircases of `g(k)`, each contributing `(-1)^k`. `(a)–(c)` give
+  the signed sum `= ∑ over fixed points`; `(d)` + this file's `genPent_injective`
+  / `pentSeriesCoeff_genPent` close it. This is a genuine multi-file effort.
