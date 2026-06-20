@@ -56,3 +56,38 @@ both routes, so it is reusable groundwork rather than throwaway.
   DFT eigenvalue-multiplicity infrastructure becomes available in Mathlib.
 - Consider contributing the four-point pinning / reduction lemmas toward a future
   Mathlib `GaussSum` sign development.
+
+## Session 2026-06-19 (Session 3) — p = 5 base case (the `p ≡ 1 mod 4` branch)
+
+**Mode:** depth-first · **Outcome:** progress (first sign determination on the OTHER residue class)
+
+### What I did
+- Companion file `Proofs/QuadraticGaussSumSignSmallFive.lean` (new, verified): the smallest
+  case of `p ≡ 1 (mod 4)`, mirroring the verified `QuadraticGaussSumSignSmall` (p = 3).
+  - `gaussSum_five_eq` — five-term enumeration over `ZMod 5` collapses to `ζ - ζ² - ζ³ + ζ⁴`
+    (`quadraticChar (ZMod 5)` = `0,1,-1,-1,1`).
+  - `gaussSum_five_re` — folding `cos(6π/5)=cos(4π/5)`, `cos(8π/5)=cos(2π/5)` gives
+    `Re g = 2·cos(2π/5) − 2·cos(4π/5)`.
+  - `gaussSum_five_re_pos` — **`0 < Re g`** from the coarse sign facts `cos(2π/5) > 0`,
+    `cos(4π/5) < 0` (no exact radical values needed). This is the open positivity crux,
+    confirmed in the base case.
+  - `gaussSum_five_eq_sqrt_five` — feeds `gaussSum_five_re_pos` into the reduction lemma
+    `gaussSum_eq_sqrt_iff_re_pos` to get the FULL determination `gaussSum (chiC 5) ψ₅ = +√5`
+    (not `−√5`) — the first sign determination for the `p ≡ 1 (mod 4)` branch.
+  - Verified by single-file olean-chain compile (Docker host-blocked); `#print axioms` =
+    `[propext, Classical.choice, Quot.sound]` only (axiom-free).
+
+### Key findings
+- Both residue classes now have a machine-checked base witness for the open crux:
+  `p = 3` (`0 < Im g`, Session 2) and `p = 5` (`0 < Re g`, this session).
+- The positivity at `p = 5` needs only `cos(2π/5) > 0` and `cos(4π/5) < 0`, sidestepping the
+  exact value `cos(2π/5) = (√5−1)/4`. The same coarse-sign idea generalises to the partial
+  sums of any `p ≡ 1 (mod 4)`, but the general count of positive vs. negative cosine
+  contributions is exactly the open DFT-spectrum content.
+
+### Files modified
+- `proofs/Proofs/QuadraticGaussSumSignSmallFive.lean` (new, verified)
+- `proofs/Proofs.lean` (import)
+
+### Next steps
+- `p = 7` (next `p ≡ 3 mod 4`) as a further witness, or pivot to the general DFT route.
