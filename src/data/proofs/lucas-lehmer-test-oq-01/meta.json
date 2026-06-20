@@ -1,0 +1,126 @@
+{
+  "id": "lucas-lehmer-test-oq-01",
+  "slug": "lucas-lehmer-test-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "LucasLehmer"
+    ],
+    "namespace": "LucasLehmerTestOQ01",
+    "lineCount": 110,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/LucasLehmerTestOQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Lucas–Lehmer Primality Test for Mersenne Numbers",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LucasLehmerTestOQ01.lean",
+    "tags": [
+      "number-theory",
+      "primality",
+      "mersenne-primes",
+      "lucas-lehmer",
+      "recurrence",
+      "norm_num",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 110,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "mersenne_prime_iff_lucasLehmerTest: the full biconditional (mersenne p).Prime ↔ LucasLehmerTest p for 3 ≤ p — Mathlib carries the two implications only as separate theorems (lucas_lehmer_sufficiency under 1 < p, lucas_lehmer_necessity under 3 ≤ p); this packages them under one hypothesis as the textbook criterion",
+      "mersenne_five_prime / mersenne_seven_prime / mersenne_thirteen_prime / mersenne_seventeen_prime: four Mersenne primes (M₅ = 31, M₇ = 127, M₁₃ = 8191, M₁₇ = 131071) decided through the Lucas–Lehmer test by rewriting along the biconditional and discharging LucasLehmerTest p with the kernel-reducing norm_num extension",
+      "lucasLehmerTest_eleven_false + mersenne_eleven_not_prime + mersenne_eleven_factorization: a composite witness — the test fails at p = 11, so M₁₁ = 2047 = 23·89 is not prime, exercising the necessity (contrapositive) direction and confirmed by the explicit factorization",
+      "s_zero / s_succ / s_one / s_two / s_three: the Lucas–Lehmer recurrence s₀ = 4, s_{i+1} = s_i² − 2 spelled out with its first computed values, the iterate whose residue mod 2^p − 1 the test inspects",
+      "lucasLehmerTest_iff_residue: the definitional identification of the test with the vanishing of the Lucas–Lehmer residue s_{p-2} in ZMod (2^p − 1)"
+    ],
+    "prerequisites": [
+      "Mathlib's lucas_lehmer_sufficiency: LucasLehmerTest p → (mersenne p).Prime for 1 < p",
+      "Mathlib's lucas_lehmer_necessity: (mersenne p).Prime → LucasLehmerTest p for 3 ≤ p",
+      "The norm_num extension evalLucasLehmerTest, which decides LucasLehmerTest p by kernel reduction of the tail-recursive residue sModNatTR (no native_decide)",
+      "The recurrence LucasLehmer.s and the residue LucasLehmer.lucasLehmerResidue"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "lucas_lehmer_sufficiency",
+        "description": "If the Lucas–Lehmer test passes (and 1 < p) then the Mersenne number 2^p − 1 is prime; the harder, group-order direction of the criterion.",
+        "module": "Mathlib.NumberTheory.LucasLehmer"
+      },
+      {
+        "theorem": "lucas_lehmer_necessity",
+        "description": "If the Mersenne number 2^p − 1 is prime (and 3 ≤ p) then the Lucas–Lehmer test passes; the converse direction.",
+        "module": "Mathlib.NumberTheory.LucasLehmer"
+      },
+      {
+        "theorem": "evalLucasLehmerTest (norm_num extension)",
+        "description": "A norm_num extension that decides LucasLehmerTest p for 1 < p by kernel reduction of the tail-recursive residue function sModNatTR; used to discharge each concrete prime/composite witness while remaining axiom-free.",
+        "module": "Mathlib.NumberTheory.LucasLehmer"
+      },
+      {
+        "theorem": "LucasLehmer.s / LucasLehmer.lucasLehmerResidue",
+        "description": "The integer recurrence s₀ = 4, s_{i+1} = s_i² − 2 and the residue s_{p-2} reduced mod 2^p − 1 that defines the test.",
+        "module": "Mathlib.NumberTheory.LucasLehmer"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "lucas-lehmer-test-oq-01-oq-01",
+      "question": "Formalize the equivalent seed-independence: the Lucas–Lehmer test gives the same verdict using the alternative starting value s₀ = 10 (or any seed of the form ω + ω⁻¹ with ω a unit of norm 1 and trace not ±2 in the relevant ring), and characterize which seeds are admissible.",
+      "significance": "medium"
+    },
+    {
+      "id": "lucas-lehmer-test-oq-01-oq-02",
+      "question": "Establish the density/distribution framing: state and connect the Lenstra–Pomerance–Wagstaff heuristic for the count of Mersenne primes below x to the test, or prove that every even perfect number arises from a Mersenne prime certified by this test (linking to the Euclid–Euler characterization already in the gallery).",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "The gallery's perfect-number work formalizes the mersenne definition and the Euclid–Euler characterization of even perfect numbers; this entry is the distinct primality *test* that certifies which Mersenne numbers (and hence which even perfect numbers) actually occur."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: NumberTheory.LucasLehmer",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of lucas_lehmer_sufficiency, lucas_lehmer_necessity, the recurrence s, and the norm_num extension deciding the test."
+    },
+    {
+      "title": "Théorie des nombres (the Lucas sequences and primality of 2^n − 1)",
+      "author": "Édouard Lucas",
+      "year": "1878",
+      "venue": "American Journal of Mathematics 1",
+      "description": "Lucas's original primality criteria for Mersenne numbers via the recurrence, later made rigorous and simplified by Lehmer."
+    },
+    {
+      "title": "An extended theory of Lucas' functions",
+      "author": "Derrick H. Lehmer",
+      "year": "1930",
+      "venue": "Annals of Mathematics 31 (3): 419–448",
+      "description": "Lehmer's rigorous treatment establishing the modern Lucas–Lehmer test in its final form."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The Lucas–Lehmer test is assembled as the full biconditional (mersenne p).Prime ↔ LucasLehmerTest p for 3 ≤ p, combining Mathlib's separately-stated sufficiency and necessity halves under one hypothesis. The recurrence s₀ = 4, s_{i+1} = s_i² − 2 is spelled out with its first values and identified with the vanishing of the residue s_{p-2} mod 2^p − 1. Four Mersenne primes (M₅ = 31, M₇ = 127, M₁₃ = 8191, M₁₇ = 131071) are decided *through the test*, and a composite witness (p = 11, where the test fails so M₁₁ = 2047 = 23·89 is not prime) exercises the converse direction. 110 lines, 11 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The two implications and the deciding norm_num extension are Mathlib's (hence the mathlib badge); the genuine new content is the packaged biconditional criterion plus the worked prime and composite instances, which Mathlib does not record. All witnesses are discharged by the norm_num extension's kernel reduction of the tail-recursive residue, so the entry is axiom-free in the foundational sense — no native_decide and hence no Lean.ofReduceBool. The entry brings the Lucas–Lehmer primality test, distinct from the gallery's perfect-number / Euclid–Euler work, to the collection.",
+    "openQuestions": [
+      "Formalize seed-independence and characterize admissible Lucas–Lehmer starting values.",
+      "Connect the test to the Lenstra–Pomerance–Wagstaff heuristic or to the Euclid–Euler perfect-number characterization."
+    ]
+  }
+}
