@@ -2865,6 +2865,7 @@ import Proofs.PythagoreanTriplesOQ05
 import Proofs.QuadraticGaussSumDiagonal
 import Proofs.QuadraticGaussSumSquare
 import Proofs.QuadraticGaussSumSquareOQ01
+import Proofs.QuadraticGaussSumNormParseval
 import Proofs.QuadraticGaussSumSignReduction
 import Proofs.QuadraticGaussSumSignSmall
 import Proofs.QuadraticGaussSumSignSmallFive

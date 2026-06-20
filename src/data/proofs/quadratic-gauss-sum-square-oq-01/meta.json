@@ -39,11 +39,11 @@
   },
   "conclusion": {
     "summary": "For every odd prime $p$ and primitive additive character $\\psi$, the quadratic Gauss sum $g$ is machine-checked to be real when $p \\equiv 1 \\pmod 4$ and purely imaginary when $p \\equiv 3 \\pmod 4$, with magnitude $\\lVert g \\rVert^2 = p$. These follow from the parent's square identity by elementary complex arithmetic, with no axioms and no sorries.",
-    "implications": "The dichotomy and magnitude reduce the full sign-determination problem to a single binary choice — the leading $\\pm$ — making explicit exactly where Gauss's deep analytic argument is required and where it is not. The same real/imaginary split governs the functional equation of the Dirichlet $L$-function attached to the quadratic character mod $p$, where the location of $g$ on the real or imaginary axis controls the root number.",
+    "implications": "The dichotomy and magnitude reduce the full sign-determination problem to a single binary choice — the leading $\\pm$ — making explicit exactly where Gauss's deep analytic argument is required and where it is not. The same real/imaginary split governs the functional equation of the Dirichlet $L$-function attached to the quadratic character mod $p$, where the location of $g$ on the real or imaginary axis controls the root number. The magnitude $\\lVert g \\rVert^2 = p$ is reproved independently from character orthogonality (Parseval) in the companion `Proofs/QuadraticGaussSumNormParseval.lean`, giving a square-identity-free cross-check.",
     "openQuestions": [
       "Can the leading sign of $g$ — $g = +\\sqrt{p}$ for $p \\equiv 1 \\pmod 4$ and $g = +i\\sqrt{p}$ for $p \\equiv 3 \\pmod 4$ (Gauss's hard theorem) — be formalized in Lean 4 on top of this dichotomy, e.g. via Schur's eigenvalue argument on the finite Fourier transform?",
       "Does the dichotomy-from-square-sign mechanism extend to higher-order Gauss sums, where the square (or higher power) lands on a denser set of rays in $\\mathbb{C}$?",
-      "Can the magnitude $\\lVert g \\rVert^2 = p$ be derived directly from character orthogonality (Parseval) as an independent cross-check on the square-identity route used here?"
+      "RESOLVED (companion `Proofs/QuadraticGaussSumNormParseval.lean`): the magnitude $\\lVert g \\rVert^2 = p$ is now also derived directly from character orthogonality (Parseval) — `gaussSum_mul_gaussSum_eq_card` — independently of the square identity, by identifying $\\overline{g}$ with $\\operatorname{gaussSum}(\\chi, \\psi^{-1})$ (conjugation fixes the real quadratic character and inverts the additive character) and using $\\chi^{-1} = \\chi$. This confirms $\\lVert g \\rVert^2 = p$ on a logically separate route, sorry-free and axiom-free."
     ]
   },
   "crossReferences": [
