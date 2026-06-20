@@ -65,7 +65,8 @@
       "**Two one-sided facts become one optimum**: the parent's pigeonhole bound (no antichain of size n+1) and its sharpness witness (an antichain of size n) are precisely the upper bound and the attainment needed for IsGreatest. The extremal value n is what the gem is really about.",
       "**The upper bound is a pure contrapositive**: 'every (n+1)-set has a divisible pair' is logically identical to 'every divisibility-antichain has ≤ n elements'. antichain_card_le is the one-line transport of erdos_divisibility_pigeonhole across this equivalence.",
       "**It is the divisibility poset's Dilworth optimum**: {1,…,2n} splits into n chains (o, 2o, 4o, … for each odd o ≤ 2n), so the largest antichain has size n. The pigeonhole 'n+1 elements share a chain' is exactly Dilworth/Mirsky for this poset, and the extremal value n is the number of chains.",
-      "**Order-theoretic packaging**: identifying the bespoke IsDivAntichain with Mathlib's IsAntichain (· ∣ ·) (isDivAntichain_iff) places the result inside the general theory of antichains, making it reusable and the Sperner-flavoured reading explicit."
+      "**Order-theoretic packaging**: identifying the bespoke IsDivAntichain with Mathlib's IsAntichain (· ∣ ·) (isDivAntichain_iff) places the result inside the general theory of antichains, making it reusable and the Sperner-flavoured reading explicit.",
+      "**This is a 'primitive set' optimum**: a divisibility-antichain is exactly what number theorists call a *primitive set* — a set of integers no member of which divides another. The result computes the largest primitive subset of {1,…,2n}: size n, attained by the top half. This is the n = N/2 case of the classical fact that the largest primitive subset of {1,…,N} has size ⌈N/2⌉, and connects the gem to Erdős's lifelong study of primitive sequences (e.g. his 1935 theorem that ∑ 1/(a log a) over a primitive set is bounded)."
     ],
     "prerequisites": [
       "The Erdős divisibility pigeonhole theorem and its sharpness (the parent entry)",
@@ -75,7 +76,12 @@
   },
   "conclusion": {
     "summary": "The extremal form of the Erdős divisibility pigeonhole is formalized with zero sorries and zero axioms: the maximum size of a divisibility-antichain in {1,…,2n} is exactly n (max_antichain_card, an IsGreatest), with the upper bound n derived as the contrapositive of the parent pigeonhole theorem and the value attained by the explicit block {n+1,…,2n}. The bespoke antichain predicate is identified with Mathlib's IsAntichain (· ∣ ·), exposing the Dilworth/Sperner reading of the result.",
-    "futureDirections": "Generalize from the interval {1,…,2n} to the maximum primitive subset of {1,…,N} for arbitrary N (the largest antichain in the divisibility poset on {1,…,N}), and connect to Mathlib's developing antichain/Sperner infrastructure."
+    "implications": "Recasting the pigeonhole gem as an IsGreatest optimum makes its real content — the *number* n, not merely the existence of a divisible pair — the formal object. This is the extremal/optimization viewpoint Erdős championed: a one-sided combinatorial bound paired with a matching construction becomes a sharp theorem. Concretely, the result computes the largest primitive subset of {1,…,2n} (a primitive set being one with no member dividing another), the n = N/2 instance of the classical max-primitive-subset value ⌈N/2⌉ for {1,…,N}. Identifying IsDivAntichain with Mathlib's IsAntichain (· ∣ ·) also makes the theorem a ready building block: it is the Dilworth/Mirsky optimum for the divisibility poset on {1,…,2n}, whose chain decomposition (one chain o, 2o, 4o, … per odd part o ≤ 2n) has exactly n chains, so 'largest antichain = number of chains' here is min–max duality made concrete.",
+    "openQuestions": [
+      "Generalize from {1,…,2n} to arbitrary N: formalize that the largest primitive (divisibility-antichain) subset of {1,…,N} has size ⌈N/2⌉, attained by the integers in (N/2, N]. The interval here is the clean even case N = 2n.",
+      "Formalize the underlying Dilworth/Mirsky duality directly — exhibit the partition of {1,…,2n} into exactly n divisibility chains (indexed by odd parts) and derive max_antichain_card as its min–max consequence, rather than via the pigeonhole counting argument.",
+      "Connect to Erdős's quantitative theory of primitive sequences: e.g. his 1935 result that ∑_{a ∈ A} 1/(a log a) is bounded over every primitive set A, and the Erdős primitive-set conjecture (sharp constant achieved by the primes), as a deeper layer above this finite extremal statement."
+    ]
   },
   "crossReferences": [
     {
