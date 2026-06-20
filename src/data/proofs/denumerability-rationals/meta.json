@@ -132,6 +132,21 @@
       "targetId": "sqrt2-irrational",
       "relationship": "related-problem",
       "description": "The irrationality of √2 shows that ℚ ≠ ℝ — there are 'gaps' in the rationals. Combined with denumerability, this means the irrationals (which fill those gaps) are uncountable and form the 'bulk' of the real line."
+    },
+    {
+      "targetId": "denumerability-rationals-oq-02",
+      "relationship": "extended-by",
+      "description": "Verified characterization of ℚ as the unique countable dense linear order without endpoints (via Mathlib's Order.iso_of_countable_dense), with a bridge showing ℚ satisfies the CDLO axioms."
+    },
+    {
+      "targetId": "denumerability-rationals-oq-03",
+      "relationship": "extended-by",
+      "description": "Verified Stern–Brocot tree formalization as a state machine, proving coprimality, positivity, ordering, and injectivity from a single determinant invariant — enumerating positive rationals in lowest terms."
+    },
+    {
+      "targetId": "denumerability-rationals-oq-04",
+      "relationship": "extended-by",
+      "description": "Verified constructive proof that the algebraic numbers are countable (avoiding full choice), via polynomial countability and finiteness of roots by FTA — strengthening countability of ℚ."
     }
   ],
   "sections": [
