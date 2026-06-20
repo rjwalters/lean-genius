@@ -1,0 +1,26 @@
+[
+  {
+    "id": "h10oq04030201-ann-01",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-02-oq-01",
+    "range": { "startLine": 54, "endLine": 71 },
+    "type": "concept",
+    "title": "The Diagonal Case: Where Divisibility Enters",
+    "content": "diagonal_mulVec_solvable_iff is the heart of the criterion. Because (diagonal d *ᵥ x) i = d i * x i (Matrix.mulVec_diagonal), the system diagonal d *ᵥ x = c decouples completely into independent scalar equations d i * xᵢ = c i, one per coordinate. Such a scalar equation is solvable over ℤ exactly when d i ∣ c i. The forward direction reads off the divisibility witness x i from a solution; the backward direction assembles a solution coordinate-by-coordinate, choosing each xᵢ from the witness supplied by d i ∣ c i (Classical choice over the finite index Fin n). This is the only place invariant-factor divisibility appears — everything else is change of basis."
+  },
+  {
+    "id": "h10oq04030201-ann-02",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-02-oq-01",
+    "range": { "startLine": 73, "endLine": 108 },
+    "type": "technique",
+    "title": "Unimodular Reduction by Pure mulVec Associativity",
+    "content": "solvable_iff_solvable_diagonal transports solvability of A x = b to the diagonalised system diagonal d *ᵥ y = U *ᵥ b, given U A V = diagonal d with U, V invertible over ℤ. The two directions are mutually inverse linear bijections: forward sends a solution x to y = Vi *ᵥ x, using V *ᵥ (Vi *ᵥ x) = x; backward sends y to x = V *ᵥ y, using the rearrangement A * V = Ui * diagonal d (obtained by left-multiplying U A V = diagonal d by Ui) and Ui *ᵥ (U *ᵥ b) = b. Remarkably, no determinant or GLₙ machinery is needed — every step is an application of Matrix.mulVec_mulVec (M *ᵥ (N *ᵥ v) = (M * N) *ᵥ v) and Matrix.one_mulVec (1 *ᵥ v = v). The unimodularity of U and V enters only through the supplied two-sided inverses."
+  },
+  {
+    "id": "h10oq04030201-ann-03",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-02-oq-01",
+    "range": { "startLine": 110, "endLine": 137 },
+    "type": "concept",
+    "title": "From Criterion to Decidable Instance",
+    "content": "solvable_iff_invariantFactor_dvd composes the unimodular reduction with the diagonal case to obtain ∃ x, A *ᵥ x = b ↔ ∀ i, d i ∣ (U *ᵥ b) i: system solvability is decided by n divisibility tests on the single transformed right-hand side U b, with no search over x. Since ∀ i, d i ∣ (U *ᵥ b) i is a Fintype-decidable predicate (finite conjunction of decidable integer-divisibility tests), decidableSolvableOfSmith hands this to decidable_of_iff to produce a Decidable instance for ∃ x, A *ᵥ x = b. The only data the instance needs is the Smith normal form itself — the construction of which is the entry's sole open question."
+  }
+]
