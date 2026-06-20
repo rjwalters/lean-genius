@@ -43,19 +43,17 @@
       "Registered import Proofs.DirichletApproximationOQ03 in proofs/Proofs.lean so the entry is part of the CI build.",
       "shear, box, shear_apply_zero/one, shear_involutive, body_eq_image, box_eq_Icc, box_isCompact, body_isCompact — the determinant-(-1) shear and the box/body image identity (DirichletApproximationOQ03.lean).",
       "box_volume (= 4) and body_volume (= 4) — the measure computation Minkowski consumes, via volume_pi_pi/Real.volume_Icc and addHaar_image_linearMap with LinearMap.det_toLin' + Matrix.det_fin_two_of.",
-      "dirichlet_via_minkowski — the unconditional, sorry-free, axiom-free capstone: Dirichlet's |q*alpha - p| <= 1/N (1 <= q <= N, N >= 2) from Mathlib's compact convex-body theorem. BUILD UNVERIFIED this session (Docker down)."
+      "dirichlet_via_minkowski — the unconditional, sorry-free, axiom-free capstone: Dirichlet's |q*alpha - p| <= 1/N (1 <= q <= N, N >= 2) from Mathlib's compact convex-body theorem. BUILD UNVERIFIED this session (Docker down).",
+      "Gallery entry src/data/proofs/dirichlet-approximation-theorem-oq-03/ (meta.json + annotations.json): status verified, badge original, 0 sorries, 0 axioms; 6 sections + 5 annotations; cross-refs to parent and oq-02."
     ],
     "mathlibGaps": [
       "Mathlib has the Minkowski convex-body theorem exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure and the lattice fundamental-domain API (ZSpan.isAddFundamentalDomain, ZSpan.volume_fundamentalDomain), but no packaged Dirichlet-via-geometry-of-numbers corollary; this entry supplies the convex body, the geometric inputs, and the arithmetic bridge.",
       "The remaining volume computation volume(body α N) = 4 has no off-the-shelf lemma; it requires building the shear LinearMap on Fin 2 → ℝ, its det via Matrix.det_fin_two, the box volume via volume_pi/Real.volume_Icc, and the set equality body = T '' box, then addHaar_image_linearMap."
     ],
     "nextSteps": [
-      "DONE — build verified via single-file `lake env lean` against pinned Mathlib v4.26.0 (0 errors/warnings/sorries; #print axioms clean). A full docker build of Proofs.DirichletApproximationOQ03 remains a nice-to-have CI confirmation but is no longer blocking.",
-      "Promote this to a gallery entry (src/data/proofs/) with status verified / badge original (0 sorry, 0 axiom, no Lean.ofReduceBool) and cross-reference the pigeonhole dirichlet-approximation-theorem entry it re-derives.",
-      "Settle the subsumption question via continued-fraction convergent selection (abs_sub_convergents_le', choosing the convergent with B_n <= N < B_{n+1}), or record that pigeonhole / Minkowski / continued fractions all give the same 1/N strength.",
-      "Optionally sharpen to the strict < 1/N via the open-boundary refinement (area > 4 variant of the convex body)."
+      "DONE — promoted to gallery entry (status verified / badge original). Remaining optional: strict < 1/N via open-boundary (area>4) refinement; simultaneous (oq-02) via Minkowski instead of torus pigeonhole; package the determinant-shear volume technique as a reusable lemma."
     ],
-    "progressSummary": "COMPLETE and BUILD VERIFIED: the Minkowski re-derivation of Dirichlet's bound is a full unconditional proof, sorry-free and axiom-free, now machine-checked. Single-file elaboration (`lake env lean Proofs/DirichletApproximationOQ03.lean`) against pinned Mathlib v4.26.0 type-checks with 0 errors/warnings/sorries, and #print axioms reports only [propext, Classical.choice, Quot.sound]. The check caught and fixed 7 real lemma-name/tactic drifts that earlier source-inspection had missed. The volume computation volume(K) = 4 is discharged via the determinant-(-1) shear, and dirichlet_via_minkowski assembles the unconditional bound from Mathlib's compact convex-body theorem. Remaining optional work: the continued-fraction subsumption question and a strict-inequality sharpening; neither is required for the core result. Ready to promote to a gallery entry."
+    "progressSummary": "COMPLETE, BUILD VERIFIED, and PROMOTED TO GALLERY: the Minkowski re-derivation of Dirichlet's bound is a full unconditional sorry-free axiom-free proof (single-file lake env lean against pinned Mathlib v4.26.0; #print axioms = [propext, Classical.choice, Quot.sound]), now published as gallery entry dirichlet-approximation-theorem-oq-03 (verified/original). Optional sharpenings remain but the core result and its gallery presentation are done."
   },
   "approaches": [
     {
