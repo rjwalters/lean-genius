@@ -85,7 +85,7 @@
     "title": "Numerical Sanity Checks: Circle and Square",
     "content": "circle_grid_crossings models a circle of circumference 2πr as a one-segment noodle (Fin.sum_univ_one collapses the sum) and computes its expected square-grid crossings as 8r/d — strikingly INDEPENDENT of π, since the π in the circumference cancels the π in the 2L/(πd) law. This is exactly double the single-family 4r/d, the canonical Buffon's-noodle sanity check. square_grid_crossings does the same for a square of perimeter 4s (four segments, Fin.sum_univ_four), giving 16s/(πd), again twice the single-family value. Both are discharged by simp-unfolding the definitions followed by field_simp/ring.",
     "mathContext": "Circle: $\\mathbb{E} = \\dfrac{8r}{d}$ (π cancels). Square: $\\mathbb{E} = \\dfrac{16s}{\\pi d}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["sanity check", "Fin.sum_univ_one", "Fin.sum_univ_four", "circumference"],
     "prerequisites": ["finite sums over Fin n"]
   },
@@ -97,7 +97,7 @@
     "title": "Rectangular Grid: When the Two Families Genuinely Differ",
     "content": "circle_rect_grid_crossings drops the square-grid assumption: with dh ≠ dv the circle's expected crossings are 4r·(1/dh + 1/dv), recovering 8r/d only when dh = dv. This confirms that expectedGridCrossings genuinely distinguishes the two perpendicular families and is not merely a relabelled single-family count — the anisotropic spacings each contribute their own additive term. It also previews the general Buffon–Laplace / Cauchy–Crofton discretization for k families at arbitrary angles, where expected crossings become (2L/π)·Σ 1/dⱼ.",
     "mathContext": "$\\mathbb{E} = \\dfrac{4r}{d_h} + \\dfrac{4r}{d_v}$; general $k$-family form $\\dfrac{2L}{\\pi}\\sum_{j=1}^{k}\\dfrac{1}{d_j}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["anisotropy", "Cauchy–Crofton formula", "kinematic measure", "generalized grids"],
     "prerequisites": ["field algebra"]
   }

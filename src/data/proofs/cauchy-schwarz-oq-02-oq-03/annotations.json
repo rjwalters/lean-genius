@@ -35,7 +35,7 @@
     "title": "Real and Imaginary Parts Split the Identity",
     "content": "`re_inner_eq_norm_polarization` and `im_inner_eq_norm_polarization` decompose the headline identity into its two RCLike components: Re⟨f,g⟩ = (‖f+g‖² - ‖f-g‖²)/4 and Im⟨f,g⟩ = (‖f-i·g‖² - ‖f+i·g‖²)/4. The first is *exactly* the real polarization identity — confirming that the complex identity contains the real one as its real part, and that the f ± i·g evaluations carry all and only the imaginary information. Each wraps the corresponding Mathlib re/im polarization lemma after a `pow_two` rewrite that converts Mathlib's ‖·‖·‖·‖ products to the ‖·‖² notation used in the headline. The reassembly ⟨f,g⟩ = Re⟨f,g⟩ + i·Im⟨f,g⟩ is what `inner_eq_sum_norm_sq_div_four` packages.",
     "mathContext": "$\\operatorname{Re}\\langle f,g\\rangle = \\frac{\\|f+g\\|^2 - \\|f-g\\|^2}{4}$, $\\quad \\operatorname{Im}\\langle f,g\\rangle = \\frac{\\|f-ig\\|^2 - \\|f+ig\\|^2}{4}$. Then $\\langle f,g\\rangle = \\operatorname{Re}\\langle f,g\\rangle + i\\operatorname{Im}\\langle f,g\\rangle$.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "real part of inner product",
       "imaginary part of inner product",
@@ -59,7 +59,7 @@
     "title": "Parallelogram Law: The Norm-Side Companion",
     "content": "`parallelogram_law_complex` states ‖f+g‖² + ‖f-g‖² = 2‖f‖² + 2‖g‖² for complex inner product spaces, restating Mathlib's `parallelogram_law_with_norm` in ‖·‖² form. Polarization and the parallelogram law are the two halves of the Jordan–von Neumann dictionary: the parallelogram law detects *whether* a norm comes from an inner product, and polarization *reconstructs* that product when it does. Note the `include 𝕜` directive — the statement mentions only norms (which live on the additive group E), so Lean's automatic variable binding would otherwise drop the field 𝕜 and the `InnerProductSpace 𝕜 E` instance needed to invoke the Mathlib lemma.",
     "mathContext": "$\\|f+g\\|^2 + \\|f-g\\|^2 = 2\\|f\\|^2 + 2\\|g\\|^2$. Jordan–von Neumann (1935): a normed space is an inner product space $\\iff$ its norm satisfies this identity.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "Jordan-von Neumann theorem",
       "parallelogram law",
@@ -107,7 +107,7 @@
     "title": "Concrete ℂ Instance with Complex.I",
     "content": "`polarization_identity_C` specializes the RCLike-generic headline to the field 𝕜 = ℂ, stating the identity with the concrete `Complex.I` in place of the abstract `RCLike.I`. The wrapper compiles by a single application of `inner_eq_sum_norm_sq_div_four` because `Complex.I = RCLike.I` *definitionally* for the ℂ instance (the RCLike structure on ℂ defines its imaginary unit as `Complex.I`). This gives gallery readers the literal complex-Hilbert-space statement matching the problem as posed, while the generic version remains available for ℝ/ℂ-uniform developments.",
     "mathContext": "For a complex inner product space $E$: $\\langle f,g\\rangle = \\frac{\\|f+g\\|^2 - \\|f-g\\|^2 + \\left(\\|f - \\mathrm{i}\\,g\\|^2 - \\|f + \\mathrm{i}\\,g\\|^2\\right)\\mathrm{i}}{4}$ with $\\mathrm{i} = $ `Complex.I`.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "Complex.I vs RCLike.I",
       "definitional equality",
