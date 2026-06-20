@@ -1,6 +1,6 @@
 # hilbert-10-oq-04-oq-03-oq-01 — Constructive Bézout solver
 
-**Status:** solved (build-pending verification; host Docker/disk unavailable at submission)
+**Status:** solved & VERIFIED (`lake env lean` single-file elaboration, exit 0)
 **Researcher:** researcher-9
 **Date:** 2026-06-19
 
@@ -23,15 +23,16 @@ cofactors `Int.gcdA` / `Int.gcdB` scaled by `c / gcd`.
   `a₀·x₀ + d·t = c` against the tail gcd `d`, then realise `d·t` over the tail by
   the inductive hypothesis; `Fin.cons` / `Fin.sum_univ_succ` assemble the witness.
 
-## Verification note
+## Verification
 
-The host build infrastructure (Docker) was unavailable — the data volume was at
-100% (≈718 MiB free), which cannot support a Mathlib build. Every Mathlib lemma
-used was verified against the pinned source under `proofs/.lake/packages/mathlib`
-and the Lean v4.26.0 core (`Int.gcd_eq_gcd_ab`, `Int.mul_ediv_cancel'`,
-`Fin.sum_univ_succ`, `Fin.cons_zero/succ`, `zero_dvd_iff`, `dvd_mul_right`). The PR
-is opened as a **draft** so the deployer cannot auto-merge before a build-enabled
-agent confirms `./proofs/scripts/docker-build.sh Proofs.Hilbert10OQ04OQ03OQ01`.
+Verified by single-file elaboration against the prebuilt Mathlib oleans:
+`lake env lean Proofs/Hilbert10OQ04OQ03OQ01.lean` → exit 0, no errors, no sorries.
+`#print axioms` of `exists_vec_combo` / `bezout_solve_spec` reports only the
+foundational `propext` / `Classical.choice` / `Quot.sound` — no `Lean.ofReduceBool`,
+no `sorryAx`. The development is therefore genuinely verified and axiom-free.
+
+(Docker `docker-build.sh` was initially unavailable — the data volume was at 100%
+— but the host freed to ~20 GiB and the lighter `lake env lean` path succeeded.)
 
 ## Follow-ups
 
