@@ -232,6 +232,21 @@
       "targetId": "buffons-needle",
       "relationship": "applied-in",
       "description": "Buffon's needle problem computes the probability $2L/(\\pi d)$ that a needle of length $L$ crosses a line in a grid of spacing $d$. The proof requires integrating over the position and angle of the needle — a double integral computed with Lebesgue (or Riemann) integration and Fubini's theorem."
+    },
+    {
+      "targetId": "lebesgue-measure-oq-01",
+      "relationship": "extended-by",
+      "description": "Discharges the parent's Dirichlet-function axiom: a complete proof that the indicator 𝟙_ℚ has Lebesgue integral 0 on [0,1], since ℚ has measure zero (Mathlib's integral_eq_zero_of_ae)."
+    },
+    {
+      "targetId": "lebesgue-measure-oq-02",
+      "relationship": "extended-by",
+      "description": "Replaces the parent's Hölder placeholder with a full measure-theoretic proof of Hölder's inequality — Young's inequality, the Lᵖ integral bound, Cauchy–Schwarz as the p=q=2 case, and Minkowski's inequality for Lᵖ spaces."
+    },
+    {
+      "targetId": "lebesgue-measure-oq-05",
+      "relationship": "extended-by",
+      "description": "Extends the parent with the Radon–Nikodym theorem for σ-finite measures: for μ ≪ ν there is a measurable density f with μ = ν.withDensity f, unique ν-a.e., recovering the general change-of-variables formula."
     }
   ],
   "leanFile": {
