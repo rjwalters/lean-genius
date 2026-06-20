@@ -1,0 +1,135 @@
+{
+  "id": "geometric-series-oq-10",
+  "slug": "geometric-series-oq-10",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Data.Nat.Choose.Cast",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "GeometricSeriesOQ10",
+    "lineCount": 170,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ10.lean",
+    "sorries": 0
+  },
+  "title": "The Third Moment of the Geometric Series: ∑ n³ rⁿ = r(1+4r+r²)/(1-r)⁴",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ10.lean",
+    "tags": [
+      "analysis",
+      "geometric-series",
+      "infinite-series",
+      "power-series",
+      "moments",
+      "summability",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 170,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "hasSum_cube_mul_geometric / tsum_cube_mul_geometric: the closed form ∑_{n≥0} n³ · rⁿ = r(1+4r+r²)/(1-r)⁴ for ‖r‖ < 1 over ℝ — a result Mathlib does not provide (it has only the zeroth and first moments, and the gallery had only up to the second moment in geometric-series-oq-07)",
+      "cube_combo: the degree-3 polynomial identity n³ = 6·(n+3 choose 3) − 12·(n+2 choose 2) + 7n + 6 (cast to ℝ), the algebraic bridge expressing n³ in the rising-binomial basis Mathlib sums; the degree-3 analogue of oq-07's n² = 2·(n+2 choose 2) − 3n − 2",
+      "cast_six_choose_three: a real-valued cast 6·(n+3 choose 3) = (n+1)(n+2)(n+3) derived from Nat.descFactorial_eq_factorial_mul_choose, supplying the (n+3 choose 3) cast that Mathlib lacks (it has Nat.cast_choose_two but no cast_choose_three)",
+      "Assembly technique: the third moment is obtained as the linear combination 6·h₃ − 12·h₂ + 7·h₁ + 6·h₀ of four Mathlib HasSum facts (the k=3 and k=2 rising-binomial sums, the first moment, and the bare geometric series), with the value simplified by field_simp; ring — the numerator collapsing to r + 4r² + r³ = r(1+4r+r²)",
+      "summable_cube_mul_geometric: summability of n³ rⁿ for ‖r‖ < 1, and a concrete evaluation ∑ n³/2ⁿ = 26"
+    ],
+    "prerequisites": [
+      "Mathlib's rising-binomial geometric sums hasSum_choose_mul_geometric_of_norm_lt_one (∑ (n+k choose k) rⁿ = 1/(1-r)^{k+1}), used at k=3 and k=2",
+      "Mathlib's first moment hasSum_coe_mul_geometric_of_norm_lt_one (∑ n rⁿ = r/(1-r)²)",
+      "Mathlib's geometric series hasSum_geometric_of_norm_lt_one (∑ rⁿ = (1-r)⁻¹)",
+      "Nat.cast_choose_two: ((a choose 2 : ℝ) = a(a-1)/2)",
+      "Nat.descFactorial_eq_factorial_mul_choose: n.descFactorial k = k! · (n choose k), used to cast (n+3 choose 3)",
+      "HasSum arithmetic (HasSum.mul_left, HasSum.sub, HasSum.add, HasSum.tsum_eq)",
+      "Sibling: geometric-series-oq-07 (the second moment ∑ n² rⁿ = r(1+r)/(1-r)³)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_choose_mul_geometric_of_norm_lt_one",
+        "description": "∑_n (n+k choose k) · rⁿ = 1/(1-r)^{k+1} for ‖r‖ < 1. Used at k=3 (giving 1/(1-r)⁴) and k=2 (giving 1/(1-r)³) as the two top-order terms of the combination.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "hasSum_coe_mul_geometric_of_norm_lt_one",
+        "description": "∑_n n · rⁿ = r/(1-r)² for ‖r‖ < 1 (the first moment), used as the +7·h₁ term of the combination.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "hasSum_geometric_of_norm_lt_one",
+        "description": "∑_n rⁿ = (1-r)⁻¹ for ‖r‖ < 1 (the geometric series), used as the +6·h₀ term.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Nat.cast_choose_two",
+        "description": "((a choose 2 : ℝ) = a·(a-1)/2). Provides the cast for the (n+2 choose 2) term in the polynomial identity.",
+        "module": "Mathlib.Data.Nat.Choose.Cast"
+      },
+      {
+        "theorem": "Nat.descFactorial_eq_factorial_mul_choose",
+        "description": "n.descFactorial k = k! · (n choose k). With k=3 this yields 6·(n+3 choose 3) = (n+3).descFactorial 3 = (n+1)(n+2)(n+3), the cast Mathlib does not provide directly for choose 3.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-10-oq-01",
+      "question": "Prove the general moment formula ∑_n n^k · rⁿ = Aₖ(r)/(1-r)^{k+1} where Aₖ is the Eulerian polynomial of degree k (A₁ = r, A₂ = r(1+r), A₃ = r(1+4r+r²)), by induction expressing n^k in the rising-binomial basis {(n+j choose j)} with Stirling-number coefficients.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-10-oq-02",
+      "question": "Use the first three central moments to compute the skewness of the geometric distribution P(X=n) = (1-r)rⁿ in closed form, identifying its limiting value as r → 1⁻.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-07",
+      "relationship": "extends",
+      "description": "Direct predecessor. oq-07 proves the second moment ∑ n² rⁿ = r(1+r)/(1-r)³ via n² = 2·(n+2 choose 2) − 3n − 2. This entry pushes the same rising-binomial technique one degree higher to the third moment ∑ n³ rⁿ = r(1+4r+r²)/(1-r)⁴, adding the k=3 rising-binomial term and the cast 6·(n+3 choose 3) = (n+1)(n+2)(n+3)."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "extends",
+      "description": "Parent. The base entry proves the zeroth moment ∑ rⁿ = 1/(1-r). This entry adds the third moment, completing the low-order family ∑ rⁿ, ∑ n rⁿ, ∑ n² rⁿ, ∑ n³ rⁿ."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecificLimits.Normed",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the geometric, first-moment, and rising-binomial geometric sums used in the linear combination."
+    },
+    {
+      "title": "Concrete Mathematics (geometric series and its derivatives)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the weighted geometric sums ∑ nᵏ rⁿ obtained by repeatedly applying r·d/dr to ∑ rⁿ = 1/(1-r); the numerators are the Eulerian polynomials."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For ‖r‖ < 1 over ℝ, the third moment of the geometric series is ∑_{n≥0} n³ · rⁿ = r(1+4r+r²)/(1-r)⁴. This extends the gallery's second-moment entry (geometric-series-oq-07) to the low-order family ∑ rⁿ = 1/(1-r), ∑ n rⁿ = r/(1-r)², ∑ n² rⁿ = r(1+r)/(1-r)³, ∑ n³ rⁿ = r(1+4r+r²)/(1-r)⁴. The proof assembles the third moment as the linear combination 6·h₃ − 12·h₂ + 7·h₁ + 6·h₀ of four Mathlib HasSum facts — the k=3 and k=2 rising-binomial sums, the first moment, and the geometric series — using the polynomial identity n³ = 6·(n+3 choose 3) − 12·(n+2 choose 2) + 7n + 6. The (n+3 choose 3) cast, absent from Mathlib, is supplied via Nat.descFactorial_eq_factorial_mul_choose. The file provides HasSum, tsum, and summability forms plus a concrete check ∑ n³/2ⁿ = 26. 170 lines, 8 theorems/lemmas, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "Mathlib provides the zeroth and first geometric moments but no closed form for ∑ n³ rⁿ, and even the cast of the rising binomial (n+3 choose 3) to ℝ has no off-the-shelf lemma — only choose 2 does. This entry fills both gaps. The mathematical difficulty is routine: n³ lies in the span of the rising-binomial functions {1, n, (n+2 choose 2), (n+3 choose 3)} that Mathlib already sums, so the moment is a finite linear combination rather than a fresh convergence argument. The same template (express nᵏ in the rising-binomial basis, take a linear combination) yields every higher moment, with Eulerian-polynomial numerators, as recorded in the open questions.",
+    "openQuestions": [
+      "Prove the general moment ∑ n^k rⁿ = Aₖ(r)/(1-r)^{k+1} with Aₖ the Eulerian polynomial of degree k.",
+      "Compute the skewness of the geometric distribution from the first three moments."
+    ]
+  }
+}
