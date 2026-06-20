@@ -2422,6 +2422,7 @@ import Proofs.FeuerbachsTheoremOQ02
 import Proofs.FeuerbachsTheoremOQ02Aristotle
 import Proofs.StatementOnly_FeuerbachOQ02Murakami_GraceTrirectangular
 import Proofs.FeuerbachsTheoremOQ05
+import Proofs.FibonacciIdentities
 import Proofs.FiveColorTheorem
 import Proofs.FodorPressingDown
 import Proofs.FourColorTheorem
