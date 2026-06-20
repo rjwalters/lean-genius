@@ -1,0 +1,93 @@
+[
+  {
+    "id": "ann-werner-identities",
+    "proofId": "triangle-angle-sum-oq-04",
+    "range": {
+      "startLine": 52,
+      "endLine": 77
+    },
+    "type": "theorem",
+    "title": "The Four Werner Product-to-Sum Identities (werner_cos_cos, werner_sin_sin, werner_sin_cos, werner_cos_sin)",
+    "content": "The four Werner identities convert a product of two sinusoids into a sum of two sinusoids: 2·cos x·cos y = cos(x−y) + cos(x+y), 2·sin x·sin y = cos(x−y) − cos(x+y), 2·sin x·cos y = sin(x−y) + sin(x+y), and 2·cos x·sin y = sin(x+y) − sin(x−y). Each is proved by expanding the addition formulas (rw [cos_add, cos_sub]; ring for the cosine products, rw [sin_add, sin_sub]; ring for the mixed products). They agree with Mathlib's Real.two_mul_cos_mul_cos, Real.two_mul_sin_mul_sin and Real.two_mul_sin_mul_cos; the cos·sin orientation is supplied directly here. These four identities are the algebraic building blocks for the telescoping Dirichlet sums.",
+    "mathContext": "$2\\cos x\\cos y = \\cos(x-y)+\\cos(x+y)$, $2\\sin x\\sin y = \\cos(x-y)-\\cos(x+y)$, $2\\sin x\\cos y = \\sin(x-y)+\\sin(x+y)$, $2\\cos x\\sin y = \\sin(x+y)-\\sin(x-y)$.",
+    "prerequisites": [
+      "The sine and cosine addition/subtraction formulas (Real.sin_add, Real.cos_add, Real.sin_sub, Real.cos_sub)",
+      "The ring tactic for closing polynomial identities in the expanded sinusoids"
+    ],
+    "relatedConcepts": [
+      "prosthaphaeresis",
+      "product-to-sum formulas",
+      "Fourier analysis building blocks"
+    ],
+    "significance": "The classical Werner formulas that turn products into sums; the half-angle specialization 2·sin(x/2)·cos((k+1)x) of the sin·cos identity is precisely the per-term telescoping engine of the Dirichlet kernel."
+  },
+  {
+    "id": "ann-telescoping-steps",
+    "proofId": "triangle-angle-sum-oq-04",
+    "range": {
+      "startLine": 79,
+      "endLine": 101
+    },
+    "type": "theorem",
+    "title": "The Single-Step Telescoping Identities (step_cos, step_sin)",
+    "content": "step_cos proves 2·sin(x/2)·cos((k+1)x) = sin((k+1+½)x) − sin((k+½)x): apply Real.two_mul_sin_mul_cos to the arguments x/2 and (k+1)x, giving sin(x/2 − (k+1)x) + sin(x/2 + (k+1)x); then the ring identities x/2 − (k+1)x = −((k+½)x) and x/2 + (k+1)x = ((k+1)+½)x (rewritten inside the sine arguments) plus sin_neg turn the right-hand side into the difference of consecutive sines sin((k+1+½)x) − sin((k+½)x). step_sin is the exact analogue with Real.two_mul_sin_mul_sin and cos_neg, producing cos((k+½)x) − cos((k+1+½)x). Each summand of the Dirichlet sum, multiplied by 2·sin(x/2), is thus a telescoping difference.",
+    "mathContext": "$2\\sin\\tfrac{x}{2}\\cos((k+1)x) = \\sin((k+1+\\tfrac12)x) - \\sin((k+\\tfrac12)x)$, $2\\sin\\tfrac{x}{2}\\sin((k+1)x) = \\cos((k+\\tfrac12)x) - \\cos((k+1+\\tfrac12)x)$.",
+    "prerequisites": [
+      "Real.two_mul_sin_mul_cos and Real.two_mul_sin_mul_sin (Werner identities)",
+      "Real.sin_neg, Real.cos_neg and the ring identities aligning the half-integer arguments"
+    ],
+    "relatedConcepts": [
+      "telescoping sum",
+      "half-angle factor",
+      "consecutive-difference cancellation"
+    ],
+    "significance": "The per-term heart of the proof: the half-angle factor sin(x/2) is exactly what makes the Werner output land on consecutive half-integer multiples of x, turning the finite sum into a telescope."
+  },
+  {
+    "id": "ann-dirichlet-sums",
+    "proofId": "triangle-angle-sum-oq-04",
+    "range": {
+      "startLine": 103,
+      "endLine": 150
+    },
+    "type": "theorem",
+    "title": "The Finite Telescoped Sums and the Dirichlet Kernel (two_sin_half_mul_sum_cos, two_sin_half_mul_sum_sin, sum_cos_eq, dirichlet_kernel)",
+    "content": "two_sin_half_mul_sum_cos proves 2·sin(x/2)·∑_{k=1}^{n} cos(kx) = sin((n+½)x) − sin(x/2) by induction on n: Finset.sum_range_succ splits off the last term, the inductive hypothesis handles the head, step_cos rewrites the new term as sin((n+1+½)x) − sin((n+½)x), and the intermediate sin((n+½)x) cancels (push_cast aligns ↑(n+1) with ↑n+1; ring finishes). two_sin_half_mul_sum_sin is the sine analogue via step_sin, telescoping consecutive cosines to cos(x/2) − cos((n+½)x). For sin(x/2) ≠ 0, sum_cos_eq divides through (eq_div_iff with mul_ne_zero two_ne_zero hx, closed by linear_combination against the telescoped identity) to give ∑ cos(kx) = (sin((n+½)x) − sin(x/2))/(2·sin(x/2)); dirichlet_kernel repackages this as the classical Dirichlet kernel ½ + ∑ cos(kx) = sin((n+½)x)/(2·sin(x/2)) = D_n(x). Mathlib records neither finite sum.",
+    "mathContext": "$2\\sin\\tfrac{x}{2}\\sum_{k=1}^{n}\\cos(kx) = \\sin((n+\\tfrac12)x) - \\sin\\tfrac{x}{2}$; for $\\sin\\tfrac{x}{2}\\neq 0$, $\\tfrac12 + \\sum_{k=1}^{n}\\cos(kx) = \\dfrac{\\sin((n+\\tfrac12)x)}{2\\sin\\tfrac{x}{2}}$.",
+    "prerequisites": [
+      "Finset.sum_range_succ and induction over Finset.range n",
+      "step_cos / step_sin (the per-term telescoping identities)",
+      "eq_div_iff, mul_ne_zero, two_ne_zero and the linear_combination tactic"
+    ],
+    "relatedConcepts": [
+      "Dirichlet kernel",
+      "Fourier partial sums",
+      "telescoping induction",
+      "Lagrange trigonometric identity"
+    ],
+    "significance": "The original content beyond Mathlib: the finite partial sums ∑_{k=1}^{n} cos(kx) and ∑_{k=1}^{n} sin(kx) in closed form, and the Dirichlet kernel D_n that is the convolution kernel of the partial sums of a Fourier series."
+  },
+  {
+    "id": "ann-worked-instances",
+    "proofId": "triangle-angle-sum-oq-04",
+    "range": {
+      "startLine": 152,
+      "endLine": 176
+    },
+    "type": "example",
+    "title": "Worked Instances (n = 2 telescoped identity and the numeric check at x = π)",
+    "content": "The n=2 instance proves 2·sin(x/2)·(cos x + cos 2x) = sin(5x/2) − sin(x/2) by assembling two explicit Werner steps — e1 : 2·sin(x/2)·cos x = sin(3x/2) − sin(x/2) and e2 : 2·sin(x/2)·cos 2x = sin(5x/2) − sin(3x/2) — and cancelling the intermediate sin(3x/2) with linear_combination e1 + e2, exhibiting the telescoping concretely. The numeric instance evaluates cos π + cos 2π = 0 using Real.cos_pi (cos π = −1) and the expansion of cos(2π) = cos(π+π) via Real.cos_add, Real.sin_pi; this is the n=2 cosine sum specialized at x = π, matching the telescoped right-hand side sin(5π/2) − sin(π/2) = 1 − 1 = 0.",
+    "mathContext": "$2\\sin\\tfrac{x}{2}(\\cos x + \\cos 2x) = \\sin\\tfrac{5x}{2} - \\sin\\tfrac{x}{2}$ and $\\cos\\pi + \\cos 2\\pi = 0$.",
+    "prerequisites": [
+      "The Werner step computation via Real.two_mul_sin_mul_cos",
+      "linear_combination for the telescoping cancellation",
+      "Real.cos_pi, Real.sin_pi and Real.cos_add for the numeric evaluation"
+    ],
+    "relatedConcepts": [
+      "telescoping cancellation",
+      "concrete specialization",
+      "Fourier sum sanity check"
+    ],
+    "significance": "Concrete confirmation that the telescoping works: the intermediate term sin(3x/2) cancels exactly, and the numeric value matches the closed form at a special angle."
+  }
+]
