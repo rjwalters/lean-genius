@@ -2980,6 +2980,7 @@ import Proofs.SchroederBernsteinOQ02
 import Proofs.SchroederBernsteinOQ03
 import Proofs.SchroederBernsteinOQ03Aristotle
 import Proofs.SchroederBernsteinOQ04
+import Proofs.SchroderNumbersOQ01
 import Proofs.SchursTheorem
 import Proofs.SearchMathlib
 import Proofs.ShannonChannelCoding
