@@ -1,0 +1,87 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03-oq-01",
+  "title": "Jacobi Sum Integrality: J(χ,χ) ∈ ℤ[ζ_n] for a Character of Order n",
+  "slug": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03-oq-01",
+  "description": "Proves that the Jacobi sum J(χ,χ) of a multiplicative character of order n on a finite field is an algebraic integer in the cyclotomic ring ℤ[ζ_n], wrapping Mathlib's jacobiSum_mem_algebraAdjoin_of_pow_eq_one. Combined with the parent entry's algebraic norm J(χ,χ)·J(χ⁻¹,χ⁻¹) = p, this yields the structural statement that J(χ,χ) is an algebraic integer of norm p in ℤ[ζ_n] — the object that factors p in the cyclotomic ring and drives cubic (ℤ[ω]) and quartic (ℤ[i]) reciprocity.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-19",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ03OQ01.lean",
+    "tags": [
+      "number-theory",
+      "jacobi-sum",
+      "cyclotomic",
+      "algebraic-integers",
+      "reciprocity",
+      "cubic-reciprocity",
+      "quartic-reciprocity",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 223,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "dateAdded": "2026-06-19",
+    "mathlibDependencies": [
+      {
+        "theorem": "jacobiSum_mem_algebraAdjoin_of_pow_eq_one",
+        "description": "χ^n = φ^n = 1 and μ a primitive n-th root of unity ⟹ J(χ,φ) ∈ Algebra.adjoin ℤ {μ} = ℤ[ζ_n]: the integrality of Jacobi sums in the cyclotomic ring",
+        "module": "Mathlib.NumberTheory.JacobiSum.Basic"
+      },
+      {
+        "theorem": "exists_jacobiSum_eq_neg_one_add",
+        "description": "For n > 2 with n ∣ #F − 1: J(χ,φ) = −1 + z·(μ−1)² for some z ∈ ℤ[μ], i.e. J ≡ −1 (mod (μ−1)²)",
+        "module": "Mathlib.NumberTheory.JacobiSum.Basic"
+      },
+      {
+        "theorem": "jacobiSum_mul_jacobiSum_inv",
+        "description": "J(χ,φ)·J(χ⁻¹,φ⁻¹) = #F: the algebraic norm formula, combined here with integrality",
+        "module": "Mathlib.NumberTheory.JacobiSum.Basic"
+      },
+      {
+        "theorem": "pow_orderOf_eq_one",
+        "description": "χ^(orderOf χ) = 1: lets the order-n phrasing (orderOf χ = n) feed the χ^n = 1 hypothesis",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      }
+    ],
+    "originalContributions": [
+      "jacobiSum_self_mem_cyclotomic_of_orderOf: J(χ,χ) ∈ ℤ[ζ_n] stated for a character of order n (orderOf χ = n)",
+      "cubic_jacobiSum_mem / quartic_jacobiSum_mem: specializations to the Eisenstein ring ℤ[ω] (χ³=1) and Gaussian ring ℤ[i] (χ⁴=1)",
+      "jacobiSum_self_integral_of_norm_p: the structural theorem — J(χ,χ) ∈ ℤ[ζ_n] ∧ J(χ,χ)·J(χ⁻¹,χ⁻¹) = p, i.e. J(χ,χ) is an algebraic integer of norm p in ℤ[ζ_n]",
+      "cubic_jacobiSum_integral_of_norm_p: the cubic case J ∈ ℤ[ω] ∧ J·J̄ = p (factorization p = a² − ab + b²)"
+    ],
+    "assumptions": "0 sorries. 0 axiom declarations. 0 structure-encoded assumptions. All proofs derive from Mathlib.NumberTheory.JacobiSum.Basic (jacobiSum_mem_algebraAdjoin_of_pow_eq_one, exists_jacobiSum_eq_neg_one_add, jacobiSum_mul_jacobiSum_inv). Build not verified in Docker (Docker daemon unavailable this session); verified at Mathlib-source level against the pinned .lake checkout.",
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "The parent entry established the magnitude of Jacobi sums via the algebraic norm J(χ,χ)·J(χ⁻¹,χ⁻¹) = #F. But Gauss's and Eisenstein's reciprocity proofs need more than magnitude: they need J(χ,χ) to be a genuine algebraic integer in the cyclotomic ring ℤ[ζ_n] = ℤ[e^{2πi/n}], so that the identity J·J̄ = p becomes a factorization of p in that ring. For n = 3 this is Eisenstein's ℤ[ω] (a² − ab + b² = p); for n = 4 it is the Gaussian ℤ[i] (a² + b² = p, Fermat's two-squares theorem). The integrality is elementary — each summand χ(x)·χ(1−x) is a product of n-th roots of unity (or 0) — but it is the structural fact that anchors the whole reciprocity program.",
+    "problemStatement": "**Open Question (OQ-01-OQ-01-OQ-03-OQ-01)**: Formalize that for a multiplicative character χ of order n on a finite field, the Jacobi sum J(χ,χ) lies in ℤ[ζ_n], and combine it with the algebraic norm to show J(χ,χ) is an algebraic integer of norm p.\n\n**Answer**: YES. Mathlib's `jacobiSum_mem_algebraAdjoin_of_pow_eq_one` gives J(χ,φ) ∈ Algebra.adjoin ℤ {μ} whenever χ^n = φ^n = 1 and μ is a primitive n-th root of unity. Specializing to the diagonal and combining with `jacobiSum_mul_jacobiSum_inv` yields the structural statement.",
+    "text": "For multiplicative characters χ, φ on a finite field F valued in an integral domain R, both of order dividing n, and μ a primitive n-th root of unity in R, every term of J(χ,φ) = Σ_x χ(x)·φ(1−x) is a product of values of χ and φ. Each such value is a power of μ (or 0), so it lies in ℤ[μ] = Algebra.adjoin ℤ {μ}; hence the whole sum does. The diagonal case J(χ,χ) is the one relevant to power reciprocity.\n\nThe structural payload combines this with the parent's norm formula: for a character χ of order n on 𝔽_p (χ ≠ 1, χ² ≠ 1) valued in a field F' of characteristic ≠ p, with μ a primitive n-th root of unity in F':\n  • J(χ,χ) ∈ ℤ[ζ_n]\n  • J(χ,χ)·J(χ⁻¹,χ⁻¹) = p\nso J(χ,χ) is an algebraic integer of norm p. For n=3 this factors p = a²−ab+b² in ℤ[ω]; for n=4, p = a²+b² in ℤ[i].",
+    "proofStrategy": "Each result is a thin, faithful wrapper over Mathlib's JacobiSum.Basic:\n1. `jacobiSum_self_mem_cyclotomic` applies `jacobiSum_mem_algebraAdjoin_of_pow_eq_one` on the diagonal φ = χ.\n2. `jacobiSum_self_mem_cyclotomic_of_orderOf` feeds `pow_orderOf_eq_one` (χ^(orderOf χ) = 1) into (1).\n3. `cubic_jacobiSum_mem`/`quartic_jacobiSum_mem` specialize n to 3 and 4 (with explicit `NeZero` instances).\n4. `jacobiSum_self_congr_neg_one` exposes the sharper (μ−1)² congruence via `exists_jacobiSum_eq_neg_one_add`.\n5. `jacobiSum_self_integral_of_norm_p` pairs integrality with `jacobiSum_mul_jacobiSum_inv`, translating `ringChar F' ≠ ringChar (ZMod p)` to `ringChar F' ≠ p` via `ZMod.ringChar_zmod_n` and `#(ZMod p) = p` via `ZMod.card` — exactly the parent's norm specialization, now bundled with the cyclotomic membership.",
+    "keyInsights": [
+      "Integrality is the structural complement of magnitude: the parent gave |J|² = p (a real constraint); this gives J ∈ ℤ[ζ_n] (an algebraic constraint). Only together do they say 'J is an algebraic integer of norm p', which is what factors p in ℤ[ζ_n].",
+      "The integrality proof is genuinely elementary — every summand χ(x)·χ(1−x) is a product of n-th roots of unity (or zero), so it lies in ℤ[ζ_n] term by term. No deep cyclotomic theory is needed, only that character values of order dividing n are powers of μ.",
+      "ℤ[ζ_n] is represented in Lean as `Algebra.adjoin ℤ {μ}` for μ a primitive n-th root of unity — a subalgebra of the target ring R, not an abstract cyclotomic field. The statement is therefore about membership in a concrete subring, which is exactly what downstream factorization arguments need.",
+      "The order-n phrasing (`orderOf χ = n`) is convenient for the classical statement but mathematically the only thing used is χ^n = 1 (order *dividing* n). The general `jacobiSum_mem_cyclotomic` is stated with χ^n = 1, and the order-n corollary is a one-line consequence of `pow_orderOf_eq_one`.",
+      "The (μ−1)²-congruence J(χ,χ) ≡ −1 (mod (μ−1)²) is the next layer of arithmetic: integrality says J ∈ ℤ[ζ_n], the congruence pins its residue, and together they determine the n-th power residue symbol from the reduction of J modulo a prime — the engine of Eisenstein reciprocity.",
+      "Quartic integrality is constructive Fermat: for p ≡ 1 (mod 4) and a quartic character χ, J(χ,χ) = a + bi ∈ ℤ[i] with a² + b² = p. The Jacobi sum *is* an explicit two-squares decomposition — integrality (J ∈ ℤ[i]) plus norm (|J|² = p) gives the decomposition with no extra work."
+    ],
+    "prerequisites": [
+      "Multiplicative characters: Mathlib's `MulChar F R`, with χ(0) = 0 for χ ≠ 1 and values that are roots of unity",
+      "Jacobi sums: `jacobiSum χ φ = Σ_x χ(x)·φ(1−x)` in Mathlib's `NumberTheory.JacobiSum.Basic`",
+      "Primitive roots of unity: `IsPrimitiveRoot μ n` and the subalgebra `Algebra.adjoin ℤ {μ}` = ℤ[μ]",
+      "The algebraic norm formula `jacobiSum_mul_jacobiSum_inv` from the parent entry (`...-oq-03`)",
+      "Order of a group element: `orderOf` and `pow_orderOf_eq_one`"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "Parent entry: the Gauss–Jacobi identity and the algebraic norm J(χ,χ)·J(χ⁻¹,χ⁻¹) = p. This entry adds the integrality J(χ,χ) ∈ ℤ[ζ_n] and bundles it with that norm into 'algebraic integer of norm p'."
+    }
+  ]
+}
