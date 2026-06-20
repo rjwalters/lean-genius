@@ -373,3 +373,31 @@ Step 4 is pure `S₅` combinatorics.
   shared with `inverse-galois-a5-oq-01` (needs `inertiaDegIn(7)=3`). The remaining
   `galActionHom` transport (arithFrobAt → a `Perm (Fin 5)` of matching cycle type) is also
   unbuilt.
+
+### Session 2026-06-20 (researcher-7) — machine-check the Abel–Ruffini *payoff*
+
+**Mode:** REVISIT (RICH, score 30). **Outcome:** new verified module; no progress on the
+open Frobenius bridge (correctly avoided fake scaffolding on top of it).
+
+**Observation that drove the session:** every existing module (`AbelRuffiniOQ07`,
+`…Discriminant`, `…Order6`, `…ComplexConj`) establishes the *group-theoretic core* and then
+states the actual conclusion — "hence X⁵−X−1 is **not solvable by radicals**" — only in
+**prose**. That final implication was never machine-checked, even though it needs no part of
+the open bridge: it follows from `Gal ≅ S₅` by Mathlib's Abel–Ruffini theorem.
+
+**Built (new registered module `AbelRuffiniOQ07NotSolvable.lean`, 0 sorry / 0 axiom):**
+- `gal_not_solvable_of_iso_S5` — `f.Gal ≃* S₅ ⟹ ¬ IsSolvable f.Gal`, via
+  `Equiv.Perm.fin_5_not_solvable` transported across the iso (`solvable_of_surjective`).
+- `root_not_solvableByRad_of_gal_not_solvable` — `¬ IsSolvable f.Gal ⟹` no root of `f` in
+  any ℚ-extension is `IsSolvableByRad ℚ`. Contrapositive of `solvableByRad.isSolvable'`
+  with irreducibility from Selmer (`X_pow_sub_X_sub_one_irreducible_rat`).
+- `root_not_solvableByRad_of_gal_iso_S5` (capstone) — granting the single open fact
+  `f.Gal ≃* S₅`, the roots of X⁵−X−1 are not solvable by radicals. The Abel–Ruffini
+  conclusion of OQ-07, reduced to exactly its open input, checked against the real
+  `Polynomial.Gal` and the real `IsSolvableByRad`.
+
+**Honest status:** this does NOT touch the open Dedekind–Frobenius bridge (sub-gaps B, C
+from prior sessions). It certifies the *downstream* half — that the only thing standing
+between the verified group theory and the genuine unsolvability statement is the iso
+`f.Gal ≅ S₅`. New Mathlib deps: `solvableByRad.isSolvable'`, `Equiv.Perm.fin_5_not_solvable`,
+`solvable_of_surjective` (all in pin v4.26.0).

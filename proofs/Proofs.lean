@@ -30,6 +30,7 @@ import Proofs.AbelRuffiniOQ04OQ09Cyclic
 import Proofs.AbelRuffiniOQ07
 import Proofs.AbelRuffiniOQ07ComplexConj
 import Proofs.AbelRuffiniOQ07Discriminant
+import Proofs.AbelRuffiniOQ07NotSolvable
 import Proofs.AbelRuffiniOQ07Order6
 import Proofs.AbelRuffiniOQ09
 import Proofs.AbelRuffiniOQ10

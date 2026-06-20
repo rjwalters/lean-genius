@@ -48,6 +48,21 @@
         "theorem": "Polynomial.X_pow_sub_X_sub_one_irreducible_rat",
         "description": "The Selmer polynomials X^n - X - 1 are irreducible over ℚ for n ≠ 1 (unit-trinomial argument + Gauss's lemma). Instantiated at n=5 to discharge Irreducible f.",
         "module": "Mathlib.RingTheory.Polynomial.Selmer"
+      },
+      {
+        "theorem": "solvableByRad.isSolvable'",
+        "description": "Abel–Ruffini (one direction): an irreducible polynomial with a radical-solvable root has solvable Galois group. Used contrapositively: ¬ IsSolvable f.Gal ⟹ no root of f is solvable by radicals.",
+        "module": "Mathlib.FieldTheory.AbelRuffini"
+      },
+      {
+        "theorem": "Equiv.Perm.fin_5_not_solvable",
+        "description": "S₅ = Perm (Fin 5) is not a solvable group. Transported across f.Gal ≃* S₅ to give ¬ IsSolvable f.Gal.",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "solvable_of_surjective",
+        "description": "Solvability transfers along a surjective group hom; used to push S₅ non-solvability back to f.Gal across the iso.",
+        "module": "Mathlib.GroupTheory.Solvable"
       }
     ],
     "originalContributions": [
@@ -61,7 +76,8 @@
       "Concrete p=3 Frobenius witness and capstone (frob3, frob3_pow_five, orderOf_frob3, five_dvd_card_of_frob3_mem, gal_eq_top_of_frobenii): exhibits the 5-cycle frob3 = (0 1 2 3 4) ∈ S₅ modelling a Frobenius element of f mod 3 (irreducible quintic), machine-checks orderOf frob3 = 5, and derives via Lagrange that any subgroup containing it has 5 ∣ |G| — supplying hypothesis (a) of gal_eq_top_of_five_dvd_and_swap from a single membership fact. The capstone gal_eq_top_of_frobenii assembles G = ⊤ = S₅ from both witnesses (frob3 gives 5 ∣ |G|, frob2³ gives the transposition), turning the entire prose cycle-type computation into verified permutation data modulo the open Dedekind–Frobenius bridge.",
       "Real-Galois-group order divisibility (five_dvd_card_gal): proves 5 ∣ Nat.card f.Gal for the GENUINE Galois group f.Gal of X⁵−X−1, conditional only on Irreducible f, via Polynomial.Gal.prime_degree_dvd_card. This discharges the order-divisibility half of the corrected proof WITHOUT the Dedekind–Frobenius bridge: where frob3 supplies 5 ∣ |G| for an abstract subgroup G ≤ S₅, this supplies it for the real f.Gal, reducing that half of the open bridge to the separately-classical irreducibility of f.",
       "Unconditional generation theorem (closure_frobenii_eq_top): the two explicit permutations frob2 = (0 1)(2 3 4) and frob3 = (0 1 2 3 4) generate the whole symmetric group, Subgroup.closure {frob2, frob3} = ⊤. Specializes the conditional capstone gal_eq_top_of_frobenii to the subgroup they generate (both are members of their own closure), giving the concrete, hypothesis-free form of the S₅ criterion: the order-5 cycle forces 5 ∣ |⟨frob2,frob3⟩| and the cube of the order-6 element is the transposition, so the generated subgroup cannot be proper. (Classically, the transposition (0 1) and the 5-cycle (0 1 2 3 4) generate S₅.)",
-      "Unconditional order divisibility (f_irreducible, five_dvd_card_gal_unconditional): discharges the Irreducible f hypothesis of five_dvd_card_gal directly from Mathlib's Selmer theorem X_pow_sub_X_sub_one_irreducible_rat (n=5), making 5 ∣ Nat.card f.Gal an UNCONDITIONAL, axiom-free, sorry-free fact about the genuine Galois group of X⁵−X−1 — no Dedekind–Frobenius bridge and no irreducibility assumption remain on the order-divisibility half of the corrected Gal ≅ S₅ proof. Only the transposition input (∃ swap ∈ Gal, from the p=2 Frobenius) stays bridge-dependent."
+      "Unconditional order divisibility (f_irreducible, five_dvd_card_gal_unconditional): discharges the Irreducible f hypothesis of five_dvd_card_gal directly from Mathlib's Selmer theorem X_pow_sub_X_sub_one_irreducible_rat (n=5), making 5 ∣ Nat.card f.Gal an UNCONDITIONAL, axiom-free, sorry-free fact about the genuine Galois group of X⁵−X−1 — no Dedekind–Frobenius bridge and no irreducibility assumption remain on the order-divisibility half of the corrected Gal ≅ S₅ proof. Only the transposition input (∃ swap ∈ Gal, from the p=2 Frobenius) stays bridge-dependent.",
+      "Abel–Ruffini payoff, machine-checked (AbelRuffiniOQ07NotSolvable.lean, sibling module): the conclusion every other module states only in prose — hence X⁵−X−1 is not solvable by radicals — is now formal. root_not_solvableByRad_of_gal_iso_S5: granting the single open fact f.Gal ≃* S₅, every root of X⁵−X−1 in any ℚ-extension is ¬ IsSolvableByRad ℚ. Assembled from gal_not_solvable_of_iso_S5 (S₅ is not solvable via Equiv.Perm.fin_5_not_solvable, transported across the iso by solvable_of_surjective) and root_not_solvableByRad_of_gal_not_solvable (contrapositive of Mathlib Abel–Ruffini solvableByRad.isSolvable', irreducibility from Selmer). Checked against the genuine Polynomial.Gal and the genuine IsSolvableByRad; 0 sorry / 0 axiom. This certifies the DOWNSTREAM half of OQ-07: the only step between the verified group theory and the genuine unsolvability statement is the open isomorphism f.Gal ≅ S₅."
     ],
     "prerequisites": [
       "Symmetric and alternating groups; permutation sign",
