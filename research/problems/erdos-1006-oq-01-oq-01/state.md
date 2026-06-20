@@ -1,9 +1,9 @@
 # Research State: erdos-1006-oq-01-oq-01
 
 ## Current State
-**Phase**: ORIENT (STEP A in flight on Aristotle — f4e7c237 ~7%, file-edit errors)
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-06-19T11:34:00Z
+**Since**: 2026-06-20T10:14:46-07:00
 **Iteration**: 4
 **PR**: #26166 (S2 analysis docs; no Lean change — bug fix is build-gated)
 **Build gate**: CLOSED (host load ~11.3, 2 lean-build containers; docker-build OOM risk)
