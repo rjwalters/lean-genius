@@ -63,6 +63,32 @@ transfer that upgrades `L(1,χ)≠0` to the density asymptotic is the missing pi
 until M2 lands. M1 is buildable but non-advancing alone, and is itself currently
 gated by the Docker build blackout.
 
+### S2 (2026-06-20, ORIENT re-grep) — M1 scaffold collapses to a Mathlib one-liner
+
+**Mode**: continuation (claimed from pool, WEAK). Docker UP; re-grepped the live
+Mathlib checkout at `proofs/.lake/packages/mathlib/`.
+
+**Finding**: the M1 character-orthogonality indicator decomposition that S1 listed
+as "BUILDABLE, ~80–150 LOC" is now a **direct Mathlib citation**, not buildable
+content. `Mathlib/NumberTheory/DirichletCharacter/Orthogonality.lean` provides:
+
+- `DirichletCharacter.sum_characters_eq (a : ZMod n) :`
+  `∑ χ : DirichletCharacter R n, χ a = if a = 1 then (n.totient : R) else 0`
+- `DirichletCharacter.sum_char_inv_mul_char_eq (ha : IsUnit a) (b : ZMod n) :`
+  `∑ χ, χ a⁻¹ * χ b = if a = b then (n.totient : R) else 0`
+
+The second lemma **is exactly** the orthogonality relation underlying M1. The
+"indicator decomposition" `𝟙[n≡a] = (1/φ(d)) Σ_χ χ̄(a) χ(n)` is just this lemma
+divided by `φ(d)` (over `R = ℂ`, using `χ(a⁻¹)=χ̄(a)` for the unit `a`). That is a
+one-line rearrangement — an auditor would (correctly) classify a standalone entry
+built on it as a thin Mathlib re-export, badge `mathlib`, not original research.
+
+**Consequence**: this problem now has **zero buildable sub-content**. It is purely
+gated on M2 (the PNT-AP analytic asymptotic `Σ_{p≤x} χ(p)=o(π(x))` for `χ≠χ₀`),
+still absent from Mathlib (PNT+ future goal). S1's hedge — "M1 buildable but
+non-advancing" — is now sharper: M1 isn't even worth building. Correct status
+remains `surveyed`; nothing ships until PNT+ lands M2.
+
 ---
 
 ## Dead Ends
