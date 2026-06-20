@@ -39,7 +39,7 @@ product of the odd number `945` with the odd number `2k+1`) and abundant (a
 positive multiple of the abundant number `945`). -/
 theorem odd_abundant_945_mul (k : ℕ) :
     Odd (945 * (2 * k + 1)) ∧ (945 * (2 * k + 1)).Abundant := by
-  refine ⟨(⟨472, by norm_num⟩ : Odd 945).mul (odd_two_mul_add_one k), ?_⟩
+  refine ⟨Odd.mul (⟨472, by norm_num⟩ : Odd 945) (odd_two_mul_add_one k), ?_⟩
   exact abundant_mul_right abundant_945 (by positivity)
 
 /-- The map `k ↦ 945·(2k+1)` is injective: multiplication by the nonzero
