@@ -3355,6 +3355,7 @@ import Proofs.ThreeSquaresSufficiencyCorrected
 import Proofs.ThreeSquaresWitnessObstruction
 import Proofs.ThreeSubgroupsLemmaOQ01
 import Proofs.ThueMorse
+import Proofs.TietzeExtensionTheoremOQ01
 import Proofs.TractatusOntology
 import Proofs.TractatusOntologyEquiv
 import Proofs.TractatusOntologyHorn
