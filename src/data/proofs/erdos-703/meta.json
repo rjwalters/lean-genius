@@ -47,9 +47,9 @@
       "star_family_card: the fixed-point star family has exactly 2^{n-1} members (sharpness witness)",
       "T_n_0: fully machine-checked proof that T(n,0) = 2^{n-1} (previously a sorry)"
     ],
-    "axiomCount": 2,
-    "lineCount": 352,
-    "assumptions": "2 axioms: frankl_rodl_1987 (the deep Frankl–Rödl 1987 exponential bound — the affirmative answer to the main question) and chromaticNumber (opaque unit-distance chromatic number). 0 sorries: the trivial case T(n,0)=2^{n-1} is now fully machine-checked via a complement-pairing upper bound and a star-family witness.",
+    "axiomCount": 1,
+    "lineCount": 348,
+    "assumptions": "1 axiom: frankl_rodl_1987 (the deep Frankl–Rödl 1987 exponential bound — the affirmative answer to the main question). 0 sorries: the trivial case T(n,0)=2^{n-1} is fully machine-checked (#print axioms T_n_0 = [propext, Classical.choice, Quot.sound]) via a complement-pairing upper bound and a star-family witness. The unused opaque chromaticNumber axiom was removed; the geometric chromatic-number consequence is recorded as prose only since infinite unit-distance chromatic numbers are not yet in Mathlib.",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,
     "definitionCount": 7
@@ -152,7 +152,7 @@
     "historicalContext": "Intersection problems for set families are fundamental in extremal combinatorics, originating with the Erdős-Ko-Rado theorem (1961) on intersecting families. Erdős extended this to forbidden r-intersection, asking how large a family can be if no two sets share exactly r elements. For r = 0, the answer T(n,0) = 2^{n-1} is classical. Frankl (1977) solved the r = 1 case. Frankl-Füredi (1984) determined T(n,r) exactly for fixed r and large n, showing the optimal families consist of very large and very small sets. The key open question — whether T(n,r) < (2-δ)^n for r in the 'middle range' εn < r < (1/2-ε)n — carried a $250 Erdős prize. Frankl and Rödl (1987) resolved this affirmatively using the 'nibble method', now a fundamental technique in probabilistic combinatorics. The result connects to geometry: it implies exponential chromatic number for the unit distance graph in ℝ^n, also proved independently by Frankl-Wilson (1981) via modular algebraic methods.",
     "problemStatement": "Let T(n,r) be the maximum size of a family F of subsets of {1,...,n} such that |A ∩ B| ≠ r for all A, B in F. Estimate T(n,r). In particular, for every ε > 0, is there δ > 0 such that T(n,r) < (2 - δ)^n for εn < r < (1/2 - ε)n?",
     "text": "Define T(n,r) as the maximum family size avoiding r-intersection. Is T(n,r) < (2-δ)^n for εn < r < (1/2-ε)n? SOLVED: YES (Frankl-Rödl 1987). Exact values known for small r (Frankl-Füredi 1984).",
-    "proofStrategy": "The formalization builds up from basic definitions (r-intersection, r-avoiding families, T(n,r)) through known results (T(n,0) = 2^{n-1}, Frankl 1977, Frankl-Füredi 1984) to the main Frankl-Rödl theorem. Deep results are axiomatized; the connections to chromatic numbers and the Frankl-Wilson theorem are also formalized.",
+    "proofStrategy": "The formalization builds up from basic definitions (r-intersection, r-avoiding families, T(n,r)) through known results (T(n,0) = 2^{n-1}, Frankl 1977, Frankl-Füredi 1984) to the main Frankl-Rödl theorem. Deep results are axiomatized; the connections to chromatic numbers and the Frankl-Wilson theorem are recorded as prose rather than via opaque axioms.",
     "keyInsights": [
       "**Base case T(n,0) = 2^{n-1}**: The r = 0 case reduces to classical intersecting families, connecting to the Erdős-Ko-Rado framework",
       "**Pigeonhole mechanism**: Large sets ($|A| > (n+r)/2$) automatically satisfy $|A \\cap B| > r$, providing the key construction ingredient for all known optimal families",
@@ -166,7 +166,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #703 is SOLVED. The answer to 'Is T(n,r) < (2-δ)^n for middle range r?' is YES, proved by Frankl-Rödl (1987) using the nibble method. The formalization covers the full development from T(n,0) through optimal families to the main theorem, with connections to the Frankl-Wilson theorem and unit distance graph chromatic numbers. 2 sorries remain (T_n_0 proof, large_sets_avoid_1).",
+    "summary": "Erdős Problem #703 is SOLVED. The answer to 'Is T(n,r) < (2-δ)^n for middle range r?' is YES, proved by Frankl-Rödl (1987) using the nibble method. The formalization covers the full development from T(n,0) through optimal families to the main theorem, with connections to the Frankl-Wilson theorem and unit distance graph chromatic numbers recorded as prose. 0 sorries remain; the only axiom is the deep Frankl-Rödl bound (frankl_rodl_1987).",
     "implications": "The Frankl-Rödl theorem is a cornerstone of extremal set theory. The exponential bound has deep connections to geometry (unit distance graph chromatic numbers), coding theory (bounds on codes with forbidden distances), and probability (the nibble method became a general-purpose tool in probabilistic combinatorics).",
     "openQuestions": [
       "What is the optimal δ = δ(ε) as a function of ε in the Frankl-Rödl bound?",
@@ -185,12 +185,12 @@
       "Finset"
     ],
     "namespace": "Erdos703",
-    "lineCount": 352,
-    "axiomCount": 2,
+    "lineCount": 348,
+    "axiomCount": 1,
     "theoremCount": 7,
     "definitionCount": 7,
     "path": "Proofs/Erdos703Problem.lean",
     "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0
 }
