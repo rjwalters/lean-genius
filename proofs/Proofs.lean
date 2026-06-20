@@ -2474,6 +2474,7 @@ import Proofs.FriendshipTheoremOQ02
 import Proofs.FriendshipTheoremOQ03
 import Proofs.FriendshipTheoremOQ04
 import Proofs.FriendshipTheoremOQ04Universal
+import Proofs.FrobeniusEndomorphismOQ01
 import Proofs.FrobeniusNumber
 import Proofs.FrobeniusNumberOQ01
 import Proofs.FrobeniusNumberOQ02
