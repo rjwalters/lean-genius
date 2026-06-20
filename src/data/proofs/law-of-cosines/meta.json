@@ -170,6 +170,16 @@
       "targetId": "synthesis-curvature-ptolemy",
       "relationship": "related",
       "description": "synthesis-curvature-ptolemy introduces curvatureSin K as the constant-curvature generalization of the distance function, which simultaneously generalizes the law of cosines. The Euclidean law of cosines $c^2 = a^2 + b^2 - 2ab\\cos C$ is the K=0 case: curvatureSin 0(d) = d, so the curvature-parametrized Ptolemy equality reduces to the Euclidean identity. For K>0, curvatureSin K(d) = sin(√K·d)/√K gives the spherical law of cosines; for K<0, it gives the hyperbolic version. The synthesis framework thus unifies all three constant-curvature laws of cosines alongside Ptolemy's theorem."
+    },
+    {
+      "targetId": "law-of-cosines-oq-01",
+      "relationship": "extended-by",
+      "description": "Spherical analogue: cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C) for a spherical triangle on the unit sphere S²."
+    },
+    {
+      "targetId": "law-of-cosines-oq-04",
+      "relationship": "extended-by",
+      "description": "Stewart's theorem b²m + c²n = a(d² + mn), derived by applying the law of cosines to sub-triangles with supplementary angles (median-length formula as a special case)."
     }
   ],
   "leanFile": {
