@@ -3256,6 +3256,7 @@ import Proofs.YangMills2DOQ02
 import Proofs.YangMillsLatticeOQ01
 import Proofs.YangMillsMassGap
 import Proofs.YangMillsTransferMatrixOQ01
+import Proofs.ZeckendorfRepresentationOQ01
 import Proofs.ZetaFiveIrrationality
 import Proofs.ZsqrtdNegTwo
 import Proofs.ZsqrtdNegTwoOQ01
