@@ -1,0 +1,106 @@
+{
+  "id": "pythagorean-triples-oq-05",
+  "title": "Pythagorean Triples OQ-05: The Brahmagupta–Fibonacci Two-Square Identity",
+  "slug": "pythagorean-triples-oq-05",
+  "description": "Formalizes the Brahmagupta–Fibonacci identity (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)² over an arbitrary commutative ring — the setting where the cross term ac−bd actually makes sense — in both conjugate forms, and shows the sums of two squares form a multiplicative submonoid (closed under products, containing 1 = 1²+0²). The structural payoff: the identity is exactly the multiplicativity of the Gaussian-integer norm N(a+bi) = a²+b², derived from Mathlib's Zsqrtd.norm_mul. 6 theorems, 1 definition, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-19",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PythagoreanTriplesOQ05.lean",
+    "tags": [
+      "number-theory",
+      "pythagorean-triples",
+      "sum-of-two-squares",
+      "brahmagupta-fibonacci",
+      "gaussian-integers",
+      "commutative-ring",
+      "norm-form"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-19",
+    "axiomCount": 0,
+    "assumptions": "None. The ring identity is a single `ring` computation; the Gaussian-norm derivation uses Mathlib's Zsqrtd.norm_mul and the Zsqrtd API. Depends only on propext, Classical.choice, and Quot.sound.",
+    "lineCount": 102,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "originalContributions": [
+      "brahmagupta_fibonacci / brahmagupta_fibonacci': the two-square identity in both conjugate forms (ac−bd, ad+bc) and (ac+bd, ad−bc), stated over an arbitrary commutative ring rather than ℕ — the honest home of the identity, since the cross term needs subtraction",
+      "IsSumOfTwoSquares with closure under multiplication and the unit 1 = 1²+0²: exhibits the sums of two squares as a multiplicative submonoid of any commutative ring (over ℤ, unlike the ℕ-only Nat.sq_add_sq_mul of the sibling oq-04)",
+      "brahmagupta_fibonacci_via_gaussianInt: derives the identity from Zsqrtd.norm_mul, identifying it with the multiplicativity of the Gaussian-integer norm N(a+bi) = a²+b² — the algebraic identity as the shadow of a norm homomorphism on ℤ[i]"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The identity (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)² appears in Diophantus's Arithmetica and was stated in full generality by the Indian mathematician Brahmagupta (628 CE), whose more general form (a²+nb²)(c²+nd²) = (ac−nbd)² + n(ad+bc)² underlies the chakravala method for Pell's equation. It resurfaced in Fibonacci's Liber Quadratorum (1225). In modern terms it is the multiplicativity of the norm on the Gaussian integers ℤ[i]: writing N(a+bi) = a²+b², the identity is N(zw) = N(z)N(w), so the map z ↦ N(z) is a monoid homomorphism ℤ[i] → ℤ. This multiplicativity is the engine that propagates Fermat's two-square theorem from primes to all integers, and it is the prototype of the norm form of an imaginary quadratic field.",
+    "problemStatement": "Formalize the Brahmagupta–Fibonacci identity over a general commutative ring, record that sums of two squares are closed under multiplication, and identify the identity with the multiplicativity of the Gaussian-integer norm.",
+    "text": "Over ℕ the multiplicativity of sums of two squares is Mathlib's Nat.sq_add_sq_mul, used by the sibling entry oq-04. But the natural numbers cannot even express the cross term ac−bd, so the identity's true setting is a commutative ring with subtraction. There it is a one-line `ring` computation, available in two conjugate forms differing by the sign of the cross terms. Packaging the predicate IsSumOfTwoSquares with its closure under multiplication and the identity 1 = 1²+0² shows the sums of two squares form a multiplicative submonoid. The structural content is that this is no coincidence: realising a+bi as the Gaussian integer ⟨a,b⟩ ∈ ℤ[i] = ℤ√(−1), the norm is N⟨a,b⟩ = a²+b², the product is ⟨a,b⟩⟨c,d⟩ = ⟨ac−bd, ad+bc⟩, and Mathlib's Zsqrtd.norm_mul gives N(zw) = N(z)N(w) — which unfolds to the Brahmagupta–Fibonacci identity exactly.",
+    "proofStrategy": "Prove both forms of the identity by `ring` over a CommRing. Define IsSumOfTwoSquares n := ∃ a b, n = a²+b²; prove the unit and zero cases by ring and closure by destructuring the two witnesses and applying the identity with the explicit witness (ac−bd, ad+bc). For the Gaussian shadow: compute N⟨a,b⟩ = a²+b² from Zsqrtd.norm_def, compute the product ⟨a,b⟩⟨c,d⟩ = ⟨ac−bd, ad+bc⟩ componentwise via re_mul/im_mul, and rewrite Zsqrtd.norm_mul through these to recover the identity.",
+    "keyInsights": [
+      "The Brahmagupta–Fibonacci identity belongs over a commutative ring, not ℕ: the witness ac−bd requires subtraction, so the natural-number statement (Nat.sq_add_sq_mul) is a shadow of the ring identity, not the other way round",
+      "There are two genuinely distinct representations of a product of sums of two squares — (ac−bd, ad+bc) and (ac+bd, ad−bc) — reflecting the two ways to pair the Gaussian factors z·w and z·w̄",
+      "The identity is exactly N(zw) = N(z)N(w) for the Gaussian norm: the algebraic miracle is the visible trace of a norm homomorphism ℤ[i] → ℤ, the simplest example of a field norm being multiplicative",
+      "Closure under multiplication plus the unit 1 = 1²+0² makes the sums of two squares a submonoid — the structure that lets the prime case of Fermat's theorem propagate to every integer"
+    ],
+    "prerequisites": [
+      "Commutative ring arithmetic (the `ring` tactic)",
+      "The Gaussian integers ℤ[i] = ℤ√(−1) and their norm (Mathlib's Zsqrtd)",
+      "Multiplicativity of the Zsqrtd norm (Zsqrtd.norm_mul)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Fully machine-verified treatment of the Brahmagupta–Fibonacci two-square identity over an arbitrary commutative ring, in both conjugate forms, with the sums of two squares exhibited as a multiplicative submonoid, and the identity derived from — and identified with — the multiplicativity of the Gaussian-integer norm. Zero axioms, zero sorries.",
+    "implications": "The multiplicativity of the two-square form is the structural backbone of the theory of sums of two squares: combined with the prime case (Fermat's theorem, the sibling oq-04) it yields the full characterization of representable integers. Realising it as the norm N: ℤ[i] → ℤ situates it as the first instance of the norm of an imaginary quadratic field, the construction that governs splitting of primes, class groups, and representation by binary quadratic forms. The two conjugate forms encode the ambiguity z·w vs z·w̄ that the Gaussian conjugation symmetry makes explicit.",
+    "openQuestions": [
+      "Generalize to Brahmagupta's nucleus identity (a²+nb²)(c²+nd²) = (ac−nbd)² + n(ad+bc)² and connect it to the norm on ℤ√(−n) for squarefree n",
+      "Promote IsSumOfTwoSquares to a bundled Submonoid of ℤ and identify it with the image of the Gaussian norm map",
+      "Combine with Fermat's prime characterization (oq-04) to derive Nat.eq_sq_add_sq_iff: n is a sum of two squares iff every prime ≡ 3 (mod 4) divides n to an even power",
+      "Quantify representations: relate the number of (a,b) with a²+b² = n to the multiplicative structure via Jacobi's two-square formula"
+    ]
+  },
+  "leanFile": {
+    "namespace": "PythagoreanTriplesOQ05",
+    "lineCount": 102,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/PythagoreanTriplesOQ05.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-triples-oq-04",
+      "relationship": "extends",
+      "description": "The sibling entry records the multiplicativity of sums of two squares over ℕ (Nat.sq_add_sq_mul) en route to Fermat's prime characterization. This entry lifts the identity to its natural setting — an arbitrary commutative ring — gives both conjugate forms, and identifies it with the multiplicativity of the Gaussian-integer norm."
+    },
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "extends",
+      "description": "The parent entry studies Pythagorean triples a²+b² = c² — the sums of two squares that are perfect squares. This entry records the multiplicative structure of all sums of two squares."
+    }
+  ],
+  "sections": [
+    {
+      "id": "ring-identity",
+      "title": "Part I: The identity over a commutative ring",
+      "startLine": 36,
+      "endLine": 50,
+      "summary": "brahmagupta_fibonacci and brahmagupta_fibonacci' state the two-square identity in both conjugate forms over an arbitrary commutative ring, each a single `ring` computation. The general-ring setting is essential: the cross term ac−bd requires subtraction, absent over ℕ."
+    },
+    {
+      "id": "submonoid",
+      "title": "Part II: Sums of two squares form a multiplicative submonoid",
+      "startLine": 52,
+      "endLine": 73,
+      "summary": "IsSumOfTwoSquares n := ∃ a b, n = a²+b². The unit (1 = 1²+0²) and zero are sums of two squares, and IsSumOfTwoSquares.mul proves closure under multiplication with the explicit witness (ac−bd, ad+bc) from the identity — exhibiting the submonoid structure over any commutative ring."
+    },
+    {
+      "id": "gaussian-shadow",
+      "title": "Part III: The Gaussian-norm shadow",
+      "startLine": 75,
+      "endLine": 102,
+      "summary": "gaussianInt_norm computes N⟨a,b⟩ = a²+b² from Zsqrtd.norm_def; gaussianInt_mk_mul computes ⟨a,b⟩⟨c,d⟩ = ⟨ac−bd, ad+bc⟩. brahmagupta_fibonacci_via_gaussianInt then rewrites Mathlib's Zsqrtd.norm_mul through these to recover the identity, identifying it with the multiplicativity of the Gaussian norm."
+    }
+  ],
+  "sorries": 0
+}

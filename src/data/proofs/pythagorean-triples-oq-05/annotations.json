@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ann-pt05-ring-identity",
+    "proofId": "pythagorean-triples-oq-05",
+    "range": { "startLine": 36, "endLine": 50 },
+    "type": "technique",
+    "title": "The Identity Belongs Over a Ring, Not ℕ",
+    "content": "brahmagupta_fibonacci proves (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)² over any commutative ring by a single `ring` call, and brahmagupta_fibonacci' gives the conjugate form (ac+bd)² + (ad−bc)². The choice of a CommRing rather than ℕ is deliberate: the witness ac−bd requires subtraction, which ℕ lacks. Mathlib's natural-number Nat.sq_add_sq_mul (used by the sibling oq-04) is therefore a shadow of this ring identity, not its source. The two conjugate forms are not redundant — they reflect the two ways to pair the Gaussian factors, z·w versus z·w̄."
+  },
+  {
+    "id": "ann-pt05-submonoid",
+    "proofId": "pythagorean-triples-oq-05",
+    "range": { "startLine": 52, "endLine": 73 },
+    "type": "concept",
+    "title": "Sums of Two Squares as a Multiplicative Submonoid",
+    "content": "IsSumOfTwoSquares n := ∃ a b, n = a²+b² packages the predicate. isSumOfTwoSquares_one (1 = 1²+0²) supplies the unit and IsSumOfTwoSquares.mul proves closure under multiplication: destructuring the two witnesses and feeding the explicit pair (ac−bd, ad+bc) to the Brahmagupta–Fibonacci identity. Unit plus closure means the sums of two squares form a multiplicative submonoid of any commutative ring — over ℤ, going beyond the ℕ-only statement. This submonoid structure is exactly what propagates Fermat's prime case to all integers."
+  },
+  {
+    "id": "ann-pt05-gaussian-shadow",
+    "proofId": "pythagorean-triples-oq-05",
+    "range": { "startLine": 75, "endLine": 102 },
+    "type": "concept",
+    "title": "The Identity Is the Gaussian Norm Being Multiplicative",
+    "content": "Realising a+bi as ⟨a,b⟩ ∈ ℤ[i] = ℤ√(−1), gaussianInt_norm computes N⟨a,b⟩ = a²+b² (from Zsqrtd.norm_def, the d = −1 case), and gaussianInt_mk_mul computes the product ⟨a,b⟩⟨c,d⟩ = ⟨ac−bd, ad+bc⟩ componentwise via re_mul/im_mul. brahmagupta_fibonacci_via_gaussianInt then takes Mathlib's Zsqrtd.norm_mul — N(zw) = N(z)N(w) — and rewrites the three norms and the product through these computations, recovering the identity on the nose. The algebraic miracle is the visible trace of a norm homomorphism ℤ[i] → ℤ: the simplest case of a field norm being multiplicative."
+  }
+]
