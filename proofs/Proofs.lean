@@ -2518,6 +2518,7 @@ import Proofs.HarmonicDivergence
 import Proofs.HarmonicDivergenceOQ01
 import Proofs.HarmonicDivergenceOQ02
 import Proofs.HarmonicDivergenceOQ04
+import Proofs.HarmonicDivergenceOQ05
 import Proofs.HermiteLindemann
 import Proofs.HeronsFormula
 import Proofs.HeronsFormulaOQ01
