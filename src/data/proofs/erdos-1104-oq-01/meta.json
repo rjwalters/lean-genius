@@ -76,7 +76,8 @@
       "**Triangle-freeness is preserved because the apex is harmless and shadows are independent**: the apex meets only the (independent) shadow class so lies in no triangle, and a triangle can use at most one shadow, hence projects to a G-triangle — impossible.",
       "**The upper bound is fully constructive**: an n-colouring of G is reused verbatim on originals and shadows (lifted by Fin.castSucc) with the apex taking the one fresh colour Fin.last n.",
       "**The lower bound is the deep half — a recolouring**: from a proper (n+1)-colouring of M(G) with apex colour a, recolour an original by its shadow's colour exactly when it wears a. The result avoids a entirely (shadows are apex-adjacent) and stays proper, collapsing the colour count back to n. This is what makes χ(M(G)) = χ(G)+1 rather than merely ≤.",
-      "**The two one-sided bounds assemble into an exact threshold**: mycielskianIter_colorable_iff states (mycielskianIter G k).Colorable (m+k) ↔ G.Colorable m, and instantiating at K₂ pins the chromatic number of the k-th tower graph to exactly k+2 — triangle-free graphs of every chromatic number, with explicit non-colourability."
+      "**The two one-sided bounds assemble into an exact threshold**: mycielskianIter_colorable_iff states (mycielskianIter G k).Colorable (m+k) ↔ G.Colorable m, and instantiating at K₂ pins the chromatic number of the k-th tower graph to exactly k+2 — triangle-free graphs of every chromatic number, with explicit non-colourability.",
+      "**Constructive where the probabilistic method is not**: Erdős's 1959 probabilistic argument shows graphs of arbitrarily large girth AND chromatic number merely *exist*, exhibiting no example; Mycielski's tower is the explicit, deterministic counterpart for the triangle-free (girth ≥ 4) case, building each witness by hand from K₂. The exact increment χ(M(G)) = χ(G)+1 moreover makes the chromatic number of every tower graph computable, where the probabilistic method only bounds it from below."
     ],
     "prerequisites": [
       "SimpleGraph basics: adjacency, fromRel, Colorable / Coloring, CliqueFree",
@@ -167,6 +168,11 @@
       "targetId": "four-color-theorem",
       "relationship": "contrast",
       "description": "A sharp contrast in chromatic number: every planar graph needs at most 4 colours (Four Color Theorem), whereas triangle-free graphs — locally even sparser — can require arbitrarily many. Planarity bounds χ; triangle-freeness does not."
+    },
+    {
+      "targetId": "mantel-theorem",
+      "relationship": "contrast",
+      "description": "Both results concern triangle-free graphs but pull in opposite directions. Mantel's theorem (1907) caps the EDGE count of a triangle-free graph at ⌊n²/4⌋, attained by the balanced complete bipartite graph — which is merely 2-chromatic. The Mycielskian shows the CHROMATIC number of triangle-free graphs is by contrast unbounded. Maximising edges within the triangle-free family drives toward bipartite (χ = 2); maximising chromatic number drives toward the sparse Mycielski tower — the two extremal objectives are essentially orthogonal."
     }
   ],
   "leanFile": {
