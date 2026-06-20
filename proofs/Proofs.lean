@@ -461,6 +461,7 @@ import Proofs.CauchySchwarzOQ03OQ01
 import Proofs.CauchySchwarzOQ03OQ02
 import Proofs.CauchySchwarzOQ04
 import Proofs.CauchySchwarzOQ04OQ01
+import Proofs.CauchySchwarzOQ07
 import Proofs.CayleyHamilton
 import Proofs.CayleyHamiltonCyclicVectorAllFields
 import Proofs.CayleyHamiltonCyclicVectorAllFieldsAristotle

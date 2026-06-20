@@ -1,0 +1,200 @@
+{
+  "id": "cauchy-schwarz-oq-07",
+  "title": "The Parallelogram Law",
+  "slug": "cauchy-schwarz-oq-07",
+  "description": "The parallelogram law ‖x+y‖² + ‖x−y‖² = 2‖x‖² + 2‖y‖² in a real or complex inner-product space, proved by expanding both squares via the inner-product self-identity and cancelling the cross terms. Includes the squared-form polarization identity recovering the inner product from the norm.",
+  "meta": {
+    "author": "Classical (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Parallelogram_law",
+    "date": "1935",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "inner-product-spaces",
+      "cauchy-schwarz",
+      "parallelogram-law",
+      "polarization-identity",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CauchySchwarzOQ07.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "parallelogram_law_with_norm",
+        "description": "Parallelogram law in the *self (un-squared) form over an RCLike inner-product space",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "norm_add_sq_real",
+        "description": "‖x+y‖² = ‖x‖² + 2⟪x,y⟫ + ‖y‖² in a real inner-product space",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "norm_sub_sq_real",
+        "description": "‖x-y‖² = ‖x‖² − 2⟪x,y⟫ + ‖y‖² in a real inner-product space",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "parallelogram_norm_sq: the squared-power (^2) packaging of the parallelogram law over a general RCLike inner-product space, with the scalar field explicit so it specializes to ℝ or ℂ",
+      "parallelogram_norm_sq_real: a direct proof over a real inner-product space by the method named in the open question — expand ‖x±y‖² via inner_self and cancel the ±2⟪x,y⟫ cross terms",
+      "real_inner_eq_norm_sq_diff_div_four: the squared-form polarization identity ⟪x,y⟫ = (‖x+y‖² − ‖x−y‖²)/4, dual to the parallelogram law (difference of diagonals vs. sum of diagonals)",
+      "norm_add_sq_eq_real: the rearranged law ‖x+y‖² = 2‖x‖² + 2‖y‖² − ‖x−y‖²",
+      "parallelogram_norm_sq_complex: the ℂ specialization"
+    ],
+    "dateAdded": "2026-06-19",
+    "lineCount": 85,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The parallelogram law — that the sum of the squares of the two diagonals of a parallelogram equals the sum of the squares of its four sides — is a Euclidean fact (Apollonius of Perga, c. 200 BCE, in the form of his median theorem). Its modern significance is the **Jordan–von Neumann theorem** (1935): a norm on a real or complex vector space arises from an inner product *if and only if* it satisfies the parallelogram law. This characterizes inner-product (pre-Hilbert) spaces among all normed spaces and is why the identity sits at the foundation of Hilbert-space geometry. The companion **polarization identity** runs the implication the other way: given a norm satisfying the parallelogram law, the inner product is reconstructed as ⟪x,y⟩ = (‖x+y‖² − ‖x−y‖²)/4 in the real case (with an extra imaginary term in the complex case), so the norm and the inner product carry exactly the same information.",
+    "problemStatement": "**Open Question (cauchy-schwarz-oq-07)**: Formalize the parallelogram law ‖x+y‖² + ‖x−y‖² = 2‖x‖² + 2‖y‖² in a real or complex inner-product space, by expanding both squares via the inner-product self-identity and cancelling the cross terms.\n\n**Result**: Proved as `parallelogram_norm_sq` over a general `RCLike` field (specializing to ℝ and ℂ), and `parallelogram_norm_sq_real` by the exact cross-term-cancellation method requested. The dual polarization identity ⟪x,y⟩ = (‖x+y‖² − ‖x−y‖²)/4 is derived as a corollary.",
+    "text": "The parallelogram law ‖x+y‖² + ‖x−y‖² = 2‖x‖² + 2‖y‖² in a real or complex inner-product space, proved by expanding both squares via inner_self and cancelling the cross terms. Includes the squared-form polarization identity.",
+    "proofStrategy": "**Proof Strategy: Cross-term cancellation.**\n\n1. Over a real inner-product space, expand ‖x+y‖² = ‖x‖² + 2⟪x,y⟩ + ‖y‖² (`norm_add_sq_real`) and ‖x−y‖² = ‖x‖² − 2⟪x,y⟩ + ‖y‖² (`norm_sub_sq_real`).\n2. Adding the two, the cross terms +2⟪x,y⟩ and −2⟪x,y⟩ cancel, leaving 2‖x‖² + 2‖y‖² — the parallelogram law.\n3. Subtracting the two instead leaves 4⟪x,y⟩, giving the polarization identity ⟪x,y⟩ = (‖x+y‖² − ‖x−y‖²)/4.\n4. For the general RCLike field, package Mathlib's `parallelogram_law_with_norm` (stated with `*self`) into the squared `^2` form via `pow_two` and linear arithmetic; the complex case is the ℂ instance.",
+    "keyInsights": [
+      "**Cross terms cancel on addition, survive on subtraction.** The single expansion ‖x±y‖² = ‖x‖² ± 2⟪x,y⟩ + ‖y‖² yields both the parallelogram law (sum, cross terms cancel) and the polarization identity (difference, cross terms double). They are two faces of the same computation.",
+      "**Parallelogram law characterizes inner-product norms.** By Jordan–von Neumann, a norm comes from an inner product iff it satisfies this identity — so the law is not just a consequence of having an inner product but is equivalent to it.",
+      "**Field-agnostic packaging.** Stating `parallelogram_norm_sq` with the scalar field `𝕜` explicit lets the same lemma serve real and complex inner-product spaces, recovering both classical forms from one statement."
+    ],
+    "prerequisites": [
+      "Inner product spaces (InnerProductSpace 𝕜 E in Mathlib, 𝕜 = ℝ or ℂ)",
+      "The norm–inner-product relation ‖x‖² = ⟪x,x⟩ (inner_self)",
+      "Basic linear arithmetic over the reals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring stating the open question and method, Mathlib import, the CauchySchwarzOQ07 namespace, and scoped inner-product notation.",
+      "mathContext": "Work in an inner-product space $(E, \\langle\\cdot,\\cdot\\rangle_\\mathbb{K})$ over $\\mathbb{K} \\in \\{\\mathbb{R}, \\mathbb{C}\\}$ with `[RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]`."
+    },
+    {
+      "id": "rclike",
+      "title": "Parallelogram Law over an RCLike Field",
+      "startLine": 37,
+      "endLine": 53,
+      "summary": "parallelogram_norm_sq: the squared (^2) form of the parallelogram law over a general real-or-complex inner-product space, packaged from Mathlib's *self-form parallelogram_law_with_norm with the scalar field explicit.",
+      "mathContext": "$\\|x+y\\|^2 + \\|x-y\\|^2 = 2\\|x\\|^2 + 2\\|y\\|^2$ for $x,y$ in an inner-product space over $\\mathbb{K}$."
+    },
+    {
+      "id": "real",
+      "title": "Real Case and Polarization",
+      "startLine": 55,
+      "endLine": 82,
+      "summary": "parallelogram_norm_sq_real proves the law over a real inner-product space directly by expanding ‖x±y‖² and cancelling cross terms; real_inner_eq_norm_sq_diff_div_four derives the dual polarization identity; norm_add_sq_eq_real gives the rearranged law.",
+      "mathContext": "Real expansions $\\|x \\pm y\\|^2 = \\|x\\|^2 \\pm 2\\langle x,y\\rangle + \\|y\\|^2$ give the law by addition and the polarization $\\langle x,y\\rangle = (\\|x+y\\|^2 - \\|x-y\\|^2)/4$ by subtraction."
+    },
+    {
+      "id": "complex",
+      "title": "Complex Case",
+      "startLine": 84,
+      "endLine": 85,
+      "summary": "parallelogram_norm_sq_complex: the ℂ specialization of the RCLike parallelogram law.",
+      "mathContext": "$\\|x+y\\|^2 + \\|x-y\\|^2 = 2\\|x\\|^2 + 2\\|y\\|^2$ over a complex inner-product space."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "extends",
+      "description": "Both are foundational inner-product-space identities; the parallelogram law and Cauchy-Schwarz together underpin Hilbert-space geometry"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-04",
+      "relationship": "related",
+      "description": "OQ-04 uses the Pythagorean norm decomposition (orthogonality); the parallelogram law here is the polarization-dual companion identity in the same inner-product-space family"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The parallelogram law specializes to the Pythagorean theorem when ⟪x,y⟩ = 0: then ‖x+y‖² = ‖x‖² + ‖y‖² and ‖x−y‖² = ‖x‖² + ‖y‖², averaging to the parallelogram identity"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "Another norm identity/inequality in normed spaces; the parallelogram law is the equality that singles out inner-product norms among those satisfying the triangle inequality"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of the parallelogram law ‖x+y‖² + ‖x−y‖² = 2‖x‖² + 2‖y‖² over real and complex inner-product spaces, proved by the requested cross-term-cancellation method, together with the dual squared-form polarization identity ⟪x,y⟩ = (‖x+y‖² − ‖x−y‖²)/4.",
+    "implications": "The parallelogram law is the algebraic signature of inner-product geometry: by Jordan–von Neumann it characterizes norms induced by an inner product, and the polarization identity shows the inner product is recoverable from such a norm. These are the standard tools for deciding whether a given Banach space is a Hilbert space.",
+    "openQuestions": [
+      "Formalize the Jordan–von Neumann converse: a norm satisfying the parallelogram law is induced by an inner product.",
+      "Extend the polarization corollary to the full complex form including the imaginary part (Mathlib's inner_eq_sum_norm_sq_div_four)."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "RCLike",
+      "InnerProductSpace"
+    ],
+    "namespace": "CauchySchwarzOQ07",
+    "lineCount": 85,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarzOQ07.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "parallelogram_norm_sq",
+      "type": "core",
+      "description": "**The parallelogram law (squared form), general field.** For an inner-product space over an `RCLike` field 𝕜 (so ℝ or ℂ), `‖x+y‖² + ‖x−y‖² = 2‖x‖² + 2‖y‖²`. Packages Mathlib's `*self`-form `parallelogram_law_with_norm` into the `^2` form requested by the open question, with 𝕜 explicit so it specializes to either field.",
+      "leanType": "∀ (𝕜 : Type*) {E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] (x y : E), ‖x + y‖ ^ 2 + ‖x - y‖ ^ 2 = 2 * ‖x‖ ^ 2 + 2 * ‖y‖ ^ 2"
+    },
+    {
+      "name": "parallelogram_norm_sq_real",
+      "type": "core",
+      "description": "**The parallelogram law over a real inner-product space**, proved by the exact method the open question names: expand ‖x+y‖² and ‖x−y‖² via `norm_add_sq_real`/`norm_sub_sq_real` (the inner-product self-identity), whereupon the cross terms ±2⟪x,y⟩ cancel on addition.",
+      "leanType": "∀ {F : Type*} [NormedAddCommGroup F] [InnerProductSpace ℝ F] (x y : F), ‖x + y‖ ^ 2 + ‖x - y‖ ^ 2 = 2 * ‖x‖ ^ 2 + 2 * ‖y‖ ^ 2"
+    },
+    {
+      "name": "real_inner_eq_norm_sq_diff_div_four",
+      "type": "core",
+      "description": "**Polarization identity (squared form).** In a real inner-product space the inner product is recovered from the norm via the diagonals: ⟪x,y⟩ = (‖x+y‖² − ‖x−y‖²)/4. The dual of the parallelogram law — the same cross-term expansion, taken as a difference instead of a sum.",
+      "leanType": "∀ {F : Type*} [NormedAddCommGroup F] [InnerProductSpace ℝ F] (x y : F), ⟪x, y⟫_ℝ = (‖x + y‖ ^ 2 - ‖x - y‖ ^ 2) / 4"
+    },
+    {
+      "name": "norm_add_sq_eq_real",
+      "type": "supporting",
+      "description": "Rearranged parallelogram law: a diagonal is determined by the sides and the other diagonal, ‖x+y‖² = 2‖x‖² + 2‖y‖² − ‖x−y‖².",
+      "leanType": "∀ {F : Type*} [NormedAddCommGroup F] [InnerProductSpace ℝ F] (x y : F), ‖x + y‖ ^ 2 = 2 * ‖x‖ ^ 2 + 2 * ‖y‖ ^ 2 - ‖x - y‖ ^ 2"
+    },
+    {
+      "name": "parallelogram_norm_sq_complex",
+      "type": "supporting",
+      "description": "The ℂ specialization of `parallelogram_norm_sq`, the parallelogram law over a complex inner-product space.",
+      "leanType": "∀ {G : Type*} [NormedAddCommGroup G] [InnerProductSpace ℂ G] (x y : G), ‖x + y‖ ^ 2 + ‖x - y‖ ^ 2 = 2 * ‖x‖ ^ 2 + 2 * ‖y‖ ^ 2"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Jordan, Pascual; von Neumann, John",
+      "title": "On Inner Products in Linear, Metric Spaces",
+      "year": "1935",
+      "venue": "Annals of Mathematics, vol. 36, no. 3, pp. 719–723",
+      "note": "Proves that a norm is induced by an inner product iff it satisfies the parallelogram law — the characterization that makes this identity central to Hilbert-space theory"
+    },
+    {
+      "authors": "Conway, John B.",
+      "title": "A Course in Functional Analysis",
+      "year": "1990",
+      "venue": "Springer, Graduate Texts in Mathematics 96 (2nd edition)",
+      "note": "Chapter I: the parallelogram law and the polarization identity in inner-product spaces"
+    }
+  ],
+  "sorries": 0
+}
