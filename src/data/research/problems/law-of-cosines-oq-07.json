@@ -1,0 +1,80 @@
+{
+  "slug": "law-of-cosines-oq-07",
+  "title": "Apollonius's Theorem: the Median Length Formula in a Euclidean Affine Space",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "started": "2026-06-20T08:40:00Z",
+  "lastUpdate": "2026-06-20T08:40:00Z",
+  "tags": [
+    "geometry",
+    "euclidean-geometry",
+    "law-of-cosines",
+    "apollonius-theorem",
+    "median-length",
+    "seeker-selected",
+    "research"
+  ],
+  "tractability": 8,
+  "significance": 5,
+  "problemStatement": {
+    "formal": "For points $a,b,c$ in a real inner-product affine space and $m=\\operatorname{midpoint}(b,c)$: $\\;|ab|^2+|ac|^2 = 2\\,(|am|^2+(|bc|/2)^2)$, equivalently $|am|^2=(2|ab|^2+2|ac|^2-|bc|^2)/4$.",
+    "plain": "Apollonius's theorem: the sum of the squares of two sides of a triangle equals twice the square of the median to the third side plus twice the square of half the third side. It is the affine/Euclidean form of the parallelogram law and follows from the law of cosines at the supplementary angles ∠amb + ∠amc = π. Gives the classical median-length formula.",
+    "whyMatters": [
+      "Apollonius's theorem is a named classical result (the median-length / Stewart's-theorem circle of identities) that the gallery did not yet expose, though Mathlib proves the core identity.",
+      "Point/midpoint (affine) formulation, distinct from sibling law-of-cosines-oq-04 which is the scalar algebraic median identity with no points or midpoint.",
+      "Surfaces an unused Mathlib geometry lemma (dist_sq_add_dist_sq_eq_two_mul_dist_midpoint_sq_add_half_dist_sq) with the explicit median-length corollary."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "apollonius_theorem: |ab|²+|ac|² = 2(|am|²+(|bc|/2)²), re-exporting Mathlib's EuclideanGeometry.dist_sq_add_dist_sq_eq_two_mul_dist_midpoint_sq_add_half_dist_sq.",
+      "median_length_sq: |am|² = (2|ab|²+2|ac|²−|bc|²)/4, derived by linarith from Apollonius.",
+      "sum_sq_sides_eq: cleared-denominator form |ab|²+|ac|² = 2|am|²+|bc|²/2. Axiom-free, no native_decide."
+    ],
+    "open": [
+      "Stewart's theorem (cevian of arbitrary ratio, not just the median).",
+      "The full parallelogram law for four points / a parallelogram witness."
+    ],
+    "goal": "Expose Apollonius's theorem in the gallery with the median-length corollary, in a general real inner-product affine space, axiom-free."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-20T08:40:00Z",
+    "iteration": 1,
+    "focus": "ACT: shipped Proofs/LawOfCosinesOQ07.lean — Apollonius's theorem + median-length corollary, axiom-free, sorry-free.",
+    "blockers": [],
+    "nextAction": "Optional: Stewart's theorem (general cevian). Core Apollonius + median formula complete and verified.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 ACT (researcher-3, 2026-06-20): Built Proofs/LawOfCosinesOQ07.lean exposing Apollonius's theorem in a general real inner-product affine space ([NormedAddCommGroup V][InnerProductSpace ℝ V][MetricSpace P][NormedAddTorsor V P]). apollonius_theorem re-exports Mathlib EuclideanGeometry.dist_sq_add_dist_sq_eq_two_mul_dist_midpoint_sq_add_half_dist_sq (grep-confirmed UNUSED in gallery). median_length_sq and sum_sq_sides_eq derive the classical median-length formula |am|²=(2|ab|²+2|ac|²−|bc|²)/4 by `have hbc:(dist b c/2)^2=dist b c^2/4 := by ring; rw; linarith`. Distinct from sibling law-of-cosines-oq-04 (scalar identity, no points/midpoint). Axiom-free (propext/Classical.choice/Quot.sound); no native_decide. Build note: shared Mathlib .lake cache heavily churned by fleet (segfaults + .ir invalid-header + 'compiled configuration invalid' on import Mathlib); retry-until-clean-window verified."
+  },
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Apollonius%27s_theorem"
+    ],
+    "mathlib": [
+      "EuclideanGeometry.dist_sq_add_dist_sq_eq_two_mul_dist_midpoint_sq_add_half_dist_sq (Geometry/Euclidean/Triangle.lean)"
+    ]
+  },
+  "relatedProofs": [
+    "law-of-cosines",
+    "law-of-cosines-oq-04"
+  ],
+  "leanFiles": [
+    {
+      "path": "proofs/Proofs/LawOfCosinesOQ07.lean",
+      "status": "verified",
+      "axiomCount": 0,
+      "sorryCount": 0
+    }
+  ],
+  "significanceNote": "Named classical theorem (Apollonius) surfaced in the gallery with the median-length corollary; affine form distinct from the scalar oq-04."
+}
