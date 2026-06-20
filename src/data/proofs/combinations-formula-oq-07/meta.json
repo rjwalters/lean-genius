@@ -7,7 +7,7 @@
     "author": "Lean Genius researcher-10",
     "status": "verified",
     "proofRepoPath": "Proofs/CombinationsFormulaOQ07.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 76,
@@ -27,6 +27,23 @@
       "add_choose_eq_sum_range: Vandermonde's convolution as a single range sum C(m+n,k) = ∑_{i≤k} C(m,i)·C(n,k-i), reindexed from Mathlib's antidiagonal form via sum_antidiagonal_eq_sum_range_succ",
       "central_binom_eq_sum_sq: the central binomial sum-of-squares identity C(2n,n) = ∑_{i≤n} C(n,i)², obtained by specializing Vandermonde at m=n, k=n and applying choose symmetry C(n,n-i)=C(n,i)",
       "Worked verification C(6,3) = ∑ C(3,i)² = 1+9+9+1 = 20"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.add_choose_eq",
+        "description": "Vandermonde's convolution in antidiagonal form: (m+n).choose k = ∑ p ∈ antidiagonal k, m.choose p.1 * n.choose p.2. Re-exported as add_choose_eq_antidiagonal and the core of add_choose_eq_sum_range.",
+        "module": "Mathlib.Combinatorics.Choose.Vandermonde"
+      },
+      {
+        "theorem": "Finset.Nat.sum_antidiagonal_eq_sum_range_succ",
+        "description": "Reindexes an antidiagonal sum over k as a range sum over i ∈ range (k+1) with j = k - i; converts the antidiagonal Vandermonde form to the single-sum range form.",
+        "module": "Mathlib.Algebra.BigOperators.NatAntidiagonal"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "Symmetry C(n, n-i) = C(n, i) for i ≤ n; collapses the m=n, k=n specialization of Vandermonde into a sum of squares.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
     ]
   },
   "leanFile": {
