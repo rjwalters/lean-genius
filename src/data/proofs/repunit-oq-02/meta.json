@@ -1,0 +1,158 @@
+{
+  "id": "repunit-oq-02",
+  "slug": "repunit-oq-02",
+  "title": "Repunits Are a Strong Divisibility Sequence: gcd(R_m, R_n) = R_gcd(m,n)",
+  "description": "A base-b repunit R_b(n) = 1 + b + b² + ⋯ + b^{n-1} is the number written as n ones in base b (R₁₀(3) = 111). This entry proves, fully machine-checked with 0 sorries and 0 axioms, that the repunit sequence is a strong divisibility sequence: gcd(R_b(m), R_b(n)) = R_b(gcd(m, n)) for every base b ≥ 2 and all indices m, n. This strictly strengthens the divisibility criterion R_b(m) ∣ R_b(n) ⟺ m ∣ n (entry repunit-oq-01), which is the special case gcd(m, n) ∈ {m, n}. The engine is the analogous identity gcd(b^m − 1, b^n − 1) = b^{gcd(m,n)} − 1, proved by Euclidean descent along Nat.gcd.induction; transfer to repunits cancels the universal factor b − 1. As corollaries: R_b(m) and R_b(n) are coprime iff m and n are.",
+  "leanFile": {
+    "imports": ["Proofs.RepunitDivisibilityOQ01"],
+    "opens": ["RepunitDivisibilityOQ01"],
+    "namespace": "RepunitDivisibilityOQ02",
+    "lineCount": 113,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "substantiveTheoremCount": 3,
+    "trivialSpecializations": 1,
+    "definitionCount": 0,
+    "path": "Proofs/RepunitDivisibilityOQ02.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Classical (strong divisibility sequences; repunits popularized by A. H. Beiler, 1966)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Divisibility_sequence",
+    "date": "1966",
+    "status": "verified",
+    "proofRepoPath": "Proofs/RepunitDivisibilityOQ02.lean",
+    "tags": [
+      "number-theory",
+      "repunit",
+      "divisibility",
+      "gcd",
+      "strong-divisibility-sequence",
+      "euclidean-algorithm"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Repunits are defined directly as ∑_{i<n} b^i in ℕ (reused from repunit-oq-01); all results are proved from elementary divisibility and the Euclidean recursion with no axioms and no structure-encoded hypotheses.",
+    "dateAdded": "2026-06-19",
+    "mathlibDependencies": [
+      "Nat.gcd.induction",
+      "Nat.gcd_rec",
+      "Nat.gcd_mul_left",
+      "Nat.gcd_mul_left_add_right",
+      "Nat.sub_dvd_pow_sub_pow"
+    ],
+    "originalContributions": [
+      "Strong divisibility identity for repunits repunit_gcd: for base b ≥ 2, gcd(R_b(m), R_b(n)) = R_b(gcd(m, n)) — the repunit sequence is a strong divisibility sequence",
+      "Power-difference strong divisibility gcd_pow_sub_one: gcd(b^m − 1, b^n − 1) = b^{gcd(m,n)} − 1, proved by Euclidean descent along Nat.gcd.induction (matches the gcd recursion gcd m n = gcd (n % m) m)",
+      "Coprimality criterion repunit_coprime_iff: R_b(m) and R_b(n) are coprime ⟺ m and n are coprime",
+      "Auxiliary repunit_eq_one_iff: R_b(d) = 1 ⟺ d = 1 for base b ≥ 2",
+      "Base-ten corollary repunit_ten_gcd: gcd(R₁₀(m), R₁₀(n)) = R₁₀(gcd(m, n))"
+    ],
+    "prerequisites": [
+      "The Euclidean algorithm and the gcd recursion gcd m n = gcd (n % m) m",
+      "Geometric factorization (b^m − 1) ∣ (b^m)^q − 1",
+      "Elementary divisibility and gcd arithmetic in ℕ"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 113,
+    "relatedProblems": ["repunit-oq-01"],
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "A sequence $(a_n)$ of integers is a *divisibility sequence* if $m \\mid n \\Rightarrow a_m \\mid a_n$, and a *strong divisibility sequence* (SDS) if $\\gcd(a_m, a_n) = a_{\\gcd(m,n)}$. The classical examples are $b^n - 1$, the Fibonacci numbers, and — proved here — the base-$b$ repunits $R_b(n) = (b^n - 1)/(b - 1)$. The SDS property is strictly stronger than plain divisibility (which is the special case $\\gcd(m,n) \\in \\{m,n\\}$) and is the structural reason behind repunit and Mersenne factorization tables: it pins down $\\gcd(R_m, R_n)$ for *every* pair of lengths, not just nested ones. Entry repunit-oq-01 proved the divisibility criterion $R_m \\mid R_n \\iff m \\mid n$; its open-question list explicitly asks for this gcd sharpening, which this entry supplies.",
+    "problemStatement": "Fix an integer base $b \\ge 2$ and define $R_b(n) = \\sum_{i=0}^{n-1} b^i$. Prove that for all natural numbers $m, n$, $\\gcd(R_b(m), R_b(n)) = R_b(\\gcd(m, n))$; equivalently, the repunits form a strong divisibility sequence.",
+    "proofStrategy": "Prove the corresponding identity for the power-difference sequence $f(k) = b^k - 1$ and transfer. For $f$, run Euclidean descent via `Nat.gcd.induction`: with $n = m q + r$, $r = n \\bmod m$, the geometric factorization $(b^m - 1) \\mid ((b^m)^q - 1)$ yields $b^n - 1 = (b^m - 1)\\,(c\\,b^r) + (b^r - 1)$, so $\\gcd(b^m - 1, b^n - 1) = \\gcd(b^m - 1, b^r - 1)$ by `Nat.gcd_mul_left_add_right`. This is exactly the gcd recursion $\\gcd(m,n) = \\gcd(n \\bmod m, m)$ (`Nat.gcd_rec`), so induction gives $\\gcd(b^m - 1, b^n - 1) = b^{\\gcd(m,n)} - 1$. Transfer to repunits by cancelling the universal positive factor $b - 1$: from $(b-1) R_b(k) = b^k - 1$ and `Nat.gcd_mul_left`, $(b-1)\\gcd(R_m, R_n) = \\gcd(b^m - 1, b^n - 1) = b^{\\gcd(m,n)} - 1 = (b-1) R_b(\\gcd(m,n))$, and cancellation finishes.",
+    "keyInsights": [
+      "The strong divisibility property is the natural completion of the divisibility criterion: $R_m \\mid R_n \\iff m \\mid n$ is exactly $\\gcd(R_m, R_n) = R_{\\gcd(m,n)}$ restricted to nested pairs $\\gcd(m,n) \\in \\{m, n\\}$.",
+      "Euclidean descent transports verbatim from the exponents to the values: the single reduction $\\gcd(b^m-1, b^n-1) = \\gcd(b^{n \\bmod m}-1, b^m-1)$ mirrors $\\gcd(m,n) = \\gcd(n \\bmod m, m)$, so `Nat.gcd.induction` closes the whole identity in one step.",
+      "The reduction needs no modular arithmetic, only the exact factorization $b^n - 1 = (b^m - 1)(c\\,b^{r}) + (b^{r} - 1)$ obtained from $(b^m - 1) \\mid (b^m)^{q} - 1$; `Nat.gcd_mul_left_add_right` then peels the multiple of $b^m - 1$.",
+      "Cancelling the universal factor $b - 1$ commutes with gcd (`Nat.gcd_mul_left`), so the repunit identity is a one-line consequence of the power-difference identity — the same $b - 1$ trick that powered the divisibility criterion.",
+      "Coprimality drops out: since $R_b(d) = 1 \\iff d = 1$, the gcd identity gives $\\gcd(R_m, R_n) = 1 \\iff \\gcd(m,n) = 1$, i.e. consecutive-length repunits (and more generally coprime lengths) are coprime."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "repunit_gcd",
+      "statement": "2 ≤ b → gcd(repunit b m, repunit b n) = repunit b (gcd m n)",
+      "description": "The main result: for any base b ≥ 2 the repunits form a strong divisibility sequence, gcd(R_m, R_n) = R_{gcd(m,n)}. Subsumes the divisibility criterion R_m ∣ R_n ⟺ m ∣ n."
+    },
+    {
+      "name": "gcd_pow_sub_one",
+      "statement": "1 ≤ b → gcd(b^m − 1, b^n − 1) = b^{gcd(m,n)} − 1",
+      "description": "The power-difference engine, proved by Euclidean descent along Nat.gcd.induction. Specializes at b = 2 to gcd(2^m − 1, 2^n − 1) = 2^{gcd(m,n)} − 1 for Mersenne numbers."
+    },
+    {
+      "name": "repunit_coprime_iff",
+      "statement": "2 ≤ b → (Coprime (repunit b m) (repunit b n) ↔ Coprime m n)",
+      "description": "Coprimality criterion: repunits of lengths m and n are coprime iff m and n are coprime, a direct corollary of the strong divisibility identity and repunit_eq_one_iff."
+    },
+    {
+      "name": "repunit_ten_gcd",
+      "statement": "gcd(repunit 10 m, repunit 10 n) = repunit 10 (gcd m n)",
+      "description": "Base-ten corollary: the ordinary repunits 1, 11, 111, … satisfy gcd(R_m, R_n) = R_{gcd(m,n)}."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "import Proofs.RepunitDivisibilityOQ01 (reusing the repunit definition and power bridge), the module docstring stating the strong divisibility identity gcd(R_m, R_n) = R_{gcd(m,n)} and sketching the Euclidean-descent reduction, and `namespace RepunitDivisibilityOQ02` with `open RepunitDivisibilityOQ01`."
+    },
+    {
+      "id": "power-engine",
+      "title": "Strong Divisibility for b^k − 1",
+      "startLine": 50,
+      "endLine": 78,
+      "summary": "Proves gcd_pow_sub_one: gcd(b^m − 1, b^n − 1) = b^{gcd(m,n)} − 1 (b ≥ 1) by Nat.gcd.induction. The H1 step writes n = m·(n/m) + n%m, uses the geometric factorization (b^m − 1) ∣ (b^m)^{n/m} − 1 to obtain b^n − 1 = (b^m − 1)·(c·b^{n%m}) + (b^{n%m} − 1), then peels the multiple of b^m − 1 with Nat.gcd_mul_left_add_right; this matches Nat.gcd_rec, closing the induction.",
+      "mathContext": "$\\gcd(b^m-1, b^n-1) = \\gcd(b^{n\\bmod m}-1, b^m-1)$ mirrors $\\gcd(m,n) = \\gcd(n\\bmod m, m)$."
+    },
+    {
+      "id": "repunit-gcd",
+      "title": "Repunit Strong Divisibility and the Base-Ten Case",
+      "startLine": 79,
+      "endLine": 96,
+      "summary": "Concludes repunit_gcd by cancelling the universal factor b − 1: from (b−1)·R_b(k) = b^k − 1 (pred_mul_repunit) and Nat.gcd_mul_left, (b−1)·gcd(R_m, R_n) = gcd(b^m−1, b^n−1) = b^{gcd(m,n)}−1 = (b−1)·R_b(gcd m n), and Nat.eq_of_mul_eq_mul_left finishes. Instantiates the base-ten corollary repunit_ten_gcd.",
+      "mathContext": "$(b-1)\\gcd(R_m,R_n) = \\gcd(b^m-1,b^n-1) = (b-1)R_b(\\gcd(m,n))$."
+    },
+    {
+      "id": "coprime",
+      "title": "Coprimality Criterion",
+      "startLine": 97,
+      "endLine": 113,
+      "summary": "Proves repunit_eq_one_iff (R_b(d) = 1 ⟺ d = 1 for b ≥ 2, via R_b(0) = 0, R_b(1) = 1, and R_b(d) ≥ 2 for d ≥ 2) and deduces repunit_coprime_iff: Coprime(R_m, R_n) ⟺ Coprime m n, by rewriting gcd through repunit_gcd and repunit_eq_one_iff."
+    }
+  ],
+  "references": [
+    {
+      "title": "Divisibility sequence",
+      "url": "https://en.wikipedia.org/wiki/Divisibility_sequence"
+    },
+    {
+      "title": "Repunit",
+      "url": "https://en.wikipedia.org/wiki/Repunit"
+    },
+    {
+      "title": "OEIS A002275 — Repunits (10^n − 1)/9",
+      "url": "https://oeis.org/A002275"
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "repunit-oq-01",
+      "relationship": "Strengthens the divisibility criterion to the gcd form",
+      "description": "repunit-oq-01 proves R_m ∣ R_n ⟺ m ∣ n and reuses its repunit definition and the bridge (b − 1)·R_b(n) = b^n − 1. The present entry answers that file's open question: gcd(R_m, R_n) = R_{gcd(m,n)}, of which the divisibility iff is the nested-pair special case."
+    }
+  ],
+  "conclusion": {
+    "summary": "For every base b ≥ 2, the base-b repunits form a strong divisibility sequence: gcd(R_b(m), R_b(n)) = R_b(gcd(m, n)), fully machine-checked with zero sorries and zero axioms. The proof establishes the power-difference identity gcd(b^m − 1, b^n − 1) = b^{gcd(m,n)} − 1 by Euclidean descent and transfers it to repunits by cancelling the universal factor b − 1.",
+    "implications": "The identity is the structural completion of the repunit divisibility law: it determines gcd(R_m, R_n) for all pairs of lengths, specializes at b = 2 to the Mersenne-number gcd identity gcd(2^m − 1, 2^n − 1) = 2^{gcd(m,n)} − 1, and yields the coprimality criterion that repunits of coprime lengths are coprime. It models the SDS-via-Euclidean-descent technique entirely inside the kernel with no native_decide and no axioms.",
+    "openQuestions": [
+      "Does the same Euclidean-descent template give gcd identities for the related sequences b^n + 1 (where gcd depends on the 2-adic valuations of m and n), making the dependence on parity explicit?",
+      "Can repunit_coprime_iff be packaged with repunit-oq-01 into a Mathlib-style `IsStrongDivisibilitySequence` instance for the generic sequence n ↦ (b^n − 1)/(b − 1)?"
+    ]
+  }
+}
