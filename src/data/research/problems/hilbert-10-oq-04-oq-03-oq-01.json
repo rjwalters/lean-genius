@@ -1,0 +1,68 @@
+{
+  "slug": "hilbert-10-oq-04-oq-03-oq-01",
+  "title": "Explicit Witness for Linear Diophantine Solvability",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "Proofs/Hilbert10OQ04OQ03OQ01.lean",
+  "problemStatement": {
+    "formal": "∀ n (a : Fin n → ℤ) (c : ℤ), (Finset.univ.gcd a) ∣ c → ∃ x : Fin n → ℤ, ∑ i, a i * x i = c, with the witness x produced constructively (computably), not merely existentially.",
+    "plain": "The parent entry proves that a linear Diophantine equation a₁x₁ + … + aₙxₙ = c is decidable and, when solvable, that a solution exists — but the existence is non-constructive (the witness comes from a noncomputable principal-ideal generator). This problem upgrades that to a computable solver returning an explicit integer solution vector.",
+    "whyMatters": [
+      "A decision procedure that also returns a witness is strictly more useful and is the integer analogue of the extended Euclidean algorithm (cofactors, not just the gcd).",
+      "It provides reusable, evaluable infrastructure for any downstream Diophantine construction in the gallery.",
+      "It cleanly separates 'a solution exists' (parent) from 'here is one' (this entry)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent hilbert-10-oq-04-oq-03: LinearForm.decidableSolvable and solvable_iff_gcd_dvd (non-constructive existence via Ideal.span / principal generator).",
+      "Mathlib: Int.gcd_eq_gcd_ab (two-variable extended Bézout), Int.gcdA / Int.gcdB (computable cofactors)."
+    ],
+    "open": [
+      "A reduced / minimal-norm witness (lattice reduction on the kernel of the coefficient row).",
+      "Extension to systems A x = b via Smith normal form (sibling of parent oq-02)."
+    ],
+    "goal": "Build a computable solver via folding pairwise Bézout cofactors across the coefficients and scaling by c/gcd; prove its correctness."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-19",
+    "iteration": 1,
+    "focus": "Shipped: constructive n-variable Bézout solver (bezout, bezout_sum, bezout_dvd, exists_solution, solve, solve_spec). 0 sorries, 0 axioms. Build unverified (Docker down) — deployer gates."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: constructive linear Diophantine solver shipped. bezout folds Int.gcdA/gcdB across coefficients; exists_solution and solve_spec prove correctness. 4 theorems, 2 defs, 0 sorries, 0 axioms.",
+    "builtItems": [
+      "bezout (Hilbert10OQ04OQ03OQ01.lean:40): computable (Fin n → ℤ) → ℤ × (Fin n → ℤ) returning gcd value g and explicit cofactor vector, by recursion combining head with tail gcd via Int.gcdA/Int.gcdB.",
+      "bezout_sum (:49): Σ aᵢ·yᵢ = g, by induction using Fin.sum_univ_succ + Finset.mul_sum + Int.gcd_eq_gcd_ab.",
+      "bezout_dvd (:71): g ∣ each aᵢ, by induction using Int.gcd_dvd_left/right.",
+      "exists_solution (:87): constructive existence — gcd a ∣ c ⟹ explicit x with Σ aᵢxᵢ = c.",
+      "solve + solve_spec (:105, :110): evaluable solver and its correctness via Int.mul_ediv_cancel'."
+    ],
+    "insights": [
+      "The parent's existence is genuinely non-constructive (Ideal.mem_span_range_iff_exists_fun after Submodule.IsPrincipal.generator); the real deliverable here is computability, not a new theorem.",
+      "Need not prove the fold value equals Finset.univ.gcd a — only that it divides it (g is a common divisor by bezout_dvd, so g ∣ Finset.gcd a; transitivity carries gcd a ∣ c to g ∣ c), avoiding normalization bookkeeping.",
+      "Iterated extended Euclid (head with running tail-gcd, tail cofactors scaled by gcdB) keeps every step an exact integer identity; division enters only at the final c/g scaling, discharged by Int.mul_ediv_cancel'.",
+      "6x+10y+15z=1 is a good demo: pairwise non-coprime, jointly coprime — the fold is essential, no single Bézout pair works."
+    ],
+    "nextSteps": [
+      "Reduced/minimal-norm witness via kernel lattice reduction (new oq-01 of this entry).",
+      "Lift to linear systems A x = b via Smith normal form (new oq-02; sibling of parent oq-02)."
+    ]
+  },
+  "tags": [
+    "hilbert-10",
+    "diophantine-equations",
+    "bezout",
+    "gcd",
+    "extended-euclid",
+    "constructive",
+    "computability",
+    "research"
+  ],
+  "started": "2026-06-19",
+  "lastUpdate": "2026-06-19",
+  "significance": 5,
+  "tractability": 7
+}
