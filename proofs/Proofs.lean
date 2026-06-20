@@ -179,6 +179,7 @@ import Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03
 import Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02
 import Proofs.ArithmeticSeriesOQ04
 import Proofs.ArithmeticSeriesOQ04OQ01
+import Proofs.ArsinhLogFormulaOQ01
 import Proofs.AutomorphicNumberOQ01
 import Proofs.BallotProblem
 import Proofs.BallotProblemOQ01
@@ -237,6 +238,7 @@ import Proofs.BertrandsPostulateOQ03OQ04
 import Proofs.BertrandsPostulateOQ03OQ04Aristotle
 import Proofs.BertrandsPostulateOQ03OQ04OQ01
 import Proofs.BertrandsPostulateOQ03OQ04OQ03
+import Proofs.BetaIntegralRecurrence
 import Proofs.BezoutIdentity
 import Proofs.BezoutIdentityOQ01
 import Proofs.BezoutIdentityOQ01Aristotle
@@ -684,6 +686,7 @@ import Proofs.CubeRoot6Irrational
 import Proofs.CubeRoot7Irrational
 import Proofs.CubeRoot9Irrational
 import Proofs.CyclotomicPolynomialsOQ01
+import Proofs.CyclotomicPolynomialsOQ02
 import Proofs.DeGuaTheorem
 import Proofs.DeMoivre
 import Proofs.DeMoivreOQ01
@@ -754,6 +757,7 @@ import Proofs.DirichletsTheoremOQ03Incomplete01
 import Proofs.DissectionOfCubes
 import Proofs.DissectionOfCubesOQ01
 import Proofs.DissectionOfCubesOQ01OQ01
+import Proofs.DissectionOfCubesOQ01OQ01OQ01
 import Proofs.DissectionOfCubesOQ01OQ03
 import Proofs.DissectionOfCubesOQ02
 import Proofs.DissectionOfCubesOQ02OQ02
@@ -783,6 +787,7 @@ import Proofs.DivisibilityTruncationGeneral
 import Proofs.DivisibilityTruncationGeneralOQ01
 import Proofs.DivisibilityTruncationGeneralOQ01OQ01
 import Proofs.DivisibilityTruncationGeneralOQ03
+import Proofs.DyckCatalanCountOQ01
 import Proofs.ETranscendentalOQ01
 import Proofs.ETranscendentalOQ01OQ01
 import Proofs.ETranscendentalOQ02
@@ -2563,6 +2568,7 @@ import Proofs.GCDAlgorithm
 import Proofs.GCDAlgorithmOQ01
 import Proofs.GCDAlgorithmOQ01OQ03
 import Proofs.GammaLogConvexityOQ01
+import Proofs.GammaReflectionFormulaOQ01
 import Proofs.GaussLemmaPrimitiveOQ01
 import Proofs.GaussWilsonNonCyclic
 import Proofs.GaussWilsonNonCyclicOQ01
@@ -3330,6 +3336,7 @@ import Proofs.ThreePlaceIdentity
 import Proofs.ThreePlaceIdentityOQ02
 import Proofs.ThreeSquares
 import Proofs.ThreeSquaresDavenportCassels
+import Proofs.ThreeSquaresRationalBridge
 import Proofs.ThreeSquaresResidue3
 import Proofs.ThreeSquaresResidue3Obstruction
 import Proofs.ThreeSquaresSingleAP
