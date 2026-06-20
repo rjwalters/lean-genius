@@ -37,7 +37,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Card
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
-import Proofs.Erdos340GreedySidon
+import Proofs.Erdos340SidonErdosTuran
 
 namespace Erdos28
 
@@ -461,12 +461,12 @@ private lemma finset_sumset_card_bound (F : Finset ℕ) :
 
 /-- **Sidon sets are NOT asymptotic bases.**
 
-Uses the tight Sidon density bound (Erdos340.sidon_upper_bound, axiom) to show that
-Sidon sets are too sparse to cover [N₀, N] when N is large.
+Uses the tight Sidon density bound (Erdos340.sidon_card_le_sqrt, verified, axiom-free)
+to show that Sidon sets are too sparse to cover [N₀, N] when N is large.
 
 **Proof**: By contradiction. For a Sidon basis with threshold N₀, pick N = (4N₀+100)².
 Coverage gives N-N₀+1 ≤ |sumset(A_N)| ≤ |A_N|(|A_N|+1)/2 (unordered pair bound).
-The tight Sidon bound gives |A_N| ≤ √N+√(√N)+1 ≤ 5N₀+126, so the RHS ≈ N/2,
+The tight Sidon bound gives |A_N| ≤ √N+√(√N)+2 ≤ 5N₀+127, so the RHS ≈ N/2,
 contradicting the LHS ≈ N. -/
 theorem sidon_not_basis (A : Set ℕ) (hS : IsSidon A) (hInf : A.Infinite) :
     ¬IsAsymptoticBasis A := by
@@ -486,13 +486,13 @@ theorem sidon_not_basis (A : Set ℕ) (hS : IsSidon A) (hInf : A.Infinite) :
     intro a b c d ha hb hc hd heq
     exact hS a b c d (Set.mem_of_mem_inter_left ha) (Set.mem_of_mem_inter_left hb)
       (Set.mem_of_mem_inter_left hc) (Set.mem_of_mem_inter_left hd) heq
-  -- Sidon tight bound: s ≤ √N + √(√N) + 1
+  -- Sidon tight bound: s ≤ √N + √(√N) + 2  (verified Erdős–Turán/Lindström bound)
   have hF_bound : ∀ a ∈ F, a ≤ N := by
     intro a ha
     rw [Set.Finite.mem_toFinset] at ha
     exact Set.mem_Iic.mp (Set.mem_of_mem_inter_right ha)
-  have h_sidon : s ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 1 :=
-    Erdos340.sidon_upper_bound F (isSidon_set_to_finset F hS_sidon) N hF_bound
+  have h_sidon : s ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 2 :=
+    Erdos340.sidon_card_le_sqrt F (isSidon_set_to_finset F hS_sidon) N hF_bound
   -- Bound s using explicit values: √(T²) = T, √T ≤ N₀ + 25
   have h_sqrt_N : Nat.sqrt N = T := by
     rw [hN_def, sq]; simp [Nat.sqrt_eq]
@@ -500,7 +500,7 @@ theorem sidon_not_basis (A : Set ℕ) (hS : IsSidon A) (hInf : A.Infinite) :
     have : T ≤ (N₀ + 25) ^ 2 := by nlinarith [hT_def]
     calc Nat.sqrt T ≤ Nat.sqrt ((N₀ + 25) ^ 2) := Nat.sqrt_le_sqrt this
       _ = N₀ + 25 := by rw [sq]; simp [Nat.sqrt_eq]
-  have h_s_bound : s ≤ 5 * N₀ + 126 := by
+  have h_s_bound : s ≤ 5 * N₀ + 127 := by
     have h1 := h_sidon; rw [h_sqrt_N] at h1; linarith [h_sqrt_T, hT_def]
   -- Coverage: [N₀, N] ⊆ sumset(S), so N - N₀ + 1 ≤ |sumset(S)|
   have h_cover : Set.Icc N₀ N ⊆ sumset S := by
@@ -547,14 +547,14 @@ theorem sidon_not_basis (A : Set ℕ) (hS : IsSidon A) (hInf : A.Infinite) :
     have h := Nat.mul_le_mul_left 2 h_cover_count
     have h2 := h_sumset_bound
     omega
-  -- s*(s+1) ≤ (5*N₀+126)*(5*N₀+127) since s ≤ 5*N₀+126
-  have h_s_mul : s * (s + 1) ≤ (5 * N₀ + 126) * (5 * N₀ + 127) := by
+  -- s*(s+1) ≤ (5*N₀+127)*(5*N₀+128) since s ≤ 5*N₀+127
+  have h_s_mul : s * (s + 1) ≤ (5 * N₀ + 127) * (5 * N₀ + 128) := by
     apply Nat.mul_le_mul <;> omega
   -- N = T^2 = (4*N₀+100)^2, so 2*N+2 = 2*(4*N₀+100)^2+2
-  -- Combining: 2*(4*N₀+100)^2+2 ≤ (5*N₀+126)*(5*N₀+127)+2*N₀
-  -- i.e., 32*N₀²+1600*N₀+20002 ≤ 25*N₀²+1267*N₀+16002
-  -- i.e., 7*N₀²+333*N₀+4000 ≤ 0, which is impossible.
-  have : 2 * T ^ 2 + 2 ≤ (5 * N₀ + 126) * (5 * N₀ + 127) + 2 * N₀ := by
+  -- Combining: 2*(4*N₀+100)^2+2 ≤ (5*N₀+127)*(5*N₀+128)+2*N₀
+  -- i.e., 32*N₀²+1600*N₀+20002 ≤ 25*N₀²+1277*N₀+16256
+  -- i.e., 7*N₀²+323*N₀+3746 ≤ 0, which is impossible.
+  have : 2 * T ^ 2 + 2 ≤ (5 * N₀ + 127) * (5 * N₀ + 128) + 2 * N₀ := by
     linarith [hN_def]
   nlinarith [hT_def, sq_nonneg N₀]
 
