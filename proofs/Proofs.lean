@@ -693,6 +693,7 @@ import Proofs.DirichletApproximation
 import Proofs.DirichletApproximationOQ01
 import Proofs.DirichletApproximationOQ02
 import Proofs.DirichletApproximationOQ03
+import Proofs.DirichletApproximationOQ04
 import Proofs.DirichletApproximationOQ05
 import Proofs.DirichletsTheorem
 import Proofs.DirichletsTheoremOQ01
