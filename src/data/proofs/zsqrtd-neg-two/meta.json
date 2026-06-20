@@ -131,6 +131,16 @@
       "targetId": "lagrange-four-squares",
       "relationship": "related",
       "description": "Every natural number is a sum of four squares; primes p ≡ 3 mod 8 proved here as sums of three squares provide special cases"
+    },
+    {
+      "targetId": "zsqrtd-neg-two-oq-01",
+      "relationship": "extended-by",
+      "description": "Strengthens this entry's two separate forward implications (p%8=1 ⇒ ∃a,b a²+2b²=p and p%8=3 ⇒ ∃a,b a²+2b²=p) into a single bi-conditional p = x²+2y² ⇔ p ≡ 1 or 3 (mod 8), adding the converse direction the parent left open."
+    },
+    {
+      "targetId": "zsqrtd-neg-two-oq-03",
+      "relationship": "extended-by",
+      "description": "Carries the method to the next quadratic form: it builds the Eisenstein integers ℤ[ω] (ring, norm, Euclidean structure) as the algebraic foundation for an x²+3y² representation theorem, mirroring the role ℤ[√−2] plays here for x²+2y²."
     }
   ],
   "mainTheorems": [
