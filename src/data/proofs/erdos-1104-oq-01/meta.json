@@ -84,6 +84,64 @@
       "Elementary reasoning about Fin (n+1), castSucc, and cardinality of complements"
     ]
   },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Problem Statement & Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring framing Erdős #1104 — the growth of f(n)=max χ(G) over triangle-free G on n vertices — and the goal: build Mycielski's construction M(G), absent from Mathlib, and prove the full theorem sorry-free and axiom-free. Imports Mathlib, opens SimpleGraph, fixes a base graph G."
+    },
+    {
+      "id": "construction",
+      "title": "The Mycielskian Construction M(G)",
+      "startLine": 47,
+      "endLine": 77,
+      "summary": "Vertex type MycVertex = Option (V ⊕ V) (original copies, shadow copies, and the apex none), the raw relation mycRel encoding original–original, shadow–original and apex–shadow edges, and mycielskian G := SimpleGraph.fromRel mycRel symmetrising it."
+    },
+    {
+      "id": "adjacency-lemmas",
+      "title": "Nine Adjacency Simp-Lemmas",
+      "startLine": 79,
+      "endLine": 136,
+      "summary": "Nine @[simp] lemmas pinning down adjacency in M(G) for every vertex-class pair: originals adjacent iff G-adjacent, shadow–original iff G-adjacent, shadows mutually non-adjacent, apex adjacent only to shadows. These turn every later case analysis into a simp call."
+    },
+    {
+      "id": "triangle-free",
+      "title": "Triangle-Freeness Is Preserved",
+      "startLine": 138,
+      "endLine": 156,
+      "summary": "mycielskian_cliqueFree_three: if G has no triangle then neither does M(G). The apex meets only the independent shadow class so lies in no triangle, and any triangle uses at most one shadow, hence projects to a G-triangle — impossible."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Chromatic Upper Bound: an Explicit (n+1)-Colouring",
+      "startLine": 158,
+      "endLine": 195,
+      "summary": "mycColor reuses an n-colouring of G verbatim on originals and shadows (lifted by Fin.castSucc) and sends the apex to the fresh colour Fin.last n; mycielskian_colorable_succ proves it proper, giving G.Colorable n → (M G).Colorable (n+1)."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Chromatic Lower Bound: Mycielski's Recolouring Argument",
+      "startLine": 197,
+      "endLine": 240,
+      "summary": "mycielskian_colorable_of_succ, the deep half: from a proper (n+1)-colouring of M(G) with apex colour a, recolour each original by its shadow's colour exactly when it wears a. The result avoids a, stays proper, and collapses to an n-colouring of G — pinning χ(M(G)) = χ(G)+1."
+    },
+    {
+      "id": "iterated-family",
+      "title": "The Iterated Witness Family",
+      "startLine": 241,
+      "endLine": 309,
+      "summary": "mycVertexIter / mycielskianIter define the k-fold Mycielskian; mycielskianIter_cliqueFree_three and mycielskianIter_colorable lift preservation and (n+k)-colourability through the tower; mycielskian_witness_family, mycielskianIter_colorable_of_add and mycielskianIter_colorable_iff give the exact colourability threshold of the iterate."
+    },
+    {
+      "id": "k2-tower",
+      "title": "K₂ Base Case and the Witness Tower",
+      "startLine": 311,
+      "endLine": 345,
+      "summary": "K₂ = (⊤ : SimpleGraph (Fin 2)) is shown triangle-free, 2-colourable and not 1-colourable; exists_triangleFree_colorable_not_colorable then iterates M from K₂ to exhibit, for every k, a triangle-free graph of chromatic number exactly k+2."
+    }
+  ],
   "conclusion": {
     "summary": "The full Mycielski theorem is formalized with zero sorries and zero axioms: the Mycielskian M(G) (built from scratch, absent from Mathlib) preserves triangle-freeness and satisfies χ(M(G)) = χ(G)+1 — the upper bound by an explicit (n+1)-colouring and the lower bound by Mycielski's recolouring argument. The iterated witness family and exact colourability threshold (mycielskianIter_colorable_iff) yield the headline exists_triangleFree_colorable_not_colorable: for every k a triangle-free graph of chromatic number exactly k+2, the constructive lower-bound engine behind Erdős #1104.",
     "implications": "The result is a fully verified instance of one of graph theory's foundational surprises: local sparsity (no triangles, the densest possible local structure removed) places no bound at all on the global colouring complexity. Having the Mycielskian and the exact increment χ(M(G)) = χ(G)+1 machine-checked turns the qualitative 'arbitrarily large χ' folklore into a concrete, reusable Lean construction — the tower K₂ → C₅ → Grötzsch → … is now a certified object, not a picture. It is precisely the constructive lower-bound engine for the open Erdős #1104 (the growth rate of f(n) = max χ over triangle-free n-vertex graphs), and supplies the kind of explicit witness family that off-diagonal Ramsey theory needs for R(3,k) lower bounds. Because Mathlib has no Mycielskian, this is also new reusable colouring infrastructure: any future Lean development needing high-chromatic triangle-free graphs can instantiate the tower.",
