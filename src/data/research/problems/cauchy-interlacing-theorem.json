@@ -1,0 +1,86 @@
+{
+  "slug": "cauchy-interlacing-theorem",
+  "title": "Cauchy Interlacing Theorem for Hermitian Matrices",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Let } A \\in \\mathbb{C}^{n\\times n} \\text{ be Hermitian with eigenvalues } \\lambda_1 \\le \\cdots \\le \\lambda_n,",
+    "plain": "If you delete one row and the matching column from a symmetric/Hermitian matrix, the eigenvalues of the resulting principal submatrix interlace those of the original.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-15T14:30:00-07:00",
+    "iteration": 3,
+    "focus": "Verified the Mathlib API against master (docs+source). Retracted the iter-2 'no sorted eigenvalues' gap. Re-pinned formalization route to matrix-native eigenvalues₀ + operator Rayleigh for extreme cases.",
+    "blockers": [
+      "Both proof backends down: Docker build pool saturated (3 lean-build on 7.65GiB VM); Aristotle MCP prove → 404.",
+      "Keystone theory gap: no k-th Courant–Fischer min-max in Mathlib (only extreme Rayleigh)."
+    ],
+    "nextAction": "When a backend returns: formalize the two extreme cases (k=0/k=last) over eigenvalues₀ via the operator Rayleigh iSup/iInf domain-restriction; see approaches/orient-min-max-scaffolding.md §4-verified.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: first Lean shipped — operator-level keystone + 2 leaf lemmas stated (Sublemma B proof attempted); build-pending, both backends down",
+    "builtItems": [
+      "approaches/orient-min-max-scaffolding.md: full ORIENT memo — proof decomposition (Courant–Fischer route), §4-verified exact Rayleigh signatures, §5-revised matrix-native statement, minimal residual-lemma list for the extreme-case PR. No .lean file shipped yet (the earlier builtItems entry claiming a CauchyInterlacing.lean was inaccurate — lean/ dir is empty).",
+      "approaches/keystone-minmax-proof-design.md: full per-step Mathlib lemma map for the k-th min-max keystone + Sublemmas A/B + boundedness obligations (no Lean compiled, both backends down)",
+      "lean/CauchyInterlacingMinMax.lean: stated keystone eigenvalue_eq_iSup_iInf_rayleigh (k-th max-min, sorry) + leaf lemmas inf_exists_ne_zero_of_finrank_add_gt (Sublemma B, proof attempted) and rayleigh_mem_Icc_of_mem_eigenspan (Sublemma A, sorry) — build-pending, no backend"
+    ],
+    "insights": [
+      "VERIFIED (Mathlib master, iter 3): Matrix.IsHermitian.eigenvalues₀ : Fin (Fintype.card n) → ℝ is sorted DESCENDING with Matrix.IsHermitian.eigenvalues₀_antitone (file Mathlib.LinearAlgebra.Matrix.Spectrum). Plain Matrix.IsHermitian.eigenvalues reuses index type n and is NOT sorted. So the 'no sorted eigenvalue function' gap from earlier survey notes is FALSE — state interlacing directly over eigenvalues₀, no abstract monotone-tuple workaround needed.",
+      "VERIFIED (Mathlib master, iter 3): operator-level sorted eigenvalues also exist — LinearMap.IsSymmetric.eigenvalues : Fin n → ℝ, antitone (eigenvalues_antitone), with hasEigenvalue_eigenvalues, eigenvectorBasis, exists_eigenvalues_eq (Mathlib.Analysis.InnerProductSpace.Spectrum).",
+      "VERIFIED (Mathlib master, iter 3): extreme eigenvalues are variationally characterized — LinearMap.IsSymmetric.hasEigenvalue_iSup_of_finiteDimensional / _iInf_ state that ⨆/⨅ of the Rayleigh quotient ⟪Tx,x⟫/‖x‖² over {x≠0} IS an eigenvalue (top/bottom). These are HasEigenvalue statements, not yet equalities with eigenvalues 0 / last — bridging them is a small lemma (extremum is an eigenvalue ⇒ ≤ max; every eigenvector's Rayleigh value ⇒ ≥). File Mathlib.Analysis.InnerProductSpace.Rayleigh.",
+      "Interlacing stated in descending convention λ k.succ ≤ μ k ≤ λ k.castSucc for k : Fin n; equivalent to ascending textbook form under index reversal.",
+      "Extreme cases (k=0 top, k=last bottom) follow TODAY from the extreme Rayleigh API by domain-monotonicity of ⨆/⨅ under the codim-1 hyperplane H_i ⊆ ℂⁿ — no k-th min-max needed.",
+      "Keystone k-th min-max ADMITS a complete classical proof (Courant-Fischer max-min): exhibit Vlo=span(b 0..k) for the >= bound; for <= bound, any (k+1)-dim S meets Vhi=span(b k..n-1) nontrivially since (k+1)+(n-k)=n+1>n, and Rayleigh <= mu k there.",
+      "Reduces to 2 standalone CLOSED sublemmas: (A) Rayleigh quotient on span of an eigenvector subset is a convex combination of those eigenvalues, hence between their min and max; (B) two subspaces with finrank sum > n meet nontrivially (via finrank_sup_add_finrank_inf_eq + finrank_le).",
+      "Critical formalization hazard identified: ciInf/ciSup over subspace families need explicit BddBelow(mu last)/BddAbove(mu 0)+nonempty discharge or they return junk - the usual silent breakage point.",
+      "CLM-vs-LM Rayleigh spelling mismatch (eigenvalues API on LinearMap, rayleighQuotient on ContinuousLinearMap) should be isolated to one bridge lemma, not threaded through the proof.",
+      "Parallel branch research/cauchy-interlacing-statement (PR #24800) holds the matrix statement of record (sortedEigs/principalDrop/cauchy_interlacing sorry) with a True-stub keystone; my operator-level leaf file complements it — the bridge is matrix Hermitian -> operator IsSymmetric via the spectral theorem"
+    ],
+    "mathlibGaps": [
+      "No k-th Courant–Fischer / min-max characterisation of the descending k-th eigenvalue in Mathlib (confirmed absent from both InnerProductSpace.Rayleigh and InnerProductSpace.Spectrum on master; only extreme top/bottom Rayleigh cases exist). This is the keystone; est. few hundred lines over Submodule ℂ (EuclideanSpace ℂ (Fin N)). Independently reusable (Weyl, Lidskii)."
+    ],
+    "nextSteps": [
+      "Formalize the two extreme cases (§4-verified): bridge eigenvalues₀ 0/last to the Rayleigh ⨆/⨅, then domain-restrict to H_i. Smallest viable first PR; good Aristotle job when backend up. Use matrix-native statement (§5-revised).",
+      "Build the general k-th min-max lemma over Submodule ℂ (EuclideanSpace ℂ (Fin N)) — keystone; the only genuine new theory.",
+      "Discharge cauchy_interlacing from min-max + the dim(S ∩ H_i) ≥ dim S − 1 count; build+register when Docker free.",
+      "At build time, re-confirm eigenvalues₀/_antitone exist in the project pin v4.26.0 (verified only against master); fall back to Tuple.sort or operator eigenvalues if absent.",
+      "When a backend returns: submit Sublemma A (Rayleigh=convex combo of eigenvalues) and Sublemma B (nontrivial intersection by finrank count) to Aristotle FIRST - they are leaf deps, closed/HARD-not-OPEN, unblock everything above.",
+      "Then build boundedness haves (mu 0 / mu last), then the max-min identity, then dual via -T, then interlacing assembly.",
+      "Re-confirm eigenvalues_antitone + apply_eigenvectorBasis + finrank_sup_add_finrank_inf_eq exist in pin v4.26.0 (checked vs master only).",
+      "Submit lean/CauchyInterlacingMinMax.lean to Aristotle prove_file (Sublemma A+B are closed leaf targets) or docker-build when <=2 containers; reconfirm finrank_bot/eigenvalues/eigenvectorBasis names vs v4.26.0 pin"
+    ],
+    "markdown": "# Knowledge Base: cauchy-interlacing-theorem\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "linear-algebra",
+    "spectral-theory",
+    "eigenvalues"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.Spectrum",
+      "Mathlib.Analysis.InnerProductSpace.Rayleigh",
+      "Mathlib.Analysis.InnerProductSpace.Spectrum"
+    ]
+  },
+  "started": "2026-06-15T12:01:03-07:00",
+  "significance": 6,
+  "tractability": 5
+}
