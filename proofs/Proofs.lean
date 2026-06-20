@@ -3142,6 +3142,7 @@ import Proofs.TriangularReciprocalGeneralized
 import Proofs.TriangularReciprocalsFigurate
 import Proofs.TriangularReciprocalsOQ02
 import Proofs.TriangularReciprocalsOQ02Aristotle
+import Proofs.TuranEdgeBound
 import Proofs.TwinPrimes
 import Proofs.TwinPrimesSpecialOQ01
 import Proofs.UnitDistanceHN7
