@@ -18,7 +18,8 @@
       "betweenness"
     ],
     "proofRepoPath": "Proofs/TriangleInequalityOQ05.lean",
-    "badge": "original",
+    "badge": "mathlib",
+    "packagingNote": "Tier B Mathlib wrapper: all five theorems are one-line re-exports of named Mathlib lemmas (sameRay_iff_norm_add, not_sameRay_iff_norm_add_lt, eq_of_norm_eq_of_norm_add_eq, dist_add_dist_eq_iff) plus a trivial two-rewrite glue (dist_add_dist_eq_iff + mem_segment_iff_wbtw). The original content is packaging both the vectorial (SameRay) and metric (Wbtw/segment) forms together with three worked instantiations on ℝ and EuclideanSpace ℝ (Fin 2). Status stays verified (genuinely 0-sorry / 0-axiom); only the badge tier is corrected from original to mathlib.",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 101,
