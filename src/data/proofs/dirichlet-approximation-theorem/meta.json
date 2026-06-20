@@ -133,6 +133,26 @@
   },
   "crossReferences": [
     {
+      "targetId": "dirichlet-approximation-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's first open question: OQ-01 upgrades the one-shot bound to the infinitude statement — infinitely many coprime p/q with |α − p/q| < 1/q² for irrational α — and recasts it in the classical coprime integer-pair form."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-02",
+      "relationship": "extended-by",
+      "description": "Answers this entry's second open question: OQ-02 is the simultaneous d-dimensional generalization, finding one common denominator q ≤ Q^d that approximates all of θ₁,…,θ_d to within 1/Q at once via a higher-dimensional pigeonhole. The d = 1 case recovers this entry."
+    },
+    {
+      "targetId": "hurwitz-theorem",
+      "relationship": "sharpened-by",
+      "description": "Hurwitz's theorem sharpens the constant in the corollary |α − p/q| < 1/q² proved here to the best-possible 1/(√5 q²), still over infinitely many coprime pairs; the golden ratio shows √5 cannot be improved. This entry supplies the unsharpened existence result Hurwitz refines."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "contrasts",
+      "description": "Liouville's theorem runs in the opposite direction: algebraic irrationals of degree n cannot be approximated to order better than n. Combined with the unconditional order-2 approximability established here, it yields explicit transcendental numbers (Liouville numbers approximable to every order)."
+    },
+    {
       "targetId": "dirichlets-theorem",
       "relationship": "related",
       "description": "Dirichlet's theorem on primes in arithmetic progressions — a different, analytic theorem of the same author. Both descend from Dirichlet's methodological innovations, but the approximation theorem is elementary and combinatorial."
