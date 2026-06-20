@@ -153,6 +153,16 @@
       "targetId": "harmonic-divergence",
       "relationship": "related",
       "description": "The harmonic series sum(1/n) diverges, but sum(2/(n(n+1))) converges to 2. The key difference is the extra factor 1/(n+1) which provides sufficient decay via telescoping."
+    },
+    {
+      "targetId": "triangular-reciprocals-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends the triangular case to general k-gonal (figurate) numbers: it formalizes the telescoping partial-fraction identity for triangular reciprocals, proves convergence of the square-reciprocal sum by p-series comparison, and includes the identity that every hexagonal number is triangular."
+    },
+    {
+      "targetId": "triangular-reciprocals-oq-02",
+      "relationship": "extended-by",
+      "description": "Generalizes the closed form along a different axis: for every k ≥ 1, ∑_{n≥1} 1/(n(n+k)) = H_k/k where H_k is the k-th harmonic number. The triangular case ∑ 2/(n(n+1)) = 2 here is the k=1 instance (Leibniz identity)."
     }
   ],
   "conclusion": {
