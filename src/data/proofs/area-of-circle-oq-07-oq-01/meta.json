@@ -1,0 +1,112 @@
+{
+  "id": "area-of-circle-oq-07-oq-01",
+  "slug": "area-of-circle-oq-07-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "",
+    "lineCount": 61,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ07OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Standard Normal Density Integrates to One",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ01.lean",
+    "tags": [
+      "analysis",
+      "gaussian-integral",
+      "special-functions",
+      "probability",
+      "normal-distribution",
+      "measure-theory",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 61,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "integral_exp_neg_half_sq: ∫_ℝ e^{-x²/2} dx = √(2π), the un-normalized mass of the variance-1 Gaussian kernel, obtained as the b = 1/2 specialization of Mathlib's integral_gaussian (since -x²/2 = -(1/2)·x² and π/(1/2) = 2π)",
+      "standard_normal_density_integral_eq_one: ∫_ℝ (1/√(2π))·e^{-x²/2} dx = 1, the normalization of the N(0,1) probability density, obtained by pulling the constant out of the integral (integral_const_mul) and cancelling (√(2π))⁻¹·√(2π) = 1"
+    ],
+    "prerequisites": [
+      "Lebesgue integration over ℝ (MeasureTheory)",
+      "Mathlib's parametrized Gaussian integral integral_gaussian",
+      "Real.sqrt and Real.pi API",
+      "Parent: area-of-circle-oq-07 (the b = 1 Gaussian ∫ e^{-x²} = √π)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_gaussian",
+        "description": "∫ x : ℝ, exp (-b * x ^ 2) = √(π / b) for every real b — the parametrized Gaussian integral. Specialized here at b = 1/2.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "MeasureTheory.integral_const_mul",
+        "description": "∫ x, r * f x = r * ∫ x, f x — used to pull the normalization constant 1/√(2π) out of the integral.",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
+      },
+      {
+        "theorem": "Real.sqrt_ne_zero'",
+        "description": "√x ≠ 0 ↔ 0 < x — supplies √(2π) ≠ 0 for the cancellation (√(2π))⁻¹·√(2π) = 1.",
+        "module": "Mathlib.Data.Real.Sqrt"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "area-of-circle-oq-07-oq-01-oq-01",
+      "question": "Generalize to arbitrary variance σ² > 0: prove ∫_ℝ (1/(σ√(2π)))·e^{-x²/(2σ²)} dx = 1, the normalization of the centered Gaussian density N(0,σ²), from integral_gaussian at b = 1/(2σ²).",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "extends",
+      "description": "Parent. The parent evaluates the bare Gaussian ∫ e^{-x²} = √π as the b = 1 case of integral_gaussian; this entry takes b = 1/2 to obtain the standard normal kernel e^{-x²/2}, whose total mass √(2π) is the normalization constant of N(0,1)."
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "Grandparent. The analytic content — squaring the Gaussian and passing to polar coordinates, where the circle-area Jacobian r dr dθ appears — is discharged inside Mathlib's integral_gaussian, the same lemma both entries specialize."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_gaussian (b : ℝ) : ∫ x, exp (-b * x ^ 2) = √(π / b), specialized here at b = 1/2."
+    },
+    {
+      "title": "Théorie analytique des probabilités",
+      "author": "Pierre-Simon Laplace",
+      "year": "1812",
+      "venue": "Courcier, Paris",
+      "description": "Classical home of the Gaussian integral and the normalization of the normal distribution."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The standard normal density (1/√(2π))·e^{-x²/2} integrates to 1 over ℝ. The proof is the b = 1/2 specialization of Mathlib's parametrized Gaussian integral integral_gaussian: the integrand exp(-(1/2)·x²) = exp(-x²/2) is the variance-1 Gaussian kernel, and √(π/(1/2)) = √(2π) is its mass (integral_exp_neg_half_sq). Pulling the constant 1/√(2π) out of the integral via integral_const_mul and cancelling (√(2π))⁻¹·√(2π) = 1 gives the normalization. 61 lines, 2 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "An honest, routine specialization rather than original mathematics — Mathlib already contains the hard analytic work inside integral_gaussian. Its value to the gallery is the direct bridge from the bare Gaussian integral to probability theory: the property ∫ density = 1 is precisely what makes N(0,1) a probability measure, and the constant √(2π) is the normalization that appears in every Gaussian density. It complements the parent's b = 1 case (∫ e^{-x²} = √π) by exhibiting the b = 1/2 case that probabilists actually use.",
+    "openQuestions": [
+      "Generalize to arbitrary variance σ² > 0: ∫_ℝ (1/(σ√(2π)))·e^{-x²/(2σ²)} dx = 1 from integral_gaussian at b = 1/(2σ²)."
+    ]
+  }
+}

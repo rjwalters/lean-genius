@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-aoc0701-context",
+    "proofId": "area-of-circle-oq-07-oq-01",
+    "range": { "startLine": 5, "endLine": 39 },
+    "type": "concept",
+    "title": "From the Bare Gaussian to a Probability Density",
+    "content": "This entry answers open question 1 of `area-of-circle-oq-07`: it normalizes the Gaussian into a probability density. The parent evaluated the bare integral `∫ e^{-x²} = √π` as the `b = 1` case of Mathlib's parametrized `integral_gaussian (b) : ∫ x, exp (-b·x²) = √(π/b)`. Here we instead take `b = 1/2`, which turns the integrand into the *standard normal kernel* `e^{-x²/2}` and the value into `√(2π)` — the constant by which one must divide to make the total mass equal `1`. The property `∫ density = 1` is exactly what certifies that `N(0,1)` is a probability measure, so this is the step that connects the Gaussian integral to probability theory.",
+    "mathContext": "For variance $\\sigma^2$ the centered Gaussian density is $\\frac{1}{\\sigma\\sqrt{2\\pi}}e^{-x^2/(2\\sigma^2)}$; the standard normal is $\\sigma = 1$. Its normalization rests on $\\int_{-\\infty}^{\\infty} e^{-x^2/2}\\,dx = \\sqrt{2\\pi}$, which is the $b = 1/2$ instance of $\\int e^{-bx^2} = \\sqrt{\\pi/b}$ since $\\pi/(1/2) = 2\\pi$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "standard normal distribution",
+      "probability density normalization",
+      "Gaussian integral",
+      "parametrized lemma specialization"
+    ],
+    "prerequisites": [
+      "Lebesgue integral over ℝ",
+      "Mathlib integral_gaussian",
+      "parent area-of-circle-oq-07 (the b = 1 case)"
+    ]
+  },
+  {
+    "id": "ann-aoc0701-mass",
+    "proofId": "area-of-circle-oq-07-oq-01",
+    "range": { "startLine": 43, "endLine": 52 },
+    "type": "technique",
+    "title": "The Mass √(2π): specializing integral_gaussian at b = 1/2",
+    "content": "`integral_exp_neg_half_sq` evaluates `∫ e^{-x²/2} = √(2π)`. The only obstacle is syntactic: Mathlib's lemma expects the exponent in the shape `-b · x²`, whereas the standard-normal kernel is written `-x²/2`. The helper `key : ∀ x, exp(-x²/2) = exp(-(1/2)·x²)`, proved by `congr 1; ring`, rewrites every value of the integrand into Mathlib's shape; `simp_rw [key]` then lets `integral_gaussian` fire at `b = 1/2`, producing `√(π/(1/2))`, and `show π/(1/2) = 2π by ring` collapses that to `√(2π)`. No measure-theoretic reasoning is reproduced — it is inherited wholesale from `integral_gaussian`.",
+    "mathContext": "`congr 1` reduces the goal `exp a = exp b` to `a = b`, an honest ring identity `-x^2/2 = -(1/2)·x^2`. Rewriting under the integral sign is sound here because the equality is pointwise (genuine function equality), so the two integrals are literally the same object.",
+    "significance": "important",
+    "relatedConcepts": ["integral_gaussian", "congr", "ring", "simp_rw under a binder"],
+    "prerequisites": ["integral_gaussian", "pointwise rewriting of integrands"]
+  },
+  {
+    "id": "ann-aoc0701-norm",
+    "proofId": "area-of-circle-oq-07-oq-01",
+    "range": { "startLine": 54, "endLine": 61 },
+    "type": "technique",
+    "title": "Normalization: (√(2π))⁻¹ · √(2π) = 1",
+    "content": "`standard_normal_density_integral_eq_one` proves `∫ (1/√(2π))·e^{-x²/2} = 1`. `MeasureTheory.integral_const_mul` pulls the constant `1/√(2π)` outside the integral, `integral_exp_neg_half_sq` replaces what remains by `√(2π)`, and `one_div` rewrites `1/√(2π)` as `(√(2π))⁻¹`, leaving `(√(2π))⁻¹ · √(2π)`. `inv_mul_cancel₀` closes it, needing only `√(2π) ≠ 0` — supplied by `Real.sqrt_ne_zero'.mpr (by positivity)` since `0 < 2π`.",
+    "mathContext": "Linearity of the Lebesgue integral (pulling out a scalar) plus a single field cancellation is the entire normalization argument. The non-vanishing side condition `√(2π) ≠ 0` is where positivity of `π` is actually used.",
+    "significance": "important",
+    "relatedConcepts": ["integral_const_mul", "inv_mul_cancel₀", "Real.sqrt_ne_zero'", "positivity"],
+    "prerequisites": ["integral_exp_neg_half_sq", "linearity of the integral"]
+  }
+]
