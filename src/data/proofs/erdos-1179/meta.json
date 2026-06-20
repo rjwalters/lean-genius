@@ -191,6 +191,16 @@
       "targetId": "ramseys-theorem",
       "relationship": "related",
       "description": "Both concern how large random structures inevitably contain ordered substructure. Ramsey's theorem guarantees monochromatic cliques in random colorings; Problem #1179 shows random subsets of abelian groups eventually represent all elements uniformly — a probabilistic density counterpart to Ramsey's combinatorial inevitability"
+    },
+    {
+      "targetId": "erdos-1179-oq-01",
+      "relationship": "extended-by",
+      "description": "Pursues the open question of the precise second-order term in $g_\\varepsilon(N)$. Formalizes the correction-term hierarchy ($O(1)$ vs $\\Theta(\\log\\log N)$ vs $o(\\log N)$) and proves foundational properties of representation counts $F_A(g)$ in $\\mathbb{Z}/N\\mathbb{Z}$ — the partition identity $\\sum_g F_A(g) = 2^{|A|}$, monotonicity under set growth, and coverage monotonicity — together with `erdos_renyi_decay` (exponential decay of the Fourier error) derived from `fourier_error_bound` via geometric-series arguments. Verified over Mathlib, 0 axioms / 0 sorries (709 lines, 28 theorems)."
+    },
+    {
+      "targetId": "erdos-1179-oq-02",
+      "relationship": "extended-by",
+      "description": "Sharpens the lower-bound side of the central quantity. Where this entry studies $g_\\varepsilon(N)$ up to a $(1+o(1))$ factor, OQ-02 asks whether $g_\\varepsilon(N) \\le \\log_2 N + O_\\varepsilon(1)$, matching the trivial $g_\\varepsilon(N) \\ge \\log_2 N$. It proves the lower-bound direction concretely and axiom-free at the level of a single subset: an $\\varepsilon$-uniform $A$ (with $\\varepsilon < 1$) of an abelian group of order $N$ satisfies $N \\le 2^{|A|}$, hence $\\lceil \\log_2 N \\rceil \\le |A|$ — removing the parent's circular hypothesis. 0 axioms / 0 sorries (151 lines, 7 theorems)."
     }
   ],
   "conclusion": {
