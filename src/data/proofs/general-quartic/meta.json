@@ -7,7 +7,7 @@
     "author": "Lodovico Ferrari (1540), published by Cardano (1545)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Quartic_equation",
     "date": "1540",
-    "status": "axiomatized",
+    "status": "verified",
     "tags": [
       "algebra",
       "polynomial",
@@ -16,7 +16,7 @@
       "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/GeneralQuartic.lean",
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -39,17 +39,17 @@
     ],
     "dateAdded": "2025-12-28",
     "wiedijkNumber": 46,
-    "axiomCount": 3,
-    "lineCount": 758,
+    "axiomCount": 0,
+    "lineCount": 802,
     "prerequisites": [
       "Complex numbers and polynomial evaluation",
       "Cubic equation solution (Cardano's formula)",
       "Quadratic formula for complex coefficients",
       "Completing the square and factorization techniques"
     ],
-    "assumptions": "3 axioms (all FTA / quadratic-formula level): quartic_has_four_roots, biquadratic_forward, biquadratic_backward. Previously-axiomatized results now proved: depressed_quartic_forward/backward (ring identity), resolvent_cubic_has_root (FTA), ferrari_factorization_forward/backward (S8: deleted, ferrari_factorization delegates to S7 `*_ne` proofs), ferrari_roots_verify (S8: replaced by proved `ferrari_roots_verify_ne` under `2m+p ≠ 0`). S3 (OQ-02.c) discharges `ferrari_biquad_limit` (was the file's only sorry) without introducing new axioms. S5a (OQ-02.a substrate) adds `resolvent_cubic_eval_s_form` (Newton-polygon-cleaned resolvent identity `R\u0303(s) = s\u00b3 + 2p\u00b7s\u00b2 + (p\u00b2 \u2212 4r)\u00b7s \u2212 q\u00b2` via `m \u21a6 (s \u2212 p)/2`; ring-discharged). S5b SCAFFOLD-1 specializes Lemma 1 to the Pan witness `(-1, t\u00b2, 1/4 \u2212 t\u00b2 + t\u2074/4)`: `pan_witness_cleaned_resolvent` proves `R\u0303(s; -1, t\u00b2, ...) = s\u00b3 \u2212 2s\u00b2 + (4t\u00b2 \u2212 t\u2074)s \u2212 t\u2074` (ring-discharged via S5a). At `t=0` this is `s\u00b2(s\u22122)`, exposing the double-root tangency that drives the `\u03b1(t)=\u0398(t)` first-order cancellation. S5b SCAFFOLD-3 (this commit) adds `pan_witness_t_zero_nondegenerate_root`: at the Pan witness's `t=0` boundary `(p,q,r) = (-1,0,1/4)`, `m = 3/2` is the explicit non-degenerate (`2m+p = 2 \u2260 0`) resolvent root, the s=2 root of the factored form `s\u00b2(s-2)` translated back to m-coordinates via m=(s+1)/2. Makes `ferrari_biquad_limit (-1) (1/4) hpr` concrete and fixes the third root location for the future `pan_witness_k1_tangency` perturbation analysis. S6 BUGFIX (2026-06-04) repaired `p+m` vs `p/2+m` factor-constant convention in `ferrari_factorization_forward/backward` axioms and the `ferrariRoots` def. S7 SOUND DISCHARGE (2026-06-09) ships 3 proved theorems + 1 helper: `ferrari_factorization_id` (polynomial identity `F₁·F₂ = y⁴ + py² + qy + r` given Vieta-completion hypotheses `α² = 2m+p`, `2αβ = q`, `(p+m)² − β² = r`; ring-discharged), `ferrari_hβ₂_of_resolvent` (with `α ≠ 0`, the resolvent cubic gives `(p+m)² − β² = r` after multiplying through 4α² and cancelling), and `ferrari_factorization_backward_ne / _forward_ne` (sound theorems under `α ≠ 0`, replacing the existing axioms in all downstream uses). Identifies residual S6 gap: legacy `*_forward/backward` axioms remain unsound at `α = 0` (β unconstrained by vacuous `hβ`), but the gap is **latent** — never exercised, since `ferrari_biquad_limit` always selects `2m+p ≠ 0`. Axiom count steady at 6, but 2 axioms now superseded by sound theorems in their actual usage range; clean axiom-elimination PR queued for next session. S8 AXIOM ELIMINATION (2026-06-13) cuts axiom count 6 → 3: deletes `ferrari_factorization_forward/backward` (theorem `ferrari_factorization` now delegates to S7's `*_ne` proofs, gaining hypothesis `α ≠ 0`), and replaces `ferrari_roots_verify` — found latently FALSE at `α = 0` (counterexample `(p,q,r,m) = (0,0,1,0)` makes it prove `1 = 0`, the same `α = 0` soundness gap S7 found for factorization) — with the proved theorem `ferrari_roots_verify_ne` under hypothesis `2m + p ≠ 0`, proved via per-root Ferrari-factor membership (`(√·)² = ·` identity) plus `ferrari_factorization_backward_ne`. `ferrari_roots_are_roots` and `ferrari_biquad_limit`'s `hsub_B` thread the non-degeneracy hypothesis (both call sites already establish `2m+p ≠ 0`). Remaining 3 axioms are all genuinely hard FTA / quadratic-formula results. Docker build verified (3058 jobs, success); 0 sorries.",
+    "assumptions": "0 axioms, 0 sorries — fully machine-verified. All three formerly-remaining FTA/quadratic-formula axioms (quartic_has_four_roots, biquadratic_forward, biquadratic_backward) are now proved theorems (see S9); `#print axioms` reports only [propext, Classical.choice, Quot.sound]. Previously-axiomatized results now proved: depressed_quartic_forward/backward (ring identity), resolvent_cubic_has_root (FTA), ferrari_factorization_forward/backward (S8: deleted, ferrari_factorization delegates to S7 `*_ne` proofs), ferrari_roots_verify (S8: replaced by proved `ferrari_roots_verify_ne` under `2m+p ≠ 0`). S3 (OQ-02.c) discharges `ferrari_biquad_limit` (was the file's only sorry) without introducing new axioms. S5a (OQ-02.a substrate) adds `resolvent_cubic_eval_s_form` (Newton-polygon-cleaned resolvent identity `R\u0303(s) = s\u00b3 + 2p\u00b7s\u00b2 + (p\u00b2 \u2212 4r)\u00b7s \u2212 q\u00b2` via `m \u21a6 (s \u2212 p)/2`; ring-discharged). S5b SCAFFOLD-1 specializes Lemma 1 to the Pan witness `(-1, t\u00b2, 1/4 \u2212 t\u00b2 + t\u2074/4)`: `pan_witness_cleaned_resolvent` proves `R\u0303(s; -1, t\u00b2, ...) = s\u00b3 \u2212 2s\u00b2 + (4t\u00b2 \u2212 t\u2074)s \u2212 t\u2074` (ring-discharged via S5a). At `t=0` this is `s\u00b2(s\u22122)`, exposing the double-root tangency that drives the `\u03b1(t)=\u0398(t)` first-order cancellation. S5b SCAFFOLD-3 (this commit) adds `pan_witness_t_zero_nondegenerate_root`: at the Pan witness's `t=0` boundary `(p,q,r) = (-1,0,1/4)`, `m = 3/2` is the explicit non-degenerate (`2m+p = 2 \u2260 0`) resolvent root, the s=2 root of the factored form `s\u00b2(s-2)` translated back to m-coordinates via m=(s+1)/2. Makes `ferrari_biquad_limit (-1) (1/4) hpr` concrete and fixes the third root location for the future `pan_witness_k1_tangency` perturbation analysis. S6 BUGFIX (2026-06-04) repaired `p+m` vs `p/2+m` factor-constant convention in `ferrari_factorization_forward/backward` axioms and the `ferrariRoots` def. S7 SOUND DISCHARGE (2026-06-09) ships 3 proved theorems + 1 helper: `ferrari_factorization_id` (polynomial identity `F₁·F₂ = y⁴ + py² + qy + r` given Vieta-completion hypotheses `α² = 2m+p`, `2αβ = q`, `(p+m)² − β² = r`; ring-discharged), `ferrari_hβ₂_of_resolvent` (with `α ≠ 0`, the resolvent cubic gives `(p+m)² − β² = r` after multiplying through 4α² and cancelling), and `ferrari_factorization_backward_ne / _forward_ne` (sound theorems under `α ≠ 0`, replacing the existing axioms in all downstream uses). Identifies residual S6 gap: legacy `*_forward/backward` axioms remain unsound at `α = 0` (β unconstrained by vacuous `hβ`), but the gap is **latent** — never exercised, since `ferrari_biquad_limit` always selects `2m+p ≠ 0`. Axiom count steady at 6, but 2 axioms now superseded by sound theorems in their actual usage range; clean axiom-elimination PR queued for next session. S8 AXIOM ELIMINATION (2026-06-13) cuts axiom count 6 → 3: deletes `ferrari_factorization_forward/backward` (theorem `ferrari_factorization` now delegates to S7's `*_ne` proofs, gaining hypothesis `α ≠ 0`), and replaces `ferrari_roots_verify` — found latently FALSE at `α = 0` (counterexample `(p,q,r,m) = (0,0,1,0)` makes it prove `1 = 0`, the same `α = 0` soundness gap S7 found for factorization) — with the proved theorem `ferrari_roots_verify_ne` under hypothesis `2m + p ≠ 0`, proved via per-root Ferrari-factor membership (`(√·)² = ·` identity) plus `ferrari_factorization_backward_ne`. `ferrari_roots_are_roots` and `ferrari_biquad_limit`'s `hsub_B` thread the non-degeneracy hypothesis (both call sites already establish `2m+p ≠ 0`). Remaining 3 axioms are all genuinely hard FTA / quadratic-formula results. Docker build verified (3058 jobs, success); 0 sorries. S9 FULL AXIOM ELIMINATION (2026-06-20, researcher-4) discharges the last 3 axioms 3 → 0, making the entry fully verified. (A2) `biquadratic_forward` and (A3) `biquadratic_backward`: the resolvent quadratic in y² factors as (y²−z₁)(y²−z₂) with z₁,₂=(−p±s)/2 and s=(p²−4r)^(1/2); the single non-elementary fact s²=p²−4r is supplied by the new helper `cpow_half_sq` (via `Complex.cpow_nat_inv_pow`, n=2), then both directions close by `linear_combination`/`mul_eq_zero`. (A1) `quartic_has_four_roots`: `quarticPoly` is monic of natDegree 4 (`compute_degree!`), so over the algebraically closed ℂ it splits (`IsAlgClosed.splits`), giving #roots = natDegree = 4 (`Splits.natDegree_eq_card_roots`); the card-4 root multiset enumerates as {r₁,r₂,r₃,r₄} (`Multiset.card_eq_four`) and `Polynomial.mem_roots` turns eval x = 0 into the four-fold disjunction. `#print axioms` on all three: only [propext, Classical.choice, Quot.sound]. Docker re-verified (3058 jobs, success); 0 axioms, 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 21,
+    "theoremCount": 25,
     "definitionCount": 5
   },
   "overview": {
@@ -89,51 +89,51 @@
     },
     {
       "id": "proved-results-and-axioms",
-      "title": "Proved Results and Remaining Axioms",
+      "title": "Proved Results (formerly with Axioms)",
       "startLine": 93,
-      "endLine": 306,
-      "summary": "The depressed-quartic forward/backward transforms (proved via `linear_combination`), the sound Ferrari-factorization substrate `ferrari_factorization_id` and `ferrari_hβ2_of_resolvent`, the α≠0 (non-degenerate) factorization directions `ferrari_factorization_forward_ne`/`backward_ne`, `resolvent_cubic_has_root` (FTA), `quartic_to_depressed`, and the 3 remaining axioms `quartic_has_four_roots`, `biquadratic_forward`, `biquadratic_backward`."
+      "endLine": 333,
+      "summary": "The depressed-quartic forward/backward transforms (proved via `linear_combination`), the sound Ferrari-factorization substrate `ferrari_factorization_id` and `ferrari_hβ2_of_resolvent`, the α≠0 (non-degenerate) factorization directions `ferrari_factorization_forward_ne`/`backward_ne`, `resolvent_cubic_has_root` (FTA), `quartic_to_depressed`, and the three formerly-axiomatic results now proved as theorems: `quartic_has_four_roots` (monic-degree-4 splits over ℂ ⇒ card-4 root multiset), the `cpow_half_sq` helper (s²=p²−4r), and `biquadratic_forward`/`biquadratic_backward` (resolvent quadratic in y² factors)."
     },
     {
       "id": "ferrari-method",
       "title": "Part III: Ferrari's Method",
-      "startLine": 307,
-      "endLine": 340,
+      "startLine": 351,
+      "endLine": 384,
       "summary": "`ferrari_factorization`: the depressed quartic factors into two quadratics at any non-degenerate resolvent root (iff form, delegating to the `_ne` lemmas), and `resolvent_has_root`."
     },
     {
       "id": "roots",
       "title": "Part IV: The Four Roots",
-      "startLine": 341,
-      "endLine": 443,
+      "startLine": 385,
+      "endLine": 487,
       "summary": "`quartic_four_roots` (FTA), the explicit `ferrariRoots` formula (α=√(2m+p), β=q/(2α), two discriminants), and `ferrari_roots_verify_ne` — the four roots satisfy the depressed quartic when 2m+p≠0, with the documented latent-false-axiom counterexample at α=0 (e.g. (p,q,r,m)=(0,0,1,0))."
     },
     {
       "id": "verification",
       "title": "Part V: Verification",
-      "startLine": 444,
-      "endLine": 460,
+      "startLine": 488,
+      "endLine": 504,
       "summary": "`ferrari_roots_are_roots`: packages `ferrari_roots_verify_ne` as the statement that all four Ferrari roots solve the depressed quartic (non-degenerate resolvent root)."
     },
     {
       "id": "special-cases",
       "title": "Part VI: Special Cases",
-      "startLine": 461,
-      "endLine": 477,
+      "startLine": 505,
+      "endLine": 521,
       "summary": "`biquadratic_simple`: the q=0 biquadratic case y⁴+py²+r=0 characterized as a quadratic in y²."
     },
     {
       "id": "biquadratic-limit-oq02c",
       "title": "Part VI.5: Biquadratic-Limit Removable Singularity (OQ-02.c)",
-      "startLine": 478,
-      "endLine": 709,
+      "startLine": 522,
+      "endLine": 753,
       "summary": "Discharges the α=0 boundary of `ferrariRoots`: `resolvent_cubic_q_zero`, `resolvent_root_neg_p_half_at_q_zero` (the trivial degenerate root m=−p/2), the Newton-polygon-cleaned `resolvent_cubic_eval_s_form` (s=2m+p), the Pan-witness scaffolding (`pan_witness_cleaned_resolvent`, `pan_witness_t_zero_factorisation` s²(s−2), `pan_witness_t_zero_nondegenerate_root` m=3/2), and `ferrari_biquad_limit`: for (p,r)≠(0,0) a non-degenerate resolvent root exists and each Ferrari root squared lands in the biquadratic pair {(−p±√(p²−4r))/2}."
     },
     {
       "id": "history",
       "title": "Part VII: Historical Context and Significance",
-      "startLine": 710,
-      "endLine": 758,
+      "startLine": 754,
+      "endLine": 802,
       "summary": "Ferrari's discovery (1540), why solvability by radicals stops at degree 4, and the connection to Abel-Ruffini and the solvable Galois group S₄ ▷ A₄ ▷ V₄ ▷ {e}."
     }
   ],
@@ -213,9 +213,9 @@
       "Complex"
     ],
     "namespace": "GeneralQuartic",
-    "lineCount": 758,
-    "axiomCount": 3,
-    "theoremCount": 21,
+    "lineCount": 802,
+    "axiomCount": 0,
+    "theoremCount": 25,
     "definitionCount": 5,
     "path": "Proofs/GeneralQuartic.lean",
     "sorries": 0

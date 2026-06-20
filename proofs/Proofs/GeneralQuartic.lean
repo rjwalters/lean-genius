@@ -261,29 +261,67 @@ theorem resolvent_cubic_has_root (p q r : ℂ) :
   intro h0
   exact hcoeff (by rw [Polynomial.eq_C_of_degree_le_zero (le_of_eq h0)]; simp [Polynomial.coeff_C])
 
-/-- **Axiom: Quartic Has Four Roots**
-By the Fundamental Theorem of Algebra, a degree 4 polynomial over ℂ has exactly 4 roots
-(counted with multiplicity). These roots can be expressed in terms of radicals via
-Ferrari's method. -/
-axiom quartic_has_four_roots (a b c d : ℂ) :
+/-- **Quartic Has Four Roots** (was an axiom; now proved).
+By the Fundamental Theorem of Algebra, the monic degree-4 polynomial `quarticPoly a b c d`
+over the algebraically closed field ℂ splits, so its root multiset has cardinality equal
+to its degree (= 4). Enumerating that card-4 multiset as `{r₁, r₂, r₃, r₄}` turns
+membership into the four-fold disjunction; `Polynomial.mem_roots` then identifies
+`eval x = 0` with membership. Roots are listed with multiplicity (repeats allowed). -/
+theorem quartic_has_four_roots (a b c d : ℂ) :
     ∃ (r₁ r₂ r₃ r₄ : ℂ),
-      ∀ x : ℂ, (quarticPoly a b c d).eval x = 0 ↔ (x = r₁ ∨ x = r₂ ∨ x = r₃ ∨ x = r₄)
+      ∀ x : ℂ, (quarticPoly a b c d).eval x = 0 ↔ (x = r₁ ∨ x = r₂ ∨ x = r₃ ∨ x = r₄) := by
+  -- Degree 4, hence nonzero.
+  have hdeg : (quarticPoly a b c d).natDegree = 4 := by
+    unfold quarticPoly; compute_degree!
+  have hne : quarticPoly a b c d ≠ 0 := by
+    intro h; rw [h] at hdeg; simp at hdeg
+  -- ℂ is algebraically closed ⇒ the polynomial splits ⇒ #roots = natDegree = 4.
+  have hsplit : (quarticPoly a b c d).Splits := IsAlgClosed.splits _
+  have hcard : (quarticPoly a b c d).roots.card = 4 := by
+    rw [← hsplit.natDegree_eq_card_roots, hdeg]
+  obtain ⟨r₁, r₂, r₃, r₄, hr⟩ := Multiset.card_eq_four.mp hcard
+  refine ⟨r₁, r₂, r₃, r₄, fun x => ?_⟩
+  have key : (quarticPoly a b c d).eval x = 0 ↔ x ∈ (quarticPoly a b c d).roots := by
+    rw [mem_roots hne, Polynomial.IsRoot.def]
+  rw [key, hr]
+  simp [Multiset.insert_eq_cons, Multiset.mem_cons, Multiset.mem_singleton]
 
-/-- **Axiom: Biquadratic Forward**
+/-- Shared helper: the principal square root `s = (p²−4r)^(1/2)` squares back to `p²−4r`.
+This is the only non-elementary fact behind the biquadratic discharges, supplied by
+`Complex.cpow_nat_inv_pow` (with `n = 2`). -/
+theorem cpow_half_sq (D : ℂ) :
+    (Complex.cpow D (1/2 : ℂ))^2 = D := by
+  rw [show (1/2 : ℂ) = ((2:ℕ):ℂ)⁻¹ by norm_num]
+  exact_mod_cast Complex.cpow_nat_inv_pow _ (by norm_num)
+
+/-- **Biquadratic Forward** (was an axiom; now proved).
 When q = 0, the depressed quartic y^4 + py^2 + r = 0 reduces to a quadratic in z = y^2.
-The solutions z = y^2 are given by the quadratic formula. -/
-axiom biquadratic_forward (p r y : ℂ)
+The solutions z = y^2 are given by the quadratic formula. The resolvent quadratic factors
+as `(y² − z₁)(y² − z₂)` with `z₁,₂ = (-p ± s)/2`; ℂ being an integral domain forces one
+factor to vanish. -/
+theorem biquadratic_forward (p r y : ℂ)
     (h : y^4 + p * y^2 + 0 * y + r = 0) :
     (y^2 = (-p + Complex.cpow (p^2 - 4*r) (1/2 : ℂ)) / 2) ∨
-    (y^2 = (-p - Complex.cpow (p^2 - 4*r) (1/2 : ℂ)) / 2)
+    (y^2 = (-p - Complex.cpow (p^2 - 4*r) (1/2 : ℂ)) / 2) := by
+  set s := Complex.cpow (p^2 - 4*r) (1/2 : ℂ) with hsdef
+  have hs : s^2 = p^2 - 4*r := cpow_half_sq _
+  have hfac : (y^2 - (-p + s)/2) * (y^2 - (-p - s)/2) = 0 := by
+    linear_combination h - hs / 4
+  rcases mul_eq_zero.mp hfac with hL | hR
+  · left;  linear_combination hL
+  · right; linear_combination hR
 
-/-- **Axiom: Biquadratic Backward**
+/-- **Biquadratic Backward** (was an axiom; now proved).
 If y^2 equals one of the two solutions from the quadratic formula, then y is a root
-of the biquadratic y^4 + py^2 + r = 0. -/
-axiom biquadratic_backward (p r y : ℂ)
+of the biquadratic y^4 + py^2 + r = 0. Substituting `y² = z₁` (or `z₂`) and rewriting
+`s² = p²−4r` reduces each branch to `0`. -/
+theorem biquadratic_backward (p r y : ℂ)
     (h : (y^2 = (-p + Complex.cpow (p^2 - 4*r) (1/2 : ℂ)) / 2) ∨
          (y^2 = (-p - Complex.cpow (p^2 - 4*r) (1/2 : ℂ)) / 2)) :
-    y^4 + p * y^2 + 0 * y + r = 0
+    y^4 + p * y^2 + 0 * y + r = 0 := by
+  have hs : (Complex.cpow (p^2 - 4*r) (1/2 : ℂ))^2 = p^2 - 4*r := cpow_half_sq _
+  have hy4 : y^4 = (y^2)^2 := by ring
+  rcases h with h | h <;> rw [hy4, h] <;> linear_combination hs / 4
 
 /-- Any general quartic can be reduced to depressed form via substitution. -/
 theorem quartic_to_depressed (a b c d : ℂ) :

@@ -162,3 +162,40 @@ written as theorems in an UNREGISTERED orphan; dual blackout so build-pending)
   rebuild `Proofs.GeneralQuartic`. (3) Set `meta.json` leanFile.axiomCount 3→0
   and bump status/badge to verified/original. (4) Aristotle is the fallback for
   A1 if the manual enumeration fights the elaborator (404 this session).
+
+### 2026-06-20 (Session 3, researcher-4) — ACT → COMPLETED ✅ (axiomCount 3 → 0)
+
+**Mode**: DEPTH (knowledge WEAK→COMPLETE) · **Outcome**: COMPLETED — all 3 axioms
+discharged, build-verified, gallery entry now `verified`/0-axiom.
+
+Docker available this session (only 2 `lean-build` containers, under the ≤3 gate).
+Built in the worktree via the real-`.lake` bind-mount recipe (reuses prebuilt
+Mathlib, ~60s/file, no OOM — see `reference-docker-build-worktree-symlink-fix`).
+
+- **A2/A3 (pure algebra)** — pasted the S2-derived skeletons directly into
+  `GeneralQuartic.lean`, replacing the two `axiom` lines with `theorem`s. Factored
+  out the shared `cpow_half_sq (D) : (D^(1/2))² = D` helper (via
+  `Complex.cpow_nat_inv_pow`, n=2). `biquadratic_forward`: `linear_combination
+  h − hs/4` → `(y²−z₁)(y²−z₂)=0` → `mul_eq_zero` → two `linear_combination`s.
+  `biquadratic_backward`: `rcases … <;> rw [hy4, h] <;> linear_combination hs/4`.
+  **First-build green** — the S2 coefficient checks held exactly.
+- **A1 (FTA root-set)** — turned out EASIER than the S2 "MEDIUM" estimate because
+  `Multiset.card_eq_four` **does** exist at the pin (`Data/Multiset/ZeroCons.lean:473`:
+  `card s = 4 ↔ ∃ x y z w, s = {x,y,z,w}`), so no manual `roots.toList` length-4
+  `cases` enumeration was needed. Proof: `compute_degree!` (natDegree = 4) ⇒ `≠ 0`;
+  `IsAlgClosed.splits _ : p.Splits`; `Splits.natDegree_eq_card_roots` (card = 4);
+  `Multiset.card_eq_four.mp`; then `rw [mem_roots hne, IsRoot.def]` turns `eval = 0`
+  into multiset membership, closed by `simp [insert_eq_cons, mem_cons, mem_singleton]`.
+- **Verification**: `lake build Proofs.GeneralQuartic` → **success, 3058 jobs**, 0
+  sorries, 0 axioms. `#print axioms` on all three reports only
+  `[propext, Classical.choice, Quot.sound]` — genuinely 0-assumption (no `sorryAx`,
+  no `Lean.ofReduceBool`).
+- **Cleanup**: deleted the now-redundant orphan
+  `proofs/Proofs/GeneralQuarticAxiomsDischarge.lean` (its theorems are inlined).
+- **Gallery**: `meta.json` status `axiomatized`→`verified`, badge `axiom`→`original`,
+  axiomCount/leanFile.axiomCount 3→0, lineCount 758→802, theoremCount 21→25,
+  section anchors/summaries updated.
+
+**Problem COMPLETE.** The OQ ("can the Ferrari factorization axioms be proved?") is
+fully resolved: the entire `GeneralQuartic.lean` file is now axiom-free and
+sorry-free. No residual gaps.

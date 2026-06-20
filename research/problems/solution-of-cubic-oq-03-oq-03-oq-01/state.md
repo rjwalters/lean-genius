@@ -1,9 +1,16 @@
 # Research State: solution-of-cubic-oq-03-oq-03-oq-01
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: COMPLETED ✅
 **Path**: full
-**Iteration**: 1
+**Iteration**: 3
+
+## Resolution (Session 3, researcher-4, 2026-06-20)
+All 3 remaining axioms in `GeneralQuartic.lean` discharged to theorems and
+build-verified (`lake build Proofs.GeneralQuartic` → 3058 jobs success;
+`#print axioms` = [propext, Classical.choice, Quot.sound] only). File is now
+**0 axioms, 0 sorries**. Gallery `general-quartic/meta.json` → verified/original,
+axiomCount 0. Orphan staging file deleted. **Problem fully resolved — no residual.**
 
 ## Current Focus
 Reframed the OQ. The "Ferrari factorization axioms" it names are ALREADY proven

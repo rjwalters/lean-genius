@@ -2567,7 +2567,6 @@ import Proofs.GcdAlgorithmOQ02
 import Proofs.GcdAlgorithmOQ04
 import Proofs.GelfondSchneider
 import Proofs.GeneralQuartic
-import Proofs.GeneralQuarticAxiomsDischarge
 import Proofs.GeometricSeries
 import Proofs.GeometricSeriesOQ01
 import Proofs.GeometricSeriesOQ01Neumann
