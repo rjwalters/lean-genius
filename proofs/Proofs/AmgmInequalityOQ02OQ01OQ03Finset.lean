@@ -8,56 +8,50 @@
 
   Lineage:
   • Parent   amgm-inequality-oq-02-oq-01             : k=2 split (∑f)² = ∑f² + Σ_{i≠j} fᵢfⱼ.
-  • Sibling  amgm-inequality-oq-02-oq-01-oq-02-oq-01 : the recurrence p₃ = e₁p₂ − e₂p₁ + 3e₃.
+  • Sibling  amgm-inequality-oq-02-oq-01-oq-02-oq-01 : the recurrence p₃ = e₁p₂ − e₂p₁ + 3e₃,
+                                                       and `psum_two_eq` (p₂ = e₁² − 2e₂).
   • Universal amgm-inequality-oq-02-oq-01-oq-03       : `psum_three_closed` over MvPolynomial,
                                                        valid for every CommRing.
 
   ───────────────────────────────────────────────────────────────────────────
-  KEY FINDING OF THIS FILE — the char-2 obstruction.
+  RESOLUTION — Route B (aeval bridge), fully general over any CommRing.
 
-  The "direct ordered-triple partition" route (Approach 1 / Route A in the OQ) assembles
-  the closed form from three concrete-Finset facts:
+  A previous iteration assembled the closed form from three concrete-Finset facts
       (L2) cube_partition :  e₁³ = p₃ + 3·Doff + 6·e₃
       (L3) D_collapse     :  Doff = e₁·p₂ − p₃
       (L4)+(k=2)          :  p₂ = e₁² − 2·e₂
-  Combining them (see `two_mul_p3_closed`) yields exactly
+  and found that combining them yields only `2·p₃ = 2·(e₁³ − 3e₁e₂ + 3e₃)` (the **char-2
+  obstruction**: over a ring with 2-torsion the factor 2 is a zero-divisor, so Route A
+  closes only when 2 is cancellable).
 
-      2 · p₃ = 2 · (e₁³ − 3·e₁·e₂ + 3·e₃).
+  This file removes that restriction.  The key lemmas `e2_bridge`/`e3_bridge`/`p3_bridge`
+  identify the concrete `powersetCard`/power-sum definitions over a `Finset s` with the
+  evaluation (`MvPolynomial.aeval`) of `MvPolynomial.esymm`/`MvPolynomial.psum` on the
+  subtype `{x // x ∈ s}`.  Transporting the proven universal identities `psum_two_eq` and
+  `psum_three_closed` across that bridge gives `p2_closed` and `p3_closed` over **any**
+  CommRing.  The combinatorial facts L2 (`cube_partition`) and L4 (`two_e2_eq_offPairs`)
+  then follow as algebraic corollaries — char 2 included.
 
-  Over ℤ, ℚ, ℝ this gives p₃ = e₁³ − 3e₁e₂ + 3e₃ after cancelling the 2.  But over a
-  ring with 2-torsion (e.g. 𝔽₂) the factor 2 is a zero-divisor and the identity 2·p₃ =
-  2·(…) collapses to 0 = 0, carrying NO information.  The closed form is still *true* over
-  𝔽₂ (the universal `psum_three_closed` proves it for every CommRing), but it is NOT
-  derivable from L2/L3/L4 alone there.  So Route A's "everything is `ring`" only closes
-  over rings where 2 is cancellable; full generality requires Route B (evaluate the proven
-  universal `psum_three_closed` through `MvPolynomial.aeval`).
-
-  This corrects the earlier ACT skeleton, which asserted the final assembly was "all `ring`
-  once the sums are reconciled" — that is false over char 2.
+  Bridge ingredients (Mathlib):
+    • `MvPolynomial.aeval_esymm_eq_multiset_esymm`, `Finset.esymm_map_val`
+    • `Finset.univ_eq_attach` (rfl), `Finset.attach_val`, `Multiset.attach_map_val'`
+    • `MvPolynomial.aeval_X`, `Finset.sum_coe_sort`, `Finset.powersetCard_one`.
 
   ───────────────────────────────────────────────────────────────────────────
-  STATUS (build-pending; Docker + Aristotle both down this session):
-    • PROVEN over any CommRing:  sq_split (k=2), D_collapse (L3), p2_closed,
-      two_mul_p3_closed (the corrected Route-A reduction).
-    • PROVEN over a CommRing with no zero-divisors and 2 ≠ 0:
-      newton_girard_three_finset (cancel the 2).
-    • Two isolated combinatorial `sorry`s remain — the genuine OQ content:
-        cube_partition       (L2: ordered-triple coincidence partition, multiplicities 1/3/6)
-        two_e2_eq_offPairs   (L4: powersetCard-2 ↔ ordered distinct pairs)
-      Both are HARD-but-known Finset-bookkeeping lemmas — ideal Aristotle targets once the
-      backend is back, or Route B (aeval) supersedes them with one reindexing lemma.
-
+  STATUS: 0 sorries, 0 axioms.  Everything holds over an arbitrary `CommRing`.
   Every numeric fact (multiplicities 1/3/6, D = e₁p₂ − p₃, 2e₂ = off-diag pairs, and the
-  char-2 collapse) is checked exactly in `verify_newton_girard_k3.py`.
+  char-2 collapse) is also checked exactly in `verify_newton_girard_k3.py`.
 
   Tags: algebra, symmetric-functions, newton-girard, power-sums, finset, characteristic-two
 -/
 
 import Mathlib
+import Proofs.AmgmInequalityOQ02OQ01OQ02OQ01
+import Proofs.AmgmInequalityOQ02OQ01OQ03
 
 namespace AMGMInequalityOQ02OQ01OQ03Finset
 
-open Finset BigOperators
+open Finset BigOperators MvPolynomial
 
 variable {ι R : Type*} [CommRing R] [DecidableEq ι]
 
@@ -110,59 +104,120 @@ theorem D_collapse (s : Finset ι) (f : ι → R) :
         rw [← Finset.sum_mul]; ring
 
 -- ============================================================
--- L2 / L4: the two genuine combinatorial bridges (OQ content) — sorry
+-- The aeval bridge:  concrete Finset defs  =  aeval of MvPolynomial symmetric functions
+-- evaluated on the subtype `{x // x ∈ s}`.  This is what carries the universal Newton
+-- identities (char-2 safe) down to the concrete `powersetCard`/power-sum statements.
+-- ============================================================
+
+/-- `aeval` of the universal `psum` on the subtype `{x // x ∈ s}` is the concrete
+    power sum `Σ_{i ∈ s} fᵢⁿ`. -/
+theorem aeval_psum_subtype (s : Finset ι) (f : ι → R) (n : ℕ) :
+    aeval (fun i : {x // x ∈ s} => f i.1) (MvPolynomial.psum {x // x ∈ s} R n)
+      = ∑ i ∈ s, f i ^ n := by
+  rw [MvPolynomial.psum, map_sum]
+  simp only [map_pow, aeval_X]
+  exact Finset.sum_coe_sort s (fun i => f i ^ n)
+
+/-- `aeval` of the universal `esymm` on the subtype `{x // x ∈ s}` is the concrete
+    `powersetCard`-`n` symmetric sum `Σ_{t ⊆ s, |t| = n} ∏_{i ∈ t} fᵢ`. -/
+theorem aeval_esymm_subtype (s : Finset ι) (f : ι → R) (n : ℕ) :
+    aeval (fun i : {x // x ∈ s} => f i.1) (MvPolynomial.esymm {x // x ∈ s} R n)
+      = ∑ t ∈ s.powersetCard n, ∏ i ∈ t, f i := by
+  rw [MvPolynomial.aeval_esymm_eq_multiset_esymm, ← Finset.esymm_map_val f s n]
+  congr 1
+  -- `univ.val.map (fun i => f i.1) = s.val.map f`; the `univ`→`attach` steps are `rfl`,
+  -- so `Multiset.attach_map_val'` (which strips the subtype projection) closes it up to defeq.
+  exact Multiset.attach_map_val' s.val f
+
+/-- The `powersetCard`-1 symmetric sum is just `e₁`. -/
+theorem esymm_one_eq_e1 (s : Finset ι) (f : ι → R) :
+    (∑ t ∈ s.powersetCard 1, ∏ i ∈ t, f i) = e1 s f := by
+  rw [Finset.powersetCard_one]
+  simp [e1, Finset.sum_map, Finset.prod_singleton]
+
+/-- Bridge at degree 1:  `aeval (esymm … 1) = e₁`. -/
+theorem e1_bridge (s : Finset ι) (f : ι → R) :
+    aeval (fun i : {x // x ∈ s} => f i.1) (MvPolynomial.esymm {x // x ∈ s} R 1) = e1 s f :=
+  (aeval_esymm_subtype s f 1).trans (esymm_one_eq_e1 s f)
+
+/-- Bridge at degree 2:  `aeval (esymm … 2) = e₂`  (definitional). -/
+theorem e2_bridge (s : Finset ι) (f : ι → R) :
+    aeval (fun i : {x // x ∈ s} => f i.1) (MvPolynomial.esymm {x // x ∈ s} R 2) = e2 s f :=
+  aeval_esymm_subtype s f 2
+
+/-- Bridge at degree 3:  `aeval (esymm … 3) = e₃`  (definitional). -/
+theorem e3_bridge (s : Finset ι) (f : ι → R) :
+    aeval (fun i : {x // x ∈ s} => f i.1) (MvPolynomial.esymm {x // x ∈ s} R 3) = e3 s f :=
+  aeval_esymm_subtype s f 3
+
+/-- Bridge for the second power sum:  `aeval (psum … 2) = p₂`  (definitional). -/
+theorem p2_bridge (s : Finset ι) (f : ι → R) :
+    aeval (fun i : {x // x ∈ s} => f i.1) (MvPolynomial.psum {x // x ∈ s} R 2) = p2 s f :=
+  aeval_psum_subtype s f 2
+
+/-- Bridge for the third power sum:  `aeval (psum … 3) = p₃`  (definitional). -/
+theorem p3_bridge (s : Finset ι) (f : ι → R) :
+    aeval (fun i : {x // x ∈ s} => f i.1) (MvPolynomial.psum {x // x ∈ s} R 3) = p3 s f :=
+  aeval_psum_subtype s f 3
+
+-- ============================================================
+-- Closed forms over ANY CommRing, via the bridge (no char-2 restriction)
+-- ============================================================
+
+/-- **p₂ closed form** over any CommRing:  p₂ = e₁² − 2·e₂.
+    Transport of the universal `psum_two_eq` across the aeval bridge. -/
+theorem p2_closed (s : Finset ι) (f : ι → R) :
+    p2 s f = e1 s f ^ 2 - 2 * e2 s f := by
+  have H := congrArg (aeval (fun i : {x // x ∈ s} => f i.1))
+    (AMGMInequalityOQ02OQ01OQ02OQ01.psum_two_eq {x // x ∈ s} R)
+  simpa only [map_sub, map_mul, map_pow, map_ofNat,
+    p2_bridge, e1_bridge, e2_bridge] using H
+
+/-- **p₃ closed form** over any CommRing:  p₃ = e₁³ − 3·e₁·e₂ + 3·e₃.
+    Transport of the universal `psum_three_closed` across the aeval bridge.
+    This is the genuinely general concrete-Finset Newton–Girard k=3 identity. -/
+theorem p3_closed (s : Finset ι) (f : ι → R) :
+    p3 s f = e1 s f ^ 3 - 3 * (e1 s f * e2 s f) + 3 * e3 s f := by
+  have H := congrArg (aeval (fun i : {x // x ∈ s} => f i.1))
+    (AMGMInequalityOQ02OQ01OQ03.psum_three_closed {x // x ∈ s} R)
+  simpa only [map_add, map_sub, map_mul, map_pow, map_ofNat,
+    p3_bridge, e1_bridge, e2_bridge, e3_bridge] using H
+
+-- ============================================================
+-- The two combinatorial bridges (former `sorry`s), now algebraic corollaries
 -- ============================================================
 
 /-- **L4 (powersetCard-2 ↔ ordered pairs).**  2·e₂ = Σᵢ Σ_{j≠i} fᵢfⱼ.
-    Each unordered 2-subset `{i,j}` corresponds to exactly the two ordered pairs `(i,j)`,
-    `(j,i)`, each contributing `fᵢfⱼ`; hence the ordered sum is `2·e₂`.  Verified exactly
-    in `verify_newton_girard_k3.py`.  Lean route: bridge `s.powersetCard 2` to `s.offDiag`
-    via `Sym2`/`Finset.sum_sym2` (no single-lemma shortcut in Mathlib). HARD/known —
-    Aristotle target, or supplant by Route B (aeval). -/
+    Now an algebraic corollary of the k=2 split and the (char-2 safe) `p2_closed`. -/
 theorem two_e2_eq_offPairs (s : Finset ι) (f : ι → R) :
     2 * e2 s f = OffPairs s f := by
-  sorry
+  linear_combination sq_split s f + p2_closed s f
 
 /-- **L2 (cube partition — the crux).**  e₁³ = p₃ + 3·Doff + 6·e₃.
-    Expand `(∑fᵢ)³ = Σᵢ Σⱼ Σₖ fᵢfⱼfₖ` (two `sum_mul_sum`) and partition the index cube
-    `s×s×s` by coincidence pattern:
-        all-equal  (1 ordering)        → p₃,
-        exactly-two-equal (3 orderings) → 3·Doff,
-        all-distinct (6 orderings)      → 6·e₃.
-    Multiplicities 1/3/6 verified exactly in `verify_newton_girard_k3.py`.  This is the
-    reusable combinatorial artifact the OQ is meant to produce. HARD/known — Aristotle
-    target, or supplant by Route B (aeval). -/
+    The reusable ordered-triple coincidence partition (multiplicities 1/3/6), obtained
+    as an algebraic corollary of `p3_closed`, `D_collapse` and `p2_closed`.  Holds over
+    any CommRing (char 2 included) because no factor of 2 is cancelled. -/
 theorem cube_partition (s : Finset ι) (f : ι → R) :
     e1 s f ^ 3 = p3 s f + 3 * Doff s f + 6 * e3 s f := by
-  sorry
+  linear_combination 2 * p3_closed s f - 3 * D_collapse s f - 3 * e1 s f * p2_closed s f
 
 -- ============================================================
--- Corrected Route-A assembly (proven from L2,L3,L4 over any CommRing)
+-- Route-A reduction (still valid; now with everything proven)
 -- ============================================================
 
-/-- p₂ = e₁² − 2·e₂, from the k=2 split and L4. -/
-theorem p2_closed (s : Finset ι) (f : ι → R) :
-    p2 s f = e1 s f ^ 2 - 2 * e2 s f := by
-  have h2 := sq_split s f
-  have h4 := two_e2_eq_offPairs s f
-  linear_combination h4 - h2
-
-/-- **The honest Route-A output:** `2·p₃ = 2·(e₁³ − 3e₁e₂ + 3e₃)`.
-    Valid over ANY CommRing — but note the factor 2 does NOT cancel in char 2.
-    Coefficients (derived, sympy-checked):  `cube_partition + 3·D_collapse + 3·e₁·p2_closed`. -/
+/-- The Route-A reduction `2·p₃ = 2·(e₁³ − 3e₁e₂ + 3e₃)`, valid over any CommRing.
+    (Historically this was as far as the direct ordered-triple partition could go without
+    a cancellable 2; it is now subsumed by the general `p3_closed`.) -/
 theorem two_mul_p3_closed (s : Finset ι) (f : ι → R) :
     2 * p3 s f = 2 * (e1 s f ^ 3 - 3 * (e1 s f * e2 s f) + 3 * e3 s f) := by
-  have hc := cube_partition s f
-  have hd := D_collapse s f
-  have hp := p2_closed s f
-  linear_combination hc + 3 * hd + 3 * e1 s f * hp
+  linear_combination cube_partition s f + 3 * D_collapse s f + 3 * e1 s f * p2_closed s f
 
-/-- **Concrete general-Finset Newton–Girard k=3** over a CommRing where 2 is cancellable
-    (no zero-divisors and `2 ≠ 0`):  p₃ = e₁³ − 3·e₁·e₂ + 3·e₃.
-    The char-2 hypothesis is essential — see the file header. -/
-theorem newton_girard_three_finset [NoZeroDivisors R] (h2 : (2 : R) ≠ 0)
-    (s : Finset ι) (f : ι → R) :
+/-- **Concrete general-Finset Newton–Girard k=3** over an arbitrary `CommRing`:
+      p₃ = e₁³ − 3·e₁·e₂ + 3·e₃.
+    No characteristic hypothesis is needed — the char-2 obstruction of the direct
+    Route-A assembly is bypassed by the `aeval` transport (`p3_closed`). -/
+theorem newton_girard_three_finset (s : Finset ι) (f : ι → R) :
     p3 s f = e1 s f ^ 3 - 3 * (e1 s f * e2 s f) + 3 * e3 s f :=
-  mul_left_cancel₀ h2 (two_mul_p3_closed s f)
+  p3_closed s f
 
 end AMGMInequalityOQ02OQ01OQ03Finset
