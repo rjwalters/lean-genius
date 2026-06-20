@@ -1,0 +1,86 @@
+{
+  "slug": "mantel-theorem-oq-02",
+  "title": "Turán's Theorem: the Clean K_{r+1}-Free Edge Bound Generalizing Mantel",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a simple graph G on n vertices with G.CliqueFree (r+1): 2*r*e(G) ≤ (r-1)*n^2, and for r ≥ 1 the rational form e(G) ≤ (1 - 1/r)*n^2/2; recover Mantel (r = 2) as a corollary.",
+    "plain": "Prove the textbook closed form of Turán's theorem for an arbitrary K_{r+1}-free graph and connect it back to the gallery's Mantel ⌊n²/4⌋ bound as the r = 2 special case.",
+    "whyMatters": [
+      "Turán's theorem is the cornerstone of extremal graph theory and the direct r-fold generalization of Mantel's theorem.",
+      "Mathlib develops the structural side but never states the clean closed-form inequality for an arbitrary K_{r+1}-free graph — the form one actually cites."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Mathlib SimpleGraph.CliqueFree.card_edgeFinset_le (exact bookkeeping bound for arbitrary graphs)",
+      "Mathlib SimpleGraph.mul_card_edgeFinset_turanGraph_le (clean bound for the Turán graph only)"
+    ],
+    "open": [],
+    "goal": "Compose the two Mathlib bounds into the clean closed form for every K_{r+1}-free graph, prove it sharp, and re-derive Mantel."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-19T18:30:00-07:00",
+    "iteration": 1,
+    "focus": "Clean closed-form Turán bound for arbitrary K_{r+1}-free graphs, with Mantel as the r = 2 corollary.",
+    "blockers": [],
+    "nextAction": "Done — proof compiles axiom-free, PR opened.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: clean Turán edge bound proved axiom-free for arbitrary K_{r+1}-free graphs (integer 2r·e ≤ (r-1)·n² and rational e ≤ (1-1/r)·n²/2), shown sharp via the Turán graph, with Mantel's 4·e ≤ n² and ⌊n²/4⌋ recovered as the r = 2 corollary. 0 sorries, 0 axioms.",
+    "builtItems": [
+      "turan_two_mul_card_edgeFinset_le (Proofs/TuranEdgeBound.lean:62): clean integer Turán bound 2r·e(G) ≤ (r-1)·n² for every K_{r+1}-free G",
+      "turan_card_edgeFinset_le_rat (Proofs/TuranEdgeBound.lean:74): the literal textbook rational bound e(G) ≤ (1 - 1/r)·n²/2 for r ≥ 1",
+      "turan_card_edgeFinset_le_rat_tight (Proofs/TuranEdgeBound.lean:94): sharpness — turanGraph n r is K_{r+1}-free and meets the rational bound",
+      "mantel_four_mul_card_edgeFinset_le (Proofs/TuranEdgeBound.lean:104): 4·e(G) ≤ n² for triangle-free G as the r = 2 case",
+      "mantel_card_edgeFinset_le_of_turan (Proofs/TuranEdgeBound.lean:112): the floor form e(G) ≤ ⌊n²/4⌋ re-derived from the general theorem"
+    ],
+    "insights": [
+      "Mathlib contains both halves of Turán's theorem — the exact bound for arbitrary graphs and the clean bound for the extremal graph — but never multiplies them together; the missing closed form is exactly the composition.",
+      "The bridge is that CliqueFree.card_edgeFinset_le's right-hand side is literally the Turán graph's edge count (card_edgeFinset_turanGraph), so gcongr reduces 2r·e(G) ≤ 2r·e(turanGraph) to the exact bound and mul_card_edgeFinset_turanGraph_le finishes.",
+      "Working in the integer form keeps the structural argument inside ℕ where gcongr and the Mathlib lemmas apply cleanly; casting to the rational textbook bound (le_div_iff₀, field_simp, Nat.cast_sub) is a separate purely arithmetic final step.",
+      "Routing the bound through the Turán graph's own clean bound makes sharpness immediate: the same graph that supplies the upper bound attains it.",
+      "Mantel's ⌊n²/4⌋ is recovered as the literal r = 2 instance (simpa collapses 2·2 to 4) rather than re-proved from triangle-free arithmetic, formally tying the mantel-theorem entry to its generalization."
+    ],
+    "mathlibGaps": [
+      "Mathlib's Extremal.Turan does not state the clean closed-form inequality e(G) ≤ (1 - 1/r)·n²/2 for an arbitrary K_{r+1}-free graph — only the bookkeeping form for arbitrary graphs and the clean form for the Turán graph itself."
+    ],
+    "nextSteps": [
+      "Formalize the uniqueness/equality case: a K_{r+1}-free graph attaining (1 - 1/r)·n²/2 edges is isomorphic to the balanced Turán graph.",
+      "Connect the clean bound to the Erdős–Stone–Simonovits theorem (Turán density via chromatic number for arbitrary forbidden subgraphs)."
+    ],
+    "markdown": "# Knowledge Base: mantel-theorem-oq-02\n\n## Problem Understanding\n\nClean closed-form Turán bound for an arbitrary K_{r+1}-free graph, generalizing the gallery's Mantel entry (r = 2).\n\n## Insights\n\nMathlib supplies the exact bound for arbitrary graphs and the clean bound only for the Turán graph; the missing textbook statement is their composition, bridged by the fact that the arbitrary-graph bound's RHS equals the Turán graph's edge count.\n\n## Outcome\n\nProved axiom-free in Proofs/TuranEdgeBound.lean: integer form, rational form, sharpness, and Mantel as the r = 2 corollary. 0 sorries, 0 axioms.\n"
+  },
+  "tags": ["graph-theory", "combinatorics", "extremal-graph-theory", "turan", "mantel"],
+  "relatedProofs": ["mantel-theorem", "mantel-theorem-oq-01"],
+  "references": {
+    "papers": [],
+    "urls": ["https://en.wikipedia.org/wiki/Tur%C3%A1n%27s_theorem"],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan"
+    ]
+  },
+  "started": "2026-06-19T18:00:00-07:00",
+  "significance": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/TuranEdgeBound.lean",
+      "filename": "TuranEdgeBound.lean",
+      "lineCount": 119,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TuranEdgeBound.lean"
+    }
+  ]
+}
