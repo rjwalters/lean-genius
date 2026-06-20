@@ -2865,6 +2865,7 @@ import Proofs.PythagoreanTriplesOQ01
 import Proofs.PythagoreanTriplesOQ01Aristotle
 import Proofs.PythagoreanTriplesOQ02
 import Proofs.PythagoreanTriplesOQ05
+import Proofs.PythagoreanTriplesOQ07
 import Proofs.QuadraticGaussSumDiagonal
 import Proofs.QuadraticGaussSumSquare
 import Proofs.QuadraticGaussSumSquareOQ01
