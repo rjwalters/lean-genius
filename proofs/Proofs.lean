@@ -3070,6 +3070,7 @@ import Proofs.StirlingExpansionAristotle
 import Proofs.StirlingFormula
 import Proofs.StirlingFormulaOQ02
 import Proofs.StirlingFormulaOQ03
+import Proofs.StirlingSecondKindOQ01
 import Proofs.SubsetCount
 import Proofs.SubsetCountMultisetOQ01
 import Proofs.SummationByPartsOQ01
