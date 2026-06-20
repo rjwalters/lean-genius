@@ -3089,6 +3089,7 @@ import Proofs.StirlingFormula
 import Proofs.StirlingFormulaOQ02
 import Proofs.StirlingFormulaOQ03
 import Proofs.StirlingFirstKindOQ01
+import Proofs.StirlingFirstKindOQ02
 import Proofs.StirlingSecondKindOQ01
 import Proofs.SubsetCount
 import Proofs.SubsetCountMultisetOQ01
