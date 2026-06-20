@@ -2864,6 +2864,7 @@ import Proofs.RamseysTheoremOQ04
 import Proofs.RandomizedMaxCut
 import Proofs.RandomizedMaxcutOQ02
 import Proofs.RandomizedMaxcutOQ04
+import Proofs.RationalCanonicalFormExists
 import Proofs.RelativizedHalting
 import Proofs.RelativizedHaltingBridge
 import Proofs.RepunitDivisibilityOQ01

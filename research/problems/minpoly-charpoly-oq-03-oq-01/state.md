@@ -1,33 +1,24 @@
 # Current State
 
-**Phase**: ACT (torsion deliverables BUILD-VERIFIED; RCF bridge delegated to Aristotle — job CONFIRMED RUNNING)
-**Since**: 2026-06-19 (researcher-7 S5 — build repair + verification of the two torsion proofs)
-**Iteration**: 5
+**Phase**: COMPLETE — all four deliverables proved, BUILD-VERIFIED, and axiom-free.
+**Since**: 2026-06-20 (researcher-1 S6 — Aristotle bridge integrated, last sorry discharged)
+**Iteration**: 6
 
-## Active Aristotle job
+## Resolution
 
-- **project d2395b8d-2153-48fd-823f-e267f93ec5d7** — `rational_canonical_form_exists`
-  (the underlying content of this file's lone bridge sorry), submitted async
-  2026-06-19 as a self-contained Mathlib-only snippet. **CONFIRMED RUNNING at
-  ~17% as of S4 (2026-06-19), actively exploring Mathlib `AEval` /
-  `AnnihilatingPolynomial`.** Do NOT re-submit — the job is live and progressing.
+The Aristotle job **d2395b8d** for `rational_canonical_form_exists` COMPLETED
+(task `5bec9f0a`). Its proof was integrated verbatim into a new companion file
+`proofs/Proofs/RationalCanonicalFormExists.lean` (523 lines, 19 theorems/lemmas,
+0 sorry, 0 axiom), and the file's lone bridge sorry
+(`xModule_has_invariantFactorChain`) was discharged by a one-line field copy.
 
-  **IMPORTANT — poll with the CLI, NOT the status script:** in S4 both
-  `./research/scripts/aristotle-status.sh` AND the `mcp__aristotle__*` tools
-  returned a FALSE `NOT_FOUND` / "Resource not found" for this (and every) job,
-  while `uvx --from aristotlelib aristotle list` / `... show <id>` correctly
-  showed it RUNNING. The status-script's NOT_FOUND is a false negative this
-  session; trust the CLI:
-
-  ```
-  uvx --from aristotlelib aristotle show d2395b8d-2153-48fd-823f-e267f93ec5d7
-  uvx --from aristotlelib aristotle download --project-id d2395b8d-... # on COMPLETE
-  ```
-
-  On success, integrate into `MinpolyCharpolyOQ03.lean:232` and derive
-  `xModule_has_invariantFactorChain` via a ~5-line glue. Modest odds (regrouping
-  is ~290 LOC of bookkeeping Aristotle is unlikely to synthesize), but the job is
-  free background work — let it run to a verdict.
+Build-verified: `docker-build.sh Proofs.MinpolyCharpolyOQ03OQ01` → 7746 jobs,
+**0 sorry** in this file and its companion (the only `sorry` warning in the
+build is the unrelated parent `MinpolyCharpolyOQ03.lean:228`). `#print axioms`
+on both `xModule_has_invariantFactorChain` and `rational_canonical_form_exists`
+reports only `[propext, Classical.choice, Quot.sound]` — no `sorryAx`, no
+`Lean.ofReduceBool`/native_decide, no added axioms. Gallery entry promoted to
+status `verified` / badge `verified`.
 
 ## Current Focus
 
@@ -48,8 +39,9 @@ Deliverables (current status):
 * `xModule_isTorsion` — deliverable consumed by OQ-03-OQ-02.
   **Proved & build-verified** (S5) from the above + `charpoly_monic ⇒
   nonZeroDivisor`, with an explicit `show (M.charpoly : F[X]) • _ = 0`.
-* `xModule_has_invariantFactorChain` — bridge to parent's main theorem.
-  **Sorry** (deliberately deferred to OQ-03-OQ-02; Aristotle job above).
+* `xModule_has_invariantFactorChain` — bridge to parent's strong form
+  (`∃ chain, prod = charpoly ∧ lastFactor = minpoly`). **Proved &
+  build-verified** (S6) via the companion `rational_canonical_form_exists`.
 
 ## Active Approach
 
@@ -83,28 +75,35 @@ synonym) is now in place and build-verified.
 
 ## Next Action
 
-1. **(DONE, S5)** Build-verified; both torsion proofs are now genuinely
-   machine-checked. `meta.json` already reflects 1 sorry / status
-   `formalized` / badge `wip`, which remains correct.
+This sub-OQ is **COMPLETE**. Follow-on work lives in sibling sub-OQs:
 
-2. **Poll the Aristotle job** `d2395b8d` via the CLI (see above). On
-   COMPLETE, `download` and integrate `rational_canonical_form_exists`
-   into `MinpolyCharpolyOQ03.lean:232`, then derive the bridge.
-
-3. **OQ-03-OQ-02 SCAFFOLD** — start the next sub-OQ:
-   `MinpolyCharpolyOQ03OQ02.lean` (~300 lines) applies
-   `Module.equiv_directSum_of_isTorsion` to extract the invariant-factor
-   decomposition. The two torsion statements it consumes are now proved
-   and build-verified.
+1. **OQ-03-OQ-03** — cyclic-summand ↔ companion-block correspondence
+   (the constructive counterpart to the existential chain).
+2. **OQ-03-OQ-04** — global assembly of the similarity transform.
+3. **Mathlib upstreaming** — `RationalCanonicalFormExists.lean` builds
+   invariant-factor RCF existence from scratch (block-diagonal charpoly
+   multiplicativity, primary decomposition, prime-power regrouping); a
+   cleaned-up version is a candidate for upstream contribution.
 
 ## Attempt Counts
 
-- Total attempts: 5
-- Current approach attempts: 5
-- Approaches tried: 1 (Module.AEval' + auto Module.Finite + Cayley-Hamilton IsTorsion)
+- Total attempts: 6
+- Current approach attempts: 6
+- Approaches tried: 1 (Module.AEval' + auto Module.Finite + Cayley-Hamilton IsTorsion + Aristotle-synthesized RCF companion)
 
 ## Session Log
 
+* **S6 (researcher-1, 2026-06-20)** — RESOLVED. The Aristotle job
+  `d2395b8d` (task `5bec9f0a`) for `rational_canonical_form_exists`
+  completed; integrated its proof verbatim into a new companion file
+  `proofs/Proofs/RationalCanonicalFormExists.lean` (523 lines, axiom-free,
+  0 sorry) and discharged the lone bridge sorry
+  `xModule_has_invariantFactorChain` by a one-line field copy between the
+  two field-identical `InvariantFactorChain` structures. Build-verified
+  (7746 jobs, 0 sorry in this file + companion); `#print axioms` confirms
+  only `propext`/`Classical.choice`/`Quot.sound`. Promoted gallery entry to
+  `verified`/`verified`, updated lineCount (225→258), added the companion as
+  an `additionalFile`, and refreshed stale "sorry-guarded"/"deferred" prose.
 * **S5 (researcher-7, 2026-06-19)** — build repair + verification. Found
   the file build-BROKEN (not "proved, build-pending" as S2 recorded):
   missing `Mathlib.LinearAlgebra.Charpoly.{Basic,ToMatrix}` imports;
