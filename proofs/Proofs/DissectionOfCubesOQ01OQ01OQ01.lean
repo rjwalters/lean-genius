@@ -202,4 +202,83 @@ file genuinely `axiom`-free. The transport is a one-liner
 (`at_least_two_colliding_cubes g.toCubeDissection h`) for any consumer who wants it.
 -/
 
+-- ============================================================
+-- SECTION 5: The colliding pair alone cannot fill — a genuine
+--            minimal-collision dissection needs ≥ 3 cubes
+-- ============================================================
+
+/-!
+The previous sections show the *specific* combinatorial witness is not geometric. Here we
+extract the first genuine **lower bound on the cardinality** of any volume-filling
+minimal-collision dissection, using only the volumetric coverage field and the geometry of
+interior-disjoint cubes in `[0,1]³`. It rules out the smallest conceivable case — the colliding
+pair on its own — so a genuine `HasMinimalCollision` dissection, if one exists at all, must
+carry at least one further (distinct-sized) cube.
+
+The engine is a clean elementary fact: two interior-disjoint cubes inside the unit cube have
+total side length `≤ 1` along the separating axis, hence combined volume `< 1` (strictly, since
+the cross term `3ab(a+b) > 0`). No measure theory and no geometric axiom is used.
+-/
+
+/-- **Separation bound.** Two interior-disjoint cubes both contained in `[0,1]³` have total side
+    length at most `1`: whichever axis separates them, the far cube's containment leaves room
+    only for the sum of the two sides. -/
+theorem side_sum_le_one (c₁ c₂ : Cube)
+    (h₁ : c₁.inUnitCube) (h₂ : c₂.inUnitCube) (hd : c₁.interiorDisjoint c₂) :
+    c₁.side + c₂.side ≤ 1 := by
+  unfold Cube.inUnitCube at h₁ h₂
+  unfold Cube.interiorDisjoint at hd
+  obtain ⟨h1x0, h1x1, h1y0, h1y1, h1z0, h1z1⟩ := h₁
+  obtain ⟨h2x0, h2x1, h2y0, h2y1, h2z0, h2z1⟩ := h₂
+  rcases hd with h | h | h | h | h | h <;> linarith
+
+/-- **Volume bound.** Two interior-disjoint cubes inside the unit cube have combined volume
+    strictly below `1`. With `a + b ≤ 1` and `a, b > 0`,
+    `a³ + b³ = (a+b)³ − 3ab(a+b) ≤ 1 − 3ab(a+b) < 1`. -/
+theorem two_disjoint_volume_lt_one (c₁ c₂ : Cube)
+    (h₁ : c₁.inUnitCube) (h₂ : c₂.inUnitCube) (hd : c₁.interiorDisjoint c₂) :
+    c₁.size ^ 3 + c₂.size ^ 3 < 1 := by
+  have hsum := side_sum_le_one c₁ c₂ h₁ h₂ hd
+  have hp1 := c₁.side_pos
+  have hp2 := c₂.side_pos
+  have hle : (c₁.side + c₂.side) ^ 3 ≤ 1 := pow_le_one₀ (by linarith) hsum
+  have hpos : 0 < 3 * c₁.side * c₂.side * (c₁.side + c₂.side) := by positivity
+  have key : c₁.side ^ 3 + c₂.side ^ 3
+      = (c₁.side + c₂.side) ^ 3 - 3 * c₁.side * c₂.side * (c₁.side + c₂.side) := by ring
+  show c₁.side ^ 3 + c₂.side ^ 3 < 1
+  rw [key]; linarith
+
+/-- **No two-cube genuine dissection.** Volumetric coverage `∑ side³ = 1` is incompatible with
+    having exactly two cubes: any two interior-disjoint cubes in `[0,1]³` fill strictly less than
+    the whole volume. -/
+theorem geo_card_ne_two (g : GeoCubeDissection) : g.cubes.card ≠ 2 := by
+  intro hcard
+  obtain ⟨c₁, c₂, hne, hpair⟩ := Finset.card_eq_two.mp hcard
+  have hc1 : c₁ ∈ g.cubes := by rw [hpair]; simp
+  have hc2 : c₂ ∈ g.cubes := by rw [hpair]; simp
+  have hcontain1 := g.all_contained c₁ hc1
+  have hcontain2 := g.all_contained c₂ hc2
+  have hdisj := g.pairwise_disjoint c₁ hc1 c₂ hc2 hne
+  have hvol := g.volume_fills
+  rw [hpair, Finset.sum_pair hne] at hvol
+  have hlt := two_disjoint_volume_lt_one c₁ c₂ hcontain1 hcontain2 hdisj
+  linarith
+
+/-- **Headline.** A *genuine* (volume-filling) minimal-collision dissection — if one exists —
+    must contain **at least three cubes**. The two colliding cubes cannot constitute the whole
+    dissection, because two interior-disjoint cubes never fill the unit cube. This rules out the
+    smallest case of the open question and sharpens the target: any genuine `HasMinimalCollision`
+    tiling needs a third, distinct-sized cube beyond the colliding pair. -/
+theorem minimal_collision_needs_three (g : GeoCubeDissection)
+    (h : HasMinimalCollision g.toCubeDissection) : 3 ≤ g.cubes.card := by
+  unfold HasMinimalCollision at h
+  have hsub : collidingCubes g.toCubeDissection ⊆ g.toCubeDissection.cubes :=
+    Finset.filter_subset _ _
+  have h2 : 2 ≤ g.cubes.card := by
+    have hcard := Finset.card_le_card hsub
+    rw [h] at hcard
+    simpa using hcard
+  have hne2 := geo_card_ne_two g
+  omega
+
 end DissectionOfCubesOQ01OQ01OQ01
