@@ -1,0 +1,164 @@
+{
+  "id": "fibonacci-identities-oq-03",
+  "title": "Fibonacci Numbers at Doubled Indices as Sums and Differences of Two Squares",
+  "slug": "fibonacci-identities-oq-03",
+  "description": "The fast-doubling identities write a Fibonacci number at a doubled index as two Fibonacci squares. Mathlib's Nat.fib_two_mul_add_one gives the odd case fib(2n+1) = fib(n+1)² + fib n² — an odd-index Fibonacci is a sum of two consecutive squares. For the even case Mathlib records only the product form Nat.fib_two_mul_add_two (fib(2n+2) = fib(n+1)·(2·fib n + fib(n+1))) and not the dual difference-of-two-squares reading fib(2n+2) = fib(n+2)² − fib n², which is the even-index companion of the odd-index sum-of-squares identity and is absent from both Mathlib and this gallery. This entry supplies it, in an ℕ-additive form fib(2n+2) + fib n² = fib(n+2)² and an ℤ-subtractive form, records the odd case for symmetry, and packages both as existential sum / difference of two squares statements. The even identity is elementary: combine Nat.fib_two_mul_add_two with the recurrence fib(n+2) = fib n + fib(n+1) and expand the square — the cross term 2·fib n·fib(n+1) of (fib n + fib(n+1))² is exactly the difference between the product form and fib n², so the whole thing closes by ring.",
+  "meta": {
+    "author": "Classical (fast-doubling Fibonacci identities); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fibonacci_sequence#Identities",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "sum-of-squares",
+      "difference-of-squares",
+      "doubling-identity",
+      "integer-sequences",
+      "identity",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ03.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib_two_mul_add_one",
+        "description": "fib (2 * n + 1) = fib (n + 1) ^ 2 + fib n ^ 2 — the odd fast-doubling identity, recorded directly as the odd-index sum-of-two-consecutive-squares result",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.fib_two_mul_add_two",
+        "description": "fib (2 * n + 2) = fib (n + 1) * (2 * fib n + fib (n + 1)) — the even fast-doubling identity in product form; expanded and matched against the square (fib n + fib (n + 1))^2 to obtain the difference-of-squares form",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "fib (n + 2) = fib n + fib (n + 1) — the defining Fibonacci recurrence, used to rewrite fib (n + 2) before the final ring normalization",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      }
+    ],
+    "originalContributions": [
+      "fib_even_add_sq_eq_sq: ∀ n : ℕ, fib (2n+2) + fib n ^ 2 = fib (n+2) ^ 2 — the even-index difference-of-two-squares identity (ℕ-additive form), absent from Mathlib, which records only the product form Nat.fib_two_mul_add_two",
+      "fib_even_sq_sub_sq: ∀ n : ℕ, (fib (2n+2) : ℤ) = (fib (n+2) : ℤ) ^ 2 − (fib n : ℤ) ^ 2 — the same identity in literal integer-subtractive difference-of-squares form",
+      "fib_odd_sq_add_sq: ∀ n : ℕ, fib (2n+1) = fib (n+1) ^ 2 + fib n ^ 2 — the odd case (Mathlib's Nat.fib_two_mul_add_one), recorded for symmetry as the sum half of the pair",
+      "fib_odd_isSumSq / fib_even_isDiffSq: ∃ a b, fib (2n+1) = a² + b² and ∃ a b, fib (2n+2) + b² = a² — the existential 'sum / difference of two squares' readings of the two cases"
+    ],
+    "dateAdded": "2026-06-20",
+    "lineCount": 76,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The fast-doubling identities fib(2n) = fib(n)·(2·fib(n+1) − fib(n)), fib(2n+1) = fib(n+1)² + fib(n)², and fib(2n+2) = fib(n+1)·(2·fib(n) + fib(n+1)) let one Fibonacci number at a doubled index be computed from two Fibonacci squares, and underlie the O(log n) fast-doubling algorithm. The odd identity is itself a classical 'sum of two squares' statement: every odd-index Fibonacci number is the sum of the squares of two consecutive Fibonacci numbers. Its even-index mirror image — fib(2n+2) as a difference of two squares fib(n+2)² − fib(n)² — completes the picture but is not recorded directly in Mathlib, whose even-doubling lemma is phrased as a product.",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-03)**: Express Fibonacci numbers at doubled indices as sums and differences of two squares — in particular establish the even-index difference-of-squares companion fib(2n+2) = fib(n+2)² − fib(n)² of the odd-index sum-of-squares identity, and package both as existential two-square statements.\n\n**Result**: fib_odd_sq_add_sq (sum, the named odd case), fib_even_add_sq_eq_sq and fib_even_sq_sub_sq (the new even difference-of-squares identity in ℕ-additive and ℤ-subtractive form), and the existential corollaries fib_odd_isSumSq, fib_even_isDiffSq.",
+    "text": "For every n, the odd-index Fibonacci number fib(2n+1) equals fib(n+1)² + fib(n)² (a sum of two consecutive squares), and the even-index Fibonacci number fib(2n+2) equals fib(n+2)² − fib(n)² (a difference of two squares two apart). The two together exhibit each doubled-index Fibonacci number as a two-square combination of nearby Fibonacci values.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. The odd case is Mathlib's Nat.fib_two_mul_add_one verbatim: fib(2n+1) = fib(n+1)² + fib(n)².\n2. For the even case, start from the product form Nat.fib_two_mul_add_two: fib(2n+2) = fib(n+1)·(2·fib(n) + fib(n+1)). Rewrite the target square fib(n+2)² using the recurrence Nat.fib_add_two, fib(n+2) = fib(n) + fib(n+1).\n3. The goal fib(n+1)·(2·fib(n) + fib(n+1)) + fib(n)² = (fib(n) + fib(n+1))² is then a pure polynomial identity in the two atoms fib(n), fib(n+1): both sides expand to fib(n)² + 2·fib(n)·fib(n+1) + fib(n+1)². It closes by `ring`. The cross term 2·fib(n)·fib(n+1) is precisely the gap between the product form and fib(n)².\n4. The integer subtractive form fib(2n+2) = fib(n+2)² − fib(n)² follows by casting the ℕ-additive identity to ℤ (exact_mod_cast) and rearranging with linarith.\n5. The existential readings instantiate a = fib(n+1)/fib(n+2), b = fib(n) directly.",
+    "keyInsights": [
+      "**Sum / difference symmetry.** The odd-index Fibonacci number is a sum of two consecutive squares (Mathlib's Nat.fib_two_mul_add_one); its even-index neighbor is a difference of two squares two apart. The two identities are the natural pair, but only the sum half is recorded directly in Mathlib.",
+      "**The cross term is the whole content.** Mathlib's even-doubling lemma is the product fib(n+1)·(2·fib(n) + fib(n+1)); the square (fib(n) + fib(n+1))² differs from it by exactly fib(n)², which is why fib(2n+2) + fib(n)² = fib(n+2)² and the identity reduces to a single `ring` call.",
+      "**ℕ-additive vs ℤ-subtractive.** Stating the even identity additively keeps it inside ℕ (no truncated subtraction); casting to ℤ then makes the literal difference-of-squares fib(n+2)² − fib(n)² available without side conditions.",
+      "**Genuinely beyond Mathlib.** Mathlib records the odd sum-of-squares identity but only the product form of the even-doubling step; the difference-of-squares reading fib(2n+2) = fib(n+2)² − fib(n)² is supplied here and is absent from both Mathlib and the existing Fibonacci gallery entries."
+    ],
+    "prerequisites": [
+      "The fast-doubling Fibonacci identities Nat.fib_two_mul_add_one and Nat.fib_two_mul_add_two",
+      "The Fibonacci recurrence Nat.fib_add_two",
+      "The ring and linarith tactics and exact_mod_cast for the ℕ→ℤ transfer"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Module docstring locating the doubled-index Fibonacci identities, recording what Mathlib's Nat.fib library contains (odd sum-of-squares directly, even case only in product form) and the import/namespace setup.",
+      "mathContext": "$F_{2n+1} = F_{n+1}^2 + F_n^2$ and $F_{2n+2} = F_{n+2}^2 - F_n^2$."
+    },
+    {
+      "id": "odd",
+      "title": "Odd Case: Sum of Two Consecutive Squares",
+      "startLine": 36,
+      "endLine": 42,
+      "summary": "fib_odd_sq_add_sq: the odd-index Fibonacci number as a sum of two consecutive squares, recorded directly from Mathlib's Nat.fib_two_mul_add_one.",
+      "mathContext": "$F_{2n+1} = F_{n+1}^2 + F_n^2$."
+    },
+    {
+      "id": "even-nat",
+      "title": "Even Case: Difference of Two Squares (ℕ form)",
+      "startLine": 44,
+      "endLine": 52,
+      "summary": "fib_even_add_sq_eq_sq: the new even-index identity fib(2n+2) + fib n² = fib(n+2)², obtained by expanding Mathlib's product form against the square of the recurrence and closing by ring.",
+      "mathContext": "$F_{2n+2} + F_n^2 = F_{n+2}^2$."
+    },
+    {
+      "id": "even-int",
+      "title": "Even Case: Difference of Two Squares (ℤ form)",
+      "startLine": 54,
+      "endLine": 61,
+      "summary": "fib_even_sq_sub_sq: the same even identity in literal integer-subtractive form fib(2n+2) = fib(n+2)² − fib n², by casting and rearranging.",
+      "mathContext": "$F_{2n+2} = F_{n+2}^2 - F_n^2$."
+    },
+    {
+      "id": "existential",
+      "title": "Existential Two-Square Readings",
+      "startLine": 63,
+      "endLine": 74,
+      "summary": "fib_odd_isSumSq and fib_even_isDiffSq: every odd-index Fibonacci number is a sum of two squares, every even-index Fibonacci number is a difference of two squares.",
+      "mathContext": "$\\exists a\\,b,\\ F_{2n+1} = a^2 + b^2$ and $\\exists a\\,b,\\ F_{2n+2} + b^2 = a^2$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "complements",
+      "description": "The base Fibonacci entry records the summation identities (sum of squares ∑ fib² = fib n · fib (n+1), sums of odd- and even-indexed Fibonacci numbers); this entry instead treats the per-term doubled-index two-square identities"
+    },
+    {
+      "targetId": "fibonacci-identities-oq-04",
+      "relationship": "related",
+      "description": "The oq-04 entry supplies the product identities Vajda, d'Ocagne, Catalan, Cassini; this entry treats the complementary sum/difference-of-squares doubled-index identities"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) treatment of the doubled-index Fibonacci two-square identities: the odd-index sum of two consecutive squares (Mathlib) and the even-index difference of two squares (new), in both ℕ-additive and ℤ-subtractive form, with existential corollaries.",
+    "implications": "Adds the even-index difference-of-squares identity fib(2n+2) = fib(n+2)² − fib(n)² to the formalized record — the natural companion of the odd-index sum-of-squares identity, recorded in Mathlib only in product form — completing the two-square reading of the fast-doubling identities.",
+    "openQuestions": [
+      "Combine the sum and difference identities to express fib(2n+1)·fib(2n+2) or fib(4n+3) as a sum of squares, iterating the doubling.",
+      "Formalize the analogous Lucas-number doubling identities L(2n) = L(n)² − 2·(−1)ⁿ and L(2n+1) = L(n+1)·L(n) + ... once Lucas numbers are available, and relate them to the Fibonacci two-square forms."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "FibonacciIdentitiesOQ03",
+    "lineCount": 76,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/FibonacciIdentitiesOQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Vorobiev, N. N.",
+      "title": "Fibonacci Numbers",
+      "year": "2002",
+      "venue": "Birkhäuser",
+      "note": "Fast-doubling identities and sum/difference-of-squares readings"
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Doubled-index Fibonacci identities"
+    }
+  ],
+  "sorries": 0
+}
