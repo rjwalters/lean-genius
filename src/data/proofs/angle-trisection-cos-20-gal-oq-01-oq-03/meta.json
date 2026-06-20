@@ -2,6 +2,21 @@
   "id": "angle-trisection-cos-20-gal-oq-01-oq-03",
   "title": "Eisenstein Conjecture for cos(π/p), General Odd Prime p",
   "slug": "angle-trisection-cos-20-gal-oq-01-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "AngleTrisectionCos20GalOQ01OQ03",
+    "lineCount": 1380,
+    "axiomCount": 0,
+    "theoremCount": 64,
+    "definitionCount": 1,
+    "path": "Proofs/AngleTrisectionCos20GalOQ01OQ03.lean",
+    "sorries": 1
+  },
   "description": "States the uniform Eisenstein conjecture: for every odd prime p ≥ 3, the minimal polynomial of 2 + 2cos(π/p) over ℚ is Eisenstein at p. Defines a parametric polynomial r : ℕ → ℤ[X] with explicit values for p ∈ {3, 5, 7, 11, 13}: r₃ = Y−3 (degenerate degree-1 boundary case, since cos(π/3) = 1/2), r₅ = Y²−5Y+5, r₇ = Y³−7Y²+14Y−7, r₁₁ = Y⁵−11Y⁴+44Y³−77Y²+55Y−11, r₁₃ = Y⁶−13Y⁵+65Y⁴−156Y³+182Y²−91Y+13. Proves IsEisensteinAt for each of the five primes by direct coefficient computation, derives irreducibility for the new primes p = 11, p = 13, and packages two structural Vieta fingerprints: (i) `r_constantCoeff_eq_signed_p` — `(r p).coeff 0 = (-1)^((p-1)/2) · p` (the norm half, matching N(2+θ_p) = (-1)^((p-1)/2) · Φ_{2p}(-1)), and (ii) `r_subLeadingCoeff_eq_neg_p` together with `r_3_traceCoeff` — the sub-leading coefficient equals −p (the trace half, matching −Tr(2+θ_p) = −p). The general conjecture is stated as a sorry; the proof requires the cyclotomic-ramification argument that 2 + 2cos(π/p) is a uniformizer in the unique prime above p in ℤ[2cos(π/p)] (totally ramified extension of degree (p−1)/2, with norm Φ_{2p}(−1) = Φ_p(1) = p). S5 ACT adds the cyclotomic anchor for the norm fingerprint at p ∈ {3, 5, 7}: explicit forms `cyclotomic_{6,10,14}_eq` derived via `eq_cyclotomic_iff` and divisor-product expansion, plus `cyclotomic_{six,ten,fourteen}_eval_neg_one` (Φ_{2p}(-1) = p), plus the bridge `r_constantCoeff_eq_cyclotomic_small` connecting `(r p).coeff 0` to Mathlib's cyclotomic API. S6 extends the cyclotomic-anchor coverage to the remaining gallery primes p ∈ {11, 13}: `cyclotomic_11_eq`, `cyclotomic_13_eq`, `cyclotomic_22_eq` (degree-22 ring), `cyclotomic_26_eq` (degree-26 ring), `cyclotomic_twentytwo_eval_neg_one` (Φ_22(-1) = 11), `cyclotomic_twentysix_eval_neg_one` (Φ_26(-1) = 13), bridge `r_{11,13}_constantCoeff_eq_cyclotomic`, and packaged 5-prime `r_constantCoeff_eq_cyclotomic_full` extending the S5 3-prime version.",
   "meta": {
     "author": "researcher-6",

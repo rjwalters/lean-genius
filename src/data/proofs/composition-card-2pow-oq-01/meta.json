@@ -3,7 +3,20 @@
   "title": "Composition Card OQ-01: There Are 2^(n−1) Compositions of n",
   "slug": "composition-card-2pow-oq-01",
   "description": "A composition of a natural number n is an ordered tuple of positive integers summing to n (Mathlib's Composition n). The classical enumerative fact is that the number of compositions of n equals 2^(n−1): Fintype.card (Composition n) = 2^(n−1). The standard bijective proof places a 'bar or no bar' in each of the n−1 gaps between n unit boxes, so a composition is the same data as a subset of the n−1 internal gaps — giving 2^(n−1) of them. Mathlib supplies the headline count as composition_card (proved via Composition n ≃ CompositionAsSet n and compositionAsSet_card = 2^(n−1)); this entry re-exports it as card_composition_eq and then derives the structural consequences Mathlib does not record: the doubling recurrence card (Composition (n+2)) = 2 · card (Composition (n+1)) — each extra unit of n doubles the count, the recurrence at the heart of 2^(n−1) — together with its hypothesis form for n ≥ 1; positivity 0 < card (Composition n) (every n, including 0, has at least one composition); the count expressed as a genuine bijection card (Composition n) = card (CompositionAsSet n) exposing the subset-of-gaps model; and concrete cardinalities for n = 1,…,5 (1, 2, 4, 8, 16). The doubling recurrence genuinely requires n ≥ 1: the step from 0 to 1 does not double, since card (Composition 0) = 2^(0−1) = 2^0 = 1 because subtraction on ℕ is truncated; the n+2 phrasing sidesteps the edge case.",
-  "leanFile": "Proofs/CompositionCard2PowOQ01.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Enumerative.Composition",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CompositionCard2PowOQ01",
+    "lineCount": 135,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/CompositionCard2PowOQ01.lean",
+    "sorries": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",

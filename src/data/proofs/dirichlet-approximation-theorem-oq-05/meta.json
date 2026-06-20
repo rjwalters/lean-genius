@@ -3,7 +3,21 @@
   "title": "Dirichlet Approximation OQ-05: The Golden Ratio is Badly Approximable",
   "slug": "dirichlet-approximation-theorem-oq-05",
   "description": "The sharpness counterpart to Dirichlet's approximation theorem: the golden ratio φ = (1+√5)/2 is badly approximable — there is a constant c > 0 (here c = 1/4) such that for every integer p and every q > 0, c/q² ≤ |φ − p/q|. Whereas the parent entry and its siblings prove the EXISTENCE of good rational approximations |α − p/q| < 1/q² (oq-01 counts them, oq-03 re-derives the bound via Minkowski's geometry of numbers), this entry proves the dual LOWER bound: no rational approximates φ faster than 1/q², so the exponent 2 in Dirichlet's theorem cannot be improved for φ. The proof is elementary, avoiding continued fractions: since φ and its conjugate ψ = (1−√5)/2 are the roots of x² − x − 1 (so φ+ψ = 1, φψ = −1), the quantity q²(p/q − φ)(p/q − ψ) = p² − pq − q² is an integer, never zero for q > 0 (otherwise p/q would equal the irrational φ or ψ), hence ≥ 1 in absolute value; this gives |φ − p/q|·|ψ − p/q| ≥ 1/q², and a short case analysis bounding the second factor by |φ − p/q| + √5 < 4 yields |φ − p/q| ≥ 1/(4q²). This is the gallery's first Diophantine lower bound.",
-  "leanFile": "Proofs/DirichletApproximationOQ05.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "DirichletApproximationOQ05",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/DirichletApproximationOQ05.lean",
+    "sorries": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",

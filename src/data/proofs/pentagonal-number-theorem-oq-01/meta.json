@@ -2,6 +2,24 @@
   "id": "pentagonal-number-theorem-oq-01",
   "title": "Pentagonal Number Theorem: Generalized Pentagonal Numbers and the Square-Discriminant Criterion",
   "slug": "pentagonal-number-theorem-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Classical",
+      "PowerSeries",
+      "Finset",
+      "PowerSeries.WithPiTopology"
+    ],
+    "namespace": "PentagonalNumberTheoremOQ01",
+    "lineCount": 530,
+    "axiomCount": 0,
+    "theoremCount": 39,
+    "definitionCount": 6,
+    "path": "Proofs/PentagonalNumberTheoremOQ01.lean",
+    "sorries": 0
+  },
   "description": "Builds the number-theoretic foundation of Euler's pentagonal number theorem: a self-contained theory of the generalized pentagonal numbers g(k)=k(3k-1)/2 (the exponents of the lacunary series ∏(1-xⁿ)=∑(-1)ᵏx^{g(k)}). The headline is the classical recognition criterion — m is a generalized pentagonal number iff 24m+1 is a perfect square — together with injectivity of the index map, nonnegativity, and the concrete values matching OEIS A001318. Building on Mathlib's 2025 Partition.GenFun, the entry now also machine-checks BOTH ends of Euler's identity for the Euler character: the product side genFun pentChar = ∏(1-Xᵐ) and the coefficient side [Xⁿ] = ∑_{distinct partitions}(-1)^{#parts} = p_even(n)-p_odd(n), narrowing the open core to the single Franklin-involution identity ∑(-1)^{#parts} = pentSeriesCoeff(n).",
   "meta": {
     "status": "verified",

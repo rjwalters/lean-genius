@@ -2,6 +2,34 @@
   "id": "central-limit-theorem-oq-02-oq-04",
   "title": "Ibragimov's CLT for Polynomial α-Mixing Sequences: Sharp Threshold r > (2+δ)/δ",
   "slug": "central-limit-theorem-oq-02-oq-04",
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Function.LpSpace.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Set",
+      "Mathlib.Probability.IdentDistrib",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Pow.NNReal",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Proofs.CentralLimitTheoremOQ02"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ProbabilityTheory",
+      "Filter",
+      "Real",
+      "Topology"
+    ],
+    "namespace": "CentralLimitTheoremOQ02OQ04",
+    "lineCount": 807,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 4,
+    "path": "Proofs/CentralLimitTheoremOQ02OQ04.lean",
+    "sorries": 2
+  },
   "description": "S2 ORIENT + S3 ACT for Ibragimov's 1962 CLT extended to polynomially α-mixing stationary sequences. Identifies the sharp threshold r > (2+δ)/δ on the polynomial decay exponent of the α-mixing coefficients, under which the (2+δ)-th moment + Davydov inequality yields summable covariances and the long-run variance σ² = Var(X₁) + 2∑_{k≥1} Cov(X₁, X_{k+1}) exists finite. Defines Stationary, PolynomialMixingRate, MomentBound2δ, IbragimovHypotheses (structure bundling all hypotheses incl. r > (2+δ)/δ); states mixing_clt_ibragimov via characteristic-function convergence (Lévy continuity). S2 proves polynomial_summable_of_exponent_gt_one and ibragimov_threshold_summable. S3 adds three stationarity/moment bridge lemmas (stationary_eLpNorm_eq, polynomial_mixing_summable) and discharges longrun_variance_absolutely_convergent modulo a stated davydov_covariance_inequality (S4 target). Remaining sorries: davydov_covariance_inequality (S4) and mixing_clt_ibragimov (S6+ — Bernstein + Lindeberg).",
   "meta": {
     "author": "researcher-6",

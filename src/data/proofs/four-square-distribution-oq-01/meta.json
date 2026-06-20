@@ -2,6 +2,43 @@
   "id": "four-square-distribution-oq-01",
   "title": "Jacobi's Four-Square Formula r₄(n) = 8·σ*(n) — Bootstrap and Axiomatization",
   "slug": "four-square-distribution-oq-01",
+  "leanFile": {
+    "imports": [
+      "Proofs.FourSquareDistribution",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.GroupTheory.Perm.DomMulAct",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "FourSquareDistribution",
+      "axiom",
+      "—",
+      "i.e.,",
+      "the",
+      "modular-form",
+      "decomposition",
+      "reduces",
+      "to",
+      "conjecture",
+      "in",
+      "isolation,",
+      "but",
+      "axiom-free",
+      "proofs",
+      "of",
+      "all",
+      "three"
+    ],
+    "namespace": "Nat",
+    "lineCount": 2932,
+    "axiomCount": 2,
+    "theoremCount": 142,
+    "definitionCount": 10,
+    "path": "Proofs/FourSquareDistributionOQ01.lean",
+    "sorries": 0
+  },
   "description": "Bootstraps Jacobi's classical four-square formula r₄(n) = 8·∑_{d|n, 4∤d} d as a Lean 4 research target. Defines σ*(n) (modified divisor sum) and a brute-force enumeration r₄(n) over signed integer 4-tuples, verifies the formula numerically for n = 1..10 via native_decide, connects to FourSquareDistribution's type-decomposition theorems, and axiomatizes the general formula whose proof requires modular form theory not yet in Mathlib.",
   "meta": {
     "author": "Lean Genius FourSquareDistributionOQ01",

@@ -2,6 +2,30 @@
   "id": "basel-problem-oq-01-oq-01-oq-02-oq-03",
   "title": "Hanson's Bound lcm(1,...,n) ≤ 3^n — Bootstrap and Axiomatization",
   "slug": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Algebra.GCDMonoid.Finset",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Nat.Choose.Factorization",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "BaselProblemOQ01OQ01OQ02OQ03",
+    "lineCount": 1802,
+    "axiomCount": 1,
+    "theoremCount": 77,
+    "definitionCount": 1,
+    "path": "Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean",
+    "sorries": 0
+  },
   "description": "Bootstraps Hanson's 1972 bound lcm(1,...,n) ≤ 3^n as a Lean 4 research target. Defines lcmRange n, proves elementary bounds (lcmRange n | n!, lcmRange n ≤ n!, lcmRange n ≤ n^n) without axioms, verifies Hanson's bound numerically for n ∈ {1..10, 12, 15, 20}, and axiomatizes the general statement whose proof requires modular-form / Chebyshev infrastructure (Beta-integral identity) not yet in Mathlib.",
   "meta": {
     "author": "Lean Genius BaselProblemOQ01OQ01OQ02OQ03",

@@ -2,6 +2,29 @@
   "id": "binomial-theorem-oq-02-oq-01-oq-04",
   "title": "Multinomial Variance: Var(Xᵢ) = n·pᵢ·(1 − pᵢ)",
   "slug": "binomial-theorem-oq-02-oq-01-oq-04",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Multinomial",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Tactic",
+      "Proofs.BinomialTheoremOQ02OQ01OQ02",
+      "Proofs.BinomialTheoremOQ02OQ01OQ03",
+      "Proofs.BinomialTheoremOQ03"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "BinomialTheoremOQ02OQ01OQ03"
+    ],
+    "namespace": "BinomialTheoremOQ02OQ01OQ04",
+    "lineCount": 151,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/BinomialTheoremOQ02OQ01OQ04.lean",
+    "sorries": 0
+  },
   "description": "Proves the diagonal of the multinomial covariance matrix: the variance of a single component Var(Xᵢ) = n·pᵢ·(1 − pᵢ). The cross-moment lemma in the sibling file BinomialTheoremOQ02OQ01OQ03 carries the hypothesis i ≠ j, so it only reaches the off-diagonal entries Cov(Xᵢ,Xⱼ) = −n·pᵢ·pⱼ; this file supplies the missing diagonal. The proof reduces the second moment E[Xᵢ²] to the binomial second moment by fiber grouping over the value j = k(i₀) and the marginal-PMF identity, then combines with the mean E[Xᵢ] = n·pᵢ and the binomial variance. Fully machine-verified with 0 sorries and 0 axioms.",
   "meta": {
     "author": "Lean Genius",

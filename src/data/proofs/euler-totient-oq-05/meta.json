@@ -2,6 +2,24 @@
   "id": "euler-totient-oq-05",
   "title": "Euler's Theorem, Congruence Form, and Exponent Reduction (RSA)",
   "slug": "euler-totient-oq-05",
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PowModTotient",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "EulerTotientOQ05",
+    "lineCount": 178,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/EulerTotientOQ05.lean",
+    "sorries": 0
+  },
   "description": "Develops the number-theoretic face of Euler's theorem in Nat.ModEq form: a^φ(n) ≡ 1 (mod n) for gcd(a,n)=1, the exponent-reduction corollary a^k ≡ a^(k mod φ(n)) (mod n), Fermat's little theorem (both a^(p-1)≡1 and a^p≡a forms), orderOf u | φ(n) for units, and the correctness of RSA decryption (m^e)^d ≡ m (mod n). 8 theorems, 0 axioms.",
   "meta": {
     "author": "Lean Genius",

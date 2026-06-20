@@ -2,6 +2,24 @@
   "id": "cauchy-group-theorem-oq-01",
   "title": "Cauchy's theorem for finite groups and its classical corollaries",
   "slug": "cauchy-group-theorem-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Perm.Cycle.Type",
+      "Mathlib.Data.ZMod.QuotientGroup",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Subgroup"
+    ],
+    "namespace": "CauchyGroupTheoremOQ01",
+    "lineCount": 145,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyGroupTheoremOQ01.lean",
+    "sorries": 0
+  },
   "description": "Cauchy's theorem (1845): if a prime p divides the order of a finite group G, then G has an element of order exactly p. Mathlib proves the existence statement (exists_prime_orderOf_dvd_card, its Nat.card and additive variants) but records none of the classical packaged corollaries. This entry repackages the theorem and proves the consequences mathematicians actually cite: the subgroup-of-order-p form (the seed of the Sylow theorems), the even-order-implies-involution corollary (the p=2 case), the contrapositive coprimality certificate, and explicit 0-axiom witnesses in ZMod 6 realising Cauchy at the primes 2 and 3.",
   "meta": {
     "author": "Augustin-Louis Cauchy (1845); Lean formalization original",

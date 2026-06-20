@@ -2,6 +2,22 @@
   "id": "frobenius-number-oq-04",
   "title": "Sylvester–Frobenius via Mathlib's Canonical Predicate (Chicken McNugget)",
   "slug": "frobenius-number-oq-04",
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.FrobeniusNumber",
+      "Mathlib.Algebra.Group.Submonoid.Membership"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "FrobeniusNumberOQ04",
+    "lineCount": 122,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/FrobeniusNumberOQ04.lean",
+    "sorries": 0
+  },
   "description": "The two-coin Sylvester–Frobenius / Chicken McNugget theorem $g(m, n) = mn - m - n$ for coprime $m, n > 1$, stated with Mathlib's **canonical** `FrobeniusNumber` predicate $\\text{FrobeniusNumber}\\,k\\,s := \\text{IsGreatest}\\,\\{j \\mid j \\notin \\text{AddSubmonoid.closure}\\,s\\}\\,k$ rather than the homemade `Representable` predicate of the gallery's parent entry `Proofs/FrobeniusNumber.lean`. Invokes `frobeniusNumber_pair` and unpacks it via `frobeniusNumber_iff` (the bare not-in-closure / above-in-closure split) and via `AddSubmonoid.mem_closure_pair` (the elementary form $\\exists a\\,b,\\ am + bn = k$). The Chicken McNugget instance $g(3, 5) = 7$ is the canonical `FrobeniusNumber 7 {3,5}` with its fully elementary unpacking ($\\neg\\exists a\\,b,\\ 3a + 5b = 7$ and $\\forall k > 7,\\ \\exists a\\,b,\\ 3a + 5b = k$). 9 theorems, 0 definitions, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",

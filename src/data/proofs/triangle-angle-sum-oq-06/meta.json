@@ -3,7 +3,22 @@
   "title": "Triangle Angle Sum OQ-06/07: Sum-to-Product (Prosthaphaeresis) Identities and the Triangle Half-Angle Products",
   "slug": "triangle-angle-sum-oq-06",
   "description": "The four sum-to-product (prosthaphaeresis) identities convert a sum of two sinusoids into a product of two sinusoids — cos x + cos y = 2·cos((x+y)/2)·cos((x−y)/2), cos x − cos y = −2·sin((x+y)/2)·sin((x−y)/2), sin x + sin y = 2·sin((x+y)/2)·cos((x−y)/2), and sin x − sin y = 2·cos((x+y)/2)·sin((x−y)/2) — each proved directly from the addition formulas via the mean / half-difference substitution x = (x+y)/2 + (x−y)/2, y = (x+y)/2 − (x−y)/2. They are the converse direction of the Werner product-to-sum family (triangle-angle-sum-oq-04/oq-05): there a product becomes a sum, here a sum becomes a product, factored through the arithmetic mean (x+y)/2 and the half-difference (x−y)/2. These four identities coincide with Mathlib's Real.cos_add_cos / Real.cos_sub_cos / Real.sin_add_sin / Real.sin_sub_sin but are anchored here from the addition formulas because the gallery had no sum-to-product identity. The substantive content beyond Mathlib is the pair of triangle half-angle product identities, which Mathlib does not record: for the angles of a triangle (A + B + C = π), sin A + sin B + sin C = 4·cos(A/2)·cos(B/2)·cos(C/2) and cos A + cos B + cos C = 1 + 4·sin(A/2)·sin(B/2)·sin(C/2). Both are the prosthaphaeresis payoff: pairing two of the three terms with a sum-to-product step and collapsing the half-angle (A+B)/2 = π/2 − C/2 turns a linear combination of three sinusoids into a single product of three half-angle factors. They are proved here in a general half-angle form (for a + b + c = π/2): sin(2a) + sin(2b) + sin(2c) = 4·cos a·cos b·cos c and cos(2a) + cos(2b) + cos(2c) = 1 + 4·sin a·sin b·sin c, then specialised to the triangle. The equilateral instance 3·sin(π/3) = 4·cos(π/6)³ follows without evaluating the surds.",
-  "leanFile": "Proofs/TriangleAngleSumOQ06.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic.LinearCombination"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "TriangleAngleSumOQ06",
+    "lineCount": 175,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/TriangleAngleSumOQ06.lean",
+    "sorries": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",

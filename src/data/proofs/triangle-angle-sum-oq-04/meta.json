@@ -3,7 +3,24 @@
   "title": "Triangle Angle Sum OQ-04: Werner Product-to-Sum Identities and the Finite Dirichlet Kernel",
   "slug": "triangle-angle-sum-oq-04",
   "description": "The four Werner product-to-sum identities convert a product of two sinusoids into a sum of two sinusoids — 2·cos x·cos y = cos(x−y) + cos(x+y), 2·sin x·sin y = cos(x−y) − cos(x+y), 2·sin x·cos y = sin(x−y) + sin(x+y), and 2·cos x·sin y = sin(x+y) − sin(x−y) — each proved directly from the addition formulas. They are the building blocks; the substantive content of this entry is their telescoping application to closed forms for the finite trigonometric sums (the Dirichlet kernel / Lagrange trigonometric identity), which Mathlib does not record. The cosine sum satisfies 2·sin(x/2)·∑_{k=1}^{n} cos(kx) = sin((n+½)x) − sin(x/2) and the sine sum 2·sin(x/2)·∑_{k=1}^{n} sin(kx) = cos(x/2) − cos((n+½)x); when sin(x/2) ≠ 0 these give the closed forms ∑_{k=1}^{n} cos(kx) = (sin((n+½)x) − sin(x/2))/(2·sin(x/2)) and the classical Dirichlet kernel ½ + ∑_{k=1}^{n} cos(kx) = sin((n+½)x)/(2·sin(x/2)) = D_n(x). The crux is that, after multiplying by 2·sin(x/2), each summand is a telescoping difference produced by a single Werner identity: 2·sin(x/2)·cos((k+1)x) = sin((k+1+½)x) − sin((k+½)x), so summing collapses to the two endpoints. Mathlib supplies the Werner identities (Real.two_mul_cos_mul_cos, Real.two_mul_sin_mul_sin, Real.two_mul_sin_mul_cos) and the sum-to-product identities (Real.cos_add_cos etc.), but a search of its trigonometric files turns up only the infinite power-series Real.cos_eq_tsum — not the finite ∑_{k=1}^{n} cos(kx) closed form. The finite telescoped Dirichlet kernel, the convolution kernel of the partial sums of a Fourier series, is the original content here. Worked instances confirm the n=2 telescoped identity 2·sin(x/2)·(cos x + cos 2x) = sin(5x/2) − sin(x/2) and the numeric check cos π + cos 2π = 0.",
-  "leanFile": "Proofs/TriangleAngleSumOQ04.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.Complex.Trigonometric",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "Finset"
+    ],
+    "namespace": "TriangleAngleSumOQ04",
+    "lineCount": 178,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/TriangleAngleSumOQ04.lean",
+    "sorries": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",

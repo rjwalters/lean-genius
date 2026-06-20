@@ -2,6 +2,21 @@
   "id": "minkowski-theorem-oq-05",
   "title": "Power-sum convexity bound (a+b)^p ≤ 2^(p−1)(a^p+b^p), with 2^(p−1) the optimal constant",
   "slug": "minkowski-theorem-oq-05",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "NNReal"
+    ],
+    "namespace": "MinkowskiTheoremOQ05",
+    "lineCount": 121,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/MinkowskiTheoremOQ05.lean",
+    "sorries": 0
+  },
   "description": "For a real exponent p ≥ 1 and nonnegative reals a, b, the power-sum convexity bound (a+b)^p ≤ 2^(p−1)(a^p+b^p), together with the sharpness statement that 2^(p−1) is the best possible constant: equality holds on the diagonal a = b, and any constant C valid for all nonnegative a, b satisfies C ≥ 2^(p−1). Mathlib proves the inequality only for ℝ≥0 (NNReal.rpow_add_le_mul_rpow_add_rpow) and ℝ≥0∞; the real-valued nonnegative formulation and the optimality of the constant are both absent. The headline result is the characterization 2^(p−1) = IsLeast of the admissible-constant set.",
   "meta": {
     "author": "Classical (power-mean / Jensen convexity)",

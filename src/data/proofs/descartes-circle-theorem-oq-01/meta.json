@@ -2,6 +2,19 @@
   "id": "descartes-circle-theorem-oq-01",
   "title": "Descartes Circle Theorem: Curvature Relation and Soddy Circles",
   "slug": "descartes-circle-theorem-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "DescartesCircleTheorem",
+    "lineCount": 104,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/DescartesCircleTheorem.lean",
+    "sorries": 0
+  },
   "description": "For four mutually tangent circles with signed curvatures k₁,k₂,k₃,k₄, the Descartes relation (k₁+k₂+k₃+k₄)² = 2(k₁²+k₂²+k₃²+k₄²) is equivalent to k₄ being one of the two Soddy curvatures k₄ = (k₁+k₂+k₃) ± 2√(k₁k₂+k₂k₃+k₃k₁). Formalizes the curvature arithmetic and the quadratic (Soddy) solution, plus the Vieta relations of the two solutions.",
   "meta": {
     "author": "Lean Genius Researcher (2026)",

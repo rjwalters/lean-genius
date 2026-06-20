@@ -3,7 +3,23 @@
   "title": "The Tangent Addition Law and the Triangle Tangent Identities",
   "slug": "tangent-addition-formula-oq-01",
   "description": "Starting from the tangent addition law tan(x+y) = (tan x + tan y)/(1 − tan x · tan y), this entry builds up to two classical triangle identities that are NOT in Mathlib. Mathlib already ships the two-argument laws Real.tan_add / tan_add' / tan_sub / tan_two_mul and the arctangent law Real.arctan_add, but it states them with the hypothesis ∀ k : ℤ, x ≠ (2k+1)·π/2; we first repackage addition and subtraction with the directly usable hypothesis cos x ≠ 0 (equivalent via Real.cos_eq_zero_iff). The genuinely new content is the three-angle theory: (1) a single symmetric trigonometric identity sin A cos B cos C + sin B cos A cos C + sin C cos A cos B = sin A sin B sin C whenever A+B+C = π, proved by eliminating C = π−(A+B) and expanding with sin_add/cos_add — this is the mathematical heart; (2) the TRIPLE TANGENT IDENTITY tan A + tan B + tan C = tan A · tan B · tan C for a triangle (A+B+C = π, no right angle), the striking fact that the sum of the tangents equals their product, with no analogue for sine or cosine; (3) the TRIPLE COTANGENT IDENTITY cot A · cot B + cot B · cot C + cot C · cot A = 1, the same polynomial heart divided by the product of sines; (4) a concrete rational-tangent application arctan(1/2) + arctan(1/3) = π/4, connecting to the gallery's MachinFromAddition entry from the tangent side; (5) the equilateral check that the triple identity holds at A=B=C=π/3 (both sides 3√3). The tangent addition law underpins arctangent addition, Machin's formula for π, the Cayley transform, the slope-of-rotated-line formula, and the Weierstrass t = tan(θ/2) substitution.",
-  "leanFile": "Proofs/TangentAdditionFormula.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan",
+      "Mathlib.Analysis.Complex.Trigonometric",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "TangentAdditionFormula",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/TangentAdditionFormula.lean",
+    "sorries": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
@@ -106,5 +122,7 @@
     }
   ],
   "conclusion": "The tangent addition law is repackaged in the directly usable cos≠0 form and pushed to its two classical triangle specializations — tan A + tan B + tan C = tan A tan B tan C and cot A cot B + cot B cot C + cot C cot A = 1 for A+B+C = π — neither of which is in Mathlib. Both rest on a single symmetric polynomial identity in the sines and cosines of the three angles, proved by eliminating one angle and expanding the two-argument laws. The development is sorry-free and axiom-free (only propext / Classical.choice / Quot.sound), with the rational-tangent corollary arctan(1/2)+arctan(1/3) = π/4 and an equilateral check anchoring the abstract identities to concrete numbers.",
-  "crossReferences": ["triangle-angle-sum-oq-06"]
+  "crossReferences": [
+    "triangle-angle-sum-oq-06"
+  ]
 }
