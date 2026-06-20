@@ -176,6 +176,21 @@
       "targetId": "sum-of-kth-powers",
       "relationship": "related",
       "description": "Both are Wiedijk-100 results about polynomial structure: Faulhaber's formulas concern polynomial evaluation (power sums as polynomials in $n$), while Descartes's rule concerns polynomial root counting — complementary perspectives on polynomial analysis"
+    },
+    {
+      "targetId": "descartes-rule-of-signs-oq-01",
+      "relationship": "extended-by",
+      "description": "The parity refinement: the number of positive roots differs from the sign-change count by an even number, with the exact-count characterization."
+    },
+    {
+      "targetId": "descartes-rule-of-signs-oq-03",
+      "relationship": "extended-by",
+      "description": "Constructive root bounds and localization derived from the sign sequence."
+    },
+    {
+      "targetId": "descartes-rule-of-signs-oq-04",
+      "relationship": "extended-by",
+      "description": "Grabiner's algebraic proof of the rule via polynomial division."
     }
   ],
   "leanFile": {
