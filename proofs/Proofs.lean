@@ -2391,6 +2391,7 @@ import Proofs.FermatDefectOneOQ04
 import Proofs.FermatTwoSquares
 import Proofs.FermatTwoSquaresOQ01
 import Proofs.FermatTwoSquaresOQ01OQ03
+import Proofs.FermatTwoSquaresOQ05
 import Proofs.FermatsLastTheorem
 import Proofs.FermatsLastTheoremOQ03
 import Proofs.FeuerbachsTheorem
