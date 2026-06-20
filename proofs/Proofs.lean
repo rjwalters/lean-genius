@@ -3044,6 +3044,7 @@ import Proofs.StirlingExpansion
 import Proofs.StirlingExpansionAristotle
 import Proofs.StirlingFormula
 import Proofs.StirlingFormulaOQ02
+import Proofs.StirlingFormulaOQ03
 import Proofs.SubsetCount
 import Proofs.SubsetCountMultisetOQ01
 import Proofs.SubsetCountOQ02
