@@ -1,10 +1,11 @@
 # Research State: amgm-inequality-oq-02-oq-01-oq-03
 
 ## Current State
-**Phase**: ACT
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-06-15T00:34:09-07:00
+**Since**: 2026-06-20
 **Iteration**: 3
+**PR**: #27174 (build green, 7745 jobs, 0 warnings/sorries/axioms)
 
 ## Current Focus
 **Route B implemented — both sorries discharged, char-2 restriction removed.**
