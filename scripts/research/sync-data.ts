@@ -33,13 +33,13 @@ const DRY_RUN = process.argv.includes('--dry-run') || process.argv.includes('-n'
 // Types
 interface PoolCandidate {
   id: string
-  name: string
-  tier: string
-  significance: number
-  tractability: number
+  name?: string
+  tier?: string
+  significance?: number
+  tractability?: number
   status: 'available' | 'in-progress' | 'completed' | 'skipped' | 'surveyed'
-  notes: string
-  tags: string[]
+  notes?: string
+  tags?: string[]
 }
 
 interface CandidatePool {
@@ -132,13 +132,14 @@ function generatePlainDescription(candidate: PoolCandidate): string {
     'galois-theory': 'Galois theory', 'measure-theory': 'measure theory',
     'set-theory': 'set theory', 'field-theory': 'field theory',
   }
-  const area = candidate.tags.find(t => mathAreas[t])
+  const displayName = candidate.name ?? candidate.id
+  const area = (candidate.tags ?? []).find(t => mathAreas[t])
   const areaStr = area ? mathAreas[area] : null
 
   if (areaStr) {
-    return `Formal investigation in ${areaStr}: ${candidate.name}.`
+    return `Formal investigation in ${areaStr}: ${displayName}.`
   }
-  return `Formal mathematical investigation: ${candidate.name}.`
+  return `Formal mathematical investigation: ${displayName}.`
 }
 
 /**
@@ -150,7 +151,7 @@ function createMinimalProblemMd(candidate: PoolCandidate): string {
   const researchValue = isStatusPlaceholder(candidate.notes)
     ? 'Important mathematical result'
     : (candidate.notes.split('.')[0] || 'Important mathematical result')
-  return `# Problem: ${candidate.name}
+  return `# Problem: ${candidate.name ?? candidate.id}
 
 ## Statement
 
@@ -165,15 +166,15 @@ $$
 ## Classification
 
 \`\`\`yaml
-tier: ${tierMap[candidate.tier] || 'C'}
-significance: ${candidate.significance}
-tractability: ${candidate.tractability}
+tier: ${(candidate.tier && tierMap[candidate.tier]) || 'C'}
+significance: ${candidate.significance ?? 5}
+tractability: ${candidate.tractability ?? 5}
 tags:
-${candidate.tags.map(t => `  - ${t}`).join('\n')}
+${(candidate.tags ?? []).map(t => `  - ${t}`).join('\n')}
 \`\`\`
 
-**Significance**: ${candidate.significance}/10
-**Tractability**: ${candidate.tractability}/10
+**Significance**: ${candidate.significance ?? 5}/10
+**Tractability**: ${candidate.tractability ?? 5}/10
 
 ## Why This Matters
 
