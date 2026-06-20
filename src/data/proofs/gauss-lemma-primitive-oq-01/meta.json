@@ -1,0 +1,114 @@
+{
+  "id": "gauss-lemma-primitive-oq-01",
+  "title": "Gauss's Lemma: a primitive integer polynomial is irreducible over ℤ iff over ℚ",
+  "slug": "gauss-lemma-primitive-oq-01",
+  "description": "Gauss's Lemma (irreducibility form): a primitive polynomial p ∈ ℤ[X] is irreducible over ℤ if and only if its image in ℚ[X] is irreducible. Mathlib proves the biconditional (IsPrimitive.Int.irreducible_iff_irreducible_map_cast) but the gallery had no entry packaging it with the monic specialization (where primitivity is automatic) and a fully-formalized witness that primitivity is essential — the non-primitive polynomial 2X, reducible over ℤ yet irreducible over ℚ.",
+  "meta": {
+    "author": "Carl Friedrich Gauss (1801)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GaussLemmaPrimitiveOQ01.lean",
+    "tags": [
+      "ring-theory",
+      "polynomials",
+      "irreducibility",
+      "gauss-lemma",
+      "primitive-polynomial",
+      "classic"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+        "description": "Gauss's Lemma: for primitive p : ℤ[X], Irreducible p ↔ Irreducible (p.map (Int.castRingHom ℚ))",
+        "module": "Mathlib.RingTheory.Polynomial.GaussLemma"
+      },
+      {
+        "theorem": "Polynomial.Monic.isPrimitive",
+        "description": "Every monic polynomial is primitive, used to drop the primitivity hypothesis in the monic specialization",
+        "module": "Mathlib.RingTheory.Polynomial.Content"
+      },
+      {
+        "theorem": "Polynomial.isPrimitive_iff_isUnit_of_C_dvd",
+        "description": "p is primitive iff every constant C r dividing p has r a unit; used to show 2X is not primitive",
+        "module": "Mathlib.RingTheory.Polynomial.Content"
+      },
+      {
+        "theorem": "Polynomial.irreducible_of_degree_eq_one",
+        "description": "Over a field, a polynomial of degree one is irreducible; gives irreducibility of the ℚ-image 2X",
+        "module": "Mathlib.Algebra.Polynomial.FieldDivision"
+      },
+      {
+        "theorem": "Polynomial.degree_map_eq_of_injective",
+        "description": "An injective ring-hom map preserves degree; transfers deg(2X over ℤ) = 1 to the ℚ-image",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Lemmas"
+      },
+      {
+        "theorem": "RingHom.injective_int",
+        "description": "Any ring hom out of ℤ into a char-zero ring is injective; instantiated at Int.castRingHom ℚ",
+        "module": "Mathlib.Data.Int.CharZero"
+      }
+    ],
+    "originalContributions": [
+      "gauss_lemma_int: the Gauss's Lemma biconditional restated as the entry headline for primitive p : ℤ[X]",
+      "gauss_lemma_int_monic: the unconditional monic specialization (primitivity automatic via Monic.isPrimitive)",
+      "two_mul_X_not_primitive / two_mul_X_reducible_over_int / two_mul_X_irreducible_over_rat: a fully-formalized counterexample showing 2X is non-primitive, reducible over ℤ, but irreducible over ℚ",
+      "primitivity_necessary: the existential ∃ p, ¬Irreducible p ∧ Irreducible (p over ℚ) ∧ ¬p.IsPrimitive, proving the primitivity hypothesis of Gauss's Lemma cannot be dropped"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on propext, Classical.choice, Quot.sound. No native_decide, so no Lean.ofReduceBool.",
+    "lineCount": 95,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Gauss's Lemma, from the Disquisitiones Arithmeticae (1801), is the cornerstone fact connecting factorization over ℤ to factorization over ℚ. In its content form it says the product of two primitive polynomials is primitive; in its irreducibility form it says a primitive integer polynomial is irreducible over ℤ exactly when it is irreducible over ℚ. The lemma is what makes the rational-root test and integer-coefficient irreducibility criteria (Eisenstein, reduction mod p) actually certify irreducibility over ℚ, and it underlies the theorem that ℤ[X] (and more generally R[X] over a UFD) is a UFD.",
+    "problemStatement": "Package Gauss's Lemma in its irreducibility form, its monic specialization, and a concrete demonstration that the primitivity hypothesis is necessary.\n\n**Answer:** For primitive p : ℤ[X], Irreducible p ↔ Irreducible (p over ℚ); for monic p the hypothesis is automatic; and 2X witnesses that without primitivity the biconditional fails.",
+    "text": "A primitive integer polynomial is irreducible over ℤ iff its image in ℚ[X] is irreducible. For monic polynomials the primitivity hypothesis is free, and the non-primitive polynomial 2X — reducible over ℤ but irreducible over ℚ — shows the hypothesis cannot be dropped.",
+    "proofStrategy": "1. gauss_lemma_int / gauss_lemma_int_monic: direct applications of Mathlib's IsPrimitive.Int.irreducible_iff_irreducible_map_cast, the second feeding it Monic.isPrimitive so no primitivity side-condition is needed.\n2. two_mul_X_not_primitive: from isPrimitive_iff_isUnit_of_C_dvd, primitivity of 2X would force 2 to be a unit of ℤ (since C 2 ∣ 2X); Int.isUnit_iff refutes this.\n3. two_mul_X_reducible_over_int: an Irreducible 2X would, via isUnit_or_isUnit on the factorization 2X = (C 2)·X, make either C 2 a unit (impossible: 2 is not a unit of ℤ) or X a unit (impossible: natDegree X = 1 ≠ 0).\n4. two_mul_X_irreducible_over_rat: the ℚ-image has the same degree as 2X over ℤ (degree_map_eq_of_injective, injectivity of Int.castRingHom ℚ from RingHom.injective_int), namely 1 (compute_degree!), and degree-one polynomials over a field are irreducible.\n5. primitivity_necessary: bundle 2–4 into the existential witness.",
+    "keyInsights": [
+      "**The irreducibility form is the working version.** Reduction mod p, Eisenstein's criterion, and the rational-root test all establish irreducibility over ℤ; Gauss's Lemma is precisely what upgrades that to irreducibility over ℚ, the field one usually cares about.",
+      "**Monic ⟹ primitive makes the lemma hypothesis-free in practice.** Most irreducibility questions are about monic polynomials, and for those the primitivity condition is automatic — gauss_lemma_int_monic states exactly this clean form.",
+      "**Primitivity is not decoration.** The polynomial 2X is reducible over ℤ (it is C 2 times X, neither a unit) but its image 2X is irreducible over ℚ (degree one over a field). This single witness shows the biconditional is false without the primitivity hypothesis — the content of primitivity_necessary.",
+      "**Degree is the only invariant needed for the ℚ-side.** Because ℤ ↪ ℚ is injective, the map preserves degree, so the irreducibility of the image reduces to a degree-one computation rather than any genuinely rational reasoning."
+    ],
+    "prerequisites": [
+      "Polynomials over ℤ and ℚ",
+      "Primitive polynomials and content",
+      "Irreducible elements and units in a ring"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "eisenstein-criterion-oq-01",
+      "relationship": "related",
+      "description": "Eisenstein's criterion certifies irreducibility over ℤ; Gauss's Lemma is what lifts such ℤ-irreducibility to irreducibility over ℚ"
+    }
+  ],
+  "conclusion": {
+    "summary": "Gauss's Lemma (irreducibility form) is packaged for ℤ/ℚ: a primitive integer polynomial is irreducible over ℤ iff over ℚ (gauss_lemma_int), with the hypothesis automatic for monic polynomials (gauss_lemma_int_monic). The polynomial 2X — non-primitive, reducible over ℤ, irreducible over ℚ — is fully formalized and bundled as primitivity_necessary, proving the primitivity hypothesis is indispensable. All six theorems are verified with 0 axioms and 0 sorries.",
+    "implications": "Supplies a citable, self-contained statement of Gauss's Lemma in its working irreducibility form together with the sharpness witness, complementing the integer-coefficient irreducibility criteria (e.g. Eisenstein) that rely on it.",
+    "openQuestions": [
+      "Can the same packaging be given over an arbitrary UFD R with fraction field K (Mathlib's Monic.irreducible_iff_irreducible_map_fraction_map), with a worked non-UFD-free example?",
+      "Does a worked positive case — a specific monic cubic shown irreducible over ℚ by transferring an integer-side argument through gauss_lemma_int_monic — add pedagogical value beyond the counterexample?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "GaussLemmaPrimitiveOQ01",
+    "lineCount": 95,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/GaussLemmaPrimitiveOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -2500,6 +2500,7 @@ import Proofs.FurstenbergCorrespondenceOQ02
 import Proofs.GCDAlgorithm
 import Proofs.GCDAlgorithmOQ01
 import Proofs.GCDAlgorithmOQ01OQ03
+import Proofs.GaussLemmaPrimitiveOQ01
 import Proofs.GaussWilsonNonCyclic
 import Proofs.GaussWilsonNonCyclicOQ01
 import Proofs.GaussWilsonNonCyclicOQ01A
