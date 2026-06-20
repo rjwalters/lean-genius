@@ -273,6 +273,16 @@
       "targetId": "minkowski-fundamental-theorem-oq-02",
       "relationship": "related",
       "description": "Minkowski's Class Number Bound — From Geometry of Numbers to Finite Class Groups: answers whether the class number bound for algebraic number fields can be derived from the geometry-of-numbers framework. This entry's conclusion asks 'Can the Minkowski bound on ideal norms be formalized, connecting the convex body theorem to finiteness of class groups?' — OQ-02 of the sibling Minkowski formalization provides exactly this connection, proving that every ideal class contains an ideal of bounded norm via the convex body theorem applied to a Minkowski embedding of a number field."
+    },
+    {
+      "targetId": "minkowski-theorem-oq-03",
+      "relationship": "extended-by",
+      "description": "Open-question extension (verified): packages the Minkowski ideal-norm bound M_K = (4/π)^{r₂}·(n!/nⁿ)·√|d_K| as a reusable class-number estimate, making the geometry-of-numbers ⟹ ideal-norm connection explicit."
+    },
+    {
+      "targetId": "minkowski-theorem-oq-04",
+      "relationship": "extended-by",
+      "description": "Open-question extension (verified): Blichfeldt's theorem (1914) — any measurable S ⊆ ℝⁿ with vol(S) > k contains k+1 points with pairwise differences in ℤⁿ — generalizing Minkowski's lattice-point theorem with no convexity or symmetry hypothesis."
     }
   ],
   "leanFile": {
