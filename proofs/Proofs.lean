@@ -2505,6 +2505,7 @@ import Proofs.GaussWilsonNonCyclicOQ01
 import Proofs.GaussWilsonNonCyclicOQ01A
 import Proofs.GaussWilsonNonCyclicOQ01B
 import Proofs.GaussWilsonNonCyclicOQ03
+import Proofs.GammaLogConvexityOQ01
 import Proofs.GcdAlgorithmOQ02
 import Proofs.GcdAlgorithmOQ04
 import Proofs.GelfondSchneider
