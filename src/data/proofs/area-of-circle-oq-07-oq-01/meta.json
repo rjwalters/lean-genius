@@ -1,0 +1,120 @@
+{
+  "id": "area-of-circle-oq-07-oq-01",
+  "slug": "area-of-circle-oq-07-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "",
+    "lineCount": 60,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ07OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Complex-Parameter Gaussian Integral",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ01.lean",
+    "tags": [
+      "analysis",
+      "gaussian-integral",
+      "special-functions",
+      "complex-analysis",
+      "measure-theory",
+      "cpow",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 60,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "complex_gaussian_integral: ∫_ℝ e^{-b x²} dx = (π/b)^{1/2} for every complex b with Re b > 0, the genuine complex-parameter generalization recorded by Mathlib's integral_gaussian_complex (principal cpow root)",
+      "complex_gaussian_integral_ofReal: for positive real b the complex value (π/b)^{1/2} is exactly the real square root √(π/b) cast into ℂ, bridging the complex statement back to the real integral_gaussian via Complex.ofReal_cpow",
+      "complex_gaussian_integral_one: at b = 1, ∫_ℝ e^{-x²} = √π inside ℂ — the complexified form of the parent entry area-of-circle-oq-07"
+    ],
+    "prerequisites": [
+      "Lebesgue integration of ℂ-valued functions over ℝ (MeasureTheory)",
+      "Mathlib's complex Gaussian integral integral_gaussian_complex",
+      "Complex.cpow and the principal square root z^{1/2}",
+      "Complex.ofReal_cpow and Real.sqrt_eq_rpow for the real-parameter bridge",
+      "Parent: area-of-circle-oq-07 (the real value √π)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_gaussian_complex",
+        "description": "0 < Re b → ∫ x : ℝ, cexp (-b * x ^ 2) = (π / b) ^ (1 / 2 : ℂ) — the complex-parameter Gaussian integral, stated directly as complex_gaussian_integral.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "Complex.ofReal_cpow",
+        "description": "0 ≤ x → ((x ^ y : ℝ) : ℂ) = (x : ℂ) ^ (y : ℂ) — pushes the real rpow through the ℝ → ℂ coercion, used to identify (π/b)^{1/2} with √(π/b) in the real-parameter bridge.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      },
+      {
+        "theorem": "Real.sqrt_eq_rpow",
+        "description": "√x = x ^ (1/2 : ℝ) — rewrites the real square root as a real power so the cpow identification applies.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "area-of-circle-oq-07-oq-01-oq-01",
+      "question": "Evaluate the Fresnel integrals ∫_ℝ cos(x²) dx = ∫_ℝ sin(x²) dx = √(π/2)/√2 as the boundary limit Re b → 0⁺ of the complex Gaussian at b = ε ± i, taking real and imaginary parts of (π/(±i))^{1/2}, to exhibit the oscillatory regime the complex parameter unlocks.",
+      "significance": "high"
+    },
+    {
+      "id": "area-of-circle-oq-07-oq-01-oq-02",
+      "question": "Derive the characteristic function of the standard normal, ∫_ℝ e^{-x²/2} e^{i t x} dx = √(2π) e^{-t²/2}, by completing the square inside the complex Gaussian with a shifted contour, connecting integral_gaussian_complex to Fourier analysis.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "extends",
+      "description": "Parent. That entry evaluates the real Gaussian ∫_ℝ e^{-x²} = √π. This entry generalizes the rate parameter to any complex b with Re b > 0, and complex_gaussian_integral_one recovers the parent's √π as the b = 1 real slice inside ℂ."
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "Grandparent. The factor of π in the Gaussian value traces to the circle-area Jacobian r dr dθ of the polar-coordinate evaluation studied in the area-of-circle entry."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_gaussian_complex {b : ℂ} (hb : 0 < re b) : ∫ x, cexp (-b * x ^ 2) = (π / b) ^ (1/2 : ℂ), proved by analytic continuation from the real parameter line."
+    },
+    {
+      "title": "Gaussian integral",
+      "author": "Wikipedia contributors",
+      "year": "2025",
+      "venue": "Wikipedia",
+      "description": "Background on the complex-parameter Gaussian and its Fresnel-type boundary behaviour as Re b → 0."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The Gaussian integral formula extends from positive real rates to the entire right half-plane of complex rates: for every b : ℂ with Re b > 0, ∫_ℝ e^{-b x²} dx = (π/b)^{1/2}, the principal complex square root. complex_gaussian_integral states this directly from Mathlib's integral_gaussian_complex, which proves it by analytic continuation from the real line. The real-parameter bridge complex_gaussian_integral_ofReal then shows that for positive real b the complex value (π/b)^{1/2} coincides with the real √(π/b) cast into ℂ — proved by rewriting √ as a real rpow (Real.sqrt_eq_rpow) and pushing it through the coercion (Complex.ofReal_cpow). The b = 1 corollary complex_gaussian_integral_one recovers the parent's √π inside ℂ. 60 lines, 3 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "The complex parameter is what makes the Gaussian integral a tool of analysis rather than a single definite integral: with Re b > 0 it underlies the Fourier transform of the Gaussian, heat-kernel evaluations, and — as Re b → 0⁺ — the oscillatory Fresnel integrals. The analytic content lives in Mathlib's analytic-continuation proof; the entry's contribution is to expose the complex statement as a first-class generalization of the parent and to certify, by an explicit cpow computation, that it restricts to the familiar real value on the positive real axis.",
+    "openQuestions": [
+      "Obtain the Fresnel integrals √(π/2)/√2 as the Re b → 0⁺ boundary limit of the complex Gaussian.",
+      "Derive the normal characteristic function √(2π) e^{-t²/2} by completing the square inside integral_gaussian_complex."
+    ]
+  }
+}

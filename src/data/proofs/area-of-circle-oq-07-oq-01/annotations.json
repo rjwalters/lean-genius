@@ -1,0 +1,59 @@
+[
+  {
+    "id": "ann-aoc0701-context",
+    "proofId": "area-of-circle-oq-07-oq-01",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "From a Real Rate to a Complex Rate",
+    "content": "This entry generalizes the parent `area-of-circle-oq-07` (the real Gaussian `∫_ℝ e^{-x²} = √π`) by letting the rate parameter `b` in `e^{-b x²}` be a *complex* number with positive real part. Mathlib's `integral_gaussian_complex` proves the same closed form `(π/b)^{1/2}` survives, with the square root taken as the principal complex power `Complex.cpow`. The genuinely new mathematics is the regime this unlocks: as `Re b → 0⁺` the integrand stops decaying and begins to oscillate, the doorway to the Fresnel integrals and the Fourier transform of the Gaussian.",
+    "mathContext": "For $\\operatorname{Re} b > 0$ the function $e^{-bx^2}$ is still integrable, and $\\int_{\\mathbb R} e^{-bx^2}\\,dx = (\\pi/b)^{1/2}$ where $z^{1/2}$ is the principal branch. The result is obtained by analytic continuation: both sides are holomorphic in $b$ on the right half-plane and agree on the positive real axis (where the value is the elementary $\\sqrt{\\pi/b}$), so they agree everywhere the continuation is valid.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complex-parameter Gaussian",
+      "analytic continuation",
+      "principal square root (cpow)",
+      "Fresnel integrals"
+    ],
+    "prerequisites": [
+      "Lebesgue integral of ℂ-valued functions",
+      "Mathlib integral_gaussian_complex",
+      "parent area-of-circle-oq-07 (the real value √π)"
+    ]
+  },
+  {
+    "id": "ann-aoc0701-main",
+    "proofId": "area-of-circle-oq-07-oq-01",
+    "range": { "startLine": 37, "endLine": 41 },
+    "type": "technique",
+    "title": "The Complex Statement via integral_gaussian_complex",
+    "content": "`complex_gaussian_integral` states `∫ x : ℝ, cexp (-b·x²) = (π/b)^{1/2}` for `0 < b.re`, and its proof is exactly `integral_gaussian_complex hb`. Mathlib has already done the analytic-continuation argument; stating it as a named theorem with the explicit hypothesis `0 < b.re` fixes the complex value used by the rest of the entry and makes the comparison with the real parent immediate.",
+    "mathContext": "The hypothesis `0 < b.re` is exactly the half-plane of convergence: for `Re b ≤ 0` the integrand fails to be integrable. The value `(π/b)^{1/2}` uses `Complex.cpow`, whose principal branch agrees with the elementary real root on the positive reals — the content checked by the next theorem.",
+    "significance": "important",
+    "relatedConcepts": ["integral_gaussian_complex", "Complex.re", "named restatement"],
+    "prerequisites": ["integral_gaussian_complex"]
+  },
+  {
+    "id": "ann-aoc0701-bridge",
+    "proofId": "area-of-circle-oq-07-oq-01",
+    "range": { "startLine": 43, "endLine": 52 },
+    "type": "technique",
+    "title": "The Real-Parameter Bridge: (π/b)^{1/2} = √(π/b)",
+    "content": "`complex_gaussian_integral_ofReal` certifies that on the positive real axis the complex value is just the real square root cast into ℂ. After `integral_gaussian_complex` reduces the goal to `(π/b)^{1/2} = ↑√(π/b)`, the proof rewrites `√(π/b)` as the real power `(π/b)^{1/2}` (`Real.sqrt_eq_rpow`), pushes that power through the `ℝ → ℂ` coercion (`Complex.ofReal_cpow`, valid since `π/b ≥ 0`), distributes the coercion over the division (`Complex.ofReal_div`), and finishes with `norm_num` identifying `↑(1/2 : ℝ)` with `(1/2 : ℂ)`. The `0 < (↑b).re` hypothesis is supplied by `simpa using hb`.",
+    "mathContext": "This is the compatibility statement that makes 'complex generalization' honest: the principal branch of $z^{1/2}$ is *defined* so that it restricts to the positive real square root on $(0,\\infty)$, and the proof is exactly the chain of coercion lemmas that turns that definition into a rewritten equality. `Complex.ofReal_cpow` needs the base to be nonnegative — precisely why the real-rate hypothesis `0 < b` is used.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.ofReal_cpow", "Real.sqrt_eq_rpow", "Complex.ofReal_div", "principal branch compatibility"],
+    "prerequisites": ["integral_gaussian_complex", "Complex.ofReal_cpow", "Real.sqrt_eq_rpow"]
+  },
+  {
+    "id": "ann-aoc0701-one",
+    "proofId": "area-of-circle-oq-07-oq-01",
+    "range": { "startLine": 54, "endLine": 60 },
+    "type": "technique",
+    "title": "Recovering the Parent inside ℂ",
+    "content": "`complex_gaussian_integral_one` specializes the real-parameter bridge at `b = 1`: `∫ x : ℝ, cexp (-x²) = ↑√π`. It follows by `simpa using complex_gaussian_integral_ofReal (b := 1) one_pos` — `simp` collapses `-(↑1)·x²` to `-x²` and `√(π/1)` to `√π`. This is the complexified mirror of the parent entry's `gaussian_integral_eq_sqrt_pi`, confirming that the complex machinery degenerates to the familiar `√π` exactly where it should.",
+    "mathContext": "The point of stating the `b = 1` case is pedagogical: it lets a reader see the parent's iconic constant `√π` re-emerge from the complex framework with no extra analytic input, so the generalization adds reach (complex `b`, Fresnel regime) without changing the value on the original slice.",
+    "significance": "important",
+    "relatedConcepts": ["specialization", "one_pos", "simpa", "complexified √π"],
+    "prerequisites": ["complex_gaussian_integral_ofReal"]
+  }
+]
