@@ -137,6 +137,7 @@ import Proofs.AreaOfCircleOQ05OQ01
 import Proofs.AreaOfCircleOQ05OQ01Aristotle
 import Proofs.AreaOfCircleOQ05OQ02
 import Proofs.AreaOfCircleOQ05OQ04
+import Proofs.AreaOfCircleOQ07OQ05
 import Proofs.ArithmeticSeries
 import Proofs.ArithmeticSeriesOQ00
 import Proofs.ArithmeticSeriesOQ00OQ01
