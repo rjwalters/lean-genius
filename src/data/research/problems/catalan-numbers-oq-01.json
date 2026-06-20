@@ -1,0 +1,78 @@
+{
+  "slug": "catalan-numbers-oq-01",
+  "title": "The Catalan Linear Recurrence: (n+2)·Cₙ₊₁ = 2(2n+1)·Cₙ",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "started": "2026-06-20T10:00:00Z",
+  "lastUpdate": "2026-06-20T10:00:00Z",
+  "tags": [
+    "combinatorics",
+    "catalan-numbers",
+    "recurrence",
+    "central-binomial",
+    "enumerative",
+    "seeker-selected",
+    "research"
+  ],
+  "tractability": 9,
+  "significance": 7,
+  "problemStatement": {
+    "formal": "The Catalan numbers $C_n$ satisfy the two-term linear recurrence $(n+2)\\,C_{n+1} = 2(2n+1)\\,C_n$, advancing the sequence from each term to the next in $O(1)$ arithmetic operations. This is sharper than Segner's quadratic convolution $C_{n+1} = \\sum_{i\\le n} C_i C_{n-i}$.",
+    "plain": "Each Catalan number can be computed from its immediate predecessor by a single multiply-and-divide step: C_{n+1} = 2(2n+1)/(n+2) · C_n. For example 14 = (2·7/5)·5 gives C₄ from C₃, and 42 = (2·9/6)·14 gives C₅ from C₄. This is far faster than summing the convolution over all earlier Catalan numbers.",
+    "whyMatters": [
+      "The linear recurrence is the standard practical way to generate Catalan numbers (used in OEIS A000108 and most references), but Mathlib only records Segner's O(n) convolution and the central-binomial closed form — not this O(1) two-term recurrence.",
+      "It is the cleanest bridge between the Catalan numbers and the central binomial coefficients' own recurrence, exposing why Cₙ = C(2n,n)/(n+1) propagates correctly.",
+      "It supplies the base identity from which the generating-function ODE and the asymptotic Cₙ ~ 4ⁿ/(n^{3/2}√π) are routinely derived."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "catalan_linear_recurrence: (n+2)·catalan(n+1) = 2·(2n+1)·catalan n, for all n : ℕ — the headline two-term linear recurrence (absent from Mathlib).",
+      "centralBinom_succ_eq: (n+1).centralBinom = 2·(2n+1)·catalan n — the bridge lemma obtained by cancelling n+1 from Nat.succ_mul_centralBinom_succ.",
+      "Worked demonstrations: C₄ = 14 from C₃ = 5, and C₅ = 42 from C₄ = 14, using only the linear recurrence (no convolution). Axiom-free, no native_decide."
+    ],
+    "open": [
+      "Derive the generating function C(x) = (1 - √(1-4x))/(2x) and its quadratic functional equation from the linear recurrence.",
+      "The asymptotic Cₙ ~ 4ⁿ / (n^{3/2}√π) via the central-binomial Stirling estimate."
+    ],
+    "goal": "Surface the classical O(1) linear recurrence for the Catalan numbers in the gallery, axiom-free, derived from Mathlib's central-binomial and Catalan identities."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-20T10:00:00Z",
+    "iteration": 1,
+    "focus": "ACT: shipped Proofs/CatalanNumbersOQ01.lean — the linear recurrence + central-binomial bridge, axiom-free, sorry-free.",
+    "blockers": [],
+    "nextAction": "Optional: generating-function functional equation, or the 4ⁿ/(n^{3/2}√π) asymptotic. Core linear recurrence complete and verified.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 ACT (researcher-7, 2026-06-20): Built Proofs/CatalanNumbersOQ01.lean proving the Catalan linear recurrence (n+2)·Cₙ₊₁ = 2(2n+1)·Cₙ, which Mathlib does not state (it has only catalan_succ' convolution, catalan_eq_centralBinom_div, and succ_mul_catalan_eq_centralBinom). Proof bridges through central binomials: from Nat.succ_mul_centralBinom_succ ((n+1)·C(2(n+1),n+1)=2(2n+1)·C(2n,n)) and succ_mul_catalan_eq_centralBinom ((n+1)·Cₙ=C(2n,n)), cancel the common n+1 (Nat.eq_of_mul_eq_mul_left) to get centralBinom_succ_eq: C(2(n+1),n+1)=2(2n+1)·Cₙ; then succ_mul_catalan_eq_centralBinom(n+1) gives (n+2)·Cₙ₊₁=C(2(n+1),n+1)=2(2n+1)·Cₙ. GOTCHA: catalan and succ_mul_catalan_eq_centralBinom are ROOT-level (not Nat.) — only centralBinom is namespaced Nat; numerals inside catalan's argument don't reduce for omega, so the worked examples need norm_num [catalan_three] to normalize catalan(3+1)→catalan 4 before omega. Axiom-free (propext/Classical.choice/Quot.sound); no native_decide."
+  },
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://oeis.org/A000108",
+      "https://en.wikipedia.org/wiki/Catalan_number#Properties"
+    ],
+    "mathlib": [
+      "succ_mul_catalan_eq_centralBinom, catalan_eq_centralBinom_div, catalan_succ' (Combinatorics/Enumerative/Catalan.lean); Nat.succ_mul_centralBinom_succ (Data/Nat/Choose/Central.lean)"
+    ]
+  },
+  "relatedProofs": [],
+  "leanFiles": [
+    {
+      "path": "proofs/Proofs/CatalanNumbersOQ01.lean",
+      "status": "verified",
+      "axiomCount": 0,
+      "sorryCount": 0
+    }
+  ],
+  "significanceNote": "The classical O(1) two-term linear recurrence for the Catalan numbers — the standard generation formula — surfaced in the gallery as a named theorem, derived axiom-free from Mathlib's central-binomial recurrence; absent before (Mathlib had only the O(n) Segner convolution and the central-binomial closed form)."
+}

@@ -431,6 +431,7 @@ import Proofs.CantorsTheoremOQ02
 import Proofs.CantorsTheoremOQ03
 import Proofs.CantorsTheoremOQ05
 import Proofs.CarnotTheorem
+import Proofs.CatalanNumbersOQ01
 import Proofs.CauchySchwarz
 import Proofs.CauchySchwarzIntegral
 import Proofs.CauchySchwarzIntegralOQ01
