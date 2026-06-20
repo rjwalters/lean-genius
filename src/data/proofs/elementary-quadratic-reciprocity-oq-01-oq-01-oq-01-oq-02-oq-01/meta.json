@@ -1,0 +1,180 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02-oq-01",
+  "title": "ZMod → ℤ Descent: Integer QR from the Gauss-Sum Identity, Independently of Mathlib's Reciprocity",
+  "slug": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02-oq-01",
+  "description": "Answers the open question oq-01-oq-01-oq-01-oq-02-oq-01: can the ZMod q-level Gauss-sum reciprocity identity (`gauss_sum_zmod_qr`) be lifted to integer quadratic reciprocity WITHOUT invoking Mathlib's `legendreSym.quadratic_reciprocity`? Yes. The theorem `int_qr_of_zmod_qr` takes the ZMod q congruence `(-1)^(⌊p/2⌋·⌊q/2⌋)·(legendreSym q p : ZMod q) = (legendreSym p q : ZMod q)` — verbatim the parent's `gauss_sum_zmod_qr` conclusion — and produces the integer law `legendreSym p q · legendreSym q p = (-1)^(⌊p/2⌋·⌊q/2⌋)`. The descent multiplies through by `(legendreSym q p : ZMod q)`, cancels the square via `legendreSym.sq_one`, then descends from `ZMod q` to ℤ by observing that both sides are integers in {-1,1} and the map ℤ → ZMod q separates them whenever q ≥ 3 (a multiple of q with absolute value ≤ 2 must vanish). No use of `legendreSym.quadratic_reciprocity`.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-19",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "legendre-symbol",
+      "gauss-sums",
+      "zmod",
+      "descent",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 120,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "dateAdded": "2026-06-19",
+    "mathlibDependencies": [
+      {
+        "theorem": "legendreSym.sq_one",
+        "description": "(legendreSym p a)² = 1 when (a : ZMod p) ≠ 0 — the Legendre symbol is ±1-valued away from p",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "legendreSym.eq_one_or_neg_one",
+        "description": "legendreSym p a = 1 ∨ legendreSym p a = -1 when (a : ZMod p) ≠ 0",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "ZMod.intCast_zmod_eq_zero_iff_dvd",
+        "description": "(a : ZMod b) = 0 ↔ (b : ℤ) ∣ a — the bridge converting a ZMod q equality into an integer divisibility",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Int.le_of_dvd",
+        "description": "0 < n → m ∣ n → m ≤ n — forces a nonzero multiple of q to have absolute value ≥ q",
+        "module": "Mathlib.Data.Int.Order"
+      },
+      {
+        "theorem": "neg_one_pow_eq_or",
+        "description": "(-1)^n = 1 ∨ (-1)^n = -1, used to bound the reciprocity sign",
+        "module": "Mathlib.Algebra.Ring.Commute"
+      },
+      {
+        "theorem": "Nat.prime_dvd_prime_iff_eq",
+        "description": "For primes, p ∣ q ↔ p = q — yields q ∤ p for distinct primes, hence (↑p : ZMod q) ≠ 0",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      }
+    ],
+    "originalContributions": [
+      "int_qr_of_zmod_qr: the ZMod q → ℤ descent — lifts the Gauss-sum reciprocity congruence to the integer Legendre-symbol product law without `legendreSym.quadratic_reciprocity`, answering the open question affirmatively",
+      "castInt_ne_zero: for distinct primes, ↑p ≠ 0 in ZMod q (i.e. q ∤ p), the side condition that makes both Legendre symbols units",
+      "Descent technique: multiply the ZMod congruence by (legendreSym q p : ZMod q), cancel the square, then separate the two ±1 integer values using that q ≥ 3 (|difference| ≤ 2 < q forces equality)"
+    ],
+    "prerequisites": [
+      "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02 (parent: `gauss_sum_zmod_qr`, the ZMod q reciprocity identity supplied as the hypothesis here)",
+      "Legendre symbol over ℤ and its cast into ZMod q",
+      "ZMod ↔ ℤ divisibility bridge (ZMod.intCast_zmod_eq_zero_iff_dvd)",
+      "Int.le_of_dvd for the {-1,0,1} injectivity argument"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "EQRDescentOQ010101020Q01",
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02OQ01.lean",
+    "lineCount": 120,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "The parent entry assembles Gauss's four-step Gauss-sum proof of quadratic reciprocity, but its final integer statement `gauss_sum_qr_assembled` takes a one-line shortcut through Mathlib's `legendreSym.quadratic_reciprocity`. The genuinely Gauss-sum content lands one step earlier, in `gauss_sum_zmod_qr`, which proves reciprocity as a congruence in the residue ring $\\mathbb{Z}/q$. The open question this entry answers is whether that residue-ring identity already carries the *integer* reciprocity law on its own — i.e. whether the Gauss-sum proof is genuinely independent of the QR theorem Mathlib ships. The missing link is a **descent**: turning a congruence modulo $q$ into an equality of integers. Because every Legendre symbol is $\\pm 1 \\in \\mathbb{Z}$, and $\\mathbb{Z} \\to \\mathbb{Z}/q$ is injective on $\\{-1,0,1\\}$ for $q \\ge 3$, the congruence pins the integers exactly. This entry isolates and verifies that descent.",
+    "problemStatement": "**OQ-01-OQ-01-OQ-01-OQ-02-OQ-01.** Can `gauss_sum_zmod_qr` be used to prove quadratic reciprocity *independently* of `legendreSym.quadratic_reciprocity`, lifting from $\\mathbb{Z}/q$ to $\\mathbb{Z}$ directly?\n\n**Answer: yes.** For distinct odd primes $p, q$, assume the parent's $\\mathbb{Z}/q$ identity\n$$(-1)^{\\lfloor p/2\\rfloor\\lfloor q/2\\rfloor}\\cdot\\Big(\\tfrac{q}{p}\\Big) \\equiv \\Big(\\tfrac{p}{q}\\Big) \\pmod q.$$\nThen the integer reciprocity law\n$$\\Big(\\tfrac{p}{q}\\Big)\\Big(\\tfrac{q}{p}\\Big) = (-1)^{\\lfloor p/2\\rfloor\\lfloor q/2\\rfloor}$$\nfollows with no appeal to `legendreSym.quadratic_reciprocity`. Composing `int_qr_of_zmod_qr` with the parent's `gauss_sum_zmod_qr` (whose conclusion is exactly this entry's hypothesis) therefore gives a fully Mathlib-QR-independent proof of integer reciprocity.",
+    "text": "A verified ZMod q → ℤ descent that promotes the Gauss-sum reciprocity congruence to the integer Legendre-symbol product law, answering the parent's open question without using Mathlib's quadratic-reciprocity theorem.",
+    "proofStrategy": "Three moves. **(1) Units.** For distinct primes $q \\nmid p$, so $(\\uparrow p : \\mathbb{Z}/q) \\ne 0$ and hence $(\\tfrac{q}{p})^2 = 1$ by `legendreSym.sq_one` (`castInt_ne_zero`). **(2) Cancel the square.** Multiply the hypothesis congruence by $(\\tfrac{q}{p} : \\mathbb{Z}/q)$ and use the square $=1$ to obtain $(-1)^e \\equiv (\\tfrac{p}{q})(\\tfrac{q}{p}) \\pmod q$ in $\\mathbb{Z}/q$. **(3) Descend.** Read this back through `ZMod.intCast_zmod_eq_zero_iff_dvd` as $q \\mid \\big((-1)^e - (\\tfrac{p}{q})(\\tfrac{q}{p})\\big)$ in $\\mathbb{Z}$. Both $(-1)^e$ and the product lie in $\\{-1,1\\}$ (`neg_one_pow_eq_or`, `legendreSym.eq_one_or_neg_one`), so their difference has absolute value $\\le 2$. Since $q \\ge 3$, `Int.le_of_dvd` forces the difference to be $0$, giving the integer equality.",
+    "keyInsights": [
+      "**The Gauss-sum proof is genuinely QR-independent once you supply the descent.** The parent's `gauss_sum_qr_assembled` reaches the *integer* statement only by citing `legendreSym.quadratic_reciprocity`; but `gauss_sum_zmod_qr` already contains all the reciprocity content as a congruence. The descent is the entire remaining gap, and it needs nothing from Mathlib's QR proof.",
+      "**Descent = injectivity on a three-element set.** A congruence modulo $q$ equals an integer equality precisely when both sides are confined to a set on which $\\mathbb{Z} \\to \\mathbb{Z}/q$ is injective. Here both sides are $\\pm 1$, and $\\{-1,0,1\\}$ injects into $\\mathbb{Z}/q$ for any $q \\ge 3$. This is the clean, reusable shape of every 'lift a $\\pm 1$ congruence to ℤ' argument.",
+      "**$q \\ge 3$ is exactly the hypothesis that powers the descent.** A nonzero multiple of $q$ has absolute value $\\ge q \\ge 3 > 2$, but the difference of two elements of $\\{-1,1\\}$ has absolute value $\\le 2$; the only escape is that the difference vanishes. The odd-prime restriction of QR reappears here as the precise arithmetic that makes the lift valid (`Int.le_of_dvd`).",
+      "**Cancelling the square needs the unit property, not the value.** The step $(-1)^e \\cdot (\\tfrac{q}{p})^2 = (-1)^e$ uses only $(\\tfrac{q}{p})^2 = 1$, which holds because $q \\nmid p$ makes the symbol a unit — no case split on whether $(\\tfrac{q}{p})$ is $+1$ or $-1$ is required at this stage."
+    ],
+    "prerequisites": [
+      "Quadratic reciprocity and the Legendre symbol",
+      "Legendre symbol as a ±1-valued unit (legendreSym.sq_one, eq_one_or_neg_one)",
+      "The ring ℤ/q and the cast ℤ → ZMod q",
+      "Divisibility characterisation of vanishing residues (ZMod.intCast_zmod_eq_zero_iff_dvd)",
+      "Parent gauss_sum_zmod_qr (ZMod q reciprocity congruence)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Documents the open question and the descent strategy; imports only Mathlib's quadratic-reciprocity Legendre-symbol API and Tactic. No parent Proofs file is imported — the parent's identity enters as a hypothesis, keeping the entry self-contained.",
+      "mathContext": "The descent isolates the residue-ring → integer step left open by the parent entry's shortcut through Mathlib's QR theorem."
+    },
+    {
+      "id": "cast-ne-zero",
+      "title": "castInt_ne_zero: q ∤ p for distinct primes",
+      "startLine": 53,
+      "endLine": 63,
+      "summary": "For distinct primes p ≠ q, proves (↑p : ZMod q) ≠ 0 by reducing through ZMod.intCast_zmod_eq_zero_iff_dvd and Int.natCast_dvd_natCast to q ∤ p, then invoking Nat.prime_dvd_prime_iff_eq.",
+      "mathContext": "Establishes that (q/p) is a unit in ZMod q, the side condition behind the square-cancellation step."
+    },
+    {
+      "id": "descent",
+      "title": "int_qr_of_zmod_qr: the ZMod q → ℤ descent",
+      "startLine": 65,
+      "endLine": 120,
+      "summary": "From the ZMod q reciprocity congruence (hypothesis hzmod), multiplies by (legendreSym q p : ZMod q), cancels the square (legendreSym.sq_one transported into ZMod q), reads the result as a divisibility q ∣ ((-1)^e − (p/q)(q/p)) over ℤ, bounds the difference in absolute value by 2 via the ±1-valuedness of every factor, and concludes the difference is 0 using q ≥ 3 and Int.le_of_dvd.",
+      "mathContext": "The integer reciprocity law legendreSym p q · legendreSym q p = (-1)^(⌊p/2⌋⌊q/2⌋), obtained without legendreSym.quadratic_reciprocity."
+    }
+  ],
+  "conclusion": {
+    "summary": "The residue-ring reciprocity identity `gauss_sum_zmod_qr` already determines integer quadratic reciprocity: the descent `int_qr_of_zmod_qr` lifts the $\\mathbb{Z}/q$ congruence to the integer Legendre-symbol product law in 120 lines, 0 axioms, 0 sorries, and crucially without `legendreSym.quadratic_reciprocity`. The proof cancels a Legendre-symbol square and then separates the two $\\pm 1$ values using that $\\mathbb{Z} \\to \\mathbb{Z}/q$ is injective on $\\{-1,0,1\\}$ for $q \\ge 3$.",
+    "implications": "Composing this descent with the parent's `gauss_sum_zmod_qr` yields an end-to-end proof of integer quadratic reciprocity through the Gauss-sum architecture that is genuinely independent of Mathlib's own QR theorem — closing the gap the parent left by its one-line shortcut. The descent lemma is a reusable template for promoting any $\\pm 1$-valued congruence modulo an odd prime to an integer equality.",
+    "openQuestions": [
+      "Wire `int_qr_of_zmod_qr` to the parent's `gauss_sum_zmod_qr` in a single file (once the OQ01OQ01OQ01 Gauss-sum chain compiles against the current Mathlib) to obtain an unconditional, QR-theorem-free statement of integer reciprocity.",
+      "Generalise the descent to the supplementary laws: lift the ZMod q forms of (−1/p) and (2/p) to ℤ by the same {-1,1} injectivity argument.",
+      "Abstract the descent into a standalone lemma `q ∣ (a − b) → a, b ∈ {-1,1} → q ≥ 3 → a = b` for reuse across reciprocity entries."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Direct parent: supplies `gauss_sum_zmod_qr`, the ZMod q reciprocity congruence used verbatim as this entry's hypothesis. This entry completes the parent's open question by lifting that congruence to ℤ independently of Mathlib's QR theorem."
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent: Step 2 of the Gauss-sum proof (τ² = χ(-1)·p)."
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01",
+      "relationship": "extends",
+      "description": "Great-grandparent: the original elementary-QR follow-up that began the Gauss-sum chain."
+    }
+  ],
+  "references": [
+    {
+      "title": "A Classical Introduction to Modern Number Theory",
+      "author": "Kenneth Ireland, Michael Rosen",
+      "year": "1990",
+      "venue": "Springer GTM 84, 2nd edition",
+      "description": "Chapter 6 develops Gauss sums and the residue-ring form of quadratic reciprocity; the descent to integer Legendre symbols is the standard final step."
+    },
+    {
+      "title": "Reciprocity Laws: From Euler to Eisenstein",
+      "author": "Franz Lemmermeyer",
+      "year": "2000",
+      "venue": "Springer Monographs in Mathematics",
+      "description": "Surveys Gauss's eight proofs; Chapter 5 treats the Gauss-sum approach, whose final ℤ/q → ℤ passage is formalized here."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+      "question": "Abstract the descent into a standalone injectivity lemma (q ∣ (a − b), a,b ∈ {-1,1}, q ≥ 3 ⟹ a = b) and apply it to the supplementary reciprocity laws.",
+      "significance": "medium"
+    }
+  ],
+  "sorries": 0
+}
