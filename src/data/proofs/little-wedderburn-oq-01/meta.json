@@ -1,0 +1,121 @@
+{
+  "id": "little-wedderburn-oq-01",
+  "slug": "little-wedderburn-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "LittleWedderburnOQ01",
+    "lineCount": 115,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/LittleWedderburnOQ01.lean",
+    "sorries": 0
+  },
+  "title": "Wedderburn's Little Theorem and Its Arithmetic Corollaries",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LittleWedderburnOQ01.lean",
+    "tags": [
+      "algebra",
+      "ring-theory",
+      "division-ring",
+      "finite-field",
+      "wedderburn",
+      "cyclic-group",
+      "prime-power",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 115,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "mul_comm_of_finite_divisionRing: Wedderburn's little theorem exposed as the explicit statement ∀ x y, x*y = y*x for a finite division ring (Mathlib carries this only inside the `littleWedderburn` Field instance, not as a named commutativity theorem)",
+      "card_isPrimePow_of_finite_divisionRing: the order of a finite division ring is a prime power, IsPrimePow (card D) — Mathlib's FiniteField.isPrimePow_card is stated only for a Field and fires here only after Wedderburn upgrades D to a field",
+      "card_eq_primePow_of_finite_divisionRing: the explicit decomposition ∃ p n, prime p ∧ card D = p^n with p the characteristic, lifted from FiniteField.card' to division rings via Wedderburn",
+      "isCyclic_units_of_finite_divisionRing: the multiplicative group Dˣ of a finite division ring is cyclic, obtained once Wedderburn makes Dˣ a finite subgroup of the units of an integral domain",
+      "units_mul_comm_of_finite_divisionRing: the unit group of a finite division ring is abelian, a direct consequence of commutativity",
+      "no_noncommutative_finite_divisionRing: there is no finite analogue of the quaternions — no noncommutative finite division ring exists, of any cardinality",
+      "isField_of_finite_divisionRing / isField_of_finite_domain: the IsField packaging of Wedderburn and its finite-domain companion (Finite.isDomain_to_isField)",
+      "zmod_card_isPrimePow / zmod_units_isCyclic: the corollaries instantiated on ZMod p, recovering the prime-power order and the existence of a primitive root mod a prime as special cases"
+    ],
+    "prerequisites": [
+      "Mathlib's littleWedderburn instance: every finite division ring carries a Field structure",
+      "FiniteField.isPrimePow_card and FiniteField.card': the cardinality of a finite field is a prime power",
+      "The integral-domain instance IsCyclic Rˣ for Finite Rˣ: a finite subgroup of the units of a domain is cyclic",
+      "Finite.isDomain_to_isField: a finite integral domain is a field"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "littleWedderburn",
+        "description": "The instance turning any [DivisionRing D] [Finite D] into a Field D; the engine behind every result in this file.",
+        "module": "Mathlib.RingTheory.LittleWedderburn"
+      },
+      {
+        "theorem": "Finite.isDomain_to_isField",
+        "description": "A finite ring with no zero divisors is a field; the companion form of Wedderburn.",
+        "module": "Mathlib.RingTheory.LittleWedderburn"
+      },
+      {
+        "theorem": "FiniteField.isPrimePow_card / FiniteField.card'",
+        "description": "The cardinality of a finite field is a prime power p^n with p its characteristic; lifted here to division rings.",
+        "module": "Mathlib.FieldTheory.Finite.Basic"
+      },
+      {
+        "theorem": "instIsCyclicUnits (IsCyclic Rˣ for Finite Rˣ)",
+        "description": "The unit group of a finite integral domain is cyclic; specialized here to a finite division ring.",
+        "module": "Mathlib.RingTheory.IntegralDomain"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "little-wedderburn-oq-01-oq-01",
+      "question": "Prove the Skolem–Noether-flavoured refinement that for a finite division ring D the center Z(D) is a field with |D| = |Z(D)|^k for some k, recovering the class-equation core of Wedderburn's own proof.",
+      "significance": "medium"
+    },
+    {
+      "id": "little-wedderburn-oq-01-oq-02",
+      "question": "Establish that for each prime power q there is, up to isomorphism, exactly one finite field of order q, the uniqueness companion to the prime-power-order corollary proved here.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "skolem-noether-csa-oq-01",
+      "relationship": "related",
+      "description": "That work concerns the Artin–Wedderburn / Skolem–Noether structure theory of central simple algebras; this entry treats the distinct Wedderburn *little* theorem on finite division rings and its elementary arithmetic corollaries."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: RingTheory.LittleWedderburn",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the littleWedderburn instance and Finite.isDomain_to_isField."
+    },
+    {
+      "title": "A theorem on finite algebras",
+      "author": "Joseph H. M. Wedderburn",
+      "year": "1905",
+      "venue": "Transactions of the American Mathematical Society 6 (3): 349–352",
+      "description": "The original statement and proof that every finite division ring is commutative."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Wedderburn's little theorem — every finite division ring is a field — is presented as an explicit commutativity statement together with its standard arithmetic corollaries, lifted to the division-ring level. The order of a finite division ring is a prime power (IsPrimePow (card D) and the explicit card D = p^n decomposition), its multiplicative group Dˣ is cyclic and hence abelian, and no noncommutative finite division ring exists. The corollaries are instantiated on ZMod p, recovering its prime-power order and the existence of a primitive root mod a prime. 115 lines, 10 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The headline commutativity rests on Mathlib's littleWedderburn instance (hence the mathlib badge); the genuine new content is the arithmetic corollaries — prime-power cardinality, cyclic and abelian unit group, and non-existence of a noncommutative finite division ring — which Mathlib states only for fields and which require Wedderburn as an input to reach the division-ring level. The entry brings Wedderburn's little theorem, distinct from the Artin–Wedderburn structure theory already in the gallery, to the collection.",
+    "openQuestions": [
+      "Prove the class-equation refinement |D| = |Z(D)|^k with Z(D) the center.",
+      "Establish uniqueness of the finite field of each prime-power order q."
+    ]
+  }
+}
