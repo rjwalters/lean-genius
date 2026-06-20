@@ -2740,6 +2740,7 @@ import Proofs.LebesgueMeasureOQ03OQ01
 import Proofs.LebesgueMeasureOQ05
 import Proofs.LebesgueMeasureOQ06
 import Proofs.LebesgueMeasureOQ06Aristotle
+import Proofs.LegendreFactorialFormulaOQ01
 import Proofs.LegendreGapEquivalence
 import Proofs.LegendrePartial
 import Proofs.LegendrePrimeGapSqrtBoundSuffices
