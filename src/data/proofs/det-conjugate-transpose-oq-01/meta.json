@@ -20,9 +20,38 @@
       "unitary",
       "star-ring"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-06-20",
+    "originalContributions": [
+      "det_conjTranspose: the base identity det Mᴴ = star (det M) over a commutative StarRing, re-exported from Mathlib's Matrix.det_conjTranspose",
+      "isSelfAdjoint_det_of_isHermitian: for a Hermitian M (Mᴴ = M), the determinant is self-adjoint, star (det M) = det M (derived corollary, absent from Mathlib)",
+      "isHermitian_det_im_zero / isHermitian_det_isReal: over ℂ the determinant of a Hermitian matrix is real — (det M).im = 0, equivalently det M = (r : ℂ)",
+      "star_det_mul_det_of_unitary: applying det to Uᴴ * U = 1 gives star (det U) * det U = 1",
+      "unitary_det_norm_one: the determinant of a unitary matrix has modulus one, ‖det U‖ = 1 (the det : U(n) → U(1) picture), via a norm/factoring argument"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.det_conjTranspose",
+        "description": "det Mᴴ = star (det M) over a commutative StarRing — the base identity, re-exported as det_conjTranspose and used in both corollaries.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "Matrix.det_mul / Matrix.det_one",
+        "description": "Multiplicativity of det and det 1 = 1; used to apply det to the unitarity relation Uᴴ * U = 1.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "Complex.conj_eq_iff_im / Complex.conj_eq_iff_real",
+        "description": "Characterise self-conjugate complex numbers as having zero imaginary part / being real; convert self-adjointness of det M into reality over ℂ.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Matrix.IsHermitian.eq",
+        "description": "The Hermitian relation Mᴴ = M, rewritten into the base identity to obtain self-adjointness of det M.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Hermitian"
+      }
+    ],
     "relatedProblems": [
       {
         "id": "cramers-rule-oq-05",
@@ -33,7 +62,7 @@
     "lineCount": 113,
     "assumptions": "0 axioms, 0 sorries, no native_decide, no Lean.ofReduceBool. All theorems depend only on the foundational propext / Classical.choice / Quot.sound. The base identity det Mᴴ = star (det M) re-exports Mathlib's Matrix.det_conjTranspose. The Hermitian corollary uses Matrix.IsHermitian.eq (Mᴴ = M) and, over ℂ, Complex.conj_eq_iff_im / Complex.conj_eq_iff_real to read off reality from self-conjugacy (star = starRingEnd ℂ via starRingEnd_apply). The unitary corollary applies det to Uᴴ * U = 1 using Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one to get star (det U) * det U = 1, takes norms with norm_mul / norm_star / norm_one to obtain ‖det U‖² = 1, and concludes ‖det U‖ = 1 by factoring (‖det U‖−1)(‖det U‖+1)=0 (linear_combination) together with norm_nonneg. The genuine hypotheses are the domain conditions M.IsHermitian and Uᴴ * U = 1.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 0
   },
   "overview": {
