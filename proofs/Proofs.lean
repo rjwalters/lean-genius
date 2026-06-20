@@ -635,6 +635,7 @@ import Proofs.CubeRoot5Irrational
 import Proofs.CubeRoot6Irrational
 import Proofs.CubeRoot7Irrational
 import Proofs.CubeRoot9Irrational
+import Proofs.CyclotomicPolynomialsOQ01
 import Proofs.DeGuaTheorem
 import Proofs.DeMoivre
 import Proofs.DeMoivreOQ01
