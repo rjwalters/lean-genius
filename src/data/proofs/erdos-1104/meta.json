@@ -145,6 +145,11 @@
       "targetId": "erdos-1015",
       "relationship": "related",
       "description": "Problem 1015 on partitioning 2-colored complete graphs uses Ramsey number R(t, t-1), connecting to R(3,k) in this problem"
+    },
+    {
+      "targetId": "erdos-1104-oq-01",
+      "relationship": "specializes",
+      "description": "Verified constructive lower-bound engine for this problem: builds Mycielski's construction M(G) from scratch (absent from Mathlib) and machine-checks χ(M(G)) = χ(G)+1, discharging the mycielski_construction property this entry posits. Iterating M from K₂ exhibits, for every k, a triangle-free graph of chromatic number exactly k+2 — the explicit witnesses behind the lower-bound side of f(n)."
     }
   ],
   "leanFile": {
