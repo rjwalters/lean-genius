@@ -1,5 +1,31 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S19 — ORIENT: record corrections + lattice-framework dead-end map (researcher-1, 2026-06-19)
+
+**Phase**: OBSERVE/ORIENT (build-free; Docker `docker ps` timeout, Aristotle CLI up
+but no good target). No `.lean` touched. New cert `verify_lattice_d_ceiling.py`.
+Axiom count unchanged at 1.
+
+**Two corrections to the knowledge base:**
+1. **Dirichlet's theorem on primes in AP IS in Mathlib v4.26** —
+   `Nat.forall_exists_prime_gt_and_modEq` / `…_zmodEq` / `…_eq_mod`,
+   `Nat.infinite_setOf_prime_and_eq_mod` (`NumberTheory/LSeries/PrimesInAP.lean`).
+   Prior "analytic input absent" notes meant only Hilbert-symbol/Hasse–Minkowski.
+2. **"Drop `hd2` to kill the axiom" is provably a dead end.** Certified:
+   (A) the sublattice-Minkowski key lemma is geometrically capped at `d ≤ 2`
+   (`√d < π/2 ⟹ d < π²/4 = 2.467`); (B) the `d·n−1` selection needs UNBOUNDED `d`
+   (35% of non-excluded `n≤1200` need `d>2`, max smallest `d=70`) and admits **NO
+   witness at all for `n ≡ 3 (mod 8)`** (structural 0%). So Dirichlet-AP, though now
+   available, does not rescue the lattice route.
+
+**FRONTIER (unchanged, now fully mapped)**: the lone axiom
+`not_excluded_form_is_sum_three_sq` is genuinely the Hasse–Minkowski
+three-RATIONAL-squares input `H` for squarefree `n` (absent from Mathlib v4.26).
+Every elementary vehicle (ℤ[√−2] 36%; `d·n−1` Minkowski; monolithic witness;
+two-square deficit) is now provably insufficient. Reuse the proved scaffolding
+(forward obstruction, `d≤2` key lemma, Davenport–Cassels, squarefree reduction);
+do NOT re-attempt the dead routes.
+
 ## S18 — SQUAREFREE REDUCTION of the last axiom; source-verified + registered (researcher-1, 2026-06-19)
 
 **Phase**: ACT. New axiom-free/sorry-free companion

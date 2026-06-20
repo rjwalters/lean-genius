@@ -964,3 +964,91 @@ unchanged at 1 (this is a reduction/infrastructure step, not an axiom eliminatio
 2. Do NOT re-derive the forward obstruction, the d≤2 key lemma, Davenport–Cassels, or
    the squarefree reduction (all proved); do NOT pursue ℤ[√−2] (36% subset) or the
    monolithic `DirichletWitnessProperty` (proven false for n≡3 mod 8).
+
+## Session 19 (researcher-1, 2026-06-19) — ORIENT: two record corrections + the precise structural reason the lattice framework is a dead end
+
+**Mode**: OBSERVE/ORIENT (build-free; Docker `docker ps` timeout → no local Lean;
+Aristotle CLI reachable but no suitable target — see below). No `.lean` changed.
+New certificate `verify_lattice_d_ceiling.py`. Axiom count unchanged (still 1);
+this session sharpens *why* the remaining axiom is genuinely deep and corrects two
+factual errors in the prior knowledge base.
+
+### Correction 1 — Dirichlet's theorem on primes in AP IS in Mathlib v4.26
+
+S16/S17/S18 variously recorded the analytic input as "absent from Mathlib". That is
+**only true for the three-squares / Hilbert-symbol / Hasse–Minkowski machinery** —
+those sessions grepped for `ThreeSquares`/`Hilbert`/ternary isotropy. **Dirichlet's
+theorem itself is present**, in `Mathlib/NumberTheory/LSeries/PrimesInAP.lean`
+(`namespace Nat`):
+- `Nat.forall_exists_prime_gt_and_modEq (n) {q a} (hq : q ≠ 0) (h : a.Coprime q) :
+  ∃ p > n, p.Prime ∧ p ≡ a [MOD q]`
+- `Nat.forall_exists_prime_gt_and_zmodEq` (ℤ variant, `IsCoprime a q`),
+  `Nat.forall_exists_prime_gt_and_eq_mod (ha : IsUnit a) (n) : ∃ p>n, p.Prime ∧ (p:ZMod q)=a`,
+  `Nat.infinite_setOf_prime_and_eq_mod`, `Nat.infinite_setOf_prime_and_modEq`,
+  `Nat.frequently_atTop_prime_and_modEq`.
+
+So "find a prime in a given residue class" is a SOLVED Mathlib call, not a gap.
+**It does not, however, rescue the open axiom** — see Correction 2.
+
+### Correction 2 — "drop `hd2` to discharge the axiom" is provably a DEAD END
+
+It is tempting to think the final axiom falls by (a) extending `dirichlet_key_lemma`
+to general `d`, then (b) using the now-confirmed Dirichlet AP to select a witness
+`(d, p = d·n−1)` for every `n`. **Both halves fail structurally**, certified in
+`verify_lattice_d_ceiling.py`:
+
+(A) **The key lemma's `d ≤ 2` is a hard geometry-of-numbers ceiling, not laziness.**
+The construction lives on the sublattice `L_r = {(x,y,z): p∣(x−r·y) ∧ p∣z}`
+(index `p²`, covolume `p²`), needing a nonzero point with `x²+d·y²+d·z² < 2p`. The
+sharper binary-slice Minkowski bound gives a slice point exactly when
+`area = 2π·p/√d > 4p`, i.e. `√d < π/2`, i.e. **`d < π²/4 ≈ 2.467` ⟹ `d ∈ {1,2}`**.
+The crude 3-D ellipsoid bound is even worse (`d < 1.481/√p` — only `d=0` for `p≥5`).
+No radius choice lifts this: the lattice itself caps `d`.
+
+(B) **The `d·n−1` selection needs UNBOUNDED `d`, and is structurally blind to
+`n ≡ 3 (mod 8)`.** Smallest admissible `d` (`p=d·n−1` prime, `−d` a QR mod `p`) over
+non-excluded `n ≤ 1200`: **35% already need `d > 2`**, max smallest `d = 70` (at
+`n=1166`) and growing with the range — so no constant `d`-cap covers all `n` (this is
+precisely *why* `DirichletWitnessNe3` is a false proposition, S14). Worse,
+**`n ≡ 3 (mod 8)` admits NO `p=d·n−1` witness for ANY `d` (0% over the entire
+class)** — corroborating S5's residue table — so that class is irreducibly *off* the
+`d·n−1` framework and is handled by the separate two-square deficit route
+(`Residue3Property`), whose own open content is "`(m−t²)/2` prime for some odd `t`"
+— a prime *value of a quadratic*, which is **not** a Dirichlet-AP statement (it is
+Landau-conjecture-flavored, harder than Dirichlet).
+
+### Net verdict (sharpens S18; does not move the axiom count)
+
+The lone remaining axiom `not_excluded_form_is_sum_three_sq` is genuinely the
+Hasse–Minkowski rational-three-squares input. Every *elementary* vehicle in the file
+is now **provably** insufficient: ℤ[√−2] (36% subset, S1); the `d·n−1`
+sublattice-Minkowski (capped at `d≤2` and blind to `n≡3`, this session); the
+monolithic witness (false, S3); the two-square deficit (a quadratic-prime statement,
+not Dirichlet-AP). The verified scaffolding that DOES survive and must be reused: the
+forward obstruction, the `d≤2` key lemma, Davenport–Cassels
+(`ThreeSquaresDC.exists_int_sq_of_rat_sq`), and the squarefree reduction
+(`three_sq_of_squarefree_rat`). The only missing factor remains
+`H : squarefree non-excluded s ⟹ s = x²+y²+z² over ℚ` — absent from Mathlib v4.26
+(no Hilbert symbol / p-adic ternary isotropy), a genuine multi-session build.
+
+### Why no Aristotle submission this session
+The two natural sub-targets are both unsuitable: the general-`d` key lemma is
+*false-via-Minkowski* (A above), and `H` needs local–global machinery Aristotle's
+standard-Mathlib sandbox also lacks. Submitting either would waste the (congested,
+~10 IDLE/RUNNING preprocess jobs) backend. The honest deliverable is this obstruction
+map, which closes off two tempting-but-dead routes for future pickers.
+
+### Files (S19)
+- `research/problems/zsqrtd-neg-two-oq-02/verify_lattice_d_ceiling.py` — NEW
+  (reproducible: exact `d≤2` ceiling + the unbounded / `n≡3`-blind selection).
+- `knowledge.md` / `state.md` — this entry.
+
+### Next steps (unchanged deep frontier, now fully mapped)
+1. The ONLY path to the last axiom is `H` (three RATIONAL squares for squarefree
+   non-excluded `n`). Needs Mathlib-absent infrastructure (Hilbert symbols over ℚ_p,
+   or a direct lattice proof of three-rational-squares). Multi-session.
+2. Reuse — do NOT re-derive — Davenport–Cassels + the squarefree reduction (already
+   wired: they reduce `H` to its squarefree-rational core).
+3. Do NOT attempt: drop-`hd2` (Minkowski-capped, dead), the monolithic witness
+   (false), "Dirichlet-AP rescues it" (it doesn't — selection is unbounded-`d` and
+   `n≡3`-blind), or ℤ[√−2] (36% subset).
