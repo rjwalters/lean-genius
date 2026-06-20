@@ -1,0 +1,108 @@
+{
+  "id": "area-of-circle-oq-07-oq-03",
+  "slug": "area-of-circle-oq-07-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "",
+    "lineCount": 57,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ07OQ03.lean",
+    "sorries": 0
+  },
+  "title": "Γ(1/2) = √π: the Gamma-Function Shadow of the Gaussian Integral",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ03.lean",
+    "tags": [
+      "analysis",
+      "gamma-function",
+      "gaussian-integral",
+      "special-functions",
+      "euler-gamma",
+      "measure-theory",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 57,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "gamma_one_half_eq_sqrt_pi: Γ(1/2) = √π, the Euler Gamma function's special value at 1/2, recorded as the Gamma-function shadow of the parent entry's Gaussian integral ∫_ℝ e^{-x²} = √π",
+      "gamma_one_half_eq_gaussian: Γ(1/2) = ∫_ℝ e^{-x²}, identifying Γ(1/2) with the full-line Gaussian integral of the parent entry area-of-circle-oq-07 (both equal √π)",
+      "gamma_one_half_eq_two_mul_gaussian_Ioi: Γ(1/2) = 2 · ∫_{x>0} e^{-x²}, the half-line form that is the direct image of the substitution u = x² in the integral defining Γ(1/2)"
+    ],
+    "prerequisites": [
+      "Euler Gamma function Real.Gamma and its integral representation",
+      "Mathlib's special-value lemma Real.Gamma_one_half_eq",
+      "Mathlib's parametrized Gaussian integrals integral_gaussian and integral_gaussian_Ioi",
+      "Parent: area-of-circle-oq-07 (the Gaussian integral ∫ e^{-x²} = √π)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.Gamma_one_half_eq",
+        "description": "Real.Gamma (1 / 2) = √π — the special-value formula, proved in Mathlib via the substitution u = x² that reduces Γ(1/2) to the Gaussian integral.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "integral_gaussian",
+        "description": "∫ x : ℝ, exp (-b * x ^ 2) = √(π / b) for every real b. Specialized at b = 1 to identify Γ(1/2) with the full-line Gaussian integral.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "integral_gaussian_Ioi",
+        "description": "∫ x in Ioi 0, exp (-b * x ^ 2) = √(π / b) / 2 for every real b. Specialized at b = 1 to give the half-line form Γ(1/2) = 2 · ∫_{x>0} e^{-x²}.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "area-of-circle-oq-07-oq-03-oq-01",
+      "question": "Derive the reflection-formula consequence Γ(1/2)² = π directly from gamma_one_half_eq_sqrt_pi, and connect it to the Beta-function value B(1/2, 1/2) = π via Mathlib's Gamma_mul_Gamma_add_half or the Beta–Gamma relation.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "extends",
+      "description": "Parent. The parent proves ∫_ℝ e^{-x²} = √π; this entry exhibits the same number as the Euler Gamma value Γ(1/2), with gamma_one_half_eq_gaussian making the identification explicit and gamma_one_half_eq_two_mul_gaussian_Ioi recording the half-line substitution u = x² that underlies Mathlib's proof of Γ(1/2) = √π."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.Gamma_one_half_eq : Real.Gamma (1 / 2) = √π and the parametrized Gaussian integrals integral_gaussian and integral_gaussian_Ioi used here."
+    },
+    {
+      "title": "Leonhard Euler and the Gamma function",
+      "author": "Leonhard Euler",
+      "year": "1729",
+      "venue": "correspondence with Goldbach",
+      "description": "Origin of the Gamma function interpolating the factorial; Γ(1/2) = √π is its archetypal non-integer special value."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The Euler Gamma function satisfies Γ(1/2) = √π, the same number as the parent entry's Gaussian integral ∫_ℝ e^{-x²}. This file records the identity (gamma_one_half_eq_sqrt_pi, a restatement of Mathlib's Real.Gamma_one_half_eq) together with two bridges that exhibit Γ(1/2) explicitly as a Gaussian value: gamma_one_half_eq_gaussian (Γ(1/2) = ∫_ℝ e^{-x²}) and gamma_one_half_eq_two_mul_gaussian_Ioi (Γ(1/2) = 2 · ∫_{x>0} e^{-x²}, the half-line form produced by the substitution u = x²). 57 lines, 3 theorems, 0 definitions, 0 axioms, 0 sorries; each theorem depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This is an honest, routine consequence of existing Mathlib results rather than original mathematics — Mathlib already proves Γ(1/2) = √π, and its proof internally performs exactly the u = x² substitution surfaced here. The value to the gallery is the explicit identification of the Euler Gamma special value with the parent's Gaussian integral, tying the factorial-interpolation viewpoint (Γ) to the probability/normalization viewpoint (∫ e^{-x²}) on a single √π.",
+    "openQuestions": [
+      "Derive Γ(1/2)² = π and connect it to the Beta-function value B(1/2, 1/2) = π via the Beta–Gamma relation."
+    ]
+  }
+}
