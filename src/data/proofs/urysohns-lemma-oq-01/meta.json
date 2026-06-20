@@ -1,0 +1,126 @@
+{
+  "id": "urysohns-lemma-oq-01",
+  "slug": "urysohns-lemma-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Metric"
+    ],
+    "namespace": "UrysohnsLemmaOQ01",
+    "lineCount": 170,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "path": "Proofs/UrysohnsLemmaOQ01.lean",
+    "sorries": 0
+  },
+  "title": "Urysohn's Lemma and the Explicit Metric Urysohn Function",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/UrysohnsLemmaOQ01.lean",
+    "tags": [
+      "topology",
+      "separation-axioms",
+      "normal-space",
+      "urysohns-lemma",
+      "metric-space",
+      "continuous-function",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 170,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "badge": "mathlib",
+    "originalContributions": [
+      "urysohn_normal: stable re-export of Mathlib's Urysohn lemma — in a NormalSpace, disjoint closed sets s, t admit a continuous f : C(X, ℝ) with f = 0 on s, f = 1 on t and 0 ≤ f ≤ 1 (exists_continuous_zero_one_of_isClosed)",
+      "urysohn_locallyCompact: the locally-compact-Hausdorff variant separating a compact set from a disjoint closed set (exists_continuous_zero_one_of_isCompact), the form behind the Riesz representation theorem and partitions of unity",
+      "urysohn_point_isClosed: functional separation of a point from a disjoint closed set in a normal T1 space (apply Urysohn to the closed singleton {x₀}), the gateway to complete regularity",
+      "urysohnFn: the explicit metric Urysohn function urysohnFn s t x = infDist x s / (infDist x s + infDist x t) — the classical closed-form witness, not a named result in Mathlib",
+      "infDist_add_pos: the denominator infDist x s + infDist x t is strictly positive everywhere for disjoint nonempty closed s, t (a point with both distances zero would lie in s ∩ t)",
+      "continuous_urysohnFn: continuity of urysohnFn as a quotient of the continuous distance-to-a-set maps with a nowhere-vanishing denominator (continuous_infDist_pt + Continuous.div)",
+      "urysohnFn_eq_zero / urysohnFn_eq_one: the explicit function is identically 0 on s and 1 on t (via infDist_zero_of_mem and the closed-set positivity IsClosed.notMem_iff_infDist_pos)",
+      "urysohnFn_mem_Icc: the explicit function is valued in [0,1] (numerator nonnegative, bounded by the positive denominator)",
+      "urysohn_metric: the explicit witness packaged as a bundled separator ∃ f : C(X, ℝ), independent of the abstract Urysohn machinery",
+      "urysohn_metric_of_normalSpace: the abstract lemma applies verbatim in any metric space, since every metric space is normal",
+      "urysohnFn_half_at_midpoint: concrete evaluation — on ℝ the explicit function separating {0} and {1} takes the value 1/2 at the midpoint"
+    ],
+    "prerequisites": [
+      "Normal topological spaces and the bundled continuous-map type C(X, ℝ)",
+      "Mathlib's exists_continuous_zero_one_of_isClosed (Urysohn's lemma) and exists_continuous_zero_one_of_isCompact (LCH variant)",
+      "Metric.infDist (distance from a point to a set) and its API: continuous_infDist_pt, infDist_zero_of_mem, infDist_nonneg",
+      "IsClosed.mem_iff_infDist_zero and IsClosed.notMem_iff_infDist_pos: the closed-set characterisation of vanishing / positive distance",
+      "Continuous.div: a quotient of continuous functions with nowhere-vanishing denominator is continuous"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "exists_continuous_zero_one_of_isClosed",
+        "description": "Urysohn's lemma: in a normal space, disjoint closed sets are separated by a continuous [0,1]-valued function. Re-exported as the headline urysohn_normal.",
+        "module": "Mathlib.Topology.UrysohnsLemma"
+      },
+      {
+        "theorem": "exists_continuous_zero_one_of_isCompact",
+        "description": "The locally compact Hausdorff form of Urysohn's lemma, separating a compact set from a disjoint closed set.",
+        "module": "Mathlib.Topology.UrysohnsLemma"
+      },
+      {
+        "theorem": "Metric.continuous_infDist_pt / Metric.infDist_zero_of_mem / Metric.infDist_nonneg",
+        "description": "Continuity, vanishing-on-membership, and nonnegativity of the distance-to-a-set function, the engine behind the explicit metric Urysohn function.",
+        "module": "Mathlib.Topology.MetricSpace.HausdorffDistance"
+      },
+      {
+        "theorem": "IsClosed.mem_iff_infDist_zero / IsClosed.notMem_iff_infDist_pos",
+        "description": "For a closed nonempty set, infDist vanishes iff the point lies in the set, equivalently is positive off the set — supplies denominator positivity and the value-1-on-t computation.",
+        "module": "Mathlib.Topology.MetricSpace.HausdorffDistance"
+      },
+      {
+        "theorem": "Continuous.div",
+        "description": "A pointwise quotient of continuous functions with a nowhere-vanishing denominator is continuous — gives continuity of urysohnFn.",
+        "module": "Mathlib.Topology.Algebra.GroupWithZero"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "urysohns-lemma-oq-01-oq-01",
+      "question": "Prove the Tietze extension theorem from Urysohn's lemma: a continuous real-valued function on a closed subset of a normal space extends continuously to the whole space (Mathlib: ContinuousMap.exists_extension / exists_restrict_eq).",
+      "significance": "high"
+    },
+    {
+      "id": "urysohns-lemma-oq-01-oq-02",
+      "question": "Establish that the explicit metric Urysohn function is Lipschitz when the two sets are a fixed positive distance apart, quantifying the modulus of separation in terms of that gap.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [],
+  "references": [
+    {
+      "title": "Mathlib4: Topology.UrysohnsLemma",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of exists_continuous_zero_one_of_isClosed and exists_continuous_zero_one_of_isCompact, the abstract Urysohn lemma re-exported in this entry."
+    },
+    {
+      "title": "Paul Urysohn, Über die Mächtigkeit der zusammenhängenden Mengen",
+      "author": "P. Urysohn",
+      "year": "1925",
+      "venue": "Mathematische Annalen",
+      "description": "Origin of Urysohn's lemma, the foundational functional-separation result for normal spaces."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Urysohn's lemma states that in a normal topological space any two disjoint closed sets are separated by a continuous [0,1]-valued function vanishing on one and equal to 1 on the other. This entry re-exports Mathlib's abstract statement (urysohn_normal from exists_continuous_zero_one_of_isClosed) together with the locally compact Hausdorff variant (urysohn_locallyCompact) and the point-from-closed-set consequence in a normal T1 space (urysohn_point_isClosed). It then supplies the content absent from Mathlib: the explicit metric Urysohn function urysohnFn s t x = infDist x s / (infDist x s + infDist x t) for disjoint nonempty closed sets, proved continuous (continuous_urysohnFn, via nowhere-vanishing denominator infDist_add_pos), identically 0 on s (urysohnFn_eq_zero), identically 1 on t (urysohnFn_eq_one), and [0,1]-valued (urysohnFn_mem_Icc), packaged as a bundled separator (urysohn_metric). The abstract lemma is shown to apply to any metric space (urysohn_metric_of_normalSpace), and a concrete evaluation on ℝ is recorded (urysohnFn_half_at_midpoint). 170 lines, 11 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "The abstract separation theorem is delegated to Mathlib; the genuine new content is the closed-form metric witness — the standard infDist construction realising Urysohn separation explicitly and constructively, with full continuity, boundary-value, and range proofs that bypass the abstract Urysohn machinery entirely. This packages the textbook 'distance Urysohn function' in machine-checked form and sets up the Tietze extension theorem and a Lipschitz refinement recorded as open questions.",
+    "openQuestions": [
+      "Derive the Tietze extension theorem from Urysohn's lemma.",
+      "Show the explicit metric Urysohn function is Lipschitz when the sets are a positive distance apart."
+    ]
+  }
+}
