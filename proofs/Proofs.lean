@@ -2652,6 +2652,7 @@ import Proofs.LagrangeTheoremOQ02OQ01
 import Proofs.LagrangeTheoremOQ02OQ02
 import Proofs.LagrangeTheoremOQ02OQ01OQ01
 import Proofs.LagrangeTheoremOQ02OQ02OQ01
+import Proofs.LagrangeTheoremOQ02OQ02OQ01OQ01
 import Proofs.LagrangeTheoremOQ03
 import Proofs.LagrangeTheoremOQ05
 import Proofs.LawOfCosines
