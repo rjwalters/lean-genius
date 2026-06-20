@@ -2874,6 +2874,7 @@ import Proofs.QuadraticGaussSumSignReduction
 import Proofs.QuadraticGaussSumSignSmall
 import Proofs.QuadraticGaussSumSignSmallFive
 import Proofs.QuadraticGaussSumSignSmallSeven
+import Proofs.QuadraticGaussSumSignSmallEleven
 import Proofs.QuadraticReciprocity
 import Proofs.QuadraticReciprocityAlgorithmOQ01
 import Proofs.QuadraticReciprocityAlgorithmOQ03
