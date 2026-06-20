@@ -129,7 +129,7 @@ theorem obliqueDistribution_support_le_three :
     ∀ k, k ≤ 3 → obliqueDistribution k = 0 := fun k hk =>
   obliqueDistribution_zero_below_four k (Nat.lt_succ_of_le hk)
 
-/-- The unique minimum tour from Knuth's classification (combined with
+/- The unique minimum tour from Knuth's classification (combined with
     `oblique_lower_bound`) shows the support is non-empty at `k = 4`. The
     concrete value `obliqueDistribution 4` is determined by the D4-orbit
     of `minimalObliqueTour` (the parent's canonical witness) and is at
@@ -427,6 +427,7 @@ theorem mem_d4Orbit_iff (t u : ClosedTour) :
   unfold d4Orbit d4Equiv
   simp only [Finset.mem_image, Finset.mem_univ, true_and]
 
+open Classical in
 /-- Bridge: the D4 orbit `Finset` is the filter of `Finset.univ` by the
     equivalence relation `d4Equiv t ·`. -/
 theorem d4Orbit_eq_filter_d4Equiv (t : ClosedTour) :
@@ -645,11 +646,9 @@ theorem d4Mul_assoc (g₃ g₂ g₁ : Bool × Fin 4) :
   obtain ⟨b₂, k₂⟩ := g₂
   obtain ⟨b₁, k₁⟩ := g₁
   cases b₃ <;> cases b₂ <;> cases b₁ <;>
-    (simp only [d4Mul, Bool.not_false, Bool.not_true]
-     refine Prod.mk.injEq.mpr ⟨rfl, ?_⟩
-     apply Fin.ext
-     simp only [Fin.val_mk]
-     omega)
+    simp only [d4Mul, Bool.not_false, Bool.not_true, Prod.mk.injEq, Fin.ext_iff,
+      Fin.val_mk, true_and] <;>
+    omega
 
 /-- **Left identity**: `(false, 0)` is a left unit for `d4Mul`. Single
     pattern match on the second argument; `(k.val + 0) % 4 = k.val`
@@ -657,10 +656,7 @@ theorem d4Mul_assoc (g₃ g₂ g₁ : Bool × Fin 4) :
 theorem d4Mul_one_left (g : Bool × Fin 4) :
     d4Mul (false, 0) g = g := by
   obtain ⟨b, k⟩ := g
-  simp only [d4Mul]
-  refine Prod.mk.injEq.mpr ⟨rfl, ?_⟩
-  apply Fin.ext
-  simp only [Fin.val_mk]
+  simp only [d4Mul, Prod.mk.injEq, Fin.ext_iff, Fin.val_mk, true_and]
   omega
 
 /-- **Right identity**: `(false, 0)` is a right unit for `d4Mul`.
@@ -669,11 +665,8 @@ theorem d4Mul_one_right (g : Bool × Fin 4) :
     d4Mul g (false, 0) = g := by
   obtain ⟨b, k⟩ := g
   cases b <;>
-    (simp only [d4Mul, Bool.not_false]
-     refine Prod.mk.injEq.mpr ⟨rfl, ?_⟩
-     apply Fin.ext
-     simp only [Fin.val_mk]
-     omega)
+    simp only [d4Mul, Bool.not_false, Prod.mk.injEq, Fin.ext_iff, Fin.val_mk, true_and] <;>
+    omega
 
 /-- **Left inverse**: `d4Inv g` is a left inverse of `g` under `d4Mul`.
     Case-split on the reflection bit. For pure rotations
@@ -685,11 +678,9 @@ theorem d4Mul_inv_left (g : Bool × Fin 4) :
     d4Mul (d4Inv g) g = (false, 0) := by
   obtain ⟨b, k⟩ := g
   cases b <;>
-    (simp only [d4Inv, d4Mul, Bool.not_true, ↓reduceIte]
-     refine Prod.mk.injEq.mpr ⟨rfl, ?_⟩
-     apply Fin.ext
-     simp only [Fin.val_mk]
-     omega)
+    simp only [d4Inv, d4Mul, Bool.not_true, Bool.false_eq_true, if_false, ↓reduceIte,
+      Prod.mk.injEq, Fin.ext_iff, Fin.val_mk, true_and] <;>
+    omega
 
 /-- **Right inverse**: `d4Inv g` is a right inverse of `g` under
     `d4Mul`. Symmetric to `d4Mul_inv_left`. -/
@@ -697,10 +688,8 @@ theorem d4Mul_inv_right (g : Bool × Fin 4) :
     d4Mul g (d4Inv g) = (false, 0) := by
   obtain ⟨b, k⟩ := g
   cases b <;>
-    (simp only [d4Inv, d4Mul, Bool.not_true, ↓reduceIte]
-     refine Prod.mk.injEq.mpr ⟨rfl, ?_⟩
-     apply Fin.ext
-     simp only [Fin.val_mk]
-     omega)
+    simp only [d4Inv, d4Mul, Bool.not_true, Bool.false_eq_true, if_false, ↓reduceIte,
+      Prod.mk.injEq, Fin.ext_iff, Fin.val_mk, true_and] <;>
+    omega
 
 end KnightsTourOblique
