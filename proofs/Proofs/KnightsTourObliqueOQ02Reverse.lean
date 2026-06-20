@@ -121,12 +121,13 @@ theorem isKnightPath_reverse {l : List Square} (h : isKnightPath l) :
   rw [List.length_reverse] at hi
   -- The reversed edge at `i` is the original edge at `l.length - 2 - i`,
   -- read in the opposite order; close by graph symmetry.
-  have key := h (l.length - 2 - i) (by omega)
-  -- Match the reversed-list getElems against the original via `getElem_reverse`,
-  -- discharging the index arithmetic with `omega` (proof terms by irrelevance).
-  convert knightGraph.symm key using 2
-  · rw [List.getElem_reverse]; congr 1; omega
-  · rw [List.getElem_reverse]; congr 1; omega
+  have key := h (l.length - 1 - (i + 1)) (by omega)
+  -- Rewrite the reversed-list getElems to the underlying list via `getElem_reverse`
+  -- (`l.reverse[j] = l[l.length - 1 - j]`), then match against the original edge.
+  -- Keeping the index as `l.length - 1 - (i + 1)` (rather than the equivalent
+  -- `l.length - 2 - i`) leaves the minuend `l.length` visible to `omega`.
+  rw [List.getElem_reverse, List.getElem_reverse]
+  convert knightGraph.symm key using 2 <;> · congr 1; omega
 
 /-- The reversed square list of a tour is nonempty. -/
 theorem reverseTour_nonempty (t : ClosedTour) : t.squares.reverse ≠ [] := by
