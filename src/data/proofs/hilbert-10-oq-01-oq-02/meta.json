@@ -56,6 +56,11 @@
         "theorem": "Finset.mem_toList",
         "description": "a ∈ s.toList ↔ a ∈ s for s : Finset α; used in iter 17 (Path B) to transport iter 10's list-indexed singletons closure and iter 14/15's list-indexed arbitrary-subset closures to the Finset-indexed analogs via the iter 4 class congruence helpers (Σ₁/Π₁/Π₂/Σ₂). No new polynomial witnesses; the underlying construction is unchanged from the List versions.",
         "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "mul_inv_cancel₀",
+        "description": "a ≠ 0 → a * a⁻¹ = 1 in a GroupWithZero; ℚ is a field. Used (with the `linear_combination` tactic from Mathlib.Tactic.LinearCombination) in iter 29 to discharge the affine-inverse identity a·(a⁻¹·q − a⁻¹·b) + b = q, proving the affine invariance of the OPEN Σ₁ question (int_diophantine_iff_affinePullback_diophantine).",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
       }
     ],
     "originalContributions": [
@@ -129,11 +134,19 @@
       "sdiff_diophantine_codiophantine_isDiophantineDefinition: Σ₁ \\ Π₁ ⊆ Σ₁. The third Boolean operation (relative complement / set difference) joins the union and intersection closures of iters 9–25. Since S \\ T = S ∩ Tᶜ and the subtracted T is Π₁, its complement ¬T is Σ₁ via `codiophantine_iff_diophantine_complement`; `intersection_isDiophantineDefinition` then lands S \\ T back in Σ₁. No new axioms (iter 28 Part VIII.29)",
       "sdiff_codiophantine_diophantine_isCoDiophantineDefinition: Π₁ \\ Σ₁ ⊆ Π₁. Level-1 dual of the Σ₁ case: subtracting a Σ₁ set T from a Π₁ set S, the complement ¬T is Π₁ via `diophantine_iff_codiophantine_complement` and `intersection_isCoDiophantineDefinition` gives Π₁. No new axioms (iter 28 Part VIII.29)",
       "sdiff_sigma2_pi2_isExistentialUniversalDefinition: Σ₂ \\ Π₂ ⊆ Σ₂. Level-2 analog: subtracting a Π₂ set from a Σ₂ set, the complement is Σ₂ via `universalExistential_iff_existentialUniversal_complement` and `sigma2_intersection_isExistentialUniversalDefinition` closes it. No new axioms (iter 28 Part VIII.29)",
-      "sdiff_pi2_sigma2_isUniversalExistentialDefinition: Π₂ \\ Σ₂ ⊆ Π₂. Level-2 dual, completing the Boolean algebra (∪, ∩, \\) of all four definability levels. The complement of the subtracted Σ₂ set is Π₂ via `existentialUniversal_iff_universalExistential_complement` and `pi2_intersection_isUniversalExistentialDefinition` finishes. No new axioms (iter 28 Part VIII.29)"
+      "sdiff_pi2_sigma2_isUniversalExistentialDefinition: Π₂ \\ Σ₂ ⊆ Π₂. Level-2 dual, completing the Boolean algebra (∪, ∩, \\) of all four definability levels. The complement of the subtracted Σ₂ set is Π₂ via `existentialUniversal_iff_universalExistential_complement` and `pi2_intersection_isUniversalExistentialDefinition` finishes. No new axioms (iter 28 Part VIII.29)",
+      "affinePullback (def): the affine pullback {q : ℚ | a·q + b ∈ S} of a subset S along the map q ↦ a·q + b, for fixed rationals a, b. Specializes to translation (a=1) and dilation (b=0).",
+      "affinePullback_isDiophantineDefinition: Σ₁ (Diophantine) is closed under affine pullback. Witness Q q = P (a·q + b) — a pure polynomial substitution in the parameter slot.",
+      "affinePullback_isCoDiophantineDefinition: Π₁ (co-Diophantine) is closed under affine pullback, same substitution witness, dual reading.",
+      "affinePullback_isExistentialUniversalDefinition: Σ₂ (∃∀) is closed under affine pullback; the substitution commutes with the ∃y, ¬hasRationalSolution block.",
+      "affinePullback_isUniversalExistentialDefinition: Π₂ (∀∃) is closed under affine pullback; dual of the Σ₂ case.",
+      "affinePullback_int_isUniversalExistentialDefinition: for any a, b : ℚ the set {q | a·q + b ∈ ℤ} is Π₂-definable — affine invariance of the SETTLED (Koenigsmann) level. Specializes to scaled lattices {q | a·q ∈ ℤ} and translates {q | q + b ∈ ℤ}.",
+      "affinePullback_notInt_isExistentialUniversalDefinition: dual corollary — {q | a·q + b ∉ ℤ} is Σ₂-definable for any a, b : ℚ.",
+      "int_diophantine_iff_affinePullback_diophantine: for a ≠ 0, ℤ is Σ₁-definable over ℚ iff its affine pullback {q | a·q + b ∈ ℤ} is — the OPEN question is invariant under affine reparametrization (converse pulls back along the inverse map q ↦ a⁻¹·q − a⁻¹·b)."
     ],
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 3316,
+    "lineCount": 3445,
     "prerequisites": [
       "Hilbert's 10th problem over ℚ (companion file Hilbert10OQ01.lean)",
       "Arithmetic hierarchy (Σ_n / Π_n) at the level of polynomial formulas",
@@ -141,8 +154,8 @@
     ],
     "assumptions": "One axiom: `koenigsmann_2016_universal` — ℤ is Π₂-definable in ℚ. This is PROVED in Koenigsmann (Annals 2016) via an explicit polynomial built from Hilbert symbols and quaternion algebras over ℚ; axiomatized here pending a Lean formalization of that construction. All other results in this file (Σ₁ → ¬H10/ℚ-decidable, Mazur → ¬Σ₁, the Σ₁/Π₁ and Σ₂/Π₂ dualities and their specializations to ℤ ⊂ ℚ, the Π₁(ℚ\\ℤ) re-exports, the Π₁ ⊆ Σ₂ containment, and the Σ₂(ℚ\\ℤ) corollary of Koenigsmann) are NOT new axioms — they are logical consequences of the OQ-01 axioms together with the Σ₁/Π₁ and Σ₂/Π₂ equivalences proved here. Both duality theorems use classical excluded middle (`Classical.byContradiction`) to convert ¬¬p to p; the Σ₂/Π₂ duality and the Σ₂(ℚ\\ℤ) corollary use it twice, the Σ₁/Π₁ duality once.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 100,
-    "definitionCount": 16
+    "theoremCount": 107,
+    "definitionCount": 17
   },
   "overview": {
     "historicalContext": "After MRDP (1970) settled H10/$\\mathbb{Z}$ negatively, attention turned to H10/$\\mathbb{Q}$ — open since at least Robinson 1949. The companion file `hilbert-10-oq-01` surveys the broad landscape; this file (OQ-01-OQ-02) zooms in on the precise model-theoretic content separating the OPEN question from Koenigsmann's celebrated 2016 Annals theorem.\n\nThe distinction is between two layers of the arithmetic hierarchy over $\\mathbb{Q}$:\n\n- **$\\Sigma_1$ (Diophantine, purely existential):** $\\mathbb{Z}$ is the projection of a rational-solution set of one polynomial equation. Equivalently, there exists $P \\in \\mathbb{Q}[t, x_1, \\ldots, x_k]$ with $t \\in \\mathbb{Z} \\iff \\exists x \\in \\mathbb{Q}^k, P(t,x) = 0$. **OPEN.**\n- **$\\Pi_2$ (universal-existential, $\\forall\\exists$):** there exists $P$ with $t \\in \\mathbb{Z} \\iff \\forall y \\in \\mathbb{Q}^n, \\exists z \\in \\mathbb{Q}^m, P(t,y,z) = 0$. **PROVED by Koenigsmann (2016).**\n\nThe Σ₁ direction is the substantive open question because it is precisely Σ₁ definability that yields the implication 'ℤ Diophantine over ℚ ⟹ H10/ℚ undecidable' (via MRDP). Π₂ definability does not carry this implication, so Koenigsmann's theorem leaves H10/ℚ untouched.\n\nMazur's conjecture (1992), a topological constraint on rational-point sets, would refute the $\\Sigma_1$ definition of $\\mathbb{Z}$ in $\\mathbb{Q}$ but is consistent with $\\Pi_2$.",
@@ -289,10 +302,10 @@
     ],
     "opens": [],
     "namespace": "Hilbert10Rationals",
-    "lineCount": 3321,
+    "lineCount": 3445,
     "axiomCount": 1,
-    "theoremCount": 100,
-    "definitionCount": 16,
+    "theoremCount": 107,
+    "definitionCount": 17,
     "path": "Proofs/Hilbert10OQ01OQ02.lean",
     "sorries": 0
   },

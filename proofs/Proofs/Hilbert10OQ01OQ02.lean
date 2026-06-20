@@ -90,6 +90,11 @@ import Mathlib.Tactic.Ring
 -- Iter 17 (Path B): `Finset.toList` and `Finset.mem_toList` for Finset
 -- transports of the iter 10 / iter 14 / iter 15 list closures.
 import Mathlib.Data.Finset.Basic
+-- Iter 29 (Path B): `linear_combination` to discharge the affine-inverse
+-- identity `a·(a⁻¹·q − a⁻¹·b) + b = q` (needs `a ≠ 0`) in the affine-pullback
+-- invariance of the OPEN Σ₁ question. `mul_inv_cancel₀` comes transitively via
+-- `Mathlib.Algebra.GroupWithZero.Basic` (already imported above).
+import Mathlib.Tactic.LinearCombination
 
 namespace Hilbert10Rationals
 
@@ -2999,6 +3004,125 @@ theorem sdiff_pi2_sigma2_isUniversalExistentialDefinition
     IsUniversalExistentialDefinition (fun q => S q ∧ ¬ T q) :=
   pi2_intersection_isUniversalExistentialDefinition hS
     ((existentialUniversal_iff_universalExistential_complement T).mp hT)
+
+-- ============================================================
+-- Part VIII.33 (iter 29, Path B): closure of all four classes
+--   under affine pullback  q ↦ a·q + b
+-- ============================================================
+
+/-- The **affine pullback** of a subset `S ⊆ ℚ` along the map `q ↦ a·q + b`
+    (for fixed rationals `a b`):
+
+        `affinePullback a b S = { q : ℚ  |  a·q + b ∈ S }`.
+
+    This is the rational analogue of pulling a Diophantine set back along a
+    polynomial change of variables. The special cases are translation
+    (`a = 1`, `affinePullback 1 b S = { q | q + b ∈ S }`) and dilation
+    (`b = 0`, `affinePullback a 0 S = { q | a·q ∈ S }`). For `a ≠ 0` the map
+    `q ↦ a·q + b` is a bijection of `ℚ`, so the pullback is a genuine
+    affine reparametrization; for `a = 0` it is the constant predicate
+    `fun _ => S b`. -/
+def affinePullback (a b : Rat) (S : RatSubset) : RatSubset :=
+  fun q => S (a * q + b)
+
+/-- Iter 29, Path B: **Σ₁ (Diophantine) is closed under affine pullback**.
+
+    If `S` is Diophantine with parametric witness `P`, then
+    `affinePullback a b S` is Diophantine with witness
+    `Q q = P (a·q + b)`: substituting the parameter `q ↦ a·q + b` into a
+    polynomial leaves it polynomial, and
+        `q ∈ affinePullback a b S ⟺ a·q+b ∈ S ⟺ ∃ x, P (a·q+b) x = 0`.
+
+    Path A (zero new Mathlib): the witness is a pure substitution; no lemma
+    beyond the existing field structure of `ℚ` is needed. -/
+theorem affinePullback_isDiophantineDefinition (a b : Rat) {S : RatSubset}
+    (h : IsDiophantineDefinition S) :
+    IsDiophantineDefinition (affinePullback a b S) := by
+  obtain ⟨P, hP⟩ := h
+  refine ⟨fun q => P (a * q + b), fun q => ?_⟩
+  simpa only [affinePullback] using hP (a * q + b)
+
+/-- Iter 29, Path B: **Π₁ (co-Diophantine) is closed under affine pullback**.
+
+    Same substitution witness `Q q = P (a·q + b)` as the Σ₁ case; the
+    universal "no rational solution" reading is preserved pointwise. -/
+theorem affinePullback_isCoDiophantineDefinition (a b : Rat) {S : RatSubset}
+    (h : IsCoDiophantineDefinition S) :
+    IsCoDiophantineDefinition (affinePullback a b S) := by
+  obtain ⟨P, hP⟩ := h
+  refine ⟨fun q => P (a * q + b), fun q => ?_⟩
+  simpa only [affinePullback] using hP (a * q + b)
+
+/-- Iter 29, Path B: **Σ₂ (existential-universal) is closed under affine
+    pullback**.
+
+    Witness `Q q y = P (a·q + b) y`: the substitution acts only on the
+    parameter slot and commutes with the `∃ y, ¬ hasRationalSolution`
+    quantifier block. -/
+theorem affinePullback_isExistentialUniversalDefinition (a b : Rat)
+    {S : RatSubset} (h : IsExistentialUniversalDefinition S) :
+    IsExistentialUniversalDefinition (affinePullback a b S) := by
+  obtain ⟨P, hP⟩ := h
+  refine ⟨fun q y => P (a * q + b) y, fun q => ?_⟩
+  simpa only [affinePullback] using hP (a * q + b)
+
+/-- Iter 29, Path B: **Π₂ (universal-existential) is closed under affine
+    pullback**.
+
+    Witness `Q q y = P (a·q + b) y`, dual to the Σ₂ case; the substitution
+    commutes with the `∀ y, hasRationalSolution` block. -/
+theorem affinePullback_isUniversalExistentialDefinition (a b : Rat)
+    {S : RatSubset} (h : IsUniversalExistentialDefinition S) :
+    IsUniversalExistentialDefinition (affinePullback a b S) := by
+  obtain ⟨P, hP⟩ := h
+  refine ⟨fun q y => P (a * q + b) y, fun q => ?_⟩
+  simpa only [affinePullback] using hP (a * q + b)
+
+/-- **Affine pullback of ℤ is Π₂-definable** (corollary of Koenigsmann).
+
+    For any fixed `a b : ℚ`, the set `{ q : ℚ | a·q + b ∈ ℤ }` is
+    Π₂-definable in ℚ. Specializing: `{ q | a·q ∈ ℤ }` (a scaled copy of the
+    integer lattice, `b = 0`) and `{ q | q + b ∈ ℤ }` (a translate of ℤ,
+    `a = 1`) are both Π₂-definable. This is the affine-invariance of the
+    settled (Π₂) level of the ℤ ⊂ ℚ definability question. -/
+theorem affinePullback_int_isUniversalExistentialDefinition (a b : Rat) :
+    IsUniversalExistentialDefinition (affinePullback a b IntSubset) :=
+  affinePullback_isUniversalExistentialDefinition a b koenigsmann_2016_universal
+
+/-- **Affine pullback of ℚ \ ℤ is Σ₂-definable** (corollary of Koenigsmann
+    via the Σ₂/Π₂ duality).
+
+    Dual to `affinePullback_int_isUniversalExistentialDefinition`: for any
+    `a b : ℚ`, `{ q : ℚ | a·q + b ∉ ℤ }` is Σ₂-definable in ℚ. -/
+theorem affinePullback_notInt_isExistentialUniversalDefinition (a b : Rat) :
+    IsExistentialUniversalDefinition (affinePullback a b NotIntSubset) :=
+  affinePullback_isExistentialUniversalDefinition a b
+    koenigsmann_implies_complement_existentialUniversal
+
+/-- **Affine invariance of the OPEN question.** For `a ≠ 0`, the map
+    `q ↦ a·q + b` is a bijection of `ℚ`, so ℤ is Σ₁-definable over ℚ iff its
+    affine pullback `{ q | a·q + b ∈ ℤ }` is. (The forward direction is the
+    closure theorem `affinePullback_isDiophantineDefinition`; the converse
+    pulls back along the inverse map `q ↦ a⁻¹·q − a⁻¹·b`.) This records that
+    the Σ₁-definability question for ℤ ⊂ ℚ is invariant under affine
+    reparametrization — a structural sanity check on the open problem. -/
+theorem int_diophantine_iff_affinePullback_diophantine
+    (a b : Rat) (ha : a ≠ 0) :
+    IsDiophantineDefinition IntSubset ↔
+      IsDiophantineDefinition (affinePullback a b IntSubset) := by
+  constructor
+  · intro h
+    exact affinePullback_isDiophantineDefinition a b h
+  · intro h
+    -- pull the pullback back along the inverse map `q ↦ a⁻¹·q − a⁻¹·b`
+    have hback := affinePullback_isDiophantineDefinition a⁻¹ (-(a⁻¹ * b)) h
+    obtain ⟨P, hP⟩ := hback
+    refine ⟨P, fun q => ?_⟩
+    have hinv : a * a⁻¹ = 1 := mul_inv_cancel₀ ha
+    have hq : a * (a⁻¹ * q + -(a⁻¹ * b)) + b = q := by
+      linear_combination (q - b) * hinv
+    have hpq := hP q
+    simpa only [affinePullback, hq] using hpq
 
 -- ============================================================
 -- Part IX: The landscape, sharpened
