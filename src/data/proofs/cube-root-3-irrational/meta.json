@@ -116,6 +116,16 @@
       "targetId": "sqrt2-irrational",
       "relationship": "thematic",
       "description": "The classical irrationality of √2 is the n=2 case of the same pattern. The Lean proof techniques are similar: establish √2² = 2, show 2 is not a perfect square, apply Mathlib's irrationality lemma."
+    },
+    {
+      "targetId": "cube-root-3-irrational-oq-02",
+      "relationship": "extended-by",
+      "description": "A companion formalization that re-proves the same irrationality via Eisenstein's criterion: X³−3 is irreducible over ℚ (Eisenstein at p=3), hence has no rational root, so ∛3∉ℚ. This is the algebraically systematic counterpart to the integer-bounds rational-root argument used here."
+    },
+    {
+      "targetId": "cube-root-3-irrational-oq-04",
+      "relationship": "extended-by",
+      "description": "Goes beyond irrationality to the metric structure: machine-verifies the first fourteen partial quotients [1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3] of the simple continued fraction of ∛3 (OEIS A002945), each aₙ pinned by a two-sided rational sandwich. Irrationality is what guarantees the continued fraction is infinite."
     }
   ],
   "references": [
