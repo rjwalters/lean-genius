@@ -1,0 +1,95 @@
+[
+  {
+    "id": "ann-composite-bijection-and-crux",
+    "proofId": "composition-parts-choose-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 131
+    },
+    "type": "theorem",
+    "title": "The Composite Bijection and the Crux Count (equivGaps, card_compositionAsSetEquiv, card_gapSubset)",
+    "content": "equivGaps n composes Mathlib's compositionEquiv : Composition n ≃ CompositionAsSet n with compositionAsSetEquiv : CompositionAsSet n ≃ Finset (Fin (n−1)), so a composition of n is the same data as a subset of the n−1 internal gaps — the cut-set. The crux lemma card_compositionAsSetEquiv proves that for d : CompositionAsSet n with n ≥ 1, the cut-set compositionAsSetEquiv n d satisfies card + 1 = d.length: the number of cuts is one less than the number of parts. The proof exhibits the gap-index map e : Fin (n−1) ↪ Fin (n+1), i ↦ i+1, as injective, identifies the image of the cut-set under e with d.boundaries.erase 0 |>.erase (Fin.last n) (a boundary is a cut precisely when it is neither the forced endpoint 0 nor n, proved by a membership ext argument), and counts: card(cut-set) = card(image) = card(boundaries) − 2 via Finset.card_image_of_injective and two applications of Finset.card_erase_of_mem. Since card(boundaries) = length + 1 and the endpoints 0, n are distinct for n ≥ 1 (forcing length ≥ 1), card(cut-set) + 1 = length by omega. card_gapSubset transports the identity to Composition n along Composition.toCompositionAsSet_length.",
+    "mathContext": "$\\#(\\mathrm{compositionAsSetEquiv}\\ n\\ d) + 1 = d.\\mathrm{length}$, equivalently the cut-set is $d.\\mathrm{boundaries} \\setminus \\{0, n\\}$.",
+    "prerequisites": [
+      "The bijections compositionEquiv and compositionAsSetEquiv, and CompositionAsSet.length = boundaries.card − 1",
+      "Finset.card_image_of_injective, Finset.card_erase_of_mem, Finset.one_lt_card",
+      "Composition.toCompositionAsSet_length"
+    ],
+    "relatedConcepts": [
+      "enumerative combinatorics",
+      "stars and bars",
+      "boundary-set model of a composition",
+      "injective-image cardinality count"
+    ],
+    "significance": "The combinatorial bridge Mathlib omits: the cut-set attached to a composition has cardinality length − 1, the bookkeeping fact that turns the subset-count into a count by number of parts."
+  },
+  {
+    "id": "ann-part-graded-count",
+    "proofId": "composition-parts-choose-oq-01",
+    "range": {
+      "startLine": 133,
+      "endLine": 146
+    },
+    "type": "theorem",
+    "title": "The Part-Graded Count C(n−1, k−1) (card_composition_length)",
+    "content": "card_composition_length is the headline result: for n, k ≥ 1, the number of compositions of n into exactly k parts is Fintype.card {c : Composition n // c.length = k} = C(n−1, k−1). The proof restricts equivGaps to an equivalence between {c // c.length = k} and {s : Finset (Fin (n−1)) // s.card = k−1} — using card_gapSubset (card + 1 = length) and omega to match the part-count k with the cut-count k−1 — and then reads off the cardinality with Mathlib's subset-counter Fintype.card_finset_len : card {s : Finset (Fin m) // s.card = j} = C(m, j), followed by Fintype.card_fin to evaluate card (Fin (n−1)) = n−1. This is the refinement by number of parts of the ungraded count 2^(n−1).",
+    "mathContext": "$\\#\\{c : \\mathrm{Composition}\\ n \\mid c.\\mathrm{length} = k\\} = \\binom{n-1}{k-1}$.",
+    "prerequisites": [
+      "equivGaps and card_gapSubset",
+      "Equiv.subtypeEquiv and Fintype.card_congr",
+      "Fintype.card_finset_len and Fintype.card_fin"
+    ],
+    "relatedConcepts": [
+      "binomial coefficients",
+      "compositions into k parts",
+      "graded enumeration",
+      "subsets of fixed size"
+    ],
+    "significance": "The finer enumerative information: the count of compositions split by number of parts, of which the total 2^(n−1) is the sum — content not present in Mathlib."
+  },
+  {
+    "id": "ann-consistency-with-total",
+    "proofId": "composition-parts-choose-oq-01",
+    "range": {
+      "startLine": 148,
+      "endLine": 168
+    },
+    "type": "theorem",
+    "title": "Consistency with the Total 2^(n−1) (sum_choose_eq)",
+    "content": "sum_choose_eq verifies that the part-graded counts sum to the headline total: ∑_{k=1}^{n} C(n−1, k−1) = 2^(n−1). Writing n = 1 + m and reindexing k = j + 1 with Finset.sum_bij turns the sum into ∑_{j=0}^{m} C(m, j), which equals 2^m = 2^(n−1) by Nat.sum_range_choose — the binomial-theorem identity ∑_j C(m, j) = 2^m. This closes the loop with the parent entry's composition_card: the graded counts C(n−1, k−1), summed over the number of parts, reproduce the ungraded count 2^(n−1).",
+    "mathContext": "$\\sum_{k=1}^{n} \\binom{n-1}{k-1} = \\sum_{j=0}^{n-1} \\binom{n-1}{j} = 2^{n-1}$.",
+    "prerequisites": [
+      "Finset.sum_bij for reindexing a finite sum",
+      "Nat.sum_range_choose : ∑_{j=0}^{m} C(m, j) = 2^m",
+      "Truncated natural-number subtraction"
+    ],
+    "relatedConcepts": [
+      "binomial theorem",
+      "reindexing finite sums",
+      "hockey-stick / row-sum identity",
+      "powers of two"
+    ],
+    "significance": "The consistency check that makes the refinement honest: the graded counts are exactly a decomposition of the total 2^(n−1) by number of parts."
+  },
+  {
+    "id": "ann-numeric-instances",
+    "proofId": "composition-parts-choose-oq-01",
+    "range": {
+      "startLine": 170,
+      "endLine": 185
+    },
+    "type": "example",
+    "title": "Worked Numeric Instances",
+    "content": "Three specialisations of card_composition_length make the count concrete. Compositions of 4 into 2 parts number C(3,1) = 3 — namely 1+3, 2+2, 3+1. Compositions of 5 into 3 parts number C(4,2) = 6. And there is a unique composition of n into 1 part — the trivial composition [n] — matching C(n−1, 0) = 1. The first two close the residual Nat.choose computation with the kernel's decide (no native_decide, hence no Lean.ofReduceBool axiom); the third uses simp on C(n−1, 0) = 1.",
+    "mathContext": "$\\binom{3}{1} = 3$, $\\binom{4}{2} = 6$, $\\binom{n-1}{0} = 1$.",
+    "prerequisites": [
+      "card_composition_length",
+      "Nat.choose evaluation"
+    ],
+    "relatedConcepts": [
+      "worked examples",
+      "compositions of small integers"
+    ],
+    "significance": "Concrete confirmation that the closed form C(n−1, k−1) produces the right counts on small cases, including the boundary case of a single part."
+  }
+]
