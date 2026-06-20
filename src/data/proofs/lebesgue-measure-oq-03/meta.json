@@ -106,6 +106,16 @@
       "targetId": "lebesgue-measure",
       "relationship": "parent-problem",
       "description": "Extends the Lebesgue measure formalization to the infinite-dimensional setting"
+    },
+    {
+      "targetId": "lebesgue-measure-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "No Translation-Invariant Measure in Infinite Dimensions — the **rigorous formalization of this entry's central impossibility claim**. Where this entry surveys *why* Lebesgue measure has no infinite-dimensional analogue and sketches the orthonormal separation heuristic, the child entry proves the precise theorem: on an infinite-dimensional separable Hilbert space there is no nonzero translation-invariant $\\sigma$-finite Borel measure. The mechanism is exactly the orthonormal separation argument referenced here — an infinite orthonormal sequence $\\{e_n\\}$ yields infinitely many disjoint translates of a fixed ball $B(0,r)$ (the balls $B(\\tfrac{r}{2}e_n, \\tfrac{r}{2})$ are pairwise disjoint by $\\|e_n - e_m\\| = \\sqrt2 > 1$), so translation invariance forces each translate to have equal measure while $\\sigma$-finiteness forbids infinitely many disjoint sets of equal positive measure — a contradiction unless the measure is zero."
+    },
+    {
+      "targetId": "lebesgue-measure-oq-05",
+      "relationship": "related",
+      "description": "Radon–Nikodym Theorem for $\\sigma$-finite Measures — the **constructive counterpart** to this entry's impossibility result, both turning on $\\sigma$-finiteness. The obstruction proved here is precisely the *failure* of a $\\sigma$-finite translation-invariant measure in infinite dimensions; Radon–Nikodym shows what structure *survives* once one drops translation invariance and keeps $\\sigma$-finiteness: any $\\mu \\ll \\nu$ between $\\sigma$-finite measures admits a density $d\\mu/d\\nu$. This is exactly the route by which Gaussian/Wiener measures (the replacements named in this entry) are handled — they are not translation-invariant, but the Cameron–Martin theorem describes their behaviour under translation via Radon–Nikodym derivatives, quantifying how far a shifted Gaussian deviates from the original."
     }
   ],
   "references": [
