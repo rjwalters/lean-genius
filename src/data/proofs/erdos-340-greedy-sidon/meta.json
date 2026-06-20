@@ -2,12 +2,12 @@
   "id": "erdos-340-greedy-sidon",
   "title": "Greedy Sidon Sequence Infrastructure (Erdos Problem #340)",
   "slug": "erdos-340-greedy-sidon",
-  "description": "Comprehensive Sidon set library for Erdos Problem #340: defines Sidon sets, proves closure under subsets, difference injectivity, counting arguments (|diffSet| = n(n-1)/2), the pigeonhole upper bound max(A) >= n(n-1)/2, and the weak upper bound |A| <= sqrt(2N) + 1. Constructs the greedy (Mian-Chowla) Sidon sequence EXPLICITLY as a Nat.find recursion and proves it strictly increasing with every initial segment Sidon (previously three existence axioms, now theorems). The Erdos-Turan upper bound is the file's only remaining axiom; Erdos's growth conjecture N^(1/2-epsilon) stays open and is recorded for reference. Imported by Erdos44Problem and Erdos44SidonLowerBound.",
+  "description": "Comprehensive Sidon set library for Erdos Problem #340: defines Sidon sets, proves closure under subsets, difference injectivity, counting arguments (|diffSet| = n(n-1)/2), the pigeonhole upper bound max(A) >= n(n-1)/2, and the weak upper bound |A| <= sqrt(2N) + 1. Constructs the greedy (Mian-Chowla) Sidon sequence EXPLICITLY as a Nat.find recursion and proves it strictly increasing with every initial segment Sidon (previously three existence axioms, now theorems). The file is now fully axiom-free: its last axiom (the tight Erdos-Turan upper bound) has been retired in favour of the verified, axiom-free Erdos340.sidon_card_le_sqrt (|A| <= sqrt(N) + sqrt(sqrt(N)) + 2). Erdos's growth conjecture N^(1/2-epsilon) stays open and is recorded only as commentary. Imported by Erdos44Problem and Erdos44SidonLowerBound.",
   "meta": {
     "author": "Erdos, Mian-Chowla, Sidon, formalized in Lean 4",
     "sourceUrl": "https://www.erdosproblems.com/340",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos340GreedySidon.lean",
     "tags": [
       "number-theory",
@@ -18,7 +18,7 @@
       "erdos",
       "infrastructure"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -59,23 +59,15 @@
       "erdos_340: formal statement of Erdos's conjecture (OPEN)"
     ],
     "dateAdded": "2026-03-22",
-    "axiomCount": 1,
-    "lineCount": 507,
+    "axiomCount": 0,
+    "lineCount": 648,
     "prerequisites": [
       "Additive combinatorics (Sidon sets, sum-free sets, difference sets)",
       "Finite set theory (Finset, card, image, filter, product)",
       "Elementary number theory (pigeonhole principle, integer square root)",
       "Asymptotic analysis (Filter.atTop, eventually)"
     ],
-    "assumptions": [
-      "sidon_upper_bound: Erdos-Turan tight bound |A| <= sqrt(N) + O(N^{1/4}) (known result, needs formalization)",
-      "greedySidonSeq: existence and uniqueness of the greedy Sidon sequence",
-      "greedySidonSeq_zero/strictMono/isSidon/greedy: properties of the greedy sequence",
-      "greedySidon_0 through greedySidon_10: first 11 values of the sequence (OEIS A005282)",
-      "greedySidon_growth_third: greedy grows at least like N^(1/3) (known, needs formalization)",
-      "erdos_340: main conjecture - growth is N^(1/2-epsilon) for all epsilon > 0 (OPEN)",
-      "_22_mem_diffSet, _33_mem_diffSet_iff: difference set membership (computational)"
-    ],
+    "assumptions": "None. This file is fully axiom-free (0 axiom declarations, 0 structure-encoded assumptions, no native_decide; #print axioms reports only propext / Classical.choice / Quot.sound). Its previous sole axiom, the tight Erdos-Turan bound sidon_upper_bound (|A| <= sqrt(N) + sqrt(sqrt(N)) + 1), has been retired: every consumer now routes through the verified, axiom-free Erdos340.sidon_card_le_sqrt (the +2 form, proved in Erdos340SidonErdosTuran.lean by optimising the master window inequality). The greedy sequence and its values are genuine definitions/theorems, and Erdos's open growth conjecture N^(1/2-epsilon) appears only as commentary, never as an assumption.",
     "mathlib_version": "4.26.0",
     "theoremCount": 16,
     "definitionCount": 10
@@ -83,8 +75,8 @@
   "overview": {
     "historicalContext": "Simon Sidon posed the problem of constructing dense sets of integers with all pairwise sums distinct to Paul Erdos in the 1930s. The question immediately attracted attention: how large can a Sidon subset of {1,...,N} be? Erdos and Turan (1941) proved the fundamental upper bound: at most sqrt(N) + O(N^{1/4}) elements, a result that remains essentially optimal 80+ years later. For the lower bound, Singer (1938) used perfect difference sets from finite projective planes to construct Sidon sets achieving (1-o(1))sqrt(N) elements, showing the Erdos-Turan bound is tight up to lower order terms.\n\nThe greedy (Mian-Chowla) construction, introduced independently by Mian and Chowla (1944), takes a different approach: start with 1, then repeatedly add the smallest positive integer that preserves the Sidon property. This produces the remarkable sequence 1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97, ... (OEIS A005282). Despite its elegant simplicity, analyzing the greedy sequence has proved extraordinarily difficult. The best proven lower bound on its counting function is the 'trivial' N^(1/3), unchanged since the 1940s, while Erdos conjectured (Problem #340) that the true growth is N^(1/2-epsilon) for all epsilon > 0 — nearly as dense as the theoretical maximum.\n\nThe gap between the N^(1/3) bound and the conjectured N^(1/2-epsilon) is one of the most persistent open problems in additive combinatorics. Ruzsa (1998) showed that non-greedy algebraic constructions can achieve N^(sqrt(2)-1) ~ N^0.414 elements, far exceeding N^(1/3), but the greedy algorithm's deterministic nature makes it resistant to the probabilistic and algebraic techniques that succeed for other constructions. The problem sits at the intersection of number theory, combinatorics, and algorithm analysis.",
     "problemStatement": "Provide a comprehensive library of Sidon set theory:\n\n1. **Definition**: IsSidon(A) iff all pairwise sums a+b (a <= b) are distinct\n2. **Closure properties**: Empty, singleton, pair are Sidon; subsets of Sidon sets are Sidon\n3. **Difference injectivity**: In a Sidon set, all pairwise differences are distinct\n4. **Counting**: The difference set has exactly n(n-1)/2 elements\n5. **Lower bound**: max(A) >= n(n-1)/2 (pigeonhole on differences)\n6. **Upper bound**: |A| <= sqrt(2N) + 1 for A in [1,N] (proved)\n7. **Greedy sequence**: Axiomatize the Mian-Chowla sequence and its properties\n8. **Main conjecture**: Formal statement of Erdos #340",
-    "text": "Comprehensive Sidon set library for Erdos Problem #340: defines Sidon sets, proves closure under subsets, difference injectivity, counting arguments (|diffSet| = n(n-1)/2), the pigeonhole upper bound max(A) >= n(n-1)/2, and the weak upper bound |A| <= sqrt(2N) + 1. Axiomatizes the greedy Sidon sequence and Erdos's conjecture that its growth is N^(1/2-epsilon). Imported by Erdos44Problem and Erdos44SidonLowerBound.",
-    "proofStrategy": "The proved results use three main techniques:\n\n1. **Difference counting** (sidon_lower_bound): A Sidon set with n elements has n(n-1)/2 distinct positive differences, all in [1, max(A)]. By pigeonhole, max(A) >= n(n-1)/2.\n\n2. **Upper bound** (sidon_upper_bound_weak): If n(n-1)/2 <= N and n >= sqrt(2N) + 2, then (n-1)^2 > 2N, so n(n-1) = (n-1)^2 + (n-1) > 2N + 1, giving n(n-1)/2 > N, contradiction.\n\n3. **Bijection argument** (orderedPairsLt_card_via_choose): The number of ordered pairs with a < b equals C(n,2) = n(n-1)/2, established via an explicit bijection with 2-element subsets (powersetCard 2 A).\n\nThe axiomatized results include the Erdos-Turan tight upper bound (known but requires sum-counting machinery not yet formalized), the greedy sequence definition (requires well-founded recursion on a complex predicate), and the main conjecture (open problem).",
+    "text": "Comprehensive Sidon set library for Erdos Problem #340: defines Sidon sets, proves closure under subsets, difference injectivity, counting arguments (|diffSet| = n(n-1)/2), the pigeonhole upper bound max(A) >= n(n-1)/2, and the weak upper bound |A| <= sqrt(2N) + 1. Constructs the greedy Sidon sequence explicitly (no axioms) and records Erdos's open conjecture that its growth is N^(1/2-epsilon) as commentary. Fully axiom-free. Imported by Erdos44Problem and Erdos44SidonLowerBound.",
+    "proofStrategy": "The proved results use three main techniques:\n\n1. **Difference counting** (sidon_lower_bound): A Sidon set with n elements has n(n-1)/2 distinct positive differences, all in [1, max(A)]. By pigeonhole, max(A) >= n(n-1)/2.\n\n2. **Upper bound** (sidon_upper_bound_weak): If n(n-1)/2 <= N and n >= sqrt(2N) + 2, then (n-1)^2 > 2N, so n(n-1) = (n-1)^2 + (n-1) > 2N + 1, giving n(n-1)/2 > N, contradiction.\n\n3. **Bijection argument** (orderedPairsLt_card_via_choose): The number of ordered pairs with a < b equals C(n,2) = n(n-1)/2, established via an explicit bijection with 2-element subsets (powersetCard 2 A).\n\nThe file is now fully axiom-free: the tight Erdos-Turan upper bound, formerly the file's only axiom, is discharged downstream by the verified Erdos340.sidon_card_le_sqrt; the greedy sequence is a genuine Nat.find recursion; and the main conjecture appears only as commentary, never as an assumption.",
     "keyInsights": [
       "The difference-set approach gives sidon_lower_bound elegantly: n(n-1)/2 distinct positive differences must fit in [1, max(A)], giving max(A) >= n(n-1)/2",
       "The bijection between orderedPairsLt and powersetCard 2 uses Finset.card_bij with explicit forward map, injectivity, and surjectivity proofs",
@@ -219,8 +211,8 @@
       "Set"
     ],
     "namespace": "Erdos340",
-    "lineCount": 646,
-    "axiomCount": 1,
+    "lineCount": 648,
+    "axiomCount": 0,
     "theoremCount": 25,
     "definitionCount": 15,
     "path": "Proofs/Erdos340GreedySidon.lean",
