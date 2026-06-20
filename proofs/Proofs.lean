@@ -3066,6 +3066,7 @@ import Proofs.StirlingFormulaOQ02
 import Proofs.StirlingFormulaOQ03
 import Proofs.SubsetCount
 import Proofs.SubsetCountMultisetOQ01
+import Proofs.SummationByPartsOQ01
 import Proofs.SubsetCountOQ02
 import Proofs.SubsetCountOQ02OQ01
 import Proofs.SumOfDivisors
