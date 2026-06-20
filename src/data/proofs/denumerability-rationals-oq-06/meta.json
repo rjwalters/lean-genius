@@ -15,7 +15,8 @@
       "aleph-null",
       "classic"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
+    "packagingNote": "Tier B Mathlib wrapper: every theorem is a one-line application of Polynomial.cardinalMk_eq_max (#(R[X]) = max #R ℵ₀) collapsed against #ℚ = #ℤ = ℵ₀ via max_self. The result #(ℚ[X]) = ℵ₀ is supplied directly by Mathlib; this entry packages it as a citable gallery object (with the ℤ[X] companion and an extracted bijection ℕ ≃ ℚ[X]). Status remains verified (0 sorries, 0 axioms); the badge is mathlib because no genuine gap, glue, induction, or worked example is contributed beyond the single Mathlib lemma.",
     "sorries": 0,
     "dateAdded": "2026-06-19",
     "mathlib_version": "4.26.0",
