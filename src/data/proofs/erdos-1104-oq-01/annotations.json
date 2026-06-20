@@ -108,6 +108,28 @@
     ]
   },
   {
+    "id": "ann-erdos-1104-oq01-iter-construction",
+    "proofId": "erdos-1104-oq-01",
+    "range": {
+      "startLine": 246,
+      "endLine": 282
+    },
+    "type": "definition",
+    "title": "The Iterated Witness Family: a Dependent Vertex Type",
+    "content": "Iterating M changes the underlying vertex type at every step, so the tower cannot be defined by a single fixed carrier — it must be indexed by a recursively-built type. mycVertexIter V k unfolds to V at k=0 and to MycVertex (mycVertexIter V k) at k+1, and mycielskianIter G k is defined by the matching recursion (G at 0, mycielskian applied to the previous iterate at k+1). The two single-step theorems then lift through the tower by structural induction on k: mycielskianIter_cliqueFree_three propagates triangle-freeness, and mycielskianIter_colorable propagates (n+k)-colourability (its successor case applies mycielskian_colorable_succ and realigns n+(k+1) with (n+1)+k via Nat.add_succ). mycielskian_witness_family bundles both halves: from any triangle-free n-colourable base, every iterate is triangle-free and (n+k)-colourable — the constructive (upper-bound) half of the witness tower, before the lower bound pins the chromatic number exactly.",
+    "mathContext": "The carrier of $M^k(G)$ depends on $k$ ($\\mathrm{mycVertexIter}\\,V\\,(k{+}1) = \\mathrm{MycVertex}(\\mathrm{mycVertexIter}\\,V\\,k)$); triangle-freeness and $(n{+}k)$-colourability both lift by induction on $k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "dependent / recursive types",
+      "structural induction",
+      "iterated graph construction"
+    ],
+    "prerequisites": [
+      "recursion on ℕ-indexed types",
+      "the single-step Mycielski theorems"
+    ]
+  },
+  {
     "id": "ann-erdos-1104-oq01-iter-iff",
     "proofId": "erdos-1104-oq-01",
     "range": {
