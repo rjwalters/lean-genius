@@ -27,22 +27,45 @@ finite-subgraph / compactness infrastructure that the problem is built around.
   directly relevant to #736: the obstruction to a small coloring always lives in a
   finite part of the graph.
 
-## Open / unformalized side result
+## Previously-deferred side result — now proved (BUILD-PENDING)
 
-- **`finite_case`** (1 `sorry`): for finite chromatic number `k`, every `m ≤ k`
-  is realized as a subgraph of `G`, so inheritance is automatic.
-  - **Proof sketch (true, not deep):** take `H` to be an induced subgraph of `G`
-    with `χ(H) = m`. Any finite subgraph of an induced subgraph of `G` is a finite
-    subgraph of `G`, so inheritance is free. Existence of an induced subgraph of
-    chromatic number exactly `m` follows from the **discrete intermediate-value
-    principle**: deleting vertices one at a time lowers the chromatic number by at
-    most one, so as we delete down to the empty graph (`χ = 0`) the value passes
-    through every `m` with `0 ≤ m ≤ k`.
-  - **Why still `sorry`:** the file uses a custom `Cardinal`-valued
-    `chromaticNumber` (not Mathlib's `ℕ∞`-valued `SimpleGraph.chromaticNumber`), so
-    the "one vertex deletion changes χ by ≤ 1" lemma must be built from scratch
-    (~150–250 lines). It is a self-contained side lemma, **not** part of the open
-    conjecture, so it is deferred.
+- **`finite_case`** (was 1 `sorry`, now `sorry`-free pending a build): for finite
+  chromatic number `k`, every `m ≤ k` is realized as the chromatic number of an
+  *induced subgraph* of `G`, so inheritance is automatic.
+  - **Proof, as formalized (iter 2, Researcher-9, 2026-06-19):** the discrete-IVT
+    sketch was completed and made fully rigorous, *fixing a gap in the original
+    sketch*: "delete vertices one at a time" does **not** terminate when `V` is
+    infinite (a graph of finite χ can have infinitely many vertices, e.g. an
+    infinite bipartite graph). The corrected argument first reduces to a **finite
+    obstruction**:
+    1. `colorable_of_custom` — bridge from the custom `Cardinal`-valued
+       `chromaticNumber V G = k` to Mathlib facts `G.Colorable k` and
+       `∀ j < k, ¬ G.Colorable j` (via `csInf_mem` / `csInf_le` on the well-ordered
+       cardinals; `csInf_mem` needs `WellFoundedLT`, which `Cardinal` has).
+    2. `exists_finset_induce_not_colorable` — Finset form of contrapositive
+       de Bruijn–Erdős: `¬ G.Colorable n → ∃ s : Finset V, ¬ (G.induce ↑s).Colorable n`
+       (derived from the existing `Subgraph`-valued version via `Colorable.mono_left`).
+    3. `exists_obstruction` — from `¬ G.Colorable (k-1)` extract a **finite** induced
+       subgraph `G.induce ↑s` with chromatic number *exactly* `k`.
+    4. `colorable_insert` — "one extra vertex costs at most one extra color":
+       `(H.induce ↑s).Colorable c → (H.induce ↑(insert v s)).Colorable (c+1)`, built
+       by an explicit `Option (Fin c)`-coloring giving the new vertex a fresh color.
+    5. `ivt_finset` — the discrete IVT itself, by **strong induction on `s.card`**
+       (`Finset.strongInductionOn`): if `m < c`, delete a vertex `v ∈ s`; by
+       `colorable_insert` the chromatic number of `s.erase v` is `≥ c-1 ≥ m`, so the
+       induction hypothesis yields a `t ⊆ s.erase v` with chromatic number `m`.
+    6. `custom_chromatic_eq` — bridge back: a finite Mathlib "χ exactly `m`" gives
+       custom `chromaticNumber = (m : Cardinal)`.
+  - **Key design choice:** phrase everything with `Finset` of vertices, so every
+    induced subgraph is `G.induce ↑(finset)` over the **fixed** ambient vertex type
+    — no subtype-of-subtype juggling, no nested-`induce` isomorphisms.
+  - **Status: BUILD-PENDING.** The proof was written and carefully hand-checked
+    against the local Mathlib source (all lemma names/signatures verified), but
+    **could not be machine-verified this session**: the Docker build infrastructure
+    was down — the host disk was at 99% (≈9 GB free) and `lake exe cache get` failed
+    repeatedly with `leantar` I/O errors (decompression out of space) across ~11
+    concurrent agent builds. Needs a clean `docker-build.sh Proofs.Erdos736Problem`
+    once disk pressure clears before the gallery status may be bumped to `verified`.
 
 ## Mathlib gaps
 
@@ -53,14 +76,40 @@ finite-subgraph / compactness infrastructure that the problem is built around.
 
 ## Next Steps
 
-1. Build-verify the file and confirm axiom profile of the two verified theorems.
-2. (Optional) Formalize the discrete IVT to discharge `finite_case` — either by
-   building a `Cardinal`-valued vertex-deletion lemma, or by re-expressing
-   `finite_case` against Mathlib's `ℕ∞`-valued chromatic number for the finite case.
-3. Consider stating the cardinal-supremum form: `χ(G) = ⨆ finite subgraphs χ(G')`
+1. **Build-verify `Proofs.Erdos736Problem`** (`docker-build.sh`) once disk pressure
+   clears — the `finite_case` discrete-IVT proof is written but unverified. On a
+   green build with `#print axioms` showing only `propext`/`Classical.choice`/
+   `Quot.sound`, bump the gallery `meta.json` to `verified`/`original`,
+   `leanFile.sorries` → 0, `theoremCount` → 8.
+2. Consider stating the cardinal-supremum form: `χ(G) = ⨆ finite subgraphs χ(G')`
    for graphs of countable chromatic number, as a further verified consequence.
 
 ## Session Log
+
+### Session 2026-06-19 (Researcher-9) — REVISIT, discharge `finite_case` (BUILD-PENDING)
+
+**Mode:** REVISIT — fresh branch `research/erdos-736-finite-case` off `origin/main`
+**Outcome:** progress — wrote a complete `sorry`-free proof of `finite_case`
+(the last remaining `sorry`), but **could not machine-verify** it (build infra down).
+
+- Added 6 supporting theorems and rewrote `finite_case` (see "Previously-deferred
+  side result" above for the full structure): `colorable_insert`,
+  `exists_finset_induce_not_colorable`, `exists_obstruction`, `ivt_finset`
+  (discrete IVT by strong induction on `s.card`), `custom_chromatic_eq`,
+  `colorable_of_custom`. File now has 0 `sorry`, 0 `axiom`, 0 `native_decide`.
+- **Mathematical contribution beyond the prior sketch:** the original IVT sketch
+  ("delete vertices one at a time") is *incorrect for infinite `V`* — it never
+  terminates. The corrected proof reduces to a **finite obstruction subgraph** via
+  the (already-verified) contrapositive de Bruijn–Erdős, then runs the IVT on that
+  finite graph. This is the genuinely new idea this session.
+- Switched the file's imports to add `Fintype.Option`, `Finset.Card`,
+  `Set.Finite.Basic`, `Order.ConditionallyCompleteLattice.Basic`.
+- **BLOCKER (infra, not math):** Docker build could not run — host disk at 99%
+  (≈9 GB free), `lake exe cache get` failing with `leantar` I/O errors across ~11
+  concurrent agent builds. All Mathlib API used was hand-verified against the local
+  `.lake/packages/mathlib` source. **Do not bump gallery status to `verified` until
+  a clean build confirms it.** PR opened as a DRAFT so the deployer cannot
+  auto-merge unverified Lean.
 
 ### Session 2026-06-19 (Researcher-4) — FRESH/continuation
 
