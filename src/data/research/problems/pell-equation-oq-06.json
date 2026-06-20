@@ -1,0 +1,84 @@
+{
+  "slug": "pell-equation-oq-06",
+  "title": "The Negative Pell Equation x² − 2y² = −1 Has Infinitely Many Solutions",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "started": "2026-06-20T07:30:00Z",
+  "lastUpdate": "2026-06-20T07:30:00Z",
+  "tags": [
+    "number-theory",
+    "pell-equation",
+    "negative-pell",
+    "diophantine",
+    "norm-form",
+    "seeker-selected",
+    "research"
+  ],
+  "tractability": 8,
+  "significance": 5,
+  "problemStatement": {
+    "formal": "Show that $x^2 - 2y^2 = -1$ has infinitely many solutions $(x,y)\\in\\mathbb{Z}^2$. The map $(x,y)\\mapsto(3x+4y,\\,2x+3y)$ — multiplication by the fundamental unit $3+2\\sqrt2$ of $\\mathbb{Z}[\\sqrt2]$ — preserves $x^2-2y^2$; iterating it from $(1,1)$ gives the strictly increasing chain $(1,1)\\to(7,5)\\to(41,29)\\to(239,169)\\to\\cdots$ of solutions.",
+    "plain": "The negative Pell equation x²−2y²=−1 (the norm −1 equation for ℚ(√2)) is solvable, and once one solution exists there are infinitely many: applying the automorphism of the form induced by the fundamental unit of ℤ[√2] generates an unbounded strictly increasing chain of distinct solutions. This is the norm −1 analogue of the classical Pell-chain argument.",
+    "whyMatters": [
+      "Mathlib's Pell.Solution₁ type is restricted to the norm +1 equation x²−Dy²=1; the norm −1 case is listed as future work in Mathlib/NumberTheory/Pell.lean. This entry treats the smallest solvable instance D=2 from scratch.",
+      "The negative Pell equation is solvable only for special D (continued-fraction period odd), making it a more delicate object than the always-solvable positive case — a clean example of a norm equation whose solvability is non-trivial.",
+      "Demonstrates the unit-orbit mechanism (fundamental unit of norm +1 acting on a norm −1 solution) that underlies the infinitude of solutions to general Pell-type norm equations."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "negPell_step: the substitution (x,y)↦(3x+4y,2x+3y) preserves the value x²−2y² exactly (ring identity), hence maps solutions of x²−2y²=−1 to solutions.",
+      "negPellSeq: the explicit solution chain from (1,1); negPellSeq_norm shows every term satisfies x²−2y²=−1.",
+      "negPellSeq_fst_strictMono: the first coordinates are strictly increasing, hence the chain n↦negPellSeq n is injective.",
+      "negPell_solutions_infinite: the integer solution set {(x,y) : x²−2y²=−1} is Infinite (via Set.infinite_of_injective_forall_mem). Axiom-free, no native_decide."
+    ],
+    "open": [
+      "General D: characterize exactly which D admit x²−Dy²=−1 (odd continued-fraction period of √D); formalize the connection to the fundamental unit having norm −1.",
+      "A Mathlib Solution₋₁ type analogous to Pell.Solution₁ for the norm −1 equation."
+    ],
+    "goal": "Formalize, axiom-free, that the negative Pell equation x²−2y²=−1 has infinitely many integer solutions via the fundamental-unit orbit, filling the gap left by Mathlib's norm +1-only Pell machinery."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-20T07:30:00Z",
+    "iteration": 1,
+    "focus": "ACT: shipped Proofs/PellEquationOQ06.lean — the full negative-Pell infinitude proof (5 main theorems, axiom-free, sorry-free).",
+    "blockers": [],
+    "nextAction": "Optional: generalize to other solvable D (e.g. D=5) or package a Solution₋₁ abstraction. Core D=2 result is complete and verified.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 ACT (researcher-3, 2026-06-20): Built Proofs/PellEquationOQ06.lean from scratch — a self-contained, axiom-free proof that x²−2y²=−1 has infinitely many integer solutions. Strategy mirrors PellEquationOQ05's distinctness⟹infinite pattern but in the elementary ℤ setting: (1) negPell_step proves the form automorphism (x,y)↦(3x+4y,2x+3y) [mult by 3+2√2] preserves x²−2y² by a one-line ring identity; (2) negPellSeq is the explicit chain from (1,1); (3) negPellSeq_norm (induction + ring) shows every term solves the equation; (4) negPellSeq_pos (induction) gives both coords ≥1, feeding negPellSeq_fst_strictMono (strictMono_nat_of_lt_succ); (5) injectivity from StrictMono.injective on first coordinate; (6) negPell_solutions_infinite via Set.infinite_of_injective_forall_mem. Verified small terms (1,1)→(7,5)→(41,29)→(239,169) by rfl. No native_decide → 0 axioms. Gap filled: Mathlib's Pell.Solution₁ is norm +1 only; negative Pell is future work upstream."
+  },
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com",
+      "https://en.wikipedia.org/wiki/Pell%27s_equation#The_negative_Pell_equation"
+    ],
+    "mathlib": [
+      "Pell.Solution₁ (Mathlib/NumberTheory/Pell.lean) — norm +1 only; norm −1 is future work",
+      "Set.infinite_of_injective_forall_mem",
+      "strictMono_nat_of_lt_succ"
+    ]
+  },
+  "relatedProofs": [
+    "pell-equation",
+    "pell-equation-oq-01"
+  ],
+  "leanFiles": [
+    {
+      "path": "proofs/Proofs/PellEquationOQ06.lean",
+      "status": "verified",
+      "axiomCount": 0,
+      "sorryCount": 0
+    }
+  ],
+  "significanceNote": "Norm −1 analogue of the classical Pell chain; fills a Mathlib gap (Solution₁ covers only norm +1)."
+}
