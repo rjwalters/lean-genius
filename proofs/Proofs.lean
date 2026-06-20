@@ -643,6 +643,7 @@ import Proofs.CombinationsFormulaOQ08
 import Proofs.CombinationsFormulaOQ09
 import Proofs.ComplexityCore
 import Proofs.CompositionCard2PowOQ01
+import Proofs.CompositionPartsChooseOQ01
 import Proofs.ConjugacyClassEquationOQ01
 import Proofs.ContinuumHypothesis
 import Proofs.ContinuumHypothesisOQ01
