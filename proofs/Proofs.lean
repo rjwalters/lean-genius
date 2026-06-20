@@ -594,6 +594,7 @@ import Proofs.CombinationsFormulaOQ02
 import Proofs.CombinationsFormulaOQ02Aristotle
 import Proofs.CombinationsFormulaOQ03
 import Proofs.CombinationsFormulaOQ03OQ06
+import Proofs.CombinationsFormulaOQ06
 import Proofs.ComplexityCore
 import Proofs.ContinuumHypothesis
 import Proofs.ContinuumHypothesisOQ01
