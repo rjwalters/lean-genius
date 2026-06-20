@@ -23,7 +23,18 @@ UNVERIFIED this session: the Docker build daemon was unresponsive; CI / the depl
 - [x] Unconditional Minkowski assembly `dirichlet_via_minkowski` from
       `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure` against the standard lattice
       `ℤ² = span ℤ (range (Pi.basisFun ℝ (Fin 2)))` — drafted sorry-free.
-- [ ] **Build verification** of `Proofs.DirichletApproximationOQ03` (blocked this session: Docker down).
+- [x] **Source-level Mathlib API verification** (s3, 2026-06-19): every external lemma the proof
+      consumes exists in the pinned mathlib (`leanprover/lean4:v4.26.0`) with a matching signature —
+      `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure`
+      (`MeasureTheory/Group/GeometryOfNumbers.lean:92`, args `fund h_symm h_conv h_cpt h`),
+      `ZSpan.isAddFundamentalDomain'` (`Algebra/Module/ZLattice/Basic.lean:359`),
+      `ZSpan.fundamentalDomain_pi_basisFun` (`…:113`, `= Set.pi univ (Ico 0 1)`),
+      `addHaar_image_linearMap` (`…/Lebesgue/EqHaar.lean:300`, `μ (f '' s) = ofReal |det f| * μ s`),
+      `LinearMap.det_toLin'`, `Matrix.det_fin_two_of`, `Basis.mem_span_iff_repr_mem`. Tactic-level
+      elaboration (simp lemma sets, `field_simp; ring`, term shapes) is NOT verified — needs a build.
+- [ ] **Build verification** of `Proofs.DirichletApproximationOQ03` (still blocked: Docker daemon
+      unresponsive, host load avg ~26–39). CI / the deployer must run
+      `./proofs/scripts/docker-build.sh Proofs.DirichletApproximationOQ03` before machine-checked.
 - [ ] Continued-fraction subsumption (optional).
 
 ## Build status
