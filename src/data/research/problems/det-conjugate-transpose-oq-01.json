@@ -1,0 +1,71 @@
+{
+  "slug": "det-conjugate-transpose-oq-01",
+  "title": "Determinant of the conjugate transpose: det(Mᴴ) = conj(det M)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: over a StarRing R (canonically R = ℂ), for any square matrix M, det(Mᴴ) = star(det M) — the determinant of the conjugate transpose is the complex conjugate of the determinant.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-06-20T18:12:04.131Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: verified 0-axiom gallery entry — base identity + Hermitian/unitary corollaries",
+    "builtItems": [
+      "DetConjugateTransposeOQ01.lean: det_conjTranspose, isSelfAdjoint_det_of_isHermitian, isHermitian_det_im_zero, isHermitian_det_isReal, star_det_mul_det_of_unitary, unitary_det_norm_one (5 theorems + 2 examples, verified 0-axiom)"
+    ],
+    "insights": [
+      "det Mᴴ = star (det M) (Matrix.det_conjTranspose) is the single scalar equation behind both the Hermitian-real-det and unitary-unit-circle facts; no further matrix computation is needed.",
+      "Hermitian Mᴴ=M gives star(det M)=det M (IsSelfAdjoint), so over ℂ det M is real ((det M).im=0): the determinant share of the real-spectrum theorem, with no spectral machinery.",
+      "Unitary Uᴴ U=1 gives star(det U)·det U=1, hence ‖det U‖=1: the det:U(n)→U(1) homomorphism, kernel SU(n)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Characterise SU(n) = {U : det U = 1} ⊂ U(n)",
+      "Real orthogonal analogue det O = ±1 for Oᵀ O = 1",
+      "det as group homomorphism: ‖det(UV)‖=‖det U‖‖det V‖"
+    ]
+  },
+  "tags": [
+    "linear-algebra",
+    "matrix",
+    "determinant",
+    "conjugate-transpose",
+    "hermitian",
+    "unitary",
+    "star-ring",
+    "seeker-selected",
+    "research"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-20T18:12:04.131Z",
+  "lastUpdate": "2026-06-20T18:12:04.131Z",
+  "significance": 7,
+  "tractability": 7
+}
