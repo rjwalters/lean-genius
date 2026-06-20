@@ -2,7 +2,7 @@
   "id": "banach-fixed-point-oq-01",
   "title": "Banach Fixed Point Theorem: Quantitative Contraction Mapping Principle",
   "slug": "banach-fixed-point-oq-01",
-  "description": "The Banach (contraction mapping) fixed point theorem in quantitative form: a contraction f with ratio K<1 on a nonempty complete metric space has a unique fixed point p, the Picard iterates fⁿx converge to p from any seed, and the convergence is geometric — an a-priori bound d(fⁿx,p) ≤ d(x,fx)·Kⁿ/(1−K) and an a-posteriori bound d(x,p) ≤ d(x,fx)/(1−K). Closes with a fully worked instance on ℝ: the affine contraction x↦x/2+c with ratio 1/2 and unique fixed point 2c. 9 theorems, 1 definition, 0 axioms.",
+  "description": "Building on Mathlib's `ContractingWith` API (the Banach contraction mapping theorem), this entry restates the theorem in quantitative textbook form and verifies a concrete ℝ instance. The five core theorems — existence/uniqueness of the fixed point p, Picard convergence fⁿx → p, the a-priori geometric bound d(fⁿx,p) ≤ d(x,fx)·Kⁿ/(1−K), and the a-posteriori bound d(x,p) ≤ d(x,fx)/(1−K) — are restatements of Mathlib's `ContractingWith` lemmas. The genuinely independent content is a fully worked instance on ℝ: the affine contraction x↦x/2+c with ratio 1/2 and unique fixed point 2c. 9 theorems, 1 definition, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-20",
@@ -17,7 +17,7 @@
       "picard-iteration",
       "geometric-convergence"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-06-20",
     "axiomCount": 0,
@@ -26,12 +26,12 @@
     "theoremCount": 9,
     "definitionCount": 1,
     "originalContributions": [
-      "banach_fixed_point_quantitative-style package: existence + uniqueness + Picard convergence + a-priori geometric rate + a-posteriori bound, assembled in textbook form",
-      "exists_fixedPoint / fixedPoint_unique_of_isFixedPt: existence and uniqueness via ContractingWith.fixedPoint and fixedPoint_unique'",
-      "tendsto_iterate: Picard iterates fⁿx → p from any seed x",
-      "apriori_estimate: d(fⁿx,p) ≤ d(x,fx)·Kⁿ/(1−K) — geometric error bound known before iterating",
-      "aposteriori_estimate: d(x,p) ≤ d(x,fx)/(1−K) — bound from a single step",
-      "contractAffine x↦x/2+c: concrete ℝ contraction, ratio 1/2, with verified Lipschitz bound",
+      "Textbook-form repackaging of Mathlib's ContractingWith fixed-point API into a single quantitative statement: existence + uniqueness + Picard convergence + a-priori geometric rate + a-posteriori bound (restatement, not an independent proof of the theorem)",
+      "exists_fixedPoint / fixedPoint_unique_of_isFixedPt: restatements of ContractingWith.fixedPoint and fixedPoint_unique'",
+      "tendsto_iterate: restatement of ContractingWith.tendsto_iterate_fixedPoint (Picard iterates fⁿx → p from any seed x)",
+      "apriori_estimate: restatement of ContractingWith.apriori_dist_iterate_fixedPoint_le — d(fⁿx,p) ≤ d(x,fx)·Kⁿ/(1−K)",
+      "aposteriori_estimate: restatement of ContractingWith.dist_fixedPoint_le — d(x,p) ≤ d(x,fx)/(1−K)",
+      "contractAffine x↦x/2+c: concrete ℝ contraction, ratio 1/2, with verified Lipschitz bound (independent worked instance)",
       "contractAffine_fixedPoint: the unique fixed point of x↦x/2+c is exactly 2c",
       "contractAffine_tendsto / contractAffine_apriori: concrete geometric convergence of the iterates to 2c"
     ]
