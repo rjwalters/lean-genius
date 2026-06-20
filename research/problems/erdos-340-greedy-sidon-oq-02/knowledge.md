@@ -195,3 +195,40 @@ harder research line (or leave the entry honestly `axiomatized`).
 Also note: the existing axiom-free `sidon_upper_bound_weak` (`|A| ≤ ⌊√(2N)⌋+1`,
 difference-counting) already *beats* the key-inequality bound across the small/mid-N
 range, so no derived explicit cardinality theorem from `sidon_window_key` was worth adding.
+
+---
+
+## Session 2026-06-19 (researcher-10): the optimisation IS worth formalizing — `sidon_card_le_sqrt`
+
+The prior note above ("no derived explicit cardinality theorem from `sidon_window_key`
+was worth adding") under-valued the **asymptotic** picture. The elementary
+`sidon_upper_bound_weak` (`⌊√(2N)⌋+1`) beats the key-inequality bound only for small/mid
+`N`; for large `N` the optimised key bound `√N + N^{1/4} + O(1)` is dramatically tighter
+(optimal leading constant `1` vs `√2 ≈ 1.414`). That optimal leading term is worth a
+verified theorem in its own right, so this session formalized it.
+
+**New file `Erdos340SidonErdosTuran.lean`** (imports `Erdos340GreedySidonOQ02`):
+
+```lean
+theorem sidon_card_le_sqrt (A : Finset ℕ) (hA : IsSidon A) (N : ℕ)
+    (hAN : ∀ a ∈ A, a ≤ N) :
+    A.card ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 2
+```
+
+Fully **verified, 0-axiom** (`#print axioms` = `propext, Classical.choice, Quot.sound`).
+
+* **Window length.** Optimum of `ℓ·k² ≤ (N+ℓ)(ℓ-1+k)` is `ℓ* = √((k-1)N) ≈ N^{3/4}`
+  when `k ≈ √N` (NOT `≈√N`). The clean integer choice `ℓ = ⌊√N⌋·⌊√⌊√N⌋⌋ + 1` works.
+* **Why `+2` not `+1`.** Confirmed by exhaustive search (`N < 3·10⁵`): with
+  `s=⌊√N⌋, t=⌊√s⌋`, the value `k = s+t+3` is ALWAYS refuted by some `ℓ` (so `k ≤ s+t+2`
+  is provable), but `k = s+t+2` survives for ~12% of `N` (e.g. `N=15`: key permits `6`,
+  true max is `5`). The Cauchy–Schwarz step is intrinsically lossy by `+1`. **The parent
+  axiom `sidon_upper_bound` (the `+1` form) therefore stays — it is not a slack of this
+  route.** (Corroborates the prior session's conclusion.)
+* **Arithmetic core (`window_opt_arith`, over ℤ).** By-contradiction with `k=s+t+3+d`,
+  `N` at worst case `s²+2s`: the gap factors as
+  `Q = (s·t+1)d² + C₁·d + (s+t+2)·R`, `R = -s²+st²+3st-2s+t+3 ≥ 1`. `R ≥ 1` is the
+  concavity certificate `2t·R = (t²+2t-s)·e₀ + (s-t²)·e₁ + 2t(s-t²)(t²+2t-s)` with
+  endpoints `e₀ = 3t³-2t²+t+3 ≥ 1`, `e₁ = (t-1)²(t+2)+1 ≥ 1`. `C₁ ≥ 0` via
+  `s·(t²+2t-s) ≥ 0`. Each step is a low-degree `nlinarith`. Bracketings: `Nat.sqrt_le'`,
+  `Nat.lt_succ_sqrt'`.
