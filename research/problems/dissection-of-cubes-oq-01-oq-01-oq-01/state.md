@@ -1,25 +1,32 @@
 # Research State: dissection-of-cubes-oq-01-oq-01-oq-01
 
 ## Current State
-**Phase**: OBSERVE
-**Path**: fast
-**Since**: 2026-04-04T02:41:26-07:00
-**Iteration**: 1
+**Phase**: COMPLETED
+**Path**: full
+**Since**: 2026-06-20
+**Iteration**: 3
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Entry built green and shipped. Replaced `covers_unit_cube : True` with a genuine volumetric
+coverage predicate `∑ c.side³ = 1` (`GeoCubeDissection`). Proved the OQ-01-01 minimal-collision
+witness fails it (volume 59/864 ≠ 1) and that the predicate is satisfiable (unit cube, 0
+collisions). `#print axioms` confirms all results are genuinely 0-axiom (propext/Classical/Quot
+only). Removed the axiom-leaking `geo_at_least_two_colliding` corollary (demoted to prose) so the
+`verified / axiomCount: 0` claim is fully defensible.
 
 ## Active Approach
-None yet.
+Volumetric coverage as a machine-checkable surrogate for unit-cube tiling.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
-None.
+None for the completed results. The deep geometric question (does any genuine tiling
+achieve exactly 2 collisions?) remains open — likely requires formalizing Littlewood's cascade.
 
-## Next Action
-Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.
-See FAST_PATH.md for protocol.
+## Next Action (future follow-up)
+Construct the 2×2×2 uniform tiling (genuine, 8 collisions); probe whether the volume
+constraint forces > 2 collisions. This is the deep open geometric question and is out of
+scope for the shipped impossibility result.
