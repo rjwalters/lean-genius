@@ -1,0 +1,151 @@
+{
+  "id": "perfect-numbers-oq-05",
+  "title": "Every Prime Power is Deficient: σ(pᵏ) < 2·pᵏ",
+  "slug": "perfect-numbers-oq-05",
+  "description": "Proves the full infinite family: for every prime p and every exponent k, the prime power pᵏ is deficient (σ(pᵏ) < 2·pᵏ). The argument is the elementary geometric fact that the lower tail 1 + p + ⋯ + pᵏ⁻¹ is strictly smaller than the single top term pᵏ. All 11 theorems verified with 0 sorries and 0 axioms — crucially the deficiency is established by a uniform geometric-series argument (Nat.geomSum_lt), not by native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Deficient_number",
+    "date": "Classical (Nicomachus, c. 100 AD, on deficient/abundant/perfect numbers)",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "perfect-numbers",
+      "divisor-sum",
+      "deficient-numbers",
+      "geometric-series",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/PerfectNumbersOQ05.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 11 theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count as assumptions). No native_decide is used: the concrete deficient instances (8, 16, 9, 81, 2187) are derived as substitutions into the general theorem, so they too are kernel-checked without Lean.ofReduceBool.",
+    "originalContributions": [
+      "prime_pow_is_deficient: every prime power pᵏ is deficient (IsDeficient (pᵏ)) — the general all-k statement, absent from the existing family which had only the k=1 case (prime_is_deficient) and isolated native_decide instances",
+      "sigma_one_prime_pow_lt: σ(pᵏ) < 2·pᵏ, the sum-of-divisors form, proved via the geometric bound rather than computation",
+      "geomSum_prime_pow_lt: the geometric heart — the lower tail Σ_{j<k} pʲ < pᵏ (instance of Nat.geomSum_lt)",
+      "sum_properDivisors_pow_lt: the proper divisors of pᵏ sum to strictly less than pᵏ (parts smaller than the whole)",
+      "isDeficient_iff_sum_properDivisors_lt: bridge between the σ-form and the proper-divisor form of deficiency",
+      "prime_is_deficient: the classical k=1 case recovered as a corollary of the general theorem",
+      "Concrete instances (8=2³, 16=2⁴, 9=3², 81=3⁴, 2187=3⁷) certified WITHOUT native_decide — each a substitution into prime_pow_is_deficient"
+    ],
+    "dateAdded": "2026-06-20",
+    "lineCount": 145,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The classification of integers as deficient (σ(n) < 2n), perfect (σ(n) = 2n), or abundant (σ(n) > 2n) dates to Nicomachus of Gerasa (c. 100 AD) and underlies the entire theory of perfect numbers. Prime powers are the simplest infinite family of deficient numbers: since the only divisors of pᵏ are 1, p, …, pᵏ, their sum is the geometric series (pᵏ⁺¹ − 1)/(p − 1), which is always just short of 2pᵏ. This deficiency is the reason perfect numbers cannot be prime powers, and it is the base case of the multiplicative analysis of the abundancy index σ(n)/n that governs which numbers can be perfect, abundant, or amicable.",
+    "problemStatement": "**Open Question (OQ-05 from Perfect Numbers)**: Characterize the deficiency of prime powers. Concretely: prove that for every prime p and every k ≥ 0, σ(pᵏ) < 2·pᵏ, so that the entire infinite family {pᵏ} consists of deficient numbers — with a uniform proof rather than case-by-case computation.\n\n**Formalized**: The general theorem prime_pow_is_deficient and its σ-form sigma_one_prime_pow_lt, both proved by the geometric-series bound Nat.geomSum_lt, with the k=1 prime case and five concrete instances derived as corollaries.",
+    "text": "A 145-line formalization proving that every prime power is deficient. The crux is geomSum_prime_pow_lt: for p ≥ 2 the lower tail 1 + p + ⋯ + pᵏ⁻¹ is strictly less than the single top term pᵏ. Splitting σ(pᵏ) = (lower tail) + pᵏ then gives σ(pᵏ) < pᵏ + pᵏ = 2pᵏ. All 11 theorems compile with 0 sorries and 0 axioms; the concrete deficient numbers are substitutions into the general theorem, avoiding native_decide entirely.",
+    "proofStrategy": "**Geometric heart (geomSum_prime_pow_lt)**: Apply Mathlib's Nat.geomSum_lt (2 ≤ m → (∀ j ∈ s, j < n) → Σ_{j ∈ s} mʲ < mⁿ) with m = p, s = range k, n = k. Every index j ∈ range k satisfies j < k by Finset.mem_range, and p ≥ 2 from hp.two_le. Internally Nat.geomSum_lt routes through the closed form (pᵏ − 1)/(p − 1) and the bound (pᵏ − 1)/(p − 1) ≤ pᵏ − 1 < pᵏ.\n\n**σ-form (sigma_one_prime_pow_lt)**: Rewrite σ(pᵏ) with Mathlib's sigma_one_apply_prime_pow to Σ_{j ∈ range (k+1)} pʲ, then peel the top term with Finset.sum_range_succ. The remaining lower tail is bounded by geomSum_prime_pow_lt, and omega closes (lower tail) + pᵏ < 2·pᵏ from (lower tail) < pᵏ.\n\n**Headline (prime_pow_is_deficient)**: IsDeficient (pᵏ) := σ(pᵏ) < 2·pᵏ is definitionally the σ-form.\n\n**Corollaries**: k = 1 recovers prime deficiency (simpa with pow_one); the concrete instances 8, 16, 9, 81, 2187 are direct substitutions, certified without native_decide.",
+    "keyInsights": [
+      "**Parts smaller than the whole**: Deficiency of pᵏ is exactly the statement that its proper divisors 1, p, …, pᵏ⁻¹ sum to less than the number itself. The single largest proper divisor pᵏ⁻¹ already equals more than half the proper-divisor sum, and the whole tail still falls short of pᵏ.",
+      "**Geometric series, not computation**: The existing family proved specific deficient numbers (4, 8, 16) by native_decide, which trusts the compiler (Lean.ofReduceBool). This file proves the same instances as corollaries of a uniform argument, so the entire infinite family — and each named instance — is kernel-checked with 0 axioms.",
+      "**Nat.geomSum_lt is the exact tool**: The Mathlib lemma Σ_{j ∈ s} mʲ < mⁿ (for 2 ≤ m and all indices < n) is precisely the lower-tail-below-top-term fact, packaged once and reused for the σ-form and the proper-divisor form.",
+      "**Why perfect numbers avoid prime powers**: A perfect number satisfies σ(n) = 2n exactly. Since prime powers always satisfy σ(pᵏ) < 2pᵏ strictly, no prime power is perfect — this file is the quantitative reason, and the base case of the multiplicative abundancy analysis σ(n)/n = ∏ σ(pᵢ^{aᵢ})/pᵢ^{aᵢ}.",
+      "**k = 0 included**: The theorem holds even for k = 0 (σ(1) = 1 < 2), since range 0 is empty and the lower tail is 0 < 1 = p⁰; no hypothesis k ≥ 1 is needed, making the family statement maximally clean."
+    ],
+    "prerequisites": [
+      "The sum-of-divisors function σ₁(n) = Σ_{d ∣ n} d and the classification deficient / perfect / abundant",
+      "Divisors of a prime power: pᵏ has exactly the divisors 1, p, …, pᵏ (Nat.divisors_prime_pow)",
+      "Finite geometric series and the bound Σ_{j<k} pʲ = (pᵏ − 1)/(p − 1) < pᵏ for p ≥ 2",
+      "Mathlib API: ArithmeticFunction.sigma_one_apply_prime_pow, Nat.geomSum_lt, Finset.sum_range_succ, Nat.sum_divisors_eq_sum_properDivisors_add_self",
+      "Definition of deficiency IsDeficient n := σ₁(n) < 2n (matching SumOfDivisors.IsDeficient)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "perfect-numbers",
+      "relationship": "extends",
+      "description": "Parent formalization of the Euclid–Euler theorem (even perfect ↔ 2^(p−1)(2^p − 1) with Mersenne prime). This file complements it on the deficiency side: prime powers are never perfect because σ(pᵏ) < 2pᵏ strictly, the base case of the abundancy-index analysis behind the Euclid–Euler characterization."
+    },
+    {
+      "proofId": "sum-of-divisors",
+      "relationship": "extends",
+      "description": "The Sum-of-Divisors family defines IsDeficient and proves the k=1 case prime_is_deficient and the closed-form σ(pᵏ) = Σ pⁱ (sigma_prime_pow). This file supplies the missing general all-k deficiency theorem with a uniform geometric-series proof, and recovers the k=1 case and concrete instances as corollaries (without native_decide)."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "PerfectNumbersOQ05",
+    "lineCount": 145,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "path": "Proofs/PerfectNumbersOQ05.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "prime_pow_is_deficient",
+      "type": "core",
+      "statement": "$p$ prime $\\Rightarrow$ $p^k$ is deficient (`IsDeficient (p^k)`, i.e. $\\sigma(p^k) < 2p^k$), for all $k$",
+      "significance": "The headline: the entire infinite family $\\{p^k\\}$ is deficient, with a single uniform proof. The existing gallery had only the $k=1$ case and isolated native_decide instances; this captures all exponents at once and is the quantitative reason no prime power is perfect.",
+      "description": "Every prime power is deficient."
+    },
+    {
+      "name": "sigma_one_prime_pow_lt",
+      "type": "core",
+      "statement": "$p$ prime $\\Rightarrow \\sigma(p^k) < 2p^k$",
+      "significance": "The sum-of-divisors form. Proof rewrites $\\sigma(p^k) = \\sum_{j\\le k} p^j$ (sigma_one_apply_prime_pow), peels the top term $p^k$, and bounds the lower tail by geomSum_prime_pow_lt; omega finishes. No computation/native_decide.",
+      "description": "σ(pᵏ) < 2·pᵏ."
+    },
+    {
+      "name": "geomSum_prime_pow_lt",
+      "type": "supporting",
+      "statement": "$p$ prime $\\Rightarrow \\sum_{j < k} p^j < p^k$",
+      "significance": "The geometric heart: the lower tail $1 + p + \\cdots + p^{k-1}$ is strictly less than the single top power $p^k$. A direct instance of Mathlib's Nat.geomSum_lt; reused for both the σ-form and the proper-divisor form.",
+      "description": "Lower tail strictly below the top power."
+    },
+    {
+      "name": "sum_properDivisors_pow_lt",
+      "type": "supporting",
+      "statement": "$p$ prime $\\Rightarrow \\sum_{d \\mid p^k,\\, d < p^k} d < p^k$",
+      "significance": "The most concrete face of deficiency: the proper divisors of $p^k$ (namely $1, p, \\dots, p^{k-1}$) sum to less than $p^k$ — the parts are smaller than the whole. Uses Nat.sum_properDivisors_prime_pow plus the geometric bound.",
+      "description": "Proper divisors of pᵏ sum to less than pᵏ."
+    },
+    {
+      "name": "isDeficient_iff_sum_properDivisors_lt",
+      "type": "supporting",
+      "statement": "`IsDeficient n ↔ (∑_{d ∈ properDivisors n} d < n)`",
+      "significance": "Bridges the two equivalent definitions of deficiency (σ(n) < 2n versus proper divisors summing below n), via Nat.sum_divisors_eq_sum_properDivisors_add_self and omega. Holds for all n, including n = 0.",
+      "description": "Equivalence of the σ-form and proper-divisor form of deficiency."
+    },
+    {
+      "name": "prime_is_deficient",
+      "type": "supporting",
+      "statement": "$p$ prime $\\Rightarrow$ `IsDeficient p`",
+      "significance": "The classical $k=1$ case (σ(p) = p + 1 < 2p), here recovered as a one-line corollary of the general prime-power theorem (simpa with pow_one).",
+      "description": "Every prime is deficient (k = 1 corollary)."
+    }
+  ],
+  "references": [
+    {
+      "text": "Nicomachus of Gerasa, Introduction to Arithmetic (c. 100 AD). Original classification of numbers as deficient, perfect, and abundant by comparing n with the sum of its proper divisors.",
+      "url": "https://en.wikipedia.org/wiki/Deficient_number"
+    },
+    {
+      "text": "Hardy, G. H. & Wright, E. M., An Introduction to the Theory of Numbers. The multiplicative sum-of-divisors function σ and the abundancy index σ(n)/n, including σ(pᵏ) = (p^{k+1}−1)/(p−1).",
+      "url": "https://en.wikipedia.org/wiki/Divisor_function"
+    },
+    {
+      "text": "Mathlib4: ArithmeticFunction.sigma_one_apply_prime_pow, Nat.geomSum_lt, Nat.sum_properDivisors_prime_pow, Nat.sum_divisors_eq_sum_properDivisors_add_self. The σ-on-prime-power formula and the geometric-sum strict bound.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves that every prime power pᵏ is deficient (σ(pᵏ) < 2·pᵏ) for every prime p and every exponent k, via the geometric fact that the lower tail 1 + p + ⋯ + pᵏ⁻¹ is strictly less than the top term pᵏ. The σ-form, the proper-divisor form, their equivalence, the k=1 prime corollary, and five concrete instances are all derived. All 11 theorems verified with 0 sorries and 0 axioms, using a uniform argument rather than native_decide.",
+    "implications": "Deficiency of prime powers is the base case of the abundancy-index analysis σ(n)/n = ∏ σ(pᵢ^{aᵢ})/pᵢ^{aᵢ} that controls which numbers are perfect, abundant, or amicable, and it is the precise reason no prime power can be perfect. Proving the infinite family uniformly (rather than instance-by-instance) and without native_decide gives a fully kernel-checked, 0-axiom foundation for the deficiency side of the Perfect-Numbers gallery.",
+    "openQuestions": [
+      "Quantify the deficiency gap 2pᵏ − σ(pᵏ) = pᵏ − (p^k − 1)/(p − 1) and its asymptotics as p, k grow",
+      "Generalize to the abundancy index: characterize when a general n = ∏ pᵢ^{aᵢ} is deficient via the multiplicative product of σ(pᵢ^{aᵢ})/pᵢ^{aᵢ}",
+      "Formalize the dual: products of distinct small primes (primorials) eventually become abundant, the boundary of the deficient/abundant classification"
+    ]
+  },
+  "sorries": 0
+}
