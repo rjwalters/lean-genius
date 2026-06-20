@@ -2,6 +2,7 @@ import Mathlib.Topology.GDelta.Basic
 import Mathlib.Topology.Perfect
 import Mathlib.Topology.Baire.Lemmas
 import Mathlib.Topology.Baire.CompleteMetrizable
+import Mathlib.Topology.MetricSpace.Polish
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
 
@@ -157,9 +158,69 @@ companion nested-interval entry, whose conclusion is this very statement. -/
 theorem not_countable_real : ¬ (Set.univ : Set ℝ).Countable :=
   not_countable_of_perfect_t1_baire
 
+/-! ### The Baire Category Theorem for perfect Polish spaces
+
+The abstract lemma `not_countable_of_perfect_t1_baire` above isolates the *topological*
+hypotheses (`T1` + `PerfectSpace` + `BaireSpace`). The standard descriptive-set-theory
+statement of the Baire Category Theorem is phrased for **Polish spaces** (separable, completely
+metrizable). Mathlib supplies the missing instances along the chain
+
+    PolishSpace X
+      → IsCompletelyMetrizableSpace X
+          → MetrizableSpace X → T2Space X → T1Space X        -- `t2Space_of_metrizableSpace`
+          → IsCompletelyPseudoMetrizableSpace X → BaireSpace X  -- `BaireSpace.of_completelyPseudoMetrizable`
+
+so a perfect Polish space *automatically* satisfies every hypothesis of the abstract lemma, and
+the general statement follows with no further argument. This packages the result at the level of
+generality (perfect Polish ⟹ uncountable) at which the Baire Category Theorem is usually quoted,
+subsuming the `ℝ`-specific `not_countable_real` above. -/
+
+/-- **The Baire Category Theorem (completeness half): every complete metric space is a Baire
+space.** This is the supporting input behind the perfect-Polish uncountability statement; it is
+Mathlib's `BaireSpace.of_completelyPseudoMetrizable` specialised to a genuine (complete) metric,
+exposed here as a named gallery result. -/
+theorem baireSpace_of_completeMetricSpace {X : Type*} [MetricSpace X] [CompleteSpace X] :
+    BaireSpace X := inferInstance
+
+/-- A perfect Polish space is `T1`: it is metrizable (hence `T2`), via the Mathlib instance chain
+`PolishSpace → IsCompletelyMetrizableSpace → MetrizableSpace → T2Space → T1Space`. Recorded as a
+named lemma to make the otherwise-implicit instance step explicit. -/
+theorem t1Space_of_polishSpace {X : Type*} [TopologicalSpace X] [PolishSpace X] : T1Space X :=
+  inferInstance
+
+/-- A Polish space is a Baire space: it is completely metrizable, and a completely
+(pseudo)metrizable space has the Baire property (`BaireSpace.of_completelyPseudoMetrizable`). -/
+theorem baireSpace_of_polishSpace {X : Type*} [TopologicalSpace X] [PolishSpace X] :
+    BaireSpace X := inferInstance
+
+/-- **Every nonempty perfect Polish space is uncountable.**
+
+The general Baire-category uncountability theorem, in its standard descriptive-set-theory form.
+A Polish space supplies both topological hypotheses of `not_countable_of_perfect_t1_baire` by
+instance resolution (`T1` via metrizability, `BaireSpace` via complete metrizability), so the
+abstract lemma applies verbatim. This subsumes `not_countable_real` (`ℝ` is a perfect Polish
+space) and the companion nested-interval entry. -/
+theorem not_countable_univ_of_perfect_polishSpace {X : Type*} [TopologicalSpace X]
+    [PolishSpace X] [PerfectSpace X] [Nonempty X] : ¬ (Set.univ : Set X).Countable :=
+  not_countable_of_perfect_t1_baire
+
+/-- **Every nonempty perfect Polish space is uncountable** (`Uncountable` typeclass form). -/
+theorem uncountable_of_perfect_polishSpace {X : Type*} [TopologicalSpace X] [PolishSpace X]
+    [PerfectSpace X] [Nonempty X] : Uncountable X :=
+  not_countable_univ_iff.mp not_countable_univ_of_perfect_polishSpace
+
+/-- `ℝ` is uncountable, recovered from the perfect-Polish packaging: `ℝ` is a perfect Polish
+space, so the general theorem applies. A second, more general route to Cantor's theorem than the
+bespoke `not_countable_real` above. -/
+theorem uncountable_real : Uncountable ℝ :=
+  uncountable_of_perfect_polishSpace
+
 end AlgebraicRealsMeager
 
 #print axioms AlgebraicRealsMeager.algebraicReals_isMeagre
 #print axioms AlgebraicRealsMeager.exists_transcendental_real
 #print axioms AlgebraicRealsMeager.not_countable_of_perfect_t1_baire
 #print axioms AlgebraicRealsMeager.not_countable_real
+#print axioms AlgebraicRealsMeager.not_countable_univ_of_perfect_polishSpace
+#print axioms AlgebraicRealsMeager.uncountable_of_perfect_polishSpace
+#print axioms AlgebraicRealsMeager.uncountable_real

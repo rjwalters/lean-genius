@@ -174,7 +174,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 165,
+    "lineCount": 226,
     "namespace": "AlgebraicRealsMeager",
     "opens": [
       "Set",
@@ -182,8 +182,8 @@
     ],
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 10,
-    "substantiveTheoremCount": 6,
+    "theoremCount": 16,
+    "substantiveTheoremCount": 8,
     "computationalVerifications": 0,
     "lemmaCount": 0,
     "imports": [
@@ -191,6 +191,7 @@
       "Mathlib.Topology.Perfect",
       "Mathlib.Topology.Baire.Lemmas",
       "Mathlib.Topology.Baire.CompleteMetrizable",
+      "Mathlib.Topology.MetricSpace.Polish",
       "Mathlib.Tactic",
       "Proofs.AlgebraicNumbersCountable"
     ],
@@ -235,6 +236,18 @@
       "type": "core",
       "description": "Abstract Baire Category Theorem: a nonempty T1 perfect Baire space is uncountable (subsumes the nested-interval entry; recovers ℝ uncountable via not_countable_real)",
       "leanType": "∀ {X : Type*} [TopologicalSpace X] [T1Space X] [PerfectSpace X] [BaireSpace X] [Nonempty X], ¬ (Set.univ : Set X).Countable"
+    },
+    {
+      "name": "uncountable_of_perfect_polishSpace",
+      "type": "core",
+      "description": "Baire Category Theorem at the standard generality: every nonempty perfect Polish space is uncountable. The hypotheses of not_countable_of_perfect_t1_baire (T1, BaireSpace) are discharged automatically from PolishSpace via Mathlib's metrizability/complete-metrizability instance chain.",
+      "leanType": "∀ {X : Type*} [TopologicalSpace X] [PolishSpace X] [PerfectSpace X] [Nonempty X], Uncountable X"
+    },
+    {
+      "name": "baireSpace_of_completeMetricSpace",
+      "type": "supporting",
+      "description": "Completeness half of the Baire Category Theorem: every complete metric space is a Baire space (the supporting input behind the perfect-Polish uncountability statement)",
+      "leanType": "∀ {X : Type*} [MetricSpace X] [CompleteSpace X], BaireSpace X"
     }
   ],
   "conclusion": {
