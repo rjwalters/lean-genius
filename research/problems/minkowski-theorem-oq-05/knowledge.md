@@ -22,9 +22,38 @@ both absent.
 - `proofs/Proofs/MinkowskiTheoremOQ05.lean` — 4 theorems, 0 def, 0 sorry, 0 axiom
   (by construction). Registered in `proofs/Proofs.lean`.
 - `src/data/proofs/minkowski-theorem-oq-05/{meta.json,annotations.json}` — gallery
-  entry, held at `formalized`/`wip` pending a green build.
+  entry, **verified/original** (build confirmed 2026-06-20).
 
 ---
+
+## Session 2026-06-20 (Session 2) — Build verified, promoted to verified/original
+
+**Mode**: REVISIT
+**Outcome**: completed (proof machine-verified)
+
+### What I Did
+- Docker harness had recovered. Ran `./proofs/scripts/docker-build.sh Proofs.MinkowskiTheoremOQ05`
+  → **green**, `✔ [7743/7743] Built Proofs.MinkowskiTheoremOQ05 (469s)`.
+- Ran a temporary `#print axioms` companion on all four theorems: each depends only on
+  `[propext, Classical.choice, Quot.sound]` — no `Lean.ofReduceBool`, no `sorryAx`.
+  Genuine 0-axiom verified result. Removed the companion afterward.
+- Promoted gallery `meta.json`: `status formalized → verified`, `badge wip → original`,
+  rewrote `assumptions` to record the green build + clean axiom profile.
+- Updated `src/data/research/problems/minkowski-theorem-oq-05.json` knowledge.
+
+### Key Findings
+- The Session-1 self-review held up exactly: no elaboration surprises — the
+  `exact_mod_cast` transport, the rpow `rw`-chain, and the `IsLeast` packaging all
+  kernel-check as written.
+
+### Files Modified
+- `src/data/proofs/minkowski-theorem-oq-05/meta.json` (formalized/wip → verified/original)
+- `src/data/research/problems/minkowski-theorem-oq-05.json` (knowledge)
+- `research/problems/minkowski-theorem-oq-05/knowledge.md` (this entry)
+
+### Next Steps
+- Follow-up veins (unchanged): reverse bound for `0 < p ≤ 1` (constant 1); n-term
+  form `(Σ aᵢ)^p ≤ n^(p−1) Σ aᵢ^p` with `n^(p−1)` optimal.
 
 ## Session 2026-06-20 (Session 1) — Full proof written, build blocked by harness blackout
 

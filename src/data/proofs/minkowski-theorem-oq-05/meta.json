@@ -5,7 +5,7 @@
   "description": "For a real exponent p ≥ 1 and nonnegative reals a, b, the power-sum convexity bound (a+b)^p ≤ 2^(p−1)(a^p+b^p), together with the sharpness statement that 2^(p−1) is the best possible constant: equality holds on the diagonal a = b, and any constant C valid for all nonnegative a, b satisfies C ≥ 2^(p−1). Mathlib proves the inequality only for ℝ≥0 (NNReal.rpow_add_le_mul_rpow_add_rpow) and ℝ≥0∞; the real-valued nonnegative formulation and the optimality of the constant are both absent. The headline result is the characterization 2^(p−1) = IsLeast of the admissible-constant set.",
   "meta": {
     "author": "Classical (power-mean / Jensen convexity)",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/MinkowskiTheoremOQ05.lean",
     "tags": [
       "analysis",
@@ -16,7 +16,7 @@
       "minkowski",
       "optimal-constant"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-06-20",
     "mathlib_version": "4.26.0",
@@ -54,7 +54,7 @@
       "isLeast_two_rpow_sub_one: the headline characterization — 2^(p−1) is the least element of { C | ∀ a b ≥ 0, (a+b)^p ≤ C(a^p+b^p) }, packaging admissibility and the lower bound into a single optimal-constant statement"
     ],
     "axiomCount": 0,
-    "assumptions": "Proof is complete by construction — 0 sorries, 0 `axiom` declarations, no native_decide (so no Lean.ofReduceBool), no structure-encoded assumptions. BUILD VERIFICATION PENDING: the local Docker build (`./proofs/scripts/docker-build.sh Proofs.MinkowskiTheoremOQ05`) was NOT run this session due to a Docker-daemon harness blackout on 2026-06-20. Status is held at `formalized`/`wip` rather than `verified`/`original` until a green Docker/CI build confirms machine-checking; promote to verified + badge original once the build passes (expected to depend only on propext, Classical.choice, Quot.sound).",
+    "assumptions": "None. Fully machine-checked — 0 sorries, 0 `axiom` declarations, no native_decide (so no Lean.ofReduceBool), no structure-encoded assumptions. The Docker build (`./proofs/scripts/docker-build.sh Proofs.MinkowskiTheoremOQ05`) succeeded on 2026-06-20 (7743/7743 jobs), and `#print axioms` confirms all four theorems depend only on the foundational [propext, Classical.choice, Quot.sound].",
     "lineCount": 121,
     "theoremCount": 4,
     "definitionCount": 0,
