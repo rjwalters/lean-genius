@@ -1,0 +1,128 @@
+{
+  "id": "geometric-series-oq-07",
+  "slug": "geometric-series-oq-07",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Data.Nat.Choose.Cast",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "GeometricSeriesOQ07",
+    "lineCount": 140,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ07.lean",
+    "sorries": 0
+  },
+  "title": "The Second Moment of the Geometric Series: ∑ n² rⁿ = r(1+r)/(1-r)³",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ07.lean",
+    "tags": [
+      "analysis",
+      "geometric-series",
+      "infinite-series",
+      "power-series",
+      "moments",
+      "summability",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 140,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "hasSum_sq_mul_geometric / tsum_sq_mul_geometric: the closed form ∑_{n≥0} n² · rⁿ = r(1+r)/(1-r)³ for ‖r‖ < 1 over ℝ — a result Mathlib does not provide (it has the zeroth and first moments but no n² sum)",
+      "two_choose_two_sub: the polynomial identity n² = 2·(n+2 choose 2) − 3n − 2 (cast to ℝ), the algebraic bridge that expresses n² in the rising-binomial basis Mathlib does sum",
+      "Assembly technique: the second moment is obtained as the linear combination 2·h₂ − 3·h₁ − 2·h₀ of three Mathlib HasSum facts (the k=2 rising-binomial sum, the first moment, and the bare geometric series), with the value simplified by field_simp; ring",
+      "summable_sq_mul_geometric: summability of n² rⁿ for ‖r‖ < 1, and a concrete evaluation ∑ n²/2ⁿ = 6"
+    ],
+    "prerequisites": [
+      "Mathlib's rising-binomial geometric sums hasSum_choose_mul_geometric_of_norm_lt_one (∑ (n+k choose k) rⁿ = 1/(1-r)^{k+1})",
+      "Mathlib's first moment hasSum_coe_mul_geometric_of_norm_lt_one (∑ n rⁿ = r/(1-r)²)",
+      "Mathlib's geometric series hasSum_geometric_of_norm_lt_one (∑ rⁿ = (1-r)⁻¹)",
+      "Nat.cast_choose_two: ((a choose 2 : ℝ) = a(a-1)/2)",
+      "HasSum arithmetic (HasSum.mul_left, HasSum.sub, HasSum.tsum_eq)",
+      "Parent: geometric-series (∑ rⁿ = 1/(1-r))"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_choose_mul_geometric_of_norm_lt_one",
+        "description": "∑_n (n+k choose k) · rⁿ = 1/(1-r)^{k+1} for ‖r‖ < 1. Used at k = 2 to obtain the second-order rising-binomial sum 1/(1-r)³.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "hasSum_coe_mul_geometric_of_norm_lt_one",
+        "description": "∑_n n · rⁿ = r/(1-r)² for ‖r‖ < 1 (the first moment), used as the −3·h₁ term of the combination.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "hasSum_geometric_of_norm_lt_one",
+        "description": "∑_n rⁿ = (1-r)⁻¹ for ‖r‖ < 1 (the geometric series), used as the −2·h₀ term.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Nat.cast_choose_two",
+        "description": "((a choose 2 : ℝ) = a·(a-1)/2). Provides the cast needed to prove n² = 2·(n+2 choose 2) − 3n − 2 over ℝ.",
+        "module": "Mathlib.Data.Nat.Choose.Cast"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-07-oq-01",
+      "question": "Generalize the moment computation to arbitrary order: prove ∑_n n^k · rⁿ = (a polynomial in r of degree k with Eulerian-number coefficients) / (1-r)^{k+1}, recovering k=0,1,2 as special cases, by expressing n^k in the rising-binomial basis {(n+j choose j)}.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-07-oq-02",
+      "question": "State the probabilistic corollary: for X geometric with P(X=n) = (1-r)rⁿ, derive E[X] = r/(1-r), E[X²] = r(1+r)/(1-r)², and Var(X) = r/(1-r)² directly from the moment closed forms.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series",
+      "relationship": "extends",
+      "description": "Parent. The base entry proves ∑ rⁿ = 1/(1-r) (the zeroth moment). This entry adds the second moment ∑ n² rⁿ = r(1+r)/(1-r)³, assembling it from the geometric series together with Mathlib's first-moment and rising-binomial sums."
+    },
+    {
+      "targetId": "geometric-series-oq-03",
+      "relationship": "sibling",
+      "description": "A sibling extension of the geometric series: oq-03 builds the Euler product ζ(s) = ∏_p ∑_k (p^{-s})^k from the geometric series, while this entry builds the weighted moment sums ∑ nᵏ rⁿ."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecificLimits.Normed",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the geometric, first-moment, and rising-binomial geometric sums (hasSum_geometric_of_norm_lt_one, hasSum_coe_mul_geometric_of_norm_lt_one, hasSum_choose_mul_geometric_of_norm_lt_one)."
+    },
+    {
+      "title": "Concrete Mathematics (geometric series and its derivatives)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the weighted geometric sums ∑ n rⁿ and ∑ n² rⁿ obtained by differentiating ∑ rⁿ = 1/(1-r)."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For ‖r‖ < 1 over ℝ, the second moment of the geometric series is ∑_{n≥0} n² · rⁿ = r(1+r)/(1-r)³. This completes the low-order moment family: ∑ rⁿ = 1/(1-r), ∑ n rⁿ = r/(1-r)², ∑ n² rⁿ = r(1+r)/(1-r)³. The proof assembles the second moment as the linear combination 2·h₂ − 3·h₁ − 2·h₀ of three Mathlib HasSum facts — the k=2 rising-binomial sum ∑ (n+2 choose 2) rⁿ = 1/(1-r)³, the first moment, and the geometric series — using the polynomial identity n² = 2·(n+2 choose 2) − 3n − 2. The file provides HasSum, tsum, and summability forms plus a concrete check ∑ n²/2ⁿ = 6. 140 lines, 7 theorems/lemmas, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "Mathlib provides the zeroth and first geometric moments but no closed form for ∑ n² rⁿ, so this fills a real gap. The difficulty is routine — the work is the elementary observation that n² lies in the span of the rising-binomial functions {1, n, (n+2 choose 2)} that Mathlib already sums, which makes the moment computable by a finite linear combination rather than by re-deriving convergence. The same template (express nᵏ in the rising-binomial basis, take a linear combination) yields every higher moment, as recorded in the open questions.",
+    "openQuestions": [
+      "Generalize to ∑ n^k rⁿ for arbitrary k via the rising-binomial basis (Eulerian-number numerators over (1-r)^{k+1}).",
+      "Derive the geometric-distribution variance Var(X) = r/(1-r)² as a probabilistic corollary."
+    ]
+  }
+}
