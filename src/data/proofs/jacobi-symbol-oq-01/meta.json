@@ -17,16 +17,44 @@
       "open-question"
     ],
     "proofRepoPath": "Proofs/JacobiSymbolOQ01.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None. All 8 theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). The concrete value J(2|15) = 1 is proved by the norm_num Legendre-symbol extension (a kernel-checked proof) and the non-residue by decide — no native_decide, so no Lean.ofReduceBool.",
     "originalContributions": [
+      "Packaging only — the five property theorems (jacobi_mul_left, jacobi_mul_right, jacobi_eq_one_or_neg_one, jacobi_eq_zero_iff, not_isSquare_of_jacobi_eq_neg_one) are each one-line re-exports of a single named Mathlib jacobiSym lemma; the only non-Mathlib content is the worked counterexample J(2|15) = 1 with 2 a non-residue mod 15. The contribution is the curated gallery presentation, not independent proof.",
       "jacobi_mul_left / jacobi_mul_right: bimultiplicativity of the Jacobi symbol in both the numerator and the modulus",
       "jacobi_eq_one_or_neg_one: the trichotomy J(a|n) = ±1 for coprime arguments; jacobi_eq_zero_iff: J(a|n) = 0 ↔ ¬coprime",
       "not_isSquare_of_jacobi_eq_neg_one: the one-sided non-residue obstruction J(a|n) = −1 ⟹ ¬IsSquare (a : ZMod n)",
       "jacobi_two_fifteen / not_isSquare_two_mod_fifteen: J(2|15) = 1 while 2 is a non-residue mod 15",
       "jacobi_one_not_isSquare: the packaged statement that the converse FAILS for composite n — ∃ a n, J(a|n) = 1 ∧ ¬IsSquare a — so the Jacobi symbol is a one-sided witness, not a residue test"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "jacobiSym.mul_left",
+        "description": "J(a₁a₂|n) = J(a₁|n)J(a₂|n), multiplicativity in the numerator. jacobi_mul_left is this lemma.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.mul_right",
+        "description": "J(a|mn) = J(a|m)J(a|n), multiplicativity in the modulus. jacobi_mul_right is this lemma.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.eq_one_or_neg_one",
+        "description": "J(a|n) = ±1 for coprime arguments. jacobi_eq_one_or_neg_one is this lemma.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.eq_zero_iff_not_coprime",
+        "description": "J(a|n) = 0 ↔ ¬ coprime a n. jacobi_eq_zero_iff is this lemma.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "ZMod.nonsquare_of_jacobiSym_eq_neg_one",
+        "description": "J(a|n) = −1 ⟹ ¬ IsSquare (a : ZMod n), the one-sided non-residue obstruction. not_isSquare_of_jacobi_eq_neg_one is this lemma.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      }
     ],
     "dateAdded": "2026-06-20",
     "lineCount": 73,
