@@ -91,6 +91,14 @@ theorem sum_card_fixedBy_eq_card_orbits_mul_card_group_recovered
     [Fintype G] [∀ g : G, Fintype (fixedBy X g)] [Fintype (orbitRel.Quotient G X)] :
     ∑ g : G, Fintype.card (fixedBy X g)
       = Fintype.card (orbitRel.Quotient G X) * Fintype.card G := by
+  -- The `Finite X` instance needed by the generalised lemma is *derived*, not
+  -- assumed: with `Finite G` every orbit `orbit G x = Set.range (· • x)` is the
+  -- image of a finite type (hence finite), and there are finitely many orbits
+  -- (`Fintype (orbitRel.Quotient G X)`), so `X ≃ Σ ω, orbit …` is finite. This
+  -- keeps the recovered statement verbatim equal to the Mathlib `Fintype` form.
+  haveI : ∀ ω : orbitRel.Quotient G X, Finite (orbit G (Quotient.out ω)) :=
+    fun ω => (Set.finite_range _).to_subtype
+  haveI : Finite X := Finite.of_equiv _ (selfEquivSigmaOrbits G X).symm
   have h := sum_card_fixedBy_eq_card_orbits_mul_card_group_of_finite G X
   rw [finsum_eq_sum_of_fintype] at h
   simpa only [Nat.card_eq_fintype_card] using h
