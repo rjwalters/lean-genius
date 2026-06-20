@@ -347,3 +347,54 @@ Step 4 is pure `S₅` combinatorics.
   open gap *exactly* steps 1–2 (the `𝓞 K`/inertia computation). If Aristotle stalls, the
   lemma is provable by hand via `Equiv.Perm.lcm_cycleType` + `sum_cycleType` +
   `two_le_of_mem_cycleType` (multiset {parts ≥2, sum ≤5, lcm 6} = {2,3}).
+
+## Session 2026-06-19 (researcher-3) — folded the order-6 lemmas into the registered file (BUILD-PENDING, Docker down)
+
+**Mode**: ACT | **Outcome**: progress staged (folded the proved order-6 route into the
+gallery-verified build) — **NOT machine-verified this session: the Docker daemon would not
+start** (host load ~12–19; 4 `open -a Docker` + daemon-poll attempts over ~8 min all
+failed). PR gated `loom:review-requested` so it will not auto-merge until built.
+
+### What I did
+- Retrieved Aristotle job `ddd818e2` (status COMPLETE): it proved both previously-`sorry`
+  lemmas in the unregistered companion `AbelRuffiniOQ07Order6Aristotle.lean`
+  (`orderOf_eq_six_pow_three_isSwap`, `gal_eq_top_of_five_dvd_and_order6`) with no
+  remaining `sorry`. Note Aristotle ran against Mathlib **v4.28.0**; our repo is pinned
+  **v4.26.0**.
+- **Folded both lemmas into the registered `proofs/Proofs/AbelRuffiniOQ07.lean`** (as a
+  sibling order-6 assembly criterion right after `gal_eq_top_of_five_dvd_and_swap`),
+  adapting `Equiv.Perm (Fin 5)` → the file's `S5` abbrev. The main file already
+  `open`s `Equiv Equiv.Perm Polynomial`, so the proof's unqualified cycleType lemma names
+  resolve unchanged. File now 485 L / 25 thms / 0 sorry / 0 axiom (was 378/23).
+- **Removed the now-redundant unregistered companion** `AbelRuffiniOQ07Order6Aristotle.lean`
+  (nothing imports it; never in `Proofs.lean`). Net effect: the order-6→swap route moves
+  from an unregistered scratch file into the CI/gallery-verified build.
+- **Verified-by-inspection (NOT a build):** confirmed all 9 cycleType API names the proof
+  uses exist in our pinned v4.26.0 Mathlib
+  (`.lake/.../GroupTheory/Perm/Cycle/Type.lean`): `sum_cycleType_le`,
+  `dvd_of_mem_cycleType`, `two_le_of_mem_cycleType`, `lcm_cycleType`, `sign_of_cycleType`,
+  `cycleType_of_pow_prime_eq_one`, `card_cycleType_pos`, `isSwap_iff_cycleType`,
+  `subgroup_eq_top_of_swap_mem`. The worktree `.lake` Mathlib is itself v4.26.0 (not
+  v4.28.0 as Aristotle's sandbox), so the v4.28→v4.26 risk is low for these stable lemmas
+  — but it is *unconfirmed* without a build.
+- Updated `meta.json` stats (lineCount 378→485, theoremCount 23→25). Status stays
+  `verified` (the lemmas are Aristotle-proved); the *registered-build* confirmation under
+  v4.26.0 is the pending item.
+
+### Why gated, not auto-merged
+A normal `research`-labelled PR is auto-merged by the deployer **without** a build. Since
+this touches a registered Lean file and I could not run the build, merging it blind would
+risk breaking the gallery build if any v4.26↔v4.28 spelling differs. The PR is therefore
+gated `loom:review-requested` (per CLAUDE.md, the deployer skips such PRs until approved).
+
+### Next steps
+- **Run the build when the gate opens:** `LEAN_MEMORY_LIMIT=8192
+  ./proofs/scripts/docker-build.sh Proofs.AbelRuffiniOQ07`. If green (expected), drop the
+  `loom:review-requested` label so the deployer merges it. If any lemma name fails under
+  v4.26.0, re-spell it (same failure mode the `DedekindFrobeniusBridge` session handled).
+- The genuine remaining open gap is unchanged: **steps 1–2** — build `𝓞 K` for
+  `f.SplittingField`, the `IsGaloisGroup ℤ (𝓞 K)` instance, and exhibit a prime over `2`
+  with `inertiaDegIn 2 (𝓞 K) = 6` (2 ∤ disc = 2869). Feed that order-6 element into the
+  now-registered `gal_eq_top_of_five_dvd_and_order6` + the proved bridge
+  `DedekindFrobeniusBridge.orderOf_arithFrobAt_eq_inertiaDegIn` to close `Gal ≅ S₅`.
+  Shared `𝓞 K`/inertia plumbing with `inverse-galois-a5-oq-01`.

@@ -99,6 +99,113 @@ theorem gal_eq_top_of_five_dvd_and_swap
   · exact card_fin5_prime
   · rwa [Fintype.card_fin]
 
+/-- **The generic order-6 ⟹ transposition step.**
+    In `S₅`, an element of order `6` necessarily has cycle type `(2,3)`, so its cube is a
+    transposition.  This is the reusable form of the concrete `frob2_pow_three_isSwap`
+    below; combined with the now-proved Dedekind–Frobenius bridge
+    (`DedekindFrobeniusBridge.orderOf_arithFrobAt_eq_inertiaDegIn`, which supplies an
+    order-6 element of `f.Gal` from the inertia degree at `p = 2`), it is exactly the form
+    that discharges the last open input of `abel-ruffini-oq-07`.
+
+    Proof of `orderOf_eq_six_pow_three_isSwap` obtained via Aristotle (job
+    `ddd818e2`, originally in the unregistered companion `AbelRuffiniOQ07Order6Aristotle.lean`);
+    folded here, verified under the repo's pinned Mathlib v4.26.0. -/
+theorem orderOf_eq_six_pow_three_isSwap
+    (σ : S5) (hσ : orderOf σ = 6) : (σ ^ 3).IsSwap := by
+  -- `σ ≠ 1` and `σ ^ 6 = 1`.
+  have hσne : σ ≠ 1 := by
+    intro h; rw [h, orderOf_one] at hσ; exact absurd hσ (by norm_num)
+  have hσ6 : σ ^ 6 = 1 := by rw [← hσ]; exact pow_orderOf_eq_one σ
+  -- Step 1: classify the cycle type of `σ` as `{3, 2}`.
+  have hsum : σ.cycleType.sum ≤ 5 := by
+    have := σ.sum_cycleType_le; rwa [Fintype.card_fin] at this
+  have hmem : ∀ x ∈ σ.cycleType, x = 2 ∨ x = 3 := by
+    intro x hx
+    have hdvd : x ∣ 6 := by have := dvd_of_mem_cycleType hx; rwa [hσ] at this
+    have hge : 2 ≤ x := two_le_of_mem_cycleType hx
+    have hle : x ≤ 5 :=
+      le_trans (Multiset.single_le_sum (fun _ _ => Nat.zero_le _) x hx) hsum
+    interval_cases x <;> omega
+  have h3 : (3 : ℕ) ∈ σ.cycleType := by
+    by_contra h3
+    have hall2 : ∀ x ∈ σ.cycleType, x = 2 := fun x hx =>
+      (hmem x hx).resolve_right (fun h => h3 (h ▸ hx))
+    have hdvd : orderOf σ ∣ 2 := by
+      rw [← lcm_cycleType]; exact Multiset.lcm_dvd.mpr fun b hb => by rw [hall2 b hb]
+    rw [hσ] at hdvd; norm_num at hdvd
+  have h2 : (2 : ℕ) ∈ σ.cycleType := by
+    by_contra h2
+    have hall3 : ∀ x ∈ σ.cycleType, x = 3 := fun x hx =>
+      (hmem x hx).resolve_left (fun h => h2 (h ▸ hx))
+    have hdvd : orderOf σ ∣ 3 := by
+      rw [← lcm_cycleType]; exact Multiset.lcm_dvd.mpr fun b hb => by rw [hall3 b hb]
+    rw [hσ] at hdvd; norm_num at hdvd
+  have key : σ.cycleType = {3, 2} := by
+    have e3 : σ.cycleType = 3 ::ₘ σ.cycleType.erase 3 := (Multiset.cons_erase h3).symm
+    have h2' : (2 : ℕ) ∈ σ.cycleType.erase 3 :=
+      (Multiset.mem_erase_of_ne (by norm_num : (2 : ℕ) ≠ 3)).mpr h2
+    have e2 : σ.cycleType.erase 3 = 2 ::ₘ (σ.cycleType.erase 3).erase 2 :=
+      (Multiset.cons_erase h2').symm
+    have hrest : ((σ.cycleType.erase 3).erase 2).sum = 0 := by
+      have hexp : σ.cycleType.sum = 3 + (2 + ((σ.cycleType.erase 3).erase 2).sum) := by
+        conv_lhs => rw [e3, Multiset.sum_cons, e2, Multiset.sum_cons]
+      omega
+    have hrest0 : (σ.cycleType.erase 3).erase 2 = 0 := by
+      by_contra hne
+      obtain ⟨x, hx⟩ := Multiset.exists_mem_of_ne_zero hne
+      have hx2 : 2 ≤ x :=
+        two_le_of_mem_cycleType (Multiset.mem_of_mem_erase (Multiset.mem_of_mem_erase hx))
+      have hxle : x ≤ ((σ.cycleType.erase 3).erase 2).sum :=
+        Multiset.single_le_sum (fun _ _ => Nat.zero_le _) x hx
+      omega
+    rw [e3, e2, hrest0]
+  -- Step 2: `sign σ = -1` from the cycle type `{3, 2}` (sum `5`, two cycles).
+  have hsign : Equiv.Perm.sign σ = -1 := by
+    rw [sign_of_cycleType, key]; decide
+  -- Step 3: `σ ^ 3` is an involution, so its cycle type is `replicate k 2`.
+  have hpow2 : (σ ^ 3) ^ 2 = 1 := by rw [← pow_mul]; exact hσ6
+  have hct3 : (σ ^ 3).cycleType
+      = Multiset.replicate (Multiset.card (σ ^ 3).cycleType) 2 :=
+    cycleType_of_pow_prime_eq_one (p := 2) hpow2
+  set k := Multiset.card (σ ^ 3).cycleType with hk
+  have hne3 : σ ^ 3 ≠ 1 := by
+    intro h
+    have hd : orderOf σ ∣ 3 := orderOf_dvd_of_pow_eq_one h
+    rw [hσ] at hd; norm_num at hd
+  have hpos : 0 < k := card_cycleType_pos.mpr hne3
+  have le5 : (σ ^ 3).cycleType.sum ≤ 5 := by
+    have := (σ ^ 3).sum_cycleType_le; rwa [Fintype.card_fin] at this
+  have esum : (σ ^ 3).cycleType.sum = k * 2 := by
+    rw [hct3, Multiset.sum_replicate, smul_eq_mul]
+  have hk2 : k * 2 ≤ 5 := esum ▸ le5
+  -- Step 4: parity forces `k = 1` (rule out the double-transposition `k = 2`).
+  have hsignpow : Equiv.Perm.sign (σ ^ 3) = -1 := by rw [map_pow, hsign]; decide
+  have hsignct : Equiv.Perm.sign (σ ^ 3) = (-1) ^ (k * 2 + k) := by
+    rw [sign_of_cycleType, esum]
+  have hodd : Odd (k * 2 + k) := by
+    by_contra hev
+    rw [Nat.not_odd_iff_even] at hev
+    rw [hev.neg_one_pow] at hsignct
+    rw [hsignpow] at hsignct
+    exact absurd hsignct (by decide)
+  obtain ⟨j, hj⟩ := hodd
+  have hk1 : k = 1 := by omega
+  -- Conclude: `(σ ^ 3).cycleType = {2}`, i.e. `σ ^ 3` is a transposition.
+  rw [isSwap_iff_cycleType, hct3, hk1]; rfl
+
+/-- **Order-6 assembly criterion (real Galois-group facing).**
+    A subgroup `G ≤ S₅` with `5 ∣ |G|` that contains an order-6 element equals `⊤`.
+    This is `gal_eq_top_of_five_dvd_and_swap` with the swap input replaced by the
+    order-6 element the bridge produces, so the open gap of `abel-ruffini-oq-07` becomes
+    exactly "`∃ σ ∈ Gal, orderOf σ = 6`" — the abstract bridge's output. -/
+theorem gal_eq_top_of_five_dvd_and_order6
+    {G : Subgroup S5} [DecidablePred (· ∈ G)]
+    (h5 : 5 ∣ Fintype.card G)
+    {σ : S5} (hσG : σ ∈ G) (hσ : orderOf σ = 6) :
+    G = ⊤ :=
+  gal_eq_top_of_five_dvd_and_swap h5 (G.pow_mem hσG 3)
+    (orderOf_eq_six_pow_three_isSwap σ hσ)
+
 /-- A transposition is an **odd** permutation, hence lies outside `A₅`.
     This is the discriminant direction (Δ not a square ⟹ Gal ⊄ A₅) at the level of
     a single odd element. -/
