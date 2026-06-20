@@ -17,9 +17,26 @@
       "open-question"
     ],
     "proofRepoPath": "Proofs/EisensteinCriterionOQ01.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
+        "description": "Eisenstein's irreducibility criterion over an integral domain with a prime ideal P — the core irreducibility engine, re-exported as irreducible_of_eisenstein and applied to the Xⁿ − p family.",
+        "module": "Mathlib.RingTheory.Polynomial.Eisenstein.Basic"
+      },
+      {
+        "theorem": "Polynomial.monic_X_pow_sub_C / Polynomial.degree_X_pow_sub_C",
+        "description": "Monicity and degree of Xⁿ − C p, supplying the leading coefficient, degree, and primitivity inputs to the criterion.",
+        "module": "Mathlib.RingTheory.Polynomial.Basic"
+      },
+      {
+        "theorem": "Ideal.span_singleton_prime / Ideal.mem_span_singleton / Ideal.span_singleton_pow",
+        "description": "Primality of (p), membership x ∈ (p) ↔ p ∣ x, and (p)^2 = (p²); used for the coefficient bookkeeping discharging the Eisenstein hypotheses.",
+        "module": "Mathlib.RingTheory.Ideal.Operations"
+      }
+    ],
     "assumptions": "None. All 5 theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). No native_decide is used anywhere.",
     "originalContributions": [
       "irreducible_of_eisenstein: Eisenstein's criterion in clean form over an integral domain with a prime ideal P (leading coeff ∉ P, lower coeffs ∈ P, constant ∉ P², primitive ⇒ irreducible)",
