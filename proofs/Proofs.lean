@@ -2993,6 +2993,7 @@ import Proofs.PrimeReciprocalDivergenceOQ03
 import Proofs.PrimitiveRoots
 import Proofs.PrimitiveRootsOQ02
 import Proofs.PrimitiveRootsOQ03
+import Proofs.PrimitiveRootsOQ04
 import Proofs.ProbMethodAlteration
 import Proofs.ProbMethodAlterationOQ02
 import Proofs.ProbMethodApplications
