@@ -53,7 +53,7 @@
       "jacobiSum_self_integral_of_norm_p: the structural theorem — J(χ,χ) ∈ ℤ[ζ_n] ∧ J(χ,χ)·J(χ⁻¹,χ⁻¹) = p, i.e. J(χ,χ) is an algebraic integer of norm p in ℤ[ζ_n]",
       "cubic_jacobiSum_integral_of_norm_p: the cubic case J ∈ ℤ[ω] ∧ J·J̄ = p (factorization p = a² − ab + b²)"
     ],
-    "assumptions": "0 sorries. 0 axiom declarations. 0 structure-encoded assumptions. All proofs derive from Mathlib.NumberTheory.JacobiSum.Basic (jacobiSum_mem_algebraAdjoin_of_pow_eq_one, exists_jacobiSum_eq_neg_one_add, jacobiSum_mul_jacobiSum_inv). Build not verified in Docker (Docker daemon unavailable this session); verified at Mathlib-source level against the pinned .lake checkout.",
+    "assumptions": "0 sorries. 0 axiom declarations. 0 structure-encoded assumptions. All proofs derive from Mathlib.NumberTheory.JacobiSum.Basic (jacobiSum_mem_algebraAdjoin_of_pow_eq_one, exists_jacobiSum_eq_neg_one_add, jacobiSum_mul_jacobiSum_inv). Type-checked clean via `lake env lean` against the prebuilt .lake Mathlib oleans (Docker unavailable this session); `#print axioms` reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool — so genuinely axiom-free.",
     "additionalFiles": []
   },
   "overview": {
