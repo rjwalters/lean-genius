@@ -521,6 +521,7 @@ import Proofs.CayleyHamiltonMinpolyOQ02
 import Proofs.CayleyHamiltonMinpolyOQ02OQ01
 import Proofs.CayleyHamiltonMinpolyOQ02OQ01OQ02
 import Proofs.CayleyHamiltonMinpolyOQ02OQ02
+import Proofs.CayleyHamiltonMinpolyOQ02OQ02OQ02
 import Proofs.CayleyHamiltonMinpolyOQ02OQ03
 import Proofs.CayleyHamiltonMinpolyOQ03
 import Proofs.CayleyHamiltonMinpolyOQ03Aristotle
