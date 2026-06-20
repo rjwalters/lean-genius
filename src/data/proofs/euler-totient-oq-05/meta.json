@@ -1,0 +1,63 @@
+{
+  "id": "euler-totient-oq-05",
+  "title": "Euler's Theorem, Congruence Form, and Exponent Reduction (RSA)",
+  "slug": "euler-totient-oq-05",
+  "description": "Develops the number-theoretic face of Euler's theorem in Nat.ModEq form: a^φ(n) ≡ 1 (mod n) for gcd(a,n)=1, the exponent-reduction corollary a^k ≡ a^(k mod φ(n)) (mod n), Fermat's little theorem (both a^(p-1)≡1 and a^p≡a forms), orderOf u | φ(n) for units, and the correctness of RSA decryption (m^e)^d ≡ m (mod n). 8 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-19",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ05.lean",
+    "tags": [
+      "number-theory",
+      "euler-totient",
+      "modular-arithmetic",
+      "fermat-little-theorem",
+      "rsa",
+      "cryptography"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-19",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's Nat.ModEq.pow_totient, Nat.pow_totient_mod, ZMod.card_units_eq_totient, and ZMod.pow_card. Concrete examples use decide (no native_decide), so no Lean.ofReduceBool dependency.",
+    "lineCount": 178,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "originalContributions": [
+      "euler_theorem: a^φ(n) ≡ 1 (mod n) in Nat.ModEq form — the computational counterpart to the base entry's group statement a^φ(n)=1 in (ZMod n)ˣ",
+      "exp_reduction: a^k ≡ a^(k mod φ(n)) (mod n) — exponents reduce modulo φ(n), the workhorse of fast modular exponentiation",
+      "fermat_little / fermat_little_full: a^(p-1)≡1 (mod p) for p∤a and a^p≡a (mod p) for all a, derived as the prime specialization",
+      "orderOf_dvd_totient: the multiplicative order of any unit divides φ(n), placing Carmichael's λ (oq-01) as the minimal such exponent",
+      "rsa_correctness: (m^e)^d ≡ m (mod n) when e·d ≡ 1 (mod φ(n)) and gcd(m,n)=1 — RSA encryption/decryption correctness as a corollary of Euler's theorem",
+      "Worked examples settling 3^100 ≡ 1 and 7^222 ≡ 9 (mod 10) by exponent collapse, never forming the large powers; a small RSA round-trip with n=15"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Euler published a^φ(n) ≡ 1 (mod n) in 1763 ('Theoremata arithmetica nova methodo demonstrata'), generalizing Fermat's little theorem (1640) from prime moduli to arbitrary positive integers. The result is structural for the multiplicative group (ℤ/nℤ)*: since it has order φ(n), Lagrange's theorem forces every element to satisfy a^φ(n)=1. The congruence form proved here is the version actually used in computation — it says exponents of a modular power may be reduced modulo φ(n), which is what makes modular exponentiation tractable and is the algebraic backbone of the RSA cryptosystem (Rivest–Shamir–Adleman, 1977). In RSA one publishes a modulus n=pq and an encryption exponent e, keeps a decryption exponent d with e·d ≡ 1 (mod φ(n)) private, and the round-trip (m^e)^d ≡ m (mod n) is precisely Euler's theorem applied to the surplus exponent e·d−1, a multiple of φ(n).",
+    "problemStatement": "Formalize Euler's theorem in Nat.ModEq form, a^φ(n) ≡ 1 (mod n) for gcd(a,n)=1, together with the exponent-reduction corollary a^k ≡ a^(k mod φ(n)) (mod n), Fermat's little theorem as the prime case, the divisibility orderOf u | φ(n), and the correctness of RSA decryption as a direct consequence.",
+    "text": "The base euler-totient entry proves Euler's theorem as the group identity a^φ(n)=1 for units a:(ZMod n)ˣ. This entry works on the number-theoretic side: it states the theorem as a natural-number congruence via Nat.ModEq.pow_totient, then derives exponent reduction a^k ≡ a^(k mod φ(n)) from Nat.pow_totient_mod. The exponent-reduction step is the practically decisive one — it collapses arbitrarily large exponents to representatives mod φ(n), so 3^100 mod 10 is settled by reducing 100 to 100 mod φ(10) = 100 mod 4 = 0 without ever forming 3^100. Fermat's little theorem appears as the n=p specialization (using φ(p)=p−1), in both the a^(p-1)≡1 form (for p∤a) and the a^p≡a form valid for all a (via ZMod.pow_card). The divisibility orderOf u | φ(n) follows from orderOf_dvd_card and ZMod.card_units_eq_totient, framing φ(n) as a universal exponent and connecting to oq-01's Carmichael λ (the least such). The capstone rsa_correctness shows (m^e)^d ≡ m (mod n): writing e·d = φ(n)·q + 1 (from e·d ≡ 1 mod φ(n)), m^(e·d) = (m^φ(n))^q · m ≡ 1^q · m = m.",
+    "proofStrategy": "Euler's theorem and exponent reduction are thin wrappers over Mathlib's Nat.ModEq.pow_totient and Nat.pow_totient_mod. Fermat's full form casts to ZMod p and applies ZMod.pow_card. orderOf_dvd_totient rewrites φ(n) as the cardinality of (ZMod n)ˣ and applies orderOf_dvd_card. RSA correctness is the only multi-step proof: extract e·d mod φ(n) = 1 from the key condition, split e·d = φ(n)·q + 1 via Nat.div_add_mod, then chain m^(e·d) = (m^φ(n))^q · m through Euler's theorem with ModEq.pow and ModEq.mul_right.",
+    "keyInsights": [
+      "Euler's theorem has two faces: the group identity a^φ(n)=1 in (ZMod n)ˣ (base entry) and the congruence a^φ(n) ≡ 1 (mod n) in ℕ (this entry); the latter is what computation uses",
+      "Exponent reduction a^k ≡ a^(k mod φ(n)) is the operationally important corollary: it bounds the exponent of any modular power by φ(n), settling 3^100 ≡ 1 (mod 10) without evaluating 3^100",
+      "Fermat's little theorem is just n=p: φ(p)=p−1 gives a^(p-1)≡1 (mod p), and ZMod.pow_card gives the unconditional a^p≡a (mod p)",
+      "φ(n) is a universal exponent for (ZMod n)ˣ (orderOf u | φ(n)); Carmichael's λ from oq-01 is the least universal exponent, refining this divisibility",
+      "RSA correctness is Euler's theorem in disguise: e·d ≡ 1 (mod φ(n)) makes e·d−1 a multiple of φ(n), so (m^e)^d = m^(e·d) ≡ m (mod n)"
+    ],
+    "prerequisites": [
+      "Euler's totient function and coprimality: Nat.totient, Nat.Coprime",
+      "Modular congruence: Nat.ModEq and its pow/mul combinators",
+      "Mathlib's Nat.ModEq.pow_totient and Nat.pow_totient_mod",
+      "Finite group order: orderOf_dvd_card, ZMod.card_units_eq_totient"
+    ]
+  },
+  "conclusion": {
+    "summary": "Euler's theorem in Nat.ModEq form with the exponent-reduction corollary a^k ≡ a^(k mod φ(n)), Fermat's little theorem, orderOf u | φ(n), and RSA decryption correctness — all derived from Mathlib's Nat.ModEq.pow_totient and Nat.pow_totient_mod. 8 theorems, 0 axioms, 178 lines.",
+    "implications": "The congruence form and exponent reduction are the computationally usable face of Euler's theorem, distinct from the base entry's abstract group statement. RSA correctness shows the theorem's cryptographic payload follows in a few lines once exponent reduction is available.",
+    "openQuestions": [
+      "Prove RSA correctness without the coprimality hypothesis on m, via CRT over the prime factorization n = pq (the full RSA correctness theorem)",
+      "Formalize the converse refinement: Carmichael's λ(n) is the exact (least) universal exponent, sharpening orderOf u | φ(n)"
+    ]
+  }
+}

@@ -2367,6 +2367,7 @@ import Proofs.EulerTotientOQ02OQ01
 import Proofs.EulerTotientOQ03
 import Proofs.EulerTotientOQ04
 import Proofs.EulerTotientOQ04OQ01
+import Proofs.EulerTotientOQ05
 import Proofs.FactorRemainderNullstellensatzOQ01
 import Proofs.FactorRemainderNullstellensatzOQ02
 import Proofs.FactorRemainderTheorem
