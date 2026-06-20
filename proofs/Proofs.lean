@@ -3078,6 +3078,7 @@ import Proofs.SchroederBernsteinOQ03StatementOnly
 import Proofs.SchroederBernsteinOQ04
 import Proofs.SchursTheorem
 import Proofs.SearchMathlib
+import Proofs.SecondIsomorphismTheoremModulesOQ01
 import Proofs.ShannonChannelCoding
 import Proofs.ShannonChannelCodingAWGN
 import Proofs.ShannonChannelCodingBEC
