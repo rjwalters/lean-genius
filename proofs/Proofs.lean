@@ -379,6 +379,7 @@ import Proofs.BuffonsNeedleOQ02OQ02
 import Proofs.BuffonsNeedleOQ02OQ03
 import Proofs.BuffonsNoodle
 import Proofs.BuffonsNoodleOQ01
+import Proofs.BuffonsNoodleOQ02
 import Proofs.BurnsideCounting
 import Proofs.BurnsideCountingOQ03
 import Proofs.BurnsideCountingOQ03Aristotle
