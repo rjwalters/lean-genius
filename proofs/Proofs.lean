@@ -2796,6 +2796,7 @@ import Proofs.NewtonInductiveStepOQ03
 import Proofs.NewtonLogConcavity
 import Proofs.NivenTheorem
 import Proofs.NivenTheoremOQ02
+import Proofs.NivenTheoremOQ03
 import Proofs.NthRootIrrational
 import Proofs.NthRootIrrationalOQ01
 import Proofs.NthRootIrrationalOQ01OQ01
