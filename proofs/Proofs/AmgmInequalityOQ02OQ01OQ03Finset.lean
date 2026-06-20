@@ -109,6 +109,7 @@ theorem D_collapse (s : Finset ι) (f : ι → R) :
 -- identities (char-2 safe) down to the concrete `powersetCard`/power-sum statements.
 -- ============================================================
 
+omit [DecidableEq ι] in
 /-- `aeval` of the universal `psum` on the subtype `{x // x ∈ s}` is the concrete
     power sum `Σ_{i ∈ s} fᵢⁿ`. -/
 theorem aeval_psum_subtype (s : Finset ι) (f : ι → R) (n : ℕ) :
@@ -118,6 +119,7 @@ theorem aeval_psum_subtype (s : Finset ι) (f : ι → R) (n : ℕ) :
   simp only [map_pow, aeval_X]
   exact Finset.sum_coe_sort s (fun i => f i ^ n)
 
+omit [DecidableEq ι] in
 /-- `aeval` of the universal `esymm` on the subtype `{x // x ∈ s}` is the concrete
     `powersetCard`-`n` symmetric sum `Σ_{t ⊆ s, |t| = n} ∏_{i ∈ t} fᵢ`. -/
 theorem aeval_esymm_subtype (s : Finset ι) (f : ι → R) (n : ℕ) :
@@ -129,32 +131,38 @@ theorem aeval_esymm_subtype (s : Finset ι) (f : ι → R) (n : ℕ) :
   -- so `Multiset.attach_map_val'` (which strips the subtype projection) closes it up to defeq.
   exact Multiset.attach_map_val' s.val f
 
+omit [DecidableEq ι] in
 /-- The `powersetCard`-1 symmetric sum is just `e₁`. -/
 theorem esymm_one_eq_e1 (s : Finset ι) (f : ι → R) :
     (∑ t ∈ s.powersetCard 1, ∏ i ∈ t, f i) = e1 s f := by
   rw [Finset.powersetCard_one]
   simp [e1, Finset.sum_map, Finset.prod_singleton]
 
+omit [DecidableEq ι] in
 /-- Bridge at degree 1:  `aeval (esymm … 1) = e₁`. -/
 theorem e1_bridge (s : Finset ι) (f : ι → R) :
     aeval (fun i : {x // x ∈ s} => f i.1) (MvPolynomial.esymm {x // x ∈ s} R 1) = e1 s f :=
   (aeval_esymm_subtype s f 1).trans (esymm_one_eq_e1 s f)
 
+omit [DecidableEq ι] in
 /-- Bridge at degree 2:  `aeval (esymm … 2) = e₂`  (definitional). -/
 theorem e2_bridge (s : Finset ι) (f : ι → R) :
     aeval (fun i : {x // x ∈ s} => f i.1) (MvPolynomial.esymm {x // x ∈ s} R 2) = e2 s f :=
   aeval_esymm_subtype s f 2
 
+omit [DecidableEq ι] in
 /-- Bridge at degree 3:  `aeval (esymm … 3) = e₃`  (definitional). -/
 theorem e3_bridge (s : Finset ι) (f : ι → R) :
     aeval (fun i : {x // x ∈ s} => f i.1) (MvPolynomial.esymm {x // x ∈ s} R 3) = e3 s f :=
   aeval_esymm_subtype s f 3
 
+omit [DecidableEq ι] in
 /-- Bridge for the second power sum:  `aeval (psum … 2) = p₂`  (definitional). -/
 theorem p2_bridge (s : Finset ι) (f : ι → R) :
     aeval (fun i : {x // x ∈ s} => f i.1) (MvPolynomial.psum {x // x ∈ s} R 2) = p2 s f :=
   aeval_psum_subtype s f 2
 
+omit [DecidableEq ι] in
 /-- Bridge for the third power sum:  `aeval (psum … 3) = p₃`  (definitional). -/
 theorem p3_bridge (s : Finset ι) (f : ι → R) :
     aeval (fun i : {x // x ∈ s} => f i.1) (MvPolynomial.psum {x // x ∈ s} R 3) = p3 s f :=
@@ -164,6 +172,7 @@ theorem p3_bridge (s : Finset ι) (f : ι → R) :
 -- Closed forms over ANY CommRing, via the bridge (no char-2 restriction)
 -- ============================================================
 
+omit [DecidableEq ι] in
 /-- **p₂ closed form** over any CommRing:  p₂ = e₁² − 2·e₂.
     Transport of the universal `psum_two_eq` across the aeval bridge. -/
 theorem p2_closed (s : Finset ι) (f : ι → R) :
@@ -173,6 +182,7 @@ theorem p2_closed (s : Finset ι) (f : ι → R) :
   simpa only [map_sub, map_mul, map_pow, map_ofNat,
     p2_bridge, e1_bridge, e2_bridge] using H
 
+omit [DecidableEq ι] in
 /-- **p₃ closed form** over any CommRing:  p₃ = e₁³ − 3·e₁·e₂ + 3·e₃.
     Transport of the universal `psum_three_closed` across the aeval bridge.
     This is the genuinely general concrete-Finset Newton–Girard k=3 identity. -/
@@ -212,6 +222,7 @@ theorem two_mul_p3_closed (s : Finset ι) (f : ι → R) :
     2 * p3 s f = 2 * (e1 s f ^ 3 - 3 * (e1 s f * e2 s f) + 3 * e3 s f) := by
   linear_combination cube_partition s f + 3 * D_collapse s f + 3 * e1 s f * p2_closed s f
 
+omit [DecidableEq ι] in
 /-- **Concrete general-Finset Newton–Girard k=3** over an arbitrary `CommRing`:
       p₃ = e₁³ − 3·e₁·e₂ + 3·e₃.
     No characteristic hypothesis is needed — the char-2 obstruction of the direct
