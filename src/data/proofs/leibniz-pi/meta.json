@@ -157,6 +157,16 @@
       "targetId": "geometric-series",
       "relationship": "foundational",
       "description": "The derivation of $\\arctan(x) = \\int_0^x 1/(1+t^2)\\,dt$ starts from the geometric series $1/(1+t^2) = 1 - t^2 + t^4 - \\cdots$ (setting $r = -t^2$), then integrates term by term to get $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$"
+    },
+    {
+      "targetId": "leibniz-pi-oq-01",
+      "relationship": "extended-by",
+      "description": "Open-question extension (verified): pins down the convergence rate of the Leibniz series as the sharp bound |π/4 - S_N| ≤ 1/(2N+1) (Θ(1/N)), and contrasts it with the exponential rates of Machin-type formulas."
+    },
+    {
+      "targetId": "leibniz-pi-oq-03",
+      "relationship": "extended-by",
+      "description": "Open-question extension (verified): formalizes two acceleration schemes for the Leibniz series — the midpoint average M(k) = (S(2k)+S(2k+1))/2 and the Euler transform — sharpening the slow alternating convergence."
     }
   ],
   "conclusion": {
