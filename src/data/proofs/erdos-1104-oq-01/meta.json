@@ -86,13 +86,29 @@
   },
   "conclusion": {
     "summary": "The full Mycielski theorem is formalized with zero sorries and zero axioms: the Mycielskian M(G) (built from scratch, absent from Mathlib) preserves triangle-freeness and satisfies χ(M(G)) = χ(G)+1 — the upper bound by an explicit (n+1)-colouring and the lower bound by Mycielski's recolouring argument. The iterated witness family and exact colourability threshold (mycielskianIter_colorable_iff) yield the headline exists_triangleFree_colorable_not_colorable: for every k a triangle-free graph of chromatic number exactly k+2, the constructive lower-bound engine behind Erdős #1104.",
-    "futureDirections": "Discharge the parent erdos-1104 mycielski_construction axiom against this verified construction; relate the tower's vertex count (which doubles each step) to the f(n) = Θ(√(n/log n)) growth rate; and consider upstreaming the Mycielskian to Mathlib's Combinatorics/SimpleGraph hierarchy."
+    "implications": "The result is a fully verified instance of one of graph theory's foundational surprises: local sparsity (no triangles, the densest possible local structure removed) places no bound at all on the global colouring complexity. Having the Mycielskian and the exact increment χ(M(G)) = χ(G)+1 machine-checked turns the qualitative 'arbitrarily large χ' folklore into a concrete, reusable Lean construction — the tower K₂ → C₅ → Grötzsch → … is now a certified object, not a picture. It is precisely the constructive lower-bound engine for the open Erdős #1104 (the growth rate of f(n) = max χ over triangle-free n-vertex graphs), and supplies the kind of explicit witness family that off-diagonal Ramsey theory needs for R(3,k) lower bounds. Because Mathlib has no Mycielskian, this is also new reusable colouring infrastructure: any future Lean development needing high-chromatic triangle-free graphs can instantiate the tower.",
+    "openQuestions": [
+      "Discharge the parent erdos-1104 mycielski_construction axiom against this verified construction, converting that entry from axiomatized to a fully grounded lower bound.",
+      "Quantify the construction's efficiency: the tower's vertex count roughly doubles each step (χ = k needs ~2^k vertices), so it gives only an exponentially weak lower bound on f(n); formalize the gap to the true f(n) = Θ(√(n/log n)) (lower bound Hefty–Horn–King–Pfender 2025, upper bound Davies–Illingworth 2022) and the sharper random/Kim R(3,k) constructions that achieve it.",
+      "Determine the exact constant in f(n) = Θ(√(n/log n)) — the genuinely open quantitative core of Erdős #1104.",
+      "Upstream the Mycielskian and the χ-increment theorem to Mathlib's Combinatorics/SimpleGraph hierarchy as general-purpose colouring infrastructure."
+    ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-1104",
       "relationship": "extends",
       "description": "Supplies the genuine Mycielskian construction and a machine-checked proof of χ(M(G)) = χ(G)+1, discharging the mycielski_construction axiom the parent open-problem entry posits to assert triangle-free graphs of unbounded chromatic number."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related-result",
+      "description": "Triangle-free graphs of large chromatic number are the natural habitat of off-diagonal Ramsey theory: lower bounds on the Ramsey number R(3,k) are built from triangle-free graphs with small independence number (hence large χ). Mycielski's tower is the cleanest constructive source of such graphs, where Ramsey's theorem itself only guarantees monochromatic structure exists."
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "contrast",
+      "description": "A sharp contrast in chromatic number: every planar graph needs at most 4 colours (Four Color Theorem), whereas triangle-free graphs — locally even sparser — can require arbitrarily many. Planarity bounds χ; triangle-freeness does not."
     }
   ],
   "leanFile": {
