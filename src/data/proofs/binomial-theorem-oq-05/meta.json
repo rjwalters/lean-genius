@@ -1,0 +1,186 @@
+{
+  "id": "binomial-theorem-oq-05",
+  "title": "Binomial Theorem OQ-05: Bernoulli's Inequality and its Strict Form",
+  "slug": "binomial-theorem-oq-05",
+  "description": "Bernoulli's inequality 1 + n·a ≤ (1+a)ⁿ (the first-order lower bound on a binomial power), plus an original strict version 1 + n·a < (1+a)ⁿ for a > -1, a ≠ 0, n ≥ 2 not present in Mathlib, with growth-bound consequences.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ05.lean",
+    "tags": [
+      "inequalities",
+      "binomial-theorem",
+      "bernoulli-inequality",
+      "induction",
+      "real-analysis"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "one_add_mul_le_pow",
+        "description": "Bernoulli's inequality for n : ℕ and -2 ≤ a: 1 + n·a ≤ (1+a)ⁿ",
+        "module": "Mathlib.Algebra.Order.Ring.Pow"
+      },
+      {
+        "theorem": "one_add_mul_sub_le_pow",
+        "description": "Bernoulli reformulated to estimate aⁿ: for -1 ≤ a, 1 + n·(a-1) ≤ aⁿ",
+        "module": "Mathlib.Algebra.Order.Ring.Pow"
+      },
+      {
+        "theorem": "mul_lt_mul_of_pos_right",
+        "description": "Multiplying a strict inequality by a positive factor preserves it (induction step)",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "Strict Bernoulli's inequality 1 + n·a < (1+a)ⁿ for a > -1, a ≠ 0, n ≥ 2 — not available in Mathlib — proved by induction from the base n = 2",
+      "Induction step that multiplies the IH by the positive factor 1+a and discards the nonnegative term n·a²",
+      "Exponential growth bounds 1 + n ≤ 2ⁿ (and strict 1 + n < 2ⁿ for n ≥ 2) as the a = 1 specialization",
+      "Strict separation 1 < (1+a)ⁿ for a > 0, n ≥ 1",
+      "Summary theorem bundling the weak and strict forms"
+    ],
+    "dateAdded": "2026-06-19",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 129,
+    "assumptions": "0 axioms, 0 sorries. Weak Bernoulli forms wrap Mathlib's one_add_mul_le_pow; the strict form is an original induction (base a² > 0, step multiplies by 1+a > 0).",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Bernoulli's inequality, published by Jacob Bernoulli in 1689, states that $(1+a)^n \\geq 1 + na$ for real $a \\geq -1$ and natural $n$. It is one of the most-used elementary inequalities in analysis: it underlies the convergence of $(1 + 1/n)^n \\to e$, the comparison of geometric and arithmetic growth, the AM–GM inequality, and countless limit estimates. Viewed through the binomial theorem, $(1+a)^n = 1 + na + \\binom{n}{2}a^2 + \\cdots$, the inequality is the statement that truncating after the linear term gives a lower bound — obvious for $a \\geq 0$, but remarkably it survives all the way down to $a \\geq -1$, where it must instead be proved by an induction that only needs $1 + a \\geq 0$. The *strict* form, $(1+a)^n > 1 + na$ for $a \\neq 0$ and $n \\geq 2$, is the version that actually powers limit arguments, since it quantifies the gap created by the discarded quadratic term $\\binom{n}{2}a^2$.",
+    "problemStatement": "**Open Question**: Formalize Bernoulli's inequality $1 + na \\leq (1+a)^n$ as the first-order lower bound on a binomial power, and strengthen it to a strict inequality.\n\n**Answer**: The weak form holds for all $a \\geq -2$ (`one_add_mul_le_pow`). The strict form $1 + na < (1+a)^n$ holds whenever $a > -1$, $a \\neq 0$, and $n \\geq 2$, proved here by induction; specializing $a = 1$ gives $1 + n < 2^n$ for $n \\geq 2$.",
+    "text": "Bernoulli's inequality 1 + n·a ≤ (1+a)ⁿ and an original strict version 1 + n·a < (1+a)ⁿ for a > -1, a ≠ 0, n ≥ 2, with exponential growth-bound consequences.",
+    "proofStrategy": "The weak inequalities are thin wrappers over Mathlib's `one_add_mul_le_pow` (general $a \\geq -2$ form) and `one_add_mul_sub_le_pow` (the $a^n$ reformulation). The strict inequality `bernoulli_strict` is the original content, proved by `Nat.le_induction` from $n = 2$:\n1. **Base** ($n = 2$): $(1+a)^2 = 1 + 2a + a^2 > 1 + 2a$ because $a^2 > 0$ (from $a \\neq 0$), closed by `nlinarith`.\n2. **Step**: from the IH $1 + na < (1+a)^n$, multiply by the positive factor $1 + a$ (`mul_lt_mul_of_pos_right`, using $a > -1 \\Rightarrow 1 + a > 0$) to get $(1+na)(1+a) < (1+a)^{n+1}$, then observe $(1+na)(1+a) = 1 + (n+1)a + na^2 \\geq 1 + (n+1)a$ via `nlinarith` with $na^2 \\geq 0$.\nThe consequences follow by specializing $a = 1$ and rewriting $1 + 1 = 2$.",
+    "keyInsights": [
+      "Bernoulli's inequality is exactly the binomial expansion **truncated after the linear term**: the dropped tail $\\binom{n}{2}a^2 + \\cdots$ is the slack, and for $a \\geq -1$ an induction (not term-by-term positivity) is what keeps the bound valid",
+      "The hypothesis that survives the induction is not $a \\geq 0$ but $1 + a \\geq 0$ — multiplying an inequality by $1 + a$ preserves its direction precisely when $1 + a \\geq 0$",
+      "The **strict** form needs two ingredients the weak form does not: $a^2 > 0$ (so $a \\neq 0$) to open a gap in the base case, and $1 + a > 0$ (so $a > -1$, strict) to propagate strictness through the multiplicative step",
+      "Mathlib has the weak Bernoulli inequality in several forms but **not** the strict one; this entry supplies it, which is the version most limit proofs actually use",
+      "Specializing $a = 1$ turns Bernoulli into the exponential-growth bound $2^n \\geq 1 + n$, a clean witness that powers dominate linear functions"
+    ],
+    "prerequisites": [
+      "Ordered fields and basic inequality manipulation",
+      "Mathematical induction (Nat.le_induction from a base point)",
+      "The binomial theorem (for the conceptual truncation picture)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Problem Statement",
+      "summary": "Module docstring: Bernoulli's inequality as the first-order lower bound on a binomial power, the plan to add a strict version, and references",
+      "startLine": 1,
+      "endLine": 36,
+      "mathContext": "$(1+a)^n = 1 + na + \\binom{n}{2}a^2 + \\cdots \\geq 1 + na$ for $a \\geq -1$; strict when $a \\neq 0$, $n \\geq 2$."
+    },
+    {
+      "id": "weak-forms",
+      "title": "Part I: Bernoulli's Inequality (Mathlib forms)",
+      "summary": "bernoulli (a ≥ -2), bernoulli_of_neg_one_le (classical a ≥ -1), and bernoulli_estimate (the aⁿ reformulation), all wrapping Mathlib lemmas",
+      "startLine": 37,
+      "endLine": 56,
+      "mathContext": "$1 + na \\leq (1+a)^n$ for $a \\geq -2$ (hence for $a \\geq -1$); and $1 + n(a-1) \\leq a^n$ for $a \\geq -1$."
+    },
+    {
+      "id": "strict",
+      "title": "Part II: Strict Bernoulli's Inequality (original)",
+      "summary": "bernoulli_strict: for a > -1, a ≠ 0, n ≥ 2, 1 + n·a < (1+a)ⁿ, by induction from n = 2 (base a² > 0; step multiplies by 1+a > 0 and drops n·a² ≥ 0)",
+      "startLine": 57,
+      "endLine": 82,
+      "mathContext": "$a > -1,\\ a \\neq 0,\\ n \\geq 2 \\Rightarrow 1 + na < (1+a)^n$. Base: $(1+a)^2 = 1 + 2a + a^2 > 1 + 2a$. Step: $(1+a)^{n+1} > (1+na)(1+a) = 1 + (n+1)a + na^2 \\geq 1 + (n+1)a$."
+    },
+    {
+      "id": "consequences",
+      "title": "Part III: Consequences",
+      "summary": "Growth bounds 1 + n ≤ 2ⁿ and strict 1 + n < 2ⁿ (n ≥ 2) at a = 1, and 1 < (1+a)ⁿ for a > 0",
+      "startLine": 83,
+      "endLine": 105,
+      "mathContext": "$a = 1$: $2^n \\geq 1 + n$ (strict for $n \\geq 2$). For $a > 0$, $n \\geq 1$: $(1+a)^n > 1$."
+    },
+    {
+      "id": "examples",
+      "title": "Part IV: Verified Examples",
+      "summary": "Concrete instances: 4 ≤ 8 = (1+1)³, strict 4 < 8, and a negative-base case 1 + 4·(-1/2) ≤ (1/2)⁴",
+      "startLine": 106,
+      "endLine": 117,
+      "mathContext": "$(1+1)^3 = 8 \\geq 4$; strictly $4 < 8$; $(1 - 1/2)^4 = 1/16 \\geq -1 = 1 + 4(-1/2)$."
+    },
+    {
+      "id": "summary",
+      "title": "Part V: Summary Theorem",
+      "summary": "binomial_oq05_summary bundles the weak and strict Bernoulli inequalities for a > -1, a ≠ 0, n ≥ 2",
+      "startLine": 118,
+      "endLine": 129,
+      "mathContext": "For $a > -1$, $a \\neq 0$, $n \\geq 2$: $1 + na \\leq (1+a)^n$ and $1 + na < (1+a)^n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry formalizes Bernoulli's inequality as the first-order lower bound on a binomial power and strengthens it to a strict inequality 1 + n·a < (1+a)ⁿ (for a > -1, a ≠ 0, n ≥ 2) that Mathlib does not provide, proved by a short induction. Growth-bound corollaries (2ⁿ ≥ 1 + n) follow by specialization. All results are verified with 0 sorries and 0 axioms beyond Lean's foundations.",
+    "implications": "The strict form is the version used in convergence arguments such as (1 + 1/n)ⁿ ↑ e and in showing exponential growth dominates polynomial growth. As the linear truncation of the binomial expansion, it ties the binomial-theorem family to the analysis of inequalities.",
+    "openQuestions": [
+      "Quantify the exact gap (1+a)ⁿ - (1 + n·a) ≥ C(n,2)·a² and prove the second-order Bernoulli bound",
+      "Extend the strict inequality to real exponents via rpow and convexity",
+      "Derive the monotone convergence of (1 + x/n)ⁿ to exp(x) from the strict bound"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "binomial-theorem",
+      "relationship": "Base theorem: the binomial expansion whose linear truncation is Bernoulli's inequality"
+    },
+    {
+      "id": "binomial-theorem-oq-01",
+      "relationship": "OQ-01: Newton's generalized binomial theorem for fractional/negative exponents"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "BinomialTheoremOQ05",
+    "lineCount": 129,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/BinomialTheoremOQ05.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Jacob Bernoulli",
+      "title": "Positiones Arithmeticae de Seriebus Infinitis",
+      "year": "1689",
+      "venue": "Basel"
+    },
+    {
+      "authors": "G. H. Hardy, J. E. Littlewood, G. Pólya",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "extends",
+      "description": "Bernoulli's inequality is the binomial expansion (1+a)ⁿ = 1 + na + C(n,2)a² + … truncated after the linear term; this entry proves the resulting lower bound and its strict form."
+    },
+    {
+      "targetId": "binomial-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Newton's generalized binomial theorem for fractional and negative exponents."
+    },
+    {
+      "targetId": "am-gm-inequality",
+      "relationship": "related",
+      "description": "Bernoulli's inequality is one of the standard routes to the AM–GM inequality; both are first-order convexity estimates on powers."
+    }
+  ],
+  "sorries": 0
+}
