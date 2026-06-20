@@ -1,0 +1,71 @@
+{
+  "slug": "minkowski-theorem-oq-05",
+  "title": "Power-sum convexity bound: (a+b)^p ≤ 2^(p−1)(a^p+b^p) for p ≥ 1",
+  "status": "active",
+  "phase": "ACT",
+  "tier": "B",
+  "tractability": 9,
+  "significance": 6,
+  "started": "2026-06-20",
+  "lastUpdate": "2026-06-20",
+  "path": "full",
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-20",
+    "iteration": 1,
+    "focus": "Proof written in full (4 theorems, 0 sorries, 0 axioms by construction); machine-build held pending Docker harness blackout.",
+    "blockers": [
+      "Docker daemon unreachable from host on 2026-06-20 (VM internally up, dockerd not exposed) — could not run docker-build.sh to kernel-check the file this session.",
+      "Aristotle only fills sorries; cannot be used to build-verify a complete (sorry-free) file."
+    ],
+    "nextAction": "Run `./proofs/scripts/docker-build.sh Proofs.MinkowskiTheoremOQ05` once the Docker harness recovers; on green, promote meta.json status formalized/wip -> verified/original.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROOF COMPLETE, BUILD PENDING. MinkowskiTheoremOQ05.lean (4 theorems, 0 def, 0 sorry, 0 axiom by construction) written and registered in Proofs.lean; gallery meta.json + annotations.json drafted at formalized/wip. Headline: 2^(p−1) = IsLeast { C | ∀ a b ≥ 0, (a+b)^p ≤ C(a^p+b^p) } — i.e. the optimal constant in the two-term power-sum convexity bound. Build verification blocked by the 2026-06-20 Docker harness blackout.",
+    "builtItems": [
+      "MinkowskiTheoremOQ05.rpow_add_le_two_rpow_sub_one_mul — real-valued bound (a+b)^p ≤ 2^(p−1)(a^p+b^p) for a,b ≥ 0, p ≥ 1, via ℝ≥0 transport (MinkowskiTheoremOQ05.lean:62)",
+      "MinkowskiTheoremOQ05.rpow_add_self_eq — diagonal equality (a+a)^p = 2^(p−1)(a^p+a^p), all real p (MinkowskiTheoremOQ05.lean:76)",
+      "MinkowskiTheoremOQ05.two_rpow_sub_one_le_of_forall — optimality lower bound C ≥ 2^(p−1) from test point a=b=1 (MinkowskiTheoremOQ05.lean:91)",
+      "MinkowskiTheoremOQ05.isLeast_two_rpow_sub_one — 2^(p−1) is the least admissible constant (MinkowskiTheoremOQ05.lean:112)"
+    ],
+    "insights": [
+      "The ℝ≥0 inequality itself is verbatim in Mathlib (NNReal.rpow_add_le_mul_rpow_add_rpow, MeanInequalitiesPow.lean:117); the genuine content is the real-valued nonnegative form (absent) plus the optimality of the constant 2^(p−1) (absent).",
+      "Transport ℝ≥0 -> ℝ: `lift a to ℝ≥0 using ha` then `exact_mod_cast` carries the whole inequality through the order-embedding coercion in one line (NNReal.coe_rpow is norm_cast).",
+      "The diagonal equality (a+a)^p = 2^(p−1)(a^p+a^p) needs NO hypothesis on p — both sides equal 2^p·a^p — so sharpness is pure rpow arithmetic, not a p ≥ 1 phenomenon.",
+      "Optimality is pinned by a single test point a=b=1: the universal bound gives 2^p ≤ 2C, hence C ≥ 2^(p−1) = 2^p/2. No variational argument needed.",
+      "Packaging admissibility + lower bound as IsLeast gives a single-theorem characterization of the sharp constant, which is the real headline (and what Mathlib lacks)."
+    ],
+    "mathlibGaps": [
+      "No real-valued (ℝ, nonneg) form of the two-term power-sum bound; Mathlib has only the ℝ≥0 and ℝ≥0∞ versions (NNReal/ENNReal.rpow_add_le_mul_rpow_add_rpow).",
+      "No statement that 2^(p−1) is the optimal constant (neither the diagonal equality nor the lower bound on admissible constants is recorded)."
+    ],
+    "nextSteps": [
+      "Kernel-check via Docker once the harness recovers; promote to verified/original.",
+      "Possible follow-up: the reverse bound for 0 < p ≤ 1 (constant 1, sub-additivity direction) and its optimal-constant characterization; the n-term generalization (a₁+…+aₙ)^p ≤ n^(p−1) Σ aᵢ^p with n^(p−1) optimal."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Mathlib: NNReal.rpow_add_le_mul_rpow_add_rpow — (z₁+z₂)^p ≤ 2^(p−1)(z₁^p+z₂^p) for z₁,z₂ : ℝ≥0, p ≥ 1.",
+      "Mathlib: NNReal.rpow_arith_mean_le_arith_mean2_rpow — the weighted two-element power-mean inequality this rests on.",
+      "This entry: the real-valued nonnegative form, the diagonal equality, the optimality lower bound, and the IsLeast characterization of 2^(p−1)."
+    ],
+    "open": [
+      "Reverse direction and optimal constant for 0 < p ≤ 1.",
+      "n-term form (a₁+…+aₙ)^p ≤ n^(p−1) Σ aᵢ^p with n^(p−1) shown optimal."
+    ]
+  },
+  "tags": [
+    "analysis",
+    "inequalities",
+    "minkowski",
+    "power-means",
+    "convexity",
+    "research"
+  ]
+}
