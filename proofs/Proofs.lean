@@ -3221,6 +3221,7 @@ import Proofs.SphericalLawOfSinesOQ03
 import Proofs.Sqrt2
 import Proofs.Sqrt2FromAxiomsOQ01
 import Proofs.Sqrt2Irrational
+import Proofs.Sqrt2IrrationalOQ02
 import Proofs.Sqrt2IrrationalFromAxioms
 import Proofs.Sqrt2Minpoly
 import Proofs.Sqrt2MinpolyOQ01
