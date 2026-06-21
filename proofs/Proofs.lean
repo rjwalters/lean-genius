@@ -2881,6 +2881,7 @@ import Proofs.MachinFromAddition
 import Proofs.MantelStabilityOQ01
 import Proofs.MantelTheorem
 import Proofs.MantelTheoremUniqueness
+import Proofs.MantelTheoremOQ04
 import Proofs.MathematicalInduction
 import Proofs.MathematicalInductionOQ01
 import Proofs.MathematicalInductionOQ03
