@@ -1,0 +1,136 @@
+{
+  "id": "geometric-series-oq-07-oq-01-oq-01",
+  "slug": "geometric-series-oq-07-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "Polynomial"
+    ],
+    "namespace": "GeometricSeriesOQ07OQ01OQ01",
+    "lineCount": 373,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "path": "Proofs/GeometricSeriesOQ07OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Moment Numerator is the Eulerian Polynomial: ∑ₖ S(m,k)·k!·Xᵏ(1−X)^{m−k} = ∑ⱼ ⟨m,j⟩·X^{j+1}",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ07OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "combinatorics",
+      "geometric-series",
+      "eulerian-numbers",
+      "eulerian-polynomial",
+      "stirling-numbers",
+      "polynomial-identity",
+      "generating-functions",
+      "moments",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 373,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "badge": "original",
+    "originalContributions": [
+      "numer_eq_eulerianPoly / stirling_numerator_eq_eulerian: THE MAIN IDENTITY. For every m ≥ 1, the change-of-basis Stirling numerator of the geometric moment, Nₘ(X) = ∑_{k=0}^{m} S(m,k)·k!·Xᵏ·(1−X)^{m−k}, equals the Eulerian polynomial ∑_{j=0}^{m-1} ⟨m,j⟩·X^{j+1}, where ⟨m,j⟩ are the Eulerian numbers. This is a pure division-free polynomial identity, valid over ANY commutative ring R, and directly answers the open question geometric-series-oq-07-oq-01-oq-01 (identify the moment numerator with the Eulerian polynomial). Combined with the parent's ∑ nᵐ rⁿ = Nₘ(r)/(1−r)^{m+1}, it exhibits the classical Eulerian generating function ∑_{n≥0} nᵐ xⁿ = (∑_j ⟨m,j⟩ x^{j+1})/(1−x)^{m+1}.",
+      "numer_recurrence: the numerator differential recurrence N₀ = 1, N_{m+1} = X·(1−X)·N′ₘ + (m+1)·X·Nₘ in R[X], proved by differentiating the defining Stirling sum term by term (Polynomial.derivative_sum / derivative_mul / derivative_X_pow / derivative_pow) and re-indexing with the Stirling recurrence S(m+1,k)=k·S(m,k)+S(m,k-1). This recurrence is exactly the defining recurrence of the (geometrically-normalised) Eulerian polynomials, so it identifies Nₘ with the Eulerian polynomial at the structural level before the explicit coefficient form is extracted.",
+      "eulerian: a from-scratch definition of the Eulerian numbers ⟨m,j⟩ (ABSENT from Mathlib, which has only Eulerian graphs/circuits) via the classical triangle recurrence ⟨n+1,k+1⟩ = (k+2)·⟨n,k+1⟩ + (n−k)·⟨n,k⟩ with ⟨m,0⟩ = 1, together with the vanishing lemmas eulerian_eq_zero_of_lt (⟨n,j⟩=0 for n<j) and eulerian_succ_self (⟨n+1,n+1⟩=0).",
+      "The induction connecting the two recurrences: numer_eq_eulerianPoly is proved by induction on m, substituting the inductive monomial description of Nₘ into the differential recurrence and matching, coefficient by coefficient, against the Eulerian triangle recurrence. The order-1,2,3 instances are verified explicitly, exhibiting the Eulerian rows 1; 1,1; 1,4,1, which reproduce the numerators r, r+r², r+4r²+r³ recorded in the parent geometric-series-oq-07-oq-01."
+    ],
+    "prerequisites": [
+      "Parent: geometric-series-oq-07-oq-01 (the all-orders moment ∑ nᵐ rⁿ = ∑ₖ S(m,k)·k!·rᵏ/(1−r)^{k+1}), whose numerator is identified here",
+      "Mathlib's Stirling numbers of the second kind Nat.stirlingSecond and the recurrences stirlingSecond_succ_succ / stirlingSecond_succ_zero / stirlingSecond_eq_zero_of_lt",
+      "Mathlib's formal polynomial derivative Polynomial.derivative and its calculus (derivative_sum, derivative_mul, derivative_C_mul, derivative_X_pow, derivative_pow)",
+      "Polynomial.C as a ring homomorphism (map_mul, map_add, C_natCast for casting natural-number coefficients)",
+      "Finset.sum reindexing (sum_range_succ, sum_range_succ', sum_add_distrib, mul_sum)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.stirlingSecond",
+        "description": "Stirling numbers of the second kind. The recurrence stirlingSecond_succ_succ drives the re-indexing inside numer_recurrence (the numerator differential recurrence); the boundary stirlingSecond_succ_zero and the vanishing stirlingSecond_eq_zero_of_lt discharge the peeled terms.",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Polynomial.derivative_pow",
+        "description": "derivative (p ^ n) = C n · p^(n-1) · derivative p. With p = 1 − X this differentiates the (1−X)^{m−k} factors of the numerator; together with derivative_X_pow and derivative_mul it gives the term-by-term derivative used to establish numer_recurrence.",
+        "module": "Mathlib.Algebra.Polynomial.Derivative"
+      },
+      {
+        "theorem": "Polynomial.C",
+        "description": "The constant-polynomial ring homomorphism. map_mul / map_add let the natural-number coefficients S(m,k)·k! and the Eulerian numbers ⟨m,j⟩ be manipulated under C, so the Stirling recurrence and the Eulerian recurrence transport to coefficient identities in R[X].",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+      "question": "Prove Worpitzky's row identity ∑_{j} ⟨m,j⟩ = m! for the Eulerian numbers defined here, confirming that the moment numerator Nₘ(1)-style evaluation recovers the total weight m! and that ⟨m,j⟩ is genuinely the descent statistic. This follows from the triangle recurrence by an induction summing the coefficient (j+1) + (m−j) = m+1 over each row.",
+      "significance": "low"
+    },
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-02",
+      "question": "Prove the Eulerian symmetry ⟨m,j⟩ = ⟨m, m−1−j⟩ (palindromy of each Eulerian row) directly from the triangle recurrence, and deduce the corresponding functional equation Nₘ(X) = Xᵐ⁺¹·Nₘ(1/X) for the moment numerator.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-07-oq-01",
+      "relationship": "extends",
+      "description": "Parent. oq-07-oq-01 gives the all-orders geometric moment ∑ nᵐ rⁿ = ∑ₖ S(m,k)·k!·rᵏ/(1−r)^{k+1} with the Stirling-number numerator and poses (as its open question oq-01) the identification of that numerator with the Eulerian polynomial. This entry answers it: ∑ₖ S(m,k)·k!·Xᵏ(1−X)^{m−k} = ∑ⱼ ⟨m,j⟩·X^{j+1}, building the Eulerian numbers from scratch (Mathlib has none) and verifying the order-1,2,3 rows 1; 1,1; 1,4,1."
+    },
+    {
+      "targetId": "geometric-series-oq-07",
+      "relationship": "sibling",
+      "description": "Ancestor. oq-07 (∑ n² rⁿ = r(1+r)/(1−r)³) is the case m=2; its numerator r+r² is the Eulerian polynomial ⟨2,0⟩r + ⟨2,1⟩r² with row 1,1, recovered as an explicit example here."
+    },
+    {
+      "targetId": "geometric-series-oq-10",
+      "relationship": "sibling",
+      "description": "oq-10 (∑ n³ rⁿ = r(1+4r+r²)/(1−r)⁴) is the case m=3; its numerator r+4r²+r³ is the Eulerian polynomial with row 1,4,1 — the row exhibited by the order-3 example here."
+    }
+  ],
+  "references": [
+    {
+      "title": "Concrete Mathematics (Eulerian numbers, the triangle recurrence, Worpitzky's identity)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the Eulerian numbers ⟨n,k⟩, their triangle recurrence ⟨n,k⟩ = (k+1)⟨n-1,k⟩ + (n-k)⟨n-1,k-1⟩, and the generating function ∑ nᵐ xⁿ = (∑_k ⟨m,k⟩ x^{k+1})/(1-x)^{m+1} identified here."
+    },
+    {
+      "title": "Mathlib4: Algebra.Polynomial.Derivative",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the formal polynomial derivative and its product/power rules, used to establish the numerator differential recurrence N_{m+1} = X(1−X)N′ₘ + (m+1)X·Nₘ over an arbitrary commutative ring."
+    },
+    {
+      "title": "Mathlib4: Combinatorics.Enumerative.Stirling",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Nat.stirlingSecond. Mathlib has Stirling numbers but neither Eulerian numbers nor the Stirling↔Eulerian numerator identity proved here."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Over any commutative ring R, the change-of-basis numerator of the geometric m-th moment, Nₘ(X) = ∑_{k=0}^{m} S(m,k)·k!·Xᵏ·(1−X)^{m−k} (so that ∑ nᵐ rⁿ = Nₘ(r)/(1−r)^{m+1}), equals the Eulerian polynomial: for m ≥ 1, Nₘ(X) = ∑_{j=0}^{m-1} ⟨m,j⟩·X^{j+1}, where ⟨m,j⟩ are the Eulerian numbers (the descent statistic on permutations). The proof rests on the numerator differential recurrence N₀ = 1, N_{m+1} = X(1−X)N′ₘ + (m+1)X·Nₘ — established in R[X] by differentiating the Stirling sum term by term and re-indexing with the Stirling recurrence — which is precisely the defining recurrence of the (geometrically-normalised) Eulerian polynomials. An induction on m then matches Nₘ, coefficient by coefficient, to the Eulerian triangle recurrence ⟨m+1,j+1⟩ = (j+2)⟨m,j+1⟩ + (m−j)⟨m,j⟩. The Eulerian numbers are built from scratch (Mathlib has only Eulerian graphs), with the diagonal/above-diagonal vanishing lemmas, and the order-1,2,3 rows 1; 1,1; 1,4,1 are verified explicitly. 373 lines, 10 theorems, 2 definitions, 0 axioms, 0 sorries; every result depends only on propext, Classical.choice, Quot.sound (the low-order checks use kernel `decide`, not native_decide).",
+    "implications": "This closes the loop on the geometric-moment numerator: the Stirling-number form S(m,k)·k! (the surjection count, the directly Mathlib-supported coefficient) and the Eulerian form ⟨m,j⟩ (the descent count) are two faces of the same polynomial, related by the change of basis ∑_k S(m,k)·k!·Xᵏ(1−X)^{m−k} = ∑_j ⟨m,j⟩·X^{j+1}. Because the identity is proved as a polynomial equation over an arbitrary commutative ring (no convergence, no division), it specialises freely — to ℝ for the moment generating function, or to any coefficient ring — and supplies a reusable, Mathlib-free implementation of the Eulerian numbers and their basic theory.",
+    "openQuestions": [
+      "Prove Worpitzky's row identity ∑_j ⟨m,j⟩ = m! from the triangle recurrence.",
+      "Prove the Eulerian palindromy ⟨m,j⟩ = ⟨m,m−1−j⟩ and the resulting functional equation Nₘ(X) = Xᵐ⁺¹·Nₘ(1/X)."
+    ]
+  }
+}
