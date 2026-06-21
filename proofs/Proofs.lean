@@ -151,6 +151,7 @@ import Proofs.AreaOfCircleOQ03OQ02OQ02OQ01
 import Proofs.AreaOfCircleOQ03OQ03
 import Proofs.AreaOfCircleOQ03OQ03OQ02
 import Proofs.AreaOfCircleOQ05
+import Proofs.AreaOfCircleOQ05Incomplete01
 import Proofs.AreaOfCircleOQ05OQ01
 import Proofs.AreaOfCircleOQ05OQ01Aristotle
 import Proofs.AreaOfCircleOQ05OQ02
