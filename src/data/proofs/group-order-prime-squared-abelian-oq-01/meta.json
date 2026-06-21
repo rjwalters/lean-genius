@@ -1,0 +1,164 @@
+{
+  "id": "group-order-prime-squared-abelian-oq-01",
+  "title": "Groups of Order p² are Abelian, with the Cyclic / Elementary-Abelian Dichotomy",
+  "slug": "group-order-prime-squared-abelian-oq-01",
+  "description": "Establishes the first nontrivial step in the classification of finite p-groups — every group G with Nat.card G = p² (p prime) is abelian — and then goes beyond Mathlib by supplying the structural dichotomy it does not state: such a G is either cyclic (≅ ℤ/p²) or has exponent p (gᵖ = 1 for all g, i.e. elementary abelian ≅ (ℤ/p)²), and these two cases are mutually exclusive. The commutativity is repackaged from IsPGroup.commutative_of_card_eq_prime_sq so that the only hypotheses are the order Nat.card G = p² and primality of p; the dichotomy is derived elementarily from the order trichotomy (every element has order 1, p, or p², by Lagrange and the divisors of a prime square) by splitting on whether an element of order p² exists. The sharpness theorem isCyclic_iff_not_forall_pow_prime shows G is cyclic iff it does not have exponent p, since a generator of a cyclic group of order p² cannot satisfy gᵖ = 1 (p² ∤ p).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-20",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GroupOrderPrimeSquaredAbelian.lean",
+    "additionalFiles": [],
+    "tags": [
+      "group-theory",
+      "finite-groups",
+      "p-groups",
+      "abelian-groups",
+      "cyclic-groups",
+      "classification",
+      "order-of-element",
+      "lagrange-theorem"
+    ],
+    "badge": "verified",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsPGroup.commutative_of_card_eq_prime_sq",
+        "description": "A group whose cardinality is p² (p prime) is commutative; its proof routes through the nontrivial center of a p-group and the cyclicity of the central quotient G/Z(G) of order 1 or p. This entry repackages it from the order hypothesis Nat.card G = p² alone.",
+        "module": "Mathlib.GroupTheory.PGroup"
+      },
+      {
+        "theorem": "orderOf_dvd_natCard",
+        "description": "The order of any element divides the cardinality of the group (Lagrange). Combined with Nat.card G = p² this gives orderOf g ∣ p².",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "Nat.dvd_prime_pow",
+        "description": "The divisors of a prime power pⁿ are exactly the pᵏ for k ≤ n; instantiated at n=2 to obtain the order trichotomy 1, p, p².",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "isCyclic_of_orderOf_eq_card",
+        "description": "A finite group with an element whose order equals the group's cardinality is cyclic; used to conclude IsCyclic G from an element of order p².",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "orderOf_dvd_iff_pow_eq_one",
+        "description": "orderOf g ∣ n ↔ gⁿ = 1; the bridge between the order trichotomy and the exponent-p statement gᵖ = 1.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      }
+    ],
+    "originalContributions": [
+      "mul_comm_of_card_eq_prime_sq: the abelian theorem stated purely from Nat.card G = p² and p.Prime, repackaging IsPGroup.commutative_of_card_eq_prime_sq with no IsPGroup hypothesis exposed.",
+      "orderOf_eq_of_card_eq_prime_sq: the order trichotomy — every element of a group of order p² has order 1, p, or p² — from orderOf_dvd_natCard and the divisor structure of a prime square (Nat.dvd_prime_pow + interval_cases).",
+      "isCyclic_or_exponent_p: the structural dichotomy IsCyclic G ∨ ∀ g, gᵖ = 1, obtained by case-splitting on the existence of an element of order p² and forcing the remaining orders to divide p.",
+      "pow_prime_eq_one_of_not_isCyclic: the elementary-abelian characterization of the non-cyclic case (¬IsCyclic G → ∀ g, gᵖ = 1).",
+      "isCyclic_iff_not_forall_pow_prime: sharpness — the two cases are mutually exclusive, so G is cyclic iff it does NOT have exponent p; the forward direction uses that a generator of order p² violates gᵖ = 1 since p² ∤ p."
+    ],
+    "dateAdded": "2026-06-20",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 104,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. No native_decide (so no Lean.ofReduceBool); #print axioms reports only [propext, Classical.choice, Quot.sound]. The commutativity is a corollary of Mathlib's IsPGroup.commutative_of_card_eq_prime_sq; the order trichotomy and the cyclic/elementary-abelian dichotomy are derived by elementary finite-group reasoning (Lagrange, divisors of a prime square, order-of-element bridges).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The classification of groups by order begins with the cyclic groups of prime order (forced by Lagrange) and, at the next level, the groups of order p². That every such group is abelian is the first genuinely nontrivial fact of finite p-group theory: it follows because a nontrivial p-group has a nontrivial center, so for |G| = p² the central quotient G/Z(G) has order 1 or p, hence is cyclic, which forces G to be abelian. The two abelian groups of order p² are then the cyclic group ℤ/p² and the elementary abelian group (ℤ/p)²; the structure theorem for finite abelian groups confirms there are no others. Mathlib formalizes the commutativity (IsPGroup.commutative_of_card_eq_prime_sq) but does not state the cyclic-versus-elementary-abelian dichotomy that separates the two isomorphism types.",
+    "problemStatement": "**Open Question (group-order-prime-squared-abelian-oq-01)**: Starting from the order hypothesis Nat.card G = p² (p prime), (1) prove G is abelian without exposing an IsPGroup hypothesis, and (2) supply the structural classification Mathlib omits: every element has order 1, p, or p²; G is either cyclic (an element of order p² exists) or has exponent p (gᵖ = 1 for all g); and these cases are mutually exclusive.\n\n**Answer**: Both are proved. Commutativity is repackaged from IsPGroup.commutative_of_card_eq_prime_sq. The dichotomy IsCyclic G ∨ ∀ g, gᵖ = 1 is derived from the order trichotomy, and its sharpness (cyclic ↔ ¬ exponent-p) is established, pinning the two isomorphism classes ℤ/p² and (ℤ/p)².",
+    "text": "The file GroupOrderPrimeSquaredAbelian.lean resolves the question. mul_comm_of_card_eq_prime_sq installs Fact p.Prime and applies IsPGroup.commutative_of_card_eq_prime_sq to obtain ∀ a b, a*b = b*a from Nat.card G = p². orderOf_eq_of_card_eq_prime_sq derives orderOf g ∣ p² (Lagrange), then uses Nat.dvd_prime_pow and interval_cases to give orderOf g ∈ {1, p, p²}. isCyclic_or_exponent_p splits on ∃ g, orderOf g = p²: in the cyclic case isCyclic_of_orderOf_eq_card concludes IsCyclic G; otherwise the trichotomy forces every order to divide p, giving gᵖ = 1 via orderOf_dvd_iff_pow_eq_one. pow_prime_eq_one_of_not_isCyclic resolves the disjunction in the non-cyclic direction, and isCyclic_iff_not_forall_pow_prime proves sharpness by deriving a contradiction (p² ≤ p) from a generator of order p² satisfying gᵖ = 1.",
+    "proofStrategy": "**Commutativity**: mul_comm_of_card_eq_prime_sq supplies haveI : Fact p.Prime and returns IsPGroup.commutative_of_card_eq_prime_sq hG directly.\n\n**Order trichotomy**: orderOf_eq_of_card_eq_prime_sq rewrites orderOf_dvd_natCard with hG to get orderOf g ∣ p², extracts orderOf g = pᵏ with k ≤ 2 via Nat.dvd_prime_pow, and discharges k = 0,1,2 by interval_cases + simpa.\n\n**Dichotomy**: isCyclic_or_exponent_p does by_cases on ∃ g, orderOf g = p². Existence ⇒ Finite G (from Nat.card ≠ 0) and isCyclic_of_orderOf_eq_card. Non-existence ⇒ push_neg, then for each g the trichotomy yields order 1 or p (the p² branch is excluded), and orderOf_dvd_iff_pow_eq_one gives gᵖ = 1.\n\n**Sharpness**: isCyclic_iff_not_forall_pow_prime, forward direction, takes a generator g with orderOf g = Nat.card G = p²; gᵖ = 1 forces orderOf g ∣ p, hence p² ≤ p by Nat.le_of_dvd, contradicting hp.two_le via nlinarith. The reverse direction resolves the dichotomy against the exponent-p case.",
+    "keyInsights": [
+      "Repackaging matters: IsPGroup.commutative_of_card_eq_prime_sq takes the order hypothesis but the IsPGroup instance is reconstructed internally, so the user-facing theorem needs only Nat.card G = p² and p.Prime — exactly the order hypothesis the open question asks to start from.",
+      "The order trichotomy {1, p, p²} is the entire engine of the classification: the divisors of a prime square are a 3-element chain, so a single by_cases on the existence of a top-order (p²) element cleanly separates the cyclic case from the exponent-p (elementary abelian) case.",
+      "Exponent p is the right invariant to express 'elementary abelian' without invoking the full structure theorem: ∀ g, gᵖ = 1 is equivalent, for an abelian group of order p², to G ≅ (ℤ/p)², and it is provable directly from the order trichotomy.",
+      "Sharpness is a counting fact, not a structural one: a cyclic group of order p² has a generator of order p², which cannot have exponent p because p² ∤ p; this single divisibility obstruction makes the dichotomy a genuine XOR."
+    ],
+    "prerequisites": [
+      "IsPGroup.commutative_of_card_eq_prime_sq — Mathlib's commutativity of groups of order p² (via nontrivial center and cyclic central quotient).",
+      "orderOf_dvd_natCard and orderOf_dvd_iff_pow_eq_one — Lagrange for element orders and the order/pow-eq-one bridge.",
+      "Nat.dvd_prime_pow — divisor structure of prime powers, giving the order trichotomy.",
+      "isCyclic_of_orderOf_eq_card and isCyclic_iff_exists_orderOf_eq_natCard — the cyclicity criterion via an element of full order."
+    ]
+  },
+  "sections": [
+    {
+      "id": "abelian",
+      "title": "The Abelian Theorem",
+      "startLine": 36,
+      "endLine": 46,
+      "summary": "mul_comm_of_card_eq_prime_sq: from Nat.card G = p² and p.Prime, every pair commutes, by installing Fact p.Prime and applying IsPGroup.commutative_of_card_eq_prime_sq.",
+      "mathContext": "$|G| = p^2 \\Rightarrow \\forall a\\,b,\\ ab = ba$."
+    },
+    {
+      "id": "orders",
+      "title": "Element Orders (Trichotomy)",
+      "startLine": 48,
+      "endLine": 60,
+      "summary": "orderOf_eq_of_card_eq_prime_sq: every element has order 1, p, or p², from orderOf_dvd_natCard and Nat.dvd_prime_pow with interval_cases.",
+      "mathContext": "$\\operatorname{ord}(g) \\in \\{1, p, p^2\\}$."
+    },
+    {
+      "id": "dichotomy",
+      "title": "The Structural Dichotomy",
+      "startLine": 62,
+      "endLine": 86,
+      "summary": "isCyclic_or_exponent_p: IsCyclic G ∨ ∀ g, gᵖ = 1, by case-splitting on an element of order p². pow_prime_eq_one_of_not_isCyclic records the non-cyclic (elementary abelian) case.",
+      "mathContext": "$G \\text{ cyclic } \\ (\\cong \\mathbb{Z}/p^2) \\ \\text{ or } \\ \\forall g,\\ g^p = 1 \\ (\\cong (\\mathbb{Z}/p)^2)$."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness (Mutually Exclusive Cases)",
+      "startLine": 88,
+      "endLine": 102,
+      "summary": "isCyclic_iff_not_forall_pow_prime: G is cyclic iff it does not have exponent p; the forward direction derives p² ≤ p from a generator of order p² with gᵖ = 1, a contradiction.",
+      "mathContext": "$\\text{IsCyclic } G \\iff \\neg\\,(\\forall g,\\ g^p = 1)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves that every group of order p² (p prime) is abelian, stated from the order hypothesis alone, and supplies the cyclic / elementary-abelian dichotomy Mathlib does not state: such a group is cyclic (≅ ℤ/p²) or has exponent p (≅ (ℤ/p)²), and the two cases are mutually exclusive. Machine-verified with 0 sorries and 0 axioms (only propext / Classical.choice / Quot.sound).",
+    "implications": "**For finite group theory**: records the first nontrivial classification step (order p²) in the gallery, packaged so downstream users get both commutativity and the isomorphism-type split from a single cardinality hypothesis.\n\n**For formalization technique**: shows how a bare Mathlib existence result (commutativity) can be upgraded to a usable classification by adding the elementary order-trichotomy argument, with exponent p serving as a structure-theorem-free proxy for 'elementary abelian'.",
+    "openQuestions": [
+      "Promote the dichotomy to genuine isomorphisms G ≃* ZMod (p^2) and G ≃* ZMod p × ZMod p, exhibiting the explicit equivalences rather than the exponent-p invariant.",
+      "Extend to order p³: classify the (two abelian and three nonabelian, for odd p) isomorphism types, where commutativity already fails and the center/commutator structure must be tracked."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "lagranges-theorem",
+      "relationship": "related",
+      "description": "The order trichotomy orderOf g ∈ {1, p, p²} is a direct consequence of Lagrange's theorem (orderOf_dvd_natCard) specialized to a prime square."
+    },
+    {
+      "targetId": "cauchys-theorem-group-theory",
+      "relationship": "related",
+      "description": "Cauchy's theorem guarantees an element of order p in any group whose order is divisible by p; it underlies why the non-cyclic case of order p² is exactly elementary abelian."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Dummit, David S. and Foote, Richard M.",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "Wiley, 3rd edition, §4.3 (Corollary: groups of order p² are abelian)",
+      "note": "Standard textbook proof via the class equation / nontrivial center and the cyclic central quotient."
+    },
+    {
+      "authors": "Rotman, Joseph J.",
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "Springer GTM 148, 4th edition, Chapter 4",
+      "note": "Groups of order p² and the cyclic / elementary-abelian classification."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/GroupOrderPrimeSquaredAbelian.lean",
+    "lineCount": 104,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "axiomCount": 0,
+    "sorries": 0,
+    "additionalFiles": []
+  }
+}
