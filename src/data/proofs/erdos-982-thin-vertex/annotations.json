@@ -1,0 +1,56 @@
+[
+  {
+    "id": "ann-erdos982thin-context",
+    "proofId": "erdos-982-thin-vertex",
+    "range": { "startLine": 1, "endLine": 57 },
+    "type": "concept",
+    "title": "Isolating the engine behind Erdős #982",
+    "content": "Erdős Problem #982 asks whether every convex n-gon has a vertex with at least ⌊n/2⌋ distinct distances to the other vertices — OPEN, with the best known bound ≈ 0.361n (Nivasch–Pach–Pinchasi–Zerbib 2013) and ⌊n/2⌋ attained by the regular polygon. The parent entry (Erdos982Problem.lean) states the conjecture and axiomatizes the published bounds. This file proves, axiom-free, the purely combinatorial core common to all Moser-type arguments and shows precisely where the genuine geometric difficulty sits. Fixing a vertex p, the other vertices split into 'distance classes': sets of vertices equidistant from p, i.e. lying on one circle centred at p. Pigeonhole relates the number of distinct distances to the size of the largest class. The geometric — and open — part is only that some vertex has all classes small.",
+    "mathContext": "$f(n)\\ge\\lfloor n/2\\rfloor$ is conjectured; here we prove the reduction $(n-1)\\le(\\#\\text{distances})\\cdot(\\text{largest class})$ and its consequences."
+  },
+  {
+    "id": "ann-erdos982thin-pigeonhole",
+    "proofId": "erdos-982-thin-vertex",
+    "range": { "startLine": 58, "endLine": 91 },
+    "type": "key-step",
+    "title": "The abstract fibre pigeonhole",
+    "content": "card_le_image_mul is fully general: for any f : α → β with DecidableEq β and any finite s, if every value b in the image is attained by at most M elements of s, then s.card ≤ (s.image f).card · M. The proof rewrites s.card as the fibrewise sum ∑_{b ∈ s.image f} #{a ∈ s | f a = b} via Finset.card_eq_sum_card_fiberwise, bounds each summand by M with Finset.sum_le_sum, and collapses ∑ M = (#image)·M with Finset.sum_const. image_card_ge_div repackages this as s.card/M ≤ #image using Nat.div_le_of_le_mul. Nothing here is geometric — this is the entire combinatorial content.",
+    "mathContext": "$s = \\bigsqcup_{b} f^{-1}(b)$ over $\\#(\\mathrm{im}\\,f)$ classes each of size $\\le M$, so $|s|\\le \\#(\\mathrm{im}\\,f)\\cdot M$."
+  },
+  {
+    "id": "ann-erdos982thin-moser",
+    "proofId": "erdos-982-thin-vertex",
+    "range": { "startLine": 112, "endLine": 131 },
+    "type": "technique",
+    "title": "The Moser-type general bound",
+    "content": "distinctDistances_ge_of_classes_le specialises the engine to f = dist p over S.erase p (the n−1 other vertices, card via Finset.card_erase_of_mem). If every circle centred at p carries ≤ M vertices, then p sees ≥ (n−1)/M distinct distances. M = 3 recovers Moser's 1952 bound f(n) ≥ ⌈n/3⌉; the entire family of published improvements (Erdős–Fishburn 1994, Dumitrescu 2006, NPPZ 2013) consists of better geometric bounds on M for a well-chosen vertex, not better combinatorics. The combinatorics is this one line.",
+    "mathContext": "All classes $\\le M \\Rightarrow \\#\\text{distances from }p \\ge \\dfrac{n-1}{M}$; Moser is $M=3$."
+  },
+  {
+    "id": "ann-erdos982thin-half",
+    "proofId": "erdos-982-thin-vertex",
+    "range": { "startLine": 132, "endLine": 162 },
+    "type": "key-step",
+    "title": "Thin vertex ⇒ ⌊n/2⌋, tight at the regular polygon",
+    "content": "distinctDistances_ge_half is the headline. If every distance class of p has size ≤ 2 (no three equidistant neighbours), then card_le_image_mul gives (n−1) ≤ (#distances)·2, and omega closes ⌊n/2⌋ ≤ #distances. The improvement of the crude ⌈(n−1)/2⌉ to the exact ⌊n/2⌋ is the parity fact ⌈(n−1)/2⌉ = ⌊n/2⌋ (recorded separately as ceil_half_pred_eq_floor_half): for even n the diametric neighbour forms a class of size 1, so one class is short and the bound rounds up. conjecture_of_exists_thin_vertex then lifts a single thin vertex to maxDistinctDistances via Finset.le_sup: one thin vertex settles #982 for that polygon.",
+    "mathContext": "All classes $\\le 2 \\Rightarrow \\#\\text{distances}\\ge\\lceil (n-1)/2\\rceil=\\lfloor n/2\\rfloor$, exactly the regular-polygon value."
+  },
+  {
+    "id": "ann-erdos982thin-obstruction",
+    "proofId": "erdos-982-thin-vertex",
+    "range": { "startLine": 163, "endLine": 174 },
+    "type": "concept",
+    "title": "The obstruction: link to Erdős #97",
+    "content": "exists_three_equidistant_of_few_distances is the contrapositive: if p sees fewer than ⌊n/2⌋ distinct distances then some circle centred at p passes through three other vertices (push_neg turns 'no class of size 3' into 'all classes ≤ 2', then the headline bound contradicts the hypothesis). This is the exact point where #982 stops being combinatorial. Erdős Problem #97 asked whether one can always find a vertex with no three equidistant neighbours — precisely a thin vertex — and that was DISPROVED. So a thin vertex is not guaranteed, the engine alone cannot close #982, and the gap to the conjecture is genuinely geometric. This file draws that line exactly.",
+    "mathContext": "$\\#\\text{distances from }p<\\lfloor n/2\\rfloor \\Rightarrow \\exists$ a circle at $p$ through $3$ vertices — the #97 configuration that cannot always be avoided."
+  },
+  {
+    "id": "ann-erdos982thin-floor",
+    "proofId": "erdos-982-thin-vertex",
+    "range": { "startLine": 176, "endLine": 220 },
+    "type": "key-step",
+    "title": "Axiom-free base case and the unique-diameter arithmetic",
+    "content": "maxDistinctDistances_pos proves that any set with ≥ 2 points has a vertex with ≥ 1 distinct distance: pick p, the erase is nonempty (Finset.card_erase_of_mem), so its image under dist p is nonempty (Finset.Nonempty.image), giving card ≥ 1, lifted by Finset.le_sup. triangle_case is the n = 3 instance ⌊3/2⌋ = 1 — the parent file left this as a sorry; here it is discharged without any axiom. ceil_half_pred_eq_floor_half records ⌈(n−1)/2⌉ = ⌊n/2⌋ (omega), the arithmetic reason the tight bound holds.",
+    "mathContext": "$|S|\\ge 2\\Rightarrow \\max\\text{distances}\\ge 1$ (the $n=3$ case), and $\\lceil(n-1)/2\\rceil=\\lfloor n/2\\rfloor$."
+  }
+]
