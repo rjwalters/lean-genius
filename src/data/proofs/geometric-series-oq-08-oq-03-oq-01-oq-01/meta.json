@@ -1,0 +1,133 @@
+{
+  "id": "geometric-series-oq-08-oq-03-oq-01-oq-01",
+  "slug": "geometric-series-oq-08-oq-03-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Proofs.GeometricSeriesOQ08OQ03OQ01",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter"
+    ],
+    "namespace": "GeometricSeriesOQ08OQ03OQ01OQ01",
+    "lineCount": 125,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ08OQ03OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "Identifying the Limit: the Geometric Sum from First Principles",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ08OQ03OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "geometric-series",
+      "cauchy-sequence",
+      "completeness",
+      "convergence",
+      "infinite-sum",
+      "limit-identification",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 125,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "geometric_truncation_defect: the algebraic defect identity ∑_{k<n} rᵏ = (1 − r)⁻¹ − rⁿ/(1 − r) for 1 − r ≠ 0, a pure geom_sum_eq rearrangement (finite-sum algebra, no analysis) — the head-vs-limit form that drives the limit identification.",
+      "geometric_partialSum_tendsto: the partial sums converge to (1 − r)⁻¹ — reading the truncation defect as n → ∞, the tail rⁿ/(1 − r) → 0 (from tendsto_pow_atTop_nhds_zero_of_lt_one), so n ↦ ∑_{k<n} rᵏ → (1 − r)⁻¹, computed directly from the defect rather than from hasSum_geometric.",
+      "geometric_limit_from_completeness: the abstract route made explicit, answering the open question of the sibling entry — completeness of ℝ (cauchySeq_tendsto_of_complete applied to the sibling's geometric_partialSum_cauchySeq) supplies the existence of some limit L knowing only that the partial sums are Cauchy, and tendsto_nhds_unique against the defect limit pins L = (1 − r)⁻¹. Existence is supplied by completeness, identity by the defect.",
+      "geometric_hasSum: HasSum (fun n ↦ rⁿ) (1 − r)⁻¹ assembled from the sibling's geometric_summable and the partial-sum limit via Summable.hasSum_iff_tendsto_nat — an independent derivation of hasSum_geometric_of_lt_one that never invokes it.",
+      "geometric_tsum: the unconditional sum ∑' n, rⁿ = (1 − r)⁻¹, recovering tsum_geometric_of_lt_one along the Cauchy/completeness path; the value is the consequence of the identified limit, not an input."
+    ],
+    "prerequisites": [
+      "geom_sum_eq (Mathlib): the finite geometric sum ∑_{i<n} xⁱ = (xⁿ − 1)/(x − 1) for x ≠ 1, behind the truncation defect",
+      "tendsto_pow_atTop_nhds_zero_of_lt_one (Mathlib): rⁿ → 0 for 0 ≤ r < 1, giving the vanishing tail",
+      "cauchySeq_tendsto_of_complete (Mathlib): a CauchySeq in a complete space converges to some limit — the existence half",
+      "tendsto_nhds_unique (Mathlib): uniqueness of limits in a Hausdorff space — pins the abstract limit to (1 − r)⁻¹",
+      "Summable.hasSum_iff_tendsto_nat (Mathlib): for a summable f over ℕ, HasSum f m ⇔ partial sums → m",
+      "Sibling: geometric-series-oq-08-oq-03-oq-01 (the CauchySeq and Summable reused verbatim as inputs)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "geom_sum_eq",
+        "description": "∑ i ∈ range n, xⁱ = (xⁿ − 1)/(x − 1) for x ≠ 1. Rearranged into the truncation defect (1 − r)⁻¹ − rⁿ/(1 − r).",
+        "module": "Mathlib.Algebra.Field.GeomSum"
+      },
+      {
+        "theorem": "tendsto_pow_atTop_nhds_zero_of_lt_one",
+        "description": "For 0 ≤ r < 1, rⁿ → 0 as n → ∞. Makes the truncation defect's tail rⁿ/(1 − r) vanish.",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "cauchySeq_tendsto_of_complete",
+        "description": "In a complete space, every CauchySeq converges to some limit. Turns the sibling's geometric_partialSum_cauchySeq into the existence of a limit L before its value is known.",
+        "module": "Mathlib.Topology.UniformSpace.Cauchy"
+      },
+      {
+        "theorem": "tendsto_nhds_unique",
+        "description": "Limits in a Hausdorff space are unique. Identifies the completeness limit L with the defect limit (1 − r)⁻¹.",
+        "module": "Mathlib.Topology.Separation.Hausdorff"
+      },
+      {
+        "theorem": "Summable.hasSum_iff_tendsto_nat",
+        "description": "For summable f : ℕ → M in a T2 commutative monoid, HasSum f m ⇔ Tendsto (fun n ↦ ∑ i ∈ range n, f i) atTop (𝓝 m). Converts the partial-sum limit into HasSum.",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.NatInt"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-08-oq-03-oq-01-oq-01-oq-01",
+      "question": "Extend the from-first-principles identification from the nonnegative range 0 ≤ r < 1 to the full signed disc |r| < 1 (real or normed field). The Cauchy/bounded-monotone lineage relied on nonnegativity (monotone partial sums, summable_of_sum_range_le); for signed r the partial sums oscillate, so recover summability by absolute convergence (summable_geometric_of_norm_lt_one / comparison ‖rⁿ‖ = ‖r‖ⁿ) and re-identify the limit (1 − r)⁻¹ via the same truncation defect, which is already field-valid.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-08-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent and source of inputs. That entry produced geometric_partialSum_cauchySeq and geometric_summable from the slice bound without hasSum_geometric, but left the limit value open. This entry consumes both, identifies the limit as (1 − r)⁻¹ via completeness + the truncation defect, and recovers HasSum/tsum — closing the open question it posed."
+    },
+    {
+      "targetId": "geometric-series-oq-08",
+      "relationship": "depends-on",
+      "description": "Grandparent. The truncation defect (1 − r)⁻¹ − ∑_{k<n} rᵏ = rⁿ/(1 − r) is exactly the head-vs-limit statement studied there; here it is the bridge that pins the abstract completeness limit to (1 − r)⁻¹."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "depends-on",
+      "description": "Base entry recording the closed forms (1 − rⁿ)/(1 − r) and (1 − r)⁻¹. This entry rederives the infinite value (1 − r)⁻¹ along the Cauchy/completeness path, routing around hasSum_geometric."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Topology.UniformSpace.Cauchy",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Provides cauchySeq_tendsto_of_complete, the completeness step turning the geometric partial sums' CauchySeq into a convergent sequence with an a-priori-unknown limit."
+    },
+    {
+      "title": "Principles of Mathematical Analysis (completeness, convergence of series)",
+      "author": "Walter Rudin",
+      "year": "1976",
+      "venue": "McGraw-Hill",
+      "description": "Standard reference for the principle that completeness turns a Cauchy sequence into a convergent one, with the limit then identified by separate computation — the structure this entry formalizes."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For 0 ≤ r < 1 the limit of the geometric series is identified as (1 − r)⁻¹ from first principles. The truncation defect ∑_{k<n} rᵏ = (1 − r)⁻¹ − rⁿ/(1 − r) (a geom_sum_eq rearrangement) gives geometric_partialSum_tendsto: the partial sums converge to (1 − r)⁻¹ because rⁿ/(1 − r) → 0. The sibling's geometric_partialSum_cauchySeq plus completeness of ℝ (cauchySeq_tendsto_of_complete) yield a limit L abstractly, which tendsto_nhds_unique pins to (1 − r)⁻¹ (geometric_limit_from_completeness). Combined with the sibling's geometric_summable via Summable.hasSum_iff_tendsto_nat this gives HasSum (fun n ↦ rⁿ) (1 − r)⁻¹ and ∑' n, rⁿ = (1 − r)⁻¹. 125 lines, 5 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This closes the lineage geometric-series-oq-08-oq-03 → …-oq-01 → …-oq-01-oq-01, which rebuilds the geometric series' convergence theory from the Cauchy criterion upward: first the ε–N block estimate, then the abstract CauchySeq/Summable predicates, and now the limit value. Completeness of ℝ supplies the existence of a limit knowing only that the partial sums are Cauchy; the truncation defect supplies its identity. Together they reproduce Mathlib's hasSum_geometric_of_lt_one and tsum_geometric_of_lt_one along an independent path that never assumes the closed form it concludes — the sum (1 − r)⁻¹ is earned, not quoted.",
+    "openQuestions": [
+      "Extend the from-first-principles limit identification from 0 ≤ r < 1 to the full signed disc |r| < 1, recovering summability by absolute convergence and re-identifying (1 − r)⁻¹ through the (already field-valid) truncation defect."
+    ]
+  }
+}
