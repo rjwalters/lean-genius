@@ -1,0 +1,205 @@
+{
+  "id": "kummer-theorem-oq-04-oq-01",
+  "title": "Kummer's Theorem OQ-04-OQ-01: Exactly One Factor of Two in the Central Binomial Coefficient",
+  "slug": "kummer-theorem-oq-04-oq-01",
+  "description": "The sharp converse left open by OQ-04: v₂(C(2n,n)) = 1 if and only if n is a power of two. Equivalently, C(2n,n) is divisible by 2 but not by 4 exactly when n = 2^k. The new ingredient is the elementary digit-sum characterisation s₂(n) = 1 ↔ ∃ k, n = 2^k, which Mathlib does not provide.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-20",
+    "status": "verified",
+    "proofRepoPath": "Proofs/KummerCentralBinomPowerOfTwoOQ01.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "kummer-theorem",
+      "p-adic",
+      "binomial-coefficient",
+      "central-binomial-coefficient",
+      "powers-of-two"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "axiomCount": 0,
+    "lineCount": 170,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "assumptions": "None. 0 axioms, 0 sorries (kernel decide only on the numeric witnesses; no native_decide, no Lean.ofReduceBool). The headline biconditional is built from the closed form v₂(C(2n,n)) = s₂(n) (re-derived here from Mathlib's digit-sum Kummer theorem so the file is self-contained) combined with the new digit-sum lemma s₂(n) = 1 ↔ ∃ k, n = 2^k.",
+    "originalContributions": [
+      "sum_digits_two_eq_one_iff: the genuinely new lemma s₂(n) = 1 ↔ ∃ k, n = 2^k — a natural number has binary digit sum 1 (a single 1-bit) exactly when it is a power of two. Mathlib has bitIndices (2^k) = [k] but does not provide this digit-sum characterisation. Proved by strong induction peeling the last binary digit n % 2: odd forces the rest to vanish (n = 1 = 2^0), even passes to n/2 = 2^j giving n = 2^{j+1}.",
+      "sum_digits_two_eq_zero_iff: the binary digit sum vanishes only at 0 (helper for the odd case of the main lemma).",
+      "padicValNat_two_centralBinom_eq_one_iff: the headline biconditional v₂(C(2n,n)) = 1 ↔ ∃ k, n = 2^k — closes the converse direction left open by OQ-04, which proved only that powers of two give valuation 1.",
+      "two_dvd_centralBinom_not_four_dvd_iff: the 'exactly one factor of two' phrasing — C(2n,n) is divisible by 2 but not by 4 precisely when n is a power of two, via the padicValNat divisibility API.",
+      "padicValNat_two_centralBinom: the OQ-04 closed form v₂(C(2n,n)) = s₂(n), re-derived here to keep the file self-contained."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.sub_one_mul_padicValNat_choose_eq_sub_sum_digits",
+        "description": "Legendre/Kummer digit-sum identity: (p-1)·v_p(C(n,k)) = s_p(k) + s_p(n-k) - s_p(n) — the source of the closed form re-derived here",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      },
+      {
+        "theorem": "Nat.digits_base_pow_mul",
+        "description": "digits b (b^k * m) = replicate k 0 ++ digits b m — the reverse direction s₂(2^k) = 1",
+        "module": "Mathlib.Data.Nat.Digits.Defs"
+      },
+      {
+        "theorem": "Nat.digits_def'",
+        "description": "digits b n = (n % b) :: digits b (n / b) for 1 < b, 0 < n — the digit-peeling step driving the strong induction",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "padicValNat_dvd_iff_le",
+        "description": "for a prime p and a ≠ 0: p^n ∣ a ↔ n ≤ v_p(a) — converts the 2-and-not-4 divisibility into v₂ = 1",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+      },
+      {
+        "theorem": "Nat.centralBinom_eq_two_mul_choose",
+        "description": "centralBinom n = C(2n, n), connecting the named central coefficient to the diagonal of Pascal's triangle",
+        "module": "Mathlib.Combinatorics.Choose.Central"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Kummer's theorem (1852) computes the $p$-adic valuation of a binomial coefficient as the number of carries in base-$p$ addition; equivalently $(p-1)v_p(\\binom{n}{k}) = s_p(k)+s_p(n-k)-s_p(n)$ with $s_p$ the base-$p$ digit sum. Specialising to $p=2$ on the diagonal gives the classical gem $v_2(\\binom{2n}{n}) = s_2(n)$, the binary popcount of $n$ (the content of the parent entry OQ-04). A natural sharp question is: when does $\\binom{2n}{n}$ carry the *minimum* possible single factor of $2$? The parent established the forward implication — powers of two do — but left the converse open. The answer is that powers of two are the *only* such $n$, because $s_2(n)=1$ characterises a single $1$-bit. This connects to the Sierpiński/Pascal-mod-2 fractal picture and to the popcount function $s_2$, whose level sets stratify the 2-adic behaviour of central binomial coefficients.",
+    "problemStatement": "Determine exactly which $n$ make the central binomial coefficient $\\binom{2n}{n}$ divisible by $2$ precisely once, i.e. for which $n$ does $v_2(\\binom{2n}{n}) = 1$. Equivalently, when is $\\binom{2n}{n}$ divisible by $2$ but not by $4$?",
+    "text": "The valuation $v_2(\\binom{2n}{n})$ equals $1$ if and only if $n$ is a power of two — the sharp converse completing the forward direction of OQ-04.",
+    "proofStrategy": "By the OQ-04 closed form $v_2(\\binom{2n}{n}) = s_2(n)$ (re-derived here for self-containment), the statement $v_2(\\binom{2n}{n}) = 1$ is equivalent to $s_2(n) = 1$. The crux is the new elementary lemma $s_2(n) = 1 \\iff \\exists k,\\ n = 2^k$. Forward: strong induction on $n$, peeling the last binary digit via `Nat.digits_def'`. If $n$ is odd then $n\\%2 = 1$ forces the remaining digits to sum to $0$, so $n/2 = 0$ and $n = 1 = 2^0$. If $n$ is even then the digits of $n/2$ still sum to $1$, so by induction $n/2 = 2^j$ and $n = 2^{j+1}$. Reverse: $\\mathrm{digits}\\,2\\,(2^k)$ is $k$ zeros followed by a $1$ (via `Nat.digits_base_pow_mul`), summing to $1$. The 'divisible by 2 not 4' phrasing then follows from `padicValNat_dvd_iff_le` (it says $1 \\le v_2$ and $\\lnot(2 \\le v_2)$, i.e. $v_2 = 1$).",
+    "keyInsights": [
+      "**The converse is a statement about binary digits, not binomials.** Once the OQ-04 closed form $v_2(\\binom{2n}{n}) = s_2(n)$ is in hand, the whole question collapses to: which $n$ have binary digit sum $1$? The answer — the powers of two — is exactly the single-$1$-bit numbers.",
+      "**Mathlib has the pieces but not the characterisation.** Mathlib knows $\\mathrm{bitIndices}(2^k) = [k]$ and has the digit machinery, but it does not state $s_2(n) = 1 \\iff n = 2^k$. This digit-sum characterisation is the genuinely new content here.",
+      "**Strong induction by digit-peeling.** The forward direction peels the least-significant bit $n\\%2$ with `Nat.digits_def'`. The parity split is clean: an odd $n$ must be exactly $1$ (the rest of the bits vanish), and an even $n$ inherits a single-bit quotient and doubles it.",
+      "**Exactly-one-factor phrasing.** 'Divisible by $2$ but not $4$' is the concrete face of $v_2 = 1$: `padicValNat_dvd_iff_le` turns $2 \\mid \\binom{2n}{n}$ into $1 \\le v_2$ and $4 \\nmid \\binom{2n}{n}$ into $\\lnot(2 \\le v_2)$, and `omega` pins $v_2 = 1$.",
+      "**Sharp boundary of the OQ-04 valuation.** Among all $n$, the powers of two are exactly the minimisers of $s_2(n)$ over positive $n$ (value $1$); the all-ones $n = 2^k-1$ are the maximisers in their bit-width (value $k$, from OQ-04). This entry pins the lower extreme as an iff."
+    ],
+    "prerequisites": [
+      "The OQ-04 closed form v₂(C(2n,n)) = s₂(n) (re-derived here from Mathlib's digit-sum Kummer theorem)",
+      "Base-2 digit representations and the recursion digits 2 n = (n % 2) :: digits 2 (n / 2)",
+      "Strong induction on the natural numbers (Nat.strongRecOn)",
+      "The padicValNat divisibility API: padicValNat_dvd_iff_le"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Research Question and Answer",
+      "startLine": 3,
+      "endLine": 55,
+      "summary": "File header stating the converse left open by OQ-04 (which n give v₂(C(2n,n)) = 1), the answer (powers of two), and the new ingredient s₂(n) = 1 ↔ n = 2^k that Mathlib does not provide."
+    },
+    {
+      "id": "digit-sum-helpers",
+      "title": "Binary Digit-Sum Helpers",
+      "startLine": 63,
+      "endLine": 83,
+      "summary": "sum_digits_two_mul (s₂(2n) = s₂(n), doubling-invariance), sum_digits_two_pos (s₂(n) > 0 for n > 0), and sum_digits_two_eq_zero_iff (s₂(n) = 0 ↔ n = 0). These support the induction in the main lemma.",
+      "mathContext": "The binary digit sum is doubling-invariant and vanishes only at 0; positivity comes from the nonzero leading digit."
+    },
+    {
+      "id": "digit-sum-one",
+      "title": "The New Lemma: s₂(n) = 1 ↔ n is a Power of Two",
+      "startLine": 85,
+      "endLine": 117,
+      "summary": "sum_digits_two_eq_one_iff: a natural number has binary digit sum 1 exactly when it is a power of two. Forward by strong induction peeling n % 2 (odd ⇒ n = 1; even ⇒ n/2 = 2^j ⇒ n = 2^{j+1}); reverse via Nat.digits_base_pow_mul.",
+      "mathContext": "$s_2(n) = 1$ means a single $1$-bit, i.e. $n = 2^k$. This is the combinatorial heart of the entry, absent from Mathlib."
+    },
+    {
+      "id": "closed-form",
+      "title": "The OQ-04 Closed Form (Re-derived)",
+      "startLine": 119,
+      "endLine": 131,
+      "summary": "padicValNat_two_centralBinom: v₂(C(2n,n)) = s₂(n), re-derived from Mathlib's digit-sum Kummer theorem and doubling-invariance so this file stands alone.",
+      "mathContext": "$(2-1)v_2(\\binom{2n}{n}) = s_2(n)+s_2(n)-s_2(n) = s_2(n)$ after $s_2(2n) = s_2(n)$."
+    },
+    {
+      "id": "headline-biconditional",
+      "title": "The Headline Biconditional",
+      "startLine": 133,
+      "endLine": 151,
+      "summary": "padicValNat_two_centralBinom_eq_one_iff: v₂(C(2n,n)) = 1 ↔ ∃ k, n = 2^k, by rewriting with the closed form and the new digit-sum lemma. two_dvd_centralBinom_not_four_dvd_iff: the 2-and-not-4 phrasing via padicValNat_dvd_iff_le and omega.",
+      "mathContext": "The valuation is minimal (equal to 1) exactly at the powers of two; equivalently $2 \\mid \\binom{2n}{n}$ and $4 \\nmid \\binom{2n}{n}$ iff $n = 2^k$."
+    },
+    {
+      "id": "numeric-witnesses",
+      "title": "Worked Numeric Witnesses",
+      "startLine": 153,
+      "endLine": 170,
+      "summary": "Kernel-decidable checks: C(8,4) = 70 with v₂ = 1 (n = 4 = 2²), and C(6,3) = 20 divisible by 4 (n = 3 not a power of two). Demonstrates both directions on concrete values. Ends namespace KummerCentralBinomPowTwo.",
+      "mathContext": "$4 = 100_2$ has $s_2 = 1$ and $70 = 2\\cdot 35$; $3 = 11_2$ has $s_2 = 2$ and $20 = 2^2\\cdot 5$."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, self-contained Lean 4 formalization closing the converse direction of OQ-04: the central binomial coefficient C(2n,n) is divisible by 2 exactly once if and only if n is a power of two. The proof rests on the new elementary lemma s₂(n) = 1 ↔ ∃ k, n = 2^k, which Mathlib does not provide. 7 theorems, 0 axioms, 0 sorries.",
+    "implications": "Pins the lower extreme of the OQ-04 valuation v₂(C(2n,n)) = s₂(n) as a sharp iff, and supplies a reusable digit-sum characterisation of powers of two. The 'divisible by 2 not 4' phrasing gives an arithmetic test for n being a power of two purely in terms of C(2n,n) mod 4.",
+    "openQuestions": [
+      "For which n is v₂(C(2n,n)) = 2, i.e. s₂(n) = 2 (numbers with exactly two 1-bits, n = 2^a + 2^b)?",
+      "Characterise level sets s₂(n) = m as an arithmetic-combinatorial family, and count #{n < N : v₂(C(2n,n)) = m}.",
+      "Is there an analogous odd-prime statement: v_p(C(2n,n)) = 1 iff n lies in an explicit base-p digit family?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "kummer-theorem-oq-04",
+      "relationship": "extends",
+      "description": "Parent entry proving the closed form v₂(C(2n,n)) = s₂(n) and the forward direction (powers of two give valuation 1). This entry closes the converse: powers of two are the only such n."
+    },
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "descends-from",
+      "description": "Grandparent proof of Kummer's theorem on p-adic valuations of binomial coefficients via carry counts."
+    },
+    {
+      "targetId": "kummer-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling OQ on the Sierpiński triangle fractal structure of Pascal's triangle mod 2 — the geometric counterpart of binary digit-sum phenomena."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Kummer, E.E."
+      ],
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "year": "1852",
+      "venue": "Journal für die reine und angewandte Mathematik 44, pp. 93-146",
+      "note": "Original carry-count theorem for v_p(C(n,k)); the digit-sum form underlies the closed form specialised here"
+    },
+    {
+      "authors": [
+        "Legendre, A.-M."
+      ],
+      "title": "Théorie des nombres",
+      "year": "1830",
+      "venue": "3rd edition, Firmin Didot Frères, Paris",
+      "note": "Legendre's formula v_p(n!) = (n - s_p(n))/(p-1), the source of the digit-sum identity"
+    },
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "venue": "2nd edition, Addison-Wesley",
+      "note": "Binary digit sums, popcount, and the 2-adic behaviour of binomial coefficients (Sierpiński/Pascal mod 2)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "KummerCentralBinomPowTwo",
+    "lineCount": 170,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/KummerCentralBinomPowerOfTwoOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
