@@ -3169,6 +3169,7 @@ import Proofs.ShapleyFolkmanAristotle
 import Proofs.ShapleyFolkmanOQ01
 import Proofs.ShapleyFolkmanOQ03
 import Proofs.SimsonLineTheorem
+import Proofs.SimsonLineTheoremOQ01OQ01
 import Proofs.SkolemNoetherCSA
 import Proofs.SkolemNoetherMatrixAut
 import Proofs.SkolemNoetherMatrixAutAristotle
