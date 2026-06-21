@@ -1,0 +1,231 @@
+{
+  "id": "derangements-convergence-oq-02",
+  "title": "The sign of the derangement error and sharp two-sided bracketing of 1/e",
+  "slug": "derangements-convergence-oq-02",
+  "description": "Refines the parent's magnitude bound |D(n)/n! - e⁻¹| ≤ 1/(n+1)! by pinning down the exact sign of the error: even partial sums D(2k)/(2k)! lie strictly above 1/e and odd ones D(2k+1)/(2k+1)! strictly below, so consecutive derangement ratios bracket 1/e in nested intervals of exact width 1/(2k+1)!. Unified sign law: (-1)^n·(D(n)/n! - e⁻¹) > 0 for every n.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DerangementsConvergenceOQ02.lean",
+    "tags": [
+      "combinatorics",
+      "derangements",
+      "probability",
+      "e-constant",
+      "convergence",
+      "alternating-series",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No assumptions. Fully machine-checked with only Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). Builds on the parent file DerangementsConvergence.lean (the alternating partial-sum representation D(n)/n! = ∑_{k≤n}(-1)^k/k! and the limit D(n)/n! → e⁻¹); the sign/bracketing content is derived here by elementary monotone-subsequence arguments.",
+    "dateAdded": "2026-06-21",
+    "lineCount": 239,
+    "theoremCount": 25,
+    "definitionCount": 0,
+    "originalContributions": [
+      "ratio_even_gt / ratio_odd_lt (PROVED): the even-indexed ratios D(2k)/(2k)! are strictly > e⁻¹ and the odd-indexed ratios D(2k+1)/(2k+1)! strictly < e⁻¹ — the sign of the approximation error, which the parent's |·| bound discards",
+      "numDerangements_bracket (PROVED): sharp two-sided bracket D(2k+1)/(2k+1)! < e⁻¹ < D(2k)/(2k)! — 1/e is trapped between consecutive derangement ratios",
+      "aSeq_error_sign / numDerangements_error_sign (PROVED): the unified sign law 0 < (-1)^n·(D(n)/n! - e⁻¹) for every n — the error alternates in sign with n",
+      "consecutive_error_opposite (PROVED): (a(n)-e⁻¹)·(a(n+1)-e⁻¹) < 0 — consecutive errors always have opposite signs",
+      "nested_interval_width (PROVED): the bracketing interval [a(2k+1), a(2k)] has exact width a(2k) - a(2k+1) = 1/(2k+1)!, shrinking monotonically to 0 (nested intervals converging to e⁻¹)",
+      "numDerangements_gt_of_even / numDerangements_lt_of_odd (PROVED): the integer-side form — D(n) > n!·e⁻¹ for even n and D(n) < n!·e⁻¹ for odd n, locating each derangement count strictly on one side of n!/e"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "numDerangements",
+        "description": "The derangement counting function D(n) (permutations with no fixed point).",
+        "module": "Mathlib.Combinatorics.Derangements.Finite"
+      },
+      {
+        "theorem": "strictAnti_nat_of_succ_lt / strictMono_nat_of_lt_succ",
+        "description": "A sequence on ℕ is strictly monotone iff each term compares with its immediate successor — used to upgrade the one-step even/odd inequalities to monotone subsequences.",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "le_of_tendsto / ge_of_tendsto",
+        "description": "Order limits: a one-sided eventual bound on a convergent sequence passes to its limit — the mechanism by which a strictly antitone (resp. monotone) convergent sequence stays strictly above (resp. below) its limit.",
+        "module": "Mathlib.Topology.Order.Basic"
+      },
+      {
+        "theorem": "Nat.factorial_lt",
+        "description": "Strict monotonicity of the factorial, n! < m! ↔ n < m (for 0 < n) — gives 1/(m+1)! < 1/m! that drives the one-step inequalities.",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The number of derangements D(n) satisfies D(n)/n! = ∑_{k=0}^n (-1)^k/k!, the n-th partial sum of the Taylor series for e⁻¹. This is one of the cleanest occurrences of e in combinatorics (Montmort 1708, Euler 1751). The parent entry derangements-convergence proves the classical magnitude estimate |D(n)/n! - e⁻¹| ≤ 1/(n+1)! via the alternating series test. But the alternating series test carries more information than magnitude: for a series with terms of strictly decreasing absolute value, the partial sums oscillate around the limit, the even ones from above and the odd ones from below, and the remainder always has the sign of its first omitted term. This entry extracts exactly that refinement for derangements.",
+    "problemStatement": "**OQ-02 of derangements-convergence**\n\nThe parent establishes |D(n)/n! - e⁻¹| ≤ 1/(n+1)!. Determine the *sign* of D(n)/n! - e⁻¹ and the resulting two-sided localization of 1/e by the derangement ratios.",
+    "text": "For every k: D(2k+1)/(2k+1)! < e⁻¹ < D(2k)/(2k)!, and uniformly 0 < (-1)^n·(D(n)/n! - e⁻¹); the brackets are nested intervals of exact width 1/(2k+1)!.",
+    "proofStrategy": "Work with a(n) = D(n)/n! = altFactPartialSum n (the parent's representation). The one-step recurrence a(n+1) = a(n) + (-1)^(n+1)/(n+1)! gives, on pairing two steps, that the even-indexed subsequence k ↦ a(2k) is strictly decreasing and the odd-indexed subsequence k ↦ a(2k+1) strictly increasing (each pair adds -1/(odd)! + 1/(even)! < 0, resp. +1/(even)! - 1/(odd)! > 0, by strict monotonicity of the factorial). Both subsequences converge to e⁻¹ (the parent's limit composed with k ↦ 2k and k ↦ 2k+1). A strictly antitone convergent sequence stays strictly above its limit and a strictly monotone one strictly below (proved here from le_of_tendsto/ge_of_tendsto), yielding e⁻¹ < a(2k) and a(2k+1) < e⁻¹. The unified sign law and the opposite-sign product follow by casing on the parity of n; the exact nesting width is one application of the one-step recurrence.",
+    "keyInsights": [
+      "The parent's absolute-value bound is lossy: |D(n)/n! - e⁻¹| ≤ 1/(n+1)! throws away the sign of the error. The alternating structure determines that sign completely — (-1)^n·(D(n)/n! - e⁻¹) > 0 — so D(n)/n! is *never* exactly e⁻¹ and you always know which side it is on.",
+      "Sign + magnitude together upgrade one-sided approximation to genuine two-sided bracketing: 1/e is trapped strictly between two consecutive computable rationals D(2k+1)/(2k+1)! and D(2k)/(2k)!, the hallmark of an alternating series and the basis for interval-arithmetic estimates of e⁻¹.",
+      "Strictness comes for free from the order-limit lemmas, not from a delicate tail estimate: a strictly decreasing sequence converging to L has every term > L (its successor is already ≥ L, and it is strictly larger than its successor). This sidesteps having to prove the omitted tail is strictly positive.",
+      "The brackets are nested with an exact, not merely bounded, width: a(2k) - a(2k+1) = 1/(2k+1)! precisely. This is the sharp form of the parent's bound at even/odd index pairs and exhibits e⁻¹ as the unique common point of the shrinking intervals [a(2k+1), a(2k)]."
+    ],
+    "prerequisites": [
+      "The parent file's alternating-series representation D(n)/n! = ∑_{k≤n}(-1)^k/k! (altFactPartialSum) and the limit D(n)/n! → e⁻¹",
+      "Monotone-subsequence API: strictAnti_nat_of_succ_lt, strictMono_nat_of_lt_succ",
+      "Order limits le_of_tendsto / ge_of_tendsto and strict monotonicity of the factorial"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Module docstring stating the sign/bracketing refinement, imports of the parent DerangementsConvergence and Mathlib.Tactic, and namespace DerangementsConvergenceOQ02.",
+      "mathContext": "Setting: a(n) = D(n)/n! = ∑_{k=0}^n (-1)^k/k!, the partial sums of e⁻¹; goal is the sign of a(n) - e⁻¹."
+    },
+    {
+      "id": "sec-signs",
+      "title": "§1 Signs of the Alternating Terms",
+      "startLine": 58,
+      "endLine": 70,
+      "summary": "altFactTerm_of_even and altFactTerm_of_odd evaluate the k-th term (-1)^k/k! to +1/k! or -(1/k!) according to the parity of k, via Even.neg_one_pow / Odd.neg_one_pow.",
+      "mathContext": "The k-th Taylor term of e⁻¹ is (-1)^k/k!; its sign is +1 for even k and -1 for odd k."
+    },
+    {
+      "id": "sec-monotone",
+      "title": "§2 Two-Step Recurrence and Strict Monotonicity of Subsequences",
+      "startLine": 71,
+      "endLine": 114,
+      "summary": "aSeq_add_two gives a(n+2) = a(n) + term(n+1) + term(n+2); aSeq_even_step and aSeq_odd_step show the even-indexed ratios strictly decrease and the odd-indexed strictly increase (each pair sign-controlled by 1/(m+1)! < 1/m!). These upgrade to StrictAnti / StrictMono on the subsequences.",
+      "mathContext": "Pairing consecutive alternating terms: a(2k+2) - a(2k) = 1/(2k+2)! - 1/(2k+1)! < 0 and a(2k+3) - a(2k+1) = 1/(2k+2)! - 1/(2k+3)! > 0."
+    },
+    {
+      "id": "sec-converge",
+      "title": "§3 Both Subsequences Converge to 1/e",
+      "startLine": 115,
+      "endLine": 138,
+      "summary": "aSeq_tendsto restates the parent limit D(n)/n! → e⁻¹ for the partial sums; composing with k ↦ 2k and k ↦ 2k+1 (tendsto_two_mul, tendsto_two_mul_add_one) gives aeven_tendsto and aodd_tendsto, the convergence of the even/odd subsequences to e⁻¹.",
+      "mathContext": "A subsequence of a convergent sequence has the same limit; both a(2k) and a(2k+1) converge to e⁻¹."
+    },
+    {
+      "id": "sec-onesided",
+      "title": "§4 Monotone Convergent Sequences Stay on One Side of the Limit",
+      "startLine": 139,
+      "endLine": 154,
+      "summary": "lt_of_strictAnti_tendsto: a strictly antitone sequence converging to L stays strictly above L; gt_of_strictMono_tendsto: a strictly monotone one stays strictly below L. Proved from le_of_tendsto / ge_of_tendsto on the tail.",
+      "mathContext": "If x is strictly decreasing with x → L, then for each n, L ≤ x(n+1) < x(n); the strictness from the single step gives x(n) > L."
+    },
+    {
+      "id": "sec-main",
+      "title": "§5 Main Bracketing Results",
+      "startLine": 155,
+      "endLine": 213,
+      "summary": "ratio_even_gt (e⁻¹ < a(2k)), ratio_odd_lt (a(2k+1) < e⁻¹), their parity-indexed forms aSeq_gt_of_even / aSeq_lt_of_odd, the two-sided bracket numDerangements_bracket, the unified sign laws aSeq_error_sign / numDerangements_error_sign, the opposite-sign product consecutive_error_opposite, and the exact width nested_interval_width.",
+      "mathContext": "Two-sided bracketing D(2k+1)/(2k+1)! < e⁻¹ < D(2k)/(2k)!, sign law (-1)^n·(D(n)/n! - e⁻¹) > 0, and nesting width a(2k) - a(2k+1) = 1/(2k+1)!."
+    },
+    {
+      "id": "sec-integer",
+      "title": "§6 Integer-Side Corollaries",
+      "startLine": 214,
+      "endLine": 239,
+      "summary": "numDerangements_gt_of_even (D(n) > n!·e⁻¹ for even n) and numDerangements_lt_of_odd (D(n) < n!·e⁻¹ for odd n), obtained by clearing the positive denominator n! from the ratio bounds.",
+      "mathContext": "Locating each derangement count relative to n!/e: above for even n, below for odd n (the signed refinement of |D(n) - n!/e| < 1/2)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements-convergence",
+      "relationship": "parent",
+      "description": "Parent entry: proves the magnitude bound |D(n)/n! - e⁻¹| ≤ 1/(n+1)! and the limit D(n)/n! → e⁻¹. This entry refines that bound by determining the sign of the error and the two-sided bracketing of 1/e, reusing the parent's altFactPartialSum representation and limit."
+    },
+    {
+      "targetId": "derangements-convergence-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling entry: derives D(n) = round(n!/e) from the |D(n) - n!/e| < 1/2 bound. This entry sharpens the location of D(n) relative to n!/e from 'within 1/2' to 'strictly above for even n, strictly below for odd n'."
+    },
+    {
+      "targetId": "derangements-convergence-oq-03-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling entry on the integer recurrence D(n+1) = (n+1)·D(n) + (-1)^(n+1); its exact ±1 remainder is the integer counterpart of the alternating sign refined here at the level of the e⁻¹ approximation."
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "foundational",
+      "description": "Root entry: basic derangement definitions and the counting function numDerangements used throughout."
+    }
+  ],
+  "conclusion": {
+    "summary": "Machine-verified refinement of the derangement convergence rate: the sign of D(n)/n! - e⁻¹ is exactly (-1)^n, so the even-indexed ratios sit strictly above 1/e and the odd-indexed strictly below, bracketing 1/e in nested intervals of exact width 1/(2k+1)!. Zero sorries, zero axioms beyond the foundational ones.",
+    "implications": "Sign-determined bracketing turns the partial sums D(n)/n! into a certified two-sided enclosure of e⁻¹: any odd ratio is a strict lower bound and any even ratio a strict upper bound, with explicit gap 1/(2k+1)!. This is the form needed for interval-arithmetic estimates of 1/e and exhibits the derangement ratios as a textbook nested-interval construction of e⁻¹. On the integer side it pins each derangement count strictly on one side of n!/e by parity, sharpening the rounding picture of the sibling entries."
+  },
+  "mainTheorems": [
+    {
+      "name": "numDerangements_bracket",
+      "type": "theorem",
+      "description": "Two-sided bracketing: consecutive derangement ratios straddle 1/e, D(2k+1)/(2k+1)! < e⁻¹ < D(2k)/(2k)!.",
+      "leanType": "(k : ℕ) → (numDerangements (2*k+1) : ℝ)/((2*k+1).factorial) < rexp (-1) ∧ rexp (-1) < (numDerangements (2*k) : ℝ)/((2*k).factorial)"
+    },
+    {
+      "name": "numDerangements_error_sign",
+      "type": "theorem",
+      "description": "Unified sign law: the approximation error D(n)/n! - e⁻¹ alternates in sign with n, i.e. (-1)^n·(D(n)/n! - e⁻¹) > 0 for every n.",
+      "leanType": "(n : ℕ) → 0 < (-1)^n * ((numDerangements n : ℝ)/(n.factorial) - rexp (-1))"
+    },
+    {
+      "name": "nested_interval_width",
+      "type": "theorem",
+      "description": "The bracketing intervals are nested with exact width a(2k) - a(2k+1) = 1/(2k+1)!.",
+      "leanType": "(k : ℕ) → altFactPartialSum (2*k) - altFactPartialSum (2*k+1) = 1/((2*k+1).factorial)"
+    },
+    {
+      "name": "numDerangements_gt_of_even",
+      "type": "theorem",
+      "description": "Integer-side form: for even n, the derangement count strictly exceeds n!/e.",
+      "leanType": "{n : ℕ} → Even n → (n.factorial : ℝ) * rexp (-1) < (numDerangements n : ℝ)"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.DerangementsConvergence",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "DerangementsConvergenceOQ02",
+    "lineCount": 239,
+    "axiomCount": 0,
+    "theoremCount": 25,
+    "substantiveTheoremCount": 11,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/DerangementsConvergenceOQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Leonhard Euler",
+      "title": "Calcul de la probabilité dans le jeu de rencontre",
+      "year": "1751",
+      "venue": "Mémoires de l'Académie de Berlin 7, pp. 255–270",
+      "note": "Origin of the derangement series D(n)/n! = ∑(-1)^k/k! whose alternating partial sums are bracketed here."
+    },
+    {
+      "authors": "Pierre Rémond de Montmort",
+      "title": "Essay d'analyse sur les jeux de hazard",
+      "year": "1708",
+      "venue": "Paris",
+      "note": "The matching/rencontre problem; first appearance of derangement counts."
+    },
+    {
+      "authors": "Tom M. Apostol",
+      "title": "Mathematical Analysis",
+      "year": "1974",
+      "venue": "Addison-Wesley, §8.14 (alternating series)",
+      "note": "Leibniz alternating series test, including the sign of the remainder and the two-sided bracketing of the sum by consecutive partial sums."
+    }
+  ]
+}
