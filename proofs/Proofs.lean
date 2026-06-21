@@ -2800,6 +2800,7 @@ import Proofs.LagrangeFourSquaresWaringG2OQ01ExactValue
 import Proofs.LagrangeFourSquaresWaringG2OQ01General
 import Proofs.LagrangeFourSquaresWaringG2OQ03OQ04
 import Proofs.LagrangeFourSquaresWaringG2OQ03OQ05
+import Proofs.LagrangeFourSquaresWaringG2OQ03OQ05OQ01
 import Proofs.LagrangeTheorem
 import Proofs.LagrangeTheoremOQ01
 import Proofs.LagrangeTheoremOQ01OQ01
