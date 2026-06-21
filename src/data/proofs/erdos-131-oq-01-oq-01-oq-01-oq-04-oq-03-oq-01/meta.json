@@ -1,0 +1,144 @@
+{
+  "id": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01",
+  "slug": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos131DavenportPower",
+    "lineCount": 210,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos131DavenportPower.lean",
+    "sorries": 0
+  },
+  "title": "The Homogeneous-Power Davenport Lower Bound D(Gⁿ) ≥ n·(D(G) − 1) + 1 (Erdős #131)",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos131DavenportPower.lean",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "erdos-problems",
+      "erdos-131",
+      "davenport-constant",
+      "zero-sum-free",
+      "zero-sum-subsequence",
+      "direct-power",
+      "elementary-abelian",
+      "olson-theorem",
+      "isleast",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 210,
+    "theoremCount": 7,
+    "definitionCount": 3,
+    "badge": "original",
+    "originalContributions": [
+      "davenport_pow_lower: the headline result — for an arbitrary additive group G the Davenport constant of the n-fold direct power Gⁿ = (Fin n → G) satisfies D(Gⁿ) ≥ n·(D(G) − 1) + 1, formalized via IsLeast of the Davenport-length sets. This is the homogeneous case of the iterated Olson–Davenport lower bound; it advances the open question oq-04-oq-03-oq-01 of the binary direct-sum companion (lifting the binary concatenation to a k-fold direct sum) for the homogeneous family. Crucially it is proved in ONE shot, needing only IsLeast (DavenportSet G) and IsLeast (DavenportSet Gⁿ) as hypotheses — no per-stage finiteness/IsLeast for the intermediate powers Gᵏ that an induction on the binary bound would require.",
+      "powerseq_not_hasZeroSum: the engine — the POWER-CONCATENATION principle for zero-sum-free sequences. If f : Fin ℓ → G has no nonempty zero-sum subsequence, then powerSeq n f : Fin (n·ℓ) → (Fin n → G) has none either. Proof: a candidate zero-sum index set s ⊆ Fin (n·ℓ) is reindexed along finProdFinEquiv : Fin n × Fin ℓ ≃ Fin (n·ℓ) to t ⊆ Fin n × Fin ℓ; the total is ∑_{(i,k) ∈ t} Pi.single i (f k), whose j-th coordinate (Finset.sum_apply, Pi.single_apply) keeps only the terms with i = j and equals ∑ over the slice {(j,k) ∈ t} of f k. Each slice sum vanishes; reindexing the slice by Prod.snd (injective there, Finset.sum_image) makes it a zero-sum subset of f, forced empty by zero-sum-freeness. Every slice empty ⟹ t = ∅ ⟹ s = ∅, contradicting nonemptiness.",
+      "powerSeq: the abstract n-fold power construction — powerSeq n f sends the index x, decoded as (i, k) : Fin n × Fin ℓ via finProdFinEquiv, to the vector Pi.single i (f k) (place f k in coordinate i of Gⁿ, 0 elsewhere). The single explicit extremal sequence whose length n·(D(G)−1) certifies the bound, generalizing the binary concatSeq of the parent.",
+      "davenport_elementary_abelian_lower: feeding the cyclic value D(ℤ/pℤ) = p gives D((ℤ/pℤ)ⁿ) ≥ n·(p − 1) + 1 — the lower-bound half of Olson's theorem for elementary abelian p-groups, where equality in fact holds (the matching upper bound is not formalized).",
+      "davenport_pow_two_lower: the n = 2 specialization D(G²) ≥ 2·D(G) − 1, matching the diagonal special case of the binary direct-sum companion (davenport_directSum_diag_lower) but obtained directly from the power construction.",
+      "davenport_set_mono, zero_not_mem_davenportSet, one_le_of_isLeast_davenport: the upward-closure of the Davenport set and positivity of the least Davenport length (reproduced verbatim from the binary companion to keep the file self-contained), the small facts that let D(G) − 1 be a genuine zero-sum-free length."
+    ],
+    "prerequisites": [
+      "finProdFinEquiv (Mathlib): the equivalence Fin m × Fin n ≃ Fin (m·n); the product reindexing that turns a subset of the power index Fin (n·ℓ) into a subset of Fin n × Fin ℓ, splitting each candidate zero-sum set into per-coordinate slices.",
+      "Pi.single and Pi.single_apply (Mathlib): the standard-basis vector Pi.single i v with (Pi.single i v) j = if j = i then v else 0; the building block placing f k in a single coordinate of Gⁿ and the evaluation that isolates the i = j slice.",
+      "Finset.sum_apply: (∑ x ∈ s, g x) j = ∑ x ∈ s, g x j for a Finset sum of functions, used to read off coordinate j of the vanishing total.",
+      "Finset.sum_filter and Finset.sum_image: rewrite ∑ (if p x then …) as a sum over a filter, and a sum over an image as a sum over the source under an injection — together turning the j-th coordinate condition into a genuine zero-sum subset of f.",
+      "IsLeast (Mathlib): the order-theoretic packaging of the Davenport constant as the least Davenport length, shared with the cyclic, rank-2 and binary direct-sum companions."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "finProdFinEquiv",
+        "description": "Equivalence Fin m × Fin n ≃ Fin (m·n). The reindexing along which a candidate zero-sum subset of the power index is split into per-coordinate slices; powerSeq is defined through its inverse.",
+        "module": "Mathlib.Logic.Equiv.Fin.Basic"
+      },
+      {
+        "theorem": "Pi.single_apply",
+        "description": "(Pi.single i v) j = if j = i then v else 0. Evaluating the power sequence's vector at coordinate j keeps the term only when the block index equals j, isolating the slice over j.",
+        "module": "Mathlib.Data.Pi.Algebra"
+      },
+      {
+        "theorem": "Finset.sum_apply",
+        "description": "(∑ x ∈ s, g x) j = ∑ x ∈ s, g x j for a sum of functions into a Pi type. Reads coordinate j of the vanishing total ∑ Pi.single x.1 (f x.2) = 0.",
+        "module": "Mathlib.Algebra.BigOperators.Pi"
+      },
+      {
+        "theorem": "Finset.sum_filter",
+        "description": "∑ x ∈ s.filter p, g x = ∑ x ∈ s, if p x then g x else 0. Converts the coordinate-j sum (with its if-then-else from Pi.single_apply) into a sum over the slice filter {x : j = x.1}.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum_image",
+        "description": "∑ b ∈ s.image g, h b = ∑ a ∈ s, h (g a) when g is injective on s. With g = Prod.snd (injective on a slice where the first coordinate is fixed) it identifies the slice sum with a sum over a genuine Finset of indices of f, exhibiting a zero-sum subset.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01-oq-01",
+      "question": "This entry handles the HOMOGENEOUS power Gⁿ = (Fin n → G) with a single product-index reindexing finProdFinEquiv. The fully general indexed direct sum ⨁_{i : Fin k} Gᵢ with distinct factors needs a Σ-type index Σ i, Fin (ℓ i) and dependent Pi.single. Does the one-shot powerSeq argument lift verbatim to a sigmaSeq over finSigmaFinEquiv : (Σ i, Fin (ℓ i)) ≃ Fin (Σ ℓ i) — giving D(⨁ᵢ Gᵢ) ≥ 1 + Σ(D(Gᵢ) − 1) without per-stage IsLeast — or does the dependent encoding force genuinely different bookkeeping?",
+      "significance": "medium"
+    },
+    {
+      "id": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01-oq-02",
+      "question": "For elementary abelian p-groups the bound D((ℤ/pℤ)ⁿ) ≥ n·(p − 1) + 1 is SHARP (Olson). The matching upper bound D((ℤ/pℤ)ⁿ) ≤ n·(p − 1) + 1 — i.e. every length n(p−1)+1 sequence over (ℤ/pℤ)ⁿ has a nonempty zero-sum subsequence — has an elementary proof for n = 1 (already formalized: D(ℤ/pℤ) = p) but the general p-group case uses the group-algebra / Chevalley–Warning argument. Is the n-variable Chevalley–Warning vanishing-of-power-sums step formalizable in Mathlib (which has Chevalley–Warning) to close the upper half for elementary abelian groups?",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03",
+      "relationship": "extends",
+      "description": "Advances that entry's open question oq-04-oq-03-oq-01 (lifting the binary concatenation to a k-fold direct sum) for the homogeneous family Gⁿ. Where the binary bound D(G₁ ⊕ G₂) ≥ D(G₁) + D(G₂) − 1 would need per-stage IsLeast hypotheses for every intermediate power to iterate, the powerSeq construction here gives D(Gⁿ) ≥ n·(D(G) − 1) + 1 in one step using a single product reindexing finProdFinEquiv in place of the binary finSumFinEquiv split."
+    },
+    {
+      "targetId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "Uses the exact cyclic Davenport constant D(ℤ/nℤ) = n from that entry as the input D(G) for the elementary-abelian specialization D((ℤ/pℤ)ⁿ) ≥ n·(p − 1) + 1."
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "extends",
+      "description": "Supplies the homogeneous-power case of the Olson–Davenport lower bound for the additive-combinatorial constant governing non-dividing sets in the parent Erdős #131 study, as reusable axiom-free infrastructure Mathlib lacks."
+    }
+  ],
+  "references": [
+    {
+      "title": "A combinatorial problem on finite Abelian groups, I",
+      "author": "John E. Olson",
+      "year": "1969",
+      "venue": "J. Number Theory",
+      "description": "Proves D((ℤ/pℤ)ⁿ) = n·(p − 1) + 1 for elementary abelian p-groups; the lower-bound half formalized here is exactly the zero-sum-free power-sequence construction, and the matching upper bound is Olson's Chevalley–Warning argument."
+    },
+    {
+      "title": "On Davenport's constant",
+      "author": "various (survey)",
+      "year": "2006",
+      "venue": "Expo. Math. / survey",
+      "description": "The Davenport constant D(G) is the least d such that every length-d sequence over G has a nonempty zero-sum subsequence; iterating the concatenation of zero-sum-free sequences across a direct power gives the standard lower bound, sharp for p-groups."
+    },
+    {
+      "title": "On some problems in combinatorial number theory",
+      "author": "Paul Erdős",
+      "year": "1975",
+      "venue": "Er75b",
+      "description": "Erdős's problem #131 on non-dividing sets; the Davenport constant is the invariant behind the per-element size bounds, and its direct-power lower bound is the higher-rank generalization of the cyclic case."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For an arbitrary additive group G, the Davenport constant of the n-fold direct power Gⁿ = (Fin n → G) satisfies D(Gⁿ) ≥ n·(D(G) − 1) + 1 (davenport_pow_lower, with D stated as the least Davenport length via IsLeast). The proof rests on the power-concatenation principle powerseq_not_hasZeroSum: given a zero-sum-free sequence f over G of length D(G) − 1, the power sequence powerSeq n f over Gⁿ (which places f k in coordinate i for the index decoded as (i,k) via finProdFinEquiv) is zero-sum-free — a candidate zero-sum index set is reindexed into Fin n × Fin ℓ, and reading off coordinate j (Finset.sum_apply, Pi.single_apply, Finset.sum_filter) turns the vanishing total into the slice sum ∑ over {(j,k) ∈ t} of f k, which Finset.sum_image identifies with a zero-sum subset of f, forced empty; all slices empty ⟹ the set is empty. Upward closure of the Davenport set (davenport_set_mono) then pushes the length n·(D(G)−1) out of the Davenport set, giving the bound. Specializations recover the elementary abelian value D((ℤ/pℤ)ⁿ) ≥ n·(p − 1) + 1 and the n = 2 diagonal D(G²) ≥ 2·D(G) − 1. 210 lines, 7 theorems, 3 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "The entry isolates the homogeneous case of the iterated Olson–Davenport lower bound and proves it with a single explicit construction rather than an induction on the binary bound, so it needs no finiteness argument for the intermediate powers. The elementary abelian specialization D((ℤ/pℤ)ⁿ) ≥ n·(p − 1) + 1 is the sharp lower half of Olson's classical p-group theorem; the matching upper bound (Olson's Chevalley–Warning argument) remains the deep open piece. The product-index Pi.single / finProdFinEquiv encoding supplies reusable direct-power zero-sum-free infrastructure complementing the binary toLeft/toRight machinery of the parent entry."
+  }
+}
