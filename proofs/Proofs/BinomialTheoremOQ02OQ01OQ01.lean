@@ -33,7 +33,7 @@ The multinomial theorem provides the normalization proof directly.
 namespace BinomialTheoremOQ02OQ01OQ01
 
 open Finset BigOperators MeasureTheory
-open scoped ENNReal
+open scoped ENNReal Nat
 
 -- ============================================================
 -- PART 1: The Composition Type (Support of Multinomial)
@@ -205,7 +205,65 @@ theorem multinomial_marginal_binomial {α : Type*} [DecidableEq α]
 -- PART 7: Mean and Variance
 -- ============================================================
 
-/-- The expected value of the i-th component is E[Xᵢ] = n · pᵢ -/
+/-- **Absorption identity.** For a composition `k` of `n` (i.e. `∑ k = n`) with
+    `kᵢ ≥ 1`, lowering the `i`-th count by one turns the multinomial coefficient
+    into the `(n-1)`-multinomial, absorbing the factor `kᵢ` into `n`:
+    `kᵢ · multinomial(s,k) = n · multinomial(s, update k i (kᵢ-1))`.
+    This is the combinatorial engine behind `E[Xᵢ] = n·pᵢ`. -/
+private theorem multinomial_absorb {α : Type*} [DecidableEq α] (s : Finset α)
+    (k : α → ℕ) (n : ℕ) (i : α) (hi : i ∈ s) (hsum : ∑ j ∈ s, k j = n) (hki : k i ≠ 0) :
+    k i * Nat.multinomial s k =
+    n * Nat.multinomial s (Function.update k i (k i - 1)) := by
+  have hn : n ≠ 0 := by
+    have hle : k i ≤ ∑ j ∈ s, k j := Finset.single_le_sum (fun j _ => Nat.zero_le _) hi
+    omega
+  set P := ∏ j ∈ s.erase i, (k j)! with hP
+  -- factor the factorial products at `i`
+  have hk_prod : (∏ j ∈ s, (k j)!) = (k i)! * P :=
+    (Finset.mul_prod_erase s (fun j => (k j)!) hi).symm
+  have hk'_prod : (∏ j ∈ s, ((Function.update k i (k i - 1)) j)!) = (k i - 1)! * P := by
+    rw [← Finset.mul_prod_erase s (fun j => ((Function.update k i (k i - 1)) j)!) hi,
+        Function.update_self]
+    congr 1
+    exact Finset.prod_congr rfl
+      (fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)])
+  -- the lowered composition sums to `n - 1`
+  have hsum' : (∑ j ∈ s, (Function.update k i (k i - 1)) j) = n - 1 := by
+    rw [← Finset.add_sum_erase s (Function.update k i (k i - 1)) hi, Function.update_self]
+    have hcong : (∑ j ∈ s.erase i, (Function.update k i (k i - 1)) j) = ∑ j ∈ s.erase i, k j :=
+      Finset.sum_congr rfl
+        (fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)])
+    rw [hcong]
+    have he : k i + ∑ j ∈ s.erase i, k j = n := by
+      rw [Finset.add_sum_erase s k hi]; exact hsum
+    omega
+  have spec_k : (∏ j ∈ s, (k j)!) * Nat.multinomial s k = n ! := by
+    rw [Nat.multinomial_spec s k, hsum]
+  have spec_k' : (∏ j ∈ s, ((Function.update k i (k i - 1)) j)!) *
+      Nat.multinomial s (Function.update k i (k i - 1)) = (n - 1)! := by
+    rw [Nat.multinomial_spec s (Function.update k i (k i - 1)), hsum']
+  have hpos : 0 < (k i - 1)! * P := by
+    refine Nat.mul_pos (Nat.factorial_pos _) ?_
+    rw [hP]; exact Finset.prod_pos (fun j _ => Nat.factorial_pos _)
+  apply Nat.eq_of_mul_eq_mul_left hpos
+  calc (k i - 1)! * P * (k i * Nat.multinomial s k)
+      = (k i * (k i - 1)!) * P * Nat.multinomial s k := by ring
+    _ = (k i)! * P * Nat.multinomial s k := by rw [Nat.mul_factorial_pred hki]
+    _ = (∏ j ∈ s, (k j)!) * Nat.multinomial s k := by rw [hk_prod]
+    _ = n ! := spec_k
+    _ = n * (n - 1)! := (Nat.mul_factorial_pred hn).symm
+    _ = n * ((∏ j ∈ s, ((Function.update k i (k i - 1)) j)!) *
+            Nat.multinomial s (Function.update k i (k i - 1))) := by rw [spec_k']
+    _ = n * ((k i - 1)! * P * Nat.multinomial s (Function.update k i (k i - 1))) := by
+          rw [hk'_prod]
+    _ = (k i - 1)! * P * (n * Nat.multinomial s (Function.update k i (k i - 1))) := by ring
+
+/-- The expected value of the i-th component is E[Xᵢ] = n · pᵢ.
+
+    Proof: each composition `k` of `n` with `kᵢ ≥ 1` corresponds bijectively to a
+    composition of `n-1` by lowering `kᵢ`; the absorption identity converts the
+    weight `kᵢ·multinomial(s,k)·∏pⱼ^kⱼ` into `n·pᵢ·multinomial(s,k')·∏pⱼ^k'ⱼ`, and
+    summing the latter over all compositions of `n-1` gives `n·pᵢ·(∑p)ⁿ⁻¹ = n·pᵢ`. -/
 theorem multinomial_mean {α : Type*} [DecidableEq α]
     (s : Finset α) (p : α → ℝ) (n : ℕ)
     (hp_sum : ∑ i ∈ s, p i = 1) (hp_nonneg : ∀ i ∈ s, 0 ≤ p i)
@@ -213,7 +271,101 @@ theorem multinomial_mean {α : Type*} [DecidableEq α]
     ∑ k ∈ s.piAntidiag n,
       (k i : ℝ) * ((Nat.multinomial s k : ℝ) * ∏ j ∈ s, p j ^ k j) =
     n * p i := by
-  sorry -- Standard: E[Xᵢ] = n·pᵢ for multinomial
+  obtain rfl | hn := Nat.eq_zero_or_pos n
+  · simp
+  -- total mass of the (n-1)-multinomial is 1 (multinomial theorem with ∑ p = 1)
+  have hmass : ∑ k ∈ s.piAntidiag (n - 1),
+      (Nat.multinomial s k : ℝ) * ∏ j ∈ s, p j ^ k j = 1 := by
+    rw [← Finset.sum_pow_eq_sum_piAntidiag s p (n - 1), hp_sum, one_pow]
+  -- drop the kᵢ = 0 terms (they carry a vanishing factor kᵢ)
+  rw [← Finset.sum_filter_of_ne (p := fun k => k i ≠ 0)
+        (fun k _ hfk hzero => hfk (by rw [hzero]; simp))]
+  -- reindex onto compositions of n-1 via k ↦ update k i (kᵢ-1)
+  rw [Finset.sum_nbij'
+        (i := fun k => Function.update k i (k i - 1))
+        (j := fun k' => Function.update k' i (k' i + 1))
+        (t := s.piAntidiag (n - 1))
+        (g := fun k' => (n : ℝ) * p i *
+          ((Nat.multinomial s k' : ℝ) * ∏ j ∈ s, p j ^ k' j))]
+  · rw [← Finset.mul_sum, hmass, mul_one]
+  · -- hi : forward map lands in piAntidiag (n-1)
+    intro k hk
+    rw [Finset.mem_filter, Finset.mem_piAntidiag] at hk
+    obtain ⟨⟨hksum, hksupp⟩, hki⟩ := hk
+    rw [Finset.mem_piAntidiag]
+    refine ⟨?_, ?_⟩
+    · have hcong : (∑ j ∈ s.erase i, (Function.update k i (k i - 1)) j) = ∑ j ∈ s.erase i, k j :=
+        Finset.sum_congr rfl
+          (fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)])
+      rw [← Finset.add_sum_erase s (Function.update k i (k i - 1)) hi, Function.update_self, hcong]
+      have he : k i + ∑ j ∈ s.erase i, k j = n := by
+        rw [Finset.add_sum_erase s k hi]; exact hksum
+      omega
+    · intro j hj
+      by_cases hji : j = i
+      · subst hji; exact hi
+      · rw [Function.update_of_ne hji] at hj; exact hksupp j hj
+  · -- hj : inverse map lands in the filtered set
+    intro k' hk'
+    rw [Finset.mem_piAntidiag] at hk'
+    obtain ⟨hk'sum, hk'supp⟩ := hk'
+    rw [Finset.mem_filter, Finset.mem_piAntidiag]
+    refine ⟨⟨?_, ?_⟩, ?_⟩
+    · have hcong : (∑ j ∈ s.erase i, (Function.update k' i (k' i + 1)) j) = ∑ j ∈ s.erase i, k' j :=
+        Finset.sum_congr rfl
+          (fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)])
+      rw [← Finset.add_sum_erase s (Function.update k' i (k' i + 1)) hi, Function.update_self, hcong]
+      have he : k' i + ∑ j ∈ s.erase i, k' j = n - 1 := by
+        rw [Finset.add_sum_erase s k' hi]; exact hk'sum
+      omega
+    · intro j hj
+      by_cases hji : j = i
+      · subst hji; exact hi
+      · rw [Function.update_of_ne hji] at hj; exact hk'supp j hj
+    · rw [Function.update_self]; exact Nat.succ_ne_zero _
+  · -- left inverse
+    intro k hk
+    have hki : k i ≠ 0 := (Finset.mem_filter.mp hk).2
+    funext j
+    by_cases hji : j = i
+    · subst hji; rw [Function.update_self, Function.update_self]; omega
+    · rw [Function.update_of_ne hji, Function.update_of_ne hji]
+  · -- right inverse
+    intro k' hk'
+    funext j
+    by_cases hji : j = i
+    · subst hji; rw [Function.update_self, Function.update_self]; omega
+    · rw [Function.update_of_ne hji, Function.update_of_ne hji]
+  · -- summand correspondence
+    intro k hk
+    rw [Finset.mem_filter, Finset.mem_piAntidiag] at hk
+    obtain ⟨⟨hksum, _⟩, hki⟩ := hk
+    have habs : (k i : ℝ) * (Nat.multinomial s k : ℝ)
+        = (n : ℝ) * (Nat.multinomial s (Function.update k i (k i - 1)) : ℝ) := by
+      exact_mod_cast multinomial_absorb s k n i hi hksum hki
+    have hprod : (∏ j ∈ s, p j ^ k j)
+        = p i * ∏ j ∈ s, p j ^ (Function.update k i (k i - 1)) j := by
+      have hL : (∏ j ∈ s, p j ^ k j) = p i ^ k i * ∏ j ∈ s.erase i, p j ^ k j :=
+        (Finset.mul_prod_erase s (fun j => p j ^ k j) hi).symm
+      have hR : (∏ j ∈ s, p j ^ (Function.update k i (k i - 1)) j)
+          = p i ^ (k i - 1) * ∏ j ∈ s.erase i, p j ^ k j := by
+        rw [← Finset.mul_prod_erase s (fun j => p j ^ (Function.update k i (k i - 1)) j) hi]
+        congr 1
+        · rw [Function.update_self]
+        · exact Finset.prod_congr rfl
+            (fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)])
+      rw [hL, hR, ← mul_assoc]
+      congr 1
+      rw [← pow_succ']
+      congr 1
+      omega
+    calc (k i : ℝ) * ((Nat.multinomial s k : ℝ) * ∏ j ∈ s, p j ^ k j)
+        = ((k i : ℝ) * (Nat.multinomial s k : ℝ)) * (∏ j ∈ s, p j ^ k j) := by ring
+      _ = ((n : ℝ) * (Nat.multinomial s (Function.update k i (k i - 1)) : ℝ))
+            * (p i * ∏ j ∈ s, p j ^ (Function.update k i (k i - 1)) j) := by rw [habs, hprod]
+      _ = (n : ℝ) * p i *
+            ((Nat.multinomial s (Function.update k i (k i - 1)) : ℝ)
+              * ∏ j ∈ s, p j ^ (Function.update k i (k i - 1)) j) := by ring
 
 /-- The covariance of components: Cov(Xᵢ, Xⱼ) = -n · pᵢ · pⱼ for i ≠ j.
     This negative correlation is a fundamental property of the multinomial:
