@@ -3009,6 +3009,7 @@ import Proofs.NthRootIrrationalOQ01OQ01Real
 import Proofs.NthRootIrrationalOQ02
 import Proofs.OSBridge
 import Proofs.OnePlusOne
+import Proofs.OnePlusOneOQ01
 import Proofs.OnePlusOneOQ04
 import Proofs.OpenMappingTheoremOQ01
 import Proofs.OrderOneAddMulPrimeOQ01
