@@ -1861,6 +1861,7 @@ import Proofs.Erdos577Problem
 import Proofs.Erdos578Problem
 import Proofs.Erdos579Problem
 import Proofs.Erdos57Aristotle
+import Proofs.Erdos57OddClosedWalk
 import Proofs.Erdos57Problem
 import Proofs.Erdos57ProblemAristotle
 import Proofs.Erdos580Problem
