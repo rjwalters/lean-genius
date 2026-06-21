@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ann-definition",
+    "proofId": "fermat-two-squares-oq-04",
+    "range": {
+      "startLine": 61,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "δ as a Dirichlet Convolution ζ * χ₄",
+    "content": "The divisor-character sum δ(n) = ∑_{d∣n} χ₄(d) is defined as the Dirichlet convolution of ζ (the constant function 1) with the character χ₄ mod 4, taken over ℤ. This mirrors Mathlib's `DirichletCharacter.zetaMul`, which is defined only for ℂ-valued quadratic characters (for Dirichlet-L non-vanishing); porting it to the integer-valued χ₄ is what lets it connect to the ℕ-valued representability criterion. Multiplicativity is then immediate: δ is the Dirichlet product of the multiplicative ζ and the completely multiplicative χ₄, so `isMultiplicative_zeta.natCast.mul (isMultiplicative_toArithmeticFunction χ₄)` finishes it."
+  },
+  {
+    "id": "ann-apply",
+    "proofId": "fermat-two-squares-oq-04",
+    "range": {
+      "startLine": 73,
+      "endLine": 80
+    },
+    "type": "technique",
+    "title": "Unfolding the Convolution to a Divisor Sum",
+    "content": "`coe_zeta_mul_apply` is the key identity (ζ * f) n = ∑_{d∣n} f d: convolution with ζ is precisely the divisor sum. The auxiliary `toArithmeticFunction` wrapper sends 0 ↦ 0 and otherwise applies χ₄; on the nonzero divisors d of n it equals χ₄(d), so `simp` with the divisor positivity `Nat.pos_of_mem_divisors` collapses it to δ(n) = ∑_{d∣n} χ₄(d)."
+  },
+  {
+    "id": "ann-prime-pow",
+    "proofId": "fermat-two-squares-oq-04",
+    "range": {
+      "startLine": 86,
+      "endLine": 91
+    },
+    "type": "key-step",
+    "title": "Prime Powers Give a Geometric Series",
+    "content": "On a prime power the divisors are 1, p, p², …, pᵏ, so `Nat.sum_divisors_prime_pow` rewrites the divisor sum as ∑_{i=0}^{k} χ₄(pⁱ). Because χ₄ is multiplicative, χ₄(pⁱ) = χ₄(p)ⁱ (via `Nat.cast_pow` and `map_pow`), exposing the geometric series ∑_{i≤k} χ₄(p)ⁱ. The entire prime-power behaviour of δ is now governed by the single value χ₄(p) ∈ {0, 1, -1}."
+  },
+  {
+    "id": "ann-dichotomy",
+    "proofId": "fermat-two-squares-oq-04",
+    "range": {
+      "startLine": 103,
+      "endLine": 140
+    },
+    "type": "key-step",
+    "title": "The Prime-Power Positivity Dichotomy",
+    "content": "Splitting on χ₄(p) via `χ₄_nat_eq_if_mod_four` gives three regimes: for p = 2 the series collapses to the single term 1 (δ(2ᵏ) = 1); for p ≡ 1 (mod 4) every term is 1, so δ(pᵏ) = k+1; for p ≡ 3 (mod 4) the series alternates, and `neg_one_geom_sum` evaluates ∑_{i≤k} (-1)ⁱ = [k even]. Combining, 0 < δ(pᵏ) ⇔ (p ≡ 3 mod 4 → k even). This single inequality is the atom from which the global representability criterion is reassembled. The `omega` calls discharge the residue bookkeeping (e.g. p % 2 = 0 forces p % 4 ≠ 3)."
+  },
+  {
+    "id": "ann-bridge",
+    "proofId": "fermat-two-squares-oq-04",
+    "range": {
+      "startLine": 154,
+      "endLine": 191
+    },
+    "type": "concept",
+    "title": "From Character Sum to Representability",
+    "content": "`multiplicative_factorization` writes δ(n) as the product ∏_{p∣n} δ(p^{vₚ(n)}). Every factor is nonnegative (the geometric-sum lemma), so the product is strictly positive iff every factor is — proved by `Finset.prod_pos` one way and `Finset.prod_eq_zero` the other. By the prime-power dichotomy this is exactly the condition that every prime q ≡ 3 (mod 4) appears to an even power, which `Nat.eq_sq_add_sq_iff` identifies with n being a sum of two squares. The result, δ(n) > 0 ⇔ ∃ x y, n = x² + y², is the qualitative shadow of Jacobi's theorem: the SIGN of the character sum is a complete detector of representability, with no Gaussian-integer counting."
+  },
+  {
+    "id": "ann-prime-values",
+    "proofId": "fermat-two-squares-oq-04",
+    "range": {
+      "startLine": 207,
+      "endLine": 224
+    },
+    "type": "concept",
+    "title": "Jacobi's Count for Primes",
+    "content": "For a prime, the divisors are just 1 and p, so δ(p) = χ₄(1) + χ₄(p) = 1 + χ₄(p). Hence δ(p) = 2 when p ≡ 1 (mod 4), matching r₂(p) = 4·2 = 8 — the eight representations (±a, ±b), (±b, ±a) of the unique unordered pair {a, b}. And δ(p) = 0 when p ≡ 3 (mod 4), matching r₂(p) = 0. These are the smallest nontrivial instances of the full Jacobi identity r₂(n) = 4 δ(n)."
+  }
+]
