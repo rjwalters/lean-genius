@@ -1,226 +1,236 @@
 [
   {
-    "id": "ann-imports",
+    "id": "ann-imports-strategy",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
     "range": {
       "startLine": 1,
-      "endLine": 30
-    },
-    "type": "concept",
-    "title": "Dependencies: PMF Framework and Multinomial Arithmetic",
-    "content": "The proof draws on four distinct Mathlib modules. `ProbabilityMassFunction.Basic` provides the `PMF` type (a function `α → ℝ≥0∞` with `tsum = 1`) and its API. `Nat.Choose.Multinomial` provides `Nat.multinomial` coefficients and `Finset.sum_pow_eq_sum_piAntidiag` (the multinomial theorem as a Finset sum). `Nat.Choose.Sum` covers binomial sums. `BigOperators.Ring.Finset` enables the `∏` and `∑` notation over finite sets. The namespace opens `MeasureTheory` for PMF-related typeclasses. The header describes the four-step construction: Composition type → PMF value function → normalization → properties.",
-    "mathContext": "Mathlib's `PMF α` is defined as `{f : α → ℝ≥0∞ // ∑' a, f a = 1}`. The key theorem from `Nat.Choose.Multinomial`: `Finset.sum_pow_eq_sum_piAntidiag s n (fun i => p i)` gives $(\\sum_i p_i)^n = \\sum_{k \\in \\text{piAntidiag}(s,n)} \\binom{n}{k} \\prod_i p_i^{k_i}$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "PMF (Mathlib)",
-      "Nat.multinomial",
-      "piAntidiag",
-      "ENNReal",
-      "BigOperators"
-    ],
-    "prerequisites": [
-      "Lean 4 imports",
-      "Mathlib PMF framework",
-      "ENNReal arithmetic"
-    ]
-  },
-  {
-    "id": "ann-multinomial-context",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
-    "range": {
-      "startLine": 7,
-      "endLine": 30
+      "endLine": 31
     },
     "type": "concept",
     "title": "Multinomial PMF in Mathlib: Strategy and Dependencies",
-    "content": "The open question asks whether the multinomial distribution can be integrated into Mathlib's PMF framework. The answer is yes: the construction proceeds in four steps — (1) define the support type (Composition), (2) construct the PMF value function in ENNReal, (3) prove normalization from the multinomial theorem, and (4) derive properties (marginals, moments). The key insight is that the multinomial theorem IS the normalization proof. The file depends on BinomialTheoremOQ02OQ01 (multinomialProb, multinomialProb_sum_eq_one) and Mathlib's PMF type which requires a function α → ℝ≥0∞ plus a tsum = 1 normalization proof.",
-    "mathContext": "Mathlib's `PMF α` is a structure: $f : \\alpha \\to \\mathbb{R}_{\\geq 0}^\\infty$ with $\\sum_{a : \\alpha} f(a) = 1$. The multinomial PMF assigns $f(k) = \\binom{n}{k_1, \\ldots, k_r} \\prod_{i} p_i^{k_i}$ to each composition $k = (k_1, \\ldots, k_r)$ with $\\sum k_i = n$. **Normalization**: the multinomial theorem gives $(\\sum_i p_i)^n = \\sum_{\\sum k_i = n} \\binom{n}{k} \\prod p_i^{k_i} = 1$ when $\\sum p_i = 1$. This makes the multinomial theorem the normalization proof directly.",
+    "content": "The file answers the open question \"can the multinomial distribution be integrated into Mathlib's PMF framework?\" affirmatively, by an explicit, fully verified construction. Mathlib supplies `Nat.multinomial`, the `piAntidiag`-based multinomial theorem `Finset.sum_pow_eq_sum_piAntidiag`, the `PMF` type, and `ENNReal` arithmetic; the file builds the `Composition` support type, the ENNReal normalization, the `PMF` instance, and the distributional properties (support, marginal, mean, covariance) on top.",
+    "mathContext": "The construction packages $P(X=k)=\\binom{n}{k_1,\\dots,k_r}\\prod_i p_i^{k_i}$ as a `PMF` over the simplex $\\{k:\\sum_i k_i=n\\}$, with normalization $\\sum_k P(X=k)=(\\sum_i p_i)^n=1$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "PMF (Mathlib)",
-      "multinomial distribution",
+      "Nat.multinomial",
+      "Finset.piAntidiag",
+      "PMF",
       "ENNReal",
-      "multinomial theorem",
-      "BinomialTheoremOQ02OQ01"
+      "multinomial theorem"
     ],
     "prerequisites": [
-      "Mathlib PMF framework",
-      "ENNReal arithmetic",
-      "Nat.multinomial (Mathlib)"
+      "binomial theorem",
+      "probability mass functions"
     ]
   },
   {
     "id": "ann-composition-type",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 41,
-      "endLine": 53
+      "startLine": 44,
+      "endLine": 72
     },
     "type": "definition",
-    "title": "Composition: The Support Type of the Multinomial Distribution",
-    "content": "Defines Composition α s n as a structure with three fields: counts : α → ℕ (the outcome counts), sum_eq (the counts sum to n), and counts_outside (counts outside the alphabet s are 0). This serves as the support type — every point in the multinomial distribution is one element of this type. The Fintype instance is open (sorry): the finiteness follows because each counts(i) ≤ n and there are finitely many indices in s, making the space finite by a counting argument via piAntidiag.",
-    "mathContext": "The support of the multinomial$(n, p_1, \\ldots, p_r)$ distribution is $\\{(k_1, \\ldots, k_r) : k_i \\geq 0, \\sum k_i = n\\} = \\text{piAntidiag}(s, n)$ as a Finset. The `Composition` structure wraps this finset as a `Fintype` suitable for Lean's `PMF α` which requires a `Fintype` or `Countable` index type. The finiteness: each $k_i \\leq n$, so the support is contained in $\\{0,\\ldots,n\\}^{|s|}$, which is finite.",
-    "significance": "key",
+    "title": "Composition: The Support Type of the Multinomial, with Fintype Instance",
+    "content": "`Composition α s n` bundles a count function `counts : α → ℕ`, the constraint `∑_{i∈s} counts i = n`, and the zero-outside condition. Its `Fintype` instance (lines 61-72) is proved — not a sorry — by transport along an explicit `Equiv` with the subtype `↥(s.piAntidiag n)`, using `Finset.mem_piAntidiag` to translate between the structure's two fields and piAntidiag membership.",
+    "mathContext": "The support of $\\mathrm{Multinomial}(n,p)$ on alphabet $s$ is $\\{k:s\\to\\mathbb N\\mid\\sum_{i\\in s}k_i=n\\}$, which is exactly `Finset.piAntidiag s n`. Wrapping it as a `Fintype` is the prerequisite for `PMF.mk`.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "piAntidiag (Mathlib)",
-      "Fintype",
-      "PMF support",
-      "composition (combinatorics)"
+      "Finset.piAntidiag",
+      "Fintype.ofEquiv",
+      "Finset.mem_piAntidiag"
     ],
     "prerequisites": [
-      "Finset.piAntidiag",
-      "Fintype",
-      "DecidableEq"
+      "finite types",
+      "subtype equivalences"
     ]
   },
   {
-    "id": "ann-pmf-normalization",
+    "id": "ann-pmf-val",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 63,
-      "endLine": 99
+      "startLine": 83,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "The Multinomial Mass Function in ℝ≥0∞",
+    "content": "`multinomialPMFVal s p n k = (Nat.multinomial s k.counts : ℝ≥0∞) * ∏ i ∈ s, p i ^ k.counts i` is the mass function valued in the extended nonnegative reals, the type Mathlib's `PMF` requires.",
+    "mathContext": "$\\mathrm{multinomialPMFVal}(k)=\\binom{n}{k_1,\\dots,k_r}\\cdot\\prod_{i\\in s}p_i^{k_i}\\in\\mathbb R_{\\ge0}^\\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ENNReal",
+      "Nat.multinomial"
+    ],
+    "prerequisites": [
+      "extended nonnegative reals"
+    ]
+  },
+  {
+    "id": "ann-normalization",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 101,
+      "endLine": 127
     },
     "type": "insight",
     "title": "Multinomial Theorem = PMF Normalization",
-    "content": "The deepest insight of this file: the multinomial theorem IS the PMF normalization proof. multinomialPMFVal s p n k = multinomial(s,k.counts) · ∏ p(i)^k.counts(i) and the sum over all compositions equals (∑ p(i))^n = 1 (when ∑ p(i) = 1). The normalization theorem multinomialPMF_sum_eq_one states this in ENNReal (sorry: requires lifting Finset.sum_pow_eq_sum_piAntidiag to ENNReal). multinomialPMF is then a trivial constructor: ⟨multinomialPMFVal, normalization_proof⟩.",
-    "mathContext": "$\\sum_{k : \\text{Composition}(s,n)} \\binom{n}{k_1,\\ldots,k_r} \\prod_{i\\in s} p_i^{k_i} = \\left(\\sum_{i\\in s} p_i\\right)^n = 1^n = 1$. In Lean: `Finset.sum_pow_eq_sum_piAntidiag` expresses the multinomial theorem as a Finset sum over `piAntidiag s n`. Lifting from `ℝ` to `ℝ≥0∞` requires careful handling of the coercion $\\mathbb{N} \\to \\mathbb{R}_{\\geq 0}^\\infty$ and the ENNReal version of the product-sum interchange.",
-    "significance": "key",
+    "content": "`multinomialPMF_sum_eq_one` proves $\\sum_k \\mathrm{multinomialPMFVal}(k)=1$ when $\\sum_i p_i=1$. The Composition-indexed sum is transported to a `piAntidiag` sum (via the sibling file's bridge), folded into a power by `Finset.sum_pow_eq_sum_piAntidiag`, and closed with `∑p=1`, `1^n=1`. This is the heart of the PMF construction.",
+    "mathContext": "The same identity $(\\sum_i p_i)^n=\\sum_k\\binom{n}{k}\\prod_i p_i^{k_i}$ is simultaneously the multinomial theorem and the normalization $\\sum_k P(X=k)=1$ — the bridge between combinatorics and probability.",
+    "significance": "major",
     "relatedConcepts": [
       "Finset.sum_pow_eq_sum_piAntidiag",
-      "ENNReal coercions",
-      "PMF.mk",
-      "multinomial theorem"
+      "Fintype.sum_equiv"
     ],
     "prerequisites": [
-      "Nat.multinomial",
-      "Finset.sum_pow_eq_sum_piAntidiag",
-      "ENNReal.coe_nat"
+      "multinomial theorem"
     ]
   },
   {
-    "id": "ann-pmf-constructor",
+    "id": "ann-pmf-instance",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 91,
-      "endLine": 99
+      "startLine": 137,
+      "endLine": 144
     },
     "type": "definition",
-    "title": "The PMF Constructor: Lean Anonymous Constructor Syntax",
-    "content": "`multinomialPMF` is defined using Lean's anonymous constructor syntax `⟨f, proof⟩` for the `PMF` structure. The first field `fun k => multinomialPMFVal s p n k` provides the mass function; the second field `multinomialPMF_sum_eq_one s p n hp` (the sorry) provides the normalization proof. This is the cleanest way to build a `PMF` instance when you already have both pieces separately — no need for `PMF.ofFinset` or `PMF.ofFintype`, which add additional API surface. The `noncomputable` annotation is required because `ℝ≥0∞` arithmetic is noncomputable in Lean 4.",
-    "mathContext": "In Lean 4, `PMF α` is a subtype: `{f : α → ℝ≥0∞ // ∑' a, f a = 1}`. The anonymous constructor `⟨f, hf⟩` directly builds an element of this subtype. For `multinomialPMF s p n hp`, we have:\n- $f = $ `multinomialPMFVal s p n` (the multinomial mass function)\n- $hf = $ `multinomialPMF_sum_eq_one s p n hp` (the sorry normalization proof)",
-    "significance": "key",
+    "title": "The PMF Instance via PMF.mk",
+    "content": "`multinomialPMF` packages `multinomialPMFVal` with the normalization proof into a genuine `PMF (Composition α s n)`, converting the `Finset.sum = 1` statement into the required `HasSum … 1` via `hasSum_fintype`.",
+    "mathContext": "`PMF α` is `{f : α → ℝ≥0∞ // HasSum f 1}`; for a `Fintype` index, `HasSum f c ↔ ∑ a, f a = c`.",
+    "significance": "supporting",
     "relatedConcepts": [
       "PMF.mk",
-      "anonymous constructor",
-      "noncomputable",
-      "subtype",
-      "normalization"
+      "hasSum_fintype"
     ],
     "prerequisites": [
-      "multinomialPMFVal",
-      "multinomialPMF_sum_eq_one",
-      "Lean 4 structure syntax"
+      "PMF framework"
     ]
   },
   {
     "id": "ann-pmf-apply-support",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 101,
-      "endLine": 119
+      "startLine": 151,
+      "endLine": 181
     },
     "type": "insight",
-    "title": "PMF.apply by rfl and Support Characterization (one proved, one sorry)",
-    "content": "`multinomialPMF_apply` (lines 106-110) proves that `(multinomialPMF s p n hp) k = multinomialPMFVal s p n k` — the PMF value at a composition k equals the multinomial probability. This is proved by `rfl`: the PMF is defined as a structure with the value function as its first field, so unfolding gives definitional equality.\n\n`multinomialPMF_support` (lines 114-119) characterizes the support: a composition k has nonzero probability iff for every outcome i with positive count k(i) ≠ 0, the probability p(i) is also nonzero. This is sorry — the proof requires showing that a product of ENNReal terms is nonzero iff each factor is nonzero (using `ENNReal.prod_ne_zero_iff` or similar), then decomposing the multinomial probability into the coefficient part (always positive) and the product part.",
-    "mathContext": "The `rfl` proof for `multinomialPMF_apply` works because `multinomialPMF` is defined as `⟨fun k => multinomialPMFVal s p n k, ...⟩`, and `PMF.instFunLike` makes `(P : PMF α) a` definitionally equal to `P.1 a`. Support characterization: $P(X = k) = \\binom{n}{k} \\prod_{i} p_i^{k_i} \\neq 0$ iff $\\binom{n}{k} \\neq 0$ (always true for valid compositions) AND $p_i \\neq 0$ whenever $k_i \\neq 0$. The condition '$p_i \\neq 0$ whenever $k_i \\neq 0$' is equivalent to the product $\\prod_i p_i^{k_i} \\neq 0$ in $\\mathbb{R}_{\\geq 0}^\\infty$, since $0^0 = 1$ (vacuously nonzero) and $p_i^{k_i} = 0$ iff $p_i = 0$ and $k_i > 0$.",
+    "title": "PMF Value and Support (both fully proved)",
+    "content": "`multinomialPMF_apply` is `rfl` (the PMF's value field is the mass function). `multinomialPMF_support` characterizes the support: the value is nonzero iff every counted outcome has nonzero probability. Proved using that the multinomial coefficient is a positive natural and that ℝ≥0∞ has no zero divisors, so a product is nonzero iff every factor is, with `p i ^ k = 0 ↔ p i = 0 ∧ k ≠ 0`.",
+    "mathContext": "$P(X=k)=\\binom{n}{k}\\prod_i p_i^{k_i}\\neq0$ iff $p_i\\neq0$ whenever $k_i\\neq0$ (since $p_i^0=1$ and $\\binom{n}{k}>0$).",
     "significance": "supporting",
     "relatedConcepts": [
-      "PMF.instFunLike",
-      "definitional equality",
-      "ENNReal.prod_ne_zero_iff",
-      "PMF support",
+      "Finset.prod_ne_zero_iff",
+      "pow_ne_zero_iff",
+      "Nat.multinomial_pos"
+    ],
+    "prerequisites": [
       "zero-product property"
-    ],
-    "prerequisites": [
-      "multinomialPMF definition",
-      "multinomialPMFVal definition",
-      "ENNReal.pow_ne_zero"
     ]
   },
   {
-    "id": "ann-marginal-binomial",
+    "id": "ann-marginal",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 133,
-      "endLine": 141
+      "startLine": 194,
+      "endLine": 298
     },
     "type": "insight",
-    "title": "Marginal Distributions are Binomial (open sorry)",
-    "content": "The marginal theorem multinomial_marginal_binomial states: fixing the i-th component to m and summing over all remaining compositions, the sum equals C(n,m) · p(i)^m · (1-p(i))^(n-m). This is the binomial PMF formula. Proof strategy: fix k(i) = m, sum over piAntidiag(s\\{i}, n-m) for the remaining components, and apply the (k-1)-dimensional multinomial theorem to recognize (1-p(i))^(n-m) = (∑_{j≠i} p(j))^(n-m). The sorry captures ~100 lines of Finset manipulation.",
-    "mathContext": "$P(X_i = m) = \\sum_{k: k_i = m} P(X = k) = \\binom{n}{m} p_i^m \\sum_{k': \\sum k'_j = n-m} \\binom{n-m}{k'} \\prod_{j\\neq i} p_j^{k'_j} = \\binom{n}{m} p_i^m (1-p_i)^{n-m}$. The inner sum equals $(1-p_i)^{n-m}$ by the $(k-1)$-dimensional multinomial theorem applied to $\\{p_j : j \\neq i\\}$, which sum to $1 - p_i$. This proves $X_i \\sim \\text{Binomial}(n, p_i)$.",
-    "significance": "key",
+    "title": "The Marginal of Xᵢ is Binomial(n, pᵢ)",
+    "content": "`multinomial_marginal_binomial` proves that summing the multinomial weight over all compositions with `k i = m` gives the binomial PMF `C(n,m)·pᵢᵐ·(1−pᵢ)ⁿ⁻ᵐ`. The proof is a reindexing bijection (`Finset.sum_nbij'`) that zeroes the i-th coordinate, identifying compositions of n with kᵢ=m on s with compositions of n−m on s∖{i}; `Nat.multinomial_insert` splits off the factor `C(n,m)`, and `Finset.sum_pow_eq_sum_piAntidiag` on s∖{i} contributes `(∑_{j≠i} pⱼ)ⁿ⁻ᵐ = (1−pᵢ)ⁿ⁻ᵐ`.",
+    "mathContext": "Marginalising the multinomial over one coordinate collapses the other categories into a single 'failure' outcome of probability $1-p_i$, recovering $X_i\\sim\\mathrm{Binomial}(n,p_i)$.",
+    "significance": "major",
     "relatedConcepts": [
+      "Finset.sum_nbij'",
+      "Nat.multinomial_insert",
+      "Finset.sum_pow_eq_sum_piAntidiag"
+    ],
+    "prerequisites": [
       "binomial distribution",
-      "marginal distribution",
-      "piAntidiag",
-      "multinomial theorem"
-    ],
-    "prerequisites": [
-      "Finset.piAntidiag",
-      "Nat.choose",
-      "multinomial theorem"
+      "marginal distributions"
     ]
   },
   {
-    "id": "ann-moments-covariance",
+    "id": "ann-absorption",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 148,
-      "endLine": 168
+      "startLine": 308,
+      "endLine": 360
     },
     "type": "insight",
-    "title": "Mean npᵢ and Negative Covariance -npᵢpⱼ (both open)",
-    "content": "Two moment results, both sorry: multinomial_mean (E[Xᵢ] = n·pᵢ) and multinomial_covariance (Cov(Xᵢ,Xⱼ) = -n·pᵢ·pⱼ for i≠j). The mean follows by differentiating the multinomial theorem generating function. The covariance uses E[XᵢXⱼ] = n(n-1)pᵢpⱼ (from fixing two coordinates and summing over remaining n-2 draws), giving Cov = n(n-1)pᵢpⱼ - (npᵢ)(npⱼ) = -npᵢpⱼ. The negative covariance reflects the constraint ∑ Xᵢ = n: more of one outcome necessarily means less of another.",
-    "mathContext": "$E[X_i] = \\sum_{k} k_i \\cdot P(X=k) = n p_i$ (differentiating $(\\sum p_j)^n$ w.r.t. $p_i$). $\\text{Cov}(X_i, X_j) = E[X_i X_j] - E[X_i]E[X_j] = n(n-1)p_i p_j - n^2 p_i p_j = -n p_i p_j < 0$. The negative covariance is characteristic of constrained counts: all $X_i$ sum to the fixed $n$, so any fluctuation above the mean in $X_i$ forces below-mean fluctuations in $\\sum_{j \\neq i} X_j$.",
-    "significance": "supporting",
+    "title": "The Absorption Identity — the Combinatorial Engine",
+    "content": "`multinomial_absorb` proves the key recurrence `kᵢ·multinomial(s,k) = n·multinomial(s, update k i (kᵢ−1))` for a composition k of n with kᵢ≥1. The proof avoids ℕ-division: it cancels the common positive factor `(kᵢ−1)!·∏_{j≠i}(kⱼ!)` after applying `Nat.multinomial_spec` to both sides and `Nat.mul_factorial_pred`. Both the mean and the cross moment are reductions to the multinomial theorem driven by this single identity.",
+    "mathContext": "From $\\binom{n}{k}=n!/\\prod_j k_j!$ one gets $k_i\\binom{n}{k}=n\\binom{n-1}{k-e_i}$ — lowering $k_i$ by one absorbs the factor $k_i$ into $n$.",
+    "significance": "major",
     "relatedConcepts": [
-      "generating function",
-      "negative covariance",
-      "moment computation",
-      "sum constraint",
-      "Shannon entropy",
-      "maximum entropy distribution",
-      "multinomial CLT"
+      "Nat.multinomial_spec",
+      "Nat.mul_factorial_pred",
+      "Finset.mul_prod_erase"
     ],
     "prerequisites": [
-      "multinomial_marginal_binomial",
-      "Finset.sum manipulation",
-      "probability generating functions"
+      "falling factorials",
+      "absorption identities"
     ]
   },
   {
-    "id": "ann-feasibility-and-example",
+    "id": "ann-mean",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 170,
-      "endLine": 247
+      "startLine": 362,
+      "endLine": 466
     },
     "type": "insight",
-    "title": "Mathlib Integration Feasibility Analysis and Dice Roll Example",
-    "content": "Lines 174-202 provide a structured feasibility analysis for contributing the multinomial PMF to Mathlib. The analysis identifies what Mathlib already has: `PMF` type with tsum normalization, `Nat.multinomial` coefficients, `Finset.sum_pow_eq_sum_piAntidiag` (the multinomial theorem), and `ENNReal` arithmetic. What needs to be built: (1) the `Composition` `Fintype` instance (~50 lines via piAntidiag), (2) ENNReal multinomial theorem lift (~30 lines), (3) PMF construction (~20 lines), (4) marginal extraction (~100 lines). Estimated total: 200-300 lines for a complete Mathlib contribution.\n\nLines 211-214 give a concrete dice example: `dice_six_rolls_all_different` (sorry) — the probability of seeing all 6 distinct faces in 6 rolls of a fair die. The Lean statement verifies `Nat.multinomial {0,...,5} (fun _ => 1) * 1 = 6!`: the multinomial coefficient when all counts equal 1 is exactly n! (the number of permutations).\n\nLines 244-245 use `#check` to verify that `multinomialPMF` and `multinomial_marginal_binomial` have the expected polymorphic types, confirming Lean's type checker accepts the definitions despite the underlying sorries.",
-    "mathContext": "Dice example: $P(\\text{all distinct in 6 rolls of fair die}) = \\frac{6!}{1!^6} \\cdot \\left(\\frac{1}{6}\\right)^6 = \\frac{720}{46656} = \\frac{5}{324} \\approx 1.54\\%$. This is a birthday-problem variant: with $n = k$ trials and categories, the probability of a perfect cover decreases as $n! / n^n$; by Stirling, $n!/n^n \\approx (e/n)^n \\cdot \\sqrt{2\\pi n}$. The Fintype strategy for `Composition α s n`: define a Lean `Equiv` between `Composition α s n` and the Finset `s.piAntidiag n` via `{counts | sum = n}`. Since `Finset.piAntidiag s n` is computable and finite, `Composition` inherits `Fintype` via `Fintype.ofEquiv`. The `#check` command is a non-sorry type-checking tool: it verifies the universe and typeclass constraints without requiring a closed proof term.",
-    "significance": "supporting",
+    "title": "Mean E[Xᵢ] = n·pᵢ via the Absorption Bijection",
+    "content": "`multinomial_mean` proves `∑_k kᵢ·multinomial(s,k)·∏pⱼ^kⱼ = n·pᵢ`. After discarding the kᵢ=0 terms, `Finset.sum_nbij'` lowers kᵢ by one (the weighted absorption identity `multinomial_absorb_weighted` turns the summand into `n·pᵢ` times the (n−1)-trial weight), and the remaining sum is the total mass `(∑p)ⁿ⁻¹ = 1`.",
+    "mathContext": "$E[X_i]=\\sum_k k_i P(X=k)=n p_i\\sum_{k'}P_{n-1}(X=k')=n p_i$ — the absorption identity makes this a one-line reduction to normalization at $n-1$.",
+    "significance": "major",
     "relatedConcepts": [
-      "Mathlib contribution",
-      "Finset.piAntidiag",
-      "Fintype.ofEquiv",
-      "birthday problem",
-      "Stirling approximation"
+      "Finset.sum_nbij'",
+      "multinomial_absorb",
+      "Finset.sum_filter_of_ne"
     ],
     "prerequisites": [
-      "Composition type",
-      "PMF framework",
-      "Fintype instance strategy"
+      "expected value"
+    ]
+  },
+  {
+    "id": "ann-covariance",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 468,
+      "endLine": 619
+    },
+    "type": "insight",
+    "title": "Cross Moment and Covariance Cov(Xᵢ,Xⱼ) = −n·pᵢ·pⱼ",
+    "content": "`multinomial_cross_moment` proves `E[XᵢXⱼ] = n(n−1)pᵢpⱼ` for i≠j by lowering Xᵢ via one absorption bijection — the surviving kⱼ factor rides along unchanged (since j≠i) and the reduced sum is exactly `n·pᵢ` times the mean of Xⱼ over n−1 trials, i.e. `n·pᵢ·(n−1)·pⱼ`. `multinomial_covariance` then expands `Cov = E[XᵢXⱼ] − E[Xᵢ]E[Xⱼ] = n(n−1)pᵢpⱼ − n²pᵢpⱼ = −n·pᵢ·pⱼ`, the total mass `∑w=1` supplying the subtracted term.",
+    "mathContext": "The negative correlation is forced by the simplex constraint $\\sum_i X_i=n$: more of one outcome means less of another. The cross moment reuses the mean, so the whole moment structure rests on the single absorption identity.",
+    "significance": "major",
+    "relatedConcepts": [
+      "multinomial_cross_moment",
+      "multinomial_mean",
+      "Finset.sum_sub_distrib"
+    ],
+    "prerequisites": [
+      "covariance",
+      "negative correlation"
+    ]
+  },
+  {
+    "id": "ann-dice",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 661,
+      "endLine": 664
+    },
+    "type": "insight",
+    "title": "Concrete Example: Six Distinct Dice Faces",
+    "content": "`dice_six_rolls_all_different` computes `multinomial({0,…,5}, fun _ => 1) = 6! = 720` by kernel `decide` (not `native_decide`), so the example — and the whole file — incurs no `Lean.ofReduceBool` axiom. The probability of seeing each face once in six fair rolls is 720/6⁶ = 720/46656.",
+    "mathContext": "$\\binom{6}{1,1,1,1,1,1}=6!/(1!)^6=720$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.multinomial",
+      "decide"
+    ],
+    "prerequisites": [
+      "multinomial coefficients"
     ]
   }
 ]
