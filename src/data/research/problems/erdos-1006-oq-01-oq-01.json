@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1006-oq-01-oq-01",
   "title": "Formalize cover graph characterization (Pretzel) without axioms",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -24,12 +24,12 @@
     "goal": "Replace the characterization axiom with a direct Lean proof."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-05T20:06:18-07:00",
     "iteration": 1,
     "focus": "Metadata refreshed against the current seven-file Erdos1006 proof family; the target remains the axiom-removal version of the cover-graph characterization.",
     "blockers": [],
-    "nextAction": "Audit the Pretzel/Brightwell reverse direction and identify a small formal sublemma that can replace part of `cover_graph_characterization`.",
+    "nextAction": "Remaining axioms (nesetril_rodl, chromatic_lt_girth) are deep; OQ-01-OQ-01 target (cover_graph_characterization) is DONE.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -37,21 +37,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S3 2026-06-20): restored soundness/faithfulness of the robust-orientation model by redefining hasDependentArc via reachability; cover_graph_characterization and nesetril_rodl_counterexample axioms are now TRUE statements. axiomCount unchanged at 3. Deep characterization remains the open goal.",
+    "progressSummary": "COMPLETE (S4 2026-06-20): de-axiomatized cover_graph_characterization (Pretzel-Brightwell). Proved in Lean with 0 extra axioms (depends only on propext/Classical.choice/Quot.sound). File axiomCount 3→2; remaining axioms are nesetril_rodl_counterexample and chromatic_lt_girth_implies_robust.",
     "builtItems": [
       "Broad Erdos1006 leanFiles metadata refreshed to seven current proof files.",
-      "Re-proved empty_graph_robust, cover_graph_admits_robust, bipartiteOrientation_robust against the reachability definition in Proofs/Erdos1006OQ01.lean (no rank-based dependent-arc reasoning)."
+      "Re-proved empty_graph_robust, cover_graph_admits_robust, bipartiteOrientation_robust against the reachability definition in Proofs/Erdos1006OQ01.lean (no rank-based dependent-arc reasoning).",
+      "reachOrder (Proofs/Erdos1006OQ01.lean): reflexive-transitive closure of an acyclic orientation's arcs as a PartialOrder; antisymmetry from rank-strict-monotonicity.",
+      "rank_lt_of_tg / rank_le_of_rtg: rank is strictly/weakly monotone along TransGen/ReflTransGen paths.",
+      "lift_below / lift_above: a directed path whose endpoint is rank-below v (resp. start rank-above u) never uses the arc (u,v), so it lifts to the (u,v)-excluded relation — the technical core of 'each arc is a covering pair'.",
+      "cover_graph_characterization is now a theorem (Proofs/Erdos1006OQ01.lean:371): admits robust orientation ↔ isCoverGraph, verified 0 extra axioms."
     ],
     "insights": [
       "The slug broad-matches the whole Erdos1006* proof family because the stripped base prefix is Erdos1006.",
       "The main characterization is still represented by an explicit axiom in Erdos1006OQ01.lean.",
       "S1/S2 found a soundness bug: hasDependentArc had its rank inequality backwards (rank v ≤ rank u), making it vacuously false for every acyclic orientation. This collapsed isRobustlyAcyclic to isAcyclic and rendered the cover_graph_characterization and nesetril_rodl_counterexample axioms UNSOUND (false statements).",
-      "S3 fix: redefine hasDependentArc via reachability — an arc (u,v) is dependent iff Relation.TransGen of the arc relation (with (u,v) excluded) connects u to v. Reversing the arc then closes a directed cycle v→u⇝v. This is faithful to the textbook meaning and makes all three robustness obligations elementary TransGen inductions (no Szpilrajn/linear-extension machinery)."
+      "S3 fix: redefine hasDependentArc via reachability — an arc (u,v) is dependent iff Relation.TransGen of the arc relation (with (u,v) excluded) connects u to v. Reversing the arc then closes a directed cycle v→u⇝v. This is faithful to the textbook meaning and makes all three robustness obligations elementary TransGen inductions (no Szpilrajn/linear-extension machinery).",
+      "With the reachability definition of hasDependentArc, BOTH directions of Pretzel-Brightwell are elementary: forward = take transitive-closure poset, 'no dependent arc' ⇔ 'every arc is a covering pair'; reverse = cover_graph_admits_robust. The literature's 'depth' is in the definition/recognition, not the equivalence under this model."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Survey dependent-arc and cover-graph lemmas needed for the Pretzel/Brightwell reverse implication.",
-      "De-axiomatize cover_graph_characterization (Pretzel-Brightwell) — still the OQ-01-OQ-01 goal; the soundness fix is a prerequisite, not the theorem itself."
+      "Tackle the remaining axioms: nesetril_rodl_counterexample (needs explicit high-girth non-cover-graph constructions) and chromatic_lt_girth_implies_robust (FFLW). Both are genuinely deep.",
+      "Consider decidability of admitsRobustAcyclicOrientation for Fintype V (reachOrder is computable)."
     ],
     "markdown": "# Knowledge Base: erdos-1006-oq-01-oq-01\n\nMetadata refreshed on 2026-05-18. The target is the axiom-removal version of the Pretzel/Brightwell cover-graph characterization: prove directly that robustly acyclic orientations correspond to cover graphs.\n"
   },
