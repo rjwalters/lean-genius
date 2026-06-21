@@ -3245,6 +3245,7 @@ import Proofs.SpernerNDimOQ03OQ01
 import Proofs.SpernerNDimOQ04
 import Proofs.SpernerSimplicialBridge
 import Proofs.SpernerSimplicialBridgeOQ01
+import Proofs.SpernerSimplicialBridgeOQ02
 import Proofs.SpernerSimplicialInstance
 import Proofs.SpernerSimplicialInstanceOQ01
 import Proofs.SpernerSimplicialInstanceOQ03
