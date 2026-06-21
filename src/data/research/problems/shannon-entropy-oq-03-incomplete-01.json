@@ -1,7 +1,7 @@
 {
   "slug": "shannon-entropy-oq-03-incomplete-01",
   "title": "Strong Subadditivity of Shannon Entropy",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -22,7 +22,7 @@
     "goal": "Express the deficit as I(X;Z|Y) = sum_y p(y) D(p(x,z|y) || p(x|y) * p(z|y)) and prove it nonnegative using KL divergence non-negativity."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-03T02:25:34-07:00",
     "iteration": 1,
     "focus": "Inspect the remaining strong-subadditivity sorry and the available entropy/KL-divergence lemmas.",
@@ -35,15 +35,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Initial observe phase. The local notes identify this as the remaining strong-subadditivity theorem for Shannon entropy, with one known sorry in the parent gallery proof.",
-    "builtItems": [],
-    "insights": [
-      "Suggested proof route: rewrite the entropy deficit as conditional mutual information and discharge nonnegativity via KL divergence."
+    "progressSummary": "COMPLETE (reframed): the premise (a remaining SSA sorry) is FALSE — SSA is fully proven (ShannonEntropy.lean:875; the cited ShannonEntropySSA.lean is BROKEN on main via dup-decl conflict). Pivoted to a genuine follow-up: the SSA EQUALITY CONDITION (Markov-chain characterization), shipped as self-contained ShannonEntropySSAEq.lean → gallery shannon-entropy-oq-03-oq-01.",
+    "builtItems": [
+      "cmiSum def + ssa_deficit_eq_cmi + ssa_cmi_eq_zero_iff + strong_subadditivity_eq_iff in Proofs/ShannonEntropySSAEq.lean (self-contained, 0 sorry/0 axiom)"
     ],
-    "mathlibGaps": [],
+    "insights": [
+      "Suggested proof route: rewrite the entropy deficit as conditional mutual information and discharge nonnegativity via KL divergence.",
+      "ShannonEntropySSA.lean does not compile on main: it imports ShannonEntropy.lean which now also declares marginalXY/marginalYZ/strong_subadditivity/entropy_chain_rule/subadditivity (same namespace) → already-declared errors. SSA is genuinely proven in ShannonEntropy.lean.",
+      "SSA deficit = conditional mutual information I(X;Z|Y) exactly (ssa_deficit_eq_cmi).",
+      "I(X;Z|Y)=0 iff the division-free Markov factorization p·p_Y = p_XY·p_YZ holds everywhere; forward via the STRICT KL bound, backward by substitution.",
+      "v4.26.0: `hp _` underscore fails to infer in single_le_sum hint lists (need explicit triples); local universe-poly `have` leaks a 4th universe param (extract top-level); conv `ext y` fails on Finset.sum."
+    ],
+    "mathlibGaps": [
+      "No SSA equality-case lemma in Mathlib; KL equality (klDivergence_eq_zero_iff) exists in ShannonEntropy.lean but is private and the file conflicts."
+    ],
     "nextSteps": [
-      "Read the parent Lean proof shannon-entropy-oq-03 and inspect the remaining sorry location.",
-      "Move from OBSERVE to ORIENT by checking the available entropy and KL-divergence lemmas."
+      "Mechanic: fix/delete broken ShannonEntropySSA.lean and repoint gallery shannon-entropy-oq-03 to ShannonEntropy.lean.",
+      "Optional: approximate/stability version of the equality condition."
     ],
     "markdown": "# Knowledge Base: shannon-entropy-oq-03-incomplete-01\n\n## Problem Understanding\n\nThe target is strong subadditivity of Shannon entropy:\n\n$$\nH(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)\n$$\n\nThe local problem note says the supporting infrastructure is already in `ShannonEntropySSA.lean`; the remaining work is the main theorem left as a `sorry`.\n\n## Known Direction\n\nUse the parent proof `shannon-entropy-oq-03` as the foundation. The stated goal is to express the deficit as conditional mutual information, `I(X;Z|Y) = sum_y p(y) D(p(x,z|y) || p(x|y) * p(z|y))`, then use KL divergence non-negativity.\n\n## Current State\n\nNo attempts have been recorded yet. The next action in `state.md` is to read the problem thoroughly and then move to ORIENT by exploring literature and related proofs.\n"
   },
