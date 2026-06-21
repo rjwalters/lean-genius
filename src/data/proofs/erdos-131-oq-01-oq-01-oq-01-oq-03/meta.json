@@ -1,0 +1,139 @@
+{
+  "id": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+  "slug": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos131DavenportConstant",
+    "lineCount": 170,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos131DavenportConstant.lean",
+    "sorries": 0
+  },
+  "title": "The Davenport Constant of the Cyclic Group ℤ/nℤ is Exactly n (Erdős #131)",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos131DavenportConstant.lean",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "erdos-problems",
+      "erdos-131",
+      "davenport-constant",
+      "zero-sum-free",
+      "zero-sum-subsequence",
+      "cyclic-group",
+      "pigeonhole",
+      "isleast",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 170,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "davenport_constant_cyclic: the headline result — the Davenport constant of the cyclic group ℤ/nℤ is EXACTLY n, formalized as IsLeast {m | ∀ f : Fin m → ZMod n, HasZeroSumSubseq f} n. The Davenport constant D(G) is the least length d such that every length-d sequence over G has a nonempty zero-sum subsequence; this establishes D(ℤ/nℤ) = n in full (both the upper bound and its sharpness), axiom-free. Mathlib has the Erdős–Ginzburg–Ziv constant s(ℤ/nℤ) = 2n − 1 but NOT the Davenport constant, so this is built from scratch.",
+      "davenport_upper: the upper bound D(ℤ/nℤ) ≤ n in the GENUINE sequence setting — every sequence f : Fin m → ZMod n with n ≤ m has a nonempty index set s with ∑_{i ∈ s} f i = 0. Proof: the m + 1 prefix sums P k = ∑_{i.val < k} f i live in ZMod n (an n-element type), so for m ≥ n pigeonhole (Fintype.exists_ne_map_eq_of_card_lt) collides two, P p = P q with p < q; the index interval [p, q) then has sum 0 (prefix split via Finset.sum_union of the disjoint [0,p) and [p,q) blocks) and is nonempty (it contains p). This STRENGTHENS the companion Erdos131DavenportBound's exists_nonempty_subset_sum_dvd, which proved the bound only for Finsets of DISTINCT naturals via integer divisibility; here it holds for arbitrary ZMod n sequences (with repeats), the actual Davenport setting.",
+      "davenport_no_zerosum_const_one: the matching lower bound / sharpness D(ℤ/nℤ) ≥ n — for every m < n the constant sequence 1 of length m over ℤ/nℤ has NO nonempty zero-sum subsequence. A nonempty index set s sums to (s.card : ZMod n) with 1 ≤ s.card ≤ m < n, hence nonzero by ZMod.natCast_eq_zero_iff (n ∤ k for 0 < k < n). This shows no length below n suffices, so the constant n is sharp — the extremal zero-sum-free sequence is the n − 1 repeated 1's.",
+      "exists_index_subset_sum_dvd: a corollary that the general-sequence upper bound recovers and strengthens the companion's divisibility statement — any g : Fin m → ℕ with n ≤ m has a nonempty index set whose g-sum is divisible by n, now WITHOUT the distinctness restriction of the Finset ℕ version (the indices may carry equal values).",
+      "davenport_isLeast_eq: uniqueness extraction — any d realising the IsLeast Davenport characterisation equals n, via IsLeast.unique.",
+      "HasZeroSumSubseq and mem_davenport_set_of_ge: the clean predicate ‘sequence has a nonempty zero-sum subsequence’ and the membership form of the upper bound, packaging the Davenport-length set {m | ∀ f, HasZeroSumSubseq f} whose least element is computed."
+    ],
+    "prerequisites": [
+      "Fintype.exists_ne_map_eq_of_card_lt (Mathlib): the pigeonhole principle — a map from a finite type into a strictly smaller finite type identifies two points; applied to the m + 1 prefix-sum function Fin (m+1) → ZMod n.",
+      "ZMod.card and ZMod.natCast_eq_zero_iff: |ZMod n| = n (the source of the pigeonhole inequality n < m + 1) and (k : ZMod n) = 0 ↔ n ∣ k (bridging both the prefix-sum collision to the zero interval sum and the constant-1 cardinality to nonzero).",
+      "Finset.sum_union together with the disjoint decomposition of the prefix filter [0, q) into [0, p) and [p, q): turns equal prefix sums into a zero block sum.",
+      "IsLeast / IsLeast.unique (Mathlib): the order-theoretic packaging ‘least element of a set of naturals’, used to state D(ℤ/nℤ) = n as a least Davenport length and to extract its uniqueness."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.exists_ne_map_eq_of_card_lt",
+        "description": "Pigeonhole: if |β| < |α| then any f : α → β collides. Instantiated with α = Fin (m+1) (prefix indices) and β = ZMod n; the engine of davenport_upper.",
+        "module": "Mathlib.Data.Fintype.Pigeonhole"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "(k : ZMod n) = 0 ↔ n ∣ k. Used both to read off the zero interval sum and, contrapositively, to show the constant-1 sequence of length < n is zero-sum-free.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset.sum_union",
+        "description": "Sum over a disjoint union splits additively. Applied to the prefix filter [0, q) = [0, p) ⊔ [p, q) to express the interval block sum as P q − P p.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "IsLeast.unique",
+        "description": "A set has at most one least element. Yields davenport_isLeast_eq: any Davenport length characterisation equals n.",
+        "module": "Mathlib.Order.Bounds.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "erdos-131-oq-01-oq-01-oq-01-oq-03-oq-01",
+      "question": "The general-group Davenport constant D(G) for a finite abelian group G = ℤ/n₁ ⊕ ⋯ ⊕ ℤ/n_k (n₁ | ⋯ | n_k) satisfies D(G) ≥ 1 + Σ(nᵢ − 1), with equality for k ≤ 2 and for p-groups (Olson) but NOT in general. Can the prefix-sum pigeonhole upper bound here be lifted to give D(ℤ/n₁ ⊕ ℤ/n₂) = n₁ + n₂ − 1 (rank-2 case) by an elementary, axiom-free argument?",
+      "significance": "high"
+    },
+    {
+      "id": "erdos-131-oq-01-oq-01-oq-01-oq-03-oq-02",
+      "question": "The exact constant D(ℤ/nℤ) = n drives the set bound |A| ≤ a + 1 for non-dividing sets, but the SET version (distinct elements) may have a strictly smaller threshold than the sequence version. What is the least m such that every m-element SUBSET of ℕ (distinct residues mod n permitted to repeat across the set only via value, not residue) contains a nonempty zero-sum subset mod n, and does it differ from the Davenport constant n?",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-131-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Completes the underlying invariant of the EGZ-sharpening entry. That entry proved only the upper bound D(ℤ/aℤ) ≤ a, and only in the integer-divisibility form for Finsets of distinct naturals (exists_nonempty_subset_sum_dvd), using it to sharpen the non-dividing set bound to |A| ≤ a + 1. This entry proves the constant EXACTLY — D(ℤ/nℤ) = n — in the proper sequence setting over ZMod n, adding the matching lower bound (the constant-1 sequence of length n − 1 is zero-sum-free) and packaging the result as IsLeast, and strengthens the upper bound to arbitrary (non-distinct) sequences."
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "extends",
+      "description": "Supplies the exact additive-combinatorial constant — the cyclic Davenport constant — that governs the structural size bounds on non-dividing sets in the parent Erdős #131 study, as a reusable axiom-free formalization Mathlib currently lacks."
+    }
+  ],
+  "references": [
+    {
+      "title": "On some problems in combinatorial number theory",
+      "author": "Paul Erdős",
+      "year": "1975",
+      "venue": "Er75b",
+      "description": "Erdős's problem #131 on non-dividing sets and the function F(N); the cyclic Davenport constant is the invariant behind the per-element size bounds on such sets."
+    },
+    {
+      "title": "On Davenport's constant",
+      "author": "various (survey)",
+      "year": "2006",
+      "venue": "Expo. Math. / survey",
+      "description": "The Davenport constant D(G) is the least d such that every length-d sequence over G has a nonempty zero-sum subsequence; the classical value for cyclic groups is D(ℤ/nℤ) = n, proved here from scratch (both bounds) by prefix-sum pigeonhole and an extremal constant-1 sequence."
+    },
+    {
+      "title": "A combinatorial problem on finite Abelian groups, I",
+      "author": "John E. Olson",
+      "year": "1969",
+      "venue": "J. Number Theory",
+      "description": "Foundational results on the Davenport constant, including D(G) for p-groups; context for the rank-2 generalisation posed in the open questions."
+    },
+    {
+      "title": "Theorem in the additive number theory",
+      "author": "Paul Erdős, Abraham Ginzburg, Abraham Ziv",
+      "year": "1961",
+      "venue": "Bull. Res. Council Israel",
+      "description": "The Erdős–Ginzburg–Ziv theorem and its constant s(ℤ/nℤ) = 2n − 1; the Davenport constant n is strictly smaller (it forbids zero-sum subsequences of every length, not just length n), the distinction exploited by the parent EGZ-sharpening entry."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The Davenport constant of the cyclic group ℤ/nℤ — the least length d such that every length-d sequence over ℤ/nℤ has a nonempty zero-sum subsequence — is exactly n (davenport_constant_cyclic, stated as IsLeast). The upper bound D(ℤ/nℤ) ≤ n (davenport_upper) holds for arbitrary sequences f : Fin m → ZMod n with n ≤ m: the m + 1 prefix sums collide in the n-element type ZMod n by pigeonhole, and the index interval between a collision sums to zero (prefix split via Finset.sum_union) and is nonempty. The matching lower bound (davenport_no_zerosum_const_one) shows sharpness: for every m < n the constant sequence 1 of length m is zero-sum-free, since any nonempty subsequence of size k sums to (k : ZMod n) with 1 ≤ k ≤ m < n. A corollary (exists_index_subset_sum_dvd) recovers and strengthens the companion entry's integer-divisibility bound to arbitrary (non-distinct) index sequences, and davenport_isLeast_eq extracts uniqueness. 170 lines, 6 theorems, 1 definition, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "The entry provides a complete, exact, axiom-free formalization of the cyclic Davenport constant D(ℤ/nℤ) = n — a named additive-combinatorial invariant Mathlib lacks (it has only the larger EGZ constant 2n − 1). Where the companion EGZ-sharpening entry needed only the upper bound (and only for distinct naturals) to bound non-dividing sets, this entry pins the invariant exactly and in its proper sequence generality, supplying the prefix-sum pigeonhole upper bound and the extremal zero-sum-free witness (n − 1 repeated ones) as reusable infrastructure. It sets up the natural generalisations to rank-2 and p-group Davenport constants posed in the open questions."
+  }
+}
