@@ -1,0 +1,89 @@
+{
+  "id": "birthday-problem-oq-03-oq-01-oq-01-oq-05",
+  "title": "Closed Form for the k=3 Birthday Count at n = 4",
+  "slug": "birthday-problem-oq-03-oq-01-oq-01-oq-05",
+  "description": "Extends the parent's closed forms for the slot recurrence R (k=3 birthday counting, at most two people per day) to n = 4: the number of ways to seat four labelled people on d days with at most two per day equals d⁴ − 4d² + 3d, equivalently d(d−1)(d²+d−3). The parent gave the closed forms for n = 1, 2, 3 (the last being d³ − d); this is the next term. Stated over ℤ to avoid truncated subtraction, and proved by directly unfolding the recurrence — no native_decide — so it is fully 0-axiom, unlike several of the parent's tabulated threshold values.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ05.lean",
+    "tags": [
+      "combinatorics",
+      "birthday-problem",
+      "generating-functions",
+      "recurrence",
+      "closed-form",
+      "enumeration"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "assumptions": "None. #print axioms reports only propext, Classical.choice, Quot.sound. The closed form is proved by unfolding the recurrence (no native_decide), so it carries no Lean.ofReduceBool dependency.",
+    "lineCount": 60,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "originalContributions": [
+      "birthdayCount3_four: the closed form birthdayCount3 4 d = d⁴ − 4d² + 3d over ℤ",
+      "birthdayCount3_four_factored: the factored form d(d−1)(d²+d−3)",
+      "birthdayCount3_four_eq_nat: a clean ℕ identity (birthdayCount3 4 d + 4d² = d⁴ + 3d) valid for d ≥ 1"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classical birthday problem asks for the probability of a coincidence among n people's birthdays. The 'k=3' (triple-coincidence) variant counts seatings of n people on d days with at most two per day; the parent entry built an O(n²) slot recurrence R(n,e,s) for this count and established closed forms birthdayCount3 1 d = d, birthdayCount3 2 d = d², and birthdayCount3 3 d = d³ − d. The next term in this sequence had not been recorded.",
+    "problemStatement": "Determine the exact closed form of birthdayCount3 4 d — the number of ways to seat four labelled people on d days with at most two per day — and prove it without native_decide.",
+    "text": "By the parent recurrence R 4 d 0 = d · R 3 (d−1) 1, and unfolding two further levels (using R 1 e s = e + s at the base), one obtains R 4 d 0 = d(d−1)(d²+d−3) = d⁴ − 4d² + 3d. We verify this directly: for d = 0, 1, 2 by evaluation, and for d = k+3 by unfolding the recurrence symbolically (the truncated subtractions d−1, d−2, d−3 become k+2, k+1, k once d ≥ 3) and matching polynomials with ring over ℤ. A sanity check: at d = 4 the formula gives 256 − 64 + 12 = 204 = R 4 4 0.",
+    "proofStrategy": "Case-split on d (small cases by decide; d = k+3 by unfolding R via its equation lemmas, normalizing the natural subtractions, casting to ℤ, and closing with ring); derive the factored and ℕ forms algebraically.",
+    "keyInsights": [
+      "The count is a degree-4 polynomial in d, the next entry after d, d², d³ − d for n = 1, 2, 3.",
+      "Writing d = k + 3 makes all truncated subtractions exact, turning the recurrence unfolding into a polynomial identity ring can close.",
+      "Working over ℤ sidesteps the n = 1 truncation artefact that the factored form d(d−1)(d²+d−3) absorbs only by accident."
+    ],
+    "prerequisites": [
+      "The parent slot recurrence R and birthdayCount3",
+      "Natural-number subtraction and case analysis",
+      "Casting to ℤ and polynomial normalization (ring)"
+    ]
+  },
+  "conclusion": {
+    "summary": "birthdayCount3 4 d = d⁴ − 4d² + 3d = d(d−1)(d²+d−3), the next closed form after the parent's n = 1, 2, 3 cases, proved 0-axiom (no native_decide). 3 theorems, 60 lines.",
+    "implications": "Continues the explicit closed-form sequence for the k=3 birthday count and demonstrates that these values are accessible by symbolic recurrence unfolding rather than the parent's native_decide evaluation, keeping the result axiom-free.",
+    "openQuestions": [
+      "Find the general closed form birthdayCount3 n d as a polynomial in d (a signed sum over involutions / telephone-number structure) and prove it by induction on n.",
+      "Identify the exponential generating function ∑ birthdayCount3 n d · x^n / n! = (1 + x + x²/2)^d and derive the closed forms from it.",
+      "Extend to the k-way count R_k tracking a full multiplicity histogram, as in the parent's open questions."
+    ]
+  },
+  "leanFile": {
+    "namespace": "BirthdayOptimized",
+    "lineCount": 60,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ05.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem-oq-03-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the O(n²) slot recurrence with closed forms for n = 1, 2, 3. This entry adds the n = 4 closed form, proved 0-axiom (no native_decide)."
+    }
+  ],
+  "sections": [
+    {
+      "title": "The n = 4 closed form",
+      "startLine": 30,
+      "endLine": 47,
+      "summary": "birthdayCount3_four: d⁴ − 4d² + 3d over ℤ, via small-case evaluation and symbolic unfolding of the recurrence for d = k+3."
+    },
+    {
+      "title": "Factored and ℕ forms",
+      "startLine": 49,
+      "endLine": 60,
+      "summary": "birthdayCount3_four_factored (d(d−1)(d²+d−3)) and birthdayCount3_four_eq_nat (a truncation-free ℕ identity for d ≥ 1)."
+    }
+  ],
+  "sorries": []
+}
