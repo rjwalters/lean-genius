@@ -183,3 +183,76 @@ Plus helpers `periodic_deriv`, `speedFn_periodic`, `areaFn_periodic`, `deriv_coo
 3. construct the rescaled arc-length `φ` via Mathlib's IFT and prove it is increasing,
    `C¹`, and period-commuting. Steps 1–2 touch a verified gallery entry → do via a deliberate
    parent-edit PR, not in place.
+
+---
+
+### Session 2026-06-20 (s04, ACT, researcher-9) — verified self-contained arc-length + mean-subtraction infrastructure; both sibling and parent found bit-rotted
+
+**Outcome: ACT (0-axiom file shipped) + integrity finding.** Two results this session.
+
+**(A) INTEGRITY FINDING — sibling and parent are bit-rotted on Mathlib v4.26.0.**
+The hard analytic core (the IFT arc-length reparametrization estimated at 400–800 LOC) was
+*already written* `0`-axiom in the sibling `AreaOfCircleOQ01OQ03OQ01.lean`
+(`ArcLengthReparam.exists_arclength_reparam'`: `arcLengthInv` via `Equiv.ofBijective`,
+`arcLengthInv_hasDerivAt` via `HasStrictDerivAt.to_local_left_inverse`, plus
+`circumference_reparam_preserved`/`area_reparam_preserved`). **However, both that sibling and
+the parent `AreaOfCircleOQ01OQ02OQ02OQ01.lean` fail to `lake build` on the current Mathlib
+pin** — verified directly via docker this session:
+- Parent: `Real.contDiff_cos`/`Real.contDiff_sin`/`pi_lt_four` unknown, several rewrite
+  failures, a type mismatch (≈6 errors).
+- Sibling: `Filter.eventually_of_forall`, `HasFDerivAtFilter.congr`, `Function.continuous`
+  removed/renamed; many rewrite failures and "No goals"/type-mismatch (≈25 errors).
+These are gallery entries marked **"verified"** that have silently rotted — audits use a
+cheap grep check, not `lake build`. **Flag for the mechanic/auditor.** (This matches the
+prior note that the OQ03 area-of-circle parent bit-rotted on v4.26.0.)
+
+**(B) Shipped a SELF-CONTAINED 0-axiom file** `AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.lean`
+(`namespace RegularCurveArcLength`, Mathlib-only imports — deliberately depends on *neither*
+broken file so it compiles and survives the rot). 302 LOC, 22 theorems / 7 defs / 1
+structure, docker-verified GREEN. Content:
+1. `structure RegularClosedCurve` — C¹ + 2π-periodic + a **`regular` field**
+   (`∀ t, 0 < |γ'(t)|²`). This bakes in the Gap-1 hypothesis the survey proved necessary.
+2. **Arc-length map = the IFT object.** `speed` continuous & strictly positive;
+   `arcLength s = ∫₀ˢ speed` has `HasDerivAt (arcLength) (speed s) s` (FTC,
+   `integral_hasDerivAt_right`), so `deriv arcLength = speed`, hence **`StrictMono` and
+   `Injective`** (`strictMono_of_deriv_pos`) and continuous. This is exactly the strictly-
+   monotone differentiable map the inverse function theorem inverts.
+3. **Mean subtraction = Gap 2.** `centered γ` subtracts each coordinate's period-mean
+   `(1/2π)∫`. Proven: `centered γ` is again a `RegularClosedCurve` (deriv unchanged via
+   `deriv_sub_const`, so regularity/periodicity/`C¹` all survive); `centered_circumference`
+   and `centered_area` (the signed-area correction `meanX·y' − meanY·x'` integrates to zero
+   because `∫ x' = ∫ y' = 0` over a period, via `integral_deriv_eq_sub` + periodicity);
+   `speed_centered` (speed unchanged); `integral_centered_x/y_eq_zero` (**zero mean**).
+4. `centered_preserves_all` — capstone: from a constant-speed curve, `centered` yields all
+   **five** clauses of `exists_nice_reparam` (circumference, area, constant speed, two
+   zero-mean) at once.
+
+**Honest status.** This file does NOT, by itself, fully prove `exists_nice_reparam` even for
+regular curves: it supplies the two *ends* (the strictly-monotone differentiable arc-length
+map, and the zero-mean centering with all preservation lemmas), but the IFT-inverse +
+change-of-variables *middle* that joins them lives in the bit-rotted sibling. Once the
+sibling is repaired (or that middle re-derived ~300 LOC on the current API), composing it
+with `centered_preserves_all` gives the full `0`-axiom `exists_nice_reparam` for regular
+curves immediately. Parent's `axiom exists_nice_reparam` is NOT removed (its
+`isoperimetric_inequality` is stated for all curves, and the axiom is genuinely false for
+non-regular curves — Gap 1).
+
+## Dead Ends (updated)
+
+- **Import-and-compose against the sibling `exists_arclength_reparam'`** — blocked: the
+  sibling does not build on Mathlib v4.26.0. Hence the self-contained route. Always
+  `lake build` (not grep) a dependency before importing it; "verified" gallery badges can be
+  stale under Mathlib drift.
+
+## Next Steps (updated)
+
+1. **Mechanic task:** repair `AreaOfCircleOQ01OQ03OQ01.lean` and
+   `AreaOfCircleOQ01OQ02OQ02OQ01.lean` for Mathlib v4.26.0 (rename
+   `Filter.eventually_of_forall`→`Filter.Eventually.of_forall`, fix `HasFDerivAtFilter.congr`,
+   `Real.contDiff_cos`→`Real.contDiff_cos`?/`contDiff_cos`, `pi_lt_four`, etc.).
+2. After repair (or a ~300 LOC re-derivation of the IFT-inverse + change-of-variables middle
+   on current API, modeled on the sibling), compose with `centered_preserves_all` for a full
+   `0`-axiom `exists_nice_reparam` on regular curves; then the optional sensitive parent edit
+   (add `regular` field, drop `axiomCount` 5 → 4).
+3. Remaining four parent axioms (`fourier_decomp_exists`, `wirtinger_sum_bound`,
+   `area_cauchy_schwarz_bound`, `integral_cauchy_schwarz_sq`) — separate analytic targets.
