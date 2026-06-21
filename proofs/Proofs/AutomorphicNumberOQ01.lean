@@ -80,7 +80,7 @@ theorem idem_eq_zero_or_one {p : ℕ} [hp : Fact p.Prime] {k : ℕ} (hk : 0 < k)
     · have hpos : 0 < n := Nat.pos_of_ne_zero hn0
       have hpnm : ¬ p ∣ (n - 1) := by
         intro hd
-        have h2 : p ∣ n - (n - 1) := Nat.dvd_sub' hpn hd
+        have h2 : p ∣ n - (n - 1) := Nat.dvd_sub hpn hd
         rw [Nat.sub_sub_self hpos] at h2
         have h3 := Nat.le_of_dvd Nat.one_pos h2
         have h4 := hp.out.two_le
@@ -122,8 +122,10 @@ theorem idem_card_prime_pow {p : ℕ} [hp : Fact p.Prime] {k : ℕ} (hk : 0 < k)
     | exact Finset.card_pair zero_ne_one
     | exact Finset.card_doubleton zero_ne_one
 
-/-- Idempotents transport across a ring isomorphism. -/
-def idemCongr {R S : Type*} [Mul R] [Mul S] (f : R ≃+* S) :
+/-- Idempotents transport across a multiplicative isomorphism.  (Only the multiplicative
+structure matters, so this is stated for a `MulEquiv`; ring isomorphisms coerce via
+`RingEquiv.toMulEquiv`.) -/
+def idemCongr {R S : Type*} [Mul R] [Mul S] (f : R ≃* S) :
     {e : R // e * e = e} ≃ {e : S // e * e = e} where
   toFun e := ⟨f e.1, by rw [← map_mul, e.2]⟩
   invFun e := ⟨f.symm e.1, by rw [← map_mul, e.2]⟩
@@ -146,16 +148,26 @@ theorem automorphic_idempotent_count (k : ℕ) (hk : 0 < k) :
     (univ.filter (fun e : ZMod (10 ^ k) => e * e = e)).card = 4 := by
   haveI : Fact (Nat.Prime 2) := ⟨by norm_num⟩
   haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
-  rw [show (10 : ℕ) ^ k = 2 ^ k * 5 ^ k from by
-        rw [show (10 : ℕ) = 2 * 5 from rfl, mul_pow]]
+  haveI : NeZero ((10 : ℕ) ^ k) := ⟨pow_ne_zero k (by norm_num)⟩
+  haveI : NeZero ((2 : ℕ) ^ k * 5 ^ k) :=
+    ⟨mul_ne_zero (pow_ne_zero k (by norm_num)) (pow_ne_zero k (by norm_num))⟩
   have hcop : Nat.Coprime (2 ^ k) (5 ^ k) := by
     rw [Nat.coprime_pow_left_iff hk, Nat.coprime_pow_right_iff hk]; decide
-  rw [← Fintype.card_subtype (fun e : ZMod (2 ^ k * 5 ^ k) => e * e = e),
-      Fintype.card_congr (idemCongr (ZMod.chineseRemainder hcop)),
-      Fintype.card_congr (idemProd (R := ZMod (2 ^ k)) (S := ZMod (5 ^ k))),
-      Fintype.card_prod,
-      idem_card_prime_pow (p := 2) hk,
-      idem_card_prime_pow (p := 5) hk]
+  have h10 : (10 : ℕ) ^ k = 2 ^ k * 5 ^ k := by
+    rw [show (10 : ℕ) = 2 * 5 from rfl, mul_pow]
+  -- Count idempotents over the coprime product modulus `2 ^ k * 5 ^ k`.
+  have key : Fintype.card {e : ZMod (2 ^ k * 5 ^ k) // e * e = e} = 4 := by
+    rw [Fintype.card_congr (idemCongr (ZMod.chineseRemainder hcop).toMulEquiv),
+        Fintype.card_congr (idemProd (R := ZMod (2 ^ k)) (S := ZMod (5 ^ k))),
+        Fintype.card_prod,
+        idem_card_prime_pow (p := 2) hk,
+        idem_card_prime_pow (p := 5) hk]
+  -- Transport along the type equality `ZMod (10 ^ k) = ZMod (2 ^ k * 5 ^ k)`, avoiding a
+  -- rewrite under the dependent `NeZero` instance.
+  have hcast : {e : ZMod (10 ^ k) // e * e = e} ≃ {e : ZMod (2 ^ k * 5 ^ k) // e * e = e} :=
+    Equiv.cast (congrArg (fun N => {e : ZMod N // e * e = e}) h10)
+  rw [← Fintype.card_subtype (fun e : ZMod (10 ^ k) => e * e = e),
+      Fintype.card_congr hcast, key]
 
 /-! ## Concrete automorphic numbers
 

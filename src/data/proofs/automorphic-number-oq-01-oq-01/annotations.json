@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-autonum-oq01oq01-context",
+    "proofId": "automorphic-number-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "concept",
+    "title": "Why exactly four? Counting automorphic residues mod n",
+    "content": "An automorphic number is one whose square ends in itself: 5²=25, 6²=36, 25²=625, 76²=5776. Reducing mod 10^k, an automorphic residue is precisely an idempotent of ZMod (10^k): an element with e²=e. The parent entry proves there are exactly four of them for every k≥1 (namely 0, 1, and the two nontrivial residues ending in …5 and …6). But why four? The answer is structural: 4 = 2², and the exponent 2 is the number of distinct primes dividing 10 (i.e. 2 and 5). This file proves the general law — for every n≥1, the number of idempotents of ZMod n equals 2^ω(n), where ω(n) counts the distinct prime factors of n — and recovers the decimal '4' as the case ω(10^k)=2.",
+    "mathContext": "Automorphic residue mod n ⟺ idempotent of ZMod n; the count is $2^{\\omega(n)}$, with $\\omega(10^k)=2$ giving the classical four."
+  },
+  {
+    "id": "ann-autonum-oq01oq01-numidem",
+    "proofId": "automorphic-number-oq-01-oq-01",
+    "range": { "startLine": 51, "endLine": 76 },
+    "type": "definition",
+    "title": "Packaging the count as an arithmetic function",
+    "content": "numIdem n is defined as Nat.card {e : ZMod n // e*e=e} for n≥1, with the value at 0 set to 0 so that it is a genuine ArithmeticFunction ℕ (the arithmetic-function convention demands f(0)=0). Using Nat.card rather than Fintype.card sidesteps any Fintype-instance bookkeeping and makes the multiplicativity proof one rewrite chain. numIdem_one records that ZMod 1 is trivial (its unique element is the only idempotent), and numIdem_prime_pow re-exports the parent's prime-power count idem_card_prime_pow = 2 in Nat.card form.",
+    "mathContext": "$\\mathrm{numIdem}(n)=\\#\\{e\\in\\mathbb{Z}/n : e^2=e\\}$, an arithmetic function with $\\mathrm{numIdem}(p^k)=2$."
+  },
+  {
+    "id": "ann-autonum-oq01oq01-multiplicative",
+    "proofId": "automorphic-number-oq-01-oq-01",
+    "range": { "startLine": 77, "endLine": 90 },
+    "type": "key-step",
+    "title": "Multiplicativity from the Chinese Remainder Theorem",
+    "content": "For coprime m, n the ring isomorphism ZMod (mn) ≃+* ZMod m × ZMod n (ZMod.chineseRemainder), coerced to a MulEquiv, transports idempotents via the parent's idemCongr, and idempotents of a product ring split componentwise via idemProd. Chaining Nat.card_congr through both equivalences and then Nat.card_prod gives numIdem(mn) = numIdem m · numIdem n. Combined with numIdem 1 = 1 and IsMultiplicative.iff_ne_zero, numIdem is a multiplicative arithmetic function. Only the multiplicative structure is used — which is exactly why the parent's idemCongr is correctly stated for a MulEquiv, not a RingEquiv.",
+    "mathContext": "$\\gcd(m,n)=1\\Rightarrow \\mathbb{Z}/mn\\cong\\mathbb{Z}/m\\times\\mathbb{Z}/n$, so an idempotent mod $mn$ is a pair of idempotents and the count multiplies."
+  },
+  {
+    "id": "ann-autonum-oq01oq01-factorization",
+    "proofId": "automorphic-number-oq-01-oq-01",
+    "range": { "startLine": 91, "endLine": 116 },
+    "type": "key-step",
+    "title": "Evaluating a multiplicative function over the factorization",
+    "content": "IsMultiplicative.multiplicative_factorization writes numIdem n (for n>0) as the product of numIdem(p^k) over the prime factorization of n. Every prime p in the support contributes numIdem(p^(factorization)) = 2 (numIdem_prime_pow, since support membership forces both primality and a positive exponent). The product of the constant 2 over the ω(n) = #support prime factors collapses via Finset.prod_const to 2^(support.card), and Nat.support_factorization rewrites the support as n.primeFactors. The result, restated with Nat.card, is idempotent_count: #{idempotents of ZMod n} = 2^ω(n).",
+    "mathContext": "A multiplicative function is determined by its prime-power values; $\\mathrm{numIdem}\\equiv 2$ there, so $\\mathrm{numIdem}(n)=\\prod_{p\\mid n}2 = 2^{\\omega(n)}$."
+  },
+  {
+    "id": "ann-autonum-oq01oq01-decimal",
+    "proofId": "automorphic-number-oq-01-oq-01",
+    "range": { "startLine": 117, "endLine": 135 },
+    "type": "technique",
+    "title": "Recovering 'exactly four' — and the parent regression fix",
+    "content": "primeFactors_ten_pow computes ω(10^k)=2: Nat.primeFactors_pow strips the exponent, then 10 = 2·5 splits as a coprime product (Nat.primeFactors_mul, Nat.Prime.primeFactors) into {2}∪{5}, whose card 2 is checked by kernel `decide` on concrete finite data. Substituting into idempotent_count yields automorphic_count_ten_pow: Nat.card {e : ZMod (10^k) // e²=e} = 2² = 4 — the classical four automorphic residues 0, 1, …5, …6. The same theorem gives 2 for any prime power and 8 for a modulus with three distinct primes. This session also repaired a build-rot in the parent file against Mathlib 4.26.0: idemCongr/idemProd were stated for a RingEquiv that requires an additive structure absent from the bare [Mul R] hypotheses (corrected to MulEquiv, the right notion for idempotency), and the renamed Nat.dvd_sub' → Nat.dvd_sub was updated.",
+    "mathContext": "$\\#\\{e\\in\\mathbb{Z}/10^k : e^2=e\\}=2^{\\omega(10^k)}=2^2=4$; the count grows as $2^{\\#\\text{distinct primes}}$, not with the size of the modulus."
+  }
+]
