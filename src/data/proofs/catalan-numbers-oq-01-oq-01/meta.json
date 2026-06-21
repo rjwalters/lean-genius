@@ -1,0 +1,129 @@
+{
+  "id": "catalan-numbers-oq-01-oq-01",
+  "title": "Catalan Numbers: the central-binomial reflection form C(n) = C(2n,n) − C(2n,n+1)",
+  "slug": "catalan-numbers-oq-01-oq-01",
+  "description": "The classical reflection (ballot-problem) identity for the Catalan numbers: catalan n = C(2n, n) - C(2n, n+1), expressing the n-th Catalan number as the gap between the central binomial coefficient and its immediate right neighbour. Mathlib provides the Catalan numbers with the closed form catalan_eq_centralBinom_div and the multiplicative bridge succ_mul_catalan_eq_centralBinom ((n+1)*catalan n = centralBinom n), but does not record this difference form. The entry derives it over ℕ with 0 axioms: the additive partition C(2n,n) = catalan n + C(2n,n+1) is proved by multiplying through by n+1 and combining the Catalan bridge with the neighbour relation (n+1)*C(2n,n+1) = n*C(2n,n) obtained from Nat.choose_succ_right_eq; ℕ subtraction then yields the reflection form, and a companion lemma certifies the difference is genuine (C(2n,n+1) ≤ C(2n,n)). Two kernel-decide sanity checks confirm catalan 3 = 20-15 = 5 and catalan 4 = 70-56 = 14. Distinct from the parent entry (the O(1) linear recurrence): this is the closed difference form behind André's reflection principle.",
+  "meta": {
+    "author": "Eugène Charles Catalan / André reflection principle (classical); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CatalanReflectionFormOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "catalan-numbers",
+      "central-binomial",
+      "binomial-coefficients",
+      "reflection-principle",
+      "ballot-problem",
+      "enumerative-combinatorics",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "succ_mul_catalan_eq_centralBinom",
+        "description": "(n + 1) * catalan n = Nat.centralBinom n. The multiplicative bridge from the Catalan numbers to the central binomial coefficient; supplies (n+1)*catalan n = C(2n,n).",
+        "module": "Mathlib.Combinatorics.Enumerative.Catalan"
+      },
+      {
+        "theorem": "Nat.centralBinom (definition)",
+        "description": "Nat.centralBinom n is definitionally (2 * n).choose n, so the bridge is reused directly as a statement about C(2n,n) by rfl.",
+        "module": "Mathlib.Data.Nat.Choose.Central"
+      },
+      {
+        "theorem": "Nat.choose_succ_right_eq",
+        "description": "n.choose (k+1) * (k+1) = n.choose k * (n - k). Instantiated at (2n, n) with 2n - n = n it gives the neighbour relation (n+1)*C(2n,n+1) = n*C(2n,n).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.eq_of_mul_eq_mul_left",
+        "description": "0 < k → k*a = k*b → a = b. Cancels the positive factor n+1 after the partition identity is established multiplicatively.",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "centralBinom_eq_catalan_add_choose: the additive near-central partition C(2n,n) = catalan n + C(2n,n+1), proved by cancelling n+1 from (n+1)*C(2n,n) = (n+1)*catalan n + (n+1)*C(2n,n+1) = C(2n,n) + n*C(2n,n). Stated without ℕ truncated subtraction so every corollary follows by omega. Not in Mathlib.",
+      "catalan_eq_centralBinom_sub_choose: the reflection / ballot form catalan n = C(2n,n) - C(2n,n+1) — the headline. The closed difference behind André's reflection principle; Mathlib records only the division form catalan n = centralBinom n / (n+1).",
+      "catalan_eq_centralBinom_sub: the same identity phrased with Mathlib's Nat.centralBinom (catalan n = centralBinom n - C(2n,n+1)), bridging the two notations.",
+      "choose_succ_le_centralBinom: C(2n,n+1) ≤ C(2n,n) — certifies the subtraction is a genuine difference, not silently truncated to 0 by ℕ subtraction.",
+      "Kernel-decide witnesses: catalan 3 = C(6,3)-C(6,4) = 20-15 = 5 and C(8,4)-C(8,5) = 70-56 = 14 (= catalan 4), confirming the identity numerically with no native_decide."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Concrete checks use kernel `decide` only (no native_decide, hence no Lean.ofReduceBool). Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 101,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Catalan numbers count Dyck paths, balanced parenthesizations, triangulations of a polygon, and binary trees. The reflection form catalan n = C(2n,n) - C(2n,n+1) is the arithmetic shadow of André's reflection principle (1887) for the ballot problem: among the C(2n,n) monotone lattice paths from (0,0) to (n,n), the 'bad' paths that step above the diagonal are in bijection — by reflecting the path after its first bad step — with all C(2n,n+1) paths to the reflected endpoint, leaving exactly the Dyck paths.",
+    "problemStatement": "Mathlib provides the Catalan numbers with the closed form catalan_eq_centralBinom_div (catalan n = centralBinom n / (n+1)) and the multiplicative bridge succ_mul_catalan_eq_centralBinom, but does not record the closed *difference* form catalan n = C(2n,n) - C(2n,n+1). Can it be derived purely arithmetically over ℕ, and can the difference be certified genuine (the subtrahend never exceeding the minuend)?\n\n**Answer:** Yes. Multiplying the additive partition C(2n,n) = catalan n + C(2n,n+1) by n+1 reduces it to the Catalan bridge plus the neighbour relation from Nat.choose_succ_right_eq; cancelling n+1 and passing to ℕ subtraction gives the reflection form, and the partition immediately yields C(2n,n+1) ≤ C(2n,n).",
+    "text": "The reflection form of the Catalan numbers is derived from Mathlib's central-binomial bridge and the choose neighbour relation, the difference is certified genuine, and two explicit values are checked by kernel decide — all with 0 axioms.",
+    "proofStrategy": "1. centralBinom_eq_catalan_add_choose: with C(2n,n) = Nat.centralBinom n by rfl, the Catalan bridge gives (n+1)*catalan n = C(2n,n); Nat.choose_succ_right_eq at (2n,n) (using 2n-n=n) gives (n+1)*C(2n,n+1) = n*C(2n,n). Then (n+1)*C(2n,n) = (n+1)*catalan n + (n+1)*C(2n,n+1) = C(2n,n) + n*C(2n,n), and Nat.eq_of_mul_eq_mul_left cancels n+1.\n2. catalan_eq_centralBinom_sub_choose: omega turns the additive partition into the ℕ difference catalan n = C(2n,n) - C(2n,n+1).\n3. catalan_eq_centralBinom_sub: rewrite C(2n,n) back to Nat.centralBinom n by rfl.\n4. choose_succ_le_centralBinom: omega reads C(2n,n+1) ≤ C(2n,n) off the partition.\n5. Sanity: decide evaluates C(6,3)-C(6,4)=5 and C(8,4)-C(8,5)=14.",
+    "keyInsights": [
+      "**The difference form is not a Mathlib re-export.** Mathlib has the division form catalan n = centralBinom n / (n+1); the subtraction form C(2n,n) - C(2n,n+1) needs the neighbour relation and a genuine cancellation, so it is derived here rather than imported.",
+      "**Work additively, conclude subtractively.** Proving the partition C(2n,n) = catalan n + C(2n,n+1) first — with no ℕ truncated subtraction — keeps the algebra honest; omega then delivers both the difference form and the inequality C(2n,n+1) ≤ C(2n,n) for free.",
+      "**One neighbour relation does the work.** Nat.choose_succ_right_eq, specialized at the central column with 2n - n = n, is exactly the fact (n+1)*C(2n,n+1) = n*C(2n,n) that, against the Catalan bridge, forces the partition.",
+      "**Reflection, arithmetically.** C(2n,n) counts all paths, C(2n,n+1) counts the reflected (bad) paths, and their difference is the Dyck count catalan n — André's reflection principle visible as a one-line identity."
+    ],
+    "exampleSections": [
+      {
+        "title": "Numerical witnesses",
+        "mathContext": "catalan 3 = C(6,3) - C(6,4) = 20 - 15 = 5 and catalan 4 = C(8,4) - C(8,5) = 70 - 56 = 14, both checked by kernel decide, confirm the reflection identity on small values."
+      }
+    ]
+  },
+  "references": [
+    {
+      "authors": "André, Désiré",
+      "title": "Solution directe du problème résolu par M. Bertrand",
+      "year": "1887",
+      "note": "C. R. Acad. Sci. Paris 105, 436–437 — the reflection principle for the ballot problem, the combinatorial source of catalan n = C(2n,n) - C(2n,n+1)."
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Catalan Numbers",
+      "year": "2015",
+      "note": "Cambridge University Press — comprehensive treatment of the Catalan numbers, including the central-binomial and reflection identities."
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Catalan Numbers with Applications",
+      "year": "2008",
+      "note": "Oxford University Press — Chapter on binomial-coefficient identities for the Catalan numbers, including the difference form."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "catalan-numbers-oq-01",
+      "reason": "The parent entry: the O(1) linear (holonomic) recurrence (n+2)*catalan(n+1) = 2(2n+1)*catalan n, also derived from the central-binomial bridge. This entry gives the closed difference form rather than the step recurrence."
+    },
+    {
+      "id": "dyck-catalan-count-oq-01",
+      "reason": "Counts Dyck paths by the Catalan numbers — the combinatorial objects whose enumeration the reflection identity C(2n,n) - C(2n,n+1) computes."
+    }
+  ],
+  "conclusion": {
+    "summary": "The central-binomial reflection form catalan n = C(2n,n) - C(2n,n+1) is derived over ℕ with 0 axioms via the additive partition C(2n,n) = catalan n + C(2n,n+1) (centralBinom_eq_catalan_add_choose), restated against Mathlib's Nat.centralBinom (catalan_eq_centralBinom_sub), certified as a genuine difference (choose_succ_le_centralBinom), and checked numerically for n = 3, 4. All results are verified with 0 sorries.",
+    "implications": "Supplies the closed difference (ballot) form of the Catalan numbers alongside the gallery's division form and linear recurrence, and isolates the central-column neighbour relation (n+1)*C(2n,n+1) = n*C(2n,n) as the arithmetic engine of André's reflection principle.",
+    "openQuestions": [
+      "Prove the bijective content directly in Lean: exhibit André's reflection as an explicit injection from diagonal-crossing monotone lattice paths to paths counted by C(2n,n+1), upgrading the arithmetic identity to a combinatorial bijection.",
+      "Establish the generalized ballot / cycle-lemma count C(2n,n) - C(2n,n+k) for the number of paths staying strictly below a line of slope determined by k, recovering the reflection form as the k=1 case."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 101,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CatalanReflectionFormOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
