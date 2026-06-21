@@ -1,0 +1,73 @@
+[
+  {
+    "id": "ann-ktoq03-header",
+    "proofId": "knights-tour-oblique-oq-03",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 56
+    },
+    "title": "Two commuting symmetries of closed knight's tours",
+    "content": "The OQ-02 program studies the symmetries that act on the histogram of oblique counts of closed knight's tours on the 8×8 board (Knuth, 2025). Two symmetries are natural and conceptually independent: the dihedral board group D₄ (applyD4Tour) permutes the SQUARES of the board (an isometry of the plane), while time-reversal (reverseTour, built in the OQ-02 reversal companion) permutes the TRAVERSAL ORDER of a fixed tour. This file proves they commute, so closed tours carry an order-16 D₄ × ℤ/2 action, refining the orbit-divisibility picture of the histogram. The docstring's honesty note distinguishes this assumption-free file from the base lineage, which uses native_decide (Lean.ofReduceBool) and accepts the uniqueness theorem unique_four_oblique as an axiom (Knuth's enumeration of ~1.3×10¹³ tours).",
+    "mathContext": "$D_4$ acts on board geometry (map of squares); reversal acts on walk dynamics (order of squares). They commute because $\\mathrm{map}$ and $\\mathrm{reverse}$ commute.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dihedral group D₄",
+      "time-reversal symmetry",
+      "group actions on tours",
+      "histogram orbit divisibility"
+    ],
+    "prerequisites": [
+      "closed knight's tours",
+      "the D₄ board action",
+      "List.map and List.reverse"
+    ]
+  },
+  {
+    "id": "ann-ktoq03-commute",
+    "proofId": "knights-tour-oblique-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 64,
+      "endLine": 71
+    },
+    "title": "reverseTour_applyD4Tour: reversal commutes with D₄",
+    "content": "reverseTour (applyD4Tour g t) = applyD4Tour g (reverseTour t). Since closed tours are equal iff their square lists are equal (closedTour_eq_iff), the goal reduces — definitionally, since applyD4Tour maps the square list by applyD4 g and reverseTour reverses it — to (t.squares.map (applyD4 g)).reverse = (t.squares.reverse).map (applyD4 g), which is exactly List.map_reverse. This single list identity is the entire mathematical content: board symmetry rewrites the list elements, reversal rewrites the list order, and the two operations commute, so the corresponding group actions on closed tours commute. The consequence is that the symmetry group acting on tours is the direct product D₄ × ℤ/2 of order 16.",
+    "mathContext": "$\\mathrm{reverse}(\\mathrm{map}\\,\\sigma_g\\,L) = \\mathrm{map}\\,\\sigma_g\\,(\\mathrm{reverse}\\,L)$, lifted through $\\mathrm{closedTour\\_eq\\_iff}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "List.map_reverse",
+      "closedTour_eq_iff",
+      "commuting group actions",
+      "direct product symmetry"
+    ],
+    "prerequisites": [
+      "structure extensionality for ClosedTour",
+      "map/reverse commutation"
+    ]
+  },
+  {
+    "id": "ann-ktoq03-inverse-injective",
+    "proofId": "knights-tour-oblique-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 73,
+      "endLine": 96
+    },
+    "title": "Invertibility, faithfulness, and orbit action",
+    "content": "d4_reverse_leftInverse: the composite symmetry t ↦ reverseTour (applyD4Tour g t) is undone by t ↦ reverseTour (applyD4Tour (d4Inv g) t). The proof rewrites reverseTour (applyD4Tour (d4Inv g) (reverseTour (applyD4Tour g t))) by pulling the inner D₄ element through the reversal (reverseTour_applyD4Tour), collapsing the resulting double reversal (reverseTour_involutive), and cancelling the D₄ pair (applyD4Tour_inv_left) — three rewrites, no induction. d4_reverse_injective then gets injectivity from the left inverse via Function.LeftInverse.injective, establishing that D₄ together with reversal acts faithfully on the finite type ClosedTour (an order-16 D₄ × ℤ/2 symmetry). reverseTour_applyD4Tour_orbit records the orbit-level reading: reversal maps the D₄-orbit of t onto the D₄-orbit of reverseTour t (witnessed by the same group element g), which is the form relevant to the histogram's orbit-divisibility.",
+    "mathContext": "Composite $R \\circ \\sigma_g$ has inverse $R \\circ \\sigma_{g^{-1}}$ (commutation + involution + $D_4$ inverse), hence is injective; reversal permutes $D_4$-orbits.",
+    "significance": "important",
+    "relatedConcepts": [
+      "left inverse implies injective",
+      "faithful group action",
+      "orbit permutation",
+      "involution"
+    ],
+    "prerequisites": [
+      "reverseTour_involutive",
+      "applyD4Tour_inv_left",
+      "Function.LeftInverse.injective"
+    ]
+  }
+]
