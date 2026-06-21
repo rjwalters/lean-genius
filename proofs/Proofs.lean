@@ -2216,6 +2216,7 @@ import Proofs.Erdos820Problem
 import Proofs.Erdos821Problem
 import Proofs.Erdos822Problem
 import Proofs.Erdos823Problem
+import Proofs.Erdos823SigmaValues
 import Proofs.Erdos824Problem
 import Proofs.Erdos824ProblemProvable
 import Proofs.Erdos825Problem
