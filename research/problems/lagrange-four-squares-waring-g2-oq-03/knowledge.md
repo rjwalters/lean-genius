@@ -4,6 +4,47 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-06-20 (researcher-11) — S8 SHIPPED oq-02: two-triangular ⟺ 4n+1 two-squares [verified, 0-axiom]
+
+**Mode**: FRESH (follow-up). **Outcome**: completed, new gallery entry
+`lagrange-four-squares-waring-g2-oq-03-oq-02`, file
+`proofs/Proofs/TwoTrianglesTwoSquares.lean` (178 L, 12 thm, 2 def, 0 axiom,
+0 sorry, no native_decide). Docker build green (7743 jobs). Registered in
+Proofs.lean. PR pending.
+
+**What.** The *two*-summand analogue of my just-merged Gauss Eureka companion
+(oq-01: three triangular ⟺ 8n+3 three squares, #27268). Headline
+`isSumTwoTriangular_iff`: for every n, `n = T(a)+T(b)` ⟺ `4n+1` is a sum of two
+integer squares. Bridge = rotation identity `4·(T a+T b)+1=(a+b+1)²+(a−b)²`.
+
+**Why it matters / how it differs from oq-01.** This one is **UNCONDITIONAL and
+fully axiom-free** — the two-square theorem is in Mathlib (`Nat.eq_sq_add_sq_iff`),
+whereas Eureka still rests on the open three-square sufficiency axiom. So I also
+ship the *complete arithmetic test* `isSumTwoTriangular_iff_factorization`:
+`n=T(a)+T(b)` ⟺ every prime `q≡3 (mod 4)` divides `4n+1` to an even power.
+
+**Gotchas captured:**
+- Backward direction is **division-free**: `4n+1≡1 (mod 4)` ⟹ one square even
+  `=2t`, one odd `=2s+1`; set `p=s+t, q=s−t` (integers) ⟹ `2n=p(p+1)+q(q+1)`.
+  The two non-mixed parity cases die as `(4:ℤ) ∣ 1` (anon ctor + `linear_combination`).
+- Integer→nat triangular bridge: `exists_nat_tri_index` uses `T(k)=T(−1−k)`
+  (`k(k+1)=(−1−k)(−k)`), `Int.toNat_of_nonneg` on the nonneg of `{k, −1−k}`.
+- **`Nat.eq_sq_add_sq_iff` RHS uses `padicValNat q m`, NOT `m.factorization q`** —
+  state the corollary with `padicValNat` so `rw [..., Nat.eq_sq_add_sq_iff]` closes
+  by `Iff.rfl`. Its LHS is `∃ a b, m = a²+b²` (number on LEFT) → add a flip lemma.
+- **TRAP:** the naive "no prime factor ≡3 mod4" form is FALSE: `n=2=T₁+T₁` but
+  `4·2+1=9=3²`. Must use even-power. Certified in
+  `verify_two_triangular_two_squares.py` ([A] 0 mismatches n<20000, [B] identity,
+  [C] naive-fail at n=2 + even-power PASS).
+- `le_or_lt` deprecated → `le_or_gt`.
+
+**Parent status unchanged:** the hard direction `not_excluded_form_is_sum_three_sq`
+(ThreeSquares.lean:1838, lone axiom) still needs the 2D-slice Minkowski /
+Davenport–Cassels build (>500 L, not in Mathlib; active across
+ThreeSquaresDavenportCassels/RationalBridge/SquarefreeReduction). Not touched here.
+
+---
+
 ## Problem Understanding
 
 Goal: the **"if" direction** of Legendre's three-square theorem,
