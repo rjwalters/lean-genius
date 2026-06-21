@@ -1,0 +1,125 @@
+{
+  "id": "erdos-131-oq-01-oq-01",
+  "slug": "erdos-131-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos131EGZ",
+    "lineCount": 153,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos131EGZBound.lean",
+    "sorries": 0
+  },
+  "title": "An Erdős–Ginzburg–Ziv Bound for Non-Dividing Sets (Erdős #131)",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos131EGZBound.lean",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "erdos-problems",
+      "erdos-131",
+      "non-dividing-sets",
+      "erdos-ginzburg-ziv",
+      "zero-sum",
+      "extremal-set-theory",
+      "structural-bound",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 153,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "egz_nondividing_card_bound: the headline structural theorem — if a ∈ A with a ≥ 2 and A is non-dividing (no element divides the sum of any ≥2-element subset of the others), then |A| ≤ 2a − 1. This generalizes the parent file's parity bound (2 ∈ A ⟹ |A| ≤ 3) from the single element a = 2 to every element a ≥ 2, by replacing the ad-hoc parity pigeonhole with the full Erdős–Ginzburg–Ziv theorem at modulus a. Proved unconditionally and axiom-free.",
+      "nondividing_card_le_two_min: the smallest-element bound — a non-dividing set whose every element is ≥ 2 has |A| ≤ 2·min(A) − 1, obtained by applying the EGZ bound at the least element (which gives the tightest constraint). This makes precise the heuristic that small elements force small non-dividing sets, a structural mechanism behind the slow growth of F(N).",
+      "two_in_card_le_three: recovers the parent's parity result two_in_nondividing_bound (2 ∈ A ⟹ |A| ≤ 3) as the immediate a = 2 special case 2·2 − 1 = 3, demonstrating that the EGZ bound subsumes the earlier hand-rolled argument.",
+      "not_nondividing_of_card_gt: the contrapositive certification form — any candidate set with more than 2a − 1 elements for some a ∈ A, a ≥ 2, is provably NOT non-dividing; a fast structural filter for search.",
+      "egz_bound_sharp_at_two: the bound is sharp at a = 2, witnessed by {2,4,5} (non-dividing, contains 2, card 3 = 2·2 − 1), proving 2·a − 1 cannot be lowered in general.",
+      "Mechanism: EGZ (Int.erdos_ginzburg_ziv) is applied to the integer-cast sequence i ↦ (i:ℤ) on A.erase a with modulus n = a; from |A| ≥ 2a one gets |A.erase a| ≥ 2a − 1, so EGZ produces an a-element subset t ⊆ A\\{a} with a ∣ ∑_{i∈t} i, and since a ≥ 2 this subset has ≥ 2 elements, contradicting IsNonDividing at a. The ℤ-divisibility is transported to ℕ via push_cast / exact_mod_cast."
+    ],
+    "prerequisites": [
+      "Int.erdos_ginzburg_ziv (Mathlib): among any 2n − 1 integers there are n whose sum is divisible by n — the Erdős–Ginzburg–Ziv theorem, here the sole nontrivial dependency; it is a fully proved Mathlib corollary of Chevalley–Warning, so the entry is axiom-free.",
+      "Finset.card_erase_of_mem: |A.erase a| = |A| − 1 for a ∈ A, used to meet the EGZ size hypothesis.",
+      "Finset.min'_mem and Finset.min': the least element of a nonempty finset, used for the smallest-element corollary."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.erdos_ginzburg_ziv",
+        "description": "Any sequence of at least 2n − 1 integers contains an n-element subsequence whose sum is divisible by n. Instantiated at modulus n = a on the integer-cast sequence over A.erase a; this is the keystone that upgrades the a = 2 parity pigeonhole to all a ≥ 2.",
+        "module": "Mathlib.Combinatorics.Additive.ErdosGinzburgZiv"
+      },
+      {
+        "theorem": "Finset.card_erase_of_mem",
+        "description": "|A.erase a| = |A| − 1 when a ∈ A; converts the assumed lower bound |A| ≥ 2a into the EGZ size hypothesis 2a − 1 ≤ |A.erase a|.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.min'_mem",
+        "description": "The minimum of a nonempty finset is a member; lets the smallest-element corollary instantiate the main bound at a = min(A).",
+        "module": "Mathlib.Order.Finset.Lattice"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "erdos-131-oq-01-oq-01-oq-01",
+      "question": "Is the EGZ bound |A| ≤ 2a − 1 sharp for a > 2? It is tight at a = 2 ({2,4,5}). For a given smallest element m ≥ 3, does there exist a non-dividing set with smallest element m and exactly 2m − 1 elements, or is the true maximum strictly smaller? Equivalently, characterize the extremal non-dividing sets meeting the EGZ bound.",
+      "significance": "medium"
+    },
+    {
+      "id": "erdos-131-oq-01-oq-01-oq-02",
+      "question": "Can the per-element EGZ bound be aggregated into a nontrivial global upper bound on F(N)? The bound |A| ≤ 2·min(A) − 1 only helps when min(A) is small; combine it with the distribution of small elements (e.g. averaging the EGZ constraint over all a ∈ A, or applying EGZ to residue-class restrictions) to recover or approach the Pham–Zakharov F(N) ≤ N^{1/4+o(1)} ceiling by elementary means.",
+      "significance": "high"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-131",
+      "relationship": "extends",
+      "description": "Generalizes the parent's structural results on non-dividing sets. The parent proves the parity bound 2 ∈ A ⟹ |A| ≤ 3 by a mod-2 pigeonhole; this entry shows that argument is exactly the p = 2 case of Erdős–Ginzburg–Ziv and lifts it to |A| ≤ 2a − 1 for every a ∈ A with a ≥ 2, recovering the parent bound as the a = 2 corollary."
+    },
+    {
+      "targetId": "erdos-131-oq-01",
+      "relationship": "depends-on",
+      "description": "Addresses the structural-bounds direction of the F(N) growth-rate study: rather than chasing the (genuinely open) growth exponent, it contributes a clean, axiom-free per-element upper bound on the size of non-dividing sets in terms of their elements."
+    }
+  ],
+  "references": [
+    {
+      "title": "On some problems in combinatorial number theory",
+      "author": "Paul Erdős",
+      "year": "1975",
+      "venue": "Er75b",
+      "description": "Erdős's problem #131 on non-dividing sets and the function F(N), the maximal size of a subset of {1,…,N} no element of which divides the sum of any distinct others."
+    },
+    {
+      "title": "Theorem in the additive number theory",
+      "author": "Paul Erdős, Abraham Ginzburg, Abraham Ziv",
+      "year": "1961",
+      "venue": "Bull. Res. Council Israel",
+      "description": "The Erdős–Ginzburg–Ziv theorem: any 2n − 1 integers contain n with sum divisible by n. Supplies the zero-sum subset that powers the structural bound; available in Mathlib as Int.erdos_ginzburg_ziv."
+    },
+    {
+      "title": "On the number of monochromatic solutions to additive equations / non-averaging sets",
+      "author": "Huy Tuan Pham, Dmitrii Zakharov",
+      "year": "2024",
+      "venue": "arXiv",
+      "description": "Proves F(N) ≤ N^{1/4+o(1)} via the non-dividing ⟹ non-averaging connection, refuting Erdős's original F(N) > N^{1/2−o(1)} guess; context for the open question of recovering global bounds elementarily."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For a non-dividing set A ⊆ ℕ (no a ∈ A divides the sum of any ≥2-element subset of A \\ {a}) and any a ∈ A with a ≥ 2, the Erdős–Ginzburg–Ziv theorem gives |A| ≤ 2a − 1 (egz_nondividing_card_bound). The argument: if |A| ≥ 2a then |A.erase a| ≥ 2a − 1, so EGZ at modulus a produces an a-element subset t ⊆ A\\{a} with a ∣ ∑_{i∈t} i; as a ≥ 2 this subset has ≥ 2 elements and violates the non-dividing property at a. Instantiating at the least element yields |A| ≤ 2·min(A) − 1 (nondividing_card_le_two_min), and the a = 2 case recovers the parent's parity bound |A| ≤ 3 (two_in_card_le_three), which is sharp via {2,4,5} (egz_bound_sharp_at_two). 153 lines, 7 theorems/lemmas, 1 definition, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "The result identifies the parent file's mod-2 parity pigeonhole as the p = 2 instance of Erdős–Ginzburg–Ziv and generalizes it to a uniform per-element structural bound on non-dividing sets, making precise the mechanism by which small elements force small sets — the qualitative reason F(N) grows slowly. It is a fully machine-checked, axiom-free structural contribution to the genuinely-open Erdős #131 growth-rate problem, sidestepping the inaccessible asymptotic exponent in favour of exact finite-set constraints, and points (open question) toward aggregating these per-element bounds into an elementary route to the Pham–Zakharov N^{1/4+o(1)} ceiling."
+  }
+}
