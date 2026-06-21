@@ -1,0 +1,124 @@
+{
+  "id": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+  "slug": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GeometricSeriesOQ07OQ01OQ01"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "Polynomial",
+      "GeometricSeriesOQ07OQ01OQ01"
+    ],
+    "namespace": "GeometricSeriesOQ07OQ01OQ01OQ01",
+    "lineCount": 192,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Combinatorial Eulerian Numbers: the Coefficients of the Eulerian Polynomial are ⟨m,j⟩",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "geometric-series",
+      "eulerian-numbers",
+      "eulerian-polynomial",
+      "stirling-numbers",
+      "descent-statistic",
+      "triangle-recurrence",
+      "polynomial",
+      "coefficient-extraction",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 192,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "eulerian: a from-scratch definition of the combinatorial Eulerian numbers ⟨m,j⟩ (the number of permutations of {1,…,m} with j descents) via the classical triangle recurrence ⟨n+1,k+1⟩ = (k+2)·⟨n,k+1⟩ + (n−k)·⟨n,k⟩ with ⟨m,0⟩ = 1 (equivalently ⟨m,k⟩ = (k+1)·⟨m−1,k⟩ + (m−k)·⟨m−1,k−1⟩). Mathlib has Eulerian GRAPHS/circuits but NO Eulerian numbers or polynomials, so the triangle is built here, with the diagonal/above-diagonal vanishing lemmas eulerian_eq_zero_of_lt (⟨n,j⟩=0 for n<j) and eulerian_succ_self (⟨n+1,n+1⟩=0).",
+      "eulerPoly_eq_eulerianNumbers: THE MAIN RESULT — the parent's Eulerian polynomial Eₘ (defined by its differential recurrence E₀=1, E_{m+1}=X(1−X)E′ₘ+(m+1)X·Eₘ) is exactly the generating polynomial of its Eulerian-number row: for m ≥ 1, E_{m+1}(X) = ∑_{j=0}^{m} ⟨m+1,j⟩·X^{j+1}. This answers the open question geometric-series-oq-07-oq-01-oq-01-oq-01 (identify the coefficients of eulerPoly with the combinatorial Eulerian numbers). Proved by induction: substituting the inductive monomial description of Eₘ into the differential recurrence reproduces, coefficient by coefficient, the Eulerian triangle recurrence.",
+      "stirlingForm_eq_eulerianNumbers: composing the main result with the parent's Frobenius identity (eulerPoly = stirlingForm) gives the Stirling moment numerator expanded directly over the Eulerian numbers: ∑_{k=0}^{m+1} S(m+1,k)·k!·Xᵏ·(1−X)^{m+1−k} = ∑_{j=0}^{m} ⟨m+1,j⟩·X^{j+1}. So the coefficients of the geometric-moment numerator are, on the nose, the descent numbers ⟨m,j⟩.",
+      "The order-1,2,3 instances verify the Eulerian rows ⟨1,0⟩=1; ⟨2,0⟩=⟨2,1⟩=1; ⟨3,0⟩=1,⟨3,1⟩=4,⟨3,2⟩=1, exhibiting E₃ = ⟨3,0⟩X + ⟨3,1⟩X² + ⟨3,2⟩X³ = X + 4X² + X³ and matching the parent's E₁,E₂,E₃ and the numerators of geometric-series-oq-07 / oq-10."
+    ],
+    "prerequisites": [
+      "Parent: geometric-series-oq-07-oq-01-oq-01 (Frobenius' identity) — supplies eulerPoly, its defining recurrence eulerPoly_succ, the low-order values eulerPoly_one/two/three, and the identity eulerPoly_eq_stirlingForm reused here",
+      "Mathlib's univariate polynomial formal derivative Polynomial.derivative (derivative_sum, derivative_C_mul, derivative_X_pow) for differentiating the monomial form of the Eulerian polynomial",
+      "Polynomial.C as a ring homomorphism (map_mul, map_add, map_natCast, map_one) for transporting the Eulerian/Nat coefficients into R[X]",
+      "Finset reindexing: Finset.sum_range_succ, Finset.sum_range_succ', Finset.sum_add_distrib, Finset.mul_sum"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.derivative",
+        "description": "The univariate formal derivative as an R-linear map. derivative_sum, derivative_C_mul and derivative_X_pow compute the derivative of the monomial form ∑ⱼ ⟨m,j⟩·X^{j+1} during the induction matching the differential recurrence to the Eulerian triangle.",
+        "module": "Mathlib.Algebra.Polynomial.Derivative"
+      },
+      {
+        "theorem": "Polynomial.C",
+        "description": "The constant-polynomial ring homomorphism. map_add / map_natCast / map_one and the cast helper C_natCast_mul move the Eulerian numbers ⟨m,j⟩ and the recurrence coefficients under C so the combinatorial triangle recurrence becomes a coefficient identity in R[X].",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "GeometricSeriesOQ07OQ01OQ01.eulerPoly_eq_stirlingForm",
+        "description": "The parent's Frobenius identity eulerPoly = stirlingForm. Reused (with the parent's eulerPoly and its recurrence eulerPoly_succ) so this entry only has to add the combinatorial coefficient identification, not re-derive the differential recurrence.",
+        "module": "Proofs.GeometricSeriesOQ07OQ01OQ01"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+      "question": "Prove Worpitzky's row identity ∑_{j} ⟨m,j⟩ = m! for the combinatorial Eulerian numbers defined here (the parent proves Eₘ(1) = m! analytically via the Stirling form; deduce it instead by induction on the triangle recurrence, summing the coefficient (j+1) + (m−j) = m+1 over each row), confirming ⟨m,j⟩ is the descent statistic.",
+      "significance": "low"
+    },
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02",
+      "question": "Prove the combinatorial form of Eulerian palindromy ⟨m,j⟩ = ⟨m,m−1−j⟩ directly from the triangle recurrence (the sibling oq-02 proves the polynomial symmetry Eₘ(X) = X^{m+1}Eₘ(1/X) by coefficient extraction; connect it to the descent-reversal bijection on permutations via the combinatorial ⟨m,j⟩ built here)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent (Frobenius' identity). The parent identifies the geometric-moment numerator with the Eulerian polynomial Eₘ defined by its differential recurrence, but leaves open (as oq-01) the textbook identification of Eₘ's coefficients with the combinatorial Eulerian numbers ⟨m,j⟩. This entry answers it: builds the ⟨m,j⟩ triangle from scratch and proves Eₘ₊₁(X) = ∑ⱼ ⟨m+1,j⟩ X^{j+1} (hence the Stirling numerator equals ∑ⱼ ⟨m+1,j⟩ X^{j+1}), reusing the parent's eulerPoly, eulerPoly_succ and eulerPoly_eq_stirlingForm."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling. oq-02 proves the palindromicity of the Eulerian polynomial Eₘ(X) = X^{m+1}Eₘ(1/X) by coefficient extraction (without a combinatorial definition). This entry supplies the missing combinatorial Eulerian-number triangle ⟨m,j⟩, the descent-statistic object whose palindromy ⟨m,j⟩ = ⟨m,m−1−j⟩ is the combinatorial content of that symmetry."
+    }
+  ],
+  "references": [
+    {
+      "title": "Concrete Mathematics (Eulerian numbers, the triangle recurrence, descents)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the Eulerian numbers ⟨n,k⟩, the descent statistic, and the triangle recurrence ⟨n,k⟩ = (k+1)⟨n-1,k⟩ + (n-k)⟨n-1,k-1⟩ implemented here."
+    },
+    {
+      "title": "Mathlib4: Algebra.Polynomial.Derivative",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the formal polynomial derivative used to match the Eulerian polynomial's differential recurrence against the combinatorial triangle recurrence on its coefficients."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The parent entry (Frobenius' identity) proves the geometric-moment numerator equals the Eulerian polynomial Eₘ defined by its first-order differential recurrence, but identifies Eₘ only as a recurrence-defined polynomial. This entry supplies the textbook combinatorial object: it defines the Eulerian numbers ⟨m,j⟩ (descents of permutations) from scratch via the triangle recurrence ⟨n+1,k+1⟩ = (k+2)⟨n,k+1⟩ + (n−k)⟨n,k⟩, ⟨m,0⟩ = 1 (Mathlib has only Eulerian graphs), and proves that the coefficients of Eₘ are exactly these integers: for m ≥ 1, E_{m+1}(X) = ∑_{j=0}^{m} ⟨m+1,j⟩·X^{j+1}. The proof is an induction on m in which substituting the inductive monomial description of Eₘ into the differential recurrence reproduces, coefficient by coefficient, the Eulerian triangle recurrence; the parent's eulerPoly, eulerPoly_succ and Frobenius identity eulerPoly_eq_stirlingForm are imported and reused, so no recurrence is re-derived. Composing with Frobenius gives the same Eulerian expansion for the Stirling form: ∑_k S(m+1,k)·k!·Xᵏ·(1−X)^{m+1−k} = ∑_j ⟨m+1,j⟩·X^{j+1}. The Eulerian rows of order 1,2,3 (1; 1,1; 1,4,1) are verified, recovering the parent's E₁,E₂,E₃. 192 lines, 8 theorems, 1 definition, 0 axioms, 0 sorries; everything depends only on propext, Classical.choice, Quot.sound (low-order checks use kernel `decide`, not native_decide).",
+    "implications": "This completes the identification of the geometric-moment numerator with the Eulerian polynomial down to the combinatorial level: the numerator's coefficients are the descent numbers ⟨m,j⟩, the Stirling form S(m,k)·k! (a surjection count) and the Eulerian form ⟨m,j⟩ (a descent count) being two faces of one polynomial. Because the coefficient identity is proved over an arbitrary commutative ring, the resulting Eulerian-number triangle and its basic theory (vanishing lemmas, generating polynomial) are a reusable, Mathlib-free foundation for further Eulerian-number work, e.g. Worpitzky's row identity and the descent-reversal palindromy.",
+    "openQuestions": [
+      "Prove Worpitzky's row identity ∑_j ⟨m,j⟩ = m! from the triangle recurrence.",
+      "Prove the combinatorial palindromy ⟨m,j⟩ = ⟨m,m−1−j⟩ and link it to the sibling's polynomial symmetry Eₘ(X) = X^{m+1}Eₘ(1/X)."
+    ]
+  }
+}
