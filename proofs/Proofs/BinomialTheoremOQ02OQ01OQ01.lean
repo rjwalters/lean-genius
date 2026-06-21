@@ -367,9 +367,136 @@ theorem multinomial_mean {α : Type*} [DecidableEq α]
             ((Nat.multinomial s (Function.update k i (k i - 1)) : ℝ)
               * ∏ j ∈ s, p j ^ (Function.update k i (k i - 1)) j) := by ring
 
+/-- **Weighted absorption.** The real-valued form of `multinomial_absorb`, carrying
+    the probability weight: lowering the `i`-th count by one converts the weighted
+    summand `kᵢ · multinomial(s,k) · ∏pⱼ^kⱼ` into `n·pᵢ · multinomial(s,k') · ∏pⱼ^k'ⱼ`. -/
+private theorem multinomial_absorb_weighted {α : Type*} [DecidableEq α]
+    (s : Finset α) (p : α → ℝ) (k : α → ℕ) (n : ℕ) (i : α)
+    (hi : i ∈ s) (hsum : ∑ l ∈ s, k l = n) (hki : k i ≠ 0) :
+    (k i : ℝ) * ((Nat.multinomial s k : ℝ) * ∏ l ∈ s, p l ^ k l)
+    = (n : ℝ) * p i * ((Nat.multinomial s (Function.update k i (k i - 1)) : ℝ)
+        * ∏ l ∈ s, p l ^ (Function.update k i (k i - 1)) l) := by
+  have habs : (k i : ℝ) * (Nat.multinomial s k : ℝ)
+      = (n : ℝ) * (Nat.multinomial s (Function.update k i (k i - 1)) : ℝ) := by
+    exact_mod_cast multinomial_absorb s k n i hi hsum hki
+  have hprod : (∏ l ∈ s, p l ^ k l)
+      = p i * ∏ l ∈ s, p l ^ (Function.update k i (k i - 1)) l := by
+    have hL : (∏ l ∈ s, p l ^ k l) = p i ^ k i * ∏ l ∈ s.erase i, p l ^ k l :=
+      (Finset.mul_prod_erase s (fun l => p l ^ k l) hi).symm
+    have hR : (∏ l ∈ s, p l ^ (Function.update k i (k i - 1)) l)
+        = p i ^ (k i - 1) * ∏ l ∈ s.erase i, p l ^ k l := by
+      rw [← Finset.mul_prod_erase s (fun l => p l ^ (Function.update k i (k i - 1)) l) hi]
+      congr 1
+      · rw [Function.update_self]
+      · exact Finset.prod_congr rfl
+          (fun l hl => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hl)])
+    rw [hL, hR, ← mul_assoc]
+    congr 1
+    rw [← pow_succ']
+    congr 1
+    omega
+  calc (k i : ℝ) * ((Nat.multinomial s k : ℝ) * ∏ l ∈ s, p l ^ k l)
+      = ((k i : ℝ) * (Nat.multinomial s k : ℝ)) * (∏ l ∈ s, p l ^ k l) := by ring
+    _ = ((n : ℝ) * (Nat.multinomial s (Function.update k i (k i - 1)) : ℝ))
+          * (p i * ∏ l ∈ s, p l ^ (Function.update k i (k i - 1)) l) := by rw [habs, hprod]
+    _ = (n : ℝ) * p i * ((Nat.multinomial s (Function.update k i (k i - 1)) : ℝ)
+          * ∏ l ∈ s, p l ^ (Function.update k i (k i - 1)) l) := by ring
+
+/-- **Cross moment** `E[Xᵢ·Xⱼ] = n·(n-1)·pᵢ·pⱼ` for `i ≠ j`.
+
+    Proof: lower `Xᵢ` by the absorption bijection (the surviving `kⱼ` factor rides
+    along unchanged since `j ≠ i`), reducing the sum to `n·pᵢ` times the *mean of
+    `Xⱼ` in an `(n-1)`-trial multinomial*, which is `(n-1)·pⱼ` by `multinomial_mean`. -/
+private theorem multinomial_cross_moment {α : Type*} [DecidableEq α]
+    (s : Finset α) (p : α → ℝ) (n : ℕ)
+    (hp_sum : ∑ i ∈ s, p i = 1) (hp_nonneg : ∀ i ∈ s, 0 ≤ p i)
+    (i j : α) (hi : i ∈ s) (hj : j ∈ s) (hij : i ≠ j) :
+    ∑ k ∈ s.piAntidiag n,
+      (k i : ℝ) * (k j : ℝ) * ((Nat.multinomial s k : ℝ) * ∏ l ∈ s, p l ^ k l)
+    = (n : ℝ) * ((n - 1 : ℕ) : ℝ) * p i * p j := by
+  obtain rfl | hn := Nat.eq_zero_or_pos n
+  · simp
+  rw [← Finset.sum_filter_of_ne (p := fun k => k i ≠ 0)
+        (fun k _ hfk hzero => hfk (by rw [hzero]; simp))]
+  rw [Finset.sum_nbij'
+        (i := fun k => Function.update k i (k i - 1))
+        (j := fun k' => Function.update k' i (k' i + 1))
+        (t := s.piAntidiag (n - 1))
+        (g := fun k' => (n : ℝ) * p i * (k' j : ℝ) *
+          ((Nat.multinomial s k' : ℝ) * ∏ l ∈ s, p l ^ k' l))]
+  · -- ∑ g = n·pᵢ · (mean of Xⱼ over n-1 trials) = n·pᵢ·(n-1)·pⱼ
+    have hfac : ∑ k' ∈ s.piAntidiag (n - 1),
+          (n : ℝ) * p i * (k' j : ℝ) * ((Nat.multinomial s k' : ℝ) * ∏ l ∈ s, p l ^ k' l)
+        = (n : ℝ) * p i * ∑ k' ∈ s.piAntidiag (n - 1),
+            (k' j : ℝ) * ((Nat.multinomial s k' : ℝ) * ∏ l ∈ s, p l ^ k' l) := by
+      rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun k' _ => by ring)
+    rw [hfac, multinomial_mean s p (n - 1) hp_sum hp_nonneg j hj]; ring
+  · intro k hk
+    rw [Finset.mem_filter, Finset.mem_piAntidiag] at hk
+    obtain ⟨⟨hksum, hksupp⟩, hki⟩ := hk
+    rw [Finset.mem_piAntidiag]
+    refine ⟨?_, ?_⟩
+    · have hcong : (∑ l ∈ s.erase i, (Function.update k i (k i - 1)) l) = ∑ l ∈ s.erase i, k l :=
+        Finset.sum_congr rfl
+          (fun l hl => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hl)])
+      rw [← Finset.add_sum_erase s (Function.update k i (k i - 1)) hi, Function.update_self, hcong]
+      have he : k i + ∑ l ∈ s.erase i, k l = n := by
+        rw [Finset.add_sum_erase s k hi]; exact hksum
+      omega
+    · intro l hl
+      by_cases hli : l = i
+      · subst hli; exact hi
+      · rw [Function.update_of_ne hli] at hl; exact hksupp l hl
+  · intro k' hk'
+    rw [Finset.mem_piAntidiag] at hk'
+    obtain ⟨hk'sum, hk'supp⟩ := hk'
+    rw [Finset.mem_filter, Finset.mem_piAntidiag]
+    refine ⟨⟨?_, ?_⟩, ?_⟩
+    · have hcong : (∑ l ∈ s.erase i, (Function.update k' i (k' i + 1)) l) = ∑ l ∈ s.erase i, k' l :=
+        Finset.sum_congr rfl
+          (fun l hl => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hl)])
+      rw [← Finset.add_sum_erase s (Function.update k' i (k' i + 1)) hi, Function.update_self, hcong]
+      have he : k' i + ∑ l ∈ s.erase i, k' l = n - 1 := by
+        rw [Finset.add_sum_erase s k' hi]; exact hk'sum
+      omega
+    · intro l hl
+      by_cases hli : l = i
+      · subst hli; exact hi
+      · rw [Function.update_of_ne hli] at hl; exact hk'supp l hl
+    · rw [Function.update_self]; exact Nat.succ_ne_zero _
+  · intro k hk
+    have hki : k i ≠ 0 := (Finset.mem_filter.mp hk).2
+    funext l
+    by_cases hli : l = i
+    · subst hli; rw [Function.update_self, Function.update_self]; omega
+    · rw [Function.update_of_ne hli, Function.update_of_ne hli]
+  · intro k' hk'
+    funext l
+    by_cases hli : l = i
+    · subst hli; rw [Function.update_self, Function.update_self]; omega
+    · rw [Function.update_of_ne hli, Function.update_of_ne hli]
+  · intro k hk
+    rw [Finset.mem_filter, Finset.mem_piAntidiag] at hk
+    obtain ⟨⟨hksum, _⟩, hki⟩ := hk
+    have hweighted := multinomial_absorb_weighted s p k n i hi hksum hki
+    have hkj' : (Function.update k i (k i - 1)) j = k j :=
+      Function.update_of_ne (Ne.symm hij) _ _
+    calc (k i : ℝ) * (k j : ℝ) * ((Nat.multinomial s k : ℝ) * ∏ l ∈ s, p l ^ k l)
+        = (k j : ℝ) * ((k i : ℝ) * ((Nat.multinomial s k : ℝ) * ∏ l ∈ s, p l ^ k l)) := by ring
+      _ = (k j : ℝ) * ((n : ℝ) * p i *
+            ((Nat.multinomial s (Function.update k i (k i - 1)) : ℝ)
+              * ∏ l ∈ s, p l ^ (Function.update k i (k i - 1)) l)) := by rw [hweighted]
+      _ = (n : ℝ) * p i * ((Function.update k i (k i - 1)) j : ℝ) *
+            ((Nat.multinomial s (Function.update k i (k i - 1)) : ℝ)
+              * ∏ l ∈ s, p l ^ (Function.update k i (k i - 1)) l) := by rw [← hkj']; ring
+
 /-- The covariance of components: Cov(Xᵢ, Xⱼ) = -n · pᵢ · pⱼ for i ≠ j.
     This negative correlation is a fundamental property of the multinomial:
-    more of one outcome means less of another. -/
+    more of one outcome means less of another.
+
+    Proof: expand `Cov = E[XᵢXⱼ] − E[Xᵢ]E[Xⱼ]`. The cross moment is `n(n-1)pᵢpⱼ`
+    (`multinomial_cross_moment`) and the total mass is `1` (multinomial theorem),
+    so the sum equals `n(n-1)pᵢpⱼ − n²pᵢpⱼ = −n·pᵢ·pⱼ`. -/
 theorem multinomial_covariance {α : Type*} [DecidableEq α]
     (s : Finset α) (p : α → ℝ) (n : ℕ)
     (hp_sum : ∑ i ∈ s, p i = 1) (hp_nonneg : ∀ i ∈ s, 0 ≤ p i)
@@ -378,7 +505,22 @@ theorem multinomial_covariance {α : Type*} [DecidableEq α]
       ((k i : ℝ) * (k j : ℝ) - n * p i * (n * p j)) *
       ((Nat.multinomial s k : ℝ) * ∏ l ∈ s, p l ^ k l) =
     -(n : ℝ) * p i * p j := by
-  sorry -- Cov(Xᵢ, Xⱼ) = E[XᵢXⱼ] - E[Xᵢ]E[Xⱼ] = n(n-1)pᵢpⱼ - (npᵢ)(npⱼ) = -npᵢpⱼ
+  obtain rfl | hn := Nat.eq_zero_or_pos n
+  · simp
+  have hmass : ∑ k ∈ s.piAntidiag n, (Nat.multinomial s k : ℝ) * ∏ l ∈ s, p l ^ k l = 1 := by
+    rw [← Finset.sum_pow_eq_sum_piAntidiag s p n, hp_sum, one_pow]
+  have hcross := multinomial_cross_moment s p n hp_sum hp_nonneg i j hi hj hij
+  have hdist : ∀ k : α → ℕ,
+      ((k i : ℝ) * (k j : ℝ) - n * p i * (n * p j)) *
+        ((Nat.multinomial s k : ℝ) * ∏ l ∈ s, p l ^ k l)
+      = (k i : ℝ) * (k j : ℝ) * ((Nat.multinomial s k : ℝ) * ∏ l ∈ s, p l ^ k l)
+        - (n * p i * (n * p j)) * ((Nat.multinomial s k : ℝ) * ∏ l ∈ s, p l ^ k l) :=
+    fun k => by ring
+  rw [Finset.sum_congr rfl (fun k _ => hdist k), Finset.sum_sub_distrib, hcross,
+      ← Finset.mul_sum, hmass, mul_one]
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn.ne'
+  push_cast
+  ring
 
 -- ============================================================
 -- PART 8: Feasibility Analysis
