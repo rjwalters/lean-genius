@@ -349,3 +349,67 @@ Cauchy–Schwarz axioms of the parent `IsoperimetricFromFourier` proof:
 sensitive parent edit that would drop `axiomCount` 5→4→…→2). Mathematically the two
 Cauchy–Schwarz axioms are now fully discharged 0-axiom; only the two genuinely Fourier-analytic
 axioms (`fourier_decomp_exists`, `wirtinger_sum_bound`) remain.
+
+### Session 2026-06-21 (s07, ACT, researcher-9) — both Fourier-analytic parent axioms discharged 0-axiom; ALL FIVE now proved
+
+**Outcome: ACT — the two remaining analytic parent axioms are now proved, completing the set.**
+New file `proofs/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier.lean`
+(`namespace IsoperimetricFourier`, imports `Mathlib` + sibling `Proofs.AreaOfCircleOQ01OQ03`;
+**0 axioms, 0 sorries, 3 theorems + 1 structure, docker GREEN 7745 jobs on v4.26.0**). This
+discharges the parent `IsoperimetricFromFourier` axioms `fourier_decomp_exists` and
+`wirtinger_sum_bound`.
+
+**Key realization the prior (s06) next-action analysis missed.** s06 declared
+`fourier_decomp_exists` "the real analytic core (Parseval + IBP) … the hard remaining target"
+and concluded `wirtinger_sum_bound` was "genuinely downstream of the Fourier axiom." But the
+hard analytic content was **already a fully proved, 0-axiom theorem** sitting in the sibling
+gallery file `AreaOfCircleOQ01OQ03.lean`:
+
+```
+theorem IsoperimetricOQ.fourier_decomposition (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
+    (hperiod : ∀ t, f (t + 2*π) = f t) :
+    ∃ c : ℤ → ℝ, Summable (c ·^2) ∧ Summable (fun n => (n:ℝ)^2 * c n^2) ∧
+      (∫ t in 0..2π, f t^2 = ∑' n, c n^2) ∧
+      (∫ t in 0..2π, deriv f t^2 = ∑' n, (n:ℝ)^2 * c n^2) ∧
+      (c 0 = (1/√(2π)) * ∫ t in 0..2π, f t)
+```
+
+proved there via `tsum_sq_fourierCoeff` (Parseval on `AddCircle (2π)`, lifting `f` through
+`AddCircle.liftIoc`) and `fourierCoeffOn_deriv_periodic` (IBP: `ĉₙ(f') = i·n·ĉₙ(f)`). That file
+**builds clean on v4.26.0** (verified this session: `docker-build.sh Proofs.AreaOfCircleOQ01OQ03`
+→ 7744 jobs, 0 errors; it imports only the grandparent `OQ01OQ02OQ02`, *not* the bit-rotted
+parent `OQ01OQ02OQ02OQ01` from #27276). So the discharge needed **no Parseval reproof** — only:
+
+* **`fourier_decomp_exists`** — define a local `FourierDecomp` structure (copy of the parent's),
+  `obtain` the existential from `IsoperimetricOQ.fourier_decomposition`, and repackage the six
+  components as the structure fields → `Nonempty (FourierDecomp f)`. ~6 lines.
+
+* **`wirtinger_inequality`** (single coordinate, reproved standalone) — from the decomposition,
+  `c₀ = 0` (zero mean ⇒ `c_zero` term vanishes), pointwise `cₙ² ≤ n²cₙ²` (`n²≥1` for `n≠0`,
+  trivial at `n=0` via `c₀=0`), then `rw [parseval_f, parseval_df]` and close with
+  `hasSum_le h_pw hsum.hasSum hsum'.hasSum`.
+
+* **`wirtinger_sum_bound`** (parent axiom shape, raw `C¹` periodic `x,y`) —
+  `∫₀²π (x²+y²) ≤ 2π c²` for zero-mean constant-speed `x'²+y'²=c²`. Apply `wirtinger_inequality`
+  to `x` and `y`; split `∫(x²+y²)=∫x²+∫y²` and recombine `∫(x'²+y'²)=∫x'²+∫y'²` via
+  `intervalIntegral.integral_add` on the four `Continuous.pow … |>.intervalIntegrable` squares;
+  then `∫(x'²+y'²) = ∫c² = 2π·c²` by `intervalIntegral.integral_congr` (the `EqOn` from
+  `hspeed`) + `intervalIntegral.integral_const` (`(2π−0)•c² = 2π·c²`, `simp [sub_zero, smul_eq_mul]`).
+  `add_le_add` chains the three steps.
+
+**Mathlib v4.26.0 notes / gotchas:**
+- `IsoperimetricOQ.fourier_decomposition` lives inside `namespace IsoperimetricOQ` (the inner
+  `AristotleLemmas` sub-namespace ends before it) — reference it fully qualified.
+- `Continuous.pow hf 2` then `.intervalIntegrable _ _` gives the interval-integrability of a
+  squared continuous function on `[0,2π]`; do *not* hand-roll `MeasureTheory` integrability.
+- `intervalIntegral.integral_const` returns `(b−a) • c`, an `smul`; close with
+  `simp only [sub_zero, smul_eq_mul]`, not `ring` (which won't touch `•`).
+- The `(hc : 0 < c)` hypothesis is unused in `wirtinger_sum_bound` (kept verbatim to match the
+  parent axiom signature) → one harmless `unusedVariables` linter warning.
+
+**Honest scope.** As with s06, these are stated for raw `C¹` periodic functions, not the
+parent's `SmoothClosedCurve`, so they are not yet *wired into* the parent. Mathematically **all
+five** analytic axioms of the Hurwitz isoperimetric proof are now discharged 0-axiom (s05
+reparam-on-regular, s06 ×2 Cauchy–Schwarz, s07 ×2 Fourier). A fully axiom-free parent file is a
+separate mechanic task: bridge raw-function ↔ `SmoothClosedCurve`, add a regularity field for
+`exists_nice_reparam` (Gap-1), and un-rot the parent (#27276).
