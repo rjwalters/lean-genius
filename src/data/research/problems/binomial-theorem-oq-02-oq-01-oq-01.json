@@ -1,33 +1,34 @@
 {
   "id": "binomial-theorem-oq-02-oq-01-oq-01",
   "name": "Multinomial PMF and MGF formalization",
-  "status": "active",
+  "status": "completed",
   "knowledge": {
     "insights": [
-      "PMF integration requires lifting multinomial theorem from ℝ to ℝ≥0∞ (ENNReal)",
-      "Composition type (k : α → ℕ with Σk = n) is the natural support type",
-      "Marginal distributions are binomial — proved by fixing one component and summing others",
-      "Covariance Cov(Xi,Xj) = -npipj reflects the constraint that counts sum to n",
-      "~200-300 lines estimated for complete Mathlib contribution"
+      "PMF integration requires lifting the multinomial theorem from ℝ to ℝ≥0∞ (ENNReal); done via Fintype.sum_equiv onto a piAntidiag sum + Finset.sum_pow_eq_sum_piAntidiag",
+      "Composition type (k : α → ℕ with Σk = n) is the natural support; its Fintype instance is transport along an Equiv with ↥(s.piAntidiag n)",
+      "The absorption identity kᵢ·multinomial(s,k)=n·multinomial(s, kᵢ−1) is a single combinatorial engine: a no-division ℕ proof cancelling (kᵢ−1)!·∏_{j≠i}kⱼ! after Nat.multinomial_spec",
+      "Mean and cross moment both reduce, via ONE Finset.sum_nbij' bijection lowering kᵢ, to the multinomial theorem on n−1 trials; the kⱼ factor in the cross moment rides along unchanged (j≠i), so E[XᵢXⱼ]=n·pᵢ·(mean of Xⱼ at n−1)=n(n−1)pᵢpⱼ",
+      "Marginal of Xᵢ is Binomial(n,pᵢ): reindex compositions with kᵢ=m onto compositions of n−m on s∖{i} (zero the i-th coord), Nat.multinomial_insert splits off C(n,m), and ∑_{j≠i}pⱼ=1−pᵢ",
+      "Covariance Cov(Xᵢ,Xⱼ)=−n·pᵢ·pⱼ reflects the simplex constraint ΣXᵢ=n (negative correlation)"
     ],
     "builtItems": [
-      "BinomialTheoremOQ02OQ01OQ01.lean: 247-line PMF integration formalization",
-      "Defined Composition type and multinomialPMFVal in ENNReal",
-      "Constructed multinomialPMF as Mathlib PMF instance",
-      "Stated marginal binomial, mean, covariance theorems",
-      "Feasibility analysis with specific line estimates"
+      "BinomialTheoremOQ02OQ01OQ01.lean: 707-line fully verified formalization (0 sorries, 0 axioms; #print axioms lists only propext/Classical.choice/Quot.sound)",
+      "Composition type + Fintype instance; multinomialPMFVal and multinomialPMF (PMF.mk) in ENNReal",
+      "multinomialPMF_sum_eq_one (normalization), multinomialPMF_apply, multinomialPMF_support — all proved",
+      "multinomial_absorb (absorption identity) + multinomial_absorb_weighted (real-weighted form)",
+      "multinomial_marginal_binomial, multinomial_mean (E[Xᵢ]=n·pᵢ), multinomial_cross_moment, multinomial_covariance — all proved",
+      "Replaced native_decide with decide in the dice example to keep the file axiom-free; deleted the now-redundant Aristotle companion"
     ],
     "mathlibGaps": [
-      "No multinomial distribution in Mathlib PMF library",
-      "ENNReal version of multinomial theorem not available",
-      "Fintype instance for compositions of n needs piAntidiag connection"
+      "Mathlib has no multinomial *distribution* in its PMF library (this file supplies one)",
+      "No ENNReal-level multinomial theorem wrapper (worked around via Nat.cast onto Finset.sum_pow_eq_sum_piAntidiag)",
+      "No multinomial absorption identity kᵢ·multinomial=n·multinomial(kᵢ−1) (built here from Nat.multinomial_spec)"
     ],
     "nextSteps": [
-      "Prove Fintype instance for Composition using piAntidiag",
-      "Lift multinomial theorem to ENNReal",
-      "Submit routine sorries to Aristotle"
+      "Optional follow-up: package the absorption identity and the marginal/mean/covariance lemmas for a Mathlib contribution",
+      "Optional follow-up: variance Var(Xᵢ)=n·pᵢ·(1−pᵢ) and the full covariance matrix; MGF/PGF of the multinomial"
     ],
-    "progressSummary": "COMPLETED: Demonstrated Mathlib PMF integration path for multinomial distribution. Built Composition type, ENNReal PMF construction, stated marginal/mean/covariance properties. 0 axioms, 7 sorries. Integration IS feasible (~200-300 lines for Mathlib)."
+    "progressSummary": "COMPLETE (verified): the multinomial distribution is a genuine Mathlib PMF, with marginal=Binomial(n,pᵢ), mean=n·pᵢ, and covariance=−n·pᵢ·pⱼ all proved from a single absorption-identity engine. 707 lines, 0 sorries, 0 axioms."
   },
   "leanFiles": [
     {
@@ -99,24 +100,13 @@
     {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
       "filename": "BinomialTheoremOQ02OQ01OQ01.lean",
-      "lineCount": 292,
+      "lineCount": 707,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01.lean"
-    },
-    {
-      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01Aristotle.lean",
-      "filename": "BinomialTheoremOQ02OQ01OQ01Aristotle.lean",
-      "lineCount": 70,
-      "theoremCount": 2,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 4,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01Aristotle.lean"
     },
     {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ01.lean",
