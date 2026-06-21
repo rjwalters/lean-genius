@@ -68,12 +68,17 @@
   "openQuestions": [
     {
       "id": "geometric-series-oq-08-oq-01",
-      "question": "Extend the defect identity to the Ico-slice partial sum ∑_{k ∈ Ico m n} rᵏ and bound the slice by rᵐ/(1 − r); state the corresponding Cauchy-criterion estimate |∑_{k ∈ Ico m n} rᵏ| ≤ rᵐ/(1 − r) used in the comparison/ratio tests.",
+      "question": "Insert the index weight k: give the finite arithmetico-geometric closed form ∑_{k<n} k·xᵏ — the division-free identity (1 − x)²·∑_{k<n} k·xᵏ = x·(1 − xⁿ) − n·xⁿ·(1 − x) over any commutative ring and the field form over (1 − x)² — and reconcile it with Mathlib's infinite value x/(1 − x)².",
       "significance": "low"
     },
     {
       "id": "geometric-series-oq-08-oq-02",
       "question": "Give the two-sided form for negative ratios: for −1 < r < 0 the partial sums oscillate around (1 − r)⁻¹, with the same |rⁿ|/(1 − r) error envelope; formalise the alternating bracketing.",
+      "significance": "low"
+    },
+    {
+      "id": "geometric-series-oq-08-oq-03",
+      "question": "Extend the defect identity to the Ico-slice partial sum ∑_{k ∈ Ico m n} rᵏ and bound the slice by rᵐ/(1 − r); state the corresponding Cauchy-criterion estimate |∑_{k ∈ Ico m n} rᵏ| ≤ rᵐ/(1 − r) used in the comparison/ratio tests.",
       "significance": "low"
     }
   ],
@@ -117,8 +122,8 @@
     "summary": "For a real ratio r the finite geometric partial sum S n = ∑_{k<n} rᵏ has closed form (1 − rⁿ)/(1 − r) when r ≠ 1. This entry quantifies the relationship between these finite sums and the infinite value (1 − r)⁻¹ for 0 ≤ r < 1: the exact truncation defect (1 − r)⁻¹ − S n = rⁿ/(1 − r); the bounds S n < (1 − r)⁻¹ (strict, 0 < r < 1) and S n ≤ (1 − r)⁻¹; monotonicity of n ↦ S n; and upward convergence S n → (1 − r)⁻¹. Together they exhibit the infinite geometric value as the supremum of an increasing, bounded sequence with explicit error rⁿ/(1 − r). 128 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
     "implications": "Mathlib provides the finite closed form and the infinite value as separate facts; the difference between them — the truncation error rⁿ/(1 − r) — is exactly what is needed to estimate a truncated geometric series, and it is the engine behind the comparison test, the ratio-test remainder, and numerical error bounds. Packaging it as a typed identity, together with the monotonicity and bound that make 1/(1 − r) the least upper bound of the partial sums, makes the finite/infinite relationship reusable rather than re-derived inline.",
     "openQuestions": [
-      "Extend the defect and error envelope to Ico-slice partial sums (the Cauchy-criterion form).",
-      "State the alternating-bracketing version for −1 < r < 0."
+      "State the alternating-bracketing version for −1 < r < 0.",
+      "Extend the defect and error envelope to Ico-slice partial sums (the Cauchy-criterion form)."
     ]
   }
 }
