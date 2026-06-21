@@ -1,0 +1,198 @@
+{
+  "id": "russell-1-plus-1-oq-01",
+  "title": "ℕ as a Natural Numbers Object",
+  "slug": "russell-1-plus-1-oq-01",
+  "description": "Answers the russell-1-plus-1 open question — how do set theory, type theory, and category theory relate? — with one machine-checked bridge: the inductively-defined ℕ is a Natural Numbers Object (Lawvere, 1964), i.e. the initial algebra of the functor X ↦ 1 + X. For every (point a, endomap f) there is a unique u : ℕ → A with u 0 = a and u (succ n) = f (u n). Addition and multiplication are then recovered as the maps the universal property names, and Lambek's lemma is proved concretely as ℕ ≅ 1 + ℕ. Self-contained, no Mathlib, 0 sorries, 0 axioms (beyond Quot.sound).",
+  "meta": {
+    "author": "Lawvere (NNO, 1964); Lambek (1968); Dedekind (recursion, 1888) — formalized in Lean 4",
+    "sourceUrl": "https://ncatlab.org/nlab/show/natural+numbers+object",
+    "date": "1964",
+    "status": "verified",
+    "tags": [
+      "foundations",
+      "category-theory",
+      "type-theory",
+      "universal-property",
+      "initial-algebra",
+      "peano-arithmetic"
+    ],
+    "proofRepoPath": "Proofs/OnePlusOneOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Self-contained proof that the Peano naturals satisfy Lawvere's Natural Numbers Object universal property (existence via the iterator, uniqueness via structural induction)",
+      "Addition and multiplication recovered as the unique maps named by the universal property, not posited as extra primitives",
+      "Concrete Lambek isomorphism ℕ ≅ 1 + ℕ exhibiting ℕ as a fixed point of X ↦ 1 + X",
+      "Explicit prose bridge identifying the single universal property across set-theoretic (Dedekind recursion), type-theoretic (the recursor), and category-theoretic (initial algebra) foundations"
+    ],
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "lineCount": 220,
+    "assumptions": "None mathematical. The only non-constructive ingredient is Quot.sound, used by funext to state uniqueness as an equality of functions; it is one of Lean's three foundational axioms and not a mathematical assumption. #print axioms reports no sorryAx and no Lean.ofReduceBool.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 13,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "The parent entry proves 1+1=2 by building the natural numbers as a type-theoretic inductive type. Its closing open question asks how the competing foundations of mathematics — set theory, type theory, category theory — relate to one another. The natural numbers are the perfect test case, because all three traditions agree on what ℕ is, while disagreeing on what kind of thing a foundation is. In 1888 Dedekind isolated the recursion theorem: given a set A, a point a ∈ A, and a map f : A → A, there is a unique sequence u with u(0) = a and u(n+1) = f(u(n)). In 1964 Lawvere recast this as a universal property, defining a Natural Numbers Object in any category with a terminal object, thereby making 'the natural numbers' a category-theoretic notion characterized up to unique isomorphism. In type theory the same property is simply the recursor of the inductive type ℕ. This entry checks, with no axioms beyond Quot.sound, that the type-theoretic ℕ meets the categorical specification.",
+    "problemStatement": "Show that the inductively-defined Peano naturals ℕ form a Natural Numbers Object: for every type A, point a : A, and endomap f : A → A, there exists a unique function u : ℕ → A satisfying u(zero) = a and u(succ n) = f(u n). Equivalently, (ℕ, zero, succ) is the initial algebra of the endofunctor X ↦ 1 + X. Recover addition and multiplication from this universal property and prove Lambek's lemma ℕ ≅ 1 + ℕ.",
+    "text": "The file is Mathlib-free, mirroring the parent's foundational minimalism. It redefines ℕ inductively, then defines the iterator iter f a : ℕ → A whose two computation rules (iter_zero, iter_succ) hold by rfl — this is the existence half of the universal property and is literally the recursor ℕ.rec. Uniqueness (iter_unique) is a one-line structural induction: any u satisfying the two algebra-homomorphism equations equals iter f a pointwise. Packaging existence and uniqueness yields nno_universal, an ∃! over the function space closed by funext. The entry then recovers add n := iter succ n and mul n := iter (add n) zero, proving their defining equations by rfl and showing (add_eq_unique) that addition is the only solution of its recurrence — so + and × are forced by initiality rather than added as primitives. Finally it presents Lambek's lemma concretely: the structure map structMap : Option ℕ → ℕ (none ↦ zero, some n ↦ succ n) and its inverse structInv form a bijection, witnessing ℕ ≅ 1 + ℕ. A closing essay maps the single theorem nno_universal onto the three foundational traditions.",
+    "proofStrategy": "Existence is free: the iterator is the recursor, so iter_zero and iter_succ are definitional (rfl). Uniqueness is the only real content and is exactly structural induction — the induction principle of the inductive type delivers what the set-theoretic recursion theorem must establish by a union-of-approximations argument. Lifting pointwise uniqueness to a function equality uses funext (hence Quot.sound). Addition and multiplication are then instances of the universal property at specific algebras, and Lambek's lemma is a direct case analysis exhibiting the two round-trip identities.",
+    "keyInsights": [
+      "Existence of the mediating arrow is not a theorem but a computation rule: iter is ℕ.rec, so iter_zero and iter_succ are proved by rfl. Type theory builds recursion in where set theory must derive it.",
+      "Uniqueness is the categorical heart of the matter — it is precisely initiality — and it is exactly the induction principle of the inductive type, discharged by a three-line induction in iter_unique.",
+      "Addition is not an independent primitive: add n = iter succ n is the unique map the universal property names at the algebra (n, succ), and add_eq_unique proves no other function satisfies its recurrence. Multiplication is the same one layer up.",
+      "Lambek's lemma — the structure map of an initial algebra is an isomorphism — appears here as the concrete bijection ℕ ≅ 1 + ℕ, the statement that every natural number is uniquely either zero or a successor.",
+      "The same universal property is Dedekind's recursion theorem (a theorem to prove in ZFC), Lawvere's NNO definition (a property to characterize in a category), and the recursor (a definition in type theory): one object, three foundational stances.",
+      "The proof is axiom-free in the strong sense relevant to the gallery: #print axioms lists at most Quot.sound (from funext) and the ordinary foundational axioms — no sorryAx, no Lean.ofReduceBool — so the result is genuinely verified, not axiomatized."
+    ],
+    "prerequisites": [
+      "Inductive types and their recursors / induction principles in dependent type theory",
+      "Universal properties and initial objects in category theory",
+      "Initial algebras of endofunctors (here X ↦ 1 + X) and the catamorphism / fold",
+      "Lambek's lemma: the structure map of an initial algebra is an isomorphism"
+    ]
+  },
+  "sections": [
+    {
+      "id": "peano-naturals",
+      "title": "The Peano naturals",
+      "startLine": 55,
+      "endLine": 70,
+      "summary": "Redefines ℕ as the inductive type with constructors zero and succ — the structure map of the X ↦ 1 + X algebra split into its two components — plus abbreviations one and two.",
+      "mathContext": "$\\mathbb{N} ::= 0 \\mid S(n)$; the pair $(\\mathrm{zero}, \\mathrm{succ})$ is an algebra structure $1 + \\mathbb{N} \\to \\mathbb{N}$."
+    },
+    {
+      "id": "iterator-existence",
+      "title": "The iterator: existence",
+      "startLine": 72,
+      "endLine": 92,
+      "summary": "Defines iter f a : ℕ → A, the canonical map out of ℕ (the catamorphism / fold). Its two computation rules iter_zero and iter_succ hold by rfl, giving the existence half of the universal property for free.",
+      "mathContext": "$\\mathrm{iter}\\,f\\,a$ is the unique algebra homomorphism $(\\mathbb{N}, 0, S) \\to (A, a, f)$; existence is the recursor $\\mathbb{N}.\\mathrm{rec}$."
+    },
+    {
+      "id": "uniqueness-nno",
+      "title": "Uniqueness and the NNO universal property",
+      "startLine": 94,
+      "endLine": 126,
+      "summary": "iter_unique proves by structural induction that any map solving the two algebra equations equals iter f a. nno_universal packages existence and uniqueness into an ∃! over ℕ → A, the statement that (ℕ, zero, succ) is the initial (point, endomap)-algebra.",
+      "mathContext": "Lawvere's NNO: $\\forall A\\,a\\,f,\\ \\exists!\\,u : \\mathbb{N} \\to A,\\ u(0) = a \\wedge u(S n) = f(u\\,n)$ — initiality of $\\mathbb{N}$."
+    },
+    {
+      "id": "recovered-operations",
+      "title": "Addition and multiplication recovered",
+      "startLine": 127,
+      "endLine": 152,
+      "summary": "Defines add n = iter succ n and mul n = iter (add n) zero, recovering 1+1=2 (one_add_one) through the universal property. add_eq_unique shows addition is the only solution of its recurrence — + and × are forced by initiality.",
+      "mathContext": "$n + {-} = \\mathrm{iter}\\,S\\,n$ and $n \\cdot {-} = \\mathrm{iter}\\,(n + {-})\\,0$; the recurrences characterize them uniquely."
+    },
+    {
+      "id": "lambek-iso",
+      "title": "Lambek's lemma: ℕ ≅ 1 + ℕ",
+      "startLine": 154,
+      "endLine": 184,
+      "summary": "Presents the structure map structMap : Option ℕ → ℕ and its inverse structInv, with the two round-trip identities (structMap_leftInv, structInv_rightInv) packaged in lambek — a concrete witness that the initial-algebra structure map is an isomorphism.",
+      "mathContext": "Lambek's lemma: the structure map of an initial algebra is iso, so $\\mathbb{N} \\cong 1 + \\mathbb{N}$ (every natural is uniquely $0$ or a successor)."
+    },
+    {
+      "id": "three-foundations",
+      "title": "How the three foundations meet at ℕ",
+      "startLine": 196,
+      "endLine": 220,
+      "summary": "Closing essay identifying the single universal property nno_universal as Dedekind's recursion theorem (set theory), the recursor (type theory), and Lawvere's NNO / initial algebra (category theory) — one object pinned down up to unique isomorphism by one property.",
+      "mathContext": "Set theory: recursion is a theorem. Type theory: recursion is definitional. Category theory: recursion is a universal property."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "russell-1-plus-1",
+      "relationship": "extends",
+      "description": "The parent entry builds ℕ type-theoretically and proves 1+1=2 by rfl; this follow-up answers its open question by showing that same ℕ satisfies the category-theoretic Natural Numbers Object specification, with 1+1=2 re-derived through the universal property."
+    },
+    {
+      "targetId": "russell-1-plus-1-oq-04",
+      "relationship": "related",
+      "description": "OQ-04 dissects the reduction rules that make 1+1=2 a definitional rfl across ℕ encodings; this entry instead abstracts away from any encoding to the universal property those encodings all realize."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Both concern the expressive structure of foundational systems: Cantor's argument bounds the cardinality of an enumeration, while this entry pins down ℕ itself by a universal property shared across foundations."
+    }
+  ],
+  "conclusion": {
+    "summary": "The natural numbers are the same object in set theory, type theory, and category theory — pinned down, up to unique isomorphism, by a single universal property. This entry proves that the type-theoretic ℕ satisfies Lawvere's Natural Numbers Object specification: existence of the mediating map is the recursor (definitional), uniqueness is structural induction (initiality), and the whole package is an ∃! closed by funext. Addition and multiplication fall out as the maps the property names, and Lambek's lemma reappears as the concrete bijection ℕ ≅ 1 + ℕ.",
+    "implications": "Foundational architecture: the open question 'how do the foundations relate?' has, for ℕ, a precise answer. They differ in what status they assign to the recursion principle — a theorem to prove (Dedekind/ZFC), a definition built into the kernel (type theory), or a universal property to characterize (Lawvere) — but they agree on the object. This is a concrete instance of the broader fact that inductive types in type theory are internal initial algebras, making category-theoretic universal properties available by computation rather than by external construction."
+  },
+  "leanFile": {
+    "imports": [],
+    "opens": [
+      "ℕ"
+    ],
+    "namespace": "PeanoNNO",
+    "lineCount": 220,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 7,
+    "path": "Proofs/OnePlusOneOQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Lawvere, F. William",
+      "title": "An elementary theory of the category of sets",
+      "year": "1964",
+      "venue": "Proceedings of the National Academy of Sciences 52(6)",
+      "note": "Introduces the Natural Numbers Object as a universal property characterizing ℕ in any suitable category."
+    },
+    {
+      "authors": "Lambek, Joachim",
+      "title": "A fixpoint theorem for complete categories",
+      "year": "1968",
+      "venue": "Mathematische Zeitschrift 103",
+      "note": "Lambek's lemma: the structure map of an initial algebra is an isomorphism; here ℕ ≅ 1 + ℕ."
+    },
+    {
+      "authors": "Dedekind, Richard",
+      "title": "Was sind und was sollen die Zahlen?",
+      "year": "1888",
+      "venue": "Vieweg, Braunschweig",
+      "note": "The recursion theorem: the set-theoretic form of the same universal property, requiring a genuine existence proof."
+    },
+    {
+      "authors": "Whitehead, Alfred North; Russell, Bertrand",
+      "title": "Principia Mathematica",
+      "year": "1910",
+      "venue": "Cambridge University Press, Vol. I",
+      "note": "The logicist, set-theoretic route to arithmetic that the type-theoretic universal property short-circuits."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "nno_universal",
+      "type": "core",
+      "description": "ℕ is a Natural Numbers Object: for every (point a, endomap f) there is a unique u : ℕ → A with u(0) = a and u(succ n) = f(u n). Equivalently, (ℕ, zero, succ) is the initial algebra of X ↦ 1 + X.",
+      "leanType": "∀ {A : Type} (a : A) (f : A → A), ∃ u : ℕ → A, (u zero = a ∧ ∀ n, u (succ n) = f (u n)) ∧ ∀ v, (v zero = a ∧ ∀ n, v (succ n) = f (v n)) → v = u"
+    },
+    {
+      "name": "iter_unique",
+      "type": "supporting",
+      "description": "Any map satisfying the two algebra-homomorphism equations equals the iterator — the initiality (uniqueness) half of the universal property.",
+      "leanType": "∀ {A} (f : A → A) (a : A) (u : ℕ → A), u zero = a → (∀ n, u (succ n) = f (u n)) → ∀ n, u n = iter f a n"
+    },
+    {
+      "name": "add_eq_unique",
+      "type": "corollary",
+      "description": "Addition is the unique solution of its recurrence — + is forced by the universal property, not posited.",
+      "leanType": "∀ (n : ℕ) (g : ℕ → ℕ), g zero = n → (∀ m, g (succ m) = succ (g m)) → g = add n"
+    },
+    {
+      "name": "lambek",
+      "type": "corollary",
+      "description": "Lambek's lemma, concrete form: structMap and structInv are mutually inverse, so ℕ ≅ 1 + ℕ.",
+      "leanType": "(∀ x : Option ℕ, structInv (structMap x) = x) ∧ (∀ n : ℕ, structMap (structInv n) = n)"
+    }
+  ],
+  "sorries": 0
+}
