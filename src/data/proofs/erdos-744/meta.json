@@ -175,10 +175,8 @@
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
       "Mathlib.Data.Nat.Choose.Basic",
-      "Mathlib.Data.Nat.Defs",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Order.Filter.AtTopBot",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -186,12 +184,12 @@
       "Finset"
     ],
     "namespace": "Erdos744",
-    "lineCount": 344,
+    "lineCount": 388,
     "axiomCount": 2,
-    "theoremCount": 8,
-    "definitionCount": 10,
+    "theoremCount": 10,
+    "definitionCount": 11,
     "path": "Proofs/Erdos744Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {

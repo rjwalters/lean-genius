@@ -2,7 +2,7 @@
   "slug": "erdos-744-incomplete-01",
   "title": "Erdős #744: Critical Graphs — Complete `bipartitionNumber` definition",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: replaced ill-formed bipartitionNumber (Nat.find over an undetermined predicate, with a sorry) with a correct, constructive, axiom-free definition; un-bit-rotted the whole file so it builds on Lean v4.26.0. 0 sorries; 2 legitimate axioms remain (chromaticNumber, rodl_tuza_theorem).",
+    "builtItems": [
+      "monochromaticEdges G c : ℕ — count of same-colored adjacent pairs u<v (Erdos744Problem.lean:99)",
+      "bipartitionNumber G := inf over c:V→Bool of monochromaticEdges G c — total, sorry-free, no chromaticNumber axiom (Erdos744Problem.lean:115)",
+      "monochromaticEdges_eq_zero_iff: c has no monochromatic edge ↔ proper 2-coloring (Erdos744Problem.lean:120)",
+      "bipartitionNumber_eq_zero_iff: bipartitionNumber G = 0 ↔ G properly 2-colorable — intrinsic bipartiteness, 0-axiom (Erdos744Problem.lean:136)"
+    ],
+    "insights": [
+      "The original bipartitionNumber was Nat.find ⟨witness, sorry⟩ over a metavariable predicate p — ill-formed, not a real definition; the right completion is a redefinition, not discharging the sorry.",
+      "Realizing the bipartition number as min monochromatic edges over 2-colorings avoids the chromaticNumber axiom entirely: bipartiteness becomes the intrinsic property bipartitionNumber = 0.",
+      "log_conjecture_false needs only f 4 n = 3 by definition (no Rödl-Tuza axiom): #print axioms shows it depends only on propext/Classical/Quot."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Optional: prove bipartitionNumber is monotone under edge addition, or relate it to isBipartite (would still need a chromaticNumber axiom linking χ≤2 to 2-colorability)."
+    ],
     "markdown": "# Knowledge Base: erdos-744-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],

@@ -16,10 +16,8 @@ References: [Er81], [EHS82], Rödl-Tuza [RoTu85]
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Nat.Defs
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Tactic
 
 open Nat Finset
@@ -60,7 +58,7 @@ Every k-chromatic graph contains a k-critical subgraph.
 def isCritical {V : Type*} (G : SimpleGraph' V) : Prop :=
   ∀ u v, G.Adj u v →
     chromaticNumber ⟨fun a b => G.Adj a b ∧ ¬(a = u ∧ b = v ∨ a = v ∧ b = u),
-      fun _ _ h => ⟨G.sym _ _ h.1, fun ⟨h1, h2⟩ => h.2 (Or.symm (Or.imp And.symm And.symm ⟨h1, h2⟩))⟩,
+      fun _ _ h => ⟨G.sym _ _ h.1, fun hor => h.2 (Or.symm (Or.imp And.symm And.symm hor))⟩,
       fun _ h => G.loopless _ h.1⟩ < chromaticNumber G
 
 /-- A k-chromatic critical graph on n vertices. -/
@@ -79,9 +77,10 @@ independent sets. Equivalently, it is 2-colorable.
 def isBipartite {V : Type*} (G : SimpleGraph' V) : Prop :=
   chromaticNumber G ≤ 2
 
-/-- Bipartite graphs are precisely those with no odd cycles.
-    This is a classical characterization (König's theorem). -/
 /-
+Bipartite graphs are precisely those with no odd cycles.
+This is a classical characterization (König's theorem).
+
 # Part 3: Edge Deletion
 
 The bipartition number: minimum edges to delete to make a graph bipartite.
@@ -89,14 +88,67 @@ This is also known as the odd cycle transversal number in edge terms.
 -/
 
 /--
+**Monochromatic edges of a 2-coloring**
+
+Given a 2-coloring `c : V → Bool`, the number of edges of `G` that are
+monochromatic (both endpoints receive the same color). We count each
+undirected edge once by ranging over the ordered pairs `u < v`. These are
+exactly the edges that must be deleted to make `c` a proper 2-coloring, so
+the minimum over all colorings is the bipartition number below.
+-/
+def monochromaticEdges {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] (c : V → Bool) : ℕ :=
+  (Finset.univ.filter
+    (fun p : V × V => p.1 < p.2 ∧ G.Adj p.1 p.2 ∧ c p.1 = c p.2)).card
+
+/--
 **Bipartition Number**
 
-The minimum number of edges whose deletion makes G bipartite.
-For a bipartite graph this is 0; for an odd cycle this is 1.
+The minimum number of edges whose deletion makes `G` bipartite. We realize it
+intrinsically (no chromatic-number axiom) as the least number of monochromatic
+edges over every 2-coloring `c : V → Bool`. The minimum ranges over the finite,
+nonempty type of 2-colorings, so it is total and well defined — no `sorry` and
+no axiom is needed.
+
+For a bipartite graph this is `0`; for an odd cycle it is `1`.
 -/
-noncomputable def bipartitionNumber {V : Type*} [Fintype V] (G : SimpleGraph' V) : ℕ :=
-  Nat.find ⟨Fintype.card V * (Fintype.card V - 1) / 2,
-    by sorry⟩ -- Existence: deleting all edges always works
+def bipartitionNumber {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] : ℕ :=
+  (Finset.univ : Finset (V → Bool)).inf' Finset.univ_nonempty (monochromaticEdges G)
+
+/-- A coloring has no monochromatic edges iff it is a proper 2-coloring of `G`. -/
+theorem monochromaticEdges_eq_zero_iff {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] (c : V → Bool) :
+    monochromaticEdges G c = 0 ↔ ∀ u v, G.Adj u v → c u ≠ c v := by
+  unfold monochromaticEdges
+  rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  constructor
+  · intro h u v hadj hc
+    rcases lt_trichotomy u v with hlt | heq | hgt
+    · exact h (Finset.mem_univ (u, v)) ⟨hlt, hadj, hc⟩
+    · exact G.loopless v (heq ▸ hadj)
+    · exact h (Finset.mem_univ (v, u)) ⟨hgt, G.sym _ _ hadj, hc.symm⟩
+  · intro h x _ hx
+    exact h x.1 x.2 hx.2.1 hx.2.2
+
+/-- **`G` is bipartite (properly 2-colorable) iff its bipartition number is `0`.**
+    This characterizes bipartiteness without the `chromaticNumber` axiom. -/
+theorem bipartitionNumber_eq_zero_iff {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G = 0 ↔ ∃ c : V → Bool, ∀ u v, G.Adj u v → c u ≠ c v := by
+  unfold bipartitionNumber
+  constructor
+  · intro h
+    obtain ⟨c, -, hc⟩ :=
+      Finset.exists_mem_eq_inf' (Finset.univ_nonempty (α := V → Bool)) (monochromaticEdges G)
+    exact ⟨c, (monochromaticEdges_eq_zero_iff G c).1 (by rw [← hc]; exact h)⟩
+  · rintro ⟨c, hc⟩
+    have hzero : monochromaticEdges G c = 0 := (monochromaticEdges_eq_zero_iff G c).2 hc
+    have hle :
+        (Finset.univ : Finset (V → Bool)).inf' Finset.univ_nonempty (monochromaticEdges G)
+          ≤ monochromaticEdges G c :=
+      Finset.inf'_le _ (Finset.mem_univ c)
+    omega
 
 /--
 **The f_k(n) Function**
@@ -128,15 +180,14 @@ theorem f_3_equals_1 (n : ℕ) (hn : n ≥ 3 ∧ n % 2 = 1) : f 3 n = 1 := by
   unfold f
   simp
 
-/--
+/-
 **Gallai's Upper Bound (1968)**
 
 f_4(n) ≤ O(n^{1/2})
 
 Gallai showed that 4-critical graphs have at most O(√n) "obstruction"
 edges preventing bipartiteness.
--/
-/--
+
 **Lovász's Upper Bound**
 
 f_k(n) ≤ O(n^{1 - 1/(k-2)})
@@ -190,25 +241,19 @@ axiom rodl_tuza_theorem (k : ℕ) (hk : k ≥ 3) :
 
 /-- For k = 4: f_4(n) = C(3,2) = 3 for large n. -/
 theorem f_4_eventually_3 : ∃ N₀ : ℕ, ∀ n ≥ N₀, f 4 n = 3 := by
-  have h := rodl_tuza_theorem 4 (by norm_num)
-  obtain ⟨N₀, hN⟩ := h
-  use N₀
-  intro n hn
-  have := hN n hn
-  simp at this ⊢
-  convert this
-  norm_num
+  obtain ⟨N₀, hN⟩ := rodl_tuza_theorem 4 (by norm_num)
+  refine ⟨N₀, fun n hn => ?_⟩
+  have h := hN n hn
+  norm_num at h
+  exact h
 
 /-- For k = 5: f_5(n) = C(4,2) = 6 for large n. -/
 theorem f_5_eventually_6 : ∃ N₀ : ℕ, ∀ n ≥ N₀, f 5 n = 6 := by
-  have h := rodl_tuza_theorem 5 (by norm_num)
-  obtain ⟨N₀, hN⟩ := h
-  use N₀
-  intro n hn
-  have := hN n hn
-  simp at this ⊢
-  convert this
-  norm_num
+  obtain ⟨N₀, hN⟩ := rodl_tuza_theorem 5 (by norm_num)
+  refine ⟨N₀, fun n hn => ?_⟩
+  have h := hN n hn
+  norm_num at h
+  exact h
 
 /-
 # Part 7: Why the Conjecture Was False
@@ -216,7 +261,7 @@ theorem f_5_eventually_6 : ∃ N₀ : ℕ, ∀ n ≥ N₀, f 5 n = 6 := by
 Understanding the structure of critical graphs that makes f_k bounded.
 -/
 
-/--
+/-
 **Key Structural Insight**
 
 Critical graphs have highly constrained structure. In a k-critical graph,
@@ -225,14 +270,16 @@ small clique-like substructure of size at most k-1.
 
 Removing the C(k-1, 2) edges of this clique-structure makes the rest
 bipartite. This is independent of how large the graph is!
+
+The complete graph K_{k-1} is (k-1)-chromatic.
 -/
 
-/-- The complete graph K_{k-1} is (k-1)-chromatic. -/
 /-- K_{k-1} has C(k-1, 2) = (k-1)(k-2)/2 edges.
     This relates the Rödl-Tuza bound to the structure of complete graphs. -/
 theorem complete_graph_edges (k : ℕ) (hk : k ≥ 2) :
     (k - 1) * (k - 2) / 2 = Nat.choose (k - 1) 2 := by
-  rw [Nat.choose_two_right]
+  have h : k - 1 - 1 = k - 2 := by omega
+  rw [Nat.choose_two_right, h]
 
 /-
 # Part 8: Consequences
@@ -260,25 +307,24 @@ theorem erdos_conjecture_false : ¬erdosOriginalConjecture := by
 
 /-- The log conjecture is also false: f_4(n) = 3 cannot grow as C·log(n). -/
 theorem log_conjecture_false : ¬erdosLogConjecture := by
-  unfold erdosLogConjecture
-  push_neg
-  intro C hC
-  -- f 4 n = 3 for all n. Need ∃ n ≥ 2, 3 < C * log n.
-  -- Choose n > exp(3/C) so log n > 3/C and C * log n > 3.
+  rintro ⟨C, hC, hbound⟩
+  -- f 4 n = 3 for all n. Pick n > exp(3/C); then C * log n > 3 = f 4 n,
+  -- contradicting the assumed lower bound f 4 n ≥ C * log n.
   obtain ⟨n, hn⟩ := exists_nat_gt (Real.exp (3 / C))
-  refine ⟨max n 2, le_max_right _ _, ?_⟩
-  simp only [f, show ¬(4 < 3) from by omega, show ¬(4 = 3) from by omega, ite_false]
-  push_neg
-  have hmax_pos : (0 : ℝ) < ↑(max n 2) := by positivity
+  have hfnat : f 4 (max n 2) = 3 := by norm_num [f]
+  have hf : (f 4 (max n 2) : ℝ) = 3 := by rw [hfnat]; norm_num
+  have hge : (f 4 (max n 2) : ℝ) ≥ C * Real.log ↑(max n 2) :=
+    hbound (max n 2) (le_max_right _ _)
+  rw [hf] at hge
   have hlog : 3 / C < Real.log ↑(max n 2) := by
     calc 3 / C = Real.log (Real.exp (3 / C)) := (Real.log_exp _).symm
       _ < Real.log ↑(max n 2) := by
-        apply Real.log_lt_log (Real.exp_pos _)
-        exact_mod_cast show Real.exp (3 / C) < ↑(max n 2) from
-          calc Real.exp (3 / C) < ↑n := by exact_mod_cast hn
+          apply Real.log_lt_log (Real.exp_pos _)
+          calc Real.exp (3 / C) < (n : ℝ) := hn
             _ ≤ ↑(max n 2) := by exact_mod_cast le_max_left n 2
-  calc (3 : ℝ) = C * (3 / C) := by field_simp
-    _ < C * Real.log ↑(max n 2) := by exact mul_lt_mul_of_pos_left hlog hC
+  have h3 : (3 : ℝ) < C * Real.log ↑(max n 2) := by
+    rw [mul_comm]; exact (div_lt_iff₀ hC).mp hlog
+  linarith
 
 /-
 # Part 9: The Complete Picture
@@ -294,12 +340,10 @@ def f_k_table : List (ℕ × ℕ) :=
     This is the definitive result from Rödl-Tuza. -/
 theorem f_k_formula (k : ℕ) (hk : k ≥ 3) :
     ∃ N₀ : ℕ, ∀ n ≥ N₀, f k n = Nat.choose (k - 1) 2 := by
-  have h := rodl_tuza_theorem k hk
-  obtain ⟨N₀, hN⟩ := h
-  use N₀
-  intro n hn
-  rw [hN n hn]
-  rw [Nat.choose_two_right]
+  obtain ⟨N₀, hN⟩ := rodl_tuza_theorem k hk
+  refine ⟨N₀, fun n hn => ?_⟩
+  have h : k - 1 - 1 = k - 2 := by omega
+  rw [hN n hn, Nat.choose_two_right, h]
 
 /-
 # Part 10: Problem Status
