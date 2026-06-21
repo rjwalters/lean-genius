@@ -413,3 +413,69 @@ five** analytic axioms of the Hurwitz isoperimetric proof are now discharged 0-a
 reparam-on-regular, s06 ×2 Cauchy–Schwarz, s07 ×2 Fourier). A fully axiom-free parent file is a
 separate mechanic task: bridge raw-function ↔ `SmoothClosedCurve`, add a regularity field for
 `exists_nice_reparam` (Gap-1), and un-rot the parent (#27276).
+
+### Session 2026-06-21 (s08, ACT, researcher-8) — CAPSTONE: full isoperimetric inequality for regular curves assembled 0-axiom
+
+**Outcome: ACT — the complete inequality `4πA ≤ C²` is now proved 0-axiom by wiring the five
+discharged pieces together.** Sessions s05–s07 discharged all five parent axioms 0-axiom but
+each in an *isolated* standalone file with nothing combining them. This session supplies the
+missing integration: new file `proofs/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Iso.lean`
+(`namespace IsoperimetricRegular`, ~170 LOC, 3 theorems, **0 axioms, 0 sorries**, docker GREEN
+7749 jobs on v4.26.0; `#print axioms` = `[propext, Classical.choice, Quot.sound]` for both
+headline results — no `ofReduceBool`/`sorryAx`).
+
+**`isoperimetric_inequality_regular`** — for every `RegularClosedCurve γ` with `0 < circumference`,
+`4 * π * γ.area ≤ γ.circumference ^ 2`. Plus the ratio form `isoperimetric_ratio_ge_one`
+(`1 ≤ C²/(4πA)` for positive area).
+
+**Assembly (no new analysis, pure plumbing + the algebraic kernel):**
+1. `RegularClosedCurve.exists_nice_reparam_for_regular γ hL` (s05 IFT file) → constant-speed
+   (`c = L/2π`), zero-mean regular curve `ρ` with `ρ.circumference = γ.circumference`,
+   `ρ.area = γ.area`.
+2. `IsoperimetricFourier.wirtinger_sum_bound ρ.x ρ.y …` (s07 Fourier file) → `∫(ρ.x²+ρ.y²) ≤ 2πc²`.
+3. `IsoperimetricCauchySchwarz.area_cauchy_schwarz_bound_contDiff ρ.x ρ.y c …` (s06) →
+   `|∫(ρ.x·ρ.y'−ρ.y·ρ.x')| ≤ c·∫√(ρ.x²+ρ.y²)`; with `2·ρ.area = |∫(…)|` (def of `area`) this is
+   `2·ρ.area ≤ c·S`.
+4. `IsoperimetricCauchySchwarz.integral_cauchy_schwarz_sq ρ.x ρ.y …` (s06) → `S² ≤ 2π·Sxy`.
+5. `isoperimetric_arithmetic_kernel` (reproved inline — the parent's copy is in the bit-rotted
+   parent file): from `S² ≤ 2π·2πc² = (2πc)²` get `S ≤ 2πc`, then `2A ≤ c·S ≤ 2πc²`, hence
+   `4πA ≤ 4π²c² = (2πc)² = L²`. Transfer across `ρ.area = γ.area` / `ρ.circumference =
+   γ.circumference`.
+
+**This file imports NONE of the axiomatized infrastructure** — only `Mathlib` and the three
+0-axiom sibling companions (`…OQ01OQ01IFT`, `…OQ01OQ01Fourier`, `…OQ01OQ01CauchySchwarz`). So
+the entire chain from raw Mathlib to `4πA ≤ C²` (on the regular locus) is now machine-checked
+with zero assumptions. The bit-rotted parent `AreaOfCircleOQ01OQ02OQ02OQ01.lean` is **not**
+touched or relied upon.
+
+**Gotchas pinned (v4.26.0):**
+- `set c := γ.circumference / (2 * π)` *after* `obtain`-ing `ρ` folds the literal
+  `(γ.circumference / (2*π))^2` in the constant-speed hypothesis `hspeed` into `c^2`, matching
+  `wirtinger_sum_bound`'s `= c^2` shape exactly — no manual rewrite needed.
+- `2 * ρ.area = |∫ …|`: `simp only [RegularClosedCurve.area]; ring` (`ring` treats the `|·|` as
+  an atom; `2 * ((1/2)*|X|) = |X|`).
+- `hL_eq : γ.circumference = 2 * π * c` via `rw [hc_def]; field_simp` (no explicit `2π≠0` needed
+  — `field_simp` discharges it here).
+- The headline lemmas about `ρ` need `ρ.continuous_x`/`ρ.continuous_y` (dot notation on the
+  `RegularClosedCurve` namespace theorems) for `integral_cauchy_schwarz_sq`, and
+  `ρ.smooth_x`/`ρ.smooth_y`/`ρ.periodic_x`/`ρ.periodic_y` for `wirtinger_sum_bound`.
+
+**Honest scope (unchanged from s05).** Stated for `RegularClosedCurve`, not the parent's
+`SmoothClosedCurve`: `exists_nice_reparam` is genuinely false for non-regular curves (Gap 1), so
+`C² ≥ 4πA` for *all* smooth closed curves needs an extra limiting argument this route does not
+supply. On the regular locus — where the Fourier/IFT proof is valid — the inequality is now
+entirely axiom-free. The bit-rotted parent/sibling repair (#27276) remains a mechanic task; a
+parent edit restating its theorem for regular curves and importing this file would make the
+parent gallery entry 0-axiom, but that touches a verified entry and is left as a deliberate
+follow-up.
+
+## Next Steps (updated)
+
+1. **(mechanic, sensitive)** Repair bit-rotted `AreaOfCircleOQ01OQ02OQ02OQ01.lean` (parent) +
+   `AreaOfCircleOQ01OQ03OQ01.lean` (sibling) for v4.26.0 (renames pinned in s05). Then optionally
+   restate the parent's `isoperimetric_inequality` for `RegularClosedCurve` and discharge it via
+   `IsoperimetricRegular.isoperimetric_inequality_regular`, dropping the parent `axiomCount` 5→0
+   on the regular locus.
+2. **Equality/rigidity capstone (optional):** combine this inequality with the s-session
+   Wirtinger equality result (OQ010202010101 #27294, `C²=4πA ⟺ circle`) into a single
+   inequality-plus-rigidity statement for regular curves.

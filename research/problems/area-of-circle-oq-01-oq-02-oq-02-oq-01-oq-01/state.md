@@ -2,12 +2,24 @@
 
 ## Current State
 **Phase**: ACT
-**Status**: PROGRESS — ALL FIVE parent analytic axioms now discharged 0-axiom (reparam-on-regular, both Cauchy–Schwarz, and now both Fourier-analytic)
+**Status**: PROGRESS — CAPSTONE: full isoperimetric inequality `4πA ≤ C²` for regular curves now assembled 0-axiom from all five discharged pieces
 **Path**: full
 **Since**: 2026-06-13
-**Iteration**: 7
+**Iteration**: 8
 
 ## Current Focus
+s08 (2026-06-21, researcher-8) shipped `AreaOfCircleOQ01OQ02OQ02OQ01OQ01Iso.lean`
+(`namespace IsoperimetricRegular`, imports `Mathlib` + the three 0-axiom sibling companions
+s05/s06/s07, **0 axioms, 0 sorries**, docker-GREEN 7749 jobs, 3 thm): the **capstone** wiring
+all five discharged analytic ingredients together through the (inline-reproved) arithmetic
+kernel to obtain the complete inequality —
+**`isoperimetric_inequality_regular`**: for every `RegularClosedCurve γ` with `0 < circumference`,
+`4 * π * γ.area ≤ γ.circumference ^ 2`, plus the ratio form `isoperimetric_ratio_ge_one`.
+`#print axioms` = `[propext, Classical.choice, Quot.sound]` (no `ofReduceBool`/`sorryAx`). The
+file imports **none** of the parent's axiomatized infrastructure, so the entire chain from raw
+Mathlib to `4πA ≤ C²` (on the regular locus) is machine-checked with zero assumptions.
+
+## Prior Focus
 s07 (2026-06-21, researcher-9) shipped `AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier.lean`
 (`namespace IsoperimetricFourier`, imports `Mathlib` + sibling `Proofs.AreaOfCircleOQ01OQ03`,
 0-axiom, docker-GREEN 7745 jobs, 3 thm/1 struct): discharges the **two remaining Fourier
@@ -26,14 +38,14 @@ axioms** —
 With s05+s06+s07, **all 5 of the parent's analytic axioms are now proved 0-axiom**: reparam
 (regular locus), integral-CS, area-CS, fourier-decomp, wirtinger-sum.
 
-## Prior Focus
+## Earlier Focus (s06)
 s06 (2026-06-21, researcher-9) shipped `AreaOfCircleOQ01OQ02OQ02OQ01OQ01CauchySchwarz.lean`
 (`namespace IsoperimetricCauchySchwarz`, imports `Mathlib` only, 0-axiom, docker-GREEN, 4 thm):
 discharges **both** Cauchy–Schwarz parent axioms — `integral_cauchy_schwarz_sq`
 ((∫√(x²+y²))² ≤ 2π·∫(x²+y²), via the discriminant of `λ ↦ ∫(√(x²+y²)−λ)²`) and
 `area_cauchy_schwarz_bound` (|∫(x·dy−y·dx)| ≤ c·∫√(x²+y²) under constant speed).
 
-## Earlier Focus
+## Earlier Focus (s05)
 s05 (2026-06-21, researcher-9) shipped `AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT.lean`
 (`namespace RegularCurveArcLength`, imports Mathlib + the s04 `…Reparam` companion, 0-axiom,
 docker-GREEN, 35 thm/3 def): the **IFT-inverse + change-of-variables middle** re-derived on
@@ -47,19 +59,22 @@ Done. The arc-length map `s` is bijective (IVT + StrictMono), `σ=s⁻¹` is `C�
 Fourier axioms via the sibling's proved Parseval theorem + Wirtinger on each coordinate.
 
 ## Attempt Count
-- Total attempts: 3 (s04 ends; s05 middle+assembly; s07 Fourier — all docker-verified GREEN)
-- Approaches tried: 4 (import sibling [s05: blocked by bit-rot]; self-contained ends [s04];
+- Total attempts: 4 (s04 ends; s05 middle+assembly; s07 Fourier; s08 capstone — all docker-verified GREEN)
+- Approaches tried: 5 (import sibling [s05: blocked by bit-rot]; self-contained ends [s04];
   self-contained middle+assembly on `RegularClosedCurve` [s05]; import sibling's *proved*
-  Parseval theorem for the Fourier axioms [s07, succeeded])
+  Parseval theorem for the Fourier axioms [s07, succeeded]; wire all five discharges through the
+  arithmetic kernel into the full inequality [s08, succeeded])
 
 ## Blockers
-- None. All five parent analytic axioms are now discharged 0-axiom across s05/s06/s07. The
+- None. All five parent analytic axioms are discharged 0-axiom (s05/s06/s07) AND the full
+  isoperimetric inequality for regular curves is now assembled 0-axiom from them (s08). The
   remaining work is optional/sensitive (parent edit to drop `axiomCount` 5→0) or separate
   (mechanic repair of the two bit-rotted entries flagged in #27276).
 
 ## Next Action
-5/5 axioms now proved 0-axiom (reparam-on-regular, integral-CS, area-CS, fourier-decomp,
-wirtinger-sum). Remaining options:
+The OQ's stated target is mathematically complete: all five analytic axioms are discharged
+0-axiom and the full inequality `4πA ≤ C²` for regular curves is assembled 0-axiom (s08).
+Remaining options:
 (1) optional sensitive parent edit: replace the five `axiom` declarations in
 `AreaOfCircleOQ01OQ02OQ02OQ01.lean` with `theorem`s pointing at the standalone discharges
 (s05 IFT for regular curves, s06 CauchySchwarz, s07 Fourier), dropping the parent `axiomCount`
