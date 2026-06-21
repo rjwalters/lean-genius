@@ -36,7 +36,7 @@
     "namespace": "MeanValueTheoremOQ02OQ04OQ01",
     "lineCount": 771,
     "axiomCount": 1,
-    "theoremCount": 12,
+    "theoremCount": 13,
     "definitionCount": 3,
     "path": "Proofs/MeanValueTheoremOQ02OQ04OQ01.lean",
     "sorries": 0
@@ -129,7 +129,7 @@
       "Demonstration that the explicit R^n factor in the denominator (M·r^(n+1) / (R^n · (R-r))) is essential; the OQ-04 statement that absorbs R^n into M is too weak to be true under real-only hypotheses.",
       "S4 (Iter 4): the §3b main theorem analytic_taylor_remainder_uniform_bound_complex is now fully proven modulo a single named sub-lemma cauchy_diag_norm_bound. The combination scaffolding (HasFPowerSeriesOnBall.hasSum_sub → per-term geometric bound via cauchy_diag_norm_bound → norm_sub_le_of_geometric_bound_of_hasSum at index n+1 → norm_sub_rev + field_simp + ring rescaling using 1 − r/R = (R−r)/R) is now Lean code, not docstring. Sorry count stays at 1 (moved from main-theorem black-box to a single Cauchy-coefficient gap). (S7 follow-on: the Cauchy-coefficient gap was discharged in PR #19063 via Mathlib's Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le; the file is now sorry-free.)"
     ],
-    "theoremCount": 12,
+    "theoremCount": 13,
     "definitionCount": 3
   },
   "overview": {

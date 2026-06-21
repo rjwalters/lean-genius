@@ -26,7 +26,7 @@
     "lineCount": 383,
     "assumptions": "Three axioms declare the matrix-multiplication exponent ω with its known bounds, all in the Layer 3 placeholder block: `omegaMM : ℝ` (the exponent itself, currently a major open problem in computational complexity — known only that 2 ≤ ω < 2.371552 as of Williams-Xu-Xu-Zhou 2024), `omegaMM_two_le : 2 ≤ ω` (folklore: must read all n² input entries), and `omegaMM_lt_three : ω < 3` (Strassen 1969: ω ≤ log₂ 7 ≈ 2.807). The 12 proved theorems (Layers 1 + 2 + 2.5) are entirely structural and depend on no axioms. The full operation-count theorem (Keller-Gehrig recovers μ_M in O(n^ω) field operations) is deferred pending Mathlib growing a complexity monad and an abstract fast-matmul oracle.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 2,
     "originalContributions": [
       "Squared-Krylov sequence: squareKrylov M k := M^(2^k), computed by repeated squaring T_{k+1} = T_k · T_k",
@@ -75,7 +75,7 @@
     "namespace": "MinpolyComplexity.SubcubicKrylov",
     "lineCount": 383,
     "axiomCount": 3,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 2,
     "sorries": 0
   },

@@ -47,7 +47,7 @@
     "lineCount": 514,
     "assumptions": "0 axioms, 0 sorries. Machine-checked: `./proofs/scripts/docker-build.sh Proofs.ProductOfSegmentsOfChords` builds green (Lean v4.26.0, Mathlib pin 2df2f01, 3070 jobs); registered in proofs/Proofs.lean. The previously-present FALSE unsigned-converse axiom (converse_product_implies_concyclic_axiom) was REMOVED 2026-06-15: its statement is refuted by a machine-checked counterexample in Proofs/ProductOfSegmentsOfChordsConverse.lean (unsigned_converse_counterexample); the corrected signed converse is proved there (signed_converse_implies_concyclic, 0 axioms/0 sorries). The forward proof was repaired for Mathlib v4.26.0 (vector division → scalar smul; `ring`-on-vectors → `abel`; `inner`→`inner ℝ`; `noncomputable powerOfPoint`) and a correctness bug fixed — power_of_point_product / product_of_segments_of_chords now require A≠B (resp. C≠D), since the chord-product identity is false when the two intersection points coincide. Verified green 2026-06-15 (researcher-4).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11,
+    "theoremCount": 10,
     "definitionCount": 4
   },
   "overview": {
@@ -211,7 +211,7 @@
     "namespace": null,
     "lineCount": 514,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 10,
     "definitionCount": 4,
     "path": "Proofs/ProductOfSegmentsOfChords.lean",
     "sorries": 0,
