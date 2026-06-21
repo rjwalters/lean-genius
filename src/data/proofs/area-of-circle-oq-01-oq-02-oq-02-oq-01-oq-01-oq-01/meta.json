@@ -1,0 +1,101 @@
+{
+  "id": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01-oq-01",
+  "title": "The Equality Case of Wirtinger's Inequality (Isoperimetric Rigidity)",
+  "slug": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01-oq-01",
+  "description": "Axiom-free characterization of the equality case of Wirtinger's inequality — the analytic core of isoperimetric rigidity (C² = 4πA ⟺ circle). For a mean-zero 2π-periodic C¹ function f, equality ∫f² = ∫(f')² holds iff every Fourier coefficient outside the first harmonic vanishes (cₙ = 0 for n ≠ ±1), i.e. the extremiser is f(t) = a·cos t + b·sin t. The concrete first harmonic is shown to have zero mean, ∫f² = π(a²+b²), and to attain equality. Builds on the parent isoperimetric inequality, whose five analytic axioms are now all discharged 0-axiom.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Wirtinger%27s_inequality_for_functions",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "geometry",
+      "isoperimetric",
+      "wirtinger-inequality",
+      "fourier-series",
+      "parseval",
+      "rigidity",
+      "equality-case",
+      "extremizer",
+      "research"
+    ],
+    "badge": "original",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 224,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "wirtinger_equality_iff_first_harmonic: the rigidity theorem — for a mean-zero 2π-periodic C¹ function with Fourier decomposition, ∫f² = ∫(f')² holds iff cₙ = 0 for all n ≠ ±1 (Fourier support is the first harmonic {−1,+1}). Forward direction: ∫(f')²−∫f² = Σ(n²−1)cₙ² is a sum of non-negative terms (c₀=0 from zero mean), so equality forces each to vanish; a single non-zero cₙ with |n|≥2 gives a strictly positive summand and hence a positive sum (Summable.tsum_pos), contradicting equality. Backward direction: on the support {−1,+1} one has n²=1, so the two Parseval sums Σcₙ² and Σn²cₙ² agree term-by-term.",
+      "first_harmonic_sq_integral: ∫₀²π (a cos t + b sin t)² = π(a²+b²), via expansion and the closed-form trigonometric integrals integral_cos_sq, integral_sin_sq, integral_sin_mul_cos₁ over a full period.",
+      "first_harmonic_wirtinger_equality: the concrete extremiser f(t)=a cos t+b sin t attains Wirtinger equality ∫f² = ∫(f')² = π(a²+b²); its derivative −a sin t + b cos t is again a first harmonic, evaluated by reusing first_harmonic_sq_integral.",
+      "first_harmonic_mean_zero / first_harmonic_deriv: the extremiser has zero mean over a period and explicit derivative −(a sin t)+b cos t (from HasDerivAt.const_mul on Real.hasDerivAt_cos/sin).",
+      "wirtinger_inequality + fourier_decomp_exists: the inequality ∫f²≤∫(f')² and the existence of a Fourier decomposition, packaged from the grandparent's axiom-free IsoperimetricOQ.fourier_decomposition (Parseval + integration by parts)."
+    ],
+    "prerequisites": [
+      "IsoperimetricOQ.fourier_decomposition (Parseval for f and f' via IBP) from the grandparent file AreaOfCircleOQ01OQ03.lean",
+      "Summable.tsum_pos / Summable.tsum_sub (sign analysis of an infinite sum of non-negative terms)",
+      "integral_cos_sq, integral_sin_sq, integral_sin_mul_cos₁ (closed-form trigonometric integrals)",
+      "Real.hasDerivAt_cos, Real.hasDerivAt_sin, HasDerivAt.const_mul (derivative of the first harmonic)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Summable.tsum_pos",
+        "description": "For a summable family of non-negative reals with one strictly positive term, the tsum is strictly positive — the engine of the forward (rigidity) direction.",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Order"
+      },
+      {
+        "theorem": "Summable.tsum_sub",
+        "description": "The tsum of a difference of two summable families is the difference of the tsums; used to form Σ(n²−1)cₙ² = ∫(f')² − ∫f².",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Group"
+      },
+      {
+        "theorem": "integral_cos_sq / integral_sin_sq / integral_sin_mul_cos₁",
+        "description": "Closed forms for ∫cos²x, ∫sin²x and ∫sin x cos x over an interval, used to evaluate the concrete extremiser's energy.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Integrals.Basic"
+      },
+      {
+        "theorem": "HasDerivAt.const_mul",
+        "description": "Derivative of a constant multiple, composed with Real.hasDerivAt_cos/sin to differentiate the first harmonic.",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Mul"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Hurwitz's 1901 Fourier proof of the isoperimetric inequality C² ≥ 4πA reduces, coordinate by coordinate, to Wirtinger's inequality ∫₀²π f² ≤ ∫₀²π (f')² for mean-zero 2π-periodic functions. The parent chain (area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01) formalizes that inequality with all five analytic axioms now discharged 0-axiom (IFT, Cauchy–Schwarz, and the two Fourier axioms). What the inequality alone does not say is when equality holds — the rigidity statement that the only isoperimetric extremiser is the circle. This entry supplies the analytic heart of that rigidity: the spectral characterization of Wirtinger's equality case.",
+    "problemStatement": "Let f : ℝ → ℝ be C¹ and 2π-periodic with zero mean (∫₀²π f = 0), and let cₙ be its real Fourier coefficients. Then ∫₀²π f² = ∫₀²π (f')² holds if and only if cₙ = 0 for every n ≠ ±1; equivalently, the extremisers are exactly the first harmonics f(t) = a cos t + b sin t. The concrete first harmonic has zero mean, energy ∫f² = π(a²+b²), and attains equality ∫f² = ∫(f')².",
+    "text": "An axiom-free proof characterizing the equality case (rigidity) of Wirtinger's inequality. Via Parseval, ∫(f')² − ∫f² = Σ(n²−1)cₙ² is a sum of non-negative terms once the mean-zero condition kills c₀; equality therefore forces the Fourier support into the first harmonic {−1,+1}. The converse and a concrete realization (a cos t + b sin t) complete the picture, exhibiting the extremisers and the common value π(a²+b²).",
+    "proofStrategy": "Write f in its real Fourier series with coefficients cₙ (the grandparent's axiom-free fourier_decomposition supplies the data: square-summability, Parseval ∫f²=Σcₙ², ∫(f')²=Σn²cₙ², and c₀ proportional to the mean). (1) Zero mean gives c₀=0. (2) Forward: set g(n)=(n²−1)cₙ² = n²cₙ²−cₙ²; it is summable (difference of two summable families) and non-negative (n²≥1 for n≠0, and the n=0 term vanishes since c₀=0), with Σg = ∫(f')²−∫f² = 0 under the equality hypothesis. If some cₙ≠0 with n≠±1 then n²≥2, so g(n)>0, and Summable.tsum_pos forces Σg>0 — contradiction. (3) Backward: if the support is {−1,+1} then n²=1 there, so cₙ²=n²cₙ² for all n, whence Σcₙ²=Σn²cₙ², i.e. ∫f²=∫(f')². (4) Concrete extremiser: expand (a cos t+b sin t)² and integrate term-by-term using the closed-form trigonometric integrals to get π(a²+b²); its derivative is the first harmonic b cos t − a sin t, whose energy is the same by symmetry.",
+    "keyInsights": [
+      "Wirtinger's inequality and its equality case are both spectral facts: the gap ∫(f')²−∫f² = Σ(n²−1)cₙ² is a manifestly non-negative sum, and rigidity is just the statement that a non-negative sum vanishes iff each term does",
+      "The mean-zero hypothesis enters exactly to make the n=0 term non-negative (it kills c₀), which is what makes the whole gap a sum of non-negative terms",
+      "Equality extremisers are precisely the first harmonics a cos t + b sin t — geometrically, forcing this in both coordinates of a constant-speed closed curve produces a circle, the isoperimetric extremiser",
+      "Summable.tsum_pos turns 'one coefficient survives' into 'the gap is strictly positive', giving the contradiction that drives the forward (rigidity) direction without needing pointwise Fourier inversion"
+    ],
+    "prerequisites": [
+      "Fourier series and Parseval's identity",
+      "Real analysis: derivatives, interval integrals of trigonometric functions",
+      "Convergence of infinite sums (summability, sign analysis of tsum)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "part-i",
+      "title": "Fourier decomposition and Wirtinger's inequality",
+      "text": "`FourierDecomp` repackages the grandparent's axiom-free Parseval data; `fourier_decomp_exists` asserts its existence for any C¹ 2π-periodic function. `wirtinger_inequality` records the inequality ∫f²≤∫(f')² (n²≥1 for n≠0, c₀=0 from zero mean), the statement whose equality case is the subject of this entry."
+    },
+    {
+      "id": "part-ii",
+      "title": "The rigidity theorem",
+      "text": "`wirtinger_equality_iff_first_harmonic`: equality ∫f²=∫(f')² holds iff cₙ=0 for all n≠±1. Forward uses that Σ(n²−1)cₙ²=0 is a vanishing sum of non-negative terms (Summable.tsum_pos for the contradiction); backward uses that n²=1 on the support {−1,+1} so the two Parseval sums coincide term-by-term."
+    },
+    {
+      "id": "part-iii",
+      "title": "The concrete extremiser a·cos t + b·sin t",
+      "text": "`first_harmonic_deriv`, `first_harmonic_mean_zero`, `first_harmonic_sq_integral` and `first_harmonic_wirtinger_equality` exhibit the first harmonic explicitly: zero mean, energy π(a²+b²), derivative b cos t − a sin t, and the attained equality ∫f²=∫(f')²=π(a²+b²)."
+    }
+  ]
+}
