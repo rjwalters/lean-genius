@@ -1,0 +1,135 @@
+{
+  "id": "erdos-131-oq-01-oq-01-oq-01",
+  "slug": "erdos-131-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos131Davenport",
+    "lineCount": 266,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos131DavenportBound.lean",
+    "sorries": 0
+  },
+  "title": "Sharpening the EGZ Bound for Non-Dividing Sets to |A| ≤ a + 1 (Erdős #131)",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos131DavenportBound.lean",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "erdos-problems",
+      "erdos-131",
+      "non-dividing-sets",
+      "davenport-constant",
+      "zero-sum-free",
+      "pigeonhole",
+      "extremal-set-theory",
+      "structural-bound",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 266,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "davenport_nondividing_card_bound: the headline theorem — if a ∈ A with a ≥ 2 and A is non-dividing (no element divides the sum of any ≥2-element subset of the others), then |A| ≤ a + 1. This SHARPENS the EGZ follow-up's bound |A| ≤ 2a − 1: the EGZ argument only consumes the size-exactly-a zero-sum subset (the EGZ constant s(ℤ/aℤ) = 2a − 1), but the non-dividing property forbids zero-sum subsets of EVERY size ≥ 2, so the governing invariant is the Davenport constant D(ℤ/aℤ) = a. Proved unconditionally and axiom-free.",
+      "exists_nonempty_subset_sum_dvd: the Davenport bound D(ℤ/aℤ) ≤ a, built from scratch because Mathlib lacks the Davenport constant / zero-sum-free sequences. Any a natural numbers contain a NONEMPTY subset whose sum is divisible by a. Proof: order s as a sorted (nodup) list L; the a+1 prefix sums of L reduced mod a land in ZMod a (an a-element type), so by pigeonhole (Fintype.exists_ne_map_eq_of_card_lt) two prefix sums coincide and the list block strictly between those indices is a nonempty sublist with sum ≡ 0 (mod a); its toFinset is the desired subset.",
+      "Mechanism for the sharpening (inside A \\ {a}): (1) at most ONE element of A\\{a} is divisible by a — two such would form a size-2 subset with sum ≡ 0, violating non-dividing; (2) the remaining ≥ a elements all have NONZERO residue mod a, so the Davenport bound hands back a nonempty zero-sum subset which, since singletons are nonzero, must have size ≥ 2 — again a violation. Hence |A\\{a}| ≤ a, i.e. |A| ≤ a + 1.",
+      "davenport_le_egz and davenport_strictly_sharper: the new bound is at least as strong as EGZ (a + 1 ≤ 2a − 1 for a ≥ 2) and STRICTLY stronger for a ≥ 3 (a + 1 < 2a − 1). In particular the EGZ bound 2a − 1 is NOT sharp for any a ≥ 3 — a negative answer to the parent follow-up's open question on the sharpness of 2a − 1.",
+      "davenport_card_le_min_succ: the smallest-element form — a non-dividing set whose every element is ≥ 2 has |A| ≤ min(A) + 1, applying the main bound at the least element.",
+      "two_in_card_le_three: recovers the original parity bound 2 ∈ A ⟹ |A| ≤ 3 as the a = 2 case, where the Davenport bound a + 1 = 3 and the EGZ bound 2a − 1 = 3 coincide.",
+      "davenport_bound_sharp_at_two: the Davenport bound is sharp at a = 2, witnessed by {2,4,5} (non-dividing, contains 2, card 3 = 2 + 1)."
+    ],
+    "prerequisites": [
+      "Fintype.exists_ne_map_eq_of_card_lt (Mathlib): the pigeonhole principle — a map from a finite type into a smaller finite type identifies two points; applied to the a+1 prefix-sum function into ZMod a.",
+      "ZMod.card and ZMod.natCast_eq_zero_iff: |ZMod a| = a and (n : ZMod a) = 0 ↔ a ∣ n, the bridge between the mod-a prefix-sum collision and integer divisibility.",
+      "List.take_append_drop / List.take_take / List.sum_toFinset: the list-surgery lemmas turning a prefix-sum collision into a genuine Finset block with the right sum (via the sorted nodup list of s).",
+      "Finset.filter_card_add_filter_neg_card_eq_card: splits A\\{a} into its a-divisible and non-a-divisible parts to isolate the ≥ a nonzero-residue elements."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.exists_ne_map_eq_of_card_lt",
+        "description": "Pigeonhole: if |β| < |α| then any f : α → β collides. Instantiated with α = Fin (|s|+1) (the prefix indices) and β = ZMod a; this is the engine of the home-grown Davenport bound exists_nonempty_subset_sum_dvd.",
+        "module": "Mathlib.Data.Fintype.Pigeonhole"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "(n : ZMod a) = 0 ↔ a ∣ n. Transports the mod-a collision of two prefix sums into the integer divisibility a ∣ (block sum) needed to violate the non-dividing property.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset.filter_card_add_filter_neg_card_eq_card",
+        "description": "|filter p| + |filter ¬p| = |s|. Splits A\\{a} by divisibility-by-a so that, with at most one a-divisible element, at least a elements of nonzero residue remain for the Davenport bound.",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "erdos-131-oq-01-oq-01-oq-01-oq-01",
+      "question": "Is the Davenport bound |A| ≤ a + 1 itself sharp for a ≥ 3? It is tight at a = 2 ({2,4,5}). Achieving |A| = a + 1 would require a\\{a} to consist of one element ≡ 0 (mod a) together with a − 1 elements of equal nonzero residue (a maximal zero-sum-free configuration over ℤ/aℤ), all DISTINCT naturals AND simultaneously non-dividing at every element of A — not just at a. Does such a set exist, or does the cross-element non-dividing constraint force a strictly smaller maximum?",
+      "significance": "medium"
+    },
+    {
+      "id": "erdos-131-oq-01-oq-01-oq-01-oq-02",
+      "question": "The bound |A| ≤ min(A) + 1 says a non-dividing set is barely larger than its smallest element. Can this be combined with the spread of A (e.g. running the Davenport bound on residue-class restrictions, or on A ∩ [1, t] for varying t) to extract a nontrivial GLOBAL bound on F(N) = max non-dividing subset of {1,…,N}, ideally approaching the Pham–Zakharov F(N) ≤ N^{1/4+o(1)} ceiling by elementary means?",
+      "significance": "high"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-131-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Directly sharpens the EGZ follow-up. That entry proves |A| ≤ 2a − 1 from Erdős–Ginzburg–Ziv (which only uses a size-a zero-sum subset); this entry replaces EGZ by the Davenport constant D(ℤ/aℤ) = a — which forbids zero-sum subsets of every size — to get |A| ≤ a + 1, strictly better for a ≥ 3, and in doing so shows the EGZ bound 2a − 1 is not sharp for a ≥ 3."
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "extends",
+      "description": "Contributes a tighter per-element structural upper bound on non-dividing sets for the parent Erdős #131 growth-rate study: |A| ≤ min(A) + 1, making precise (and nearly optimal at the level of a single element) the mechanism by which small elements force small non-dividing sets."
+    }
+  ],
+  "references": [
+    {
+      "title": "On some problems in combinatorial number theory",
+      "author": "Paul Erdős",
+      "year": "1975",
+      "venue": "Er75b",
+      "description": "Erdős's problem #131 on non-dividing sets and the function F(N), the maximal size of a subset of {1,…,N} no element of which divides the sum of any distinct others."
+    },
+    {
+      "title": "On Davenport's constant",
+      "author": "various (survey)",
+      "year": "2006",
+      "venue": "Expo. Math. / survey",
+      "description": "The Davenport constant D(G) is the least d such that every length-d sequence over G has a nonempty zero-sum subsequence; for cyclic groups D(ℤ/nℤ) = n. The n-bound proved here from scratch by prefix-sum pigeonhole is the special case powering the sharpened set bound."
+    },
+    {
+      "title": "Theorem in the additive number theory",
+      "author": "Paul Erdős, Abraham Ginzburg, Abraham Ziv",
+      "year": "1961",
+      "venue": "Bull. Res. Council Israel",
+      "description": "The Erdős–Ginzburg–Ziv theorem (any 2n − 1 integers contain n with sum divisible by n) underlies the weaker 2a − 1 bound that this entry sharpens; the EGZ constant 2n − 1 versus the Davenport constant n is exactly the gap exploited here."
+    },
+    {
+      "title": "On the number of monochromatic solutions to additive equations / non-averaging sets",
+      "author": "Huy Tuan Pham, Dmitrii Zakharov",
+      "year": "2024",
+      "venue": "arXiv",
+      "description": "Proves F(N) ≤ N^{1/4+o(1)} via the non-dividing ⟹ non-averaging connection; context for the open question of recovering global F(N) bounds elementarily from per-element constraints."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For a non-dividing set A ⊆ ℕ and any a ∈ A with a ≥ 2, the size bound |A| ≤ 2a − 1 coming from Erdős–Ginzburg–Ziv can be sharpened to |A| ≤ a + 1 (davenport_nondividing_card_bound). The point is that non-dividing forbids a zero-sum subset of EVERY size ≥ 2, not just of size a, so the relevant invariant is the Davenport constant D(ℤ/aℤ) = a rather than the EGZ constant 2a − 1. The Davenport bound itself (exists_nonempty_subset_sum_dvd: any a integers have a nonempty subset with sum divisible by a) is proved from scratch by a prefix-sum pigeonhole, since Mathlib lacks it. Working inside A\\{a}: at most one element is ≡ 0 (mod a) (else a size-2 zero-sum pair), and the remaining ≥ a nonzero-residue elements yield, via Davenport, a zero-sum subset of size ≥ 2 — a contradiction; hence |A\\{a}| ≤ a. The new bound is ≤ the EGZ bound for all a ≥ 2 and strictly smaller for a ≥ 3 (davenport_strictly_sharper), so 2a − 1 is not sharp beyond a = 2; it recovers |A| ≤ 3 at a = 2 (two_in_card_le_three) and is sharp there via {2,4,5} (davenport_bound_sharp_at_two). 266 lines, 9 theorems + 1 private lemma, 1 definition, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "The entry pinpoints the correct additive-combinatorial invariant behind the non-dividing size bound — the cyclic Davenport constant, not the EGZ constant — and in doing so nearly halves the previously published bound and shows the EGZ bound is non-sharp for every a ≥ 3. It also supplies a reusable, axiom-free formalization of D(ℤ/nℤ) ≤ n (a nonempty zero-sum subsequence in any length-n sequence over ℤ/nℤ), which Mathlib currently lacks. The smallest-element corollary |A| ≤ min(A) + 1 is essentially the tightest single-element constraint available and sets up the open problem of aggregating per-element Davenport bounds into a global, elementary upper bound on F(N)."
+  }
+}
