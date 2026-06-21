@@ -1,0 +1,115 @@
+{
+  "id": "geometric-series-oq-08-oq-01-oq-01",
+  "slug": "geometric-series-oq-08-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "GeometricSeriesOQ08OQ01OQ01",
+    "lineCount": 137,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ08OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "Second-order Arithmetico-Geometric Sum: a Closed Form for ∑ k²·xᵏ",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ08OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "geometric-series",
+      "arithmetico-geometric",
+      "finite-sums",
+      "closed-form",
+      "weighted-series",
+      "second-moment",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 137,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "sq_arith_geom_mul: the division-free closed form (1 − x)³ · ∑_{k<n} k²·xᵏ = x + x² − n²·xⁿ + (2n² − 2n − 1)·x^{n+1} − (n−1)²·x^{n+2}, valid over ANY commutative ring. Proved by induction peeling the top term with Finset.sum_range_succ then push_cast; ring. Coefficients use ring casts ((n:R), (n:R)−1) so the n = 0 instance is well-defined (no ℕ truncated subtraction). This finite second-order identity is not in Mathlib.",
+      "sq_arith_geom_div: the field closed form ∑_{k<n} k²·xᵏ = (x + x² − n²·xⁿ + (2n² − 2n − 1)·x^{n+1} − (n−1)²·x^{n+2})/(1 − x)³ for x ≠ 1, obtained by clearing the (1 − x)³ ≠ 0 denominator.",
+      "sq_arith_geom_two: the weight-x = 2 specialisation ∑_{k<n} k²·2ᵏ = n²·2ⁿ − (2n² − 2n − 1)·2^{n+1} + (n−1)²·2^{n+2} − 6 (the denominator (1 − 2)³ = −1), with numerical witnesses at n = 4 (= 90) and the x = 3, n = 3 case (= 39).",
+      "sq_arith_geom_mul_one: a base-case sanity guard that the n = 1 instance reduces to 0 (the only term 0²·x⁰ = 0), checking the sign pattern of the closed form."
+    ],
+    "prerequisites": [
+      "Finset.sum_range_succ for peeling the top term in the inductive step",
+      "eq_div_iff / pow_ne_zero / sub_ne_zero for the field-form denominator clearing",
+      "push_cast; ring for the Nat-cast polynomial identity in the inductive step",
+      "Parent: geometric-series-oq-08-oq-01 (the first-moment finite sum ∑_{k<n} k·xᵏ over (1 − x)²)",
+      "Ancestor: geometric-series-oq-08 (finite partial sums ∑_{k<n} rᵏ and their infinite limit)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "∑_{k<n+1} f k = ∑_{k<n} f k + f n. Peels the k = n term in the inductive step of the ring identity.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "eq_div_iff",
+        "description": "a = b / c ↔ a * c = b for c ≠ 0. Clears the (1 − x)³ denominator to reduce the field form to the ring identity.",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-08-oq-01-oq-01-oq-01",
+      "question": "Unify the family: give a single division-free closed form for the m-th moment finite sum ∑_{k<n} kᵐ·xᵏ over any commutative ring, with denominator (1 − x)^{m+1} and Eulerian-polynomial numerator, specialising to the m = 0, 1, 2 cases recorded here.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-08-oq-01",
+      "relationship": "extends",
+      "description": "Parent. The parent gives the first-moment finite arithmetico-geometric sum (1 − x)²·∑_{k<n} k·xᵏ = x(1 − xⁿ) − n·xⁿ(1 − x). This entry raises the weight to k², giving the second-moment finite closed form over (1 − x)³."
+    },
+    {
+      "targetId": "geometric-series-oq-08",
+      "relationship": "extends",
+      "description": "Ancestor. The unweighted (m = 0) finite geometric partial sums ∑_{k<n} rᵏ; this entry is the m = 2 member of the weight family ∑ kᵐ·xᵏ."
+    },
+    {
+      "targetId": "geometric-series-oq-07",
+      "relationship": "sibling",
+      "description": "Records the INFINITE second moment ∑' k, k²·xᵏ = x(1 + x)/(1 − x)³ for ‖x‖ < 1. That value is precisely the n → ∞ limit of this entry's FINITE closed form (the tail terms n²·xⁿ, (2n²−2n−1)·x^{n+1}, (n−1)²·x^{n+2} vanish, leaving x + x² over (1 − x)³). The infinite result is not reproved here; this entry supplies the finite companion."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecificLimits.Normed",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Provides the finite/infinite geometric-series infrastructure; the finite second-order closed form here is the missing companion to its infinite weighted series."
+    },
+    {
+      "title": "Concrete Mathematics (sums of the form ∑ kᵐ·xᵏ and Eulerian numbers)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for weighted geometric (arithmetico-geometric) sums and the perturbation method yielding their closed forms."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The finite second-order arithmetico-geometric sum ∑_{k<n} k²·xᵏ — each geometric term xᵏ weighted by the square k² — has the division-free closed form (1 − x)³·∑_{k<n} k²·xᵏ = x + x² − n²·xⁿ + (2n² − 2n − 1)·x^{n+1} − (n−1)²·x^{n+2} over any commutative ring, equivalently ∑_{k<n} k²·xᵏ = (…)/(1 − x)³ for x ≠ 1. It specialises to ∑_{k<n} k²·2ᵏ (numerically 90 at n = 4) and, as n → ∞ with ‖x‖ < 1, recovers the gallery's infinite second moment x(1 + x)/(1 − x)³ (geometric-series-oq-07). 137 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This completes the m = 0, 1, 2 row of the weighted-geometric family ∑_{k<n} kᵐ·xᵏ in finite form: m = 0 is geometric-series-oq-08 (denominator 1 − x), m = 1 is the parent geometric-series-oq-08-oq-01 (denominator (1 − x)²), and m = 2 is supplied here (denominator (1 − x)³). The ring-level identity holds with no analysis and over every commutative ring; the field form and the infinite-limit connection follow as specialisations. Such finite second-moment sums arise in computing variances of geometric/negative-binomial distributions and in coefficient extraction for rational generating functions.",
+    "openQuestions": [
+      "Unify into a single closed form for ∑_{k<n} kᵐ·xᵏ over (1 − x)^{m+1} with an Eulerian-polynomial numerator, specialising to m = 0, 1, 2."
+    ]
+  }
+}
