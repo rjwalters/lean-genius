@@ -1,0 +1,126 @@
+{
+  "id": "compactness-finite-subcover-oq-01",
+  "slug": "compactness-finite-subcover-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "",
+    "lineCount": 123,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/CompactnessFiniteSubcover.lean",
+    "sorries": 0
+  },
+  "title": "Compactness via Finite Subcovers: the Heine–Borel Characterization",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CompactnessFiniteSubcover.lean",
+    "tags": [
+      "topology",
+      "compactness",
+      "heine-borel",
+      "finite-subcover",
+      "open-cover",
+      "general-topology",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 123,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "isCompact_union_of_finite_subcover: a binary union of compact sets is compact, RE-DERIVED directly from the finite-subcover characterization rather than citing Mathlib's IsCompact.union. Given an open cover of s ∪ t, the proof extracts a finite subcover of s and a finite subcover of t (via IsCompact.elim_finite_subcover) and returns the union of the two finite index Finsets — the genuine content of the entry, running the Heine–Borel definition by hand.",
+      "isCompact_finset_biUnion: a finite indexed union ⋃ i ∈ a, f i of compact sets is compact, by induction on the Finset a using ONLY the re-derived binary union above (Finset.set_biUnion_insert + the empty case), so the whole finite-union result is bootstrapped from the subcover characterization.",
+      "isCompact_finset_coe: every finite set ↑s (s : Finset X) is compact in an arbitrary topological space, as a corollary — ↑s = ⋃ x ∈ s, {x} and singletons are compact, fed through isCompact_finset_biUnion.",
+      "isCompact_image_union_of_continuous: the continuous image f '' (s ∪ t) of a union of two compact sets is compact, combining the re-derived union theorem with continuous-image preservation (IsCompact.image).",
+      "isCompact_two_intervals: a concrete instance over ℝ — the union [0,1] ∪ [2,3] of two disjoint closed intervals is compact, obtained from isCompact_union_of_finite_subcover and isCompact_Icc, a worked cross-check of the abstract machinery.",
+      "compact_iff_finite_subcover / finite_subcover_of_isCompact: the headline Heine–Borel characterization (re-export of isCompact_iff_finite_subcover) and its forward elimination form, packaged as the gallery statement."
+    ],
+    "prerequisites": [
+      "isCompact_iff_finite_subcover: Mathlib's equivalence between compactness and the finite-subcover property",
+      "IsCompact.elim_finite_subcover: extraction of a finite subcover from a compact set and an open cover",
+      "isCompact_of_finite_subcover: the converse — finite-subcover property implies compactness",
+      "Finset.set_biUnion_insert: ⋃ x ∈ insert a s, f x = f a ∪ ⋃ x ∈ s, f x, the inductive step for the finite union",
+      "isCompact_singleton and isCompact_Icc: singletons are compact, and closed real intervals are compact"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "isCompact_iff_finite_subcover",
+        "description": "A set s is compact iff every open cover of s admits a finite subcover. The Heine–Borel characterization, re-exported as compact_iff_finite_subcover.",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "IsCompact.elim_finite_subcover",
+        "description": "From a compact set and an open cover, extract a finite index Finset whose corresponding subfamily still covers. The workhorse driving the re-derived binary union.",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "isCompact_of_finite_subcover",
+        "description": "If every open cover of s has a finite subcover then s is compact. Used to conclude isCompact_union_of_finite_subcover from the constructed subcover.",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "IsCompact.image",
+        "description": "The continuous image of a compact set is compact. Supplies the continuous-image cross-check isCompact_image_union_of_continuous.",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "Finset.set_biUnion_insert",
+        "description": "⋃ x ∈ insert a s, f x = f a ∪ ⋃ x ∈ s, f x. The inductive step turning the binary union into the finite-family union.",
+        "module": "Mathlib.Order.CompleteLattice.Finset"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "compactness-finite-subcover-oq-01-oq-01",
+      "question": "Re-derive the tube lemma (if K is compact and N is open with K × {y} ⊆ N, then some open tube K × V ⊆ N) directly from the finite-subcover characterization, by covering K × {y} with basic open boxes and extracting a finite subcover, mirroring the by-hand subcover style used here for the union.",
+      "significance": "high"
+    },
+    {
+      "id": "compactness-finite-subcover-oq-01-oq-02",
+      "question": "Prove the finite-intersection-property dual (a space is compact iff every family of closed sets with the FIP has nonempty intersection) and connect it to isCompact_iff_finite_subfamily_closed, then derive that a nested sequence of nonempty compact sets has nonempty intersection (Cantor's intersection theorem).",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "egorov-theorem-oq-01",
+      "relationship": "related",
+      "description": "Egorov's theorem uses finite-measure compactness-style covering arguments; this entry isolates the open-cover characterization of compactness that underlies such finite-extraction proofs."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Topology.Compactness.Compact",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of isCompact_iff_finite_subcover, IsCompact.elim_finite_subcover, isCompact_of_finite_subcover, and IsCompact.image."
+    },
+    {
+      "title": "Topology",
+      "author": "Munkres",
+      "year": "2000",
+      "venue": "Prentice Hall",
+      "description": "Standard reference for the open-cover definition of compactness, the finite-union and continuous-image preservation theorems, and the tube lemma."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "A set s in a topological space is compact iff every open cover of s admits a finite subcover (the Heine–Borel characterization, Mathlib's isCompact_iff_finite_subcover, re-exported as compact_iff_finite_subcover). The entry's substance is using that characterization BY HAND rather than citing the ready-made lemmas: isCompact_union_of_finite_subcover proves a binary union of compacts is compact by extracting finite subcovers of each piece and unioning the two index Finsets (never invoking IsCompact.union); isCompact_finset_biUnion lifts this to finite indexed unions by induction; isCompact_finset_coe deduces that every finite set is compact; isCompact_image_union_of_continuous adds the continuous-image cross-check; and isCompact_two_intervals gives the concrete ℝ instance [0,1] ∪ [2,3]. 123 lines, 8 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The iff-characterization itself is delegated to Mathlib (hence the mathlib badge), but the finite-union results are produced by running the subcover definition directly — the from-scratch binary union, its finite-family induction, the finite-set corollary, and the concrete instance are the formalized content, demonstrating the standard ways compactness propagates (finite unions, continuous images) from first principles.",
+    "openQuestions": [
+      "Re-derive the tube lemma directly from the finite-subcover characterization.",
+      "Prove the finite-intersection-property dual and Cantor's intersection theorem for nested compacts."
+    ]
+  }
+}
