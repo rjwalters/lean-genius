@@ -1,0 +1,131 @@
+{
+  "id": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+  "slug": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GeometricSeriesOQ07OQ01OQ01OQ02"
+    ],
+    "opens": [
+      "Polynomial",
+      "Finset"
+    ],
+    "namespace": "GeometricSeriesOQ07OQ01OQ01OQ01",
+    "lineCount": 195,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Eulerian Numbers via the Combinatorial Triangle Recurrence",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "geometric-series",
+      "eulerian-numbers",
+      "eulerian-polynomial",
+      "descent-statistic",
+      "triangle-recurrence",
+      "permutations",
+      "polynomial",
+      "coefficient-extraction",
+      "factorial",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 195,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "eulerian: the Eulerian number ⟨m,k⟩ defined directly by the textbook combinatorial triangle recurrence ⟨0,0⟩ = 1, ⟨m+1,0⟩ = 1, ⟨m+1,k+1⟩ = (k+2)·⟨m,k+1⟩ + (m-k)·⟨m,k⟩ — the count of permutations of {1,…,m} with exactly k descents. Mathlib has no Eulerian numbers; this is a from-scratch definition with the row data ⟨3,·⟩ = 1,4,1 and ⟨4,·⟩ = 1,11,11,1 verified by decide.",
+      "coeff_eulerPoly_eq_eulerian: the headline identification — for m ≥ 1, coeff(Eₘ, k+1) = ⟨m,k⟩ over an arbitrary commutative ring. This answers the parent entry's open question geometric-series-oq-07-oq-01-oq-01-oq-01, upgrading the parent's 'differential-recurrence + Stirling-closed-form' description of eulerPoly to the combinatorial (descent-statistic) definition of the Eulerian numbers. The proof is an induction on m: the boundary index k = 0 (giving ⟨m,0⟩ = 1) uses the imported coeff_eulerPoly_succ_one, and the generic index k+1 is exactly the imported coefficient recurrence coeff_eulerPoly_succ_add_two, whose two lower-order terms −(k+1)·coeff(Eₘ,k+1) + (m+1)·coeff(Eₘ,k+1) collapse into the triangle weight (m-k). The ring/ℕ subtraction mismatch (the ring weight m-k versus truncated ℕ subtraction) is handled by a case split: the two agree where k ≤ m, and where k > m both sides vanish because ⟨m,k⟩ = 0.",
+      "eulerian_eq_zero_of_lt: the above-diagonal vanishing ⟨m,k⟩ = 0 for k > m — a permutation of m letters has at most m-1 descents — proved by induction directly from the triangle recurrence; the boundary input that closes the case split in the identification theorem.",
+      "eulerian_row_sum: the row sum ∑_{k=0}^{m-1} ⟨m,k⟩ = m! — every one of the m! permutations of {1,…,m} has some number of descents — recovered from the analytic identity Eₘ(1) = m! (parent's eval_eulerPoly_one) by expanding the evaluation at 1 as the sum of coefficients (eval_eq_sum_range with the parent's degree bound natDegree Eₘ = m) and re-indexing each coefficient as an Eulerian number.",
+      "eulerian_symm: combinatorial palindromicity ⟨m,k⟩ = ⟨m,m-1-k⟩ — the descent statistic is symmetric under reversing a permutation — obtained by transporting the sibling entry's coefficient symmetry eulerPoly_coeff_symm across the identification.",
+      "eulerian_right_zero, eulerian_one, eulerian_succ_succ: the structural equations of the triangle (first column ⟨m,0⟩ = 1, first row ⟨1,k⟩ = [k=0], and the recurrence in unfolded form) used as rewrite lemmas throughout."
+    ],
+    "prerequisites": [
+      "Parent geometric-series-oq-07-oq-01-oq-01: the Eulerian polynomial eulerPoly defined by the differential recurrence E₀ = 1, E_{m+1} = X·(1-X)·E'ₘ + (m+1)·X·Eₘ, with eulerPoly_one (E₁ = X) and the row sum eval_eulerPoly_one (Eₘ(1) = m!).",
+      "Sibling geometric-series-oq-07-oq-01-oq-01-oq-02 (imported): the coefficient recurrence coeff_eulerPoly_succ_add_two and boundary value coeff_eulerPoly_succ_one extracted from the differential recurrence, the constant-coefficient vanishing coeff_eulerPoly_zero_eq_zero, the coefficient symmetry eulerPoly_coeff_symm, and the exact degree eulerPoly_natDegree — the entire engine that this entry reads as the combinatorial triangle.",
+      "Mathlib's univariate polynomial API: Polynomial.coeff_X, Polynomial.eval_eq_sum_range (eval x = ∑_{i ≤ natDegree} coeff i · xⁱ), Finset.sum_range_succ' and Nat.cast_sub for the row-sum and ring/ℕ subtraction bookkeeping.",
+      "Nat.le_induction for the m ≥ 1 induction underlying the identification."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.eval_eq_sum_range",
+        "description": "p.eval x = ∑ i ∈ range (p.natDegree + 1), p.coeff i · xⁱ. Evaluated at x = 1, this turns the parent's Eₘ(1) = m! into a sum of coefficients; combined with the parent's degree bound natDegree Eₘ = m and the coefficient–Eulerian-number identification it yields the row sum ∑ ⟨m,k⟩ = m!.",
+        "module": "Mathlib.Algebra.Polynomial.Eval.Degree"
+      },
+      {
+        "theorem": "Nat.cast_sub",
+        "description": "k ≤ m → ((m - k : ℕ) : R) = (m : R) - (k : R). The bridge that reconciles the ring weight (m - k) appearing in the coefficient recurrence with the truncated ℕ subtraction in the triangle recurrence, in the case k ≤ m of the identification theorem.",
+        "module": "Mathlib.Data.Nat.Cast.Defs"
+      },
+      {
+        "theorem": "GeometricSeriesOQ07OQ01OQ01OQ02.coeff_eulerPoly_succ_add_two",
+        "description": "The coefficient recurrence coeff(E_{m+1}, j+2) = (j+2)·coeff(Eₘ, j+2) − (j+1)·coeff(Eₘ, j+1) + (m+1)·coeff(Eₘ, j+1), extracted from the differential recurrence in the sibling entry. Read after the index shift it IS the Eulerian triangle recurrence; this entry makes that identification precise.",
+        "module": "Proofs.GeometricSeriesOQ07OQ01OQ01OQ02"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+      "question": "Connect the combinatorial Eulerian numbers defined here to Mathlib's permutation/descent machinery: define the descent set of a permutation in Finset.range m and prove that ⟨m,k⟩ as defined by the triangle recurrence equals the cardinality of {σ : Equiv.Perm (Fin m) | (descents σ).card = k}, i.e. the genuine combinatorial count, recovering the triangle recurrence by the standard insertion bijection.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02",
+      "question": "Prove the explicit alternating-sum (Worpitzky-dual) formula ⟨m,k⟩ = ∑_{i=0}^{k} (-1)ⁱ·C(m+1,i)·(k+1-i)ᵐ, either by induction from the triangle recurrence via Pascal's rule or by clearing (1-X)^{m+1} in the parent's analytic moment generating identity and extracting coefficients.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent (Frobenius' identity). It defines the Eulerian polynomial eulerPoly by its differential recurrence and the Stirling closed form, and records this combinatorial identification as its open question oq-01. This entry answers it: it defines the Eulerian triangle ⟨m,k⟩ and proves coeff(Eₘ, k+1) = ⟨m,k⟩, also recovering the row sum ⟨m,·⟩-sum = m! from the parent's Eₘ(1) = m!."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Palindromicity of the Eulerian polynomial. Its coefficient recurrence coeff_eulerPoly_succ_add_two and symmetry eulerPoly_coeff_symm are imported here: the former is read as the triangle recurrence, and the latter is transported across the identification to give combinatorial palindromicity ⟨m,k⟩ = ⟨m,m-1-k⟩."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-03",
+      "relationship": "sibling",
+      "description": "Mean and variance of the descent statistic. That entry treats the Eulerian polynomial as the (unnormalised) probability generating function of the number of descents; this entry supplies the combinatorial meaning of its coefficients as the descent-class counts ⟨m,k⟩ and the normalising total m!."
+    }
+  ],
+  "references": [
+    {
+      "title": "Concrete Mathematics (Eulerian numbers ⟨n,k⟩, the triangle recurrence, the row sum n!, the reflection symmetry)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the Eulerian numbers: the combinatorial definition via descents, the triangle recurrence ⟨n,k⟩ = (k+1)⟨n-1,k⟩ + (n-k)⟨n-1,k-1⟩, the row sum ∑ₖ ⟨n,k⟩ = n!, and the symmetry ⟨n,k⟩ = ⟨n,n-1-k⟩, all formalized here."
+    },
+    {
+      "title": "Mathlib4: Algebra.Polynomial.Eval.Degree",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of eval_eq_sum_range, used with the parent's degree bound to turn Eₘ(1) = m! into the row sum of the Eulerian numbers."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The Eulerian numbers ⟨m,k⟩ are defined from scratch by the combinatorial triangle recurrence ⟨0,0⟩ = 1, ⟨m+1,0⟩ = 1, ⟨m+1,k+1⟩ = (k+2)·⟨m,k+1⟩ + (m-k)·⟨m,k⟩ (the count of permutations of {1,…,m} with exactly k descents), and identified with the coefficients of the Eulerian polynomial: for m ≥ 1, coeff(Eₘ, k+1) = ⟨m,k⟩ over an arbitrary commutative ring (coeff_eulerPoly_eq_eulerian). The proof is an induction on m whose generic step is precisely the differential-recurrence coefficient identity coeff_eulerPoly_succ_add_two of the sibling entry, with the two lower-order terms collapsing into the triangle weight (m-k); the ring/ℕ subtraction discrepancy is dispatched by the above-diagonal vanishing ⟨m,k⟩ = 0 for k > m (eulerian_eq_zero_of_lt). Two corollaries close the loop to the analytic origin: the row sum ∑_{k=0}^{m-1} ⟨m,k⟩ = m! (eulerian_row_sum, from the parent's Eₘ(1) = m!) and combinatorial palindromicity ⟨m,k⟩ = ⟨m,m-1-k⟩ (eulerian_symm, from the sibling's coefficient symmetry). 195 lines, 10 theorems, 1 definition, 0 axioms, 0 sorries; every result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This is the textbook combinatorial definition of the Eulerian numbers, absent from Mathlib, pinned exactly onto the analytic object (the cleared numerator of the geometric moment generating function) studied by the parent and siblings. It makes the whole lineage's 'Eulerian number' language literal: the coefficients the parent computed via Stirling numbers, the symmetry the sibling proved, and the mean/variance the descent-statistic sibling computed are now all statements about the combinatorial counts ⟨m,k⟩ and their total m!. The same coefficient recurrence serves both the analytic and combinatorial readings, so no bijective argument is needed to establish the identification.",
+    "openQuestions": [
+      "Connect ⟨m,k⟩ to Mathlib's Equiv.Perm descent counts, proving the triangle recurrence equals the genuine permutation count by the insertion bijection.",
+      "Prove the explicit alternating-sum formula ⟨m,k⟩ = ∑ᵢ (-1)ⁱ·C(m+1,i)·(k+1-i)ᵐ."
+    ]
+  }
+}
