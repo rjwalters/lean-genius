@@ -226,6 +226,7 @@ import Proofs.BaselProblemOQ01OQ01OQ02OQ01
 import Proofs.BaselProblemOQ01OQ01OQ02OQ02
 import Proofs.BaselProblemOQ01OQ01OQ02OQ03
 import Proofs.BaselProblemOQ01OQ03
+import Proofs.BaselProblemOQ01OQ05
 import Proofs.BaselProblemOQ02
 import Proofs.BaselProblemOQ02Aristotle
 import Proofs.BaselProblemOQ04
