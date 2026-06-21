@@ -346,6 +346,7 @@ import Proofs.BorsukUlamOQ02
 import Proofs.BorsukUlamOQ02OQ01
 import Proofs.BorsukUlamOQ02OQ01OQ01
 import Proofs.BorsukUlamOQ02OQ01OQ01OQ02
+import Proofs.BorsukUlamOQ02OQ01OQ02
 import Proofs.BorsukUlamOQ02OQ01OQ01OQ02OQ03
 import Proofs.BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01
 import Proofs.BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ02
