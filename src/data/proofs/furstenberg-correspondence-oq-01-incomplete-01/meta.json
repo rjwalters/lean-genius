@@ -1,0 +1,208 @@
+{
+  "id": "furstenberg-correspondence-oq-01-incomplete-01",
+  "title": "Devaney Chaos of the Shift on Cantor Space",
+  "slug": "furstenberg-correspondence-oq-01-incomplete-01",
+  "description": "The topological-dynamics counterpart of the Furstenberg correspondence: the shift map T(x)(n) = x(n+1) on Cantor space {0,1}^ℕ is chaotic in the sense of Devaney — topologically transitive (in fact mixing), with dense periodic points and sensitive dependence on initial conditions. All three properties are proved by explicit symbolic constructions, fully verified with 0 axioms and 0 sorries.",
+  "meta": {
+    "author": "Devaney (1989); Banks–Brooks–Cairns–Davis–Stacey (1992)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Devaney_chaos",
+    "date": "1992",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FurstenbergShiftChaos.lean",
+    "tags": [
+      "ergodic-theory",
+      "dynamics",
+      "topological-dynamics",
+      "symbolic-dynamics",
+      "shift-dynamics",
+      "cantor-space",
+      "devaney-chaos",
+      "combinatorics",
+      "szemeredi"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-checked; #print axioms reports only the foundational propext / Classical.choice / Quot.sound. No `axiom` declarations, no sorries, no native_decide.",
+    "dateAdded": "2026-06-21",
+    "mathlibDependencies": [
+      {
+        "theorem": "continuous_apply",
+        "description": "Coordinate projections on a product space are continuous",
+        "module": "Mathlib.Topology.Constructions"
+      },
+      {
+        "theorem": "isOpen_pi_iff",
+        "description": "Characterization of open sets in the product topology via finite cylinder constraints — used to show prefix cylinders form a neighbourhood basis",
+        "module": "Mathlib.Topology.Constructions"
+      },
+      {
+        "theorem": "isClopen_discrete",
+        "description": "Every set in a discrete space (here Bool) is clopen",
+        "module": "Mathlib.Topology.Separation"
+      },
+      {
+        "theorem": "dense_iff_inter_open",
+        "description": "A set is dense iff it meets every nonempty open set",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "Function.IsPeriodicPt",
+        "description": "Periodic-point predicate for iterated maps",
+        "module": "Mathlib.Dynamics.PeriodicPts.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Word cylinders Cyl(w) on Cantor space and a proof that they form a clopen neighbourhood basis (exists_cyl_subset), via the product-topology basis isOpen_pi_iff",
+      "Topological transitivity / mixing of the shift: the explicit `bridge v w t` point starting with v that reads off w after t ≥ |v| shifts, witnessing that every nonempty open set is eventually carried across every other (transitive, mixing_cyl)",
+      "Dense periodic points: the repetition point `periodicPoint w = w w w …` has exact period |w|, lies in Cyl(w), and these are dense (dense_periodicPts)",
+      "Sensitive dependence with explicit sensitivity constant 1: flipping a single coordinate (Function.update) produces a nearby point whose orbit separates at coordinate 0 (sensitive)",
+      "Assembly: shift_devaney_chaos packages transitivity + dense periodic points + sensitivity, the full Devaney definition of chaos",
+      "Complements the parent's measure-theoretic correspondence (Cesàro/Prokhorov) with the topological recurrence structure underlying Furstenberg's topological multiple recurrence theorem"
+    ],
+    "prerequisites": [
+      "Product topology on ℕ → Bool (Cantor space)",
+      "Symbolic dynamics: the full shift",
+      "Devaney's definition of chaos (transitivity, dense periodic points, sensitivity)"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 263,
+    "relatedProblems": [
+      {
+        "id": "furstenberg-correspondence-oq-01",
+        "relationship": "Topological-dynamics counterpart to the parent's measure-theoretic Furstenberg correspondence on the same shift system; the chaos here is the recurrence/instability structure underlying topological multiple recurrence"
+      },
+      {
+        "id": "furstenberg-correspondence",
+        "relationship": "Same shift dynamical system on Cantor space; supplies the topological half of the dynamics-combinatorics dictionary"
+      }
+    ],
+    "theoremCount": 19,
+    "definitionCount": 7
+  },
+  "crossReferences": [
+    {
+      "targetId": "furstenberg-correspondence-oq-01",
+      "relationship": "extends",
+      "description": "Develops the topological-dynamics side (Devaney chaos) of the same shift on Cantor space whose measure-theoretic side the parent builds toward the Furstenberg correspondence"
+    },
+    {
+      "targetId": "furstenberg-correspondence",
+      "relationship": "related",
+      "description": "Topological recurrence structure of the shift system used in the correspondence principle"
+    }
+  ],
+  "overview": "Furstenberg's correspondence translates combinatorial density into ergodic theory on the shift system T(x)(n) = x(n+1) over Cantor space {0,1}^ℕ. The parent files build the measure-theoretic half: Cesàro averages of Dirac measures, weak-* limits, and a reduction to Prokhorov compactness. This entry builds the complementary topological half by proving that the very same shift is chaotic in the sense of Devaney. Three properties together constitute Devaney chaos, and each is established here by an explicit symbolic construction rather than an abstract existence argument: (1) topological transitivity/mixing, witnessed by a 'bridge' sequence that starts with one prescribed word and, after enough shifts, displays any second prescribed word; (2) density of periodic points, witnessed by periodic repetitions w w w … of finite words; and (3) sensitive dependence on initial conditions with sensitivity constant 1, witnessed by flipping a single far-out coordinate. The topological framework — word cylinders forming a clopen neighbourhood basis — is set up from Mathlib's product-topology tools. This chaotic structure is exactly the recurrence and instability that drive Furstenberg's topological multiple recurrence theorem, the topological route to Szemerédi's theorem.",
+  "sections": [
+    {
+      "id": "shift",
+      "title": "Cantor Space and the Shift",
+      "startLine": 44,
+      "endLine": 65,
+      "summary": "Cantor space ℕ → Bool with the product topology; the left shift T(x)(n) = x(n+1), proved continuous and measurable, with the iterate formula T^[n](x)(k) = x(k+n).",
+      "mathContext": "The full one-sided shift on two symbols — the canonical symbolic dynamical system."
+    },
+    {
+      "id": "cylinders",
+      "title": "Word Cylinders — A Clopen Neighbourhood Basis",
+      "startLine": 67,
+      "endLine": 131,
+      "summary": "Word cylinders Cyl(w) (sequences whose first |w| symbols are w), proved clopen, with membership = prefix agreement. The key lemma exists_cyl_subset shows every neighbourhood contains a prefix cylinder, so cylinders form a basis.",
+      "mathContext": "Cylinder sets are the combinatorial atoms of symbolic dynamics; being a clopen basis lets topological statements reduce to finite words."
+    },
+    {
+      "id": "periodic",
+      "title": "Dense Periodic Points",
+      "startLine": 133,
+      "endLine": 179,
+      "summary": "The repetition periodicPoint w = w w w … has exact period |w| and starts with w; hence the T-periodic points are dense (dense_periodicPts) — Devaney's second condition.",
+      "mathContext": "Density of periodic points is what makes a chaotic system 'regular' amid its unpredictability."
+    },
+    {
+      "id": "transitive",
+      "title": "Topological Transitivity and Mixing",
+      "startLine": 181,
+      "endLine": 224,
+      "summary": "The explicit bridge v w t point gives, for any two nonempty open sets and any delay t ≥ |v|, a point of the first whose t-th shift lands in the second (transitive, mixing_cyl) — Devaney's first condition, in fact in the stronger mixing form.",
+      "mathContext": "Topological transitivity expresses indecomposability of the orbit structure; the bridge construction realizes it cofinitely (mixing)."
+    },
+    {
+      "id": "sensitive",
+      "title": "Sensitive Dependence on Initial Conditions",
+      "startLine": 226,
+      "endLine": 244,
+      "summary": "With sensitivity constant 1, flipping coordinate m of x yields a point agreeing with x on the first m coordinates whose orbit differs from x's at coordinate 0 after m shifts (sensitive) — Devaney's third condition.",
+      "mathContext": "Sensitivity is the 'butterfly effect': nearby initial states diverge under iteration. Here it is exact and constructive."
+    },
+    {
+      "id": "assembly",
+      "title": "Devaney Chaos — Assembly",
+      "startLine": 246,
+      "endLine": 263,
+      "summary": "shift_devaney_chaos bundles transitivity, dense periodic points, and sensitive dependence: the shift on Cantor space is chaotic in the sense of Devaney.",
+      "mathContext": "The full Devaney definition, certified with 0 axioms and 0 sorries."
+    }
+  ],
+  "conclusion": "On the same shift system whose measure-theoretic dynamics the parent files push toward the Furstenberg correspondence, the topological dynamics are now fully pinned down: the shift on Cantor space is Devaney-chaotic — topologically transitive (indeed mixing), with dense periodic points and sensitive dependence on initial conditions. Each property is realized by an explicit symbolic witness (a bridging sequence, a periodic repetition, a single coordinate flip), and the whole package is machine-checked with no axioms or sorries. This is the topological recurrence and instability structure underlying Furstenberg's topological multiple recurrence theorem.",
+  "leanFile": {
+    "path": "Proofs/FurstenbergShiftChaos.lean",
+    "lineCount": 263,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 7,
+    "theoremCount": 19
+  },
+  "mainTheorems": [
+    {
+      "name": "shift_devaney_chaos",
+      "statement": "The shift T on Cantor space is chaotic in the sense of Devaney: it is topologically transitive, has dense periodic points, and depends sensitively on initial conditions.",
+      "isAxiomatized": false,
+      "significance": "The headline result — the full Devaney definition of chaos for the full 2-shift, assembled from three explicit constructions."
+    },
+    {
+      "name": "transitive",
+      "statement": "For any two nonempty open sets U, V there is a point of U whose t-th shift lands in V.",
+      "isAxiomatized": false,
+      "significance": "Topological transitivity (Devaney condition 1), witnessed by the explicit bridge construction; strengthened to mixing in mixing_cyl."
+    },
+    {
+      "name": "dense_periodicPts",
+      "statement": "The T-periodic points are dense in Cantor space.",
+      "isAxiomatized": false,
+      "significance": "Dense periodic points (Devaney condition 2), via the repetition w w w … of finite words."
+    },
+    {
+      "name": "sensitive",
+      "statement": "For every point x and precision m there is a point y agreeing with x on the first m coordinates whose orbit separates from x's at coordinate 0.",
+      "isAxiomatized": false,
+      "significance": "Sensitive dependence (Devaney condition 3) with explicit sensitivity constant 1."
+    },
+    {
+      "name": "exists_cyl_subset",
+      "statement": "Every neighbourhood of a point contains a prefix cylinder of that point.",
+      "isAxiomatized": false,
+      "significance": "Word cylinders form a clopen neighbourhood basis — the bridge between finite-word combinatorics and the product topology."
+    }
+  ],
+  "references": [
+    {
+      "title": "An Introduction to Chaotic Dynamical Systems",
+      "author": "R. L. Devaney",
+      "year": "1989",
+      "url": "https://www.google.com/books/edition/An_Introduction_To_Chaotic_Dynamical_Sys/3wbvAAAAMAAJ"
+    },
+    {
+      "title": "On Devaney's definition of chaos",
+      "author": "J. Banks, J. Brooks, G. Cairns, G. Davis, P. Stacey",
+      "year": "1992",
+      "url": "https://doi.org/10.1080/00029890.1992.11995856"
+    },
+    {
+      "title": "Recurrence in Ergodic Theory and Combinatorial Number Theory",
+      "author": "H. Furstenberg",
+      "year": "1981",
+      "url": "https://press.princeton.edu/books/hardcover/9780691615363/recurrence-in-ergodic-theory-and-combinatorial-number-theory"
+    }
+  ],
+  "sorries": 0
+}
