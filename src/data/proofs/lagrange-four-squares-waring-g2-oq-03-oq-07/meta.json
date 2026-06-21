@@ -1,0 +1,120 @@
+{
+  "id": "lagrange-four-squares-waring-g2-oq-03-oq-07",
+  "slug": "lagrange-four-squares-waring-g2-oq-03-oq-07",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "ThreeSquaresMultiplierQR",
+    "lineCount": 171,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/LagrangeFourSquaresWaringG2OQ03OQ07.lean",
+    "sorries": 0
+  },
+  "title": "The Multiplier–Quadratic-Residue Reduction for Three-Square Sufficiency",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeFourSquaresWaringG2OQ03OQ07.lean",
+    "tags": [
+      "number-theory",
+      "sums-of-squares",
+      "three-square-theorem",
+      "legendre-three-square",
+      "quadratic-residues",
+      "legendre-symbol",
+      "dirichlet-primes-in-ap",
+      "geometry-of-numbers",
+      "additive-number-theory",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 171,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "legendreSym_neg_multiplier_eq: the central identity. For a prime p of the multiplier shape p = d·n − 1, the Legendre symbol of the multiplier −d equals that of −n: legendreSym p (−d) = legendreSym p (−n). The proof is reciprocity-free: p = d·n − 1 gives d·n ≡ 1 (mod p), so (−d)·(−n) = d·n ≡ 1, making −d and −n inverse mod p; a product of two Legendre symbols equal to 1 (since the product argument is a square) forces the two symbols to coincide. This collapses the geometry-of-numbers QR hypothesis, phrased in terms of the awkward unbounded multiplier d, onto a condition on n alone.",
+      "legendreSym_neg_d_eq_one_iff / legendreSym_neg_n_one_imp_neg_d_one: the selection criterion. The hypothesis legendreSym p (−d) = 1 consumed by the gallery's geometry lemma ThreeSquares.dirichlet_key_lemma is equivalent to (and in particular implied by) legendreSym p (−n) = 1 — a condition depending only on p mod 4n, with the multiplier d entirely eliminated from the residue bookkeeping.",
+      "exists_multiplier_prime: the Dirichlet supply. For every n ≥ 2 and every bound N there is a prime p > N of multiplier shape p = d·n − 1 with d ≥ 1, produced by Mathlib's Dirichlet theorem on primes in arithmetic progressions (Nat.forall_exists_prime_gt_and_modEq) in the residue class p ≡ n − 1 ≡ −1 (mod n). The quotient is repackaged as a fresh variable to keep the divisibility bookkeeping inside omega's linear fragment.",
+      "exists_multiplier_prime_qr_reduces: the assembled selection layer. For every n ≥ 2 and bound N there is a multiplier prime p > N for which the geometry's QR hypothesis legendreSym p (−d) = 1 is governed solely by legendreSym p (−n): the latter being 1 already forces the former. This is exactly the number-theoretic input the unbounded-multiplier classes (n mod 8 ∈ {1,2,5,6}) need, now that Dirichlet-in-AP is available in Mathlib, with the dependence on d removed."
+    ],
+    "prerequisites": [
+      "Nat.forall_exists_prime_gt_and_modEq (Mathlib, NumberTheory/LSeries/PrimesInAP): Dirichlet's theorem on primes in arithmetic progressions — for coprime a, q there are infinitely many primes p ≡ a (mod q). The recently-added input that supplies the multiplier prime p ≡ −1 (mod n).",
+      "legendreSym.mul, legendreSym.eq_one_iff, legendreSym.eq_one_or_neg_one (Mathlib, NumberTheory/LegendreSymbol/Basic): multiplicativity, the square characterisation, and the ±1 dichotomy of the Legendre symbol — the algebra behind the multiplier reduction.",
+      "Nat.div_add_mod, Nat.mod_eq_of_lt, Nat.coprime_self_sub_left (Mathlib): the elementary ℕ arithmetic pinning p % n = n − 1 and the coprimality (n−1, n) feeding Dirichlet.",
+      "ThreeSquares.dirichlet_key_lemma (gallery, 0-axiom, d ∈ {1,2}): the geometry-of-numbers consumer whose QR hypothesis this entry reduces; the reduction is what makes its selection step a fixed-target (n-only) problem."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.forall_exists_prime_gt_and_modEq",
+        "description": "Dirichlet's theorem on primes in arithmetic progressions: for a coprime to q there are arbitrarily large primes p ≡ a (mod q). Supplies the multiplier prime p ≡ −1 (mod n).",
+        "module": "Mathlib.NumberTheory.LSeries.PrimesInAP"
+      },
+      {
+        "theorem": "legendreSym.eq_one_or_neg_one",
+        "description": "For p ∤ a, legendreSym p a = 1 or −1. With multiplicativity (legendreSym.mul) this is what turns a Legendre-symbol product of 1 into an equality of the two symbols.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-07-oq-01",
+      "question": "Force the QR condition legendreSym p (−n) = 1 by congruence selection: identify the residue class of p mod 4n (equivalently mod 8 and mod the odd part of n, via quadratic reciprocity for the Jacobi symbol) on which −n is a quadratic residue, show that class is coprime to 4n and compatible with p ≡ −1 (mod n), and conclude via Dirichlet that infinitely many multiplier primes p satisfy BOTH p = d·n − 1 and legendreSym p (−n) = 1. This upgrades exists_multiplier_prime_qr_reduces from a conditional reduction to an unconditional existence of a fully-qualified multiplier prime.",
+      "significance": "high"
+    },
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-07-oq-02",
+      "question": "Generalise the d ∈ {1,2} geometry of ThreeSquares.dirichlet_key_lemma to a d-uniform sublattice construction, so that the multiplier prime supplied here (with d = (p+1)/n unbounded) actually discharges n = x²+y²+z² for the classes n mod 8 ∈ {1,2,5,6}. The selection layer is now complete and d-free; the residual gap is purely geometric (a ternary-form descent valid for all d, e.g. via Gauss reduction of the form x² + d·y² + d·z²).",
+      "significance": "high"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03",
+      "relationship": "depends-on",
+      "description": "The parent three-square sufficiency study isolates sufficiency as the single axiom not_excluded_form_is_sum_three_sq, whose classical proof selects a multiplier prime p = d·n − 1 with legendreSym p (−d) = 1 and runs a geometry-of-numbers descent. This entry simplifies that selection step: legendreSym p (−d) reduces to legendreSym p (−n), eliminating the unbounded multiplier d from the residue/QR bookkeeping, and supplies the multiplier primes via Mathlib's Dirichlet theorem."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-01",
+      "relationship": "related",
+      "description": "The Gauss-Eureka 8n+3 slice (oq-03-oq-01) handles one residue class of sufficiency via a bounded auxiliary prime; this entry treats the multiplier-selection mechanism uniformly in n and shows the QR condition is intrinsically a condition on −n, the form needed for the harder classes n mod 8 ∈ {1,2,5,6} that require unbounded multipliers."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-06",
+      "relationship": "related",
+      "description": "The rational-half entry (oq-03-oq-06) reduces the remaining open sufficiency to a single Hasse-Minkowski statement (squarefree non-excluded n is a sum of three rational squares), explicitly noting it requires a Dirichlet-prime-in-AP input. This entry provides exactly that input in the multiplier formulation and shows the Legendre-symbol side condition depends only on n."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-04",
+      "relationship": "related",
+      "description": "The 2-adic normal form (oq-03-oq-04) characterises the excluded family E = {4^a(8b+7)} via residues mod 8; the multiplier reduction here is the complementary selection tool for the NON-excluded classes, reducing their QR side condition to legendreSym p (−n), the quantity controlled by p mod 4n."
+    }
+  ],
+  "references": [
+    {
+      "title": "Sur la possibilité de décomposer un nombre en trois carrés",
+      "author": "P. G. L. Dirichlet",
+      "year": "1850",
+      "venue": "Three-square theorem via primes in arithmetic progressions",
+      "description": "Dirichlet's proof of Legendre's three-square theorem selects an auxiliary prime in an arithmetic progression and applies a quadratic-form argument. This entry formalises the multiplier-selection core of that route and shows the quadratic-residue side condition depends only on −n."
+    },
+    {
+      "title": "Essai sur la théorie des nombres",
+      "author": "Adrien-Marie Legendre",
+      "year": "1798",
+      "venue": "Three-square theorem",
+      "description": "n = x²+y²+z² is solvable over ℤ iff n ≠ 4^a(8b+7). The sufficiency direction is the target this selection layer advances."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The number-theoretic selection layer of the Dirichlet/Minkowski route to three-square sufficiency, made d-free and supplied by Mathlib's Dirichlet theorem. The headline legendreSym_neg_multiplier_eq proves that for a prime p = d·n − 1 the Legendre symbol of the multiplier, legendreSym p (−d), equals legendreSym p (−n): a reciprocity-free consequence of (−d)·(−n) = d·n ≡ 1 (mod p), so −d and −n are mutually inverse mod p and hence simultaneously (non)squares. The selection corollaries legendreSym_neg_d_eq_one_iff / legendreSym_neg_n_one_imp_neg_d_one turn the geometry's QR hypothesis into a condition on n alone, and exists_multiplier_prime / exists_multiplier_prime_qr_reduces use Dirichlet on primes in the class p ≡ −1 (mod n) to supply arbitrarily large multiplier primes for which legendreSym p (−n) = 1 already forces legendreSym p (−d) = 1. 171 lines, 7 theorems, 0 definitions, 0 axioms, 0 sorries; verified to depend only on propext / Classical.choice / Quot.sound.",
+    "implications": "This removes the apparent obstruction that the multiplier d must be tracked through the residue/QR bookkeeping in the unbounded-multiplier classes n mod 8 ∈ {1,2,5,6}: the quadratic-residue side condition is intrinsically a condition on −n (governed by p mod 4n), independent of d. Combined with Mathlib's now-available Dirichlet theorem, the selection of a multiplier prime is a fixed-target problem. The residual gap toward the parent's sufficiency axiom is therefore isolated to two clean follow-ups: (oq-07-oq-01) forcing legendreSym p (−n) = 1 by reciprocity-driven congruence selection, and (oq-07-oq-02) extending the d ∈ {1,2} sublattice geometry to a d-uniform construction that consumes the unbounded multiplier."
+  }
+}
