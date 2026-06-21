@@ -1,0 +1,105 @@
+{
+  "id": "cantor-diagonalization-oq-01-oq-01-oq-03",
+  "title": "The Generalized Continuum Function: ZFC Constraints on 2^{ℵ_α}",
+  "slug": "cantor-diagonalization-oq-01-oq-01-oq-03",
+  "description": "Answers the parent's open question on the generalized continuum level by proving, unconditionally in ZFC and axiom-free, the three constraints that Easton's theorem identifies as the only restrictions on the continuum function α ↦ 2^{ℵ_α}: monotonicity, Cantor's strict inequality ℵ_α < 2^{ℵ_α}, and König's constraint cf(2^{ℵ_α}) > ℵ_α. The König constraint — which the parent only stated — is discharged directly from Mathlib's Cardinal.lt_cof_power. Records the subtlety that the continuum function is monotone but not strictly monotone.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ01OQ01OQ03.lean",
+    "tags": [
+      "set-theory",
+      "cardinals",
+      "continuum-hypothesis",
+      "gch",
+      "konig-theorem",
+      "cofinality",
+      "easton-theorem"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "assumptions": "None. Proved in ZFC (Mathlib's cardinal/cofinality foundations) with no added axioms; #print axioms reports only propext, Classical.choice, Quot.sound. In particular König's constraint is proved, not assumed (unlike the parent, which stated it as a Prop).",
+    "lineCount": 79,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "originalContributions": [
+      "contFn: the generalized continuum function α ↦ 2^{ℵ_α}",
+      "contFn_monotone: monotonicity of the continuum function (α ≤ β → 2^{ℵ_α} ≤ 2^{ℵ_β})",
+      "aleph_lt_contFn: Cantor's constraint ℵ_α < 2^{ℵ_α} at every level",
+      "aleph_lt_cof_contFn: König's constraint cf(2^{ℵ_α}) > ℵ_α, generalized to all α and proved from Cardinal.lt_cof_power",
+      "aleph0_lt_cof_continuum: the classical case cf(2^{ℵ₀}) > ℵ₀ (so 2^{ℵ₀} ≠ ℵ_ω)",
+      "contFn_constraints: the three ZFC constraints packaged together (the admissibility conditions of Easton's theorem)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cantor's theorem gives ℵ_α < 2^{ℵ_α}; König's theorem (1905) sharpens this to cf(2^{ℵ_α}) > ℵ_α, ruling out e.g. 2^{ℵ₀} = ℵ_ω. Gödel (1938) and Cohen (1963) showed CH, and more generally the value of the continuum function, is independent of ZFC. Easton's theorem (1970) completed the picture for regular cardinals: monotonicity, Cantor, and König are the ONLY ZFC constraints — any function on regular cardinals respecting them is consistent. The parent gallery entry formalized CH and stated König's constraint and Easton's theorem at 2^{ℵ₀}, leaving the generalized-level pattern question open.",
+    "problemStatement": "At the generalized continuum level, which patterns of 2^{ℵ_α} are consistent with ZFC?",
+    "text": "By Easton's theorem the admissible patterns for the continuum function on regular cardinals are exactly those satisfying three constraints, which we prove unconditionally for all α: monotonicity (contFn_monotone, from power_le_power_left and the monotonicity of aleph), Cantor's strict inequality ℵ_α < 2^{ℵ_α} (aleph_lt_contFn, from Cardinal.cantor), and König's constraint cf(2^{ℵ_α}) > ℵ_α (aleph_lt_cof_contFn, from Cardinal.lt_cof_power with base 2). The classical instance cf(2^{ℵ₀}) > ℵ₀ follows. These three together (contFn_constraints) are the necessary conditions; Easton's theorem asserts they are also sufficient for regular cardinals.",
+    "proofStrategy": "Define the continuum function and read off each constraint from the corresponding Mathlib cardinal lemma: power_le_power_left (monotone), Cardinal.cantor (strict), Cardinal.lt_cof_power (König).",
+    "keyInsights": [
+      "König's constraint, stated as a Prop in the parent, is a direct corollary of Mathlib's Cardinal.lt_cof_power — no axiom needed.",
+      "The strict inequality is between an index and its own value (Cantor); between distinct indices only ≤ holds — the continuum function is monotone but NOT strictly monotone (e.g. 2^{ℵ₀} = 2^{ℵ₁} under Martin's Axiom).",
+      "Together monotonicity, Cantor and König are exactly the Easton constraints, so this is a faithful formal answer to 'which patterns are consistent'."
+    ],
+    "prerequisites": [
+      "Cardinal arithmetic and the aleph hierarchy",
+      "Cofinality and König's theorem (Cardinal.lt_cof_power)",
+      "Cantor's theorem (Cardinal.cantor)",
+      "Easton's theorem (background, for sufficiency)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The generalized continuum function satisfies the three ZFC constraints — monotonicity, Cantor's ℵ_α < 2^{ℵ_α}, and König's cf(2^{ℵ_α}) > ℵ_α — all proved axiom-free from Mathlib, discharging the parent's stated-only König constraint. 7 theorems, 1 definition, 79 lines.",
+    "implications": "This gives the necessary conditions of Easton's characterization of admissible continuum patterns, in machine-checked form, and upgrades the parent's König constraint from an assumption to a theorem. It clarifies that the only universal laws of the continuum function are these three; everything else is independent of ZFC.",
+    "openQuestions": [
+      "Formalize the sufficiency half of Easton's theorem (forcing construction realizing any constraint-respecting pattern on regular cardinals).",
+      "Treat singular cardinals, where Silver's and Shelah's PCF theorems impose additional constraints beyond König.",
+      "State GCH at the generalized level (2^{ℵ_α} = ℵ_{α+1} for all α) and derive it as the minimal constraint-respecting pattern."
+    ]
+  },
+  "leanFile": {
+    "namespace": "CantorDiagOQ010103",
+    "lineCount": 79,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: CH independence, König's constraint (stated) and Easton's theorem at 2^{ℵ₀}. This entry proves the constraints at the generalized level 2^{ℵ_α}, discharging König from Mathlib."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonal argument and theorem ℵ_α < 2^{ℵ_α}, the first of the three constraints."
+    }
+  ],
+  "sections": [
+    {
+      "title": "The continuum function and monotonicity",
+      "startLine": 44,
+      "endLine": 59,
+      "summary": "contFn α = 2^{ℵ_α}, the helper (2:Cardinal) ≠ 0, and contFn_monotone (monotone in the index)."
+    },
+    {
+      "title": "Cantor and König constraints",
+      "startLine": 61,
+      "endLine": 73,
+      "summary": "aleph_lt_contFn (Cantor), aleph_lt_cof_contFn (König, generalized, from lt_cof_power), and the classical aleph0_lt_cof_continuum; plus contFn_ne_aleph (no fixed point)."
+    },
+    {
+      "title": "Packaged admissibility constraints",
+      "startLine": 75,
+      "endLine": 79,
+      "summary": "contFn_constraints: the three Easton constraints (Cantor, König, monotonicity) bundled as the necessary conditions on any consistent continuum pattern."
+    }
+  ],
+  "sorries": []
+}
