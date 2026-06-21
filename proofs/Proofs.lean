@@ -103,6 +103,7 @@ import Proofs.AngleTrisectionOQ02OQ01OQ02Aristotle
 import Proofs.AngleTrisectionOQ02OQ01OQ02Incomplete01
 import Proofs.AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle
 import Proofs.AngleTrisectionOQ02OQ02
+import Proofs.AngleTrisectionOQ02OQ02OQ02
 import Proofs.AngleTrisectionOQ02OQ03
 import Proofs.AngleTrisectionOQ02OQ03Ext
 import Proofs.AngleTrisectionOQ02OQ03OQ01
