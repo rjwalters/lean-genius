@@ -59,7 +59,7 @@
     "lineCount": 550,
     "assumptions": "3 axioms: erdos_770_q1 (density of {n : hMinK n = p} exists for each prime p — OPEN), erdos_770_q3 (hMinK n = p when p is the largest prime with (p-1)|n, for large n — OPEN), and `Lean.ofReduceBool`. The credited concrete-computation theorems (gcdPowerSeq_* literal values, the h_val_1..h_val_12 verifications, the fermat_* checks, and the h_eq_3_at_*/h_gt_3_at_* pattern witnesses) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy these credited theorems are counted in meta.axiomCount. The abstract structural results (gcdPowerSeq_stable, prime_dvd_pow_sub_one, prime_dvd_gcdPowerSeq, gcdPowerSeq_at_succ_eq_one, h_eq_succ_of_prime, hMinK_prime_minus_one, hMinK_unbounded, etc.) use no native_decide and depend only on Mathlib. Q2 (h(n) unbounded) is proved via hMinK_unbounded without native_decide. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. 74 theorems, 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 74,
+    "theoremCount": 80,
     "definitionCount": 2
   },
   "sections": [
@@ -209,7 +209,7 @@
     "namespace": null,
     "lineCount": 550,
     "axiomCount": 2,
-    "theoremCount": 74,
+    "theoremCount": 80,
     "definitionCount": 2,
     "path": "Proofs/Erdos770Problem.lean",
     "sorries": 0

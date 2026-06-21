@@ -28,7 +28,7 @@
     "axiomCount": 0,
     "assumptions": "No axiom declarations and no sorries: every theorem in the file is machine-checked. The entry is classified `axiomatized` because the open question is only partially resolved and the headline results are conditional. Specifically: (1) the t=1 specialization qtMultichoose q 1 n k = qMultichoose q n k holds under the Path A non-degeneracy hypothesis `q^(j+1) ≠ 1 for all j < k` (q not a low-order root of unity), which keeps the Macdonald rational denominators nonzero; (2) the polynomial-sub-lattice bridges carry the analogous `1 - q ≠ 0` / `1 - q^2 t ≠ 0` guards; (3) the positive q=t=1 recovery of Nat.multichoose is formalized only at the k=0 boundary column (qtMultichoose_at_one_one_zero: = Nat.multichoose n 0 = 1, the empty product); for every k≥1 the Field-R 0/0 trap collapses the naive substitution to 0, and a sharpness inequality (qtMultichoose_at_one_one_ne_classical, char 0) proves this 0 strictly differs from the nonzero classical value, so positive recovery for k≥1 provably requires a RatFunc.eval lift (Path C, future work); (4) the interpolating (q,t)-Pascal recurrence remains open (prior PREP analysis falsified the naive candidate at small cases).",
     "lineCount": 563,
-    "theoremCount": 21,
+    "theoremCount": 22,
     "definitionCount": 2,
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -218,7 +218,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 563,
-    "theoremCount": 21,
+    "theoremCount": 22,
     "definitionCount": 2,
     "sorries": 0,
     "additionalFiles": []

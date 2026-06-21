@@ -12,7 +12,7 @@
     "namespace": "AngleTrisectionCos20GalOQ01OQ03",
     "lineCount": 1380,
     "axiomCount": 0,
-    "theoremCount": 64,
+    "theoremCount": 63,
     "definitionCount": 1,
     "path": "Proofs/AngleTrisectionCos20GalOQ01OQ03.lean",
     "sorries": 1
@@ -41,7 +41,7 @@
     "mathlib_version": "4.26.0",
     "historicalContext": "The angle trisection impossibility proof reduces to the irreducibility of minimal polynomials of cosines. For specific primes the gallery already has formalizations: cos(20°) = cos(π/9) (Eisenstein at 3), cos(π/5) (Eisenstein at 5), cos(π/7) (Eisenstein at 7). The pattern Y → Y − 2 and the resulting Eisenstein-at-p form for the minimal polynomial of 2 + 2cos(π/p) is conjectured to hold for every odd prime p ≥ 3. The cyclotomic perspective ties this to Φ_{2p}(−1) = Φ_p(1) = p, a Mathlib-available identity, and the standard ramification theory of cyclotomic fields developed by Kummer, Hilbert, and Hensel.",
     "proofStrategy": "Per-prime: define the explicit polynomial r_p ∈ ℤ[X] and apply Mathlib's `Polynomial.IsEisensteinAt` constructor with three obligations: leadingCoeff = 1 ∉ (p), all sub-leading coefficients in (p), constant term ∉ (p)². Each obligation reduces to `decide` or `interval_cases k <;> norm_num` after coefficient unfolding. For p ∈ {11, 13}, derive irreducibility via `Polynomial.irreducible_of_eisenstein_criterion`. General conjecture (sorry): cyclotomic ramification — (1+ζ_{2p}) is uniformizer of unique prime above p in ℤ[ζ_{2p}] (Mathlib's `IsCyclotomicExtension.Rat.totallyRamified`), descends to (2 + 2cos(π/p)) as uniformizer in the real subfield with ramification index (p−1)/2, hence minimal polynomial is Eisenstein by local-field theory. S5 added the per-prime cyclotomic anchor for p ∈ {3, 5, 7}; S6 extends the same per-prime template to p ∈ {11, 13} via degree-22 and degree-26 `ring` identities, closing the cyclotomic-side range to the full verified gallery set.",
-    "theoremCount": 64,
+    "theoremCount": 63,
     "definitionCount": 1,
     "originalContributions": [
       "Parametric definition r : ℕ → ℤ[X] explicit for p ∈ {3, 5, 7, 11, 13}",
