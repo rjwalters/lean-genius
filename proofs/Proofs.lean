@@ -3133,6 +3133,7 @@ import Proofs.ShannonEntropyOQ01OQ01
 import Proofs.ShannonEntropyOQ02
 import Proofs.ShannonEntropySSA
 import Proofs.ShannonEntropySSAAristotle
+import Proofs.ShannonEntropySSAEq
 import Proofs.ShannonSourceCoding
 import Proofs.ShannonSourceCodingOQ01
 import Proofs.ShannonSourceCodingOQ02
