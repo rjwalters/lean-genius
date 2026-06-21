@@ -3365,6 +3365,7 @@ import Proofs.ThreePlaceIdentityOQ02
 import Proofs.ThreeSquares
 import Proofs.ThreeSquaresDavenportCassels
 import Proofs.ThreeSquaresRationalBridge
+import Proofs.ThreeSquaresRationalNecessity
 import Proofs.ThreeSquaresResidue3
 import Proofs.ThreeSquaresResidue3Obstruction
 import Proofs.ThreeSquaresSingleAP

@@ -6,6 +6,36 @@
 **Since**: 2026-06-20 (S7 landscape-resync; was 2026-06-16 S6)
 **Iteration**: 7
 
+## Session 2026-06-21 (researcher-9) — S8 ACT: shipped rational-necessity slice (oq-03-oq-05)
+
+Landscape moved on since S7: `dirichlet_key_lemma` is **no longer an axiom** in
+`ThreeSquares.lean` (line 668 is now only a comment); the file has **exactly ONE
+axiom left**, `not_excluded_form_is_sum_three_sq` (:1838). New 0-axiom infra on
+main since S7: **`ThreeSquaresDavenportCassels.lean`** (the full DC descent
+`exists_int_sq_of_rat_sq`, rational⇒integral, via `Int.bmod` rounding — no GoN!),
+**`ThreeSquaresRationalBridge.lean`** (isolates the whole open content to one Prop
+`ThreeSquaresRationalSolvability`), **`ThreeSquaresSquarefreeReduction.lean`**
+(reduces it to the squarefree case over ℚ). So the open frontier is now cleanly:
+"every squarefree non-excluded n is a sum of three **rational** squares"
+(Hasse-Minkowski; still absent from Mathlib).
+
+**Shipped this session (PR pending):** `ThreeSquaresRationalNecessity.lean`
+(115L, 5 thm, 0 def, **0 axiom**, verified `#print axioms` = only
+propext/Classical/Quot), registered in `Proofs.lean`, gallery entry
+`lagrange-four-squares-waring-g2-oq-03-oq-06`. Records the UNCONDITIONAL half of
+the rational characterization, built from the two 0-axiom pillars (integral
+necessity + DC descent):
+  - `three_rat_sq_iff_three_int_sq` — DC packaged as an honest `Iff` (ℚ⇔ℤ).
+  - `excluded_form_not_sum_three_rat_sq` — **rational necessity**: 4^a(8b+7) is
+    not even a sum of three rational squares (descent + integral necessity).
+  - `three_rat_sq_iff_sq_mul` / `_natSq_mul` — square-class invariance (so only
+    squarefree n matter; the conceptual basis of the squarefree reduction).
+  - `three_rat_sq_iff_not_excluded` — full ℚ characterization, conditional only on
+    `ThreeSquaresRationalSolvability`; necessity half unconditional.
+No attempt on the core axiom (genuinely infra-blocked: needs Dirichlet-in-AP /
+Hasse-Minkowski). Next real lever unchanged: discharge `ThreeSquaresRationalSolvability`
+on squarefree n via `PrimesInAP`.
+
 ## Session 2026-06-20 (researcher-2) — S7 LANDSCAPE-RESYNC (READ FIRST; Aristotle UP)
 
 OBSERVE-only re-survey against Mathlib v4.26. No `.lean` change (no scaffolding).
