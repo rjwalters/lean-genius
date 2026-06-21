@@ -4,6 +4,57 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-06-21 (researcher-8) — S10 SHIPPED oq-05: natural density of the excluded family = 1/6 [verified, 0-axiom]
+
+**Mode**: FRESH (follow-up). **Outcome**: completed, new gallery entry
+`lagrange-four-squares-waring-g2-oq-03-oq-05`, file
+`proofs/Proofs/LagrangeFourSquaresWaringG2OQ03OQ05.lean` (305 L, 12 thm, 1 def,
+0 axiom, 0 sorry; `#print axioms excludedCount_density` = `[propext,
+Classical.choice, Quot.sound]` — no native_decide, no ofReduceBool). Docker green
+(7744 jobs, v4.26.0). Directly answers the open question oq-03-oq-04-oq-01 (density
+1/6) posed by my own previous session.
+
+**What.** The QUANTITATIVE capstone of the excluded family `E = {4^a(8b+7)}` (the
+non-three-square integers = the Waring-extremal numbers needing all 4 squares):
+- `excludedCount_density`: **natural density of E is exactly 1/6** —
+  `excludedCount N / N → 1/6`, where `excludedCount N = #{n<N : n∈E}`.
+- `excludedCount_rec`: the engine, a 4-descent **counting recursion**
+  `excludedCount N = N/8 + excludedCount ((N+3)/4)`. Each excluded number below N is
+  either odd `≡7 (mod 8)` (`⌊N/8⌋` of them) or `4·(smaller excluded)`.
+- `excludedCount_error_bound`: `|6·excludedCount N − N| ≤ 6·(log₂ N + 1)`, by strong
+  induction. Pins 1/6 = Σ 1/(8·4^a) = (1/8)(4/3) WITHOUT forming an infinite sum.
+
+**Why distinct (checked).** No density/counting statement about the three-square
+exceptional set exists anywhere in the gallery (grep-confirmed). Reuses oq-03-oq-04's
+`IsExcludedForm` + computable `Decidable` instance (so `excludedCount` is a real
+`Finset.card`); proves its own elementary 2-adic descent facts (`four_mul_excluded_iff`,
+`excluded_not_dvd_four_iff`) rather than importing the heavy parent `ThreeSquares.lean`.
+Independent of the still-open sufficiency axiom — purely about the excluded set itself.
+
+**Gotchas captured (v4.26.0):**
+- `Finset.card_bij'` presents its goals in order **linv, rinv, hi, hj** — NOT the
+  argument order (i,j,hi,hj,linv,rinv). Use `refine ... ?hi ?hj ?linv ?rinv` with
+  named `case` blocks so ordering is irrelevant.
+- In `card_bij'` the inverse goals arrive **unbeta-reduced** as
+  `(fun k _ => 4*k) ((fun n _ => n/4) n _) = n`; omega sees the application as an
+  opaque atom and fails. Prefix with `show 4 * (n/4) = n` to force beta, THEN omega.
+- `rw [Finset.mem_filter, Finset.mem_range] at hn ⊢` fails when `mem_range` has no
+  occurrence in one of the locations (nested filters) — use
+  `simp only [Finset.mem_filter, Finset.mem_range] at hn ⊢` (no-op on misses).
+- Deprecations: `Finset.range_succ`→`range_add_one`, `card_insert_of_not_mem`→
+  `card_insert_of_notMem`.
+- `abs_add` is now `abs_add_le`; `div_le_div_iff`→`div_le_div_iff₀`; the residue
+  count `#{n<N:n%8=7} = N/8` proves cleanly by `Finset` induction matching the
+  recurrence `(N+1)/8 = N/8 + [N≡7 mod 8]`.
+- `(log₂ N + 1)/N → 0` via `Real.isLittleO_log_id_atTop.tendsto_div_nhds_zero` +
+  `tendsto_natCast_atTop_atTop` + `squeeze_zero'`, with `Nat.log 2 N ≤ Real.log N /
+  Real.log 2` from `Nat.pow_log_le_self` + `Real.log_pow`.
+
+**Parent open axiom unchanged:** `not_excluded_form_is_sum_three_sq`
+(ThreeSquares.lean:1838) untouched.
+
+---
+
 ## Session 2026-06-21 (researcher-8) — S9 SHIPPED oq-04: 2-adic normal form of the excluded family [verified, 0-axiom]
 
 **Mode**: FRESH (follow-up). **Outcome**: completed, new gallery entry
