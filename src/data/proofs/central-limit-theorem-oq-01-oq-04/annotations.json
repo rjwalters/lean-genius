@@ -1,0 +1,47 @@
+[
+  {
+    "id": "cltoq0104-ann-01",
+    "proofId": "central-limit-theorem-oq-01-oq-04",
+    "range": { "startLine": 67, "endLine": 86 },
+    "type": "concept",
+    "title": "The real symmetric α-stable characteristic function",
+    "content": "By symmetry the standard α-stable characteristic function is real: `stablePhi α t = exp(−|t|^α)`, where `|t|^α` is the real power `Real.rpow`. This is the real-axis form of the parent file's `stableCharFun`. Two specializations anchor it: α = 2 gives the Gaussian `exp(−t²)` (`stablePhi_two`, via `Real.rpow_natCast` and `sq_abs`), and α = 1 gives the Cauchy law `exp(−|t|)` (`stablePhi_one`). It is normalized (`φ_α(0)=1`) and strictly positive.",
+    "mathContext": "$\\varphi_\\alpha(t) = e^{-|t|^\\alpha}$; $\\varphi_2 = e^{-t^2}$, $\\varphi_1 = e^{-|t|}$."
+  },
+  {
+    "id": "cltoq0104-ann-02",
+    "proofId": "central-limit-theorem-oq-01-oq-04",
+    "range": { "startLine": 95, "endLine": 110 },
+    "type": "technique",
+    "title": "Exponent monotonicity: the crossover at |t| = 1",
+    "content": "The comparison of α-stable and Gaussian reduces to comparing the exponents `|t|^α` and `t²`. For a base in (0,1), a *smaller* exponent gives a *larger* power, so `t² < t^α` when α < 2 (`exponent_gt_sq`, from `Real.rpow_lt_rpow_of_exponent_gt`). For a base above 1 the order flips: `t^α < t²` (`exponent_lt_sq`, from `Real.rpow_lt_rpow_of_exponent_lt`). At `t = 1` both equal 1 (`exponent_crossover_at_one`). The single crossover at |t|=1 is the whole story.",
+    "mathContext": "base $<1$: $t^2 < t^\\alpha$; base $>1$: $t^\\alpha < t^2$; equal at $t=1$."
+  },
+  {
+    "id": "cltoq0104-ann-03",
+    "proofId": "central-limit-theorem-oq-01-oq-04",
+    "range": { "startLine": 112, "endLine": 132 },
+    "type": "result",
+    "title": "Sub-quadratic deviation: the obstruction for α < 2",
+    "content": "Exponentiating the exponent inequalities through the strictly monotone `exp` gives the crossover of the characteristic functions themselves: near 0 (`0<t<1`) `stablePhi α t < stablePhi 2 t` — the α-stable law decays faster there because `|t|^α > t²` — while beyond `t=1` it lies above the Gaussian. The deviation near 0 is of order `|t|^α`, *below* the quadratic order that a second-order Taylor (Berry–Esseen) expansion controls. This sub-quadratic deviation is the frequency-domain signature of infinite variance and the precise reason the classical rate argument has no finite α < 2 analogue.",
+    "mathContext": "$0<t<1 \\Rightarrow \\varphi_\\alpha(t) < \\varphi_2(t)$; deviation $\\sim |t|^\\alpha$, sub-quadratic for $\\alpha<2$."
+  },
+  {
+    "id": "cltoq0104-ann-04",
+    "proofId": "central-limit-theorem-oq-01-oq-04",
+    "range": { "startLine": 156, "endLine": 169 },
+    "type": "technique",
+    "title": "The Berry–Esseen kernel: where the third moment enters",
+    "content": "`charFun_kernel_second` restates Mathlib's `Complex.norm_exp_sub_one_sub_id_le` for the integrand `e^{ia}` (a = t·x): `‖e^{ia} − (1 + ia)‖ ≤ a²`. In the classical proof one integrates this against the law of X; the `a²` remainder becomes a variance term and the next-order cubic correction a third-moment term, which is exactly how a finite `ρ = E|X|³` produces the `C·ρ/(σ³√n)` rate. For α-stable laws with α < 2 the corresponding moment is infinite, so this remainder cannot be integrated to a finite constant — the analytic counterpart of the crossover above.",
+    "mathContext": "$\\|e^{ia}-(1+ia)\\| \\le a^2$; integrated $\\Rightarrow$ variance/third-moment term $\\Rightarrow$ $O(1/\\sqrt n)$."
+  },
+  {
+    "id": "cltoq0104-ann-05",
+    "proofId": "central-limit-theorem-oq-01-oq-04",
+    "range": { "startLine": 10, "endLine": 13 },
+    "type": "caveat",
+    "title": "Scope: the obstruction is formalized, not the rate",
+    "content": "This entry does NOT prove an α-stable Berry–Esseen rate — that is the open question and is genuinely hard. It formalizes, axiom-free, the analytic mechanism of the classical theorem and the precise obstruction to extending it below α = 2 (the sub-quadratic |t|^α deviation). The kernel bounds are attributed Mathlib wrappers; the crossover analysis is the new content. #print axioms shows only propext / Classical.choice / Quot.sound.",
+    "mathContext": "Goal: isolate why a Gaussian-rate expansion fails for $\\alpha<2$, not to derive the stable rate."
+  }
+]
