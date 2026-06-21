@@ -1,0 +1,124 @@
+{
+  "id": "geometric-series-oq-08-oq-03",
+  "slug": "geometric-series-oq-08-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Field.GeomSum",
+      "Mathlib.Algebra.Order.Field.GeomSum",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "GeometricSeriesOQ08OQ03",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ08OQ03.lean",
+    "sorries": 0
+  },
+  "title": "The Ico-slice of a Geometric Series and the Cauchy Criterion",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ08OQ03.lean",
+    "tags": [
+      "analysis",
+      "geometric-series",
+      "cauchy-criterion",
+      "partial-sums",
+      "comparison-test",
+      "ratio-test",
+      "convergence",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 141,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "geometric_slice_eq_tail_sub: the difference-of-tails identity ∑_{k ∈ Ico m n} rᵏ = rᵐ/(1 − r) − rⁿ/(1 − r) for r < 1 and m ≤ n. It exhibits a middle block as exactly the parent's m-tail minus its n-tail, the bridge from the two-sided slice back to GeometricSeriesOQ08.geometric_sum_tail. Proved from geom_sum_Ico' by sub_div.",
+      "geometric_slice_factor: the self-similarity ∑_{k ∈ Ico m n} rᵏ = rᵐ · ∑_{k < n − m} rᵏ for all m, n — a slice starting at m is rᵐ times a fresh partial sum. Proved via Finset.sum_Ico_eq_sum_range and pow_add, with no order hypothesis.",
+      "geometric_slice_abs_le: the absolute-value Cauchy estimate |∑_{k ∈ Ico m n} rᵏ| ≤ rᵐ/(1 − r) for 0 ≤ r < 1, the form invoked by the comparison and ratio tests (the bound is independent of the right endpoint n).",
+      "geometric_slice_bound_tendsto: the envelope rᵐ/(1 − r) → 0 as m → ∞, obtained from tendsto_pow_atTop_nhds_zero_of_lt_one by dividing by the constant 1 − r.",
+      "geometric_slice_cauchy: the explicit ε–N Cauchy criterion — for 0 ≤ r < 1 and every ε > 0 there is an N past which every slice with left endpoint m ≥ N has |∑_{k ∈ Ico m n} rᵏ| ≤ ε, uniformly in the right endpoint n. The threshold is extracted with exists_pow_lt_of_lt_one and the monotonicity pow_le_pow_of_le_one. This is the estimate that exhibits the geometric series as Cauchy and the template the comparison/ratio tests follow."
+    ],
+    "prerequisites": [
+      "geom_sum_Ico' (Mathlib): the slice closed form (rᵐ − rⁿ)/(1 − r)",
+      "geom_sum_Ico_le_of_lt_one (Mathlib): the raw slice bound rᵐ/(1 − r), valid for all m, n",
+      "Finset.sum_Ico_eq_sum_range and pow_add for the self-similar factorisation",
+      "exists_pow_lt_of_lt_one and pow_le_pow_of_le_one for the ε–N Cauchy threshold",
+      "tendsto_pow_atTop_nhds_zero_of_lt_one for the vanishing envelope",
+      "Parent: geometric-series-oq-08 (the one-sided truncation defect rⁿ/(1 − r) and monotone upward convergence)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "geom_sum_Ico'",
+        "description": "∑ i ∈ Ico m n, xⁱ = (xᵐ − xⁿ)/(1 − x) for x ≠ 1 and m ≤ n. Wrapped as geometric_slice_closed and used to derive the difference-of-tails identity.",
+        "module": "Mathlib.Algebra.Field.GeomSum"
+      },
+      {
+        "theorem": "geom_sum_Ico_le_of_lt_one",
+        "description": "∑ i ∈ Ico m n, xⁱ ≤ xᵐ/(1 − x) for 0 ≤ x < 1, valid for all m, n (empty slice when n ≤ m). The raw slice bound behind the absolute estimate and the Cauchy criterion.",
+        "module": "Mathlib.Algebra.Order.Field.GeomSum"
+      },
+      {
+        "theorem": "exists_pow_lt_of_lt_one",
+        "description": "For 0 < ε and r < 1 there is N with rᴺ < ε. Supplies the Cauchy threshold (applied to ε·(1 − r)).",
+        "module": "Mathlib.Algebra.Order.Archimedean.Basic"
+      },
+      {
+        "theorem": "tendsto_pow_atTop_nhds_zero_of_lt_one",
+        "description": "rⁿ → 0 for 0 ≤ r < 1. Divided by 1 − r to show the slice-bound envelope vanishes.",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-08-oq-03-oq-01",
+      "question": "Promote the elementary ε–N criterion to the abstract metric Cauchy predicate: show the finite partial sums n ↦ ∑_{k<n} rᵏ form a CauchySeq (or that the series satisfies Mathlib's cauchySeq_finset_iff) directly from geometric_slice_cauchy, recovering summability without invoking hasSum_geometric.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-08",
+      "relationship": "extends",
+      "description": "Parent. The parent gives the one-sided truncation defect (1 − r)⁻¹ − ∑_{k<n} rᵏ = rⁿ/(1 − r) and the monotone upward convergence of the heads. This entry turns that into the two-sided slice estimate: geometric_slice_eq_tail_sub writes a middle block Ico m n as the m-tail minus the n-tail, and geometric_slice_cauchy packages the resulting bound as the ε–N Cauchy criterion."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "depends-on",
+      "description": "Base entry recording the finite closed form (1 − rⁿ)/(1 − r) and the infinite value (1 − r)⁻¹. The slice closed form (rᵐ − rⁿ)/(1 − r) used here is the difference of two such heads."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Algebra.Order.Field.GeomSum",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Provides geom_sum_Ico' and geom_sum_Ico_le_of_lt_one, the slice closed form and raw slice bound wrapped and assembled here into the Cauchy criterion."
+    },
+    {
+      "title": "Principles of Mathematical Analysis (Cauchy criterion, comparison and ratio tests)",
+      "author": "Walter Rudin",
+      "year": "1976",
+      "venue": "McGraw-Hill",
+      "description": "Standard reference for the Cauchy criterion for series and its use through the geometric majorant in the comparison and ratio tests."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For 0 ≤ r < 1 an arbitrary middle block of a geometric series is controlled by an endpoint-free envelope: ∑_{k ∈ Ico m n} rᵏ = rᵐ/(1 − r) − rⁿ/(1 − r) ≤ rᵐ/(1 − r), and |∑_{k ∈ Ico m n} rᵏ| ≤ rᵐ/(1 − r) with rᵐ/(1 − r) → 0. Packaged as the ε–N Cauchy criterion: for every ε > 0 there is an N past which every slice with left endpoint m ≥ N satisfies |∑_{k ∈ Ico m n} rᵏ| ≤ ε, uniformly in n. 141 lines, 7 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "Where the parent geometric-series-oq-08 measures how far a head ∑_{k<n} rᵏ sits below the limit, this entry measures how large a discarded tail block between steps m and n can be — and the bound rᵐ/(1 − r) does not depend on n. That endpoint-free control is exactly the Cauchy criterion, the reusable engine behind the comparison test, the ratio-test remainder, and dominated convergence by a geometric majorant. The closed form (geom_sum_Ico') and the raw slice bound (geom_sum_Ico_le_of_lt_one) are Mathlib; the difference-of-tails identity, the self-similar factorisation, the absolute-value packaging, and the explicit ε–N criterion are assembled here.",
+    "openQuestions": [
+      "Derive Mathlib's abstract CauchySeq / cauchySeq_finset predicate for the geometric partial sums directly from the ε–N criterion, recovering summability without hasSum_geometric."
+    ]
+  }
+}
