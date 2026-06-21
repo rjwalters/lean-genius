@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-aiz-imports",
+    "proofId": "basel-problem-oq-01-oq-05",
+    "range": { "startLine": 1, "endLine": 58 },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "The framing rests on Mathlib's transcendence stack: `RingTheory.AlgebraicIndependent.Transcendental` supplies `AlgebraicIndependent.transcendental` (each member of an algebraically independent family is transcendental), `RingTheory.Algebraic.Basic` supplies `isAlgebraic_rat`, and `NumberTheory.Real.Irrational` supplies `Transcendental.irrational` and `irrational_sqrt_two`. `LinearAlgebra.LinearIndependent.Basic` gives `AlgebraicIndependent.linearIndependent` and `LinearIndependent.injective`. No analytic facts about the zeta function are imported beyond `InfiniteSum.Basic` for the $\\sum'$ definition.",
+    "mathContext": "Algebraic independence of $x_1, \\dots, x_n$ over $\\mathbb{Q}$ means no nonzero polynomial $P \\in \\mathbb{Q}[X_1,\\dots,X_n]$ satisfies $P(x_1,\\dots,x_n)=0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["AlgebraicIndependent", "Transcendental", "Irrational", "LinearIndependent"],
+    "prerequisites": ["Lean 4 import system", "field theory", "transcendence theory"]
+  },
+  {
+    "id": "ann-aiz-ladder",
+    "proofId": "basel-problem-oq-01-oq-05",
+    "range": { "startLine": 60, "endLine": 80 },
+    "type": "technique",
+    "title": "Value-Level Ladder: Transcendence and Irrationality",
+    "content": "`AlgIndep.transcendental_of_mem` is a direct wrapper of `AlgebraicIndependent.transcendental`: if a family is algebraically independent over $\\mathbb{Q}$, each member is transcendental. `AlgIndep.irrational_of_mem` chains this with `Transcendental.irrational` (valid for reals: a transcendental real is irrational). These are the first two rungs of the hierarchy — both routine on their own, but recording them makes the descent from OQ-05 to known notions explicit.",
+    "mathContext": "Transcendental $\\Rightarrow$ irrational because every rational is algebraic (a root of $X - q$).",
+    "significance": "core",
+    "relatedConcepts": ["transcendence implies irrationality"],
+    "prerequisites": ["definition of transcendental over a field"]
+  },
+  {
+    "id": "ann-aiz-structural",
+    "proofId": "basel-problem-oq-01-oq-05",
+    "range": { "startLine": 81, "endLine": 95 },
+    "type": "technique",
+    "title": "Linear Independence and Distinctness",
+    "content": "`AlgIndep.linearIndependent` exposes `AlgebraicIndependent.linearIndependent`: algebraic independence implies there are no nontrivial $\\mathbb{Q}$-*linear* relations among the values, a strict refinement of 'each value is irrational' (irrationality of $x$ is linear independence of $\\{1,x\\}$). `AlgIndep.injective` then derives pairwise distinctness via `LinearIndependent.injective` (valid since $\\mathbb{Q}$ is nontrivial): a repeated value $x_i = x_j$ would be the nontrivial relation $x_i - x_j = 0$.",
+    "mathContext": "Algebraic independence $\\Rightarrow$ linear independence $\\Rightarrow$ injectivity.",
+    "significance": "core",
+    "relatedConcepts": ["linear independence over ℚ", "injectivity"],
+    "prerequisites": ["linear algebra over a field"]
+  },
+  {
+    "id": "ann-aiz-infinitude",
+    "proofId": "basel-problem-oq-01-oq-05",
+    "range": { "startLine": 96, "endLine": 118 },
+    "type": "key-insight",
+    "title": "OQ-05 Implies Ball–Rivoal",
+    "content": "`AlgIndep.infinitely_many_irrational` is the payoff. For a *sequence* $y : \\mathbb{N} \\to \\mathbb{R}$ that is algebraically independent, injectivity makes `Set.range y` infinite (`Set.infinite_range_of_injective`) and every value is irrational. Specialized to the odd zeta values this yields 'infinitely many irrational odd zeta values' — exactly the Ball–Rivoal theorem — as a corollary, demonstrating that OQ-05 is strictly stronger than the best result currently proved by analytic methods.",
+    "mathContext": "Ball–Rivoal (2001): infinitely many of $\\zeta(3), \\zeta(5), \\zeta(7), \\dots$ are irrational, though which ones is unknown.",
+    "significance": "core",
+    "relatedConcepts": ["Ball–Rivoal theorem", "infinite range of injective map"],
+    "prerequisites": ["cardinality of sets", "injective functions"]
+  },
+  {
+    "id": "ann-aiz-strictness",
+    "proofId": "basel-problem-oq-01-oq-05",
+    "range": { "startLine": 119, "endLine": 159 },
+    "type": "key-insight",
+    "title": "The Hierarchy Is Strict",
+    "content": "Two concrete witnesses prevent reversing any implication. `linIndep_not_algIndep_two`: the singleton family $![2]$ is linearly independent over $\\mathbb{Q}$ (a single nonzero vector, via `linearIndependent_unique_iff`) yet algebraically dependent, because $2$ is rational hence algebraic (`isAlgebraic_rat`). `irrational_not_transcendental_sqrt_two`: $\\sqrt 2$ is irrational (`irrational_sqrt_two`) but not transcendental — it is exhibited as a root of $X^2 - 2$ (nonzero by inspecting the degree-2 coefficient; the evaluation closes by `Real.sq_sqrt`). The general principle is `not_algIndep_of_isAlgebraic`: a single algebraic member destroys algebraic independence.",
+    "mathContext": "Strict implications: linear independence $\\not\\Rightarrow$ algebraic independence; irrationality $\\not\\Rightarrow$ transcendence.",
+    "significance": "core",
+    "relatedConcepts": ["counterexamples", "algebraic numbers", "minimal polynomial"],
+    "prerequisites": ["polynomial evaluation", "Real.sqrt"]
+  },
+  {
+    "id": "ann-aiz-zeta",
+    "proofId": "basel-problem-oq-01-oq-05",
+    "range": { "startLine": 160, "endLine": 191 },
+    "type": "concept",
+    "title": "Specialization to Odd Zeta Values",
+    "content": "`oddZeta k = ζ(2k+3) = ∑' n, 1/(n+1)^(2k+3)` enumerates $\\zeta(3), \\zeta(5), \\zeta(7), \\dots$; only its type (a real sequence) matters for the framing, so no convergence input is needed. `OddZetaAlgIndependent` states OQ-05 as `AlgebraicIndependent ℚ oddZeta`. The four framing theorems instantiate the abstract ladder: OQ-05 implies transcendence and irrationality of every odd zeta value, infinitely many irrational ones (Ball–Rivoal), and the absence of $\\mathbb{Q}$-linear relations among them.",
+    "mathContext": "The folklore conjecture predicts $\\pi, \\zeta(3), \\zeta(5), \\dots$ are algebraically independent over $\\mathbb{Q}$.",
+    "significance": "core",
+    "relatedConcepts": ["Riemann zeta values", "period conjecture"],
+    "prerequisites": ["infinite series", "Riemann zeta function"]
+  }
+]
