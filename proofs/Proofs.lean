@@ -1479,6 +1479,7 @@ import Proofs.Erdos29Problem
 import Proofs.Erdos2OQ01
 import Proofs.Erdos2OQ01Aristotle
 import Proofs.Erdos2Problem
+import Proofs.Erdos2OQ03
 import Proofs.Erdos300Problem
 import Proofs.Erdos301Problem
 import Proofs.Erdos302Aristotle
