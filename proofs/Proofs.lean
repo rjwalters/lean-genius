@@ -3400,6 +3400,7 @@ import Proofs.TriangularReciprocalsOQ04
 import Proofs.TuranEdgeBound
 import Proofs.TwinPrimes
 import Proofs.TwinPrimesSpecialOQ01
+import Proofs.TwoTrianglesTwoSquares
 import Proofs.UnitDistanceHN7
 import Proofs.UnitDistanceHN7Aristotle
 import Proofs.UnitDistanceIndependence

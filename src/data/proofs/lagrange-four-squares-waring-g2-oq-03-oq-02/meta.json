@@ -1,0 +1,121 @@
+{
+  "id": "lagrange-four-squares-waring-g2-oq-03-oq-02",
+  "slug": "lagrange-four-squares-waring-g2-oq-03-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "TwoTrianglesTwoSquares",
+    "lineCount": 178,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "path": "Proofs/TwoTrianglesTwoSquares.lean",
+    "sorries": 0
+  },
+  "title": "Sums of Two Triangular Numbers and the 4n+1 Two-Square Slice",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/TwoTrianglesTwoSquares.lean",
+    "tags": [
+      "number-theory",
+      "sums-of-squares",
+      "two-square-theorem",
+      "triangular-numbers",
+      "two-triangular-numbers",
+      "additive-number-theory",
+      "geometry-of-numbers",
+      "reduction",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 178,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "badge": "original",
+    "originalContributions": [
+      "isSumTwoTriangular_iff: the headline equivalence — for every natural number n, n is a sum of two triangular numbers T(k)=k(k+1)/2 IF AND ONLY IF 4n+1 is a sum of two integer squares. This is the two-summand analogue of the gallery's Gauss Eureka entry (three triangular ⟺ 8n+3 three squares), proved unconditionally and axiom-free.",
+      "isSumTwoTriangular_iff_nat: the natural-number restatement, n is a sum of two triangular numbers iff 4n+1 = x²+y² for naturals x,y; obtained by composing the integer equivalence with the int/nat absolute-value bridge.",
+      "isSumTwoTriangular_iff_factorization: the COMPLETE arithmetic characterization via Mathlib's two-square theorem (Nat.eq_sq_add_sq_iff) — n is a sum of two triangular numbers iff every prime q ≡ 3 (mod 4) divides 4n+1 to an even power. Because the two-square theorem (unlike three-square sufficiency) is fully in Mathlib, this gives a decidable test, making the result strictly stronger than the conditional Gauss Eureka companion. The docstring records the trap that the naive 'no prime factor ≡ 3 mod 4' form is FALSE (n=2=T₁+T₁ while 4·2+1=9=3²).",
+      "sum_tri_identity: the rotation identity 4·(T(a)+T(b))+1 = (a+b+1)² + (a−b)², the linear change of variables (a,b) ↦ (a+b+1, a−b) that bridges triangular sums and two-square representations of 4n+1.",
+      "sq_to_isSumTwoTriangular: the backward direction handled DIVISION-FREE — 4n+1 ≡ 1 (mod 4) forces one square even (=2t) and one odd (=2s+1), and the inverse rotation p=s+t, q=s−t (integers, no halving) yields 2n = p(p+1)+q(q+1); the two non-mixed parity cases are dispatched as 4 ∣ 1 contradictions.",
+      "exists_nat_tri_index: every integer index k gives k(k+1) = j(j+1) for a natural j, formalizing T(k)=T(−1−k) so that negative integer triangular indices contribute nothing new — the lemma that lets the integer construction land back in natural triangular numbers.",
+      "int_sq_iff_nat_sq: a sum of two integer squares equals a sum of two natural squares (the squared quantities depend only on |·|), the bridge from the integer equivalence to Mathlib's natural-number two-square characterization."
+    ],
+    "prerequisites": [
+      "Nat.eq_sq_add_sq_iff (Mathlib): a natural number is a sum of two squares iff every prime ≡ 3 (mod 4) in its factorization occurs to an even power — the two-square theorem that makes the characterization unconditional.",
+      "Nat.mul_div_cancel' and Nat.even_mul_succ_self: exactness of the triangular-number division 2·T(k)=k(k+1).",
+      "Int.even_or_odd, Int.toNat_of_nonneg, Int.abs_eq_natAbs, sq_abs: the parity split of 4n+1 and the integer↔natural square/triangular bridges."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.eq_sq_add_sq_iff",
+        "description": "A natural n is a sum of two squares iff every prime q ≡ 3 (mod 4) has Even (padicValNat q n); supplies the complete arithmetic characterization, replacing the open three-square sufficiency axiom that the Gauss Eureka companion still needs.",
+        "module": "Mathlib.NumberTheory.SumTwoSquares"
+      },
+      {
+        "theorem": "Nat.mul_div_cancel'",
+        "description": "Exact division a ∣ b → a · (b / a) = b; gives 2 · (k(k+1)/2) = k(k+1) so triangular numbers behave as exact halves.",
+        "module": "Mathlib.Algebra.Order.Group.Nat"
+      },
+      {
+        "theorem": "Int.even_or_odd",
+        "description": "Every integer is even or odd; drives the parity case split that forces, from 4n+1 ≡ 1 (mod 4), exactly one of the two squares to be odd.",
+        "module": "Mathlib.Algebra.Parity"
+      },
+      {
+        "theorem": "Int.toNat_of_nonneg",
+        "description": "For 0 ≤ a, ↑a.toNat = a; converts the integer triangular indices p, q (one possibly negative) into the natural indices the predicate IsSumTwoTriangular requires, using k(k+1)=(−1−k)(−k).",
+        "module": "Mathlib.Data.Int.Order"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-02-oq-01",
+      "question": "Quantitative two-triangular count: the number of ordered representations of n as T(a)+T(b) equals the number of representations of 4n+1 as an ordered sum of two squares (the rotation (a,b)↦(a+b+1,a−b) is a bijection ℤ²→{(X,Y): X+Y odd}). Formalize the counting identity r_{2△}(n) = r₂(4n+1) and connect it to the sum-of-two-squares function.",
+      "significance": "medium"
+    },
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-02-oq-02",
+      "question": "Unify the two-, three-, and four-triangular slices: two triangular ⟺ 4n+1 two squares (this entry), three triangular ⟺ 8n+3 three squares (Gauss Eureka companion). Is there a single 'd·n + c(d) ⟺ d squares' meta-statement, and does the four-triangular case correspond cleanly to Lagrange's four-square theorem on an arithmetic progression?",
+      "significance": "high"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "The two-summand analogue of the Gauss Eureka companion. Where that entry needs the still-open three-square sufficiency axiom to conclude unconditionally, this entry is fully unconditional and axiom-free because Mathlib supplies the two-square theorem, and it adds the complete arithmetic characterization via prime factorization of 4n+1."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03",
+      "relationship": "depends-on",
+      "description": "Companion to the parent three-square sufficiency study: it records the elementary 4n+1 ⟷ two-triangular bijection in the same sums-of-squares ↔ triangular-numbers circle of ideas, using the (a,b)↦(a+b+1,a−b) rotation."
+    }
+  ],
+  "references": [
+    {
+      "title": "Disquisitiones Arithmeticae",
+      "author": "Carl Friedrich Gauss",
+      "year": "1801",
+      "venue": "Articles 291–293",
+      "description": "Gauss's theory of representations by binary quadratic forms and triangular/polygonal numbers; the two-triangular ⟷ 4n+1 sum-of-two-squares correspondence sits in this circle of ideas."
+    },
+    {
+      "title": "Sur la théorie des nombres",
+      "author": "Pierre de Fermat / Leonhard Euler",
+      "year": "1640/1749",
+      "venue": "Fermat's Christmas theorem; Euler's proof",
+      "description": "The two-square theorem characterizing which integers are sums of two squares (every prime ≡ 3 mod 4 to an even power), used here via Mathlib's Nat.eq_sq_add_sq_iff to make the triangular characterization unconditional."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For every natural number n, n is a sum of two triangular numbers T(k)=k(k+1)/2 if and only if 4n+1 is a sum of two integer squares (isSumTwoTriangular_iff). The bridge is the rotation identity 4·(T(a)+T(b))+1 = (a+b+1)²+(a−b)²: the forward direction reads it left-to-right; the backward direction uses that 4n+1 ≡ 1 (mod 4) forces one square even (2t) and one odd (2s+1), so the inverse rotation p=s+t, q=s−t gives 2n = p(p+1)+q(q+1) with no division, and each integer triangular value equals a natural one since T(k)=T(−1−k). Composing with Mathlib's two-square theorem (Nat.eq_sq_add_sq_iff) yields the complete arithmetic test isSumTwoTriangular_iff_factorization: n is a sum of two triangular numbers iff every prime ≡ 3 (mod 4) divides 4n+1 to an even power. 178 lines, 12 theorems/lemmas, 2 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This is the unconditional two-summand analogue of the gallery's Gauss Eureka entry (three triangular ⟺ 8n+3 three squares). Because the two-square theorem is available in Mathlib while three-square sufficiency is not, the two-triangular result is fully machine-checked end to end and even delivers a decidable factorization test, whereas Eureka still rests on an axiom. The pair sharpens the general picture that 'sums of d triangular numbers' is exactly a fixed arithmetic-progression slice of 'sums of d squares', and points toward a unified d=2,3,4 statement (the open question) bridging to Lagrange's four-square theorem."
+  }
+}
