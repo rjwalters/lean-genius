@@ -161,7 +161,23 @@ theorem multinomialPMF_support {α : Type*} [DecidableEq α]
     (k : Composition α s n) :
     (multinomialPMF s p n hp) k ≠ 0 ↔
     ∀ i ∈ s, k.counts i ≠ 0 → p i ≠ 0 := by
-  sorry -- Follows from the product being nonzero iff each factor is nonzero
+  -- The PMF value is `multinomial · ∏ p i ^ counts i`. The multinomial coefficient
+  -- is a positive natural, hence a nonzero ENNReal, so the value is nonzero iff the
+  -- product is. In ℝ≥0∞ (no zero divisors) a product is nonzero iff every factor is,
+  -- and `p i ^ counts i ≠ 0` iff `counts i = 0` (giving `1`) or `p i ≠ 0`.
+  rw [multinomialPMF_apply]
+  unfold multinomialPMFVal
+  rw [mul_ne_zero_iff, Finset.prod_ne_zero_iff]
+  have hmul : (Nat.multinomial s k.counts : ℝ≥0∞) ≠ 0 := by
+    rw [Nat.cast_ne_zero]; exact (Nat.multinomial_pos s k.counts).ne'
+  constructor
+  · rintro ⟨_, hprod⟩ i hi hcount
+    exact (pow_ne_zero_iff hcount).mp (hprod i hi)
+  · intro h
+    refine ⟨hmul, fun i hi => ?_⟩
+    rcases eq_or_ne (k.counts i) 0 with hc | hc
+    · rw [hc, pow_zero]; exact one_ne_zero
+    · rw [pow_ne_zero_iff hc]; exact h i hi hc
 
 -- ============================================================
 -- PART 6: Marginal Distribution (Binomial)
