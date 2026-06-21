@@ -148,7 +148,12 @@ theorem cantelli (s : Finset α) (f : α → ℚ) (a : ℚ) (hs : s.Nonempty)
   have hN : (0 : ℚ) < s.card := by exact_mod_cast hs.card_pos
   have hden : (0 : ℚ) < variance s f + a ^ 2 :=
     add_pos_of_nonneg_of_pos hvar_nonneg (pow_pos ha 2)
-  rw [tailProb, div_le_div_iff hN hden, mul_comm (variance s f) (s.card : ℚ)]
+  rw [tailProb]
+  first
+    | rw [div_le_div_iff₀ hN hden]
+    | rw [div_le_div_iff_of_pos hN hden]
+    | rw [div_le_div_iff hN hden]
+  rw [mul_comm (variance s f) (s.card : ℚ)]
   exact cantelli_key s f a hs ha
 
 /-- **Cantelli is sharper than one-sided Chebyshev.** The Cantelli bound
@@ -164,7 +169,10 @@ theorem tailProb_le_chebyshev (s : Finset α) (f : α → ℚ) (a : ℚ) (hs : s
   have hden : (0 : ℚ) < variance s f + a ^ 2 :=
     add_pos_of_nonneg_of_pos hvar_nonneg ha2
   have hcomp : variance s f / (variance s f + a ^ 2) ≤ variance s f / a ^ 2 := by
-    rw [div_le_div_iff hden ha2]
+    first
+      | rw [div_le_div_iff₀ hden ha2]
+      | rw [div_le_div_iff_of_pos hden ha2]
+      | rw [div_le_div_iff hden ha2]
     nlinarith [mul_self_nonneg (variance s f)]
   exact le_trans (cantelli s f a hs ha) hcomp
 
