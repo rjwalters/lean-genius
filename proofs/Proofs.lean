@@ -548,6 +548,7 @@ import Proofs.CayleyHamiltonMinpolyOQ03OQ02
 import Proofs.CayleyHamiltonMinpolyOQ04
 import Proofs.CayleyHamiltonMinpolyOQ04Backward
 import Proofs.CayleyHamiltonMinpolyOQ04BackwardAristotle
+import Proofs.CayleyHamiltonMinpolyOQ04OQ01
 import Proofs.CayleyHamiltonMinpolyOQ05
 import Proofs.CayleyHamiltonMinpolyOQ05OQ01
 import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ01
