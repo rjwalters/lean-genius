@@ -17647,8 +17647,20 @@
       "lastAudited": "2026-06-21T12:27:37Z",
       "result": "clean",
       "notes": "Static audit: 0 sorries / 0 axiom decls / no native_decide tactic (grep hits lines 18/29/114 are docstring prose; line 18 \"admits\" matched admit-grep) / no structures (6 plain defs/Props: angleFrac, vertexAngleSum, PositiveDefect, archimedeanTypes, family, IsUniform). 12 theorems, 6 defs, 206 lines — matches meta. 0-axiom original claim holds."
+    },
+    "combinations-formula-oq-01-oq-01": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-21T12:36:52Z",
+      "result": "clean"
+    },
+    "sqrt2-irrational-oq-02": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-21T12:36:52Z",
+      "result": "clean"
     }
   },
   "version": 1,
-  "lastUpdated": "2026-06-21T12:27:37Z"
+  "lastUpdated": "2026-06-21T12:36:52Z"
 }
