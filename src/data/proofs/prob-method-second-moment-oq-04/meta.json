@@ -1,0 +1,222 @@
+{
+  "id": "prob-method-second-moment-oq-04",
+  "title": "Cantelli's One-Sided Chebyshev Inequality (Finite Form)",
+  "slug": "prob-method-second-moment-oq-04",
+  "description": "The sharp one-sided concentration bound P(f − μ ≥ a) ≤ σ²/(σ² + a²) for a > 0, in the discrete Finset-ℚ counting-measure setting consistent with the parent ProbMethodSecondMoment.lean. Strictly sharper than the one-sided Chebyshev bound σ²/a² (recovered as a corollary), and best possible among bounds depending only on the first two moments.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-20",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ProbMethodSecondMomentOQ04.lean",
+    "tags": [
+      "probability",
+      "concentration",
+      "second-moment-method",
+      "cantelli",
+      "chebyshev",
+      "variance",
+      "one-sided"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "axiomCount": 0,
+    "lineCount": 171,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "assumptions": "None. 0 axioms, 0 sorries. Fully verified in Lean 4 with Mathlib. Reuses mean / variance from the sibling ProbMethodSecondMomentOQ02.lean (counting-measure formalism).",
+    "originalContributions": [
+      "cantelli: the sharp one-sided tail bound tailProb s f a ≤ variance s f / (variance s f + a²) for a > 0 — Cantelli's inequality in the finite Finset-ℚ setting",
+      "cantelli_key: the division-free cleared form #tail · (V + a²) ≤ #s · V, the polynomial heart of the proof (no fractions, obtained via the scaled shift g i = a·(f i − μ) + V)",
+      "tailProb_le_chebyshev: Cantelli implies the classical one-sided Chebyshev bound σ²/a², proving Cantelli is strictly sharper",
+      "sum_sub_mean_eq_zero: the centering identity ∑_{i∈s} (f i − μ) = 0",
+      "tailProb: the upper-tail counting-measure probability #{ i ∈ s : f i − μ ≥ a } / #s"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_le_sum_of_subset_of_nonneg",
+        "description": "Monotonicity of finite sums under subset with nonnegative summands — bounds the tail-event sub-sum by the full sum",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.sum_le_sum",
+        "description": "Termwise comparison of finite sums — lower-bounds each tail term by the constant (a² + V)²",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.sum_add_distrib",
+        "description": "Linearity of finite sum: ∑ (f + g) = ∑ f + ∑ g — used to expand the second-moment identity of the scaled shift",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "le_of_mul_le_mul_right",
+        "description": "Cancellation of a positive right factor in an inequality — clears the common factor (a² + V) from the cleared bound",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      },
+      {
+        "theorem": "div_le_div_iff",
+        "description": "Cross-multiplication for an inequality between two ratios with positive denominators — converts cantelli_key into the probability statement",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Cantelli's inequality is the sharp one-sided refinement of the Bienaymé–Chebyshev second-moment bound. Where the two-sided Chebyshev inequality gives P(|X − μ| ≥ a) ≤ σ²/a², the one-sided question — how large can the *upper* tail P(X − μ ≥ a) alone be? — admits the strictly smaller answer σ²/(σ² + a²). The bound is named for **Francesco Paolo Cantelli (1875–1966)**, who established it in his work on the foundations of probability in the 1910s–1920s; the same inequality appears in the work of **Chebyshev's** school and is sometimes attributed to **Bienaymé**, mirroring the priority history of the two-sided bound. Cantelli is also remembered for the Borel–Cantelli lemmas and for an early (1917) proof of the strong law of large numbers. The one-sided bound is *tight*: a two-point distribution placing mass σ²/(σ² + a²) at +a and the rest below achieves equality, so σ²/(σ² + a²) is the best possible function of the first two moments alone. This extremal sharpness is why Cantelli's inequality, rather than the cruder σ²/a², is the right tool in one-sided concentration arguments — median-vs-mean gaps, the analysis of M-estimators, and risk bounds where only over- (or only under-) shooting matters.",
+    "problemStatement": "In the discrete Finset-ℚ setting of the parent ProbMethodSecondMoment program — a finite sample space s : Finset α with the uniform counting measure and a ℚ-valued random variable f : α → ℚ — let μ = mean s f and σ² = variance s f. For every a > 0 prove the one-sided tail bound\n\n  tailProb s f a := #{ i ∈ s : f i − μ ≥ a } / #s ≤ σ² / (σ² + a²),\n\nand derive the classical one-sided Chebyshev corollary tailProb s f a ≤ σ²/a², confirming Cantelli's bound is strictly sharper. Everything is to be done over ℚ with Finset sums — no measure theory, no real analysis, no axioms or sorries.",
+    "text": "Formalizes Cantelli's one-sided Chebyshev inequality in the measure-theory-free discrete setting consistent with the sibling OQ-02 file. The crux is a fraction-free reformulation: rather than minimizing the rational function (σ² + t²)/(a + t)² over the shift t (optimum t = σ²/a), the proof works with the *scaled* shift g i = a·(f i − μ) + σ², which equals a·(deviation + σ²/a) and so stays polynomial. Two ingredients — a second-moment identity for g and a tail lower bound — combine and cancel the positive factor a² + σ² to give the cleared inequality #tail · (σ² + a²) ≤ #s · σ², which is exactly the probability bound after restoring denominators.",
+    "proofStrategy": "Four steps:\n\n1. **Centering identity** (sum_sub_mean_eq_zero): ∑_{i∈s} (f i − μ) = 0, by splitting the sum and unfolding mean.\n\n2. **Second-moment identity for the scaled shift** (inside cantelli_key): with g i = a·(f i − μ) + σ², expand g i² = a²·(f i − μ)² + 2a·σ²·(f i − μ) + σ⁴ and sum. The linear term vanishes by the centering identity; the quadratic term uses ∑(f i − μ)² = σ²·#s (the variance definition). Result: ∑_{i∈s} g i² = #s · σ² · (a² + σ²).\n\n3. **Tail lower bound** (inside cantelli_key): on the tail event d_i = f i − μ ≥ a > 0 we have g i = a·d_i + σ² ≥ a² + σ² ≥ 0, hence g i² ≥ (a² + σ²)². Summing over the tail subset and bounding by the full sum (Finset.sum_le_sum_of_subset_of_nonneg, with g i² ≥ 0 everywhere) gives #tail · (a² + σ²)² ≤ ∑_{i∈s} g i².\n\n4. **Clear and divide**: combining steps 2–3, #tail · (a² + σ²)² ≤ #s · σ² · (a² + σ²); cancel the positive factor a² + σ² (le_of_mul_le_mul_right) to get cantelli_key: #tail · (σ² + a²) ≤ #s · σ². The probability statement cantelli follows by div_le_div_iff (both denominators positive), and tailProb_le_chebyshev by σ²/(σ² + a²) ≤ σ²/a².",
+    "keyInsights": [
+      "**The scaled shift keeps everything polynomial.** The textbook proof minimizes (σ² + t²)/(a + t)² over t ≥ 0 with optimum t = σ²/a — a fraction. Substituting g i = a·(f i − μ) + σ² = a·(d_i + σ²/a) clears the denominator, so the whole argument lives in ℚ[Finset sums] with no division until the very last cross-multiplication step.",
+      "**Sharpness comes from a single nonneg square.** The tail lower bound is just g i² ≥ (a² + σ²)² on the event d_i ≥ a, i.e. the convexity of squaring applied at the threshold. There is no slack beyond this one square, which is why the bound is tight (two-point extremizer) rather than merely valid.",
+      "**Cancellation, not division, is the engine.** The cleared form #tail · (σ² + a²) ≤ #s · σ² is obtained by cancelling the common positive factor (a² + σ²) from #tail·(a²+σ²)² ≤ #s·σ²·(a²+σ²). Working with the cleared inequality and only dividing once (div_le_div_iff) keeps the Lean proof free of field_simp gymnastics on nested fractions.",
+      "**Strictly sharper than Chebyshev, provably.** tailProb_le_chebyshev derives σ²/a² from σ²/(σ² + a²) by div_le_div_iff + nlinarith, exhibiting the gap σ²/(σ²+a²) ≤ σ²/a² explicitly. The one-sided bound buys a factor that matters precisely when a is comparable to σ.",
+      "**Measure theory is unnecessary for the algebraic content.** As with the sibling OQ-02 file, the counting-measure formalism turns 'probability' into the arithmetic fraction #tail/#s and 'variance' into a Finset sum, so Cantelli's inequality reduces to a verified polynomial inequality over ℚ — no σ-algebras, no integrability."
+    ],
+    "prerequisites": [
+      "Finset.sum and filtering Finsets",
+      "Monotonicity of finite sums (Finset.sum_le_sum, sum over a subset)",
+      "Variance and mean in the counting-measure setting (sibling entry ProbMethodSecondMomentOQ02)",
+      "Second moment method and Chebyshev's inequality (parent entry ProbMethodSecondMoment)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "File header and imports",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "States Cantelli's inequality P(f − μ ≥ a) ≤ σ²/(σ² + a²), defines the counting-measure tail probability, and lays out the division-free proof via the scaled shift g i = a·(f i − μ) + σ². Imports Mathlib and the sibling ProbMethodSecondMomentOQ02 (for mean / variance)."
+    },
+    {
+      "id": "centering",
+      "title": "Centering identity",
+      "startLine": 50,
+      "endLine": 62,
+      "summary": "sum_sub_mean_eq_zero: the deviations from the mean sum to zero, ∑_{i∈s} (f i − μ) = 0. Proved by splitting the sum into ∑ f − #s·μ and unfolding the definition of mean. This is the identity that kills the linear cross-term in the scaled-shift second moment."
+    },
+    {
+      "id": "cantelli-key",
+      "title": "The cleared key inequality",
+      "startLine": 63,
+      "endLine": 129,
+      "summary": "cantelli_key: the division-free heart, #tail · (V + a²) ≤ #s · V. Establishes the second-moment identity ∑ g i² = #s·V·(a²+V) for the scaled shift (linear term vanishes by centering, quadratic term by the variance definition), the tail lower bound #tail·(a²+V)² ≤ ∑ g i² (each tail term g i² ≥ (a²+V)² since g i ≥ a²+V there), then cancels the positive factor a²+V.",
+      "mathContext": "Cleared form of Cantelli: #{i : d_i ≥ a} · (σ² + a²) ≤ #s · σ², equivalent to the probability bound after restoring denominators."
+    },
+    {
+      "id": "probability-statement",
+      "title": "The probability statement and Chebyshev corollary",
+      "startLine": 130,
+      "endLine": 171,
+      "summary": "tailProb defines the upper-tail counting-measure probability #{i ∈ s : f i − μ ≥ a}/#s. cantelli converts cantelli_key into tailProb s f a ≤ V/(V + a²) by cross-multiplication (div_le_div_iff, both denominators positive). tailProb_le_chebyshev derives the classical one-sided Chebyshev bound V/a² from Cantelli, exhibiting the strict-sharpness gap V/(V+a²) ≤ V/a².",
+      "mathContext": "P(f − μ ≥ a) ≤ σ²/(σ² + a²) ≤ σ²/a²; the middle term is Cantelli (sharp), the right is one-sided Chebyshev (recovered corollary)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Ships Cantelli's one-sided Chebyshev inequality in the discrete Finset-ℚ counting-measure setting: tailProb s f a ≤ variance s f / (variance s f + a²) for a > 0, fully verified in Lean 4 with Mathlib (0 axioms, 0 sorries, 4 theorems, 1 definition). The proof is fraction-free until a single final cross-multiplication, built on the scaled shift g i = a·(f i − μ) + σ²: a second-moment identity ∑ g i² = #s·σ²·(a²+σ²), a one-square tail lower bound, and cancellation of the positive factor a²+σ². The classical one-sided Chebyshev bound σ²/a² is recovered as a corollary, confirming Cantelli is strictly sharper.",
+    "implications": "Completes the one-sided concentration slice of the OQ-04 second-moment program. The cleared inequality cantelli_key is reusable as a polynomial certificate wherever a one-sided second-moment bound is needed without invoking measure theory, and the sharpness (two-point extremizer) means no first-two-moments bound can improve on it. Together with the sibling OQ-02 pair-sum variance identity, the discrete second-moment toolkit now covers both the algebraic backbone (variance of sums) and the sharp tail estimate (Cantelli) in a uniform, axiom-free ℚ formalism.",
+    "openQuestions": [
+      "Two-sided assembly: combine the upper-tail Cantelli bound with its mirror image (apply to −f) to recover the two-sided Chebyshev bound σ²/a² with the improved constant where the tails are asymmetric.",
+      "Extremal characterization: formalize the two-point distribution achieving equality in Cantelli, certifying that σ²/(σ² + a²) is the best possible bound depending only on the first two moments.",
+      "Generalize the counting measure to weighted Finsets (∑ w a in place of #s) to capture non-uniform discrete distributions while staying measure-theory-free.",
+      "Bridge to Mathlib's measure-theoretic ProbabilityTheory.variance via a counting-measure adapter so Cantelli composes with downstream Mathlib probability content."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "cantelli",
+      "statement": "∀ {α : Type*} (s : Finset α) (f : α → ℚ) (a : ℚ), s.Nonempty → 0 < a → tailProb s f a ≤ variance s f / (variance s f + a ^ 2)",
+      "description": "**Cantelli's one-sided Chebyshev inequality (finite form).** The upper-tail counting-measure probability is bounded by σ²/(σ² + a²). Proved by rewriting tailProb and applying div_le_div_iff (the sample size #s and the denominator V + a² are both positive) to reduce to the cleared inequality cantelli_key."
+    },
+    {
+      "name": "cantelli_key",
+      "statement": "∀ {α : Type*} (s : Finset α) (f : α → ℚ) (a : ℚ), s.Nonempty → 0 < a → ((s.filter (fun i => a ≤ f i - mean s f)).card : ℚ) * (variance s f + a ^ 2) ≤ (s.card : ℚ) * variance s f",
+      "description": "**The division-free heart of Cantelli.** Combines a second-moment identity for the scaled shift g i = a·(f i − μ) + V — namely ∑ g i² = #s·V·(a²+V), where the linear cross-term vanishes by sum_sub_mean_eq_zero and the quadratic term uses ∑(f i − μ)² = V·#s — with a tail lower bound #tail·(a²+V)² ≤ ∑ g i² (each tail term satisfies g i ≥ a²+V ≥ 0, so g i² ≥ (a²+V)²; the off-tail terms are nonnegative). Cancelling the positive factor a²+V via le_of_mul_le_mul_right yields the cleared bound."
+    },
+    {
+      "name": "tailProb_le_chebyshev",
+      "statement": "∀ {α : Type*} (s : Finset α) (f : α → ℚ) (a : ℚ), s.Nonempty → 0 < a → tailProb s f a ≤ variance s f / a ^ 2",
+      "description": "**Cantelli is sharper than one-sided Chebyshev.** Derives the classical bound σ²/a² from Cantelli by transitivity through the explicit inequality σ²/(σ² + a²) ≤ σ²/a² (div_le_div_iff + nlinarith), making the strict-sharpness gap visible."
+    },
+    {
+      "name": "sum_sub_mean_eq_zero",
+      "statement": "∀ {α : Type*} (s : Finset α) (f : α → ℚ), s.Nonempty → s.sum (fun i => f i - mean s f) = 0",
+      "description": "The centering identity: deviations from the mean sum to zero. Proved by splitting the sum into ∑ f − #s·μ (Finset.sum_sub_distrib + Finset.sum_const) and unfolding mean. This is what annihilates the linear term in the scaled-shift second-moment expansion."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Cantelli, F. P.",
+      "title": "Intorno ad un teorema fondamentale della teoria del rischio",
+      "year": "1910",
+      "note": "Bollettino dell'Associazione degli Attuari Italiani. Early work in which Cantelli developed the one-sided second-moment bound now bearing his name; P(X − μ ≥ a) ≤ σ²/(σ² + a²)."
+    },
+    {
+      "authors": "Cantelli, F. P.",
+      "title": "Sulla probabilità come limite della frequenza",
+      "year": "1917",
+      "note": "Atti Accad. Naz. Lincei 26, 39–45. Contains Cantelli's strong law of large numbers; the same second-moment methods underlie his one-sided inequality."
+    },
+    {
+      "authors": "Bienaymé, I.-J.",
+      "title": "Considérations à l'appui de la découverte de Laplace sur la loi de probabilité dans la méthode des moindres carrés",
+      "year": "1853",
+      "note": "C. R. Acad. Sci. Paris 37, 309–324. First clear statement of the two-sided second-moment bound; the one-sided refinement is the natural sharpening Cantelli supplied."
+    },
+    {
+      "authors": "Chebyshev, P. L.",
+      "title": "Des valeurs moyennes",
+      "year": "1867",
+      "note": "Journal de Mathématiques Pures et Appliquées 12, 177–184. The two-sided bound σ²/a² that Cantelli's one-sided σ²/(σ² + a²) strictly improves on, recovered here as the corollary tailProb_le_chebyshev."
+    },
+    {
+      "authors": "Boucheron, S., Lugosi, G., and Massart, P.",
+      "title": "Concentration Inequalities: A Nonasymptotic Theory of Independence",
+      "year": "2013",
+      "note": "Oxford University Press. Modern reference for one-sided and two-sided second-moment concentration; §2 treats Chebyshev–Cantelli bounds and their sharpness via two-point extremizers."
+    },
+    {
+      "authors": "Alon, N. and Spencer, J. H.",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "note": "4th edition, Wiley. Chapter 4 ('The Second Moment') develops the second-moment toolkit — Chebyshev concentration, Paley–Zygmund anti-concentration — that Cantelli's one-sided bound refines."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/ProbMethodSecondMomentOQ04.lean",
+    "imports": [
+      "Mathlib",
+      "Proofs.ProbMethodSecondMomentOQ02"
+    ],
+    "opens": [],
+    "namespace": "ProbMethod.SecondMoment",
+    "lineCount": 171,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "substantiveTheoremCount": 4,
+    "definitionCount": 1,
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "depends-on",
+      "description": "Parent entry: the second moment method (Chebyshev / Paley–Zygmund). This OQ-04 file supplies the sharp one-sided refinement of the parent's Chebyshev concentration bound."
+    },
+    {
+      "targetId": "prob-method-second-moment-oq-02",
+      "relationship": "depends-on",
+      "description": "Sibling OQ-02: supplies the mean and variance definitions (counting-measure formalism) imported and reused here. OQ-04 builds the Cantelli tail bound directly on top of OQ-02's second-moment scaffolding."
+    },
+    {
+      "targetId": "prob-method-second-moment-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ-01 from the same parent: complementary slice of the second moment method's open-question program, sharing the discrete Finset-ℚ counting-measure setting."
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "depends-on",
+      "description": "Foundational: linearity of expectation (the centering identity ∑(f − μ) = 0) is the first-moment ancestor of the second-moment estimate proved here."
+    }
+  ]
+}
