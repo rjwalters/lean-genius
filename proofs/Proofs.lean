@@ -2505,6 +2505,7 @@ import Proofs.FermatTwoSquares
 import Proofs.FermatTwoSquaresOQ01
 import Proofs.FermatTwoSquaresOQ01OQ03
 import Proofs.FermatTwoSquaresOQ01OQ03OQ01
+import Proofs.FermatTwoSquaresOQ04
 import Proofs.FermatTwoSquaresOQ05
 import Proofs.FermatsLastTheorem
 import Proofs.FermatsLastTheoremOQ03
