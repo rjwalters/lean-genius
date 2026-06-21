@@ -1,0 +1,84 @@
+{
+  "slug": "four-square-distribution-oq-05",
+  "title": "2-adic structure of the four-square symmetry multiplier",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∀ {n} (t : RepType n) {k}, k ≤ t.nonzeroCount → 2 ^ k ∣ t.contribution; in particular 3 ≤ t.nonzeroCount → 8 ∣ t.contribution.",
+    "plain": "The parent four-square type decomposition proves bounds on the symmetry multiplier contribution(t) = permutations(t)·signFactor(t) but no divisibility. Establish the 2-adic (sign-change) divisibility structure of the multiplier.",
+    "whyMatters": [
+      "Isolates the sign-symmetry source of Jacobi's factor of 8 at the per-type level.",
+      "Complements the parent's upper bound (≤ 384) with a divisor structure."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "two_pow_nonzeroCount_dvd_contribution: 2^(nonzeroCount t) ∣ contribution t.",
+      "two_pow_dvd_contribution_of_le: 2^k ∣ contribution t for k ≤ nonzeroCount t.",
+      "eight_dvd_contribution_of_three_le: 8 ∣ contribution t when nonzeroCount ≥ 3.",
+      "sixteen_dvd_contribution_of_four: 16 ∣ contribution t when all four entries nonzero.",
+      "signFactor_dvd_contribution and the 2/4-divisibility specializations."
+    ],
+    "open": [
+      "8 ∣ contribution t for every type with ≥ 1 nonzero entry (needs permutation parity in the 1- and 2-nonzero cases) ⟹ Jacobi's 8 ∣ r₄(n)."
+    ],
+    "goal": "Divisibility structure of the per-type symmetry multiplier. ACHIEVED for the sign part (2^k) — verified, 0 sorries, 0 axioms."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-21T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "2-adic divisibility of the four-square symmetry multiplier.",
+    "blockers": [],
+    "nextAction": "Optional: permutation-parity analysis for the full 8 ∣ contribution (low-nonzero cases).",
+    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE (sign part): Proved 2^(nonzeroCount t) ∣ contribution t for every four-square type, hence 8 ∣ contribution when ≥3 nonzero and 16 ∣ when all 4 nonzero. New file FourSquareDistributionOQ05.lean, 110L, 8 thm, 0 sorry, 0 axiom. Parent had only bounds (≤384), no divisibility.",
+    "builtItems": [
+      "Created FourSquareDistributionOQ05.lean (110L, 8 thm, 0 sorry/axiom)",
+      "two_pow_nonzeroCount_dvd_contribution + the 2-adic tower",
+      "eight/sixteen_dvd corollaries"
+    ],
+    "insights": [
+      "contribution = permutations·signFactor with signFactor = 2^nonzeroCount, so the 2-adic divisibility is STRUCTURAL (signFactor is literally a factor) — no number theory needed.",
+      "The parent already proves the bounds (nonzeroCount_le_four, permutations_le_twentyfour, signFactor_le_sixteen, contribution_le_384) — reusing those names errors with 'already declared'; the NEW content is the divisibility.",
+      "Full 8 ∣ contribution for nz≥1 (⟹ 8 ∣ r₄(n)) needs evaluating the permutation count (dedup/count over symbolic tuples) in the 1- and 2-nonzero cases — left as the open step."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Permutation-parity lemmas for nonzeroCount ∈ {1,2} to upgrade to the full Jacobi 8 ∣ r₄(n)."
+    ],
+    "markdown": "# Knowledge Base: four-square-distribution-oq-05\n\nCompleted the sign-part divisibility of the symmetry multiplier. See FourSquareDistributionOQ05.lean."
+  },
+  "tags": [
+    "number-theory",
+    "sum-of-squares",
+    "jacobi",
+    "symmetry",
+    "hyperoctahedral-group",
+    "divisibility"
+  ],
+  "relatedProofs": [
+    "four-square-distribution",
+    "four-square-distribution-oq-01",
+    "four-square-distribution-oq-02",
+    "four-square-distribution-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "C. G. J. Jacobi, Fundamenta nova theoriae functionum ellipticarum (1829).",
+      "J. H. Conway, N. J. A. Sloane, Sphere Packings, Lattices and Groups (1999)."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.NumberTheory.SumFourSquares"
+    ]
+  },
+  "started": "2026-06-21T00:00:00.000Z",
+  "lastUpdate": "2026-06-21T00:00:00.000Z",
+  "completed": "2026-06-21T00:00:00.000Z",
+  "leanFiles": ["Proofs/FourSquareDistributionOQ05.lean"]
+}
