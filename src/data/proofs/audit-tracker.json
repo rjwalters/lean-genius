@@ -17586,8 +17586,16 @@
       "lastAudited": "2026-06-21T10:51:50Z",
       "result": "clean",
       "issues": []
+    },
+    "feuerbachs-theorem-defs-oq-01-oq-01-oq-01-oq-02-oq-01": {
+      "slug": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01-oq-02-oq-01",
+      "status": "completed",
+      "result": "clean",
+      "auditCount": 1,
+      "lastAudited": "2026-06-21",
+      "notes": "Build-verified (docker, 3093 jobs OK). 0 axioms / 0 sorries / 0 native_decide / 0 True-stubs. 347L, 20 theorems + 5 lemmas (4 private + sq_dist2), 0 defs — matches meta. Vector identity A−H=2(O−M_a) circle-free (Prod.ext;ring); AH²=4·OM_a² ring; 4·OM_a²=4R²−a² one linear_combination over equidist defects; true-dist via eq_of_sq_eq_of_nonneg. Triangle.nondegenerate is well-formedness, not a smuggled assumption. Dep FeuerbachsTheoremDefs.lean is itself 0-axiom/0-sorry. #print-axioms claim (propext/Classical/Quot only) consistent with clean build."
     }
   },
   "version": 1,
-  "lastUpdated": "2026-06-21T10:52:00Z"
+  "lastUpdated": "2026-06-21"
 }
