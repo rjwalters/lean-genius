@@ -1673,6 +1673,7 @@ import Proofs.Erdos439Problem
 import Proofs.Erdos43Problem
 import Proofs.Erdos440Problem
 import Proofs.Erdos441Aristotle
+import Proofs.Erdos441LowerBound
 import Proofs.Erdos441Problem
 import Proofs.Erdos442Problem
 import Proofs.Erdos443Problem
