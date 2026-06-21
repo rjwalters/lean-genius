@@ -1,0 +1,114 @@
+{
+  "id": "lagrange-four-squares-waring-g2-oq-03-oq-04",
+  "slug": "lagrange-four-squares-waring-g2-oq-03-oq-04",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "LagrangeFourSquaresWaringG2OQ03OQ04",
+    "lineCount": 155,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 2,
+    "path": "Proofs/LagrangeFourSquaresWaringG2OQ03OQ04.lean",
+    "sorries": 0
+  },
+  "title": "The 2-Adic Normal Form of the Non-Three-Square Integers",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeFourSquaresWaringG2OQ03OQ04.lean",
+    "tags": [
+      "number-theory",
+      "sums-of-squares",
+      "three-square-theorem",
+      "legendre-three-square",
+      "p-adic-valuation",
+      "factorization",
+      "decidability",
+      "additive-number-theory",
+      "normal-form",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 155,
+    "theoremCount": 5,
+    "definitionCount": 2,
+    "badge": "original",
+    "originalContributions": [
+      "isExcludedForm_iff: the 2-adic NORMAL FORM of the excluded family of Legendre's three-square theorem. A positive integer n is of the form 4^a(8b+7) iff its 2-adic valuation n.factorization 2 is EVEN and its odd part n / 2^(n.factorization 2) is ≡ 7 (mod 8). This replaces the unbounded existential search over (a,b) by two arithmetic conditions read directly off n — the canonical 'solved' description of the set of integers that are NOT sums of three squares.",
+      "excludedForm_unique: UNIQUENESS of the 4^a(8b+7) parametrisation — 4^a(8b+7) = 4^a'(8b'+7) ⟹ a = a' ∧ b = b'. The exponent a is pinned down by reading off the 2-adic valuation (= 2a, factorization_two_of_excluded), after which cancelling 4^a pins down b. This is the well-definedness underlying the normal form and any counting/density statement about the excluded family; it is not proved elsewhere in the gallery.",
+      "factorization_two_of_excluded: the engine lemma — v₂(4^a(8b+7)) = 2a, since the odd factor 8b+7 contributes nothing to the 2-adic valuation and 4^a = 2^(2a). Drives both the normal form and the uniqueness theorem.",
+      "isExcludedB / instExcluded: a genuinely COMPUTABLE decision procedure for the excluded family — a Bool-valued test isExcludedB n with IsExcludedForm n ↔ isExcludedB n = true (isExcludedForm_iff_isExcludedB), yielding a Decidable instance with NO Classical.choice. This is an effective replacement for the parent ThreeSquares.lean's noncomputable DecidablePred instance, subsuming all future membership checks into one computable test.",
+      "excludedForm_ge_seven: every element of the excluded family is ≥ 7 (4^a ≥ 1, 8b+7 ≥ 7), giving a clean elementary certificate that small non-excluded numbers (e.g. 6) are representable-eligible without invoking factorization."
+    ],
+    "prerequisites": [
+      "Nat.factorization API (Mathlib): Nat.factorization_mul, Nat.factorization_pow, Nat.Prime.factorization_self, Nat.factorization_eq_zero_of_not_dvd — compute the 2-adic valuation of 4^a(8b+7) = 2a.",
+      "Nat.ord_proj_mul_ord_compl_eq_self (Mathlib): p^(n.factorization p) * (n / p^(n.factorization p)) = n — recovers n from its 2-adic valuation and odd part, the heart of the normal-form reconstruction.",
+      "Nat.eq_of_mul_eq_mul_left and omega: cancel the common 4^a factor and finish the uniqueness and modular arithmetic.",
+      "decide_eq_true_eq, Nat.even_iff, Bool.and_eq_true: bridge the Bool decision procedure to the Prop-level characterization."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.ord_proj_mul_ord_compl_eq_self",
+        "description": "p^(n.factorization p) * (n / p^(n.factorization p)) = n; reconstructs n = 2^(v₂ n) * (odd part) in the reverse direction of the 2-adic normal form.",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      },
+      {
+        "theorem": "Nat.factorization_mul",
+        "description": "(a*b).factorization = a.factorization + b.factorization for a,b ≠ 0; splits the 2-adic valuation of 4^a(8b+7) into the contribution of 4^a (=2a) and the odd factor (=0).",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.factorization_eq_zero_of_not_dvd",
+        "description": "¬ p ∣ n ⟹ n.factorization p = 0; the odd factor 8b+7 contributes no 2-adic valuation.",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.factorization_pow",
+        "description": "(a^n).factorization = n • a.factorization; gives v₂(2^(2a)) = 2a for the 4^a = 2^(2a) factor.",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-04-oq-01",
+      "question": "Using the uniqueness of the 4^a(8b+7) parametrisation (excludedForm_unique), prove that the excluded family has natural density exactly 1/6: the count of non-three-square integers in [1,N] is N/6 + o(N). The 2-adic layering 4^a · (8b+7) is disjoint across a, with each layer contributing density 1/(8·4^a), summing to (1/8)·(4/3) = 1/6.",
+      "significance": "high"
+    },
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-04-oq-02",
+      "question": "Generalise the 2-adic normal form to the m-adic structure of the excluded sets for sums of squares in other forms (e.g. the x²+y²+2z² or x²+2y²+2z² ternary genera): characterise the analogue of 'even valuation + congruence on the odd part' that detects local non-representability.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03",
+      "relationship": "depends-on",
+      "description": "Companion to the parent three-square sufficiency study. The parent's ThreeSquares.lean defines IsExcludedForm by the existential 4^a(8b+7) and supplies only a noncomputable decidability instance; this entry supplies the effective layer — the 2-adic normal form, the uniqueness of the parametrisation, and a computable (Classical-free) decision procedure."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-03",
+      "relationship": "extends",
+      "description": "The two-square sufficiency slice (oq-03-oq-03) studies which non-excluded n are reachable from Mathlib's two-square theory; this entry instead pins down the structure of the EXCLUDED complement — its 2-adic normal form and the uniqueness of its parametrisation — completing the structural picture of the excluded set used there (e.g. the 63 = 8·7+7 non-closure witness)."
+    }
+  ],
+  "references": [
+    {
+      "title": "Essai sur la théorie des nombres",
+      "author": "Adrien-Marie Legendre",
+      "year": "1798",
+      "venue": "Three-square theorem",
+      "description": "n = x²+y²+z² is solvable iff n ≠ 4^a(8b+7). This entry characterises the excluded family 4^a(8b+7) by its 2-adic normal form and proves the uniqueness of its parametrisation."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The effective / structural layer of the excluded family E = {4^a(8b+7)} of Legendre's three-square theorem — the integers that are NOT sums of three squares. The headline isExcludedForm_iff gives the 2-adic NORMAL FORM: a positive integer n lies in E iff its 2-adic valuation n.factorization 2 is even and its odd part n / 2^(n.factorization 2) is ≡ 7 (mod 8), converting the unbounded existential search over (a,b) into two arithmetic conditions on n. excludedForm_unique proves the parametrisation 4^a(8b+7) is unique in (a,b), by reading off the valuation (factorization_two_of_excluded: v₂(4^a(8b+7)) = 2a). isExcludedB together with isExcludedForm_iff_isExcludedB packages this as a genuinely computable Bool test, giving a Decidable instance with no Classical.choice — an effective replacement for the parent file's noncomputable instance. 155 lines, 5 theorems, 2 definitions, 1 instance, 0 axioms, 0 sorries.",
+    "implications": "Where the parent ThreeSquares.lean treats membership of the excluded family as an existential search and decides it only noncomputably, this entry exposes its canonical solved form: the obstruction to being a sum of three squares is read directly off the 2-adic valuation and the odd part's residue mod 8. The uniqueness of the parametrisation is the well-definedness that any counting or density statement about non-three-square integers (e.g. their natural density 1/6) rests on, and the computable decision procedure subsumes all future case-by-case membership checks."
+  }
+}

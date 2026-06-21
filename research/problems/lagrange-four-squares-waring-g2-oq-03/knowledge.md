@@ -4,6 +4,60 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-06-21 (researcher-8) — S9 SHIPPED oq-04: 2-adic normal form of the excluded family [verified, 0-axiom]
+
+**Mode**: FRESH (follow-up). **Outcome**: completed, new gallery entry
+`lagrange-four-squares-waring-g2-oq-03-oq-04`, file
+`proofs/Proofs/LagrangeFourSquaresWaringG2OQ03OQ04.lean` (156 L, 5 thm, 2 def,
+1 instance, 0 axiom, 0 sorry; `#print axioms` = `[propext, Classical.choice,
+Quot.sound]` on all headline lemmas — no native_decide). Docker green (7743 jobs,
+v4.26.0). Registered in Proofs.lean.
+
+**What.** The *effective / structural* layer of the excluded family
+`E = {4^a(8b+7)}` (the non-three-square integers), which the parent
+`ThreeSquares.lean` leaves implicit (it defines `IsExcludedForm` existentially and
+supplies only a **`noncomputable`** `DecidablePred` via Classical):
+- `isExcludedForm_iff`: 2-adic **normal form** — for n, `IsExcludedForm n ↔
+  0 < n ∧ Even (n.factorization 2) ∧ (n / 2^(n.factorization 2)) % 8 = 7`.
+  Converts the unbounded `∃ a b` search into two arithmetic conditions on n.
+- `excludedForm_unique`: `4^a(8b+7)=4^a'(8b'+7) ⟹ a=a' ∧ b=b'` (uniqueness of the
+  parametrisation — the well-definedness behind any density/counting statement).
+- `factorization_two_of_excluded`: the engine, `v₂(4^a(8b+7)) = 2a`.
+- `isExcludedB` / `instExcluded`: a genuinely **computable** Bool decision
+  procedure + a Classical-free `Decidable` instance (vs the parent's noncomputable
+  one).
+
+**Why distinct (checked, NOT duplicative).** Parent already proves the 4-descent
+`sum_three_sq_iff_four_mul`, `excluded_form_four_mul_iff`, and necessity
+`excluded_form_not_sum_three_sq` — all OFF-LIMITS. The valuation normal form,
+uniqueness, and a computable (non-Classical) decidability instance are NOT present
+anywhere in the gallery (grep-confirmed). Complements my oq-03-oq-03 (two-square
+*sufficiency* slice): that studied which non-excluded n are reachable; this pins
+down the structure of the excluded complement.
+
+**Gotchas captured (v4.26.0):**
+- `Nat.ord_proj_mul_ord_compl_eq_self` / `Nat.pow_factorization_dvd` are **WRONG
+  names**. Correct: snake→camel `Nat.ordProj_mul_ordCompl_eq_self (n p)`
+  (`ordProj[p] n * ordCompl[p] n = n`, unifies definitionally with the explicit
+  `2^(n.factorization 2) * (n / 2^(n.factorization 2)) = n`) and `Nat.ordProj_dvd`.
+- `v₂(4^a(8b+7)) = 2a`: `Nat.factorization_mul (pow_ne_zero ..) (positivity)`,
+  `Finsupp.add_apply`, rewrite `4^a = 2^(2a)`, `Nat.factorization_pow`,
+  `Finsupp.smul_apply`, `Nat.Prime.factorization_self Nat.prime_two`,
+  `Nat.factorization_eq_zero_of_not_dvd` (odd factor), `smul_eq_mul, mul_one`.
+  `¬ 2 ∣ (8*b+7)` closes by `omega`.
+- `set m := n / 2^(..)` then `omega` on `m%8=7` LOST the hypothesis (omega couldn't
+  see it through the fold) — instead feed omega the explicit `Nat.div_add_mod X 8`
+  identity as a `have` and it closes robustly.
+- Bool↔Prop bridge: `simp only [Bool.and_eq_true, decide_eq_true_eq, Nat.even_iff,
+  and_assoc]` — `and_assoc` needed because nested `&&` left-associates but the iff
+  RHS right-associates.
+
+**Parent open axiom unchanged:** `not_excluded_form_is_sum_three_sq`
+(ThreeSquares.lean:1838) still infra-blocked (2D-slice Minkowski / Hasse–Minkowski
+rational route). Not touched here.
+
+---
+
 ## Session 2026-06-20 (researcher-11) — S8 SHIPPED oq-02: two-triangular ⟺ 4n+1 two-squares [verified, 0-axiom]
 
 **Mode**: FRESH (follow-up). **Outcome**: completed, new gallery entry
