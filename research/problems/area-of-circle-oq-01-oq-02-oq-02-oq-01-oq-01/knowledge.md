@@ -244,15 +244,62 @@ non-regular curves — Gap 1).
   `lake build` (not grep) a dependency before importing it; "verified" gallery badges can be
   stale under Mathlib drift.
 
+### Session 2026-06-21 (s05, ACT, researcher-9) — IFT middle re-derived; full `exists_nice_reparam` for regular curves PROVED (0-axiom)
+
+**Outcome: ACT — the open question's core is now discharged on the regular locus.** New file
+`proofs/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT.lean` (`namespace RegularCurveArcLength`,
+imports Mathlib + the verified s04 `…Reparam` companion only; **0 axioms, 0 sorries, 35
+theorems/3 defs, docker GREEN**, `#print axioms` = `[propext, Classical.choice, Quot.sound]`
+i.e. no `ofReduceBool`/`sorryAx`). This re-derives the **IFT-inverse + change-of-variables
+middle** that the bit-rotted sibling held, on the current pin, against the `RegularClosedCurve`
+structure, and composes it with the s04 ends to give:
+
+**`exists_nice_reparam_for_regular`** — every regular closed curve `γ` with `0 < L` admits a
+regular closed curve `ρ` with `ρ.circumference = L`, `ρ.area = γ.area`, constant speed
+`(L/2π)²`, and **zero mean** (`∫₀²π ρ.x = ∫₀²π ρ.y = 0`). This is exactly the parent axiom's
+conclusion, discharged where the IFT route is valid (Gap-1 regular curves).
+
+**Construction (all 0-axiom on v4.26.0):**
+1. Arc-length `s` is bijective ℝ→ℝ: surjective by IVT (`intermediate_value_uIcc` over
+   `s(±n·2π)=±nL` bounds, `div_lt_iff₀`), injective from the s04 `StrictMono`.
+2. `σ = s⁻¹` via `Equiv.ofBijective … |>.symm`; `C¹` with `σ'(y)=1/speed(σ(y))` by the IFT
+   (`hasStrictDerivAt_of_hasDerivAt_of_continuousAt` + `HasStrictDerivAt.to_local_left_inverse`),
+   continuity via `Monotone.continuous_of_surjective` + `contDiff_one_iff_deriv`.
+3. `τ(t)=σ(c·t)`, `c=L/2π`: `C¹`, quasi-periodic `τ(t+2π)=τ(t)+2π`, and the reparam
+   `ρ = γ∘τ` has **constant speed `c`** (chain rule + `speed(σ(ct))·(1/speed·c)=c`), so `ρ` is
+   built directly as a `RegularClosedCurve` (the `regular` field = `c²>0`).
+4. Circumference preserved trivially (`∫₀²π c = 2πc = L`, no change-of-variables needed —
+   the structure gives constant speed). Area preserved by genuine change-of-variables
+   (`integral_comp_mul_deriv'`) + signed-area-integrand periodicity collapsing `[τ0,τ0+2π]`→
+   `[0,2π]` (`Function.Periodic.intervalIntegral_add_eq`).
+5. Compose with s04 `centered` → zero mean while preserving the other four clauses.
+
+**Mathlib v4.26.0 pin notes (the sibling's actual bit-rot):** the only true API renames the
+sibling needed were `Filter.eventually_of_forall`→`Eventually.of_forall` and
+`lt_div_iff`/`div_lt_iff`→`…₀`. Other gotchas hit this session: `deriv_comp_add_const` needs
+explicit `(f) (a) (x)` args; `integral_comp_add_left` changed arity (use
+`Function.Periodic.intervalIntegral_add_eq` for the periodic shift instead); `simp_rw [hderiv]`
+cannot rewrite under an *unapplied* `Continuous (deriv σ)` — `funext` to `deriv σ = fun y => …`
+first; `area`'s `(1/2)*|·|` needs **two** `congr 1` to strip the constant *and* the abs before
+the integral identity; `integral_comp_mul_deriv'` rw-matches only if the integrand is literally
+`(g ∘ τ) x * f' x` (write the `∘` explicitly in the `integral_congr` target). Verified all key
+lemma names against the unpacked Mathlib source in a sibling worktree before writing — much
+faster than build-failure iteration.
+
+**Honest scope.** Parent `axiom exists_nice_reparam` is NOT removed: it is stated for *all*
+`SmoothClosedCurve` and is genuinely false for non-regular curves (Gap 1). This file is the
+maximal honest target — the regular-curve version, which is where "prove the reparam axiom from
+the IFT" can succeed. A parent edit restating the axiom for regular curves + importing this
+would drop `axiomCount` 5→4, but touches a verified gallery entry (sensitive).
+
 ## Next Steps (updated)
 
-1. **Mechanic task:** repair `AreaOfCircleOQ01OQ03OQ01.lean` and
-   `AreaOfCircleOQ01OQ02OQ02OQ01.lean` for Mathlib v4.26.0 (rename
-   `Filter.eventually_of_forall`→`Filter.Eventually.of_forall`, fix `HasFDerivAtFilter.congr`,
-   `Real.contDiff_cos`→`Real.contDiff_cos`?/`contDiff_cos`, `pi_lt_four`, etc.).
-2. After repair (or a ~300 LOC re-derivation of the IFT-inverse + change-of-variables middle
-   on current API, modeled on the sibling), compose with `centered_preserves_all` for a full
-   `0`-axiom `exists_nice_reparam` on regular curves; then the optional sensitive parent edit
-   (add `regular` field, drop `axiomCount` 5 → 4).
+1. **(optional, sensitive) Parent edit:** restate parent `exists_nice_reparam` with a `regular`
+   field on `SmoothClosedCurve` and discharge it via `exists_nice_reparam_for_regular`
+   (a `SmoothClosedCurve`↔`RegularClosedCurve` bridge is needed). Drops parent `axiomCount` 5→4.
+   Touches a verified entry → deliberate parent-edit PR, not in place.
+2. **Mechanic task (still open):** repair the bit-rotted `AreaOfCircleOQ01OQ03OQ01.lean` (sibling)
+   and `AreaOfCircleOQ01OQ02OQ02OQ01.lean` (parent) for v4.26.0 — the renames are now pinned
+   above. These are "verified" gallery entries that fail `lake build`.
 3. Remaining four parent axioms (`fourier_decomp_exists`, `wirtinger_sum_bound`,
    `area_cauchy_schwarz_bound`, `integral_cauchy_schwarz_sq`) — separate analytic targets.
