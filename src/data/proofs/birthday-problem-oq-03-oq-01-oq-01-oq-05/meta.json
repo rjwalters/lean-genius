@@ -21,9 +21,9 @@
     "dateAdded": "2026-06-21",
     "axiomCount": 0,
     "assumptions": "None. #print axioms reports only propext, Classical.choice, Quot.sound. The closed form is proved by unfolding the recurrence (no native_decide), so it carries no Lean.ofReduceBool dependency.",
-    "lineCount": 60,
-    "theoremCount": 3,
-    "definitionCount": 0,
+    "lineCount": 77,
+    "theoremCount": 6,
+    "definitionCount": 2,
     "originalContributions": [
       "birthdayCount3_four: the closed form birthdayCount3 4 d = d⁴ − 4d² + 3d over ℤ",
       "birthdayCount3_four_factored: the factored form d(d−1)(d²+d−3)",
@@ -47,7 +47,7 @@
     ]
   },
   "conclusion": {
-    "summary": "birthdayCount3 4 d = d⁴ − 4d² + 3d = d(d−1)(d²+d−3), the next closed form after the parent's n = 1, 2, 3 cases, proved 0-axiom (no native_decide). 3 theorems, 60 lines.",
+    "summary": "birthdayCount3 4 d = d⁴ − 4d² + 3d = d(d−1)(d²+d−3), the next closed form after the parent's n = 1, 2, 3 cases, proved 0-axiom (no native_decide). 6 theorems, 2 definitions, 77 lines.",
     "implications": "Continues the explicit closed-form sequence for the k=3 birthday count and demonstrates that these values are accessible by symbolic recurrence unfolding rather than the parent's native_decide evaluation, keeping the result axiom-free.",
     "openQuestions": [
       "Find the general closed form birthdayCount3 n d as a polynomial in d (a signed sum over involutions / telephone-number structure) and prove it by induction on n.",
@@ -56,11 +56,11 @@
     ]
   },
   "leanFile": {
-    "namespace": "BirthdayOptimized",
-    "lineCount": 60,
+    "namespace": "BirthdayN4Closed",
+    "lineCount": 77,
     "axiomCount": 0,
-    "theoremCount": 3,
-    "definitionCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
     "path": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ05.lean",
     "sorries": 0
   },
@@ -74,14 +74,14 @@
   "sections": [
     {
       "title": "The n = 4 closed form",
-      "startLine": 30,
-      "endLine": 47,
+      "startLine": 51,
+      "endLine": 62,
       "summary": "birthdayCount3_four: d⁴ − 4d² + 3d over ℤ, via small-case evaluation and symbolic unfolding of the recurrence for d = k+3."
     },
     {
       "title": "Factored and ℕ forms",
-      "startLine": 49,
-      "endLine": 60,
+      "startLine": 64,
+      "endLine": 75,
       "summary": "birthdayCount3_four_factored (d(d−1)(d²+d−3)) and birthdayCount3_four_eq_nat (a truncation-free ℕ identity for d ≥ 1)."
     }
   ],

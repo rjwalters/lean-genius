@@ -17626,8 +17626,29 @@
       "lastAudited": "2026-06-21T11:58:59Z",
       "result": "issues-fixed",
       "notes": "Build-verified (docker, 7743 jobs). #print axioms on jacobiSym_neg_eq_neg_one_of_three_mod_four + multiplier_route_obstructed_of_three_mod_four = [propext, Classical.choice, Quot.sound] only → 0-axiom. 0 sorries / 0 native_decide / 0 admit (grep hits on lines 53,63 are docstring PROSE). 178L, 7 theorems, 0 defs. Self-contained (import Mathlib only). Fixed meta theoremCount 8→7. status verified justified."
+    },
+    "birthday-problem-oq-03-oq-01-oq-01-oq-05": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-21T12:27:37Z",
+      "result": "issues-fixed",
+      "notes": "Static audit: 0 sorries / 0 axiom decls / no native_decide (base cases d=0,1,2 use kernel decide → no Lean.ofReduceBool) / no structures. 0-axiom verified claim holds. Fixed stale metadata: leanFile.namespace BirthdayOptimized→BirthdayN4Closed, theoremCount 3→6, definitionCount 0→2, lineCount 60→77 (file has defs R, birthdayCount3 + theorems R_zero/R_succ/R_one/four/four_factored/four_eq_nat), plus section line ranges and summary."
+    },
+    "cantor-diagonalization-oq-01-oq-01-oq-03": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-21T12:27:37Z",
+      "result": "clean",
+      "notes": "Static audit: 0 sorries / 0 axiom decls / no native_decide / no structures. 7 theorems, 1 noncomputable def (contFn), 79 lines — matches meta. 0-axiom verified claim holds (König constraint proved via Mathlib cofinality, not assumed)."
+    },
+    "platonic-solids-oq-02-oq-01": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-21T12:27:37Z",
+      "result": "clean",
+      "notes": "Static audit: 0 sorries / 0 axiom decls / no native_decide tactic (grep hits lines 18/29/114 are docstring prose; line 18 \"admits\" matched admit-grep) / no structures (6 plain defs/Props: angleFrac, vertexAngleSum, PositiveDefect, archimedeanTypes, family, IsUniform). 12 theorems, 6 defs, 206 lines — matches meta. 0-axiom original claim holds."
     }
   },
   "version": 1,
-  "lastUpdated": "2026-06-21T12:09:59Z"
+  "lastUpdated": "2026-06-21T12:27:37Z"
 }
