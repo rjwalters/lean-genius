@@ -530,6 +530,7 @@ import Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ03PID
 import Proofs.CayleyHamiltonCyclicVectorCommRingOQ01
 import Proofs.CayleyHamiltonCyclicVectorZMod4Counterexample
 import Proofs.CayleyHamiltonMinpolyOQ01
+import Proofs.CayleyHamiltonMinpolyOQ01OQ02
 import Proofs.CayleyHamiltonMinpolyOQ02
 import Proofs.CayleyHamiltonMinpolyOQ02OQ01
 import Proofs.CayleyHamiltonMinpolyOQ02OQ01OQ02
