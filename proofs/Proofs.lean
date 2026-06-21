@@ -608,6 +608,7 @@ import Proofs.CevasTheoremOQ02OQ01OQ02
 import Proofs.CevasTheoremOQ02OQ01OQ02OQ01
 import Proofs.CevasTheoremOQ02OQ01OQ03
 import Proofs.CevasTheoremOQ02OQ02
+import Proofs.CevasTheoremOQ02OQ04
 import Proofs.CevasTheoremOQ04
 import Proofs.CevasTheoremOQ04OQ01
 import Proofs.CevasTheoremSinRatio
