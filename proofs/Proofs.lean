@@ -2625,6 +2625,7 @@ import Proofs.GeometricSeriesOQ07OQ01
 import Proofs.GeometricSeriesOQ08
 import Proofs.GeometricSeriesOQ08OQ01OQ01
 import Proofs.GeometricSeriesOQ08OQ03
+import Proofs.GeometricSeriesOQ08OQ03OQ01
 import Proofs.GeometricSeriesOQ09
 import Proofs.GeometricSeriesOQ10
 import Proofs.GnedenkoKolmogorov
