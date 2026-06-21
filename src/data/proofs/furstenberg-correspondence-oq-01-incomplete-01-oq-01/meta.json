@@ -1,0 +1,185 @@
+{
+  "id": "furstenberg-correspondence-oq-01-incomplete-01-oq-01",
+  "title": "An Explicit Transitive Point of the Shift (Universal Sequence)",
+  "slug": "furstenberg-correspondence-oq-01-incomplete-01-oq-01",
+  "description": "A constructive Birkhoff transitive point for the shift T(x)(n) = x(n+1) on Cantor space {0,1}^ℕ: a single explicit sequence z whose entire forward orbit {T^t z} is dense. z is the infinite concatenation of all finite binary words (a universal/disjunctive sequence), so every finite word occurs as a factor of z. This strengthens the parent's mixing condition — which supplies a target-dependent witness for each pair of open sets — to one uniform universal point. Fully verified, 0 axioms and 0 sorries.",
+  "meta": {
+    "author": "Birkhoff (1927); construction in the style of disjunctive/normal sequences",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Transitive_point",
+    "date": "1927",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FurstenbergShiftTransitive.lean",
+    "tags": [
+      "ergodic-theory",
+      "dynamics",
+      "topological-dynamics",
+      "symbolic-dynamics",
+      "shift-dynamics",
+      "cantor-space",
+      "transitive-point",
+      "disjunctive-sequence",
+      "birkhoff-transitivity",
+      "combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-checked; #print axioms exists_transitive_point reports only the foundational propext / Classical.choice / Quot.sound. No `axiom` declarations, no sorries, no native_decide.",
+    "dateAdded": "2026-06-21",
+    "mathlibDependencies": [
+      {
+        "theorem": "Encodable.encodek",
+        "description": "decode (encode a) = some a — gives a surjective enumeration of the (countable) set of finite words List Bool",
+        "module": "Mathlib.Logic.Encodable.Basic"
+      },
+      {
+        "theorem": "List.getD_append",
+        "description": "Indexing a concatenation within the left part agrees with the left part — used for prefix stability and word occurrence",
+        "module": "Mathlib.Data.List.Basic"
+      },
+      {
+        "theorem": "List.getD_append_right",
+        "description": "Indexing a concatenation past the left part reads the right part at the shifted index — locates a block inside the concatenation",
+        "module": "Mathlib.Data.List.Basic"
+      },
+      {
+        "theorem": "dense_iff_inter_open",
+        "description": "A set is dense iff it meets every nonempty open set — reduces orbit density to 'the orbit enters every nonempty open set'",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "enum : ℕ → List Bool, a surjective enumeration of all finite binary words built from Encodable (List Bool); enum_surjective proves every word is hit",
+      "The universal sequence z, defined as the infinite concatenation block 0 ++ block 1 ++ … of padded words (block k = enum k ++ [false]); the one-bit pad guarantees offsets grow at least linearly so every bit of z is read from a finite prefix",
+      "Prefix-stability infrastructure (concatPrefix, offset, concatPrefix_prefix, getD_concatPrefix_stable, z_eq): the value of a bit is independent of which sufficiently long finite concatenation it is read from",
+      "occ: the occurrence lemma — the word enum k appears verbatim in z starting at offset k",
+      "disjunctive: every finite word occurs as a factor of z (z is a disjunctive sequence)",
+      "dense_orbit / exists_transitive_point: the forward orbit of z is dense, i.e. z is an explicit Birkhoff transitive point — strengthening the parent's per-target mixing witness to one uniform universal point"
+    ],
+    "prerequisites": [
+      "Product topology on ℕ → Bool (Cantor space) and word cylinders (reused from the parent)",
+      "Symbolic dynamics: the full one-sided shift",
+      "Countability of finite words (Encodable) and disjunctive/universal sequences",
+      "Birkhoff transitivity: existence of a point with dense orbit"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 192,
+    "relatedProblems": [
+      {
+        "id": "furstenberg-correspondence-oq-01-incomplete-01",
+        "relationship": "Direct strengthening: the parent proves Devaney chaos with transitivity in mixing form (a witness per pair of open sets); this entry constructs a single transitive point whose orbit is dense, the first 'next step' the parent listed"
+      },
+      {
+        "id": "furstenberg-correspondence-oq-01",
+        "relationship": "Same shift system on Cantor space; the universal sequence is the topological-recurrence object dual to the measure-theoretic correspondence"
+      },
+      {
+        "id": "furstenberg-correspondence",
+        "relationship": "Same shift dynamical system underlying the correspondence principle"
+      }
+    ],
+    "theoremCount": 15,
+    "definitionCount": 5
+  },
+  "crossReferences": [
+    {
+      "targetId": "furstenberg-correspondence-oq-01-incomplete-01",
+      "relationship": "extends",
+      "description": "Strengthens the parent's topological transitivity (stated in mixing form, with a target-dependent bridge point) to the existence of a single explicit transitive point with dense orbit"
+    },
+    {
+      "targetId": "furstenberg-correspondence-oq-01",
+      "relationship": "related",
+      "description": "Topological-recurrence structure of the same shift system whose measure-theoretic side the parent develops"
+    }
+  ],
+  "overview": "The parent file establishes that the shift T(x)(n) = x(n+1) on Cantor space is chaotic in the sense of Devaney, with topological transitivity stated in mixing form: for each pair of nonempty open sets U, V it produces an ad-hoc point of U whose orbit later enters V. Birkhoff transitivity asks for something uniform and stronger — a SINGLE point whose entire forward orbit is dense, simultaneously approximating every configuration. This entry constructs such a transitive point explicitly. The idea is the classical universal (disjunctive) sequence: enumerate all finite binary words via Encodable, then concatenate them into one infinite sequence z = block 0 ++ block 1 ++ block 2 ++ …, where each block is a word followed by a single padding bit (so blocks are nonempty and the n-th bit of z is always read from a finite prefix). Because the enumeration is surjective, every word w equals enum k for some k and therefore appears verbatim in z at the offset where block k begins — z is disjunctive. Given any nonempty open set U, shrink it to a prefix cylinder, realize that prefix as some enum k, and the shift T^{offset k} z lands in U. Hence the orbit of z meets every nonempty open set and is dense. The construction reuses the parent's word-cylinder neighbourhood basis and is verified with no axioms or sorries.",
+  "sections": [
+    {
+      "id": "enumeration",
+      "title": "A Surjective Enumeration of All Finite Words",
+      "startLine": 55,
+      "endLine": 64,
+      "summary": "enum k = (decode k).getD [] enumerates all finite binary words via Encodable (List Bool); enum_surjective shows every word is hit, using Encodable.encodek.",
+      "mathContext": "Countability of the set of finite words is the combinatorial input that makes a single universal sequence possible."
+    },
+    {
+      "id": "universal-sequence",
+      "title": "The Universal (Disjunctive) Sequence",
+      "startLine": 66,
+      "endLine": 148,
+      "summary": "Padded blocks block k = enum k ++ [false], their running concatenation concatPrefix and offsets offset, prefix stability (concatPrefix_prefix, getD_concatPrefix_stable, z_eq), the sequence z itself, and the occurrence lemma occ: enum k appears in z at offset k.",
+      "mathContext": "Concatenating an enumeration of all words yields a sequence containing every word; padding keeps offsets growing so the infinite concatenation is well-defined pointwise."
+    },
+    {
+      "id": "transitive-point",
+      "title": "z Is Disjunctive and Its Orbit Is Dense",
+      "startLine": 150,
+      "endLine": 192,
+      "summary": "disjunctive: every finite word occurs as a factor of z. orbit_mem: some iterate of z enters any nonempty open set. dense_orbit / exists_transitive_point: the forward orbit of z is dense — an explicit Birkhoff transitive point.",
+      "mathContext": "A dense orbit is the defining property of a transitive point; the explicit universal sequence makes Birkhoff transitivity constructive."
+    }
+  ],
+  "conclusion": "The shift on Cantor space has an explicit transitive point: the universal sequence z formed by concatenating all finite binary words. Every finite word occurs as a factor of z (z is disjunctive), so the forward orbit of z meets every nonempty open set and is therefore dense. This upgrades the parent's mixing condition — a separate, target-dependent witness for each pair of open sets — to a single uniform universal point, the constructive content of Birkhoff transitivity. The whole development is machine-checked with 0 axioms and 0 sorries, reusing the parent's word-cylinder neighbourhood basis.",
+  "leanFile": {
+    "path": "Proofs/FurstenbergShiftTransitive.lean",
+    "lineCount": 192,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 5,
+    "theoremCount": 15
+  },
+  "mainTheorems": [
+    {
+      "name": "exists_transitive_point",
+      "statement": "The shift on Cantor space has a point whose forward orbit is dense — exhibited explicitly as the universal sequence z.",
+      "isAxiomatized": false,
+      "significance": "The headline result: a constructive Birkhoff transitive point, strengthening the parent's per-target mixing witness to one uniform universal point."
+    },
+    {
+      "name": "dense_orbit",
+      "statement": "The forward orbit {T^t z : t ∈ ℕ} of the universal sequence z is dense in Cantor space.",
+      "isAxiomatized": false,
+      "significance": "Density of a single explicit orbit — the defining property of a transitive point."
+    },
+    {
+      "name": "disjunctive",
+      "statement": "Every finite binary word occurs as a factor of z.",
+      "isAxiomatized": false,
+      "significance": "The combinatorial heart: z is a disjunctive (universal) sequence, which is exactly why its orbit is dense."
+    },
+    {
+      "name": "occ",
+      "statement": "The word enum k appears verbatim in z starting at position offset k.",
+      "isAxiomatized": false,
+      "significance": "The occurrence lemma linking the surjective enumeration to factor occurrences in z."
+    },
+    {
+      "name": "enum_surjective",
+      "statement": "Every finite binary word equals enum k for some k.",
+      "isAxiomatized": false,
+      "significance": "Surjectivity of the word enumeration, the countability input to the whole construction."
+    }
+  ],
+  "references": [
+    {
+      "title": "Dynamical Systems",
+      "author": "G. D. Birkhoff",
+      "year": "1927",
+      "url": "https://doi.org/10.1090/coll/009"
+    },
+    {
+      "title": "An Introduction to Chaotic Dynamical Systems",
+      "author": "R. L. Devaney",
+      "year": "1989",
+      "url": "https://www.google.com/books/edition/An_Introduction_To_Chaotic_Dynamical_Sys/3wbvAAAAMAAJ"
+    },
+    {
+      "title": "Recurrence in Ergodic Theory and Combinatorial Number Theory",
+      "author": "H. Furstenberg",
+      "year": "1981",
+      "url": "https://press.princeton.edu/books/hardcover/9780691615363/recurrence-in-ergodic-theory-and-combinatorial-number-theory"
+    }
+  ],
+  "sorries": 0
+}
