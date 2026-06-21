@@ -1,0 +1,45 @@
+{
+  "id": "angle-trisection-oq-04-oq-01",
+  "title": "Neusis-Constructible Degrees Are Exactly the 3-Smooth Numbers",
+  "slug": "angle-trisection-oq-04-oq-01",
+  "description": "Replaces the existential definition of a 2-3 number (d ∣ 2^a·3^b for some a,b) with an intrinsic, witness-free criterion: a positive d is a 2-3 number iff every prime factor of d is 2 or 3 — i.e. the neusis-constructible degrees are exactly the 3-smooth numbers. The hard backward direction is a strong induction peeling off Nat.minFac. From the criterion the structural theory falls out with no witness bookkeeping: closure under divisors, products, and least common multiples; a uniform prime obstruction superseding all of the parent's individual n_not_two_three results; and the geometry-facing form with the trisection witness (degree 3 passes). Answers OQ-04-OQ-01 of the tool-hierarchy study angle-trisection-oq-04.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ04OQ01.lean",
+    "tags": [
+      "geometry",
+      "angle-trisection",
+      "constructibility",
+      "number-theory",
+      "smooth-numbers"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified (depends only on propext, Classical.choice, Quot.sound). Does not re-derive Gleason's field-theoretic equivalence (degree ↔ neusis construction), which the parent states as the modelling assumption.",
+    "lineCount": 217,
+    "theoremCount": 14,
+    "definitionCount": 2,
+    "originalContributions": [
+      "isTwoThreeNumber_iff: intrinsic prime-factor criterion replacing the existential ∃ a b witness — d is a 2-3 number iff every prime factor is 2 or 3",
+      "exists_dvd_of_primes: the hard backward direction by strong induction peeling off Nat.minFac and re-absorbing the prime into the exponent",
+      "not_isTwoThreeNumber_of_prime: a single uniform obstruction superseding all of the parent's individual n_not_two_three lemmas (instantly recovers 5, 7, 11 ∉)",
+      "isTwoThreeNumber_lcm: closure under least common multiples — not immediate from the existential definition, needs the prime-factor criterion",
+      "isTwoThreeNumber_of_dvd and isTwoThreeNumber_mul: witness-free closure under divisors and products",
+      "isNeusisConstructible_iff: the geometry-facing form — the marked-ruler analogue of the Gauss–Wantzel prime-factor test",
+      "trisection_degree_neusis: the degree-3 extension realizing cos(20°) passes the criterion (only prime factor is 3)"
+    ]
+  },
+  "leanFile": {
+    "lineCount": 217,
+    "path": "Proofs/AngleTrisectionOQ04OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 2,
+    "theoremCount": 14
+  },
+  "sorries": 0
+}
