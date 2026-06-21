@@ -80,6 +80,11 @@
       "id": "geometric-series-oq-08-oq-03",
       "question": "Extend the defect identity to the Ico-slice partial sum ∑_{k ∈ Ico m n} rᵏ and bound the slice by rᵐ/(1 − r); state the corresponding Cauchy-criterion estimate |∑_{k ∈ Ico m n} rᵏ| ≤ rᵐ/(1 − r) used in the comparison/ratio tests.",
       "significance": "low"
+    },
+    {
+      "id": "geometric-series-oq-08-oq-04",
+      "question": "Raise the index weight to k²: give the finite SECOND-moment closed form ∑_{k<n} k²·xᵏ — the division-free identity (1 − x)³·∑_{k<n} k²·xᵏ = x + x² − xⁿ·Q(n,x) with defect polynomial Q(n,x) = n² + (1 + 2n − 2n²)·x + (n−1)²·x² over any commutative ring, the field form over (1 − x)³, and recovery of the infinite second moment x(1+x)/(1−x)³ as the n → ∞ limit.",
+      "significance": "medium"
     }
   ],
   "crossReferences": [

@@ -1,0 +1,124 @@
+{
+  "id": "geometric-series-oq-08-oq-04",
+  "slug": "geometric-series-oq-08-oq-04",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.GeomSum",
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter"
+    ],
+    "namespace": "GeometricSeriesOQ08OQ04",
+    "lineCount": 171,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/GeometricSeriesOQ08OQ04.lean",
+    "sorries": 0
+  },
+  "title": "The Finite Second Moment: ∑_{k<n} k²·xᵏ, its Defect Polynomial, and the Infinite Limit",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ08OQ04.lean",
+    "tags": [
+      "analysis",
+      "geometric-series",
+      "arithmetico-geometric",
+      "finite-sums",
+      "second-moment",
+      "truncation-error",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 171,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "cube_one_sub_mul_sum_sq_mul_pow: the division-free master identity (1 − x)³·∑_{k<n} k²·xᵏ = x + x² − xⁿ·Q(n,x) over an ARBITRARY commutative ring, where Q(n,x) = n² + (1 + 2n − 2n²)·x + (n−1)²·x² is the explicit truncation defect. This is the finite second-moment analogue of the parent's zeroth-power defect (oq-08) and the first-power arithmetico-geometric form (oq-08-oq-01); it is proved by induction with the step collapsing to the single ring identity Q(n) − x·Q(n+1) = n²·(1−x)³.",
+      "defectPoly: the degree-2 tail polynomial Q(n,x) packaged as a definition, isolating exactly what ∑_{k<n} k²·xᵏ is missing relative to the infinite series x(1+x)/(1−x)³.",
+      "sum_sq_mul_pow_eq_div: the field form ∑_{k<n} k²·xᵏ = (x + x² − xⁿ·Q(n,x))/(1 − x)³ for x ≠ 1 in any field.",
+      "defect_tendsto_zero: the defect tail xⁿ·Q(n,x) → 0 for |x| < 1 (geometric decay beats the polynomial Q), the analytic content that turns the finite closed form into the infinite value.",
+      "hasSum_sq_mul_pow: recovers the infinite second moment ∑ k²·xᵏ = x(1+x)/(1−x)³ for |x| < 1 as the n → ∞ limit of the finite closed form (rather than assumed). The value coincides with sibling oq-07's hasSum_sq_mul_geometric; the novelty here is the finite/defect route."
+    ],
+    "prerequisites": [
+      "Finset.sum_range_succ (induction step on the partial sum)",
+      "ring / induction for the core polynomial identity over a CommRing",
+      "summable_pow_mul_geometric_of_norm_lt_one and Summable.tendsto_atTop_zero (nᵏ·xⁿ → 0)",
+      "summable_norm_pow_mul_geometric_of_norm_lt_one and hasSum_iff_tendsto_nat_of_summable_norm (HasSum as the limit of partial sums)",
+      "Parent: geometric-series-oq-08 (finite vs infinite, truncation defect, bounds)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "∑_{k<n+1} f k = (∑_{k<n} f k) + f n. Drives the induction that establishes the master identity.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "summable_pow_mul_geometric_of_norm_lt_one",
+        "description": "Summable (fun n => (n:R)^k · r^n) for ‖r‖ < 1. With Summable.tendsto_atTop_zero gives nᵏ·xⁿ → 0, used to show the defect tail vanishes.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "hasSum_iff_tendsto_nat_of_summable_norm",
+        "description": "For a norm-summable family, HasSum f a ↔ the partial sums ∑_{k<n} f k tend to a. Converts the finite closed form into the infinite HasSum statement.",
+        "module": "Mathlib.Analysis.Normed.Group.InfiniteSum"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-08-oq-04-oq-01",
+      "question": "Give the general r-th moment finite closed form: (1 − x)^{r+1}·∑_{k<n} kʳ·xᵏ = Aᵣ(x) − xⁿ·Qᵣ(n,x), where Aᵣ is the Eulerian-polynomial numerator x·Aᵣ(x)/(1−x)^{r+1} of the infinite r-th moment and Qᵣ is a degree-r defect polynomial in x with coefficients of degree r in n. The cases r = 0,1,2 are oq-08, oq-08-oq-01, and this entry.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-08-oq-04-oq-02",
+      "question": "Bound the second-moment truncation defect: for 0 ≤ x < 1 give an explicit envelope |xⁿ·Q(n,x)|/(1 − x)³ ≤ C·n²·xⁿ/(1 − x)³ and the monotone/convergence package making x(1+x)/(1−x)³ the supremum of the increasing finite sums.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-08",
+      "relationship": "extends",
+      "description": "Parent. oq-08 gives the zeroth-power truncation defect (1 − x)⁻¹ − ∑_{k<n} xᵏ = xⁿ/(1 − x). This entry is the second-moment analogue: the finite closed form for ∑_{k<n} k²·xᵏ with the explicit degree-2 defect polynomial, recovering the infinite value as n → ∞."
+    },
+    {
+      "targetId": "geometric-series-oq-07",
+      "relationship": "sibling",
+      "description": "oq-07 computes the INFINITE second moment ∑_{n≥0} n²·rⁿ = r(1+r)/(1−r)³. This entry supplies the FINITE partial sum ∑_{k<n} k²·xᵏ and its truncation defect, re-deriving oq-07's value as the limit when the defect tail vanishes."
+    }
+  ],
+  "references": [
+    {
+      "title": "Concrete Mathematics (sums of the form ∑ k² xᵏ)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for arithmetico-geometric sums and the operator (x d/dx) raising the moment of the geometric series."
+    },
+    {
+      "title": "Mathlib4: Analysis.SpecificLimits.Normed",
+      "author": "Mathlib Community",
+      "year": "2026",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of summable_pow_mul_geometric_of_norm_lt_one and the norm-summability lemmas used to vanish the defect tail and assemble the HasSum corollary."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Over an arbitrary commutative ring, the finite second-moment sum satisfies the division-free identity (1 − x)³·∑_{k<n} k²·xᵏ = x + x² − xⁿ·Q(n,x) with defect polynomial Q(n,x) = n² + (1 + 2n − 2n²)·x + (n−1)²·x²; the field form divides by (1 − x)³ when x ≠ 1. For |x| < 1 the defect tail xⁿ·Q(n,x) → 0, so the finite sums converge to x(1+x)/(1−x)³ — the infinite second moment, here recovered as a limit rather than assumed. 171 lines, 7 theorems, 1 definition, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This is the finite/defect cell missing from the geometric-series moment grid: the parent (oq-08) handles the zeroth moment, oq-08-oq-01 the first moment, and oq-07 the infinite second moment. The explicit degree-2 defect polynomial is exactly the error term when ∑ k² xᵏ is truncated, and the induction step's collapse to Q(n) − x·Q(n+1) = n²·(1−x)³ shows how each higher moment's defect is generated from the previous, pointing to the general Eulerian-polynomial pattern.",
+    "openQuestions": [
+      "Generalise to the r-th moment finite closed form with Eulerian-polynomial numerator and a degree-r defect polynomial.",
+      "Give the explicit truncation envelope and monotone-convergence package for the second-moment partial sums."
+    ]
+  }
+}
