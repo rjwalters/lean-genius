@@ -2435,6 +2435,7 @@ import Proofs.Erdos980Problem
 import Proofs.Erdos981Problem
 import Proofs.Erdos982Aristotle
 import Proofs.Erdos982Problem
+import Proofs.Erdos982ThinVertex
 import Proofs.Erdos983Problem
 import Proofs.Erdos984Problem
 import Proofs.Erdos985Problem
