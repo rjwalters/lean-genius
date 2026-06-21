@@ -2623,6 +2623,7 @@ import Proofs.FurstenbergCorrespondence
 import Proofs.FurstenbergCorrespondenceOQ01
 import Proofs.FurstenbergCorrespondenceOQ02
 import Proofs.FurstenbergShiftChaos
+import Proofs.FurstenbergShiftTransitive
 import Proofs.GCDAlgorithm
 import Proofs.GCDAlgorithmOQ01
 import Proofs.GCDAlgorithmOQ01OQ03
