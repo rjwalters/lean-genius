@@ -3508,3 +3508,4 @@ import Proofs.ZsqrtdNegTwoOQ03OQ01
 import Proofs.eTranscendental
 import Proofs.MellinPowerConvergenceOQ01
 import Proofs.GeometricSeriesOQ07OQ01OQ01OQ01OQ01
+import Proofs.GeometricSeriesOQ07OQ01OQ01OQ01OQ04
