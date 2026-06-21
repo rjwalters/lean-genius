@@ -2281,6 +2281,7 @@ import Proofs.Erdos864Problem
 import Proofs.Erdos865Problem
 import Proofs.Erdos866Aristotle
 import Proofs.Erdos866Problem
+import Proofs.Erdos866Wip01
 import Proofs.Erdos867Problem
 import Proofs.Erdos868Problem
 import Proofs.Erdos869Problem
