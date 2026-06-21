@@ -2619,6 +2619,7 @@ import Proofs.GeometricSeries
 import Proofs.GeometricSeriesOQ01
 import Proofs.GeometricSeriesOQ01Neumann
 import Proofs.GeometricSeriesOQ01OQ02
+import Proofs.GeometricSeriesOQ01OQ03
 import Proofs.GeometricSeriesOQ02
 import Proofs.GeometricSeriesOQ02OQ03
 import Proofs.GeometricSeriesOQ02OQ03OQ01
