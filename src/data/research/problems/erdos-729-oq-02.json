@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-05T23:54:18-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "2-adic recurrences + maximality characterization companion shipped (verified, 0-axiom).",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Optional: prove s_2(n)=1 <-> n=2^k here too (currently delegated to Kummer companion), or extend doubling recurrence to general prime p (v_p((p*n)!) = ? ).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,14 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT (researcher-2, 2026-06-15, build-pending, dual blackout): added self-contained companion Erdos729LegendreGeneral.lean proving the general textbook Legendre identity v_p(n!)=(n-s_p(n))/(p-1) axiom-free for EVERY prime p (sibling PR #24474 discharges only the p=2 case before deleting the general axiom). Division form bridges Mathlib sub_one_mul_padicValNat_factorial by cancelling p-1; states both Mathlib (p.digits n).sum form and recursive digitSum form. 0 axioms/0 sorries; math certified over 7500 (p,n) pairs. UNREGISTERED (blackout); does not touch the contested registered file (#24474/#24481). The 3 remaining axioms (erdos_1968_classical, barreto_leeham_theorem/bound) are deep published research, out of scope.",
+    "progressSummary": "ACT (researcher-9, 2026-06-20): added third self-contained companion Erdos729LegendreRecurrence.lean — the DOWNSTREAM consequences of Legendre's identity for p=2 that are absent from Mathlib and the two prior companions. Proves the 2-adic doubling recurrences v_2((2n)!)=n+v_2(n!) and v_2((2n+1)!)=n+v_2(n!) (the factorial of 2n collects exactly n extra factors of 2), the digit-sum invariants s_2(2n)=s_2(n) / s_2(2n+1)=s_2(n)+1, and the maximality characterization v_2(n!)=n-1 <-> s_2(n)=1 (n a power of two) — n-1 being the ceiling since v_2(n!)<n for n>=1. 5 theorems, 0 axioms, 0 sorries, 0 native_decide; #print axioms = {propext, Classical.choice, Quot.sound} only. Registered Proofs.lean. Built GREEN (docker, 7743 jobs). The equivalence s_2(n)=1 <-> n=2^k is left to the Kummer companion KummerTheoremOQ04OQ01.lean (not reproved here).\n\nPRIOR: ACT (researcher-2, 2026-06-15, build-pending, dual blackout): added self-contained companion Erdos729LegendreGeneral.lean proving the general textbook Legendre identity v_p(n!)=(n-s_p(n))/(p-1) axiom-free for EVERY prime p (sibling PR #24474 discharges only the p=2 case before deleting the general axiom). Division form bridges Mathlib sub_one_mul_padicValNat_factorial by cancelling p-1; states both Mathlib (p.digits n).sum form and recursive digitSum form. 0 axioms/0 sorries; math certified over 7500 (p,n) pairs. UNREGISTERED (blackout); does not touch the contested registered file (#24474/#24481). The 3 remaining axioms (erdos_1968_classical, barreto_leeham_theorem/bound) are deep published research, out of scope.",
     "builtItems": [
       "padicValNat_factorial_eq_div (p n)(hp:p.Prime): padicValNat p n.factorial = (n-(p.digits n).sum)/(p-1) -- Erdos729LegendreGeneral.lean",
       "legendre_digit_sum_identity (p n)(hp:p.Prime): same in recursive digitSum form (exact deleted-axiom statement, all primes)",
-      "verify_legendre_general.py: 7500 (p,n) pairs (p<50,n<500) certify the identity + (p-1)|(n-s_p(n)) divisibility, 0 mismatches"
+      "verify_legendre_general.py: 7500 (p,n) pairs (p<50,n<500) certify the identity + (p-1)|(n-s_p(n)) divisibility, 0 mismatches",
+      "v2_factorial_two_mul (n): padicValNat 2 (2*n).factorial = n + padicValNat 2 n.factorial -- 2-adic doubling recurrence, Erdos729LegendreRecurrence.lean",
+      "v2_factorial_two_mul_add_one (n): padicValNat 2 (2*n+1).factorial = n + padicValNat 2 n.factorial -- odd-step recurrence (2n+1 odd contributes no factor of 2)",
+      "binary_digit_sum_two_mul (n): s_2(2n)=s_2(n); binary_digit_sum_two_mul_add_one (n): s_2(2n+1)=s_2(n)+1 -- digit-sum bit-shift invariants",
+      "v2_factorial_eq_pred_iff (n)(hn:1<=n): padicValNat 2 n.factorial = n-1 <-> (Nat.digits 2 n).sum = 1 -- maximality (n a power of two)"
     ],
     "insights": [
-      "General textbook Legendre identity v_p(n!)=(n-s_p(n))/(p-1) proved axiom-free for ALL primes p in new companion Erdos729LegendreGeneral.lean (sibling PR #24474 covers only p=2). Division form derived from Mathlib sub_one_mul_padicValNat_factorial via Nat.mul_div_cancel_left; not a named Mathlib lemma."
+      "General textbook Legendre identity v_p(n!)=(n-s_p(n))/(p-1) proved axiom-free for ALL primes p in new companion Erdos729LegendreGeneral.lean (sibling PR #24474 covers only p=2). Division form derived from Mathlib sub_one_mul_padicValNat_factorial via Nat.mul_div_cancel_left; not a named Mathlib lemma.",
+      "v_2((2n)!) = n + v_2(n!): the 2-adic valuation of the factorial doubles-with-offset because multiplying by 2 left-shifts the binary expansion (s_2 invariant) — i.e. 2n! gains exactly n factors of two over n!. Equivalent to Legendre + s_2(2n)=s_2(n). v_2(n!) hits its ceiling n-1 exactly when s_2(n)=1 (n a power of two). None of these are named Mathlib lemmas."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -60,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-04-13T00:54:20.846Z",
-  "lastUpdate": "2026-06-15",
+  "lastUpdate": "2026-06-20",
   "significance": 7,
   "tractability": 8,
   "leanFiles": [
@@ -74,6 +79,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos729LegendreRecurrence.lean",
+      "filename": "Erdos729LegendreRecurrence.lean",
+      "lineCount": 132,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729LegendreRecurrence.lean"
     }
   ]
 }

@@ -2069,6 +2069,7 @@ import Proofs.Erdos727Problem
 import Proofs.Erdos728FactorialDivisibility
 import Proofs.Erdos728Problem
 import Proofs.Erdos729LegendreGeneral
+import Proofs.Erdos729LegendreRecurrence
 import Proofs.Erdos729Problem
 import Proofs.Erdos72Aristotle
 import Proofs.Erdos72Problem
