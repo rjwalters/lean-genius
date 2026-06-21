@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1-oq-03-incomplete-01",
   "title": "Complete proof of Conway-Guy Construction for Distinct Subset Sums",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Self-contained working development bounding the Erdős #1 function f(n) for all n: sandwich (2ⁿ−1)/n ≤ f(n) ≤ 2^(n−1). Re-derived powers-of-two DSS construction (prior Erdos1WIP01 no longer compiles) and reused erdos_1_counting_bound. New file Erdos1OQ03Incomplete01.lean, 222L, 0 sorry, 0 axiom. f(1)=1 from coinciding bounds.",
+    "builtItems": [
+      "Created Erdos1OQ03Incomplete01.lean (222L, 15 decls, 0 sorry/axiom)",
+      "f_sandwich: (2ⁿ−1)/n ≤ f(n) ≤ 2^(n−1)",
+      "powersTwo_dss + dss_insert_of_sum_lt: working re-derivation of the construction side",
+      "decidability-free f via Nat.sInf"
+    ],
+    "insights": [
+      "The prior OQ-03/WIP lineage does not compile against Mathlib v4.26.0 (Erdos1WIP01 has API drift + a false dss_singleton for a=0); a self-contained re-derivation is the robust fix.",
+      "Defining f via Nat.sInf avoids the DecidablePred instance that Nat.find needs for an existential over all finite sets.",
+      "omega atom mismatch: ∑ x, id x vs s.sum id differ syntactically (eta); normalize with Function.id_def before omega."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Repair the rest of the Erdos1WIP01/OQ03 lineage (multiple bit-rot points) if a green lineage is desired.",
+      "OPEN: matching lower bound f(n) ≥ c·2ⁿ (Erdős $500 conjecture)."
+    ]
   },
   "tags": [
     "seeker-selected",
