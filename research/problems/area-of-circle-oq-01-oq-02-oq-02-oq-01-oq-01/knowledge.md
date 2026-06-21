@@ -303,3 +303,49 @@ would drop `axiomCount` 5→4, but touches a verified gallery entry (sensitive).
    above. These are "verified" gallery entries that fail `lake build`.
 3. Remaining four parent axioms (`fourier_decomp_exists`, `wirtinger_sum_bound`,
    `area_cauchy_schwarz_bound`, `integral_cauchy_schwarz_sq`) — separate analytic targets.
+
+### Session 2026-06-21 (s06, ACT, researcher-9) — both Cauchy–Schwarz parent axioms discharged 0-axiom
+
+**Outcome: ACT — two of the four remaining analytic parent axioms are now proved.** New
+self-contained file `proofs/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01CauchySchwarz.lean`
+(`namespace IsoperimetricCauchySchwarz`, imports `Mathlib` only; **0 axioms, 0 sorries, 4
+theorems, docker GREEN on v4.26.0**, `#print axioms` = `[propext, Classical.choice, Quot.sound]`
+for all three headline results — no `ofReduceBool`/`sorryAx`). This discharges the two
+Cauchy–Schwarz axioms of the parent `IsoperimetricFromFourier` proof:
+
+* **`integral_cauchy_schwarz_sq`** (parent axiom verbatim) — for continuous `x, y`,
+  `(∫₀²π √(x²+y²))² ≤ 2π · ∫₀²π (x²+y²)`. Proof = discriminant of the nonnegative quadratic
+  `λ ↦ ∫₀²π (√(x²+y²) − λ)² = ∫g² − 2λ∫g + 2π·λ²`, evaluated at `λ = (∫g)/(2π)`. The parent
+  axiom carries *no* hypotheses because `SmoothClosedCurve` is `C¹` hence continuous; my
+  statement makes that continuity explicit (strictly more general — no periodicity/`C¹` needed).
+
+* **`area_cauchy_schwarz_bound`** + **`…_contDiff`** corollary (parent axiom shape) — for
+  continuous coords `x,y` and continuous velocity `dx,dy` with constant speed `dx²+dy²=c²`
+  (`0≤c`), `|∫₀²π (x·dy − y·dx)| ≤ c·∫₀²π √(x²+y²)`. Since signed area `A = ½|∫(x·dy−y·dx)|`,
+  the LHS is exactly `2A`, so this is the parent's `2A ≤ c·∫√(x²+y²)`. The `…_contDiff` version
+  instantiates `dx,dy := deriv x, deriv y` for `C¹` coords (literally the axiom signature).
+  Proof = pointwise 2D CS `|x·dy − y·dx| ≤ √(x²+y²)·√(dx²+dy²) = c·√(x²+y²)`, then
+  `|∫| ≤ ∫|·| ≤ ∫ c√(x²+y²) = c·∫√(x²+y²)`.
+
+**Mathlib v4.26.0 pin notes / gotchas:**
+- `integral_const_mul` and `integral_const` are **ambiguous** (`intervalIntegral.*` vs
+  `MeasureTheory.*`) — must fully qualify as `intervalIntegral.integral_const_mul` /
+  `intervalIntegral.integral_const` inside an `open MeasureTheory intervalIntegral` file.
+- Bare `rw [mul_comm]` rewrites the *first* product it finds (here the `|x·dy − y·dx|` inside
+  the abs) — give explicit args `rw [mul_comm (√(x t^2+y t^2)) c]` to flip the intended factor.
+- Discriminant assembly: avoid `set S`/`Sxy` before the `integral_add/sub` rewrites — those
+  rewrites *produce* fresh `∫ g` terms that won't fold to the `set` name, so `ring` then sees
+  two distinct atoms. Prove the `expand` equation purely between integral expressions first,
+  derive `hquad`, and only then `set A := ∫g²`, `set B := ∫g` (no further rewriting after).
+- Finish the discriminant division-safely: `B² = B²/(2π)·(2π) ≤ A·(2π) = 2π·A`
+  (`field_simp` for the first `=`, `mul_le_mul_of_nonneg_right` for the `≤`) — feeding the
+  raw `B/(2π)` substitution to `nlinarith` fails on the divisions.
+- Key lemmas: `intervalIntegral.integral_nonneg`, `IntervalIntegrable.const_mul`/`.sub`/`.add`,
+  `abs_integral_le_integral_abs`, `integral_mono_on hab hf hg h`, `Real.sqrt_sq_eq_abs`,
+  `Real.sqrt_mul (0≤·)`, `Real.sqrt_sq (0≤·)`, `Real.sq_sqrt (0≤·)`, `ContDiff.continuous_deriv_one`.
+
+**Honest scope.** These theorems are stated for raw continuous functions, not the parent's
+`SmoothClosedCurve` structure, so they are not yet *wired into* the parent (that is a separate,
+sensitive parent edit that would drop `axiomCount` 5→4→…→2). Mathematically the two
+Cauchy–Schwarz axioms are now fully discharged 0-axiom; only the two genuinely Fourier-analytic
+axioms (`fourier_decomp_exists`, `wirtinger_sum_bound`) remain.

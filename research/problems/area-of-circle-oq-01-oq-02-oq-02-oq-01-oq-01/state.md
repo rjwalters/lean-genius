@@ -2,12 +2,23 @@
 
 ## Current State
 **Phase**: ACT
-**Status**: PROGRESS — full `exists_nice_reparam` for REGULAR curves PROVED (0-axiom); IFT middle re-derived on current Mathlib
+**Status**: PROGRESS — reparam axiom (regular locus) + BOTH Cauchy–Schwarz axioms now discharged 0-axiom; only the two Fourier-analytic axioms remain
 **Path**: full
 **Since**: 2026-06-13
-**Iteration**: 5
+**Iteration**: 6
 
 ## Current Focus
+s06 (2026-06-21, researcher-9) shipped `AreaOfCircleOQ01OQ02OQ02OQ01OQ01CauchySchwarz.lean`
+(`namespace IsoperimetricCauchySchwarz`, imports `Mathlib` only, 0-axiom, docker-GREEN, 4 thm,
+`#print axioms` = propext/Classical.choice/Quot.sound): discharges **both** Cauchy–Schwarz
+parent axioms — `integral_cauchy_schwarz_sq` ((∫√(x²+y²))² ≤ 2π·∫(x²+y²), via the discriminant
+of the nonnegative quadratic `λ ↦ ∫(√(x²+y²)−λ)²`) and `area_cauchy_schwarz_bound`
+(|∫(x·dy−y·dx)| ≤ c·∫√(x²+y²) under constant speed, plus a `…_contDiff` corollary matching the
+axiom signature). After s05+s06, 3 of the parent's 5 axioms (reparam-on-regular, integral-CS,
+area-CS) are proved 0-axiom; only `fourier_decomp_exists` and `wirtinger_sum_bound` remain.
+See knowledge.md s06 for the proof and v4.26.0 gotchas.
+
+## Prior Focus
 s05 (2026-06-21, researcher-9) shipped `AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT.lean`
 (`namespace RegularCurveArcLength`, imports Mathlib + the s04 `…Reparam` companion, 0-axiom,
 docker-GREEN, 35 thm/3 def, `#print axioms`=propext/Classical.choice/Quot.sound only): the
@@ -34,8 +45,12 @@ built directly as a `RegularClosedCurve`, circumference preserved trivially, are
   bit-rotted entries).
 
 ## Next Action
-CORE PROVED. Next: (1) optional sensitive parent edit — restate parent `exists_nice_reparam`
-with a `regular` field and discharge via `exists_nice_reparam_for_regular` (needs a
-SmoothClosedCurve↔RegularClosedCurve bridge), dropping parent `axiomCount` 5→4; (2) mechanic:
-repair bit-rotted sibling/parent (renames now pinned in knowledge.md s05); (3) remaining four
-parent axioms (Fourier/Wirtinger/Cauchy–Schwarz) — separate analytic core.
+3/5 axioms now proved 0-axiom (reparam-on-regular, integral-CS, area-CS). Next:
+(1) **`wirtinger_sum_bound`** — apply the already-PROVED `wirtinger_inequality` (parent thm) to
+each coordinate and add: `∫(x²+y²) = ∫x²+∫y² ≤ ∫x'²+∫y'² = ∫(speed²) = 2π·c²`. The only gap is
+the `FourierDecomp` existence the parent `wirtinger_inequality` requires — i.e. it still leans
+on `fourier_decomp_exists`. So Wirtinger is genuinely downstream of the Fourier axiom.
+(2) **`fourier_decomp_exists`** — the real analytic core (Parseval + IBP for periodic C¹
+functions); the hard remaining target.
+(3) optional sensitive parent edit wiring s05/s06 theorems into the parent to drop `axiomCount`.
+(4) mechanic: repair bit-rotted sibling/parent (renames pinned in knowledge.md s05).
