@@ -1330,6 +1330,7 @@ import Proofs.Erdos1OQ01
 import Proofs.Erdos1OQ02
 import Proofs.Erdos1OQ03
 import Proofs.Erdos1OQ03Aristotle
+import Proofs.Erdos1OQ03Incomplete01
 import Proofs.Erdos1OQ04
 import Proofs.Erdos1Problem
 import Proofs.Erdos1Wip01
