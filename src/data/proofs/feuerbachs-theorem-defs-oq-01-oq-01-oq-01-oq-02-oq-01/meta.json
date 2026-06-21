@@ -1,0 +1,206 @@
+{
+  "id": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01-oq-02-oq-01",
+  "title": "Feuerbach's Theorem: A Vertex–Orthocenter Segment is Twice the Circumcenter–Opposite-Midpoint Segment (AH = 2·OM_a)",
+  "slug": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01-oq-02-oq-01",
+  "description": "Proves the classical companion of AH² = 4R² − a²: the distance from a vertex to the orthocenter is exactly twice the distance from the circumcenter O to the midpoint of the opposite side, AH = 2·OM_a (and B, C). The engine is the exact affine vector identity A − H = 2(O − M_a) — purely from H = A + B + C − 2O and M_a = (B+C)/2, with no circle hypothesis — which gives AH² = 4·OM_a² by squaring; the circle then enters only to evaluate 4·OM_a² = 4R² − a² (OM_a² = R² − (a/2)²) via the perpendicular-bisector equidistance. Re-derives AH² = 4R² − a² independently, lifts to the true-distance AH = 2·OM_a, recovers the altitude's perpendicularity (A−H)·(C−B) = 0 from the parallel segment OM_a, sums to 4(OM_a²+OM_b²+OM_c²) = 12R² − (a²+b²+c²), and verifies the 3-4-5 right triangle. 20 theorems and 5 lemmas, 0 definitions, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremDefsOQ01OQ01OQ01OQ02OQ01.lean",
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ],
+    "tags": [
+      "geometry",
+      "feuerbach",
+      "orthocenter",
+      "circumcenter",
+      "circumradius",
+      "midpoint",
+      "vector-identity",
+      "vertex-distance",
+      "metric-identity",
+      "mathlib"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only propext / Classical.choice / Quot.sound, confirmed by #print axioms on every theorem). Inherits the coordinate API (circumcenter/orthocenter/midpoint formulas, side-length lemmas, dist2/dist2_sq, eq_of_sq_eq_of_nonneg, dist2_nonneg, circumcenter_denom_ne_zero, and the triangle_345 computations) from FeuerbachsTheoremDefs.lean, which is itself 0-sorry, 0-axiom.",
+    "lineCount": 347,
+    "theoremCount": 20,
+    "definitionCount": 0,
+    "originalContributions": [
+      "vertexA_orthocenter_vec (and B, C): the exact componentwise vector identity A − H = 2·(O − M_a), proved purely affinely (both sides equal 2O − B − C) with NO circle / equidistance hypothesis — the structural core showing the segment HA is parallel to OM_a and twice its length",
+      "orthocenter_vertexA_eq_four_OMa_sq (and B, C): AH² = 4·OM_a², the squared-length consequence of the vector identity, a pure ring identity in the coordinates (still circle-free)",
+      "circumcenter_midpoint_a_sq (and b, c): 4·OM_a² = 4R² − a², i.e. OM_a² = R² − (a/2)² — the squared circumcenter-to-opposite-midpoint distance, where the circle finally enters through the perpendicular-bisector equidistance (one linear_combination over the equidistance defects)",
+      "circumcenter_midpoint_a_classical: OM_a² = R² − (a/2)² in textbook R/side-length form (M_a lies on the perpendicular bisector of BC, so OM_a is the apothem-like leg of the right triangle O M_a B)",
+      "orthocenter_vertexA_eq_four_OMa_classical: AH² = 4R² − a² re-derived here independently (AH² = 4·OM_a² = 4R² − a²), a cross-check of the parent entry obtained through the OM_a route rather than directly",
+      "orthocenter_vertexA_dist_eq_two_OMa (and B, C): the textbook AH = 2·OM_a as an identity of actual square-root distances (from AH² = 4·OM_a² and non-negativity)",
+      "altitude_A_perp_BC: (A − H)·(C − B) = 0 — the altitude through A is perpendicular to BC, recovered from the parallel segment OM_a (which bisects BC perpendicularly); collapses to equidistB − equidistC",
+      "circumcenter_midpoint_sum_sq: 4·(OM_a² + OM_b² + OM_c²) = 12R² − (a²+b²+c²), so OM_a² + OM_b² + OM_c² = ¼(AH² + BH² + CH²)",
+      "triangle_345_OMa_sq / OMb_sq / OMc_sq / vertexB_eq_four_OMb: worked example — for the 3-4-5 right triangle the circumcenter is the hypotenuse midpoint M_a so OM_a = 0 = AH/2, while OM_b² = 9/4 (BH = 3 = 2·OM_b) and OM_c² = 4 (CH = 4 = 2·OM_c)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "AH = 2·OM_a — the distance from a vertex to the orthocenter equals twice the distance from the circumcenter to the midpoint of the opposite side — is one of the oldest relations in the geometry of the Euler line. It is the lever behind the standard synthetic construction of the orthocenter (translate the circumcenter's medial picture by the homothety of ratio −2 about the centroid) and the cleanest route to AH = 2R·cos A, since OM_a = R·cos A is the apothem of the side BC. The parent entry FeuerbachsTheoremDefsOQ01OQ01OQ01OQ02 measured AH² = 4R² − a² directly; this entry recovers the same number through OM_a, exposing the underlying parallel segments O→M_a and H→A and the exact factor of 2 between them.",
+    "problemStatement": "With O the circumcenter, R the circumradius, H = A + B + C − 2O the orthocenter, M_a = (B+C)/2 the midpoint of BC (and M_b, M_c the other side midpoints), and a, b, c the side lengths, prove:\n1. **Vector identity**: A − H = 2·(O − M_a) (componentwise), hence HA ∥ OM_a; likewise for B, C.\n2. **Squared lengths**: AH² = 4·OM_a² (circle-free), and 4·OM_a² = 4R² − a², i.e. OM_a² = R² − (a/2)².\n3. **True distance**: AH = 2·OM_a, BH = 2·OM_b, CH = 2·OM_c.\n4. **Altitude**: (A − H)·(C − B) = 0 (HA ⊥ BC).\n5. **Sum**: 4·(OM_a² + OM_b² + OM_c²) = 12R² − (a² + b² + c²).\n6. A numerical instance on the 3-4-5 right triangle.",
+    "text": "A 347-line companion file with 20 theorems and 5 lemmas (no new definitions). It reproves the circumcenter's pairwise equidistance against vertex A locally (the parent declares it private), establishes the exact affine vector identity A − H = 2(O − M_a) by Prod.ext + ring, squares it to AH² = 4·OM_a² by a single ring step, evaluates 4·OM_a² = 4R² − a² by one linear_combination over the equidistance relations, lifts to the metric R/side-length forms and to the true distance AH = 2·OM_a via the sq_dist2 bridge and eq_of_sq_eq_of_nonneg, recovers the altitude perpendicularity, sums the three midpoint identities, and closes with the 3-4-5 worked example.",
+    "proofStrategy": "Work in O-centered coordinates a = A − O, b = B − O, c = C − O. From H = A + B + C − 2O one has A − H = −(b + c) = −2·M_a (with O the origin, M_a = (b+c)/2), i.e. A − H = 2(O − M_a) — an identity of polynomials in the coordinates that needs NO equidistance, dispatched by unfolding orthocenter/midpoint_a/pointMidpoint and `Prod.ext (by dsimp; ring) (by dsimp; ring)`. Squaring is again pure `ring`: AH² = |b + c|² = 4·|M_a|² = 4·OM_a². The circle enters only in 4·OM_a² = 4R² − a²: expand 4·OM_a² = |b + c|² = |b|² + |c|² + 2b·c and 4R² − a² = 4|a|² − |b − c|² = 4|a|² − (|b|² + |c|² − 2b·c); their difference is 2(|b|²−|a|²) + 2(|c|²−|a|²), so `linear_combination 2·equidistB + 2·equidistC` closes it (the b- and c-midpoints need one equidistance each). The equidistance relations are reproved locally from the perpendicular-bisector identity, which is linear in O (field_simp; ring after substituting the circumcenter fraction; nlinarith to clear squares). The true-distance form uses eq_of_sq_eq_of_nonneg with sq_dist2 : (dist2 P Q)² = dist2_sq P Q and the non-negativity of dist2 (so `mul_nonneg` covers 0 ≤ 2·OM_a). The altitude perpendicularity (A − H)·(C − B) = 0 substitutes A − H = 2O − B − C and collapses to |B − O|² − |C − O|² = equidistB − equidistC.",
+    "keyInsights": [
+      "The whole result factors into a circle-free part and a circle part. A − H = 2(O − M_a) and AH² = 4·OM_a² are PURE coordinate identities (affine, then ring) — true for the orthocenter of ANY triangle regardless of the circumscribed circle. Only the evaluation 4·OM_a² = 4R² − a² uses the circumcenter's defining equidistance.",
+      "The factor of 2 is not metric but structural: it is the literal coefficient in the vector identity A − H = 2(O − M_a), so AH ∥ OM_a with ratio exactly 2 — the same homothety (centroid, ratio −2) that carries the medial triangle to the original.",
+      "OM_a² = R² − (a/2)² is the Pythagorean apothem identity in disguise: M_a is the foot of the perpendicular from O to BC, and the right triangle O M_a B has hypotenuse R and one leg a/2. The linear_combination over the equidistance defects is exactly this Pythagoras.",
+      "Because HA ∥ OM_a and OM_a ⊥ BC (O is equidistant from B and C), the altitude perpendicularity (A − H)·(C − B) = 0 falls out of the SAME equidistance facts — a free re-derivation of the defining property of the altitude through A, this time from the circumcenter side.",
+      "The 3-4-5 instance is the clean degenerate case: O is the hypotenuse midpoint M_a, so OM_a = 0 forces AH = 0 (the orthocenter is the right-angle vertex), while OM_b, OM_c give the other two non-trivial 2·OM = vertex-distance checks."
+    ],
+    "prerequisites": [
+      "FeuerbachsTheoremDefs.lean — coordinate API (Point, Triangle, circumcenter, orthocenter, midpoint_a/b/c, pointMidpoint, dist2, dist2_sq, circumradius, side_a/b/c), eq_of_sq_eq_of_nonneg, dist2_nonneg, circumcenter_denom_ne_zero, and the triangle_345 computations",
+      "feuerbachs-theorem-defs-oq-01-oq-01-oq-01-oq-02 — the parent metric identity AH² = 4R² − a², which this entry recovers through OM_a",
+      "feuerbachs-theorem-defs-oq-01-oq-01 — the altitude-concurrency entry establishing H = A + B + C − 2O",
+      "Real.sq_sqrt and linear_combination / ring for the polynomial and rational identities over R"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Pairwise Equidistance of the Circumcenter",
+      "startLine": 1,
+      "endLine": 127,
+      "summary": "Module docstring stating the open question, imports FeuerbachsTheoremDefs, and reproves the two circumcenter-equidistance facts (against vertex A) locally — the parent declares them private — via the perpendicular-bisector identity, which is linear in O.",
+      "mathContext": "perp_bisector_AB / _AC close by substituting the circumcenter fraction and field_simp; ring; equidistB / equidistC then follow by nlinarith. These supply |B−O|² = |A−O|² and |C−O|² = |A−O|², the only place the circumscribed circle is used."
+    },
+    {
+      "id": "bridge",
+      "title": "Part I: Squared Distance vs. the Metric dist2",
+      "startLine": 128,
+      "endLine": 137,
+      "summary": "Proves sq_dist2 : (dist2 P Q)² = dist2_sq P Q, the bridge from the polynomial squared-distance to the metric (square-root) distance.",
+      "mathContext": "dist2 P Q = √(dist2_sq P Q) with dist2_sq P Q ≥ 0, so Real.sq_sqrt recovers dist2_sq on squaring; used by the true-distance AH = 2·OM_a form and the classical R/side-length forms."
+    },
+    {
+      "id": "vector-identity",
+      "title": "Part II: The Exact Vector Identity A − H = 2·(O − M_a)",
+      "startLine": 138,
+      "endLine": 172,
+      "summary": "The three componentwise vector identities A − H = 2(O − M_a), B − H = 2(O − M_b), C − H = 2(O − M_c), proved purely affinely.",
+      "mathContext": "Unfold orthocenter / midpoint_x / pointMidpoint; both sides equal 2O − (vertex sum minus the vertex); Prod.ext (by dsimp; ring) (by dsimp; ring). No circle hypothesis is used."
+    },
+    {
+      "id": "squared-lengths",
+      "title": "Part III: Squared Lengths AH² = 4·OM_a² (circle-free)",
+      "startLine": 173,
+      "endLine": 200,
+      "summary": "AH² = 4·OM_a², BH² = 4·OM_b², CH² = 4·OM_c², each a pure ring identity obtained by squaring the vector identity.",
+      "mathContext": "simp only [dist2_sq, Triangle.orthocenter, Triangle.midpoint_x, pointMidpoint]; ring. Still independent of the circumscribed circle."
+    },
+    {
+      "id": "circumcenter-midpoint",
+      "title": "Part IV: The Circumcenter–Midpoint Distance 4·OM_a² = 4R² − a²",
+      "startLine": 201,
+      "endLine": 240,
+      "summary": "4·OM_a² = 4R² − a² (and b, c), i.e. OM_a² = R² − (a/2)², plus the textbook R/side-length form circumcenter_midpoint_a_classical.",
+      "mathContext": "simp only [dist2_sq, Triangle.midpoint_a, pointMidpoint]; linear_combination 2·equidistB + 2·equidistC (the b/c versions use one equidistance each). The classical form rewrites R² and a² via sq_dist2 and div_pow."
+    },
+    {
+      "id": "together",
+      "title": "Part V: Putting Them Together — AH² = 4R² − a² and AH = 2·OM_a",
+      "startLine": 241,
+      "endLine": 277,
+      "summary": "Re-derives AH² = 4R² − a² (AH² = 4·OM_a² = 4R² − a²) and gives the true-distance AH = 2·OM_a, BH = 2·OM_b, CH = 2·OM_c.",
+      "mathContext": "orthocenter_vertexA_eq_four_OMa_classical chains the two earlier rewrites; the true-distance forms use eq_of_sq_eq_of_nonneg with sq_dist2 and mul_nonneg for 0 ≤ 2·OM_a."
+    },
+    {
+      "id": "altitude-sum-example",
+      "title": "Part VI–VIII: Altitude Perpendicularity, Sum Identity, 3-4-5 Example",
+      "startLine": 278,
+      "endLine": 347,
+      "summary": "altitude_A_perp_BC : (A − H)·(C − B) = 0; the sum 4·(OM_a²+OM_b²+OM_c²) = 12R² − (a²+b²+c²); and the 3-4-5 instance OM_a = 0, OM_b² = 9/4, OM_c² = 4.",
+      "mathContext": "altitude_A_perp_BC collapses to equidistB − equidistC; circumcenter_midpoint_sum_sq is linarith over the three midpoint identities; the 3-4-5 theorems rewrite triangle_345_circumcenter then norm_num."
+    }
+  ],
+  "conclusion": {
+    "summary": "Supplies the segment relation AH = 2·OM_a of the orthocenter sub-line: the exact affine vector identity A − H = 2(O − M_a) (circle-free), the squared form AH² = 4·OM_a², the circumcenter–midpoint distance 4·OM_a² = 4R² − a² (OM_a² = R² − (a/2)²), an independent re-derivation of AH² = 4R² − a², the true-distance AH = 2·OM_a, the altitude perpendicularity (A−H)·(C−B) = 0, the sum 4(OM_a²+OM_b²+OM_c²) = 12R² − (a²+b²+c²), and a 3-4-5 worked example. 20 theorems and 5 lemmas, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "**Structural source of AH² = 4R² − a²**: the parent measured AH directly; here the factor of 2 is exhibited as the literal coefficient of an affine identity A − H = 2(O − M_a), separating the part true for any triangle (the parallel segments) from the part that uses the circumscribed circle (OM_a² = R² − (a/2)²).\n\n**Toward the angle form and the medial homothety**: OM_a = R·cos A makes AH = 2·OM_a the same statement as AH = 2R·cos A; and the vector identity is exactly the homothety (centroid, ratio −2) sending the medial triangle's circumcenter picture to the orthocenter, the standard bridge to the Euler line and the nine-point circle of the Feuerbach umbrella.",
+    "openQuestions": [
+      "Promote the affine identity A − H = 2(O − M_a) to a clean statement of the homothety h(G, −2) carrying each side midpoint M_a to the opposite vertex A and the circumcenter O to the orthocenter H, deriving the Euler-line collinearity O, G, H with HG = 2·GO as a corollary.",
+      "Combine OM_a = R·cos A with the obtuse/acute dichotomy to determine the sign of cos A geometrically and hence whether the foot of the perpendicular from O lands inside segment BC, locating the orthocenter inside or outside the triangle."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "the parent metric identity AH² = 4R² − a²; this entry recovers the same quantity geometrically as AH = 2·OM_a via the vector identity A − H = 2(O − M_a), and re-derives AH² = 4R² − a² independently through OM_a"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "the sibling metric measurement OH² = 9R² − (a²+b²+c²); both quantify the orthocenter's position relative to the circumcenter, and the midpoint-sum 4(OM_a²+OM_b²+OM_c²) = 12R² − (a²+b²+c²) equals AH²+BH²+CH²"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-01-oq-01",
+      "relationship": "related",
+      "description": "uses the orthocenter H = A + B + C − 2O established by the altitude-concurrency entry; here the altitude's perpendicularity is re-derived from the parallel segment OM_a"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs",
+      "relationship": "extends",
+      "description": "adds the vertex–orthocenter / circumcenter–midpoint segment relation AH = 2·OM_a, a quantity the nine-point-circle and Euler-line development in FeuerbachsTheoremDefs.lean never measures"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Proofs.FeuerbachsTheoremDefs"],
+    "opens": ["FeuerbachsTheorem"],
+    "namespace": "FeuerbachsTheoremDefsOQ01OQ01OQ01OQ02OQ01",
+    "lineCount": 347,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 0,
+    "path": "Proofs/FeuerbachsTheoremDefsOQ01OQ01OQ01OQ02OQ01.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "vertexA_orthocenter_vec",
+      "type": "core",
+      "description": "The exact componentwise vector identity A − H = 2·(O − M_a): the directed segment from the orthocenter to vertex A is twice the directed segment from the midpoint of BC to the circumcenter. Purely affine — no circle hypothesis.",
+      "leanType": "∀ T : Triangle, (T.A.1 - T.orthocenter.1, T.A.2 - T.orthocenter.2) = (2 * (T.circumcenter.1 - T.midpoint_a.1), 2 * (T.circumcenter.2 - T.midpoint_a.2))"
+    },
+    {
+      "name": "orthocenter_vertexA_eq_four_OMa_sq",
+      "type": "core",
+      "description": "AH² = 4·OM_a²: the squared vertex–orthocenter distance is four times the squared circumcenter–opposite-midpoint distance, by squaring the vector identity (a pure ring identity, still circle-free).",
+      "leanType": "∀ T : Triangle, dist2_sq T.A T.orthocenter = 4 * dist2_sq T.circumcenter T.midpoint_a"
+    },
+    {
+      "name": "circumcenter_midpoint_a_classical",
+      "type": "core",
+      "description": "OM_a² = R² − (a/2)²: the squared circumcenter-to-opposite-midpoint distance equals R² minus the square of half the opposite side (the apothem Pythagoras for the perpendicular bisector of BC).",
+      "leanType": "∀ T : Triangle, dist2_sq T.circumcenter T.midpoint_a = T.circumradius ^ 2 - (T.side_a / 2) ^ 2"
+    },
+    {
+      "name": "orthocenter_vertexA_dist_eq_two_OMa",
+      "type": "core",
+      "description": "AH = 2·OM_a as an identity of actual (square-root) distances: the vertex–orthocenter distance is twice the circumcenter–opposite-midpoint distance.",
+      "leanType": "∀ T : Triangle, dist2 T.A T.orthocenter = 2 * dist2 T.circumcenter T.midpoint_a"
+    },
+    {
+      "name": "altitude_A_perp_BC",
+      "type": "core",
+      "description": "(A − H)·(C − B) = 0: the segment HA is perpendicular to BC, recovering the defining property of the altitude through A from the parallel segment OM_a (which bisects BC perpendicularly).",
+      "leanType": "∀ T : Triangle, (T.A.1 - T.orthocenter.1) * (T.C.1 - T.B.1) + (T.A.2 - T.orthocenter.2) * (T.C.2 - T.B.2) = 0"
+    },
+    {
+      "name": "circumcenter_midpoint_sum_sq",
+      "type": "core",
+      "description": "4·(OM_a² + OM_b² + OM_c²) = 12R² − (a² + b² + c²), hence OM_a² + OM_b² + OM_c² = ¼(AH² + BH² + CH²).",
+      "leanType": "∀ T : Triangle, 4 * (dist2_sq T.circumcenter T.midpoint_a + dist2_sq T.circumcenter T.midpoint_b + dist2_sq T.circumcenter T.midpoint_c) = 12 * dist2_sq T.circumcenter T.A - (dist2_sq T.B T.C + dist2_sq T.C T.A + dist2_sq T.A T.B)"
+    }
+  ],
+  "sorries": 0
+}
