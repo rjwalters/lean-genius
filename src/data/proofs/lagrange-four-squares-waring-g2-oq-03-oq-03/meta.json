@@ -1,0 +1,129 @@
+{
+  "id": "lagrange-four-squares-waring-g2-oq-03-oq-03",
+  "slug": "lagrange-four-squares-waring-g2-oq-03-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "LagrangeFourSquaresWaringG2OQ03OQ03",
+    "lineCount": 189,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 2,
+    "path": "Proofs/LagrangeFourSquaresWaringG2OQ03OQ03.lean",
+    "sorries": 0
+  },
+  "title": "The Two-Square Sufficiency Slice of the Three-Square Theorem",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeFourSquaresWaringG2OQ03OQ03.lean",
+    "tags": [
+      "number-theory",
+      "sums-of-squares",
+      "three-square-theorem",
+      "two-square-theorem",
+      "legendre-three-square",
+      "additive-number-theory",
+      "fermat-christmas-theorem",
+      "multiplicativity",
+      "reduction",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 189,
+    "theoremCount": 15,
+    "definitionCount": 2,
+    "badge": "original",
+    "originalContributions": [
+      "isSumTwoSq_imp_isSumThreeSq: the embedding — every sum of two integer squares is a sum of three integer squares (append 0²). Trivial on its own, but the key bridge that turns Mathlib's complete two-square theory into an unconditional slice of the OPEN three-square sufficiency ('if') direction, which the gallery's parent oq-03 entry still reduces to a Dirichlet/Hasse–Minkowski axiom.",
+      "prime_mod_four_ne_three_isSumThreeSq: every prime p with p % 4 ≠ 3 is a sum of three integer squares, unconditional via Mathlib's Nat.Prime.sq_add_sq (Fermat's Christmas theorem). An explicit infinite Dirichlet-free family verifying the if-direction.",
+      "isSumThreeSq_of_forall_threeMod_even: the characterization slice — every natural n in which each prime ≡ 3 (mod 4) occurs to an EVEN power is a sum of three integer squares, via Mathlib's Nat.eq_sq_add_sq_iff. An explicit, infinite, axiom-free family satisfying the open sufficiency direction without invoking Dirichlet's theorem on primes in arithmetic progressions.",
+      "isSumThreeSq_strictly_contains_twoSq: strict containment — 3 = 1²+1²+1² is a sum of three squares but, being ≡ 3 (mod 4), is NOT a sum of two squares (sumTwoSq_ne_three_mod_four). The three-square family properly extends the two-square family.",
+      "isSumThreeSq_not_mul_closed: FAILURE of multiplicative closure — 3 and 21 are each sums of three squares, but 3·21 = 63 = 8·7+7 is excluded (not a sum of three squares, via the mod-8 obstruction not_isSumThreeSq_of_mod_eight). This is the precise structural reason the sufficiency direction CANNOT be bootstrapped multiplicatively from a prime slice and genuinely requires analytic input — contrasted against isSumTwoSq_mul, the Brahmagupta–Fibonacci multiplicative closure of two squares.",
+      "isSumTwoSq_mul: the sums of two integer squares are closed under multiplication (Brahmagupta–Fibonacci identity, via Mathlib's sq_add_sq_mul), included as the sharp contrast to the three-square non-closure.",
+      "isSumTwoSq_ne_seven_mod_eight: a sum of two squares is never ≡ 7 (mod 8), so the entire two-square slice avoids the excluded family 4^a(8b+7) — confirming consistency of the sufficiency slice with the elementary necessity direction.",
+      "not_isSumThreeSq_of_mod_eight / not_isSumTwoSq_of_mod_four: robust mod-8 and mod-4 obstructions phrased over ℕ residues (n % 8 = 7, n % 4 = 3), driving the concrete separating (3) and non-closure (63) witnesses via kernel decide over ZMod 8 / ZMod 4."
+    ],
+    "prerequisites": [
+      "Nat.Prime.sq_add_sq (Mathlib): every prime p with p % 4 ≠ 3 is a sum of two squares (Fermat's Christmas theorem) — supplies the unconditional prime slice.",
+      "Nat.eq_sq_add_sq_iff (Mathlib): a natural number is a sum of two squares iff every prime ≡ 3 (mod 4) in its factorization occurs to an even power — the complete two-square characterization driving the infinite Dirichlet-free family.",
+      "sq_add_sq_mul (Mathlib): the Brahmagupta–Fibonacci identity giving multiplicative closure of sums of two squares.",
+      "ZMod.natCast_mod and Int.cast_natCast: cast bookkeeping reducing the mod-8/mod-4 obstructions to finite decide checks over ZMod 8 / ZMod 4."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime.sq_add_sq",
+        "description": "Fermat's two-square theorem: a prime p with p % 4 ≠ 3 is a sum of two squares; embedded (append 0²) to give an unconditional prime slice of the open three-square sufficiency direction.",
+        "module": "Mathlib.NumberTheory.SumTwoSquares"
+      },
+      {
+        "theorem": "Nat.eq_sq_add_sq_iff",
+        "description": "A natural n is a sum of two squares iff every prime q ≡ 3 (mod 4) has Even (padicValNat q n); composed with the embedding to produce an explicit infinite Dirichlet-free family of three-square representable numbers.",
+        "module": "Mathlib.NumberTheory.SumTwoSquares"
+      },
+      {
+        "theorem": "sq_add_sq_mul",
+        "description": "Brahmagupta–Fibonacci identity: the product of two sums of two squares is a sum of two squares; used for isSumTwoSq_mul, the contrast against three-square non-closure.",
+        "module": "Mathlib.NumberTheory.SumTwoSquares"
+      },
+      {
+        "theorem": "ZMod.natCast_mod",
+        "description": "((a % n : ℕ) : ZMod n) = (a : ZMod n); reduces the mod-8/mod-4 obstruction hypotheses (n % 8 = 7, n % 4 = 3) to finite decide checks.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-03-oq-01",
+      "question": "Extend the Dirichlet-free slice: characterize exactly which residue classes / 4-free cores of the open three-square sufficiency direction are reachable purely from the two-square theorem plus the 4-power and odd-square scalings (sq_mul_sum_three_sq), and pin down the precise residual gap that genuinely needs Dirichlet's theorem on primes in arithmetic progressions.",
+      "significance": "high"
+    },
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-03-oq-02",
+      "question": "Quantify the failure of multiplicative closure: describe the structure of the 'product obstruction' set {(m,n) : m, n sums of three squares but mn excluded}, e.g. mn = 4^a(8b+7), and relate it to the genus theory of ternary quadratic forms.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03",
+      "relationship": "depends-on",
+      "description": "Companion to the parent three-square sufficiency study. Where the parent reduces the full 'if' direction to a Dirichlet/Hasse–Minkowski axiom, this entry carves out an explicit, infinite, axiom-free slice of that same direction using only Mathlib's two-square theory, and isolates (via the 3·21=63 non-closure) exactly why the remaining gap needs analytic input."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-02",
+      "relationship": "extends",
+      "description": "Both ride on Mathlib's two-square theorem to make a slice of the three-square circle unconditional; this entry handles the direct two-square ↪ three-square embedding and the multiplicative-closure contrast, complementing the two-triangular ⟺ 4n+1 bijection of oq-03-oq-02."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "The Gauss Eureka companion handles the 8n+3 (three-triangular) slice; this entry handles the complementary two-square slice and, unlike Eureka, needs no three-square sufficiency axiom — both are unconditional consequences of Mathlib's two-square theory."
+    }
+  ],
+  "references": [
+    {
+      "title": "Sur la théorie des nombres (Fermat's Christmas theorem)",
+      "author": "Pierre de Fermat / Leonhard Euler",
+      "year": "1640/1749",
+      "venue": "Two-square theorem",
+      "description": "Every prime ≡ 1 (mod 4) is a sum of two squares; via Mathlib's Nat.Prime.sq_add_sq and Nat.eq_sq_add_sq_iff this supplies the unconditional slice of the open three-square sufficiency direction."
+    },
+    {
+      "title": "Essai sur la théorie des nombres",
+      "author": "Adrien-Marie Legendre",
+      "year": "1798",
+      "venue": "Three-square theorem",
+      "description": "n = x²+y²+z² is solvable iff n ≠ 4^a(8b+7). The sufficiency ('if') direction is the open half studied by the parent entry; this companion proves an elementary Dirichlet-free slice of it."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "An elementary, axiom-free slice of the OPEN sufficiency ('if') direction of Legendre's three-square theorem, obtained by bridging Mathlib's complete two-square theory into the still-open three-square question. The embedding isSumTwoSq_imp_isSumThreeSq (append 0²) turns Fermat's two-square theorem into unconditional three-square families: every prime p with p % 4 ≠ 3 is a sum of three squares (prime_mod_four_ne_three_isSumThreeSq), and every n whose primes ≡ 3 (mod 4) all occur to even power is a sum of three squares (isSumThreeSq_of_forall_threeMod_even, an explicit infinite Dirichlet-free family). The three-square numbers strictly contain the two-square numbers (3 = 1²+1²+1² is three but not two squares). Crucially, unlike the two-square numbers — closed under multiplication by Brahmagupta–Fibonacci (isSumTwoSq_mul) — the three-square numbers are NOT multiplicatively closed: 3 and 21 are sums of three squares but 3·21 = 63 = 8·7+7 is excluded (isSumThreeSq_not_mul_closed). 189 lines, 15 theorems, 2 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound (kernel decide over ZMod 4 / ZMod 8, no native_decide).",
+    "implications": "The result pins down both what the two-square theorem gives the open three-square sufficiency direction for free — an explicit, infinite, axiom-free family of representable n with no appeal to Dirichlet's theorem — and exactly where that strategy stops: because three-square representability fails to be multiplicative (3·21=63), the sufficiency direction cannot be assembled from a prime slice the way the two- and four-square theorems can, which is precisely why the full theorem genuinely requires the analytic Dirichlet/Hasse–Minkowski input still axiomatized in the parent entry."
+  }
+}
