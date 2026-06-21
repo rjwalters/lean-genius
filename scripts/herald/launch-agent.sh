@@ -109,7 +109,7 @@ You are the **herald** agent for Lean Genius. Your mission is to post noteworthy
 All posting goes through `post-mathstodon.sh`. The script handles:
 - Posting to the Mastodon API
 - Updating state file (post history + daily counts) automatically
-- Rate limit enforcement (max 4 posts/day)
+- Rate limit enforcement (max 2 posts/day — a backstop, not a target; significance is the real gate)
 - Dedup checking (blocks posts with previously-used subject keys)
 - Appending `[automated post]` tag when `--automated` is set
 
@@ -191,12 +191,21 @@ find ${REPO_ROOT}/src/data/proofs -name "meta.json" -mmin -420 -type f 2>/dev/nu
 
 ### 6. Assess significance
 
-Apply the criteria from your role definition (herald.md):
-- **Tier 1 (always post)**: Full proof completion (0 axioms, 0 sorries), Freek 100 entry, soundness catch
-- **Tier 2 (if notable)**: Major axiom elimination (N→0), named theorem formalization
-- **Tier 3 (weekly max)**: Cumulative stats roundup
+**Default disposition: stand down.** On a typical cycle the correct action is to post NOTHING. The fleet completes many fully-verified proofs every day; "0 axioms, 0 sorries, fully verified" is the BASELINE of every gallery entry, not news. A result is NOT post-worthy just because it is verified, and NOT post-worthy just because it has a textbook name.
 
-Skip if nothing meets the threshold.
+Apply the full significance criteria from your role definition (herald.md) — that file is the source of truth and overrides any shorthand here. The bar for a **standalone post** is high; post only if a result CLEARLY clears one of:
+
+- **Infrastructure milestone** — a whole reusable library/suite reaches 0 sorries (not one theorem).
+- **Flagship pipeline progression** — the next stage of the Probabilistic Method → Regularity → Counting → Removal → Roth arc completes.
+- **Freek 100 entry** — a theorem from the Freek 100 list.
+- **Genuinely famous result** — a household-name theorem a working mathematician would recognize instantly AND be pleased to see formalized. A merely textbook-named result (a routine named lemma, a numbered Erdős-problem OQ extension) does NOT qualify on its name alone.
+- **Genuinely novel finding** — a soundness catch / counterexample that overturns a stated claim, a surprising cross-area connection, or a real proof-engineering lesson.
+
+If a result does not CLEARLY clear one of these, it is **roundup material, not a standalone post** — do not post it, and do not "queue" it to spend tomorrow's quota on. When in doubt, stand down: a cycle that posts nothing because nothing cleared the bar is a SUCCESSFUL cycle, not a failed one.
+
+Standing down because the daily cap is reached is a red flag — it means routine results were posted that should have gone to the weekly roundup. Aim to stand down for *lack of noteworthy results* far more often than for *hitting the cap*.
+
+**Weekly roundup (at most 1 per week):** routine-but-real named formalizations that did not clear the standalone bar are not lost — consolidate the best of them into a single themed roundup post (lead with pipeline progress, never raw counts). Before posting a roundup, check recent post history (`post-mathstodon.sh --status` and `${STATE_FILE}`) and only post one if a week has elapsed since the last roundup.
 
 ### 7. Verify the proof page is deployed (MANDATORY)
 
@@ -290,7 +299,7 @@ sleep ${INTERVAL}m
 
 ## Important Rules
 
-- **Max 1 post per cycle, max 4 posts per day**
+- **Max 1 post per cycle, max 2 posts per day (hard backstop)** — but prefer 0; post only when a result clearly clears the high bar in step 6. Hitting the cap should be rare.
 - **Max 3 replies per engagement scan** (replies also count toward daily post limit)
 - **Never post about**: build fixes, data syncs, enrichment batches, axiom decomposition
 - **Always use --subject** for every post (enables dedup)
@@ -351,8 +360,14 @@ launch_agent() {
     # (e.g. claude-fable-5) without affecting the rest of the pool.
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
     local herald_model="${HERALD_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
+    # Enforce the scan interval as a floor between cycles. The herald often stands
+    # down in seconds (nothing noteworthy, or daily cap reached); without a floor the
+    # wrapper would busy-loop and re-invoke Claude every ~40s, burning quota on no-ops.
+    # CYCLE_MIN_SECONDS makes the wrapper sleep the remainder of the interval after a
+    # successful cycle (default 0 elsewhere, so other agents are unaffected).
+    local cycle_min_seconds=$((INTERVAL * 60))
     tmux new-session -d -s "$SESSION_NAME" -c "$REPO_ROOT" \
-        "ENHANCER_ID=herald REPO_ROOT=$REPO_ROOT CLAUDE_MODEL=$herald_model $wrapper_script --daemon --prompt 'You are the herald agent. Read $prompt_file for your instructions, then start the scan loop.' --log '$LOG_FILE'"
+        "ENHANCER_ID=herald REPO_ROOT=$REPO_ROOT CLAUDE_MODEL=$herald_model CYCLE_MIN_SECONDS=$cycle_min_seconds $wrapper_script --daemon --prompt 'You are the herald agent. Read $prompt_file for your instructions, then start the scan loop.' --log '$LOG_FILE'"
 
     print_success "Launched herald agent"
     echo ""
