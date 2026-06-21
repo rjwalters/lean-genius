@@ -17610,6 +17610,22 @@
       "auditCount": 2,
       "lastAudited": "2026-06-21",
       "notes": "Build-verified (docker, 7743 jobs). 0 axioms / 0 sorries / 0 True-stubs. 98L, 8 theorems, 2 defs — matches meta. Two 'native_decide' grep hits are BOTH docstring PROSE (lines 8,21) describing/disclaiming it — no native_decide tactic. mod-8 lower bound uses plain kernel `decide` over ZMod 8 (axiom-free, no Lean.ofReduceBool). Sharpens parent umbrella's waring_g2 into 0-axiom IsLeast/sInf form, REMOVING the parent's native_decide taint as claimed."
+    },
+    "erdos-816-oq-01": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-21T11:58:59Z",
+      "result": "clean",
+      "notes": "Build-verified (docker, 7743 jobs). #print axioms on no_equalDegreePath3_of_partDegrees + exists_sameDegree_pair = [propext, Classical.choice, Quot.sound] only → 0-axiom. 0 sorries / 0 native_decide / 0 True-stubs. 161L, 5 theorems, 4 defs — matches meta. Self-contained (import Mathlib only); bit-rotted parent Erdos816Problem.lean NOT imported, 4 defs inlined as disclosed in assumptions. status verified justified."
+    },
+    "lagrange-four-squares-waring-g2-oq-03-oq-07-oq-01-oq-02": {
+      "auditCount": 1,
+      "issues": [
+        "meta theoremCount 8→7 (file has 7 theorem decls)"
+      ],
+      "lastAudited": "2026-06-21T11:58:59Z",
+      "result": "issues-fixed",
+      "notes": "Build-verified (docker, 7743 jobs). #print axioms on jacobiSym_neg_eq_neg_one_of_three_mod_four + multiplier_route_obstructed_of_three_mod_four = [propext, Classical.choice, Quot.sound] only → 0-axiom. 0 sorries / 0 native_decide / 0 admit (grep hits on lines 53,63 are docstring PROSE). 178L, 7 theorems, 0 defs. Self-contained (import Mathlib only). Fixed meta theoremCount 8→7. status verified justified."
     }
   },
   "version": 1,
