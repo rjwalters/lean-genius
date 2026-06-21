@@ -291,6 +291,7 @@ import Proofs.BinaryGcdOQ02OQ02
 import Proofs.BinaryGcdOQ03
 import Proofs.BinaryGcdOQ03OQ01
 import Proofs.BinaryGcdOQ03OQ02
+import Proofs.BinaryGcdOQ03OQ02Incomplete01
 import Proofs.BinaryGcdOQ03OQ02PathA
 import Proofs.BinomialTheorem
 import Proofs.BinomialTheoremOQ01
