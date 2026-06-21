@@ -3014,6 +3014,7 @@ import Proofs.PicksTheoremOQ03Product
 import Proofs.PlatonicSolids
 import Proofs.PlatonicSolidsOQ01
 import Proofs.PlatonicSolidsOQ02
+import Proofs.PlatonicSolidsOQ02OQ01
 import Proofs.PoincareConjecture
 import Proofs.PompeiuTheorem
 import Proofs.PowerMeanCrossZeroOQ
