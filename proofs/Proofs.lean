@@ -2833,6 +2833,7 @@ import Proofs.LagrangeFourSquaresWaringG2OQ03OQ04
 import Proofs.LagrangeFourSquaresWaringG2OQ03OQ05
 import Proofs.LagrangeFourSquaresWaringG2OQ03OQ05OQ01
 import Proofs.LagrangeFourSquaresWaringG2OQ03OQ07
+import Proofs.LagrangeFourSquaresWaringG2OQ03OQ07OQ01
 import Proofs.LagrangeFourSquaresWaringG2OQ03OQ08
 import Proofs.LagrangeTheorem
 import Proofs.LagrangeTheoremOQ01
