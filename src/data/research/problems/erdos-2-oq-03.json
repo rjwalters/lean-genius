@@ -2,7 +2,7 @@
   "slug": "erdos-2-oq-03",
   "title": "Can the Balister et al",
   "phase": "NEW",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -31,11 +31,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "Formalized (axiom-free) the elementary structural arithmetic behind Erdős #2 / OQ-03: conditional on the classical density bound Σ 1/nᵢ ≥ 1 (taken as a hypothesis, not an axiom), a covering system with minimum modulus m must have at least m congruence classes and a modulus ≥ 2m−1. The deep quantitative OQ-03 (improving 616,000) is untouched. Self-contained because the parent Erdos2Problem.lean does not compile under Lean 4.26.0.",
+    "builtItems": [
+      "reciprocalSum_le: all moduli ≥ m ⟹ Σ 1/nᵢ ≤ k/m (k = #classes)",
+      "card_classes_ge: min modulus ≥ m ⟹ ≥ m congruence classes",
+      "maxModulus_ge: distinct moduli in [m,M] ⟹ 2m ≤ M+1 (modulus ≥ 2m−1 forced)",
+      "improvement_cost: combined count+spread structural cost",
+      "card_bound_tight: k ≥ m sharp via {0,1 mod 2} (k=m=2, recip sum 1)"
+    ],
+    "insights": [
+      "The reciprocal-sum lower bound Σ 1/nᵢ ≥ 1 is the entire engine: paired with the trivial upper bound Σ 1/nᵢ ≤ k/m it forces k ≥ m, linking large minimum modulus to many classes.",
+      "Distinctness + Nat.card_Icc converts the class count into a span constraint 2m ≤ M+1, so covering moduli cannot cluster just above the minimum.",
+      "Parent Erdos2Problem.lean is bit-rotted: hough_bound forward-references the balister_bound axiom declared later, so the file fails to compile under Lean 4.26.0; downstream entries must be self-contained."
+    ],
+    "mathlibGaps": [
+      "No lemma counting residues of an arithmetic progression inside an interval (P/n exact count when n | P), which is what an axiom-free proof of Σ 1/nᵢ ≥ 1 would need."
+    ],
+    "nextSteps": [
+      "Prove the density bound Σ 1/nᵢ ≥ 1 axiom-free via a residue-counting argument over the lcm of the moduli, removing the remaining hypothesis.",
+      "Strengthen the spread bound using harmonic sums: distinct moduli ≥ m with Σ 1/nᵢ ≥ 1 force the largest modulus to be ≳ e·m, not just 2m−1."
+    ]
   },
   "tags": [
     "seeker-selected",
