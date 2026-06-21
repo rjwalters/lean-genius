@@ -135,3 +135,51 @@ and de-risked the eventual build by locating the exact Mathlib lemmas.
 3. Then attempt the IFT-based arc-length construction (Mathlib FTC + inverse-function-theorem;
    the regular-curve hypothesis from step 1 makes `s'(t)=|γ'(t)|>0`, enabling the `C¹` inverse).
    ~400–800 lines total; harness is up, so it is now attemptable.
+
+---
+
+### Session 2026-06-20 (s03, ACT, researcher-8) — invariance core PROVED (0-axiom)
+
+**Outcome: progress (ACT).** Built and verified the change-of-variables heart of Gap 2 that
+S1/S2 identified as the prerequisite for any honest discharge of `exists_nice_reparam`. New
+file `proofs/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean` (196 lines, 6 theorems, 2 defs,
+**0 axioms, 0 sorries**, docker build GREEN). Gallery entry created under
+`src/data/proofs/area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01/` (status `verified`, badge
+`original`).
+
+Proved, for `C¹` 2π-periodic coordinates `x, y` and a `C¹` reparametrization `φ` with
+`φ(2π) = φ(0) + 2π`:
+- `arclength_reparam_invariant` (assuming `φ' ≥ 0`):
+  `∫₀²π √((x∘φ)'²+(y∘φ)'²) = ∫₀²π √(x'²+y'²)`.
+- `signed_area_reparam_invariant` (no monotonicity needed):
+  `∫₀²π ((x∘φ)(y∘φ)' − (y∘φ)(x∘φ)') = ∫₀²π (x·y' − y·x')`.
+Plus helpers `periodic_deriv`, `speedFn_periodic`, `areaFn_periodic`, `deriv_coord_comp`.
+
+**Technique (3-step, both proofs):**
+1. chain rule `deriv_comp` factors the γ∘φ integrand pointwise as `(integrand∘φ)·φ'`
+   (arc length: `√(φ'²·A) = φ'·√A` via `Real.sqrt_mul`+`Real.sqrt_sq`, needs `φ'≥0`;
+   signed area: `φ'` factor is linear ⇒ no sign hypothesis);
+2. `intervalIntegral.integral_comp_mul_deriv` substitutes `u = φ t` →
+   `∫_{φ0}^{φ(2π)} integrand`;
+3. `hshift : φ(2π)=φ0+2π` + integrand periodicity ⇒
+   `Function.Periodic.intervalIntegral_add_eq` collapses to `∫₀²π`.
+
+**Mathlib gotchas pinned (v4.26.0):**
+- no `Function.Periodic.deriv` lemma exists; derive it from `deriv_comp_add_const` +
+  `funext hf` (period identity), **no differentiability hypothesis required**.
+- continuity of the speed integrand: `(((hx.continuous_deriv le_rfl).pow 2).add
+  ((hy.continuous_deriv le_rfl).pow 2)).sqrt` (use `Continuous.sqrt`, not `continuous_sqrt`
+  which is ambiguous with the NNReal one under `open Real`).
+- `integral_comp_mul_deriv` wants `Continuous g` (g = the period integrand as a function of
+  the *new* variable), `ContinuousOn (deriv φ)` on `uIcc`, and `∀ t ∈ uIcc, HasDerivAt φ
+  (deriv φ t) t` via `.differentiableAt.hasDerivAt`.
+
+**What remains to fully discharge the axiom (unchanged from S2's plan):**
+1. add a `regular : ∀ t, 0 < deriv x t ^2 + deriv y t ^2` field to `SmoothClosedCurve` so the
+   arc-length map `s(t)=∫₀ᵗ|γ'|` is strictly increasing and the IFT gives a `C¹` inverse;
+2. restate `exists_nice_reparam` so the witness is literally `γ' = γ ∘ φ` (then these two
+   invariance theorems supply the circumference/area-preservation clauses directly, killing
+   the Gap-2 circularity);
+3. construct the rescaled arc-length `φ` via Mathlib's IFT and prove it is increasing,
+   `C¹`, and period-commuting. Steps 1–2 touch a verified gallery entry → do via a deliberate
+   parent-edit PR, not in place.
