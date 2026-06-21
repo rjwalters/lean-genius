@@ -1,0 +1,78 @@
+{
+  "slug": "basel-problem-oq-01-oq-01-oq-02-oq-01",
+  "title": "Apéry numbers: the central-binomial lower bound and geometric growth",
+  "problemStatement": "Prove, with no axioms, a geometric lower bound on the Apéry numbers bₙ = ∑_{k≤n} C(n,k)²·C(n+k,k)². The parent basel-problem-oq-01-oq-01-oq-02 formalizes Apéry's ζ(3)-irrationality proof from five axioms, one of which is an exponential UPPER bound bₙ ≤ 34ⁿ; no axiom-free statement there bounds bₙ from below. Establish C(2n,n)² ≤ bₙ, 4ⁿ ≤ bₙ, the sharper 16ⁿ ≤ 4n²·bₙ, and bₙ → ∞.",
+  "significance": "Supplies the lower half of Apéry's growth squeeze (bₙ → ∞ geometrically) assumption-free, complementing the parent's axiomatized 34ⁿ upper bound. The whole argument flows from one observation: the central binomial coefficient squared is one of the Apéry summands, so its known growth bounds the intricate Apéry numbers below.",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "tractability": "high",
+  "started": "2026-06-21",
+  "completed": "2026-06-21",
+  "lastUpdate": "2026-06-21",
+  "path": "proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ01.lean",
+  "leanFiles": [
+    {
+      "path": "Proofs/BaselProblemOQ01OQ01OQ02OQ01.lean",
+      "filename": "BaselProblemOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 141,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "basel-problem",
+    "basel-problem-oq-01",
+    "basel-problem-oq-01-oq-01",
+    "basel-problem-oq-01-oq-01-oq-02",
+    "basel-problem-oq-01-oq-01-oq-02-oq-01",
+    "basel-problem-oq-01-oq-01-oq-02-oq-02",
+    "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "basel-problem-oq-01-oq-03"
+  ],
+  "knownResults": [
+    "Apéry (1979): bₙ = ∑ C(n,k)²·C(n+k,k)² are positive integers driving ζ(3) irrationality",
+    "Erdős's Bertrand-postulate bound 4ⁿ ≤ 2n·C(2n,n) (Mathlib Nat.four_pow_le_two_mul_self_mul_centralBinom)",
+    "Central binomial recurrence (n+1)·C(2n+2,n+1) = 2(2n+1)·C(2n,n) (Mathlib Nat.succ_mul_centralBinom_succ)"
+  ],
+  "references": [],
+  "tags": [
+    "apery",
+    "zeta-3",
+    "central-binomial",
+    "irrationality",
+    "number-theory",
+    "combinatorics"
+  ],
+  "currentState": "Solved. 11 theorems, 1 definition, 0 axioms, 0 sorries, no native_decide. Builds against Mathlib 4.26.0.",
+  "knowledge": {
+    "progressSummary": "COMPLETE: axiom-free geometric lower bound on the Apéry numbers. C(2n,n)² ≤ bₙ (drop all but the k=n term), 2ⁿ ≤ C(2n,n) (self-contained recurrence induction), hence 4ⁿ ≤ bₙ; sharper 16ⁿ ≤ 4n²·bₙ by squaring Erdős's bound; bₙ → ∞ by squeeze. Apéry numbers redefined locally so none of the parent's five axioms enter.",
+    "insights": [
+      "The k = n summand of bₙ is C(n,n)²·C(n+n,n)² = C(2n,n)² exactly, so a single Finset.single_le_sum gives the central-binomial lower bound C(2n,n)² ≤ bₙ with no combinatorics.",
+      "2ⁿ ≤ C(2n,n) needs no Stirling: multiply the goal 2^(n+1) ≤ C(2n+2,n+1) by (n+1), rewrite with the central-binomial recurrence (n+1)C(2n+2,n+1)=2(2n+1)C(2n,n), use 2(n+1) ≤ 2(2n+1) and the IH, then cancel (n+1) with Nat.le_of_mul_le_mul_left.",
+      "Squaring Mathlib's Erdős bound 4ⁿ ≤ 2n·C(2n,n) gives the much sharper 16ⁿ ≤ 4n²·bₙ — matching the genuine order C(2n,n)² ≈ 16ⁿ/πn of the central term, within a polynomial factor of the true rate 17+12√2.",
+      "Kernel `decide` (not native_decide) handles b₂=73 and b₃=1445, keeping the file fully 0-axiom (only propext/Classical.choice/Quot.sound; verified by #print axioms).",
+      "Defining aperyB locally (rather than importing the parent) keeps the five Apéry axioms out of the dependency graph entirely."
+    ],
+    "builtItems": [
+      "aperyB_centralTerm (BaselProblemOQ01OQ01OQ02OQ01.lean:74) — k=n summand = C(2n,n)²",
+      "centralBinom_sq_le_aperyB (:79) — C(2n,n)² ≤ bₙ",
+      "two_pow_le_centralBinom (:91) — 2ⁿ ≤ C(2n,n), self-contained induction",
+      "four_pow_le_aperyB (:104) — geometric lower bound 4ⁿ ≤ bₙ",
+      "sixteen_pow_le_aperyB (:113) — sharper 16ⁿ ≤ 4n²·bₙ",
+      "aperyB_tendsto_atTop (:132) — (bₙ:ℝ) → ∞"
+    ],
+    "mathlibGaps": [
+      "Mathlib has the central-binomial growth bounds and recurrence but no facts about the Apéry numbers themselves (definition, integrality, growth, congruences)."
+    ],
+    "nextSteps": [
+      "Sharpen the lower base toward 17+12√2 by bounding the largest summand (near k ≈ 0.8n) instead of the central one.",
+      "Prove an axiom-free geometric UPPER bound bₙ ≤ Cⁿ, removing the parent's recurrence-based 34ⁿ axiom.",
+      "Formalize that every Apéry number is odd via a Kummer/Lucas mod-2 argument (only the k = 0 term survives mod 2)."
+    ]
+  }
+}
