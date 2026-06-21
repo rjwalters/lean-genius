@@ -595,6 +595,7 @@ import Proofs.CentralLimitTheoremOQ04
 import Proofs.CevasTheorem
 import Proofs.CevasTheoremNonEuclidean
 import Proofs.CevasTheoremNonEuclideanOQ02
+import Proofs.CevasTheoremNonEuclideanOQ03
 import Proofs.CevasTheoremNonEuclideanOQ02OQ01
 import Proofs.CevasTheoremNonEuclideanOQ02OQ01OQ01
 import Proofs.CevasTheoremOQ01
