@@ -3167,6 +3167,7 @@ import Proofs.PowerMeanLimitOQ
 import Proofs.PowerMeanMonotoneOQ
 import Proofs.PrimeGapBounds
 import Proofs.PrimeGapBoundsOQ01
+import Proofs.PrimeGapBoundsOQ03
 import Proofs.PrimeNumberTheorem
 import Proofs.PrimeNumberTheoremOQ01
 import Proofs.PrimeNumberTheoremOQ01OQ01
