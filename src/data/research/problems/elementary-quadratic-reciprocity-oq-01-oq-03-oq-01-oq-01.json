@@ -1,0 +1,29 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01",
+  "title": "Frobenius/Zolotarev for squarefree odd n: sign(x ↦ a·x on ℤ/n) = J(a | n)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "The general odd-squarefree statement is the recursive structure of the Jacobi symbol made structural: jacobiSym.mul_right (denominator multiplicativity of the symbol) is the value-level shadow of the grandparent's sign_ringMulPerm_mul_of_odd (CRT multiplicativity of the permutation sign), and the recursion bottoms out at the parent's prime base case.",
+      "Squarefreeness is exactly the hypothesis that makes the smallest prime factor split off coprimely: p ∣ (n/p) would give p² ∣ n, so Squarefree n forces Coprime p (n/p) — the input sign_ringMulPerm_mul_of_odd needs at every recursion step.",
+      "Representing the unit by the integer a makes the Chinese-remainder component-matching automatic: the projection of (a : ℤ/n) onto ℤ/p is (a : ℤ/p) by map_intCast, so no residue bookkeeping is needed (simp [map_intCast] closes the matching hypotheses).",
+      "Manufacturing the per-prime component units costs only a one-line Bezout bridge (intCast_isUnit_of_isCoprime): x·a + y·k = 1 reduces mod k to x·a = 1.",
+      "Strong induction (Nat.strong_induction_on) on the bare n, with the [NeZero n] instance placed inside the quantified motive, avoids instance-revert problems; the n = 1 base uses the subsingleton structure of ℤ/1."
+    ],
+    "builtItems": [
+      "intCast_isUnit_of_isCoprime (Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01.lean:74) — Bezout bridge: integer coprime to k casts to a unit of ℤ/k",
+      "main (…:92) — strong induction over the smallest prime factor proving sign(ringMulPerm u) = J(c | n) for odd squarefree n",
+      "sign_ringMulPerm_eq_jacobiSym (…:169) — clean-binder statement of the result"
+    ],
+    "mathlibGaps": [
+      "No general Frobenius/Zolotarev = Jacobi characterization in Mathlib; assembled from the lineage's CRT multiplicativity, the prime base case, and jacobiSym.mul_right."
+    ],
+    "nextSteps": [
+      "Handle prime-power factors p^e (e ≥ 2): CRT does not split them and the sign on ℤ/p^e is a genuinely new computation; reaching it gives sign(ringMulPerm a on ℤ/n) = J(a | n) for every odd n.",
+      "Specialize the squarefree statement to recover quadratic reciprocity itself (Zolotarev's original application).",
+      "Repair the bit-rotted grandparent ElementaryQuadraticReciprocityOQ01 (Mechanic task)."
+    ],
+    "progressSummary": "COMPLETE: squarefree odd case proved unconditionally and axiom-free, landing on Mathlib's jacobiSym via factorization induction."
+  }
+}
