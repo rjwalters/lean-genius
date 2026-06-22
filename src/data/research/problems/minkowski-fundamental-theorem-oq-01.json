@@ -1,8 +1,8 @@
 {
   "slug": "minkowski-fundamental-theorem-oq-01",
   "title": "Can Minkowski's second theorem (on successive minima) be formalized with the ...",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE (infrastructure): successive-minima framework + first-minimum bound shipped (PR #27450, verified 0-axiom). Product bound of the second theorem remains the open analytic core.",
+    "builtItems": [
+      "ConvexBody.scale (c • S as symmetric ConvexBody) in MinkowskiFundamentalTheoremOQ01.lean:63",
+      "IndepLatticePoints + .mono (k independent lattice points predicate, antitone in k) :88,:94",
+      "successiveMinimum = sInf admissibleScalings, with successiveMinimum_nonneg/_mono (λ₀≤λ₁≤⋯) :112,:121,:134",
+      "firstMinimum_le_one_of_volume_gt: λ₀≤1 from parent minkowski_fundamental :157",
+      "secondTheorem_upper_statement: Prop scaffold for (∏λᵢ)·vol(S)≤2ⁿ·covol(L) :149"
+    ],
+    "insights": [
+      "Parent custom Lattice/ConvexBody API is expressive enough for the full successive-minima definitional layer — no new foundations needed for OQ-01 infrastructure.",
+      "Monotonicity λ₀≤λ₁≤⋯ is order-theoretic: more independent points ⟹ nested-down admissible sets ⟹ csInf antitone. No analysis required.",
+      "Minkowski first theorem = i=0 case of second: nonzero lattice point in S ⟹ 1 admissible for λ₀ ⟹ λ₀≤1.",
+      "Build fixes for the abandoned draft: open scoped Pointwise for c•(Set ...); explicit Unique (Fin (0+1)) instance for single-vector linear independence."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove secondTheorem_upper_statement: (∏λᵢ)·vol(S)≤2ⁿ·covol(L) via basis realizing successive minima + simultaneous reduction.",
+      "Prove matching lower bound (2ⁿ/n!)·covol(L)≤(∏λᵢ)·vol(S).",
+      "Prove admissibleScalings nonempty (attainment of each λᵢ) to discharge the monotonicity hypothesis unconditionally."
+    ],
     "markdown": "# Knowledge Base: minkowski-fundamental-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
