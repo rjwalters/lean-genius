@@ -1,0 +1,100 @@
+{
+  "id": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02-oq-01",
+  "title": "Erdős #396 OQ-04 → OQ-01 → OQ-01 → OQ-02 → OQ-02 → OQ-02 → OQ-01: The Exact Wallis Constant 1/√π in the 1/2 Exponent of the Central Binomial Coefficient",
+  "slug": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02-oq-01",
+  "description": "The grandparent thread pinned the critical exponent 1/2 of the central binomial coefficient from the recurrence alone: C(2n,n)/4^n ∼ n^{−1/2}. Its child sharpened this to a two-sided bracket on the leading constant of the normalised sequence C(2n,n)·√n/4^n, placing it between 1/2 and 1/√3 (equivalently 3 < π < 4). This entry closes the bracket to a single point: the normalised central binomial coefficient converges to the exact Wallis constant, C(2n,n)·√n/4^n → 1/√π, equivalently C(2n,n) ∼ 4^n/√(πn). The proof routes through Mathlib's Stirling sequence stirlingSeq n = n!/(√(2n)·(n/e)^n) → √π via a single square-root-free identity: C(2n,n)²·n/16^n = stirlingSeq(2n)²/stirlingSeq(n)⁴. Squaring is what removes every square root — stirlingSeq(2n)² carries (√(4n))² = 4n and stirlingSeq(n)⁴ carries (√(2n))⁴ = (2n)² — so the identity is purely polynomial once (2n)! = C(2n,n)·(n!)² and ((2n)/e)^{2n} = 4^n·((n/e)^n)² are substituted. The right side tends to (√π)²/(√π)⁴ = 1/π, and a final square root (the sequence is non-negative) transports the limit to 1/√π. The parent's bracket is recovered as the squeeze of this exact limit between its endpoints.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://erdosproblems.com/396",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02OQ02OQ01.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "central-binomial",
+      "stirling",
+      "wallis",
+      "asymptotics",
+      "limits",
+      "critical-exponent",
+      "pi",
+      "square-root"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "erdosNumber": 396,
+    "erdosUrl": "https://erdosproblems.com/396",
+    "axiomCount": 0,
+    "lineCount": 167,
+    "assumptions": "0 axioms, 0 sorries. All four theorems depend only on the foundational axioms propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool / native_decide). Built against Mathlib 4.26.0.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The central-binomial thread reads the two-term recurrence (n+1)·C(2(n+1),n+1) = 2(2n+1)·C(2n,n) as a multiplicative step and tracks its deficit below the limiting rate 4. The grandparent OQ-02 extracted the critical exponent 1/2: C(2n,n)/4^n ≤ exp(−(1/2)·H_n) ∼ n^{−1/2}, using only the per-step inequality log y ≤ y − 1 and the divergence of the harmonic series — no Stirling. Its first open question asked whether the recurrence-level bounds could be sharpened to explicit constants c₁·4^n/√n ≤ C(2n,n) ≤ c₂·4^n/√n, isolating the √π constant as the only ingredient genuinely needing an analytic input. The child OQ-02 answered the bracket half: a squared-recurrence induction produced c₁ = 1/2 and c₂ = 1/√3, equivalently 1/2 ≤ 1/√π ≤ 1/√3 ⟺ 3 ≤ π ≤ 4. What remained open was the exact value of the constant. This entry supplies it.",
+    "problemStatement": "Does the normalised central binomial coefficient C(2n,n)·√n/4^n converge, and to what exact constant? The parent's elementary bracket placed the limit (if it exists) in [1/2, 1/√3]; can the single point 1/√π — the value forced by the classical asymptotic C(2n,n) ∼ 4^n/√(πn) — be pinned with a fully machine-checked proof?",
+    "text": "The limit is the exact Wallis constant: C(2n,n)·√n/4^n → 1/√π. The proof is built on one square-root-free identity. For n ≥ 1, C(2n,n)²·n/16^n = stirlingSeq(2n)²/stirlingSeq(n)⁴, where stirlingSeq n = n!/(√(2n)·(n/e)^n) is Mathlib's Stirling sequence. Squaring the target sequence is the key device: it turns every square root inside the Stirling sequence into a polynomial — stirlingSeq(2n)² contains (√(2·2n))² = 4n and stirlingSeq(n)⁴ contains (√(2n))⁴ = (2n)² — so once (2n)! = C(2n,n)·(n!)² (from Nat.choose_mul_factorial_mul_factorial) and the power cancellation ((2n)/e)^{2n} = 4^n·((n/e)^n)² are substituted, the identity is closed by field_simp on a rational function of the atoms {C(2n,n), n!, n, 16^n, (n/e)^{4n}}. Mathlib's Stirling.tendsto_stirlingSeq_sqrt_pi gives stirlingSeq n → √π, whence stirlingSeq(2n)² → π and stirlingSeq(n)⁴ → π², so the right side tends to π/π² = 1/π. The squeeze transfers this to (C(2n,n)·√n/4^n)² → 1/π for n ≥ 1, and Filter.Tendsto.sqrt together with √((·)²) = · (non-negativity) and √(1/π) = 1/√π delivers C(2n,n)·√n/4^n → 1/√π. Two consequences follow: the equivalent normalisation C(2n,n)·√(πn)/4^n → 1 (i.e. C(2n,n) ∼ 4^n/√(πn)), and the bracket recovery 1/2 ≤ 1/√π ≤ 1/√3 via √π ≤ √4 = 2 and √3 ≤ √π from 3 ≤ π ≤ 4 (Real.pi_gt_three, Real.pi_lt_four).",
+    "proofStrategy": "Self-contained, import Mathlib only. (1) two_mul_factorial_eq: (2n)! = C(2n,n)·(n!·n!) over ℝ, from Nat.choose_mul_factorial_mul_factorial with 2n − n = n and the definitional C(2n,n) = (2n).choose n, then exact_mod_cast. (2) cb_sq_identity (the bridge, n ≥ 1): establish closed forms hSn for stirlingSeq(n)⁴ — (√(2n))⁴ = (2n)² via (4 = 2·2), pow_mul, Real.sq_sqrt; ((n/e)^n)⁴ = (n/e)^{4n} via pow_mul — and hS2n for stirlingSeq(2n)² — (√(2·2n))² = 2·2n via Real.sq_sqrt and push_cast; ((2n/e)^{2n})² = 16^n·(n/e)^{4n} via mul_pow and 2^4 = 16; numerator rewritten by two_mul_factorial_eq — then rw both and discharge with field_simp on the nonzero atoms (n!, n, (n/e)^{4n}, 16^n). (3) centralBinom_mul_sqrt_div_tendsto: stirlingSeq(2n) → √π by composing tendsto_stirlingSeq_sqrt_pi with n ↦ 2n (tendsto_atTop_mono); Tendsto.pow gives stirlingSeq(2n)² → π and stirlingSeq(n)⁴ → π²; Tendsto.div gives the ratio → π/π² = 1/π; transfer to the square of the target via Tendsto.congr' on n ≥ 1 using cb_sq_identity and (√n)² = n, (4^n)² = 16^n; finish with Filter.Tendsto.sqrt, Real.sqrt_sq (non-negativity), and √(1/π) = 1/√π (Real.sqrt_inv). (4) centralBinom_mul_sqrt_pi_div_tendsto_one: multiply the limit by the constant √π, simplify √π·(1/√π) = 1, and rewrite √(π·n) = √π·√n (Real.sqrt_mul). (5) sqrt_pi_inv_mem_bracket: √π ≤ 2 from π < 4 and √3 ≤ √π from 3 < π, then one_div_le_one_div_of_le.",
+    "keyInsights": [
+      "**Squaring removes every square root.** The Stirling sequence stirlingSeq n = n!/(√(2n)·(n/e)^n) carries an irreducible √(2n). Working with the *square* of the normalised central binomial coefficient — C(2n,n)²·n/16^n rather than C(2n,n)·√n/4^n — makes the matching √ in the Stirling expression appear to an even power: (√(4n))² = 4n in stirlingSeq(2n)² and (√(2n))⁴ = (2n)² in stirlingSeq(n)⁴. The bridge identity is then purely polynomial and is closed by a single field_simp, with no square-root lemmas inside the hard step. The lone surviving root, √n on the target sequence, is restored at the very end by one application of Filter.Tendsto.sqrt.",
+      "**One algebraic identity reduces the whole asymptotic to a Mathlib limit.** C(2n,n)²·n/16^n = stirlingSeq(2n)²/stirlingSeq(n)⁴ converts the unknown limit of the central binomial coefficient into the known limit of the Stirling sequence. The right side tends to (√π)²/(√π)⁴ = π/π² = 1/π by Tendsto.pow and Tendsto.div; nothing about C(2n,n)'s growth needs to be estimated directly.",
+      "**The exact constant is the point the parent could only bracket.** The parent's squared-recurrence induction trapped the limit in [1/2, 1/√3], equivalent to 3 ≤ π ≤ 4. The Wallis/Stirling constant 1/√π is precisely the single value inside that interval — exactly the analytic ingredient the parent's first open question flagged as the only one not reachable from the recurrence. The bracket-recovery theorem makes the consistency explicit: 1/2 ≤ 1/√π ≤ 1/√3.",
+      "**The two power cancellations carry the content.** Everything reduces to two facts: (2n)! = C(2n,n)·(n!)² (a binomial identity) and ((2n)/e)^{2n} = 4^n·((n/e)^n)² (the base doubling that produces the 4^n, squared to 16^n). These are the only inputs beyond the Stirling limit; the rest is bookkeeping that field_simp absorbs.",
+      "**A clean capstone for the recurrence thread.** Where the recurrence-only entries deliberately avoided Stirling to expose the exponent 1/2 from harmonic divergence, pinning the *constant* genuinely requires the Wallis product (here packaged inside Mathlib's tendsto_stirlingSeq_sqrt_pi). This entry isolates that single analytic input and shows it suffices to upgrade the parent's bracket to an exact limit."
+    ],
+    "prerequisites": [
+      "Mathlib's Stirling sequence Stirling.stirlingSeq and its limit Stirling.tendsto_stirlingSeq_sqrt_pi : stirlingSeq → √π",
+      "The binomial identity Nat.choose_mul_factorial_mul_factorial and Nat.centralBinom",
+      "Square-root algebra: Real.sq_sqrt, Real.sqrt_sq, Real.sqrt_inv, Real.sqrt_mul, and Filter.Tendsto.sqrt",
+      "Limit algebra: Filter.Tendsto.pow, Filter.Tendsto.div, Filter.Tendsto.congr', tendsto_atTop_mono",
+      "The bounds Real.pi_gt_three and Real.pi_lt_four for the bracket-recovery corollary"
+    ]
+  },
+  "conclusion": {
+    "summary": "The normalised central binomial coefficient converges to the exact Wallis constant: C(2n,n)·√n/4^n → 1/√π, equivalently C(2n,n) ∼ 4^n/√(πn). The proof rests on a single square-root-free identity C(2n,n)²·n/16^n = stirlingSeq(2n)²/stirlingSeq(n)⁴ that reduces the asymptotic to Mathlib's Stirling limit stirlingSeq → √π; squaring the target sequence is what eliminates the square roots in the Stirling expression, leaving a polynomial identity closed by field_simp. The right side tends to π/π² = 1/π and a final square root yields 1/√π. The parent's elementary bracket 1/2 ≤ 1/√π ≤ 1/√3 (i.e. 3 ≤ π ≤ 4) is recovered as a corollary. All five theorems are fully machine-checked with no axioms or sorries.",
+    "implications": "The entry closes the parent's open question on the exact value of the leading constant: the recurrence-only thread bracketed it in [1/2, 1/√3] without analytic input, and this file pins the single point 1/√π using exactly one analytic ingredient — the Wallis product, packaged in Mathlib's tendsto_stirlingSeq_sqrt_pi. The square-root-free bridge identity is a reusable device: any asymptotic of the shape a_n ∼ c/√n can be attacked by squaring to a_n²·n → c² before invoking a Stirling-type limit, sidestepping square-root manipulation in the algebraic core.",
+    "openQuestions": [
+      "The bound is first-order: C(2n,n)·√n/4^n → 1/√π. Can the same square-and-reduce device, applied to Mathlib's sharper Stirling bounds (sqrt_pi_le_stirlingSeq and the geometric-sum error term log_stirlingSeq_diff_le_geo_sum), produce a verified second-order expansion C(2n,n) = (4^n/√(πn))·(1 − 1/(8n) + O(1/n²)), and is the 1/8n correction extractable from the recurrence deficit 2/(n+1)?",
+      "The identity C(2n,n)·√n/4^n = stirlingSeq(2n)/stirlingSeq(n)² holds before squaring; does the square-free form give a shorter route to the limit, or is the squared identity genuinely necessary to keep the algebraic core free of √ in a machine-checked proof?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Topology",
+      "Finset",
+      "Real",
+      "Stirling"
+    ],
+    "namespace": "Erdos396OQ01OQ01OQ02OQ02OQ02OQ01",
+    "lineCount": 167,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02",
+      "relationship": "parent",
+      "description": "Parent OQ: explicit constants in the 1/2 exponent, bracketing the leading constant of C(2n,n)·√n/4^n between 1/2 and 1/√3 (equivalently 3 < π < 4) by a squared-recurrence induction with no analytic input. This entry closes that bracket to the single exact point 1/√π using Mathlib's Stirling limit, and recovers the bracket as a corollary."
+    },
+    {
+      "targetId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02",
+      "relationship": "ancestor",
+      "description": "Grandparent OQ: the 1/2 critical exponent of the central binomial coefficient from the recurrence, C(2n,n)/4^n ∼ n^{−1/2}, proved without Stirling. This entry supplies the exact constant of the same asymptotic, C(2n,n) ∼ 4^n/√(πn)."
+    },
+    {
+      "targetId": "erdos-396",
+      "relationship": "ancestor",
+      "description": "Root problem on central binomial coefficients. C(2n,n) is the root object whose exact growth rate 4^n/√(πn) is established here."
+    }
+  ],
+  "sorries": 0
+}
