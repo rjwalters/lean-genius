@@ -1,7 +1,7 @@
 {
   "slug": "pell-equation-oq-06",
   "title": "The Negative Pell Equation x² − 2y² = −1 Has Infinitely Many Solutions",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -54,7 +54,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 ACT (researcher-3, 2026-06-20): Built Proofs/PellEquationOQ06.lean from scratch — a self-contained, axiom-free proof that x²−2y²=−1 has infinitely many integer solutions. Strategy mirrors PellEquationOQ05's distinctness⟹infinite pattern but in the elementary ℤ setting: (1) negPell_step proves the form automorphism (x,y)↦(3x+4y,2x+3y) [mult by 3+2√2] preserves x²−2y² by a one-line ring identity; (2) negPellSeq is the explicit chain from (1,1); (3) negPellSeq_norm (induction + ring) shows every term solves the equation; (4) negPellSeq_pos (induction) gives both coords ≥1, feeding negPellSeq_fst_strictMono (strictMono_nat_of_lt_succ); (5) injectivity from StrictMono.injective on first coordinate; (6) negPell_solutions_infinite via Set.infinite_of_injective_forall_mem. Verified small terms (1,1)→(7,5)→(41,29)→(239,169) by rfl. No native_decide → 0 axioms. Gap filled: Mathlib's Pell.Solution₁ is norm +1 only; negative Pell is future work upstream."
+    "progressSummary": "S1 ACT (researcher-3, 2026-06-20): Built Proofs/PellEquationOQ06.lean from scratch — a self-contained, axiom-free proof that x²−2y²=−1 has infinitely many integer solutions. Strategy mirrors PellEquationOQ05's distinctness⟹infinite pattern but in the elementary ℤ setting: (1) negPell_step proves the form automorphism (x,y)↦(3x+4y,2x+3y) [mult by 3+2√2] preserves x²−2y² by a one-line ring identity; (2) negPellSeq is the explicit chain from (1,1); (3) negPellSeq_norm (induction + ring) shows every term solves the equation; (4) negPellSeq_pos (induction) gives both coords ≥1, feeding negPellSeq_fst_strictMono (strictMono_nat_of_lt_succ); (5) injectivity from StrictMono.injective on first coordinate; (6) negPell_solutions_infinite via Set.infinite_of_injective_forall_mem. Verified small terms (1,1)→(7,5)→(41,29)→(239,169) by rfl. No native_decide → 0 axioms. Gap filled: Mathlib's Pell.Solution₁ is norm +1 only; negative Pell is future work upstream. || S2 (researcher-8, 2026-06-21): COMPLETED follow-up child pell-equation-oq-06-oq-01 — exact CLASSIFICATION (descent) + norm−1→norm+1 squaring bridge, 0-axiom verified, builds in full Proofs aggregate.",
+    "builtItems": [
+      "Proofs/PellEquationOQ06OQ01.lean — CLASSIFICATION follow-up (gallery pell-equation-oq-06-oq-01): negPell_complete proves every positive solution of x²−2y²=−1 is a term of the chain (descent/Vieta-jumping on x.toNat via inverse unit 3−2√2); negPell_solutions_eq_range packages {x≥1,y≥1,x²−2y²=−1}=Set.range negPellSeq; negPell_sq_is_pos_pell bridges norm−1→norm+1. 167L 6thm 0-axiom verified."
+    ],
+    "insights": [
+      "Descent inequalities become elementary via exact factored identities proved by linear_combination of x²−2y²=−1: (3x−4y−1)(3x+4y+1)=2(y−5)(y+1) and (3y−2x)(3y+2x)=y²+4; one factor positive forces the sign of the other (nlinarith).",
+      "Termination of the descent anchored by a finite no-small-solution check: no positive solution has 2≤x≤6 (bound y≤4, interval_cases); the gap to x=7 is exactly the jump (1,1)→(7,5)."
+    ],
+    "nextSteps": [
+      "Generalize classification to x²−Dy²=−1 for other solvable D (odd CF period of √D), uniform in D.",
+      "Promote negPell_sq_is_pos_pell into Mathlib Pell.Solution₁ (negative Pell as norm−1 half of the unit group)."
+    ]
   },
   "references": {
     "papers": [],
