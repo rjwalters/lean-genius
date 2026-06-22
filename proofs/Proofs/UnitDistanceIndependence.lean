@@ -14,7 +14,7 @@ the independence number α(S) = max |I| where I ⊆ S has no two points at dista
 - Hadwiger-Nelson bounds: 5 ≤ χ(R^2) ≤ 7
 - Basic structural theorems about independence
 
-**Status**: COMPLETE (67 theorems, 0 sorries, 2 axioms)
+**Status**: COMPLETE (67 theorems, 0 sorries, 1 axiom)
 Tags: combinatorial-geometry, graph-theory, independence-number, unit-distance
 -/
 
@@ -26,6 +26,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Tactic
+import Proofs.UnitDistanceHN7
 
 namespace UnitDistanceIndependence
 
@@ -132,9 +133,16 @@ axiom hadwiger_nelson_lower_bound :
     ∀ (c : Plane → Fin 4), ∃ p q : Plane, dist p q = 1 ∧ c p = c q
 
 /-- **Hadwiger-Nelson Upper Bound**: The plane can be 7-colored such that
-    no two points at distance 1 have the same color. -/
-axiom hadwiger_nelson_upper_bound :
-    ∃ c : Plane → Fin 7, ∀ p q : Plane, dist p q = 1 → c p ≠ c q
+    no two points at distance 1 have the same color.
+
+    This is now a fully machine-checked theorem, discharged by the explicit
+    hexagonal 7-coloring construction `hadwiger_nelson_7coloring` proved in
+    `Proofs.UnitDistanceHN7` (0 sorries, no `native_decide`). Both `Plane`
+    abbreviations are definitionally `EuclideanSpace ℝ (Fin 2)`, so the term
+    typechecks directly. -/
+theorem hadwiger_nelson_upper_bound :
+    ∃ c : Plane → Fin 7, ∀ p q : Plane, dist p q = 1 → c p ≠ c q :=
+  _root_.hadwiger_nelson_7coloring
 
 /-- The chromatic number of the plane is between 5 and 7 (consequence of bounds). -/
 theorem hadwiger_nelson_bounds :
@@ -193,7 +201,7 @@ noncomputable def unitDistGraph (S : Finset Plane) : SimpleGraph S where
   Adj p q := dist (p : Plane) (q : Plane) = 1 ∧ p ≠ q
   symm := by
     intro p q ⟨hd, hne⟩
-    exact ⟨by rw [dist_comm]; exact hd, hne.symm⟩
+    exact ⟨by rw [_root_.dist_comm]; exact hd, hne.symm⟩
   loopless := by
     intro p ⟨_, hne⟩
     exact hne rfl
@@ -828,8 +836,8 @@ theorem indep_degree_sum_eq_cut_edges {V : Type*} [Fintype V] [DecidableEq V]
   rw [SimpleGraph.degree]
   apply congr_arg Finset.card
   ext u
-  simp only [SimpleGraph.neighborFinset, Finset.mem_filter, Finset.mem_sdiff,
-    Finset.mem_univ, true_and]
+  simp only [SimpleGraph.mem_neighborFinset, Set.mem_toFinset, SimpleGraph.mem_neighborSet,
+    Finset.mem_filter, Finset.mem_sdiff, Finset.mem_univ, true_and]
   constructor
   · intro hadj
     exact ⟨fun huI => hI v hv u huI (G.ne_of_adj hadj) hadj, hadj⟩
@@ -935,13 +943,16 @@ This file establishes:
 - `indep_degree_sum`: Degree sum in independent set
 - `independenceNumber_pos`: α(G) > 0 for nonempty graphs
 
-### Axioms Used (2)
+### Axioms Used (1)
 - `hadwiger_nelson_lower_bound`: De Grey's 5-color lower bound (2018)
-- `hadwiger_nelson_upper_bound`: 7-coloring upper bound
+
+### Now Proven (formerly axiomatized)
+- `hadwiger_nelson_upper_bound`: the 7-coloring upper bound is now a theorem,
+  discharged by `hadwiger_nelson_7coloring` from `Proofs.UnitDistanceHN7`
+  (explicit hexagonal tiling, 0 sorries, no `native_decide`).
 
 ### What's NOT Proven (and Why)
 - De Grey's construction (requires explicit 1581-vertex graph verification)
-- The 7-coloring (requires constructing the hexagonal tiling coloring)
 - Fractional chromatic number bounds (requires LP duality formalization)
 -/
 
