@@ -1339,6 +1339,7 @@ import Proofs.Erdos177OQ04
 import Proofs.Erdos177Problem
 import Proofs.Erdos178Problem
 import Proofs.Erdos179Aristotle
+import Proofs.Erdos179Incomplete01
 import Proofs.Erdos179Problem
 import Proofs.Erdos179ProblemAristotle
 import Proofs.Erdos17Problem
