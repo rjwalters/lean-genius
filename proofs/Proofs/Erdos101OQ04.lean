@@ -22,10 +22,10 @@ This file focuses on the **lower-bound construction direction**:
   without introducing a permanent axiom.  Path B in
   `research/problems/erdos101-problem-oq-04/state.md`.
 * `Erdos101OQ04.solymosi_stojakovic_lower_bound` — the modern
-  n^{2−O(1/√(log n))} bound.  Strengthens
-  `Erdos101OQ01.solymosi_stojakovic_lower_bound` only cosmetically
-  (re-named here for OQ-04 provenance); reduces to it by
-  `solymosi_stojakovic_lower_bound_via_oq01`.
+  n^{2−O(1/√(log n))} bound.  Re-states
+  `Erdos101OQ01.solymosi_stojakovic_lower_bound` in OQ-04's
+  `IsLowerBoundConstruction` packaging (re-named here for OQ-04
+  provenance); both remain deferred proof obligations.
 * `Erdos101OQ04.exists_four_collinear_subset_of_count_pos` —
   unconditional: a no-five-collinear `P` with at least one four-point
   line admits an explicit 4-element collinear subset of `P.points`.
@@ -77,6 +77,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Data.ZMod.Basic
+import Mathlib.Tactic.LinearCombination
 
 namespace Erdos101OQ04
 
@@ -133,7 +134,7 @@ theorem isLowerBoundConstruction_threshold_eq_zero_of_small
     IsLowerBoundConstruction P 0 := by
   refine ⟨hP, ?_⟩
   rw [fourPointLineCount_lt_four P h]
-  exact le_refl 0
+  norm_num
 
 /- ## Grünbaum's Ω(n^{3/2}) lower bound (recorded as deferred proof)
 
@@ -144,12 +145,16 @@ the *parabola modulo p*:
 
     $G_p = \{(i, j) \in (\mathbb{F}_p)^2 : 4j \equiv -i^2 \pmod p\}$
 
-For `p` prime, $|G_p| = p$, and the construction admits
-$\Omega(p^{3/2})$ four-point lines (each "secant line" of the parabola
-hits at most four points by the degree-two polynomial-roots bound).
-The result `grunbaum_lower_bound_three_halves` below records the
-asymptotic statement; the construction itself is deferred to Path B
-of the state.md S2 inventory.
+For `p` prime, $|G_p| = p$.  The bare parabola is itself a
+*general-position* set: every affine line meets it in **at most two**
+points (the degree-two polynomial-roots bound — see
+`parabola_inter_line_card_le_two` below), so it has *no* four-point
+lines on its own.  Grünbaum's $\Omega(p^{3/2})$ four-point-line witness
+is built *from* this no-three-collinear base by a further sumset /
+grid construction; the parabola's general-position property is the
+foundational input.  The result `grunbaum_lower_bound_three_halves`
+below records the asymptotic statement; the construction itself is
+deferred to Path B of the state.md S2 inventory.
 
 Note: this statement was refuted as a *tight* lower bound by
 Solymosi–Stojaković, but remains valid as a *weaker* lower bound;
@@ -186,9 +191,8 @@ Re-states the Solymosi–Stojaković existential lower bound in OQ-04's
 namespace, with `IsLowerBoundConstruction`-flavoured packaging.  The
 statement is *cosmetically* different from
 `Erdos101OQ01.solymosi_stojakovic_lower_bound` but mathematically
-equivalent; the bridge lemma
-`solymosi_stojakovic_lower_bound_via_oq01` shows that OQ-04's
-formulation reduces to OQ-01's.
+equivalent (the inner `IsLowerBoundConstruction P threshold` unfolds
+to exactly OQ-01's `NoFiveCollinear P ∧ threshold ≤ fourPointLineCount P`).
 
 Note: the construction itself is OPEN (Path A in state.md, ~600-1000
 LOC of measure-theoretic Lean infrastructure to formalise the random
@@ -207,36 +211,12 @@ Reference: J. Solymosi and M. Stojaković, *Combinatorica* 33 (2013),
 Recorded as `theorem ... := by sorry`; the construction is OPEN
 (Path A in `state.md`, deferred to multi-session ACT).  This statement
 is mathematically equivalent to
-`Erdos101OQ01.solymosi_stojakovic_lower_bound`; the bridge is
-`solymosi_stojakovic_lower_bound_via_oq01` below. -/
+`Erdos101OQ01.solymosi_stojakovic_lower_bound`. -/
 theorem solymosi_stojakovic_lower_bound :
     ∀ C : ℝ, 0 < C → ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
       ∃ P : PlanarPointSet, P.points.card = n ∧
         IsLowerBoundConstruction P ((n : ℝ) ^ (2 - C / Real.sqrt (Real.log n))) := by
   sorry
-
-/-- **Bridge**: OQ-04's `IsLowerBoundConstruction`-flavoured re-statement
-reduces directly to OQ-01's `solymosi_stojakovic_lower_bound`.  This
-lemma is the asymptotic equivalence between the two formulations and
-shows that OQ-04's `solymosi_stojakovic_lower_bound` is a deferred
-proof obligation only because OQ-01's is.
-
-Recorded *unconditionally* (no sorry): the implication holds even
-when both sides are open. -/
-theorem solymosi_stojakovic_lower_bound_via_oq01 :
-    Erdos101OQ01.solymosi_stojakovic_lower_bound →
-      Erdos101OQ04.solymosi_stojakovic_lower_bound := by
-  -- Both are `Prop`-typed; the OQ-01 statement directly produces the
-  -- witness `P` with `fourPointLineCount P ≥ n^{2 - C / √(log n)}`,
-  -- which is precisely the `IsLowerBoundConstruction` payload.
-  intro h C hC
-  obtain ⟨N, hN⟩ := h C hC
-  refine ⟨N, fun n hn => ?_⟩
-  obtain ⟨P, hcard, hno5, hlb⟩ := hN n hn
-  -- The OQ-04 existential unfolds to `∃ P, P.points.card = n ∧
-  -- IsLowerBoundConstruction P threshold`, where the inner predicate
-  -- is `NoFiveCollinear P ∧ threshold ≤ (fourPointLineCount P : ℝ)`.
-  exact ⟨P, hcard, hno5, hlb⟩
 
 /- ## Asymptotic comparison: Solymosi–Stojaković strictly beats Grünbaum
 
@@ -277,7 +257,7 @@ theorem solymosi_stojakovic_exponent_gt_three_halves
   have hsqrt_pos : (0 : ℝ) < Real.sqrt (Real.log (n : ℝ)) := by linarith
   -- `C / √(log n) < C < 1/2`.
   have h_frac_lt_C : C / Real.sqrt (Real.log (n : ℝ)) < C := by
-    rw [div_lt_iff hsqrt_pos]
+    rw [div_lt_iff₀ hsqrt_pos]
     nlinarith [hsqrt_gt_one, hC_pos]
   linarith
 
@@ -396,6 +376,124 @@ theorem parabola_card (p : ℕ) [NeZero p] [Fact p.Prime] (hp : p ≠ 2) :
       Finset.card_image_of_injective _ (param_injective p),
       Finset.card_univ]
   exact ZMod.card p
+
+/- ## S3-B2 (parabola secant bound — general position / no three collinear)
+
+The Grünbaum parabola is a *general-position* set: over the field
+`ZMod p` (`p` an odd prime), every affine line
+`{(x,y) : α·x + β·y = γ}` with `(α,β) ≠ (0,0)` meets the parabola in
+**at most two** points.  Equivalently, no three points of the parabola
+are collinear.
+
+This is the foundational "no three in a line" property that any
+sumset/grid lower-bound construction built on top of the parabola
+needs as input.  The proof is purely elementary (no `Polynomial`
+machinery): substituting `y = -x²·4⁻¹` into the line equation yields a
+quadratic `(-β)·x² + (4α)·x + (-4γ) = 0` whose leading pair `(-β, 4α)`
+is nonzero, and a field-theoretic three-roots argument shows it has at
+most two solutions. -/
+
+/-- A nonzero quadratic over any field has at most two roots: there is
+no triple of pairwise-distinct field elements all satisfying
+`a·t² + b·t + c = 0` when `(a, b) ≠ (0, 0)`.  Elementary divided-
+difference argument, no `Polynomial` import. -/
+private theorem no_three_quadratic_roots {F : Type*} [Field F]
+    (a b c : F) (hab : ¬ (a = 0 ∧ b = 0)) (i j k : F)
+    (hi : a * i ^ 2 + b * i + c = 0) (hj : a * j ^ 2 + b * j + c = 0)
+    (hk : a * k ^ 2 + b * k + c = 0)
+    (hij : i ≠ j) (hik : i ≠ k) (hjk : j ≠ k) : False := by
+  -- Divided differences: `(i - j)·(a·(i+j) + b) = 0`, and `i ≠ j`.
+  have e1 : a * (i + j) + b = 0 := by
+    have hd : (i - j) * (a * (i + j) + b) = 0 := by linear_combination hi - hj
+    rcases mul_eq_zero.mp hd with h | h
+    · exact absurd (sub_eq_zero.mp h) hij
+    · exact h
+  have e2 : a * (j + k) + b = 0 := by
+    have hd : (j - k) * (a * (j + k) + b) = 0 := by linear_combination hj - hk
+    rcases mul_eq_zero.mp hd with h | h
+    · exact absurd (sub_eq_zero.mp h) hjk
+    · exact h
+  -- Subtracting the two: `a·(i - k) = 0`, and `i ≠ k`, so `a = 0`.
+  have ha : a = 0 := by
+    have hd : a * (i - k) = 0 := by linear_combination e1 - e2
+    rcases mul_eq_zero.mp hd with h | h
+    · exact h
+    · exact absurd (sub_eq_zero.mp h) hik
+  -- Then `e1` forces `b = 0`, contradicting `(a, b) ≠ (0, 0)`.
+  have hb : b = 0 := by rw [ha, zero_mul, zero_add] at e1; exact e1
+  exact hab ⟨ha, hb⟩
+
+/-- **Parabola secant bound** (S3-B2 deliverable).
+
+For `p` an odd prime, every affine line `{(x,y) : α·x + β·y = γ}` with
+`(α, β) ≠ (0, 0)` meets the Grünbaum parabola in at most two points.
+Equivalently: the parabola is in general position — no three of its
+points are collinear.  This is the no-three-in-a-line property that
+underpins any lower-bound construction built on the parabola; the bare
+parabola has *no* four-point lines. -/
+theorem parabola_inter_line_card_le_two (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) (α β γ : ZMod p) (hαβ : ¬ (α = 0 ∧ β = 0)) :
+    ((parabola p).filter (fun x => α * x.1 + β * x.2 = γ)).card ≤ 2 := by
+  by_contra hcon
+  rw [not_le] at hcon
+  obtain ⟨x, y, z, hx, hy, hz, hxy, hxz, hyz⟩ := Finset.two_lt_card_iff.mp hcon
+  simp only [Finset.mem_filter] at hx hy hz
+  have h4 := four_ne_zero p hp
+  have h44 : (4 : ZMod p) * (4 : ZMod p)⁻¹ = 1 := mul_inv_cancel₀ h4
+  -- On the parabola the second coordinate is determined by the first.
+  have second : ∀ w : ZMod p × ZMod p, w ∈ parabola p →
+      w.2 = -(w.1 * w.1) * (4 : ZMod p)⁻¹ := by
+    intro w hw
+    have h := (mem_parabola_iff_eq_param p hp w).mp hw
+    have h2 := congrArg Prod.snd h
+    simpa [param] using h2
+  -- The first coordinate is injective on the parabola.
+  have firstInj : ∀ u v : ZMod p × ZMod p, u ∈ parabola p → v ∈ parabola p →
+      u.1 = v.1 → u = v := by
+    intro u v hu hv h1
+    rw [(mem_parabola_iff_eq_param p hp u).mp hu,
+        (mem_parabola_iff_eq_param p hp v).mp hv, h1]
+  -- Substituting `w.2` into the line equation gives a quadratic in `w.1`.
+  have quad : ∀ w : ZMod p × ZMod p, w ∈ parabola p →
+      α * w.1 + β * w.2 = γ →
+      (-β) * w.1 ^ 2 + (4 * α) * w.1 + (-(4 * γ)) = 0 := by
+    intro w hw hline
+    rw [second w hw] at hline
+    have step : (4 : ZMod p) * (β * (-(w.1 * w.1) * (4 : ZMod p)⁻¹))
+        = -(β * (w.1 * w.1)) := by
+      rw [show (4 : ZMod p) * (β * (-(w.1 * w.1) * (4 : ZMod p)⁻¹))
+            = -(β * (w.1 * w.1)) * ((4 : ZMod p) * (4 : ZMod p)⁻¹) from by ring,
+          h44, mul_one]
+    have e4 : (4 : ZMod p) * (α * w.1) + (4 : ZMod p) * (β * (-(w.1 * w.1)
+        * (4 : ZMod p)⁻¹)) = (4 : ZMod p) * γ := by rw [← mul_add, hline]
+    rw [step] at e4
+    linear_combination e4
+  have qx := quad x hx.1 hx.2
+  have qy := quad y hy.1 hy.2
+  have qz := quad z hz.1 hz.2
+  -- The first coordinates are pairwise distinct (else the points coincide).
+  have hx1 : x.1 ≠ y.1 := fun h => hxy (firstInj x y hx.1 hy.1 h)
+  have hx2 : x.1 ≠ z.1 := fun h => hxz (firstInj x z hx.1 hz.1 h)
+  have hy2 : y.1 ≠ z.1 := fun h => hyz (firstInj y z hy.1 hz.1 h)
+  -- The leading pair `(-β, 4α)` is nonzero.
+  have hab : ¬ ((-β : ZMod p) = 0 ∧ (4 * α : ZMod p) = 0) := by
+    rintro ⟨hb, ha⟩
+    exact hαβ ⟨(mul_eq_zero.mp ha).resolve_left h4, neg_eq_zero.mp hb⟩
+  exact no_three_quadratic_roots (-β) (4 * α) (-(4 * γ)) hab x.1 y.1 z.1
+    qx qy qz hx1 hx2 hy2
+
+/-- **No three collinear** (corollary restatement).  For `p` an odd
+prime, the Grünbaum parabola contains no three points on a common
+affine line with direction `(α, β) ≠ (0, 0)`. -/
+theorem parabola_no_three_collinear (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) (α β γ : ZMod p) (hαβ : ¬ (α = 0 ∧ β = 0))
+    (S : Finset (ZMod p × ZMod p)) (hS : S ⊆ parabola p)
+    (hline : ∀ w ∈ S, α * w.1 + β * w.2 = γ) :
+    S.card ≤ 2 := by
+  refine le_trans (Finset.card_le_card ?_) (parabola_inter_line_card_le_two p hp α β γ hαβ)
+  intro w hw
+  rw [Finset.mem_filter]
+  exact ⟨hS hw, hline w hw⟩
 
 end Grunbaum
 
