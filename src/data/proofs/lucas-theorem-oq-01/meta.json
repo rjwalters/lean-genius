@@ -1,0 +1,135 @@
+{
+  "id": "lucas-theorem-oq-01",
+  "title": "Lucas' Theorem and Glaisher's Count: row n of Pascal's triangle has 2^(s₂ n) odd entries",
+  "slug": "lucas-theorem-oq-01",
+  "description": "Lucas' theorem reduces a binomial coefficient modulo a prime p to the product of the binomial coefficients of the base-p digits, C(m,n) ≡ ∏ᵢ C(mᵢ,nᵢ) (mod p). The bare statement is already in Mathlib (Mathlib.Data.Nat.Choose.Lucas); this entry re-exports it (lucas_theorem) and records the single base-2 step (lucas_mod_two), then proves the substantive classical consequence that the digit-product form is meant to produce: Glaisher's 1899 theorem that the number of ODD entries in row n of Pascal's triangle equals 2^(s₂ n), where s₂(n) is the number of 1's in the binary expansion of n. Over the binary digit {0,1}, Lucas mod 2 collapses to two pointwise parity laws — C(2n,k) is odd iff k is even and C(n,k/2) is odd (top digit 0, since C(0,1)=0), while C(2n+1,k) is odd iff C(n,k/2) is odd for every k (top digit 1, since C(1,0)=C(1,1)=1). These give the doubling recursion oddCount(2n)=oddCount(n) and oddCount(2n+1)=2·oddCount(n), mirroring the binary-digit-sum recursion s₂(2n)=s₂(n), s₂(2n+1)=s₂(n)+1, and a strong induction yields the closed form. Corollary: every row contains a power-of-two number of odd entries. Verified with 0 axioms, 0 sorries, no native_decide (the three concrete row checks use kernel decide).",
+  "meta": {
+    "author": "Classical (Lucas 1878; Glaisher 1899 / Fine 1947 for the odd-entry count); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LucasTheoremOQ01.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "prime",
+      "binomial-coefficients",
+      "lucas-theorem",
+      "pascals-triangle",
+      "binary-digit-sum",
+      "parity",
+      "sierpinski",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-21",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Choose.choose_modEq_choose_mod_mul_choose_div_nat",
+        "description": "The single recursive step of Lucas' theorem: for a prime p, C(n,k) ≡ C(n%p, k%p)·C(n/p, k/p) (mod p). Specialised to p = 2 it is lucas_mod_two, the entire engine for the pointwise parity laws.",
+        "module": "Mathlib.Data.Nat.Choose.Lucas"
+      },
+      {
+        "theorem": "Nat.Choose.lucas_theorem_nat",
+        "description": "The full digit-product form of Lucas' theorem: C(n,k) ≡ ∏ᵢ C(n/pⁱ%p, k/pⁱ%p) (mod p) for n,k < pᵃ. Re-exported verbatim as lucas_theorem.",
+        "module": "Mathlib.Data.Nat.Choose.Lucas"
+      },
+      {
+        "theorem": "Nat.digits_def'",
+        "description": "1 < b → 0 < n → digits b n = n % b :: digits b (n/b). The recursion that turns the binary digit sum s₂ n = (digits 2 n).sum into s₂ n = n%2 + s₂(n/2), matching the doubling recursion of oddCount.",
+        "module": "Mathlib.Data.Nat.Digits.Defs"
+      },
+      {
+        "theorem": "Finset.card_image_of_injective",
+        "description": "Injective f → (s.image f).card = s.card. Counts the even/odd reindexings j ↦ 2j and j ↦ 2j+1 of oddRow, giving the doubling recursion.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_union_of_disjoint",
+        "description": "Disjoint s t → (s ∪ t).card = s.card + t.card. Splits oddRow(2n+1) into its even (image 2·j) and odd (image 2·j+1) parts, each in bijection with oddRow n, to get oddCount(2n+1) = 2·oddCount n.",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "oddCount_eq_two_pow_s2 (Glaisher): the number of odd entries in row n of Pascal's triangle equals 2^(s₂ n), where s₂(n) = (digits 2 n).sum is the binary digit sum (popcount). Proved by strong induction on the doubling recursion, with the base-2 digit-sum recursion s₂ n = n%2 + s₂(n/2) supplied by digits_def'.",
+      "odd_choose_two_mul: C(2n,k) is odd ⟺ k%2 = 0 ∧ C(n,k/2) odd. The even-top-digit pointwise parity law, from Lucas mod 2 with C(0,k%2) = [k even].",
+      "odd_choose_two_mul_add_one: C(2n+1,k) is odd ⟺ C(n,k/2) odd, independent of the parity of k. The odd-top-digit law, from Lucas mod 2 with C(1,0) = C(1,1) = 1.",
+      "oddCount_two_mul and oddCount_two_mul_add_one: the doubling recursion oddCount(2n) = oddCount(n), oddCount(2n+1) = 2·oddCount(n), obtained by reindexing oddRow along j ↦ 2j (even part) and j ↦ 2j+1 (odd part) — the combinatorial mirror of s₂(2n) = s₂(n), s₂(2n+1) = s₂(n)+1.",
+      "oddCount_isPowerOfTwo: every row of Pascal's triangle contains a power-of-two number of odd entries — the qualitative Sierpiński-triangle fact, here pinned to the exact exponent s₂(n).",
+      "lucas_mod_two: the clean p = 2 specialisation of Lucas' single-step recursion, packaged for reuse."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. No native_decide — the three concrete row checks (oddCount 5 = 4, oddCount 4 = 2, oddCount 7 = 8) use kernel `decide`, so no Lean.ofReduceBool. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 206,
+    "theoremCount": 10,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Édouard Lucas (1878) proved that a binomial coefficient modulo a prime p factors over the base-p digits. The parity case p = 2 has an especially vivid form, observed by J.W.L. Glaisher (1899): the count of odd entries in row n of Pascal's triangle is 2 raised to the number of 1's in the binary representation of n. Reducing Pascal's triangle mod 2 produces the Sierpiński triangle, and the row-by-row odd-entry counts 1,2,2,4,2,4,4,8,… are exactly 2^(popcount n). The summed count over the first 2^m rows is 3^m, the basis of the fractal's Hausdorff dimension log₂ 3.",
+    "problemStatement": "Lucas' theorem reduces C(m,n) mod a prime p to the product ∏ᵢ C(mᵢ,nᵢ) of digit-wise binomial coefficients in base p. Mathlib already contains the bare statement; the open question asks for a genuine consequence of the digit-product form. What does Lucas mod 2 say about how many entries in a row of Pascal's triangle are odd?\n\n**Answer:** the number of odd entries in row n equals 2^(s₂ n), where s₂(n) is the binary digit sum (the number of 1-bits of n).",
+    "text": "From Lucas mod 2 the parity of C(n,k) is determined bit-by-bit: C(n,k) is odd iff each binary digit of k is ≤ the corresponding digit of n. Counting such k gives 2^(s₂ n). The formalization routes this through a doubling recursion on the row index that mirrors the binary-digit-sum recursion, avoiding any explicit bit-mask bookkeeping.",
+    "proofStrategy": "1. lucas_mod_two: specialise Mathlib's Lucas step to p = 2 (with the Fact (Nat.Prime 2) instance).\n2. odd_choose_two_mul / odd_choose_two_mul_add_one: from lucas_mod_two, case on k % 2 and evaluate the top-digit factor C(0,k%2) (= [k even]) or C(1,k%2) (= 1) to obtain the pointwise parity laws.\n3. oddCount_two_mul: the map j ↦ 2j is a bijection of oddRow n onto oddRow(2n) (every odd entry of row 2n sits in an even column), so card is preserved; Finset.card_image_of_injective closes it.\n4. oddCount_two_mul_add_one: oddRow(2n+1) splits as the disjoint union of its even part (image of j ↦ 2j) and odd part (image of j ↦ 2j+1), each a copy of oddRow n; Finset.card_union_of_disjoint gives 2·oddCount n.\n5. s2_pos: digits_def' gives s₂ n = n%2 + s₂(n/2) for n > 0.\n6. oddCount_eq_two_pow_s2: strong induction on n, splitting on n % 2 and combining the matching recursions for oddCount and s₂.",
+    "keyInsights": [
+      "Lucas mod 2 makes parity of C(n,k) a per-bit condition (k's bits ≤ n's bits), but the formalization never needs an explicit bitwise predicate: the two top-digit cases C(0,·) and C(1,·) collapse directly into a recursion on the row index 2n vs 2n+1.",
+      "The even-top-digit law C(2n,k) odd ⟺ k even ∧ C(n,k/2) odd is the source of the Sierpiński 'holes' — half the columns of an even row are forced even.",
+      "The doubling recursion oddCount(2n)=oddCount(n), oddCount(2n+1)=2·oddCount(n) is the exact combinatorial shadow of s₂(2n)=s₂(n), s₂(2n+1)=s₂(n)+1; the closed form is then forced.",
+      "Counting via image/biUnion of oddRow keeps the whole argument inside Finset.card algebra — no generating functions and no carry analysis."
+    ],
+    "exampleSections": [
+      {
+        "title": "Row 5 = 101₂",
+        "mathContext": "s₂(5) = 2, so row 5 has 2² = 4 odd entries. Indeed row 5 is 1, 5, 10, 10, 5, 1, whose odd members are 1, 5, 5, 1 — exactly four. The file verifies oddCount 5 = 4, oddCount 4 = 2 (row 4 = 100₂, s₂ = 1), and oddCount 7 = 8 (row 7 = 111₂ is entirely odd) by kernel decide."
+      }
+    ]
+  },
+  "references": [
+    {
+      "authors": "É. Lucas",
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "year": "1878",
+      "note": "American Journal of Mathematics 1, 184–196 & 197–240. Original statement of the digit-product congruence for binomial coefficients mod a prime."
+    },
+    {
+      "authors": "J.W.L. Glaisher",
+      "title": "On the residue of a binomial-theorem coefficient with respect to a prime modulus",
+      "year": "1899",
+      "note": "Quarterly Journal of Pure and Applied Mathematics 30, 150–156. The number of binomial coefficients in a row not divisible by p, here specialised to p = 2 as 2^(s₂ n)."
+    },
+    {
+      "authors": "N.J. Fine",
+      "title": "Binomial coefficients modulo a prime",
+      "year": "1947",
+      "note": "American Mathematical Monthly 54, 589–592. Standard modern reference for the count of nonzero residues per row, of which the odd-entry count is the p = 2 case."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "catalan-numbers-oq-01-oq-02",
+      "reason": "Uses the same binary-digit-sum s₂ and its doubling-invariance s₂(2n)=s₂(n); there for the 2-adic valuation of Catalan numbers, here for the odd-entry count."
+    },
+    {
+      "id": "catalan-numbers-oq-01-oq-02-oq-01",
+      "reason": "Generalises the same Lucas/Kummer arithmetic of binomial coefficients to an arbitrary prime via Legendre's formula; this entry is the parity (p = 2) face of that family."
+    }
+  ],
+  "conclusion": {
+    "summary": "Building on Mathlib's Lucas' theorem, the entry proves Glaisher's closed form: row n of Pascal's triangle contains exactly 2^(s₂ n) odd entries, where s₂(n) is the binary digit sum. The proof reduces Lucas mod 2 to a doubling recursion on the row index that mirrors the binary-digit-sum recursion, then closes by strong induction — all with 0 axioms and no native_decide.",
+    "implications": "The result is the quantitative core of the Sierpiński-triangle structure of Pascal's triangle mod 2, and the doubling recursion generalises directly to the count of entries not divisible by an odd prime p (replacing 2 by p and the digit weights 1,2 by 1,2,…,p). It is a clean, reusable parity tool for binomial-coefficient divisibility.",
+    "openQuestions": [
+      "Generalise to an arbitrary prime p: the number of entries in row n not divisible by p equals ∏ᵢ (nᵢ + 1) over the base-p digits nᵢ (Fine's theorem); formalize this digit-product count via the same image/union reindexing with p branches.",
+      "Sum over rows: the total number of odd entries in rows 0..2^m − 1 is 3^m; derive it from oddCount_eq_two_pow_s2 via ∑_{n<2^m} 2^(s₂ n) = 3^m, the arithmetic behind the Sierpiński triangle's dimension log₂ 3."
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Nat", "Finset"],
+    "namespace": "LucasOddEntries",
+    "lineCount": 206,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 3,
+    "path": "Proofs/LucasTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
