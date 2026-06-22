@@ -94,6 +94,7 @@ import Proofs.AngleTrisection
 import Proofs.AngleTrisectionAristotle
 import Proofs.AngleTrisectionCos20Gal
 import Proofs.AngleTrisectionCos20GalOQ01
+import Proofs.AngleTrisectionCos20GalOQ02
 import Proofs.AngleTrisectionCos20GalOQ01OQ01
 import Proofs.AngleTrisectionCos20GalOQ01OQ02
 import Proofs.AngleTrisectionCos20GalOQ01OQ02OQ02
