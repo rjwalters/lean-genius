@@ -1,0 +1,83 @@
+[
+  {
+    "id": "trinomial-revision-context",
+    "proofId": "combinations-formula-oq-07-oq-01",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "concept",
+    "title": "Trinomial Revision: Vandermonde's Multiplicative Companion",
+    "content": "The subset-of-a-subset identity C(n,k)·C(k,m) = C(n,m)·C(n-m,k-m) (for m ≤ k ≤ n) is the multiplicative partner of Vandermonde's additive convolution. Both count one structure two ways. Here the structure is a nested selection — an m-subcommittee inside a k-committee inside an n-person group: counting committee-first gives C(n,k)·C(k,m); counting subcommittee-first (pick the m members from all n, then the remaining k-m committee seats from the n-m leftovers) gives C(n,m)·C(n-m,k-m). Mathlib provides Vandermonde but not this identity.",
+    "mathContext": "$\\binom{n}{k}\\binom{k}{m} = \\binom{n}{m}\\binom{n-m}{k-m}$. Both sides equal $\\dfrac{n!}{m!\\,(k-m)!\\,(n-k)!}$, the trinomial coefficient counting an ordered partition of the $n$ elements into the $m$ subcommittee members, the $k-m$ other committee members, and the $n-k$ outsiders — hence the name 'trinomial revision' (Graham–Knuth–Patashnik, eq. 5.21).",
+    "significance": "key",
+    "relatedConcepts": [
+      "trinomial revision",
+      "Vandermonde's identity",
+      "committee–subcommittee double counting",
+      "trinomial coefficient",
+      "absorption identity"
+    ],
+    "prerequisites": [
+      "Nat.choose binomial coefficients",
+      "factorial identity for binomial coefficients",
+      "natural-number subtraction"
+    ]
+  },
+  {
+    "id": "main-identity-thm",
+    "proofId": "combinations-formula-oq-07-oq-01",
+    "range": { "startLine": 65, "endLine": 95 },
+    "type": "theorem",
+    "title": "Subset-of-a-Subset Identity by Clearing Denominators",
+    "content": "choose_mul_choose proves C(n,k)·C(k,m) = C(n,m)·C(n-m,k-m) without any summation or induction. The trick: multiply both sides by D = m!·(k-m)!·(n-k)!. Four applications of Nat.choose_mul_factorial_mul_factorial collapse each side to n!. On the left, C(k,m)·m!·(k-m)! = k! and then C(n,k)·k!·(n-k)! = n!. On the right, using (n-m)-(k-m) = n-k, the block C(n-m,k-m)·(k-m)!·(n-k)! = (n-m)! and then C(n,m)·m!·(n-m)! = n!. Since D > 0, Nat.eq_of_mul_eq_mul_right cancels it.",
+    "mathContext": "Each binomial coefficient $\\binom{a}{b} = \\frac{a!}{b!(a-b)!}$ is missing exactly the factorials in $D$. Multiplying by $D$ realizes both products as $n!$ divided by nothing, i.e. $n!$ itself. The multiplicative regrouping is closed by `ring` (ℕ is a commutative semiring with the choose/factorial terms as atoms); the subtraction bookkeeping $k-m \\le n-m$ and $(n-m)-(k-m) = n-k$ by `omega`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.choose_mul_factorial_mul_factorial",
+      "Nat.eq_of_mul_eq_mul_right",
+      "clearing denominators",
+      "ring tactic over ℕ"
+    ],
+    "prerequisites": [
+      "C(n,k)·k!·(n-k)! = n!",
+      "right cancellation in ℕ",
+      "omega for natural subtraction"
+    ]
+  },
+  {
+    "id": "central-blocks-thm",
+    "proofId": "combinations-formula-oq-07-oq-01",
+    "range": { "startLine": 100, "endLine": 109 },
+    "type": "theorem",
+    "title": "Central-Blocks Form",
+    "content": "choose_mul_choose_of_le' rewrites the leftover block from the bottom to the top: C(n,k)·C(k,m) = C(n,m)·C(n-m,n-k). It follows from the main identity by Nat.choose_symm, which gives C(n-m,k-m) = C(n-m,n-k) since (n-m)-(k-m) = n-k.",
+    "mathContext": "Counting the $k-m$ remaining committee seats among the $n-m$ non-subcommittee people is the same as counting the $n-k$ outsiders among them: $\\binom{n-m}{k-m} = \\binom{n-m}{(n-m)-(k-m)} = \\binom{n-m}{n-k}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.choose_symm",
+      "binomial symmetry",
+      "complementary selection"
+    ],
+    "prerequisites": [
+      "C(n, n-k) = C(n, k)"
+    ]
+  },
+  {
+    "id": "absorption-corollary",
+    "proofId": "combinations-formula-oq-07-oq-01",
+    "range": { "startLine": 111, "endLine": 129 },
+    "type": "theorem",
+    "title": "Absorption / Committee-Chair Corollary",
+    "content": "mul_choose_eq specializes the general identity at m=1 to recover the classical absorption identity k·C(n,k) = n·C(n-1,k-1). With C(n,1)=n and C(k,1)=k (Nat.choose_one_right), trinomial revision reads C(n,k)·k = n·C(n-1,k-1) — choosing a k-committee and designating one chair, two ways. Numeric checks confirm C(5,3)·C(3,2) = C(5,2)·C(3,1) = 30 and 3·C(5,3) = 5·C(4,2) = 30 by decide.",
+    "mathContext": "The absorption identity $k\\binom{n}{k} = n\\binom{n-1}{k-1}$ is the m=1 case: pick a committee then its chair ($\\binom{n}{k}\\cdot k$) versus pick the chair from all $n$ then the rest ($n\\cdot\\binom{n-1}{k-1}$). It is the engine of weighted row sums such as $\\sum_k k\\binom{n}{k} = n\\,2^{n-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "absorption identity",
+      "Nat.choose_one_right",
+      "weighted binomial sums",
+      "Nat.succ_mul_choose_eq"
+    ],
+    "prerequisites": [
+      "C(n,1) = n",
+      "the subset-of-a-subset identity at m=1"
+    ]
+  }
+]
