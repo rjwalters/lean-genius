@@ -1,0 +1,61 @@
+{
+  "id": "bezout-identity-oq-02-oq-02-oq-01-oq-04",
+  "slug": "bezout-identity-oq-02-oq-02-oq-01-oq-04",
+  "title": "Bézout Quotient Formula in Non-Commutative Rings",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "EMPTY",
+  "tractability": "high",
+  "path": "Proofs/BezoutIdentityOQ02OQ02OQ01OQ04.lean",
+  "started": "2026-06-22",
+  "lastUpdate": "2026-06-22",
+  "problemStatement": "Open question 4 of bezout-identity-oq-02-oq-02-oq-01: can the constructive Bézout quotient formula (u*a+v*b=1 and b*c=a*k imply a*(u*c+v*k)=c) be generalized to non-commutative rings (e.g. matrix rings) where Euclid's lemma fails?",
+  "significance": "Pinpoints commutativity as the exact dividing line for constructive Bézout divisibility, and gives a fully formal witness of Euclid's lemma failing in a matrix ring — the canonical example invoked informally in the parent.",
+  "currentState": "COMPLETED. The formula holds in any ring iff a commutes with the Bézout coefficients u,v (quotient_formula_comm), with right-handed twin, central corollary, commutative recovery, and a constructive Euclid's lemma for central a. Necessity proved by an explicit M₂(ℤ/2) counterexample with u*a+v*b=1, b*c=a*k but a*(u*c+v*k)≠c and a∤c.",
+  "knowledge": {
+    "progressSummary": "COMPLETE: Bézout quotient formula in non-commutative rings (12 theorems, 7 defs, 0 axioms, 0 sorries; verified, kernel decide NOT native_decide). PR pending.",
+    "builtItems": [
+      "BezoutIdentityOQ02OQ02OQ01OQ04.lean: non-commutative Bézout quotient theory (0 axioms, 0 sorries, verified)",
+      "quotient_formula_comm: a*(u*c+v*k)=c in any Ring given Commute a u, Commute a v",
+      "quotient_formula_comm_right: right-handed mirror (c*u+k*v)*a=c",
+      "quotient_formula_central / quotient_formula_commRing: central and CommRing specializations",
+      "euclids_lemma_central: constructive a∣c for central a with explicit quotient u*c+v*k",
+      "M₂(ℤ/2) counterexample: a,b,c,u,v,k with u*a+v*b=1, b*c=a*k, a*(u*c+v*k)≠c, a∤c, ¬Commute a u (kernel decide)",
+      "quotient_formula_needs_commutativity: ∃ failing instance packaging necessity"
+    ],
+    "insights": [
+      "The commutative quotient proof is almost entirely commutativity-free: only the two steps a*(u*c)=u*(a*c), a*(v*k)=v*(a*k) need it — exactly Commute a u, Commute a v.",
+      "noncomm_ring proves the pure distribution/associativity identity u*(a*c)+v*(b*c)=(u*a+v*b)*c, isolating the commutation steps.",
+      "Central element ⟹ a∣c with explicit quotient: ⟨u*c+v*k, (formula).symm⟩.",
+      "Matrix decide: 2×2 over ZMod 2 is decidable by kernel decide (no native_decide / ofReduceBool). But ¬Commute needs `show a*u≠u*a` first (Commute not reducible for instance search), and ¬(a∣c) needs a manual entry argument (Dvd existential not decidable-synthesizable here).",
+      "Search found non-degenerate witness: c≠0, k=0; a has zero top row, which simultaneously gives a∤c and ¬Commute a u."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Characterize the centralizer locus where constructive divisibility is recovered",
+      "Develop one-sided (left/right) Bézout divisibility theory",
+      "Quantify the obstruction over M_n(F_q)"
+    ]
+  },
+  "knownResults": [
+    "Parent constructive Bézout quotient formula (commutative case)",
+    "Euclid's lemma fails in non-commutative rings (classical)",
+    "Commute / SemiconjBy API; noncomm_ring tactic; Matrix.mul_fin_two"
+  ],
+  "relatedProofs": [
+    "bezout-identity-oq-02-oq-02-oq-01",
+    "bezout-identity-oq-02-oq-02",
+    "bezout-identity"
+  ],
+  "references": [
+    "Parent: bezout-identity-oq-02-oq-02-oq-01",
+    "Lam (2001), A First Course in Noncommutative Rings"
+  ],
+  "tags": [
+    "noncommutative-rings",
+    "bezout-identity",
+    "euclids-lemma",
+    "matrix-rings",
+    "counterexample"
+  ]
+}
