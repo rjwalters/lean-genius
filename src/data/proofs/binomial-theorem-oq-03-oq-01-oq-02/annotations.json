@@ -1,0 +1,103 @@
+[
+  {
+    "id": "signed-moments-context",
+    "proofId": "binomial-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "concept",
+    "title": "The Other Evaluation Point: x = -1 and Finite Differences",
+    "content": "The parent computes the unsigned moments Σ k^(r)·C(n,k) — the derivatives of (1+x)ⁿ = Σ C(n,k)xᵏ at x = +1, where the factor (1+x)ⁿ⁻ʳ = 2ⁿ⁻ʳ is large. Inserting the alternating sign (-1)ᵏ evaluates the same derivatives at x = -1, where (1+x)ⁿ⁻ʳ vanishes for every r < n. The signed moments therefore collapse to a single Iverson-bracket form Σ (-1)ᵏ·k^(r)·C(n,k) = (-1)ʳ·n^(r)·[n = r]: zero off the diagonal, peaking at (-1)ⁿ·n! when r = n. This is the generating-function shadow of the finite-difference fact that the n-th forward difference kills every polynomial of degree < n.",
+    "mathContext": "$\\sum_{k=0}^{n}(-1)^k k^{\\underline{r}}\\binom{n}{k} = (-1)^r n^{\\underline{r}}[n=r]$, the value of the falling-factorial-weighted derivative of $(1+x)^n$ at $x=-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite differences",
+      "alternating binomial sums",
+      "falling factorial Nat.descFactorial",
+      "generating functions at x = -1"
+    ],
+    "prerequisites": [
+      "Nat.choose binomial coefficients",
+      "Int.alternating_sum_range_choose",
+      "the binomial theorem"
+    ]
+  },
+  {
+    "id": "signed-recurrence",
+    "proofId": "binomial-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 69, "endLine": 88 },
+    "type": "technique",
+    "title": "The Signed Recurrence T(m+1,r+1) = -(m+1)·T(m,r)",
+    "content": "Peeling the vanishing k = 0 term and reindexing k ↦ k+1 turns each summand into (-1)ᵏ⁺¹·(k+1)^(r+1)·C(m+1,k+1). Then Nat.succ_descFactorial_succ splits (k+1)^(r+1) = (k+1)·k^(r) and the grandparent's absorption rewrites (k+1)·C(m+1,k+1) = (m+1)·C(m,k). The sign (-1)ᵏ⁺¹ = -(-1)ᵏ supplies the minus, yielding the parent's positive recurrence with one extra negative factor. Each term closes by `linear_combination` against the cast absorption identity.",
+    "mathContext": "$\\sum_{k\\le m+1}(-1)^k k^{\\underline{r+1}}\\binom{m+1}{k} = -(m+1)\\sum_{k\\le m}(-1)^k k^{\\underline{r}}\\binom{m}{k}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "absorption identity (k+1)C(m+1,k+1) = (m+1)C(m,k)",
+      "index shift Finset.sum_range_succ'",
+      "sign flip from reindexing"
+    ],
+    "prerequisites": [
+      "BinomialTheoremOQ03.absorption",
+      "Nat.succ_descFactorial_succ",
+      "Finset.sum_range_succ'",
+      "linear_combination"
+    ]
+  },
+  {
+    "id": "general-closed-form",
+    "proofId": "binomial-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 101, "endLine": 124 },
+    "type": "key-step",
+    "title": "One Induction on r Lands the Closed Form",
+    "content": "Induction on r: the base case r = 0 is Mathlib's Int.alternating_sum_range_choose : Σ (-1)ᵏ·C(n,k) = [n = 0]. The step rewrites the sum with signed_step, applies the induction hypothesis, lowers the falling factorial with Nat.succ_descFactorial_succ, and splits on whether m = r to align the Iverson brackets [m = r] and [m+1 = r+1]. The whole closed form (-1)ʳ·n^(r)·[n = r] falls out unconditionally.",
+    "mathContext": "Iterating $T(m+1,r+1) = -(m+1)T(m,r)$ unfolds $n^{\\underline r}$ through the falling factorial and reaches the base case $T(n-r,0) = [n=r]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction on falling-factorial order",
+      "Iverson bracket closed form",
+      "signed binomial moments"
+    ],
+    "prerequisites": [
+      "Int.alternating_sum_range_choose",
+      "signed_step recurrence",
+      "Nat.succ_descFactorial_succ"
+    ]
+  },
+  {
+    "id": "vanishing-peak",
+    "proofId": "binomial-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 133, "endLine": 151 },
+    "type": "concept",
+    "title": "Finite-Difference Vanishing and the Diagonal Peak",
+    "content": "For n ≠ r the bracket [n = r] is zero, so the signed moment vanishes — for r < n this is the annihilation of a degree-r polynomial by the n-th alternating sum, and for r > n every term is already zero. At r = n the bracket is one and n^(n) = n! (Nat.descFactorial_self), giving the sharp value (-1)ⁿ·n!, the discrete analogue of dⁿ/dxⁿ xⁿ = n!.",
+    "mathContext": "$\\sum_{k}(-1)^k k^{\\underline r}\\binom{n}{k} = 0$ for $n \\ne r$, and $= (-1)^n n!$ at $r = n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite-difference annihilation",
+      "leading term n! ",
+      "discrete derivative"
+    ],
+    "prerequisites": [
+      "signed_descFactorial_moment closed form",
+      "Nat.descFactorial_self"
+    ]
+  },
+  {
+    "id": "concrete-companions",
+    "proofId": "binomial-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 158, "endLine": 175 },
+    "type": "concept",
+    "title": "Concrete Companions of the Parent's Moments",
+    "content": "Specialising r = 1 and r = 2 gives the alternating versions of the parent's first two moments: Σ (-1)ᵏ·k·C(n,k) = 0 for n ≥ 2 (against the parent's Σ k·C(n,k) = n·2ⁿ⁻¹), and Σ (-1)ᵏ·k(k-1)·C(n,k) = 0 for n ≥ 3 (against Σ k(k-1)·C(n,k) = n(n-1)·2ⁿ⁻²). Same weights and coefficients as the parent, but summed against alternating signs they vanish once n exceeds the polynomial's degree.",
+    "mathContext": "$\\sum_k(-1)^k k\\binom{n}{k}=0\\ (n\\ge2)$, $\\sum_k(-1)^k k(k-1)\\binom{n}{k}=0\\ (n\\ge3)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "signed first moment",
+      "signed second factorial moment",
+      "degree threshold"
+    ],
+    "prerequisites": [
+      "signed_descFactorial_moment_of_ne",
+      "Nat.descFactorial_one",
+      "Nat.descFactorial_succ"
+    ]
+  }
+]
