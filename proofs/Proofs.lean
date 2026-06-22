@@ -729,6 +729,7 @@ import Proofs.CramersRuleOQ02OQ02
 import Proofs.CramersRuleOQ03
 import Proofs.CramersRuleOQ03OQ03
 import Proofs.CramersRuleOQ04
+import Proofs.CramersRuleOQ04OQ01
 import Proofs.CramersRuleOQ05
 import Proofs.CubeRoot10Irrational
 import Proofs.CubeRoot2Irrational
