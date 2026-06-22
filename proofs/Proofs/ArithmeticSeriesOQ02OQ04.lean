@@ -50,7 +50,7 @@ theorem simplicial_factorial (k n : ℕ) :
 /-- The ascending factorial as an explicit product:
     ascFactorial(n, k) = n * (n+1) * ... * (n+k-1) = prod i in range k, (n + i). -/
 theorem ascFactorial_eq_prod (n k : ℕ) :
-    Nat.ascFactorial n k = ∏ i in range k, (n + i) := by
+    Nat.ascFactorial n k = ∏ i ∈ range k, (n + i) := by
   induction k with
   | zero => simp
   | succ k ih =>
@@ -60,7 +60,7 @@ theorem ascFactorial_eq_prod (n k : ℕ) :
 /-- **Explicit Product Formula**: S_k(n) * k! = prod i in range k, (n + 1 + i).
     This makes explicit that the identity is (n+1)(n+2)...(n+k). -/
 theorem simplicial_product (k n : ℕ) :
-    simplicial k n * k.factorial = ∏ i in range k, (n + 1 + i) := by
+    simplicial k n * k.factorial = ∏ i ∈ range k, (n + 1 + i) := by
   rw [simplicial_factorial, ascFactorial_eq_prod]
 
 -- ============================================================
@@ -82,7 +82,7 @@ theorem simplicial_full_factorial (k n : ℕ) :
     is always a natural number. -/
 theorem factorial_dvd_ascFactorial (n k : ℕ) :
     k.factorial ∣ Nat.ascFactorial (n + 1) k :=
-  ⟨simplicial k n, (simplicial_factorial k n).symm⟩
+  ⟨simplicial k n, by rw [Nat.mul_comm, simplicial_factorial]⟩
 
 -- ============================================================
 -- Part IV: Low-Dimensional Specializations
@@ -90,35 +90,33 @@ theorem factorial_dvd_ascFactorial (n k : ℕ) :
 
 /-- k=1: S_1(n) * 1! = n + 1. -/
 theorem simplicial_factorial_one (n : ℕ) :
-    simplicial 1 n * 1.factorial = n + 1 := by
-  rw [simplicial_product, Finset.prod_range_one]; omega
+    simplicial 1 n * Nat.factorial 1 = n + 1 := by
+  rw [simplicial_product, Finset.prod_range_one]
 
 /-- k=2: S_2(n) * 2! = (n+1)(n+2). Matches `simplicial_two_formula`. -/
 theorem simplicial_factorial_two (n : ℕ) :
-    simplicial 2 n * 2.factorial = (n + 1) * (n + 2) := by
+    simplicial 2 n * Nat.factorial 2 = (n + 1) * (n + 2) := by
   rw [simplicial_product]
   simp only [Finset.prod_range_succ, Finset.prod_range_zero, one_mul, Nat.add_zero]
-  ring
 
 /-- k=3: S_3(n) * 3! = (n+1)(n+2)(n+3). Matches `simplicial_three_formula`. -/
 theorem simplicial_factorial_three (n : ℕ) :
-    simplicial 3 n * 3.factorial = (n + 1) * (n + 2) * (n + 3) := by
+    simplicial 3 n * Nat.factorial 3 = (n + 1) * (n + 2) * (n + 3) := by
   rw [simplicial_product]
   simp only [Finset.prod_range_succ, Finset.prod_range_zero, one_mul, Nat.add_zero]
-  ring
 
 -- ============================================================
 -- Part V: Concrete Verification
 -- ============================================================
 
 /-- S_4(3) * 4! = 4*5*6*7 = 840. C(7,4) = 35, 35 * 24 = 840. -/
-theorem check_k4_n3 : simplicial 4 3 * 4.factorial = 840 := by native_decide
+theorem check_k4_n3 : simplicial 4 3 * Nat.factorial 4 = 840 := by decide
 
 /-- S_5(2) * 5! = 3*4*5*6*7 = 2520. C(7,5) = 21, 21 * 120 = 2520. -/
-theorem check_k5_n2 : simplicial 5 2 * 5.factorial = 2520 := by native_decide
+theorem check_k5_n2 : simplicial 5 2 * Nat.factorial 5 = 2520 := by decide
 
 /-- The product formula agrees: prod i in range 4, (4 + i) = 4*5*6*7 = 840. -/
-theorem check_product : ∏ i in range 4, (3 + 1 + i) = 840 := by native_decide
+theorem check_product : ∏ i ∈ range 4, (3 + 1 + i) = 840 := by decide
 
 /-
   Summary
