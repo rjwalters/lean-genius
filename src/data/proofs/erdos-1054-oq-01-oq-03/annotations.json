@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-abundancy-identity",
+    "proofId": "erdos-1054-oq-01-oq-03",
+    "range": {
+      "startLine": 76,
+      "endLine": 97
+    },
+    "type": "insight",
+    "title": "The Abundancy Index Is a Sum of Unit Fractions",
+    "content": "sigma_div_eq_sum_inv proves (σ m : ℝ)/m = ∑_{d∣m} 1/d. The mechanism is the complementary-divisor bijection d ↦ m/d, which permutes the divisors of m (Nat.sum_div_divisors). Each term 1/d is rewritten as (m/d)/m (legal because d ∣ m, so the natural-number division is exact and casts to (m:ℝ)/(d:ℝ)); summing over divisors and pulling out the 1/m gives (∑_{d∣m} d)/m = σ(m)/m. This identity is what converts a question about the SIZE of divisor sums into a question about a harmonic-type series, and it is the hinge of the whole argument."
+  },
+  {
+    "id": "ann-no-mertens",
+    "proofId": "erdos-1054-oq-01-oq-03",
+    "range": {
+      "startLine": 99,
+      "endLine": 130
+    },
+    "type": "insight",
+    "title": "Harmonic Divergence Replaces Mertens/Gronwall",
+    "content": "The parent axiomatized σ(m)/m → ∞, citing Gronwall's theorem σ(m)/(m log log m) → e^γ — deep analytic number theory absent from Mathlib. But only DIVERGENCE is needed, and that is elementary. harmonic_le_sigma_ratio shows ∑_{i<n} 1/(i+1) ≤ σ(lcm(1,…,n))/lcm(1,…,n): every k ≤ n divides lcm(1,…,n) (Finset.dvd_lcm), so the shifted range {i+1 : i<n} is a block of divisors and its reciprocal sum (the harmonic partial sum Hₙ) is dominated by the full ∑_{d∣lcm} 1/d = σ(lcm)/lcm. Then sigma_ratio_tendsto_atTop lifts the Mathlib divergence Real.tendsto_sum_range_one_div_nat_succ_atTop through tendsto_atTop_mono. Net result: the parent's blocking axiom is discharged with 0 axioms and no Mertens/Gronwall machinery."
+  },
+  {
+    "id": "ann-lcm-witness",
+    "proofId": "erdos-1054-oq-01-oq-03",
+    "range": {
+      "startLine": 57,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Why lcm(1,…,n), Not Primorials or Superabundant Numbers",
+    "content": "The parent reaches for superabundant numbers and primorials, whose abundancy growth genuinely needs ∑_p 1/p (Mertens). The sequence lcm(1,…,n) sidesteps all of that: by construction it is divisible by every k from 1 to n (Finset.dvd_lcm on Icc 1 n), so {1,…,n} ⊆ divisors(lcm(1,…,n)) with no prime-counting input whatsoever. The abundancy index then automatically contains the entire harmonic partial sum. This is a purely structural witness — we never compute σ(lcm(1,…,n)) or estimate any constant."
+  },
+  {
+    "id": "ann-corollary",
+    "proofId": "erdos-1054-oq-01-oq-03",
+    "range": {
+      "startLine": 132,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "From Divergence to f(n)/n → 0 (and What Stays Open)",
+    "content": "f_sigma_ratio_tendsto_zero takes reciprocals: lcm(1,…,n)/σ(lcm(1,…,n)) → 0. Composed with the parent's sigma bound f(σ(m)) ≤ m, this gives f(σ(mₙ))/σ(mₙ) ≤ mₙ/σ(mₙ) → 0, so liminf f(n)/n = 0 unconditionally — the easy half of Erdős #1054 Part II. What this does NOT do is resolve the full Part II: density 0 of {n : f(n) ≥ εn} requires controlling f over ALMOST ALL n, not merely along one sequence. That statement remains open; this entry is honest about supplying exactly the analytic ingredient the parent had axiomatized, no more."
+  }
+]
