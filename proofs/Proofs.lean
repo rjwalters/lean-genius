@@ -3449,6 +3449,7 @@ import Proofs.TaylorSinCosConvergenceOQ01
 import Proofs.TaylorSinCosConvergenceOQ02
 import Proofs.TaylorSinCosConvergenceOQ02Aristotle
 import Proofs.TaylorSinCosConvergenceOQ03
+import Proofs.TaylorSinCosConvergenceOQ03Incomplete01
 import Proofs.TaylorSinCosConvergenceOQ03Aristotle
 import Proofs.TaylorSinCosConvergenceOQ04
 import Proofs.TaylorTheorem
