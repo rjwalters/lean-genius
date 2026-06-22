@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-eqr-oq0103010101-mullefthom",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 69, "endLine": 72 },
+    "type": "definition",
+    "title": "The left regular representation",
+    "content": "mulLeftHom : G →* Perm G packages left translation x ↦ a·x of an arbitrary finite group as a monoid homomorphism into its symmetric group. This is the abstract home of Zolotarev's lemma: the map x ↦ u·x on a unit group is left translation, and its sign is the object to be computed. Stating it generically isolates the purely group-theoretic core from the number theory."
+  },
+  {
+    "id": "ann-eqr-oq0103010101-nofixed",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 75, "endLine": 91 },
+    "type": "theorem",
+    "title": "A generator's translation is a single cycle",
+    "content": "mulLeft_no_fixed: translation by a ≠ 1 has no fixed point, since a·x = x forces a = 1 by mul_right_cancel. mulLeft_generator_isCycle: when g generates the group (every element is a power of g), repeatedly translating 1 reaches every element, so Equiv.mulLeft g is a single cycle. Together with full support this pins down the cycle structure exactly."
+  },
+  {
+    "id": "ann-eqr-oq0103010101-signgen",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 93, "endLine": 125 },
+    "type": "theorem",
+    "title": "Sign of translation by a generator",
+    "content": "generator_ne_one: a generator of a group with more than one element is non-trivial. sign_mulLeft_generator: a single |G|-cycle has sign -(-1)^|G|, which equals -1 precisely when |G| is even (Even.neg_one_pow). sign_mulLeft_pow: sign of translation is multiplicative under powers, because sign ∘ mulLeftHom is a homomorphism. These three facts reduce the whole computation to the parity of |G| and the value at a single generator."
+  },
+  {
+    "id": "ann-eqr-oq0103010101-cardeven",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 131, "endLine": 140 },
+    "type": "theorem",
+    "title": "The prime-power unit group has even order",
+    "content": "card_units_prime_pow_even: |(ℤ/pⁿ)ˣ| equals the totient pⁿ⁻¹(p-1) (ZMod.card_units_eq_totient and Nat.totient_prime_pow), which is even because p-1 is even for an odd prime p. This even-order fact is exactly what makes a generator's single full-length cycle an odd permutation (sign -1)."
+  },
+  {
+    "id": "ann-eqr-oq0103010101-main",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 148, "endLine": 186 },
+    "type": "theorem",
+    "title": "The units-level prime-power Zolotarev lemma",
+    "content": "sign_mulLeft_eq_quadraticChar: instantiating the generic machinery at the cyclic group (ℤ/pⁿ)ˣ (cyclic by ZMod.isCyclic_units_of_prime_pow for odd p). Pick a generator g; the reduction ρ = ZMod.unitsMap (p ∣ pⁿ) is surjective (ZMod.unitsMap_surjective), so ρ g generates (ℤ/p)ˣ and is a non-residue (reusing the parent's generator_not_isSquare), giving quadraticChar(ρ g) = -1; the even-order single-cycle argument gives sign(mulLeft g) = -1. Writing u = gᵏ, both sign(mulLeft u) and quadraticChar(ρ u) collapse to (-1)ᵏ, so they coincide."
+  },
+  {
+    "id": "ann-eqr-oq0103010101-legendre",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 188, "endLine": 195 },
+    "type": "theorem",
+    "title": "Legendre-symbol form",
+    "content": "sign_mulLeft_eq_legendre: converts the field quadratic character of the reduced unit back into the Legendre symbol mod p via the parent's legendreSym_unit_eq, giving the clean statement sign(x ↦ u·x on (ℤ/pⁿ)ˣ) = legendreSym p ((ρ u).val) — the prime-power generalization of the prime base case."
+  }
+]
