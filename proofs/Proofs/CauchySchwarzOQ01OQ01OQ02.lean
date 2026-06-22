@@ -50,8 +50,7 @@ theorem expVal_im_zero (A : E →ₗ[ℂ] E) (hA : A.IsSymmetric) (ψ : E) :
   have hself : ⟪ψ, A ψ⟫_ℂ = starRingEnd ℂ ⟪ψ, A ψ⟫_ℂ := by
     rw [inner_conj_symm, ← hA ψ ψ]
   have h := congr_arg Complex.im hself
-  simp only [RCLike.star_def, starRingEnd_apply, map_star,
-             RCLike.conj_im, neg_eq_iff_eq_neg, neg_neg] at h
+  rw [Complex.conj_im] at h
   linarith
 
 -- The expectation value equals its complex conjugate
@@ -59,8 +58,8 @@ theorem expVal_self_conj (A : E →ₗ[ℂ] E) (hA : A.IsSymmetric) (ψ : E) :
     starRingEnd ℂ (expVal A ψ) = expVal A ψ := by
   have him := expVal_im_zero A hA ψ
   apply Complex.ext
-  · simp [starRingEnd_apply, Complex.conj_re]
-  · simp [starRingEnd_apply, Complex.conj_im, him]
+  · exact Complex.conj_re _
+  · rw [Complex.conj_im, him, neg_zero]
 
 /-! ## Part III: Commutator and centered vectors -/
 
