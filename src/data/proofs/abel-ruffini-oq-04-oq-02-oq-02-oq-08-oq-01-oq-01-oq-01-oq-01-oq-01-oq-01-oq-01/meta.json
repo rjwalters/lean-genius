@@ -1,0 +1,274 @@
+{
+  "id": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+  "slug": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+  "title": "Drop Nontriviality and Survival Becomes One-Directional: ⊕-Survival ⊊ ×-Survival by AM–GM",
+  "description": "The parent file proved a PRESERVATION COINCIDENCE: for NONTRIVIAL solvable pieces (each with ≥ 2 points), Perm (α ⊕ β) is solvable iff Perm (α × β) is, the unique survivor being the single pair (2,2) for both operations. That symmetry was stated under the standing hypothesis card α, card β ≥ 2. This entry asks what happens when the nontriviality hypothesis is dropped. The clean coincidence collapses, but not into chaos — it degrades into a precise ONE-DIRECTIONAL CONTAINMENT governed by the arithmetic mean–geometric mean inequality. Containment (unconditional): 4·(card α · card β) ≤ (card α + card β)² (four_mul_le_add_sq), so card α + card β ≤ 4 forces card α · card β ≤ 4; in solvability terms Perm (α ⊕ β) solvable ⟹ Perm (α × β) solvable with NO hypothesis on the pieces (perm_sum_solvable_imp_prod_solvable) — the product is the strictly more permissive operation. Converse fails: the pair (Fin 1, Fin 4) is a product-survivor that is not a sum-survivor — 1 · 4 = 4 ≤ 4 (solvable) while 1 + 4 = 5 (unsolvable) (perm_prod_solvable_sum_not) — so the inclusion of survivor sets is STRICT. The gap is exactly the trivial pieces: every product-survivor failing to be a sum-survivor has a trivial piece (card ≤ 1) (survival_gap_requires_trivial); restricting to card ≥ 2 deletes the entire gap, which is precisely WHY the parent's coincidence needed nontriviality — among pieces of size ≥ 2, card α · card β ≤ 4 ↔ card α + card β ≤ 4 (nontriviality_restores_symmetry). So the survival sets of ⊕ and × are nested, not equal: sum-survival ⊊ product-survival, and the difference is carried entirely by the absorbing/neutral trivial cardinalities 0 and 1 (survival_containment_strict, without_nontriviality_only_containment). The parent's symmetric picture is the shadow this containment casts once the degenerate sizes are removed.",
+  "overview": {
+    "historicalContext": "Abel–Ruffini rests on S₅ being non-solvable; classically Sₙ and Aₙ are solvable exactly for n ≤ 4. The parent chain read that threshold through the two monoidal structures on finite types — disjoint union (which adds point counts) and Cartesian product (which multiplies them). It isolated first an ASYMMETRY of escape (the solvable range {0,1,2,3,4} first breaks at additive degree 5 but multiplicative degree 6) and then, on the preservation side, a COINCIDENCE: for pieces of size ≥ 2 the two operations preserve solvability on the same single pair (2,2). The coincidence was always stated under nontriviality. The present entry removes that hypothesis and asks what the preservation relation between ⊕ and × really is in full generality, including the degenerate pieces of size 0 and 1.",
+    "modernSignificance": "Reading Perm as a functor on finite types, solvability of Perm (α ⊕ β) and Perm (α × β) is governed by card α + card β and card α · card β against the cap 4. The arithmetic mean–geometric mean inequality 4ab ≤ (a+b)² makes the SUM constraint the harder one: bounding a + b automatically bounds a · b, but not conversely. So the survivor sets are nested — every solvable disjoint union is a solvable product (perm_sum_solvable_imp_prod_solvable), with no hypothesis on the pieces — and the nesting is strict, witnessed by the degenerate pair (Fin 1, Fin 4) whose product survives at degree 4 while its union escapes at 5. The trivial cardinalities are exactly what break the parent's symmetry: 0 is the multiplicative absorber (0 · n = 0 always solvable) and 1 the multiplicative neutral (1 · n = n), neither of which the additive structure shares. Removing them — i.e. restricting to card ≥ 2 — collapses the containment back to the parent's equivalence (nontriviality_restores_symmetry). The clean picture: ⊕-survival ⊊ ×-survival, with the gap supported entirely on the degenerate sizes."
+  },
+  "meta": {
+    "author": "Classical (Sₙ/Aₙ solvable iff n ≤ 4); survival-containment and AM–GM-gap formalization original",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Symmetric_group",
+    "date": "1870",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ02OQ02OQ08OQ01OQ01OQ01OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "solvability",
+      "alternating-group",
+      "symmetric-group",
+      "product",
+      "disjoint-union",
+      "am-gm",
+      "inequality",
+      "closure",
+      "classification",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.card_sum",
+        "description": "Fintype.card (α ⊕ β) = Fintype.card α + Fintype.card β. Behind perm_sum_solvable_iff, turns the union threshold into the linear constraint card α + card β ≤ 4 — the harder constraint that AM–GM shows implies the product one.",
+        "module": "Mathlib.Data.Fintype.Sum"
+      },
+      {
+        "theorem": "Fintype.card_prod",
+        "description": "Fintype.card (α × β) = Fintype.card α * Fintype.card β. Behind perm_prod_solvable_iff, turns the product threshold into card α · card β ≤ 4 — the more permissive constraint containing the additive survivor set.",
+        "module": "Mathlib.Data.Fintype.Prod"
+      },
+      {
+        "theorem": "Nat.mul_le_mul",
+        "description": "a ≤ b ∧ c ≤ d ⟹ a * c ≤ b * d. With a factor ≥ 3 and the other ≥ 2 yields ≥ 6 > 4, the engine showing that any product-survivor outside the sum-survivor set must have a trivial piece (survival_gap_requires_trivial).",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Fintype.card_fin",
+        "description": "Fintype.card (Fin n) = n. Evaluates the strictness witness Perm (Fin 1 × Fin 4) (solvable, 1·4 = 4) and Perm (Fin 1 ⊕ Fin 4) (unsolvable, 1+4 = 5) (perm_prod_solvable_sum_not).",
+        "module": "Mathlib.Data.Fintype.Card"
+      }
+    ],
+    "originalContributions": [
+      "four_mul_le_add_sq: AM–GM for naturals, 4·(a·b) ≤ (a+b)² — the difference (a+b)² − 4ab = (a−b)² is a square, so the sum constraint dominates the product constraint",
+      "add_le_four_imp_mul_le_four: the AM–GM core at the Abel–Ruffini cap — a + b ≤ 4 forces a · b ≤ 4 (4ab ≤ (a+b)² ≤ 16)",
+      "perm_sum_solvable_imp_prod_solvable: sum-survival implies product-survival for ANY finite pieces — the ⊕-survivor set is contained in the ×-survivor set, no nontriviality needed",
+      "perm_prod_solvable_sum_not: the strictness witness — Perm (Fin 1 × Fin 4) is solvable (1·4 = 4) but Perm (Fin 1 ⊕ Fin 4) is not (1+4 = 5), so the containment is proper",
+      "survival_containment_strict: packages the unconditional containment with the proper-inclusion witness (Fin 1, Fin 4)",
+      "survival_gap_requires_trivial: the gap is exactly the trivial pieces — a product-survivor (a·b ≤ 4) that fails to be a sum-survivor (a+b > 4) has a ≤ 1 or b ≤ 1; both pieces ≥ 2 would force the product to ≥ 6",
+      "nontriviality_restores_symmetry: for a, b ≥ 2 the two caps are equivalent, a·b ≤ 4 ↔ a+b ≤ 4 — the pure arithmetic reason the parent's preservation coincidence needs the nontriviality hypothesis",
+      "without_nontriviality_only_containment: the full picture — unconditional containment, strict-inclusion witness (Fin 1, Fin 4), and the parent's coincidence recovered as the card ≥ 2 restriction that excises the trivial gap"
+    ],
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "lineCount": 188,
+    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions. No `native_decide` is used (the strings 'sorry'/'native_decide' appear only in the module docstring's no-assumptions disclaimer). The AM–GM core four_mul_le_add_sq is proved by zify + nlinarith with sq_nonneg ((a:ℤ) − b); the containment rewrites the parent chain's thresholds (perm_sum_solvable_iff / perm_prod_solvable_iff) and closes with the AM–GM lemma; the gap lemma forces the nonlinear cap factor-by-factor with Nat.mul_le_mul; the final conjunct reuses the parent's sum_prod_survival_coincide. `#print axioms` on without_nontriviality_only_containment, survival_containment_strict, survival_gap_requires_trivial, four_mul_le_add_sq and nontriviality_restores_symmetry reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no `Lean.ofReduceBool`, no `sorryAx`.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "additionalFiles": [],
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+        "relationship": "Parent — proved the preservation COINCIDENCE for nontrivial pieces ((2,2) the unique survivor for both ⊕ and ×). This entry drops the nontriviality hypothesis and shows the coincidence degrades into a strict containment ⊕-survival ⊊ ×-survival, recovering the parent's equivalence exactly as the card ≥ 2 restriction (without_nontriviality_only_containment) and importing its sum_prod_survival_coincide."
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01",
+        "relationship": "Grandparent — supplied perm_sum_solvable_iff and perm_prod_solvable_iff turning the thresholds into arithmetic on card α + card β and card α · card β, the two sides AM–GM relates."
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01",
+        "relationship": "Ancestor — the intrinsic threshold IsSolvable (Perm α) ↔ Fintype.card α ≤ 4 behind both threshold characterisations."
+      },
+      {
+        "id": "abel-ruffini",
+        "relationship": "Ancestor — Abel–Ruffini rests on S₅ non-solvable. The strictness witness (Fin 1, Fin 4) separates at degree 5, exactly the Abel–Ruffini threshold: the product stays at 4 (solvable S₄) while the union reaches 5 (unsolvable S₅)."
+      }
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.GroupTheory.Perm.ViaEmbedding",
+      "Mathlib.Tactic",
+      "Proofs.AbelRuffiniOQ04OQ02OQ02OQ08OQ01OQ01OQ01OQ01OQ01OQ01"
+    ],
+    "opens": [
+      "Equiv"
+    ],
+    "namespace": "AbelRuffiniOQ04OQ02OQ02OQ08OQ01OQ01OQ01OQ01OQ01OQ01OQ01",
+    "lineCount": 188,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "four_mul_le_add_sq",
+        "type": "key",
+        "description": "AM–GM for naturals: 4·(a·b) ≤ (a+b)². The difference (a+b)² − 4ab = (a−b)² is a square, sharp exactly when a = b. This is the mechanism making the sum constraint dominate the product constraint.",
+        "leanType": "(a b : ℕ) → 4 * (a * b) ≤ (a + b) ^ 2",
+        "line": 68
+      },
+      {
+        "name": "add_le_four_imp_mul_le_four",
+        "type": "core",
+        "description": "The AM–GM core at the Abel–Ruffini cap: a + b ≤ 4 forces a · b ≤ 4 (4ab ≤ (a+b)² ≤ 16).",
+        "leanType": "(a b : ℕ) → a + b ≤ 4 → a * b ≤ 4",
+        "line": 75
+      },
+      {
+        "name": "perm_sum_solvable_imp_prod_solvable",
+        "type": "key",
+        "description": "Sum-survival implies product-survival for any finite pieces: Perm (α ⊕ β) solvable ⟹ Perm (α × β) solvable. The ⊕-survivor set is contained in the ×-survivor set; the product is the more permissive operation.",
+        "leanType": "[DecidableEq α] → [DecidableEq β] → [Fintype α] → [Fintype β] → IsSolvable (Perm (α ⊕ β)) → IsSolvable (Perm (α × β))",
+        "line": 92
+      },
+      {
+        "name": "perm_prod_solvable_sum_not",
+        "type": "key",
+        "description": "The strictness witness: Perm (Fin 1 × Fin 4) is solvable (1·4 = 4) but Perm (Fin 1 ⊕ Fin 4) is not (1+4 = 5). Hence the containment is strict.",
+        "leanType": "IsSolvable (Perm (Fin 1 × Fin 4)) ∧ ¬ IsSolvable (Perm (Fin 1 ⊕ Fin 4))",
+        "line": 110
+      },
+      {
+        "name": "survival_gap_requires_trivial",
+        "type": "key",
+        "description": "The gap is exactly the trivial pieces: if a·b ≤ 4 yet a+b > 4 then a ≤ 1 or b ≤ 1. Both pieces ≥ 2 would force one ≥ 3 and the product to ≥ 6 > 4. This is the arithmetic reason the parent's coincidence needs nontriviality.",
+        "leanType": "(a b : ℕ) → a * b ≤ 4 → 4 < a + b → a ≤ 1 ∨ b ≤ 1",
+        "line": 139
+      },
+      {
+        "name": "nontriviality_restores_symmetry",
+        "type": "core",
+        "description": "For a, b ≥ 2 the product cap and sum cap are equivalent: a · b ≤ 4 ↔ a + b ≤ 4 — the pure arithmetic heart of the parent's preservation coincidence, both sides holding exactly at a = b = 2.",
+        "leanType": "(a b : ℕ) → 2 ≤ a → 2 ≤ b → (a * b ≤ 4 ↔ a + b ≤ 4)",
+        "line": 154
+      },
+      {
+        "name": "without_nontriviality_only_containment",
+        "type": "key",
+        "description": "The full picture: (1) unconditional containment sum-solvable ⟹ product-solvable; (2) strict-inclusion witness (Fin 1, Fin 4); (3) the parent's coincidence recovered as the card ≥ 2 restriction that excises the trivial gap of (2).",
+        "leanType": "(∀ (α β : Type) [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β], IsSolvable (Perm (α ⊕ β)) → IsSolvable (Perm (α × β))) ∧ (IsSolvable (Perm (Fin 1 × Fin 4)) ∧ ¬ IsSolvable (Perm (Fin 1 ⊕ Fin 4))) ∧ (∀ (α β : Type) [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β], 2 ≤ Fintype.card α → 2 ≤ Fintype.card β → (IsSolvable (Perm (α ⊕ β)) ↔ IsSolvable (Perm (α × β))))",
+        "line": 176
+      }
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "without_nontriviality_only_containment",
+      "statement": "Without the nontriviality hypothesis, the preservation relation between ⊕ and × is a strict containment, not an equivalence: (1) for any finite pieces, solvability of Perm (α ⊕ β) implies solvability of Perm (α × β); (2) the pair (Fin 1, Fin 4) is a product-survivor that is not a sum-survivor, so the inclusion is proper; (3) restricting to card ≥ 2 restores the parent's equivalence by deleting the trivial gap.",
+      "significance": "Explains the parent's preservation coincidence as a special case. The AM–GM inequality 4ab ≤ (a+b)² makes the disjoint union the harder operation to keep solvable, so ⊕-survival ⊊ ×-survival. The strict gap lives entirely on the degenerate cardinalities 0 and 1 (the multiplicative absorber and neutral), and excising them — the parent's card ≥ 2 hypothesis — is exactly what collapses the containment back to an equivalence."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Module docstring: dropping the parent's nontriviality hypothesis degrades the preservation coincidence into a one-directional AM–GM containment ⊕-survival ⊊ ×-survival, with the strict gap carried by the trivial cardinalities 0 and 1. Imports the parent chain and Mathlib group/permutation infrastructure.",
+      "mathContext": "Parent supplies perm_sum_solvable_iff, perm_prod_solvable_iff and sum_prod_survival_coincide."
+    },
+    {
+      "id": "am-gm-core",
+      "title": "§1 The arithmetic mean–geometric mean core",
+      "startLine": 58,
+      "endLine": 81,
+      "summary": "four_mul_le_add_sq proves 4·(a·b) ≤ (a+b)² for naturals (via zify + nlinarith with sq_nonneg ((a:ℤ) − b)); add_le_four_imp_mul_le_four specialises it to the cap 4: a + b ≤ 4 ⟹ a · b ≤ 4.",
+      "mathContext": "(a+b)² − 4ab = (a−b)² ≥ 0, so bounding the sum bounds the product — the asymmetry that drives the whole file."
+    },
+    {
+      "id": "containment",
+      "title": "§2 Containment: the disjoint union survives less often than the product",
+      "startLine": 82,
+      "endLine": 98,
+      "summary": "perm_sum_solvable_imp_prod_solvable: for any finite pieces, Perm (α ⊕ β) solvable ⟹ Perm (α × β) solvable — the ⊕-survivor set is contained in the ×-survivor set, no nontriviality hypothesis.",
+      "mathContext": "Rewrites both thresholds and closes with the AM–GM lemma add_le_four_imp_mul_le_four."
+    },
+    {
+      "id": "strictness",
+      "title": "§3 Strictness: a product-survivor that is not a sum-survivor",
+      "startLine": 99,
+      "endLine": 126,
+      "summary": "perm_prod_solvable_sum_not exhibits (Fin 1, Fin 4): the product has 4 points (solvable S₄) while the union has 5 (unsolvable); survival_containment_strict packages the containment with this proper-inclusion witness.",
+      "mathContext": "A single trivial factor (card 1, the multiplicative neutral) separates the two operations at the Abel–Ruffini threshold 5."
+    },
+    {
+      "id": "gap-is-trivial",
+      "title": "§4 The gap is exactly the trivial pieces",
+      "startLine": 127,
+      "endLine": 162,
+      "summary": "survival_gap_requires_trivial: a product-survivor (a·b ≤ 4) failing to be a sum-survivor (a+b > 4) has a ≤ 1 or b ≤ 1; nontriviality_restores_symmetry: for a, b ≥ 2 the two caps coincide, a·b ≤ 4 ↔ a+b ≤ 4.",
+      "mathContext": "If both pieces were ≥ 2 then a + b ≥ 5 forces one ≥ 3 and the product to ≥ 6 > 4 — so the gap requires a degenerate size, the arithmetic reason the parent's coincidence needs nontriviality."
+    },
+    {
+      "id": "full-picture",
+      "title": "§5 The full picture, side by side",
+      "startLine": 163,
+      "endLine": 188,
+      "summary": "without_nontriviality_only_containment assembles the unconditional containment, the strict-inclusion witness (Fin 1, Fin 4), and the parent's coincidence sum_prod_survival_coincide recovered as the card ≥ 2 restriction.",
+      "mathContext": "The parent's symmetric picture is the shadow this containment casts once the trivial cardinalities are removed."
+    }
+  ],
+  "sorries": [],
+  "references": [
+    {
+      "authors": [
+        "C. Jordan"
+      ],
+      "title": "Traité des substitutions et des équations algébriques",
+      "year": "1870",
+      "venue": "Gauthier-Villars, Paris",
+      "note": "Sₙ and Aₙ solvable iff n ≤ 4; S₄ as the largest solvable symmetric group at degree 4."
+    },
+    {
+      "authors": [
+        "É. Galois"
+      ],
+      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
+      "year": "1846",
+      "venue": "Journal de Mathématiques Pures et Appliquées (published posthumously)",
+      "note": "Solvability by radicals iff solvable Galois group; S₅ as the minimal obstruction one step above the degree-4 survivor where the strictness witness separates."
+    },
+    {
+      "authors": [
+        "G. H. Hardy",
+        "J. E. Littlewood",
+        "G. Pólya"
+      ],
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "The arithmetic mean–geometric mean inequality 4ab ≤ (a+b)², the mechanism making sum-survival ⊆ product-survival."
+    },
+    {
+      "authors": [
+        "The mathlib Community"
+      ],
+      "title": "The Lean Mathematical Library — Data.Fintype.Sum, Data.Fintype.Prod and GroupTheory.Solvable",
+      "year": "2020",
+      "venue": "Lean 4 / Mathlib",
+      "note": "Source of Fintype.card_sum, Fintype.card_prod and Nat.mul_le_mul, the arithmetic engines of the containment and the gap lemma."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent proved survival coincides for nontrivial pieces ((2,2) the unique survivor). This entry drops nontriviality and shows the coincidence degrades to a strict containment ⊕-survival ⊊ ×-survival, recovering the parent's equivalence as the card ≥ 2 restriction."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent supplied perm_sum_solvable_iff / perm_prod_solvable_iff, turning the thresholds into the arithmetic card α + card β ≤ 4 and card α · card β ≤ 4 that AM–GM relates."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel–Ruffini rests on S₅ non-solvable; the strictness witness (Fin 1, Fin 4) separates exactly at the threshold 5 — product stays at solvable S₄, union reaches unsolvable S₅."
+    }
+  ]
+}
