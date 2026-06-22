@@ -2,7 +2,7 @@
   "slug": "unit-distance-independence-oq-02",
   "title": "Prove Hadwiger-Nelson upper bound ≤ 7 via hexagonal 7-coloring",
   "phase": "ACT",
-  "status": "in-progress",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -18,7 +18,7 @@
     "nextAction": "S4 PREP/ACT: tackle covering_radius via the cube-norm inequality outlined in knowledge.md §Suggested-implementation-sketch. Path A (preferred, ~80 LOC): prove private lemma hexCoord_cube_bound (Q(q-a, r-b) ≤ 1/3) by 3-sub-case split on rq+ry+rr correction; combine with proved hexCenter_dist_sq to get dist² ≤ s². Path B (fallback): decompose into 6 cube-rounding sub-cases. Paste-ready sketch in sessions/2026-05-16-s3-statesync-json-leanfile-iter2-drift.md §Remaining-obligation. Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 stable."
   },
   "knowledge": {
-    "progressSummary": "S2 (2026-04-29) reduced UnitDistanceHN7.lean from 3 sorries to 1. Resolved hexCenter_dist_sq + inline modular step in same_color_far; companion HN7Aristotle.lean updated accordingly. Remaining: covering_radius (A₂ Voronoi circumradius ≤ s) — the hardest of the three obligations. Eliminating it would close the hexagonal 7-coloring construction and remove the hadwiger_nelson_upper_bound axiom from UnitDistanceIndependence.lean. Current state: HN7.lean 287/8/6/0/1, HN7Aristotle.lean 78/3/0/0/1, parent UnitDistanceIndependence.lean 948/65/11/2/0 (lines/thms/defs/axioms/sorries).",
+    "progressSummary": "COMPLETE: covering_radius proved in UnitDistanceHN7.lean → hadwiger_nelson_7coloring (χ(ℝ²) ≤ 7) is now fully machine-verified, 0 sorries, 0 axioms. covering_radius_ari companion sorry also discharged.",
     "builtItems": [
       "hexSideLength, axialQ, axialR, hexCoord, hexColor, hexCenter (6 defs, HN7.lean lines 32-82)",
       "color_sublattice_min_norm: PROVED (HN7.lean:84) — integer arithmetic on Q(da,db) over 3·da+db ≡ 0 (mod 7) sublattice",
@@ -27,7 +27,11 @@
       "same_hex_close, same_color_far: PROVED (HN7.lean:160, 180) — uses covering_radius (sorry pending) + hexCenter_dist_sq",
       "Inline modular step in same_color_far: PROVED in S2 via simp [hexColor, Fin.mk.injEq] + omega (handles Int.toNat and redundant Nat.mod 7)",
       "Companion HN7Aristotle.lean updated in S2: hexCenter_dist_sq_ari delegates to main lemma; hexColor_eq_implies_mod_ari proved by parallel omega",
-      "hadwiger_nelson_7coloring: PROVED (HN7.lean:258) — main theorem, conditional on covering_radius"
+      "hadwiger_nelson_7coloring: PROVED (HN7.lean:258) — main theorem, conditional on covering_radius",
+      "hexRound + hexRound_Q_bound (UnitDistanceHN7.lean): abstract cube-rounding with Q(q-a,r-b) ≤ 1/3, four-branch Voronoi case analysis",
+      "quad_bound_A / quad_bound_B (UnitDistanceHN7.lean): SOS arithmetic cores for the hexagon (≤1/4) and correction (≤1/3, tight) bounds",
+      "hexPos / hexPos_axial / hexPos_dist_sq / dist_p_center_sq: A₂ basis reconstruction giving dist² = 3s²·Q in axial coordinates",
+      "covering_radius (UnitDistanceHN7.lean): closes the last sorry; covering_radius_ari delegated"
     ],
     "insights": [
       "Hex diameter 2s = 4/5 < 1 ensures same-cell points < 1 apart",
@@ -43,12 +47,14 @@
       "S2 PROOF PATTERN — nlinarith [h3, sq_nonneg …] with h3 : Real.sqrt 3 * Real.sqrt 3 = 3 closes hexCenter_dist_sq where ring_nf alone fails (since ring_nf normalizes √3 differently each call).",
       "S2 PROOF PATTERN — simp only [hexColor, Fin.mk.injEq] before omega is required to peel the Fin 7 constructor and expose Nat equality; raw simp alone leaves let-binding that omega cannot parse.",
       "S2 OUTCOME — 2 of 3 original sorries (same_hex_close, same_color_far) provably reduce to covering_radius. So eliminating covering_radius would close ALL remaining obligations in HN7.lean and HN7Aristotle.lean, then remove hadwiger_nelson_upper_bound from UnitDistanceIndependence.lean — a full collapse to 0 sorries / 1 axiom (down from 2) across the bundle.",
-      "DECOMPOSITION — covering_radius reduces to Q(q-a, r-b) ≤ 1/3 (cube-norm bound on rounding error) combined with proved hexCenter_dist_sq to get dist² ≤ 3s²·(1/3) = s². See knowledge.md §Suggested-implementation-sketch."
+      "DECOMPOSITION — covering_radius reduces to Q(q-a, r-b) ≤ 1/3 (cube-norm bound on rounding error) combined with proved hexCenter_dist_sq to get dist² ≤ 3s²·(1/3) = s². See knowledge.md §Suggested-implementation-sketch.",
+      "Marking axialQ/axialR irreducible and running the rounding case-analysis on a parallel def hexRound over abstract reals avoids whnf/isDefEq blowups from EuclideanSpace internals",
+      "Hand-writing the if-expression synthesizes different Decidable instances than the def, making the connecting rfl time out; a parallel def with an identical body fixes it",
+      "Parent axiom hadwiger_nelson_upper_bound is now redundant but a clean discharge needs namespacing UnitDistanceHN7 (root-level Plane clashes on import) — left as follow-up"
     ],
     "nextSteps": [
-      "Prove covering_radius (~80 LOC, Path A): private lemma hexCoord_cube_bound bounds Q(q-a, r-b) ≤ 1/3 by 3-sub-case split on the cube-coordinate correction (rq + ry + rr = 0 vs ≠ 0, then largest-error coordinate is corrected leaving the other two with |Δ| ≤ 1/2). Combine via hexCenter_dist_sq + Real.sqrt_le_sqrt to close.",
-      "Fallback Path B: decompose covering_radius into 6 isolated sub-lemmas (3 corrections × 2 signs), each closed by Int.floor_le / Int.le_ceil + nlinarith. ~3× the LOC but mechanically discharged.",
-      "After covering_radius lands: HN7Aristotle.lean covering_radius_ari follows by delegation (1 LOC). hadwiger_nelson_upper_bound axiom in UnitDistanceIndependence.lean can then be replaced by `exact hadwiger_nelson_7coloring`."
+      "Namespace UnitDistanceHN7 and discharge the parent hadwiger_nelson_upper_bound axiom in UnitDistanceIndependence.lean (replace axiom with `exact hadwiger_nelson_7coloring`), reducing the gallery entry to 1 axiom (de Grey lower bound only).",
+      "Lower bound χ(ℝ²) ≥ 5 (de Grey 2018, 1581-vertex graph) remains genuinely hard / axiomatized."
     ]
   },
   "tags": [
