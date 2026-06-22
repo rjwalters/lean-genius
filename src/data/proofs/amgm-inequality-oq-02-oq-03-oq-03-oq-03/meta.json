@@ -1,0 +1,129 @@
+{
+  "id": "amgm-inequality-oq-02-oq-03-oq-03-oq-03",
+  "slug": "amgm-inequality-oq-02-oq-03-oq-03-oq-03",
+  "title": "Power-Mean Inequality: Mₚ ≤ M_q for 0 < p ≤ q",
+  "description": "Proves the unweighted power-mean (generalized mean) inequality Mₚ ≤ M_q for positive exponents 0 < p ≤ q — the case Mathlib's MeanInequalities lists as a TODO. Answers the parent open question on generalizing the Maclaurin chain to Lᵖ means, and corrects its stated direction (power means increase, not decrease, in the exponent). Fully verified (0 axioms, 0 sorries).",
+  "leanFile": {
+    "namespace": "AmgmInequalityOQ02OQ03OQ03OQ03",
+    "lineCount": 128,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "path": "Proofs/AmgmInequalityOQ02OQ03OQ03OQ03.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib"
+    ]
+  },
+  "overview": "The power means Mₚ(x) = ((1/n)·Σᵢ xᵢᵖ)^{1/p} are monotone increasing in the exponent: for 0 < p ≤ q one has Mₚ ≤ M_q. The classical instance M₁ ≤ M₂ is the arithmetic-mean ≤ root-mean-square inequality. This file establishes the general positive-exponent case by specializing Mathlib's weighted Jensen inequality NNReal.rpow_arith_mean_le_arith_mean_rpow (convexity of t ↦ t^{q/p} for q/p ≥ 1) to the uniform weights 1/n. With r = q/p and zᵢ = xᵢᵖ, Jensen gives (Σ wᵢ xᵢᵖ)^{q/p} ≤ Σ wᵢ xᵢ^q; raising both sides to 1/q (monotone since q > 0) yields Mₚ ≤ M_q. The result is exactly the entry 'generalized mean inequality with any p ≤ q' that Mathlib.Analysis.MeanInequalities records in its TODO section, so it is not currently available upstream as a theorem. The negative-exponent case (p < 0, requiring xᵢ > 0) remains future work, mirroring Mathlib's own TODO.",
+  "mainTheorems": [
+    {
+      "name": "powerMean_le_powerMean",
+      "type": "main",
+      "description": "The power-mean inequality: for a nonempty finite index set and 0 < p ≤ q, the power means satisfy Mₚ ≤ M_q. Proved by specializing NNReal.rpow_arith_mean_le_arith_mean_rpow to uniform weights and raising to the 1/q power.",
+      "leanType": "(s : Finset ι) (x : ι → ℝ≥0) (hs : s.Nonempty) {p q : ℝ} (hp : 0 < p) (hpq : p ≤ q) → powerMean s x p ≤ powerMean s x q"
+    },
+    {
+      "name": "arithMean_le_quadraticMean",
+      "type": "corollary",
+      "description": "Arithmetic mean ≤ quadratic mean (root-mean-square), the special case p = 1, q = 2 of the power-mean inequality.",
+      "leanType": "(s : Finset ι) (x : ι → ℝ≥0) (hs : s.Nonempty) → powerMean s x 1 ≤ powerMean s x 2"
+    },
+    {
+      "name": "powerMean_mono",
+      "type": "corollary",
+      "description": "Restatement of the power-mean inequality with both 0 < p and 0 < q hypotheses bundled, for a monotonicity-style API.",
+      "leanType": "(s : Finset ι) (x : ι → ℝ≥0) (hs : s.Nonempty) {p q : ℝ} (hp : 0 < p) (hq : 0 < q) (hpq : p ≤ q) → powerMean s x p ≤ powerMean s x q"
+    }
+  ],
+  "sections": [],
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ03OQ03OQ03.lean",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "power-means",
+      "jensen",
+      "convexity"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "axiomCount": 0,
+    "lineCount": 128,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "assumptions": "None beyond Mathlib. Fully verified: 0 axioms, 0 sorries. Restricted to positive exponents 0 < p ≤ q; the negative-exponent case (which Mathlib also lists as a TODO) is not covered.",
+    "originalContributions": [
+      "Definition of the unweighted power mean Mₚ over a finite set with NNReal values",
+      "The power-mean inequality Mₚ ≤ M_q for 0 < p ≤ q, an item Mathlib lists in its MeanInequalities TODO",
+      "Clarifies the direction of the parent open question: power means increase in the exponent (Mₚ ≤ M_q), unlike the degree-indexed Maclaurin means",
+      "Root-mean-square ≥ arithmetic-mean corollary as the p=1, q=2 instance"
+    ],
+    "prerequisites": [
+      "Real powers of nonnegative reals (NNReal.rpow) and the identity (a^p)^(q/p) = a^q",
+      "Jensen's inequality for the convex map t ↦ t^r (r ≥ 1) with weights summing to one",
+      "Monotonicity of x ↦ x^z for nonnegative exponent z (NNReal.rpow_le_rpow)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "NNReal.rpow_arith_mean_le_arith_mean_rpow",
+        "description": "Weighted generalized-mean (Jensen) inequality for t ↦ t^p, p ≥ 1, over ℝ≥0-valued functions with weights summing to 1. The convexity engine specialized here to uniform weights.",
+        "module": "Mathlib.Analysis.MeanInequalitiesPow"
+      },
+      {
+        "theorem": "NNReal.rpow_mul",
+        "description": "x^(y*z) = (x^y)^z over ℝ≥0; used to rewrite (xᵢ^p)^{q/p} = xᵢ^q and to collapse the iterated exponent (q/p)·(1/q) = 1/p.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNReal"
+      },
+      {
+        "theorem": "NNReal.rpow_le_rpow",
+        "description": "Monotonicity of x ↦ x^z for 0 ≤ z over ℝ≥0; used to raise the Jensen inequality to the 1/q power.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNReal"
+      },
+      {
+        "theorem": "Finset.sum_const / nsmul_eq_mul / mul_inv_cancel₀",
+        "description": "Establishes that the uniform weights (|s|)⁻¹ sum to one over a nonempty finite set.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ]
+  },
+  "references": [
+    {
+      "authors": "Hardy, G. H.; Littlewood, J. E.; Pólya, G.",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Classical reference for the power-mean (generalized mean) inequality and its monotonicity in the exponent."
+    },
+    {
+      "authors": "mathlib4 contributors",
+      "title": "Mathlib.Analysis.MeanInequalities — TODO: generalized mean inequality with any p ≤ q",
+      "year": "2026",
+      "venue": "leanprover-community/mathlib4",
+      "note": "The module's TODO section explicitly lists the generalized mean inequality for arbitrary p ≤ q as unformalized; this entry supplies the positive-exponent case."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-02-oq-03-oq-03",
+      "relationship": "extends",
+      "description": "Parent Full Maclaurin Chain entry, whose open question asks for a power-mean generalization; this entry answers it and corrects the stated inequality direction."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-03-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Sibling open question resolving whether the Maclaurin step follows from Newton's identities; both clarify the analytic content underlying Maclaurin/power means."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "Base AM-GM inequality; the power means interpolate between AM-GM endpoints, and M₁ ≤ M₂ recovers the AM ≤ RMS instance."
+    }
+  ],
+  "conclusion": "The unweighted power-mean inequality Mₚ ≤ M_q holds for all 0 < p ≤ q, fully verified with no axioms. This fills the positive-exponent case of an inequality Mathlib currently lists only as a TODO, and clarifies that the correct power-mean ordering is increasing in the exponent — distinct from the degree-decreasing Maclaurin means of the parent entry.",
+  "sorries": 0
+}
