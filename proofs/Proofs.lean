@@ -648,6 +648,7 @@ import Proofs.CevasTheoremOQ04
 import Proofs.CevasTheoremOQ04OQ01
 import Proofs.CevasTheoremSinRatio
 import Proofs.ChebyshevBounds
+import Proofs.ChebyshevBoundsOQ03
 import Proofs.ChebyshevBoundsOQ02
 import Proofs.ChebyshevBoundsOQ04
 import Proofs.ChebyshevBoundsOQ04Aristotle

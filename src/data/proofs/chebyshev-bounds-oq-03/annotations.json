@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-correction-small",
+    "proofId": "chebyshev-bounds-oq-03",
+    "range": {
+      "startLine": 57,
+      "endLine": 77
+    },
+    "type": "insight",
+    "title": "Prime Powers Are Too Sparse to Matter",
+    "content": "psi_sub_theta_div_tendsto_zero proves (ψ(x) − θ(x))/x → 0. The difference ψ − θ collects only the proper prime powers p^k with k ≥ 2 — there are at most √x of them up to x, each contributing at most log x. Mathlib packages this as |ψ(x) − θ(x)| ≤ 2√x·log x; dividing by x gives the bound 2√x·log x/x = 2 log x/√x (using √x/x = 1/√x). A squeeze against this bound, which tends to 0, shows the correction is o(x). The whole prime-power contribution is invisible to the leading x asymptotic."
+  },
+  {
+    "id": "ann-log-decay",
+    "proofId": "chebyshev-bounds-oq-03",
+    "range": {
+      "startLine": 49,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "log x / √x → 0 Is the Only Growth Fact Needed",
+    "content": "log_div_sqrt_tendsto_zero is the single analytic input: the logarithm grows slower than any positive power, so log = o(x^{1/2}) (Mathlib's isLittleO_log_rpow_atTop at r = 1/2), and since √x = x^{1/2}, log x/√x → 0. Everything else in the argument is the size estimate from Mathlib and elementary limit arithmetic — no zeta function, no complex analysis."
+  },
+  {
+    "id": "ann-equivalence",
+    "proofId": "chebyshev-bounds-oq-03",
+    "range": {
+      "startLine": 79,
+      "endLine": 98
+    },
+    "type": "insight",
+    "title": "ψ ∼ x and θ ∼ x Are the Same Statement",
+    "content": "psi_asymp_iff_theta_asymp concludes ψ(x)/x → 1 ⟺ θ(x)/x → 1. The proof is purely algebraic once the correction vanishes: ψ(x)/x = θ(x)/x + (ψ(x) − θ(x))/x, and adding a term tending to 0 cannot change the limit (Tendsto.add / Tendsto.sub). So the prime number theorem may be established in whichever Chebyshev form is convenient — ψ ∼ x or θ ∼ x — and transferred freely. This isolates the elementary link of the PNT equivalence chain, leaving the genuine partial-summation step θ ∼ x ⟺ π ∼ x/log x to the sibling bridge entries."
+  }
+]
