@@ -3270,6 +3270,7 @@ import Proofs.ShannonSourceCodingOQ02
 import Proofs.ShannonSourceCodingOQ03
 import Proofs.ShannonSourceCodingOQ04
 import Proofs.ShannonSourceCodingOQ04Aristotle
+import Proofs.ShannonSourceCodingOQ04Incomplete01
 import Proofs.ShapleyFolkman
 import Proofs.ShapleyFolkmanAristotle
 import Proofs.ShapleyFolkmanOQ01
