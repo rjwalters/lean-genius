@@ -1,0 +1,93 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "erdos-1100-incomplete-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Erdős #1100 and the Coprime-Consecutive-Divisor Count",
+    "content": "Erdős #1100 studies $\\tau^\\perp(n)$, the number of consecutive divisor pairs $(d_i, d_{i+1})$ of $n$ that are coprime. The parent file states the deep Erdős–Hall / Erdős–Simonovits results as axioms and ALSO axiomatizes the 'trivial' bound $\\tau^\\perp(n) \\ge \\omega(n)$, noting it 'requires intricate reasoning about sorted divisor positions.' This companion proves the universal weak form $\\tau^\\perp(n) \\ge 1$ with 0 axioms / 0 sorries.",
+    "mathContext": "Divisors are listed $1 = d_1 < d_2 < \\cdots < d_{\\tau(n)} = n$; $\\tau^\\perp(n) = |\\{i : \\gcd(d_i, d_{i+1}) = 1\\}|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "coprime divisors",
+      "divisor function",
+      "Erdős–Hall"
+    ],
+    "prerequisites": [
+      "divisors",
+      "gcd"
+    ]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-1100-incomplete-01",
+    "range": {
+      "startLine": 39,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "divisorList and τ⊥",
+    "content": "`divisorList n` is the sorted list of divisors of n (filter of `range (n+1)` by divisibility, then `sort`). `tauPerp n` counts indices i with $\\gcd(d_i, d_{i+1}) = 1$. Matches the parent's definitions but uses a `let`-free body so the index argument unfolds cleanly.",
+    "mathContext": "$\\mathrm{divisorList}\\,n = \\mathrm{sort}\\,\\{d \\le n : d \\mid n\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sort",
+      "List.filter"
+    ]
+  },
+  {
+    "id": "ann-first-divisor",
+    "proofId": "erdos-1100-incomplete-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "The First Sorted Divisor is 1",
+    "content": "Proves `(divisorList n).getD 0 0 = 1` for n ≥ 1. The 0-th sorted entry is the minimum of the divisor set (`Finset.sorted_zero_eq_min'`); that minimum is $\\le 1$ (since 1 is a divisor) and $\\ge 1$ (the smallest divisor is positive, `Nat.pos_of_dvd_of_pos`), hence equals 1. This is exactly the 'sorted divisor position' reasoning the parent flagged.",
+    "mathContext": "$d_1 = \\min'\\{d : d \\mid n\\} = 1$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "sorted_zero_eq_min'",
+      "minimum divisor"
+    ]
+  },
+  {
+    "id": "ann-main",
+    "proofId": "erdos-1100-incomplete-01",
+    "range": {
+      "startLine": 91,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "Main: τ⊥(n) ≥ 1 — the First Pair is Coprime",
+    "content": "Proves `tauPerp_ge_one`: τ⊥(n) ≥ 1 for n ≥ 2. Because $d_1 = 1$, the first consecutive pair $(1, d_2)$ has $\\gcd = 1$ ($\\gcd(1,\\cdot) = 1$), so index 0 lies in the filtered index list, which is therefore nonempty. The bound is tight when $\\omega(n) = 1$ (prime powers), matching the axiomatized $\\tau^\\perp(n) \\ge \\omega(n)$ there.",
+    "mathContext": "$\\gcd(d_1, d_2) = \\gcd(1, d_2) = 1 \\Rightarrow \\tau^\\perp(n) \\ge 1$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "lower bound",
+      "gcd_one_left",
+      "coprime pair"
+    ]
+  },
+  {
+    "id": "ann-edge",
+    "proofId": "erdos-1100-incomplete-01",
+    "range": {
+      "startLine": 107,
+      "endLine": 119
+    },
+    "type": "theorem",
+    "title": "first_pair_coprime and the Edge Case τ⊥(1) = 0",
+    "content": "`first_pair_coprime` states the coprimality $\\gcd(d_1, d_2) = 1$ directly. `tauPerp_one` pins the edge case: $n = 1$ has the single divisor list $[1]$, so there are no consecutive pairs and $\\tau^\\perp(1) = 0$ (computed via kernel `decide`, not `native_decide`).",
+    "mathContext": "$\\mathrm{divisorList}\\,1 = [1]$, length 1, zero consecutive pairs.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge case",
+      "singleton divisor list"
+    ]
+  }
+]
