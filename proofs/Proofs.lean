@@ -1111,6 +1111,7 @@ import Proofs.Erdos10OQ02Decidable
 import Proofs.Erdos10OQ02Popcount
 import Proofs.Erdos10PrimePlusPowers
 import Proofs.Erdos10Problem
+import Proofs.Erdos10WIP01
 import Proofs.Erdos1100OQ01Aristotle
 import Proofs.Erdos1100Problem
 import Proofs.Erdos1100ProblemAristotle
