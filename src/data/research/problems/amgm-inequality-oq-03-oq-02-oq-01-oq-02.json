@@ -1,0 +1,69 @@
+{
+  "slug": "amgm-inequality-oq-03-oq-02-oq-01-oq-02",
+  "title": "Equality case of the crossing-zero power-mean chain: M_r = GM iff data constant (all r ≠ 0)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "tractability": 7,
+  "significance": 6,
+  "started": "2026-06-22T00:00:00-07:00",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For strictly positive weights summing to 1 and strictly positive data: (1) for every r ≠ 0, weightedPowerMean r = weightedGeomMean ↔ all data equal; (2) for r < 0 < t, weightedPowerMean r = weightedPowerMean t ↔ all data equal; (3) the crossing-zero bounds are strict for non-constant data.",
+    "plain": "Characterize equality in the crossing-zero power-mean inequalities M_r ≤ GM ≤ M_s (r < 0 < s). The geometric mean equals the power mean of order r exactly when the data is constant — and this holds for every nonzero r, positive or negative, even though the inequality reverses direction across zero. Hence M_r = M_t iff constant for r < 0 < t, and all bounds (including HM < GM < AM) are strict off the diagonal.",
+    "whyMatters": [
+      "Completes the crossing-zero power-mean story by pairing the inequality (parent oq-03-oq-02-oq-01) with its sharp equality case.",
+      "Exhibits a sign-independent equality locus sitting underneath a sign-dependent inequality.",
+      "Recovers the classical strict HM < GM < AM as a single specialization."
+    ]
+  },
+  "tags": [
+    "analysis",
+    "inequalities",
+    "mean-inequalities",
+    "power-means",
+    "amgm",
+    "equality-case",
+    "research"
+  ],
+  "tractability": 7,
+  "knowledge": {
+    "insights": [
+      "The equality case of the crossing-zero chain is one application of weighted AM-GM's equality case (weighted_amgm_eq_iff) to the powered data uᵢ = zᵢ^r — the same AM-GM step whose inequality drives the parent's bounds.",
+      "The equality locus M_r = GM is sign-independent: 'all data equal' for every r ≠ 0, even though M_r ≤ GM for r < 0 reverses to GM ≤ M_r for r > 0.",
+      "Raising M_r to the r-th power is bijective on the positive reals for any r ≠ 0, so M_r = GM ↔ M_r^r = GM^r needs no case split on the sign of r.",
+      "The crossing-zero equality M_r = M_t (r < 0 < t) follows by squeezing the endpoints of M_r ≤ GM ≤ M_t.",
+      "The strict classical HM < GM < AM for non-constant data is the r = -1, t = 1 instance."
+    ],
+    "builtItems": [
+      "geomMean_rpow_eq_weightedSum_rpow_iff (Proofs/AmgmInequalityOQ03OQ02OQ01OQ02.lean:108): GM^r = ∑ wᵢ zᵢ^r ↔ data constant",
+      "power_mean_eq_geom_mean_iff (Proofs/AmgmInequalityOQ03OQ02OQ01OQ02.lean:134): M_r = GM ↔ data constant, all r ≠ 0",
+      "power_mean_crossing_zero_eq_iff (Proofs/AmgmInequalityOQ03OQ02OQ01OQ02.lean:162): M_r = M_t ↔ data constant for r < 0 < t",
+      "power_mean_lt_geom_mean_neg_of_ne / geom_mean_lt_power_mean_pos_of_ne / power_mean_crossing_zero_lt_of_ne (Proofs/AmgmInequalityOQ03OQ02OQ01OQ02.lean:181,195,209): strict bounds",
+      "hm_eq_gm_iff and hm_lt_gm_lt_am_of_ne (Proofs/AmgmInequalityOQ03OQ02OQ01OQ02.lean:227,235): sharp HM < GM < AM corner"
+    ],
+    "mathlibGaps": [
+      "Mathlib has no equality/strictness characterization for the weighted power-mean inequality across zero; only the inequalities (and the same-sign convexity argument) are available."
+    ],
+    "nextSteps": [
+      "Merge the same-sign equality case (PowerMeanEqualityOQ, 0 < r < t) with this crossing-zero case into one all-exponent statement M_r = M_t ↔ constant for all r < t (r, t ≠ 0).",
+      "Quantitative stability: lower-bound M_t − M_r by the variance/spread of the data.",
+      "Equality in the endpoint limits min = M_{-∞}, max = M_{+∞}."
+    ],
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms, 12 declarations verified. Equality case + strictness of the crossing-zero power-mean chain.",
+    "markdown": ""
+  },
+  "knownResults": [],
+  "leanFiles": [
+    "Proofs/AmgmInequalityOQ03OQ02OQ01OQ02.lean"
+  ],
+  "path": "Proofs/AmgmInequalityOQ03OQ02OQ01OQ02.lean",
+  "references": [],
+  "relatedProofs": [
+    "amgm-inequality-oq-03-oq-02-oq-01",
+    "jensen-inequality-oq-01-oq-01-oq-01-oq-04-oq-01",
+    "jensen-inequality-oq-01"
+  ],
+  "currentState": "Completed and verified.",
+  "tier": "B"
+}
