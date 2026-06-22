@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ann-eqr-oq010301-bridge",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01",
+    "range": { "startLine": 122, "endLine": 132 },
+    "type": "theorem",
+    "title": "The fixed-point sign-restriction bridge (the new content)",
+    "content": "sign_ringMulPerm_eq_sign_mulPerm proves sign(ringMulPerm a) = sign(mulPerm a): the sign of multiplication-by-a on the WHOLE field ℤ/p equals its sign on the units (ℤ/p)ˣ. Because multiplication by a unit fixes 0 and keeps nonzero residues nonzero, Equiv.Perm.sign_subtypePerm restricts the sign to {x // x ≠ 0} without changing it, and the field equivalence unitsEquivNeZero identifies that restriction with mulPerm a (transported by sign_eq_sign_of_equiv). This is exactly the 'fixed-point sign-restriction argument' the parent named as the remaining glue."
+  },
+  {
+    "id": "ann-eqr-oq010301-generator-nonsquare",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01",
+    "range": { "startLine": 184, "endLine": 225 },
+    "type": "theorem",
+    "title": "A generator of (ℤ/p)ˣ is a non-square",
+    "content": "generator_not_isSquare: if a generator g were u², then orderOf g = orderOf(u²) = orderOf u / gcd(orderOf u, 2), which is strictly smaller than the maximal order p-1 (since p-1 is even). This, together with the single-(p-1)-cycle sign computation, pins both the quadratic character and the permutation sign of a generator to -1 — the base values that drive the whole units-level Zolotarev lemma."
+  },
+  {
+    "id": "ann-eqr-oq010301-basecase",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01",
+    "range": { "startLine": 262, "endLine": 266 },
+    "type": "theorem",
+    "title": "The base case: sign(ringMulPerm a on ℤ/p) = legendreSym p a",
+    "content": "sign_ringMulPerm_eq_legendre chains the fixed-point bridge, the self-contained units-level Zolotarev lemma (sign_mulPerm_eq_quadraticChar), and the definitional bridge legendreSym = quadraticChar. This is the exact base case the parent (oq-01-oq-03) listed as its next step, now proved unconditionally and axiom-free for p ≠ 2."
+  },
+  {
+    "id": "ann-eqr-oq010301-loopclose",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01",
+    "range": { "startLine": 283, "endLine": 297 },
+    "type": "theorem",
+    "title": "Closing the loop: Jacobi value on ℤ/pq",
+    "content": "sign_ringMulPerm_eq_legendre_mul combines the base case with the parent's CRT multiplicativity (ZolotarevCRT.sign_ringMulPerm_mul_of_odd): for distinct odd primes p, q the whole-ring permutation sign on ℤ/pq is the product of the Legendre symbols of the two CRT components — the two-factor Jacobi value. The general squarefree case follows by iterating over the factorization."
+  }
+]
