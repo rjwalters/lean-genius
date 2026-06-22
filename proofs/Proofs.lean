@@ -3188,6 +3188,7 @@ import Proofs.PuiseuxTheoremOQ02
 import Proofs.PvsNP
 import Proofs.PythagoreanTheorem
 import Proofs.PythagoreanTheoremOQ03
+import Proofs.PythagoreanTheoremOQ03OQ02
 import Proofs.PythagoreanTheoremOQ05
 import Proofs.PythagoreanTriples
 import Proofs.PythagoreanTriplesOQ01
