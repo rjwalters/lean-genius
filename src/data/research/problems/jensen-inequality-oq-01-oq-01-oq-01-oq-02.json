@@ -1,0 +1,71 @@
+{
+  "slug": "jensen-inequality-oq-01-oq-01-oq-01-oq-02",
+  "title": "Generalized (Finite-Family) Minkowski Inequality for Discrete ℓᵖ Norms",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\Big(\\sum_{i\\in s}\\Big(\\sum_{j\\in t} F_j(i)\\Big)^{p}\\Big)^{1/p} \\le \\sum_{j\\in t}\\Big(\\sum_{i\\in s} F_j(i)^{p}\\Big)^{1/p} \\quad (1\\le p,\\ F_j\\ge 0)",
+    "plain": "Mathlib provides Minkowski's inequality only for the sum of two vectors (Real.Lp_add_le_of_nonneg), but not for an arbitrary finite family of vectors. Prove the finite-family form: for 1 ≤ p and a finite family of nonnegative vectors F_j over a coordinate set s, the ℓᵖ norm of their sum is at most the sum of their ℓᵖ norms — the triangle inequality (subadditivity of the discrete ℓᵖ seminorm) for finitely many summands.",
+    "whyMatters": [
+      "Fills a real Mathlib gap: only the two-vector Minkowski inequality is available in elementary Finset.sum form",
+      "It is the ℓᵖ-norm sibling of the parent ladder's generalization of two-term to n-term Young/Hölder",
+      "The finite-family triangle inequality is the standard tool for bounding norms of sums of many vectors, and was explicitly flagged as the next step of the n-fold Hölder entry"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-22T14:40:00-07:00",
+    "iteration": 1,
+    "focus": "Prove the finite-family Minkowski inequality by induction on the family using the two-vector case.",
+    "blockers": [],
+    "nextAction": "Complete — proof verified, gallery entry created.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SOLVED (researcher-9, 2026-06-22): proved the generalized finite-family Minkowski inequality Lpnorm s p (fun i => ∑ j ∈ t, F j i) ≤ ∑ j ∈ t, Lpnorm s p (F j) for 1 ≤ p and nonnegative vectors F j. 0-axiom verified (propext/Classical.choice/Quot.sound, no native_decide). File Proofs/JensenInequalityOQ01OQ01OQ01OQ02.lean (116L, 1 def, 4 thm). The discrete ℓᵖ norm Lpnorm s p g = (∑ i ∈ s, g i ^ p)^{1/p} is defined; minkowski_finset is proved by Finset.induction on the family, using the two-vector case Lpnorm_add_le (= Mathlib's Real.Lp_add_le_of_nonneg restated) at the inductive step and Lpnorm_nonneg for the partial sums. The three-vector instance Lpnorm_add3 is derived from minkowski_finset over Fin 3 (a case Mathlib does not provide).",
+    "builtItems": [
+      "Proofs/JensenInequalityOQ01OQ01OQ01OQ02.lean: minkowski_finset (finite-family Minkowski for finite sums — Mathlib gap)",
+      "Lpnorm (the discrete ℓᵖ norm (∑ g i^p)^{1/p})",
+      "Lpnorm_nonneg (norm of a nonnegative vector is nonnegative)",
+      "Lpnorm_add_le (two-vector Minkowski in this notation, base step)",
+      "Lpnorm_add3 (three-vector instance derived from the family theorem)",
+      "src/data/proofs/jensen-inequality-oq-01-oq-01-oq-01-oq-02/ gallery entry"
+    ],
+    "insights": [
+      "The finite-family Minkowski inequality is exactly subadditivity of the ℓᵖ seminorm over a Finset, so a single Finset.induction on the family with the two-vector case at each step suffices — no new analytic content beyond Real.Lp_add_le_of_nonneg",
+      "The empty family yields the zero vector, whose ℓᵖ norm is 0 because (0:ℝ)^p = 0 (p ≠ 0) and 0^{1/p} = 0; this is the induction base",
+      "At the inductive step the partial sum ∑ j ∈ u, F j i must be shown nonnegative (sum of nonnegatives) so the two-vector case applies",
+      "Deriving the three-vector instance from the general family theorem (over Fin 3, via Fin.sum_univ_three) exhibits a case absent from Mathlib, confirming the generalization is strict"
+    ],
+    "mathlibGaps": [
+      "Mathlib has only the two-vector Minkowski inequality in Finset.sum form (Real.Lp_add_le_of_nonneg); the finite-family generalization minkowski_finset here is the missing elementary result and a natural upstream contribution. The abstract PiLp/WithLp triangle inequality is not the same elementary closed-form statement"
+    ],
+    "nextSteps": [
+      "Prove the equality case: equality holds iff all the nonzero vectors F j are pairwise proportional",
+      "Lift to the Lᵖ / integral and ℝ≥0∞ settings, matching Mathlib's measure-theoretic Minkowski",
+      "Combine with the n-fold Hölder entry to state the full ℓᵖ–ℓᵍ duality for finite families"
+    ],
+    "markdown": "# Knowledge Base: jensen-inequality-oq-01-oq-01-oq-01-oq-02\n\n## Problem Understanding\n\nProve the generalized finite-family Minkowski inequality (a Mathlib gap) — the triangle inequality for the discrete ℓᵖ norm over an arbitrary finite family of vectors — from the two-vector case by induction.\n\n## Insights\n\nThe ℓᵖ norm Lpnorm s p g = (∑ i ∈ s, g i ^ p)^{1/p} is subadditive: induction on the family t, with the empty case giving the zero vector (norm 0) and the inductive step peeling one vector off via Finset.sum_insert, applying the two-vector Minkowski inequality (Mathlib's Real.Lp_add_le_of_nonneg), and closing with the induction hypothesis on the rest. The partial sums are nonnegative as sums of nonnegatives.\n\n## Dead Ends\n\nNone substantive — one first-build fix: Finset.induction re-introduces the family-nonnegativity hypothesis in each branch (so it must not be `intro`-ed; the induction hypothesis is already the implication form).\n"
+  },
+  "tags": [
+    "analysis",
+    "convexity",
+    "minkowski-inequality",
+    "holder-inequality",
+    "lp-spaces",
+    "triangle-inequality",
+    "inequalities",
+    "research"
+  ]
+}
