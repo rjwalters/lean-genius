@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-e396oq04oq01-recurrence",
+    "proofId": "erdos-396-oq-04-oq-01",
+    "range": {
+      "startLine": 51,
+      "endLine": 75
+    },
+    "type": "key-step",
+    "title": "The two-term Catalan recurrence (self-contained)",
+    "content": "The file re-derives the closed form $C(2(n+1),n+1) = 2(2n+1)\\,\\mathrm{catalan}\\,n$ and the recurrence $(n+2)\\,\\mathrm{catalan}(n+1) = 2(2n+1)\\,\\mathrm{catalan}\\,n$ directly from Mathlib's `Nat.succ_mul_centralBinom_succ` and `succ_mul_catalan_eq_centralBinom`, so it does not depend on the parent build. It also supplies `catalan_pos`, which Mathlib lacks, from $(n+1)\\,\\mathrm{catalan}\\,n = C(2n,n) > 0$.",
+    "mathContext": "$(n+2)\\,C_{n+1} = 2(2n+1)\\,C_n$, i.e. $C_{n+1} = \\frac{4n+2}{n+2}\\,C_n$."
+  },
+  {
+    "id": "ann-e396oq04oq01-partialfraction",
+    "proofId": "erdos-396-oq-04-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 102
+    },
+    "type": "key-step",
+    "title": "Partial-fraction form r n = 4 − 6/(n+2)",
+    "content": "The multiplicative step is `catalanRatio n = (4n+2)/(n+2)`. The single identity $r(n) = 4 - \\frac{6}{n+2}$ (proved by `field_simp; ring`, using $4(n+2) - (4n+2) = 6$) encodes the whole asymptotic story: the constant $4$ is the limit, and the positive tail $\\frac{6}{n+2}$ forces both $r(n) < 4$ and strict growth of $r$. The step is the genuine quotient of consecutive Catalan numbers: $(\\mathrm{catalan}(n+1):\\mathbb{R}) = r(n)\\cdot\\mathrm{catalan}\\,n$.",
+    "mathContext": "$r(n) = \\dfrac{4n+2}{n+2} = 4 - \\dfrac{6}{n+2}$."
+  },
+  {
+    "id": "ann-e396oq04oq01-limit",
+    "proofId": "erdos-396-oq-04-oq-01",
+    "range": {
+      "startLine": 104,
+      "endLine": 140
+    },
+    "type": "key-step",
+    "title": "Ratio bounded by 4, increasing, and converging to 4",
+    "content": "From the partial-fraction form: `ratio_lt_four` ($r(n) < 4$, the step never reaches $4$); `ratio_strictMono` ($r$ strictly increases, since $\\frac{6}{n+2}$ strictly decreases — via `div_lt_div_iff₀`); and `ratio_tendsto_four` ($r(n) \\to 4$), proved by sending $n+2 \\to \\infty$ with `Tendsto.inv_tendsto_atTop` so that $\\frac{6}{n+2} \\to 0$. This is the recurrence-level shadow of the exponential growth rate $4$ in $\\mathrm{catalan}\\,n \\sim 4^n/(n^{3/2}\\sqrt{\\pi})$.",
+    "mathContext": "$r(n) < 4$, $r$ strictly increasing, $\\lim_{n\\to\\infty} r(n) = 4$."
+  },
+  {
+    "id": "ann-e396oq04oq01-growth",
+    "proofId": "erdos-396-oq-04-oq-01",
+    "range": {
+      "startLine": 142,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Catalan growth bounds from the recurrence",
+    "content": "Because $4n+2 < 4(n+2)$, the recurrence gives `catalan_succ_lt_four_mul`: $\\mathrm{catalan}(n+1) < 4\\,\\mathrm{catalan}\\,n$, by cancelling the positive factor $n+2$ with `Nat.lt_of_mul_lt_mul_left`. Induction then yields `catalan_le_four_pow`: $\\mathrm{catalan}\\,n \\le 4^n$ for all $n$ (and the strict `catalan_lt_four_pow`: $\\mathrm{catalan}\\,n < 4^n$ for $n \\ge 1$) — the standard upper bound, obtained purely from the recurrence with no Stirling estimate.",
+    "mathContext": "$\\mathrm{catalan}(n+1) < 4\\,\\mathrm{catalan}\\,n$ and $\\mathrm{catalan}\\,n \\le 4^n$."
+  }
+]
