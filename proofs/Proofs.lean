@@ -2518,6 +2518,7 @@ import Proofs.ErdosDivisibilityPigeonhole
 import Proofs.ErdosDivisibilityPigeonholeOQ01
 import Proofs.ErdosGinzburgZivOQ01
 import Proofs.ErdosKoRado
+import Proofs.ErdosKoRadoOQ02
 import Proofs.ErdosMordellChordIdentity
 import Proofs.ErdosMordellChordReduction
 import Proofs.ErdosMordellFeetAngleAristotle
