@@ -1,0 +1,194 @@
+{
+  "id": "cube-root-3-irrational-oq-01",
+  "title": "∛3 via Eisenstein's Criterion, and the General Prime Case",
+  "slug": "cube-root-3-irrational-oq-01",
+  "description": "Answers the parent ∛3 entry's open question for a cleaner algebraic proof via Eisenstein's criterion. Using Mathlib's Polynomial.irreducible_of_eisenstein_criterion at the prime ideal (p) ⊆ ℤ, it proves the GENERAL theorem that Xⁿ − p is irreducible over ℤ for every prime p and every n ≥ 1, transfers it to ℚ by Gauss's lemma, and specializes to X³ − 3 (the minimal polynomial of ∛3, so ∛3 has algebraic degree exactly 3) as well as X⁵ − 7 and X² − 5 — showing the technique is uniform where the rational-root argument is ad hoc. Zero axioms, no native_decide.",
+  "meta": {
+    "author": "Gotthold Eisenstein (1850); Carl Friedrich Gauss; formalized in Lean 4",
+    "date": "1850",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ01.lean",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "eisenstein-criterion",
+      "irreducible-polynomial",
+      "gauss-lemma",
+      "algebraic-degree"
+    ],
+    "badge": "verified",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 130,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "originalContributions": [
+      "irreducible_X_pow_sub_C_prime_int: the GENERAL theorem that Xⁿ − p is irreducible over ℤ for every prime p and n ≥ 1, proved by verifying the four Eisenstein hypotheses (leading coeff 1 ∉ (p); lower coeffs 0 or −p ∈ (p); constant −p ∉ (p)² since p²∤p; monic ⟹ primitive).",
+      "irreducible_X_pow_sub_C_prime_rat: the same over ℚ, lifted by Gauss's lemma (IsPrimitive.Int.irreducible_iff_irreducible_map_cast).",
+      "irreducible_X_cubed_sub_three_int / _rat: X³ − 3 is irreducible over ℤ and ℚ — the minimal polynomial of ∛3 via Eisenstein at p=3, answering the parent's open question and pinning ∛3's algebraic degree at exactly 3 (hence irrational).",
+      "irreducible_X_fifth_sub_seven_rat and irreducible_X_sq_sub_five_rat: the same machinery gives the irreducibility (and degree) of ⁵√7 and √5, demonstrating the technique is uniform across primes and exponents."
+    ],
+    "prerequisites": [
+      "Eisenstein's irreducibility criterion (Mathlib's Polynomial.irreducible_of_eisenstein_criterion)",
+      "Gauss's lemma transferring ℤ-irreducibility of a primitive polynomial to ℚ",
+      "Prime ideals span {p} ⊆ ℤ and elementary divisibility"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
+        "description": "Eisenstein's criterion: a primitive polynomial whose non-leading coeffs lie in a prime ideal P, with leading coeff ∉ P and constant coeff ∉ P², is irreducible.",
+        "module": "Mathlib.RingTheory.Polynomial.Eisenstein.Criterion"
+      },
+      {
+        "theorem": "Polynomial.IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+        "description": "Gauss's lemma: a primitive integer polynomial is irreducible iff its image in ℚ[X] is.",
+        "module": "Mathlib.RingTheory.Polynomial.GaussLemma"
+      },
+      {
+        "theorem": "Ideal.span_singleton_prime / monic_X_pow_sub_C / degree_X_pow_sub_C",
+        "description": "The prime ideal (p), and that Xⁿ − C a is monic of degree n for n ≥ 1.",
+        "module": "Mathlib.RingTheory.Ideal.Maximal / Mathlib.Algebra.Polynomial"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The parent entry proves ∛3 ∉ ℚ by the rational root theorem: the only candidate rational roots of X³ − 3 are ±1, ±3, none of which work. That argument is elementary but ad hoc — it must be re-run for each number and gives only irrationality, not the algebraic degree. Eisenstein's criterion (1850) is the systematic alternative: for a prime p, the polynomial Xⁿ − p satisfies the criterion at p (all lower coefficients divisible by p, the constant term not divisible by p²), so it is irreducible at one stroke for every n. The parent's open question asks precisely for this cleaner, Eisenstein-based proof.\n\nThis entry supplies it as a general theorem. Over ℤ the criterion applies directly at the prime ideal (p); Gauss's lemma then lifts the irreducibility to ℚ. Because Xⁿ − p is the minimal polynomial of p^{1/n} over ℚ, irreducibility is strictly stronger than irrationality: it pins the algebraic degree of p^{1/n} at exactly n. Specializing p=3, n=3 recovers ∛3 (degree 3, irrational), and the identical proof yields ⁵√7 (degree 5) and √5 (degree 2) with no extra work.",
+    "problemStatement": "**Open Question (parent cube-root-3-irrational)**: is there a Lean proof of Eisenstein's irreducibility criterion that, combined with the rational root theorem, gives a cleaner algebraic proof of ∛3's irrationality via the degree argument?\n\n**This entry**: proves Xⁿ − p irreducible over ℤ and ℚ for every prime p and n ≥ 1 via Eisenstein + Gauss, specializing to X³ − 3 (∛3, degree 3) and to X⁵ − 7, X² − 5.",
+    "text": "A 130-line, fully verified file (0 sorries, 0 axioms, no native_decide) importing only Mathlib. irreducible_X_pow_sub_C_prime_int is the general Eisenstein theorem over ℤ; irreducible_X_pow_sub_C_prime_rat transfers it to ℚ by Gauss; the four specializations instantiate ∛3, ⁵√7, and √5.",
+    "proofStrategy": "For Xⁿ − C p over ℤ, the Eisenstein criterion at P = span{p} needs: (1) leadingCoeff = 1 ∉ P, since P is a proper (prime) ideal; (2) every coefficient below degree n lies in P — by coeff_sub/coeff_X_pow/coeff_C each such coefficient is 0 or −p, both in P; (3) 0 < degree = n; (4) the constant coefficient is −p, and −p ∉ P² = span{p²} because p² ∣ p would force p ∣ 1 (cancel one factor via mul_dvd_mul_iff_left), contradicting primality; (5) Xⁿ − C p is monic, hence primitive (Monic.isPrimitive). Gauss's lemma (IsPrimitive.Int.irreducible_iff_irreducible_map_cast) then gives the ℚ version after identifying the casted polynomial with Xⁿ − C p via map_sub/map_pow. The specializations follow by instantiating p and n and normalizing the casts with simpa.",
+    "keyInsights": [
+      "Eisenstein's criterion is the structural reason X³ − 3 is irreducible: the prime 3 divides the constant term once and no other coefficient — no case analysis on candidate roots required.",
+      "The proof is uniform: the same lemma handles every Xⁿ − p, so ∛3, ⁵√7, √5 are one theorem with three instantiations, unlike the rational-root argument which restarts each time.",
+      "Irreducibility ⟹ degree: since Xⁿ − p is the minimal polynomial of p^{1/n}, its irreducibility pins the algebraic degree at exactly n — strictly more than 'irrational' (degree > 1).",
+      "The only genuinely arithmetic step is −p ∉ (p²): it reduces to p² ∤ p, i.e. p ∤ 1, the defining property of a prime.",
+      "Gauss's lemma is what makes the ℤ-level Eisenstein argument yield the ℚ-level (field) irreducibility relevant to minimal polynomials."
+    ]
+  },
+  "sections": [
+    {
+      "id": "eisenstein-int",
+      "title": "Eisenstein's Criterion over ℤ",
+      "startLine": 40,
+      "endLine": 77,
+      "summary": "irreducible_X_pow_sub_C_prime_int: Xⁿ − p irreducible over ℤ for prime p, n ≥ 1, verifying the four Eisenstein hypotheses at P = span{p}.",
+      "mathContext": "The general integer irreducibility, the heart of the entry."
+    },
+    {
+      "id": "gauss-rat",
+      "title": "Transfer to ℚ via Gauss's Lemma",
+      "startLine": 79,
+      "endLine": 93,
+      "summary": "irreducible_X_pow_sub_C_prime_rat lifts the ℤ result to ℚ using IsPrimitive.Int.irreducible_iff_irreducible_map_cast.",
+      "mathContext": "Field-level irreducibility, relevant to minimal polynomials."
+    },
+    {
+      "id": "cbrt3",
+      "title": "The Minimal Polynomial of ∛3",
+      "startLine": 95,
+      "endLine": 109,
+      "summary": "irreducible_X_cubed_sub_three_int / _rat: X³ − 3 irreducible (Eisenstein at p=3), so ∛3 has degree exactly 3 and is irrational.",
+      "mathContext": "Answers the parent's open question; the degree argument."
+    },
+    {
+      "id": "general",
+      "title": "Uniform Across Primes and Exponents",
+      "startLine": 111,
+      "endLine": 129,
+      "summary": "irreducible_X_fifth_sub_seven_rat and irreducible_X_sq_sub_five_rat: ⁵√7 (degree 5) and √5 (degree 2) by the same machinery.",
+      "mathContext": "Demonstrates the technique's generality."
+    }
+  ],
+  "conclusion": {
+    "summary": "Via Mathlib's Eisenstein criterion at the prime ideal (p) and Gauss's lemma, this entry proves the general theorem that Xⁿ − p is irreducible over ℤ and ℚ for every prime p and n ≥ 1, and specializes it to X³ − 3 (the minimal polynomial of ∛3) and to X⁵ − 7, X² − 5 — answering the parent's open question for a cleaner, Eisenstein-based proof of ∛3's irrationality via the degree argument.",
+    "implications": "Eisenstein's criterion replaces the ad-hoc rational-root computation with a uniform structural argument that also yields the algebraic degree: ∛3 (and p^{1/n} for any prime p) has minimal polynomial of degree exactly n, hence is irrational and not contained in any proper subfield of degree < n. The same six-line instantiation pattern covers every radical of a prime.",
+    "openQuestions": [
+      "Conclude irrationality/degree of p^{1/n} as a real number directly from this irreducibility (connect to minpoly ℚ (p^{1/n} : ℝ)).",
+      "Prove ℚ(∛3) has degree 3 and exhibit its ℚ-basis {1, ∛3, ∛9}, linking to the parent's linear-independence open question.",
+      "Generalize the Eisenstein input to Xⁿ − a for any a that is squarefree-at-some-prime, not just a prime."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cube-root-3-irrational",
+      "relationship": "extends",
+      "description": "Parent: proves ∛3 ∉ ℚ by the rational root theorem and asks for an Eisenstein-based proof. This entry supplies it, generally, and pins the algebraic degree."
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "related",
+      "description": "Companion thread on the general n-th-root irrationality theorem; this entry adds the irreducibility/degree refinement via Eisenstein."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "CubeRoot3IrrationalOQ01",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "irreducible_X_pow_sub_C_prime_int",
+        "type": "core",
+        "description": "Xⁿ − p is irreducible over ℤ for every prime p and n ≥ 1 (Eisenstein's criterion).",
+        "leanType": "{p : ℕ} → p.Prime → {n : ℕ} → 0 < n → Irreducible ((X : ℤ[X]) ^ n - C (p : ℤ))"
+      },
+      {
+        "name": "irreducible_X_pow_sub_C_prime_rat",
+        "type": "key",
+        "description": "The same over ℚ, by Gauss's lemma.",
+        "leanType": "{p : ℕ} → p.Prime → {n : ℕ} → 0 < n → Irreducible ((X : ℚ[X]) ^ n - C (p : ℚ))"
+      },
+      {
+        "name": "irreducible_X_cubed_sub_three_rat",
+        "type": "key",
+        "description": "X³ − 3 irreducible over ℚ: ∛3 has algebraic degree exactly 3.",
+        "leanType": "Irreducible ((X : ℚ[X]) ^ 3 - C (3 : ℚ))"
+      }
+    ],
+    "path": "Proofs/CubeRoot3IrrationalOQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "irreducible_X_pow_sub_C_prime_int",
+      "type": "core",
+      "description": "General Eisenstein irreducibility of Xⁿ − p over ℤ for prime p, n ≥ 1.",
+      "leanType": "{p : ℕ} → p.Prime → {n : ℕ} → 0 < n → Irreducible ((X : ℤ[X]) ^ n - C (p : ℤ))"
+    },
+    {
+      "name": "irreducible_X_cubed_sub_three_rat",
+      "type": "key",
+      "description": "X³ − 3 irreducible over ℚ — the minimal polynomial of ∛3 via Eisenstein.",
+      "leanType": "Irreducible ((X : ℚ[X]) ^ 3 - C (3 : ℚ))"
+    },
+    {
+      "name": "irreducible_X_fifth_sub_seven_rat",
+      "type": "supporting",
+      "description": "X⁵ − 7 irreducible over ℚ — same machinery, ⁵√7 has degree 5.",
+      "leanType": "Irreducible ((X : ℚ[X]) ^ 5 - C (7 : ℚ))"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Eisenstein, Gotthold",
+      "title": "Über die Irreductibilität und einige andere Eigenschaften der Gleichung...",
+      "year": "1850",
+      "venue": "Journal für die reine und angewandte Mathematik 39, 160–179",
+      "note": "Original irreducibility criterion"
+    },
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "Wiley, 3rd ed., §9.4",
+      "note": "Eisenstein's criterion and Gauss's lemma, the textbook route to degree of radicals"
+    }
+  ],
+  "sorries": 0
+}
