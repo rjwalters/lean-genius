@@ -1,13 +1,13 @@
 {
   "slug": "arithmetic-series-oq-03",
   "title": "Arithmetic Series: Riemann Zeta Regularization zeta(-1) = -1/12",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Arithmetic Series: Riemann Zeta Regularization zeta(-1) = -1/12.",
+    "formal": "\\zeta(-1) = -1/12,\\ \\zeta(0)=-1/2,\\ \\zeta(-2)=0,\\ \\zeta(-3)=1/120;\\ \\zeta(-2k)=0\\ (k\\ge1);\\ \\zeta(-p)\\in\\mathbb{Q}",
+    "plain": "Zeta regularization of divergent power sums: the famous 1+2+3+...=-1/12 and its companions, via the analytic continuation of the Riemann zeta function.",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-03T22:29:17.627Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Solved: ζ-regularized power sums evaluated in closed form, 0-axiom verified.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — entry shipped.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 8 theorems + 1 def, 140L, 0-axiom verified (no native_decide). Shipped as gallery entry arithmetic-series-oq-03.",
+    "builtItems": [
+      "ZetaRegularization.riemannZeta_neg_one : ζ(-1)=-1/12 (Proofs/ZetaRegularization.lean:75)",
+      "regularizedPowerSum_even : ζ(-2k)=0 for k≥1 (ZetaRegularization.lean:104)",
+      "regularizedPowerSum_rational : ∀p, ∃q:ℚ, ζ(-p)=q (ZetaRegularization.lean:117)",
+      "bernoulli_four : B₄=-1/30 helper (ZetaRegularization.lean:63)"
+    ],
+    "insights": [
+      "ζ(-1)=-1/12 is the value of the analytically-continued zeta at s=-1, NOT a convergent sum; formalized by defining regularizedPowerSum p := riemannZeta(-(p:ℂ)).",
+      "Mathlib riemannZeta_neg_nat_eq_bernoulli k : ζ(-k)=(-1)^k B_{k+1}/(k+1) powers every closed-form value (k=1→-1/12, k=3→1/120) and the rationality corollary.",
+      "Even power sums all regularize to 0 (trivial zeros ζ(-2k)=0, k≥1) via riemannZeta_neg_two_mul_nat_add_one — an infinite family phrased on the power index.",
+      "All negative-integer zeta values are rational, the mirror of ζ(2k)∈π^{2k}ℚ."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Connect ζ(-1) to an explicit summation method (Abel/Ramanujan) rather than analytic continuation.",
+      "Formalize the functional equation and derive ζ(-1)=-1/12 from ζ(2)=π²/6 directly."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -69,214 +82,6 @@
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
-    {
-      "path": "Proofs/ArithmeticSeries.lean",
-      "filename": "ArithmeticSeries.lean",
-      "lineCount": 180,
-      "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeries.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ00.lean",
-      "filename": "ArithmeticSeriesOQ00.lean",
-      "lineCount": 161,
-      "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ00OQ01.lean",
-      "filename": "ArithmeticSeriesOQ00OQ01.lean",
-      "lineCount": 282,
-      "theoremCount": 12,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00OQ01.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ00OQ02.lean",
-      "filename": "ArithmeticSeriesOQ00OQ02.lean",
-      "lineCount": 121,
-      "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00OQ02.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02.lean",
-      "filename": "ArithmeticSeriesOQ02.lean",
-      "lineCount": 210,
-      "theoremCount": 12,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02OQ01.lean",
-      "filename": "ArithmeticSeriesOQ02OQ01.lean",
-      "lineCount": 174,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ01.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02OQ01OQ01.lean",
-      "filename": "ArithmeticSeriesOQ02OQ01OQ01.lean",
-      "lineCount": 218,
-      "theoremCount": 6,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ01OQ01.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02OQ02.lean",
-      "filename": "ArithmeticSeriesOQ02OQ02.lean",
-      "lineCount": 155,
-      "theoremCount": 9,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean",
-      "filename": "ArithmeticSeriesOQ02OQ02OQ01.lean",
-      "lineCount": 166,
-      "theoremCount": 8,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean",
-      "filename": "ArithmeticSeriesOQ02OQ02OQ03.lean",
-      "lineCount": 208,
-      "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean",
-      "filename": "ArithmeticSeriesOQ02OQ02OQ03OQ01.lean",
-      "lineCount": 508,
-      "theoremCount": 27,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02OQ03.lean",
-      "filename": "ArithmeticSeriesOQ02OQ03.lean",
-      "lineCount": 164,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ03.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02OQ03Aristotle.lean",
-      "filename": "ArithmeticSeriesOQ02OQ03Aristotle.lean",
-      "lineCount": 40,
-      "theoremCount": 1,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ03Aristotle.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02OQ04.lean",
-      "filename": "ArithmeticSeriesOQ02OQ04.lean",
-      "lineCount": 159,
-      "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean",
-      "filename": "ArithmeticSeriesOQ02OQ04OQ01.lean",
-      "lineCount": 170,
-      "theoremCount": 12,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03.lean",
-      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03.lean",
-      "lineCount": 79,
-      "theoremCount": 2,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean",
-      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean",
-      "lineCount": 119,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ04.lean",
-      "filename": "ArithmeticSeriesOQ04.lean",
-      "lineCount": 198,
-      "theoremCount": 16,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ04.lean"
-    },
-    {
-      "path": "Proofs/ArithmeticSeriesOQ04OQ01.lean",
-      "filename": "ArithmeticSeriesOQ04OQ01.lean",
-      "lineCount": 306,
-      "theoremCount": 19,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ04OQ01.lean"
-    }
+    "proofs/Proofs/ZetaRegularization.lean"
   ]
 }
