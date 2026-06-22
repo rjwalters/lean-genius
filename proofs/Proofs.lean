@@ -3106,6 +3106,7 @@ import Proofs.PellEquationOQ06
 import Proofs.PellEquationOQ06OQ01
 import Proofs.PentagonalNumberTheoremOQ01
 import Proofs.PerfectNumbers
+import Proofs.PerfectNumbersOQ02
 import Proofs.PerfectNumbersOQ03
 import Proofs.PerfectNumbersOQ05
 import Proofs.PerfectNumbersOQ06
