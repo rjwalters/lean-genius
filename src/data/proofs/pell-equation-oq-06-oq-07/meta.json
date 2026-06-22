@@ -1,0 +1,134 @@
+{
+  "id": "pell-equation-oq-06-oq-07",
+  "title": "Pell x² − 2y² = 1: The Solutions Form a Divisibility Sequence (m ∣ n ⟹ Yₘ ∣ Yₙ)",
+  "slug": "pell-equation-oq-06-oq-07",
+  "description": "Records a purely arithmetic structural fact about the Pell chain that none of its siblings touch: the second coordinates Yₙ of the positive-Pell solutions form a divisibility sequence, m ∣ n ⟹ Yₘ ∣ Yₙ. Writing the fundamental unit γ = 3 + 2√2 ∈ ℤ[√2] and γⁿ = Xₙ + Yₙ√2 (so (Yₙ) = 0, 2, 12, 70, 408, …), the engine is the addition formula Y_{m+n} = Xₘ·Yₙ + Yₘ·Xₙ, free from γ^(m+n) = γᵐ·γⁿ and the multiplication of ℤ[√2] via Zsqrtd.im_mul. Taking n a multiple of m and inducting, every summand of Y_{k·m} carries a factor Yₘ, giving Yₘ ∣ Y_{k·m} and hence the divisibility sequence. This is the Pell analogue of the classical theorem that the Fibonacci (and every nondegenerate Lucas) sequence is a divisibility sequence — and, as there, it is a consequence of the addition law, not a triviality of the closed form. The entry also proves the companion Pell relation Xₙ² − 2Yₙ² = 1, the step recurrences Xₙ₊₁ = 3Xₙ + 4Yₙ / Yₙ₊₁ = 2Xₙ + 3Yₙ (the parent automorphism), the coprimality of Xₙ and Yₙ, and the corollary that every Yₙ is even.",
+  "meta": {
+    "author": "Lean Genius (divisibility-sequence structure on Zsqrtd 2); classical theory (Lucas, divisibility sequences)",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PellEquationOQ06OQ07.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-equations",
+      "pell-equation",
+      "divisibility-sequence",
+      "lucas-sequence",
+      "quadratic-integers",
+      "zsqrtd",
+      "addition-formula",
+      "coprimality",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-22",
+    "lineCount": 177,
+    "originalContributions": [
+      "Y_dvd_of_dvd : THE HEADLINE — the positive-Pell second coordinates form a divisibility sequence, m ∣ n ⟹ Yₘ ∣ Yₙ; the Pell analogue of the classical Fibonacci/Lucas divisibility-sequence theorem, and an arithmetic fact untouched by the parent lineage's analytic and algebraic siblings",
+      "Y_dvd_mul : the inductive core Yₘ ∣ Y_{k·m}, proved by induction on k off the addition formula Y_{j·m+m} = X_{j·m}·Yₘ + Y_{j·m}·Xₘ — first summand carries Yₘ directly, second through the inductive hypothesis",
+      "Y_add / X_add : the addition formulas Y_{m+n} = Xₘ·Yₙ + Yₘ·Xₙ and X_{m+n} = Xₘ·Xₙ + 2·Yₘ·Yₙ, obtained for free from γ^(m+n) = γᵐ·γⁿ and Zsqrtd.im_mul / re_mul — the engine of the whole entry",
+      "pell : every term solves the norm +1 Pell relation Xₙ² − 2·Yₙ² = 1, read off from N(γⁿ) = N(γ)ⁿ = 1 (norm_pow + norm_γ)",
+      "isCoprime_X_Y : Xₙ and Yₙ are coprime, with the explicit Bézout certificate Xₙ·Xₙ + (−2Yₙ)·Yₙ = 1 coming directly from the Pell relation — the key ingredient for the strong (gcd) divisibility sequence left as future work",
+      "X_succ / Y_succ : the step recurrences Xₙ₊₁ = 3Xₙ + 4Yₙ and Yₙ₊₁ = 2Xₙ + 3Yₙ, recovering the parent's form automorphism (x,y) ↦ (3x+4y, 2x+3y) as the n+1 case of the addition formula",
+      "two_dvd_Y : every Pell Yₙ is even — the m = 1 corollary of the divisibility sequence, since Y₁ = 2 and 1 ∣ n",
+      "norm_pow : self-contained multiplicativity of the Zsqrtd norm across powers, N(zᵏ) = N(z)ᵏ, by induction off Zsqrtd.norm_mul"
+    ],
+    "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide. #print axioms reports only propext, Classical.choice, and Quot.sound for the headline results (no Lean.ofReduceBool, no sorryAx); the `decide` calls are kernel decide on concrete integer values of the chain. Self-contained: imports only Mathlib (Zsqrtd API: re_mul, im_mul, norm_def, norm_mul), with the chain defined directly from γ = ⟨3,2⟩ : ℤ√2.",
+    "theoremCount": 12,
+    "definitionCount": 2
+  },
+  "crossReferences": [
+    {
+      "targetId": "pell-equation-oq-06-oq-06",
+      "relationship": "extends",
+      "description": "The oq-06 sibling isolates Brahmagupta composition — multiplication in ℤ[√2] — as the single algebraic fact behind the lineage. This entry uses exactly that multiplication (γ^(m+n) = γᵐ·γⁿ, read through Zsqrtd.im_mul) to obtain the addition formula, then pushes it one step further into the arithmetic of divisibility: m ∣ n ⟹ Yₘ ∣ Yₙ."
+    },
+    {
+      "targetId": "pell-equation-oq-06-oq-02",
+      "relationship": "extends",
+      "description": "The oq-02 sibling realizes the negative-Pell chain as the odd powers ζ^(2n+1) of the fundamental unit ζ = 1 + √2. This entry works with the positive-Pell chain γⁿ = (ζ²)ⁿ = ζ^(2n) directly (γ = 3 + 2√2 = ζ²), and reuses the same power/norm machinery (norm_pow) to obtain the divisibility sequence on the coordinates."
+    },
+    {
+      "targetId": "pell-equation-oq-06",
+      "relationship": "extends",
+      "description": "The parent generates its chain by the substitution (x,y) ↦ (3x+4y, 2x+3y). This entry recovers that exact substitution as X_succ / Y_succ — the n+1 case of the addition formula, composition with the unit (3,2) — and then proves the divisibility structure of the resulting sequence."
+    },
+    {
+      "targetId": "pell-equation",
+      "relationship": "related",
+      "description": "The classical norm +1 Pell equation x² − 2y² = 1, modeled in Mathlib by Pell.Solution₁. The coordinates Yₙ proved here to form a divisibility sequence are exactly the y-components of the powers of the fundamental solution (3,2) that Solution₁ enumerates."
+    }
+  ],
+  "overview": {
+    "historicalContext": "That the Fibonacci numbers form a divisibility sequence — m ∣ n ⟹ Fₘ ∣ Fₙ — goes back to Lucas (1878), who developed the general theory of the sequences now bearing his name and showed every nondegenerate Lucas sequence shares this property; the strong form gcd(Fₘ, Fₙ) = F_{gcd(m,n)} makes them strong divisibility sequences. The solutions of Pell's equation x² − D y² = 1 are governed by the same kind of binary linear recurrence: the y-coordinates of the powers of the fundamental solution are a Lucas-type sequence, hence a divisibility sequence. For D = 2 the relevant unit is the fundamental unit 3 + 2√2 of ℤ[√2] (the square of 1 + √2), and the coordinates 0, 2, 12, 70, 408, … satisfy Yₙ₊₁ = 6Yₙ − Yₙ₋₁. This entry proves the divisibility-sequence property in the Pell setting from the addition formula, the structural fact underlying it — exactly as in the Fibonacci case, where the closed form is not what makes divisibility work.",
+    "problemStatement": "The parent lineage describes the Pell chain analytically (√2-approximation), algebraically (powers of the fundamental unit, Brahmagupta composition, linear recurrence), and via determinants (Cassini). What about its arithmetic? Do the coordinates obey divisibility relations indexed by the natural numbers — concretely, is the sequence of second coordinates Yₙ a divisibility sequence, m ∣ n ⟹ Yₘ ∣ Yₙ, as the Fibonacci and Lucas sequences are? And can this be derived cleanly from the addition formula that the algebraic siblings already supply?",
+    "proofStrategy": "Define the chain directly from the fundamental unit: γ = ⟨3,2⟩ : ℤ√2, Xₙ = (γⁿ).re, Yₙ = (γⁿ).im. Establish the norm +1 Pell relation via norm_pow and norm_γ (N(γⁿ) = 1). Derive the addition formulas X_add / Y_add from γ^(m+n) = γᵐ·γⁿ and Zsqrtd.re_mul / im_mul. The divisibility core Y_dvd_mul (Yₘ ∣ Y_{k·m}) is an induction on k: writing (k+1)·m = k·m + m and applying Y_add gives Y_{(k+1)m} = X_{km}·Yₘ + Y_{km}·Xₘ, whose first summand is a multiple of Yₘ and whose second is a multiple of Yₘ by the inductive hypothesis. Reindexing n = m·k yields the divisibility sequence Y_dvd_of_dvd. Coprimality isCoprime_X_Y is the Bézout certificate from the Pell relation, and two_dvd_Y is the m = 1 corollary.",
+    "keyInsights": [
+      "The divisibility-sequence property is an arithmetic shadow of the addition formula, not of the closed form. The single fact Y_{m+n} = Xₘ·Yₙ + Yₘ·Xₙ — itself just (γᵐ·γⁿ).im — drives an induction in which every term of Y_{k·m} visibly carries the factor Yₘ.",
+      "Working with the positive-Pell unit γ = 3 + 2√2 = (1+√2)² keeps the norm at +1 throughout, so N(γⁿ) = N(γ)ⁿ = 1 is immediate and the coordinates satisfy a clean Lucas-type recurrence; the sign complications of the negative chain (odd powers of ζ) are sidestepped.",
+      "The step recurrences Xₙ₊₁ = 3Xₙ + 4Yₙ, Yₙ₊₁ = 2Xₙ + 3Yₙ are not a separate input: they are the n+1 instance of the addition formula, i.e. composition with the unit (3,2). This identifies the parent's defining automorphism with multiplication by γ.",
+      "Coprimality of consecutive coordinates is free: Xₙ² − 2Yₙ² = 1 is a Bézout relation Xₙ·Xₙ + (−2Yₙ)·Yₙ = 1, so gcd(Xₙ, Yₙ) = 1. This is precisely the ingredient needed to upgrade the divisibility sequence to the strong form gcd(Yₘ, Yₙ) = Y_{gcd(m,n)} — the natural next step.",
+      "Every Pell Yₙ is even because Y₁ = 2 divides Yₙ for all n (as 1 ∣ n) — a one-line corollary of the divisibility sequence, illustrating how index divisibility propagates concrete factors."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Research Context",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Explains that the parent lineage has described the Pell chain analytically and algebraically but not arithmetically, and that this entry records the divisibility-sequence property m ∣ n ⟹ Yₘ ∣ Yₙ — the Pell analogue of the Fibonacci/Lucas divisibility theorem — derived from the addition formula.",
+      "mathContext": "$\\gamma=3+2\\sqrt2\\in\\mathbb{Z}[\\sqrt2]$, $\\gamma^n=X_n+Y_n\\sqrt2$, $(Y_n)=0,2,12,70,408,\\dots$, with $m\\mid n\\Rightarrow Y_m\\mid Y_n$."
+    },
+    {
+      "id": "chain",
+      "title": "The Positive-Pell Chain as Powers of the Fundamental Unit",
+      "startLine": 59,
+      "endLine": 77,
+      "summary": "Defines γ = ⟨3,2⟩ : ℤ√2 and the coordinate sequences Xₙ = (γⁿ).re, Yₙ = (γⁿ).im, with the base values X₀=1, Y₀=0, X₁=3, Y₁=2.",
+      "mathContext": "$X_n=(\\gamma^n)_{\\mathrm{re}}$, $Y_n=(\\gamma^n)_{\\mathrm{im}}$ in $\\texttt{Zsqrtd}\\,2$."
+    },
+    {
+      "id": "norm-pell",
+      "title": "The Norm and the Pell Relation",
+      "startLine": 78,
+      "endLine": 101,
+      "summary": "norm_γ (N(γ) = 1), the self-contained norm_pow (N(zᵏ) = N(z)ᵏ), and norm_γ_pow give the Pell relation pell: Xₙ² − 2·Yₙ² = 1 for every n.",
+      "mathContext": "$N(\\gamma^n)=N(\\gamma)^n=1$, i.e. $X_n^2-2Y_n^2=1$."
+    },
+    {
+      "id": "addition-formulas",
+      "title": "The Addition Formulas and Step Recurrence",
+      "startLine": 102,
+      "endLine": 133,
+      "summary": "X_add and Y_add (the addition formulas from γ^(m+n) = γᵐ·γⁿ via Zsqrtd.re_mul / im_mul), the step recurrences X_succ / Y_succ recovering the parent automorphism, and the positivity one_le_X_and_zero_le_Y.",
+      "mathContext": "$Y_{m+n}=X_mY_n+Y_mX_n$, $X_{m+n}=X_mX_n+2Y_mY_n$; $X_{n+1}=3X_n+4Y_n$, $Y_{n+1}=2X_n+3Y_n$."
+    },
+    {
+      "id": "coprimality",
+      "title": "Coprimality of the Coordinates",
+      "startLine": 134,
+      "endLine": 142,
+      "summary": "isCoprime_X_Y: Xₙ and Yₙ are coprime, with the explicit Bézout certificate Xₙ·Xₙ + (−2Yₙ)·Yₙ = 1 from the Pell relation — the ingredient for the strong (gcd) divisibility sequence.",
+      "mathContext": "$X_n\\cdot X_n+(-2Y_n)\\cdot Y_n=1\\Rightarrow\\gcd(X_n,Y_n)=1$."
+    },
+    {
+      "id": "divisibility-sequence",
+      "title": "The Divisibility Sequence",
+      "startLine": 143,
+      "endLine": 167,
+      "summary": "The inductive core Y_dvd_mul (Yₘ ∣ Y_{k·m}), the headline Y_dvd_of_dvd (m ∣ n ⟹ Yₘ ∣ Yₙ), and the corollary two_dvd_Y (every Yₙ is even).",
+      "mathContext": "$m\\mid n\\Rightarrow Y_m\\mid Y_n$; in particular $2=Y_1\\mid Y_n$ for all $n$."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity Checks",
+      "startLine": 168,
+      "endLine": 177,
+      "summary": "Concrete values X₂=17, Y₂=12, X₃=99, Y₃=70 and instances of the divisibility sequence Y₂ ∣ Y₆, Y₃ ∣ Y₉.",
+      "mathContext": "$Y_2=12\\mid Y_6$ and $Y_3=70\\mid Y_9$ — explicit witnesses from $6=2\\cdot3$, $9=3\\cdot3$."
+    }
+  ]
+}
