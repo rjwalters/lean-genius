@@ -2180,6 +2180,7 @@ import Proofs.Erdos738Problem
 import Proofs.Erdos739Problem
 import Proofs.Erdos73Aristotle
 import Proofs.Erdos73Problem
+import Proofs.Erdos740BipartiteIncomplete01
 import Proofs.Erdos740Problem
 import Proofs.Erdos740ProblemProvable
 import Proofs.Erdos741Problem
