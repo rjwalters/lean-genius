@@ -1,0 +1,207 @@
+{
+  "id": "area-of-circle-oq-05-oq-03-oq-02",
+  "title": "Gaussians Form a Convolution Semigroup",
+  "slug": "area-of-circle-oq-05-oq-03-oq-02",
+  "description": "A density-side follow-up to area-of-circle-oq-05-oq-03 (the Gaussian is its own Fourier transform). Proves, axiom-free and in explicit Lebesgue-integral form, that the centred Gaussian densities φ_σ(x)=e^{-x²/(2σ²)}/(σ√(2π)) are closed under convolution with variances adding: ∫_ℝ φ_{σ₁}(y)·φ_{σ₂}(x−y) dy = φ_{√(σ₁²+σ₂²)}(x). This is the analytic heart of 'the sum of two independent normals is normal' (the Gaussian / heat-kernel semigroup, Chapman–Kolmogorov). Method: complete the square in y, y²/(2σ₁²)+(x−y)²/(2σ₂²) = (s/(2σ₁²σ₂²))(y−σ₁²x/s)² + x²/(2s) with s=σ₁²+σ₂², so the integrand is a y-free constant times a single shifted Gaussian; translation-invariance of Lebesgue measure removes the shift, Mathlib's integral_gaussian evaluates the remainder to √(π/A), and the prefactors collapse to exactly φ_{√s}(x). Corollaries: total mass is preserved (each φ_σ integrates to 1), and the Fourier shadow χ_{σ₁}(t)·χ_{σ₂}(t)=χ_{√(σ₁²+σ₂²)}(t) (convolution ↦ multiplication of characteristic functions). All 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Classical (Gaussian convolution semigroup / heat kernel); Lean 4 formalization (research, 2026)",
+    "date": "2003",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ05OQ03OQ02.lean",
+    "tags": [
+      "analysis",
+      "gaussian-integral",
+      "convolution",
+      "heat-kernel",
+      "characteristic-function",
+      "probability"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 216,
+    "assumptions": "0 axioms, 0 sorries. Builds on Mathlib's real Gaussian integral (integral_gaussian : ∫ e^{-b x²} = √(π/b)) and translation-invariance of Lebesgue measure (integral_sub_right_eq_self). HONEST SCOPE / NOVELTY: Mathlib already contains the abstract measure-theoretic versions of this fact — ProbabilityTheory.gaussianReal_conv_gaussianReal (for Measure.conv) and gaussianReal_add_gaussianReal_of_indepFun (for sums of independent normals). What is delivered here is the complementary explicit Lebesgue-integral identity in terms of the elementary density φ_σ, computed directly by completing the square, matching the deliberate 'concrete integral, no abstract measure' register of the parent entries.",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-06-21",
+    "theoremCount": 7,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "That the convolution of two Gaussians is again a Gaussian — with variances adding — is one of the defining structural properties of the normal family. It is the reason the normal distribution is stable, the analytic statement that the heat semigroup e^{tΔ} is a semigroup (Chapman–Kolmogorov for Brownian motion: the transition densities at times s and t convolve to the density at time s+t), and the density-side counterpart of the characteristic-function identity used in the Central Limit Theorem. The parent entry area-of-circle-oq-05-oq-03 proved the Gaussian Fourier self-duality; its sibling …-oq-01 proved the dilation/uncertainty law. Both live on the Fourier side; this entry supplies the complementary density-side semigroup law.",
+    "problemStatement": "Prove, in explicit Lebesgue-integral form, that the centred Gaussian densities are closed under convolution and the variances add: writing φ_σ(x) = e^{-x²/(2σ²)}/(σ√(2π)) for the N(0,σ²) density, ∫_ℝ φ_{σ₁}(y)·φ_{σ₂}(x−y) dy = φ_{√(σ₁²+σ₂²)}(x).",
+    "text": "The proof is the classical 'complete the square in the integration variable y'. With s = σ₁²+σ₂², the combined quadratic exponent splits as y²/(2σ₁²)+(x−y)²/(2σ₂²) = A(y−m)² + B, where A = s/(2σ₁²σ₂²) is the curvature, m = σ₁²x/s the centre, and B = x²/(2s) a y-free constant. Hence the integrand factors as (constant)·e^{−A(y−m)²}: the leading reciprocals of the two densities collapse to 1/(σ₁σ₂·2π) using √(2π)·√(2π)=2π, and the y-free exponential e^{−B} pulls out. Translation-invariance of Lebesgue measure (integral_sub_right_eq_self) removes the shift m, and Mathlib's integral_gaussian evaluates ∫ e^{−Au²} du = √(π/A). The closed form √(π/A) = σ₁σ₂√(2π)/√s then makes the prefactors collapse to exactly 1/(√s·√(2π)), and e^{−B} = e^{−x²/(2s)} = e^{−x²/(2(√s)²)}, giving φ_{√s}(x). Two corollaries are recorded: each φ_σ integrates to 1 (so convolution preserves total mass — the result is again a probability density), and the Fourier shadow χ_{σ₁}(t)·χ_{σ₂}(t) = χ_{√(σ₁²+σ₂²)}(t) with χ_σ(t)=e^{−σ²t²/2}, the multiplicativity of characteristic functions under convolution.",
+    "proofStrategy": "1. **Complete the square** (`complete_the_square`): −(1/(2σ₁²))y² − (1/(2σ₂²))(x−y)² = −B − A(y−m)², an identity in σ₁,σ₂,x,y proved by `field_simp; ring`.\n\n2. **Prefactor collapse** (`prefactor_collapse`): (σ₁√(2π))⁻¹·(σ₂√(2π))⁻¹ = 1/(σ₁σ₂·2π), via `← mul_inv` and `Real.mul_self_sqrt`.\n\n3. **Residual integral value** (`sqrt_pi_div_A`): √(π/A) = σ₁σ₂√(2π)/√s, via `Real.sqrt_div`, `Real.sqrt_mul`, `Real.sqrt_sq`.\n\n4. **Convolution law** (`gaussian_convolution`): rewrite the integrand pointwise as (C·e^{−B})·e^{−A(y−m)²} (steps 1–2 plus `Real.exp_add`), pull the constant out with `integral_const_mul`, kill the shift with `integral_sub_right_eq_self`, evaluate with `integral_gaussian`, then collapse the scalars to φ_{√s}(x) (step 3, `Real.sq_sqrt`, `field_simp`).\n\n5. **Corollaries**: `gaussian_density_integral_eq_one` (∫ φ_σ = 1 by `integral_gaussian` at b=1/(2σ²)); `charFun_mul` (the Fourier-side product law by `Real.exp_add` and `Real.sq_sqrt`); `charFun_zero` (normalisation at t=0).",
+    "keyInsights": [
+      "Completing the square in the integration variable y (not in x) is what turns the two-factor integrand into a single shifted Gaussian times a y-free constant — the whole computation hinges on that one algebraic identity, dischargeable by field_simp; ring.",
+      "The added-variance law s = σ₁²+σ₂² emerges purely from the constant term B = x²/(2s) of the completed square; the curvature A and centre m are scaffolding that integrate away.",
+      "Translation-invariance of Lebesgue measure (∫ f(y−m) = ∫ f) is exactly what lets the centre m disappear without any change-of-variables Jacobian, reducing the shifted integral to Mathlib's integral_gaussian.",
+      "The result is the density-side dual of the parent's Fourier identity: convolution of densities ↔ multiplication of characteristic functions (charFun_mul), the same variance-addition seen from the two sides of the Fourier transform.",
+      "This is the concrete, density-level companion to Mathlib's abstract gaussianReal_conv_gaussianReal: same theorem, expressed as an honest Lebesgue integral of elementary densities rather than a convolution of measures."
+    ],
+    "prerequisites": [
+      "area-of-circle-oq-05-oq-03 — the Gaussian is its own Fourier transform (parent)",
+      "area-of-circle-oq-05 — the real Gaussian integral ∫ e^{-x²} = √π (grandparent lineage)",
+      "Mathlib's real Gaussian integral integral_gaussian : ∫ e^{-b x²} = √(π/b)",
+      "Translation-invariance of Lebesgue measure (integral_sub_right_eq_self) and linearity of the Bochner integral (integral_const_mul)",
+      "Real square-root algebra: Real.sqrt_div, Real.sqrt_mul, Real.sqrt_sq, Real.mul_self_sqrt"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble: Imports, Setup, and the Density φ_σ",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Imports Mathlib; opens Real, MeasureTheory. Header documents the semigroup law (★), the complete-the-square method, and the honest scope relative to Mathlib's abstract measure convolution. Defines φ σ x = (σ√(2π))⁻¹·e^{−(1/(2σ²))x²}.",
+      "mathContext": "Targets the concrete Lebesgue-integral form of the Gaussian convolution semigroup, complementing the parent's Fourier-side identity."
+    },
+    {
+      "id": "complete-square",
+      "title": "Part I: Completing the Square (Pointwise Algebra)",
+      "startLine": 72,
+      "endLine": 111,
+      "summary": "complete_the_square (the combined quadratic splits as −B − A(y−m)²), prefactor_collapse ((σ₁√(2π))⁻¹(σ₂√(2π))⁻¹ = 1/(σ₁σ₂·2π)), and sqrt_pi_div_A (√(π/A) = σ₁σ₂√(2π)/√s).",
+      "mathContext": "The algebraic heart: isolate the y-dependence into a single centred square and pre-compute the two scalar collapses needed at the end."
+    },
+    {
+      "id": "convolution",
+      "title": "Part II: The Convolution Semigroup Law",
+      "startLine": 112,
+      "endLine": 182,
+      "summary": "gaussian_convolution: ∫ φ_{σ₁}(y)·φ_{σ₂}(x−y) dy = φ_{√(σ₁²+σ₂²)}(x). Pointwise factor the integrand, pull out the constant, remove the shift by translation-invariance, evaluate by integral_gaussian, and collapse the scalars.",
+      "mathContext": "The main result: the centred normal family is a convolution semigroup with additive variances — the Gaussian / heat-kernel semigroup in explicit density form."
+    },
+    {
+      "id": "corollaries",
+      "title": "Part III: Mass Preservation and the Fourier Shadow",
+      "startLine": 183,
+      "endLine": 216,
+      "summary": "gaussian_density_integral_eq_one (∫ φ_σ = 1, so convolution preserves total mass), the characteristic function χ_σ(t)=e^{−σ²t²/2}, charFun_mul (χ_{σ₁}·χ_{σ₂}=χ_{√(σ₁²+σ₂²)}), and charFun_zero.",
+      "mathContext": "The convolution lands among probability densities, and on the Fourier side becomes multiplication of characteristic functions — the dual of the density-side law."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Gaussian convolution semigroup law is proved axiom-free in concrete Lebesgue form: ∫ φ_{σ₁}(y)·φ_{σ₂}(x−y) dy = φ_{√(σ₁²+σ₂²)}(x) — convolving two centred normal densities gives a centred normal density with the variances added. Corollaries: each density integrates to 1 (mass preserved), and the characteristic functions multiply, χ_{σ₁}(t)·χ_{σ₂}(t)=χ_{√(σ₁²+σ₂²)}(t). (0 axioms, 0 sorries.)",
+    "implications": "This is the density-side analytic heart of 'the sum of independent normals is normal', the semigroup property of the Gaussian heat kernel, and the input behind the characteristic-function proof of the Central Limit Theorem. It complements the parent area-of-circle-oq-05-oq-03 (Fourier self-duality) and its sibling …-oq-01 (dilation/uncertainty) by giving the convolution structure explicitly at the level of elementary densities, mirroring Mathlib's abstract gaussianReal_conv_gaussianReal without invoking the measure-convolution machinery.",
+    "openQuestions": [
+      "Bridge this explicit density convolution to Mathlib's measure-level ProbabilityTheory.gaussianReal_conv_gaussianReal by identifying φ_σ with the density (Radon–Nikodym derivative) of gaussianReal 0 σ² and rewriting Measure.conv as the integral convolution proved here.",
+      "Prove the non-centred semigroup law for means, ∫ φ_{μ₁,σ₁}(y)·φ_{μ₂,σ₂}(x−y) dy = φ_{μ₁+μ₂,√(σ₁²+σ₂²)}(x), by the same completing-the-square argument with an affine shift.",
+      "Establish the multivariate (EuclideanSpace) Gaussian convolution semigroup, the density form of the heat kernel e^{tΔ} on ℝⁿ."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-05-oq-03",
+      "relationship": "extends",
+      "description": "Parent: the Gaussian is its own Fourier transform. This entry gives the complementary density-side statement — convolution of Gaussians is Gaussian — whose Fourier shadow is the parent's multiplicativity of characteristic functions."
+    },
+    {
+      "targetId": "area-of-circle-oq-05",
+      "relationship": "related",
+      "description": "Grandparent lineage: the real Gaussian integral ∫ e^{-x²} = √π, the elementary value (via integral_gaussian) that drives the convolution computation here."
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The convolution semigroup / variance-addition law is the density-side mechanism behind the CLT; charFun_mul is exactly the characteristic-function multiplicativity the CLT uses."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "GaussianConvolutionSemigroup",
+    "lineCount": 216,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "mainTheorems": [
+      {
+        "name": "gaussian_convolution",
+        "type": "core",
+        "description": "The Gaussian convolution semigroup law: ∫ φ_{σ₁}(y)·φ_{σ₂}(x−y) dy = φ_{√(σ₁²+σ₂²)}(x) — convolution of centred normal densities is a centred normal density with variances added.",
+        "leanType": "(σ₁ σ₂ : ℝ) → 0 < σ₁ → 0 < σ₂ → (x : ℝ) → (∫ y : ℝ, φ σ₁ y * φ σ₂ (x - y)) = φ (Real.sqrt (σ₁ ^ 2 + σ₂ ^ 2)) x"
+      },
+      {
+        "name": "complete_the_square",
+        "type": "key",
+        "description": "Completing the square in y: −(1/(2σ₁²))y² − (1/(2σ₂²))(x−y)² = −x²/(2s) − (s/(2σ₁²σ₂²))(y − σ₁²x/s)², s = σ₁²+σ₂².",
+        "leanType": "(σ₁ σ₂ x y : ℝ) → σ₁ ≠ 0 → σ₂ ≠ 0 → σ₁ ^ 2 + σ₂ ^ 2 ≠ 0 → -(1/(2*σ₁^2))*y^2 + -(1/(2*σ₂^2))*(x-y)^2 = -(x^2/(2*(σ₁^2+σ₂^2))) + -((σ₁^2+σ₂^2)/(2*σ₁^2*σ₂^2))*(y - σ₁^2*x/(σ₁^2+σ₂^2))^2"
+      },
+      {
+        "name": "charFun_mul",
+        "type": "key",
+        "description": "Fourier shadow of the convolution law: the characteristic functions multiply, χ_{σ₁}(t)·χ_{σ₂}(t) = χ_{√(σ₁²+σ₂²)}(t) with χ_σ(t)=e^{−σ²t²/2}.",
+        "leanType": "(σ₁ σ₂ t : ℝ) → χ σ₁ t * χ σ₂ t = χ (Real.sqrt (σ₁ ^ 2 + σ₂ ^ 2)) t"
+      },
+      {
+        "name": "gaussian_density_integral_eq_one",
+        "type": "supporting",
+        "description": "Each centred Gaussian density integrates to 1, so convolution preserves total mass (the result is again a probability density).",
+        "leanType": "(σ : ℝ) → 0 < σ → (∫ x : ℝ, φ σ x) = 1"
+      }
+    ],
+    "path": "Proofs/AreaOfCircleOQ05OQ03OQ02.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "gaussian_convolution",
+      "type": "core",
+      "description": "The Gaussian convolution semigroup law: ∫ φ_{σ₁}(y)·φ_{σ₂}(x−y) dy = φ_{√(σ₁²+σ₂²)}(x) — convolution of centred normal densities is a centred normal density with variances added.",
+      "leanType": "(σ₁ σ₂ : ℝ) → 0 < σ₁ → 0 < σ₂ → (x : ℝ) → (∫ y : ℝ, φ σ₁ y * φ σ₂ (x - y)) = φ (Real.sqrt (σ₁ ^ 2 + σ₂ ^ 2)) x"
+    },
+    {
+      "name": "complete_the_square",
+      "type": "key",
+      "description": "Completing the square in y: the combined quadratic exponent splits as −x²/(2s) − A(y−m)² with s = σ₁²+σ₂², A = s/(2σ₁²σ₂²), m = σ₁²x/s.",
+      "leanType": "(σ₁ σ₂ x y : ℝ) → σ₁ ≠ 0 → σ₂ ≠ 0 → σ₁ ^ 2 + σ₂ ^ 2 ≠ 0 → -(1/(2*σ₁^2))*y^2 + -(1/(2*σ₂^2))*(x-y)^2 = -(x^2/(2*(σ₁^2+σ₂^2))) + -((σ₁^2+σ₂^2)/(2*σ₁^2*σ₂^2))*(y - σ₁^2*x/(σ₁^2+σ₂^2))^2"
+    },
+    {
+      "name": "charFun_mul",
+      "type": "key",
+      "description": "Fourier shadow of the convolution law: the characteristic functions multiply, χ_{σ₁}(t)·χ_{σ₂}(t) = χ_{√(σ₁²+σ₂²)}(t) — convolution becomes multiplication under the Fourier transform.",
+      "leanType": "(σ₁ σ₂ t : ℝ) → χ σ₁ t * χ σ₂ t = χ (Real.sqrt (σ₁ ^ 2 + σ₂ ^ 2)) t"
+    },
+    {
+      "name": "gaussian_density_integral_eq_one",
+      "type": "supporting",
+      "description": "Each centred Gaussian density integrates to 1, so convolution preserves total mass (the result is again a probability density).",
+      "leanType": "(σ : ℝ) → 0 < σ → (∫ x : ℝ, φ σ x) = 1"
+    },
+    {
+      "name": "prefactor_collapse",
+      "type": "supporting",
+      "description": "The two leading reciprocals collapse: (σ₁√(2π))⁻¹·(σ₂√(2π))⁻¹ = 1/(σ₁σ₂·2π).",
+      "leanType": "(σ₁ σ₂ : ℝ) → (σ₁ * Real.sqrt (2 * Real.pi))⁻¹ * (σ₂ * Real.sqrt (2 * Real.pi))⁻¹ = 1 / (σ₁ * σ₂ * (2 * Real.pi))"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stein, Elias M. and Shakarchi, Rami",
+      "title": "Fourier Analysis: An Introduction",
+      "year": "2003",
+      "venue": "Princeton University Press",
+      "note": "Chapter 5; the Gaussian, its convolutions, and the heat kernel"
+    },
+    {
+      "authors": "mathlib community",
+      "title": "Analysis.SpecialFunctions.Gaussian.GaussianIntegral; Probability.Distributions.Gaussian.Real",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "integral_gaussian (the real Gaussian integral) and gaussianReal_conv_gaussianReal (the abstract measure-level convolution law complemented here)"
+    },
+    {
+      "authors": "Billingsley, Patrick",
+      "title": "Probability and Measure",
+      "year": "1995",
+      "venue": "Wiley",
+      "note": "Sums of independent random variables, convolution of densities, and stability of the normal family"
+    }
+  ],
+  "sorries": 0
+}
