@@ -37,7 +37,8 @@
       "prod_div_telescope + edgeRatio_cycle_prod: Ceva around any closed walk (lines 123-149)",
       "exists_weights_of_cocycle: constructive reconstruction w_i=r(b,i) (lines 169-179)",
       "cocycle_iff_triangles + concurrency_criterion + concurrency_iff_face_ceva: the 3-way concurrency equivalence (lines 190-247)",
-      "tetrahedron_face_ceva / tetrahedron_full_cycle: Fin 4 specializations (lines 258-280)"
+      "tetrahedron_face_ceva / tetrahedron_full_cycle: Fin 4 specializations (lines 258-280)",
+      "CevasTheoremOQ02OQ04OQ01.lean: 18 thm / 1 def, 0-axiom verified Menelaus higher-dim twisted-cocycle criterion (child OQ)"
     ],
     "insights": [
       "The planar Ceva product BD/DC·CE/EA·AF/FB = 1 is the single-triangle instance of a 1-cocycle condition on a simplex's edge ratios r(i,j)=w_j/w_i.",
@@ -45,7 +46,8 @@
       "Concurrency = solvability: a positive edge-ratio assignment comes from a common point iff it is a coboundary r(i,j)=w_j/w_i, i.e. iff it satisfies the cocycle law r(i,j)·r(j,k)=r(i,k).",
       "The concurrency point is reconstructed CONSTRUCTIVELY: its barycentric coordinates are w_i = r(b,i) for any base vertex b.",
       "The cube relation r(i,i)^3=1 with positivity forces r(i,i)=1 (factor x^2+x+1>0) — the only nonlinear step, and what makes the triangle conditions sufficient for the cocycle.",
-      "Telescoping ∏ f(t+1)/f(t)=f(m)/f(0) gives Ceva around ANY closed walk (e.g. a tetrahedron's 4-vertex loop), unifying all ratio-product identities."
+      "Telescoping ∏ f(t+1)/f(t)=f(m)/f(0) gives Ceva around ANY closed walk (e.g. a tetrahedron's 4-vertex loop), unifying all ratio-product identities.",
+      "Child cevas-theorem-oq-02-oq-04-oq-01 (PR-pending) builds the Menelaus DUAL of this Ceva cocycle: signed ratio m(i,j)=-a_i/a_j, twisted cocycle m(i,j)·m(j,k)=-m(i,k), 2-face product -1, reconstruction a_i=1/m(b,i), and duality m(i,j)=-r(j,i) — resolves the listed Menelaus higher-dim next-step."
     ],
     "mathlibGaps": [
       "Mathlib has no abstract 1-cocycle/coboundary theory on a complete graph specialized to barycentric edge ratios; built self-contained (~290 lines).",
