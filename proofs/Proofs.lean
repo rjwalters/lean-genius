@@ -3092,6 +3092,7 @@ import Proofs.PicksTheoremOQ03
 import Proofs.PicksTheoremOQ03CrossPoly
 import Proofs.PicksTheoremOQ03Ext
 import Proofs.PicksTheoremOQ03Product
+import Proofs.PlanarGraphDischarging
 import Proofs.PlatonicSolids
 import Proofs.PlatonicSolidsOQ01
 import Proofs.PlatonicSolidsOQ02

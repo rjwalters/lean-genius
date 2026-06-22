@@ -1,0 +1,150 @@
+[
+  {
+    "id": "ann-disch-charge-identity",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 69,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "Charge Identity (total_charge_eq)",
+    "content": "Assigns each vertex the charge 6 − deg(v) and proves the total equals 6V − 2E. The proof is pure handshaking: ∑ deg = 2E (sum_degrees_eq_twice_card_edges), combined with ∑ 6 = 6V via Finset.sum_const and Finset.sum_sub_distrib. No planarity hypothesis is used here — this is the planarity-free core.",
+    "mathContext": "$\\sum_{v}(6 - \\deg v) = 6|V| - \\sum_v \\deg v = 6|V| - 2|E|$ by the handshaking lemma $\\sum_v \\deg v = 2|E|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "handshaking lemma",
+      "discrete Gauss–Bonnet curvature",
+      "charge"
+    ],
+    "prerequisites": [
+      "Handshaking Lemma",
+      "Finset Sums",
+      "Integer Coercion"
+    ]
+  },
+  {
+    "id": "ann-disch-base",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 87,
+      "endLine": 94
+    },
+    "type": "theorem",
+    "title": "Discharging Base (discharging_base)",
+    "content": "Substituting the planar edge bound E ≤ 3V − 6 into the charge identity yields ∑(6 − deg v) ≥ 12. This fixed positive total — independent of graph size — is the quantitative seed of every discharging argument and the foundation behind the parent Five Color Theorem's low-degree-vertex fact.",
+    "mathContext": "$\\sum_v (6 - \\deg v) = 6|V| - 2|E| \\ge 6|V| - 2(3|V| - 6) = 12.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "discharging method",
+      "Euler's formula",
+      "planar edge bound"
+    ],
+    "prerequisites": [
+      "Planar Edge Bound (E ≤ 3V − 6)",
+      "Charge Identity"
+    ]
+  },
+  {
+    "id": "ann-disch-exists-low-degree",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 100,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "One Low-Degree Vertex (exists_low_degree')",
+    "content": "Re-derives the parent's exists_low_degree directly from the discharging base: if every vertex had degree ≥ 6, every charge 6 − deg(v) would be ≤ 0, making the total ≤ 0 and contradicting the bound ≥ 12. So some vertex has degree ≤ 5.",
+    "mathContext": "A sum of non-positive terms is non-positive (Finset.sum_nonpos); since the total charge is ≥ 12 > 0, some term must be positive, i.e. $\\deg v < 6$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "pigeonhole on charge",
+      "minimum degree"
+    ],
+    "prerequisites": [
+      "Discharging Base"
+    ]
+  },
+  {
+    "id": "ann-disch-two-low-degree",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 116,
+      "endLine": 155
+    },
+    "type": "theorem",
+    "title": "Two Low-Degree Vertices (two_low_degree)",
+    "content": "A strict sharpening of the parent's existence result. Splitting the total charge via Finset.sum_filter_add_sum_filter_not over {deg ≤ 5} and its complement: high-degree vertices contribute ≤ 0, and each low-degree vertex contributes 6 − deg ≤ 6. Hence 12 ≤ 6·|L|, forcing at least two vertices of degree ≤ 5.",
+    "mathContext": "$12 \\le \\sum_{v}(6-\\deg v) = \\sum_{v \\in L}(6-\\deg v) + \\sum_{v \\notin L}(6-\\deg v) \\le 6|L| + 0$, so $|L| \\ge 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "charge accounting",
+      "sum splitting by predicate"
+    ],
+    "prerequisites": [
+      "Discharging Base",
+      "Finset Sum Splitting"
+    ]
+  },
+  {
+    "id": "ann-disch-no-min-degree-six",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 157,
+      "endLine": 164
+    },
+    "type": "theorem",
+    "title": "No Minimum Degree 6 (no_min_degree_six)",
+    "content": "An immediate corollary: a planar graph cannot have every vertex of degree ≥ 6, since exists_low_degree' always supplies a vertex of degree ≤ 5. In particular there is no 6-regular planar graph.",
+    "mathContext": "Equivalently $\\delta(G) \\le 5$ for every planar graph $G$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "minimum degree",
+      "regular graphs"
+    ],
+    "prerequisites": [
+      "One Low-Degree Vertex"
+    ]
+  },
+  {
+    "id": "ann-disch-average-degree",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 172,
+      "endLine": 193
+    },
+    "type": "theorem",
+    "title": "Average Degree < 6 (sum_degrees_le / average_degree_lt_six)",
+    "content": "From the same charge identity, ∑ deg ≤ 6V − 12, so for a nonempty planar graph the average degree is strictly less than 6. This is the global counterpart of the local low-degree statements.",
+    "mathContext": "$\\frac{1}{|V|}\\sum_v \\deg v \\le 6 - \\frac{12}{|V|} < 6.$",
+    "significance": "standard",
+    "relatedConcepts": [
+      "average degree",
+      "sparsity of planar graphs"
+    ],
+    "prerequisites": [
+      "Charge Identity",
+      "Discharging Base"
+    ]
+  },
+  {
+    "id": "ann-disch-sharpness",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 199,
+      "endLine": 204
+    },
+    "type": "theorem",
+    "title": "Sharpness — Triangulations (charge_eq_twelve_iff_triangulation)",
+    "content": "The discharging base is tight: equality ∑(6 − deg v) = 12 holds exactly when E = 3V − 6, i.e. for edge-maximal planar graphs (triangulations). This records the equality case of the charge identity.",
+    "mathContext": "$\\sum_v(6-\\deg v) = 12 \\iff |E| = 3|V| - 6$, the triangulation (maximal planar) case.",
+    "significance": "important",
+    "relatedConcepts": [
+      "triangulations",
+      "maximal planar graphs",
+      "tightness"
+    ],
+    "prerequisites": [
+      "Charge Identity"
+    ]
+  }
+]
