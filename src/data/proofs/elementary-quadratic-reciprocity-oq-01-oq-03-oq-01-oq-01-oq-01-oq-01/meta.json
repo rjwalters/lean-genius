@@ -1,0 +1,126 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01",
+  "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01",
+  "title": "Prime-power Zolotarev (whole ring): sign(x ↦ a·x on ℤ/pⁿ) = legendreSym p (a mod p)ⁿ = J(a | pⁿ)",
+  "description": "Closes the prime-power case of the Frobenius/Zolotarev identity, performing the assembly the parent (the units-level prime-power lemma) explicitly left as its follow-up: 'assembling [the units sign] with the action on the non-unit part p·(ℤ/pⁿ⁻¹) ⊂ ℤ/pⁿ to obtain the whole-ring statement sign(ringMulPerm u on ℤ/pⁿ) = J(u | pⁿ), and thence every odd n, is left to the follow-up.' For an odd prime p and a unit a : (ℤ/pⁿ)ˣ, the sign of multiplication-by-a on the WHOLE ring ℤ/pⁿ (ZolotarevCRT.ringMulPerm a) equals legendreSym p (a mod p) raised to the n-th power, equivalently the Jacobi symbol J(a | pⁿ). The argument: ringMulPerm a preserves both the units U = {x | IsUnit x} and the non-units N = {x | ¬IsUnit x} = the maximal ideal (p), so its sign factors over the two invariant blocks (Equiv.Perm.sign_subtypeCongr). The units block is the left regular representation Equiv.mulLeft a on (ℤ/pⁿ)ˣ, whose sign is legendreSym p (a mod p) — exactly the parent units-level lemma. The non-unit block N = (p) is carried by an additive bijection μ : y ↦ p·(lift y) (nonUnitsEquiv) onto ℤ/pⁿ⁻¹, under which a· becomes multiplication by the reduction ā ∈ (ℤ/pⁿ⁻¹)ˣ; hence its sign is the sign of ringMulPerm ā on the smaller ring — a strictly smaller instance of the same problem. Inducting on n gives legendreSym p (a mod p)ⁿ = J(a | pⁿ).",
+  "leanFile": {
+    "imports": [
+      "Proofs.ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01"
+    ],
+    "opens": [
+      "Equiv",
+      "Equiv.Perm",
+      "ZolotarevCRT"
+    ],
+    "namespace": "ZolotarevPrimePowerWhole",
+    "lineCount": 318,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 3,
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "overview": {
+    "text": "The parent computed the sign of multiplication on the UNITS (ℤ/pⁿ)ˣ and flagged the remaining work: glue that to the action on the non-unit part to obtain the whole-ring sign on ℤ/pⁿ. This entry performs exactly that gluing. The key structural fact is that multiplication by a unit a is a permutation of ℤ/pⁿ that maps units to units and non-units to non-units, so by Equiv.Perm.sign_subtypeCongr its sign is the product of the signs of its restrictions to the two blocks. The units block is the parent's left-regular-representation computation; the non-unit block — the maximal ideal (p), of size pⁿ⁻¹ — is additively isomorphic to ℤ/pⁿ⁻¹ via y ↦ p·(lift y), an isomorphism under which the a-action becomes the (ā)-action of the reduced unit, giving an honest recursion on the exponent. The compatibility μ(ā·y) = a·μ(y) — the one genuinely new computation — rests on the elementary bridge p·u = p·v ⟺ u ≡ v (mod pⁿ⁻¹) in ℤ/pⁿ.",
+    "historicalContext": "Zolotarev (1872) identified the Legendre symbol (a/p) with the sign of x ↦ ax on (ℤ/p)ˣ; Frobenius (1914) generalized this to composite moduli and the Jacobi symbol. The gallery lineage built it up in layers: the great-grandparent (oq-01-oq-03) gave the CRT decomposition of the multiplication-permutation sign on the whole ring ℤ/n; the grandparent (oq-01-oq-03-oq-01) the prime base case on ℤ/p; the squarefree parent (oq-01-oq-03-oq-01-oq-01) the factorization induction over distinct primes (reaching J for all squarefree odd n) and flagged prime powers pᵉ as the obstruction; the units-level parent (oq-01-oq-03-oq-01-oq-01-oq-01) supplied the sign on (ℤ/pᵉ)ˣ and flagged the whole-ring assembly. This entry closes that prime-power case.",
+    "problemStatement": "Open Question (the listed follow-up of elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01): assemble the units-level prime-power sign with the action on the non-unit part p·(ℤ/pⁿ) ≅ ℤ/pⁿ⁻¹ to obtain the whole-ring statement sign(ringMulPerm a on ℤ/pⁿ) = J(a | pⁿ). This entry proves sign(ringMulPerm a on ℤ/pⁿ) = legendreSym p (a mod p)ⁿ = J(a | pⁿ) for every odd prime p and unit a.",
+    "proofStrategy": "Part I (bridge): in ℤ/pⁿ⁺¹, p·z = 0 ⟺ z reduces to 0 in ℤ/pⁿ (both say pⁿ ∣ z.val), proved by ZMod.natCast_eq_zero_iff after cancelling one factor of p; this yields p·u = p·v ⟺ castHom u = castHom v (mul_p_of_castHom_eq / castHom_eq_of_mul_p_eq). Part II (non-unit block): p·z is never a unit (not_isUnit_mul_p, via ZMod.isUnit_iff_coprime), and y ↦ p·(lift y) is a bijection ℤ/pⁿ → {non-units of ℤ/pⁿ⁺¹} — injective by the bridge, surjective by cardinality (pⁿ⁺¹ − φ(pⁿ⁺¹) = pⁿ via Nat.totient_prime_pow_succ). Part III (recursion): ringMulPerm a preserves IsUnit (a is a unit, IsUnit.mul_iff), so Equiv.Perm.sign_subtypeCongr factors sign(ringMulPerm a) = sign(units block)·sign(non-unit block); the units block equals sign(Equiv.mulLeft a) = legendreSym p (a mod p) by the parent lemma (transported via the units↔IsUnit-subtype equiv), the non-unit block equals sign(ringMulPerm ā) on ℤ/pⁿ⁻¹ (transported via the μ-bijection, whose intertwining μ(ā·y)=a·μ(y) is the bridge). Part IV: induct on n to get legendreSym p (a mod p)ⁿ, and J(A | pⁿ) = (legendreSym p A)ⁿ (jacobiSym.mul_right) converts it to the Jacobi symbol.",
+    "keyInsights": [
+      "Multiplication by a unit a permutes ℤ/pⁿ while preserving the units / non-units partition, so its sign is the product of the two block signs (Equiv.Perm.sign_subtypeCongr) — the whole-ring problem splits cleanly into the parent's units computation and a smaller copy of itself.",
+      "The non-units of ℤ/pⁿ form the maximal ideal (p), of size pⁿ⁻¹, and y ↦ p·(lift y) is an additive bijection ℤ/pⁿ⁻¹ ≅ (p) under which multiplication-by-a becomes multiplication-by-(a mod pⁿ⁻¹) — turning the non-unit block into a strictly smaller instance and giving a genuine recursion on the exponent.",
+      "Everything reduces to one elementary bridge in ℤ/pⁿ⁺¹: p·u = p·v ⟺ u ≡ v (mod pⁿ). It supplies both the injectivity of the non-unit isomorphism and the intertwining μ(ā·y) = a·μ(y) that the recursion needs.",
+      "The non-unit block's cardinality is exactly pⁿ⁻¹ = pⁿ − φ(pⁿ) = pⁿ − pⁿ⁻¹(p−1), so the p-multiplication map is a bijection by injectivity-plus-counting, no explicit inverse required.",
+      "Iterating the one-step recursion n times collapses the whole-ring prime-power sign to legendreSym p (a mod p)ⁿ, and jacobiSym.mul_right identifies this with J(a | pⁿ), closing the prime-power case the squarefree induction could not reach."
+    ],
+    "prerequisites": [
+      "The units-level prime-power lemma (ZolotarevPrimePower.sign_mulLeft_eq_legendre) and the whole-ring multiplication permutation ZolotarevCRT.ringMulPerm",
+      "Sign of a permutation over an invariant predicate / its complement (Equiv.Perm.sign_subtypeCongr, Equiv.Perm.subtypePerm) and transport of sign across an equiv (Equiv.Perm.sign_eq_sign_of_equiv)",
+      "ZMod reduction homomorphism ZMod.castHom / ZMod.unitsMap and ZMod.natCast_eq_zero_iff, ZMod.isUnit_iff_coprime",
+      "Cardinality of the unit group (ZMod.card_units_eq_totient, Nat.totient_prime_pow_succ) and Fintype.bijective_iff_injective_and_card",
+      "Multiplicativity of the Jacobi symbol over prime powers (jacobiSym.mul_right, legendreSym.to_jacobiSym)"
+    ]
+  },
+  "sections": [
+    {
+      "title": "The p-multiplication bridge on ℤ/pⁿ⁺¹",
+      "content": "mul_p_eq_zero_iff: p·z = 0 in ℤ/pⁿ⁺¹ iff z reduces to 0 in ℤ/pⁿ (both express pⁿ ∣ z.val), via ZMod.natCast_eq_zero_iff and cancelling one factor of p (Nat.mul_dvd_mul_iff_left). mul_p_of_castHom_eq and castHom_eq_of_mul_p_eq promote this to p·u = p·v ⟺ castHom u = castHom v — the single fact behind both the non-unit isomorphism and its intertwining."
+    },
+    {
+      "title": "The non-unit block is ℤ/pⁿ⁻¹",
+      "content": "not_isUnit_mul_p: p·z is never a unit (ZMod.isUnit_iff_coprime). nonUnitsFun / nonUnitsFun_bijective / nonUnitsEquiv: y ↦ p·(lift y) is a bijection ℤ/pⁿ ≃ {non-units of ℤ/pⁿ⁺¹}, injective by the bridge and surjective by counting (pⁿ⁺¹ − φ(pⁿ⁺¹) = pⁿ)."
+    },
+    {
+      "title": "The prime-power recursion for the whole-ring sign",
+      "content": "sign_ringMulPerm_succ: for a unit a : (ℤ/pⁿ⁺¹)ˣ, sign(ringMulPerm a) = legendreSym p (a mod p) · sign(ringMulPerm ā on ℤ/pⁿ). Proof: sign_subtypeCongr factors the sign over the units / non-units partition; the units block is sign(Equiv.mulLeft a) = legendreSym p (a mod p) (parent lemma, transported via units↔IsUnit-subtype equiv); the non-unit block is sign(ringMulPerm ā) (transported via the μ-bijection, intertwining from the bridge)."
+    },
+    {
+      "title": "The prime-power Zolotarev–Frobenius identity",
+      "content": "sign_ringMulPerm_eq_legendre_pow: iterating the recursion, sign(ringMulPerm a on ℤ/pⁿ) = legendreSym p (a mod p)ⁿ. jacobiSym_prime_pow + sign_ringMulPerm_eq_jacobiSym: J(A | pⁿ) = (legendreSym p A)ⁿ (jacobiSym.mul_right), so the sign equals the Jacobi symbol J(a | pⁿ) — closing the prime-power case."
+    }
+  ],
+  "meta": {
+    "author": "Zolotarev (1872), Frobenius (1914)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Zolotarev%27s_lemma",
+    "date": "1914",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "legendre-symbol",
+      "jacobi-symbol",
+      "permutation-sign",
+      "zolotarev",
+      "frobenius",
+      "prime-power",
+      "maximal-ideal",
+      "left-regular-representation",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 318,
+    "theoremCount": 10,
+    "defCount": 3,
+    "assumptions": "None. The file has 0 axiom declarations, 0 sorries, no native_decide, and no assumption-carrying structures. The headline theorems sign_ringMulPerm_eq_legendre_pow, sign_ringMulPerm_eq_jacobiSym and sign_ringMulPerm_succ were checked with #print axioms and depend only on propext / Classical.choice / Quot.sound (the standard foundational axioms, which do not count as assumptions). This closes the prime-power case sign(ringMulPerm a on ℤ/pᵉ) = J(a | pᵉ). Honest scope: the file proves the per-prime-power identity; combining it with the great-grandparent's CRT multiplicativity to reach every odd n is the next (purely organizational) step.",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
+  },
+  "conclusion": {
+    "summary": "Proves, with 0 sorries and 0 axioms, the whole-ring prime-power Frobenius/Zolotarev identity: for an odd prime p and a unit a : (ℤ/pⁿ)ˣ, the sign of multiplication-by-a on the whole ring ℤ/pⁿ equals legendreSym p (a mod p)ⁿ = J(a | pⁿ). It performs the assembly the units-level parent flagged: factor the sign over the invariant units / non-units partition, identify the units block with the parent's left-regular-representation sign and the non-unit block (the maximal ideal (p) ≅ ℤ/pⁿ⁻¹) with a strictly smaller instance of the same problem, and recurse on the exponent. The one new computation — that the additive isomorphism p·(lift y) intertwines the a-action with the reduced action — reduces to the elementary bridge p·u = p·v ⟺ u ≡ v (mod pⁿ⁻¹).",
+    "implications": "Closes the prime-power obstruction the squarefree induction could not handle. Combined with the great-grandparent's CRT multiplicativity (sign_ringMulPerm_mul_of_odd), it yields sign(ringMulPerm a on ℤ/n) = J(a | n) for EVERY odd n — completing the Frobenius generalization of Zolotarev's lemma — from which quadratic reciprocity itself follows (Zolotarev's original application). The reusable pieces are the p-multiplication bridge in ℤ/pⁿ⁺¹ and the additive isomorphism of the maximal ideal with the smaller ring.",
+    "openQuestions": [
+      "Combine this per-prime-power identity with the great-grandparent's CRT multiplicativity (sign_ringMulPerm_mul_of_odd) and the multiplicativity of the Jacobi symbol to obtain sign(ringMulPerm a on ℤ/n) = J(a | n) for EVERY odd n — a now purely organizational induction over the prime factorization.",
+      "Specialize the resulting general-odd Frobenius identity to recover the quadratic reciprocity law itself (Zolotarev's original derivation, via the sign of a suitable shuffle permutation).",
+      "Extract the additive isomorphism (p) ≅ ℤ/pⁿ⁻¹ and the p-multiplication bridge as standalone ZMod lemmas of independent interest (filtration of ℤ/pⁿ by the powers of its maximal ideal)."
+    ]
+  },
+  "references": [
+    {
+      "title": "Zolotarev, Nouvelle démonstration de la loi de réciprocité de Legendre (1872)",
+      "url": "https://en.wikipedia.org/wiki/Zolotarev%27s_lemma"
+    },
+    {
+      "title": "Jacobi symbol",
+      "url": "https://en.wikipedia.org/wiki/Jacobi_symbol"
+    },
+    {
+      "title": "Rousseau, On the quadratic reciprocity law, Amer. Math. Monthly (1991)",
+      "url": "https://www.jstor.org/stable/2324174"
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01",
+      "relation": "parent",
+      "note": "The units-level prime-power lemma sign(x ↦ u·x on (ℤ/pⁿ)ˣ) = legendreSym p (u mod p); this entry performs the whole-ring assembly it explicitly left as a follow-up, reusing it as the units block via sign_mulLeft_eq_legendre."
+    },
+    {
+      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03",
+      "relation": "ancestor",
+      "note": "Defines ZolotarevCRT.ringMulPerm (multiplication-by-a on the whole ring ℤ/n) and the CRT decomposition of its sign; this entry supplies the prime-power factor the CRT decomposition cannot split."
+    }
+  ]
+}
