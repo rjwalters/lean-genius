@@ -1,0 +1,165 @@
+{
+  "id": "furstenberg-correspondence-oq-02-oq-02",
+  "title": "Ergodic Decomposition: Mathlib Has the Extreme-Point Structure",
+  "slug": "furstenberg-correspondence-oq-02-oq-02",
+  "description": "The parent (furstenberg-correspondence-oq-02) is a feasibility survey of formalizing ergodic decomposition that is unsure whether the key structural fact — ergodic measures are exactly the extreme points of the invariant probability measures — is in Mathlib. This entry resolves that: the characterization IS in Mathlib (Ergodic.iff_mem_extremePoints), together with ergodic rigidity (Ergodic.eq_of_absolutelyContinuous) and a.e.-constancy of invariant functions (PreErgodic.ae_eq_const_of_ae_eq_comp). We package these as the concrete building blocks of ergodic decomposition, answering the OQ: Mathlib's disintegration plus this extreme-point theory supplies the structure; the remaining gap is the Choquet integral representation. 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ergodic_decomposition",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FurstenbergCorrespondenceOQ02OQ02.lean",
+    "tags": [
+      "ergodic-theory",
+      "dynamics",
+      "measure-theory",
+      "ergodic-decomposition",
+      "extreme-points",
+      "choquet-theory",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Ergodic.iff_mem_extremePoints",
+        "description": "A probability measure is ergodic iff it is an extreme point of the f-invariant probability measures",
+        "module": "Mathlib.Dynamics.Ergodic.Extreme"
+      },
+      {
+        "theorem": "Ergodic.eq_of_absolutelyContinuous",
+        "description": "An invariant probability measure absolutely continuous w.r.t. an ergodic one equals it (rigidity)",
+        "module": "Mathlib.Dynamics.Ergodic.Extreme"
+      },
+      {
+        "theorem": "PreErgodic.ae_eq_const_of_ae_eq_comp",
+        "description": "A measurable invariant function is a.e. constant under an ergodic measure",
+        "module": "Mathlib.Dynamics.Ergodic.Function"
+      }
+    ],
+    "originalContributions": [
+      "ergodic_iff_extremePoint: gallery-form statement that ergodic ⟺ extreme point of invariant probability measures — confirming the Choquet-simplex characterization the parent survey was unsure existed in Mathlib",
+      "ergodic_eq_of_absolutelyContinuous: ergodic rigidity — invariant prob measure absolutely continuous w.r.t. an ergodic one equals it (distinct ergodic components are mutually singular)",
+      "ergodic_invariant_ae_const: measurable invariant functions are a.e. constant under an ergodic measure (well-definedness of the decomposition kernel)",
+      "ergodic_decomposition_prerequisites: the three ingredients bundled — the concrete Mathlib-provided building blocks of ergodic decomposition, recording the OQ's answer"
+    ],
+    "axiomCount": 0,
+    "lineCount": 81,
+    "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound]. The results invoke Mathlib's verified ergodic theory; they confirm and package the prerequisites for ergodic decomposition rather than proving the full integral-representation theorem.",
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "prerequisites": [
+      "Ergodic and invariant (measure-preserving) measures",
+      "Extreme points of convex sets; Choquet theory",
+      "Measure disintegration / kernels",
+      "Absolute continuity and mutual singularity of measures"
+    ],
+    "relatedProblems": [
+      {
+        "id": "furstenberg-correspondence-oq-02",
+        "relationship": "Parent: feasibility survey of formalizing ergodic decomposition. This entry answers its OQ on whether Mathlib's disintegration/structure suffices, by confirming and packaging the extreme-point characterization."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The ergodic decomposition theorem says that any invariant measure of a measure-preserving system can be written uniquely as an integral of ergodic measures: μ = ∫ μ_x dμ(x), where each μ_x is ergodic. Structurally this is a Choquet-type result: the invariant probability measures form a convex set (in fact a simplex), the ergodic measures are exactly its extreme points, and the decomposition expresses a general invariant measure as a barycentre (integral) over those extreme points. Realising the integral concretely uses disintegration of measures with respect to the invariant σ-algebra.\n\nThe parent gallery entry surveyed the feasibility of formalizing this in Lean and was uncertain whether the central piece — the identification of ergodic measures with the extreme points — was already in Mathlib, noting it 'might already be partially there'. In fact Mathlib's `Mathlib.Dynamics.Ergodic.Extreme` proves the full equivalence `Ergodic.iff_mem_extremePoints`, along with the rigidity `Ergodic.eq_of_absolutelyContinuous` and (in `Ergodic.Function`) the a.e.-constancy of invariant functions. This entry confirms and packages these, recording the honest answer to the OQ: the extreme-point structure and disintegration are present; the outstanding work for the full theorem is the Choquet integral representation tying a general invariant measure to its ergodic components.",
+    "problemStatement": "Determine whether Mathlib provides the structural prerequisites for the ergodic decomposition theorem. Confirm and package: (1) ergodic measures are exactly the extreme points of the invariant probability measures; (2) ergodic measures are rigid (an absolutely continuous invariant probability measure equals the ergodic one); (3) invariant measurable functions are a.e. constant under an ergodic measure.",
+    "proofStrategy": "Each result is a direct invocation of Mathlib's verified ergodic theory, restated in gallery form: ergodic_iff_extremePoint = Ergodic.iff_mem_extremePoints; ergodic_eq_of_absolutelyContinuous = Ergodic.eq_of_absolutelyContinuous; ergodic_invariant_ae_const = (Ergodic.toPreErgodic).ae_eq_const_of_ae_eq_comp. The bundled ergodic_decomposition_prerequisites assembles all three for an ergodic probability measure.",
+    "keyInsights": [
+      "Ergodic measures ARE the extreme points of the invariant probability simplex — the Choquet picture underlying ergodic decomposition — and Mathlib already proves this equivalence (Ergodic.iff_mem_extremePoints).",
+      "Ergodic rigidity (an absolutely continuous invariant measure equals the ergodic one) is the statement that distinct ergodic components are mutually singular, so the decomposition is a partition into disjoint pieces.",
+      "A.e.-constancy of invariant functions makes the decomposition map (point ↦ its ergodic component) well defined: the invariant σ-algebra is a.e. trivial on each component.",
+      "The honest answer to the parent's OQ: disintegration plus the extreme-point theory supplies the structure; what is still missing is the Choquet integral representation (writing a general invariant measure as ∫ over its ergodic components).",
+      "Confirming a result already exists in Mathlib is itself a useful contribution to a feasibility survey: it converts 'might be there' into a verified, citable fact."
+    ],
+    "prerequisites": [
+      "Ergodic and measure-preserving maps",
+      "Extreme points and Choquet simplices",
+      "Disintegration of measures",
+      "Absolute continuity and singularity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "extreme-point",
+      "title": "Section I: Ergodic ⟺ Extreme Point",
+      "startLine": 41,
+      "endLine": 49,
+      "summary": "ergodic_iff_extremePoint confirms Mathlib's Ergodic.iff_mem_extremePoints: a probability measure is ergodic iff it is an extreme point of the invariant probability measures — the Choquet-simplex fact underlying ergodic decomposition.",
+      "mathContext": "The structural heart of ergodic decomposition: ergodic measures are the extreme points of the invariant simplex."
+    },
+    {
+      "id": "rigidity",
+      "title": "Section II: Ergodic Rigidity",
+      "startLine": 51,
+      "endLine": 66,
+      "summary": "ergodic_eq_of_absolutelyContinuous (an invariant prob measure ≪ an ergodic one equals it) and ergodic_invariant_ae_const (invariant functions a.e. constant).",
+      "mathContext": "Distinct ergodic components are mutually singular, and the invariant σ-algebra is a.e. trivial on each — the well-definedness inputs for the decomposition kernel."
+    },
+    {
+      "id": "prerequisites",
+      "title": "Section III: Packaged Prerequisites",
+      "startLine": 68,
+      "endLine": 79,
+      "summary": "ergodic_decomposition_prerequisites bundles the extreme-point characterization, rigidity, and invariant-function constancy for an ergodic probability measure.",
+      "mathContext": "The concrete Mathlib-provided building blocks of ergodic decomposition, recording the OQ's answer."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 81 lines and 4 theorems confirming and packaging the structural prerequisites for ergodic decomposition that Mathlib already provides: ergodic ⟺ extreme point of the invariant probability measures, ergodic rigidity, and a.e.-constancy of invariant functions.",
+    "implications": "This answers the parent survey's OQ: Mathlib's disintegration together with its ergodic extreme-point theory supplies the structure for ergodic decomposition — the characterization the survey was unsure existed is in fact in Mathlib (Ergodic.iff_mem_extremePoints). The honest remaining gap for the full theorem is the Choquet integral representation expressing a general invariant measure as an integral over its ergodic (extreme) components. Recording these as verified, citable facts converts the survey's uncertainty into concrete building blocks.",
+    "openQuestions": [
+      "Formalize the Choquet integral representation: write a general f-invariant probability measure as ∫ μ_x dμ(x) over the ergodic components, using Mathlib's disintegration with respect to the invariant σ-algebra.",
+      "Establish uniqueness of the ergodic decomposition (the invariant measures form a Choquet simplex), combining the extreme-point characterization with the integral representation."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Dynamics.Ergodic.Extreme",
+      "Mathlib.Dynamics.Ergodic.Function",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Function",
+      "Set",
+      "ENNReal"
+    ],
+    "namespace": "FurstenbergCorrespondenceOQ02OQ02",
+    "lineCount": 81,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/FurstenbergCorrespondenceOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "furstenberg-correspondence-oq-02",
+      "relationship": "extends",
+      "description": "Parent: feasibility survey of formalizing the ergodic decomposition theorem, uncertain whether the ergodic-extreme-point characterization is in Mathlib. This entry confirms it is (Ergodic.iff_mem_extremePoints) and packages the prerequisites, answering the OQ on disintegration sufficiency."
+    }
+  ],
+  "references": [
+    {
+      "key": "EW11",
+      "citation": "Einsiedler, M. and Ward, T., Ergodic Theory: with a view towards Number Theory, Springer GTM 259 (2011).",
+      "type": "book"
+    },
+    {
+      "key": "Phelps01",
+      "citation": "Phelps, R.R., Lectures on Choquet's Theorem, 2nd ed., Springer Lecture Notes in Mathematics 1757 (2001).",
+      "type": "book"
+    },
+    {
+      "key": "Furstenberg77",
+      "citation": "Furstenberg, H., Ergodic behavior of diagonal measures and a theorem of Szemerédi on arithmetic progressions, J. Analyse Math. 31 (1977), 204–256.",
+      "type": "paper"
+    }
+  ],
+  "sorries": 0
+}
