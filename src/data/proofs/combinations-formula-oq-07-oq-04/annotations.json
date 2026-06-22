@@ -1,0 +1,96 @@
+[
+  {
+    "id": "secondmoment-context",
+    "proofId": "combinations-formula-oq-07-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 66
+    },
+    "type": "concept",
+    "title": "Weighting the Sum of Squares by k²: A Second Moment",
+    "content": "The parent entry proves the central sum of squares C(2n,n) = ∑_{k=0}^{n} C(n,k)², and the sibling oq-07-oq-03 weights it by k to get the first moment. This entry weights by k². The result, ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1) for n ≥ 1, is a second-moment identity: reading p_k = C(n,k)²/C(2n,n) as the hypergeometric distribution on {0,…,n}, the weighted sum is its second moment. Together with the mean n/2 it yields the variance n²/(4(2n−1)). Crucially, unlike the first moment, no reflection is needed — a single squared absorption identity collapses each term.",
+    "mathContext": "$\\sum_{k=0}^{n} k^2\\binom{n}{k}^2 = n^2\\binom{2n-2}{n-1}$. Probabilistically, with $p_k = \\binom{n}{k}^2/\\binom{2n}{n}$, the second moment is $\\sum_k k^2 p_k = n^3/(2(2n-1))$, giving variance $n^2/(4(2n-1))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum of squares of binomial coefficients",
+      "second moment / weighted sum",
+      "hypergeometric distribution and variance",
+      "absorption identity",
+      "central binomial coefficient"
+    ],
+    "prerequisites": [
+      "Nat.choose binomial coefficients",
+      "absorption k·C(n,k) = n·C(n-1,k-1)",
+      "the parent identity C(2n,n) = ∑ C(n,k)²"
+    ]
+  },
+  {
+    "id": "succ-form-thm",
+    "proofId": "combinations-formula-oq-07-oq-04",
+    "range": {
+      "startLine": 78,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "The Second Moment (Subtraction-Free Form)",
+    "content": "sum_sq_weighted_sq_succ establishes ∑_{k=0}^{m+1} k²·C(m+1,k)² = (m+1)²·C(2m,m). The proof's engine is the term lemma: squaring the absorption identity Nat.add_one_mul_choose_eq, which gives (j+1)·C(m+1,j+1) = (m+1)·C(m,j), turns each summand (j+1)²·C(m+1,j+1)² into (m+1)²·C(m,j)². Finset.sum_range_succ' peels off the vanishing k=0 term and reindexes the rest as k = j+1; Finset.mul_sum extracts the constant (m+1)²; and the parent's central_binom_eq_sum_sq applied to row m evaluates ∑_{j=0}^{m} C(m,j)² = C(2m,m).",
+    "mathContext": "$k^2\\binom{n}{k}^2 = (k\\binom{n}{k})^2 = (n\\binom{n-1}{k-1})^2 = n^2\\binom{n-1}{k-1}^2$, so the sum becomes $n^2\\sum_{j} \\binom{n-1}{j}^2 = n^2\\binom{2n-2}{n-1}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Nat.add_one_mul_choose_eq",
+      "Finset.sum_range_succ'",
+      "Finset.mul_sum",
+      "absorption identity",
+      "squaring an exact identity"
+    ],
+    "prerequisites": [
+      "summation over Finset.range",
+      "reindexing a finite sum",
+      "the absorption identity for binomial coefficients"
+    ]
+  },
+  {
+    "id": "classical-form-thm",
+    "proofId": "combinations-formula-oq-07-oq-04",
+    "range": {
+      "startLine": 97,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "The Classical Form",
+    "content": "sum_sq_weighted_sq states the result in its familiar form: ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1) for n ≥ 1. It is obtained from the subtraction-free form by writing n = m+1 and rewriting 2(m+1)−2 = 2m and (m+1)−1 = m. The n ≥ 1 hypothesis is needed only to make the truncated subtractions 2n−2 and n−1 mean what the mathematics intends; the underlying content is the all-n subtraction-free identity.",
+    "mathContext": "$\\sum_{k=0}^{n} k^2\\binom{n}{k}^2 = n^2\\binom{2n-2}{n-1}$, $n \\geq 1$. This is the closed form posed as an open question by the first-moment sibling.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural-number subtraction",
+      "central binomial coefficient of the predecessor row",
+      "second moment closed form"
+    ],
+    "prerequisites": [
+      "the subtraction-free form sum_sq_weighted_sq_succ",
+      "arithmetic of truncated subtraction (omega)"
+    ]
+  },
+  {
+    "id": "centralbinom-thm",
+    "proofId": "combinations-formula-oq-07-oq-04",
+    "range": {
+      "startLine": 107,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "Packaging via Nat.centralBinom",
+    "content": "sum_sq_weighted_centralBinom restates the second moment using Mathlib's central binomial coefficient: ∑_{k=0}^{m+1} k²·C(m+1,k)² = (m+1)²·centralBinom(m). Since Nat.centralBinom m is definitionally C(2m,m), this connects the new identity to Mathlib's existing API and makes the row-shift explicit — the second moment of row m+1 is (m+1)² times the central binomial coefficient of row m.",
+    "mathContext": "$\\sum_{k=0}^{m+1} k^2\\binom{m+1}{k}^2 = (m+1)^2\\,\\mathrm{centralBinom}(m)$, where $\\mathrm{centralBinom}(m) = \\binom{2m}{m}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.centralBinom",
+      "definitional unfolding",
+      "Mathlib API integration"
+    ],
+    "prerequisites": [
+      "Nat.centralBinom definition",
+      "the subtraction-free form sum_sq_weighted_sq_succ"
+    ]
+  }
+]

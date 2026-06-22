@@ -1,0 +1,137 @@
+{
+  "id": "combinations-formula-oq-07-oq-04",
+  "title": "The Second Moment of the Sum of Squares of Binomial Coefficients",
+  "slug": "combinations-formula-oq-07-oq-04",
+  "description": "Weights the parent's central sum of squares C(2n,n) = ∑ C(n,k)² by k², yielding the second-moment identity ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1) for n ≥ 1. This directly answers the open question posed by the first-moment sibling oq-07-oq-03. Unlike the first moment, no reflection is needed: a single absorption k·C(n,k) = n·C(n−1,k−1) gives k²·C(n,k)² = n²·C(n−1,k−1)², so the k=0 term vanishes, reindexing k = j+1 pulls out n², and the parent identity applied to row n−1 finishes. Reading C(n,k)²/C(2n,n) as a hypergeometric distribution, this is its second moment n³/(2(2n−1)); combined with the mean n/2 it gives the variance n²/(4(2n−1)).",
+  "meta": {
+    "author": "Lean Genius researcher-9",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ07OQ04.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 119,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "assumptions": "None. The subtraction-free form ∑_{k=0}^{m+1} k²·C(m+1,k)² = (m+1)²·C(2m,m) is fully machine-checked for all m; the classical form ∑ k²·C(n,k)² = n²·C(2n−2,n−1) is stated for n ≥ 1. Depends only on the foundational axioms propext, Classical.choice, Quot.sound; the numeric checks use kernel `decide` (no Lean.ofReduceBool, no native_decide, no sorryAx).",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "sum-of-squares",
+      "weighted-sum",
+      "second-moment",
+      "absorption",
+      "central-binomial",
+      "hypergeometric"
+    ],
+    "dateAdded": "2026-06-22",
+    "originalContributions": [
+      "sum_sq_weighted_sq_succ: the second-moment identity ∑_{k=0}^{m+1} k²·C(m+1,k)² = (m+1)²·C(2m,m) in subtraction-free form, a squared-index companion to the parent's C(2n,n) = ∑ C(n,k)² and the sibling's first moment, absent from Mathlib",
+      "sum_sq_weighted_sq: the classical closed form ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1) for n ≥ 1, directly answering the open question raised by oq-07-oq-03",
+      "sum_sq_weighted_centralBinom: the second moment packaged via Mathlib's Nat.centralBinom, expressing the result as (m+1)²·centralBinom(m)",
+      "The absorption route k²·C(n,k)² = (k·C(n,k))² = (n·C(n−1,k−1))² = n²·C(n−1,k−1)², which needs no reflection and reduces the whole sum to the parent identity on the predecessor row",
+      "Worked check ∑_{k=0}^{3} k²·C(3,k)² = 0 + 9 + 36 + 9 = 54 = 3²·C(4,2)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.add_one_mul_choose_eq",
+        "description": "The absorption identity (n+1)·C(n,k) = C(n+1,k+1)·(k+1). Rearranged to (j+1)·C(m+1,j+1) = (m+1)·C(m,j), it converts each squared term (j+1)²·C(m+1,j+1)² into (m+1)²·C(m,j)², which is the entire engine of the proof.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_succ'",
+        "description": "∑_{i ∈ range (n+1)} f i = (∑_{i ∈ range n} f (i+1)) + f 0. Peels off the vanishing k=0 term and reindexes the remaining sum as k = j+1, the form on which absorption acts.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.mul_sum",
+        "description": "b·∑ f = ∑ (b·f). Used in reverse to pull the constant (m+1)² out of the reindexed sum so the parent identity can be applied to what remains.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "CombinationsFormulaOQ07.central_binom_eq_sum_sq",
+        "description": "The parent identity C(2n,n) = ∑_{k=0}^{n} C(n,k)². Applied to row m, it evaluates the reindexed sum ∑_{j=0}^{m} C(m,j)² as C(2m,m); the entire weighted result rests on it.",
+        "module": "Proofs.CombinationsFormulaOQ07"
+      },
+      {
+        "theorem": "Nat.centralBinom",
+        "description": "Mathlib's central binomial coefficient centralBinom(n) = C(2n,n). Used to package the second moment as (m+1)²·centralBinom(m), connecting the result to Mathlib's existing API.",
+        "module": "Mathlib.Combinatorics.Choose.Central"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ07OQ04.lean",
+    "namespace": "CombinationsFormulaOQ07OQ04",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 119,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The sum of squares of a Pascal row, ∑_{k} C(n,k)² = C(2n,n), is the most quoted special case of Vandermonde's convolution and the subject of the parent entry. Its moments turn this counting identity into a probabilistic statement: reading p_k = C(n,k)²/C(2n,n) as the hypergeometric law for the number of items drawn from the first half when n of 2n items are chosen, ∑ k·p_k is the mean and ∑ k²·p_k is the second moment. The sibling oq-07-oq-03 computed the mean (n/2); this entry computes the second moment, from which the variance follows. Weighted binomial sums of this kind are catalogued in Gould's Combinatorial Identities (1972); the absorption identity k·C(n,k) = n·C(n−1,k−1) used here is the same one that yields ∑ k·C(n,k) = n·2^{n−1}. Mathlib carries the unweighted and alternating row sums and the central binomial coefficient, but none of the squared-coefficient moments.",
+    "problemStatement": "Open Question OQ-07-OQ-04 (raised explicitly by oq-07-oq-03): the parent proves C(2n,n) = ∑_{k=0}^{n} C(n,k)² and the first-moment sibling proves 2·∑ k·C(n,k)² = n·C(2n,n). What is the second moment ∑_{k=0}^{n} k²·C(n,k)²? Find and formalize its closed form, and identify the structural mechanism behind it.",
+    "proofStrategy": "Write n = m+1 to stay subtraction-free. The key is absorption: Nat.add_one_mul_choose_eq gives (j+1)·C(m+1,j+1) = (m+1)·C(m,j), so squaring yields (j+1)²·C(m+1,j+1)² = (m+1)²·C(m,j)² (the term lemma). The k=0 summand vanishes, so Finset.sum_range_succ' rewrites ∑_{k=0}^{m+1} k²·C(m+1,k)² as the reindexed sum ∑_{j=0}^{m} (j+1)²·C(m+1,j+1)²; applying the term lemma turns each summand into (m+1)²·C(m,j)², Finset.mul_sum pulls out the constant (m+1)², and the parent's central_binom_eq_sum_sq on row m evaluates ∑_{j=0}^{m} C(m,j)² = C(2m,m) (sum_sq_weighted_sq_succ). The classical form ∑ k²·C(n,k)² = n²·C(2n−2,n−1) for n ≥ 1 then follows by substituting n = m+1 and rewriting 2(m+1)−2 = 2m, (m+1)−1 = m (sum_sq_weighted_sq). A final packaging expresses C(2m,m) as Nat.centralBinom m (sum_sq_weighted_centralBinom).",
+    "keyInsights": [
+      "Unlike the first moment, the second moment needs no reflection: absorption alone collapses each term, because k²·C(n,k)² = (k·C(n,k))² and k·C(n,k) = n·C(n−1,k−1) is an exact identity that squares cleanly.",
+      "Squaring the absorption identity is the whole proof — it converts a second moment on row n into a constant n² times the zeroth moment (sum of squares) on row n−1, which the parent identity already evaluates.",
+      "The answer is again a single central binomial coefficient, now of the predecessor row: n²·C(2n−2,n−1). The pattern (zeroth moment → C(2n,n), second moment → n²·C(2n−2,n−1)) reflects how each index weight shifts the central coefficient down one row.",
+      "Stating the result subtraction-free as ∑_{k=0}^{m+1} k²·C(m+1,k)² = (m+1)²·C(2m,m) makes it valid for all m and avoids the n ≥ 1 hypothesis needed only to write 2n−2 and n−1 under truncated subtraction.",
+      "Probabilistically the second moment is n³/(2(2n−1)) (using C(2n−2,n−1)/C(2n,n) = n²/(2n(2n−1))); combined with the sibling's mean n/2 it gives the clean hypergeometric variance n²/(4(2n−1))."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Mathematical Context",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "Header stating OQ-07-OQ-04: weighting the parent's central sum of squares by k², the absorption proof of ∑ k²·C(n,k)² = n²·C(2n−2,n−1), and the hypergeometric second-moment/variance interpretation."
+    },
+    {
+      "id": "succ-form",
+      "title": "The Second Moment (Subtraction-Free Form)",
+      "startLine": 72,
+      "endLine": 93,
+      "summary": "sum_sq_weighted_sq_succ: ∑_{k=0}^{m+1} k²·C(m+1,k)² = (m+1)²·C(2m,m). The term lemma squares the absorption identity Nat.add_one_mul_choose_eq; Finset.sum_range_succ' drops the k=0 term and reindexes, Finset.mul_sum extracts (m+1)², and the parent's central_binom_eq_sum_sq finishes."
+    },
+    {
+      "id": "classical-form",
+      "title": "The Classical Form",
+      "startLine": 95,
+      "endLine": 102,
+      "summary": "sum_sq_weighted_sq: ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1) for n ≥ 1, obtained from the subtraction-free form by substituting n = m+1 and simplifying 2n−2 = 2m, n−1 = m."
+    },
+    {
+      "id": "central-binom",
+      "title": "Packaging via Nat.centralBinom",
+      "startLine": 104,
+      "endLine": 118,
+      "summary": "sum_sq_weighted_centralBinom: expresses the second moment as (m+1)²·centralBinom(m) using Mathlib's central binomial coefficient; with the numeric check ∑_{k=0}^{3} k²·C(3,k)² = 54 = 3²·C(4,2)."
+    }
+  ],
+  "conclusion": {
+    "summary": "3 theorems, 0 sorries, 0 axioms. The second-moment identity ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1) (n ≥ 1) weights the parent's central sum of squares by k² and answers the open question left by the first-moment sibling oq-07-oq-03. The proof is a single squared absorption identity against the parent identity — no reflection, induction, or generating functions.",
+    "implications": "Adds a squared-coefficient second-moment identity that Mathlib lacks, built on its absorption lemma and the parent's sum of squares. The technique — square the absorption identity k·C(n,k) = n·C(n−1,k−1) to reduce a second moment on row n to a constant times the zeroth moment on row n−1 — is a reusable route to higher moments of squared binomial sums, and the C(n,k)²/C(2n,n) hypergeometric reading completes the mean/second-moment/variance trio (mean n/2, second moment n³/(2(2n−1)), variance n²/(4(2n−1))).",
+    "openQuestions": [
+      "Do the higher moments ∑_{k=0}^{n} k^r·C(n,k)² for r ≥ 3 admit closed forms as integer combinations of central binomial coefficients C(2n−2j, n−j)? Iterating the squared absorption suggests each weight shifts the row down, but cross terms appear for r ≥ 3.",
+      "Is there a single generating identity ∑_{k} x^k·C(n,k)² = C(2n,n)·(hypergeometric in x) whose r-th derivative at x=1 reproduces these moments, and can it be formalized over ℚ[x]?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-07-oq-03",
+      "relationship": "sibling and direct predecessor — computes the first moment 2·∑ k·C(n,k)² = n·C(2n,n) and explicitly poses the second moment as an open question; this entry answers it with ∑ k²·C(n,k)² = n²·C(2n−2,n−1)"
+    },
+    {
+      "targetId": "combinations-formula-oq-07",
+      "relationship": "parent — proves the unweighted C(2n,n) = ∑ C(n,k)²; this entry weights that sum by k² and reuses the parent identity on the predecessor row n−1"
+    },
+    {
+      "targetId": "combinations-formula-oq-07-oq-01",
+      "relationship": "sibling — the multiplicative subset-of-a-subset companion, whose absorption identity k·C(n,k) = n·C(n−1,k−1) is exactly the lemma squared here to drive the second moment"
+    }
+  ],
+  "sorries": 0
+}
