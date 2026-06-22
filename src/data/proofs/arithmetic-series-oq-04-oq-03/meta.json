@@ -1,0 +1,221 @@
+{
+  "id": "arithmetic-series-oq-04-oq-03",
+  "title": "ζ at Negative Integers from Faulhaber: ζ(−n) = −B_{n+1}/(n+1)",
+  "slug": "arithmetic-series-oq-04-oq-03",
+  "description": "Answers parent OQ-04's third open question: derive the Riemann zeta values at the non-positive integers, ζ(−n) = −B'_{n+1}/(n+1), from the power-sum / Faulhaber formula via analytic continuation. The analytic continuation is Mathlib's (riemannZeta_neg_nat_eq_bernoulli'); this file makes the Faulhaber↔ζ bridge explicit — the constant B_{p+1} subtracted in Faulhaber's polynomial identity is exactly −(p+1)·ζ(−p) — and derives the trivial zeros ζ(−2n)=0 and the special values ζ(0)=−1/2, ζ(−1)=−1/12, ζ(−2)=0, ζ(−3)=1/120.",
+  "meta": {
+    "author": "Bernhard Riemann (1859); Leonhard Euler (functional equation, 1749); formalized in Lean 4",
+    "date": "1859",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ04OQ03.lean",
+    "tags": [
+      "number-theory",
+      "bernoulli",
+      "riemann-zeta",
+      "power-sums",
+      "faulhaber",
+      "analytic-continuation",
+      "arithmetic-series"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 215,
+    "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. `#print axioms` reports only the three ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted under the project's axiom-integrity policy. The deep analytic content — the meromorphic continuation of the Riemann zeta function and the functional equation, culminating in `riemannZeta_neg_nat_eq_bernoulli'` — is supplied by Mathlib. The new content here (the Faulhaber↔ζ bridge, convention reconciliation, trivial zeros, and special values) is fully machine-checked over ℂ.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "riemannZeta_neg_nat_eq_bernoulli'",
+        "description": "ζ(−n) = −B'_{n+1}/(n+1), the endpoint of the analytic continuation (B'_1 = +1/2 convention)",
+        "module": "Mathlib.NumberTheory.LSeries.HurwitzZetaValues"
+      },
+      {
+        "theorem": "riemannZeta_neg_nat_eq_bernoulli",
+        "description": "ζ(−n) = (−1)^n·B_{n+1}/(n+1) (B_1 = −1/2 convention)",
+        "module": "Mathlib.NumberTheory.LSeries.HurwitzZetaValues"
+      },
+      {
+        "theorem": "Polynomial.sum_range_pow_eq_bernoulli_sub",
+        "description": "(p+1)·∑_{k<n} k^p = B_{p+1}(n) − B_{p+1}, the Bernoulli-polynomial form of Faulhaber's formula",
+        "module": "Mathlib.NumberTheory.BernoulliPolynomials"
+      },
+      {
+        "theorem": "bernoulli'_eq_bernoulli",
+        "description": "B'_n = (−1)^n·B_n, reconciling the two Bernoulli conventions",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      },
+      {
+        "theorem": "bernoulli'_eq_zero_of_odd",
+        "description": "B'_n = 0 for odd n > 1, the source of the trivial zeros",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      },
+      {
+        "theorem": "bernoulli_eq_bernoulli'_of_ne_one",
+        "description": "B_n = B'_n for n ≠ 1, used to collapse the conventions for p ≥ 1",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      }
+    ],
+    "dateAdded": "2026-06-21",
+    "theoremCount": 12,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Riemann zeta function ζ(s) = ∑ 1/n^s, convergent for Re(s) > 1, was continued to the whole complex plane (minus a simple pole at s = 1) by Bernhard Riemann in his 1859 memoir. Euler had already, in 1749, conjectured the functional equation relating ζ(s) and ζ(1−s) and computed values like ζ(−1) = −1/12 by audacious manipulation of divergent series. The values at the non-positive integers are rational and given by Bernoulli numbers: ζ(−n) = −B_{n+1}/(n+1). The even negative integers −2, −4, −6, … are the 'trivial zeros' of ζ (where odd Bernoulli numbers vanish), to be contrasted with the conjectured nontrivial zeros on the critical line Re(s) = 1/2.\n\nThe connection to power sums is not a coincidence. Faulhaber's formula expresses ∑_{k=1}^n k^p as a degree-(p+1) polynomial in n whose coefficients are Bernoulli numbers; ζ(−p) is, up to the factor (p+1) and a sign, the constant term that this polynomial 'wants' but cannot have (the power sum vanishes at n = 0). Reading 1 + 2 + 3 + ⋯ as the divergent value ζ(−1), the regularized answer −1/12 is exactly this leftover constant.",
+    "problemStatement": "**Open Question (parent arithmetic-series-oq-04, third open question)**: Can we derive ζ(−n) = −B_{n+1}/(n+1) from the power-sum formula via analytic continuation?\n\n**Answer: YES.** The continuation is carried out in Mathlib (`riemannZeta_neg_nat_eq_bernoulli'`: ζ(−n) = −B'_{n+1}/(n+1)). This file makes the bridge to Faulhaber explicit and reads off the trivial zeros and special values.",
+    "text": "A 215-line, fully verified (0 sorries, 0 axioms, no native_decide) formalization over ℂ. Part I restates the value formula in both Bernoulli conventions and proves they agree. Part II is the new content: Faulhaber's polynomial identity (p+1)·∑_{k<n} k^p = B_{p+1}(n) − B_{p+1}, the clearing of denominators (p+1)·ζ(−p) = −B_{p+1} for p ≥ 1, and the bridge theorem identifying the subtracted constant with −(p+1)·ζ(−p). Part III derives the trivial zeros ζ(−2n) = 0 (n ≥ 1) from B'_{2n+1} = 0. Part IV reads off ζ(0) = −1/2, ζ(−1) = −1/12, ζ(−2) = 0, ζ(−3) = 1/120.",
+    "proofStrategy": "The value formula is Mathlib's `riemannZeta_neg_nat_eq_bernoulli'`, the endpoint of its Hurwitz/Riemann zeta analytic-continuation development. The convention reconciliation `bernoulli_convention_eq` uses `bernoulli'_eq_bernoulli` then `push_cast; ring`. The denominator-clearing `zeta_neg_nat_mul` rewrites with the value formula, collapses B' to B via `bernoulli_eq_bernoulli'_of_ne_one` (valid since p+1 ≠ 1 for p ≥ 1), and finishes with `field_simp`; the bridge `faulhaber_constant_eq_zeta` is then one `neg_neg`. The trivial zeros follow by feeding `Odd (2n+1)` and `1 < 2n+1` to `bernoulli'_eq_zero_of_odd`. Each special value rewrites the integer argument as a `Nat` cast, applies the value formula, and closes with `push_cast; norm_num` after substituting the relevant Bernoulli value (B'_1 = 1/2, B'_2 = 1/6, B'_4 = −1/30).",
+    "keyInsights": [
+      "ζ(−n) = −B'_{n+1}/(n+1) is the literal answer to the open question; Mathlib has it as `riemannZeta_neg_nat_eq_bernoulli'`, so the analytic continuation is already done.",
+      "The bridge to Faulhaber is algebraic: the constant B_{p+1} subtracted in (p+1)·∑_{k<n} k^p = B_{p+1}(n) − B_{p+1} is exactly −(p+1)·ζ(−p) (for p ≥ 1). The zeta value is the 'missing constant term' of the power-sum polynomial.",
+      "ζ(−1) = −1/12 is the rigorous shadow of 1 + 2 + 3 + ⋯ '=' −1/12: it is the regularized constant left over from the Faulhaber polynomial ½n(n+1).",
+      "The trivial zeros ζ(−2n) = 0 (n ≥ 1) are not analytic accidents — they are the vanishing of the odd Bernoulli numbers B'_{2n+1} = 0, visible directly in the value formula.",
+      "The two Mathlib conventions ζ(−n) = −B'_{n+1}/(n+1) and ζ(−n) = (−1)^n·B_{n+1}/(n+1) agree because B'_m = (−1)^m·B_m; only the B_1 = ∓1/2 entry differs, which is why ζ(0) needs the sign."
+    ],
+    "prerequisites": [
+      "Riemann zeta function and its analytic continuation (used as a black box from Mathlib)",
+      "Bernoulli numbers, both conventions B and B'",
+      "Faulhaber's formula and its Bernoulli-polynomial form",
+      "Complex-number coercions and Finset sums in Lean 4/Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "value-formula",
+      "title": "Part I: The Value Formula ζ(−n) = −B_{n+1}/(n+1)",
+      "startLine": 53,
+      "endLine": 88,
+      "summary": "zeta_neg_nat: ζ(−n) = −B'_{n+1}/(n+1) (alias of Mathlib's riemannZeta_neg_nat_eq_bernoulli'). zeta_neg_nat_bernoulli: the (−1)^n·B_{n+1} form. bernoulli_convention_eq: the two numerators agree via B'_m = (−1)^m·B_m.",
+      "mathContext": "The answer to the open question. Mathlib's analytic continuation gives ζ(−n) = −B'_{n+1}/(n+1) with the B'_1 = +1/2 convention, equivalently ζ(−n) = (−1)^n·B_{n+1}/(n+1)."
+    },
+    {
+      "id": "faulhaber-bridge",
+      "title": "Part II: The Faulhaber ↔ ζ Bridge",
+      "startLine": 90,
+      "endLine": 147,
+      "summary": "faulhaber_sum_eq: (p+1)·∑_{k<n} k^p = B_{p+1}(n) − B_{p+1}. faulhaber_constant_is_eval_zero: B_{p+1} = B_{p+1}(0). zeta_neg_nat_mul: (p+1)·ζ(−p) = −B_{p+1} for p ≥ 1. faulhaber_constant_eq_zeta: the subtracted constant B_{p+1} equals −(p+1)·ζ(−p).",
+      "mathContext": "The new content: the constant that Faulhaber's polynomial subtracts off is, up to the factor (p+1) and a sign, the analytically-continued zeta value. This is the precise sense in which ζ(−p) 'is' the regularized power sum."
+    },
+    {
+      "id": "trivial-zeros",
+      "title": "Part III: The Trivial Zeros ζ(−2n) = 0",
+      "startLine": 149,
+      "endLine": 168,
+      "summary": "zeta_neg_even: ζ(−2n) = 0 for n ≥ 1, from the value formula and the vanishing of the odd Bernoulli number B'_{2n+1} = 0.",
+      "mathContext": "The trivial zeros of ζ at the negative even integers are exactly the zeros of the odd Bernoulli numbers, read straight off the value formula."
+    },
+    {
+      "id": "special-values",
+      "title": "Part IV: Special Values",
+      "startLine": 170,
+      "endLine": 208,
+      "summary": "zeta_zero: ζ(0) = −1/2. zeta_neg_one: ζ(−1) = −1/12. zeta_neg_two: ζ(−2) = 0. zeta_neg_three: ζ(−3) = 1/120.",
+      "mathContext": "The classical special values, each obtained by reading off the relevant Bernoulli number (B'_1 = 1/2, B'_2 = 1/6, B'_4 = −1/30). ζ(−1) = −1/12 is the rigorous form of 1 + 2 + 3 + ⋯ '=' −1/12."
+    }
+  ],
+  "conclusion": {
+    "summary": "Parent OQ-04's third open question is answered affirmatively: ζ(−n) = −B'_{n+1}/(n+1) is the endpoint of Mathlib's analytic continuation. This file pins down the precise link to Faulhaber's formula — the subtracted constant B_{p+1} is −(p+1)·ζ(−p) — and reads off the trivial zeros and the special values ζ(0) = −1/2, ζ(−1) = −1/12, ζ(−2) = 0, ζ(−3) = 1/120.",
+    "implications": "The identification of ζ(−p) with the missing constant term of the Faulhaber polynomial is the algebraic heart of zeta-regularization: it explains why 1 + 2 + 3 + ⋯ is assigned −1/12 and why the power-sum polynomials encode the zeta values at negative integers. The trivial zeros are the vanishing odd Bernoulli numbers. Via the functional equation these negative-integer values are dual to the even-integer values ζ(2k) = (−1)^{k+1}·2^{2k−1}·π^{2k}·B_{2k}/(2k)! also in Mathlib.",
+    "openQuestions": [
+      "Can the Faulhaber ↔ ζ bridge be lifted to the full functional equation, relating ζ(−p) to ζ(p+1) for all p?",
+      "Can the same regularization be formalized for the Hurwitz zeta function ζ(s, a), recovering the Bernoulli polynomials B_{p+1}(a) rather than just the constant B_{p+1}?",
+      "Can ζ(−1) = −1/12 be connected formally to its appearances in the Casimir effect and bosonic string theory (critical dimension 26)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series-oq-04",
+      "relationship": "extends",
+      "description": "Parent: Faulhaber's formula for power sums via Bernoulli numbers. This entry answers its third open question."
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The trivial zeros ζ(−2n) = 0 proved here are exactly the trivial zeros excluded from the Riemann Hypothesis statement about nontrivial zeros on Re(s) = 1/2."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial (scoped)"
+    ],
+    "namespace": "ArithmeticSeriesOQ04OQ03",
+    "lineCount": 215,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "zeta_neg_nat",
+        "type": "core",
+        "description": "ζ(−n) = −B'_{n+1}/(n+1), the value formula answering the open question",
+        "leanType": "(n : ℕ) → riemannZeta (-(n : ℂ)) = -(bernoulli' (n + 1) : ℂ) / ((n : ℂ) + 1)"
+      },
+      {
+        "name": "faulhaber_constant_eq_zeta",
+        "type": "key",
+        "description": "The constant B_{p+1} subtracted in Faulhaber's identity equals −(p+1)·ζ(−p) for p ≥ 1",
+        "leanType": "(p : ℕ) → 1 ≤ p → (bernoulli (p + 1) : ℂ) = -(((p : ℂ) + 1) * riemannZeta (-(p : ℂ)))"
+      },
+      {
+        "name": "zeta_neg_even",
+        "type": "key",
+        "description": "Trivial zeros: ζ(−2n) = 0 for n ≥ 1, from B'_{2n+1} = 0",
+        "leanType": "(n : ℕ) → 1 ≤ n → riemannZeta (-((2 * n : ℕ) : ℂ)) = 0"
+      }
+    ],
+    "path": "Proofs/ArithmeticSeriesOQ04OQ03.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "zeta_neg_nat",
+      "type": "core",
+      "description": "ζ(−n) = −B'_{n+1}/(n+1), the answer to the open question (alias of riemannZeta_neg_nat_eq_bernoulli')",
+      "leanType": "(n : ℕ) → riemannZeta (-(n : ℂ)) = -(bernoulli' (n + 1) : ℂ) / ((n : ℂ) + 1)"
+    },
+    {
+      "name": "zeta_neg_nat_mul",
+      "type": "key",
+      "description": "(p+1)·ζ(−p) = −B_{p+1} for p ≥ 1, clearing the denominator",
+      "leanType": "(p : ℕ) → 1 ≤ p → ((p : ℂ) + 1) * riemannZeta (-(p : ℂ)) = -(bernoulli (p + 1) : ℂ)"
+    },
+    {
+      "name": "faulhaber_constant_eq_zeta",
+      "type": "key",
+      "description": "The Faulhaber ↔ ζ bridge: subtracted constant B_{p+1} = −(p+1)·ζ(−p)",
+      "leanType": "(p : ℕ) → 1 ≤ p → (bernoulli (p + 1) : ℂ) = -(((p : ℂ) + 1) * riemannZeta (-(p : ℂ)))"
+    },
+    {
+      "name": "zeta_neg_one",
+      "type": "key",
+      "description": "ζ(−1) = −1/12, the rigorous form of 1 + 2 + 3 + ⋯ '=' −1/12",
+      "leanType": "riemannZeta (-(1 : ℂ)) = -1 / 12"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Riemann, Bernhard",
+      "title": "Ueber die Anzahl der Primzahlen unter einer gegebenen Grösse",
+      "year": "1859",
+      "venue": "Monatsberichte der Berliner Akademie",
+      "note": "Introduces the analytic continuation and functional equation of ζ(s), the basis for evaluating ζ at negative integers"
+    },
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Remarques sur un beau rapport entre les séries des puissances tant directes que réciproques",
+      "year": "1749",
+      "venue": "Mémoires de l'Académie des Sciences de Berlin",
+      "note": "Conjectures the functional equation and computes ζ(−n) values, including the (regularized) ζ(−1) = −1/12"
+    },
+    {
+      "authors": "Ireland, Kenneth; Rosen, Michael",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer GTM 84, 2nd edition",
+      "note": "Chapter 15 derives ζ(−n) = −B_{n+1}/(n+1) from the power-sum formula and Bernoulli numbers, the algebraic route formalized here"
+    }
+  ],
+  "sorries": 0
+}
