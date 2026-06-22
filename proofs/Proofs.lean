@@ -3004,6 +3004,7 @@ import Proofs.MidyTheorem
 import Proofs.MinkowskiFundamentalTheorem
 import Proofs.MinkowskiFundamentalTheoremOQ01
 import Proofs.MinkowskiFundamentalTheoremOQ01OQ01
+import Proofs.MinkowskiFundamentalTheoremOQ01OQ02
 import Proofs.MinkowskiFundamentalTheoremOQ02
 import Proofs.MinkowskiFundamentalTheoremOQ04
 import Proofs.MinkowskiTheoremOQ02
