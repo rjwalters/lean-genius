@@ -495,6 +495,148 @@ theorem parabola_no_three_collinear (p : ℕ) [NeZero p] [Fact p.Prime]
   rw [Finset.mem_filter]
   exact ⟨hS hw, hline w hw⟩
 
+/- ## S3-B3 — realizing the mod-`p` arc as a concrete `PlanarPointSet` in ℝ²
+
+The parent gallery's incidence framework (`PlanarPointSet`, `collinear`,
+`NoFiveCollinear`, `fourPointLineCount`) lives over **ℝ²**, whereas the
+general-position result above ("no three collinear") is proved over the
+finite field `ZMod p`.  This section bridges the two: the Grünbaum
+parabola lifts to an explicit `p`-point set in ℝ² that is in general
+position in the gallery's *own* determinant-collinearity sense, hence
+satisfies `NoFiveCollinear`.
+
+The lift is the coordinatewise canonical-representative map
+`embed (i, j) = (i.val, j.val) : ℝ × ℝ`, with `ZMod.val` taking values
+in `{0, …, p-1}`.  The key arithmetic fact is that collinearity over ℝ
+of three lifted points is an **integer** determinant vanishing
+(`= 0` in ℤ, since all coordinates are integers), which reduces mod `p`
+to collinearity over `ZMod p`.  Thus the proven `ZMod p` arc property
+transfers to a *bona fide* real arc — no new geometry, only a
+ℝ → ℤ → `ZMod p` cast chain.
+
+Honest scope: the resulting set is an **arc** (no three collinear), so
+its `fourPointLineCount` is `0`.  It is the verified general-position
+base in ℝ² on top of which a four-point-line lower-bound construction
+must be built — it is not itself a lower-bound witness. -/
+
+/-- The canonical-representative embedding `ZMod p × ZMod p ↪ ℝ × ℝ`,
+sending each coordinate to its `ZMod.val` representative in `{0,…,p-1}`
+cast into ℝ. -/
+noncomputable def embed {p : ℕ} (w : ZMod p × ZMod p) : ℝ × ℝ :=
+  ((w.1.val : ℝ), (w.2.val : ℝ))
+
+/-- `embed` is injective: `ZMod.val` is injective and `ℕ ↪ ℝ`. -/
+theorem embed_injective (p : ℕ) [NeZero p] :
+    Function.Injective (embed : ZMod p × ZMod p → ℝ × ℝ) := by
+  intro x y h
+  simp only [embed, Prod.mk.injEq] at h
+  obtain ⟨h1, h2⟩ := h
+  have e1 : x.1.val = y.1.val := by exact_mod_cast h1
+  have e2 : x.2.val = y.2.val := by exact_mod_cast h2
+  exact Prod.ext (ZMod.val_injective p e1) (ZMod.val_injective p e2)
+
+/-- **ℝ → `ZMod p` collinearity transfer.**  If three lifted parabola
+points are collinear in ℝ² (gallery determinant sense), then the
+underlying `ZMod p` points satisfy the same determinant relation.  The
+ℝ-determinant of integer coordinates is an integer that vanishes, hence
+vanishes mod `p`. -/
+theorem embed_collinear_imp_zdet (p : ℕ) [NeZero p]
+    (a b c : ZMod p × ZMod p) (h : collinear (embed a) (embed b) (embed c)) :
+    (b.1 - a.1) * (c.2 - a.2) = (c.1 - a.1) * (b.2 - a.2) := by
+  simp only [collinear, embed] at h
+  -- The ℝ equation between integer-casts forces the integer equation.
+  have hint : ((b.1.val : ℤ) - a.1.val) * ((c.2.val : ℤ) - a.2.val)
+            = ((c.1.val : ℤ) - a.1.val) * ((b.2.val : ℤ) - a.2.val) := by
+    exact_mod_cast h
+  -- Reduce mod `p`; canonical representatives cast back to themselves.
+  have hz := congrArg (fun n : ℤ => (n : ZMod p)) hint
+  push_cast at hz
+  simpa [ZMod.natCast_zmod_val] using hz
+
+/-- **No three collinear over `ZMod p`, determinant form.**  Three
+distinct parabola points cannot satisfy the gallery determinant
+collinearity relation over `ZMod p`.  Derived from
+`parabola_no_three_collinear`: the determinant relation places the
+three points on the common affine line through `a` and `b`. -/
+theorem parabola_no_three_collinear_zdet (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) (a b c : ZMod p × ZMod p)
+    (ha : a ∈ parabola p) (hb : b ∈ parabola p) (hc : c ∈ parabola p)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hdet : (b.1 - a.1) * (c.2 - a.2) = (c.1 - a.1) * (b.2 - a.2)) : False := by
+  -- Line through `a`, `b`: direction `(α, β) = (b.2 - a.2, a.1 - b.1)`.
+  have hαβ : ¬ ((b.2 - a.2 : ZMod p) = 0 ∧ (a.1 - b.1 : ZMod p) = 0) := by
+    rintro ⟨h1, h2⟩
+    exact hab (Prod.ext (sub_eq_zero.mp h2) (sub_eq_zero.mp h1).symm)
+  have hsub : ({a, b, c} : Finset (ZMod p × ZMod p)) ⊆ parabola p := by
+    intro w hw
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+    rcases hw with rfl | rfl | rfl <;> assumption
+  have hline : ∀ w ∈ ({a, b, c} : Finset (ZMod p × ZMod p)),
+      (b.2 - a.2) * w.1 + (a.1 - b.1) * w.2
+        = (b.2 - a.2) * a.1 + (a.1 - b.1) * a.2 := by
+    intro w hw
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+    rcases hw with rfl | rfl | rfl
+    · ring
+    · ring
+    · linear_combination -hdet
+  have hcard : ({a, b, c} : Finset (ZMod p × ZMod p)).card = 3 :=
+    Finset.card_eq_three.mpr ⟨a, b, c, hab, hac, hbc, rfl⟩
+  have hle := parabola_no_three_collinear p hp (b.2 - a.2) (a.1 - b.1)
+      ((b.2 - a.2) * a.1 + (a.1 - b.1) * a.2) hαβ {a, b, c} hsub hline
+  rw [hcard] at hle
+  omega
+
+/-- The lifted parabola: the image of the `ZMod p` parabola under
+`embed`, an explicit `p`-point subset of ℝ². -/
+noncomputable def realParabola (p : ℕ) [NeZero p] : Finset (ℝ × ℝ) :=
+  (parabola p).image embed
+
+/-- The lifted parabola has exactly `p` points (`embed` injective,
+`parabola` has `p` points). -/
+theorem realParabola_card (p : ℕ) [NeZero p] [Fact p.Prime] (hp : p ≠ 2) :
+    (realParabola p).card = p := by
+  rw [realParabola, Finset.card_image_of_injective _ (embed_injective p),
+      parabola_card p hp]
+
+/-- **No three collinear in ℝ².**  Three distinct points of the lifted
+parabola are never collinear in the gallery's determinant sense — the
+real arc property, transferred from `ZMod p` via `embed_collinear_imp_zdet`
+and `parabola_no_three_collinear_zdet`. -/
+theorem realParabola_no_three_collinear (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) (A B C : ℝ × ℝ)
+    (hA : A ∈ realParabola p) (hB : B ∈ realParabola p) (hC : C ∈ realParabola p)
+    (hAB : A ≠ B) (hAC : A ≠ C) (hBC : B ≠ C) :
+    ¬ collinear A B C := by
+  intro hcol
+  rw [realParabola, Finset.mem_image] at hA hB hC
+  obtain ⟨a, ha, rfl⟩ := hA
+  obtain ⟨b, hb, rfl⟩ := hB
+  obtain ⟨c, hc, rfl⟩ := hC
+  have hab : a ≠ b := fun h => hAB (by rw [h])
+  have hac : a ≠ c := fun h => hAC (by rw [h])
+  have hbc : b ≠ c := fun h => hBC (by rw [h])
+  exact parabola_no_three_collinear_zdet p hp a b c ha hb hc hab hac hbc
+    (embed_collinear_imp_zdet p a b c hcol)
+
+/-- **The lifted parabola as a `PlanarPointSet`** (S3-B3 deliverable).
+An explicit `p`-point planar set realizing the mod-`p` Grünbaum arc in
+the gallery's ℝ² incidence framework. -/
+noncomputable def realParabolaSet (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) : PlanarPointSet where
+  points := realParabola p
+  size_pos := by
+    rw [realParabola_card p hp]; exact (Fact.out : p.Prime).pos
+
+/-- **The lifted parabola has no five collinear points** — indeed no
+three.  Thus it is a valid input to the gallery's four-point-line
+machinery (`NoFiveCollinear`), realized in ℝ² with `0` axioms. -/
+theorem realParabolaSet_noFiveCollinear (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) : NoFiveCollinear (realParabolaSet p hp) := by
+  intro A B C _ _ hA hB hC _ _ hAB hAC _ _ hBC _ _ _ _ _
+  rintro ⟨hcol, -, -⟩
+  exact realParabola_no_three_collinear p hp A B C hA hB hC hAB hAC hBC hcol
+
 end Grunbaum
 
 end Erdos101OQ04
