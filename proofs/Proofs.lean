@@ -1406,6 +1406,7 @@ import Proofs.Erdos219Problem
 import Proofs.Erdos21Problem
 import Proofs.Erdos220Aristotle
 import Proofs.Erdos220OQ01
+import Proofs.Erdos220Incomplete01
 import Proofs.Erdos220Problem
 import Proofs.Erdos220ProblemProvable
 import Proofs.Erdos221Problem
