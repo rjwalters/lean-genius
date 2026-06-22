@@ -1635,6 +1635,7 @@ import Proofs.Erdos394Problem
 import Proofs.Erdos395OQ01
 import Proofs.Erdos395OQ01Incomplete01
 import Proofs.Erdos395Problem
+import Proofs.Erdos396OQ04
 import Proofs.Erdos396Problem
 import Proofs.Erdos397Problem
 import Proofs.Erdos398Problem

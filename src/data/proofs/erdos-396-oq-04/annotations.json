@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-e396oq04-closed-form",
+    "proofId": "erdos-396-oq-04",
+    "range": {
+      "startLine": 50,
+      "endLine": 58
+    },
+    "type": "key-step",
+    "title": "Closed form: C(2(n+1),n+1) = 2(2n+1)·catalan n",
+    "content": "Mathlib's `Nat.succ_mul_centralBinom_succ` states $(n+1)\\,C(2(n+1),n+1) = 2(2n+1)\\,C(2n,n)$. Rewriting $C(2n,n) = (n+1)\\,\\mathrm{catalan}\\,n$ via `succ_mul_catalan_eq_centralBinom` and cancelling the nonzero factor $n+1$ with `Nat.eq_of_mul_eq_mul_left` yields $C(2(n+1),n+1) = 2(2n+1)\\,\\mathrm{catalan}\\,n$. This exposes the Catalan number as the exact cofactor of $2(2n+1)$ — a form Mathlib does not record, since it proves Catalan integrality through a Gosper telescoping instead.",
+    "mathContext": "$C(2(n+1),n+1) = 2(2n+1)\\,C_n$ where $C_n = \\mathrm{catalan}\\,n$."
+  },
+  {
+    "id": "ann-e396oq04-divisibility",
+    "proofId": "erdos-396-oq-04",
+    "range": {
+      "startLine": 60,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "Divisibility refinements",
+    "content": "Reading the closed form as a product gives four divisibilities of the next central binomial coefficient: by $\\mathrm{catalan}\\,n$ (cofactor $2(2n+1)$), by $2(2n+1)$, by the odd factor $2n+1$, and by $2$. The odd-factor statement strengthens Mathlib's `two_dvd_centralBinom_succ`, which records only the even factor.",
+    "mathContext": "$\\mathrm{catalan}\\,n \\mid C(2(n+1),n+1)$ and $(2n+1) \\mid C(2(n+1),n+1)$."
+  },
+  {
+    "id": "ann-e396oq04-recurrence",
+    "proofId": "erdos-396-oq-04",
+    "range": {
+      "startLine": 92,
+      "endLine": 116
+    },
+    "type": "key-step",
+    "title": "Two-term Catalan recurrence",
+    "content": "Applying `succ_mul_catalan_eq_centralBinom` at index $n+1$ gives $(n+2)\\,\\mathrm{catalan}(n+1) = C(2(n+1),n+1)$; substituting the closed form yields the elementary recurrence $(n+2)\\,\\mathrm{catalan}(n+1) = 2(2n+1)\\,\\mathrm{catalan}\\,n$ — the standard computational recurrence for Catalan numbers, here obtained without binomial coefficients.",
+    "mathContext": "$(n+2)\\,C_{n+1} = 2(2n+1)\\,C_n$, i.e. $C_{n+1} = \\frac{2(2n+1)}{n+2} C_n$."
+  },
+  {
+    "id": "ann-e396oq04-coprime",
+    "proofId": "erdos-396-oq-04",
+    "range": {
+      "startLine": 118,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Coprimality of the divisors",
+    "content": "The two natural divisors $n+1$ and $2n+1$ of consecutive central binomial coefficients are coprime: peeling $2n+1 = n + 1\\cdot(n+1)$ reduces $\\gcd(n+1, 2n+1)$ to $\\gcd(n+1, n) = \\gcd(n, 1) = 1$. This explains why the two divisibility constraints act independently.",
+    "mathContext": "$\\gcd(n+1,\\,2n+1) = 1$ for all $n$."
+  }
+]
