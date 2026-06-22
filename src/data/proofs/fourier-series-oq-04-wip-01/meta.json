@@ -1,0 +1,177 @@
+{
+  "id": "fourier-series-oq-04-wip-01",
+  "title": "A Genuine Multi-Dimensional Fourier Coefficient on the n-Torus",
+  "slug": "fourier-series-oq-04-wip-01",
+  "description": "The parent scaffold (fourier-series-oq-04) leaves the n-dimensional Fourier coefficient as a placeholder (fourierCoeff := 0) and asks (OQ-04) whether it can be implemented in Lean using Mathlib's integration and Haar measure, via Fin n → AddCircle (1:ℝ) with product Haar measure. This entry does exactly that: it builds the n-dimensional Fourier character e_k(x) = ∏ᵢ fourier(kᵢ)(xᵢ) from Mathlib's one-dimensional fourier, defines the genuine coefficient f̂(k) = ∫_{Tⁿ} f(x)·conj(e_k(x)) dHaar, and proves the defining algebraic properties — the character is a unimodular homomorphism (ℤⁿ,+) → (ℂ,×) — plus linearity of the coefficient. All 0 axioms, replacing the placeholder with a real definition.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fourier_series",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FourierSeriesOQ04WIP01.lean",
+    "tags": [
+      "harmonic-analysis",
+      "fourier-series",
+      "multi-dimensional",
+      "torus",
+      "haar-measure",
+      "characters",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "fourier",
+        "description": "The one-dimensional Fourier character fourier n : C(AddCircle T, ℂ), e^{2πi n x / T}",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "fourier_zero / fourier_add / fourier_neg",
+        "description": "The character laws: fourier 0 = 1, fourier (m+n) = fourier m · fourier n, fourier (-n) = conj (fourier n)",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "Circle.norm_coe",
+        "description": "Elements of the unit circle have complex norm 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "MeasureTheory.integral_const_mul",
+        "description": "Pulling a constant out of an integral (linearity)",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner"
+      },
+      {
+        "theorem": "MeasureTheory.Measure.pi",
+        "description": "Product (Haar) measure on Fin n → AddCircle 1, the default volume on the torus",
+        "module": "Mathlib.MeasureTheory.Constructions.Pi"
+      }
+    ],
+    "originalContributions": [
+      "torusChar: the genuine n-dimensional Fourier character e_k(x) = ∏ᵢ fourier(kᵢ)(xᵢ), built from Mathlib's 1D fourier — replacing the parent's conceptual gap",
+      "fourierCoeffND: the genuine multi-dimensional Fourier coefficient f̂(k) = ∫_{Tⁿ} f(x)·conj(e_k(x)) dHaar, replacing the parent scaffold's placeholder fourierCoeff := 0",
+      "torusChar_zero / torusChar_add / torusChar_neg: the character laws (e_0 = 1, e_{j+k} = e_j·e_k, e_{-k} = conj e_k) lifted from the 1D character to the product",
+      "norm_torusChar: unimodularity ‖e_k(x)‖ = 1 (product of unit-modulus 1D characters)",
+      "torusCharHom: packages the character as a monoid homomorphism Multiplicative (ℤⁿ) →* ℂ",
+      "fourierCoeffND_const_mul / fourierCoeffND_zero_fun: linearity of the coefficient in the function"
+    ],
+    "axiomCount": 0,
+    "lineCount": 123,
+    "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound]. SCOPE: this implements the multi-dimensional Fourier coefficient and proves the character's algebraic laws and the coefficient's linearity — the concrete OQ-04 deliverable. It does not address the deep convergence questions (2D Carleson, Bochner-Riesz), which remain open.",
+    "theoremCount": 7,
+    "definitionCount": 4,
+    "prerequisites": [
+      "The n-torus (ℝ/ℤ)ⁿ and Haar (product) measure",
+      "Fourier characters e^{2πi k·x} and their group-homomorphism laws",
+      "Bochner integration on a measure space (MeasureTheory.integral)",
+      "Complex conjugation and the unit circle"
+    ],
+    "relatedProblems": [
+      {
+        "id": "fourier-series-oq-04",
+        "relationship": "Parent: higher-dimensional Fourier convergence scaffold with a placeholder fourierCoeff := 0. This entry implements that coefficient genuinely via Mathlib's AddCircle Fourier theory."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Fourier analysis on the n-torus Tⁿ = (ℝ/ℤ)ⁿ expands a function f as ∑_{k ∈ ℤⁿ} f̂(k) e^{2πi k·x}, where the Fourier coefficient f̂(k) = ∫_{Tⁿ} f(x) e^{-2πi k·x} dx integrates against the Haar (Lebesgue) probability measure. In n ≥ 2 the convergence theory becomes subtle — rectangular sums can diverge (Fefferman 1971), and the analogue of Carleson's theorem (a.e. convergence of spherical sums for L²) is a major open problem — but the foundational object, the Fourier coefficient itself, is elementary once one has integration and the characters.\n\nThe parent gallery scaffold set up the framework but left the coefficient as a literal placeholder `fourierCoeff := 0`, with an explicit open question (OQ-04) asking for a genuine Lean implementation via `Fin n → AddCircle (1 : ℝ)` and the product Haar measure. Mathlib already provides the one-dimensional Fourier character `fourier : ℤ → C(AddCircle T, ℂ)` together with its group-homomorphism laws and the Haar measure `haarAddCircle`. This entry assembles these into the genuine n-dimensional character and coefficient and proves the basic structure theorems.",
+    "problemStatement": "Implement the n-dimensional Fourier coefficient on the torus Fin n → AddCircle (1:ℝ) using Mathlib's integration and Haar measure, replacing the parent's placeholder. Build the multi-dimensional character e_k(x) = ∏ᵢ fourier(kᵢ)(xᵢ), define f̂(k) = ∫ f·conj(e_k) dHaar, and prove the character is a unimodular group homomorphism (ℤⁿ,+) → (ℂ,×) together with the coefficient's linearity.",
+    "proofStrategy": "Model the torus as the product Fin n → AddCircle (1:ℝ); its default volume is the product of the circle Haar measures (a probability measure). Define the character as the finite product of Mathlib's 1D characters and the coefficient as the Bochner integral of f·conj(e_k). The character laws are lifted coordinatewise: e_0 = ∏ fourier 0 = ∏ 1 = 1 (fourier_zero); e_{j+k} = ∏ fourier(jᵢ+kᵢ) = ∏ (fourier jᵢ · fourier kᵢ) = e_j·e_k (fourier_add + prod_mul_distrib); e_{-k} = ∏ fourier(-kᵢ) = ∏ conj(fourier kᵢ) = conj(∏ ...) (fourier_neg + map_prod); ‖e_k‖ = ∏‖fourier kᵢ‖ = 1 (Circle.norm_coe). Linearity of the coefficient uses integral_const_mul.",
+    "keyInsights": [
+      "The n-dimensional Fourier kernel is just a finite product of Mathlib's one-dimensional characters: e_k(x) = ∏ᵢ fourier(kᵢ)(xᵢ). Every structural property descends coordinatewise.",
+      "The character laws (e_0 = 1, e_{j+k} = e_j·e_k, conjugation, unimodularity) are products of the corresponding 1D laws — proved by prod_congr / prod_mul_distrib / map_prod, with no analysis beyond the AddCircle facts.",
+      "The genuine coefficient is a one-line Bochner integral once the character is in hand; the default volume on the product torus is exactly the product Haar measure the OQ requested.",
+      "Replacing a placeholder definition (`:= 0`) with a real one is the substantive step: every downstream statement about the scaffold only becomes meaningful once the kernel is the actual Fourier character.",
+      "Linearity in the function holds unconditionally (integral_const_mul needs no integrability), giving a clean first structural property of f̂."
+    ],
+    "prerequisites": [
+      "AddCircle T and its Haar measure; product measures on Fin n → AddCircle 1",
+      "The 1D Fourier character fourier n and its homomorphism laws",
+      "Bochner integral and its linearity (integral_const_mul)",
+      "Finite products in a commutative monoid (Finset.prod)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Section I: The Genuine Character and Coefficient",
+      "startLine": 43,
+      "endLine": 64,
+      "summary": "Models the torus as Fin n → AddCircle (1:ℝ); defines torusChar k x = ∏ᵢ fourier(kᵢ)(xᵢ) and the genuine fourierCoeffND f k = ∫ f·conj(e_k) dHaar; proves each 1D character is unimodular (norm_fourier_apply).",
+      "mathContext": "Replaces the parent's placeholder fourierCoeff := 0 with a real Bochner integral against the product Haar measure."
+    },
+    {
+      "id": "character-laws",
+      "title": "Section II: The Character Is a Unimodular Homomorphism",
+      "startLine": 66,
+      "endLine": 106,
+      "summary": "torusChar_zero (e_0 = 1), torusChar_add (e_{j+k} = e_j·e_k), torusChar_neg (e_{-k} = conj e_k), norm_torusChar (‖e_k‖ = 1); torusCharHom packages the multiplicative homomorphism Multiplicative (ℤⁿ) →* ℂ.",
+      "mathContext": "The defining algebraic structure of the Fourier kernel, lifted coordinatewise from Mathlib's 1D character laws."
+    },
+    {
+      "id": "linearity",
+      "title": "Section III: Linearity of the Coefficient",
+      "startLine": 108,
+      "endLine": 121,
+      "summary": "fourierCoeffND_const_mul ((c·f)̂(k) = c·f̂(k)) via integral_const_mul, and fourierCoeffND_zero_fun (the coefficient of 0 is 0).",
+      "mathContext": "The first structural properties of the genuine coefficient as a linear functional of f."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) implementation, in 123 lines with 7 theorems and 4 definitions, of the multi-dimensional Fourier coefficient on the n-torus Fin n → AddCircle (1:ℝ). The n-dimensional character e_k(x) = ∏ᵢ fourier(kᵢ)(xᵢ) is built from Mathlib's 1D character and shown to be a unimodular homomorphism (ℤⁿ,+) → (ℂ,×); the coefficient f̂(k) = ∫ f·conj(e_k) dHaar is defined as a genuine Bochner integral and shown linear in f.",
+    "implications": "This realises the concrete OQ-04 deliverable: the parent scaffold's placeholder fourierCoeff := 0 is replaced by an actual definition using Mathlib's integration and Haar measure on AddCircle, with the character's algebraic laws and the coefficient's linearity proved. It provides a correct foundation on which the harder convergence statements (Parseval/Plancherel in L², and the open 2D Carleson and Bochner-Riesz questions) could be built. The reusable pieces are the n-torus character and its homomorphism/unimodularity lemmas.",
+    "openQuestions": [
+      "Prove Parseval/Plancherel for the n-torus: ∑_{k ∈ ℤⁿ} |f̂(k)|² = ∫_{Tⁿ} |f|² for f ∈ L²(Tⁿ), using the orthonormality of the products of Mathlib's fourierBasis across coordinates.",
+      "Establish that {e_k}_{k ∈ ℤⁿ} is a Hilbert basis of L²(Tⁿ) as a tensor product of the 1D fourierBasis, giving L² convergence of multi-dimensional Fourier series."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.MeasureTheory.Constructions.Pi",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Complex",
+      "Finset",
+      "ComplexConjugate"
+    ],
+    "namespace": "FourierSeriesOQ04WIP01",
+    "lineCount": 123,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 4,
+    "path": "Proofs/FourierSeriesOQ04WIP01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "fourier-series-oq-04",
+      "relationship": "extends",
+      "description": "Parent: multi-dimensional Fourier convergence scaffold whose fourierCoeff is a placeholder := 0. This entry implements that coefficient genuinely on Fin n → AddCircle (1:ℝ) with the product Haar measure, exactly the concrete path the parent's OQ-04 proposed."
+    }
+  ],
+  "references": [
+    {
+      "key": "Gra14",
+      "citation": "Grafakos, L., Classical Fourier Analysis, 3rd ed., Springer GTM 249 (2014), Chapter 3.",
+      "type": "book"
+    },
+    {
+      "key": "SW71",
+      "citation": "Stein, E.M. and Weiss, G., Introduction to Fourier Analysis on Euclidean Spaces, Princeton University Press (1971).",
+      "type": "book"
+    },
+    {
+      "key": "Kat04",
+      "citation": "Katznelson, Y., An Introduction to Harmonic Analysis, 3rd ed., Cambridge University Press (2004).",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}
