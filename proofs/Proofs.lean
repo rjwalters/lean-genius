@@ -3248,6 +3248,7 @@ import Proofs.QuadraticGaussSumSquareOQ01
 import Proofs.QuadraticGaussSumSquareOQ02
 import Proofs.QuadraticReciprocity
 import Proofs.QuadraticReciprocityAlgorithmOQ01
+import Proofs.QuadraticReciprocityAlgorithmOQ02
 import Proofs.QuadraticReciprocityAlgorithmOQ03
 import Proofs.QuadraticReciprocityAlgorithmOQ03FieldBridge
 import Proofs.QuadraticReciprocityAlgorithmOQ03M2
