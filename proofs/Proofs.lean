@@ -1032,6 +1032,7 @@ import Proofs.Erdos1052Aristotle
 import Proofs.Erdos1052Problem
 import Proofs.Erdos1053Problem
 import Proofs.Erdos1054AlmostAllOQ01
+import Proofs.Erdos1054AlmostAllOQ0103
 import Proofs.Erdos1054ConstructionD
 import Proofs.Erdos1054OQ01
 import Proofs.Erdos1054OQ02
