@@ -1,0 +1,68 @@
+{
+  "slug": "jensen-inequality-oq-01-oq-01",
+  "title": "Young's Inequality and its Equality Case, from Weighted AM–GM",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "a\\,b = \\frac{a^p}{p} + \\frac{b^q}{q} \\iff a^p = b^q \\quad (1/p+1/q=1,\\ a,b\\ge 0)",
+    "plain": "Mathlib has Young's inequality a·b ≤ aᵖ/p + bᵍ/q for Hölder-conjugate exponents p, q and nonnegative a, b, but not its equality case. Prove that equality holds if and only if aᵖ = bᵍ, by recognizing Young's inequality as the two-term weighted AM–GM inequality (weights 1/p, 1/q on data aᵖ, bᵍ) and inheriting the equality characterization from the parent entry.",
+    "whyMatters": [
+      "Fills a real Mathlib gap: the equality case of Young's inequality is absent",
+      "The equality case identifies the extremizers of Hölder's inequality"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-22T13:15:00-07:00",
+    "iteration": 1,
+    "focus": "Add the equality case of Young's inequality by specializing the parent's weighted AM–GM equality case to two terms.",
+    "blockers": [],
+    "nextAction": "Complete — proof verified, gallery entry created.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SOLVED (researcher-9, 2026-06-22): proved the equality case of Young's inequality a·b = aᵖ/p + bᵍ/q ↔ aᵖ = bᵍ, 0-axiom verified (propext/Classical.choice/Quot.sound, no native_decide). File Proofs/JensenInequalityOQ01OQ01.lean (89L, 4 thm). amgm_two_weighted_eq_iff specializes the parent's weighted_amgm_eq_iff to a Fin 2 index set (w = ![1/p,1/q], z = ![aᵖ,bᵍ]); young_eq_iff applies it with (aᵖ)^{1/p} = a (Real.rpow_mul, p·p⁻¹ = 1, rpow_one), Hölder conjugacy giving p⁻¹+q⁻¹ = 1; young_le re-exports Real.young_inequality_of_nonneg; young_lt_of_ne is lt_of_le_of_ne against the equality case.",
+    "builtItems": [
+      "Proofs/JensenInequalityOQ01OQ01.lean: young_eq_iff (equality case of Young's inequality — Mathlib gap)",
+      "amgm_two_weighted_eq_iff (two-variable weighted AM–GM equality case, from parent over Fin 2)",
+      "young_le (Young's inequality re-export), young_lt_of_ne (strict form)",
+      "src/data/proofs/jensen-inequality-oq-01-oq-01/ gallery entry"
+    ],
+    "insights": [
+      "Young's inequality IS the two-term weighted AM–GM with weights 1/p, 1/q, so its equality case is forced by the AM–GM equality case — no new convexity argument needed",
+      "Choosing data aᵖ, bᵍ makes the weighted geometric mean (aᵖ)^{1/p}·(bᵍ)^{1/q} telescope to a·b, because (aᵖ)^{1/p} = a^{p·p⁻¹} = a",
+      "Hölder conjugacy 1/p+1/q=1 is exactly the 'weights sum to 1' hypothesis of weighted AM–GM",
+      "Reducing a two-variable inequality to the general weighted statement over a Fin 2 index set keeps the equality case a one-line specialization"
+    ],
+    "mathlibGaps": [
+      "Mathlib has Young's inequality (Real.young_inequality_of_nonneg) but NOT its equality case; young_eq_iff here is the missing characterization and a natural upstream contribution"
+    ],
+    "nextSteps": [
+      "Lift to the equality case of Hölder's inequality (proportionality of |f|ᵖ and |g|ᵍ)",
+      "State the integral / convolution form of Young's inequality equality case",
+      "n-fold generalized Young / weighted AM–GM equality case directly from weighted_amgm_eq_iff"
+    ],
+    "markdown": "# Knowledge Base: jensen-inequality-oq-01-oq-01\n\n## Problem Understanding\n\nAdd the equality case of Young's inequality (missing from Mathlib) by recognizing Young's inequality as two-term weighted AM–GM and inheriting the parent's equality characterization.\n\n## Insights\n\nWith weights 1/p, 1/q and data aᵖ, bᵍ, the weighted geometric mean (aᵖ)^{1/p}·(bᵍ)^{1/q} collapses to a·b and the weighted arithmetic mean is aᵖ/p + bᵍ/q. The two-variable weighted AM–GM equality case (parent's weighted_amgm_eq_iff over Fin 2) then gives equality iff aᵖ = bᵍ. Hölder conjugacy 1/p+1/q=1 is the 'weights sum to 1' hypothesis.\n\n## Dead Ends\n\nNone — the build succeeded after removing one unused simp argument.\n"
+  },
+  "tags": [
+    "analysis",
+    "convexity",
+    "young-inequality",
+    "am-gm-inequality",
+    "holder-conjugate",
+    "inequalities",
+    "equality-case",
+    "research"
+  ]
+}
