@@ -1,0 +1,173 @@
+{
+  "id": "cevas-theorem-oq-02-oq-04-oq-01",
+  "title": "Menelaus in Higher Dimensions: The Signed Twisted-Cocycle Criterion",
+  "slug": "cevas-theorem-oq-02-oq-04-oq-01",
+  "description": "The Menelaus (transversal) dual of the parent's higher-dimensional Ceva cocycle. A hyperplane crossing the edges of an n-simplex and missing its vertices assigns each vertex i a nonzero value a_i and divides the edge i→j in the signed ratio m(i,j) = -a_i/a_j. These signed ratios obey a TWISTED cocycle law m(i,j)·m(j,k) = -m(i,k) and multiply to -1 around every triangular 2-face (classical Menelaus collinearity), versus the +1 of concurrent cevians. Conversely any nonzero twisted cocycle is reconstructed from vertex values a_i = 1/m(b,i), giving a transversal-hyperplane criterion m(i,j)·m(j,k)·m(k,i) = -1 on every 2-face. The duality m(i,j) = -r(j,i) shows Ceva (+1) and Menelaus (-1) are one identity up to sign.",
+  "meta": {
+    "author": "Classical (Menelaus of Alexandria, c. 100 AD); higher-dimensional signed twisted-cocycle formulation original",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Menelaus%27s_theorem",
+    "date": "c. 100",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CevasTheoremOQ02OQ04OQ01.lean",
+    "tags": [
+      "geometry",
+      "simplex",
+      "higher-dimensional",
+      "collinearity",
+      "transversal",
+      "menelaus",
+      "signed-ratio",
+      "cocycle",
+      "duality",
+      "generalization",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.prod_range_succ",
+        "description": "∏ over range (n+1) peels off the last factor",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.prod_mul_distrib",
+        "description": "∏ (f·g) = (∏ f)·(∏ g)",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "div_self",
+        "description": "a / a = 1 for a ≠ 0",
+        "module": "Mathlib.Algebra.Group.Basic"
+      },
+      {
+        "theorem": "mul_right_cancel₀",
+        "description": "cancellation of a nonzero right factor",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      },
+      {
+        "theorem": "mul_eq_zero",
+        "description": "a * b = 0 ↔ a = 0 ∨ b = 0",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      },
+      {
+        "theorem": "neg_div",
+        "description": "(-a) / b = -(a / b)",
+        "module": "Mathlib.Algebra.Group.Basic"
+      }
+    ],
+    "originalContributions": [
+      "menelausRatio framework: signed division ratio m(i,j) = -a_i/a_j in which a transversal hyperplane with nonzero vertex values a meets the edge i→j of an n-simplex",
+      "menelausRatio_twisted_cocycle: the TWISTED cocycle law m(i,j)·m(j,k) = -m(i,k) — the Menelaus analogue of the Ceva cocycle, the extra sign being the whole difference between collinearity and concurrency",
+      "menelausRatio_triangle / planar_menelaus_product: the classical Menelaus product = -1 on every triangular 2-face (the collinearity / transversal criterion)",
+      "menelausRatio_swap: signed reciprocity m(i,j)·m(j,i) = 1 (two sign reversals cancel)",
+      "prod_div_telescope + menelausRatio_cycle_prod: the signed product around ANY closed walk of length L equals (-1)^L — odd cycles give -1, even cycles return to +1",
+      "exists_values_of_twisted_cocycle: reconstruction of the transversal hyperplane — every nonzero twisted cocycle arises from explicit vertex values a_i = 1/m(b,i)",
+      "cube_eq_neg_one: over ℝ the only cube root of -1 is -1 (the nonlinear step that makes the 2-face conditions sufficient)",
+      "twisted_cocycle_iff_triangles: the twisted cocycle law is equivalent to the Menelaus product = -1 on every ordered triple (the 2-face conditions generate the whole twisted cocycle)",
+      "menelaus_criterion: full equivalence — a transversal hyperplane realizing m exists iff the Menelaus product = -1 on every triangular 2-face",
+      "menelausRatio_eq_neg_edgeRatio / menelaus_triangle_eq_neg_ceva: the Ceva–Menelaus duality — m(i,j) = -r(j,i) and the Menelaus face product is the negation of the Ceva face product (-1 transversal vs +1 concurrent)",
+      "tetra_face_menelaus / tetra_other_face_menelaus / tetra_four_cycle: explicit 3-simplex (Fin 4) specializations including the even-length 4-vertex walk returning +1"
+    ],
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "lineCount": 296,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (no native_decide). The only hypotheses are the standing non-vanishing of the vertex values / signed ratios (the hyperplane missing the vertices), supplied as ordinary theorem hypotheses, not structure-encoded assumptions.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 18,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Menelaus's theorem (Menelaus of Alexandria, c. 100 AD) is the projective companion of Ceva's: for a triangle ABC and a transversal line meeting the (extended) sides at X, Y, Z, the three points are collinear iff the product of signed side ratios equals -1 — exactly the opposite sign to Ceva's +1 for concurrent cevians. The parent file CevasTheoremOQ02OQ04.lean answered open question 4 of cevas-theorem-oq-02 ('when do hypersurfaces bisect a simplex concurrently?') by identifying the planar Ceva product as a 1-cocycle on the simplex's edge ratios. This entry develops the dual transversal story: what replaces Ceva's cocycle when a hyperplane, rather than a point, crosses the simplex.",
+    "problemStatement": "**Setup.** A hyperplane H = {x : ℓ(x) = c} missing every vertex of an n-simplex assigns each vertex i the nonzero value a_i = ℓ(V_i) - c. The point where H meets the edge from V_i to V_j divides it in the signed ratio m(i,j) = -a_i/a_j (the point (1-t)V_i + tV_j with ℓ = c sits at t = a_i/(a_i - a_j), giving t/(1-t) = -a_i/a_j).\n\n**Theorem (forward).** The signed ratios satisfy the twisted cocycle law m(i,j)·m(j,k) = -m(i,k), and the product around every triangular 2-face is -1 (classical Menelaus collinearity); more generally the product around a closed walk of length L is (-1)^L.\n\n**Theorem (converse / reconstruction).** Any nonzero signed assignment obeying the twisted cocycle law comes from vertex values: there exist nonzero a with m(i,j) = -a_i/a_j, given explicitly by a_i = 1/m(b,i).\n\n**Transversal criterion.** For nonzero m the following are equivalent: (1) a transversal hyperplane realizing m exists; (2) m satisfies the twisted cocycle law; (3) the Menelaus product m(i,j)·m(j,k)·m(k,i) = -1 holds on every triangular 2-face.",
+    "text": "Higher-dimensional Menelaus's theorem via the signed twisted-cocycle criterion for simplex transversals. A hyperplane's signed edge ratios m(i,j) = -a_i/a_j satisfy m(i,j)·m(j,k) = -m(i,k) and multiply to -1 around every 2-face; conversely any nonzero twisted cocycle is reconstructed from vertex values a_i = 1/m(b,i). The duality m(i,j) = -r(j,i) makes Menelaus (-1) and the parent's Ceva (+1) one identity up to sign.",
+    "proofStrategy": "The argument mirrors the parent's Ceva cocycle but tracks the sign that distinguishes a transversal hyperplane from a concurrency point:\n\n1. **Forward direction.** With m(i,j) = -a_i/a_j, the twisted cocycle m(i,j)·m(j,k) = -m(i,k) and the 2-face product = -1 are direct field computations; the single extra minus per edge is what flips +1 into -1.\n2. **Telescoping.** Writing m(i,j) = (-1)·(a_i/a_j) and applying ∏_{t<L} f(t)/f(t+1) = f(0)/f(L) along a closed walk gives signed product (-1)^L · 1, so odd cycles (triangles) give -1 and even cycles return to +1.\n3. **Cube relation forces normalization.** From the 2-face conditions alone, m(i,i)³ = -1 over ℝ forces m(i,i) = -1 (factor (x+1)(x²-x+1), second factor positive), then signed reciprocity m(i,k)·m(k,i) = 1, then the twisted cocycle by cancelling the nonzero factor m(k,i).\n4. **Reconstruction.** Setting a_i = 1/m(b,i), the twisted cocycle m(b,i)·m(i,j) = -m(b,j) is exactly m(i,j) = -a_i/a_j.\n5. **Duality.** m(i,j) = -r(j,i) for the parent edge ratio r, and the Menelaus 2-face product is the negation of the Ceva 2-face product — the sign is the entire difference between the two classical theorems.",
+    "keyInsights": [
+      "Menelaus is Ceva with a sign: the signed edge ratio is m(i,j) = -r(j,i), and the 2-face product is -1 (collinear/transversal) instead of +1 (concurrent). The two classical theorems are one identity up to sign.",
+      "Concurrency is an honest 1-cocycle; a transversal is a TWISTED cocycle m(i,j)·m(j,k) = -m(i,k). The twist is exactly the extra orientation reversal a hyperplane forces on each edge it crosses.",
+      "In dimension n the single planar Menelaus equation is replaced by the Menelaus product = -1 on EVERY triangular 2-face; those 2-face conditions generate the whole twisted cocycle.",
+      "Realizability is reconstruction: a nonzero signed assignment comes from a transversal hyperplane iff it is a twisted coboundary m(i,j) = -a_i/a_j, with vertex values recovered explicitly as a_i = 1/m(b,i).",
+      "The cube relation m(i,i)³ = -1 (only real root -1) is the lone nonlinear step; it is what makes the 2-face conditions sufficient, the signed analogue of the parent's r(i,i)³ = 1.",
+      "The signed closed-walk product (-1)^L explains why even cycles of a simplex (e.g. the tetrahedron's 4-vertex loop) return to +1 while odd cycles (triangles) give the Menelaus -1."
+    ],
+    "prerequisites": [
+      "Euclidean / projective geometry (transversals, signed ratios, collinearity)",
+      "Menelaus's and Ceva's theorems for triangles",
+      "Elementary group cohomology intuition (1-cocycles, coboundaries, and twisting on a graph)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header, Namespace, and the Signed Ratio",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Module docstring deriving the signed division ratio of a transversal hyperplane and stating the four parts of the answer; imports (including the parent CevasTheoremOQ02OQ04), namespace MenelausHigherDim, variable {ι}, and the menelausRatio definition m(i,j) = -a_i/a_j.",
+      "mathContext": "A hyperplane ℓ = c missing the vertices assigns a_i = ℓ(V_i) - c; its intersection with edge i→j divides it in the signed ratio $m(i,j) = -a_i/a_j$, generalizing the planar Menelaus side ratios."
+    },
+    {
+      "id": "part1-forward",
+      "title": "Part 1: Forward Direction — Signed Ratios of a Hyperplane",
+      "startLine": 71,
+      "endLine": 120,
+      "summary": "menelausRatio_ne_zero, menelausRatio_self (m(i,i) = -1), menelausRatio_twisted_cocycle (m(i,j)·m(j,k) = -m(i,k)), menelausRatio_swap (signed reciprocity = 1), menelausRatio_triangle (2-face Menelaus product = -1), and planar_menelaus_product (the classical -1 in conventional order).",
+      "mathContext": "If the signed ratios come from a hyperplane they satisfy a twisted cocycle; the classical planar Menelaus product is the triangle case, $m(i,j)\\,m(j,k)\\,m(k,i) = -1$."
+    },
+    {
+      "id": "part2-telescope",
+      "title": "Part 2: Telescoping — Closed-Walk Product is (-1)^L",
+      "startLine": 122,
+      "endLine": 155,
+      "summary": "prod_div_telescope (∏ f(t)/f(t+1) = f(0)/f(m) by induction) and menelausRatio_cycle_prod (the signed product around any closed walk of length L equals (-1)^L; the triangle L=3 is -1, even cycles +1).",
+      "mathContext": "Writing $m(i,j) = (-1)\\cdot a_i/a_j$ and telescoping along a closed walk gives $(-1)^L\\cdot 1$, extending Menelaus from triangles to arbitrary cycles in the simplex."
+    },
+    {
+      "id": "part3-reconstruction",
+      "title": "Part 3: Converse — Reconstructing the Transversal Hyperplane",
+      "startLine": 156,
+      "endLine": 187,
+      "summary": "twisted_self (the twisted cocycle forces m(i,i) = -1) and exists_values_of_twisted_cocycle (any nonzero twisted cocycle arises from explicit vertex values a_i = 1/m(b,i) — the transversal hyperplane).",
+      "mathContext": "The substantive direction: a nonzero twisted cocycle is a twisted coboundary. The reconstructed values $a_i = 1/m(b,i)$ are the (reciprocal) functional values of the transversal hyperplane."
+    },
+    {
+      "id": "part4-criterion",
+      "title": "Part 4: The Transversal Criterion",
+      "startLine": 188,
+      "endLine": 245,
+      "summary": "cube_eq_neg_one (over ℝ the only cube root of -1 is -1), twisted_cocycle_iff_triangles (twisted cocycle ⟺ Menelaus product = -1 on every ordered triple, via the cube relation), and menelaus_criterion (transversal-hyperplane existence ⟺ all 2-face Menelaus products = -1).",
+      "mathContext": "Three-way equivalence: a transversal hyperplane realizing m exists iff the signed ratios form a twisted cocycle iff the classical Menelaus equation $= -1$ holds on every triangular 2-face."
+    },
+    {
+      "id": "part5-duality",
+      "title": "Part 5: Ceva–Menelaus Duality (the Sign Signature)",
+      "startLine": 246,
+      "endLine": 271,
+      "summary": "menelausRatio_eq_neg_edgeRatio (m(i,j) = -r(j,i) for the parent edge ratio r) and menelaus_triangle_eq_neg_ceva (the Menelaus 2-face product is the negation of the Ceva 2-face product: -1 transversal vs +1 concurrent).",
+      "mathContext": "The signed ratio is literally the negated, orientation-reversed parent edge ratio; the Menelaus face product equals $-1 = -(\\text{Ceva face product})$, so the two theorems differ only by sign."
+    },
+    {
+      "id": "part6-tetrahedron",
+      "title": "Part 6: The Tetrahedron (3-Simplex), Explicitly",
+      "startLine": 272,
+      "endLine": 296,
+      "summary": "tetra_face_menelaus and tetra_other_face_menelaus (two triangular faces of a 3-simplex, Menelaus product -1) and tetra_four_cycle (the even-length 4-vertex walk 0→1→2→3→0 returning +1).",
+      "mathContext": "Specialization to ι = Fin 4 makes the content concrete: the tetrahedron's triangular faces carry signed product -1 while its 4-vertex cycle returns +1, illustrating the $(-1)^L$ law."
+    }
+  ],
+  "conclusion": "Menelaus's theorem is Ceva's with a sign. A hyperplane crossing an n-simplex assigns signed edge ratios m(i,j) = -a_i/a_j that satisfy a TWISTED cocycle m(i,j)·m(j,k) = -m(i,k) and multiply to -1 around every triangular 2-face — the exact negation of the parent's Ceva +1 for concurrent cevians. A transversal hyperplane realizing a nonzero signed assignment exists precisely when the Menelaus product equals -1 on every 2-face, and the hyperplane is reconstructed explicitly as a_i = 1/m(b,i). The closed-walk product (-1)^L unifies the triangle's -1 with the even cycles' +1. This completes the Ceva/Menelaus dual at the algebraic level of the parent's higher-dimensional Ceva entry, fully machine-checked with 0 axioms and 0 sorries.",
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem-oq-02-oq-04",
+      "description": "Direct parent: the higher-dimensional Ceva cocycle (concurrency, +1); this entry is its Menelaus (transversal, -1) dual and imports its edgeRatio for the duality bridge."
+    },
+    {
+      "targetId": "menelaus-theorem-oq-01",
+      "description": "Sibling lineage: the planar (2D coordinate) signed Menelaus criterion; recovered here as the single-triangle 2-face case of the n-simplex theory."
+    },
+    {
+      "targetId": "cevas-theorem-oq-02",
+      "description": "Grandparent: non-Euclidean Ceva/Menelaus, whose open question 4 (higher dimensions) the parent and this dual entry answer."
+    }
+  ],
+  "sorries": []
+}
