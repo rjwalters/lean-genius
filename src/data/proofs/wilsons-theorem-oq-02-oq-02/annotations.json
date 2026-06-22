@@ -1,0 +1,123 @@
+[
+  {
+    "id": "gauss-wilson-direct-context",
+    "proofId": "wilsons-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 52
+    },
+    "type": "concept",
+    "title": "A Direct Single-Involution Argument, Self-Contained",
+    "content": "Gauss generalized Wilson's theorem to all moduli: ∏ of the units of ZMod n is −1 when (ZMod n)ˣ is cyclic and +1 otherwise. The classical proof pairs each unit with its inverse, leaving the 2-torsion S = {x | x² = 1}, so the product depends only on S. The parent entry proves the non-cyclic half (∏ = 1) using two companion files and a 'two-involution trick' (a constant-product involution applied three times, then cancelled). This entry answers the open question for a DIRECT argument in a single file: the 2-torsion S is itself a 2-group, so |S| is a power of 2; when non-cyclicity forces |S| ≥ 3 it is in fact ≥ 4, hence 4 ∣ |S|, and then ONE involution x ↦ a·x gives ∏ S = a^(|S|/2) = (a²)^(|S|/4) = 1.",
+    "mathContext": "For $n \\ge 3$, $\\prod_{u \\in (\\mathbb{Z}/n)^\\times} u = -1 \\iff (\\mathbb{Z}/n)^\\times$ is cyclic. The product reduces to that of the 2-torsion $S = \\{x : x^2 = 1\\}$; since $S$ is a 2-group, $|S| = 2^m$, and $|S| \\ge 3 \\Rightarrow 4 \\mid |S| \\Rightarrow \\prod S = a^{|S|/2} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gauss-Wilson theorem",
+      "Wilson's theorem",
+      "two-torsion / square roots of unity",
+      "p-group cardinality",
+      "fixed-point-free involution"
+    ],
+    "prerequisites": [
+      "units of ZMod n",
+      "finite commutative groups",
+      "cyclic groups and IsCyclic",
+      "the order of a p-group is a power of p"
+    ]
+  },
+  {
+    "id": "prod-eq-two-torsion",
+    "proofId": "wilsons-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 93,
+      "endLine": 111
+    },
+    "type": "theorem",
+    "title": "Reducing to the 2-Torsion",
+    "content": "prod_eq_prod_two_torsion shows ∏_{x ∈ G} x = ∏_{x : x² = 1} x in any finite commutative group. The involution x ↦ x⁻¹ is fixed-point-free off the 2-torsion (x = x⁻¹ ⟺ x² = 1), and pairs each such element with its distinct inverse, whose product is 1; Mathlib's Finset.prod_involution collapses that part of the product to 1, leaving exactly the self-inverse elements. This is the classical first step of every Wilson-type proof and isolates the only part of the product that can be non-trivial.",
+    "mathContext": "$\\prod_{x \\in G} x = \\prod_{x^2 = 1} x$: outside the 2-torsion, $x$ and $x^{-1}$ are distinct and cancel in pairs.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Finset.prod_involution",
+      "inverse involution",
+      "2-torsion subgroup",
+      "pairing argument"
+    ],
+    "prerequisites": [
+      "finite commutative group",
+      "x² = 1 ⟺ x = x⁻¹"
+    ]
+  },
+  {
+    "id": "two-torsion-pow-two",
+    "proofId": "wilsons-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 239,
+      "endLine": 249
+    },
+    "type": "theorem",
+    "title": "The 2-Torsion Has Power-of-Two Cardinality",
+    "content": "card_two_torsion_eq_pow_two is the structural heart of the simplification: |{x | x² = 1}| = 2^n. The set {x | x² = 1} is packaged as an honest Subgroup (twoTorsion), and since every element squares to 1 it is a 2-group (isPGroup_twoTorsion : IsPGroup 2). IsPGroup.iff_card then forces its order to be a power of 2, transported from Nat.card of the subgroup to the Finset.filter cardinality via a subtype-card bridge. This is exactly what the parent proof avoids paying for — and exactly what lets a single involution suffice below.",
+    "mathContext": "$S = \\{x : x^2 = 1\\}$ is a subgroup of exponent dividing 2, hence a 2-group, so $|S| = 2^m$. Consequently $|S| \\ge 3 \\Rightarrow |S| \\ge 4 \\Rightarrow 4 \\mid |S|$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "IsPGroup.iff_card",
+      "elementary abelian 2-group",
+      "subgroup of square roots of unity",
+      "Nat.card vs Fintype.card"
+    ],
+    "prerequisites": [
+      "p-groups have prime-power order",
+      "subgroups and IsPGroup",
+      "Subgroup.coe_pow"
+    ]
+  },
+  {
+    "id": "direct-single-involution",
+    "proofId": "wilsons-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 265,
+      "endLine": 300
+    },
+    "type": "theorem",
+    "title": "The Direct Single-Involution Lemma",
+    "content": "prod_two_torsion_eq_one is the answer to the open question: in a finite commutative group, if the 2-torsion S = {x | x² = 1} has at least 3 elements then ∏ S = 1, proved with ONE involution. Power-of-two cardinality (card_two_torsion_eq_pow_two) upgrades |S| ≥ 3 to 4 ∣ |S|. Pick any a ∈ S with a ≠ 1; the map x ↦ a·x is a fixed-point-free involution of S (a² = 1) whose pairs each multiply to the constant a, so prod_involution_const gives ∏ S = a^(|S|/2). Since 4 ∣ |S|, the exponent |S|/2 is even, and a^(|S|/2) = (a²)^(|S|/4) = 1. No second or third involution, no cancellation step.",
+    "mathContext": "With $4 \\mid |S|$ and any $a \\in S \\setminus \\{1\\}$: $\\prod_{x \\in S} x = \\prod_{\\text{pairs}} x(ax) = a^{|S|/2} = (a^2)^{|S|/4} = 1$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "constant-product involution",
+      "prod_involution_const",
+      "4 ∣ |S| from 2-group structure",
+      "single-involution argument"
+    ],
+    "prerequisites": [
+      "the 2-torsion is a 2-group",
+      "fixed-point-free involutions and pair products",
+      "a² = 1 ⟹ aⁿ ∈ {1, a}"
+    ]
+  },
+  {
+    "id": "gauss-wilson-assembled",
+    "proofId": "wilsons-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 551,
+      "endLine": 602
+    },
+    "type": "theorem",
+    "title": "Gauss-Wilson, Assembled Self-Contained",
+    "content": "prod_units_one_of_not_cyclic derives the non-cyclic case ∏ units = 1 by combining prod_eq_prod_two_torsion with the direct lemma, using the inlined card_two_torsion_units_ge_three (¬cyclic ⟹ |S| ≥ 3, via the CRT and 2^(k−1)+1 third-root constructions). prod_units_neg_one_of_cyclic handles the cyclic case: IsCyclic.card_pow_eq_one_le pins the 2-torsion to exactly {1, −1}, so the product is −1. gaussWilson combines them into the biconditional ∏ units = −1 ↔ (ZMod n)ˣ cyclic — all from Mathlib alone, with no Proofs.* companion dependency.",
+    "mathContext": "$\\prod_{u} u = -1 \\iff (\\mathbb{Z}/n)^\\times$ cyclic: cyclic gives 2-torsion $\\{1,-1\\}$ (product $-1$); non-cyclic gives $|S| \\ge 4$ (product $1$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZMod.isCyclic_units_iff",
+      "ZMod.chineseRemainder",
+      "IsCyclic.card_pow_eq_one_le",
+      "Gauss-Wilson biconditional"
+    ],
+    "prerequisites": [
+      "cyclic units of ZMod n",
+      "Chinese Remainder Theorem",
+      "the direct single-involution lemma"
+    ]
+  }
+]
