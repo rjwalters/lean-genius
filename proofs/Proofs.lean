@@ -102,6 +102,7 @@ import Proofs.AngleTrisectionCos20GalOQ03
 import Proofs.AngleTrisectionCos20GalOQ03OQ01
 import Proofs.AngleTrisectionEmbedding
 import Proofs.AngleTrisectionOQ01
+import Proofs.AngleTrisectionOQ01OQ04
 import Proofs.AngleTrisectionOQ02
 import Proofs.AngleTrisectionOQ02OQ01
 import Proofs.AngleTrisectionOQ02OQ01OQ01

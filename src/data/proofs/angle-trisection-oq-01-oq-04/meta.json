@@ -1,0 +1,157 @@
+{
+  "id": "angle-trisection-oq-01-oq-04",
+  "title": "Gauss–Wantzel: Structural Tools for Polygon Constructibility",
+  "slug": "angle-trisection-oq-01-oq-04",
+  "description": "Extends the parent's regular-polygon classification (n ≤ 20, proved by native_decide) toward the general Gauss–Wantzel theorem, with 0 axioms (no native_decide): φ(2^a) and coprime-product totients are powers of 2, the p-gon is constructible iff p−1 is a power of 2, Fermat primes give constructible polygons, and new explicit entries (24,32,34,40,48,51,60,64,68,80,85,96 constructible; 21,28,36,100 not).",
+  "meta": {
+    "author": "Carl Friedrich Gauss / Pierre Wantzel",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_polygon",
+    "date": "1837",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ01OQ04.lean",
+    "tags": [
+      "constructibility",
+      "gauss-wantzel",
+      "euler-totient",
+      "fermat-primes",
+      "number-theory",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient_mul",
+        "description": "φ(m·n) = φ(m)·φ(n) for coprime m, n — the multiplicative engine of Gauss–Wantzel",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_prime_pow",
+        "description": "φ(p^n) = p^(n-1)·(p-1); specialized to φ(2^a) = 2^(a-1)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_prime",
+        "description": "φ(p) = p-1 for prime p; turns the totient criterion into 'p-1 is a power of 2'",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.prime_dvd_prime_iff_eq",
+        "description": "p ∣ q ↔ p = q for primes; gives the contradiction when an odd prime divides 2^k",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_of_dvd_pow",
+        "description": "p ∣ a^n → p ∣ a; reduces p ∣ 2^k to p ∣ 2",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "totient_mul_isPow: coprime factors with power-of-2 totients combine to a power-of-2 totient — the multiplicative core of the Gauss–Wantzel characterization n = 2^a·(distinct Fermat primes)",
+      "totient_two_pow_isPow and twoPow_constructible: every 2^a-gon (a ≥ 2) is constructible, proved structurally (φ(2^a) = 2^(a-1))",
+      "prime_constructible_iff: for prime p, the p-gon is constructible iff p−1 is a power of 2 (φ(p) = p−1)",
+      "fermatPrime_constructible: every Fermat prime 2^(2^k)+1 yields a constructible polygon",
+      "Extended the explicit classification beyond the parent's n ≤ 20 (12 new constructible n-gons up to 96 and 4 new non-constructible ones up to 100), all 0-axiom — replacing the parent's native_decide approach with structural totient lemmas"
+    ],
+    "axiomCount": 0,
+    "lineCount": 172,
+    "assumptions": "None — fully verified from Mathlib with 0 axioms (only propext / Classical.choice / Quot.sound) and 0 sorries. Crucially, no native_decide is used: small totients are computed with kernel `decide` and the general facts via structural totient lemmas, so this entry does NOT depend on Lean.ofReduceBool (unlike the parent). The full Gauss–Wantzel equivalence (constructible ⇔ n = 2^a·distinct Fermat primes) as a single biconditional, and the parent's 3 geometric axioms, remain out of scope.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 24,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Gauss showed (1796, published in Disquisitiones Arithmeticae 1801) that the regular 17-gon is constructible, and stated that a regular n-gon is constructible exactly when n = 2^a·p₁⋯pₘ with the pᵢ distinct Fermat primes; Pierre Wantzel (1837) supplied the necessity proof. The criterion is equivalent to φ(n) being a power of 2, where φ is Euler's totient. The known Fermat primes are 3, 5, 17, 257, 65537; whether any others exist is a famous open problem. The parent file verifies the n ≤ 20 cases with native_decide; this entry develops the structural machinery to go further without trusting the compiler.",
+    "problemStatement": "Extend the regular-polygon classification beyond n = 20 toward the general Gauss–Wantzel characterization n = 2^a·(distinct Fermat primes).",
+    "text": "Provides the 0-axiom structural tools (totient multiplicativity, prime/Fermat criteria) and new explicit polygon entries.",
+    "proofStrategy": "Everything reduces to 'φ(n) is a power of 2'. φ(2^a) = 2^(a-1) via Nat.totient_prime_pow; coprime products multiply totients (Nat.totient_mul), so power-of-2 totients are closed under coprime products (pow_add). For a prime p, φ(p) = p−1, giving the 'p−1 is a power of 2' criterion and the Fermat-prime corollary. Non-constructibility follows when an odd prime divides φ(n): then it would divide 2^k, contradicting Nat.prime_dvd_prime_iff_eq. Explicit entries combine these lemmas with kernel `decide` on small component totients (≤ 25), avoiding native_decide entirely.",
+    "keyInsights": [
+      "Power-of-2 totients are closed under coprime multiplication — this single lemma (totient_mul_isPow) is the engine that assembles n = 2^a·(distinct Fermat primes)",
+      "φ(p) = p−1 collapses the prime case to a one-line criterion: the p-gon is constructible iff p−1 is a power of 2 (i.e. p is a Fermat prime)",
+      "Replacing native_decide with structural totient lemmas removes the Lean.ofReduceBool dependency, so the extended classification is genuinely axiom-free",
+      "Non-constructibility is detected by a single odd prime factor of φ(n) — an odd prime cannot divide 2^k",
+      "Supplying implicit m, n explicitly to totient_mul_isPow is necessary: the product n = m·n does not determine the factors, so they cannot be inferred"
+    ],
+    "prerequisites": [
+      "Euler's totient function and its multiplicativity",
+      "Fermat primes",
+      "Compass-and-straightedge constructibility"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "The Constructibility Criterion",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring framing OQ#4. Reproduces RegularNgonConstructible n := n ≥ 3 ∧ φ(n) is a power of 2 (the parent's totient criterion)."
+    },
+    {
+      "id": "structural-tools",
+      "title": "Structural Tools",
+      "startLine": 46,
+      "endLine": 71,
+      "summary": "φ(2^a) is a power of 2; coprime factors with power-of-2 totients multiply to a power-of-2 totient (the multiplicative engine); every 2^a-gon (a ≥ 2) is constructible.",
+      "mathContext": "φ(2^a) = 2^(a-1); φ(mn) = φ(m)φ(n) = 2^k·2^j = 2^(k+j) for coprime m, n."
+    },
+    {
+      "id": "prime-criteria",
+      "title": "Prime and Fermat-Prime Criteria",
+      "startLine": 72,
+      "endLine": 98,
+      "summary": "For prime p, the p-gon is constructible iff p−1 is a power of 2 (φ(p) = p−1); every Fermat prime gives a constructible polygon; non-constructibility from an odd prime factor of φ(n).",
+      "mathContext": "φ(p) = p−1, so constructible ⇔ p−1 = 2^k ⇔ p Fermat prime."
+    },
+    {
+      "id": "constructible-entries",
+      "title": "New Constructible n-gons (21 ≤ n ≤ 96)",
+      "startLine": 99,
+      "endLine": 144,
+      "summary": "12 new constructible polygons beyond the parent's n ≤ 20: 24, 32, 34, 40, 48, 51, 60, 64, 68, 80, 85, 96 — including the two-Fermat-prime products 51 = 3·17 and 85 = 5·17.",
+      "mathContext": "Each n = 2^a·(Fermat primes); e.g. φ(96) = φ(32)φ(3) = 16·2 = 32 = 2^5."
+    },
+    {
+      "id": "nonconstructible-entries",
+      "title": "New Non-constructible n-gons",
+      "startLine": 145,
+      "endLine": 172,
+      "summary": "New non-constructible polygons 21, 28, 36, 100, each detected by an odd prime dividing φ(n).",
+      "mathContext": "φ(21) = 12 (3 ∣ 12), φ(100) = 40 (5 ∣ 40), etc."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 axioms, 0 sorries, no native_decide) structural toolkit for the Gauss–Wantzel classification of constructible regular polygons, extending the parent's n ≤ 20 table with 12 new constructible and 4 new non-constructible entries up to n = 100. The key lemma is that power-of-2 totients are closed under coprime multiplication.",
+    "implications": "These tools assemble the constructible n = 2^a·(distinct Fermat primes) one coprime factor at a time, and reduce the prime case to 'p−1 is a power of 2'. Replacing native_decide with structural lemmas makes the extended classification genuinely axiom-free.",
+    "openQuestions": [
+      "Package the tools into the single Gauss–Wantzel biconditional: constructible ⇔ n = 2^a · (product of distinct Fermat primes).",
+      "Prove that 2^m + 1 prime forces m to be a power of 2 (so 'p−1 a power of 2' ⇔ 'p a Fermat prime' for primes p).",
+      "Are there infinitely many Fermat primes? (Open — bounds the supply of odd prime factors allowed.)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-01",
+      "relationship": "parent",
+      "description": "Parent classifying constructible n-gons for n ≤ 20 via native_decide; this entry answers its fourth open question (extend the classification / general Gauss–Wantzel) with 0-axiom structural tools"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "ancestor",
+      "description": "Root problem: impossibility of angle trisection by compass and straightedge"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "AngleTrisectionGaussWantzel",
+    "lineCount": 172,
+    "axiomCount": 0,
+    "theoremCount": 24,
+    "definitionCount": 1,
+    "path": "Proofs/AngleTrisectionOQ01OQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
