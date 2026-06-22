@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-boundary-overview",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "concept",
+    "title": "The threshold meets the algebra of finite types",
+    "content": "The ancestors reduced solvability of $S_\\alpha$ to a single arithmetic fact, $\\mathrm{IsSolvable}(S_\\alpha) \\iff |\\alpha| \\le 4$, and split $\\mathbb{N}$ into a solvable down-set $\\{\\le 4\\}$ and an unsolvable up-set $\\{\\ge 5\\}$. Here we ask how that threshold behaves under the two ways of building bigger finite types: disjoint union $\\alpha \\oplus \\beta$ (with $|\\alpha\\oplus\\beta| = |\\alpha| + |\\beta|$) and product $\\alpha \\times \\beta$ (with $|\\alpha\\times\\beta| = |\\alpha|\\cdot|\\beta|$). The threshold turns each into an arithmetic side-condition — and the two operations turn out to sit on **opposite sides** of the Abel–Ruffini boundary."
+  },
+  {
+    "id": "ann-sum-threshold",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 64, "endLine": 70 },
+    "type": "technique",
+    "title": "Rewriting the threshold through a cardinality formula",
+    "content": "`perm_sum_solvable_iff` is one `rw`: apply the intrinsic threshold `perm_solvable_iff_card` to $S_{\\alpha\\oplus\\beta}$, then `Fintype.card_sum` evaluates $|\\alpha\\oplus\\beta| = |\\alpha| + |\\beta|$. The result\n$$\\mathrm{IsSolvable}(S_{\\alpha\\oplus\\beta}) \\iff |\\alpha| + |\\beta| \\le 4$$\nis the disjoint-union threshold as an **additive** condition. `perm_prod_solvable_iff` is the same proof with `Fintype.card_prod`, yielding the **multiplicative** condition $|\\alpha|\\cdot|\\beta| \\le 4$."
+  },
+  {
+    "id": "ann-products-reflect",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 96, "endLine": 108 },
+    "type": "insight",
+    "title": "Products reflect solvability downward",
+    "content": "A nonempty second factor only enlarges the carrier: $|\\alpha| \\le |\\alpha|\\cdot|\\beta|$ whenever $|\\beta| \\ge 1$ (`Nat.le_mul_of_pos_right` with `Fintype.card_pos`). So if $|\\alpha|\\cdot|\\beta| \\le 4$ then already $|\\alpha| \\le 4$, and `perm_solvable_of_prod_solvable` concludes $\\mathrm{IsSolvable}(S_\\alpha)$. A Cartesian factor of a solvable permutation-product is **always** solvable — the product operation can never hide an unsolvable factor. The `omega` step is honest: with the product written as a single atom, $|\\alpha| \\le \\text{atom} \\le 4$ is linear."
+  },
+  {
+    "id": "ann-sums-fail",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 149, "endLine": 162 },
+    "type": "insight",
+    "title": "Disjoint unions do NOT preserve solvability",
+    "content": "The exact opposite of products. `perm_sum_solvability_not_preserved` exhibits the minimal witness: $S_{\\mathrm{Fin}\\,2}$ and $S_{\\mathrm{Fin}\\,3}$ are both solvable ($2,3 \\le 4$), yet $S_{\\mathrm{Fin}\\,2 \\oplus \\mathrm{Fin}\\,3}$ is **not** — the union has $2 + 3 = 5$ points, and $5 \\not\\le 4$. Two solvable systems join into an unsolvable one. This is the Abel–Ruffini obstruction in combinatorial dress: solvability of the pieces carries no information about solvability of their union."
+  },
+  {
+    "id": "ann-additive-escape",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 165, "endLine": 188 },
+    "type": "concept",
+    "title": "5 is the minimal additive escape — and the dichotomy",
+    "content": "The failure is sharp. Reading $\\{0,1,2,3,4\\}$ as the available cardinalities, `abel_ruffini_is_additive_escape` shows $5 = 2 + 3$ is a sum of two of them that leaves the set, that it is unsolvable, and that it is the **least** such escape. So the solvable cardinalities first break additive closure exactly at the Abel–Ruffini degree. `product_reflects_sum_does_not` then states the closure dichotomy as one theorem: solvability is reflected by $\\times$ but not preserved by $\\oplus$ — the two monoidal structures on finite types lie on opposite sides of the boundary $n = 5$."
+  }
+]
