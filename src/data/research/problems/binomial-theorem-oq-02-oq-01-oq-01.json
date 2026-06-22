@@ -9,7 +9,8 @@
       "The absorption identity kᵢ·multinomial(s,k)=n·multinomial(s, kᵢ−1) is a single combinatorial engine: a no-division ℕ proof cancelling (kᵢ−1)!·∏_{j≠i}kⱼ! after Nat.multinomial_spec",
       "Mean and cross moment both reduce, via ONE Finset.sum_nbij' bijection lowering kᵢ, to the multinomial theorem on n−1 trials; the kⱼ factor in the cross moment rides along unchanged (j≠i), so E[XᵢXⱼ]=n·pᵢ·(mean of Xⱼ at n−1)=n(n−1)pᵢpⱼ",
       "Marginal of Xᵢ is Binomial(n,pᵢ): reindex compositions with kᵢ=m onto compositions of n−m on s∖{i} (zero the i-th coord), Nat.multinomial_insert splits off C(n,m), and ∑_{j≠i}pⱼ=1−pᵢ",
-      "Covariance Cov(Xᵢ,Xⱼ)=−n·pᵢ·pⱼ reflects the simplex constraint ΣXᵢ=n (negative correlation)"
+      "Covariance Cov(Xᵢ,Xⱼ)=−n·pᵢ·pⱼ reflects the simplex constraint ΣXᵢ=n (negative correlation)",
+      "Variance Var(Xᵢ)=n·pᵢ(1-pᵢ) and the full covariance matrix Cov(Xᵢ,Xⱼ)=n·pᵢ(δᵢⱼ-pⱼ) (= n·(diag(p)-p·pᵀ)) completed in child binomial-theorem-oq-02-oq-01-oq-01-oq-04 (verified, 0-axiom), via a diagonal second factorial moment by absorption + routing the off-diagonal through the existing covariance theorem."
     ],
     "builtItems": [
       "BinomialTheoremOQ02OQ01OQ01.lean: 707-line fully verified formalization (0 sorries, 0 axioms; #print axioms lists only propext/Classical.choice/Quot.sound)",
