@@ -3377,6 +3377,7 @@ import Proofs.StirlingExpansionAristotle
 import Proofs.StirlingFirstKindOQ01
 import Proofs.StirlingFirstKindOQ02
 import Proofs.StirlingFormula
+import Proofs.StirlingFormulaOQ01OQ01
 import Proofs.StirlingFormulaOQ02
 import Proofs.StirlingFormulaOQ03
 import Proofs.StirlingSecondKindOQ01
