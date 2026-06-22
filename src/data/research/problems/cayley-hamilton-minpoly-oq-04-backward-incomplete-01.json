@@ -1,10 +1,10 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
   "title": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
-  "path": "full",
+  "path": "Proofs/CayleyHamiltonMinpolyOQ04BackwardIncomplete01.lean",
   "problemStatement": {
     "formal": "",
     "plain": "",
@@ -29,14 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: irreducible-minpoly case of nonderogatory->cyclic vector. Every nonzero v cyclic via gcd/Bezout (no normalizedFactors). 4 thms, 0 axioms, verified. Parent sorry blocked by normalizedFactors/DecidableEq import; parent also bit-rotted->self-contained.",
+    "builtItems": [
+      "CayleyHamiltonMinpolyOQ04BackwardIncomplete01.lean (0 axioms, 0 sorries, verified, self-contained)",
+      "cyclic_of_irreducible_minpoly: irreducible minpoly deg n => every nonzero v cyclic",
+      "nonderogatory_irreducible_cyclic + exists_cyclic_of_nonderogatory_irreducible",
+      "self-contained gcd_aeval_mulVec_eq_zero (Bezout) reproved in current Mathlib"
+    ],
+    "insights": [
+      "irreducible mu: gcd(p,mu) collapses to a unit (mu|p impossible by degrees) => d(M) invertible => v=0, no factorization needed",
+      "parent CayleyHamiltonMinpolyOQ04Backward does NOT compile vs current Mathlib (legacy sum-in syntax, changed gcd lemmas) -> cannot import, made self-contained",
+      "unit polynomial -> aeval M d is matrix unit (IsUnit.map) -> invertible",
+      "coercion gotcha: (up-arrow u inv : T) misparses -> use Units.val explicitly"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Complete general theorem in fresh file with normalizedFactors import",
+      "Prime-power minpoly case q^k",
+      "Refresh parent file to current Mathlib syntax"
+    ],
     "markdown": "# Knowledge: cayley-hamilton-minpoly-oq-04-backward-incomplete-01\n*No research conducted yet*\n"
   },
-  "tags": [],
+  "tags": [
+    "linear-algebra",
+    "cayley-hamilton",
+    "minimal-polynomial",
+    "cyclic-vector",
+    "nonderogatory"
+  ],
   "relatedProofs": [
     "cayley-hamilton",
     "cayley-hamilton-minpoly",
@@ -48,5 +68,5 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:33:50.248Z",
-  "lastUpdate": "2026-04-03T08:33:50.248Z"
+  "lastUpdate": "2026-06-22"
 }
