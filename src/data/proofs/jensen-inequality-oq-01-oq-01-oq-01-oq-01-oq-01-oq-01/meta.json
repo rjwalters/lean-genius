@@ -1,0 +1,122 @@
+{
+  "id": "jensen-inequality-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+  "title": "The Equality Case of Lyapunov's Inequality",
+  "slug": "jensen-inequality-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+  "description": "Pins down the equality case of Lyapunov's interpolation inequality, directly answering the first open question of the parent Lyapunov entry. The parent proves A(a·p + b·r) ≤ A(p)^a · A(r)^b for the weighted moment function A(t) = ∑_i w_i·x_i^t of a strictly positive family with convex weights a, b > 0, a + b = 1. This entry proves that for distinct exponents p ≠ r, equality holds if and only if the data x is constant: A(a·p + b·r) = A(p)^a · A(r)^b ↔ ∀ i j, x_i = x_j. Equivalently, the moment curve t ↦ log A(t) is strictly convex away from the degenerate locus where all x_i coincide (where A(t) = (∑ w_i)·c^t is genuinely log-affine). The engine is the two-variable weighted AM–GM equality case (amgm_two_weighted_eq_iff, from the grandparent two-variable Young entry), applied pointwise and summed: normalising to probability vectors S_i = w_i·x_i^p/A(p), T_i = w_i·x_i^r/A(r), the pointwise weighted AM–GM S_i^a·T_i^b ≤ a·S_i + b·T_i sums to Lyapunov's inequality, and a sum of ≤'s is an equality iff it is termwise an equality (Finset.sum_eq_sum_iff_of_le). Termwise equality S_i = T_i says x_i^{p-r} = A(p)/A(r) is the same constant for every i, which for p ≠ r forces all x_i equal by injectivity of t ↦ t^{p-r}. This deliberately avoids the (unformalised in Mathlib) general Hölder equality case: the only equality input is the two-variable AM–GM. Two corollaries are included: the strict inequality for non-constant data, and the equality case of the symmetric three-exponent form A(q)^{r-p} = A(p)^{r-q}·A(r)^{q-p} ↔ x constant for p < q < r.",
+  "meta": {
+    "author": "Lean Genius (equality case of Lyapunov's inequality via summed two-variable AM–GM); A. M. Lyapunov",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/JensenInequalityOQ01OQ01OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "convexity",
+      "log-convexity",
+      "lyapunov-inequality",
+      "equality-case",
+      "am-gm-inequality",
+      "strict-convexity",
+      "power-means",
+      "inequalities",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-22",
+    "lineCount": 216,
+    "originalContributions": [
+      "moment_interp_eq_iff: the equality case of Lyapunov's interpolation inequality — for strictly positive families w, x, distinct exponents p ≠ r, and convex weights a, b > 0 with a + b = 1, equality A(a·p + b·r) = A(p)^a · A(r)^b holds iff the data x is constant (∀ i j, x_i = x_j). This directly answers open question #1 of the parent Lyapunov entry. Proved by normalising the two moment families to probability vectors and applying the two-variable weighted AM–GM equality case pointwise; equality of the resulting sum of pointwise inequalities is termwise equality, which forces x_i^{p-r} to be a fixed constant and hence (p ≠ r) all x_i equal.",
+      "normalized_amgm_sum_eq_one_iff: the abstract core — for nonnegative probability vectors u, v (∑ u = ∑ v = 1) and convex weights a, b > 0 with a + b = 1, the weighted geometric average ∑_i u_i^a·v_i^b equals 1 iff u_i = v_i for every i. This isolates the global step (a sum of pointwise AM–GM inequalities is an equality iff termwise, via Finset.sum_eq_sum_iff_of_le) from the rpow bookkeeping, and is reusable for any equality-case-of-summed-AM–GM argument.",
+      "moment_interp_lt_of_not_const: the strict Lyapunov inequality — when the data x is non-constant, A(a·p + b·r) < A(p)^a · A(r)^b. Equivalently, t ↦ log A(t) is strictly convex off the single-point locus.",
+      "moment_lyapunov_eq_iff: the equality case of the symmetric three-exponent form — for p < q < r, A(q)^{r-p} = A(p)^{r-q}·A(r)^{q-p} iff x is constant. Derived from moment_interp_eq_iff with a = (r-q)/(r-p), b = (q-p)/(r-p) by injectivity of raising to the positive power r - p."
+    ],
+    "assumptions": "None beyond Mathlib's foundational axioms. Fully machine-checked: 0 sorries, 0 axiom declarations, no native_decide; all theorems depend only on [propext, Classical.choice, Quot.sound]. The file imports two other gallery entries — Proofs/JensenInequalityOQ01OQ01OQ01OQ01OQ01 (the parent Lyapunov inequality, for the moment function and the inequality moment_interp_le) and Proofs/JensenInequalityOQ01OQ01 (the grandparent two-variable Young entry, for the AM–GM equality case amgm_two_weighted_eq_iff).",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "jensen-inequality-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Answers the parent Lyapunov entry's first open question by proving the equality case of its interpolation inequality moment_interp_le: equality A(a·p+b·r) = A(p)^a·A(r)^b holds iff all x_i are equal. The strict inequality moment_interp_lt_of_not_const is built directly on the parent's moment_interp_le."
+    },
+    {
+      "targetId": "jensen-inequality-oq-01-oq-01",
+      "relationship": "uses",
+      "description": "The sole equality input is the grandparent's two-variable weighted AM–GM equality case amgm_two_weighted_eq_iff, applied pointwise to the normalised moment families and summed."
+    },
+    {
+      "targetId": "jensen-inequality-oq-01-oq-01-oq-01-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Second-order sharpening of the equality case of the power-mean inequality (M_r = M_t iff x constant): that entry compares two points of the moment curve; this one characterises when a chord of the log-moment curve touches it, i.e. the equality case of its convexity."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Lyapunov's inequality states that the moments of a positive measure are a log-convex function of their order. The equality case is the companion sharp statement: log-convexity is strict — the chord lies strictly above the curve — except on the degenerate locus where the underlying function is constant (a single atom), in which case the moment function A(t) = W·c^t is exactly log-affine and every chord touches the curve. This is the discrete, elementary prototype of the rigidity statements that accompany the interpolation inequalities (Hölder, Lyapunov, Riesz–Thorin): equality in the interpolation bound is a strong structural constraint forcing proportionality of the interpolated data. Mathlib provides the two-variable weighted AM–GM and its equality case but not the equality case of the general discrete Hölder inequality, so the present argument is deliberately routed through the two-variable AM–GM summed pointwise rather than through a general Hölder rigidity lemma.",
+    "problemStatement": "For strictly positive families w, x : ι → ℝ on a nonempty finite index type, with the weighted moment function A(t) = ∑_i w_i·x_i^t, characterise when the Lyapunov interpolation inequality A(a·p + b·r) ≤ A(p)^a·A(r)^b is an equality. Prove that for distinct exponents p ≠ r and convex weights a, b > 0 with a + b = 1, equality holds if and only if all x_i are equal; derive the strict inequality for non-constant data and the equality case of the symmetric three-exponent form.",
+    "proofStrategy": "Normalise the two moment families to probability vectors S_i = w_i·x_i^p/A(p) and T_i = w_i·x_i^r/A(r), so that ∑ S = ∑ T = 1. The two-variable weighted AM–GM gives the pointwise bound S_i^a·T_i^b ≤ a·S_i + b·T_i. Summing, the left side equals A(a·p+b·r)/(A(p)^a·A(r)^b) (via the interpolation identity (w·x^p)^a·(w·x^r)^b = w·x^{a·p+b·r}) and the right side equals a + b = 1, recovering Lyapunov's inequality. The abstract lemma normalized_amgm_sum_eq_one_iff records that this sum equals 1 iff it is termwise equality (Finset.sum_eq_sum_iff_of_le), with each term resolved by the AM–GM equality case amgm_two_weighted_eq_iff: S_i^a·T_i^b = a·S_i + b·T_i ↔ S_i = T_i. Termwise S_i = T_i unwinds (cancelling w_i > 0 and the positive normalisers) to x_i^p·A(r) = x_i^r·A(p), i.e. x_i^{p-r} = A(p)/A(r), the same constant for every i; for p ≠ r this forces x_i = x_j by injectivity of t ↦ t^{p-r} (Real.rpow_left_inj). The converse direction is the direct computation that constant data makes A(t) = (∑ w_i)·c^t and both sides equal (∑ w_i)·c^{a·p+b·r}. The strict inequality is lt_of_le_of_ne against the equality case, and the three-exponent equality is obtained by raising the two-exponent equality to the positive power r - p (again using injectivity of rpow in the base).",
+    "keyInsights": [
+      "Equality in a summed inequality is equality termwise: the entire rigidity content is Finset.sum_eq_sum_iff_of_le, reducing the global equality case to the two-variable AM–GM equality case applied at each index.",
+      "Normalising the moment families to probability vectors is what turns the pointwise AM–GM into Lyapunov's inequality with the sharp constant 1 on the right; without normalisation the pointwise sum does not reassemble into the geometric mean A(p)^a·A(r)^b.",
+      "Termwise equality S_i = T_i is the statement that x_i^{p-r} = A(p)/A(r) is independent of i — a single equation per index whose only solution (for p ≠ r and positive data) is x_i constant, by injectivity of the base in t ↦ t^{p-r}.",
+      "The general Hölder equality case is not needed and is not in Mathlib: routing through the two-variable AM–GM summed pointwise gives the full rigidity statement from a single, already-formalised equality lemma.",
+      "The equality locus is exponent-independent: it is the same single-point locus {x constant} for every choice of p ≠ r and weights a, b, whereas the inequality itself is non-trivial for all non-constant data — mirroring how the power-mean equality locus is sign-independent even as the inequality flips across zero."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "States the goal — the equality case of Lyapunov's interpolation inequality — and explains the engine: the two-variable weighted AM–GM equality case applied pointwise to normalised moment families and summed, with the global step Finset.sum_eq_sum_iff_of_le, deliberately avoiding the unformalised general Hölder equality case.",
+      "mathContext": "$A(ap+br)=A(p)^a A(r)^b \\iff \\forall i\\,j,\\ x_i=x_j$ for $p\\ne r$, $a,b>0$, $a+b=1$."
+    },
+    {
+      "id": "abstract-core",
+      "title": "Normalised pointwise AM–GM, summed",
+      "startLine": 53,
+      "endLine": 80,
+      "summary": "normalized_amgm_sum_eq_one_iff: for nonnegative probability vectors u, v with ∑ u = ∑ v = 1 and weights a, b > 0, a + b = 1, the weighted geometric average ∑_i u_i^a·v_i^b equals 1 iff u_i = v_i for all i. The pointwise AM–GM sums to ≤ 1; equality is termwise by Finset.sum_eq_sum_iff_of_le, each term resolved by amgm_two_weighted_eq_iff.",
+      "mathContext": "$\\sum_i u_i^a v_i^b = 1 \\iff \\forall i,\\ u_i=v_i$, given $\\sum u=\\sum v=1$."
+    },
+    {
+      "id": "equality-case",
+      "title": "Equality case of the interpolation inequality",
+      "startLine": 82,
+      "endLine": 166,
+      "summary": "moment_interp_eq_iff: A(a·p+b·r) = A(p)^a·A(r)^b ↔ x constant (for p ≠ r). Forward: normalise to S_i, T_i, apply the core lemma to get S_i = T_i, unwind to x_i^{p-r} = A(p)/A(r) constant, conclude x_i = x_j by Real.rpow_left_inj. Backward: constant data gives A(t) = (∑ w_i)·c^t and both sides collapse to (∑ w_i)·c^{a·p+b·r}.",
+      "mathContext": "$S_i=\\frac{w_i x_i^p}{A(p)},\\ T_i=\\frac{w_i x_i^r}{A(r)}$; $S_i=T_i\\iff x_i^{p-r}=\\tfrac{A(p)}{A(r)}$."
+    },
+    {
+      "id": "strict-and-symmetric",
+      "title": "Strict inequality and symmetric three-exponent equality",
+      "startLine": 168,
+      "endLine": 216,
+      "summary": "moment_interp_lt_of_not_const: strict Lyapunov inequality for non-constant data, via lt_of_le_of_ne against the equality case. moment_lyapunov_eq_iff: A(q)^{r-p} = A(p)^{r-q}·A(r)^{q-p} ↔ x constant for p < q < r, obtained from moment_interp_eq_iff with a = (r-q)/(r-p), b = (q-p)/(r-p) by injectivity of raising to the positive power r - p.",
+      "mathContext": "$A(q)^{r-p}=A(p)^{r-q}A(r)^{q-p}\\iff x\\ \\text{constant}$, $a=\\tfrac{r-q}{r-p},\\ b=\\tfrac{q-p}{r-p}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This fully verified 216-line file (0 sorries, 0 axioms, no native_decide; all theorems depend only on propext/Classical.choice/Quot.sound) settles the equality case of Lyapunov's inequality: for distinct exponents p ≠ r, the interpolation bound A(a·p+b·r) ≤ A(p)^a·A(r)^b is an equality iff the data x is constant. It also delivers the strict inequality for non-constant data and the equality case of the symmetric three-exponent form. The single equality input is the two-variable weighted AM–GM equality case, applied pointwise to normalised moment families and summed, with the rigidity packaged in the reusable abstract lemma normalized_amgm_sum_eq_one_iff.",
+    "implications": "The result completes the rigidity picture for the discrete Lyapunov inequality: log-convexity of moments is strict precisely off the single-point locus, so the gallery's power-mean monotonicity and power-mean equality entries are exposed as first- and second-order shadows of one convexity phenomenon. The abstract core (a summed AM–GM is an equality iff termwise) is a reusable template for the equality case of any inequality obtained by summing pointwise weighted AM–GM, including discrete Hölder and Minkowski.",
+    "openQuestions": [
+      "Lift the equality case to the Lᵖ / integral setting: characterise equality in the measure-theoretic Lyapunov inequality (∫ f^t)^{u-s} = (∫ f^s)^{u-t}(∫ f^u)^{t-s} as f being a.e. constant on its support, connecting to Mathlib's interpolation infrastructure.",
+      "Derive the equality case of the general n-fold discrete Hölder inequality (the parent generalized-Hölder entry) from the same summed-AM–GM template, characterising equality as proportionality of the columns (w_i·x_{j,i}^{p_j} independent of j up to scaling)."
+    ]
+  },
+  "leanFile": {
+    "lineCount": 216,
+    "axiomCount": 0,
+    "path": "Proofs/JensenInequalityOQ01OQ01OQ01OQ01OQ01OQ01.lean",
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 4,
+    "imports": [
+      "Proofs.JensenInequalityOQ01OQ01OQ01OQ01OQ01",
+      "Proofs.JensenInequalityOQ01OQ01"
+    ]
+  },
+  "sorries": 0
+}
