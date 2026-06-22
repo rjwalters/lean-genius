@@ -1,0 +1,37 @@
+{
+  "id": "roth-theorem-k3-oq-03-oq-01",
+  "name": "Foundational identities for the Gowers norm and the k-AP counting operator",
+  "parentId": "roth-theorem-k3-oq-03",
+  "status": "in-progress",
+  "knowledge": {
+    "score": 10,
+    "insights": [
+      "The parent OQ-03 defines gowersNorm and kAPCount constructively but proves NO algebraic properties of them — this child fills that gap with the foundational degenerate/normalization identities.",
+      "kAPCount on a constant tuple (c,…,c) equals c^k: the inner product is c^k and the normalized double average (N^-1)^2 * sum_{x,d} c^k = c^k cancels N^2 against the (N^-1)^2 prefactor. The all-ones case gives Λ_k(1,…,1)=1, the total normalized k-AP mass.",
+      "A single zero argument annihilates the whole count (Finset.prod_eq_zero on the j-th factor) — the multiplicative analogue of linearity in each slot.",
+      "gowersNorm of the zero function is 0: conjugateByWeight ω 0 = 0 in both branches (identity and conjugation), so every 2^s-fold hypercube product vanishes.",
+      "These constant/zero base cases are exactly the start of the multilinear expansion 1_A = δ·1 + (1_A − δ) that opens the generalized von Neumann argument.",
+      "Parent RothTheoremOQ03.lean has TOOLCHAIN DRIFT on the current Mathlib (Complex.abs removed; Fin.val rewrite patterns and a dangling /-- docstring no longer parse) — this child is therefore SELF-CONTAINED, re-declaring the operators with the modern norm ‖·‖ so it builds independently of the broken parent.",
+      "norm notation ‖ ... ‖ wrapping a ∑/∏ that extends to the right swallows the closing bar — wrap the inner expression in explicit parentheses ‖(...)‖ (the parent dodged this with Complex.abs (...))."
+    ],
+    "builtItems": [
+      "RothTheoremOQ03OQ01.lean: self-contained, 4 noncomputable defs (hypercubeShift, conjugateByWeight, gowersNorm, kAPCount) + 5 proved theorems, 0 axioms, 0 sorries.",
+      "conjugateByWeight_zero: conjugateByWeight ω 0 = 0 (simp lemma).",
+      "gowersNorm_zero: gowersNorm N s 0 = 0.",
+      "kAPCount_const: kAPCount k (fun _ _ => c) = c^k.",
+      "kAPCount_const_one: kAPCount k (fun _ _ => 1) = 1.",
+      "kAPCount_eq_zero_of_zero: f j = 0 ⟹ kAPCount k f = 0."
+    ],
+    "progressSummary": "Child of roth-theorem-k3-oq-03. The parent constructs the Gowers U^s norm and the k-AP counting operator Λ_k but proves nothing about them. This entry supplies the foundational identities: gowersNorm_zero, kAPCount_const (Λ_k(c,…,c)=c^k), kAPCount_const_one (normalization Λ_k(1,…,1)=1), and kAPCount_eq_zero_of_zero (a zero slot annihilates the count). All 0-axiom verified (#print axioms = propext/Classical.choice/Quot.sound only), no native_decide. Self-contained file using the current Mathlib norm ‖·‖ (the parent file uses the now-removed Complex.abs).",
+    "nextSteps": [
+      "Prove multilinearity of kAPCount in each slot (additivity and scalar homogeneity via Function.update), enabling the full 1_A = δ·1 + (1_A − δ) expansion.",
+      "Prove gowersNorm_nonneg and the U^1 mean identity once the parent's Complex.abs drift is repaired (or keep on the self-contained operators).",
+      "Connect kAPCount of an indicator function to the actual count of k-APs in a finset.",
+      "Repair the toolchain drift in the parent RothTheoremOQ03.lean (Complex.abs → ‖·‖, Fin.val rewrites, dangling docstring) so the two files can be merged."
+    ]
+  },
+  "relatedProofs": [
+    "roth-theorem-k3",
+    "roth-theorem-k3-oq-03"
+  ]
+}
