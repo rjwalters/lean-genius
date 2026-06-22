@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-closure",
+    "proofId": "connected-space-oq-01",
+    "range": {
+      "startLine": 35,
+      "endLine": 48
+    },
+    "type": "insight",
+    "title": "Connectedness Survives Closure",
+    "content": "preconnected_closure and connected_closure record that the closure of a (pre)connected set is (pre)connected. The reason is that connectedness cannot be destroyed by adding limit points: any pair of open sets separating closure s would already separate the dense original set s, contradicting its preconnectedness. These are Mathlib's IsPreconnected.closure / IsConnected.closure, restated in gallery form."
+  },
+  {
+    "id": "ann-bark-tree",
+    "proofId": "connected-space-oq-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "Bark and Tree: the Sharp Form",
+    "content": "preconnected_of_subset_closure is strictly stronger than the closure statement: ANY set t with s ⊆ t ⊆ closure s is preconnected, not just t = closure s. Picturesquely, everything between the 'bark' (s) and the 'tree' (closure s) inherits connectedness. The full-closure result is the special case t = closure s; conversely this sharp form is what powers downstream arguments where one only knows a set lies between a connected core and its closure."
+  },
+  {
+    "id": "ann-dense",
+    "proofId": "connected-space-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 73
+    },
+    "type": "insight",
+    "title": "Dense Connected Subset ⟹ Connected Space",
+    "content": "connectedSpace_of_dense_connected is the practical corollary: if a space has a dense connected subset, the whole space is connected. The proof reduces ConnectedSpace α to IsConnected (univ) (connectedSpace_iff_univ); density gives closure s = univ (Dense.closure_eq), so univ is the closure of a connected set, which is connected (IsConnected.closure). This is a standard and reusable route to proving connectedness — establish it on a dense, easier-to-analyze part and let closure do the rest."
+  }
+]
