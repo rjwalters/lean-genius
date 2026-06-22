@@ -20,7 +20,7 @@
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 2,
-    "assumptions": "2 axioms: hadwiger_nelson_lower_bound (χ(ℝ²) ≥ 5) and hadwiger_nelson_upper_bound (χ(ℝ²) ≤ 7). The lower bound was improved to 5 by de Grey (2018) using a 1581-vertex graph; the upper bound follows from a 7-coloring of the plane using hexagonal tiling. These require substantial geometric computation.",
+    "assumptions": "2 axioms in the parent file UnitDistanceIndependence.lean: hadwiger_nelson_lower_bound (χ(ℝ²) ≥ 5, de Grey 2018, genuinely hard) and hadwiger_nelson_upper_bound (χ(ℝ²) ≤ 7). The upper bound is now CONSTRUCTIVELY PROVED — sorry-free and axiom-free — in the companion file UnitDistanceHN7.lean (theorem hadwiger_nelson_7coloring), via an explicit hexagonal 7-coloring and the A₂-lattice Voronoi covering-radius bound; the parent file retains it as an axiom only for local self-containment and it is now redundant. Thus the only genuinely unavoidable assumption is the de Grey lower bound.",
     "lineCount": 948,
     "theoremCount": 65,
     "definitionCount": 12,
@@ -38,7 +38,9 @@
       "independence_number: definition α(G) = max |I| for independent I",
       "alpha_chromatic_bound: α(G) ≥ |V|/χ(G) (fractional coloring bound)",
       "UnitDistanceGraph: definition with edges between points at distance 1",
-      "moser_spindle: the Moser spindle subgraph (5-chromatic) construction"
+      "moser_spindle: the Moser spindle subgraph (5-chromatic) construction",
+      "covering_radius (UnitDistanceHN7.lean): the A₂ cube-coordinate rounding keeps every point within the circumradius s=2/5 of its Voronoi center — the last remaining geometric obligation of the hexagonal 7-coloring, proved via Q(Δq,Δr) ≤ 1/3 (hexRound_Q_bound) by a four-branch case analysis with explicit SOS certificates",
+      "hadwiger_nelson_7coloring (UnitDistanceHN7.lean): complete, machine-verified proof of the Hadwiger-Nelson upper bound χ(ℝ²) ≤ 7 (0 sorries, 0 axioms)"
     ]
   },
   "overview": {
