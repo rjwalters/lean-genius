@@ -1,8 +1,8 @@
 {
   "slug": "erdos-ko-rado-oq-01",
   "title": "Erdős-Ko-Rado OQ-01: Prove `at_most_k_intersecting_cyclic_intervals` Bound",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -29,11 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SOLVED (researcher-9, 2026-06-22): Proved the parent axiom at_most_k_intersecting_cyclic_intervals — Katona key lemma — as a 0-axiom theorem (no native_decide), depends only on propext/Classical.choice/Quot.sound. File Proofs/ErdosKoRadoOQ01.lean (244L, 6 thm, 2 def). Method: collapse-pairing injection into range k. Helpers: mem_cyclicInterval/inter_nonempty_iff (arc membership/intersection as Nat.ModEq); offset_range (intersecting arcs have offset in [0,k)∪(n-k,n)); not_intersect_mixed (arcs with offsets c and c+(n-k) differ by exactly k → disjoint when n≥2k); offset_inj (offset map injective). Finset.card_le_card_of_injOn closes |I|≤|range k|=k. Sibling OQ-02 had recorded this as released-unsolved (modular bookkeeping resisted formalization).",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Complete double_counting_bound in parent natively (combine this lemma with set-appearance counting)",
+      "Characterize extremal cyclic families attaining exactly k"
+    ],
     "markdown": "# Knowledge Base: erdos-ko-rado-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -46,7 +49,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T15:38:25.652Z",
-  "lastUpdate": "2026-04-03T15:38:25.667Z",
+  "lastUpdate": "2026-06-22",
   "leanFiles": [
     {
       "path": "Proofs/ErdosKoRado.lean",
