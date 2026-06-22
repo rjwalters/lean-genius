@@ -1,0 +1,99 @@
+{
+  "slug": "binomial-theorem-oq-03-oq-01-oq-01",
+  "title": "The General Falling-Factorial Moment of the Binomial Coefficients",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\sum_{k=0}^{n} k^{\\underline{r}}\\binom{n}{k} = n^{\\underline{r}}\\,2^{\\,n-r}",
+    "plain": "The parent entry computed the first three unweighted combinatorial moments of the binomial coefficients (Σ k·C(n,k), Σ k(k-1)·C(n,k), Σ k²·C(n,k)) one at a time. Is there a single closed form behind all of the factorial moments? Yes: writing k^(r) = k(k-1)⋯(k-r+1) for the falling factorial, Σ_{k=0}^{n} k^(r)·C(n,k) = n^(r)·2ⁿ⁻ʳ for every n and r — the r-th falling-factorial moment, the integer shadow of differentiating (1+x)ⁿ exactly r times and setting x = 1.",
+    "whyMatters": [
+      "Subsumes every factorial moment of the binomial coefficients in one identity",
+      "Fills a genuine gap in Mathlib's Nat.Choose.Sum (which stops at the zeroth moment)"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-22T11:30:00-07:00",
+    "iteration": 1,
+    "focus": "Generalise the parent's three combinatorial moments into a single falling-factorial moment for all orders.",
+    "blockers": [],
+    "nextAction": "Complete — proof verified, gallery entry created.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SOLVED (researcher-9, 2026-06-22): proved the general falling-factorial moment Σ_{k=0}^{n} k^(r)·C(n,k) = n^(r)·2ⁿ⁻ʳ for all n,r:ℕ, 0-axiom verified (propext/Classical.choice/Quot.sound, no native_decide). File Proofs/BinomialTheoremOQ03OQ01OQ01.lean (162L, 7 thm). Induction on r: base r=0 is Nat.sum_range_choose (Σ C=2ⁿ); step lemma sum_descFactorial_mul_choose_step lifts the grandparent's order-1 absorption (k+1)·C(m+1,k+1)=(m+1)·C(m,k) to the recurrence S(m+1,r+1)=(m+1)·S(m,r) via Nat.succ_descFactorial_succ : (k+1)^(r+1)=(k+1)·k^(r). Unconditional — when r>n both sides are 0 (n^(r)=0). Recovers parent's r=1, r=2 moments as one-line corollaries; new r=3 case for free.",
+    "builtItems": [
+      "Proofs/BinomialTheoremOQ03OQ01OQ01.lean: sum_descFactorial_mul_choose (general r-th falling-factorial moment, 0-axiom)",
+      "sum_descFactorial_mul_choose_step (the absorption recurrence S(m+1,r+1)=(m+1)·S(m,r), reusable engine)",
+      "sum_id_mul_choose, sum_descFactorial2_mul_choose (parent's first two moments recovered as r=1, r=2 corollaries)",
+      "sum_descFactorial3_mul_choose (new third factorial moment), descFactorial_two, descFactorial_three",
+      "src/data/proofs/binomial-theorem-oq-03-oq-01-oq-01/ gallery entry"
+    ],
+    "insights": [
+      "The order-1 absorption identity is the ONLY nontrivial ingredient: lifting it through Nat.succ_descFactorial_succ gives the recurrence S(m+1,r+1)=(m+1)·S(m,r), whose solution is exactly n^(r)·2ⁿ⁻ʳ",
+      "The falling factorial (not the ordinary power) is the natural carrier of binomial-coefficient moments — n^(r) builds itself as the recurrence unfolds",
+      "No side condition needed: truncated subtraction in 2ⁿ⁻ʳ is harmless because n^(r)=0 whenever r>n, killing the RHS exactly where every term k^(r) (k≤n<r) on the LHS vanishes",
+      "Ordinary power moments Σ kʳ·C(n,k) follow by Stirling change of basis: kʳ=Σ_j S(r,j)·k^(j) ⟹ Σ kʳ·C = Σ_j S(r,j)·n^(j)·2ⁿ⁻ʲ"
+    ],
+    "mathlibGaps": [
+      "Mathlib's Nat.Choose.Sum has only the zeroth moment Σ C(n,k)=2ⁿ (Nat.sum_range_choose); no positive-order falling-factorial or power moment — the general identity here is a natural upstream contribution"
+    ],
+    "nextSteps": [
+      "Formalise the ordinary power moments Σ kʳ·C(n,k) via Stirling numbers of the second kind (needs Stirling S(r,j) infrastructure in Mathlib)",
+      "Ascending-factorial / generating-function variants and the analogous identities for Σ k^(r)·C(n,k)·xᵏ"
+    ],
+    "markdown": "# Knowledge Base: binomial-theorem-oq-03-oq-01-oq-01\n\n## Problem Understanding\n\nGeneralise the parent's three unweighted combinatorial moments into a single falling-factorial moment Σ_{k=0}^{n} k^(r)·C(n,k) = n^(r)·2ⁿ⁻ʳ for all orders r.\n\n## Insights\n\nThe single order-1 absorption identity (k+1)·C(n+1,k+1) = (n+1)·C(n,k) is the only nontrivial ingredient. Lifting it through `Nat.succ_descFactorial_succ` turns it into the recurrence S(m+1,r+1) = (m+1)·S(m,r), whose solution is n^(r)·2ⁿ⁻ʳ. The falling factorial materialises on the right with no extra bookkeeping. The identity is unconditional over ℕ (both sides vanish when r > n).\n\n## Dead Ends\n\nNone — the induction-on-r approach worked on the first attempt.\n"
+  },
+  "tags": [
+    "combinatorics",
+    "binomial-coefficients",
+    "moments",
+    "falling-factorial",
+    "absorption",
+    "generating-functions",
+    "mathlib"
+  ],
+  "relatedProofs": [
+    "binomial-theorem",
+    "binomial-theorem-oq-03",
+    "binomial-theorem-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Nat.sum_range_choose",
+      "Nat.succ_descFactorial_succ",
+      "Nat.descFactorial_one"
+    ]
+  },
+  "started": "2026-06-22T11:00:00-07:00",
+  "lastUpdate": "2026-06-22T11:30:00-07:00",
+  "completed": "2026-06-22T11:30:00-07:00",
+  "significance": 7,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/BinomialTheoremOQ03OQ01OQ01.lean",
+      "filename": "BinomialTheoremOQ03OQ01OQ01.lean",
+      "lineCount": 162,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ01OQ01.lean"
+    }
+  ]
+}
