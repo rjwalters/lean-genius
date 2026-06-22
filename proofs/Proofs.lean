@@ -710,6 +710,7 @@ import Proofs.CombinationsFormulaOQ07
 import Proofs.CombinationsFormulaOQ07OQ01
 import Proofs.CombinationsFormulaOQ07OQ02
 import Proofs.CombinationsFormulaOQ07OQ03
+import Proofs.CombinationsFormulaOQ07OQ05
 import Proofs.CombinationsFormulaOQ08
 import Proofs.CombinationsFormulaOQ09
 import Proofs.CompactnessFiniteSubcover

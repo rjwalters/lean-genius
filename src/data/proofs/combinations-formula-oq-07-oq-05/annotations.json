@@ -1,0 +1,142 @@
+[
+  {
+    "id": "signed-context",
+    "proofId": "combinations-formula-oq-07-oq-05",
+    "range": {
+      "startLine": 1,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Signing the Sum of Squares: A Parity Dichotomy",
+    "content": "The parent entry proves the central sum of squares C(2n,n) = ∑_{k=0}^{n} C(n,k)². This follow-up inserts the alternating sign (-1)^k. The signed sum S(n) = ∑ (-1)^k·C(n,k)² is the coefficient of X^n in (1−X²)^n = (1−X)^n(1+X)^n; because (1−X²)^n is a polynomial in X², that coefficient survives only in even degree. The result is a sharp dichotomy: S(n) = 0 for odd n and S(2m) = (-1)^m·C(2m,m) for even n. Mathlib has the unsigned row sum, the unsigned sum of squares (the parent), and the linear alternating sum, but not this signed sum of squares.",
+    "mathContext": "$\\sum_{k=0}^{n} (-1)^k \\binom{n}{k}^2 = [X^n]\\,(1-X^2)^n = \\begin{cases} (-1)^{n/2}\\binom{n}{n/2} & n \\text{ even}\\\\ 0 & n \\text{ odd}\\end{cases}$. The alternation sieves the full Pascal row down to a single signed central coefficient.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum of squares of binomial coefficients",
+      "alternating / signed sum",
+      "generating functions",
+      "polynomial coefficient extraction",
+      "central binomial coefficient",
+      "parity dichotomy"
+    ],
+    "prerequisites": [
+      "Nat.choose binomial coefficients",
+      "binomial symmetry C(n,k) = C(n,n-k)",
+      "polynomial coefficients and the product rule coeff_mul",
+      "the parent identity C(2n,n) = ∑ C(n,k)²"
+    ]
+  },
+  {
+    "id": "coeff-one-sub-x-thm",
+    "proofId": "combinations-formula-oq-07-oq-05",
+    "range": {
+      "startLine": 65,
+      "endLine": 78
+    },
+    "type": "theorem",
+    "title": "Coefficients of (1 − X)^n",
+    "content": "coeff_one_sub_X_pow establishes ((1−X)^n).coeff k = (-1)^k·C(n,k). Rather than a fresh induction, it reduces to Mathlib's coeff_X_add_C_pow by writing 1 − X = −(X + C(−1)), so (1−X)^n = (-1)^n·(X + C(−1))^n; the latter's coefficient is (-1)^{n−k}·C(n,k), and the parity identity (-1)^n·(-1)^{n−k} = (-1)^k (via neg_one_sq) finishes. The k > n branch is closed by Nat.choose_eq_zero_of_lt.",
+    "mathContext": "$[X^k]\\,(1-X)^n = (-1)^k\\binom{n}{k}$, the binomial theorem with one sign.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial theorem",
+      "polynomial coefficients",
+      "sign parity"
+    ],
+    "prerequisites": [
+      "Polynomial.coeff_X_add_C_pow",
+      "Polynomial.coeff_C_mul"
+    ]
+  },
+  {
+    "id": "sum-as-coeff-thm",
+    "proofId": "combinations-formula-oq-07-oq-05",
+    "range": {
+      "startLine": 80,
+      "endLine": 94
+    },
+    "type": "theorem",
+    "title": "The Alternating Sum as a Polynomial Coefficient",
+    "content": "alt_sum_sq_eq_coeff identifies ∑ (-1)^k·C(n,k)² with the coefficient of X^n in (1−X²)^n. The factorization (1−X²)^n = (1−X)^n·(1+X)^n lets coeff_mul expand the X^n coefficient over the antidiagonal as ∑_k ((1−X)^n).coeff k · ((1+X)^n).coeff (n−k) = ∑_k (-1)^k C(n,k)·C(n,n−k); Nat.choose_symm turns C(n,n−k) into C(n,k), assembling the square.",
+    "mathContext": "$\\sum_{k=0}^{n} (-1)^k \\binom{n}{k}^2 = [X^n]\\big((1-X)^n(1+X)^n\\big)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy product of polynomials",
+      "Vandermonde convolution",
+      "binomial symmetry"
+    ],
+    "prerequisites": [
+      "Polynomial.coeff_mul",
+      "Finset.Nat.sum_antidiagonal_eq_sum_range_succ",
+      "Nat.choose_symm"
+    ]
+  },
+  {
+    "id": "diagonal-coeff-thm",
+    "proofId": "combinations-formula-oq-07-oq-05",
+    "range": {
+      "startLine": 96,
+      "endLine": 109
+    },
+    "type": "theorem",
+    "title": "The Diagonal Coefficient via Polynomial.expand",
+    "content": "coeff_one_sub_X_sq_pow_diag computes the X^n coefficient of (1−X²)^n as (-1)^{n/2}·C(n,n/2) when 2∣n and 0 otherwise. The key observation is that (1−X²)^n = expand ℤ 2 ((1−X)^n) — a polynomial in X² — so Polynomial.coeff_expand reads off the diagonal coefficient: it is the (n/2)-th coefficient of (1−X)^n exactly when 2 divides n, which by coeff_one_sub_X_pow is (-1)^{n/2}·C(n,n/2).",
+    "mathContext": "$[X^n]\\,(1-X^2)^n = [X^n]\\,\\mathrm{expand}_2\\big((1-X)^n\\big) = \\mathbf{1}_{2\\mid n}\\,(-1)^{n/2}\\binom{n}{n/2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial.expand (substitution X ↦ X^p)",
+      "coefficient extraction",
+      "parity / divisibility"
+    ],
+    "prerequisites": [
+      "Polynomial.coeff_expand",
+      "Polynomial.expand_X",
+      "coeff_one_sub_X_pow"
+    ]
+  },
+  {
+    "id": "closed-form-thm",
+    "proofId": "combinations-formula-oq-07-oq-05",
+    "range": {
+      "startLine": 111,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "The Closed Form and Even/Odd Corollaries",
+    "content": "alt_sum_sq combines the two coefficient lemmas into the unified closed form ∑ (-1)^k·C(n,k)² = if 2∣n then (-1)^{n/2}·C(n,n/2) else 0. The corollaries specialize the branch: alt_sum_sq_odd uses if_neg (an odd n is not divisible by 2) to give 0, and alt_sum_sq_even uses if_pos with 2m/2 = m to give the signed central binomial coefficient (-1)^m·C(2m,m).",
+    "mathContext": "$\\sum_{k=0}^{2m} (-1)^k \\binom{2m}{k}^2 = (-1)^m \\binom{2m}{m}$, and $\\sum_{k=0}^{n}(-1)^k\\binom{n}{k}^2 = 0$ for odd $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "case split on parity",
+      "closed-form evaluation"
+    ],
+    "prerequisites": [
+      "alt_sum_sq_eq_coeff",
+      "coeff_one_sub_X_sq_pow_diag"
+    ]
+  },
+  {
+    "id": "reflection-thm",
+    "proofId": "combinations-formula-oq-07-oq-05",
+    "range": {
+      "startLine": 136,
+      "endLine": 159
+    },
+    "type": "theorem",
+    "title": "Odd Case via Reflection (Antisymmetry)",
+    "content": "alt_sum_sq_odd_reflect reproves the vanishing of the odd-n sum without any generating-function machinery. Finset.sum_range_reflect substitutes k ↦ n−k; Nat.choose_symm restores C(n,k)², and for odd n the sign flips via (-1)^{n−k} = −(-1)^k (a consequence of Odd.neg_one_pow). Thus each reflected term is the negative of the original, the sum equals −itself, and so it is 0 — the signed analogue of Pascal-row symmetry.",
+    "mathContext": "For odd $n$: $S(n) = \\sum_k (-1)^{n-k}\\binom{n}{n-k}^2 = -\\sum_k (-1)^k \\binom{n}{k}^2 = -S(n)$, hence $S(n)=0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "reflection symmetry",
+      "antisymmetry / sign reversal",
+      "alternative proof"
+    ],
+    "prerequisites": [
+      "Finset.sum_range_reflect",
+      "Nat.choose_symm",
+      "Odd.neg_one_pow"
+    ]
+  }
+]
