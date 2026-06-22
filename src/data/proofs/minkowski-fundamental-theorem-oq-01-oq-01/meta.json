@@ -1,0 +1,206 @@
+{
+  "id": "minkowski-fundamental-theorem-oq-01-oq-01",
+  "title": "Bracketing the Product of Successive Minima by the Extreme Minima",
+  "slug": "minkowski-fundamental-theorem-oq-01-oq-01",
+  "description": "Next step of minkowski-fundamental-theorem-oq-01 (which built the successive-minima infrastructure and left Minkowski's second theorem product bound as an open scaffold). Turns the parent's order chain λ₀ ≤ λ₁ ≤ ⋯ ≤ λₙ₋₁ into a quantitative statement about the product that appears in the second theorem: the bracketing λ₀ⁿ ≤ ∏ᵢ λᵢ ≤ λₙ₋₁ⁿ (the geometric mean of the minima lies between the extremes). As a payoff, granting the still-open product bound collapses it to single-minimum statements: the upper bound gives λ₀ⁿ·vol(S) ≤ 2ⁿ·covolume(L) and the lower bound gives (2ⁿ/n!)·covolume(L) ≤ λₙ₋₁ⁿ·vol(S). All 0 axioms, 0 sorries; the product bound itself remains the open analytic core.",
+  "meta": {
+    "author": "Hermann Minkowski (1896); Lean 4 formalization (research, 2026)",
+    "date": "1896",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MinkowskiFundamentalTheoremOQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "geometry-of-numbers",
+      "minkowski-theorem",
+      "successive-minima",
+      "lattices",
+      "convex-bodies"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 229,
+    "assumptions": "0 axioms, 0 sorries. Built on the parent OQ-01 file's successive-minima API (Proofs.MinkowskiFundamentalTheoremOQ01) and the grandparent's Lattice / ConvexBody / HasVolume API. The bracketing results carry the natural attainment hypothesis that the minima are attained, formalised as the (smallest) admissible-scaling set — that of the top index — being non-empty; by antitonicity this makes every admissible set non-empty and the full order chain available. HONEST SCOPE: the product bound of Minkowski's second theorem is NOT proved here (it is the open analytic core); the two single-minimum consequences are stated as implications conditional on the product bound (`secondTheorem_upper_statement` / `secondTheorem_lower_statement`).",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-06-21",
+    "theoremCount": 11,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Minkowski's *second* theorem (Geometrie der Zahlen, 1896) bounds the full product of the successive minima λ₁ ≤ λ₂ ≤ ⋯ ≤ λₙ of a symmetric convex body S with respect to a lattice L:\n\n    (2ⁿ / n!) · covolume(L) ≤ λ₁ λ₂ ⋯ λₙ · vol(S) ≤ 2ⁿ · covolume(L).\n\nThe parent entry minkowski-fundamental-theorem-oq-01 built the successive-minima framework and proved their order structure (λ₀ ≤ λ₁ ≤ ⋯), but left the product bound itself as an open Prop scaffold. The geometric content of monotonicity is that the product is squeezed between powers of the extreme minima — a classical observation that reduces the two-sided product bound to bounds on single minima.",
+    "problemStatement": "Building on the parent's order chain λ₀ ≤ λ₁ ≤ ⋯ ≤ λₙ₋₁, bracket the product ∏ᵢ λᵢ between the n-th powers of the smallest and largest successive minima:\n\n    λ₀ⁿ ≤ ∏ᵢ λᵢ ≤ λₙ₋₁ⁿ,\n\nand use the bracket to reduce the (still-open) second-theorem product bound to single-minimum statements.",
+    "text": "Working on top of the parent's `successiveMinimum`, `admissibleScalings`, and `successiveMinimum_mono`, this file introduces the extreme indices of `Fin n` (`botIndex = 0`, `topIndex = n-1`), shows that attainment of the top minimum (its admissible-scaling set being non-empty) propagates to all minima by antitonicity, and assembles the full order chain λ₀ ≤ λᵢ ≤ λₙ₋₁. From the chain, monotone multiplicativity of the finite product over `Fin n` gives the bracketing λ₀ⁿ ≤ ∏ᵢ λᵢ ≤ λₙ₋₁ⁿ. Finally, granting the parent's `secondTheorem_upper_statement` collapses it to λ₀ⁿ·vol(S) ≤ 2ⁿ·covolume(L), and granting the companion lower statement collapses it to (2ⁿ/n!)·covolume(L) ≤ λₙ₋₁ⁿ·vol(S).",
+    "proofStrategy": "1. **Extreme indices** (`botIndex`, `topIndex`, `botIndex_le`, `le_topIndex`): the indices 0 and n-1 of `Fin n` (well-defined as n ≠ 0) and their order positions, proved through `Fin.le_def` and `omega`.\n\n2. **Attainment propagation** (`admissibleScalings_nonempty`): the admissible-scaling sets are antitone in the index (parent's `admissibleScalings_subset`), so the top set is the smallest; if it is non-empty, every set is non-empty via `Set.Nonempty.mono`.\n\n3. **Order chain** (`firstMinimum_le`, `le_lastMinimum`): feed `botIndex ≤ i` and `i ≤ topIndex` into the parent's `successiveMinimum_mono`, with the nonemptiness hypotheses discharged by step 2.\n\n4. **Bracketing** (`firstMinimum_pow_le_prod`, `prod_le_lastMinimum_pow`, `extremeMinima_bracket`): rewrite the constant power λᵏⁿ as a product of constants over `Fin n` (`Finset.prod_const`, `Finset.card_univ`, `Fintype.card_fin`) and compare termwise with `Finset.prod_le_prod` using the order chain and nonnegativity (`successiveMinimum_nonneg`).\n\n5. **Single-minimum consequences** (`firstMinimum_pow_volume_le_of_secondTheorem`, `lower_le_lastMinimum_pow_volume_of_secondTheorem`): multiply the bracket by vol(S) ≥ 0 (`mul_le_mul_of_nonneg_right`, `HasVolume.volume_pos`) and chain with the granted product bound via `le_trans`.",
+    "keyInsights": [
+      "The geometric content of the order chain λ₀ ≤ ⋯ ≤ λₙ₋₁ is exactly the bracketing λ₀ⁿ ≤ ∏ᵢ λᵢ ≤ λₙ₋₁ⁿ: the geometric mean of the minima lies between the extremes (stated in n-th power form to stay over ℝ and avoid real n-th roots).",
+      "Attainment need only be assumed for the *top* index: the admissible-scaling sets shrink with the index, so non-emptiness of the smallest (top) set propagates to all of them.",
+      "The bracket reduces the deep, still-open two-sided product bound to single-minimum statements — the upper bound becomes a bound on λ₀ alone, the lower bound a bound on λₙ₋₁ alone — cleanly separating the order-theoretic content from the analytic core.",
+      "The first-minimum consequence λ₀ⁿ·vol(S) ≤ 2ⁿ·covolume(L) is the natural sharpening of the parent's λ₀ ≤ 1 bound (which is the first theorem); both come from the same single-minimum reduction."
+    ],
+    "prerequisites": [
+      "minkowski-fundamental-theorem-oq-01 — the successive-minima infrastructure and order structure",
+      "Minkowski's fundamental (first) theorem — see minkowski-fundamental-theorem",
+      "Monotone multiplicativity of finite products (Finset.prod_le_prod) over Fin n",
+      "Infima of sets of reals and the order structure of the successive minima"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble: Imports and Setup",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Imports Mathlib, the grandparent Proofs.MinkowskiFundamentalTheorem, and the parent Proofs.MinkowskiFundamentalTheoremOQ01; opens both namespaces, Set, and the Pointwise instances. Header documents the bracketing and the honest scope.",
+      "mathContext": "Reuses the parent's successiveMinimum / admissibleScalings / successiveMinimum_mono, so the bracketing argument stays inside the established successive-minima abstraction."
+    },
+    {
+      "id": "extreme-indices",
+      "title": "Part I: The Extreme Indices of Fin n",
+      "startLine": 61,
+      "endLine": 82,
+      "summary": "botIndex (= 0), topIndex (= n-1) and their order positions botIndex_le, le_topIndex.",
+      "mathContext": "The smallest minimum λ₀ sits at index 0 and the largest λₙ₋₁ at index n-1; these extreme indices anchor the bracketing of the product."
+    },
+    {
+      "id": "attainment-and-chain",
+      "title": "Part II: Attainment of the Minima and the Full Order Chain",
+      "startLine": 83,
+      "endLine": 109,
+      "summary": "admissibleScalings_nonempty (attainment of the top minimum propagates to all), firstMinimum_le (λ₀ ≤ λᵢ), le_lastMinimum (λᵢ ≤ λₙ₋₁).",
+      "mathContext": "Antitonicity of the admissible-scaling sets means the top set is smallest; its non-emptiness yields the full chain λ₀ ≤ λᵢ ≤ λₙ₋₁ through the parent's monotonicity lemma."
+    },
+    {
+      "id": "bracketing",
+      "title": "Part III: The Product, Bracketed by the Extreme Minima",
+      "startLine": 110,
+      "endLine": 150,
+      "summary": "prod_successiveMinimum_nonneg, firstMinimum_pow_le_prod (λ₀ⁿ ≤ ∏ᵢ λᵢ), prod_le_lastMinimum_pow (∏ᵢ λᵢ ≤ λₙ₋₁ⁿ), and the combined extremeMinima_bracket.",
+      "mathContext": "Each factor of the product lies between λ₀ and λₙ₋₁ and is nonnegative, so termwise comparison against the constant products λ₀ⁿ and λₙ₋₁ⁿ brackets the product between the extreme powers."
+    },
+    {
+      "id": "single-minimum-consequences",
+      "title": "Part IV: Collapsing the Second Theorem to Single-Minimum Bounds",
+      "startLine": 151,
+      "endLine": 195,
+      "summary": "secondTheorem_lower_statement (companion scaffold), firstMinimum_pow_volume_le_of_secondTheorem (upper bound ⟹ λ₀ⁿ·vol ≤ 2ⁿ·covol), lower_le_lastMinimum_pow_volume_of_secondTheorem (lower bound ⟹ (2ⁿ/n!)·covol ≤ λₙ₋₁ⁿ·vol).",
+      "mathContext": "Multiplying the bracket by the positive volume and chaining with the (granted) product bound reduces each side of Minkowski's two-sided second theorem to a statement about a single extreme minimum."
+    }
+  ],
+  "conclusion": {
+    "summary": "The order chain of the successive minima is upgraded to the quantitative bracketing λ₀ⁿ ≤ ∏ᵢ λᵢ ≤ λₙ₋₁ⁿ (0 axioms, 0 sorries), and this bracket reduces the still-open product bound of Minkowski's second theorem to single-minimum statements: the upper bound to λ₀ⁿ·vol(S) ≤ 2ⁿ·covolume(L), the lower bound to (2ⁿ/n!)·covolume(L) ≤ λₙ₋₁ⁿ·vol(S).",
+    "implications": "The bracketing isolates exactly what is open about the second theorem: once the product bound is supplied, every consequence for the individual minima follows by pure order theory. It also sharpens the parent's first-minimum bound λ₀ ≤ 1 (the first theorem) into a volume-quantitative form. The remaining work is the product bound itself — the basis-realizing simultaneous reduction argument.",
+    "openQuestions": [
+      "Prove the product bound secondTheorem_upper_statement: (∏ λᵢ)·vol(S) ≤ 2ⁿ·covolume(L), via a basis realizing the successive minima and simultaneous reduction.",
+      "Prove the matching lower bound secondTheorem_lower_statement: (2ⁿ/n!)·covolume(L) ≤ (∏ λᵢ)·vol(S).",
+      "Discharge the attainment hypothesis (admissibleScalings of the top index nonempty) from compactness of S and full rank of L, making the bracketing unconditional."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "minkowski-fundamental-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the successive-minima infrastructure. This entry reuses its successiveMinimum / admissibleScalings / successiveMinimum_mono and its secondTheorem_upper_statement scaffold, turning the order chain into the product bracketing."
+    },
+    {
+      "targetId": "minkowski-fundamental-theorem",
+      "relationship": "related",
+      "description": "Grandparent: Minkowski's fundamental (first) theorem, whose Lattice / ConvexBody / HasVolume API underlies the whole successive-minima development."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.MinkowskiFundamentalTheorem",
+      "Proofs.MinkowskiFundamentalTheoremOQ01"
+    ],
+    "opens": [
+      "MinkowskiFundamentalTheorem",
+      "MinkowskiSecondTheorem",
+      "Set",
+      "Pointwise"
+    ],
+    "namespace": "MinkowskiSecondTheoremBracket",
+    "lineCount": 229,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "mainTheorems": [
+      {
+        "name": "extremeMinima_bracket",
+        "type": "core",
+        "description": "The product of the successive minima is bracketed by the n-th powers of the extreme minima: λ₀ⁿ ≤ ∏ᵢ λᵢ ≤ λₙ₋₁ⁿ (under attainment of the minima).",
+        "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → (admissibleScalings n L S (topIndex n)).Nonempty → (successiveMinimum n L S (botIndex n)) ^ n ≤ ∏ i, successiveMinimum n L S i ∧ ∏ i, successiveMinimum n L S i ≤ (successiveMinimum n L S (topIndex n)) ^ n"
+      },
+      {
+        "name": "firstMinimum_pow_volume_le_of_secondTheorem",
+        "type": "key",
+        "description": "Granting the second theorem's product upper bound, the lower bracket collapses it to a bound on the first minimum alone: λ₀ⁿ·vol(S) ≤ 2ⁿ·covolume(L).",
+        "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → [hv : HasVolume n S] → (admissibleScalings n L S (topIndex n)).Nonempty → secondTheorem_upper_statement n L S → (successiveMinimum n L S (botIndex n)) ^ n * hv.volume ≤ 2 ^ n * L.covolume"
+      },
+      {
+        "name": "lower_le_lastMinimum_pow_volume_of_secondTheorem",
+        "type": "key",
+        "description": "Granting the second theorem's product lower bound, the upper bracket collapses it to a bound on the last minimum alone: (2ⁿ/n!)·covolume(L) ≤ λₙ₋₁ⁿ·vol(S).",
+        "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → [hv : HasVolume n S] → (admissibleScalings n L S (topIndex n)).Nonempty → secondTheorem_lower_statement n L S → (2 ^ n / n.factorial) * L.covolume ≤ (successiveMinimum n L S (topIndex n)) ^ n * hv.volume"
+      }
+    ],
+    "path": "Proofs/MinkowskiFundamentalTheoremOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "extremeMinima_bracket",
+      "type": "core",
+      "description": "The product of the successive minima is bracketed by the n-th powers of the extreme minima: λ₀ⁿ ≤ ∏ᵢ λᵢ ≤ λₙ₋₁ⁿ (under attainment of the minima).",
+      "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → (admissibleScalings n L S (topIndex n)).Nonempty → (successiveMinimum n L S (botIndex n)) ^ n ≤ ∏ i, successiveMinimum n L S i ∧ ∏ i, successiveMinimum n L S i ≤ (successiveMinimum n L S (topIndex n)) ^ n"
+    },
+    {
+      "name": "firstMinimum_pow_le_prod",
+      "type": "key",
+      "description": "Lower bracket: the product dominates the n-th power of the first minimum, λ₀ⁿ ≤ ∏ᵢ λᵢ.",
+      "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → (admissibleScalings n L S (topIndex n)).Nonempty → (successiveMinimum n L S (botIndex n)) ^ n ≤ ∏ i, successiveMinimum n L S i"
+    },
+    {
+      "name": "prod_le_lastMinimum_pow",
+      "type": "key",
+      "description": "Upper bracket: the product is dominated by the n-th power of the last minimum, ∏ᵢ λᵢ ≤ λₙ₋₁ⁿ.",
+      "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → (admissibleScalings n L S (topIndex n)).Nonempty → ∏ i, successiveMinimum n L S i ≤ (successiveMinimum n L S (topIndex n)) ^ n"
+    },
+    {
+      "name": "firstMinimum_pow_volume_le_of_secondTheorem",
+      "type": "supporting",
+      "description": "Granting the second theorem's product upper bound yields the single-minimum bound λ₀ⁿ·vol(S) ≤ 2ⁿ·covolume(L).",
+      "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → [hv : HasVolume n S] → (admissibleScalings n L S (topIndex n)).Nonempty → secondTheorem_upper_statement n L S → (successiveMinimum n L S (botIndex n)) ^ n * hv.volume ≤ 2 ^ n * L.covolume"
+    },
+    {
+      "name": "admissibleScalings_nonempty",
+      "type": "supporting",
+      "description": "Attainment of the top minimum propagates to every minimum: if the top admissible-scaling set is nonempty, so is each admissible-scaling set.",
+      "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → (admissibleScalings n L S (topIndex n)).Nonempty → (i : Fin n) → (admissibleScalings n L S i).Nonempty"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Minkowski, Hermann",
+      "title": "Geometrie der Zahlen",
+      "year": "1896",
+      "venue": "Leipzig: Teubner",
+      "note": "Introduces the successive minima and the second theorem bounding their product"
+    },
+    {
+      "authors": "Cassels, J. W. S.",
+      "title": "An Introduction to the Geometry of Numbers",
+      "year": "1959",
+      "venue": "Springer-Verlag, Grundlehren 99",
+      "note": "Chapter VIII; the bracketing of the product by the extreme minima is the elementary half of the second theorem"
+    },
+    {
+      "authors": "Gruber, P. M. and Lekkerkerker, C. G.",
+      "title": "Geometry of Numbers",
+      "year": "1987",
+      "venue": "North-Holland",
+      "note": "Comprehensive treatment of successive minima and transference theorems"
+    }
+  ],
+  "sorries": 0
+}
