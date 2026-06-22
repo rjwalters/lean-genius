@@ -3426,6 +3426,7 @@ import Proofs.SylowTheoremOQ01
 import Proofs.SylowTheoremOQ02
 import Proofs.SylowTheoremOQ02Orbit
 import Proofs.SylowTheoremOQ03
+import Proofs.SylowTheoremSchurZassenhausOQ03
 import Proofs.SylowTheoremOQ03B
 import Proofs.SylowTheoremOQ04
 import Proofs.SylvesterGallaiOQ01
