@@ -637,6 +637,37 @@ theorem realParabolaSet_noFiveCollinear (p : ℕ) [NeZero p] [Fact p.Prime]
   rintro ⟨hcol, -, -⟩
   exact realParabola_no_three_collinear p hp A B C hA hB hC hAB hAC hBC hcol
 
+/-- **The lifted parabola has zero four-point lines** — formalizing the
+honest scope.  Being an arc (no three collinear), a fortiori no four of
+its points lie on a common line, so `fourPointLineCount` is `0`.  This
+makes explicit that the bare arc is *not* a four-point-line lower-bound
+witness: the Ω(p^{3/2}) count must come from the sumset/grid
+construction built on top of this general-position base. -/
+theorem realParabolaSet_fourPointLineCount_zero (p : ℕ) [NeZero p]
+    [Fact p.Prime] (hp : p ≠ 2) :
+    fourPointLineCount (realParabolaSet p hp) = 0 := by
+  rw [fourPointLineCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  intro S hS
+  simp only [Finset.mem_powerset] at hS
+  rintro ⟨hScard, a, b, ha, hb, hab, hline⟩
+  -- A four-element set on a common line through `a ≠ b` contains a third
+  -- point `c`, giving three collinear points of the arc — impossible.
+  -- `S` has four points, so it is not contained in `{a, b}`: a third
+  -- point `c ∈ S` exists, distinct from both `a` and `b`.
+  have hthird : ∃ c ∈ S, c ∉ ({a, b} : Finset (ℝ × ℝ)) := by
+    by_contra hcon
+    push_neg at hcon
+    have hSsub : S ⊆ ({a, b} : Finset (ℝ × ℝ)) := fun x hx => hcon x hx
+    have hle := Finset.card_le_card hSsub
+    rw [hScard, Finset.card_pair hab] at hle
+    omega
+  obtain ⟨c, hcS, hcab⟩ := hthird
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hcab
+  push_neg at hcab
+  exact realParabola_no_three_collinear p hp a b c (hS ha) (hS hb) (hS hcS)
+    hab (fun h => hcab.1 h.symm) (fun h => hcab.2 h.symm)
+    (hline c hcS)
+
 end Grunbaum
 
 end Erdos101OQ04
