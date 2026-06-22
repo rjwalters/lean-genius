@@ -1,8 +1,8 @@
 {
   "slug": "cevas-theorem-oq-04-oq-01",
   "title": "[Problem Title]",
-  "phase": "SCAFFOLD",
-  "status": "active",
+  "phase": "complete",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -29,10 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
+    "progressSummary": "COMPLETE: Generalized the parent's triangle mass-point structure to an n-simplex (n+1 positive vertex masses). Defined the complement-mass fraction ratio i = (Σ_{j≠i} mass j)/total = 1 - mass i/total, proved ratio i ∈ (0,1) (positivity needs n ≥ 1), and established the n-dim Ceva identity Σ ratio i = n. Uniform masses give ratio i = n/(n+1) (centroid); n=2 recovers the triangle sum 2. ~10 theorems, 4 defs, 215 lines, 0 sorries, 0 axioms. Repaired bit-rot (removed import Mathlib.Algebra.BigOperators.Basic → .Group.Finset.Basic; field_simp/div_self drift) and added gallery data.",
+    "builtItems": [
+      "MassPoint n: structure of n+1 positive vertex masses on an n-simplex",
+      "MassPoint.total / total_pos / total_ne_zero: total mass and positivity",
+      "MassPoint.ratio + ratio_eq_one_sub: complement fraction = 1 - mass i/total",
+      "ratio_lt_one (unconditional) + ratio_pos (n ≥ 1): fractions lie in (0,1)",
+      "MassPoint.sum_ratio_eq: the n-dim Ceva identity Σ ratio i = n",
+      "uniform / uniform_ratio: centroid gives ratio i = n/(n+1); n=2 example sums to 2"
+    ],
+    "insights": [
+      "The n-dim generalization of the triangle ratios is the complement fraction: the share of total mass not at vertex i.",
+      "Each complement fraction is 1 minus a normalized vertex mass, so it is automatically in (0,1).",
+      "The complement fractions of an n-simplex sum to n: (n+1) normalized masses summing to 1 give (n+1) - 1 = n.",
+      "Positivity needs n ≥ 1 (two vertices); the upper bound is unconditional. Uniform masses give the centroid ratios n/(n+1)."
+    ],
+    "mathlibGaps": [
+      "Bit-rot: Mathlib.Algebra.BigOperators.Basic removed in v4.26.0 → Mathlib.Algebra.BigOperators.Group.Finset.Basic.",
+      "field_simp/div_self drift in the proof bodies required repair."
+    ],
     "nextSteps": [],
     "markdown": "# Knowledge Base: cevas-theorem-oq-04-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
     "archivedSessions": [
@@ -69,7 +84,7 @@
     "mathlib": []
   },
   "started": "2026-05-13T00:55:42.236Z",
-  "lastUpdate": "2026-05-14T20:35:00.000Z",
+  "lastUpdate": "2026-06-22",
   "leanFiles": [
     {
       "path": "Proofs/CevasTheorem.lean",
