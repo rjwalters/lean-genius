@@ -29,10 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Glaisher closed form oddCount n = 2^(s₂ n) proved (0-axiom, no native_decide) on top of Mathlib Lucas.",
+    "progressSummary": "COMPLETE: Glaisher closed form + Sierpiński block sum 3^m (child oq-02) both proved 0-axiom. Remaining next step: Fine general-p per-row count.",
     "builtItems": [
       "proofs/Proofs/LucasTheoremOQ01.lean (206L, 10thm/3def, 0-axiom verified, no native_decide): lucas_theorem (re-export), lucas_mod_two, odd_choose_two_mul, odd_choose_two_mul_add_one, oddCount_two_mul, oddCount_two_mul_add_one, s2_pos, oddCount_eq_two_pow_s2 (Glaisher), oddCount_isPowerOfTwo.",
-      "Gallery: src/data/proofs/lucas-theorem-oq-01/meta.json"
+      "Gallery: src/data/proofs/lucas-theorem-oq-01/meta.json",
+      "lucas-theorem-oq-01-oq-02 (PR #27478): ∑_{n<2^m} oddCount n = 3^m (Sierpiński count) via leading-bit lemma s₂(2^m+k)=s₂(k)+1 + doubling recursion T(m+1)=3T(m). 0-axiom verified."
     ],
     "insights": [
       "Lucas mod 2 (Mathlib Choose.choose_modEq_choose_mod_mul_choose_div_nat, p=2) gives pointwise parity: C(2n,k) odd ⟺ k even ∧ C(n,k/2) odd (top digit 0, C(0,1)=0); C(2n+1,k) odd ⟺ C(n,k/2) odd for all k (top digit 1, C(1,0)=C(1,1)=1).",
