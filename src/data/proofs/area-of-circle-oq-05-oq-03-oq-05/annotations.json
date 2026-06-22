@@ -1,0 +1,99 @@
+[
+  {
+    "id": "ann-aoc-oq05oq03oq05-scope",
+    "proofId": "area-of-circle-oq-05-oq-03-oq-05",
+    "range": {
+      "startLine": 1,
+      "endLine": 62
+    },
+    "type": "insight",
+    "title": "From Generating Function to the Moments Themselves",
+    "content": "The sibling entry proved that the moment generating function of N(0,1) is the entire function e^{s²/2}. A generating function stores the moments as its Taylor coefficients but never displays them. This entry reads them off in closed form. The even moments are double factorials and the odd moments vanish: ∫_ℝ x^{2n} e^{-x²/2} dx = (2n−1)‼·√(2π) and ∫_ℝ x^{2n+1} e^{-x²/2} dx = 0, so after normalization E[X^{2n}]=(2n−1)‼ and E[X^{2n+1}]=0 for X~N(0,1). In particular E[X²]=1 (variance) and E[X⁴]=3 (zero excess kurtosis). Combinatorially this is the univariate Wick/Isserlis theorem: (2n−1)‼ counts the perfect matchings of 2n points. All 0 axioms, 0 sorries.",
+    "mathContext": "The closed-form moments make explicit what the MGF e^{s²/2} only encodes as Taylor coefficients.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gaussian moments",
+      "double factorial",
+      "Wick theorem",
+      "Isserlis theorem",
+      "variance",
+      "kurtosis"
+    ]
+  },
+  {
+    "id": "ann-aoc-oq05oq03oq05-gamma",
+    "proofId": "area-of-circle-oq-05-oq-03-oq-05",
+    "range": {
+      "startLine": 63,
+      "endLine": 110
+    },
+    "type": "technique",
+    "title": "Every Even Moment is a Half-Integer Gamma Value",
+    "content": "The core computation is the even moment of the analyst's weight e^{-x²}. Because x^{2n}e^{-x²} is even, the full-line integral is twice the half-line integral — Mathlib's integral_comp_abs, fed the folding function explicitly in a calc step (rw cannot do the higher-order match on the resulting beta-redex). The half-line integral is exactly the Gamma moment integral: substituting u=x² gives ∫_0^∞ x^{2n} e^{-x²} = ½Γ(n+½), which is Mathlib's integral_rpow_mul_exp_neg_mul_rpow at exponent p=2, weight q=2n, scale b=1 (so the scale power is 1^e=1 and disappears). The half-integer value Real.Gamma_nat_add_half then gives Γ(n+½)=(2n−1)‼√π/2ⁿ, hence ∫_ℝ x^{2n}e^{-x²} = (2n−1)‼√π/2ⁿ. The double factorial is the half-integer Gamma value in disguise.",
+    "mathContext": "∫_0^∞ x^{2n}e^{-x²}=½Γ(n+½) and Γ(n+½)=(2n−1)‼√π/2ⁿ reduce the moment to one Gamma value.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gamma function",
+      "half-integer values",
+      "even function folding",
+      "substitution u=x²"
+    ]
+  },
+  {
+    "id": "ann-aoc-oq05oq03oq05-rescale",
+    "proofId": "area-of-circle-oq-05-oq-03-oq-05",
+    "range": {
+      "startLine": 117,
+      "endLine": 166
+    },
+    "type": "technique",
+    "title": "From e^{-x²} to e^{-x²/2} by a Single Rescaling",
+    "content": "The probabilist's weight e^{-x²/2} differs from the analyst's e^{-x²} only by the substitution x↦x/√2 (Mathlib's integral_comp_div, which contributes the Jacobian |√2|=√2). Under it (x/√2)^{2n}e^{-(x/√2)²} = (1/2ⁿ)·x^{2n}e^{-x²/2}, using (√2)^{2n}=((√2)²)ⁿ=2ⁿ via Real.sq_sqrt. So (1/2ⁿ)·∫ x^{2n}e^{-x²/2} = √2·((2n−1)‼√π/2ⁿ); cancelling 1/2ⁿ (mul_left_cancel₀) and collapsing √2·√π=√(2π) (Real.sqrt_mul) gives ∫_ℝ x^{2n}e^{-x²/2} = (2n−1)‼·√(2π). The factor √2 from the Jacobian is exactly what promotes √π to √(2π). Dividing by √(2π) gives the normalized moment (2n−1)‼.",
+    "mathContext": "The rescaling x↦x/√2 turns the analyst's normalization √π into the probabilist's √(2π).",
+    "significance": "important",
+    "relatedConcepts": [
+      "change of variables",
+      "linear rescaling",
+      "Jacobian",
+      "normalization"
+    ]
+  },
+  {
+    "id": "ann-aoc-oq05oq03oq05-odd",
+    "proofId": "area-of-circle-oq-05-oq-03-oq-05",
+    "range": {
+      "startLine": 167,
+      "endLine": 200
+    },
+    "type": "insight",
+    "title": "Odd Moments Vanish by Reflection Symmetry",
+    "content": "The odd moments vanish for a structural reason, not a computation: x^{2n+1}e^{-x²/2} is an odd function and Lebesgue measure is reflection-invariant. Substituting x↦−x (Mathlib's integral_neg_eq_self) leaves the integral unchanged, while the odd integrand flips sign (Odd.neg_pow, neg_sq), so the integral equals its own negation and is therefore 0. This is the analytic shadow of the Gaussian's evenness: the symmetric density cannot produce a nonzero odd moment.",
+    "mathContext": "An odd integrand against a reflection-invariant measure integrates to zero.",
+    "significance": "important",
+    "relatedConcepts": [
+      "odd function",
+      "reflection invariance",
+      "symmetry",
+      "vanishing moments"
+    ]
+  },
+  {
+    "id": "ann-aoc-oq05oq03oq05-loworder",
+    "proofId": "area-of-circle-oq-05-oq-03-oq-05",
+    "range": {
+      "startLine": 201,
+      "endLine": 247
+    },
+    "type": "insight",
+    "title": "Variance 1 and Kurtosis 3",
+    "content": "The general formula specializes to the two moments that define the shape of the standard normal: E[X²]=1‼=1 (the variance, n=1) and E[X⁴]=3‼=3 (n=2), so the excess kurtosis E[X⁴]−3 vanishes — the benchmark flatness against which all other distributions' kurtosis is measured. Both follow by evaluating the double factorial (1‼=1, 3‼=3·1=3) in the general normalized moment E[X^{2n}]=(2n−1)‼.",
+    "mathContext": "The first two even moments fix the variance and (zero excess) kurtosis of N(0,1).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "variance",
+      "kurtosis",
+      "standard normal",
+      "double factorial"
+    ]
+  }
+]

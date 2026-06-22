@@ -1,0 +1,259 @@
+{
+  "id": "area-of-circle-oq-05-oq-03-oq-05",
+  "title": "The Even Moments of the Gaussian are Double Factorials",
+  "slug": "area-of-circle-oq-05-oq-03-oq-05",
+  "description": "Follow-up to area-of-circle-oq-05-oq-03-oq-04 (the moment & cumulant generating function of the Gaussian), which proved that the moment generating function of N(0,1) is the entire function e^{s²/2}. That generating function encodes every moment as a Taylor coefficient but never exhibits them; this entry evaluates the moments themselves in closed form. The even moments are double factorials and the odd moments vanish: ∫_ℝ x^{2n} e^{-x²/2} dx = (2n−1)‼·√(2π) and ∫_ℝ x^{2n+1} e^{-x²/2} dx = 0, so after the probability normalization E[X^{2n}] = (2n−1)‼ and E[X^{2n+1}] = 0 for X~N(0,1). In particular the variance E[X²]=1‼=1 and the fourth moment E[X⁴]=3‼=3 (excess kurtosis 0). This is the univariate Wick/Isserlis theorem: the 2n-th Gaussian moment counts the (2n−1)‼ perfect matchings of 2n points. The companion identity for the un-normalized weight e^{-x²} (∫ x^{2n} e^{-x²} = (2n−1)‼√π/2ⁿ) is obtained by folding the even integrand onto the half-line (integral_comp_abs) and applying Mathlib's Gamma evaluation of the half-line moment integral integral_rpow_mul_exp_neg_mul_rpow together with the half-integer Gamma value Real.Gamma_nat_add_half (Γ(n+1/2)=(2n−1)‼√π/2ⁿ); the Gaussian normalization follows by the rescaling x↦x/√2 (integral_comp_div). The odd moments vanish by reflection invariance of Lebesgue measure (integral_neg_eq_self). All 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Classical (Gaussian moments; Isserlis 1918, Wick 1950); Lean 4 formalization (research, 2026)",
+    "date": "1918",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ05OQ03OQ05.lean",
+    "tags": [
+      "analysis",
+      "gaussian-integral",
+      "moments",
+      "double-factorial",
+      "wick-theorem",
+      "gamma-function",
+      "probability",
+      "measure-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 247,
+    "assumptions": "0 axioms, 0 sorries (depends only on propext, Classical.choice, Quot.sound). Builds on Mathlib's Gamma evaluation of the half-line moment integral (integral_rpow_mul_exp_neg_mul_rpow), the half-integer special value of the Gamma function (Real.Gamma_nat_add_half), the even-function folding lemma integral_comp_abs, the linear rescaling integral_comp_div, and reflection invariance integral_neg_eq_self. The moment order n is an arbitrary natural number, so the formula (2n−1)‼ is the full moment sequence, not finitely many instances. Wick/Isserlis is cited for combinatorial interpretation; what is formalized is the closed-form value of each moment.",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-06-22",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The sibling entry area-of-circle-oq-05-oq-03-oq-04 proved that the moment generating function of the standard normal is the single entire function e^{s²/2}. A generating function is a bookkeeping device: its Taylor coefficients are the moments, but it does not display them. This entry extracts the moments in closed form and so completes the moment story of the Gaussian-integral lineage area-of-circle-oq-05. The answer is one of the most quoted formulas in probability: the even moments of N(0,1) are the double factorials E[X^{2n}]=(2n−1)‼ and the odd moments vanish. Combinatorially this is the univariate case of the Wick (physics) / Isserlis (statistics) theorem — (2n−1)‼ is the number of perfect matchings (pair partitions) of 2n labelled points — which is the engine behind Feynman diagrams and Gaussian Hilbert space calculus. The normalization √(2π) of the Gaussian integral itself reappears here as the zeroth even moment.",
+    "problemStatement": "Evaluate the moments of the standard Gaussian in closed form: prove ∫_ℝ x^{2n} e^{-x²/2} dx = (2n−1)‼·√(2π) and the un-normalized companion ∫_ℝ x^{2n} e^{-x²} dx = (2n−1)‼·√π/2ⁿ; prove that the odd moments ∫_ℝ x^{2n+1} e^{-x²/2} dx vanish; and deduce the normalized moments of N(0,1): E[X^{2n}]=(2n−1)‼, E[X^{2n+1}]=0, with E[X²]=1 and E[X⁴]=3.",
+    "text": "The core computation is the even moment of the weight e^{-x²}. Because x^{2n}e^{-x²} is even, the full-line integral is twice the half-line integral (integral_comp_abs). The half-line integral is exactly the Gamma-function moment integral: substituting u=x² in ∫_0^∞ x^{2n} e^{-x²} dx gives ½Γ(n+½), Mathlib's integral_rpow_mul_exp_neg_mul_rpow at exponent p=2, weight q=2n, scale b=1. The half-integer value of the Gamma function, Real.Gamma_nat_add_half, says Γ(n+½)=(2n−1)‼√π/2ⁿ, so ∫_ℝ x^{2n}e^{-x²} = (2n−1)‼√π/2ⁿ. To pass to the probabilist's weight e^{-x²/2} one rescales by x↦x/√2 (integral_comp_div): the substitution turns e^{-x²} into e^{-x²/2}, the factor (√2)^{2n}=2ⁿ cancels the 2ⁿ in the denominator, and the Jacobian √2 promotes √π to √(2π), yielding ∫_ℝ x^{2n}e^{-x²/2} = (2n−1)‼√(2π). Dividing by √(2π) gives the normalized even moment (2n−1)‼. The odd moments vanish because the integrand x^{2n+1}e^{-x²/2} is odd and Lebesgue measure is reflection-invariant (integral_neg_eq_self forces the integral to equal its own negation). The low-order cases n=1 (variance 1) and n=2 (fourth moment 3) follow by evaluating the double factorial.",
+    "proofStrategy": "1. **Un-normalized even moment** (`integral_pow_mul_exp_neg_sq`): fold the even integrand onto the half-line with integral_comp_abs (a calc step provides the folding function explicitly); convert the half-line npow integrand to the rpow form of Mathlib's integral_rpow_mul_exp_neg_mul_rpow (p=2,q=2n,b=1, so the b-power is 1^e=1); rewrite the Gamma argument (2n+1)/2=n+1/2 and apply Real.Gamma_nat_add_half.\n\n2. **Gaussian integral** (`integral_exp_neg_sq`): the n=0 case, ∫ e^{-x²}=√π.\n\n3. **Gaussian even moment** (`integral_pow_mul_gaussian`): apply integral_comp_div with a=√2; rewrite the substituted integrand (x/√2)^{2n}e^{-(x/√2)²}=(1/2ⁿ)·x^{2n}e^{-x²/2} using (√2)²=2 (Real.sq_sqrt); cancel 1/2ⁿ with mul_left_cancel₀ and collapse √2·√π=√(2π) (Real.sqrt_mul).\n\n4. **Normalized even moment** (`gaussian_even_moment`): integral_div and cancellation of √(2π).\n\n5. **Odd moments** (`integral_odd_pow_mul_gaussian`, `gaussian_odd_moment`): conv_lhs with integral_neg_eq_self, then integral_congr_ae with Odd.neg_pow and neg_sq to show the integral equals its negation, hence 0.\n\n6. **Low-order moments** (`gaussian_variance`, `gaussian_fourth_moment`): specialize at n=1,2 and evaluate 1‼=1, 3‼=3 (decide).",
+    "keyInsights": [
+      "The even moments of N(0,1) are the double factorials: E[X^{2n}]=(2n−1)‼. This is the closed form that the sibling MGF entry only encodes implicitly as the Taylor coefficients of e^{s²/2}.",
+      "Every Gaussian moment reduces to a single value of the Gamma function at a half-integer: ∫_0^∞ x^{2n}e^{-x²} = ½Γ(n+½), and Γ(n+½)=(2n−1)‼√π/2ⁿ. The double factorial is the half-integer Gamma value in disguise.",
+      "The probabilist's normalization e^{-x²/2} differs from the analyst's e^{-x²} only by the rescaling x↦x/√2; this single substitution converts √π to √(2π) and cancels the power of 2 in the denominator, turning (2n−1)‼√π/2ⁿ into (2n−1)‼√(2π).",
+      "Combinatorially E[X^{2n}]=(2n−1)‼ is the univariate Wick/Isserlis theorem: (2n−1)‼ counts the perfect matchings of 2n points. The vanishing odd moments reflect the symmetry of the Gaussian; together they encode E[X²]=1 (variance) and E[X⁴]=3 (zero excess kurtosis)."
+    ],
+    "prerequisites": [
+      "area-of-circle-oq-05-oq-03-oq-04 — the moment generating function e^{s²/2} whose Taylor coefficients these moments are",
+      "area-of-circle-oq-05 — the real Gaussian integral ∫ e^{-x²}=√π (the n=0 even moment)",
+      "Mathlib's Gamma evaluation of the half-line moment integral: integral_rpow_mul_exp_neg_mul_rpow",
+      "The half-integer Gamma value Real.Gamma_nat_add_half: Γ(n+1/2)=(2n−1)‼√π/2ⁿ",
+      "Even/odd integral symmetry: integral_comp_abs (folding) and integral_neg_eq_self (reflection), and the rescaling integral_comp_div"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble: Imports and Setup",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Imports Mathlib; opens Real, MeasureTheory, Set and the Nat double-factorial notation. Header states the moment formulas E[X^{2n}]=(2n−1)‼, E[X^{2n+1}]=0, their Wick/Isserlis interpretation, and the Gamma-function method.",
+      "mathContext": "Targets the closed-form moments of the Gaussian, completing the moment story of the area-of-circle-oq-05 lineage."
+    },
+    {
+      "id": "unnormalized",
+      "title": "Part I: The Un-normalized Even Moment ∫ x^{2n} e^{-x²} = (2n−1)‼ √π / 2ⁿ",
+      "startLine": 63,
+      "endLine": 116,
+      "summary": "integral_pow_mul_exp_neg_sq folds the even integrand onto the half-line (integral_comp_abs) and evaluates it as ½Γ(n+½) via integral_rpow_mul_exp_neg_mul_rpow, then applies Real.Gamma_nat_add_half. integral_exp_neg_sq is the n=0 case ∫ e^{-x²}=√π.",
+      "mathContext": "Every Gaussian even moment is a half-integer value of the Gamma function; the double factorial is that value."
+    },
+    {
+      "id": "gaussian",
+      "title": "Part II: The Gaussian Even Moment ∫ x^{2n} e^{-x²/2} = (2n−1)‼ √(2π)",
+      "startLine": 117,
+      "endLine": 166,
+      "summary": "integral_pow_mul_gaussian rescales the e^{-x²} moment by x↦x/√2 (integral_comp_div): (√2)^{2n}=2ⁿ cancels the denominator and the Jacobian √2 promotes √π to √(2π). gaussian_even_moment divides by √(2π) to give the normalized moment (2n−1)‼.",
+      "mathContext": "The probabilist's normalization differs from the analyst's by the single substitution x↦x/√2."
+    },
+    {
+      "id": "odd",
+      "title": "Part III: The Odd Moments Vanish",
+      "startLine": 167,
+      "endLine": 200,
+      "summary": "integral_odd_pow_mul_gaussian shows ∫ x^{2n+1} e^{-x²/2}=0 because the integrand is odd and Lebesgue measure is reflection-invariant (integral_neg_eq_self forces the integral to equal its negation). gaussian_odd_moment is the normalized version.",
+      "mathContext": "The vanishing odd moments are the analytic shadow of the Gaussian's reflection symmetry."
+    },
+    {
+      "id": "low-order",
+      "title": "Part IV: Low-order Moments (Variance and Kurtosis)",
+      "startLine": 201,
+      "endLine": 247,
+      "summary": "gaussian_variance (E[X²]=1‼=1) and gaussian_fourth_moment (E[X⁴]=3‼=3, so excess kurtosis E[X⁴]−3=0) specialize the general formula at n=1,2.",
+      "mathContext": "The first two even moments fix the variance and kurtosis that define the standard normal."
+    }
+  ],
+  "conclusion": {
+    "summary": "The moments of the standard Gaussian are evaluated in closed form: the even moments are double factorials, ∫_ℝ x^{2n} e^{-x²/2} = (2n−1)‼·√(2π) (and ∫ x^{2n} e^{-x²} = (2n−1)‼√π/2ⁿ for the un-normalized weight), and the odd moments vanish, ∫ x^{2n+1} e^{-x²/2} = 0. After the probability normalization, E[X^{2n}]=(2n−1)‼ and E[X^{2n+1}]=0 for X~N(0,1), with the variance E[X²]=1 and the fourth moment E[X⁴]=3. The even moment reduces to a half-integer value of the Gamma function (∫_0^∞ x^{2n}e^{-x²}=½Γ(n+½), Γ(n+½)=(2n−1)‼√π/2ⁿ), folded by evenness and rescaled to the probabilist's weight. (0 axioms, 0 sorries.)",
+    "implications": "These moments make concrete what the sibling MGF entry (oq-04) only encodes as the Taylor coefficients of e^{s²/2}, and they derive the lineage's normalization √(2π) (oq-05) as the zeroth even moment. The closed form E[X^{2n}]=(2n−1)‼ is the univariate Wick/Isserlis theorem and the starting point for Gaussian Hilbert space calculus, Feynman-diagram combinatorics, and sub-Gaussian moment bounds.",
+    "openQuestions": [
+      "Prove the multivariate Wick/Isserlis theorem: for a centred Gaussian vector, E[X_{i_1}···X_{i_{2n}}] = Σ over pair partitions of the product of covariances, of which E[X^{2n}]=(2n−1)‼ is the equal-index case.",
+      "Identify the Hermite polynomials as the orthogonal polynomials of the Gaussian weight by computing ∫ H_m(x) H_n(x) e^{-x²/2} dx = √(2π) n! δ_{mn}, using these moments to evaluate the diagonal."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-05-oq-03-oq-04",
+      "relationship": "extends",
+      "description": "Sibling: the moment & cumulant generating function e^{s²/2}, whose Taylor coefficients are exactly the moments computed here. That entry's stated open question — extract E[X^{2k}]=(2k−1)‼ — is what this entry proves."
+    },
+    {
+      "targetId": "area-of-circle-oq-05-oq-03",
+      "relationship": "related",
+      "description": "Parent of the sibling lineage: the Gaussian is its own Fourier transform. The moments are the derivatives of the characteristic function at 0; here they are computed directly from the density."
+    },
+    {
+      "targetId": "area-of-circle-oq-05",
+      "relationship": "related",
+      "description": "Grandparent: the real Gaussian integral ∫ e^{-x²}=√π, which is the n=0 even moment and whose value (as √(2π)) is the normalization appearing in every moment."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "Set"
+    ],
+    "namespace": "GaussianMoments",
+    "lineCount": 247,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "integral_pow_mul_gaussian",
+        "type": "core",
+        "description": "The even moments of the standard Gaussian weight: ∫_ℝ x^{2n} e^{-x²/2} dx = (2n−1)‼·√(2π). Obtained from the e^{-x²} moment by the rescaling x↦x/√2.",
+        "leanType": "(n : ℕ) → ∫ x : ℝ, x ^ (2 * n) * Real.exp (-x ^ 2 / 2) = ((2 * n - 1)‼ : ℝ) * Real.sqrt (2 * π)"
+      },
+      {
+        "name": "gaussian_even_moment",
+        "type": "core",
+        "description": "The normalized even moments of N(0,1): E[X^{2n}] = (2n−1)‼. The univariate Wick/Isserlis theorem.",
+        "leanType": "(n : ℕ) → ∫ x : ℝ, x ^ (2 * n) * (Real.exp (-x ^ 2 / 2) / Real.sqrt (2 * π)) = ((2 * n - 1)‼ : ℝ)"
+      },
+      {
+        "name": "integral_pow_mul_exp_neg_sq",
+        "type": "key",
+        "description": "The even moments of the un-normalized weight e^{-x²}: ∫_ℝ x^{2n} e^{-x²} dx = (2n−1)‼·√π/2ⁿ, via integral_comp_abs, the Gamma moment integral, and Real.Gamma_nat_add_half.",
+        "leanType": "(n : ℕ) → ∫ x : ℝ, x ^ (2 * n) * Real.exp (-x ^ 2) = ((2 * n - 1)‼ : ℝ) * Real.sqrt π / 2 ^ n"
+      },
+      {
+        "name": "integral_odd_pow_mul_gaussian",
+        "type": "key",
+        "description": "All odd moments of the Gaussian vanish: ∫_ℝ x^{2n+1} e^{-x²/2} dx = 0, by reflection invariance of Lebesgue measure.",
+        "leanType": "(n : ℕ) → ∫ x : ℝ, x ^ (2 * n + 1) * Real.exp (-x ^ 2 / 2) = 0"
+      },
+      {
+        "name": "gaussian_odd_moment",
+        "type": "supporting",
+        "description": "The normalized odd moments of N(0,1): E[X^{2n+1}] = 0.",
+        "leanType": "(n : ℕ) → ∫ x : ℝ, x ^ (2 * n + 1) * (Real.exp (-x ^ 2 / 2) / Real.sqrt (2 * π)) = 0"
+      },
+      {
+        "name": "integral_exp_neg_sq",
+        "type": "supporting",
+        "description": "The Gaussian integral as the n=0 even moment: ∫_ℝ e^{-x²} dx = √π.",
+        "leanType": "∫ x : ℝ, Real.exp (-x ^ 2) = Real.sqrt π"
+      },
+      {
+        "name": "gaussian_variance",
+        "type": "supporting",
+        "description": "The variance of N(0,1) is 1: E[X²]=1‼=1.",
+        "leanType": "∫ x : ℝ, x ^ 2 * (Real.exp (-x ^ 2 / 2) / Real.sqrt (2 * π)) = 1"
+      },
+      {
+        "name": "gaussian_fourth_moment",
+        "type": "supporting",
+        "description": "The fourth moment of N(0,1) is 3: E[X⁴]=3‼=3, so the excess kurtosis E[X⁴]−3=0.",
+        "leanType": "∫ x : ℝ, x ^ 4 * (Real.exp (-x ^ 2 / 2) / Real.sqrt (2 * π)) = 3"
+      }
+    ],
+    "path": "Proofs/AreaOfCircleOQ05OQ03OQ05.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "integral_pow_mul_gaussian",
+      "type": "core",
+      "description": "The even moments of the standard Gaussian weight: ∫_ℝ x^{2n} e^{-x²/2} dx = (2n−1)‼·√(2π). Obtained from the e^{-x²} moment by the rescaling x↦x/√2.",
+      "leanType": "(n : ℕ) → ∫ x : ℝ, x ^ (2 * n) * Real.exp (-x ^ 2 / 2) = ((2 * n - 1)‼ : ℝ) * Real.sqrt (2 * π)"
+    },
+    {
+      "name": "gaussian_even_moment",
+      "type": "core",
+      "description": "The normalized even moments of N(0,1): E[X^{2n}] = (2n−1)‼. The univariate Wick/Isserlis theorem.",
+      "leanType": "(n : ℕ) → ∫ x : ℝ, x ^ (2 * n) * (Real.exp (-x ^ 2 / 2) / Real.sqrt (2 * π)) = ((2 * n - 1)‼ : ℝ)"
+    },
+    {
+      "name": "integral_pow_mul_exp_neg_sq",
+      "type": "key",
+      "description": "The even moments of the un-normalized weight e^{-x²}: ∫_ℝ x^{2n} e^{-x²} dx = (2n−1)‼·√π/2ⁿ, via integral_comp_abs, the Gamma moment integral, and Real.Gamma_nat_add_half.",
+      "leanType": "(n : ℕ) → ∫ x : ℝ, x ^ (2 * n) * Real.exp (-x ^ 2) = ((2 * n - 1)‼ : ℝ) * Real.sqrt π / 2 ^ n"
+    },
+    {
+      "name": "integral_odd_pow_mul_gaussian",
+      "type": "key",
+      "description": "All odd moments of the Gaussian vanish: ∫_ℝ x^{2n+1} e^{-x²/2} dx = 0, by reflection invariance of Lebesgue measure.",
+      "leanType": "(n : ℕ) → ∫ x : ℝ, x ^ (2 * n + 1) * Real.exp (-x ^ 2 / 2) = 0"
+    },
+    {
+      "name": "integral_exp_neg_sq",
+      "type": "supporting",
+      "description": "The Gaussian integral as the n=0 even moment: ∫_ℝ e^{-x²} dx = √π.",
+      "leanType": "∫ x : ℝ, Real.exp (-x ^ 2) = Real.sqrt π"
+    },
+    {
+      "name": "gaussian_variance",
+      "type": "supporting",
+      "description": "The variance of N(0,1) is 1: E[X²]=1‼=1.",
+      "leanType": "∫ x : ℝ, x ^ 2 * (Real.exp (-x ^ 2 / 2) / Real.sqrt (2 * π)) = 1"
+    },
+    {
+      "name": "gaussian_fourth_moment",
+      "type": "supporting",
+      "description": "The fourth moment of N(0,1) is 3: E[X⁴]=3‼=3, so the excess kurtosis E[X⁴]−3=0.",
+      "leanType": "∫ x : ℝ, x ^ 4 * (Real.exp (-x ^ 2 / 2) / Real.sqrt (2 * π)) = 3"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Isserlis, Leon",
+      "title": "On a formula for the product-moment coefficient of any order of a normal frequency distribution in any number of variables",
+      "year": "1918",
+      "venue": "Biometrika 12(1-2):134-139",
+      "note": "The original moment / pair-partition formula for the multivariate normal"
+    },
+    {
+      "authors": "Janson, Svante",
+      "title": "Gaussian Hilbert Spaces",
+      "year": "1997",
+      "venue": "Cambridge University Press",
+      "note": "Wick's theorem and Gaussian moments (Thm 1.28); E[X^{2n}]=(2n−1)‼ as the equal-index case"
+    },
+    {
+      "authors": "Billingsley, Patrick",
+      "title": "Probability and Measure",
+      "year": "1995",
+      "venue": "Wiley",
+      "note": "Moments of the normal distribution (§21)"
+    },
+    {
+      "authors": "mathlib community",
+      "title": "MeasureTheory.Integral.Gamma / Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "integral_rpow_mul_exp_neg_mul_rpow (Gamma moment integral) and Real.Gamma_nat_add_half (half-integer Gamma value)"
+    }
+  ],
+  "sorries": 0
+}
