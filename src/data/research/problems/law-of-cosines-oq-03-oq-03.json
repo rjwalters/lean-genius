@@ -1,0 +1,61 @@
+{
+  "id": "law-of-cosines-oq-03-oq-03",
+  "slug": "law-of-cosines-oq-03-oq-03",
+  "title": "Hyperbolic AAA Congruence",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "EMPTY",
+  "tractability": "high",
+  "path": "Proofs/LawOfCosinesOQ03OQ03.lean",
+  "started": "2026-06-22",
+  "lastUpdate": "2026-06-22",
+  "problemStatement": "In hyperbolic geometry, do the three angles of a triangle determine its size (AAA congruence), or are there similar non-congruent triangles as in Euclidean geometry? Invert the second hyperbolic law of cosines and decide.",
+  "significance": "AAA congruence is one of the sharpest qualitative differences between hyperbolic and Euclidean geometry, and underlies the rigidity of hyperbolic structures (Thurston). Completes the basic congruence theory alongside the parent law of cosines and sibling law of sines.",
+  "currentState": "COMPLETED. Proved AAA congruence: the second law of cosines inverts to cosh c = (cos C + cos A cos B)/(sin A sin B), a function of the angles alone; injectivity of cosh on [0,∞) turns equal angles into equal sides. Also proved internal consistency (the defect A+B+C<π is exactly what makes the formula exceed 1) and the equilateral closed form cosh(side)=cos θ/(1-cos θ).",
+  "knowledge": {
+    "progressSummary": "COMPLETE: hyperbolic AAA congruence formalized (18 theorems, 1 structure, 7 structure-encoded axioms, 0 sorries; verified 0-axiom — only propext/Classical/Quot, no native_decide). PR #27561.",
+    "builtItems": [
+      "LawOfCosinesOQ03OQ03.lean: hyperbolic AAA congruence (0 sorries, 7 structure-encoded axioms)",
+      "HyperbolicTriangle: structure with sides a,b,c, angles A,B,C, side positivity, angle bounds, defect, and three second laws of cosines lawA/lawB/lawC",
+      "cosh_c_eq / cosh_a_eq / cosh_b_eq: invert the second law to express each side from the angles (eq_div_iff + linear_combination -t.law*)",
+      "angle_formula_gt_one: angle ratio > 1 from the defect alone, via cos(A+B) > cos(π-C) = -cos C (Real.cos_lt_cos_of_nonneg_of_le_pi + Real.cos_pi_sub + Real.cos_add)",
+      "cosh_c_gt_one: cosh c > 1 derived purely from the angles",
+      "aaa_congruence: equal angles ⟹ equal sides via Real.cosh_strictMonoOn.injOn",
+      "equilateral_cosh: closed form cosh(side) = cos θ/(1-cos θ) using sin²θ=(1-cosθ)(1+cosθ) + div_eq_div_iff"
+    ],
+    "insights": [
+      "The second law of cosines is linear in cosh of the opposite side, so it inverts algebraically — no Euclidean analogue, since the Euclidean law relates a side to the other two sides, not purely to angles.",
+      "The angular defect A+B+C<π is equivalent to the angle formula exceeding 1: numerator-minus-denominator = cos C + cos(A+B), and the defect gives A+B<π-C, so by strict antitonicity of cos on [0,π], cos(A+B)>-cos C. Existence of a valid hyperbolic side ⟺ positive defect.",
+      "cosh injectivity on [0,∞) (Real.cosh_strictMonoOn.injOn) upgrades equal cosh-sides to equal sides; side positivity (ha/hb/hc) places sides in the domain.",
+      "lt_div_iff was renamed to lt_div_iff₀ in current Mathlib (4.26.0).",
+      "Equilateral case collapses to cos θ/(1-cos θ): the (1+cos θ) factors cancel between sin²θ and the numerator cos θ(1+cos θ)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Derive the three second laws of cosines from a single first law to reduce structure-encoded axioms",
+      "Formalize SAS and ASA hyperbolic congruence by the same inversion technique",
+      "Recover the area defect as an integral of the side-from-angle formulas"
+    ]
+  },
+  "knownResults": [
+    "Second hyperbolic law of cosines (parent law-of-cosines-oq-03)",
+    "Real.cosh_strictMonoOn: cosh strictly monotone on [0,∞)",
+    "Real.cos_lt_cos_of_nonneg_of_le_pi: cos strictly antitone on [0,π]"
+  ],
+  "relatedProofs": [
+    "law-of-cosines-oq-03",
+    "law-of-cosines-oq-03-oq-02",
+    "law-of-cosines"
+  ],
+  "references": [
+    "Ratcliffe (2006), Foundations of Hyperbolic Manifolds, Ch. 3",
+    "Thurston (1997), Three-Dimensional Geometry and Topology"
+  ],
+  "tags": [
+    "hyperbolic-geometry",
+    "law-of-cosines",
+    "aaa-congruence",
+    "rigidity",
+    "trigonometry"
+  ]
+}
