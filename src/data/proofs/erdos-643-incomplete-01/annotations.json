@@ -1,0 +1,109 @@
+[
+  {
+    "id": "ann-643star-f-welldef",
+    "proofId": "erdos-643-incomplete-01",
+    "range": {
+      "startLine": 77,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "Why the Extremal Function f(n,t) Is Well-Defined",
+    "content": "f(n,t) is `Nat.find` of the predicate 'every family with ≥ m edges has a crossed pair'. For `Nat.find` to make sense the predicate must hold somewhere, and the witness is m = C(n,t) + 1: any t-uniform family H on Fin n is a set of t-subsets, hence H ⊆ powersetCard t univ, whose ncard is exactly C(n,t) (`Finset.card_powersetCard` + `Fintype.card_fin`). So a crossed-pair-free family can have at most C(n,t) edges, and beyond that the threshold is forced. This mirrors the parent's definition exactly, so the f proved about here is the same extremal function.",
+    "mathContext": "There are exactly C(n,t) t-subsets of an n-set, so edgeCount H ≤ C(n,t) for every t-uniform H — the upper cap that makes Nat.find non-vacuous.",
+    "significance": "high",
+    "relatedConcepts": [
+      "Nat.find",
+      "Finset.powersetCard",
+      "Set.ncard_le_ncard"
+    ],
+    "prerequisites": [
+      "Cardinality of the family of t-subsets"
+    ]
+  },
+  {
+    "id": "ann-643star-nocrossedpair",
+    "proofId": "erdos-643-incomplete-01",
+    "range": {
+      "startLine": 103,
+      "endLine": 110
+    },
+    "type": "technique",
+    "title": "The Star Has No Crossed Pair — One t-Independent Line",
+    "content": "A crossed pair requires two of its four edges, A and B, to satisfy A ∩ B = ∅. But every edge of the star St₀ contains the fixed vertex 0, so for any two star edges 0 ∈ A and 0 ∈ B, giving 0 ∈ A ∩ B and A ∩ B ≠ ∅ — a direct contradiction. The argument never mentions t, which is precisely why the bound generalizes from the parent's hardcoded t=3 `Star_noCrossedPair` to all t at once. (Implementation note: `open scoped Classical` makes the ∩ in `IsCrossedPair` use the classical DecidableEq instance, distinct from `Fin n`'s concrete one, so the proof uses `simp_all [Finset.ext_iff]` rather than a direct rewrite to dodge the instance diamond.)",
+    "mathContext": "Two sets sharing a common element are never disjoint; all star edges share vertex 0; a crossed pair needs a disjoint pair of edges.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "crossed pair",
+      "intersecting family",
+      "Finset.ext_iff"
+    ],
+    "prerequisites": [
+      "Definition of a crossed pair (disjoint pairs with equal union)"
+    ]
+  },
+  {
+    "id": "ann-643star-card",
+    "proofId": "erdos-643-incomplete-01",
+    "range": {
+      "startLine": 112,
+      "endLine": 141
+    },
+    "type": "technique",
+    "title": "Counting the Star: the Link Bijection e ↦ e \\ {0}",
+    "content": "The star St₀ = { e : |e|=t, 0∈e } is put in bijection with the (t-1)-subsets of the remaining n-1 vertices: St₀ = image (insert 0) (powersetCard (t-1) (univ.erase 0)). Injectivity of `insert 0` on sets avoiding 0 is `erase_insert`; surjectivity onto St₀ is `insert_erase` (e = insert 0 (e.erase 0) when 0 ∈ e). `Finset.card_image_of_injOn` then reduces |St₀| to |powersetCard (t-1) (univ.erase 0)| = C(n-1, t-1) via `Finset.card_powersetCard` and `card_erase_of_mem`. This generalizes the parent's t=3 `Star_card` (which gave C(n-1,2)) to arbitrary t.",
+    "mathContext": "t-subsets of [n] containing a fixed vertex ↔ (t-1)-subsets of the other n-1 vertices, hence |St₀| = C(n-1,t-1) — the link of vertex 0.",
+    "significance": "high",
+    "relatedConcepts": [
+      "Finset.card_image_of_injOn",
+      "Finset.card_powersetCard",
+      "vertex link"
+    ],
+    "prerequisites": [
+      "Finset.insert_erase / erase_insert",
+      "Cardinality of powersetCard"
+    ]
+  },
+  {
+    "id": "ann-643star-fgestar",
+    "proofId": "erdos-643-incomplete-01",
+    "range": {
+      "startLine": 151,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "From a Crossed-Pair-Free Witness to a Bound on f",
+    "content": "The extremal function f = Nat.find p, where p m says 'every family with ≥ m edges contains a crossed pair'. `Nat.le_find_iff` turns the goal C(n-1,t-1)+1 ≤ f into: for every m ≤ C(n-1,t-1), p m fails — i.e. there is a crossed-pair-free family of size ≥ m. The star, with exactly C(n-1,t-1) edges and no crossed pair, witnesses this for every such m at once. Hence f(n,t) ≥ C(n-1,t-1)+1 for all t ≥ 1, n ≥ 1 (`f_ge_star`), restated as `f_ge_main_term` in the parent's (t ≥ 2, n ≥ t) signature where only a `sorry` previously stood.",
+    "mathContext": "An attained crossed-pair-free size c forces the forcing threshold f to exceed c: f(n,t) ≥ C(n-1,t-1) + 1.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Nat.le_find_iff",
+      "extremal function",
+      "lower bound by construction"
+    ],
+    "prerequisites": [
+      "Nat.find characterization of f"
+    ]
+  },
+  {
+    "id": "ann-643star-asymptotic",
+    "proofId": "erdos-643-incomplete-01",
+    "range": {
+      "startLine": 177,
+      "endLine": 223
+    },
+    "type": "technique",
+    "title": "Asymptotic Optimality: C(n-1,t-1)/C(n,t-1) → 1",
+    "content": "The star's edge count C(n-1,t-1) is the conjectured main term C(n,t-1) up to a factor that vanishes: the exact column identity (n-k)·C(n,k) = n·C(n-1,k) (`choose_pred_identity`, from `Nat.add_one_mul_choose_eq` and `Nat.choose_succ_right_eq`) gives, for n ≥ t, the ratio C(n-1,t-1)/C(n,t-1) = (n-t+1)/n. Since (t-1)/n → 0 (`Tendsto.div_atTop`), this ratio tends to 1 (`star_ratio_tendsto`), so f(n,t) ≥ (1+o(1))·C(n,t-1): the star realizes the full first-order constant of Erdős' conjectured lower bound. Only the second-order term ⌊(n-1)/t⌋ and the matching upper bounds lie outside this axiom-free island.",
+    "mathContext": "C(n-1,t-1)/C(n,t-1) = (n-t+1)/n → 1, so the single-star lower bound is asymptotically optimal for the conjecture's main term.",
+    "significance": "high",
+    "relatedConcepts": [
+      "Nat.add_one_mul_choose_eq",
+      "Nat.choose_succ_right_eq",
+      "Filter.Tendsto.div_atTop"
+    ],
+    "prerequisites": [
+      "Binomial column recurrence",
+      "Limit of (constant)/n"
+    ]
+  }
+]
