@@ -1,0 +1,209 @@
+{
+  "id": "area-of-circle-oq-05-oq-03",
+  "title": "The Gaussian is its own Fourier Transform",
+  "slug": "area-of-circle-oq-05-oq-03",
+  "description": "Open question from the area-of-circle-oq-05 lineage (Gaussian integral ∫e^{-x²}=√π) and a flagged axiom in CentralLimitTheorem.lean. Proves, axiom-free, that the Gaussian is its own Fourier transform in explicit Lebesgue-integral form: ∫_ℝ e^{itx}·e^{-x²/2} dx = e^{-t²/2}·√(2π) (un-normalized) and ∫_ℝ e^{itx}·(e^{-x²/2}/√(2π)) dx = e^{-t²/2} (normalized — the characteristic function of N(0,1)). Method: complete the square i t x − x²/2 = −½(x−it)² − t²/2, pull out the constant e^{-t²/2}, and evaluate the remaining vertical-strip contour integral ∫ e^{-½(x-it)²} dx = √(2π) via Mathlib's GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I at b=1/2, c=-t. Corollaries: the standard density integrates to 1, and ∫ e^{-x²/2} dx = √(2π). All 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Classical (Gaussian Fourier self-duality); Lean 4 formalization (research, 2026)",
+    "date": "2003",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ05OQ03.lean",
+    "tags": [
+      "analysis",
+      "fourier-analysis",
+      "gaussian-integral",
+      "characteristic-function",
+      "complex-analysis",
+      "probability"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 172,
+    "assumptions": "0 axioms, 0 sorries. Builds on Mathlib's Gaussian Fourier transform infrastructure (GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I — the vertical-strip shift of the real Gaussian integral). HONEST SCOPE: CentralLimitTheorem.lean states its gaussian_fourier_identity against an abstract stdGaussian measure introduced by `axiom`; this file proves the full mathematical content as a concrete Lebesgue integral, but discharging that particular CLT axiom additionally requires replacing the abstract measure by ProbabilityTheory.gaussianReal 0 1, a separate bridge not attempted here.",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-06-21",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "That the Gaussian function is (up to normalization) its own Fourier transform is one of the cornerstone computations of analysis — it underlies the heat kernel, the uncertainty principle, and the proof of the Central Limit Theorem via characteristic functions. The area-of-circle-oq-05 entry formalized the real Gaussian integral ∫e^{-x²}=√π; this entry takes the next step to the *Fourier* transform of the Gaussian. It is also a concrete answer to a gap flagged in the gallery's central-limit-theorem development, which currently axiomatizes the identity ∫ e^{itx} dN(0,1)(x) = e^{-t²/2}.",
+    "problemStatement": "Prove that the Fourier transform of the standard Gaussian is again a Gaussian: ∫_ℝ e^{itx}·e^{-x²/2} dx = e^{-t²/2}·√(2π), and in normalized form ∫_ℝ e^{itx}·(e^{-x²/2}/√(2π)) dx = e^{-t²/2} — the characteristic function of the standard normal distribution.",
+    "text": "The proof is the classical 'complete the square' argument, carried out over ℂ. Pointwise, e^{itx}·e^{-x²/2} = e^{-½(x-it)²}·e^{-t²/2}, because i t x − x²/2 = −½(x−it)² − t²/2 (an identity that uses only i² = −1). The constant factor e^{-t²/2} pulls out of the integral, leaving ∫_ℝ e^{-½(x-it)²} dx. This is a Gaussian integral along the horizontal line shifted into the complex plane; Mathlib's GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I (proved by a Cauchy vertical-strip argument reducing to the real Gaussian integral) evaluates it to (π/(1/2))^{1/2} = √(2π). Combining gives the un-normalized identity; dividing through by √(2π) gives the normalized one. The t = 0 specialisations recover ∫ e^{-x²/2} = √(2π) and that the standard density has total mass 1.",
+    "proofStrategy": "1. **Complete the square pointwise** (`gaussian_integrand_complete_square`): rewrite both products of exponentials as single exponentials (Complex.exp_add), then prove the exponent identity i t x − x²/2 = −½(x + (−t)i)² − t²/2 by `push_cast` and `linear_combination (t²/2)·Complex.I_sq` (the only nontrivial input is i² = −1).\n\n2. **Identify the constant** (`cpow_half_eq_sqrt_two_pi`): show the Mathlib contour constant (π/(1/2))^{1/2} equals the real √(2π), via π/(1/2) = 2π, Real.sqrt_eq_rpow, and Complex.ofReal_cpow.\n\n3. **Un-normalized identity** (`gaussian_fourier_real`): `simp_rw` the pointwise factoring under the integral, pull the constant e^{-t²/2} out with MeasureTheory.integral_mul_const, apply integral_cexp_neg_mul_sq_add_real_mul_I at b = (1/2 : ℂ) (re = 1/2 > 0) and c = −t, then rewrite the constant by step 2.\n\n4. **Normalized identity** (`gaussian_fourier_normalized`): rewrite e^{itx}·(g/√(2π)) as (e^{itx}·g)/√(2π) (mul_div_assoc), pull the constant out with MeasureTheory.integral_div, apply step 3, and cancel √(2π) (div_self, the denominator being nonzero since √(2π) > 0).\n\n5. **Consequences**: `gaussian_density_total_mass` and `integral_gaussian_half` follow by specialising the two identities at t = 0 (`simpa`).",
+    "keyInsights": [
+      "The entire computation is 'complete the square' over ℂ: i t x − x²/2 = −½(x − it)² − t²/2. The only algebraic fact needed beyond ring arithmetic is i² = −1, supplied to linear_combination as Complex.I_sq.",
+      "After completing the square the t-dependence sits entirely in the constant e^{-t²/2}, which pulls out of the integral; the remaining x-integral is t-independent and equals √(2π) for every t.",
+      "The shifted Gaussian integral ∫ e^{-½(x-it)²} dx — over a line displaced into the complex plane — equals the ordinary real Gaussian integral, a Cauchy vertical-strip fact packaged by Mathlib as integral_cexp_neg_mul_sq_add_real_mul_I.",
+      "Normalizing by √(2π) turns the identity into the characteristic function of N(0,1): φ(t) = e^{-t²/2}. This is exactly the input the characteristic-function proof of the Central Limit Theorem needs."
+    ],
+    "prerequisites": [
+      "area-of-circle-oq-05 — the real Gaussian integral ∫ e^{-x²} = √π",
+      "Mathlib's Gaussian Fourier transform: GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I",
+      "Complex exponential algebra (Complex.exp_add, Complex.I_sq) and the cpow/sqrt bridge (Complex.ofReal_cpow, Real.sqrt_eq_rpow)",
+      "Linearity of the Bochner integral (integral_mul_const, integral_div)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble: Imports and Setup",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Imports Mathlib; opens Real, Complex, MeasureTheory. Header documents the un-normalized and normalized identities, the complete-the-square method, and the honest scope relative to the CLT axiom.",
+      "mathContext": "Targets the concrete Lebesgue-integral form of the Gaussian Fourier self-duality, drawing the contour integral from Mathlib's GaussianFourier development."
+    },
+    {
+      "id": "complete-square",
+      "title": "Part I: Completing the Square (Pointwise)",
+      "startLine": 56,
+      "endLine": 78,
+      "summary": "gaussian_integrand_complete_square: e^{itx}·e^{-x²/2} = e^{-½(x+(-t)i)²}·e^{-t²/2}, proved by Complex.exp_add and linear_combination with Complex.I_sq.",
+      "mathContext": "The algebraic heart: i t x − x²/2 = −½(x − it)² − t²/2, isolating the t-dependence into a pull-out constant."
+    },
+    {
+      "id": "constant",
+      "title": "Part II: The Constant √(2π) from the Contour Integral",
+      "startLine": 79,
+      "endLine": 94,
+      "summary": "cpow_half_eq_sqrt_two_pi: (π/(1/2))^{1/2} = √(2π), bridging Mathlib's complex contour constant to the real square root.",
+      "mathContext": "Converts the cpow value returned by the contour-integral lemma into the familiar real √(2π) via Complex.ofReal_cpow and Real.sqrt_eq_rpow."
+    },
+    {
+      "id": "fourier-identity",
+      "title": "Part III: The Gaussian Fourier Identity (Lebesgue Form)",
+      "startLine": 95,
+      "endLine": 129,
+      "summary": "gaussian_fourier_real (∫ e^{itx}e^{-x²/2} = e^{-t²/2}·√(2π)) and gaussian_fourier_normalized (∫ e^{itx}(e^{-x²/2}/√(2π)) = e^{-t²/2}).",
+      "mathContext": "Pull the constant out of the integral, evaluate the shifted Gaussian by the Mathlib contour lemma at b=1/2, c=-t, and (normalized) cancel √(2π)."
+    },
+    {
+      "id": "consequences",
+      "title": "Part IV: Consequences",
+      "startLine": 130,
+      "endLine": 150,
+      "summary": "gaussian_density_total_mass (standard density integrates to 1) and integral_gaussian_half (∫ e^{-x²/2} = √(2π)), both via t = 0.",
+      "mathContext": "The t = 0 shadows of the two Fourier identities recover normalization of the density and the half-variance Gaussian integral."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Gaussian Fourier self-duality is proved axiom-free in concrete Lebesgue form: ∫ e^{itx}e^{-x²/2} dx = e^{-t²/2}·√(2π), and normalized, ∫ e^{itx}(e^{-x²/2}/√(2π)) dx = e^{-t²/2} — the characteristic function of N(0,1). Specialisations at t = 0 recover ∫ e^{-x²/2} = √(2π) and total mass 1. (0 axioms, 0 sorries.)",
+    "implications": "This supplies the exact computation that the gallery's central-limit-theorem development currently axiomatizes (gaussian_fourier_identity). It is the characteristic-function input to the CLT and a building block for the heat kernel and uncertainty principle. It also extends the area-of-circle Gaussian-integral lineage from the value ∫e^{-x²}=√π to the full Fourier transform.",
+    "openQuestions": [
+      "Discharge the CentralLimitTheorem.lean axiom gaussian_fourier_identity by replacing its abstract `axiom stdGaussian` with ProbabilityTheory.gaussianReal 0 1 and rewriting the measure integral as the density-weighted Lebesgue integral proved here.",
+      "Prove the multivariate Gaussian Fourier transform (the EuclideanSpace version, integral_cexp_neg_mul_sq_norm_add) in the same explicit form.",
+      "Derive the general N(μ, σ²) characteristic function e^{iμt - σ²t²/2} by an affine change of variables."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-05",
+      "relationship": "extends",
+      "description": "Parent: the real Gaussian integral ∫ e^{-x²} = √π. This entry advances from the value of the Gaussian integral to the Fourier transform of the Gaussian."
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "Provides, axiom-free in Lebesgue form, the Gaussian Fourier identity that the CLT entry currently introduces as an axiom (characteristic function of the standard normal = e^{-t²/2})."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Complex",
+      "MeasureTheory"
+    ],
+    "namespace": "GaussianFourierTransform",
+    "lineCount": 172,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "gaussian_fourier_normalized",
+        "type": "core",
+        "description": "The standard Gaussian density is its own Fourier transform: ∫ e^{itx}·(e^{-x²/2}/√(2π)) dx = e^{-t²/2}, the characteristic function of N(0,1).",
+        "leanType": "(t : ℝ) → ∫ x : ℝ, Complex.exp (Complex.I * t * x) * (Complex.exp (-(x : ℂ) ^ 2 / 2) / ((Real.sqrt (2 * π) : ℝ) : ℂ)) = Complex.exp (-(t : ℂ) ^ 2 / 2)"
+      },
+      {
+        "name": "gaussian_fourier_real",
+        "type": "core",
+        "description": "Un-normalized Gaussian Fourier identity: ∫ e^{itx}·e^{-x²/2} dx = e^{-t²/2}·√(2π).",
+        "leanType": "(t : ℝ) → ∫ x : ℝ, Complex.exp (Complex.I * t * x) * Complex.exp (-(x : ℂ) ^ 2 / 2) = Complex.exp (-(t : ℂ) ^ 2 / 2) * ((Real.sqrt (2 * π) : ℝ) : ℂ)"
+      },
+      {
+        "name": "gaussian_integrand_complete_square",
+        "type": "key",
+        "description": "Completing the square at the integrand level: e^{itx}·e^{-x²/2} = e^{-½(x+(-t)i)²}·e^{-t²/2}.",
+        "leanType": "(t x : ℝ) → Complex.exp (Complex.I * t * x) * Complex.exp (-(x : ℂ) ^ 2 / 2) = Complex.exp (-(((1 : ℝ) / 2 : ℝ) : ℂ) * ((x : ℂ) + ((-t : ℝ) : ℂ) * Complex.I) ^ 2) * Complex.exp (-(t : ℂ) ^ 2 / 2)"
+      },
+      {
+        "name": "integral_gaussian_half",
+        "type": "supporting",
+        "description": "The t = 0 shadow: ∫ e^{-x²/2} dx = √(2π).",
+        "leanType": "∫ x : ℝ, Complex.exp (-(x : ℂ) ^ 2 / 2) = ((Real.sqrt (2 * π) : ℝ) : ℂ)"
+      }
+    ],
+    "path": "Proofs/AreaOfCircleOQ05OQ03.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "gaussian_fourier_normalized",
+      "type": "core",
+      "description": "The standard Gaussian density is its own Fourier transform: ∫ e^{itx}·(e^{-x²/2}/√(2π)) dx = e^{-t²/2} — the characteristic function of N(0,1).",
+      "leanType": "(t : ℝ) → ∫ x : ℝ, Complex.exp (Complex.I * t * x) * (Complex.exp (-(x : ℂ) ^ 2 / 2) / ((Real.sqrt (2 * π) : ℝ) : ℂ)) = Complex.exp (-(t : ℂ) ^ 2 / 2)"
+    },
+    {
+      "name": "gaussian_fourier_real",
+      "type": "key",
+      "description": "Un-normalized Gaussian Fourier identity: ∫ e^{itx}·e^{-x²/2} dx = e^{-t²/2}·√(2π).",
+      "leanType": "(t : ℝ) → ∫ x : ℝ, Complex.exp (Complex.I * t * x) * Complex.exp (-(x : ℂ) ^ 2 / 2) = Complex.exp (-(t : ℂ) ^ 2 / 2) * ((Real.sqrt (2 * π) : ℝ) : ℂ)"
+    },
+    {
+      "name": "gaussian_integrand_complete_square",
+      "type": "key",
+      "description": "Completing the square at the integrand level: e^{itx}·e^{-x²/2} = e^{-½(x+(-t)i)²}·e^{-t²/2} (uses only i² = -1).",
+      "leanType": "(t x : ℝ) → Complex.exp (Complex.I * t * x) * Complex.exp (-(x : ℂ) ^ 2 / 2) = Complex.exp (-(((1 : ℝ) / 2 : ℝ) : ℂ) * ((x : ℂ) + ((-t : ℝ) : ℂ) * Complex.I) ^ 2) * Complex.exp (-(t : ℂ) ^ 2 / 2)"
+    },
+    {
+      "name": "gaussian_density_total_mass",
+      "type": "supporting",
+      "description": "The standard Gaussian density integrates to 1 (t = 0 of the normalized identity).",
+      "leanType": "∫ x : ℝ, Complex.exp (-(x : ℂ) ^ 2 / 2) / ((Real.sqrt (2 * π) : ℝ) : ℂ) = 1"
+    },
+    {
+      "name": "integral_gaussian_half",
+      "type": "supporting",
+      "description": "The t = 0 shadow of the un-normalized identity: ∫ e^{-x²/2} dx = √(2π).",
+      "leanType": "∫ x : ℝ, Complex.exp (-(x : ℂ) ^ 2 / 2) = ((Real.sqrt (2 * π) : ℝ) : ℂ)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stein, Elias M. and Shakarchi, Rami",
+      "title": "Fourier Analysis: An Introduction",
+      "year": "2003",
+      "venue": "Princeton University Press",
+      "note": "Chapter 5; the Gaussian as its own Fourier transform via completing the square"
+    },
+    {
+      "authors": "mathlib community",
+      "title": "Analysis.SpecialFunctions.Gaussian.FourierTransform",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "integral_cexp_neg_mul_sq_add_real_mul_I — the shifted Gaussian contour integral used here"
+    },
+    {
+      "authors": "Billingsley, Patrick",
+      "title": "Probability and Measure",
+      "year": "1995",
+      "venue": "Wiley",
+      "note": "Characteristic functions and the CLT; the standard normal characteristic function is e^{-t²/2}"
+    }
+  ],
+  "sorries": 0
+}
