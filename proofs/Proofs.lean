@@ -653,6 +653,7 @@ import Proofs.ChebyshevPNTBridgeOQ01
 import Proofs.ChebyshevPNTBridgeOQ01Aristotle
 import Proofs.ChebyshevPNTBridgeOQ01OQ02
 import Proofs.ChebyshevPNTBridgeOQ02
+import Proofs.ChebyshevPNTBridgeOQ03
 import Proofs.ChebyshevPolynomialsOQ01
 import Proofs.ChebyshevSumMonotoneOQ01
 import Proofs.ChevalleyWarningTheoremOQ01
