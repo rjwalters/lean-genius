@@ -1,10 +1,10 @@
 {
   "slug": "erdos-1065-incomplete-01",
   "title": "Erdős Problem #1065: Primes of the Form 2^k · q + 1",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
-  "path": "fast",
+  "path": "Proofs/Erdos1065Incomplete01.lean",
   "problemStatement": {
     "formal": "",
     "plain": "",
@@ -13,7 +13,7 @@
   "knownResults": {
     "proven": [],
     "open": [],
-    "goal": ""
+    "goal": "Decidable characterization of Form A primes (p=2^k*q+1) via the odd part of p-1"
   },
   "currentState": {
     "phase": "NEW",
@@ -29,13 +29,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: odd prime p is Form A iff oddPart(p-1)=1 or prime. 11 thms, 3 defs, 0 axioms, 0 sorries, verified (no native_decide). Parent had no real sorries (1 conjecture-axiom each) -> pivoted to new structural result.",
+    "builtItems": [
+      "Erdos1065Incomplete01.lean: decidable characterization (0 axioms, 0 sorries)",
+      "oddPart_eq: ordCompl[2](p-1)=m from p-1=2^a*m (m odd)",
+      "isFormA_iff_oddPart: main characterization",
+      "sufficiency (Fermat + odd-q branches) and necessity (q=2/q-odd split)",
+      "not_isFormA_37/41/17/71 reproofs via the criterion"
+    ],
+    "insights": [
+      "Form A depends only on odd part m of p-1: m=1 (Fermat,q=2) or m prime (q=m); m odd composite => not Form A",
+      "Odd-prime hypothesis necessary: p=2 has odd part 1 but is not Form A",
+      "Nat.factorization not decide-reducible -> evaluate odd part via structural oddPart_eq then decide small 1-or-prime test (kernel, no native_decide)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Extend to Form B via {2,3}-free part of p-1",
+      "Restate infinitude conjecture about odd part of p-1",
+      "Efficient ordCompl[2] evaluator"
+    ]
   },
-  "tags": [],
+  "tags": [
+    "erdos-problems",
+    "number-theory",
+    "prime-numbers",
+    "2-adic-valuation",
+    "decidable-criterion"
+  ],
   "relatedProofs": [
     "erdos-1",
     "erdos-10",
@@ -48,7 +68,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:27:10.205Z",
-  "lastUpdate": "2026-04-03T08:27:10.205Z",
+  "lastUpdate": "2026-06-22",
   "significance": 7,
   "tractability": 7
 }
