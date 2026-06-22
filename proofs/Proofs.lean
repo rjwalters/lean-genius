@@ -334,6 +334,7 @@ import Proofs.BinomialTheoremOQ02OQ01OQ03
 import Proofs.BinomialTheoremOQ02OQ01OQ04
 import Proofs.BinomialTheoremOQ02OQ02
 import Proofs.BinomialTheoremOQ02OQ02OQ01
+import Proofs.BinomialTheoremOQ02OQ02OQ02
 import Proofs.BinomialTheoremOQ02OQ03
 import Proofs.BinomialTheoremOQ02OQ04
 import Proofs.BinomialTheoremOQ03
