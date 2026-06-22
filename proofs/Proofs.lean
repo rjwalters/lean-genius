@@ -3569,3 +3569,4 @@ import Proofs.ZetaRegularization
 import Proofs.CatalanNumbersOQ01OQ02
 import Proofs.CatalanNumbersOQ01OQ02OQ01
 import Proofs.MarkovEquation
+import Proofs.MantelTheoremOQ04OQ01
