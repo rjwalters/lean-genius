@@ -2908,6 +2908,8 @@ import Proofs.IsoscelesTriangleOQ02
 import Proofs.IsoscelesTriangleOQ01
 import Proofs.JacobiSumDiagonalIntegral
 import Proofs.JacobiSymbolOQ01
+import Proofs.JensenInequalityOQ01
+import Proofs.JensenInequalityOQ01OQ01
 import Proofs.KaprekarConstantOQ01
 import Proofs.KeithNumberOQ01
 import Proofs.KeplerConjecture
