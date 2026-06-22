@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-encoding",
+    "proofId": "godel-first-incompleteness-oq01-oq-03",
+    "range": {
+      "startLine": 52,
+      "endLine": 73
+    },
+    "type": "concept",
+    "title": "The Axioms Are Constraints on Two Atoms",
+    "content": "The parent's axioms only ever mention three sentences: G, Prov(⌜G⌝), and ¬G (codes 42, 84, 43). Abstracting the provability predicate to P : ℕ → Prop and reading off these codes, the four substantive axioms become purely propositional constraints on the two atoms p = P(G) and q = P(Prov⌜G⌝): D1G is p → q, SelfRef is p ↔ ¬q, OmegaCons is ¬p → ¬q, NegGProv is P(¬G) → q. Working abstractly keeps this file from importing — and being poisoned by — the parent's (inconsistent) global axioms."
+  },
+  {
+    "id": "ann-inconsistency",
+    "proofId": "godel-first-incompleteness-oq01-oq-03",
+    "range": {
+      "startLine": 81,
+      "endLine": 100
+    },
+    "type": "insight",
+    "title": "Three Axioms Contradict",
+    "content": "`core_inconsistency` derives False from D1G ∧ SelfRef ∧ OmegaCons. The argument: D1G (p→q) and SelfRef (p↔¬q) together give p→(q∧¬q), so ¬p; then SelfRef turns ¬p into q, while OmegaCons turns ¬p into ¬q — contradiction. So `no_model_of_all_axioms`: no provability predicate satisfies the parent's axioms. Its First Incompleteness theorem is therefore vacuously true (it follows from contradictory hypotheses) — the same vacuity failure as Provable := fun _ => False, just hidden behind the meta-level self-reference axiom."
+  },
+  {
+    "id": "ann-derivable",
+    "proofId": "godel-first-incompleteness-oq01-oq-03",
+    "range": {
+      "startLine": 108,
+      "endLine": 116
+    },
+    "type": "insight",
+    "title": "The Fourth Axiom Is Redundant",
+    "content": "`negGProv_derivable` shows the object-level diagonal axiom NegGProv (P(¬G) → q) follows from D1G ∧ SelfRef: those two already force q = P(Prov⌜G⌝) to be true (¬p ⟹ q via self-reference, and ¬p holds), so an implication into q is automatic. Hence NegGProv is not independent — a direct answer to the OQ's 'could any be derived from the others?'."
+  },
+  {
+    "id": "ann-minimal",
+    "proofId": "godel-first-incompleteness-oq01-oq-03",
+    "range": {
+      "startLine": 124,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "A Minimal Inconsistent Set",
+    "content": "The three contradictory axioms are each independent of the other two, witnessed by explicit provability predicates: P = (· = G) satisfies SelfRef and OmegaCons but not D1G; P = (fun _ => False) satisfies D1G and OmegaCons but not SelfRef; P = (· = Prov⌜G⌝) satisfies D1G and SelfRef but not OmegaCons. So no two of them imply the third — the inconsistency genuinely needs all three, and the fix must change one of them (the meta self-reference) rather than simply drop a redundant axiom."
+  }
+]
