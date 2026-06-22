@@ -1,8 +1,8 @@
 {
   "slug": "cayley-hamilton-oq-01-oq-01",
   "title": "Invariant Factor Decomposition via Annihilator Ideal",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "complete",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -39,10 +39,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
+    "progressSummary": "COMPLETE: Annihilator theory of Kⁿ as a K[X]-module via M. Module annihilator = span{minpoly K M}; vecAnnIdeal M v = span{minpoly K M} for a cyclic vector (deg minpoly = n), via monic polynomial division f = q·minpoly + r with the cyclic property killing r; monicity from Cayley-Hamilton integrality. 6 theorems, 2 defs, 145 lines, 0 sorries, 0 axioms. Repaired bit-rot (LinearMap.mul_apply → Module.End.mul_apply) and added gallery data for an orphaned proof.",
+    "builtItems": [
+      "kn_module_annihilator_eq_minpoly: K[X]-annihilator of Kⁿ = span{minpoly K M}",
+      "vecAnnIdeal: annihilator ideal {f : f(M)·v = 0} of a vector",
+      "mem_vecAnnIdeal_iff: membership via the AEval' scalar action",
+      "minpoly_mem_vecAnnIdeal / minpoly_ideal_le_vecAnnIdeal: span{minpoly K M} ≤ vecAnnIdeal M v",
+      "IsCyclicVector + cyclic_vecAnnIdeal_eq_minpoly: cyclic v ⟹ vecAnnIdeal M v = span{minpoly K M}"
+    ],
+    "insights": [
+      "Fixing M makes Kⁿ a K[X]-module; annihilators become ideals of the PID K[X].",
+      "A vector's order divides the minimal polynomial and equals it exactly for cyclic vectors.",
+      "Cyclicity makes the remainder of monic division vanish, upgrading span{minpoly} ≤ vecAnnIdeal to equality.",
+      "Monicity of the minimal polynomial follows for free from Cayley-Hamilton (integrality of M)."
+    ],
+    "mathlibGaps": [
+      "Bit-rot: LinearMap.mul_apply renamed to Module.End.mul_apply in Mathlib v4.26.0."
+    ],
     "nextSteps": [],
     "markdown": "# Knowledge Base: cayley-hamilton-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -466,5 +479,6 @@
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ02OQ01Aristotle.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-06-22"
 }
