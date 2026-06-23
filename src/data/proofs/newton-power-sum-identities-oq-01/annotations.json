@@ -1,0 +1,50 @@
+[
+  {
+    "id": "newton-ps-oq01-header",
+    "proofId": "newton-power-sum-identities-oq-01",
+    "range": { "startLine": 3, "endLine": 30 },
+    "type": "context",
+    "title": "Unrolling Newton's recurrence in low degree",
+    "content": "Newton's identities (Newton–Girard, 1707/1629) relate the two fundamental bases of symmetric functions: the power sums pₖ = ∑ᵢ Xᵢᵏ and the elementary symmetric polynomials eⱼ. Mathlib proves the general recurrence `MvPolynomial.psum_eq_mul_esymm_sub_sum`, pₖ = (−1)^{k+1}·k·eₖ − ∑_{0<i<k}(−1)^i·eᵢ·p_{k−i}, but records no explicit closed forms. This entry unrolls it for k = 1, 2, 3 to obtain p₁ = e₁, p₂ = e₁² − 2e₂, p₃ = e₁³ − 3e₁e₂ + 3e₃, valid in MvPolynomial σ R for any finite σ and commutative ring R (higher eⱼ vanish when card σ < k). These are the cases that appear constantly — expressing ∑xᵢ², ∑xᵢ³ of a polynomial's roots in its coefficients (traces of matrix powers ↔ characteristic-polynomial coefficients).",
+    "mathContext": "$p_k = (-1)^{k+1} k\\,e_k - \\sum_{0<i<k} (-1)^i e_i\\, p_{k-i}$",
+    "significance": "context",
+    "relatedConcepts": ["Newton's identities", "power sums", "elementary symmetric polynomials", "symmetric functions"],
+    "prerequisites": ["MvPolynomial.psum and esymm", "the Newton recurrence", "commutative rings"]
+  },
+  {
+    "id": "newton-ps-oq01-deg1",
+    "proofId": "newton-power-sum-identities-oq-01",
+    "range": { "startLine": 38, "endLine": 41 },
+    "type": "theorem",
+    "title": "psum_one_eq: p₁ = e₁",
+    "content": "The degree-1 identity. Both the first power sum and the first elementary symmetric polynomial equal ∑ᵢ Xᵢ, so the proof is a direct rewrite by `MvPolynomial.psum_one` and `MvPolynomial.esymm_one`. This base case is reused when substituting into the degree-2 and degree-3 derivations.",
+    "mathContext": "$p_1 = e_1 = \\sum_i X_i$",
+    "significance": "supporting",
+    "relatedConcepts": ["psum_one", "esymm_one", "base case"],
+    "prerequisites": ["definitions of psum and esymm"]
+  },
+  {
+    "id": "newton-ps-oq01-deg2",
+    "proofId": "newton-power-sum-identities-oq-01",
+    "range": { "startLine": 43, "endLine": 55 },
+    "type": "theorem",
+    "title": "psum_two_eq: p₂ = e₁² − 2e₂",
+    "content": "The degree-2 identity, unrolled from the recurrence at k = 2. The inner sum ranges over {a ∈ antidiagonal 2 | 0 < a.1 < 2}; an `omega`-discharged set equality reduces this (via `mem_antidiagonal`, `mem_Ioo`) to the singleton {(1,1)}, so `Finset.sum_singleton` leaves the single term (−1)¹·e₁·p₁. Substituting p₁ = e₁ (from `psum_one_eq`) and closing with `push_cast; ring` — which evaluates (−1)^{2+1} and the cast coefficient — yields p₂ = e₁² − 2e₂. The index set is pure linear arithmetic; no Finset computation or decide on the polynomial ring is needed.",
+    "mathContext": "$p_2 = e_1^2 - 2e_2$",
+    "significance": "key",
+    "relatedConcepts": ["Newton recurrence at k=2", "Finset.antidiagonal", "omega", "Finset.sum_singleton"],
+    "prerequisites": ["the recurrence", "the degree-1 identity"]
+  },
+  {
+    "id": "newton-ps-oq01-deg3",
+    "proofId": "newton-power-sum-identities-oq-01",
+    "range": { "startLine": 57, "endLine": 71 },
+    "type": "theorem",
+    "title": "psum_three_eq: p₃ = e₁³ − 3e₁e₂ + 3e₃",
+    "content": "The degree-3 identity, from the recurrence at k = 3. The inner index set {a ∈ antidiagonal 3 | 0 < a.1 < 3} reduces by `omega` to {(1,2),(2,1)}, so `Finset.sum_pair` (with (1,2) ≠ (2,1) closed by kernel `decide`, not native_decide) yields the two terms (−1)¹·e₁·p₂ and (−1)²·e₂·p₁. Substituting the degree-2 and degree-1 identities and finishing with `push_cast; ring` gives p₃ = e₁³ − 3e₁e₂ + 3e₃. These explicit closed forms are absent from Mathlib, which carries only the general recurrence.",
+    "mathContext": "$p_3 = e_1^3 - 3e_1 e_2 + 3e_3$",
+    "significance": "key",
+    "relatedConcepts": ["Newton recurrence at k=3", "Finset.sum_pair", "kernel decide", "push_cast; ring"],
+    "prerequisites": ["the recurrence", "the degree-1 and degree-2 identities"]
+  }
+]
