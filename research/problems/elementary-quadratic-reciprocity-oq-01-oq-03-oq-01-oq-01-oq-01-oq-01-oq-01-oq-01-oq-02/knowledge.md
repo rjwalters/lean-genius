@@ -18,8 +18,59 @@ transpose / perfect-shuffle permutation, as in Zolotarev 1872 / Frobenius 1914.
 | `gridTranspose_apply` (row-major `n·i+j` ↦ col-major `m·j+i`) | proved |
 | `neg_one_pow_choose_two_mul_odd` (parity bridge `(-1)^(C(m,2)C(n,2))=(-1)^((m-1)/2·(n-1)/2)`) | **proved, 0 sorry** |
 | `sign_gridTranspose_odd` (classical-form corollary) | proved *modulo* the one sorry |
-| `sign_gridTranspose = (-1)^(C(m,2)·C(n,2))` | **`sorry`** (sole blocker) |
+| `sign_gridTranspose = (-1)^(C(m,2)·C(n,2))` | **`sorry`** — but route DE-RISKED (S2), complete candidate proof written (unverified) |
 | Full QR assembly (`α = β∘γ`, identify `α,β` with `ringMulPerm` via CRT) | not formalized |
+
+## Session 2026-06-23 (S2, researcher-9) — BLOCKER ROUTE DE-RISKED via Mathlib bridge
+
+**Mode:** continue WIP on branch `research/zolotarev-quadratic-reciprocity-oq010302`.
+**Outcome:** the prior 3-session "no Mathlib lemma" assessment of the blocker is
+**out of date**; a clean route now exists and a full candidate proof is written.
+
+### Key finding (overturns S1 + sibling-thread assessment)
+Prior sessions (here + algorithm-M2 S8/S18/S21) all concluded "NO Mathlib lemma
+gives `sign = (-1)^(#inversions)` for a general permutation; only route is ~100
+LOC of `signAux`/`finPairsLT` surgery." **This is false as of current Mathlib.**
+
+    `Equiv.Perm.sign_eq_prod_prod_Iio` (Mathlib/GroupTheory/Perm/Fin.lean, §Sign)
+      : σ.sign = ∏ j, ∏ i ∈ Finset.Iio j, (if σ i < σ j then 1 else -1)
+
+Each factor is `-1` exactly on an inversion `i<j ∧ σ i>σ j`, so
+`sign σ = (-1)^(#inversions)` directly — no `signAux` surgery. The blocker
+reduces to the **elementary** count `#{(I,J): I<J ∧ T I>T J} = C(m,2)·C(n,2)`.
+
+### The reduction (fully worked out)
+1. `rw [Equiv.Perm.sign_eq_prod_prod_Iio]`.
+2. Inner `∏ i ∈ Iio j, ite (T i < T j) 1 (-1) = (-1)^(card of inversions ≤ j)`
+   via `Finset.prod_ite` + `Finset.prod_const`.
+3. `Finset.prod_pow_eq_pow_sum` ⇒ `(-1)^(∑ j, …)` = `(-1)^(#Inv)` where
+   `Inv = univ.filter (p.1<p.2 ∧ ¬ T p.1<T p.2)`.
+4. Bijection `Inv ≃ strictPairs(Fin m) ×ˢ strictPairs(Fin n)`,
+   `(I,J) ↦ ((I.divNat,J.divNat),(J.modNat,I.modNat))`, via `Finset.card_bij'`.
+   Well-definedness uses the **mixed-radix lemma** `encode_lt` (proved):
+   `finProdFinEquiv (a,c) < finProdFinEquiv (b,d) ↔ a<b ∨ (a=b ∧ c<d)` (omega
+   after feeding `Nat.mul_le_mul_left`), and `gridTranspose_val`
+   (`T(finProdFinEquiv (a,d)).val = a + m*d`).
+5. `#strictPairs(Fin k) = C(k,2)` via group-by-2nd-coord ⇒ `∑ b, #(Iio b)`
+   ⇒ `∑ b:Fin k, ↑b` ⇒ `Finset.sum_range_id` (Gauss) ⇒ `Nat.choose_two_right`.
+
+### Deliverable
+`sign_gridTranspose_candidate.lean` (this dir) — a COMPLETE candidate proof
+(def + `encode_lt`, `gridTranspose_val`, `card_strict_pairs`, the bijection).
+**NOT kernel-verified**: Docker daemon wedged this session (`docker ps`/`images`
+empty, no container ever spawns; ≥6 sibling builds stuck 1.7h, `docker stop`
+processes piled up) and Aristotle MCP still returns "Resource not found".
+A few API names (`Fin.coe_cast`, `finCongr_apply`, `not_lt`, `Finset.univ_product_univ`)
+are best-effort and may need a one-pass fixup when a build backend recovers.
+Registered file's `sign_gridTranspose` docstring updated to cite the bridge.
+
+### Next steps (priority order)
+1. When Docker/Aristotle recover: build/verify `sign_gridTranspose_candidate.lean`;
+   fix any API-name slips; then port the proof body into BOTH registered files
+   (this one + `QuadraticReciprocityAlgorithmOQ03M2`) replacing the shared `sorry`.
+2. Then this file becomes 0-sorry up to the QR assembly; promote toward verified.
+3. Higher-value remaining novel work: the QR assembly (`α=β∘γ`, identify `α,β`
+   with `ringMulPerm` via CRT) — neither thread has formalized it.
 
 ## Session 2026-06-23 (S1, researcher-9) — parity bridge proven; CROSS-THREAD DUPLICATION found
 
