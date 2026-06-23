@@ -1,0 +1,192 @@
+{
+  "id": "erdos-1022-oq-02",
+  "title": "The 2-Colorability Threshold for Complete Uniform Hypergraphs",
+  "slug": "erdos-1022-oq-02",
+  "description": "An exact threshold for Property B of the complete t-uniform hypergraph K_n^(t): it is 2-colorable if and only if n ≤ 2t − 2, failing first at n = 2t − 1 by pigeonhole. This is the lower-bound companion to the parent's first-moment upper bound, yielding m(t) ≤ C(2t−1, t).",
+  "meta": {
+    "author": "Erdős (research extension)",
+    "sourceUrl": "https://erdosproblems.com/1022",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1022OQ02.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "hypergraph coloring",
+      "Property B",
+      "pigeonhole",
+      "extremal set theory",
+      "open question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 1022,
+    "erdosUrl": "https://erdosproblems.com/1022",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "assumptions": "No axioms beyond Lean/Mathlib foundations (propext, Classical.choice, Quot.sound). No native_decide. All results fully machine-checked. The parent Erdős #1022 sparsity conjecture remains open; this file proves only the unconditional complete-hypergraph threshold.",
+    "lineCount": 208,
+    "relatedProblems": [
+      {
+        "id": "erdos-1022",
+        "relationship": "Parent problem: Property B and sparse set families"
+      },
+      {
+        "id": "erdos-1022-oq-01",
+        "relationship": "Sibling: Property B_k (k-colorability)"
+      },
+      {
+        "id": "erdos-1022-oq-03",
+        "relationship": "Sibling: Lovász Local Lemma bound for Property B"
+      }
+    ],
+    "theoremCount": 7,
+    "definitionCount": 3
+  },
+  "overview": {
+    "text": "An axiom-free determination of the exact 2-colorability threshold for the complete t-uniform hypergraph K_n^(t) (every t-subset of an n-element ground set is an edge). The headline theorem hasPropertyB_completeUnif_iff proves: for t ≥ 1, K_n^(t) has Property B if and only if n ≤ 2t − 2. The failure direction is a clean pigeonhole argument; the success direction is an explicit balanced 2-coloring. As a consequence (exists_non_propertyB_card_choose), the complete hypergraph on 2t − 1 vertices is a non-2-colorable t-uniform family with exactly C(2t−1, t) edges, giving m(t) ≤ C(2t−1, t).",
+    "historicalContext": "Property B — the existence of a 2-coloring of a set family with no monochromatic member — was introduced by Felix Bernstein in 1908. Erdős (1963/1964), in one of the earliest applications of the probabilistic method, proved that any t-uniform family with fewer than 2^{t-1} edges has Property B, giving the lower bound m(t) ≥ 2^{t-1} on the minimum number of edges m(t) of a non-2-colorable t-uniform hypergraph. The exact value of m(t) is famously open: m(2) = 3 (the triangle) and m(3) = 7 (the Fano plane) are known, but no closed form exists. Erdős Problem #1022 concerns the related question of which sparsity conditions force Property B. The complete t-uniform hypergraph furnishes the simplest explicit non-2-colorable family and the most transparent upper bound m(t) ≤ C(2t−1, t).",
+    "problemStatement": "For which n is the complete t-uniform hypergraph on n vertices 2-colorable (has Property B)? Equivalently, at what ground-set size does every 2-coloring force a monochromatic t-subset?",
+    "proofStrategy": "Failure (n ≥ 2t − 1): the two color classes partition n ≥ 2t − 1 vertices, so by pigeonhole one class has ≥ t vertices; any t-subset of it is a monochromatic edge. Success (n ≤ 2t − 2): split the ground set into two classes of size ≤ t − 1 (take any subset of size ⌊n/2⌋ and its complement); since no class has t vertices, no t-edge is monochromatic. The two halves combine into an iff via omega arithmetic.",
+    "keyInsights": [
+      "The complete t-uniform hypergraph turns 2-colorability into a pure pigeonhole statement: a monochromatic edge exists iff some color class reaches size t",
+      "The exact threshold is n = 2t − 1: at 2t − 2 a balanced split keeps both classes at t − 1, but at 2t − 1 the majority class is forced to size t",
+      "This is the sharp lower-bound companion to the parent's first-moment upper bound: together they sandwich 2^{t-1} ≤ m(t) ≤ C(2t−1, t)",
+      "The argument is entirely elementary and finite — no probability, no measure, no native_decide — yet recovers the smallest non-bipartite graph (the triangle, t = 2) and the m(3) ≤ 10 estimate as instances",
+      "The hypothesis t ≥ 1 is essential and is genuinely used (the omega closing the success case relies on it): for t = 0 the family {∅} is never 2-colorable, so the threshold statement would be false"
+    ],
+    "prerequisites": [
+      "Combinatorics (hypergraphs, set families, Property B)",
+      "Pigeonhole principle",
+      "Finset.powersetCard and basic Finset cardinality in Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Property B and the Complete Uniform Hypergraph",
+      "startLine": 49,
+      "endLine": 76,
+      "summary": "Defines IsMonoOn (a coloring constant on a set), HasPropertyB (∃ 2-coloring with no monochromatic member), and completeUnif (all t-subsets via Finset.powersetCard); computes its edge count as C(n, t).",
+      "mathContext": "$K_n^{(t)} = \\binom{[n]}{t}$, $\\;|K_n^{(t)}| = \\binom{n}{t}$. $B(F) \\iff \\exists c : \\alpha \\to \\{0,1\\},\\ \\forall A \\in F,\\ A \\text{ not monochromatic}$."
+    },
+    {
+      "id": "failure",
+      "title": "Failure of Property B Above the Threshold",
+      "startLine": 78,
+      "endLine": 121,
+      "summary": "Pigeonhole lemma exists_large_color_class: if 2t − 1 ≤ n then some color class has ≥ t vertices. Main theorem not_hasPropertyB_completeUnif: carve a t-subset out of that class — it is a monochromatic edge.",
+      "mathContext": "$2t - 1 \\leq n \\implies \\exists b,\\ |c^{-1}(b)| \\geq t \\implies \\exists$ monochromatic $t$-edge $\\implies \\neg B(K_n^{(t)})$."
+    },
+    {
+      "id": "success",
+      "title": "Property B At or Below the Threshold",
+      "startLine": 123,
+      "endLine": 159,
+      "summary": "hasPropertyB_completeUnif: for n ≤ 2t − 2, color by membership in a subset T of size ⌊n/2⌋. Both T and its complement have size ≤ t − 1, so no t-edge fits inside either class.",
+      "mathContext": "$n \\leq 2t - 2 \\implies |T| = \\lfloor n/2 \\rfloor \\leq t-1$ and $|T^c| = n - \\lfloor n/2 \\rfloor \\leq t-1 \\implies B(K_n^{(t)})$."
+    },
+    {
+      "id": "threshold",
+      "title": "The Exact Threshold",
+      "startLine": 161,
+      "endLine": 178,
+      "summary": "hasPropertyB_completeUnif_iff combines the two directions: K_n^(t) has Property B iff n ≤ 2t − 2.",
+      "mathContext": "For $t \\geq 1$: $\\; B(K_n^{(t)}) \\iff n \\leq 2t - 2$. The first failure is at $n = 2t - 1$."
+    },
+    {
+      "id": "extremal",
+      "title": "Consequence for the Extremal Function m(t)",
+      "startLine": 180,
+      "endLine": 208,
+      "summary": "exists_non_propertyB_card_choose: the complete hypergraph on 2t − 1 vertices is non-2-colorable with C(2t−1, t) edges, so m(t) ≤ C(2t−1, t). Includes small instances (triangle t=2, K_5^(3), and a below-threshold positive case).",
+      "mathContext": "$m(t) \\leq \\binom{2t-1}{t}$, sandwiching $2^{t-1} \\leq m(t) \\leq \\binom{2t-1}{t}$ with Erdős's first-moment bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified, axiom-free determination of the 2-colorability threshold for complete t-uniform hypergraphs: K_n^(t) has Property B iff n ≤ 2t − 2 (t ≥ 1), failing first at n = 2t − 1. This produces an explicit non-2-colorable family with C(2t−1, t) edges, hence m(t) ≤ C(2t−1, t), the natural lower-bound companion to Erdős's first-moment upper bound m(t) ≥ 2^{t-1}.",
+    "implications": "The result pins down exactly how large a complete uniform hypergraph must be to defeat 2-colorability, and gives the cleanest concrete witness to the existence of non-2-colorable t-uniform families. Sandwiching m(t) between 2^{t-1} and C(2t−1, t) frames the still-open determination of m(t), and the complete-hypergraph extremal construction motivates the search for sparser non-2-colorable families (Fano plane for t = 3, m(3) = 7 < 10).",
+    "openQuestions": [
+      "What is the exact value of the extremal function m(t) between the bounds 2^{t-1} and C(2t−1, t)?",
+      "Among non-2-colorable t-uniform hypergraphs, how sparse can the family be while remaining 'complete-like' (e.g., vertex-transitive)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1022",
+      "relationship": "parent",
+      "description": "Parent problem: Property B (2-colorability) for sparse set families"
+    },
+    {
+      "targetId": "erdos-1022-oq-01",
+      "relationship": "sibling",
+      "description": "Property B_k: the k-colorability generalization"
+    },
+    {
+      "targetId": "erdos-1022-oq-03",
+      "relationship": "sibling",
+      "description": "Lovász Local Lemma bound improving on the first-moment threshold"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 208,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1022OQ02",
+    "path": "Proofs/Erdos1022OQ02.lean",
+    "sorries": 0,
+    "definitionCount": 3
+  },
+  "mainTheorems": [
+    {
+      "name": "hasPropertyB_completeUnif_iff",
+      "type": "proved",
+      "description": "The exact threshold: K_n^(t) has Property B iff n ≤ 2t − 2 (for t ≥ 1)"
+    },
+    {
+      "name": "not_hasPropertyB_completeUnif",
+      "type": "proved",
+      "description": "Failure above threshold: for 2t − 1 ≤ n, K_n^(t) is not 2-colorable (pigeonhole)"
+    },
+    {
+      "name": "hasPropertyB_completeUnif",
+      "type": "proved",
+      "description": "Success at/below threshold: for n ≤ 2t − 2, the balanced split 2-colors K_n^(t)"
+    },
+    {
+      "name": "exists_non_propertyB_card_choose",
+      "type": "proved",
+      "description": "m(t) ≤ C(2t−1, t): explicit non-2-colorable t-uniform family on 2t−1 vertices"
+    },
+    {
+      "name": "exists_large_color_class",
+      "type": "proved",
+      "description": "Pigeonhole: any 2-coloring of ≥ 2t − 1 vertices has a color class of size ≥ t"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On a combinatorial problem, II",
+      "year": "1964",
+      "venue": "Acta Math. Acad. Sci. Hungar. 15, pp. 445-447",
+      "note": "First-moment 2^{t-1} bound for Property B; lower bound m(t) ≥ 2^{t-1}"
+    },
+    {
+      "authors": "Erdős, Paul; Hajnal, András",
+      "title": "On a property of families of sets",
+      "year": "1961",
+      "venue": "Acta Math. Acad. Sci. Hungar. 12, pp. 87-123",
+      "note": "Foundational study of Property B and the function m(t)"
+    }
+  ],
+  "sorries": 0
+}
