@@ -73,16 +73,32 @@
   ],
   "sections": [
     {
-      "title": "The n = 4 closed form",
-      "startLine": 51,
-      "endLine": 62,
-      "summary": "birthdayCount3_four: d⁴ − 4d² + 3d over ℤ, via small-case evaluation and symbolic unfolding of the recurrence for d = k+3."
+      "id": "sec-header",
+      "title": "Module Header and Scope",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Docstring recalling the parent's slot recurrence R and birthdayCount3, the existing n = 1, 2, 3 closed forms, and the goal (n = 4, stated over ℤ, no native_decide). Imports Mathlib and opens namespace BirthdayN4Closed; the recurrence is reproduced locally to keep the file self-contained and fast."
     },
     {
-      "title": "Factored and ℕ forms",
+      "id": "sec-recurrence",
+      "title": "Recurrence and Base Lemmas",
+      "startLine": 36,
+      "endLine": 49,
+      "summary": "The two definitions R (slot recurrence on the empty/single-day state (e, s)) and birthdayCount3 n d = R n d 0, plus the simp equation lemmas R_zero, R_succ and the base identity R_one e s = e + s."
+    },
+    {
+      "id": "sec-closed-form",
+      "title": "The n = 4 Closed Form",
+      "startLine": 51,
+      "endLine": 62,
+      "summary": "birthdayCount3_four: d⁴ − 4d² + 3d over ℤ, via small-case evaluation (d = 0, 1, 2 by decide) and symbolic unfolding of the recurrence for d = k+3 (simp on the equation lemmas, push_cast, ring)."
+    },
+    {
+      "id": "sec-factored-nat",
+      "title": "Factored and ℕ Forms",
       "startLine": 64,
-      "endLine": 75,
-      "summary": "birthdayCount3_four_factored (d(d−1)(d²+d−3)) and birthdayCount3_four_eq_nat (a truncation-free ℕ identity for d ≥ 1)."
+      "endLine": 77,
+      "summary": "birthdayCount3_four_factored (d(d−1)(d²+d−3), via rw + ring) and birthdayCount3_four_eq_nat (the truncation-free ℕ identity birthdayCount3 4 d + 4d² = d⁴ + 3d for d ≥ 1, via zify + linarith)."
     }
   ],
   "sorries": []

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "bday-oq03-n4-ann-header",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-05",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "The k=3 Birthday Count and Its Closed-Form Sequence",
+    "content": "The 'k=3' birthday variant counts seatings of n labelled people on d days with at most two per day — exactly the configurations that avoid a triple coincidence. The parent entry encodes this with a slot recurrence R on the state (e, s) of empty and single-occupancy days, sets birthdayCount3 n d = R n d 0, and proves the closed forms d, d², d³ − d for n = 1, 2, 3. This file supplies the next term, n = 4, stated over ℤ to dodge truncated subtraction and proved without native_decide so it remains genuinely 0-axiom. The recurrence is reproduced locally to keep the file self-contained and fast to compile.",
+    "mathContext": "$\\mathrm{birthdayCount3}(n, d) = R(n, d, 0); \\qquad n=1{:}\\ d,\\ \\ n=2{:}\\ d^2,\\ \\ n=3{:}\\ d^3 - d.$",
+    "significance": "key",
+    "relatedConcepts": ["birthday problem", "occupancy enumeration", "linear recurrence", "exponential generating function"],
+    "prerequisites": ["combinatorial enumeration", "recurrence relations"]
+  },
+  {
+    "id": "bday-oq03-n4-ann-recurrence",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-05",
+    "range": { "startLine": 36, "endLine": 49 },
+    "type": "definition",
+    "title": "The Slot Recurrence and Base Lemmas",
+    "content": "`R n e s` tracks placements with `e` still-empty days and `s` single-occupancy days available: placing person n+1 either opens a fresh day (factor `e`, decrement `e`, increment `s`) or completes a single into a double (factor `s`, decrement `s`). `birthdayCount3 n d = R n d 0` starts every day empty. The `@[simp]` equation lemmas `R_zero` (R 0 = 1) and `R_succ` are definitional (`rfl`), and `R_one e s = e + s` follows by `simp` — these are the rewriting engine for the unfolding proof below.",
+    "mathContext": "$R(0,e,s) = 1, \\qquad R(n{+}1,e,s) = e\\,R(n,e{-}1,s{+}1) + s\\,R(n,e,s{-}1).$",
+    "significance": "supporting",
+    "relatedConcepts": ["state recurrence", "occupancy state", "definitional unfolding", "simp lemmas"],
+    "prerequisites": ["recursive definitions in Lean", "pattern matching"]
+  },
+  {
+    "id": "bday-oq03-n4-ann-closed-form",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-05",
+    "range": { "startLine": 51, "endLine": 62 },
+    "type": "theorem",
+    "title": "Closed Form: d⁴ − 4d² + 3d",
+    "content": "`birthdayCount3_four` is the headline: the n = 4 count equals d⁴ − 4d² + 3d over ℤ. The proof case-splits d into 0, 1, 2, and k+3. The three small cases close by `decide` (finite evaluation). For d = k+3 every truncated subtraction (d−1, d−2, d−3) becomes exact, so the `R_succ`/`R_one`/`R_zero` simp set unfolds the recurrence into a concrete ℕ polynomial; `push_cast` moves it into ℤ and `ring` matches it against the target. A sanity check: at d = 4 the formula gives 256 − 64 + 12 = 204.",
+    "mathContext": "$\\mathrm{birthdayCount3}(4, d) = d^4 - 4d^2 + 3d \\quad (\\text{over } \\mathbb{Z}).$",
+    "significance": "critical",
+    "relatedConcepts": ["closed form", "recurrence unfolding", "truncated subtraction", "ring normalization"],
+    "prerequisites": ["natural-number subtraction", "casting ℕ → ℤ", "ring / decide tactics"]
+  },
+  {
+    "id": "bday-oq03-n4-ann-factored",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-05",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "theorem",
+    "title": "Factored Form: d(d−1)(d²+d−3)",
+    "content": "`birthdayCount3_four_factored` rewrites the closed form as d(d−1)(d²+d−3). The proof simply rewrites with `birthdayCount3_four` and lets `ring` verify the polynomial factorization. The factor d(d−1) exposes the two roots d = 0 and d = 1 (there are no valid seatings when there are too few days for four people under the at-most-two constraint to be nontrivial), while the quadratic factor d²+d−3 carries the genuinely degree-4 growth.",
+    "mathContext": "$d^4 - 4d^2 + 3d = d(d-1)(d^2 + d - 3).$",
+    "significance": "key",
+    "relatedConcepts": ["polynomial factorization", "roots of the count", "ring tactic"],
+    "prerequisites": ["polynomial algebra"]
+  },
+  {
+    "id": "bday-oq03-n4-ann-nat",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-05",
+    "range": { "startLine": 69, "endLine": 77 },
+    "type": "theorem",
+    "title": "Truncation-Free ℕ Identity",
+    "content": "`birthdayCount3_four_eq_nat` restates the result purely in ℕ as `birthdayCount3 4 d + 4d² = d⁴ + 3d` for d ≥ 1, rearranged so no natural subtraction can truncate. The proof imports the ℤ identity, applies `zify` to lift the ℕ goal into ℤ, and finishes with `linarith`. This gives downstream ℕ consumers a clean equation without forcing them into ℤ, while the d ≥ 1 hypothesis records exactly where the additive rearrangement is needed.",
+    "mathContext": "$\\mathrm{birthdayCount3}(4, d) + 4d^2 = d^4 + 3d \\quad (d \\ge 1).$",
+    "significance": "supporting",
+    "relatedConcepts": ["truncated subtraction", "zify", "linear arithmetic over ℤ"],
+    "prerequisites": ["ℕ vs ℤ arithmetic", "linarith"]
+  }
+]
