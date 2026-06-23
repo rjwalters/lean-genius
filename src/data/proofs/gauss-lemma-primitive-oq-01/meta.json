@@ -15,7 +15,7 @@
       "primitive-polynomial",
       "classic"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-06-20",
     "mathlib_version": "4.26.0",
@@ -52,13 +52,12 @@
       }
     ],
     "originalContributions": [
-      "gauss_lemma_int: the Gauss's Lemma biconditional restated as the entry headline for primitive p : ℤ[X]",
-      "gauss_lemma_int_monic: the unconditional monic specialization (primitivity automatic via Monic.isPrimitive)",
-      "two_mul_X_not_primitive / two_mul_X_reducible_over_int / two_mul_X_irreducible_over_rat: a fully-formalized counterexample showing 2X is non-primitive, reducible over ℤ, but irreducible over ℚ",
-      "primitivity_necessary: the existential ∃ p, ¬Irreducible p ∧ Irreducible (p over ℚ) ∧ ¬p.IsPrimitive, proving the primitivity hypothesis of Gauss's Lemma cannot be dropped"
+      "two_mul_X_not_primitive / two_mul_X_reducible_over_int / two_mul_X_irreducible_over_rat: a fully-formalized sharpness witness showing 2X is non-primitive, reducible over ℤ, but irreducible over ℚ (the genuinely independent content of this entry)",
+      "primitivity_necessary: the existential ∃ p, ¬Irreducible p ∧ Irreducible (p over ℚ) ∧ ¬p.IsPrimitive, proving the primitivity hypothesis of Gauss's Lemma cannot be dropped",
+      "Packaging: the Gauss's Lemma headline (gauss_lemma_int) and its monic specialization (gauss_lemma_int_monic) are one-line restatements of Mathlib's IsPrimitive.Int.irreducible_iff_irreducible_map_cast (the monic form feeding it Monic.isPrimitive), not independent proofs — the entry's added value is the sharpness witness above, not the biconditional itself"
     ],
     "axiomCount": 0,
-    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on propext, Classical.choice, Quot.sound. No native_decide, so no Lean.ofReduceBool.",
+    "assumptions": "0 axioms, 0 sorries; all six theorems machine-checked. The headline biconditional (gauss_lemma_int) and its monic form (gauss_lemma_int_monic) are obtained directly from Mathlib's IsPrimitive.Int.irreducible_iff_irreducible_map_cast — the core Gauss's Lemma result is Mathlib's, not independently proved here, hence the `mathlib` badge (Tier B). The entry's independent content is the 2X sharpness witness (primitivity_necessary). Depends only on propext, Classical.choice, Quot.sound; no native_decide, so no Lean.ofReduceBool.",
     "lineCount": 95,
     "theoremCount": 6,
     "definitionCount": 0
