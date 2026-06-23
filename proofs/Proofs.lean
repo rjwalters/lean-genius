@@ -3191,6 +3191,7 @@ import Proofs.NarcissisticNumberOQ01
 import Proofs.NavierStokes
 import Proofs.NesbittInequalityOQ01
 import Proofs.NormEuclideanZsqrtdFamilyOQ03
+import Proofs.NormalAutFinSepDegreeEquality
 import Proofs.NewtonIndStep2
 import Proofs.NewtonInductiveStep
 import Proofs.NewtonInductiveStepOQ01
