@@ -1,0 +1,164 @@
+{
+  "id": "combinations-formula-oq-07-oq-04-oq-01",
+  "title": "The General r-th Falling-Factorial Moment of the Squares of Binomial Coefficients",
+  "slug": "combinations-formula-oq-07-oq-04-oq-01",
+  "description": "Answers the open question of OQ-07-OQ-04 (the third moment, the general r-th moment, and the falling-factorial form) in one uniform identity: for every r ≤ n, ∑_{k=0}^{n} (k)_r·C(n,k)² = (n)_r·C(2n−r, n−r), where (x)_r = x(x−1)⋯(x−r+1) is the falling factorial Nat.descFactorial. The single committee-chair absorption k·C(n,k) = n·C(n−1,k−1) (OQ-01) iterates by induction on r to the falling absorption (k)_r·C(n,k) = (n)_r·C(n−r,k−r); summing kills the orders k<r, and reindexing k ↦ k−r leaves the parent Vandermonde convolution read along the diagonal r steps off-centre, which closes the sum to the single off-diagonal entry C(2n−r,n−r). Specialisations recover the entire moment ladder of this OQ family — r=0 the central binomial C(2n,n) (OQ-07), r=1 the first moment (OQ-03), r=2 the parent's falling second moment, and r=3 the headline third moment — and the raw power moment ∑ k³·C(n,k)² follows from the Stirling expansion k³ = (k)_3 + 3(k)_2 + (k)_1. The falling-factorial weighting is what makes the closed form uniform in r: it lands on one Vandermonde entry with no order-dependent recombination.",
+  "meta": {
+    "author": "Lean Genius researcher-12",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ07OQ04OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 230,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "assumptions": "None. The general closed form ∑_{k=0}^{n} (k)_r·C(n,k)² = (n)_r·C(2n−r, n−r) holds for all r ≤ n and is fully machine-checked; the named specialisations carry the natural lower bounds (n ≥ 1 for r=1, n ≥ 2 for r=2, n ≥ 3 for r=3 and the cubic moment). Depends only on the foundational axioms propext, Classical.choice, Quot.sound; the three numeric sanity checks use kernel `decide` on small numerals (no Lean.ofReduceBool, no native_decide, no sorryAx).",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "sum-of-squares",
+      "falling-factorial",
+      "descFactorial",
+      "weighted-sum",
+      "higher-moments",
+      "absorption",
+      "vandermonde",
+      "central-binomial"
+    ],
+    "dateAdded": "2026-06-23",
+    "originalContributions": [
+      "sum_descFactorial_weighted_sq: the general r-th falling-factorial moment ∑_{k=0}^{n} (k)_r·C(n,k)² = (n)_r·C(2n−r, n−r) for all r ≤ n, a single uniform closed form covering the entire moment ladder of this OQ family, absent from Mathlib",
+      "descFactorial_mul_choose: the iterated (falling) absorption (k)_r·C(n,k) = (n)_r·C(n−r,k−r) for r ≤ k ≤ n, proved by induction on r by peeling one falling factor per step — the conceptual core that keeps a single plain factor C(n,k) (unlike the square form), so summation yields a genuine Vandermonde convolution",
+      "vandermonde_diag: the r-shifted Vandermonde diagonal ∑_{j=0}^{n−r} C(n−r,j)·C(n,j+r) = C(2n−r, n−r), reading the parent's convolution add_choose_eq_sum_range along the diagonal r steps off-centre via the reflection C(n,(n−r)−j) = C(n,j+r)",
+      "sum_falling_third: the headline falling third moment ∑ k(k−1)(k−2)·C(n,k)² = n(n−1)(n−2)·C(2n−3,n−3), the direct answer to the parent's open question about the third moment",
+      "sum_cube_weighted_sq: the raw cubic (third-power) moment ∑ k³·C(n,k)² = n(n−1)(n−2)·C(2n−3,n−3) + 3n(n−1)·C(2n−2,n−2) + n·C(2n−1,n−1), obtained from the falling moments by the Stirling expansion k³ = (k)_3 + 3(k)_2 + (k)_1",
+      "sum_first_weighted_sq and sum_falling_second: the r=1 and r=2 specialisations, recovering OQ-03's first moment and the parent's falling second moment as instances of the single general identity",
+      "Worked checks at n=4, r=3: ∑ (k)_3·C(4,k)² = (4)_3·C(5,1) = 24·5 = 120, and the matching falling and raw cubic forms"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "CombinationsFormulaOQ07OQ01.mul_choose_eq",
+        "description": "The absorption / committee-chair identity k·C(n,k) = n·C(n−1,k−1) for 1 ≤ k ≤ n, proved in the OQ-01 sibling. Iterating it r times (by induction on r) is the entire mechanism of the falling absorption, hence of the general moment.",
+        "module": "Proofs.CombinationsFormulaOQ07OQ01"
+      },
+      {
+        "theorem": "CombinationsFormulaOQ07.add_choose_eq_sum_range",
+        "description": "The range form of Vandermonde's convolution (m+n).choose k = ∑_i m.choose i · n.choose (k−i), proved in the grandparent OQ-07. Read with m=n−r, k=n−r it gives the r-shifted diagonal C(2n−r,n−r) that closes the inner sum after absorption.",
+        "module": "Proofs.CombinationsFormulaOQ07"
+      },
+      {
+        "theorem": "Nat.descFactorial_succ",
+        "description": "n.descFactorial (k+1) = (n−k)·n.descFactorial k. Peels one falling factor per induction step in descFactorial_mul_choose, matching the single absorption application n.choose k = n·C(n−1,k−1) at each stage.",
+        "module": "Mathlib.Data.Nat.Factorial.BigOperators"
+      },
+      {
+        "theorem": "Nat.descFactorial_eq_zero_iff_lt",
+        "description": "n.descFactorial k = 0 ↔ n < k. Shows the low-order terms k < r of the moment sum vanish (a falling factorial of length r kills any base < r), so the sum truncates to Ico r (n+1) before reindexing.",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "C(n, n−k) = C(n, k) for k ≤ n. Reflects the convolution term C(n,(n−r)−j) into the shifted summand C(n,j+r), aligning the parent Vandermonde sum with the off-centre diagonal in vandermonde_diag.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.sum_Ico_consecutive",
+        "description": "Splits ∑ over Ico 0 (n+1) into Ico 0 r plus Ico r (n+1), isolating the vanishing low-order block k < r before the falling absorption (which needs r ≤ k) is applied term by term.",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ07OQ04OQ01.lean",
+    "namespace": "CombinationsFormulaOQ07OQ04OQ01",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 230,
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The sum of squares of a Pascal row, ∑_k C(n,k)² = C(2n,n), is the diagonal of Vandermonde's convolution (OQ-07); weighting its terms turns a counting identity into a moment computation for the hypergeometric law p_k = C(n,k)²/C(2n,n). OQ-03 found the first moment ∑ k·C(n,k)² = n·C(2n−1,n−1) (mean n/2) and OQ-04 the second ∑ k²·C(n,k)² = n²·C(2n−2,n−1) (variance n²/(4(2n−1))), explicitly leaving open the third moment, the general r-th moment, and whether the falling-factorial form is cleaner. The classical answer — found among the weighted Vandermonde sums of Gould's Combinatorial Identities (1972) — is that the falling-factorial moment, not the raw power moment, has a uniform closed form: ∑ (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r). Mathlib carries the unweighted and alternating row sums and Vandermonde's convolution, but none of the squared-coefficient moments, weighted or falling; the general identity here is new to the library.",
+    "problemStatement": "Open Question OQ-07-OQ-04-OQ-01 (posed as the open question of OQ-04): the parent computes the second moment ∑ k²·C(n,k)² and asks for the third moment ∑ k³·C(n,k)², the general r-th moment, and whether the falling-factorial second moment ∑ k(k−1)·C(n,k)² admits an even cleaner closed form via double absorption. Provide a single uniform closed form for every order r, exhibit the structural reason it lands on one central binomial entry, and read off the third and raw cubic moments as instances.",
+    "proofStrategy": "Work with the falling-factorial weight (k)_r = Nat.descFactorial k r rather than the raw power kʳ. First iterate the committee-chair absorption k·C(n,k) = n·C(n−1,k−1) (OQ-01): by induction on r, peeling one factor via Nat.descFactorial_succ at each step, obtain the falling absorption (k)_r·C(n,k) = (n)_r·C(n−r,k−r) for r ≤ k ≤ n (descFactorial_mul_choose). Crucially the falling product keeps one plain factor C(n,k) — unlike the squared absorption k²·C(n,k)² = n²·C(n−1,k−1)² used for the second moment — so summing leaves a genuine convolution rather than another sum of squares. In ∑_{k=0}^{n} (k)_r·C(n,k)², the orders k < r vanish (descFactorial_eq_zero_iff_lt), so the sum truncates to Ico r (n+1) (Finset.sum_Ico_consecutive); reindex k ↦ k−r and apply the falling absorption to each term, leaving (n)_r · ∑_{j=0}^{n−r} C(n−r,j)·C(n,j+r). That inner sum is the parent Vandermonde convolution add_choose_eq_sum_range read along the diagonal r steps off-centre (vandermonde_diag), using Nat.choose_symm to reflect C(n,(n−r)−j) into C(n,j+r); it closes to the single entry C(2n−r,n−r). Pulling out the constant (n)_r gives the general identity sum_descFactorial_weighted_sq. The r=1,2,3 specialisations follow by simplifying (k)_1, (k)_2, (k)_3; the raw cubic moment sum_cube_weighted_sq follows from the Stirling expansion k³ = (k)_3 + 3(k)_2 + (k)_1, splitting the sum and substituting the three falling moments.",
+    "keyInsights": [
+      "Use the falling-factorial weight, not the raw power: (k)_r·C(n,k) keeps exactly one plain factor C(n,k), so iterated absorption turns the weighted square into a single off-diagonal Vandermonde convolution rather than another sum of squares. This is why the falling moment is clean for every r while the raw power moment is a recombination of several.",
+      "Iterated absorption is just the committee-chair identity applied r times: descFactorial_mul_choose proves (k)_r·C(n,k) = (n)_r·C(n−r,k−r) by induction, peeling one factor of (k−i) against one application of k·C(n,k) = n·C(n−1,k−1) per step.",
+      "The general moment lands on a single central binomial entry C(2n−r,n−r) — the parent Vandermonde convolution read r steps off the centre diagonal. No order-dependent recombination appears; the whole r-dependence is the prefactor (n)_r and the shift r in the binomial.",
+      "The low-order terms k < r genuinely vanish because a falling factorial of length r annihilates any base below r (descFactorial_eq_zero_iff_lt); isolating them with Finset.sum_Ico_consecutive lets the absorption, which needs r ≤ k, apply to every surviving summand.",
+      "The raw power moments are recovered, not bypassed: k³ = (k)_3 + 3(k)_2 + (k)_1 (Stirling numbers of the second kind) expresses ∑ k³·C(n,k)² as a combination of the falling third, second, and first moments, so the falling form is the right primitive from which every raw moment is assembled."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Mathematical Context",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "Header stating OQ-07-OQ-04-OQ-01: the general r-th falling-factorial moment ∑ (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r), the moment ladder it unifies (r=0..3), the raw cubic moment via Stirling expansion, and the iterated-absorption-plus-shifted-Vandermonde strategy."
+    },
+    {
+      "id": "iterated-absorption",
+      "title": "Iterated (Falling) Absorption",
+      "startLine": 72,
+      "endLine": 101,
+      "summary": "descFactorial_mul_choose: (k)_r·C(n,k) = (n)_r·C(n−r,k−r) for r ≤ k ≤ n, proved by induction on r. Each step peels one falling factor with Nat.descFactorial_succ and applies the OQ-01 committee-chair identity once. Keeping one plain factor C(n,k) is what makes the later sum a convolution."
+    },
+    {
+      "id": "vandermonde-diagonal",
+      "title": "The Shifted Vandermonde Diagonal",
+      "startLine": 103,
+      "endLine": 120,
+      "summary": "vandermonde_diag: ∑_{j=0}^{n−r} C(n−r,j)·C(n,j+r) = C(2n−r,n−r). Reads the parent add_choose_eq_sum_range with m=n−r, k=n−r and uses Nat.choose_symm to reflect C(n,(n−r)−j) into the shifted term C(n,j+r), realigning the convolution onto the off-centre diagonal."
+    },
+    {
+      "id": "general-moment",
+      "title": "The General r-th Falling-Factorial Moment",
+      "startLine": 122,
+      "endLine": 155,
+      "summary": "sum_descFactorial_weighted_sq: ∑_{k=0}^{n} (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r) for r ≤ n. Truncates the vanishing orders k<r (descFactorial_eq_zero_iff_lt, Finset.sum_Ico_consecutive), reindexes k ↦ k−r, rewrites each term by the iterated absorption, and closes the inner sum with vandermonde_diag."
+    },
+    {
+      "id": "specialisations",
+      "title": "First, Second, and Third Falling Moments",
+      "startLine": 157,
+      "endLine": 188,
+      "summary": "descFactorial_two/three unfold (k)_2 = k(k−1) and (k)_3 = k(k−1)(k−2). sum_first_weighted_sq (r=1, recovers OQ-03), sum_falling_second (r=2, the parent's falling form), and sum_falling_third (r=3, the headline third moment n(n−1)(n−2)·C(2n−3,n−3)) are read off the general identity."
+    },
+    {
+      "id": "raw-cubic-moment",
+      "title": "The Raw Cubic Moment via Stirling Expansion",
+      "startLine": 190,
+      "endLine": 228,
+      "summary": "sum_cube_weighted_sq: ∑ k³·C(n,k)² = n(n−1)(n−2)·C(2n−3,n−3) + 3n(n−1)·C(2n−2,n−2) + n·C(2n−1,n−1), from k³ = (k)_3 + 3(k)_2 + (k)_1; with three kernel-decide numeric checks at n=4 confirming the r=3, falling-third, and raw-cubic forms all equal 120."
+    }
+  ],
+  "conclusion": {
+    "summary": "9 theorems, 0 sorries, 0 axioms. A single uniform closed form ∑_{k=0}^{n} (k)_r·C(n,k)² = (n)_r·C(2n−r, n−r) answers the parent's open question for every order r at once: the third moment, the general r-th moment, and the cleaner falling-factorial form all fall out of one identity. The engine is the committee-chair absorption k·C(n,k) = n·C(n−1,k−1) iterated r times (keeping one plain factor C(n,k)), summed against the parent Vandermonde convolution read r steps off the centre diagonal — no generating functions, no order-dependent recombination.",
+    "implications": "Adds the general falling-factorial moment of the squared Pascal row, which Mathlib lacks, subsuming OQ-03's first moment and OQ-04's second moment as the r=1,2 cases and delivering the third moment and the raw cubic moment ∑ k³·C(n,k)² that the parent posed as open. The method — iterate the committee-chair identity to a falling absorption that keeps one plain factor, then close on a shifted Vandermonde diagonal — is a reusable route to all higher moments of symmetric binomial sums, with the Stirling expansion converting falling moments to raw power moments on demand.",
+    "openQuestions": [
+      "Does the same falling-absorption-to-Vandermonde mechanism give a closed form for the bilateral / two-parameter moment ∑_{k} (k)_r·C(m,k)·C(n,k), reducing to a single off-diagonal entry C(m+n−r, ·) of the general Vandermonde C(m+n,·) rather than the diagonal one?",
+      "The falling moments determine all factorial moments of the hypergeometric law C(n,k)²/C(2n,n); is there a clean closed form for its moment generating function ∑_k C(n,k)²·xᵏ / C(2n,n) (a Legendre-polynomial value) from which every (k)_r moment is the r-th derivative at x=1?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-07-oq-04",
+      "relationship": "parent question — OQ-04 computes the second moment ∑ k²·C(n,k)² and explicitly poses the third moment, the general r-th moment, and the falling-factorial form as its open questions; this entry answers all three with the single identity ∑ (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r)"
+    },
+    {
+      "targetId": "combinations-formula-oq-07-oq-03",
+      "relationship": "grandparent / r=1 case — OQ-03's first moment ∑ k·C(n,k)² = n·C(2n−1,n−1) is recovered here as sum_first_weighted_sq, the r=1 specialisation of the general identity"
+    },
+    {
+      "targetId": "combinations-formula-oq-07",
+      "relationship": "great-grandparent — supplies the Vandermonde convolution add_choose_eq_sum_range whose off-centre diagonal C(2n−r,n−r) closes the moment sum; the r=0 case is its central sum of squares C(2n,n)"
+    },
+    {
+      "targetId": "combinations-formula-oq-07-oq-01",
+      "relationship": "sibling — supplies the committee-chair absorption k·C(n,k) = n·C(n−1,k−1) whose r-fold iteration is the falling absorption driving this proof"
+    }
+  ],
+  "sorries": 0
+}
