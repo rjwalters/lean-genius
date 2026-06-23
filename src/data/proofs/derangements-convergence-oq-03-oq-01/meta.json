@@ -139,13 +139,49 @@
       "description": "Sibling: one-term recurrence and modular shadow of the rounding formula."
     }
   ],
-  "conclusion": "For all n ≥ 2 the derangement count D(n) admits three equivalent machine-checked rounding forms — round(n!/e), ⌊n!/e + 1/2⌋ and ⌈n!/e − 1/2⌉ — all flowing from the single strict bound |D(n) − n!/e| < 1/2, with the floor and ceiling forms provably coinciding because n!/e is never a half-integer.",
+  "conclusion": {
+    "summary": "For all n ≥ 2 the derangement count D(n) admits three equivalent machine-checked rounding forms — round(n!/e), ⌊n!/e + 1/2⌋ and ⌈n!/e − 1/2⌉ — all flowing from the single strict bound |D(n) − n!/e| < 1/2, with the floor and ceiling forms provably coinciding because n!/e is never a half-integer.",
+    "implications": [
+      "A single strict bound |D(n) − n!/e| < 1/2 is the common engine: floor, ceiling and round forms are three different Mathlib characterisations (Int.floor_eq_iff, Int.ceil_eq_iff, round_eq) fed by the same pair of inequalities — completeness and citability rather than new mathematics.",
+      "The floor=ceiling agreement is the integer-level shadow of e's irrationality: n!/e is never a half-integer, so rounding up from x−1/2 and down from x+1/2 land on the same integer. A genuine half-integer would split the two forms apart, so the agreement implicitly records e ∉ ½ℤ·(1/n!).",
+      "The entry is deliberately self-contained, re-deriving the round form from the base rate lemma with current Mathlib names (div_le_iff₀) rather than importing the bit-rotted parent — a robustness pattern that keeps a corollary buildable independent of its ancestor's maintenance state."
+    ],
+    "openQuestions": [
+      "Extend the rounding forms to n ∈ {0, 1}: D(0) = 1, D(1) = 0, while 0!/e ≈ 0.368 and 1!/e ≈ 0.368 — characterize exactly where the strict-bound argument breaks and whether a modified offset recovers a uniform formula.",
+      "Quantify the gap n!/e − D(n) as n → ∞: it is the alternating tail ±1/(n+1) + …, so its sign and decay could be recorded as a companion lemma sharpening the < 1/2 bound to an asymptotic."
+    ]
+  },
   "mainTheorems": [
-    "abs_derangements_sub_lt_half: For n ≥ 2, |D(n) − n!·e⁻¹| < 1/2",
-    "derangements_eq_floor: For n ≥ 2, (numDerangements n : ℤ) = ⌊n!·e⁻¹ + 1/2⌋",
-    "derangements_eq_ceil: For n ≥ 2, (numDerangements n : ℤ) = ⌈n!·e⁻¹ − 1/2⌉",
-    "derangements_eq_round: For n ≥ 2, (numDerangements n : ℤ) = round(n!·e⁻¹)",
-    "floor_eq_ceil_forms: For n ≥ 2, ⌊n!·e⁻¹ + 1/2⌋ = ⌈n!·e⁻¹ − 1/2⌉"
+    {
+      "name": "abs_derangements_sub_lt_half",
+      "type": "core",
+      "description": "The strict two-sided bound |D(n) − n!·e⁻¹| < 1/2 for n ≥ 2 — the engine behind all three rounding forms, extracted from derangements_convergence_rate by clearing the n! denominator (div_le_iff₀) and bounding 1/(n+1) < 1/2.",
+      "leanType": "(n : ℕ) (hn : 2 ≤ n) : |(numDerangements n : ℝ) - (n.factorial : ℝ) * rexp (-1)| < 1 / 2"
+    },
+    {
+      "name": "derangements_eq_floor",
+      "type": "main",
+      "description": "Floor form: for n ≥ 2, D(n) = ⌊n!/e + 1/2⌋, the definitional content of nearest-integer rounding, via Int.floor_eq_iff and the strict bound.",
+      "leanType": "(n : ℕ) (hn : 2 ≤ n) : (numDerangements n : ℤ) = ⌊(n.factorial : ℝ) * rexp (-1) + 1 / 2⌋"
+    },
+    {
+      "name": "derangements_eq_ceil",
+      "type": "main",
+      "description": "Ceiling form: for n ≥ 2, D(n) = ⌈n!/e − 1/2⌉, the mirror image, via Int.ceil_eq_iff and the same strict bound.",
+      "leanType": "(n : ℕ) (hn : 2 ≤ n) : (numDerangements n : ℤ) = ⌈(n.factorial : ℝ) * rexp (-1) - 1 / 2⌉"
+    },
+    {
+      "name": "derangements_eq_round",
+      "type": "main",
+      "description": "Round form: for n ≥ 2, D(n) = round(n!/e), the parent identity re-derived self-containedly via round_eq and the floor form.",
+      "leanType": "(n : ℕ) (hn : 2 ≤ n) : (numDerangements n : ℤ) = round ((n.factorial : ℝ) * rexp (-1))"
+    },
+    {
+      "name": "floor_eq_ceil_forms",
+      "type": "lemma",
+      "description": "The floor and ceiling forms agree: ⌊n!/e + 1/2⌋ = ⌈n!/e − 1/2⌉ for n ≥ 2, both equal to D(n) — the integer-level shadow of e's irrationality (n!/e is never a half-integer).",
+      "leanType": "(n : ℕ) (hn : 2 ≤ n) : ⌊(n.factorial : ℝ) * rexp (-1) + 1 / 2⌋ = ⌈(n.factorial : ℝ) * rexp (-1) - 1 / 2⌉"
+    }
   ],
   "sorries": 0,
   "leanFile": {
