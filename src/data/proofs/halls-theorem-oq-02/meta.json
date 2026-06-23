@@ -80,13 +80,27 @@
   "sections": [
     {
       "id": "part-i",
-      "title": "Balanced one-sided Hall saturates both sides",
-      "text": "`isMatching_saturating_both_of_balanced`: from hall_marriage's p₁-saturating matching, the matched-partner map φ injects p₁ into p₂ and into M.verts; balance (p₁.ncard = p₂.ncard) with p₂ finite upgrades the injection to φ '' p₁ = p₂ (Set.eq_of_subset_of_ncard_le), so p₂ ⊆ M.verts. The matching saturates both sides."
+      "title": "Part I: Balanced One-Sided Hall Saturates Both Sides",
+      "startLine": 40,
+      "endLine": 89,
+      "summary": "isMatching_saturating_both_of_balanced: from hall_marriage's p₁-saturating matching, the matched-partner map φ injects p₁ into p₂ (bipartiteness) and into M.verts (partners are matched endpoints); injectivity comes from IsMatching.eq_of_adj_right. Balance (p₁.ncard = p₂.ncard) with p₂ finite upgrades the injection to φ '' p₁ = p₂ (Set.eq_of_subset_of_ncard_le), so p₂ ⊆ M.verts and the matching saturates both sides.",
+      "mathContext": "$\\varphi:p_1\\hookrightarrow p_2$ with $|\\varphi(p_1)|=|p_1|=|p_2|$ and $p_2$ finite $\\Rightarrow\\varphi(p_1)=p_2$, so $p_2\\subseteq M.\\mathrm{verts}$."
     },
     {
       "id": "part-ii",
-      "title": "The balanced perfect-matching criterion",
-      "text": "`exists_isPerfectMatching_of_balanced`: adding p₁ ∪ p₂ = univ to the balanced one-sided hypotheses makes the both-sides-saturating matching spanning (Subgraph.isSpanning_iff), hence a perfect matching — the practical bipartite criterion in its natural one-sided form."
+      "title": "Part II: The Balanced Perfect-Matching Criterion",
+      "startLine": 90,
+      "endLine": 110,
+      "summary": "exists_isPerfectMatching_of_balanced: adding p₁ ∪ p₂ = univ to the balanced one-sided hypotheses makes the both-sides-saturating matching spanning (its vertex set ⊇ p₁ ∪ p₂ = univ, via Subgraph.isSpanning_iff), hence a SimpleGraph perfect matching — the practical bipartite criterion in its natural one-sided form, with the global Hall condition replaced by balance + covering + one-sided Hall.",
+      "mathContext": "$p_1\\subseteq M.\\mathrm{verts}\\wedge p_2\\subseteq M.\\mathrm{verts}\\wedge p_1\\cup p_2=V\\Rightarrow M.\\mathrm{verts}=V$, i.e. $M$ is a perfect matching."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "An axiom-free strengthening of Hall's marriage theorem for the balanced bipartite case: in a locally finite bipartite graph with balanced parts (p₁.ncard = p₂.ncard, p₂ finite), the ONE-SIDED Hall condition on p₁ already produces a matching saturating BOTH sides (isMatching_saturating_both_of_balanced), and — when the parts cover the vertex set — a genuine perfect matching (exists_isPerfectMatching_of_balanced). The argument layers a clean counting step on top of the parent's hall_marriage: the matched-partner map injects p₁ into p₂, and balance plus finiteness upgrade the injection to a bijection. 110 lines, 2 theorems, 0 axioms, 0 sorries (#print axioms reports only propext / Classical.choice / Quot.sound).",
+    "implications": "Mathlib's perfect-matching theorem and the parent's hall_perfect both require the GLOBAL Hall condition quantified over every set s : Set V, which silently bundles balance and covering. This entry isolates the textbook balanced criterion — check Hall on one side, get both — which is what one actually verifies in practice. No new hard combinatorics is introduced: the strengthening rides entirely on the parent's necessity direction plus elementary ncard bookkeeping, demonstrating how cardinality balance converts one-sided saturation into two-sided. Separating the matching (verts ⊇ p₁ ∪ p₂) from the covering (p₁ ∪ p₂ = univ) makes the perfect-matching corollary a one-line consequence.",
+    "openQuestions": [
+      "Drop the explicit p₂-finiteness hypothesis where it follows from local finiteness and balance, or extend the criterion to the case where only p₁.ncard ≤ p₂.ncard (one-sided saturation without forcing a bijection).",
+      "Derive the defect/deficiency version: when the one-sided Hall condition fails by at most d, the maximum matching saturates all but d vertices of p₁ (the König–Ore defect form), again from hall_marriage plus counting."
+    ]
+  }
 }

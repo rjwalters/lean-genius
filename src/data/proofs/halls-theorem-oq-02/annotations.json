@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ann-both-sides",
+    "proofId": "halls-theorem-oq-02",
+    "range": { "startLine": 44, "endLine": 89 },
+    "type": "theorem",
+    "title": "One-Sided Hall Saturates Both Sides (Balanced Case)",
+    "content": "`isMatching_saturating_both_of_balanced`: in a locally finite bipartite graph with balanced parts (p₁.ncard = p₂.ncard, p₂ finite), the ONE-SIDED Hall condition on p₁ yields a matching M with both p₁ ⊆ M.verts and p₂ ⊆ M.verts. The proof starts from a p₁-saturating matching given by the parent's hall_marriage, then defines the matched-partner map φ v = the unique M-neighbour of v and shows: (a) φ v ∈ p₂ — M.Adj v (φ v) ⟹ G.Adj v (φ v), and bipartiteness sends neighbours of p₁ into p₂ (IsBipartiteWith.mem_of_mem_adj); (b) φ v ∈ M.verts — a partner is a matched endpoint (Subgraph.Adj.snd_mem); (c) φ is injective on p₁ — equal partners force equal vertices in a matching (IsMatching.eq_of_adj_right). Hence φ '' p₁ ⊆ p₂ with (φ '' p₁).ncard = p₁.ncard = p₂.ncard, and since p₂ is finite Set.eq_of_subset_of_ncard_le gives φ '' p₁ = p₂, so p₂ ⊆ M.verts. Neither Mathlib nor the parent has this one-sided form.",
+    "mathContext": "$|p_1|=|p_2|$, $p_2$ finite, Hall on $p_1$ $\\Rightarrow\\exists M$ with $p_1,p_2\\subseteq M.\\mathrm{verts}$; the partner map $\\varphi$ injects $p_1\\hookrightarrow p_2$, and $|\\varphi(p_1)|=|p_2|$ forces $\\varphi(p_1)=p_2$.",
+    "significance": "critical",
+    "relatedConcepts": ["Hall's marriage theorem", "matched-partner map", "injection-to-bijection", "Set.ncard", "bipartite saturation"],
+    "prerequisites": ["bipartite matchings", "Hall's condition", "set cardinality"]
+  },
+  {
+    "id": "ann-perfect-matching",
+    "proofId": "halls-theorem-oq-02",
+    "range": { "startLine": 90, "endLine": 110 },
+    "type": "theorem",
+    "title": "The Balanced Perfect-Matching Criterion",
+    "content": "`exists_isPerfectMatching_of_balanced`: the practical bipartite perfect-matching criterion. Balanced parts (p₁.ncard = p₂.ncard, p₂ finite) that cover the vertex set (p₁ ∪ p₂ = univ) together with the one-sided Hall condition on p₁ give a genuine SimpleGraph perfect matching. It follows immediately from the both-sides-saturating matching: p₁ ⊆ M.verts and p₂ ⊆ M.verts give M.verts ⊇ p₁ ∪ p₂ = univ, so M is spanning (Subgraph.isSpanning_iff) and therefore a perfect matching. This replaces Mathlib's GLOBAL Hall condition (quantified over every s : Set V, which silently bundles balance and covering) with the explicit, checkable balance + covering + one-sided-Hall hypotheses.",
+    "mathContext": "balance $+$ $p_1\\cup p_2=V$ $+$ one-sided Hall $\\Rightarrow$ $M.\\mathrm{verts}=V$, a perfect matching; the global Hall condition is unbundled into its real components.",
+    "significance": "key",
+    "relatedConcepts": ["perfect matching", "spanning subgraph", "Subgraph.isSpanning_iff", "global vs one-sided condition"],
+    "prerequisites": ["perfect matchings", "spanning subgraphs", "bipartite covering"]
+  }
+]
