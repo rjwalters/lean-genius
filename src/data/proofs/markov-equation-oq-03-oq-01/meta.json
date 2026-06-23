@@ -133,5 +133,95 @@
     "definitionCount": 1,
     "theoremCount": 14
   },
+  "mainTheorems": [
+    {
+      "name": "hurwitz_one_classification",
+      "type": "headline",
+      "description": "Complete classification of the a=1 slice: every positive solution of x²+y²+z²=xyz is (3a,3b,3c) for a triple (a,b,c) reachable from the root (1,1,1) in the Markov tree.",
+      "leanType": "∀ {x y z : ℤ}, IsHurwitz 1 x y z → ∃ a b c : ℤ, x = 3 * a ∧ y = 3 * b ∧ z = 3 * c ∧ Reachable (a, b, c) (1, 1, 1)"
+    },
+    {
+      "name": "three_dvd_all_of_hurwitz_one",
+      "type": "core",
+      "description": "The mod-3 obstruction: any integer solution of x²+y²+z²=xyz has 3 dividing all three coordinates. Proved by a 27-case `decide` over (ZMod 3)³ (not native_decide) showing (0,0,0) is the only residue solution.",
+      "leanType": "∀ {x y z : ℤ}, x ^ 2 + y ^ 2 + z ^ 2 = x * y * z → (3 : ℤ) ∣ x ∧ (3 : ℤ) ∣ y ∧ (3 : ℤ) ∣ z"
+    },
+    {
+      "name": "hurwitz_one_iff_markov_scaled",
+      "type": "core",
+      "description": "The scaling bijection: (x,y,z) solves the a=1 equation iff it is 3× a Markov triple.",
+      "leanType": "∀ {x y z : ℤ}, IsHurwitz 1 x y z ↔ ∃ a b c : ℤ, x = 3 * a ∧ y = 3 * b ∧ z = 3 * c ∧ IsMarkov a b c"
+    },
+    {
+      "name": "hurwitz_diagonal_coeff",
+      "type": "core",
+      "description": "Coefficient rigidity: a positive diagonal solution (t,t,t) exists only for a=1 (t=3) or a=3 (t=1) — exactly the two solvable coefficients in three variables.",
+      "leanType": "∀ {a t : ℤ}, IsHurwitz a t t t → (a = 1 ∧ t = 3) ∨ (a = 3 ∧ t = 1)"
+    },
+    {
+      "name": "hurwitz_vieta",
+      "type": "supporting",
+      "description": "Coefficient-agnostic Vieta jump: replacing z by a·xy − z preserves Markov–Hurwitz triples (with positivity), for any coefficient a.",
+      "leanType": "∀ {a x y z : ℤ}, IsHurwitz a x y z → IsHurwitz a x y (a * x * y - z)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "intro",
+      "title": "The a=1 Markov–Hurwitz slice",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Docstring: x²+y²+z²=xyz is the a=1 member of x²+y²+z²=a·xyz; classified here by reduction to the parent's Markov tree via a mod-3 obstruction and scaling bijection. Defines IsHurwitz.",
+      "mathContext": "Only a=1 and a=3 admit positive solutions; both are the Markov tree up to scaling by 3."
+    },
+    {
+      "id": "vieta-general",
+      "title": "Coefficient-agnostic Vieta jumping",
+      "startLine": 52,
+      "endLine": 81,
+      "summary": "hurwitz_root_prod (z·z' = x²+y²), hurwitz_vieta (the jump z ↦ a·xy − z preserves Hurwitz triples), hurwitz_vieta_involutive — all independent of the coefficient a.",
+      "mathContext": "The descent infrastructure depends only on the shape of the equation, not on a."
+    },
+    {
+      "id": "a3-slice",
+      "title": "The a=3 slice is the Markov equation",
+      "startLine": 83,
+      "endLine": 91,
+      "summary": "isHurwitz_three_iff_isMarkov: at a=3 the Markov–Hurwitz predicate is definitionally the parent's IsMarkov.",
+      "mathContext": "$x^2+y^2+z^2=3xyz$ is exactly the Markov equation."
+    },
+    {
+      "id": "mod3",
+      "title": "The mod-3 obstruction",
+      "startLine": 92,
+      "endLine": 117,
+      "summary": "three_dvd_all_of_hurwitz_one: every integer solution of x²+y²+z²=xyz has 3 | x,y,z, from the finite (ZMod 3)³ check that (0,0,0) is the only residue solution (decide, not native_decide).",
+      "mathContext": "$3\\mid x,y,z$ for every $a=1$ solution."
+    },
+    {
+      "id": "bijection",
+      "title": "The scaling bijection a=1 ↔ 3× Markov",
+      "startLine": 119,
+      "endLine": 156,
+      "summary": "hurwitz_one_of_markov (Markov ⇒ tripled a=1 solution), markov_of_hurwitz_one (a=1 solution ⇒ 3× Markov via the mod-3 obstruction), hurwitz_one_iff_markov_scaled (the iff).",
+      "mathContext": "$x^2+y^2+z^2=xyz \\iff (x,y,z)=3\\cdot(\\text{Markov triple})$."
+    },
+    {
+      "id": "classification",
+      "title": "Complete classification of a=1 solutions",
+      "startLine": 158,
+      "endLine": 170,
+      "summary": "hurwitz_one_classification: composing the bijection with the parent's markov_classification, every a=1 solution is (3a,3b,3c) with (a,b,c) reachable from (1,1,1).",
+      "mathContext": "The a=1 solution set inherits the full Markov tree, scaled by 3."
+    },
+    {
+      "id": "rigidity",
+      "title": "Coefficient rigidity and small solutions",
+      "startLine": 172,
+      "endLine": 208,
+      "summary": "hurwitz_diagonal (t,t,t) ⟹ a·t=3) and hurwitz_diagonal_coeff ((a,t)∈{(1,3),(3,1)}); small solutions (3,3,3),(3,3,6),(3,6,15) as images of Markov triples.",
+      "mathContext": "Only a∈{1,3} have a symmetric solution."
+    }
+  ],
   "sorries": 0
 }
