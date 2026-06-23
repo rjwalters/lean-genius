@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-catalan-andre-encoding",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-01",
+    "range": { "startLine": 33, "endLine": 57 },
+    "type": "definition",
+    "title": "Encoding paths as up-step position sets",
+    "content": "A 2n-step monotone lattice path is encoded as the set S : Finset (Fin (2n)) of positions carrying an up-step. preUps S j counts the up-steps among the first j positions, so the height after j steps is 2·preUps S j − j (ups minus downs). hitsAt S j says the path reaches height −1 at prefix length j, i.e. j = 2·preUps S j + 1; Reaches S says this happens somewhere among the 2n prefixes. reflect S t is André's reflection at cut point t: keep every step before t, complement membership from t onward.",
+    "mathContext": "$\\operatorname{preUps}(S,j)=\\#\\{i\\in S: i<j\\}$, height $=2\\operatorname{preUps}(S,j)-j$, and $S$ reaches $-1$ iff $\\exists j\\le 2n,\\ j=2\\operatorname{preUps}(S,j)+1$.",
+    "significance": "key",
+    "relatedConcepts": ["lattice paths", "prefix sums", "reflection principle", "up-step encoding"],
+    "prerequisites": ["Finset.filter", "Finset.card", "Fin"]
+  },
+  {
+    "id": "ann-catalan-andre-card-identity",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-01",
+    "range": { "startLine": 68, "endLine": 103 },
+    "type": "lemma",
+    "title": "The subtraction-free reflection cardinality identity",
+    "content": "The single quantitative engine: #(reflect S t) + #S + t = 2·preUps S t + 2n for every cut t ≤ 2n. The proof is one pointwise indicator computation over all positions i — below the cut, reflect and S agree; at or above it they are complementary — so the contributions [reflect i] + [i ∈ S] + [i < t] equal 2·[i ∈ S ∧ i < t] + 1 at each i, and summing gives the identity. Stated additively to avoid ℕ truncated subtraction so everything downstream closes by omega.",
+    "mathContext": "$\\#(\\operatorname{reflect}(S,t)) + \\#S + t = 2\\operatorname{preUps}(S,t) + 2n$. At the first descent $t$ where $t = 2\\operatorname{preUps}+1$ this collapses to $\\#(\\operatorname{reflect}) + \\#S + 1 = 2n$.",
+    "significance": "critical",
+    "relatedConcepts": ["double counting", "indicator sums", "complementary counting"],
+    "prerequisites": ["Finset.card_filter", "Finset.sum_add_distrib", "Finset.mul_sum"]
+  },
+  {
+    "id": "ann-catalan-andre-ivt",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-01",
+    "range": { "startLine": 147, "endLine": 176 },
+    "type": "lemma",
+    "title": "Discrete intermediate value: deficient paths reach −1",
+    "content": "reaches_of_card_lt: any path with fewer than n up-steps ends at height 2·#S − 2n < 0, so it must dip to −1. Because the height steps by ±1, the FIRST prefix where it goes negative lands exactly on −1: at the least j with 2·preUps S j < j, the increment preUps_succ forces the up-step count at j−1 to be 0, giving j = 2·preUps S j + 1 = hitsAt. This is why LowPaths (all (n−1)-up paths) need no extra condition — they are automatically bad.",
+    "mathContext": "$\\#S < n \\Rightarrow \\exists j\\le 2n,\\ j = 2\\operatorname{preUps}(S,j)+1$. The first $j$ with $2\\operatorname{preUps}<j$ satisfies it exactly.",
+    "significance": "key",
+    "relatedConcepts": ["discrete intermediate value theorem", "first passage", "ballot problem"],
+    "prerequisites": ["Nat.find", "preUps_succ", "least witness"]
+  },
+  {
+    "id": "ann-catalan-andre-involution",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-01",
+    "range": { "startLine": 178, "endLine": 255 },
+    "type": "lemma",
+    "title": "The cut-point involution",
+    "content": "reflect is an involution at any fixed cut (reflect (reflect S t) t = S — complementing twice is identity). preUps_reflect_eq shows the prefix up-count is unchanged below the cut, so the first-descent index cut S = sInf {j | hitsAt S j} is preserved by reflecting there (cut_reflect) and the reflected path is again bad (reaches_reflect). Hence the same reflection map is its own inverse on the bad-path set, and at t = cut S the cardinality identity gives #(reflect S (cut S)) + #S + 1 = 2n: the up-count drops by exactly one.",
+    "mathContext": "$\\operatorname{cut}(\\operatorname{reflect}(S,\\operatorname{cut}S)) = \\operatorname{cut}S$ and $\\operatorname{reflect}(\\operatorname{reflect}(S,\\operatorname{cut}S),\\operatorname{cut}S)=S$.",
+    "significance": "critical",
+    "relatedConcepts": ["involution", "first-passage decomposition", "sign-reversing bijection"],
+    "prerequisites": ["Nat.sInf_mem", "Nat.sInf_le", "preUps invariance"]
+  },
+  {
+    "id": "ann-catalan-andre-bijection",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-01",
+    "range": { "startLine": 257, "endLine": 329 },
+    "type": "theorem",
+    "title": "The André reflection bijection and the bad-path count",
+    "content": "card_badPaths: for n ≥ 1, Finset.card_bij' with the reflection both ways gives a bijection BadPaths n ≃ LowPaths n — bad n-up paths to all (n−1)-up paths. The four obligations are exactly the cardinality drop (n → n−1), the discrete IVT (LowPaths are bad), and the two involution identities. Path counts are free: subsets of the 2n positions of size k are counted by Finset.powersetCard as C(2n,k). With choose symmetry C(2n,n−1) = C(2n,n+1), card_badPaths_eq concludes #BadPaths = C(2n,n+1) for all n (the n = 0 path never dips).",
+    "mathContext": "$\\#\\operatorname{BadPaths}(n) = \\#\\operatorname{LowPaths}(n) = \\binom{2n}{n-1} = \\binom{2n}{n+1}$.",
+    "significance": "critical",
+    "relatedConcepts": ["bijective proof", "Finset.card_bij'", "powersetCard", "choose symmetry"],
+    "prerequisites": ["Finset.card_bij'", "Finset.card_powersetCard", "Nat.choose_symm"]
+  },
+  {
+    "id": "ann-catalan-andre-headline",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-01",
+    "range": { "startLine": 343, "endLine": 360 },
+    "type": "theorem",
+    "title": "Headline: #GoodPaths = catalan n",
+    "content": "card_goodPaths_eq_catalan: splitting all n-up paths into good (never dip) and bad (dip) via filter_card_add_filter_neg, then substituting the total count C(2n,n) and the bijective bad-path count C(2n,n+1), and reproving the additive partition C(2n,n) = catalan n + C(2n,n+1) inline (kept self-contained), gives #GoodPaths = C(2n,n) − C(2n,n+1) = catalan n. This is the bijective upgrade of the arithmetic Catalan reflection form — Mathlib counts Dyck words only through the binary-tree recursion, not by reflection.",
+    "mathContext": "$\\#\\operatorname{GoodPaths}(n) = \\binom{2n}{n} - \\binom{2n}{n+1} = \\operatorname{catalan} n.$",
+    "significance": "critical",
+    "relatedConcepts": ["Catalan numbers", "Dyck paths", "reflection form", "ballot problem"],
+    "prerequisites": ["Finset.filter_card_add_filter_neg_card_eq_card", "succ_mul_catalan_eq_centralBinom"]
+  }
+]
