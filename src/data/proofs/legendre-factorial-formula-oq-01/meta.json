@@ -60,6 +60,36 @@
       "description": "Shares Legendre's name but is mathematically unrelated: 'legendre-partial' concerns the Legendre conjecture (a prime between consecutive squares), whereas this entry is Legendre's factorial formula for p-adic valuations."
     }
   ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Docstring stating Legendre's formula in its two classical forms (floor-sum and digit-sum) and announcing the new solved form vₚ(n!) = (n − Sₚ(n))/(p−1). Imports the p-adic valuation basics, opens Nat / Finset, and fixes a prime p (via the Fact p.Prime convention on each theorem)."
+    },
+    {
+      "id": "sec-floor-digit",
+      "title": "Floor-Sum and Digit-Sum Forms",
+      "startLine": 32,
+      "endLine": 45,
+      "summary": "padicValNat_factorial_eq_sum wraps Mathlib's padicValNat_factorial (vₚ(n!) = ∑_{i∈[1,b)} ⌊n/pⁱ⌋ for any bound b above log_p n) and sub_one_mul_padicValNat_factorial_eq wraps sub_one_mul_padicValNat_factorial ((p−1)·vₚ(n!) = n − Sₚ(n))."
+    },
+    {
+      "id": "sec-solved",
+      "title": "The Solved Form",
+      "startLine": 47,
+      "endLine": 56,
+      "summary": "padicValNat_factorial_eq_div: the value-add. Starting from (p−1)·vₚ(n!) = n − Sₚ(n) with 0 < p−1, divide both sides by p−1 via Nat.mul_div_cancel_left to isolate vₚ(n!) = (n − Sₚ(n))/(p−1) as an exact (remainder-free) natural quotient."
+    },
+    {
+      "id": "sec-bound-instance",
+      "title": "Bound and Worked Instance",
+      "startLine": 58,
+      "endLine": 71,
+      "summary": "padicValNat_factorial_le wraps Mathlib's bound vₚ(n!) ≤ n, and a worked example checks v₂(10!) = 8 through the floor-sum form (bound b = 4 justified by log₂ 10 < 4), reducing to ⌊10/2⌋ + ⌊10/4⌋ + ⌊10/8⌋ = 8 closed by kernel decide."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.Padics.PadicVal.Basic"
