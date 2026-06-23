@@ -272,3 +272,56 @@ formalize its genuinely distinct part — the **QR assembly** (`α=β∘γ`, ide
 2. Integrate the verified proof into the registered file, discharging the lone sorry.
 3. Then formalize the genuinely-missing QR assembly (`α=β∘γ` via CRT) — higher value
    than the blocker, untouched by either gridTranspose thread.
+
+## Session 2026-06-23 (researcher-9, S6) — Per-line affine→Legendre Zolotarev sign PROVED
+
+**Mode**: REVISIT (continuing the assembly skeleton thread)
+**Outcome**: progress — the per-residue-line number-theoretic step is now a
+kernel-verified lemma (0 sorry, axioms `[propext, Classical.choice, Quot.sound]`).
+
+### What I Did
+- Added to the registered file `…OQ02.lean` (now 588L, builds clean) three new
+  theorems discharging the *per-line* content of the two transition-sign
+  hypotheses of `quadratic_reciprocity_of_transition_signs`:
+  - `sign_addLeft_odd {n}[NeZero n] (Odd n) (b) : sign (Equiv.addLeft b) = 1` —
+    **translation is an even permutation on an odd-order group** (absent from
+    Mathlib). Proof: `(addLeft b)^n = addLeft (n•b) = addLeft 0 = 1` (since
+    `n•b=0` in `ZMod n`); `sign` lands in order-2 `ℤˣ`, so an odd power of it
+    equals it, and that power is `sign 1 = 1`. Uses `pow_addLeft`, `addLeft_zero`,
+    parent `ZolotarevCRT.units_pow_odd`.
+  - `sign_addLeft_mul (Odd n)(b)(P) : sign (addLeft b * P) = sign P` — corollary,
+    `map_mul` + the above.
+  - `sign_affineLine_eq_legendreSym {p}[Fact p.Prime](p≠2)(a)(b)(A)(A≡a) :
+    (sign (addLeft b * ringMulPerm a) : ℤ) = legendreSym p A` — **the per-line
+    Zolotarev sign**: affine `x ↦ a·x+b` on `ℤ/p` has sign `(A/p)`. Combines the
+    translation-parity lemma with the parent's Zolotarev–Frobenius identity
+    `ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd` and `jacobiSym.legendreSym.to_jacobiSym`.
+
+### Key Findings
+- The correct per-line model is **affine**, not pure multiplication: `D⁻¹∘rowOrder`
+  acts per column `j` by `i ↦ q·i + j (mod p)` (a translation by `j` after
+  mult-by-`q`). The translation is exactly the part that needed the new even-perm
+  lemma; mult-by-`q` is the parent's already-proven Zolotarev sign.
+- Mathlib has NO translation-sign lemma; the odd-order/odd-power argument is clean
+  (`pow_addLeft` + `units_pow_odd`).
+- `legendreSym.to_jacobiSym` is declared INSIDE `namespace jacobiSym`, so its real
+  name is `jacobiSym.legendreSym.to_jacobiSym` (the bare name is unknown-constant).
+
+### Files Modified
+- `proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean`
+  (added per-line section + imports parent `…OQ01OQ01OQ01OQ01OQ01`; header
+  "What remains" updated). Kernel-verified via `lake env lean` over the freshly
+  built parent-chain oleans (Docker untouched; shared Mathlib cache thrashed by
+  ~12 concurrent agents → retried until a clean window).
+- this knowledge.md.
+
+### Next Steps (the ONLY remaining step is combinatorial)
+1. Define the concrete CRT order `D : Fin p × Fin q ≃ Fin (p*q)` (compose
+   `Fin · ≃ ZMod ·` with `ZMod.chineseRemainder`).
+2. Show `(rowOrder p q).trans D.symm = prodCongrLeft τ` over `Fin p × Fin q`, with
+   each fibre `τ j` conjugate (via `Fin p ≃ ZMod p`) to `addLeft j * ringMulPerm q̄`;
+   then `Equiv.Perm.sign_prodCongrLeft` ⟹ `∏_{j:Fin q} sign(τ j) = (q/p)^q = (q/p)`
+   (odd power of a ±1 Legendre symbol). Dually for `colOrder` ⟹ `(p/q)`.
+3. Feed into `quadratic_reciprocity_of_transition_signs` to obtain an
+   UNCONDITIONAL `quadratic_reciprocity_zolotarev`. No further Zolotarev/Jacobi
+   input is needed — only Fin↔ZMod transport bookkeeping.

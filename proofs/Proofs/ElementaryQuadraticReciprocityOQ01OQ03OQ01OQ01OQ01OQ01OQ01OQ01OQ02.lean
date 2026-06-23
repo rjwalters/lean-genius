@@ -112,9 +112,23 @@
   Discharging the two hypotheses `sign τ_cd = (p/q)`, `sign τ_rd = (q/p)` for the
   concrete CRT order `D` (Shurman §3): `D⁻¹∘C` fixes each row and acts on it by
   `y ↦ p·y + x mod q`, a multiplication-by-`p` permutation of `ℤ/q` up to an
-  even (odd-length-cycle) translation, whose sign is `(p/q)` by the already-proved
-  `ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd` (`= legendreSym` at a
-  prime).  This is the remaining number-theoretic step.
+  even (odd-length-cycle) translation, whose sign is `(p/q)`.
+
+  The *per-line number-theoretic step* is now PROVED in this file as
+  `sign_affineLine_eq_legendreSym` (§"Per-line Zolotarev sign" below): for an odd
+  prime `m` the sign of the affine permutation `x ↦ a·x + b` of `ℤ/m` is the
+  Legendre symbol `(a / m)`.  The translation summand `x ↦ x + b` is an *even*
+  permutation — it has odd order on the odd-order group `ℤ/m`, so its sign is `+1`
+  (`sign_addLeft_odd`, absent from Mathlib) — and the multiplication factor is
+  Zolotarev's lemma in Frobenius form
+  (`ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd = legendreSym` at a prime).
+
+  What is left is therefore PURELY COMBINATORIAL: identify each transition
+  `D⁻¹∘rowOrder` / `D⁻¹∘colOrder` with `prodCongrLeft` of the per-line affine maps
+  (transported across `Fin m ≃ ℤ/m`), apply `Equiv.Perm.sign_prodCongrLeft` to get
+  the `q`-fold (resp. `p`-fold) product of per-line signs, and collapse it via
+  `(q/p)^q = (q/p)` (an odd power of a `±1` Legendre symbol).  No further
+  Zolotarev/Jacobi input is needed.
 
   References:
   - Zolotarev (1872); Frobenius (1914); Lerch (1896).
@@ -124,6 +138,9 @@
     "card trick" formulation used here).
 -/
 import Mathlib
+-- Zolotarev's lemma in Frobenius form (`sign(x ↦ a·x on ℤ/n) = J(A|n)`, n odd),
+-- used below to discharge the per-residue-line transition signs.
+import Proofs.ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01
 
 set_option maxHeartbeats 800000
 
@@ -494,6 +511,68 @@ theorem quadratic_reciprocity_of_transition_signs
     simpa using hcast
   rwa [hcd, hrd] at hZ
 
+/-! ### Per-line Zolotarev sign: discharging the transition-sign hypotheses
+
+The two hypotheses of `quadratic_reciprocity_of_transition_signs` are *per residue
+line* facts.  For the CRT order `D` (Shurman §3), the transition `D⁻¹∘rowOrder`
+fixes each column `j` and acts on the row index by the **affine** map
+`i ↦ q·i + j (mod p)`; dually `D⁻¹∘colOrder` acts per row by `j ↦ p·j + i (mod q)`.
+The sign of one such affine permutation of `ZMod p` is the Legendre symbol `(q/p)`:
+the translation summand is an *even* permutation — it has odd order on the
+odd-order group `ZMod p`, hence sign `+1` — and the multiplication factor is
+Zolotarev's lemma in Frobenius form
+(`ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd`).  These lemmas supply the
+remaining number-theoretic ingredient flagged in the file header; the only step
+left to make `quadratic_reciprocity_of_transition_signs` unconditional is the
+purely combinatorial identification of each transition with `prodCongrLeft` of
+these affine maps (`sign_prodCongrLeft` then collapses the `q`-fold product since
+`(q/p)^q = (q/p)`). -/
+
+open ZolotarevCRT (ringMulPerm)
+
+/-- `n • b = 0` in `ZMod n`: the additive group has exponent dividing `n`. -/
+private theorem nsmul_self_zmod {n : ℕ} (b : ZMod n) : n • b = 0 := by
+  rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
+
+/-- **Translation is an even permutation on an odd-order group.**  For odd `n`,
+    the translation `x ↦ b + x` of `ZMod n` has sign `+1`: its order divides `n`
+    (because `n • b = 0`), so the order is odd, while `sign` lands in the
+    order-`2` group `ℤˣ`; thus an odd power of the sign equals the sign, and that
+    power is `sign 1 = 1`.  (Absent from Mathlib.) -/
+theorem sign_addLeft_odd {n : ℕ} [NeZero n] (hodd : Odd n) (b : ZMod n) :
+    Equiv.Perm.sign (Equiv.addLeft b) = 1 := by
+  set u : ℤˣ := Equiv.Perm.sign (Equiv.addLeft b) with hu
+  have hpow : (Equiv.addLeft b) ^ n = 1 := by
+    rw [pow_addLeft, nsmul_self_zmod, addLeft_zero]
+  have hun : u ^ n = 1 := by rw [hu, ← map_pow, hpow, map_one]
+  rw [← ZolotarevCRT.units_pow_odd u hodd]; exact hun
+
+/-- **Affine sign = multiplication sign on an odd-order group.**  Composing any
+    permutation `P` of `ZMod n` (odd `n`) with a translation leaves the sign
+    unchanged. -/
+theorem sign_addLeft_mul {n : ℕ} [NeZero n] (hodd : Odd n)
+    (b : ZMod n) (P : Equiv.Perm (ZMod n)) :
+    Equiv.Perm.sign (Equiv.addLeft b * P) = Equiv.Perm.sign P := by
+  rw [map_mul, sign_addLeft_odd hodd, one_mul]
+
+/-- **Per-line Zolotarev sign (prime modulus).**  For an odd prime `p`, a unit
+    `a : (ℤ/p)ˣ`, any translation `b`, and any integer representative `A ≡ a
+    (mod p)`, the sign of the affine permutation `x ↦ a·x + b` of `ℤ/p` is the
+    Legendre symbol `(A / p)`.  This combines the translation-parity lemma above
+    with Zolotarev's lemma in Frobenius form
+    (`ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd`), and is exactly the
+    sign of a single residue line of the CRT transition permutations `τ_rd`,
+    `τ_cd`.  It discharges the *per-line* content of the two hypotheses of
+    `quadratic_reciprocity_of_transition_signs`. -/
+theorem sign_affineLine_eq_legendreSym {p : ℕ} [hp : Fact p.Prime] (hp2 : p ≠ 2)
+    (a : (ZMod p)ˣ) (b : ZMod p) (A : ℤ) (hA : (A : ZMod p) = (a : ZMod p)) :
+    (Equiv.Perm.sign (Equiv.addLeft b * ringMulPerm a) : ℤ) = legendreSym p A := by
+  haveI : NeZero p := ⟨hp.out.pos.ne'⟩
+  have hodd : Odd p := hp.out.odd_of_ne_two hp2
+  rw [sign_addLeft_mul hodd b (ringMulPerm a),
+      ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd hodd a A hA,
+      jacobiSym.legendreSym.to_jacobiSym]
+
 end ZolotarevQR
 
 #check @ZolotarevQR.gridTranspose
@@ -504,3 +583,6 @@ end ZolotarevQR
 #check @ZolotarevQR.gridTranspose_eq
 #check @ZolotarevQR.sign_transRC
 #check @ZolotarevQR.quadratic_reciprocity_of_transition_signs
+#check @ZolotarevQR.sign_addLeft_odd
+#check @ZolotarevQR.sign_addLeft_mul
+#check @ZolotarevQR.sign_affineLine_eq_legendreSym
