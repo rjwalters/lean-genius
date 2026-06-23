@@ -1,0 +1,167 @@
+{
+  "id": "cramers-rule-oq-04-oq-01-oq-01",
+  "title": "The Explicit Cramer Solution: xᵢ = det(Aᵢ)/det A",
+  "slug": "cramers-rule-oq-04-oq-01-oq-01",
+  "description": "Answers the parent's OQ-01: formalize the classical scalar form of Cramer's rule, xᵢ = det(Aᵢ)/det A, where Aᵢ is A with its i-th column replaced by b, as an equality over a field with det A ≠ 0. The parent (cramers-rule-oq-04-oq-01) proved only the determinant form A·(adj A · b) = (det A)·b. Here we close the gap to the honest scalar formula by bridging through Mathlib's Matrix.cramer: cramer_apply identifies its i-th component with det(Aᵢ), and the same adjugate identity adj(A)·A = (det A)·I that powers the parent shows the cramer vector equals (det A)·x for any solution x of Ax = b. We also prove existence (the formula solves the system) and uniqueness of the solution. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cramer%27s_rule",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CramersRuleOQ04OQ01OQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "cramers-rule",
+      "adjugate",
+      "determinant",
+      "linear-systems",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.cramer_apply",
+        "description": "cramer A b i = det(A.updateCol i b): the i-th Cramer component is the determinant with column i replaced by b",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Matrix.cramer_eq_adjugate_mulVec",
+        "description": "cramer A b = adjugate A *ᵥ b: the Cramer vector is the adjugate applied to b",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Matrix.adjugate_mul / Matrix.mulVec_cramer",
+        "description": "adjugate A · A = (det A)·I and A *ᵥ cramer A b = (det A)·b, the adjugate identities underlying the collapse",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Matrix.mulVec_mulVec / smul_mulVec / one_mulVec",
+        "description": "Associativity and scalar laws for matrix–vector multiplication",
+        "module": "Mathlib.Data.Matrix.Mul"
+      }
+    ],
+    "originalContributions": [
+      "det_smul_solution_eq_cramer: over any commutative ring, A x = b ⟹ (det A)·x = cramer A b — the invertibility-free algebraic core, derived from cramer_eq_adjugate_mulVec + adjugate_mul",
+      "det_mul_solution_eq_det_updateCol: scalar form (det A)·xᵢ = det(Aᵢ), obtained componentwise via cramer_apply",
+      "cramer_solution: the explicit classical formula xᵢ = det(Aᵢ)/det A over a field with det A ≠ 0 (the OQ's literal target)",
+      "cramer_solution_eq: the full solution vector in closed form x = fun i => det(Aᵢ)/det A",
+      "cramer_solution_unique: uniqueness of the solution when det A ≠ 0",
+      "cramer_formula_isSolution: existence — the Cramer vector actually solves A x = b, via mulVec_cramer and scalar cancellation"
+    ],
+    "axiomCount": 0,
+    "lineCount": 109,
+    "assumptions": "None. All six theorems are fully proved with 0 axioms and 0 sorries (no native_decide, no decide). #print axioms reports only [propext, Classical.choice, Quot.sound] for the headline cramer_solution and for cramer_formula_isSolution. Matrix.cramer, cramer_apply, cramer_eq_adjugate_mulVec, adjugate_mul, and mulVec_cramer are invoked from Mathlib; the solution lemmas, the field-division formula, and the existence/uniqueness packaging are assembled here.",
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "prerequisites": [
+      "Matrices, determinants, and the adjugate (classical adjoint)",
+      "Matrix–vector multiplication and linear systems Ax = b",
+      "The adjugate identity adj(A)·A = (det A)·I",
+      "Mathlib's Matrix.cramer and cramer_apply"
+    ],
+    "relatedProblems": [
+      {
+        "id": "cramers-rule-oq-04-oq-01",
+        "relationship": "Parent: proved the determinant form A·(adj A · b) = (det A)·b. This entry answers its OQ-01 by promoting that to the explicit scalar formula xᵢ = det(Aᵢ)/det A over a field."
+      },
+      {
+        "id": "cramers-rule",
+        "relationship": "Grandparent chain: Cramer's rule via the adjugate."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cramer's rule (Gabriel Cramer, 1750) gives a closed-form solution to a square linear system Ax = b when det A ≠ 0: the i-th unknown equals det(Aᵢ)/det A, where Aᵢ is the matrix obtained from A by replacing its i-th column with the right-hand side b. It is the determinant-theoretic counterpart of A⁻¹ = (det A)⁻¹·adj A, since (adj A · b)ᵢ = det(Aᵢ) by cofactor expansion along column i. While impractical for computation, the rule is theoretically central: it makes the solution an explicit rational function of the entries, which is what powers its use in proofs (continuity/algebraicity of solutions, Cramer–Gauss bounds, the Laplace expansion).\n\nThe parent entry formalized only the determinant-scaled form A·(adj A · b) = (det A)·b. The honest scalar statement requires dividing by det A and identifying each adjugate-vector component with the column-replaced determinant. Mathlib supplies exactly this bridge in Matrix.cramer: by definition cramer A b i = det(A.updateCol i b) (cramer_apply), and cramer A b = adjugate A *ᵥ b (cramer_eq_adjugate_mulVec). This entry assembles the classical formula and its existence/uniqueness companions from those primitives.",
+    "problemStatement": "Over a field K, given A : Matrix n n K, vectors x, b with A *ᵥ x = b, and det A ≠ 0, prove the explicit Cramer formula x i = det(A.updateCol i b) / det A. Establish the algebraic core over an arbitrary commutative ring (no invertibility), and prove that the closed-form vector both solves the system and is its unique solution.",
+    "proofStrategy": "The algebraic core det_smul_solution_eq_cramer proves (det A)·x = cramer A b without any invertibility: rewrite cramer A b = adjugate A *ᵥ b (cramer_eq_adjugate_mulVec), substitute b = A *ᵥ x, and collapse adjugate A *ᵥ (A *ᵥ x) = (adjugate A * A) *ᵥ x = ((det A)•1) *ᵥ x = (det A)·x via mulVec_mulVec, adjugate_mul, smul_mulVec, one_mulVec. Taking the i-th component and rewriting with cramer_apply gives (det A)·xᵢ = det(Aᵢ) (det_mul_solution_eq_det_updateCol). Over a field with det A ≠ 0, eq_div_iff turns the goal xᵢ = det(Aᵢ)/det A into (det A)·xᵢ = det(Aᵢ), which is exactly the core (cramer_solution). Uniqueness follows because both solutions equal the same closed-form vector. Existence (cramer_formula_isSolution) writes the formula as A.det⁻¹ • cramer A b and uses mulVec_cramer (A *ᵥ cramer A b = (det A)·b) plus inv_mul_cancel₀ to recover b.",
+    "keyInsights": [
+      "The scalar Cramer formula factors through one ring-level identity: (det A)·x = cramer A b holds over ANY commutative ring whenever Ax = b — no invertibility, no field. Division enters only at the very last step.",
+      "cramer_apply is the dictionary between the abstract adjugate vector and the concrete column-replaced determinant: cramer A b i = det(A.updateCol i b). Without it the 'det(Aᵢ)' in the statement would be disconnected from the adjugate machinery.",
+      "The same adjugate identity adj(A)·A = (det A)·I that the parent used to prove the determinant form A·(adj A · b) = (det A)·b is what collapses the cramer vector here — the two entries are two readings of one identity.",
+      "Existence and uniqueness are cleanly separated: uniqueness needs only that every solution equals the closed form; existence needs mulVec_cramer and a single scalar cancellation. Together they show the system has exactly one solution, given explicitly.",
+      "Over a field, det A ≠ 0 ⟺ A invertible, so the hypothesis is the sharp one; the formula then computes A⁻¹b coordinate-by-coordinate as a ratio of determinants."
+    ],
+    "prerequisites": [
+      "The adjugate and the identity adj(A)·A = (det A)·I",
+      "Matrix–vector multiplication, its associativity and scalar laws",
+      "Mathlib's Matrix.cramer, cramer_apply, cramer_eq_adjugate_mulVec, mulVec_cramer",
+      "Field arithmetic: eq_div_iff, inv_mul_cancel₀"
+    ]
+  },
+  "sections": [
+    {
+      "id": "algebraic-core",
+      "title": "Section I: The Invertibility-Free Algebraic Core",
+      "startLine": 42,
+      "endLine": 66,
+      "summary": "det_smul_solution_eq_cramer ((det A)·x = cramer A b for any commutative ring) and its scalar form det_mul_solution_eq_det_updateCol ((det A)·xᵢ = det(Aᵢ)), via cramer_eq_adjugate_mulVec + adjugate_mul + cramer_apply.",
+      "mathContext": "The entire content of Cramer's rule before any division: scaling a solution by the determinant reproduces the column-replaced determinants."
+    },
+    {
+      "id": "explicit-formula",
+      "title": "Section II: The Explicit Formula and Uniqueness",
+      "startLine": 68,
+      "endLine": 92,
+      "summary": "cramer_solution (xᵢ = det(Aᵢ)/det A over a field with det A ≠ 0 — the OQ's target), cramer_solution_eq (full vector form), and cramer_solution_unique (any two solutions coincide).",
+      "mathContext": "Division by the nonzero determinant turns the algebraic core into the classical scalar formula, which is therefore the unique solution."
+    },
+    {
+      "id": "existence",
+      "title": "Section III: Existence — the Formula Solves the System",
+      "startLine": 94,
+      "endLine": 107,
+      "summary": "cramer_formula_isSolution: A *ᵥ (fun i => det(Aᵢ)/det A) = b, writing the formula as A.det⁻¹ • cramer A b and cancelling via mulVec_cramer and inv_mul_cancel₀.",
+      "mathContext": "Combined with uniqueness, the system Ax = b has exactly one solution, given in closed form."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 109 lines and 6 theorems formalizing the classical scalar form of Cramer's rule. The headline cramer_solution proves xᵢ = det(Aᵢ)/det A over a field with det A ≠ 0; det_smul_solution_eq_cramer isolates the invertibility-free core (det A)·x = cramer A b over any commutative ring; cramer_solution_unique and cramer_formula_isSolution give uniqueness and existence of the solution.",
+    "implications": "This closes the parent's OQ-01: where the parent proved only the determinant form A·(adj A · b) = (det A)·b, this entry delivers the honest scalar formula every textbook states, with the column-replaced determinant det(A.updateCol i b) supplied by Mathlib's cramer_apply. The clean separation — an invertibility-free core over a commutative ring, with division deferred to the final field step — is reusable wherever Cramer's rule appears (e.g. algebraicity/continuity of linear-system solutions).",
+    "openQuestions": [
+      "Specialize the formula to the 2×2 and 3×3 cases, recovering the elementary closed forms (e.g. x = (b₁a₂₂ − b₂a₁₂)/det A) and verifying them against det_fin_two / det_fin_three.",
+      "Phrase the rule via the matrix inverse: show (fun i => det(Aᵢ)/det A) = A⁻¹ *ᵥ b directly from nonsing_inv, identifying the Cramer formula with coordinate extraction from A⁻¹b."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Adjugate",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix"
+    ],
+    "namespace": "CramersRuleOQ04OQ01OQ01",
+    "lineCount": 109,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/CramersRuleOQ04OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule-oq-04-oq-01",
+      "relationship": "extends",
+      "description": "Parent: proved the determinant form A·(adj A · b) = (det A)·b. This entry answers its OQ-01 by promoting that to the explicit scalar formula xᵢ = det(Aᵢ)/det A over a field with det A ≠ 0."
+    }
+  ],
+  "references": [
+    {
+      "key": "Cramer1750",
+      "citation": "Cramer, G., Introduction à l'analyse des lignes courbes algébriques, Geneva (1750).",
+      "type": "book"
+    },
+    {
+      "key": "DummitFoote",
+      "citation": "Dummit, D.S. and Foote, R.M., Abstract Algebra, 3rd ed., Wiley (2004), §11.1.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

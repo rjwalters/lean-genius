@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-algebraic-core",
+    "proofId": "cramers-rule-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 64
+    },
+    "type": "insight",
+    "title": "Cramer's Rule Before Division: A Commutative-Ring Identity",
+    "content": "det_smul_solution_eq_cramer is the algebraic heart, and it needs NO invertibility and NO field: over any commutative ring, A *ᵥ x = b implies (det A) • x = cramer A b. The proof rewrites cramer A b = adjugate A *ᵥ b (Mathlib's cramer_eq_adjugate_mulVec), substitutes b = A *ᵥ x, and collapses adjugate A *ᵥ (A *ᵥ x) = (adjugate A * A) *ᵥ x = ((det A)•1) *ᵥ x = (det A)•x using mulVec_mulVec, adjugate_mul, smul_mulVec, one_mulVec. Componentwise, with cramer_apply, this is (det A)·xᵢ = det(Aᵢ) — the column-replaced determinant. Division by det A is deferred entirely to the field step."
+  },
+  {
+    "id": "ann-cramer-apply-bridge",
+    "proofId": "cramers-rule-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 59,
+      "endLine": 64
+    },
+    "type": "concept",
+    "title": "cramer_apply: From the Abstract Adjugate to det(Aᵢ)",
+    "content": "The statement of Cramer's rule mentions det(Aᵢ), the determinant of A with column i replaced by b. What connects this concrete quantity to the adjugate machinery is Mathlib's cramer_apply: cramer A b i = det(A.updateCol i b), true by definition of Matrix.cramer (a cofactor expansion along column i). det_mul_solution_eq_det_updateCol simply reads off the i-th component of the core identity and applies cramer_apply, yielding (det A)·xᵢ = det(Aᵢ). Without this dictionary, the 'det(Aᵢ)' in the classical formula would be disconnected from the adjugate identity that proves it."
+  },
+  {
+    "id": "ann-explicit-formula",
+    "proofId": "cramers-rule-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 92
+    },
+    "type": "insight",
+    "title": "The Classical Formula and Why It Is the Only Solution",
+    "content": "cramer_solution is the OQ's literal target: over a field with det A ≠ 0, xᵢ = det(Aᵢ)/det A. eq_div_iff hdet turns this goal into (det A)·xᵢ = det(Aᵢ) (after mul_comm), which is exactly the algebraic core proved above — so the only field-specific ingredient is the cancellation of a nonzero scalar. cramer_solution_eq packages all coordinates into the closed-form vector. cramer_solution_unique then needs nothing new: every solution of A x = b equals that same closed form, so any two solutions coincide. Over a field, det A ≠ 0 is exactly invertibility of A, so this is the sharp hypothesis."
+  },
+  {
+    "id": "ann-existence",
+    "proofId": "cramers-rule-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 98,
+      "endLine": 105
+    },
+    "type": "insight",
+    "title": "Existence: The Formula Actually Solves the System",
+    "content": "cramer_formula_isSolution closes the loop: A *ᵥ (fun i => det(Aᵢ)/det A) = b. The key rewrite expresses the closed-form vector as A.det⁻¹ • cramer A b (since det(Aᵢ)/det A = (det A)⁻¹ · det(Aᵢ) = (det A)⁻¹ · (cramer A b)ᵢ). Then mulVec_cramer (A *ᵥ cramer A b = (det A)•b) and inv_mul_cancel₀ hdet collapse A.det⁻¹ • (det A) • b to b. Combined with uniqueness, the system A x = b has EXACTLY ONE solution when det A ≠ 0, and it is given explicitly by the ratio of determinants."
+  }
+]
