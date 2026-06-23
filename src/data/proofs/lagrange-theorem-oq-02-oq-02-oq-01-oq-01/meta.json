@@ -90,6 +90,36 @@
       "**Finite vs Fintype** — `nonempty_fintype : Finite α → Nonempty (Fintype α)` and the `Subtype.finite` instance, which together let a `Finite` hypothesis discharge every `Fintype`/`Finite` obligation in the proof."
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Burnside off Fintype",
+      "startLine": 6,
+      "endLine": 54,
+      "summary": "Module docstring: poses the parent's OQ-02 (generalise Mathlib's Fintype-form Burnside lemma to Finite), states the finsum/Nat.card generalisation, and explains why the proof lifts unchanged — the orbit-counting content is the finiteness-free bijection sigmaFixedByEquivOrbitsProdGroup."
+    },
+    {
+      "id": "setup",
+      "title": "Setup",
+      "startLine": 56,
+      "endLine": 60,
+      "summary": "namespace BurnsideFinite, open MulAction, and an abstract group action G ↷ X with no finiteness on the variables (added per theorem)."
+    },
+    {
+      "id": "finite-form",
+      "title": "The Finite generalisation",
+      "startLine": 62,
+      "endLine": 82,
+      "summary": "sum_card_fixedBy_eq_card_orbits_mul_card_group_of_finite: ∑ᶠ g, Nat.card (fixedBy X g) = Nat.card (X/G) · Nat.card G, proved in four rewrites of the finiteness-free bijection (nonempty_fintype G, finsum_eq_sum_of_fintype, ← Nat.card_sigma, Nat.card_congr, Nat.card_prod)."
+    },
+    {
+      "id": "recovered",
+      "title": "Recovering the Fintype form",
+      "startLine": 84,
+      "endLine": 109,
+      "summary": "sum_card_fixedBy_eq_card_orbits_mul_card_group_recovered: recovers Mathlib's exact Fintype statement as a corollary (Finite X is derived via selfEquivSigmaOrbits, then Nat.card_eq_fintype_card converts), certifying the generalisation subsumes the original and is upstream-ready."
+    }
+  ],
   "leanFile": {
     "path": "Proofs/LagrangeTheoremOQ02OQ02OQ01OQ01.lean",
     "namespace": "BurnsideFinite",
