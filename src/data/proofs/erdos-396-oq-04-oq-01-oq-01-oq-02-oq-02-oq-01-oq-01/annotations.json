@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-context",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 61 },
+    "type": "context",
+    "title": "Two Faces of the Wallis Product",
+    "content": "The parent entry derives the normalised central binomial coefficient as a finite combinatorial product C(2n,n)/4^n = ∏_{k<n}(2k+1)/(2k+2) = (2n−1)!!/(2n)!!, living entirely in ℚ-arithmetic of the recurrence and never touching an integral. This file supplies the analytic twin: John Wallis' seventeenth-century definite integrals of powers of sine over [0,π] evaluate to exactly the same closed products. Identifying the two makes a combinatorial number equal to an analytic quantity, with no Stirling estimate — the only combinatorial input is the imported recurrence.",
+    "mathContext": "$\\int_0^\\pi \\sin^{2n}x\\,dx = \\pi\\prod_{k<n}\\frac{2k+1}{2k+2}$ and $\\int_0^\\pi \\sin^{2n+1}x\\,dx = 2\\prod_{k<n}\\frac{2k+2}{2k+3}$.",
+    "significance": "context",
+    "relatedConcepts": ["Wallis product", "Wallis integrals", "central binomial coefficient", "analytic combinatorics", "double factorial"],
+    "prerequisites": ["definite integrals", "finite products"]
+  },
+  {
+    "id": "ann-odd-telescope",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-01-oq-01",
+    "range": { "startLine": 63, "endLine": 79 },
+    "type": "technique",
+    "title": "The Odd-Index Telescope",
+    "content": "prod_odd_telescope proves ∏_{k<n}(2k+1)/(2k+3) = 1/(2n+1), the elementary telescoping product (1/3)·(3/5)·(5/7)···((2n−1)/(2n+1)) where every interior factor cancels. The Lean proof is a one-line induction: Finset.prod_range_succ peels the last factor, then push_cast/field_simp/ring close it. This is the combinatorial fact that, against the parent's even product, pins down the odd Wallis product.",
+    "mathContext": "$\\prod_{k<n}\\frac{2k+1}{2k+3} = \\frac{1}{2n+1}$ (telescoping).",
+    "significance": "supporting",
+    "relatedConcepts": ["telescoping product", "induction", "Finset.prod_range_succ"],
+    "prerequisites": ["finite products", "induction"]
+  },
+  {
+    "id": "ann-integral-rep",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-01-oq-01",
+    "range": { "startLine": 81, "endLine": 100 },
+    "type": "insight",
+    "title": "The Central Binomial Coefficient as an Integral",
+    "content": "The headline result. integral_sin_pow_even_eq_centralBinom identifies Mathlib's even Wallis integral with the parent's product: ∫₀^π sin²ⁿx dx = π·C(2n,n)/4^n, by rewriting integral_sin_pow_even and then centralBinom_div_eq_wallis_prod backwards, closing with ring. The combinatorial and analytic Wallis products are literally equal. Inverting (centralBinom_eq_integral) writes the integer C(2n,n) = (4^n/π)·∫₀^π sin²ⁿx dx as a definite integral — the bridge that lets Wallis' analytic limit speak about the integer sequence.",
+    "mathContext": "$\\int_0^\\pi \\sin^{2n}x\\,dx = \\frac{\\pi\\,C(2n,n)}{4^n}$, equivalently $C(2n,n) = \\frac{4^n}{\\pi}\\int_0^\\pi \\sin^{2n}x\\,dx$.",
+    "significance": "key",
+    "relatedConcepts": ["Wallis integral", "central binomial coefficient", "integral representation", "analytic combinatorics"],
+    "prerequisites": ["definite integrals", "Wallis integrals"]
+  },
+  {
+    "id": "ann-odd-reciprocal",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-01-oq-01",
+    "range": { "startLine": 102, "endLine": 138 },
+    "type": "concept",
+    "title": "The Odd Integral Is the Reciprocal Central Binomial",
+    "content": "wallis_odd_prod_eq shows ∏(2k+2)/(2k+3) = 4^n/((2n+1)·C(2n,n)). The argument multiplies the even product A = ∏(2k+1)/(2k+2) and the odd product B = ∏(2k+2)/(2k+3): factorwise A·B = ∏(2k+1)/(2k+3) (Finset.prod_mul_distrib), which by the telescope is 1/(2n+1), so A·B·(2n+1) = 1. Substituting the parent's A = C(2n,n)/4^n and clearing denominators (eq_div_iff, linear_combination) gives the closed form, and integral_sin_pow_odd_eq_centralBinom reads off ∫₀^π sin²ⁿ⁺¹ = 2·4^n/((2n+1)·C(2n,n)). The (2k+2)/(2k+3) product is the reciprocal of the central binomial sequence.",
+    "mathContext": "$\\prod_{k<n}\\frac{2k+2}{2k+3} = \\frac{4^n}{(2n+1)C(2n,n)}$; $\\int_0^\\pi \\sin^{2n+1}x\\,dx = \\frac{2\\cdot 4^n}{(2n+1)C(2n,n)}$.",
+    "significance": "key",
+    "relatedConcepts": ["Wallis product", "reciprocal central binomial", "Finset.prod_mul_distrib", "linear_combination"],
+    "prerequisites": ["finite products", "field arithmetic"]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-01-oq-01",
+    "range": { "startLine": 140, "endLine": 166 },
+    "type": "insight",
+    "title": "Multiplying Cancels the Combinatorics; Dividing Squares It",
+    "content": "Pairing the two consecutive Wallis integrals exposes the structure two ways. integral_even_mul_odd_eq: their product (∫sin²ⁿ)(∫sin²ⁿ⁺¹) = 2π/(2n+1) is entirely free of C(2n,n) — the central binomial coefficient cancels. integral_ratio_eq: their quotient (∫sin²ⁿ)/(∫sin²ⁿ⁺¹) = (π/2)(2n+1)(C(2n,n)/4^n)² is the square of the normalised central binomial sequence. Since Wallis' theorem forces this ratio to 1, the identity is the analytic source of the asymptotic C(2n,n)/4^n ∼ 1/√(πn) established in the sibling files — derived here without any Stirling estimate.",
+    "mathContext": "$(\\int\\sin^{2n})(\\int\\sin^{2n+1}) = \\frac{2\\pi}{2n+1}$; $\\frac{\\int\\sin^{2n}}{\\int\\sin^{2n+1}} = \\frac{\\pi}{2}(2n+1)\\left(\\frac{C(2n,n)}{4^n}\\right)^2 \\to 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Wallis' theorem", "central binomial asymptotic", "1/√(πn)", "integral squeeze"],
+    "prerequisites": ["limits", "Wallis product", "asymptotics"]
+  }
+]
