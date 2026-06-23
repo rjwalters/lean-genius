@@ -1,0 +1,74 @@
+[
+  {
+    "id": "inherited-facts",
+    "proofId": "cube-root-3-irrational-oq-03",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "context",
+    "title": "Inherited Facts from the Parent",
+    "content": "`cbrt3_pow_three` ((∛3)³ = 3) and `cbrt3_irrational` (∛3 ∉ ℚ) are re-exposed from the parent file CubeRoot3Irrational via the imported cbrt3, cbrt3_cubed, irrational_cbrt3. These are the only external inputs: the parent establishes ∛3 as a genuine real cube root of 3 and proves its irrationality, and this entry builds the entire degree-3 algebraic theory on top.",
+    "mathContext": "$(\\sqrt[3]{3})^3 = 3$ and $\\sqrt[3]{3}\\notin\\mathbb{Q}$, inherited from the parent.",
+    "significance": "context",
+    "relatedConcepts": ["cube root", "irrationality", "inherited lemmas"],
+    "prerequisites": ["real analysis", "irrationality"]
+  },
+  {
+    "id": "no-rational-cube",
+    "proofId": "cube-root-3-irrational-oq-03",
+    "range": { "startLine": 50, "endLine": 67 },
+    "type": "technique",
+    "title": "The Single Arithmetic Input: 3 Has No Rational Cube Root",
+    "content": "`no_rat_cube_three`: q³ ≠ 3 for all q ∈ ℚ — the one fact that carries the whole development. The proof casts a hypothetical rational q with q³ = 3 to ℝ, observes (q:ℝ)³ = (∛3)³, and applies injectivity of the odd power map x ↦ x³ on ℝ (Odd.strictMono_pow.injective) to force (q:ℝ) = ∛3, contradicting irrational_cbrt3. The bridge from a real-analytic irrationality fact to the algebraic no-root hypothesis is exactly this injectivity. `no_rat_cube_neg_three` handles −3 by negation.",
+    "mathContext": "$\\forall q\\in\\mathbb{Q},\\ q^3\\neq 3$; proved via injectivity of $x\\mapsto x^3$ on $\\mathbb{R}$.",
+    "significance": "critical",
+    "relatedConcepts": ["rational root", "strict monotonicity", "odd power injectivity", "Odd.strictMono_pow"],
+    "prerequisites": ["real analysis", "monotone functions", "rational/real casts"]
+  },
+  {
+    "id": "irreducibility",
+    "proofId": "cube-root-3-irrational-oq-03",
+    "range": { "startLine": 69, "endLine": 88 },
+    "type": "theorem",
+    "title": "X³ − 3 Is Irreducible over ℚ",
+    "content": "`irreducible_X_cubed_sub_C_three`: X³ − 3 is irreducible over ℚ. For polynomials of degree ≤ 3 over a field, irreducibility is equivalent to having no root — a nontrivial factorization would need a linear factor. The polynomial has natDegree 3 ∈ [1,3], and its evaluation x³ − 3 is nonzero at every rational x by exactly no_rat_cube_three, so Mathlib's irreducible_of_degree_le_three_of_not_isRoot applies directly. `cbrt3_isIntegral` records that ∛3 is integral over ℚ (a root of the monic X³ − 3).",
+    "mathContext": "$X^3-3$ irreducible over $\\mathbb{Q}$: degree $\\le 3$ with no rational root $\\Rightarrow$ irreducible.",
+    "significance": "key",
+    "relatedConcepts": ["irreducible polynomial", "degree-≤3 criterion", "Eisenstein at 3", "no rational root"],
+    "prerequisites": ["polynomial irreducibility", "field theory"]
+  },
+  {
+    "id": "minpoly-and-degree",
+    "proofId": "cube-root-3-irrational-oq-03",
+    "range": { "startLine": 90, "endLine": 101 },
+    "type": "theorem",
+    "title": "Minimal Polynomial and Field Degree [ℚ(∛3):ℚ] = 3",
+    "content": "`minpoly_cbrt3`: since ∛3 is a root of the monic irreducible X³ − 3, Mathlib's minpoly.eq_of_irreducible_of_monic identifies minpoly ℚ ∛3 = X³ − 3. `finrank_adjoin_cbrt3`: the simple-extension dimension formula IntermediateField.adjoin.finrank gives [ℚ(∛3) : ℚ] = Module.finrank ℚ ℚ⟮cbrt3⟯ = natDegree(X³ − 3) = 3. This is the sharp degree statement upgrading the parent's irrationality.",
+    "mathContext": "$\\mathrm{minpoly}_{\\mathbb{Q}}(\\sqrt[3]{3})=X^3-3$ and $[\\mathbb{Q}(\\sqrt[3]{3}):\\mathbb{Q}]=3$.",
+    "significance": "key",
+    "relatedConcepts": ["minimal polynomial", "field extension degree", "simple extension", "IntermediateField.adjoin.finrank"],
+    "prerequisites": ["field extensions", "minimal polynomial", "linear algebra"]
+  },
+  {
+    "id": "linindep-elementary",
+    "proofId": "cube-root-3-irrational-oq-03",
+    "range": { "startLine": 103, "endLine": 160 },
+    "type": "theorem",
+    "title": "Linear Independence of {1, ∛3, (∛3)²} (Elementary Form)",
+    "content": "`linindep_triple`: a self-contained elimination showing a + b∛3 + c(∛3)² = 0 (a,b,c ∈ ℚ) forces a = b = c = 0. Multiplying the relation by ∛3 and reducing (∛3)³ = 3 gives a second relation; eliminating (∛3)² yields (ac − b²)∛3 = ab − 3c². If ac − b² ≠ 0 then ∛3 = (ab − 3c²)/(ac − b²) ∈ ℚ — contradiction; if ac − b² = 0 then ab = 3c² and ac = b² combine to b³ = 3c³, i.e. (b/c)³ = 3 — impossible by no_rat_cube_three. The degenerate cases c = 0, b = 0 are handled first. This is the original open-question statement, equivalent to degree ≥ 3.",
+    "mathContext": "$a+b\\sqrt[3]{3}+c\\sqrt[3]{3}^2=0,\\ a,b,c\\in\\mathbb{Q}\\Rightarrow a=b=c=0$.",
+    "significance": "key",
+    "relatedConcepts": ["linear independence", "elimination", "minimal polynomial degree", "rational normal form"],
+    "prerequisites": ["linear algebra over ℚ", "algebraic manipulation"]
+  },
+  {
+    "id": "linindep-mathlib-form",
+    "proofId": "cube-root-3-irrational-oq-03",
+    "range": { "startLine": 162, "endLine": 183 },
+    "type": "definition",
+    "title": "Mathlib LinearIndependent Packaging and Negative Restatement",
+    "content": "`linearIndependent_cbrt3_powers`: the same fact in Mathlib's LinearIndependent predicate for the family ![1, ∛3, (∛3)²] : Fin 3 → ℝ over ℚ, obtained from linindep_triple via Fintype.linearIndependent_iff and a Fin 3 case split. This is the reusable form (a basis-sized independent family) that the sibling oq-04 does not provide. `cbrt3_no_quadratic_relation` is the negative restatement: ∛3 satisfies no rational relation (∛3)² = b·∛3 + c, derived by applying linindep_triple to (−c, −b, 1).",
+    "mathContext": "$\\mathrm{LinearIndependent}_{\\mathbb{Q}}\\,[1,\\sqrt[3]{3},\\sqrt[3]{3}^2]$; no quadratic relation $\\sqrt[3]{3}^2=b\\sqrt[3]{3}+c$.",
+    "significance": "supporting",
+    "relatedConcepts": ["LinearIndependent predicate", "Fintype.linearIndependent_iff", "basis", "reusable formalization"],
+    "prerequisites": ["linear algebra", "Mathlib LinearIndependent API"]
+  }
+]
