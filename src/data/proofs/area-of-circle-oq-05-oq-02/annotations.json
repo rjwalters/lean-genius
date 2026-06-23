@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Multivariate Gaussian: Two-Step Strategy",
-    "content": "The file header frames the two-step proof strategy: (1) diagonal case via Fubini + scalar Gaussian, (2) general case via spectral theorem. The key mathematical chain is: for positive-definite A, diagonalize as A = UᵀDU (D = diag(λ₁,...,λₙ)), then the orthogonal change y = Uᵀx preserves Lebesgue measure (|det Uᵀ| = 1), so ∫ exp(-xᵀAx) = ∫ exp(-yᵀDy) = ∫ exp(-∑ λᵢyᵢ²) = ∏ √(π/λᵢ) = √(πⁿ/∏λᵢ) = √(πⁿ/det A).\n\nThe status section explicitly tracks what is proved (0 sorries) vs. open (1 sorry in the general case), making the boundary of formalization precise.",
+    "content": "The file header frames the two-step proof strategy: (1) diagonal case via Fubini + scalar Gaussian, (2) general case via spectral theorem. The key mathematical chain is: for positive-definite A, diagonalize as A = UᵀDU (D = diag(λ₁,...,λₙ)), then the orthogonal change y = Uᵀx preserves Lebesgue measure (|det Uᵀ| = 1), so ∫ exp(-xᵀAx) = ∫ exp(-yᵀDy) = ∫ exp(-∑ λᵢyᵢ²) = ∏ √(π/λᵢ) = √(πⁿ/∏λᵢ) = √(πⁿ/det A).\n\nThe status section confirms the formalization is complete: both `diagonal_gaussian` and the general `multivariate_gaussian_integral` are fully proved (0 sorries, 0 axioms).",
     "mathContext": "$\\int_{\\mathbb{R}^n} e^{-x^\\top A x}\\,dx = \\sqrt{\\frac{\\pi^n}{\\det A}}$ for positive-definite $A$. Proof chain: $A = U^\\top D U$ (spectral), $|\\det U| = 1$ (orthogonal), $\\det A = \\prod \\lambda_i$ (eigenvalue product).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -125,8 +125,8 @@
       "endLine": 114
     },
     "type": "insight",
-    "title": "Spectral Decomposition Proof Outline and the Remaining Gap",
-    "content": "The docstring for `multivariate_gaussian_integral` describes a 5-step proof plan: (1) spectral theorem — A = U * diag(λ) * U* for eigenvector unitary U; (2) quadratic form rewrite xᵀAx = ∑ᵢ λᵢ(Uᵀx)ᵢ²; (3) orthogonal change of variables y = Uᵀx (measure-preserving since |det U| = 1); (4) apply diagonal_gaussian with b = eigenvalues; (5) use det A = ∏ λᵢ. Steps 1, 2, 4, 5 are mathematically clear and Mathlib has all the pieces. The single sorry lives entirely in step 3: connecting the orthogonal linear map to a MeasurableEquiv and invoking map_linearMap_volume_pi_eq_smul_volume_pi with the determinant condition.",
+    "title": "Spectral Decomposition Proof Outline",
+    "content": "The docstring for `multivariate_gaussian_integral` describes a 5-step proof plan, all of which are fully formalized (0 sorries): (1) spectral theorem — A = U * diag(λ) * U* for eigenvector unitary U; (2) quadratic form rewrite xᵀAx = ∑ᵢ λᵢ(Uᵀx)ᵢ²; (3) orthogonal change of variables y = Uᵀx (measure-preserving since |det U| = 1); (4) apply diagonal_gaussian with b = eigenvalues; (5) use det A = ∏ λᵢ. Step 3 — historically the hard part — is discharged by setting L = Uᵀ.mulVecLin, proving |det Uᵀ| = 1 from the unitary property, and invoking Real.map_linearMap_volume_pi_eq_smul_volume_pi to obtain Measure.map L volume = volume; the change of variables then follows from integral_map.",
     "mathContext": "Spectral theorem: $A = U^\\top \\mathrm{diag}(\\lambda_1,\\ldots,\\lambda_n) U$. Change of variables: $y = U^\\top x \\Rightarrow \\int_{{\\mathbb{R}^n}} f(x)\\,dx = \\int_{{\\mathbb{R}^n}} f(Uy)\\,dy$ (since $|\\det U| = 1$). Then $\\det A = \\prod_i \\lambda_i$.",
     "significance": "key",
     "relatedConcepts": [
@@ -149,8 +149,8 @@
       "endLine": 138
     },
     "type": "insight",
-    "title": "General Case: Spectral Sorry and What Remains",
-    "content": "The theorem `multivariate_gaussian_integral` has 1 sorry: the spectral change-of-variables step. The docstring documents exactly what is needed:\n\n(a) **Spectral decomposition**: `hA.isHermitian.spectral_theorem` gives A = U * diag(λ) * U* for the eigenvector unitary U.\n\n(b) **Positive eigenvalues**: `Matrix.PosDef.eigenvalues_pos` gives λᵢ > 0.\n\n(c) **Measure preservation**: `map_linearMap_volume_pi_eq_smul_volume_pi` with `|det Uᵀ| = 1` (orthogonal matrix). Requires constructing a `MeasurableEquiv` from U and using `MeasurePreserving.integral_comp'`.\n\n(d) **Determinant identity**: `IsHermitian.det_eq_prod_eigenvalues` connects `det A` to `∏ λᵢ`.\n\nThe difficulty is step (c): Mathlib's change-of-variables infrastructure requires constructing a `MeasurableEquiv` from the orthogonal linear map, which involves connecting `Matrix.toLinearMap` to `MeasurableLinearMap`.",
+    "title": "General Case: The Spectral Change of Variables",
+    "content": "The theorem `multivariate_gaussian_integral` is fully proved (0 sorries). The proof assembles four ingredients:\n\n(a) **Spectral decomposition**: `hA.isHermitian.spectral_theorem` gives A = U * diag(λ) * U* for the eigenvector unitary U.\n\n(b) **Positive eigenvalues**: `Matrix.PosDef.eigenvalues_pos` gives λᵢ > 0.\n\n(c) **Measure preservation**: with L = Uᵀ.mulVecLin and `LinearMap.det L = Uᵀ.det`, the unitary property yields `|det Uᵀ| = 1`, so `Real.map_linearMap_volume_pi_eq_smul_volume_pi` gives `Measure.map L volume = volume`; `integral_map` then performs the change of variables y = Uᵀx.\n\n(d) **Determinant identity**: `IsHermitian.det_eq_prod_eigenvalues` connects `det A` to `∏ λᵢ`.\n\nAfter the change of variables the integrand reduces to ∑ λᵢ yᵢ², closing the proof by appeal to `diagonal_gaussian`.",
     "mathContext": "After spectral decomposition $A = U^\\top \\text{diag}(\\lambda) U$ and change of variables $y = U^\\top x$: $x^\\top A x = \\sum_i \\lambda_i y_i^2$, and $\\int e^{-x^\\top Ax}\\,dx = \\int e^{-\\sum \\lambda_i y_i^2}\\,dy = \\sqrt{\\pi^n/\\prod \\lambda_i} = \\sqrt{\\pi^n/\\det A}$.",
     "significance": "key",
     "relatedConcepts": [
