@@ -34,6 +34,41 @@ recurrence is equivalent to
   `(n + 3) * Q (n+1) = (5n + 6) * Q n + (4n + 6) * L n`.
 
 Both statements below are over `ℕ` with no subtraction.
+
+## Buildable-in-Lean roadmap (Mathlib `PowerSeries` API — NOT yet executed)
+
+This recurrence is *not* a deep gap: every ingredient now exists in Mathlib, so it is BUILDABLE
+(~150–250 lines), not blocked.  Concrete plan, mirroring the Catalan precedent:
+
+1. **GF object.** Work over `ℤ` (the ODE needs subtraction).  Set
+   `f : ℤ⟦X⟧ := PowerSeries.mk (fun n => (largeSchroder n : ℤ))`, with
+   `coeff n f = largeSchroder n` and `constantCoeff f = 1`.
+
+2. **GF quadratic** `X * f^2 + (X - 1) * f + 1 = 0`  (equivalently `f = 1 + X*f + X*f^2`).
+   This is a *direct mirror* of Mathlib's
+   `PowerSeries.catalanSeries_sq_mul_X_add_one : catalanSeries ^ 2 * X + 1 = catalanSeries`
+   (file `Mathlib/RingTheory/PowerSeries/Catalan.lean`): `ext n; cases n`, then
+   `coeff_succ_mul_X`, `sq`, `coeff_mul`, and `largeSchroder_succ` in place of `catalan_succ'`.
+
+3. **Differentiate.** `PowerSeries.derivative` (`Mathlib/RingTheory/PowerSeries/Derivative.lean`)
+   is a `Derivation` (`d⁄dX`), giving `derivative_X = 1`, `derivative_C = 0`, additivity, and the
+   Leibniz rule `derivativeFun_mul`.  Differentiating the quadratic gives
+   `(2*X*f + (X-1)) * f' = -(f^2 + f)`.
+
+4. **Eliminate `f²` and the `f·f'` term.** The discriminant identity
+   `(2*X*f + (X-1))^2 = X^2 - 6*X + 1`  (which holds *on the solution*, since the RHS is the
+   discriminant of the quadratic and the cross term vanishes by step 2) rationalises the
+   denominator, yielding the linear ODE  `X*(X^2 - 6*X + 1) * f' = (3*X - 1)*f + (X + 1)`.
+
+5. **Extract the `xⁿ`-coefficient.** `PowerSeries.coeff_derivative`
+   (`coeff n (d⁄dX f) = coeff (n+1) f * (n+1)`) turns `f'`-coefficients into `(n+1)*L(n+1)`, and
+   `coeff_mul` / `coeff_X_mul` / `coeff_X_pow_mul` expand the polynomial coefficients.  Reading off
+   `coeff n` of the ODE in step 4 produces exactly `largeSchroder_holonomic`; the convolution-form
+   `largeSchroder_conv_holonomic` below follows the same way from step 2's coefficient identity.
+
+The single remaining `sorry` is therefore HARD-but-classical and fully scoped: it awaits either
+automated proof search or a manual session with a working Lean verifier (this session had neither
+Aristotle nor a responsive docker build available).
 -/
 
 namespace Nat

@@ -51,7 +51,7 @@
     "additionalFiles": [
       {
         "path": "Proofs/SchroderLinearRecurrenceAristotle.lean",
-        "description": "Companion file (NOT part of the verified entry) stating the open order-two holonomic recurrence (n+3)·L(n+2) + n·L n = 3·(2n+3)·L(n+1) and its convolution reformulation, each as a `sorry`, for automated proof search. Contains 2 sorries; a full generating-function proof sketch is given in its docstring."
+        "description": "Companion file (NOT part of the verified entry) for the open order-two holonomic recurrence (n+3)·L(n+2) + n·L n = 3·(2n+3)·L(n+1). The headline recurrence largeSchroder_holonomic is proved unconditionally from a single convolution lemma largeSchroder_conv_holonomic via a routine linear_combination, so there is now exactly 1 sorry — the convolution lemma — isolating all the hard generating-function content. Its docstring records a concrete five-step, Mathlib-supported buildability roadmap (PowerSeries.catalanSeries template + PowerSeries.derivative/coeff_derivative)."
       }
     ],
     "dateAdded": "2026-06-23",
@@ -70,7 +70,7 @@
       "**Positivity is a genuine gap.** Mathlib records evenness of the large Schröder numbers (Nat.even_largeSchroder) but not positivity; positivity is what licenses cancelling Schröder factors and is the base for every quantitative estimate.",
       "**Two boundary terms already force factor-3 growth.** The convolution sum ∑ i ≤ n+1, L i · L(n+1−i) contains the summands at i = 0 and i = n+1, each equal to L(n+1); together with the leading +L(n+1) in the convolution recurrence this gives L(n+2) ≥ 3·L(n+1) with no analysis of the interior terms.",
       "**The factor 3 is sharp as an integer ratio but loose asymptotically.** The true ratio L(n+1)/L n increases to 3 + 2√2 ≈ 5.83 (the dominant root of x² − 6x + 1, the discriminant of the Schröder generating-function equation); 3 is the best constant available from the two boundary terms alone.",
-      "**The deeper holonomic recurrence needs generating functions.** The order-two recurrence (n+3)·L(n+2) + n·L n = 3·(2n+3)·L(n+1) follows from the linear ODE x(x²−6x+1) f' = (3x−1) f + (x+1) satisfied by f = ∑ L n xⁿ; unlike the Catalan first-order recurrence (inherited from central binomials), it has no elementary central-coefficient bridge in Mathlib, so it is deferred to automated proof search."
+      "**The deeper holonomic recurrence needs generating functions, but is buildable in Mathlib.** The order-two recurrence (n+3)·L(n+2) + n·L n = 3·(2n+3)·L(n+1) follows from the linear ODE x(x²−6x+1) f' = (3x−1) f + (x+1) satisfied by f = ∑ L n xⁿ. Unlike the Catalan first-order recurrence (inherited from central binomials) it has no central-coefficient shortcut, but it is not blocked: the formal-power-series route is fully supported by Mathlib (estimated ~150–250 lines). The GF quadratic X·f² + (x−1)·f + 1 = 0 is a direct mirror of PowerSeries.catalanSeries_sq_mul_X_add_one (Mathlib/RingTheory/PowerSeries/Catalan.lean), and the differentiation/coefficient-extraction step uses PowerSeries.derivative (a Derivation, d⁄dX) together with PowerSeries.coeff_derivative (Mathlib/RingTheory/PowerSeries/Derivative.lean). A concrete five-step lemma plan is recorded in the companion file's docstring; the single remaining sorry awaits automated proof search or a manual session with a working verifier."
     ],
     "prerequisites": [
       "The (large) Schröder numbers and their definition via the quadratic convolution recurrence",
@@ -122,7 +122,7 @@
     "summary": "Fully verified (0 sorries, 0 axioms) quantitative basics for Mathlib's large Schröder numbers: positivity 0 < L n, a convolution lower bound, the step growth 3·L(n+1) ≤ L(n+2), and the closed exponential lower bound 2·3ⁿ ≤ L(n+1).",
     "implications": "Supplies the positivity and geometric-growth facts that Mathlib's Schröder development lacks, enabling cancellation arguments and asymptotic estimates. It frames the Schröder analogue of the Catalan first-order recurrence: the order-two holonomic recurrence is stated with a full generating-function proof sketch in the companion file for automated proof search.",
     "openQuestions": [
-      "Prove the order-two holonomic recurrence (n+3)·L(n+2) + n·L n = 3·(2n+3)·L(n+1) — equivalently extract the xⁿ-coefficient of the ODE x(x²−6x+1) f' = (3x−1) f + (x+1) for the generating function f = ∑ L n xⁿ — completing the Schröder analogue of catalan-numbers-oq-01.",
+      "Prove the order-two holonomic recurrence (n+3)·L(n+2) + n·L n = 3·(2n+3)·L(n+1) — equivalently extract the xⁿ-coefficient of the ODE x(x²−6x+1) f' = (3x−1) f + (x+1) for the generating function f = ∑ L n xⁿ — completing the Schröder analogue of catalan-numbers-oq-01. This is now reduced (in the companion file) to the single convolution lemma largeSchroder_conv_holonomic, and scoped as BUILDABLE (~150–250 lines) via Mathlib's PowerSeries API: mirror PowerSeries.catalanSeries_sq_mul_X_add_one for the GF quadratic, then differentiate with PowerSeries.derivative and read off coefficients with PowerSeries.coeff_derivative (full plan in the companion docstring).",
       "Upgrade the growth bound to the sharp ratio: prove L(n+1)/L n → 3 + 2√2 over ℝ, the dominant root of x² − 6x + 1."
     ]
   },
