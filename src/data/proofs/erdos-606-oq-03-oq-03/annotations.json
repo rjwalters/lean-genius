@@ -119,8 +119,8 @@
       "endLine": 154
     },
     "type": "insight",
-    "title": "Sylvester-Gallai Main Theorem (Sorry)",
-    "content": "States the main theorem: for $|S| \\ge 3$ with $\\neg\\text{AllCollinear}(S)$, an ordinary line exists. The proof structure follows Kelly: (1) by contradiction, assume no ordinary line; (2) every line through 2 points of $S$ has $\\ge 3$ points; (3) combined with non-collinearity, choose a minimum-distance pair; (4) apply `kelly_distance_lemma` for contradiction. The sorry covers the extremal setup (finite set $\\Rightarrow$ minimum exists) and the connection to the key lemma.",
+    "title": "Sylvester-Gallai Main Theorem",
+    "content": "States and proves the main theorem: for $|S| \\ge 3$ with $\\neg\\text{AllCollinear}(S)$, an ordinary line exists. The proof structure follows Kelly: (1) by contradiction, assume no ordinary line; (2) every line through 2 points of $S$ has $\\ge 3$ points; (3) combined with non-collinearity, choose a minimum-distance pair; (4) apply `kelly_distance_lemma` for contradiction. The extremal setup (finite set $\\Rightarrow$ minimum exists, via `Finset.exists_min_image` over the filtered triple set $F$) and the connection to the key lemma are fully discharged inline — the proof is complete with no `sorry`.",
     "mathContext": "The proof by contradiction assumes $\\forall a, b \\in S,\\, a \\ne b \\Rightarrow \\exists c \\in S,\\, c \\ne a \\wedge c \\ne b \\wedge \\text{Collinear}(a, b, c)$. Since $S$ is finite and not all collinear, the set of triples $(p, a, b)$ with $p \\notin \\overline{ab}$ is nonempty and finite, so a minimum-distance pair exists. Kelly's lemma then yields $\\text{False}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -143,8 +143,8 @@
     },
     "type": "concept",
     "title": "Proof Roadmap and Axiom Inventory",
-    "content": "Summarizes the formalization status: 1 axiom (`kelly_distance_lemma`), 1 sorry (the extremal argument setup in `sylvester_gallai`), and 2 proved collinearity lemmas. The key lemma is identified as a candidate for Aristotle (automated proof search) since it reduces to a routine coordinate inequality after the geometric setup is formalized.",
-    "mathContext": "The path to a complete proof requires: (1) proving the coordinate inequality $\\alpha(\\alpha - 2\\gamma) \\le 0$ when $0 \\le \\alpha \\le \\gamma$ (straightforward); (2) proving that a minimum over a finite nonempty set exists (standard Finset lemma); (3) connecting the extremal pair to Kelly's lemma hypotheses.",
+    "content": "Summarizes the formalization status: 0 axioms, 0 sorries. `kelly_distance_lemma` is proved directly via a 6-case analysis on the foot parameter $s = (u\\cdot v)/D$ (not an axiom), the extremal argument setup in `sylvester_gallai` is discharged via `Finset.exists_min_image`, and 2 collinearity lemmas are proved. The entry is fully machine-checked.",
+    "mathContext": "The complete proof establishes: (1) the coordinate inequality $\\alpha(\\alpha - 2\\gamma) \\le 0$ when $0 \\le \\alpha \\le \\gamma$ inside the case analysis of Kelly's lemma; (2) existence of a minimum over the finite nonempty triple set $F$ via `Finset.exists_min_image`; (3) the connection of the extremal pair to Kelly's lemma hypotheses.",
     "significance": "supporting",
     "relatedConcepts": [
       "Aristotle proof search",
