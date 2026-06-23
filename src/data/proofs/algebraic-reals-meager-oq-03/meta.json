@@ -1,0 +1,155 @@
+{
+  "id": "algebraic-reals-meager-oq-03",
+  "title": "The Cardinality Axis: Measure-Small and Category-Small Sets Need Not Be Countable",
+  "slug": "algebraic-reals-meager-oq-03",
+  "description": "Completes the three-way independence of the smallness notions on ℝ — cardinality (countable), measure (Lebesgue-null), and category (meagre). The companion oq-02 settles the measure ⊥ category axis via the Liouville numbers (comeagre yet null). This entry settles the remaining cardinality axis, which oq-02 does not address: the separating examples are uncountable. Every countable set is automatically both meagre and null, but the converse fails in both directions — a meagre set can be uncountable (the non-Liouville reals, uncountable because they have full Lebesgue measure) and a null set can be uncountable (the Liouville numbers, uncountable because a countable set would be meagre, contradicting comeagreness). Hence cardinality-smallness is strictly stronger than, and independent of, measure- and category-smallness. An abstract engine derives the full-measure meagre complement from any residual null set using only countable subadditivity, so no measurability hypothesis is needed.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Meagre_set",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicRealsMeagerOQ03.lean",
+    "tags": [
+      "measure-theory",
+      "baire-category",
+      "liouville-numbers",
+      "cardinality",
+      "uncountable",
+      "residual",
+      "lebesgue-measure",
+      "real-analysis"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Countable.measure_zero",
+        "description": "A countable set has measure zero under any atomless measure — used to show a full-measure set is uncountable",
+        "module": "Mathlib.MeasureTheory.Measure.Typeclasses.NoAtoms"
+      },
+      {
+        "theorem": "not_isMeagre_of_mem_residual",
+        "description": "In a nonempty Baire space a residual set is not meagre — used to show the Liouville set is uncountable",
+        "module": "Mathlib.Topology.Baire.Lemmas"
+      },
+      {
+        "theorem": "measure_union_le",
+        "description": "Countable subadditivity: μ (s ∪ t) ≤ μ s + μ t, valid for all sets (no measurability)",
+        "module": "Mathlib.MeasureTheory.OuterMeasure.Basic"
+      },
+      {
+        "theorem": "Real.volume_univ",
+        "description": "The Lebesgue measure of ℝ is ∞",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "IsMeagre",
+        "description": "s is meagre iff its complement sᶜ is residual",
+        "module": "Mathlib.Topology.GDelta.Basic"
+      }
+    ],
+    "originalContributions": [
+      "exists_meagre_uncountable: PROVED category-small ⇏ cardinality-small — there is a meagre subset of ℝ that is uncountable (the non-Liouville reals); uncountability comes from its full Lebesgue measure (a countable set would be null). This axis is absent from the companion oq-02",
+      "exists_null_uncountable: PROVED measure-small ⇏ cardinality-small — there is a Lebesgue-null subset of ℝ that is uncountable (the Liouville numbers); uncountability comes from comeagreness (a countable set would be meagre, contradicting not_isMeagre_of_mem_residual)",
+      "countable_isMeagre_and_null: PROVED the aligned case — every countable subset of ℝ is BOTH meagre and null, so any set separating cardinality from the other two notions must be uncountable",
+      "meagre_conull_compl_of_residual_null: PROVED the abstract engine — the complement of any residual, Lebesgue-null set is meagre and has full measure, using only countable subadditivity (measure_union_le), so NO measurability of the set is assumed; this supplies the full-measure input behind exists_meagre_uncountable",
+      "oq03_resolution: packaged the cardinality axis (aligned case + the two non-implications), completing the pairwise independence of all three smallness notions begun in oq-02",
+      "Honest scope: the substantive inputs (the Liouville numbers are residual and null; countable sets are meagre in a perfect T1 space) are imported from Mathlib and the parent entry; the new content is the CARDINALITY axis — that measure-small and category-small sets can be uncountable — which neither the parent nor oq-02 establishes"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Lebesgue measure on ℝ; atomless measures (countable ⇒ null); countable subadditivity",
+      "Baire category: meagre / residual (comeagre) sets; countable ⇒ meagre in a perfect T1 space",
+      "Liouville numbers: residual (comeagre) and Lebesgue-null (imported via oq-02)",
+      "Cardinality: countable vs uncountable subsets of ℝ"
+    ],
+    "lineCount": 139,
+    "relatedProblems": [
+      {
+        "id": "algebraic-reals-meager-oq-02",
+        "relationship": "Sibling: oq-02 settles the measure ⊥ category axis (a comeagre null set); this entry settles the remaining cardinality axis (measure-small and category-small sets that are uncountable), completing the three-way independence"
+      },
+      {
+        "id": "algebraic-reals-meager",
+        "relationship": "Parent: the Baire-category smallness of the algebraic reals; this entry uses the parent's countable_isMeagre to show a countable set is meagre, and develops the cardinality axis of the three smallness notions the parent lists"
+      }
+    ],
+    "assumptions": "0 axioms. Depends only on Mathlib's measure-theory and Baire-category infrastructure, the parent's countable-implies-meagre lemma, and, via the companion oq-02, the Mathlib facts that the Liouville numbers are residual and Lebesgue-null.",
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "A subset of ℝ can be 'small' in three classical and independent senses: countable (cardinality), Lebesgue-null (measure), or meagre/first-category (Baire category). Cantor's countability of the algebraic reals, Lebesgue measure, and Baire's category theorem give the three. Oxtoby's 'Measure and Category' (1980) studies how measure and category interact; the parent entry lists all three notions, and the companion oq-02 separates measure from category using the Liouville numbers. The third pairing — cardinality against measure and against category — is what this entry formalizes: the measure-small and category-small separating sets are uncountable, so countability is a strictly stronger notion of smallness.",
+    "problemStatement": "Show that cardinality-smallness (countability) is independent of measure-smallness (Lebesgue-null) and category-smallness (meagre) on ℝ: every countable set is both meagre and null, yet there exist a meagre uncountable set and a null uncountable set. This is the cardinality axis completing the three-way independence begun in oq-02.",
+    "text": "A 0-sorry, 0-axiom development. A countable subset of ℝ is meagre (a countable union of nowhere-dense singletons in the perfect space ℝ) and null (volume is atomless), so cardinality-smallness entails the other two notions. The converse fails: the non-Liouville reals are meagre yet have full Lebesgue measure — hence uncountable, since a countable set is null; and the Liouville numbers are null yet uncountable, since a countable set would be meagre, contradicting their comeagreness. An abstract engine produces the full-measure meagre complement of any residual null set using only countable subadditivity, with no measurability hypothesis.",
+    "proofStrategy": "countable_isMeagre_and_null pairs the parent's countable_isMeagre with Set.Countable.measure_zero. The engine meagre_conull_compl_of_residual_null: IsMeagre Sᶜ is definitional (Sᶜᶜ = S ∈ residual); volume Sᶜ = volume univ from univ = Sᶜ ∪ S, measure_union_le, and volume S = 0, with measure_mono for the reverse. exists_meagre_uncountable instantiates the engine at the Liouville set and rules out countability by rewriting the full measure to Real.volume_univ = ∞ ≠ 0. exists_null_uncountable uses liouville_null and derives a contradiction from countable_isMeagre against not_isMeagre_of_mem_residual liouville_residual.",
+    "keyInsights": [
+      "**The third axis**: oq-02 separates measure from category; this entry separates cardinality from both. Countability is strictly the strongest of the three notions of smallness — it implies the other two but neither implies it.",
+      "**A meagre set can be uncountable** because it can have full measure: the non-Liouville reals. Were it countable it would be null, but it is conull.",
+      "**A null set can be uncountable** because it can be comeagre: the Liouville numbers. Were they countable they would be meagre, contradicting comeagreness.",
+      "**Aligned baseline**: every countable set is automatically meagre AND null, so the separating witnesses for the cardinality axis are necessarily uncountable — the content is precisely that such witnesses exist.",
+      "**Measurability-free engine**: the full-measure step uses only countable subadditivity (measure_union_le holds for all sets), so the meagre full-measure complement is produced from any residual null set without assuming measurability.",
+      "**Honest scope**: the Liouville residual/null facts and countable ⇒ meagre are imported (Mathlib, parent, oq-02); the new mathematics is the cardinality independence, which neither predecessor states."
+    ],
+    "prerequisites": [
+      "Lebesgue measure on ℝ and atomless measures",
+      "Baire category: meagre and residual (comeagre) sets; countable sets are meagre in a perfect T1 space",
+      "Liouville numbers: residual and Lebesgue-null (via oq-02)",
+      "Countable versus uncountable subsets of ℝ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: the three smallness notions",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "File docstring and imports. Lists the three independent notions of smallness (cardinality, measure, category), recalls that oq-02 separates measure from category, and previews this entry's cardinality axis: meagre and null sets that are uncountable.",
+      "mathContext": "Countable ⊆ null and countable ⊆ meagre, but the reverse inclusions fail; this entry exhibits the separating uncountable witnesses."
+    },
+    {
+      "id": "engine",
+      "title": "The abstract orthogonality engine",
+      "startLine": 61,
+      "endLine": 80,
+      "summary": "Proves the complement of a residual, Lebesgue-null set is meagre and of full measure — using only countable subadditivity, so no measurability is assumed. This supplies the full-measure input for the meagre uncountable witness.",
+      "mathContext": "univ = Sᶜ ∪ S, measure_union_le, and volume S = 0 force volume Sᶜ = volume univ."
+    },
+    {
+      "id": "aligned",
+      "title": "The aligned case: countable ⇒ meagre and null",
+      "startLine": 81,
+      "endLine": 91,
+      "summary": "Every countable subset of ℝ is both meagre (countable union of nowhere-dense singletons, via the parent's countable_isMeagre) and null (atomless volume), so any set separating cardinality from the other notions must be uncountable.",
+      "mathContext": "Cardinality-smallness is the strongest notion: it implies both measure- and category-smallness."
+    },
+    {
+      "id": "cardinality-axis",
+      "title": "The cardinality axis: the separating examples are uncountable",
+      "startLine": 92,
+      "endLine": 139,
+      "summary": "The two non-implications — a meagre uncountable set (non-Liouville reals, uncountable via full measure) and a null uncountable set (Liouville numbers, uncountable via comeagreness) — packaged with the aligned case as the OQ-03 resolution.",
+      "mathContext": "category-small ⇏ countable and measure-small ⇏ countable, completing the three-way independence."
+    }
+  ],
+  "references": [
+    {
+      "title": "Measure and Category (Oxtoby, GTM 2)",
+      "url": "https://link.springer.com/book/10.1007/978-1-4684-9339-9"
+    },
+    {
+      "title": "Liouville number — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Liouville_number"
+    },
+    {
+      "title": "Meagre set — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Meagre_set"
+    }
+  ],
+  "crossReferences": [],
+  "conclusion": "Cardinality-smallness (countability) is independent of measure-smallness and category-smallness on ℝ. Every countable set is automatically both meagre and null, but neither converse holds: the non-Liouville reals are meagre yet uncountable (they have full measure), and the Liouville numbers are null yet uncountable (they are comeagre). Together with oq-02's separation of measure from category, this completes the pairwise independence of all three notions of smallness — with zero axioms, and with the full-measure step requiring no measurability hypothesis.",
+  "sorries": []
+}
