@@ -919,6 +919,7 @@ import Proofs.EhrhartSimplexProven
 import Proofs.EisensteinCriterionOQ01
 import Proofs.EisensteinCriterionOQ01OQ03
 import Proofs.EisensteinCriterionOQ01OQ03OQ02
+import Proofs.EisensteinCriterionOQ01OQ03OQ02OQ02
 import Proofs.ElementaryQuadraticReciprocity
 import Proofs.ElementaryQuadraticReciprocityOQ01
 import Proofs.ElementaryQuadraticReciprocityOQ01OQ01

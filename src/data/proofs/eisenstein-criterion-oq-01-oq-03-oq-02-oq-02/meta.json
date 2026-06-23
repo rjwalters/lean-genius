@@ -1,0 +1,158 @@
+{
+  "id": "eisenstein-criterion-oq-01-oq-03-oq-02-oq-02",
+  "title": "The Cyclotomic Field ℚ(ζ_p) Has Degree p − 1, and Φ_p Is the Minimal Polynomial of a Primitive p-th Root of Unity",
+  "slug": "eisenstein-criterion-oq-01-oq-03-oq-02-oq-02",
+  "description": "Answers the second open question of eisenstein-criterion-oq-01-oq-03-oq-02: use the parent's elementary (Eisenstein-route) irreducibility of Φ_p to compute [ℚ(ζ_p) : ℚ] = p − 1 explicitly and identify Φ_p as the minimal polynomial of a primitive p-th root of unity. For any primitive p-th root of unity ζ in a characteristic-zero field, minpoly ℚ ζ = Φ_p (since irreducibility forces the a priori divisor of Φ_p to be all of Φ_p), hence the minimal polynomial has degree φ(p) = p − 1 and [ℚ(ζ) : ℚ] = p − 1. A concrete capstone instantiates this in ℂ at ζ_p = exp(2πi/p). The irreducibility input is the parent's cyclotomic_prime_irreducible_rat, re-derived elementarily rather than via Mathlib's cyclotomic.irreducible_rat. 4 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cyclotomic_field",
+    "date": "Carl Friedrich Gauss, 1801 (Disquisitiones Arithmeticae)",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "field-theory",
+      "polynomials",
+      "minimal-polynomial",
+      "cyclotomic-polynomials",
+      "cyclotomic-field",
+      "number-theory",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/EisensteinCriterionOQ01OQ03OQ02OQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsPrimitiveRoot.minpoly_eq_cyclotomic_of_irreducible",
+        "description": "Given a primitive n-th root of unity μ and irreducibility of cyclotomic n K, concludes cyclotomic n K = minpoly K μ. The irreducibility hypothesis is supplied here by the parent entry's elementary result, not by Mathlib's general cyclotomic.irreducible_rat.",
+        "module": "Mathlib.RingTheory.Polynomial.Cyclotomic.Roots"
+      },
+      {
+        "theorem": "EisensteinCriterionOQ01OQ03OQ02.cyclotomic_prime_irreducible_rat",
+        "description": "The PARENT entry's result: Φ_p is irreducible over ℚ, re-derived elementarily from Eisenstein's criterion at Φ_p(X + 1). This is the single nontrivial input — irreducibility is exactly what upgrades minpoly ℚ ζ from 'some divisor of Φ_p' to Φ_p itself.",
+        "module": "Proofs.EisensteinCriterionOQ01OQ03OQ02"
+      },
+      {
+        "theorem": "IntermediateField.adjoin.finrank",
+        "description": "For an integral element x, Module.finrank K K⟮x⟯ = (minpoly K x).natDegree. Converts the degree of the minimal polynomial into the field-extension degree [ℚ(ζ) : ℚ].",
+        "module": "Mathlib.FieldTheory.IntermediateField.Adjoin.Basic"
+      },
+      {
+        "theorem": "IsPrimitiveRoot.isIntegral / IsIntegral.tower_top / natDegree_cyclotomic / Nat.totient_prime / Complex.isPrimitiveRoot_exp",
+        "description": "ζ is integral over ℤ hence over ℚ (tower_top); (cyclotomic p ℚ).natDegree = totient p = p − 1; and exp(2πi/p) is a primitive complex p-th root of unity for the ℂ capstone.",
+        "module": "Mathlib.RingTheory.RootsOfUnity.Minpoly / Mathlib.RingTheory.IntegralClosure / Mathlib.Data.Nat.Totient / Mathlib.RingTheory.RootsOfUnity.Complex"
+      }
+    ],
+    "assumptions": "None. All 4 theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). No native_decide is used. Depends on the parent entry's elementary irreducibility cyclotomic_prime_irreducible_rat (itself 0-axiom verified) and on standard Mathlib field-theory and cyclotomic infrastructure.",
+    "originalContributions": [
+      "minpoly_eq_cyclotomic: for any primitive p-th root of unity ζ in a characteristic-zero field, minpoly ℚ ζ = cyclotomic p ℚ, obtained by feeding the parent's elementary irreducibility of Φ_p into IsPrimitiveRoot.minpoly_eq_cyclotomic_of_irreducible. This identifies Φ_p as the minimal polynomial, the first half of the open question.",
+      "minpoly_natDegree and finrank_adjoin: the minimal polynomial has degree p − 1 (via natDegree_cyclotomic and Nat.totient_prime), and consequently [ℚ(ζ) : ℚ] = Module.finrank ℚ ℚ⟮ζ⟯ = p − 1 (via IntermediateField.adjoin.finrank). This is the explicit cyclotomic-field degree computation the open question requested.",
+      "exists_complex_primitiveRoot_finrank: a concrete capstone exhibiting a primitive complex p-th root of unity ζ_p = exp(2πi/p) with [ℚ(ζ_p) : ℚ] = p − 1, grounding the abstract result in ℂ.",
+      "End-to-end demonstration that the elementary Eisenstein-route irreducibility of the parent entry delivers its intended field-theoretic payoff: the degree of the cyclotomic field, which is the entire reason irreducibility of Φ_p matters."
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 75,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Irreducibility of the cyclotomic polynomial Φ_p over ℚ (Gauss, Disquisitiones Arithmeticae, 1801) is rarely the final goal: its purpose is to determine the degree of the cyclotomic field ℚ(ζ_p). Once Φ_p is known irreducible, the minimal polynomial of a primitive p-th root of unity ζ — a priori only some monic divisor of Φ_p — must be Φ_p itself, so [ℚ(ζ_p) : ℚ] = deg Φ_p = φ(p) = p − 1. The parent entry eisenstein-criterion-oq-01-oq-03-oq-02 reproved irreducibility of Φ_p elementarily from Eisenstein's criterion at Φ_p(X + 1); its second open question asks to harvest the field-theoretic consequence. This entry does so.",
+    "problemStatement": "**Open Question (OQ-01-OQ-03-OQ-02-OQ-02)**: Use cyclotomic_prime_irreducible_rat to compute [ℚ(ζ_p) : ℚ] = p − 1 explicitly, identifying Φ_p as the minimal polynomial of a primitive p-th root of unity.\n\n**Formalized**: minpoly_eq_cyclotomic (minpoly ℚ ζ = Φ_p), minpoly_natDegree (its degree is p − 1), finrank_adjoin ([ℚ(ζ) : ℚ] = p − 1), and a concrete ℂ capstone exists_complex_primitiveRoot_finrank.",
+    "text": "A 75-line formalization in 4 theorems and 0 definitions. The only nontrivial input is the parent's irreducibility of Φ_p, re-derived elementarily via Eisenstein at Φ_p(X + 1). Feeding it into Mathlib's IsPrimitiveRoot.minpoly_eq_cyclotomic_of_irreducible (with the NeZero (p : ℚ) instance from char-zero) gives minpoly ℚ ζ = cyclotomic p ℚ for any primitive p-th root of unity ζ in a characteristic-zero field. natDegree_cyclotomic and Nat.totient_prime read off the degree p − 1; IntermediateField.adjoin.finrank (with ζ integral over ℚ via IsPrimitiveRoot.isIntegral and IsIntegral.tower_top) converts this to the field degree [ℚ(ζ) : ℚ] = p − 1. The capstone instantiates ℂ with ζ_p = exp(2πi/p) via Complex.isPrimitiveRoot_exp. All theorems compile with 0 sorries, 0 axioms, no native_decide.",
+    "proofStrategy": "**Minimal polynomial (minpoly_eq_cyclotomic)**: with NeZero ((p : ℕ) : ℚ) supplied from p ≠ 0 in characteristic zero, IsPrimitiveRoot.minpoly_eq_cyclotomic_of_irreducible applied to the parent's cyclotomic_prime_irreducible_rat gives cyclotomic p ℚ = minpoly ℚ ζ; symmetrize.\n\n**Degree (minpoly_natDegree)**: rewrite minpoly ℚ ζ to cyclotomic p ℚ, then natDegree_cyclotomic gives totient p and Nat.totient_prime gives p − 1.\n\n**Field degree (finrank_adjoin)**: ζ is integral over ℤ by IsPrimitiveRoot.isIntegral, hence over ℚ by IsIntegral.tower_top; IntermediateField.adjoin.finrank then equates Module.finrank ℚ ℚ⟮ζ⟯ with (minpoly ℚ ζ).natDegree = p − 1.\n\n**Capstone (exists_complex_primitiveRoot_finrank)**: Complex.isPrimitiveRoot_exp p (p ≠ 0) provides ζ_p = exp(2πi/p) as a primitive p-th root of unity in ℂ; apply finrank_adjoin.",
+    "keyInsights": [
+      "**Irreducibility is the load-bearing hypothesis**: the minimal polynomial of ζ is always a monic divisor of Φ_p; only irreducibility of Φ_p collapses that divisor to Φ_p itself. The whole field-degree computation rests on the single input cyclotomic_prime_irreducible_rat.",
+      "**The degree is the payoff**: knowing Φ_p is irreducible is interesting precisely because it pins [ℚ(ζ_p) : ℚ] = p − 1. This entry makes the implication 'irreducible ⟹ degree = p − 1' explicit and machine-checked.",
+      "**Reusing the elementary route end-to-end**: the irreducibility consumed here is the parent's Eisenstein-after-translation result, not Mathlib's cyclotomic.irreducible_rat — so the field degree is obtained without ever invoking Mathlib's general cyclotomic irreducibility theorem.",
+      "**Integral over ℤ, then over ℚ**: a primitive root is integral over ℤ (IsPrimitiveRoot.isIntegral); IsIntegral.tower_top promotes this to integrality over ℚ, the hypothesis IntermediateField.adjoin.finrank needs to read the field degree off the minimal polynomial.",
+      "**0-axiom, no native_decide**: all 4 theorems are kernel-checked, depending only on propext / Classical.choice / Quot.sound, which do not count as assumptions."
+    ],
+    "prerequisites": [
+      "Cyclotomic polynomials Φ_n; natDegree_cyclotomic = totient n, Nat.totient_prime p = p − 1 (Mathlib Cyclotomic.Basic, Nat.Totient)",
+      "Minimal polynomials and IsPrimitiveRoot.minpoly_eq_cyclotomic_of_irreducible (Mathlib RootsOfUnity / Cyclotomic.Roots)",
+      "Irreducibility of Φ_p over ℚ via the elementary Eisenstein route (parent entry eisenstein-criterion-oq-01-oq-03-oq-02)",
+      "IntermediateField adjoin K⟮x⟯ and adjoin.finrank: [K(x) : K] = deg (minpoly K x) for integral x (Mathlib FieldTheory.IntermediateField.Adjoin)",
+      "Integrality of roots of unity: IsPrimitiveRoot.isIntegral over ℤ and IsIntegral.tower_top to ℚ; Complex.isPrimitiveRoot_exp for the ℂ instance"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "eisenstein-criterion-oq-01-oq-03-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry. It reproves irreducibility of Φ_p over ℚ elementarily via Eisenstein at Φ_p(X + 1) (cyclotomic_prime_irreducible_rat). This entry answers its second open question by using that irreducibility to compute [ℚ(ζ_p) : ℚ] = p − 1 and identify Φ_p as the minimal polynomial of a primitive p-th root of unity."
+    },
+    {
+      "proofId": "eisenstein-criterion-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Grandparent entry, which reproves Eisenstein's criterion over ℚ in concrete divisibility form. The cyclotomic field degree is the downstream field-theoretic consequence of that criterion's cyclotomic application."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.EisensteinCriterionOQ01OQ03OQ02"
+    ],
+    "namespace": "EisensteinCriterionOQ01OQ03OQ02OQ02",
+    "lineCount": 75,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/EisensteinCriterionOQ01OQ03OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "finrank_adjoin",
+      "type": "core",
+      "statement": "For any prime $p$ and any primitive $p$-th root of unity $\\zeta$ in a characteristic-zero field, $[\\mathbb{Q}(\\zeta) : \\mathbb{Q}] = p - 1$.",
+      "significance": "The headline result and the direct answer to the open question: the cyclotomic field degree, obtained from $[\\mathbb{Q}(\\zeta):\\mathbb{Q}] = \\deg(\\operatorname{minpoly}_{\\mathbb{Q}} \\zeta) = \\deg \\Phi_p = \\varphi(p) = p-1$.",
+      "description": "[ℚ(ζ_p) : ℚ] = p − 1 via the parent's elementary irreducibility of Φ_p."
+    },
+    {
+      "name": "minpoly_eq_cyclotomic",
+      "type": "core",
+      "statement": "For any prime $p$ and any primitive $p$-th root of unity $\\zeta$ in a characteristic-zero field, $\\operatorname{minpoly}_{\\mathbb{Q}}(\\zeta) = \\Phi_p$.",
+      "significance": "Identifies Φ_p as the minimal polynomial of a primitive p-th root of unity — the second half of the open question. Irreducibility of Φ_p (from the parent) is what forces the minimal polynomial, a priori only a divisor, to equal Φ_p.",
+      "description": "minpoly ℚ ζ = cyclotomic p ℚ."
+    },
+    {
+      "name": "minpoly_natDegree",
+      "type": "supporting",
+      "statement": "$\\deg \\operatorname{minpoly}_{\\mathbb{Q}}(\\zeta) = p - 1$.",
+      "significance": "The degree computation that bridges minpoly_eq_cyclotomic and finrank_adjoin, via natDegree_cyclotomic = totient p and Nat.totient_prime = p − 1.",
+      "description": "The minimal polynomial of a primitive p-th root of unity has degree p − 1."
+    },
+    {
+      "name": "exists_complex_primitiveRoot_finrank",
+      "type": "supporting",
+      "statement": "There exists a primitive complex $p$-th root of unity $\\zeta_p$ (namely $e^{2\\pi i/p}$) with $[\\mathbb{Q}(\\zeta_p) : \\mathbb{Q}] = p - 1$.",
+      "significance": "A concrete capstone grounding the abstract result in ℂ at the canonical primitive root exp(2πi/p), via Complex.isPrimitiveRoot_exp.",
+      "description": "Concrete ℂ instance of the degree formula."
+    }
+  ],
+  "references": [
+    {
+      "text": "Gauss, C. F. (1801). Disquisitiones Arithmeticae. Irreducibility of Φ_p and the structure of cyclotomic fields.",
+      "url": "https://en.wikipedia.org/wiki/Cyclotomic_field"
+    },
+    {
+      "text": "Minimal polynomial of a root of unity and the degree of the cyclotomic field; Dummit & Foote, Abstract Algebra, §13.6.",
+      "url": "https://en.wikipedia.org/wiki/Root_of_unity"
+    },
+    {
+      "text": "Mathlib4: IsPrimitiveRoot.minpoly_eq_cyclotomic_of_irreducible, IntermediateField.adjoin.finrank, natDegree_cyclotomic, Nat.totient_prime, Complex.isPrimitiveRoot_exp; and the parent entry's cyclotomic_prime_irreducible_rat.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
+  "conclusion": {
+    "summary": "Answers the second open question of eisenstein-criterion-oq-01-oq-03-oq-02. Using the parent's elementary (Eisenstein-route) irreducibility of Φ_p, the minimal polynomial of a primitive p-th root of unity ζ over ℚ is identified as cyclotomic p ℚ (minpoly_eq_cyclotomic), its degree computed as p − 1 (minpoly_natDegree), and the cyclotomic field degree obtained as [ℚ(ζ) : ℚ] = p − 1 (finrank_adjoin). A concrete capstone instantiates this in ℂ at ζ_p = exp(2πi/p). 4 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide.",
+    "implications": "The entry harvests the field-theoretic payoff of the parent's irreducibility result: irreducibility of Φ_p matters precisely because it fixes the degree of the cyclotomic field at p − 1. It closes the eisenstein-criterion-oq-01-oq-03 line from the abstract criterion through the cyclotomic application to the explicit extension degree, entirely along the elementary route and without invoking Mathlib's general cyclotomic irreducibility theorem.",
+    "openQuestions": [
+      "Compute the Galois group: combine finrank_adjoin with the cyclotomic Galois action to show Gal(ℚ(ζ_p)/ℚ) ≅ (ℤ/pℤ)ˣ, an abelian group of order p − 1.",
+      "Extend the degree formula to prime powers: once irreducibility of Φ_{p^k} is available (the sibling open question), the same argument yields [ℚ(ζ_{p^k}) : ℚ] = φ(p^k) = p^{k-1}(p − 1)."
+    ]
+  },
+  "sorries": 0
+}
