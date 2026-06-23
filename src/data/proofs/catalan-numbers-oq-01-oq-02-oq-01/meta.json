@@ -148,5 +148,49 @@
     "path": "Proofs/CatalanNumbersOQ01OQ02OQ01.lean",
     "sorries": 0
   },
+  "sections": [
+    {
+      "id": "overview-header",
+      "title": "Overview: from p = 2 to an arbitrary prime",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring framing the generalisation of the sibling's 2-adic result to a general prime p, identifying the two general-in-p ingredients (Legendre's formula and (2n)! = C(2n,n)·(n!)²) and the Kummer carry-count interpretation of 2·s_p(n) − s_p(2n)."
+    },
+    {
+      "id": "setup-nonzero",
+      "title": "Setup: Catalan numbers are nonzero",
+      "startLine": 38,
+      "endLine": 49,
+      "summary": "Opens namespace CatalanPAdic; catalan_ne_zero proves catalan n ≠ 0 from (n+1)·catalan n = centralBinom n > 0 — the side condition for splitting the p-adic valuation across products."
+    },
+    {
+      "id": "central-binomial-valuation",
+      "title": "Central-binomial valuation at a general prime",
+      "startLine": 51,
+      "endLine": 80,
+      "summary": "sub_one_mul_padicValNat_centralBinom: (p−1)·v_p(C(2n,n)) + s_p(2n) = 2·s_p(n), proved from Legendre's formula on (2n)! and n! (made exact by digit_sum_le) plus the factorisation (2n)! = C(2n,n)·n!·n!; one ring step distributes (p−1) and omega closes it."
+    },
+    {
+      "id": "catalan-valuation",
+      "title": "The p-adic valuation of the Catalan numbers",
+      "startLine": 82,
+      "endLine": 97,
+      "summary": "sub_one_mul_padicValNat_catalan: (p−1)·(v_p(Cₙ) + v_p(n+1)) + s_p(2n) = 2·s_p(n), obtained by splitting v_p across (n+1)·catalan n = C(2n,n) and substituting into the central-binomial identity."
+    },
+    {
+      "id": "divisibility-criterion",
+      "title": "The p-divisibility criterion",
+      "startLine": 99,
+      "endLine": 129,
+      "summary": "not_dvd_catalan_iff: p ∤ catalan n ⟺ (p−1)·v_p(n+1) + s_p(2n) = 2·s_p(n), via padicValNat_dvd_iff_le and Nat.mul_eq_zero (using p ≥ 2). Generalises the sibling's parity law (p = 2 ⇒ v₂(n+1) = s₂(n) ⟺ n+1 a power of two)."
+    },
+    {
+      "id": "concrete-example",
+      "title": "Concrete example at p = 3",
+      "startLine": 131,
+      "endLine": 135,
+      "summary": "example : ¬ 3 ∣ catalan 2, discharged by kernel decide (no native_decide), matching the criterion's arithmetic (2·1 + s₃(4) = 4 = 2·s₃(2))."
+    }
+  ],
   "sorries": 0
 }
