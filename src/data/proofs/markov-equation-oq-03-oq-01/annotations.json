@@ -1,0 +1,143 @@
+[
+  {
+    "id": "markov-oq0301-ann-header",
+    "proofId": "markov-equation-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "concept",
+    "title": "The a = 1 Slice and Its Complete Classification",
+    "content": "The classical Markov equation x²+y²+z² = 3xyz is the a = 3 member of the Markov–Hurwitz family x²+y²+z² = a·xyz. In three variables only a = 1 and a = 3 admit positive solutions, and the two solution sets are isomorphic via scaling by 3. The sibling entry markov-equation-oq-03 carries the Vieta-jump infrastructure to the whole family but classifies no new member; this file completes the a = 1 case. IsHurwitz a x y z bundles positivity with x²+y²+z² = a·xyz. The strategy: a mod-3 obstruction forces 3 ∣ x,y,z, the scaling bijection identifies a = 1 solutions with 3× Markov triples, and the parent's classification transports the tree. Honest scope: Hurwitz's full non-existence theorem for a ∉ {1,3} is not proved (only the diagonal obstruction).",
+    "mathContext": "$x^2+y^2+z^2 = a\\,xyz;\\quad a=1:\\ x^2+y^2+z^2 = xyz \\iff (x,y,z) = 3\\cdot(\\text{Markov triple}).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Markov–Hurwitz equation",
+      "Markov tree",
+      "scaling bijection",
+      "mod-3 obstruction"
+    ],
+    "prerequisites": [
+      "Diophantine equations",
+      "modular arithmetic",
+      "the Markov equation"
+    ]
+  },
+  {
+    "id": "markov-oq0301-ann-vieta",
+    "proofId": "markov-equation-oq-03-oq-01",
+    "range": { "startLine": 57, "endLine": 90 },
+    "type": "theorem",
+    "title": "Coefficient-Agnostic Vieta Jump",
+    "content": "The descent machinery depends only on the shape of the equation, not on a. Fixing x and y makes x²+y²+z² = a·xyz the monic quadratic t² − a·xy·t + (x²+y²) = 0 in z; its roots z and z' = a·xy − z multiply to x²+y² (hurwitz_root_prod), so the jump z ↦ a·xy − z again gives a solution with the same a (hurwitz_vieta), with positivity of the new coordinate from z·z' = x²+y² > 0 and z > 0. The jump is an involution. isHurwitz_three_iff_isMarkov records that the a = 3 predicate is definitionally the parent's IsMarkov, anchoring the family to the classical case.",
+    "mathContext": "$z + z' = a\\,xy,\\qquad z\\,z' = x^2 + y^2,\\qquad z' = a\\,xy - z.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Vieta's formulas",
+      "root conjugation",
+      "involution",
+      "coefficient independence"
+    ],
+    "prerequisites": [
+      "Vieta's formulas",
+      "quadratic equations"
+    ]
+  },
+  {
+    "id": "markov-oq0301-ann-mod3",
+    "proofId": "markov-equation-oq-03-oq-01",
+    "range": { "startLine": 92, "endLine": 117 },
+    "type": "insight",
+    "title": "The Mod-3 Obstruction — the Arithmetic Heart",
+    "content": "three_dvd_all_of_hurwitz_one is the crux: every integer solution of x²+y²+z² = xyz has all three coordinates divisible by 3. The proof is a finite congruence check — over (ZMod 3)³ the only residue triple satisfying a²+b²+c² = abc is (0,0,0), discharged by `decide` (a 27-case check, not native_decide, so no Lean.ofReduceBool and the result stays axiom-clean). The integer equation is cast into ZMod 3 via push_cast, and ZMod.intCast_zmod_eq_zero_iff_dvd converts each zero residue back to a divisibility statement over ℤ.",
+    "mathContext": "$\\forall a,b,c\\in\\mathbb{Z}/3:\\ a^2+b^2+c^2 = abc \\Rightarrow a=b=c=0;\\quad \\text{hence } 3\\mid x,y,z.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "congruence obstruction",
+      "ZMod 3",
+      "decide tactic",
+      "squares mod 3"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "finite case checking",
+      "Int.cast into ZMod"
+    ]
+  },
+  {
+    "id": "markov-oq0301-ann-bijection",
+    "proofId": "markov-equation-oq-03-oq-01",
+    "range": { "startLine": 119, "endLine": 156 },
+    "type": "theorem",
+    "title": "The Scaling Bijection a = 1 ↔ 3 × Markov",
+    "content": "Tripling a Markov triple turns the a = 3 equation into the a = 1 equation: hurwitz_one_of_markov shows (a,b,c) Markov ⟹ (3a,3b,3c) is an a = 1 solution, since 9(a²+b²+c²) = 9·3abc = 27abc = (3a)(3b)(3c). Conversely, markov_of_hurwitz_one uses the mod-3 obstruction to write any a = 1 solution as (3a,3b,3c) and cancels the common factor 9 to recover a²+b²+c² = 3abc. hurwitz_one_iff_markov_scaled packages both directions: (x,y,z) solves x²+y²+z² = xyz iff it is 3× a Markov triple. So the a = 1 numbers 3, 6, 15, 39, … are exactly 3× the Markov numbers.",
+    "mathContext": "$9(a^2+b^2+c^2) = (3a)(3b)(3c) = 27abc \\iff a^2+b^2+c^2 = 3abc.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "bijection of solution sets",
+      "homogeneous scaling",
+      "Markov numbers",
+      "common factor cancellation"
+    ],
+    "prerequisites": [
+      "linear_combination",
+      "divisibility extraction"
+    ]
+  },
+  {
+    "id": "markov-oq0301-ann-classification",
+    "proofId": "markov-equation-oq-03-oq-01",
+    "range": { "startLine": 158, "endLine": 170 },
+    "type": "theorem",
+    "title": "Transported Complete Classification",
+    "content": "hurwitz_one_classification composes the scaling bijection with the parent's markov_classification: every positive solution of x²+y²+z² = xyz is (3a,3b,3c) where (a,b,c) is reachable from the root (1,1,1) in the Markov tree. This is a genuinely complete description of the a = 1 solution set — not a sample of solutions but a structural theorem — obtained by reusing (not re-proving) the parent's descent. It cleanly separates the arithmetic step (the mod-3 congruence) from the structural step (the transported tree).",
+    "mathContext": "$\\mathrm{IsHurwitz}\\,1\\,(x,y,z) \\Rightarrow (x,y,z) = (3a,3b,3c),\\ \\mathrm{Reachable}((a,b,c),(1,1,1)).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete classification",
+      "Markov tree reachability",
+      "proof reuse",
+      "transport of structure"
+    ],
+    "prerequisites": [
+      "the Markov classification theorem",
+      "composition of bijections"
+    ]
+  },
+  {
+    "id": "markov-oq0301-ann-rigidity",
+    "proofId": "markov-equation-oq-03-oq-01",
+    "range": { "startLine": 172, "endLine": 192 },
+    "type": "insight",
+    "title": "Coefficient Rigidity on the Diagonal",
+    "content": "hurwitz_diagonal shows a symmetric solution (t,t,t) forces a·t = 3: the equation collapses to 3t² = a·t³, and cancelling t² > 0 gives a·t = 3. hurwitz_diagonal_coeff then enumerates the positive factorisations of 3 (via interval_cases t after bounding 1 ≤ t ≤ 3) to conclude (a,t) ∈ {(1,3),(3,1)}. So a = 1 and a = 3 are exactly the coefficients admitting a symmetric solution — the two slices whose full solution sets are now classified (a = 3 by the parent, a = 1 here). This is an elementary partial form of Hurwitz's coefficient theorem.",
+    "mathContext": "$3t^2 = a\\,t^3 \\Rightarrow a\\,t = 3 \\Rightarrow (a,t)\\in\\{(1,3),(3,1)\\}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "diagonal solutions",
+      "coefficient rigidity",
+      "interval_cases",
+      "factorisations of 3"
+    ],
+    "prerequisites": [
+      "cancellation in integral domains",
+      "bounded case analysis"
+    ]
+  },
+  {
+    "id": "markov-oq0301-ann-small",
+    "proofId": "markov-equation-oq-03-oq-01",
+    "range": { "startLine": 194, "endLine": 208 },
+    "type": "context",
+    "title": "Small a = 1 Solutions as Images of Markov Triples",
+    "content": "The file closes with concrete witnesses that exhibit the bijection on the leading entries of the tree: (3,3,3), (3,3,6), (3,6,15) are the a = 1 images of the Markov triples (1,1,1), (1,1,2), (1,2,5). They make the abstract scaling tangible — the smallest a = 1 solutions are precisely 3× the smallest Markov triples — and serve as machine-checked sanity checks on the classification.",
+    "mathContext": "$(1,1,1)\\mapsto(3,3,3),\\ (1,1,2)\\mapsto(3,3,6),\\ (1,2,5)\\mapsto(3,6,15).$",
+    "significance": "context",
+    "relatedConcepts": [
+      "concrete witnesses",
+      "Markov triples",
+      "tree leaves",
+      "sanity checks"
+    ],
+    "prerequisites": [
+      "small-case verification"
+    ]
+  }
+]

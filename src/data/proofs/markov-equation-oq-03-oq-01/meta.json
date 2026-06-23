@@ -35,6 +35,57 @@
     "theoremCount": 14,
     "definitionCount": 1
   },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Overview and the IsHurwitz Predicate",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Docstring framing the a = 1 slice of the Markov–Hurwitz family x²+y²+z² = a·xyz, the three-step plan (mod-3 obstruction, scaling bijection, transported classification), the diagonal coefficient-rigidity result, and the honest scope note (Hurwitz's full non-existence theorem for a ∉ {1,3} is not proved). Imports Mathlib and the parent Proofs.MarkovEquation, opens MarkovEquation, and defines IsHurwitz a x y z = positivity ∧ x²+y²+z² = a·xyz."
+    },
+    {
+      "id": "sec-vieta",
+      "title": "Coefficient-Agnostic Vieta Jumping",
+      "startLine": 57,
+      "endLine": 90,
+      "summary": "hurwitz_root_prod (the two z-roots of t² − a·xy·t + (x²+y²) multiply to x²+y², independent of a), hurwitz_vieta (the jump z ↦ a·xy − z preserves solutions with positivity), hurwitz_vieta_involutive, and isHurwitz_three_iff_isMarkov (the a = 3 predicate is definitionally the parent's IsMarkov)."
+    },
+    {
+      "id": "sec-mod3",
+      "title": "The Mod-3 Divisibility Obstruction",
+      "startLine": 92,
+      "endLine": 117,
+      "summary": "three_dvd_all_of_hurwitz_one: every integer solution of x²+y²+z² = xyz has 3 dividing all coordinates. Proved by a finite `decide` over (ZMod 3)³ (the only residue triple solving the equation is (0,0,0) — 27 cases, not native_decide), casting the integer equation into ZMod 3 via push_cast and converting zero residues back to divisibility with ZMod.intCast_zmod_eq_zero_iff_dvd."
+    },
+    {
+      "id": "sec-bijection",
+      "title": "The Scaling Bijection a = 1 ↔ 3 × Markov",
+      "startLine": 119,
+      "endLine": 156,
+      "summary": "hurwitz_one_of_markov (tripling a Markov triple gives an a = 1 solution, via 9·(a²+b²+c²) = 27abc), markov_of_hurwitz_one (every a = 1 solution is (3a,3b,3c) for a Markov triple, using the mod-3 obstruction and cancelling 9), and hurwitz_one_iff_markov_scaled packaging both directions."
+    },
+    {
+      "id": "sec-classification",
+      "title": "Complete Classification at a = 1",
+      "startLine": 158,
+      "endLine": 170,
+      "summary": "hurwitz_one_classification: composing the scaling bijection with the parent's markov_classification, every positive a = 1 solution is (3a,3b,3c) with (a,b,c) reachable from the root (1,1,1) in the Markov tree — a complete structural description obtained by reusing the parent's descent."
+    },
+    {
+      "id": "sec-rigidity",
+      "title": "Coefficient Rigidity (Diagonal Obstruction)",
+      "startLine": 172,
+      "endLine": 192,
+      "summary": "hurwitz_diagonal (a symmetric solution (t,t,t) forces a·t = 3, from 3t² = a·t³ and cancelling t² > 0) and hurwitz_diagonal_coeff (the positive factorisations of 3 give (a,t) ∈ {(1,3),(3,1)}), so a ∈ {1,3} are exactly the coefficients with a symmetric solution."
+    },
+    {
+      "id": "sec-small",
+      "title": "Small Solutions",
+      "startLine": 194,
+      "endLine": 208,
+      "summary": "Concrete a = 1 witnesses (3,3,3), (3,3,6), (3,6,15) exhibited as the images under scaling-by-3 of the Markov triples (1,1,1), (1,1,2), (1,2,5)."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "markov-equation-oq-03",
