@@ -22,7 +22,47 @@ transpose / perfect-shuffle permutation, as in Zolotarev 1872 / Frobenius 1914.
 | `sign_gridTranspose_odd` (classical-form corollary) | **proved, 0 sorry** |
 | `rowOrder`/`colOrder`/`gridTranspose_eq`/`transRC`/`sign_transRC` | **proved, 0 sorry, kernel-verified** (S5) |
 | `quadratic_reciprocity_of_transition_signs` (Shurman 3-transition skeleton → QR, conditional on the two per-line Zolotarev signs) | **proved, 0 sorry, kernel-verified** (S5; axioms `[propext, Classical.choice, Quot.sound]`) |
-| Discharge per-line signs `sign τ_cd=(p/q)`, `sign τ_rd=(q/p)` for the concrete CRT `D` | not formalized (next step) |
+| Discharge per-line signs `sign τ_cd=(p/q)`, `sign τ_rd=(q/p)` for the concrete CRT `D` | **PROVED, 0 sorry, kernel-verified** (S7: `crtOrder`, `sign_rowTransition`, `sign_colTransition`) |
+| `zolotarev_quadratic_reciprocity` (UNCONDITIONAL QR for distinct odd primes) | **PROVED, 0 sorry, kernel-verified** (S7; axioms `[propext, Classical.choice, Quot.sound]`, no Mathlib `legendreSym.quadratic_reciprocity`) |
+
+## Session 2026-06-23 (S7, researcher-9) — GAP CLOSED: UNCONDITIONAL ZOLOTAREV QR
+
+**Mode**: REVISIT (continuation of own S5/S6). **Outcome**: COMPLETE — the
+previously-open combinatorial gap is closed; `zolotarev_quadratic_reciprocity`
+is now a fully unconditional, kernel-verified 0-sorry theorem.
+
+### What I Did
+- Defined the concrete CRT order `crtOrder hpq : Fin p × Fin q ≃ Fin (p*q)` as the
+  Chinese-remainder iso `ZMod (p*q) ≃+* ZMod p × ZMod q` transported across the
+  canonical `ZMod.finEquiv : Fin n ≃+* ZMod n`. Its inverse is `z ↦ (z mod p, z mod q)`.
+- Helper lemmas `finEquiv_val` (`(finEquiv n i).val = i.val`, by `obtain succ; rfl`),
+  `finEquiv_eq_natCast` (`finEquiv n i = ↑i.val`), `arrEquiv`/`arrEquiv_apply`, and the
+  key `arrEquiv_crtOrder_symm` (`arrEquiv ((crtOrder hpq).symm z) = crt (finEquiv (p*q) z)`).
+- `sign_rowTransition`: conjugating `crtOrder⁻¹∘rowOrder` by `arrEquiv` gives LITERALLY
+  `prodCongrLeft (fun k:ZMod q => addLeft (↑j) * ringMulPerm ⟨q⟩)` on `ZMod p × ZMod q`
+  (via `Equiv.Perm.sign_eq_sign_of_equiv` + componentwise CRT residue computation
+  `chineseRemainder_fst/snd` + `map_natCast` + `ZMod.natCast_self`), then
+  `sign_prodCongrLeft_affineLine` collapses to `legendreSym p q`.
+- `sign_colTransition`: dual, conjugating `crtOrder⁻¹∘colOrder` by `arrEquiv ∘ swap`
+  into `ZMod q × ZMod p`; reuses `sign_prodCongrLeft_affineLine` with moduli swapped → `legendreSym q p`.
+- `zolotarev_quadratic_reciprocity`: feeds both into `quadratic_reciprocity_of_transition_signs`
+  with `D := crtOrder hpq`. `#print axioms = [propext, Classical.choice, Quot.sound]`.
+
+### Key technical points / gotchas
+- `finProdFinEquiv (i,j)` has `.val = j.val + q*i.val` BY `rfl` (mixed-radix def);
+  `colOrder` (`prodComm` + `finCongr`) also reduces to `i.val + p*j.val` by `rfl`.
+- `ZMod.finEquiv n` does NOT reduce for variable `n`; prove `val`-preservation by
+  `obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne n); rfl` (it is `.refl`).
+- For the column transition the coordinate SWAP is the trap: reduce `ec (i,j)` to a
+  literal pair via a separate `have hrhs` BEFORE `prodCongrLeft_apply`, else the
+  rewrite leaves an unreduced `(_, _).swap.2` and `prodCongrLeft_apply` produces garbage.
+- The first `Equiv.trans_apply` auto-unfolds a `set`-bound equiv (`ec`), so don't also
+  `rw [hec]` — it then fails ("no `ec` in goal").
+- `RingEquiv.symm_apply_apply` must fire BEFORE `finEquiv_eq_natCast` (else the inner
+  `finEquiv` gets cast away and the symm cancellation no longer matches).
+- `ringMulPerm_apply` lives in `ZolotarevCRT` (only `ringMulPerm` is `open`ed) → qualify.
+- Compile from the WORKTREE proofs dir (its `proofs/.lake` symlinks main's oleans);
+  `cd`-ing into the MAIN repo and compiling tests the OLD unedited file (silent false pass).
 
 ## Session 2026-06-23 (S5, researcher-9) — QR ASSEMBLY SKELETON FORMALIZED & VERIFIED
 

@@ -10,7 +10,13 @@
      reciprocity law (a/p)(p/a) = (-1)^… directly via the sign of a suitable
      shuffle permutation, as in Zolotarev's 1872 derivation."
 
-  ## Status of THIS file (0 sorries / 0 axioms — the combinatorial blocker is proved)
+  ## Status of THIS file (0 sorries — UNCONDITIONAL Zolotarev QR is now complete)
+
+  The capstone `zolotarev_quadratic_reciprocity` derives the full law
+  `(q/p)·(p/q) = (-1)^((p-1)/2·(q-1)/2)` for distinct odd primes `p, q` entirely
+  from the sign-of-permutation calculus, with NO hypotheses and NO appeal to
+  Mathlib's `legendreSym.quadratic_reciprocity` (axioms `[propext,
+  Classical.choice, Quot.sound]` only).  The earlier sections build toward it:
 
   The parent program already supplies, with 0 sorries / 0 axioms, the
   Frobenius/Zolotarev sign identity for EVERY odd modulus:
@@ -107,28 +113,31 @@
     correct objects are the three transition permutations, and α,β are NOT
     `ringMulPerm` on `ℤ/pq` but per-line multiplication maps on `ℤ/q` resp `ℤ/p`.)
 
-  ## What remains
+  ## What remains — NOTHING: the gap is now closed (`zolotarev_quadratic_reciprocity`)
 
-  Discharging the two hypotheses `sign τ_cd = (p/q)`, `sign τ_rd = (q/p)` for the
-  concrete CRT order `D` (Shurman §3): `D⁻¹∘C` fixes each row and acts on it by
-  `y ↦ p·y + x mod q`, a multiplication-by-`p` permutation of `ℤ/q` up to an
-  even (odd-length-cycle) translation, whose sign is `(p/q)`.
+  The two transition-sign hypotheses are now DISCHARGED for a concrete CRT order
+  `crtOrder` (§"Closing the gap" below), and the capstone
+  `zolotarev_quadratic_reciprocity` is **unconditional** (0 sorries, axioms
+  `[propext, Classical.choice, Quot.sound]` only — no `sorryAx`, no `ofReduceBool`,
+  and no appeal to Mathlib's `legendreSym.quadratic_reciprocity`).
 
-  The *per-line number-theoretic step* is now PROVED in this file as
-  `sign_affineLine_eq_legendreSym` (§"Per-line Zolotarev sign" below): for an odd
-  prime `m` the sign of the affine permutation `x ↦ a·x + b` of `ℤ/m` is the
-  Legendre symbol `(a / m)`.  The translation summand `x ↦ x + b` is an *even*
-  permutation — it has odd order on the odd-order group `ℤ/m`, so its sign is `+1`
-  (`sign_addLeft_odd`, absent from Mathlib) — and the multiplication factor is
-  Zolotarev's lemma in Frobenius form
+  The *per-line number-theoretic step* is `sign_affineLine_eq_legendreSym`
+  (§"Per-line Zolotarev sign"): for an odd prime `m` the sign of the affine
+  permutation `x ↦ a·x + b` of `ℤ/m` is the Legendre symbol `(a / m)`.  The
+  translation summand `x ↦ x + b` is an *even* permutation — it has odd order on
+  the odd-order group `ℤ/m`, so its sign is `+1` (`sign_addLeft_odd`, absent from
+  Mathlib) — and the multiplication factor is Zolotarev's lemma in Frobenius form
   (`ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd = legendreSym` at a prime).
 
-  What is left is therefore PURELY COMBINATORIAL: identify each transition
-  `D⁻¹∘rowOrder` / `D⁻¹∘colOrder` with `prodCongrLeft` of the per-line affine maps
-  (transported across `Fin m ≃ ℤ/m`), apply `Equiv.Perm.sign_prodCongrLeft` to get
-  the `q`-fold (resp. `p`-fold) product of per-line signs, and collapse it via
-  `(q/p)^q = (q/p)` (an odd power of a `±1` Legendre symbol).  No further
-  Zolotarev/Jacobi input is needed.
+  The (previously open) COMBINATORIAL step is `sign_rowTransition` /
+  `sign_colTransition`: the concrete order `crtOrder` transports the Chinese-
+  remainder isomorphism `ℤ/pq ≃ ℤ/p × ℤ/q` across `ZMod.finEquiv`; conjugating
+  `crtOrder⁻¹∘rowOrder` by `arrEquiv : Fin p × Fin q ≃ ℤ/p × ℤ/q` (and
+  `crtOrder⁻¹∘colOrder` by the swap) realizes each transition LITERALLY as a
+  `prodCongrLeft` of the per-line affine maps `x ↦ q·x + ↑j` (resp. `x ↦ p·x + ↑i`).
+  `sign_prodCongrLeft_affineLine` then collapses the `q`-fold (resp. `p`-fold)
+  product to the single Legendre symbol `(q/p)` (resp. `(p/q)`), and the
+  three-transition skeleton assembles QR.  No further Zolotarev/Jacobi input.
 
   References:
   - Zolotarev (1872); Frobenius (1914); Lerch (1896).
@@ -611,6 +620,183 @@ theorem sign_prodCongrLeft_affineLine {p q : ℕ} [hp : Fact p.Prime] [NeZero q]
   have h0 := sign_affineLine_eq_legendreSym hp2 a 0 A hA
   rwa [sign_addLeft_mul hodd 0 (ringMulPerm a)] at h0
 
+/-! ### Closing the gap: the concrete CRT order and both transition signs
+
+This section discharges the two hypotheses of
+`quadratic_reciprocity_of_transition_signs` for a *concrete* diagonal/CRT order
+`crtOrder`, yielding the fully unconditional Zolotarev derivation of quadratic
+reciprocity `zolotarev_quadratic_reciprocity` (0 hypotheses beyond `p, q` distinct
+odd primes).
+
+The order transports the Chinese-remainder isomorphism
+`ZMod (p*q) ≃+* ZMod p × ZMod q` across the canonical `Fin n ≃ ZMod n`
+(`ZMod.finEquiv`):
+
+    `crtOrder.symm : Fin (p*q) ≃ Fin p × Fin q`,  `z ↦ (z mod p, z mod q)`.
+
+Conjugating the row→diagonal transition `crtOrder⁻¹ ∘ rowOrder` across
+`arrEquiv : Fin p × Fin q ≃ ZMod p × ZMod q` turns it into the fiberwise-affine
+permutation `(x, y) ↦ (q·x + ↑j, y)` of `ZMod p × ZMod q`, whose sign is `(q/p)`
+by `sign_prodCongrLeft_affineLine`.  Dually the column transition has sign `(p/q)`
+on `ZMod q × ZMod p`.  Substituting into the skeleton gives reciprocity. -/
+
+/-- `ZMod.finEquiv` is the identity on the underlying `Fin`, so it preserves `val`. -/
+private theorem finEquiv_val {n : ℕ} [NeZero n] (i : Fin n) :
+    (ZMod.finEquiv n i).val = i.val := by
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne n)
+  rfl
+
+/-- `ZMod.finEquiv n i` is the residue class of `i.val`. -/
+private theorem finEquiv_eq_natCast {n : ℕ} [NeZero n] (i : Fin n) :
+    (ZMod.finEquiv n i) = (i.val : ZMod n) := by
+  have h := ZMod.natCast_rightInverse (n := n) (ZMod.finEquiv n i)
+  rw [finEquiv_val] at h
+  exact h.symm
+
+variable {p q : ℕ} [NeZero p] [NeZero q]
+
+/-- The array `Fin p × Fin q` identified with `ZMod p × ZMod q` via `ZMod.finEquiv`. -/
+private def arrEquiv : Fin p × Fin q ≃ ZMod p × ZMod q :=
+  (ZMod.finEquiv p).toEquiv.prodCongr (ZMod.finEquiv q).toEquiv
+
+@[simp] private theorem arrEquiv_apply (i : Fin p) (j : Fin q) :
+    arrEquiv (i, j) = (ZMod.finEquiv p i, ZMod.finEquiv q j) := rfl
+
+/-- The diagonal / CRT order on the `p × q` array: its inverse is the
+    Chinese-remainder map `z ↦ (z mod p, z mod q)` read through `ZMod.finEquiv`. -/
+noncomputable def crtOrder (hpq : p.Coprime q) [NeZero (p * q)] :
+    Fin p × Fin q ≃ Fin (p * q) :=
+  ((ZMod.finEquiv (p * q)).toEquiv.trans
+    ((ZMod.chineseRemainder hpq).toEquiv.trans arrEquiv.symm)).symm
+
+/-- The defining property of `crtOrder`: conjugating `crtOrder⁻¹` by `arrEquiv`
+    recovers the Chinese-remainder isomorphism on linear indices. -/
+private theorem arrEquiv_crtOrder_symm (hpq : p.Coprime q) [NeZero (p * q)]
+    (z : Fin (p * q)) :
+    arrEquiv ((crtOrder hpq).symm z)
+      = (ZMod.chineseRemainder hpq) (ZMod.finEquiv (p * q) z) := by
+  simp only [crtOrder, Equiv.symm_symm, Equiv.trans_apply, Equiv.apply_symm_apply,
+    RingEquiv.toEquiv_eq_coe, RingEquiv.coe_toEquiv]
+
+/-- **Row→diagonal transition sign.**  For distinct odd primes `p, q`, the row→CRT
+    transition `crtOrder⁻¹ ∘ rowOrder` of the `p × q` array has sign equal to the
+    Legendre symbol `(q / p)`.  Conjugating across `arrEquiv` makes it the
+    fiberwise-affine permutation `(x, y) ↦ (q·x + ↑j, y)` of `ZMod p × ZMod q`,
+    and `sign_prodCongrLeft_affineLine` evaluates its sign. -/
+private theorem sign_rowTransition [Fact p.Prime] (hp2 : p ≠ 2) (hq : Odd q)
+    (hpq : p.Coprime q) [NeZero (p * q)] :
+    ((Equiv.Perm.sign ((rowOrder p q).trans (crtOrder hpq).symm) : ℤ))
+      = legendreSym p (q : ℤ) := by
+  have hqp : q.Coprime p := hpq.symm
+  set a : (ZMod p)ˣ := ZMod.unitOfCoprime q hqp with ha
+  set β : ZMod q → ZMod p := fun k => (((ZMod.finEquiv q).symm k).val : ZMod p) with hβ
+  -- The conjugated permutation is fiberwise affine over `ZMod q`.
+  have hconj : ∀ x : Fin p × Fin q,
+      arrEquiv (((rowOrder p q).trans (crtOrder hpq).symm) x)
+        = (Equiv.prodCongrLeft fun k : ZMod q => Equiv.addLeft (β k) * ringMulPerm a)
+            (arrEquiv x) := by
+    rintro ⟨i, j⟩
+    rw [Equiv.trans_apply, arrEquiv_crtOrder_symm]
+    have hidx : (ZMod.finEquiv (p * q) ((rowOrder p q) (i, j)))
+        = ((j.val + q * i.val : ℕ) : ZMod (p * q)) := by
+      rw [finEquiv_eq_natCast]; rfl
+    rw [hidx, arrEquiv_apply, Equiv.prodCongrLeft_apply, Equiv.Perm.mul_apply,
+      ZolotarevCRT.ringMulPerm_apply, Equiv.coe_addLeft]
+    refine Prod.ext ?_ ?_
+    · -- first coordinate (mod p)
+      rw [ZolotarevFullOdd.chineseRemainder_fst, map_natCast, hβ, ha,
+        ZMod.coe_unitOfCoprime]
+      simp only [RingEquiv.symm_apply_apply]
+      rw [finEquiv_eq_natCast]
+      push_cast
+      ring
+    · -- second coordinate (mod q)
+      rw [ZolotarevFullOdd.chineseRemainder_snd, map_natCast, finEquiv_eq_natCast]
+      push_cast
+      rw [ZMod.natCast_self]
+      ring
+  have hsign := Equiv.Perm.sign_eq_sign_of_equiv
+    ((rowOrder p q).trans (crtOrder hpq).symm)
+    (Equiv.prodCongrLeft fun k : ZMod q => Equiv.addLeft (β k) * ringMulPerm a)
+    arrEquiv hconj
+  have hA : ((q : ℤ) : ZMod p) = (a : ZMod p) := by
+    rw [ha, ZMod.coe_unitOfCoprime]; push_cast; ring
+  have key := sign_prodCongrLeft_affineLine (p := p) (q := q) hp2 hq a β (q : ℤ) hA
+  rw [hsign]; exact key
+
+/-- **Column→diagonal transition sign.**  Dual to `sign_rowTransition`: the
+    column→CRT transition `crtOrder⁻¹ ∘ colOrder` has sign `(p / q)`.  Conjugating
+    across `arrEquiv` composed with the coordinate swap makes it the
+    fiberwise-affine permutation `(x, y) ↦ (p·x + ↑i, y)` of `ZMod q × ZMod p`. -/
+private theorem sign_colTransition [Fact q.Prime] (hq2 : q ≠ 2) (hp : Odd p)
+    (hpq : p.Coprime q) [NeZero (p * q)] :
+    ((Equiv.Perm.sign ((colOrder p q).trans (crtOrder hpq).symm) : ℤ))
+      = legendreSym q (p : ℤ) := by
+  set a' : (ZMod q)ˣ := ZMod.unitOfCoprime p hpq with ha'
+  set β' : ZMod p → ZMod q := fun k => (((ZMod.finEquiv p).symm k).val : ZMod q) with hβ'
+  set ec : Fin p × Fin q ≃ ZMod q × ZMod p :=
+    arrEquiv.trans (Equiv.prodComm (ZMod p) (ZMod q)) with hec
+  have hconj : ∀ x : Fin p × Fin q,
+      ec (((colOrder p q).trans (crtOrder hpq).symm) x)
+        = (Equiv.prodCongrLeft fun k : ZMod p => Equiv.addLeft (β' k) * ringMulPerm a')
+            (ec x) := by
+    rintro ⟨i, j⟩
+    have hidx : (ZMod.finEquiv (p * q) ((colOrder p q) (i, j)))
+        = ((i.val + p * j.val : ℕ) : ZMod (p * q)) := by
+      rw [finEquiv_eq_natCast]; rfl
+    -- the swap-conjugating equiv sends `(i, j)` to the literal pair `(j mod q, i mod p)`.
+    have hrhs : ec (i, j) = (ZMod.finEquiv q j, ZMod.finEquiv p i) := by
+      rw [hec]; simp [Equiv.trans_apply, arrEquiv_apply, Equiv.prodComm_apply]
+    rw [hrhs, Equiv.trans_apply, Equiv.trans_apply, arrEquiv_crtOrder_symm, hidx,
+      Equiv.prodComm_apply, Equiv.prodCongrLeft_apply, Equiv.Perm.mul_apply,
+      ZolotarevCRT.ringMulPerm_apply, Equiv.coe_addLeft]
+    refine Prod.ext ?_ ?_
+    · -- first coordinate (ZMod q): the `mod q` residue
+      rw [Prod.fst_swap, ZolotarevFullOdd.chineseRemainder_snd, map_natCast, hβ', ha',
+        ZMod.coe_unitOfCoprime]
+      simp only [RingEquiv.symm_apply_apply]
+      rw [finEquiv_eq_natCast]
+      push_cast
+      ring
+    · -- second coordinate (ZMod p): the `mod p` residue
+      rw [Prod.snd_swap, ZolotarevFullOdd.chineseRemainder_fst, map_natCast,
+        finEquiv_eq_natCast]
+      push_cast
+      rw [ZMod.natCast_self]
+      ring
+  have hsign := Equiv.Perm.sign_eq_sign_of_equiv
+    ((colOrder p q).trans (crtOrder hpq).symm)
+    (Equiv.prodCongrLeft fun k : ZMod p => Equiv.addLeft (β' k) * ringMulPerm a')
+    ec hconj
+  have hA' : ((p : ℤ) : ZMod q) = (a' : ZMod q) := by
+    rw [ha', ZMod.coe_unitOfCoprime]; push_cast; ring
+  have key := sign_prodCongrLeft_affineLine (p := q) (q := p) hq2 hp a' β' (p : ℤ) hA'
+  rw [hsign]; exact key
+
+/-- **Quadratic reciprocity, à la Zolotarev (unconditional).**  For distinct odd
+    primes `p, q`,
+
+        `(q / p) · (p / q) = (-1) ^ ((p-1)/2 · (q-1)/2)`,
+
+    proved entirely from the sign-of-permutation calculus: the parent program's
+    Zolotarev/Frobenius lemma `sign(x ↦ a·x on ℤ/n) = J(a|n)` (per residue line),
+    the inversion count of the grid transpose (`sign_gridTranspose_odd`), and the
+    three-transition skeleton, with the concrete CRT order `crtOrder` discharging
+    both transition-sign hypotheses (`sign_rowTransition`, `sign_colTransition`).
+    No appeal to Mathlib's `legendreSym.quadratic_reciprocity`. -/
+theorem zolotarev_quadratic_reciprocity {p q : ℕ} [Fact p.Prime] [Fact q.Prime]
+    (hp2 : p ≠ 2) (hq2 : q ≠ 2) (hne : p ≠ q) :
+    legendreSym q (p : ℤ) * legendreSym p (q : ℤ)
+      = (-1 : ℤ) ^ (((p - 1) / 2) * ((q - 1) / 2)) := by
+  have hp : Odd p := (Fact.out : p.Prime).odd_of_ne_two hp2
+  have hq : Odd q := (Fact.out : q.Prime).odd_of_ne_two hq2
+  have hpq : p.Coprime q := (Nat.coprime_primes Fact.out Fact.out).mpr hne
+  haveI : NeZero p := ⟨(Fact.out : p.Prime).pos.ne'⟩
+  haveI : NeZero q := ⟨(Fact.out : q.Prime).pos.ne'⟩
+  haveI : NeZero (p * q) := ⟨Nat.mul_ne_zero (NeZero.ne p) (NeZero.ne q)⟩
+  exact quadratic_reciprocity_of_transition_signs hp hq (crtOrder hpq)
+    (sign_rowTransition hp2 hq hpq) (sign_colTransition hq2 hp hpq)
+
 end ZolotarevQR
 
 #check @ZolotarevQR.gridTranspose
@@ -625,3 +811,7 @@ end ZolotarevQR
 #check @ZolotarevQR.sign_addLeft_mul
 #check @ZolotarevQR.sign_affineLine_eq_legendreSym
 #check @ZolotarevQR.sign_prodCongrLeft_affineLine
+#check @ZolotarevQR.crtOrder
+#check @ZolotarevQR.sign_rowTransition
+#check @ZolotarevQR.sign_colTransition
+#check @ZolotarevQR.zolotarev_quadratic_reciprocity
