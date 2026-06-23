@@ -1,0 +1,74 @@
+[
+  {
+    "id": "davenport-set-def",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03",
+    "range": { "startLine": 48, "endLine": 57 },
+    "type": "definition",
+    "title": "Zero-Sum Subsequences and the Davenport Set",
+    "content": "HasZeroSumSubseq f asserts that some nonempty index set s ⊆ Fin m has ∑_{i∈s} f i = 0 — the negation of 'zero-sum-free'. DavenportSet G collects the lengths m at which every length-m sequence is forced to contain such a subsequence; the Davenport constant D(G) is its least element. Packaging D(G) as an IsLeast of this set (rather than as a raw number) lets the proof reason purely order-theoretically and matches the cyclic and rank-2 companions.",
+    "mathContext": "$\\mathrm{DavenportSet}(G) = \\{m \\mid \\forall f : \\mathrm{Fin}\\,m \\to G,\\ \\exists\\, \\emptyset \\neq s \\subseteq \\mathrm{Fin}\\,m,\\ \\sum_{i \\in s} f_i = 0\\}$, and $D(G)$ is its least element.",
+    "significance": "supporting",
+    "relatedConcepts": ["zero-sum-free sequences", "Davenport constant", "IsLeast", "additive combinatorics"],
+    "prerequisites": ["finite abelian groups", "Finset sums"]
+  },
+  {
+    "id": "davenport-set-mono",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03",
+    "range": { "startLine": 59, "endLine": 89 },
+    "type": "technique",
+    "title": "Upward Closure of the Davenport Set",
+    "content": "davenport_set_mono shows the Davenport set is upward closed: a length-m' sequence is restricted to its first m entries via Fin.castLE, the zero-sum subset found there is re-embedded into Fin m' through the order embedding Fin.castLEEmb, and Finset.sum_map keeps the sum unchanged. zero_not_mem_davenportSet records that length 0 is never Davenport (the empty sequence has no nonempty index set), so one_le_of_isLeast_davenport gives D(G) ≥ 1. Monotonicity is the bridge that turns 'a long zero-sum-free sequence exists' into a strict lower bound on D.",
+    "mathContext": "$m \\le m',\\ m \\in \\mathrm{DavenportSet}(G) \\implies m' \\in \\mathrm{DavenportSet}(G)$; and $0 \\notin \\mathrm{DavenportSet}(G)$ so $D(G) \\ge 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["upward-closed sets", "Fin.castLE", "order embeddings", "monotonicity"],
+    "prerequisites": ["Finset sums", "Fin arithmetic"]
+  },
+  {
+    "id": "concat-seq",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03",
+    "range": { "startLine": 91, "endLine": 97 },
+    "type": "definition",
+    "title": "Block Concatenation via Fin.addCases",
+    "content": "concatSeq f₁ f₂ is the abstract block-concatenation: indices below m₁ map to (f₁ i, 0) and indices m₁ + j map to (0, f₂ j), encoded by Fin.addCases on Fin (m₁ + m₂). This is the general-group replacement for the rank-2 companion's explicit (1,0)/(0,1) witness — f₁ lives entirely in the first coordinate over the first block, f₂ entirely in the second over the second block, with no interaction between them.",
+    "mathContext": "$\\mathrm{concatSeq}\\,f_1\\,f_2 : \\mathrm{Fin}(m_1+m_2) \\to G_1 \\times G_2$, sending $i \\mapsto (f_1 i, 0)$ and $m_1 + j \\mapsto (0, f_2 j)$.",
+    "significance": "key",
+    "relatedConcepts": ["Fin.addCases", "direct sum of groups", "sequence concatenation"],
+    "prerequisites": ["product groups", "Fin case analysis"]
+  },
+  {
+    "id": "concat-principle",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03",
+    "range": { "startLine": 99, "endLine": 142 },
+    "type": "insight",
+    "title": "The Concatenation Principle: Zero-Sum-Freeness Adds",
+    "content": "concat_not_hasZeroSum is the engine of the whole result: the concatenation of two zero-sum-free sequences is zero-sum-free. A candidate zero-sum index set s is reindexed along finSumFinEquiv : Fin m₁ ⊕ Fin m₂ ≃ Fin (m₁ + m₂) to t, split by Finset.toLeft / Finset.toRight. Because each factor occupies its own coordinate, the vanishing total in G₁ × G₂ splits (Prod.fst_sum / Prod.snd_sum, Finset.sum_disjSum, Fin.addCases_left/right) into two independent vanishing block sums; zero-sum-freeness of f₁ and f₂ forces both blocks empty, so t = ∅ and s = ∅ — contradicting nonemptiness. The lengths add precisely because there is no cross-block interaction term.",
+    "mathContext": "If $\\sum_{i\\in s}\\mathrm{concatSeq}\\,f_1\\,f_2\\,i = 0$ then $\\sum_{j\\in t_L} f_1 j = 0$ and $\\sum_{k\\in t_R} f_2 k = 0$, each forcing its block empty.",
+    "significance": "key",
+    "relatedConcepts": ["finSumFinEquiv", "Finset.toLeft / toRight", "coordinatewise independence", "reindexing bijections"],
+    "prerequisites": ["sum-type Finsets", "Equiv reindexing", "product group sums"]
+  },
+  {
+    "id": "main-lower-bound",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03",
+    "range": { "startLine": 144, "endLine": 176 },
+    "type": "concept",
+    "title": "The Headline Bound D(G₁ ⊕ G₂) ≥ D(G₁) + D(G₂) − 1",
+    "content": "davenport_directSum_lower assembles the pieces. Since d₁ = D(G₁) is least, length d₁ − 1 is not Davenport, so it admits a zero-sum-free sequence f₁ (likewise f₂ of length d₂ − 1). Their concatenation is zero-sum-free of length (d₁ − 1) + (d₂ − 1) = d₁ + d₂ − 2, hence that length is not Davenport for G₁ ⊕ G₂. If d = D(G₁ ⊕ G₂) were ≤ d₁ + d₂ − 2, upward closure (davenport_set_mono) would make d₁ + d₂ − 2 Davenport — contradiction. So d ≥ d₁ + d₂ − 1. This is the binary step that, iterated over invariant factors, yields Olson's D(G) ≥ 1 + Σ(nᵢ − 1).",
+    "mathContext": "$D(G_1 \\oplus G_2) \\ge D(G_1) + D(G_2) - 1$; iterating gives $D(G) \\ge 1 + \\sum_i (n_i - 1)$ for $G \\cong \\bigoplus_i \\mathbb{Z}/n_i\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["Olson's theorem", "invariant-factor decomposition", "Davenport constant", "proof by contradiction"],
+    "prerequisites": ["IsLeast", "the concatenation principle", "upward closure"]
+  },
+  {
+    "id": "specializations",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03",
+    "range": { "startLine": 178, "endLine": 194 },
+    "type": "context",
+    "title": "Cyclic and Diagonal Specializations",
+    "content": "davenport_rank2_lower_of_cyclic recovers the rank-2 companion's bound D(ℤ/aℤ ⊕ ℤ/bℤ) ≥ a + b − 1 by feeding in the cyclic values D(ℤ/aℤ) = a, D(ℤ/bℤ) = b (from the exact-value companion). davenport_directSum_diag_lower gives the diagonal D(G ⊕ G) ≥ 2·D(G) − 1, which for G = ℤ/nℤ is the sharp 2n − 1 (Olson's theorem supplies the matching upper bound, not formalized here). These show the abstract principle reproduces every previously established special case.",
+    "mathContext": "$D(\\mathbb{Z}/a\\mathbb{Z} \\oplus \\mathbb{Z}/b\\mathbb{Z}) \\ge a + b - 1$; $D(G \\oplus G) \\ge 2D(G) - 1$, sharp for $\\mathbb{Z}/n\\mathbb{Z}$.",
+    "significance": "context",
+    "relatedConcepts": ["cyclic Davenport constant", "Olson's theorem", "sharp bounds", "ℤ/nℤ"],
+    "prerequisites": ["cyclic groups", "the headline bound"]
+  }
+]

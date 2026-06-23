@@ -84,6 +84,69 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "The Davenport constant D(G) of a finite abelian group — the least d such that every length-d sequence over G has a nonempty zero-sum subsequence — was popularized by Harold Davenport in the 1960s in connection with the factorization of algebraic integers: D(G) is exactly the maximal length of an irreducible (non-factorizable) element in a Dedekind domain whose ideal class group is G. The fundamental lower bound D(G) ≥ 1 + Σ(nᵢ − 1), where G ≅ ⊕ᵢ ℤ/nᵢℤ is the invariant-factor decomposition, is due to John Olson (1969), who also proved equality for p-groups and for groups of rank ≤ 2. Strikingly, the bound is NOT tight in general: D'Atri–Olson and later work exhibit groups of rank ≥ 4 where D(G) strictly exceeds 1 + Σ(nᵢ − 1), and the exact value of D(G) for general G remains open to this day. The single binary step D(G₁ ⊕ G₂) ≥ D(G₁) + D(G₂) − 1 — formalized here for arbitrary group summands — is the engine that, iterated across the invariant factors, produces Olson's lower bound. Within Erdős problem #131 (non-dividing sets), the Davenport constant is the governing invariant, and this direct-sum principle is its higher-rank scaffolding.",
+    "problemStatement": "For additive (abelian) groups G₁, G₂, prove the direct-sum lower bound for the Davenport constant: D(G₁ ⊕ G₂) ≥ D(G₁) + D(G₂) − 1, where D(G) is formalized as the least element (IsLeast) of the Davenport set {m | every length-m sequence over G has a nonempty zero-sum subsequence}. Equivalently: if G₁ admits a zero-sum-free sequence of length D(G₁) − 1 and G₂ one of length D(G₂) − 1, then G₁ ⊕ G₂ admits a zero-sum-free sequence of length (D(G₁) − 1) + (D(G₂) − 1), so D(G₁ ⊕ G₂) − 1 ≥ (D(G₁) − 1) + (D(G₂) − 1). The rank-2 cyclic companion proves only the special case D(ℤ/aℤ ⊕ ℤ/bℤ) ≥ a + b − 1 by displaying one explicit extremal sequence; the task here is the general structural principle for any summands.",
+    "proofStrategy": "The proof isolates the concatenation principle (concat_not_hasZeroSum): block-concatenating a zero-sum-free f₁ over G₁ with a zero-sum-free f₂ over G₂ — placing f₁ in the first coordinate over the first block and f₂ in the second coordinate over the second block (concatSeq, defined by Fin.addCases on Fin (m₁ + m₂)) — yields a zero-sum-free sequence over G₁ × G₂. To verify this, a candidate zero-sum index set s ⊆ Fin (m₁ + m₂) is reindexed along finSumFinEquiv : Fin m₁ ⊕ Fin m₂ ≃ Fin (m₁ + m₂) to t ⊆ Fin m₁ ⊕ Fin m₂, then split by Finset.toLeft / Finset.toRight. The total sum factors coordinatewise (Finset.sum_disjSum, Fin.addCases_left/right, Prod.fst_sum/snd_sum): its first coordinate is Σ over t.toLeft of f₁ and its second is Σ over t.toRight of f₂. A vanishing total forces both block sums to vanish, and zero-sum-freeness of f₁ and f₂ forces both blocks empty, so t = ∅ and s = ∅, contradicting nonemptiness. The headline davenport_directSum_lower then combines this with upward closure of the Davenport set (davenport_set_mono, via Fin.castLE / Fin.castLEEmb restriction) and the fact that length 0 is never Davenport (so D(Gᵢ) ≥ 1): the concatenated witness shows length (d₁ − 1) + (d₂ − 1) is not Davenport, so by upward closure d > (d₁ − 1) + (d₂ − 1), i.e. d ≥ d₁ + d₂ − 1.",
+    "keyInsights": [
+      "The explicit extremal witness of the rank-2 cyclic case is a red herring for generality: what actually drives the lower bound is not the specific sequence (1,0)^{a−1}(0,1)^{b−1} but the abstract concatenation principle, which works for ANY group summands. Isolating it is the whole content of this entry.",
+      "Coordinatewise independence is the heart of the matter. Because f₁ lives entirely in the first coordinate and f₂ entirely in the second, a zero total in G₁ × G₂ splits into two independent zero conditions (Prod.fst_sum / Prod.snd_sum) — there is no 'interaction' term that could create a zero-sum using elements from both blocks. This is exactly why the lengths add.",
+      "The combinatorics is carried entirely by the index bijection finSumFinEquiv together with the toLeft/toRight calculus on sum-type Finsets: the proof never touches group elements beyond reading two coordinates, making it uniform over all abelian G₁, G₂.",
+      "Upward closure of the Davenport set is the bridge from 'a zero-sum-free sequence of length L exists' to 'D ≥ L + 1'. Without it, a single long zero-sum-free sequence would not by itself bound the least Davenport length; davenport_set_mono (restrict via Fin.castLE, re-embed via Fin.castLEEmb) supplies the monotonicity.",
+      "The bound is sharp exactly where the theory is classical (rank ≤ 2, p-groups, by Olson) and STRICT in general — so this verified principle is the lower half of a still-open problem. Iterating it over invariant factors gives D(G) ≥ 1 + Σ(nᵢ − 1); the matching upper bound for general G is unknown.",
+      "Self-containment is a deliberate verification choice: importing only Mathlib (not the cyclic companions) keeps the file independently checkable and genuinely axiom-free (only propext, Classical.choice, Quot.sound — the foundational trio that does not count as an assumption)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: The General Direct-Sum Bound",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "States the goal D(G₁ ⊕ G₂) ≥ D(G₁) + D(G₂) − 1 for arbitrary additive groups, names the two cyclic companions (rank-2 explicit witness, exact value D(ℤ/nℤ) = n), and explains the deliberate self-containment (import Mathlib only). Previews the concatenation principle and notes that the matching upper bound (Olson's theorem) is not formalized.",
+      "mathContext": "$D(G_1 \\oplus G_2) \\ge D(G_1) + D(G_2) - 1$ for additive groups; the structural generalization of the rank-2 cyclic case."
+    },
+    {
+      "id": "definitions",
+      "title": "Zero-Sum Subsequences and the Davenport Set",
+      "startLine": 48,
+      "endLine": 57,
+      "summary": "HasZeroSumSubseq f: some nonempty index set s has ∑_{i∈s} f i = 0. DavenportSet G: the lengths m such that every length-m sequence over G has a nonempty zero-sum subsequence; D(G) is its least element. These definitions package the Davenport constant order-theoretically (via IsLeast), shared with the cyclic and rank-2 companions.",
+      "mathContext": "$\\mathrm{DavenportSet}(G) = \\{m \\mid \\forall f : \\mathrm{Fin}\\,m \\to G,\\ \\exists\\, \\emptyset \\neq s,\\ \\textstyle\\sum_{i\\in s} f_i = 0\\}$; $D(G) = \\min$."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Upward Closure and Positivity",
+      "startLine": 59,
+      "endLine": 89,
+      "summary": "davenport_set_mono: the Davenport set is upward closed — restrict a length-m' sequence to its first m entries via Fin.castLE, find a zero-sum subset, and re-embed through Fin.castLEEmb (Finset.sum_map preserves the sum). zero_not_mem_davenportSet: length 0 is never Davenport (the empty sequence has no nonempty index set). one_le_of_isLeast_davenport: hence the least Davenport length is ≥ 1.",
+      "mathContext": "$m \\le m'$ and $m \\in \\mathrm{DavenportSet}(G) \\Rightarrow m' \\in \\mathrm{DavenportSet}(G)$; and $0 \\notin \\mathrm{DavenportSet}(G)$, so $D(G) \\ge 1$."
+    },
+    {
+      "id": "concatenation",
+      "title": "The Concatenation Principle",
+      "startLine": 91,
+      "endLine": 142,
+      "summary": "concatSeq f₁ f₂ (Fin.addCases): places f₁ as (f₁ i, 0) over the first block and f₂ as (0, f₂ j) over the second. concat_not_hasZeroSum: if f₁, f₂ are zero-sum-free then so is concatSeq f₁ f₂ — reindex a candidate zero-sum set along finSumFinEquiv, split by toLeft/toRight, read the two coordinates (Finset.sum_disjSum, Prod.fst_sum/snd_sum), force both blocks empty by zero-sum-freeness, conclude s = ∅.",
+      "mathContext": "Coordinatewise: $\\big(\\sum (f_1,0)\\big) + \\big(\\sum (0,f_2)\\big) = 0 \\Rightarrow \\sum f_1 = 0 \\wedge \\sum f_2 = 0$, each forcing its block empty."
+    },
+    {
+      "id": "main-bound",
+      "title": "The Headline Lower Bound",
+      "startLine": 144,
+      "endLine": 176,
+      "summary": "davenport_directSum_lower: from least Davenport lengths d₁ = D(G₁), d₂ = D(G₂), lengths d₁−1 and d₂−1 admit zero-sum-free sequences f₁, f₂; their concatenation is zero-sum-free of length (d₁−1)+(d₂−1), so that length is not Davenport. Were d = D(G₁⊕G₂) ≤ d₁+d₂−2, upward closure would make it Davenport — contradiction. Hence d ≥ d₁+d₂−1.",
+      "mathContext": "A zero-sum-free sequence of length $(d_1-1)+(d_2-1)$ over $G_1\\oplus G_2$ shows $D(G_1\\oplus G_2) > (d_1-1)+(d_2-1)$."
+    },
+    {
+      "id": "specializations",
+      "title": "Cyclic and Diagonal Specializations",
+      "startLine": 178,
+      "endLine": 194,
+      "summary": "davenport_rank2_lower_of_cyclic: feeding the cyclic values D(ℤ/aℤ) = a, D(ℤ/bℤ) = b recovers the rank-2 bound D(ℤ/aℤ ⊕ ℤ/bℤ) ≥ a + b − 1 proved explicitly by the companion. davenport_directSum_diag_lower: the diagonal case D(G ⊕ G) ≥ 2·D(G) − 1, sharp for G = ℤ/nℤ by Olson (D(ℤ/nℤ ⊕ ℤ/nℤ) = 2n − 1).",
+      "mathContext": "$D(\\mathbb{Z}/a\\mathbb{Z} \\oplus \\mathbb{Z}/b\\mathbb{Z}) \\ge a + b - 1$ and $D(G \\oplus G) \\ge 2D(G) - 1$."
+    }
+  ],
   "openQuestions": [
     {
       "id": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01",
