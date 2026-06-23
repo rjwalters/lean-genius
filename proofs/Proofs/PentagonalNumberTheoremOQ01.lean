@@ -127,6 +127,40 @@ theorem isGenPent_iff_isSquare (m : ℤ) :
         rw [hs1] at hs; linear_combination hs
       exact mul_left_cancel₀ (by norm_num) h12
 
+/-! ## Part 2b: Explicit discriminant roots and the ±-pairing
+
+The forward half of the recognition criterion is the algebraic identity
+`24·g(k)+1 = (6k-1)²`.  Where `isGenPent_iff_isSquare` only asserts that *some*
+square equals the discriminant, an enumerator of pentagonal exponents actually
+needs the *explicit* root, so we record it (and its negative-index companion) as
+named witnesses.  The two roots `6k∓1` of the `±k` pair straddle `6k`
+symmetrically, and the values themselves satisfy `g(k)+g(-k) = 3k²` (their
+difference being `k`, by `genPent_neg`). -/
+
+/-- **Explicit discriminant root (positive index).**  `24·g(k)+1 = (6k-1)²` — the
+concrete square witnessing `IsGenPent (g k)` in the recognition criterion, with
+its root named explicitly rather than existentially. -/
+theorem disc_genPent (k : ℤ) : 24 * genPent k + 1 = (6 * k - 1) ^ 2 := by
+  linear_combination 12 * two_mul_genPent k
+
+/-- **Explicit discriminant root (negative index).**  `24·g(-k)+1 = (6k+1)²`; the
+two roots `6k-1` and `6k+1` of the `±k` pair straddle `6k`. -/
+theorem disc_genPent_neg (k : ℤ) : 24 * genPent (-k) + 1 = (6 * k + 1) ^ 2 := by
+  linear_combination 12 * two_mul_genPent (-k)
+
+/-- **The `±k` pairing sum.**  `g(k)+g(-k) = 3k²`: the two pentagonal shifts that
+appear together in Euler's recurrence sum to `3k²` (their difference is `k`, by
+`genPent_neg`), since `2(g(k)+g(-k)) = k(3k-1)+k(3k+1) = 6k²`. -/
+theorem genPent_add_neg (k : ℤ) : genPent k + genPent (-k) = 3 * k ^ 2 := by
+  have h : 2 * (genPent k + genPent (-k)) = 2 * (3 * k ^ 2) := by
+    linear_combination two_mul_genPent k + two_mul_genPent (-k)
+  exact mul_left_cancel₀ (by norm_num) h
+
+/-- Sanity check on the explicit root: `24·g(3)+1 = 17²` with `17 = 6·3-1`,
+strengthening `twelve_isGenPent` (Part 4) to exhibit the concrete square root. -/
+theorem disc_genPent_three : 24 * genPent 3 + 1 = 17 ^ 2 := by
+  rw [disc_genPent 3]; norm_num
+
 /-! ## Part 3: Structural facts -/
 
 /-- Generalized pentagonal numbers are nonnegative: `k(3k-1) ≥ 0` for all `k`. -/
