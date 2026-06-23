@@ -1,0 +1,97 @@
+[
+  {
+    "id": "legendre-fact-oq01-oq01-oq01-ann-header",
+    "proofId": "legendre-factorial-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "The Carry Algorithm Mathlib Leaves Implicit",
+    "content": "Kummer's theorem says vₚ(C(n,k)) counts base-p carries: vₚ(C(n,k)) = #{carries when adding k and n−k in base p}. Mathlib (Nat.Prime.emultiplicity_choose) and the sibling carry-count entry both record only the cardinality of the overflow set {i ∈ Ico 1 b | pⁱ ≤ k%pⁱ + (n−k)%pⁱ} — a set defined by an inequality, with no carry ever produced by addition and no rule linking a carry at one position to the next. The gallery's multinomial-Kummer entry even flags 'base-p carry counting' as not yet in Mathlib. This entry supplies the missing carry algorithm: an explicit recursive sequence with a proven schoolbook propagation rule.",
+    "mathContext": "$v_p\\!\\binom{n}{k} = \\#\\{\\,i \\ge 1 : \\text{carry into position } i \\text{ when adding } k \\text{ and } n-k \\text{ in base } p\\,\\}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kummer's theorem",
+      "p-adic valuation",
+      "base-p carries",
+      "carry propagation"
+    ],
+    "prerequisites": [
+      "Kummer carry-count theorem (parent entry)",
+      "Legendre's formula"
+    ]
+  },
+  {
+    "id": "legendre-fact-oq01-oq01-oq01-ann-carry-def",
+    "proofId": "legendre-factorial-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "The Carry Sequence Is a Single Overflow Bit",
+    "content": "The carry into position i is defined directly as carry p k m i = (k%pⁱ + m%pⁱ)/pⁱ: divide the summed low-i digit blocks by pⁱ. `carry_le_one` shows this is a single bit — each remainder is < pⁱ, so the sum is < 2·pⁱ and the quotient is < 2 (Nat.div_lt_of_lt_mul). `carry_eq_one_iff` then reads off carry = 1 ↔ pⁱ ≤ k%pⁱ + m%pⁱ from Nat.one_le_div_iff. That right-hand side is exactly the predicate appearing in Mathlib's emultiplicity_choose filter, which is what lets the headline identify Mathlib's index set with the set of carry positions.",
+    "mathContext": "$\\mathrm{carry}\\,p\\,k\\,m\\,i = \\left\\lfloor \\tfrac{k \\bmod p^i + m \\bmod p^i}{p^i} \\right\\rfloor \\in \\{0,1\\}, \\qquad \\mathrm{carry} = 1 \\iff p^i \\le k \\bmod p^i + m \\bmod p^i.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "carry as overflow indicator",
+      "Euclidean division bounds",
+      "base-p digit blocks"
+    ],
+    "prerequisites": [
+      "Nat.div_lt_of_lt_mul",
+      "Nat.one_le_div_iff",
+      "Nat.mod_lt"
+    ]
+  },
+  {
+    "id": "legendre-fact-oq01-oq01-oq01-ann-recurrence",
+    "proofId": "legendre-factorial-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 89,
+      "endLine": 119
+    },
+    "type": "theorem",
+    "title": "The Schoolbook Carry Recurrence (Keystone)",
+    "content": "`carry_succ` is the new content this entry contributes: carry(i+1) = (digitᵢ(k) + digitᵢ(m) + carryᵢ)/p — precisely how one adds two numbers in base p by hand, carrying a 1 whenever the column total (two digits plus the incoming carry) reaches p. The proof expands each position-(i+1) remainder with the base-p block identity Nat.mod_pow_succ (k%pⁱ⁺¹ = k%pⁱ + pⁱ·digitᵢ(k)), regroups the numerator as pⁱ·(digitᵢ(k) + digitᵢ(m) + carryᵢ) + (A mod pⁱ) where A = k%pⁱ + m%pⁱ, and collapses the division by pⁱ⁺¹ = pⁱ·p with the cancellation lemma div_block: (q·Y + r)/(q·p) = Y/p whenever r < q. This propagation rule is absent from Mathlib and from the sibling carry-count entry.",
+    "mathContext": "$\\mathrm{carry}\\,p\\,k\\,m\\,(i+1) = \\left\\lfloor \\tfrac{d_i(k) + d_i(m) + \\mathrm{carry}\\,p\\,k\\,m\\,i}{p} \\right\\rfloor, \\quad d_i(x) = \\lfloor x/p^i \\rfloor \\bmod p.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "schoolbook addition algorithm",
+      "carry propagation",
+      "base-p block identity"
+    ],
+    "prerequisites": [
+      "Nat.mod_pow_succ",
+      "Nat.div_div_eq_div_mul",
+      "Nat.mul_add_div",
+      "Nat.div_add_mod"
+    ]
+  },
+  {
+    "id": "legendre-fact-oq01-oq01-oq01-ann-headline",
+    "proofId": "legendre-factorial-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 120,
+      "endLine": 179
+    },
+    "type": "theorem",
+    "title": "vₚ(C(n,k)) Counts the Explicit Carries",
+    "content": "`padicValNat_choose_eq_numCarries` reassembles the carry-count theorem on the explicit sequence: padicValNat_eq_emultiplicity rewrites vₚ(C(n,k)) as Mathlib's emultiplicity, Nat.Prime.emultiplicity_choose expresses it as the cardinality of {i ∈ Ico 1 b | pⁱ ≤ k%pⁱ + (n−k)%pⁱ}, and Finset.filter_congr with carry_eq_one_iff rewrites that filter as the carry positions {i | carry p k (n−k) i = 1}; a Nat-coercion cancellation closes it. `padicValNat_choose_eq_sum_carries` gives the equivalent carry-sum form Σ carry bits via Finset.card_filter (legal because each bit is 0 or 1). The instance v₂(C(6,3)) = 2 — two carries when adding 3 + 3 = 110₂ — is verified by kernel decide on the finite carry sum (no native_decide), with the log cutoff log₂ 6 < 4 supplied by Nat.log_lt_of_lt_pow.",
+    "mathContext": "$v_p\\!\\binom{n}{k} = \\#\\{i \\in [1,b) : \\mathrm{carry}\\,p\\,k\\,(n-k)\\,i = 1\\} = \\sum_{i \\in [1,b)} \\mathrm{carry}\\,p\\,k\\,(n-k)\\,i, \\quad \\log_p n < b.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "emultiplicity_choose",
+      "Finset.filter_congr",
+      "carry-count vs carry-sum form",
+      "kernel decide"
+    ],
+    "prerequisites": [
+      "padicValNat_eq_emultiplicity",
+      "Nat.Prime.emultiplicity_choose",
+      "Finset.card_filter",
+      "Nat.log_lt_of_lt_pow"
+    ]
+  }
+]

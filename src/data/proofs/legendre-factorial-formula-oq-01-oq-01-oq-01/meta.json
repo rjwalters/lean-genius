@@ -1,0 +1,150 @@
+{
+  "id": "legendre-factorial-formula-oq-01-oq-01-oq-01",
+  "title": "The Explicit Recursive Carry Sequence Behind Kummer's Theorem",
+  "slug": "legendre-factorial-formula-oq-01-oq-01-oq-01",
+  "description": "Kummer's theorem says vₚ(C(n,k)) counts the carries when k and n−k are added in base p, but both Mathlib (Nat.Prime.emultiplicity_choose) and the gallery's Kummer carry-count entry leave the carry implicit — recording only the cardinality of the overflow set {i | pⁱ ≤ k%pⁱ + (n−k)%pⁱ} and never stating the rule that generates the carries. This entry supplies the missing carry algorithm. It defines the carry sequence explicitly, carry p k m i = (k%pⁱ + m%pⁱ)/pⁱ ∈ {0,1}, proves it is a single overflow bit, proves the schoolbook digit-by-digit recurrence carry(i+1) = (digitᵢ(k) + digitᵢ(m) + carryᵢ)/p (a carry is propagated iff the two base-p digits plus the incoming carry reach p), and reassembles Kummer's theorem on top of the explicit sequence in both carry-count and carry-sum forms. This is open question oq-01 of the Kummer carry-count entry.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kummer%27s_theorem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LegendreFactorialFormulaOQ01OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "p-adic-valuation",
+      "binomial-coefficient",
+      "kummer-theorem",
+      "legendre-formula",
+      "carries",
+      "carry-recurrence",
+      "base-p",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 179,
+    "theoremCount": 7,
+    "definitionCount": 3,
+    "assumptions": "None. Fully machine-checked from Mathlib with 0 sorries and 0 axioms beyond Lean's foundational propext / Classical.choice / Quot.sound: the source declares no `sorry` and no `axiom`, and uses no `native_decide` (both sanity examples use kernel `decide` on small finite Finset.Ico sums, so no Lean.ofReduceBool is introduced). The valuation-counting engine is Mathlib's Nat.Prime.emultiplicity_choose, which expresses vₚ(C(n,k)) as the cardinality of the overflow filter {i ∈ Ico 1 b | pⁱ ≤ k%pⁱ + (n−k)%pⁱ}; the bridge from emultiplicity (ℕ∞) to padicValNat (ℕ) is Mathlib's padicValNat_eq_emultiplicity together with Nat.choose_pos. The ORIGINAL in-file content — none of which exists in Mathlib — is the explicit carry sequence and its theory: carry p k m i := (k%pⁱ + m%pⁱ)/pⁱ; carry_le_one (carries are single bits, via Nat.div_lt_of_lt_mul on k%pⁱ + m%pⁱ < 2·pⁱ); carry_eq_one_iff (carry = 1 ↔ pⁱ ≤ k%pⁱ + m%pⁱ, via Nat.one_le_div_iff), which is exactly the predicate appearing in Mathlib's filter and lets Finset.filter_congr identify the two index sets; and the keystone carry_succ — the schoolbook digit-by-digit carry recurrence carry(i+1) = (digitᵢ(k) + digitᵢ(m) + carryᵢ)/p — proved from the base-p block identity Nat.mod_pow_succ (k%pⁱ⁺¹ = k%pⁱ + pⁱ·digitᵢ(k)) and the division lemma (q·Y+r)/(q·p) = Y/p for r < q (div_block, via Nat.div_div_eq_div_mul and Nat.mul_add_div). The sibling Kummer carry-count entry and the multinomial Kummer entry both leave the carry implicit; this entry exhibits the propagation rule itself.",
+    "mathlib_version": "4.26.0",
+    "sorryCount": 0
+  },
+  "overview": {
+    "historicalContext": "Ernst Kummer proved in 1852 that the exponent of a prime p in the binomial coefficient C(m+n, m) equals the number of carries that occur when m and n are added in base p — a combinatorial refinement of Legendre's 1808 factorial formula. The valuation-as-carry-count identity is in Mathlib (Nat.Prime.emultiplicity_choose / Nat.factorization_choose), expressed as the cardinality of the digit positions where the truncated remainders k%pⁱ and (n−k)%pⁱ sum to at least pⁱ — the overflow that signals a carry. But the carry there is purely descriptive: the set is defined by an inequality, not produced by the schoolbook addition algorithm, and Mathlib never states how a carry at one position propagates to the next. The gallery's Kummer carry-count entry (the parent oq-01-oq-01) names that cardinality and derives divisibility corollaries, while the multinomial Kummer entry explicitly flags 'base-p carry counting' as 'not yet in Mathlib'. This entry, the oq-01 follow-up to the carry-count entry, closes that loop: it constructs the carry sequence as an honest recursive object and proves the propagation rule, then re-derives the carry-count theorem on top of it.",
+    "problemStatement": "Make Kummer's carries an explicit recursive sequence and verify the carry-count theorem on top of it. (1) Define the base-p carry into position i when adding k and m as carry p k m i = (k%pⁱ + m%pⁱ)/pⁱ, and show it is a single bit (carry ≤ 1) equal to 1 exactly when the low-i digit blocks overflow pⁱ. (2) Prove the schoolbook carry recurrence: carry(i+1) = (digitᵢ(k) + digitᵢ(m) + carryᵢ)/p, so a carry is propagated iff the two base-p digits plus the incoming carry reach p. (3) Conclude vₚ(C(n,k)) = #{i ∈ Ico 1 b | carry p k (n−k) i = 1} = Σ_{i∈Ico 1 b} carry p k (n−k) i for any cutoff b > log_p n. Verify the instance v₂(C(6,3)) = v₂(20) = 2 (adding 3 + 3 = 110₂ yields two carries).",
+    "text": "The carry into base-p position i when adding k and m is carry p k m i = (k%pⁱ + m%pⁱ)/pⁱ ∈ {0,1}; it obeys the schoolbook recurrence carry(i+1) = (digitᵢ(k) + digitᵢ(m) + carryᵢ)/p, and vₚ(C(n,k)) equals the number — equivalently the sum — of these carry bits over the addition k + (n−k).",
+    "proofStrategy": "The carry into position i is defined directly as the overflow quotient carry p k m i = (k%pⁱ + m%pⁱ)/pⁱ. Two elementary facts pin down its behaviour: carry_le_one bounds k%pⁱ + m%pⁱ < 2·pⁱ (each remainder is < pⁱ) so the quotient is < 2, i.e. a single bit; carry_eq_one_iff reads off carry = 1 ↔ pⁱ ≤ k%pⁱ + m%pⁱ from Nat.one_le_div_iff together with that bound. The keystone carry_succ establishes the schoolbook recurrence: expanding each position-(i+1) numerator with the base-p block identity Nat.mod_pow_succ gives k%pⁱ⁺¹ = k%pⁱ + pⁱ·digitᵢ(k) (and likewise for m), so the position-(i+1) numerator is (k%pⁱ + m%pⁱ) + pⁱ·(digitᵢ(k) + digitᵢ(m)); writing A = k%pⁱ + m%pⁱ = pⁱ·(A/pⁱ) + A%pⁱ regroups it as pⁱ·(digitᵢ(k) + digitᵢ(m) + carryᵢ) + A%pⁱ with remainder A%pⁱ < pⁱ, and the division lemma (q·Y+r)/(q·p) = Y/p (div_block, proved via Nat.div_div_eq_div_mul and Nat.mul_add_div) collapses the division by pⁱ⁺¹ = pⁱ·p to the schoolbook quotient (digitᵢ(k) + digitᵢ(m) + carryᵢ)/p. For the headline, padicValNat_eq_emultiplicity rewrites vₚ(C(n,k)) as Mathlib's emultiplicity, Nat.Prime.emultiplicity_choose expresses it as the cardinality of {i ∈ Ico 1 b | pⁱ ≤ k%pⁱ + (n−k)%pⁱ}, and Finset.filter_congr with carry_eq_one_iff identifies that index set with the carry positions {i | carry p k (n−k) i = 1}; a Nat-coercion cancellation finishes. The carry-sum form follows from Finset.card_filter since each carry bit is 0 or 1. The instance v₂(C(6,3)) = 2 is closed by kernel decide on the finite carry sum (no native_decide), with the log cutoff log₂ 6 < 4 supplied by Nat.log_lt_of_lt_pow.",
+    "keyInsights": [
+      "**Mathlib has the count, not the algorithm.** Nat.Prime.emultiplicity_choose gives vₚ(C(n,k)) as #{i ∈ Ico 1 b | pⁱ ≤ k%pⁱ + (n−k)%pⁱ}. That set is defined by an overflow inequality; nothing in Mathlib produces those carries by addition or relates a carry at position i to the next. Defining carry p k m i = (k%pⁱ + m%pⁱ)/pⁱ and proving carry = 1 ↔ that predicate (carry_eq_one_iff) turns the implicit cardinality into a genuine, computable carry sequence.",
+      "**A carry is a single bit.** Because k%pⁱ and m%pⁱ are each < pⁱ, their sum is < 2·pⁱ, so (k%pⁱ + m%pⁱ)/pⁱ ∈ {0,1}. This one-line bound (carry_le_one) is what makes 'carry into position i' a well-defined 0/1 indicator and makes the carry-count and carry-sum forms coincide.",
+      "**The schoolbook recurrence is the heart of the entry.** carry(i+1) = (digitᵢ(k) + digitᵢ(m) + carryᵢ)/p — exactly how one adds in base p by hand, carrying a 1 whenever the column total (two digits plus the incoming carry) reaches p. Its formal heart is the block identity k%pⁱ⁺¹ = k%pⁱ + pⁱ·digitᵢ(k) (Nat.mod_pow_succ) and the cancellation (q·Y+r)/(q·p) = Y/p for r < q. This propagation rule, absent from Mathlib and from the sibling carry-count entry, is the new content.",
+      "**Kummer = Legendre with the digit drop counted by carries.** vₚ(C(n,k)) = vₚ(n!) − vₚ(k!) − vₚ((n−k)!) and Legendre's digit-sum form turns the right side into (Sₚ(k) + Sₚ(n−k) − Sₚ(n))/(p−1); each unit of that digit-sum drop is precisely one base-p carry, and the recurrence here is exactly the mechanism by which a digit overflow becomes a unit of valuation.",
+      "**log/digits resist kernel reduction, but the carry sum does not.** Nat.log uses well-founded recursion and will not reduce under decide, so the cutoff bound log₂ 6 < 4 is supplied by Nat.log_lt_of_lt_pow (6 < 2⁴) rather than by decide; the carry sum itself is a plain Finset.Ico division sum that decide evaluates cleanly, keeping v₂(C(6,3)) = 2 axiom-free (no native_decide)."
+    ],
+    "prerequisites": [
+      "Kummer carry-count entry (parent oq-01-oq-01): the carry-count theorem with the carry left implicit",
+      "Legendre's formula (grandparent oq-01): the p-adic valuation of a factorial and its digit-sum form",
+      "Mathlib's implicit Kummer form: Nat.Prime.emultiplicity_choose, and the bridge padicValNat_eq_emultiplicity with the Fact p.Prime convention",
+      "Base-p block arithmetic: Nat.mod_pow_succ (k%pⁱ⁺¹ = k%pⁱ + pⁱ·(k/pⁱ % p)) and Nat.mod_mul",
+      "Natural-number division facts: Nat.div_div_eq_div_mul, Nat.mul_add_div, Nat.div_lt_of_lt_mul, Nat.one_le_div_iff, Nat.div_add_mod; Finset.filter_congr, Finset.card_filter; Nat.log_lt_of_lt_pow"
+    ]
+  },
+  "conclusion": {
+    "summary": "The carries underlying Kummer's theorem are constructed as an explicit recursive sequence. carry p k m i = (k%pⁱ + m%pⁱ)/pⁱ is shown to be a single bit (carry_le_one) whose value is the overflow test pⁱ ≤ k%pⁱ + m%pⁱ (carry_eq_one_iff), and it obeys the schoolbook digit-by-digit recurrence carry(i+1) = (digitᵢ(k) + digitᵢ(m) + carryᵢ)/p (carry_succ). On top of this sequence the headline padicValNat_choose_eq_numCarries identifies vₚ(C(n,k)) with the number of carry positions, and padicValNat_choose_eq_sum_carries with the sum of carry bits. All 7 theorems are fully verified with 0 axioms and 0 sorries; the instance v₂(C(6,3)) = 2 is checked by kernel reduction.",
+    "implications": "This supplies the explicit base-p carry algorithm that the gallery's multinomial-Kummer entry flagged as missing from Mathlib and that the sibling carry-count entry leaves implicit, turning the descriptive overflow-set form of Kummer's theorem into a faithful carry sequence with a verified propagation rule. The carry sequence and its recurrence are reusable for Lucas-type congruences, for the carry/digit-drop side of Legendre's digit-sum identity, and as the binary case (p = 2) for Hamming-weight / popcount valuations of central binomial coefficients.",
+    "openQuestions": [
+      "Derive Lucas' theorem from the carry recurrence: C(n,k) ≢ 0 (mod p) iff the addition k + (n−k) is carry-free, i.e. every base-p digit of k is ≤ the corresponding digit of n.",
+      "Express the carry count in closed form via the digit-sum drop: #carries = (Sₚ(k) + Sₚ(n−k) − Sₚ(n))/(p−1), linking the recurrence directly to Mathlib's sub_one_mul_padicValNat_choose_eq_sub_sum_digits."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "legendre-factorial-formula-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry (Kummer carry-count theorem). It records vₚ(C(n,k)) as the cardinality of the overflow set with the carry left implicit; this entry answers its open question oq-01 by constructing the carry as an explicit recursive sequence and proving the schoolbook propagation rule that generates it."
+    },
+    {
+      "targetId": "legendre-factorial-formula-oq-01",
+      "relationship": "related",
+      "description": "Grandparent entry (Legendre's formula). Kummer's theorem is the binomial counterpart of Legendre's factorial formula; the carry recurrence here is the mechanism by which Legendre's digit-sum drop becomes a unit of binomial valuation."
+    },
+    {
+      "targetId": "kummer-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Multinomial Kummer entry. It treats the m-summand generalization but explicitly leaves base-p carry counting to Mathlib's implicit cardinality; this entry provides the explicit carry sequence and schoolbook recurrence for the binomial (two-summand) case."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Docstring explaining that Mathlib and the sibling carry-count entry record Kummer's theorem only with the carry implicit, and that this file supplies the missing carry algorithm. Imports Mathlib's multiplicity and p-adic valuation basics and opens Nat / Finset."
+    },
+    {
+      "id": "sec-carry-def",
+      "title": "The Carry Sequence and Base-p Digits",
+      "startLine": 48,
+      "endLine": 88,
+      "summary": "Defines carry p k m i = (k%pⁱ + m%pⁱ)/pⁱ and digit p x i = x/pⁱ % p. carry_zero (no carry into the units place), carry_le_one (a carry is a single bit, from k%pⁱ + m%pⁱ < 2·pⁱ), and carry_eq_one_iff (carry = 1 ↔ pⁱ ≤ k%pⁱ + m%pⁱ, the overflow test that matches Mathlib's filter predicate)."
+    },
+    {
+      "id": "sec-recurrence",
+      "title": "The Schoolbook Carry Recurrence",
+      "startLine": 89,
+      "endLine": 119,
+      "summary": "A private division lemma div_block ((q·Y+r)/(q·p) = Y/p for r < q) and the keystone carry_succ: carry(i+1) = (digitᵢ(k) + digitᵢ(m) + carryᵢ)/p, proved by expanding the position-(i+1) numerators with Nat.mod_pow_succ and regrouping into pⁱ·(digit sum + incoming carry) + remainder."
+    },
+    {
+      "id": "sec-headline",
+      "title": "Kummer's Carry-Count Theorem on the Explicit Sequence",
+      "startLine": 120,
+      "endLine": 179,
+      "summary": "numCarries counts carry positions over Ico 1 b. padicValNat_choose_eq_numCarries bridges vₚ(C(n,k)) (via padicValNat_eq_emultiplicity and emultiplicity_choose) to the carry positions through Finset.filter_congr with carry_eq_one_iff; padicValNat_choose_eq_sum_carries gives the carry-sum form via Finset.card_filter. Two kernel-decide sanity checks confirm v₂(C(6,3)) = 2 (two carries adding 3 + 3 in base 2)."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Multiplicity",
+      "Mathlib.NumberTheory.Padics.PadicVal.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "KummerCarryRecurrence",
+    "lineCount": 179,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 3,
+    "path": "Proofs/LegendreFactorialFormulaOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Kummer, Ernst E.",
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "year": "1852",
+      "venue": "Journal für die reine und angewandte Mathematik 44, 93–146",
+      "note": "Original source of the carry-count description of the prime exponent in a binomial coefficient."
+    },
+    {
+      "authors": "Legendre, Adrien-Marie",
+      "title": "Essai sur la théorie des nombres",
+      "year": "1808",
+      "venue": "Courcier, Paris (2nd edition)",
+      "note": "Formula for the exponent of a prime in n!, from which Kummer's theorem follows by the digit-sum drop."
+    },
+    {
+      "authors": "Granville, Andrew",
+      "title": "Binomial coefficients modulo prime powers",
+      "year": "1997",
+      "venue": "CMS Conf. Proc. 20, 253–276",
+      "note": "Modern survey of Kummer's and Lucas' theorems and the role of base-p carries in binomial valuations."
+    }
+  ],
+  "sorries": 0
+}
