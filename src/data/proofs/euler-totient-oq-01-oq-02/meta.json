@@ -17,7 +17,7 @@
       "prime-powers",
       "research"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-06-22",
     "mathlib_version": "4.26.0",
@@ -49,15 +49,12 @@
       }
     ],
     "originalContributions": [
-      "carmichael_two_pow: λ(2ᵏ) = 2ᵏ⁻² for k ≥ 3 (the OQ's target), from carmichael_two_pow_of_ne_two",
-      "two_mul_carmichael_two_pow: 2·λ(2ᵏ) = φ(2ᵏ) for k ≥ 3 — λ is exactly half the totient at high powers of two",
-      "carmichael_odd_prime_pow: λ(pᵏ) = φ(pᵏ) for odd primes — Carmichael and totient coincide when the unit group is cyclic",
-      "carmichael_dvd_totient / pow_carmichael: λ(n) ∣ φ(n) and the universal-exponent property a^{λ(n)} = 1",
-      "carmichael_eight / carmichael_sixteen: concrete λ(8) = 2, λ(16) = 4"
+      "Curated packaging of Mathlib's Carmichael (reduced-totient) API specialized to prime powers: λ(2ᵏ)=2ᵏ⁻², 2·λ(2ᵏ)=φ(2ᵏ), λ(pᵏ)=φ(pᵏ) for odd p, λ(n)∣φ(n), a^{λ(n)}=1 — each a one-line restatement of the corresponding Mathlib lemma (carmichael_two_pow_of_ne_two, two_mul_carmichael_two_pow_of_three_le_eq_totient, carmichael_pow_of_prime_ne_two, carmichael_dvd_totient, pow_carmichael), not independent proofs",
+      "carmichael_eight / carmichael_sixteen: concrete evaluations λ(8)=2, λ(16)=4, obtained from carmichael_two_pow by norm_num — the only genuinely derived (non-delegating) statements in the file"
     ],
     "axiomCount": 0,
     "lineCount": 75,
-    "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide; the concrete λ(8), λ(16) follow from the formula by norm_num, not native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound]. The prime-power values are invoked from Mathlib's Carmichael development.",
+    "assumptions": "0 axioms, 0 sorries; all theorems machine-checked (no native_decide — the concrete λ(8), λ(16) follow from the formula by norm_num). #print axioms reports only [propext, Classical.choice, Quot.sound]. The prime-power Carmichael values are obtained directly from Mathlib's ArithmeticFunction.Carmichael development — every substantive theorem is a one-line delegation to a Mathlib lemma, so the core results are Mathlib's, not independently proved here; hence the `mathlib` badge (Tier B). The entry's value is the curated prime-power packaging and the concrete evaluations.",
     "theoremCount": 7,
     "definitionCount": 0,
     "prerequisites": [
