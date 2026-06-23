@@ -1,0 +1,168 @@
+{
+  "id": "erdos-1002-oq-03",
+  "title": "Erdős #1002 OQ-03: The Rational Case — Linear Drift of the Weighted Fractional Sum with Slope 1/(2q)",
+  "slug": "erdos-1002-oq-03",
+  "description": "Companion to Erdős #1002 (asymptotic distribution of the weighted fractional sum S(α,n) = Σ_{k=1}^n (1/2 − {αk})). The parent open question asks how the limiting behaviour of S(α,n) depends on the arithmetic of α — concretely on its continued-fraction expansion. This entry resolves the RATIONAL case completely and axiom-free. For a reduced fraction α = p/q (gcd(p,q)=1, q ≥ 1), the continued fraction terminates and the behaviour is the cleanest of all: the sum over one full period is the universal constant 1/2, independent of both p and q (innerSum_period_sum: S(p/q, q) = 1/2), and over n periods the sum is exactly n/2 (innerSum_linear: S(p/q, n·q) = n/2). Hence for rational α the weighted fractional sum grows EXACTLY LINEARLY with per-step drift 1/(2q) governed solely by the denominator q (the final continued-fraction convergent), so the limiting distribution is degenerate — a sharp contrast with the bounded/Cauchy behaviour in the irrational case. The crux is an elementary complete-residue-system fact: as k runs over one period the residues p·(k+1) mod q permute {0,…,q−1} (multiplication by a unit permutes ℤ/qℤ), so Σ {p(k+1)/q} = (q−1)/2 and the deviations 1/2 − {p(k+1)/q} telescope to exactly 1/2; linear growth follows from q-periodicity of the summand and induction on the number of periods. Fully machine-checked: 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://erdosproblems.com/1002",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1002OQ03.lean",
+    "erdosNumber": 1002,
+    "erdosUrl": "https://erdosproblems.com/1002",
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": null,
+    "tags": [
+      "number-theory",
+      "diophantine-approximation",
+      "fractional-parts",
+      "continued-fractions",
+      "complete-residue-system",
+      "equidistribution",
+      "erdos",
+      "axiom-free"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.ModEq.cancel_left_of_coprime",
+        "description": "Cancellation p·a ≡ p·b [MOD q] ⟹ a ≡ b [MOD q] when gcd(q,p)=1 — the engine making k ↦ p·(k+1) mod q injective on a period",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset.card_image_of_injOn",
+        "description": "An injective-on map preserves cardinality — promotes injectivity of the residue map to a bijection of range q onto itself (complete residue system)",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.sum_range_id_mul_two",
+        "description": "(Σ_{m<q} m)·2 = q·(q−1) — evaluates the residue sum to (q−1)/2, giving the per-period deviation 1/2",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Int.fract_add_natCast",
+        "description": "{x + n} = {x} for natural n — yields q-periodicity of the summand k ↦ 1/2 − {(p/q)(k+1)}, the basis of the linear-growth induction",
+        "module": "Mathlib.Algebra.Order.Floor"
+      }
+    ],
+    "originalContributions": [
+      "innerSum_period_sum: PROVED that for any reduced fraction p/q the weighted fractional sum over one full period is the universal constant 1/2 = S(p/q, q), independent of p and q (0 axioms)",
+      "innerSum_linear: PROVED exact linear growth S(p/q, n·q) = n/2, so rational α gives per-step drift 1/(2q) and a degenerate limiting distribution (0 axioms)",
+      "sum_mulmod_shift: PROVED the complete-residue-system identity Σ_{k<q} (p·(k+1) mod q) = Σ_{m<q} m for gcd(p,q)=1 — the arithmetic crux",
+      "fract_natDiv: PROVED Int.fract(a/q) = (a mod q)/q for naturals, the bridge from fractional parts to residues",
+      "deviation_rational_periodic / cyclic_sum_periodic: PROVED q-periodicity of the deviation summand and that a q-periodic function sums to the same value over any q consecutive indices — the period recurrence behind linear growth"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Erdős #1002 parent (asymptotic distribution of weighted fractional sums)",
+      "Fractional part {x} and its translation invariance {x+n} = {x}",
+      "Complete residue systems: multiplication by a unit permutes ℤ/qℤ",
+      "Continued fractions of rationals terminate; the last denominator is q"
+    ],
+    "lineCount": 212,
+    "relatedProblems": [
+      {
+        "id": "erdos-1002",
+        "relationship": "Direct parent: asks how the limiting distribution of S(α,n) depends on α; this entry settles the rational case (terminating continued fraction) with exact linear drift 1/(2q)"
+      },
+      {
+        "id": "erdos-1002-oq-01-oq-01-incomplete-01",
+        "relationship": "Sibling: establishes the a-priori envelope |S(α,n)| ≤ n/2 and the zero-mean ∫₀¹(1/2−{x})dx = 0 underlying the irrational/equidistributed case; this entry gives the exact value in the rational case where the drift is non-zero"
+      }
+    ],
+    "assumptions": "None. 0 axioms, 0 sorries (the theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound; the two numeric corollary examples use kernel `decide`/`norm_num`, NOT `native_decide`, so no `Lean.ofReduceBool` is introduced). The per-period value 1/2 and the linear law S(p/q,n·q)=n/2 are elementary classical facts; the contribution is a clean, fully verified, 0-axiom formalization isolating the rational case of Erdős #1002 and exhibiting the continued-fraction dependence (drift slope 1/(2q)) explicitly.",
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "structureCount": 0
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1002 concerns the limiting distribution of the weighted fractional sum f(α,n) = (1/log n)·Σ_{k=1}^n (1/2 − {αk}). Kesten (1960) proved that a two-parameter variant has a Cauchy limiting distribution; the one-parameter case remains open. The qualitative behaviour of the inner sum S(α,n) = Σ_{k=1}^n (1/2 − {αk}) depends sharply on the arithmetic of α: for badly approximable irrationals (bounded partial quotients, e.g. quadratic irrationals) the Denjoy–Koksma inequality keeps S bounded along continued-fraction denominators, while for general irrationals it can be unbounded. The rational endpoint of this spectrum — where the continued fraction terminates — is the cleanest case, and is what this entry pins down exactly.",
+    "problemStatement": "Determine, axiom-free, the exact behaviour of the inner sum S(α,n) = Σ_{k=1}^n (1/2 − {αk}) when α = p/q is rational (the terminating continued-fraction case of Erdős #1002), and exhibit the dependence on the continued-fraction data (the denominator q).",
+    "text": "A 212-line self-contained file proving that for a reduced fraction p/q the inner sum over one period is the universal constant 1/2 (S(p/q, q) = 1/2), and over n periods is exactly n/2 (S(p/q, n·q) = n/2) — hence linear growth with drift 1/(2q). All 0 sorries, 0 axioms, no native_decide.",
+    "proofStrategy": "Write each deviation term 1/2 − {(p/q)(k+1)} as 1/2 − (p·(k+1) mod q)/q using fract_natDiv (Int.fract(a/q) = (a mod q)/q). Over one period k ∈ {0,…,q−1}, the map k ↦ p·(k+1) mod q is injective because gcd(p,q)=1 (Nat.ModEq.cancel_left_of_coprime), hence — having the right cardinality — a bijection of range q onto itself (Finset.card_image_of_injOn); so Σ residues = Σ_{m<q} m = q(q−1)/2 (Finset.sum_range_id_mul_two). Summing, the q copies of 1/2 minus (q−1)/2 give exactly 1/2 (innerSum_period_sum). For linear growth, the summand is q-periodic (deviation_rational_periodic, from Int.fract_add_natCast), so its sum over any q consecutive indices is constant (cyclic_sum_periodic); this yields the period recurrence S(p/q, n+q) = S(p/q, n) + S(p/q, q), and induction on the number of periods gives S(p/q, n·q) = n/2 (innerSum_linear).",
+    "keyInsights": [
+      "**Rational = degenerate distribution.** Unlike the bounded (quadratic-irrational) or Cauchy (Kesten) regimes, rational α forces S(p/q,n) to grow linearly, so f(p/q,n) = S/log n → ∞: the limiting distribution is degenerate. This is the terminating-continued-fraction endpoint of the parent's spectrum.",
+      "**The per-period drift is a universal constant 1/2.** Over one full period the sum is exactly 1/2, independent of both the numerator p and the denominator q — a clean invariant hiding inside a p- and q-dependent sum.",
+      "**Continued-fraction dependence is exactly the denominator q.** The per-step drift is 1/(2q), where q is the last continued-fraction convergent denominator of the terminating expansion; this is the precise way the rational case 'depends on the continued fraction'.",
+      "**Complete residue system is the whole arithmetic.** The non-trivial cancellation comes solely from gcd(p,q)=1 making p·(k+1) mod q permute {0,…,q−1}, collapsing Σ{p(k+1)/q} to (q−1)/2.",
+      "**Periodicity ⟹ linearity for free.** Once the summand is shown q-periodic, no further arithmetic is needed: a periodic function sums identically over each block, so the whole growth is the single per-period constant repeated."
+    ],
+    "prerequisites": [
+      "Fractional part and its translation invariance {x+n} = {x}",
+      "Complete residue systems / units of ℤ/qℤ",
+      "Erdős #1002 parent entry (weighted fractional sums)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1002",
+      "relationship": "extends",
+      "description": "Settles the rational case of the parent's open question (dependence of S(α,n) on the continued-fraction expansion): terminating CF ⟹ linear drift with slope 1/(2q)."
+    },
+    {
+      "targetId": "erdos-1002-oq-01-oq-01-incomplete-01",
+      "relationship": "complements",
+      "description": "The sibling proves the a-priori envelope |S(α,n)| ≤ n/2 and zero mean for the equidistributed/irrational regime; this entry gives the exact non-zero drift in the rational regime."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 212,
+    "namespace": "Erdos1002OQ03",
+    "opens": ["Real"],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "substantiveTheoremCount": 2,
+    "computationalVerifications": 2,
+    "lemmaCount": 8,
+    "imports": ["Mathlib"],
+    "path": "Proofs/Erdos1002OQ03.lean",
+    "sorries": 0,
+    "definitionCount": 2
+  },
+  "conclusion": {
+    "summary": "A fully machine-checked (0 sorries, 0 axioms) resolution of the rational case of Erdős #1002: for a reduced fraction p/q the weighted fractional sum S(p/q,n) = Σ_{k=1}^n (1/2 − {(p/q)k}) over one period equals the universal constant 1/2, and over n periods equals exactly n/2 — hence linear growth with per-step drift 1/(2q) determined by the (terminating) continued-fraction denominator q.",
+    "implications": "Pins down the degenerate endpoint of Erdős #1002's distribution spectrum: rational α (terminating continued fraction) gives strictly linear drift, so f(α,n) = S/log n diverges and admits no proper limiting distribution — in sharp contrast to the bounded behaviour for badly approximable irrationals and the Cauchy law in Kesten's two-parameter variant. The explicit slope 1/(2q) makes the parent's 'dependence on the continued-fraction expansion' concrete in the rational case.",
+    "openQuestions": [
+      "Formalize the Denjoy–Koksma bound |S(α, q_k)| ≤ 1 along continued-fraction denominators q_k, giving the bounded-S regime for badly approximable α and a clean contrast with the rational linear drift.",
+      "For α with bounded partial quotients, bound the maximal excursion of S(α,n) in terms of Σ a_i (sum of partial quotients) via the Ostrowski representation, quantifying the continued-fraction dependence in the irrational case."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "innerSum_period_sum",
+      "type": "core",
+      "description": "Per-period value: for a reduced fraction p/q, S(p/q, q) = 1/2 — the universal per-period drift, independent of p and q (PROVED, 0 axioms)",
+      "leanType": "∀ (p q : ℕ), q ≥ 1 → Nat.gcd p q = 1 → innerSum (↑p / ↑q) q = 1 / 2"
+    },
+    {
+      "name": "innerSum_linear",
+      "type": "core",
+      "description": "Linear growth: S(p/q, n·q) = n/2 over n full periods, so rational α has per-step drift 1/(2q) and a degenerate limiting distribution (PROVED, 0 axioms)",
+      "leanType": "∀ (p q : ℕ), q ≥ 1 → Nat.gcd p q = 1 → ∀ (n : ℕ), innerSum (↑p / ↑q) (n * q) = ↑n / 2"
+    },
+    {
+      "name": "sum_mulmod_shift",
+      "type": "supporting",
+      "description": "Complete residue system: Σ_{k<q} (p·(k+1) mod q) = Σ_{m<q} m for gcd(p,q)=1 — the arithmetic crux (PROVED, 0 axioms)",
+      "leanType": "∀ (p q : ℕ), q ≥ 1 → Nat.gcd p q = 1 → ∑ k ∈ Finset.range q, (p * (k + 1)) % q = ∑ m ∈ Finset.range q, m"
+    },
+    {
+      "name": "fract_natDiv",
+      "type": "supporting",
+      "description": "Fractional part of a natural quotient: Int.fract(a/q) = (a mod q)/q for q > 0 — bridges fractional parts to residues (PROVED, 0 axioms)",
+      "leanType": "∀ (a q : ℕ), 0 < q → Int.fract ((↑a : ℝ) / ↑q) = (↑(a % q) : ℝ) / ↑q"
+    },
+    {
+      "name": "cyclic_sum_periodic",
+      "type": "supporting",
+      "description": "A q-periodic function sums to the same value over any q consecutive indices — the period recurrence behind linear growth (PROVED, 0 axioms)",
+      "leanType": "∀ (g : ℕ → ℝ) (q : ℕ), (∀ k, g (k + q) = g k) → ∀ (n : ℕ), ∑ k ∈ Finset.range q, g (n + k) = ∑ k ∈ Finset.range q, g k"
+    }
+  ],
+  "sorries": 0
+}
