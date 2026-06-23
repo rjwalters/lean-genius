@@ -157,7 +157,23 @@
       "url": "https://en.wikipedia.org/wiki/Meagre_set"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "algebraic-reals-meager",
+      "relationship": "extends",
+      "description": "Supplies the measure-theoretic counterpart of the parent's Baire-category result: the algebraic reals are Lebesgue-null (mirroring their meagreness), and the comeagre-vs-conull sharp boundary the parent only mentions in prose."
+    },
+    {
+      "targetId": "algebraic-reals-meager-oq-03",
+      "relationship": "related",
+      "description": "Sibling that completes the dual direction: oq-03 builds on this entry's verified liouville_residual/liouville_null to construct a meagre set of full measure and the full Oxtoby orthogonal decomposition ℝ = A ⊔ B."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "depends-on",
+      "description": "Grandparent: the countability of the algebraic reals (Algebraic.countable) is the input that makes them Lebesgue-null here."
+    }
+  ],
   "conclusion": "The algebraic reals are small and the transcendentals large in the measure sense exactly as in the category sense — but the two senses are not interchangeable. The Liouville numbers are a dense, comeagre set of Lebesgue measure zero, so comeagre does not imply conull; the comeagre filter and the a.e. filter on ℝ are disjoint. This formalizes, with zero axioms, the measure-versus-category contrast that the parent Baire-category entry records only informally.",
   "sorries": []
 }
