@@ -1,0 +1,43 @@
+{
+  "slug": "buffons-needle-oq-02-oq-02-oq-01",
+  "title": "Monotonicity of the Buffon crossing factor in the dimension",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\alpha_{n+2}<\\alpha_n,\\ \\alpha_n\\le 2/\\pi,\\ \\alpha_n<1\\ (n\\ge2)",
+    "plain": "Prove the global monotone behaviour of the n-dimensional Buffon crossing factor.",
+    "whyMatters": []
+  },
+  "knowledge": {
+    "progressSummary": "Proved global monotonicity of the n-dim Buffon crossing factor alpha_n=E_{S^{n-1}}|u_1| (recurrence alpha_{n+2}=(n/(n+1))alpha_n, base 2/pi,1/2): strict two-step decrease alpha_{n+2}<alpha_n, maximum alpha_2=2/pi (alpha_n<=2/pi), hence alpha_n<1 in every dimension, and alpha_3<alpha_2. Self-contained re-declaration because companion BuffonsNeedleOQ02OQ01.lean is bit-rotted (Filter.Tendsto.div drift). 8 thm/1 def, 0 sorries/0 axioms, builds green 7743 jobs.",
+    "builtItems": [
+      "crossingFactor + crossingFactor_pos",
+      "crossingFactor_two_step_lt: alpha_{n+2}<alpha_n",
+      "crossingFactor_le_two_div_pi: alpha_n<=2/pi",
+      "crossingFactor_lt_one: alpha_n<1",
+      "crossingFactor_three_lt_two: 1/2<2/pi"
+    ],
+    "insights": [
+      "Recurrence multiplies by n/(n+1)<1 each two-dim step -> strict decrease along even and odd dims.",
+      "Both subsequences start at their first term; alpha_3=1/2<2/pi=alpha_2 so global max is the planar value 2/pi.",
+      "alpha_n<1 in every dimension (2/pi<1); plane is most crossing-prone."
+    ],
+    "mathlibGaps": [
+      "Companion BuffonsNeedleOQ02OQ01.lean bit-rotted: Filter.Tendsto.div API drift at line 303."
+    ],
+    "nextSteps": [
+      "Prove alpha_n->0 (product of ratios diverges; alpha_n~sqrt(2/(pi n))).",
+      "Closed form alpha_n=Gamma(n/2)/(sqrt(pi)Gamma((n+1)/2)).",
+      "Repair the bit-rotted companion file."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "buffon",
+    "integral-geometry"
+  ],
+  "significance": 7,
+  "tractability": 6
+}
