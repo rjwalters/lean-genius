@@ -1,0 +1,171 @@
+{
+  "id": "fibonacci-identities-oq-01-oq-02",
+  "title": "d'Ocagne's Identity for Fibonacci Numbers",
+  "slug": "fibonacci-identities-oq-01-oq-02",
+  "description": "d'Ocagne's identity: with Fₙ = Nat.fib n, the cross-determinant of two arbitrarily-spaced Fibonacci pairs (Fₘ, Fₘ₊₁) and (Fₙ, Fₙ₊₁) collapses to a single signed Fibonacci number — for n ≤ m, Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ = (−1)ⁿ·Fₘ₋ₙ over ℤ. It is the off-diagonal companion of Cassini (oq-01), which is the diagonal case m = n+1 (then Fₘ₋ₙ = F₁ = 1). Proved by reparametrising m = n+k and inducting on n: the two-term recurrence collapses the successor step to g(n+1) = −g(n), and a single linear_combination (-1)·ih closes the algebra. Includes the diagonal corollary recovering Cassini and the unsigned form |Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ| = Fₘ₋ₙ. d'Ocagne's identity is absent from Mathlib (which has the recurrence, fib_add, fib_two_mul, fib_gcd, but no cross-determinant identity) and answers the second open question of the Cassini entry.",
+  "meta": {
+    "author": "Maurice d'Ocagne (19th century); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cassini_and_Catalan_identities",
+    "date": "1885",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "docagne",
+      "cassini",
+      "recurrence",
+      "induction",
+      "determinant",
+      "integer-sequences",
+      "identity",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "fib (n + 2) = fib n + fib (n + 1) — the defining Fibonacci recurrence, cast to ℤ to expand the two terms introduced at the successor step",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.fib_zero / Nat.fib_one",
+        "description": "fib 0 = 0, fib 1 = 1 — base values discharging the n = 0 case by simp",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.exists_eq_add_of_le",
+        "description": "n ≤ m → ∃ k, m = n + k — reparametrises the spacing as k = m − n so the headline avoids ℕ-subtraction inside the induction",
+        "module": "Mathlib.Algebra.Order.Sub.Basic"
+      },
+      {
+        "theorem": "Nat.add_sub_cancel_left",
+        "description": "n + k − n = k — collapses Fₘ₋ₙ to Fₖ after reparametrisation",
+        "module": "Mathlib.Algebra.Group.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "fib_docagne_aux: ∀ k n, (fib (n+k) : ℤ)·fib (n+1) − (fib (n+k+1) : ℤ)·fib n = (−1)ⁿ·fib k — d'Ocagne's identity with explicit spacing m = n+k, the inductive core",
+      "fib_docagne: ∀ {m n}, n ≤ m → (fib m : ℤ)·fib (n+1) − (fib (m+1) : ℤ)·fib n = (−1)ⁿ·fib (m−n) — d'Ocagne's identity in standard two-index form, absent from Mathlib",
+      "fib_docagne_cassini: ∀ n, (fib (n+1) : ℤ)² − (fib (n+2) : ℤ)·fib n = (−1)ⁿ — Cassini recovered as the diagonal m = n+1 of d'Ocagne",
+      "fib_docagne_abs: ∀ {m n}, n ≤ m → |(fib m : ℤ)·fib (n+1) − (fib (m+1) : ℤ)·fib n| = fib (m−n) — the unsigned cross-determinant form"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 120,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used in the four theorems; the trailing numeric examples use decide but are illustrations, not part of any theorem.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "d'Ocagne's identity, attributed to the French mathematician and engineer Maurice d'Ocagne (best known for nomography), is the asymmetric two-index Fibonacci determinant identity. Where Cassini measures the determinant of a single sliding window of consecutive terms, d'Ocagne measures the cross-determinant of two Fibonacci pairs at arbitrary positions m and n and finds it equal to a single signed Fibonacci number ±Fₘ₋ₙ. It sits alongside Catalan's identity (the symmetric diagonal generalisation) in the standard hierarchy of Fibonacci identities, all of which descend from the matrix relation [[1,1],[1,0]]ⁿ = [[Fₙ₊₁,Fₙ],[Fₙ,Fₙ₋₁]] and the multiplicativity of the determinant.",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-01, second question)**: Prove d'Ocagne's identity Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ = (−1)ⁿ·Fₘ₋ₙ.\n\n**Result**: fib_docagne (for n ≤ m, (fib m : ℤ)·fib (n+1) − (fib (m+1) : ℤ)·fib n = (−1)ⁿ·fib (m−n)), with its explicit-spacing core fib_docagne_aux, the diagonal Cassini corollary fib_docagne_cassini, and the unsigned form fib_docagne_abs.",
+    "text": "For n ≤ m, working over ℤ, Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ = (−1)ⁿ·Fₘ₋ₙ, where Fₙ = Nat.fib n. The cross-determinant of the Fibonacci pairs (Fₘ, Fₘ₊₁) and (Fₙ, Fₙ₊₁) equals a single Fibonacci number whose index is the spacing m−n, with a sign alternating in n.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Reparametrise the spacing. Since n ≤ m, write m = n + k with k = m − n (Nat.exists_eq_add_of_le); this removes ℕ-subtraction from the induction and turns the target into the explicit-spacing core fib_docagne_aux.\n2. Prove the core by induction on n with k fixed, cast to ℤ. Base case n = 0: Fₖ·F₁ − Fₖ₊₁·F₀ = Fₖ·1 − Fₖ₊₁·0 = Fₖ = (−1)⁰·Fₖ, discharged by simp on fib_zero/fib_one.\n3. Successor step. Writing g(n) for the left-hand side, expand Fₙ₊₂ = Fₙ + Fₙ₊₁ and Fₙ₊ₖ₊₂ = Fₙ₊ₖ + Fₙ₊ₖ₊₁ (both cast from Nat.fib_add_two). The Fₙ₊₁-terms cancel, leaving g(n+1) = −g(n); after pow_succ this is exactly (−1)ⁿ ↦ (−1)ⁿ⁺¹, closed by `linear_combination (-1) * ih`. Index normalisation (j+1+k ↦ j+k+1, etc.) is done by omega-proven rewrites.\n4. fib_docagne specialises the core at the reparametrisation; fib_docagne_cassini instantiates m = n+1 (so Fₘ₋ₙ = F₁ = 1) and recovers Cassini; fib_docagne_abs rewrites by fib_docagne and simplifies |(−1)ⁿ| = 1.",
+    "keyInsights": [
+      "**Reparametrise, don't subtract.** The headline Fₘ₋ₙ hides a ℕ-subtraction; substituting m = n + k makes the spacing k a free induction-independent parameter, so the proof is a clean single induction on n with no truncation hazards.",
+      "**The step is a sign flip.** Exactly as in Cassini, the successor step satisfies g(n+1) = −g(n): the two recurrence expansions cancel the Fₙ₊₁ cross-terms, so a single linear_combination with coefficient −1 against the hypothesis matches (−1)ⁿ ↦ (−1)ⁿ⁺¹.",
+      "**Cassini is the diagonal.** Setting m = n+1 gives Fₘ₋ₙ = F₁ = 1 and recovers Cassini's identity as a one-line corollary (fib_docagne_cassini) — d'Ocagne genuinely generalises the parent entry off the diagonal.",
+      "**Recurrence as the only input.** Beyond the base values and the reparametrisation lemma, the proof uses nothing but Nat.fib_add_two cast to ℤ; no closed form, matrices, or Binet formula are needed.",
+      "**Not in Mathlib.** Mathlib carries the recurrence, fib_add, fib_two_mul, and fib_gcd, but no cross-determinant identity, so d'Ocagne (and its corollaries) is an original contribution."
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence Nat.fib_add_two and base values",
+      "Induction over ℕ and casting ℕ → ℤ (exact_mod_cast)",
+      "Reparametrising an inequality n ≤ m as m = n + k (Nat.exists_eq_add_of_le) to avoid ℕ-subtraction",
+      "The linear_combination tactic for closing polynomial identities against a hypothesis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Module docstring stating d'Ocagne's identity with worked numerical examples and the relation to Cassini, the Fibonacci/tactic imports, namespace, and open Nat.",
+      "mathContext": "$F_m F_{n+1} - F_{m+1} F_n = (-1)^n F_{m-n}$ for $n \\le m$, with $F_0=0, F_1=1, F_{n+2}=F_n+F_{n+1}$."
+    },
+    {
+      "id": "core",
+      "title": "d'Ocagne Core (Explicit Spacing)",
+      "startLine": 67,
+      "endLine": 95,
+      "summary": "fib_docagne_aux: the inductive core Fₙ₊ₖ·Fₙ₊₁ − Fₙ₊ₖ₊₁·Fₙ = (−1)ⁿ·Fₖ, proved by induction on n — base case by simp, successor step by expanding the recurrence twice and closing with linear_combination (-1)·ih (the step negates the determinant).",
+      "mathContext": "$F_{n+k} F_{n+1} - F_{n+k+1} F_n = (-1)^n F_k$ over $\\mathbb{Z}$."
+    },
+    {
+      "id": "docagne",
+      "title": "d'Ocagne's Identity",
+      "startLine": 97,
+      "endLine": 106,
+      "summary": "fib_docagne: the standard two-index form for n ≤ m, obtained from the core by reparametrising m = n+k and collapsing m−n = k via Nat.add_sub_cancel_left.",
+      "mathContext": "$F_m F_{n+1} - F_{m+1} F_n = (-1)^n F_{m-n}$."
+    },
+    {
+      "id": "cassini",
+      "title": "Cassini as the Diagonal",
+      "startLine": 108,
+      "endLine": 114,
+      "summary": "fib_docagne_cassini: instantiating m = n+1 (so Fₘ₋ₙ = F₁ = 1) recovers Cassini's identity Fₙ₊₁² − Fₙ₊₂·Fₙ = (−1)ⁿ, demonstrating that d'Ocagne generalises the parent entry off the diagonal.",
+      "mathContext": "$F_{n+1}^2 - F_{n+2} F_n = (-1)^n$."
+    },
+    {
+      "id": "abs",
+      "title": "Unsigned Form and Examples",
+      "startLine": 116,
+      "endLine": 120,
+      "summary": "fib_docagne_abs: the cross-determinant has absolute value exactly Fₘ₋ₙ, via abs_pow/abs_neg on (−1)ⁿ; followed by concrete numeric examples.",
+      "mathContext": "$\\left| F_m F_{n+1} - F_{m+1} F_n \\right| = F_{m-n}$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities-oq-01",
+      "relationship": "extends",
+      "description": "Answers the second open question of the Cassini entry; Cassini is recovered here as the diagonal case m = n+1 (fib_docagne_cassini)"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) proof of d'Ocagne's identity Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ = (−1)ⁿ·Fₘ₋ₙ over ℤ for n ≤ m, together with its explicit-spacing core, the diagonal Cassini corollary, and the unsigned |·| = Fₘ₋ₙ form, by a single induction using only the Fibonacci recurrence and a reparametrisation of the spacing.",
+    "implications": "Supplies the asymmetric two-index Fibonacci cross-determinant identity — the off-diagonal companion of Cassini and a sibling of Catalan — as a universally quantified theorem absent from Mathlib, with Cassini falling out as the diagonal special case.",
+    "openQuestions": [
+      "Extend d'Ocagne to the bilateral (signed-index) Fibonacci Fₙ₋ₘ allowing m > n, by developing the negaFibonacci extension F₋ₙ = (−1)ⁿ⁺¹Fₙ.",
+      "Unify Cassini, Catalan, and d'Ocagne under the single matrix identity det([[1,1],[1,0]]ⁿ) = (−1)ⁿ together with the cocycle [[1,1],[1,0]]^{m} = [[1,1],[1,0]]^{n}·[[1,1],[1,0]]^{m−n}."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Fib.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "FibonacciIdentitiesOQ01OQ02",
+    "lineCount": 120,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/FibonacciIdentitiesOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Vajda, S.",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": "1989",
+      "venue": "Ellis Horwood / Dover",
+      "note": "d'Ocagne's, Catalan's and Cassini's identities and their interrelations"
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "d'Ocagne's identity and the matrix derivation of the Fibonacci determinant identities"
+    }
+  ],
+  "sorries": 0
+}
