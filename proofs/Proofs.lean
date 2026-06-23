@@ -913,6 +913,7 @@ import Proofs.ElementaryQuadraticReciprocityOQ03OQ03
 import Proofs.Erdos1000OQ01
 import Proofs.Erdos1000OQ01Aristotle
 import Proofs.Erdos1000OQ03
+import Proofs.Erdos1000OQ03OQ01
 import Proofs.Erdos1000Problem
 import Proofs.Erdos1001OQ02
 import Proofs.Erdos1001OQ02OQ01
