@@ -1,4 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
@@ -272,9 +274,8 @@ circle is optimal.
     Its isoperimetric ratio is 4/(π) > 1. Equivalently, C² > 4πA. -/
 theorem square_isoperimetric_strict (s : ℝ) (hs : 0 < s) :
     4 * π * s ^ 2 < (4 * s) ^ 2 := by
-  -- Need: 4πs² < 16s², i.e., π < 4
-  have : 4 * π * s ^ 2 < 4 * 4 * s ^ 2 := by nlinarith [pi_lt_four]
-  linarith
+  -- Need: 4πs² < 16s², i.e., π < 4 (using s² > 0)
+  nlinarith [pi_lt_four, pow_pos hs 2]
 
 /-- The isoperimetric ratio of a square is 4/π ≈ 1.273 > 1. -/
 theorem square_isoperimetric_ratio (s : ℝ) (hs : 0 < s) :
@@ -283,7 +284,6 @@ theorem square_isoperimetric_ratio (s : ℝ) (hs : 0 < s) :
   have hπ : π ≠ 0 := ne_of_gt pi_pos
   have hs' : s ≠ 0 := ne_of_gt hs
   field_simp [hπ, hs']
-  ring
 
 /-- The isoperimetric ratio of a regular n-gon is πn⁻¹/tan(π/n).
     As n → ∞, this → 1 (approaching the circle).
@@ -374,8 +374,8 @@ theorem isoperimetric_inequality (γ : SmoothClosedCurve)
   set c := γ.circumference / (2 * π) with hc_def
   have hc_pos : 0 < c := div_pos hL (by positivity)
   -- Step 3: Gather the analytical bounds
-  have hWirt := wirtinger_sum_bound γ' c hc_pos (by rwa [hcirc]) hzx hzy
-  have hArea := area_cauchy_schwarz_bound γ' c hc_pos (by rwa [hcirc])
+  have hWirt := wirtinger_sum_bound γ' c hc_pos hspeed hzx hzy
+  have hArea := area_cauchy_schwarz_bound γ' c hc_pos hspeed
   have hCS := integral_cauchy_schwarz_sq γ'
   -- Step 4: Set S and Sxy
   set S := ∫ t in (0 : ℝ)..(2 * π), sqrt (γ'.x t ^ 2 + γ'.y t ^ 2)
@@ -388,7 +388,7 @@ theorem isoperimetric_inequality (γ : SmoothClosedCurve)
   -- Step 6: Apply the arithmetic kernel
   have hL_eq : γ.circumference = 2 * π * c := by
     rw [hc_def]; field_simp [ne_of_gt pi_pos]
-  rw [← harea]
+  rw [← harea, ← hcirc]
   exact isoperimetric_arithmetic_kernel γ'.area γ'.circumference c S Sxy
     hc_pos (by rwa [hcirc]) hS_nn hArea hCS hWirt
 
