@@ -1,0 +1,210 @@
+{
+  "id": "lagrange-theorem-oq-07-oq-02",
+  "title": "Additive Finite Group Annihilation: n · x = 0 for Every Element of an Order-n Group",
+  "slug": "lagrange-theorem-oq-07-oq-02",
+  "description": "The additive image of the finite-group exponent theorem: in any finite additive group of order n, scaling every element by n yields 0. Derived from additive Lagrange (addOrderOf_dvd_card), descended to the additive exponent, specialised to the canonical order-n abelian group ZMod n (with sharp exponent n), and shown to BE the parent's multiplicative theorem transported through Multiplicative.",
+  "meta": {
+    "author": "Lagrange (additive image)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ07OQ02.lean",
+    "tags": [
+      "group-theory",
+      "algebra",
+      "lagrange-theorem",
+      "finite-groups",
+      "additive-groups",
+      "order-of-element",
+      "exponent",
+      "zmod",
+      "to-additive"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "addOrderOf_dvd_card",
+        "description": "Additive Lagrange for elements: addOrderOf g divides |G| (to_additive image of orderOf_dvd_card)",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "addOrderOf_dvd_iff_nsmul_eq_zero",
+        "description": "addOrderOf x ∣ n ↔ n • x = 0",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "card_nsmul_eq_zero",
+        "description": "Fintype.card G • x = 0 in a finite additive group (to_additive image of pow_card_eq_one)",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "card_nsmul_eq_zero'",
+        "description": "Nat.card G • x = 0 (holds unconditionally)",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "AddGroup.exponent_dvd_card",
+        "description": "AddMonoid.exponent G ∣ Fintype.card G",
+        "module": "Mathlib.GroupTheory.Exponent"
+      },
+      {
+        "theorem": "AddMonoid.exponent_dvd_iff_forall_nsmul_eq_zero",
+        "description": "exponent G ∣ n ↔ ∀ g, n • g = 0 (universal property)",
+        "module": "Mathlib.GroupTheory.Exponent"
+      },
+      {
+        "theorem": "AddMonoid.addOrder_dvd_exponent",
+        "description": "addOrderOf g ∣ AddMonoid.exponent G",
+        "module": "Mathlib.GroupTheory.Exponent"
+      },
+      {
+        "theorem": "ZMod.card",
+        "description": "Fintype.card (ZMod n) = n for n ≠ 0",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "ZMod.addOrderOf_one",
+        "description": "addOrderOf (1 : ZMod n) = n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "ofAdd_nsmul",
+        "description": "Multiplicative.ofAdd (n • a) = Multiplicative.ofAdd a ^ n (the transport identity)",
+        "module": "Mathlib.Algebra.Group.TypeTags.Basic"
+      },
+      {
+        "theorem": "Fintype.card_multiplicative",
+        "description": "Fintype.card (Multiplicative α) = Fintype.card α",
+        "module": "Mathlib.Algebra.Group.TypeTags.Finite"
+      }
+    ],
+    "originalContributions": [
+      "addOrderOf_dvd_groupCard: additive Lagrange for elements (addOrderOf g divides |G|)",
+      "card_nsmul_eq_zero_of_lagrange: |G| • g = 0 derived explicitly from additive Lagrange via addOrderOf_dvd_iff_nsmul_eq_zero",
+      "card_nsmul_eq_zero_agrees: the Lagrange-derived proof is definitionally the library lemma card_nsmul_eq_zero",
+      "nsmul_natCard_eq_zero: Nat.card form, holding for any additive group with no finiteness hypothesis",
+      "card_is_common_period: |G| is a common period for all elements",
+      "addExponent_dvd_card / addExponent_dvd_card_via_universal: the additive exponent divides the order, both via the library lemma and via the universal property of the exponent",
+      "zmod_nsmul_eq_zero: the concrete recovery n • x = 0 in the order-n group ZMod n",
+      "addExponent_zmod: AddMonoid.exponent (ZMod n) = n — the Part II bound exponent ∣ card is sharp for the cyclic group ZMod n",
+      "comm_card_nsmul_eq_zero: the recovery stated for an arbitrary finite additive commutative group of order n (matching the open question's phrasing)",
+      "card_nsmul_eq_zero_via_multiplicative: structural bridge proving the additive theorem IS the parent's multiplicative pow_card_eq_one transported through Multiplicative.ofAdd, reproving Part I without re-invoking Lagrange",
+      "chain_lagrange_to_zmod: end-to-end statement tying additive Lagrange divisibility to the ZMod n recovery"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound. No native_decide.",
+    "lineCount": 158,
+    "theoremCount": 12,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The multiplicative finite-group exponent identity g^|G| = 1 (the parent entry) has an exact additive counterpart: in a finite additive group of order n, every element x satisfies n · x = 0. Historically the additive statement is the one that appears first in elementary number theory — n · x = 0 in ℤ/nℤ is simply the fact that ℤ/nℤ has characteristic n — but its group-theoretic root is the same Lagrange divisibility. In Lean's Mathlib the two theorems are literally one declaration: the additive lemma card_nsmul_eq_zero is generated mechanically from the multiplicative pow_card_eq_one by the to_additive attribute, which transports each statement across the type-tag equivalence Multiplicative.ofAdd : G ≃ Multiplicative G. This entry makes that 'same argument' precise.",
+    "problemStatement": "Does the same exponent-divides-order argument behind g^|G| = 1 formalise cleanly for the additive structure, recovering n · x = 0 in a finite (abelian) group of order n?\n\n**Answer: Yes.** Additive Lagrange gives addOrderOf g ∣ |G|, hence |G| • g = 0; the additive exponent divides |G|; specialising to ZMod n recovers n • x = 0 with sharp additive exponent n; and a transport through Multiplicative shows the additive theorem is the parent's multiplicative theorem read on the type tag.",
+    "text": "Every element of a finite additive group of order n is killed by scaling by n — the additive image of g^|G| = 1, recovered concretely in ℤ/nℤ.",
+    "proofStrategy": "Take the additive image of the parent's chain: specialise additive Lagrange to cyclic subgroups (addOrderOf g ∣ |G|), convert divisibility to an annihilation identity (addOrderOf_dvd_iff_nsmul_eq_zero), lift to the additive exponent (it divides |G| by its universal property), then instantiate on ZMod n where |ZMod n| = n to recover n • x = 0 and compute the exponent exactly. A final transport through Multiplicative.ofAdd reproves the core identity by reading the parent's pow_card_eq_one on the type tag Multiplicative G.",
+    "keyInsights": [
+      "n • x = 0 is additive Lagrange in disguise: addOrderOf x is the cardinality of the additive cyclic subgroup ⟨x⟩, so Lagrange gives addOrderOf x ∣ |G|, and addOrderOf_dvd_iff_nsmul_eq_zero turns that into the annihilation identity",
+      "Commutativity is not needed: |G| • x = 0 holds in any finite additive group, not only abelian ones; the open question's 'abelian' is a convenience, since additive groups are conventionally commutative",
+      "The group order is generally NOT the minimal annihilator — that minimum is the additive exponent, which divides |G|. For the cyclic group ZMod n the bound is sharp: the exponent equals n, because 1 has additive order n",
+      "The concrete recovery n • x = 0 in ZMod n is exactly char-n: ZMod n is the canonical order-n group, and card_nsmul_eq_zero specialises to it via |ZMod n| = n",
+      "The additive theorem IS the multiplicative parent: ofAdd_nsmul sends |G| • g to (ofAdd g)^|G| and ofAdd_zero sends 0 to 1, so pow_card_eq_one on Multiplicative G transports back to |G| • g = 0 — this is precisely what to_additive does mechanically"
+    ],
+    "prerequisites": [
+      "Group theory (additive groups, order of an element, cosets)",
+      "The type-tag equivalence Multiplicative / Additive and the to_additive mechanism",
+      "Modular arithmetic in ZMod n"
+    ]
+  },
+  "sections": [
+    {
+      "id": "core",
+      "title": "The Core Theorem — |G| · x = 0",
+      "startLine": 41,
+      "endLine": 75,
+      "summary": "Additive Lagrange and the annihilation identity, with the Nat.card form.",
+      "mathContext": "$\\operatorname{addOrder}(x) \\mid |G|$, hence $|G|\\cdot x = 0$; also $(\\#G)\\cdot x = 0$ unconditionally."
+    },
+    {
+      "id": "exponent",
+      "title": "The Additive Exponent Divides the Order",
+      "startLine": 77,
+      "endLine": 100,
+      "summary": "The additive exponent is the least common annihilator; |G| is one such, so the exponent divides |G|.",
+      "mathContext": "$\\exp(G) \\mid |G|$, both via the library lemma and via the universal property $\\exp(G)\\mid n \\iff \\forall g,\\, n\\cdot g = 0$."
+    },
+    {
+      "id": "zmod",
+      "title": "The Concrete Order-n Group ZMod n",
+      "startLine": 102,
+      "endLine": 132,
+      "summary": "The recovery n • x = 0 in ZMod n, the sharp exponent n, and the abelian-of-order-n restatement.",
+      "mathContext": "$n\\cdot x = 0$ in $\\mathbb{Z}/n$; $\\exp(\\mathbb{Z}/n) = n$."
+    },
+    {
+      "id": "bridge",
+      "title": "Structural Bridge — the Additive Theorem IS the Parent's",
+      "startLine": 134,
+      "endLine": 150,
+      "summary": "Transport of pow_card_eq_one through Multiplicative.ofAdd reproves the core identity.",
+      "mathContext": "$\\mathrm{ofAdd}(|G|\\cdot g) = (\\mathrm{ofAdd}\\,g)^{|G|} = 1 = \\mathrm{ofAdd}\\,0$."
+    },
+    {
+      "id": "chain",
+      "title": "The Chain, End to End",
+      "startLine": 152,
+      "endLine": 158,
+      "summary": "A single statement tying additive Lagrange divisibility to the ZMod n recovery.",
+      "mathContext": "additive Lagrange $\\Rightarrow$ annihilation $\\Rightarrow$ $n\\cdot x = 0$ in $\\mathbb{Z}/n$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Réflexions sur la résolution algébrique des équations",
+      "year": "1771",
+      "note": "Origin of Lagrange's theorem on subgroup orders"
+    },
+    {
+      "authors": "Mathlib community",
+      "title": "The to_additive attribute",
+      "year": "2020",
+      "note": "Mechanism transporting multiplicative theorems to their additive counterparts across the Multiplicative/Additive type tags"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem-oq-07",
+      "relationship": "extends",
+      "description": "Additive image of the parent's finite-group exponent theorem g^|G| = 1; the bridge theorem makes the transport explicit."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "extends",
+      "description": "Direct corollary: additive Lagrange on the cyclic subgroup ⟨x⟩ gives addOrderOf x ∣ |G|, hence |G| • x = 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "The additive annihilation identity n · x = 0 in a finite group of order n is machine-checked, derived from additive Lagrange, sharpened on ZMod n where the additive exponent equals n, and shown to be the parent's multiplicative theorem transported through Multiplicative.",
+    "implications": "Confirms that the finite-group exponent identity and its additive image are a single fact under to_additive, and recovers the elementary char-n statement n · x = 0 in ℤ/nℤ as a special case.",
+    "openQuestions": [
+      "Can the structure theorem for finite abelian groups be used to compute the additive exponent of an arbitrary finite abelian group as the lcm of the orders of its cyclic factors, sharpening exponent ∣ card to an exact value?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "AdditiveFiniteGroupAnnihilation",
+    "lineCount": 158,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "path": "Proofs/LagrangeTheoremOQ07OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

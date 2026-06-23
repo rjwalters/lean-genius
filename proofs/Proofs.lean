@@ -3039,6 +3039,7 @@ import Proofs.LagrangeTheoremOQ03
 import Proofs.LagrangeTheoremOQ05
 import Proofs.LagrangeTheoremOQ06
 import Proofs.LagrangeTheoremOQ07
+import Proofs.LagrangeTheoremOQ07OQ02
 import Proofs.LawOfCosines
 import Proofs.LawOfCosinesOQ01OQ01
 import Proofs.LawOfCosinesOQ01OQ01OQ01
