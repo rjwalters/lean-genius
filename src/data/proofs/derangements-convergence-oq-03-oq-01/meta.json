@@ -124,16 +124,19 @@
   ],
   "crossReferences": [
     {
-      "slug": "derangements-convergence-oq-03",
-      "relationship": "Parent open question: proves D(n) = round(n!/e). This entry repackages it as floor and ceiling forms."
+      "targetId": "derangements-convergence-oq-03",
+      "relationship": "extends",
+      "description": "Parent open question: proves D(n) = round(n!/e). This entry repackages it as the equivalent floor and ceiling forms, derived from a single strict two-sided bound."
     },
     {
-      "slug": "derangements-convergence",
-      "relationship": "Base entry: supplies the rate bound derangements_convergence_rate that this entry's strict bound is built from."
+      "targetId": "derangements-convergence",
+      "relationship": "depends-on",
+      "description": "Base entry: supplies the rate bound derangements_convergence_rate that this entry's strict bound |D(n) − n!/e| < 1/2 is built from."
     },
     {
-      "slug": "derangements-convergence-oq-03-oq-02",
-      "relationship": "Sibling: one-term recurrence and modular shadow of the rounding formula."
+      "targetId": "derangements-convergence-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Sibling: one-term recurrence and modular shadow of the rounding formula."
     }
   ],
   "conclusion": "For all n ≥ 2 the derangement count D(n) admits three equivalent machine-checked rounding forms — round(n!/e), ⌊n!/e + 1/2⌋ and ⌈n!/e − 1/2⌉ — all flowing from the single strict bound |D(n) − n!/e| < 1/2, with the floor and ceiling forms provably coinciding because n!/e is never a half-integer.",
