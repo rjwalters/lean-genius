@@ -3371,6 +3371,7 @@ import Proofs.SchroederBernsteinOQ03
 import Proofs.SchroederBernsteinOQ03Aristotle
 import Proofs.SchroederBernsteinOQ03StatementOnly
 import Proofs.SchroederBernsteinOQ04
+import Proofs.SchroederBernsteinOQ04OQ01
 import Proofs.SchursLemma
 import Proofs.SchursTheorem
 import Proofs.SearchMathlib
