@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-sbp-oq01-context",
+    "proofId": "summation-by-parts-oq-01",
+    "range": {
+      "startLine": 4,
+      "endLine": 42
+    },
+    "type": "context",
+    "title": "The arithmetico-geometric sum and why it is a gap",
+    "content": "Multiplying each term of the geometric series by its index k yields the arithmetico-geometric sum ∑_{k<n} k·rᵏ — the discrete analogue of differentiating the geometric series. Its exact finite closed form (r − n·rⁿ + (n−1)·rⁿ⁺¹)/(r−1)² holds over any field for r ≠ 1, with the |r|<1 limit giving the textbook ∑ k·rᵏ = r/(1−r)². Mathlib has the geometric closed form geom_sum_eq and the triangular number sum_range_id separately, but NOT the weighted sum; the gallery's infinite GeometricSeriesOQ06 (a tsum over a normed field) silently assumes the finite identity this entry supplies.",
+    "mathContext": "$\\sum_{k=0}^{n-1} k\\,r^k = \\dfrac{r - n r^n + (n-1) r^{n+1}}{(r-1)^2}$, an exact polynomial-over-$(r-1)^2$ identity with no analytic hypothesis.",
+    "significance": "context",
+    "relatedConcepts": ["arithmetico-geometric series", "geometric series", "discrete calculus", "Abel summation"],
+    "prerequisites": ["finite sums", "geometric series"]
+  },
+  {
+    "id": "ann-sbp-oq01-closed-form",
+    "proofId": "summation-by-parts-oq-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 63
+    },
+    "type": "technique",
+    "title": "The closed form by induction",
+    "content": "sum_range_mul_geom proves the identity by induction on n over an arbitrary field K (r ≠ 1 gives r − 1 ≠ 0). The base case is the empty sum (0 = 0/(r−1)²). The step uses Finset.sum_range_succ to add the new term m·rᵐ to the closed form at m; push_cast handles the ℕ→K casts of the index, field_simp clears the (r−1)² denominator (legal since r−1 ≠ 0), and ring discharges the resulting polynomial identity n·rⁿ(r−1)² = n·rⁿ⁺² − 2n·rⁿ⁺¹ + n·rⁿ.",
+    "mathContext": "Inductive step: $\\frac{r - m r^m + (m-1)r^{m+1}}{(r-1)^2} + m r^m = \\frac{r - (m{+}1)r^{m+1} + m\\,r^{m+2}}{(r-1)^2}$, reduced to a $\\texttt{ring}$ identity after clearing denominators.",
+    "significance": "key",
+    "relatedConcepts": ["mathematical induction", "Finset.sum_range_succ", "field_simp", "ring", "polynomial identity"],
+    "prerequisites": ["induction on ℕ", "field arithmetic"]
+  },
+  {
+    "id": "ann-sbp-oq01-by-parts",
+    "proofId": "summation-by-parts-oq-01",
+    "range": {
+      "startLine": 65,
+      "endLine": 81
+    },
+    "type": "insight",
+    "title": "Re-derivation via Abel's summation by parts",
+    "content": "sum_range_mul_geom_eq_byParts derives the same sum a second, structurally illuminating way. Specializing Finset.sum_range_by_parts to the arithmetic weight f(k) = k and geometric sequence g(k) = rᵏ rewrites ∑ k·rᵏ as the boundary term (n−1)·Gₙ minus a correction ∑_{i<n−1} G_{i+1}, where Gₘ = ∑_{j<m} rʲ is the geometric partial sum. The key structural fact: the forward differences f(k+1) − f(k) = 1 are CONSTANT, so the abstract Abel correction collapses to a plain sum of geometric partial sums — the discrete analogue of integration by parts, and the reason the closed form exists at all.",
+    "mathContext": "$\\sum_{k<n} k\\,r^k = (n-1)G_n - \\sum_{i<n-1} G_{i+1}$, with $G_m=\\sum_{j<m}r^j$; constant increments $f(k{+}1)-f(k)=1$ degenerate the correction.",
+    "significance": "key",
+    "relatedConcepts": ["Abel summation", "Finset.sum_range_by_parts", "integration by parts analogue", "forward differences"],
+    "prerequisites": ["summation by parts", "partial sums"]
+  }
+]
