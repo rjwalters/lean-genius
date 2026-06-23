@@ -1,0 +1,113 @@
+{
+  "id": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01-oq-02",
+  "slug": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01-oq-02",
+  "title": "Exponent-Swap Reflection Symmetry of the Half-Period Trigonometric Integral",
+  "overview": {
+    "historicalContext": "The Cauchy–Crofton chain reduces the angular average on S^{n-1} to one-dimensional trigonometric power integrals of the form ∫_0^{π/2} sinᵃθ cosᵇθ dθ. The parent entry (BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01) proved a single-power instance of the reflection symmetry — ∫ sin θ · cosᵐ θ = ∫ cos θ · sinᵐ θ — and flagged as its second open question whether that bespoke reflection packages into one clean, reusable lemma: that the half-period trig integral is invariant under swapping its two exponents. This file resolves that question.",
+    "problemStatement": "Prove the exponent-swap symmetry $\\int_0^{\\pi/2} \\sin^{a}\\theta\\,\\cos^{b}\\theta\\,d\\theta = \\int_0^{\\pi/2} \\sin^{b}\\theta\\,\\cos^{a}\\theta\\,d\\theta$ as a single reusable lemma, for natural-number exponents $a,b$ and — strictly more generally — for arbitrary real exponents (Real.rpow), and identify the Euler Beta symmetry $B(x,y)=B(y,x)$ as the immediate corollary.",
+    "proofStrategy": "The whole content is the reflection θ ↦ π/2 − θ, applied via intervalIntegral.integral_comp_sub_left with center π/2 on the self-fixed interval [0, π/2] (endpoints π/2−π/2 = 0 and π/2−0 = π/2, closed by sub_self and sub_zero). The unconditional identities Real.sin_pi_div_two_sub (sin(π/2−θ)=cos θ) and Real.cos_pi_div_two_sub (cos(π/2−θ)=sin θ) rewrite the reflected integrand sinᵃ(π/2−θ)·cosᵇ(π/2−θ) into cosᵃθ·sinᵇθ; a single intervalIntegral.integral_congr with mul_comm transposes the two factors to land on the swapped integrand. Because the rewrite acts only on the bases of the powers, the identical script proves the natural-number version (the powers are Monoid.npow) and the real-exponent version (Real.rpow) with no positivity or integrability hypothesis. The Beta symmetry corollary is the real-exponent lemma instantiated at exponents 2x−1, 2y−1; the parent's single-power identity is the natural-number lemma at a = 1 (using pow_one).",
+    "keyInsights": [
+      "The reflection symmetry is not really about FTC or antiderivatives at all — it is a pure change of variables. Stripping the parent's single-power statement down to its mechanism reveals a two-parameter lemma whose proof is three tactic lines: integral_comp_sub_left, simp with the two complementary-angle identities, and integral_congr with mul_comm.",
+      "Because the complementary-angle identities sin(π/2−θ)=cos θ and cos(π/2−θ)=sin θ are unconditional and act on the *bases* of the powers, the proof is completely insensitive to the exponent type. The natural-number and Real.rpow versions are literally the same script, so the general (real-exponent) lemma is obtained at no extra cost — and it is the form that meets the Euler Beta integral.",
+      "Euler's Beta symmetry B(x,y) = B(y,x), in the trigonometric representation B(x,y) = 2∫_0^{π/2} sin^{2x−1}θ cos^{2y−1}θ dθ, is exactly this exponent swap at exponents 2x−1, 2y−1. The reflection therefore gives a Gamma-free proof of Beta symmetry — the symmetry half of the Beta theory, cleanly separated from the (harder) evaluation half that needs the Gamma recurrence.",
+      "The parent's hand-rolled reflection identity ∫ sin θ · cosᵐ θ = ∫ cos θ · sinᵐ θ is recovered verbatim as the a = 1 slice, confirming the new lemma is a genuine generalization rather than a restatement, and supplying the reusable bridge the open question asked for."
+    ]
+  },
+  "description": "Packages the parent's bespoke single-power reflection into one clean, reusable lemma: the half-period trigonometric integral ∫_0^{π/2} sinᵃθ cosᵇθ dθ is invariant under swapping the exponents a ↔ b. The proof is the single reflection θ ↦ π/2 − θ (intervalIntegral.integral_comp_sub_left) together with the complementary-angle identities sin(π/2−θ)=cos θ, cos(π/2−θ)=sin θ; because these act on the bases of the powers, the identical script proves both the natural-number-exponent and the Real.rpow versions, with no positivity or integrability side conditions. As corollaries it gives the Euler Beta symmetry B(x,y)=B(y,x) in trigonometric form (a Gamma-free derivation) and recovers the parent's single-power identity as the a = 1 case. Axiom-free, 0 sorries.",
+  "assumptions": [],
+  "conclusion": {
+    "summary": "Gives a complete axiom-free Lean formalization of the exponent-swap reflection symmetry of the half-period trigonometric integral, for both natural-number and arbitrary real (Real.rpow) exponents, from the single reflection θ ↦ π/2 − θ. Includes the Euler Beta symmetry B(x,y)=B(y,x) in trigonometric form and the parent's single-power identity as corollaries. All results are machine-checked with 0 sorries and 0 axioms.",
+    "implications": "Supplies the reusable 'symmetry of the half-period trig integral under exponent swap' lemma requested by the parent's open question, in a form usable across the gallery's trigonometric-integral entries and one that meets the Beta function directly. By isolating the symmetry content as a pure reflection — independent of exponent type, positivity, and integrability — it cleanly separates the (easy) symmetry half of Beta theory from the (Gamma-dependent) evaluation half.",
+    "openQuestions": [
+      "Can the trigonometric Beta integral ∫_0^{π/2} sin^{2x−1}θ cos^{2y−1}θ dθ be connected to Mathlib's Real.betaIntegral via the half-angle substitution t = sin²θ, turning this trigonometric symmetry into a proof of the symmetry of Real.betaIntegral itself?",
+      "Does the same reflection give the Wallis recurrence relating ∫ sinᵃθ cosᵇθ to ∫ sin^{a−2}θ cosᵇθ (integration by parts in the reflected variable), completing an elementary evaluation route alongside the symmetry?"
+    ]
+  },
+  "sorries": 0,
+  "openQuestion": {
+    "id": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01-oq-02",
+    "parentId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
+    "question": "Does the reflection-symmetry argument generalize to a clean Lean lemma 'symmetry of the half-period trig integral under exponent swap' usable across the gallery's trigonometric-integral entries?",
+    "answer": "Yes. The lemma integral_sin_pow_mul_cos_pow_swap states ∫_0^{π/2} sinᵃθ cosᵇθ dθ = ∫_0^{π/2} sinᵇθ cosᵃθ dθ for all a, b : ℕ, proved in three tactic steps from intervalIntegral.integral_comp_sub_left (the reflection θ ↦ π/2 − θ), the complementary-angle identities sin(π/2−θ)=cos θ and cos(π/2−θ)=sin θ, and a single integral_congr/mul_comm transposition. Because the identities act on the bases of the powers, the identical proof yields the strictly more general Real.rpow version integral_sin_rpow_mul_cos_rpow_swap for real exponents, with no positivity or integrability hypothesis. This real-exponent form instantiates to the Euler Beta symmetry B(x,y)=B(y,x) in its trigonometric guise (integral_beta_trig_symm), a Gamma-free derivation, and the natural-number form at a = 1 recovers the parent's single-power reflection identity (integral_sin_mul_cos_pow_eq_reflect). Connecting the trigonometric Beta integral to Mathlib's Real.betaIntegral via t = sin²θ remains the natural next step.",
+    "status": "answered"
+  },
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
+      "relationship": "Parent: proved the single-power reflection ∫ sin θ · cosᵐ θ = ∫ cos θ · sinᵐ θ and flagged the general exponent-swap lemma as its second open question; this file proves that general lemma and recovers the parent's identity as the a = 1 case"
+    },
+    {
+      "targetId": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+      "relationship": "Grandparent: defines the Cauchy–Crofton angular-average data whose trigonometric power integrals this symmetry governs"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "Classical root: the Buffon needle crossing problem this integral-geometry chain formalizes"
+    }
+  ],
+  "highlights": [
+    {
+      "title": "One reflection, two exponent types",
+      "detail": "The reflection θ ↦ π/2 − θ rewrites the bases of the powers, so the same three-line proof covers natural-number and Real.rpow exponents alike — the general lemma costs nothing beyond the special case."
+    },
+    {
+      "title": "Beta symmetry without Gamma",
+      "detail": "Instantiated at exponents 2x−1, 2y−1, the lemma is Euler's Beta symmetry B(x,y)=B(y,x) in trigonometric form, derived purely from the reflection with no Gamma-function input."
+    },
+    {
+      "title": "No side conditions",
+      "detail": "The complementary-angle identities are unconditional, so the swap needs no positivity, no integrability, and no antiderivative — it is a pure change of variables."
+    },
+    {
+      "title": "Generalizes the parent verbatim",
+      "detail": "Setting a = 1 (using sin θ ^ 1 = sin θ) recovers the parent's hand-rolled reflection identity, confirming a genuine generalization."
+    },
+    {
+      "title": "Reusable across the gallery",
+      "detail": "Stated as a standalone two-parameter lemma, it is directly applicable to any half-period trigonometric power integral in the gallery, exactly as the open question requested."
+    }
+  ],
+  "sections": [
+    {
+      "title": "The exponent-swap lemma",
+      "content": "The headline lemma integral_sin_pow_mul_cos_pow_swap asserts ∫_0^{π/2} sinᵃθ cosᵇθ = ∫_0^{π/2} sinᵇθ cosᵃθ for a, b : ℕ. The proof applies intervalIntegral.integral_comp_sub_left with center π/2 and interval [0, π/2], which is fixed by the reflection (its endpoints map to π/2−π/2 = 0 and π/2−0 = π/2). The complementary-angle identities sin(π/2−θ)=cos θ and cos(π/2−θ)=sin θ rewrite the reflected integrand into cosᵃθ sinᵇθ, and one integral_congr with mul_comm transposes the factors onto the target."
+    },
+    {
+      "title": "Real exponents and the Beta function",
+      "content": "Because the reflection rewrites only the bases of the powers, the identical script proves integral_sin_rpow_mul_cos_rpow_swap for arbitrary real exponents (Real.rpow), with no positivity or integrability hypothesis. Instantiating the exponents at 2x−1 and 2y−1 yields integral_beta_trig_symm, the trigonometric form of Euler's Beta symmetry B(x,y)=B(y,x) — obtained without any Gamma-function machinery."
+    },
+    {
+      "title": "Recovering the parent",
+      "content": "The natural-number lemma at a = 1 (with sin θ ^ 1 = sin θ, cos θ ^ 1 = cos θ) is the parent's single-power reflection identity ∫ sin θ · cosᵐ θ = ∫ cos θ · sinᵐ θ, re-proved here as integral_sin_mul_cos_pow_eq_reflect. This confirms the new statement strictly generalizes the parent and supplies the reusable bridge the open question asked for."
+    },
+    {
+      "title": "Scope and boundary",
+      "content": "This file isolates the symmetry content of the trigonometric power integrals. The complementary half — the evaluation of ∫ sin^{2x−1}θ cos^{2y−1}θ as a ratio of Gamma values, and the bridge to Mathlib's Real.betaIntegral via t = sin²θ — needs the Gamma recurrence and is left to the Beta/Gamma API, marking the boundary of the elementary reflection method."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Beta_function",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01OQ02.lean",
+    "tags": [
+      "integral-geometry",
+      "beta-integral",
+      "buffon",
+      "cauchy-crofton",
+      "angular-averaging",
+      "trigonometric-integrals",
+      "reflection-symmetry",
+      "change-of-variables",
+      "rpow",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 117,
+    "theoremCount": 4,
+    "definitionCount": 0
+  }
+}
