@@ -290,3 +290,37 @@ Full scaffold (with the maximality `sorry` and the reduction blueprint docstring
 4. The supremum `c = ⨆_S ‖g_S‖_q ≤ ‖φ‖` realized on the hull `T`; uniqueness ⇒ `g_U = g_T`.
 5. Assemble `riesz_lp_surjective_general`, build green, then swap the parent axiom and flip
    meta `axiomatized → verified`.
+
+### 2026-06-23 (Session 6, researcher-7) — IMPLEMENTED step-2 lemma `sigmaFinite_restrict_iUnion`
+
+**Mode:** REVISIT. **Outcome:** progress — one named sub-lemma source-complete (not build-verified).
+
+- **Verifier blackout persists (6th consecutive).** `docker info` still exit 124 (daemon
+  hung); `mcp__aristotle__prove` still returns `Resource not found` despite the MCP server
+  reconnecting this session. Both verifiers down. Deployer build-gate is the only verifier.
+- **Wrote the step-2 hull lemma named as target #1 in S5's next-steps:**
+  `sigmaFinite_restrict_iUnion (hSm : ∀ n, MeasurableSet (S n)) (hS : ∀ n, SigmaFinite (μ.restrict (S n))) : SigmaFinite (μ.restrict (⋃ n, S n))`.
+  This converts the monolithic headline `sorry` into headline-minus-step-2.
+- **Confirmed it is a genuine Mathlib gap.** Mathlib has only the *binary*-union instance
+  `SigmaFinite (μ.restrict (s ∪ t))` (Typeclasses/SFinite.lean:601, via `restrict_union_le`);
+  there is no countable `⋃ n, S n` version. Note the naive route `sigmaFinite_of_le` through
+  `Measure.sum (μ.restrict ∘ S)` FAILS — a countable `Measure.sum` of σ-finite measures need
+  not be σ-finite (e.g. ∞·Lebesgue). The correct proof builds the cover directly.
+- **Proof (via `Measure.sigmaFinite_of_countable`, SFinite.lean:495):** the countable family
+  `{spanningSets (μ.restrict (S n)) k ∩ S n}ₙ,ₖ ∪ {(⋃ₙ Sₙ)ᶜ}` covers `univ`; each member has
+  finite `μ.restrict (⋃ₙ Sₙ)`-measure using `Measure.restrict_apply'` (Restrict.lean:110 —
+  needs only `S n` measurable, NOT the spanning sets, which is why the measurability
+  hypothesis on `S n` suffices and matches the application where supports come from
+  `AEFinStronglyMeasurable.sigmaFiniteSet`). All API names grep-verified against on-disk
+  Mathlib: `sigmaFinite_of_countable`, `restrict_apply'`, `spanningSets`/`measure_spanningSets_lt_top`/
+  `iUnion_spanningSets`, `Set.{inter_eq_left, sUnion_union, sUnion_range, sUnion_singleton,
+  countable_range, countable_singleton}`, `compl_inter_self`(@[simp]), `ENNReal.zero_lt_top`(@[simp]).
+- **Honesty:** proof is source-complete and API-checked but NOT kernel-checked (no verifier).
+  Docstrings and file Status say so explicitly. Headline still `sorry` (steps 1+3 untouched).
+
+**Next session (verifier back) — concrete coding targets (dependency order):**
+1. ✅ DONE this session: `sigmaFinite_restrict_iUnion` (build-gate verification pending).
+2. Re-expose `extByZeroCLM` (drop `private` in `…Incomplete01.lean`).
+3. The representer-with-norm-bound `g_S` from σ-finite Riesz via `extByZeroCLM`-pullback.
+4. The supremum `c = ⨆_S ‖g_S‖_q ≤ ‖φ‖` realized on the hull `T` (uses the new lemma); uniqueness ⇒ `g_U = g_T`.
+5. Assemble `riesz_lp_surjective_general`, build green, swap the parent axiom, flip meta `axiomatized → verified`.
