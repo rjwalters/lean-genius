@@ -2319,6 +2319,7 @@ import Proofs.Erdos831Problem
 import Proofs.Erdos832Problem
 import Proofs.Erdos833Problem
 import Proofs.Erdos834Problem
+import Proofs.Erdos835Incomplete01
 import Proofs.Erdos835Problem
 import Proofs.Erdos836Problem
 import Proofs.Erdos837Problem
