@@ -1,0 +1,125 @@
+{
+  "id": "cauchy-interlacing-theorem-oq-01-oq-01-oq-02",
+  "slug": "cauchy-interlacing-theorem-oq-01-oq-01-oq-02",
+  "title": "Cauchy Interlacing for a Principal Submatrix: the Eigenvalue Corollary",
+  "description": "Assembles the literal matrix Cauchy interlacing theorem: the descending eigenvalues of a Hermitian (n+1)×(n+1) matrix and of any principal submatrix obtained by deleting one row and the matching column interlace, λ_{k+1} ≤ μ_k ≤ λ_k. The bridge is a coordinate isometry under which the orthogonal compression of the matrix operator IS the submatrix operator, so the submatrix's spectral eigenbasis transports to an eigenbasis of the compression with the same antitone eigenvalues, which feeds the gallery's abstract Cauchy interlacing theorem. 0 axioms, 0 sorries.",
+  "meta": {
+    "status": "verified",
+    "badge": "mathlib",
+    "axiomCount": 0,
+    "difficulty": "advanced",
+    "category": "linear-algebra",
+    "tags": [
+      "Cauchy interlacing",
+      "eigenvalues",
+      "Hermitian matrices",
+      "principal submatrix",
+      "orthogonal compression",
+      "spectral theorem",
+      "inner product spaces"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CauchyInterlacingOQ01OQ01",
+      "Proofs.CauchyInterlacingCompression"
+    ],
+    "opens": [
+      "InnerProductSpace",
+      "Matrix",
+      "CauchyInterlacingOQ01OQ01",
+      "CauchyInterlacing.Assembly"
+    ],
+    "namespace": "CauchyInterlacingOQ01OQ01OQ02",
+    "lineCount": 292,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "path": "Proofs/CauchyInterlacingOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "conclusion": {
+    "summary": "A machine-checked Lean 4 assembly of the literal matrix Cauchy interlacing theorem from the geometric identification of the previous entry. For a Hermitian A : Matrix (Fin (n+1)) (Fin (n+1)) 𝕜 and an index j, write λ for the descending eigenvalues (Matrix.IsHermitian.eigenvalues₀) of A and μ for those of the principal submatrix A' = A.submatrix j.succAbove j.succAbove. Then for every k : Fin n, λ_{k+1} ≤ μ_k ≤ λ_k. The file builds the coordinate isometry coordEquiv : EuclideanSpace 𝕜 (Fin n) ≃ₗᵢ H onto the coordinate hyperplane, proves the intertwining compress (toEuclideanLin A) H (coordEquiv x) = coordEquiv (toEuclideanLin A' x) (compress_intertwine), and packages a reusable transfer engine (interlacing_of_intertwine) that converts such an intertwining into interlacing without any eigenvalue-uniqueness lemma. The result is 0-axiom, 0-sorry; both an operator-eigenvalue form and the literal eigenvalues₀ form are provided.",
+    "implications": "Closes the first open question of cauchy-interlacing-theorem-oq-01-oq-01: the geometric fact that the compression's sesquilinear form is the principal submatrix (compress_inner_eq_principalSubmatrix) is upgraded to the spectral statement that the submatrix's eigenvalues literally interlace the parent's. Together with the parent chain this gives the full textbook Cauchy interlacing theorem for an arbitrary deleted row/column in Lean, a result still absent from Mathlib. The transfer engine interlacing_of_intertwine and the coordinate isometry coordEquiv are reusable for any unitary-equivalence transport of compression spectra.",
+    "openQuestions": [
+      "Iterate the single-deletion corollary to the Poincaré separation theorem for compression onto an arbitrary coordinate subspace of codimension m, λ_i ≤ μ_i ≤ λ_{i+m}, by composing the coordinate isometries (the abstract codimension-m statement is already proved as cauchy-interlacing-theorem-oq-02; the remaining step is the matrix-level identification for a multi-index deletion).",
+      "Derive the eigenvalue majorization and the interlacing-implies-positive-semidefiniteness corollaries (e.g. that every principal submatrix of a PSD matrix is PSD) directly from the eigenvalues₀ interlacing bound."
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cauchy's interlacing theorem (1829) states that the eigenvalues of a principal submatrix of a Hermitian matrix interlace those of the matrix itself: if A is (n+1)×(n+1) Hermitian with descending eigenvalues λ₁ ≥ … ≥ λ_{n+1} and B is the n×n principal submatrix obtained by deleting one row and the matching column, with descending eigenvalues μ₁ ≥ … ≥ μ_n, then λ_{k+1} ≤ μ_k ≤ λ_k. The conceptual proof identifies B with the compression of A to a coordinate subspace and applies the variational (Courant–Fischer) characterization of eigenvalues. The lean-genius gallery first proved the abstract compression interlacing inequality (cauchy-interlacing-theorem-oq-01), then identified the compression's sesquilinear form with the principal submatrix (cauchy-interlacing-theorem-oq-01-oq-01). What remained — and is supplied here — was to pass from the form-level identification to the spectral-level conclusion, i.e. that the submatrix's eigenvalues themselves interlace.",
+    "problemStatement": "The previous entry proved that the orthogonal compression of toEuclideanLin A to the coordinate hyperplane H has, on the natural basis, sesquilinear form exactly the principal submatrix A' = A.submatrix j.succAbove j.succAbove. It left as its first open question: assemble the matrix-level eigenvalue corollary — exhibit a unitary equivalence of compress (toEuclideanLin A) H with toEuclideanLin A' so that the principal submatrix's eigenvalues literally interlace A's, λ_{k+1} ≤ μ_k ≤ λ_k.\n\n**Answer.** Build the coordinate isometry coordEquiv : EuclideanSpace 𝕜 (Fin n) ≃ₗᵢ H sending e_i ↦ e_{j.succAbove i}. Under it the compression IS the submatrix operator: compress (toEuclideanLin A) H (coordEquiv x) = coordEquiv (toEuclideanLin A' x). Transporting the submatrix's spectral eigenbasis through coordEquiv yields an eigenbasis of the compression with the same antitone eigenvalues, which the abstract Cauchy interlacing theorem turns into λ_{k+1} ≤ μ_k ≤ λ_k.",
+    "text": "Under the coordinate isometry that identifies a coordinate hyperplane with a smaller Euclidean space, the orthogonal compression of a Hermitian matrix operator is the principal-submatrix operator; transporting the submatrix's eigenbasis therefore makes the principal submatrix's eigenvalues interlace the parent matrix's.",
+    "proofStrategy": "Three pieces. (1) The coordinate isometry. The n vectors e_{j.succAbove i} (all standard basis vectors except e_j) are an orthonormal family; OrthonormalBasis.mk packages them as coordBasis, an orthonormal basis of the coordinate hyperplane H, and coordEquiv := coordBasis.repr.symm is the resulting isometry EuclideanSpace 𝕜 (Fin n) ≃ₗᵢ H, e_i ↦ e_{j.succAbove i}. (2) The intertwining (compress_intertwine). On a single coordinate vector, coordBasis.repr.injective reduces the goal to one submodule inner product, which the previous entry's compress_inner_eq_principalSubmatrix reads off as an entry of A' (compress_coordBasis); the general case follows by expanding x in the standard basis and pushing compress, toEuclideanLin A' and coordEquiv through the sum with map_sum/map_smul — purely rewrite-based, so the isometry is never definitionally unfolded. (3) The transfer engine (interlacing_of_intertwine). Given the intertwining compress T H (e x) = e (T' x), the image b'.map e of the submatrix's spectral eigenbasis b' is an eigenbasis of the compression with the same antitone eigenvalues; combined with the orthogonal compression's Rayleigh agreement, the gallery's abstract cauchy_interlacing produces λ_{k+1} ≤ μ_k ≤ λ_k. No eigenvalue-uniqueness lemma is required because the eigenvalues are carried along by the eigenbasis, not re-derived. A small bookkeeping lemma (eigenvalues_finrank_congr) bridges the operator eigenvalues used in the proof to Mathlib's Matrix.IsHermitian.eigenvalues₀ indexing.",
+    "keyInsights": [
+      "The eigenvalue corollary needs no eigenvalue-uniqueness theorem: pushing the submatrix's spectral eigenbasis through the coordinate isometry directly produces an eigenbasis of the compression with the SAME antitone eigenvalues, which the abstract interlacing theorem consumes as-is",
+      "The intertwining compress(A) ∘ e = e ∘ submatrix(A) is the precise spectral meaning of the previous entry's form-level identification, and it suffices to check it on a single coordinate vector before extending by linearity",
+      "Working through map_sum/map_smul rewrites rather than linear-map-composition coercions keeps the orthonormal-basis isometry opaque, avoiding the definitional-unfolding blow-up that the OrthonormalBasis.mk construction would otherwise trigger",
+      "Mathlib's Matrix.IsHermitian.eigenvalues₀ is by definition the symmetric operator's eigenvalues, so the only gap between the operator proof and the literal matrix statement is the Fin (card) ↔ Fin (n+1) reindexing, discharged once and for all by eigenvalues_finrank_congr"
+    ],
+    "prerequisites": [
+      "Hermitian matrices, their real eigenvalues, and Matrix.IsHermitian.eigenvalues₀",
+      "The spectral theorem: orthonormal eigenbases and antitone eigenvalue lists for symmetric operators",
+      "Orthogonal compression of an operator to a subspace and its Rayleigh-quotient agreement",
+      "Linear isometry equivalences, orthonormal bases (OrthonormalBasis.mk, repr), and EuclideanSpace ↔ matrix correspondence"
+    ]
+  },
+  "sections": [
+    {
+      "title": "The Coordinate Isometry",
+      "content": "The natural basis vectors e_{j.succAbove i} of the coordinate hyperplane are orthonormal (orthonormal_hyperplaneBasis) and span it (span_hyperplaneBasis_top), so OrthonormalBasis.mk assembles them into coordBasis : OrthonormalBasis (Fin n) 𝕜 H. Its inverse representation coordEquiv := coordBasis.repr.symm is the linear isometry equivalence EuclideanSpace 𝕜 (Fin n) ≃ₗᵢ H sending the standard basis vector e_i to e_{j.succAbove i}; reading any coordinate of an image against the basis returns the input coordinate (coordBasis_inner_coordEquiv)."
+    },
+    {
+      "title": "The Intertwining: Compression Is the Submatrix Operator",
+      "content": "On a single coordinate vector, coordBasis.repr.injective reduces the intertwining to one submodule inner product, evaluated by the previous entry's compress_inner_eq_principalSubmatrix as an entry of the principal submatrix (compress_coordBasis). Expanding a general x in the standard basis and pushing compress, toEuclideanLin A' and coordEquiv through the sum with map_sum/map_smul yields the full intertwining compress (toEuclideanLin A) H (coordEquiv x) = coordEquiv (toEuclideanLin A' x) (compress_intertwine)."
+    },
+    {
+      "title": "The Transfer Engine and the Eigenvalue Corollary",
+      "content": "interlacing_of_intertwine is a reusable abstract theorem: an isometric intertwining of the compression with a symmetric operator T' transports T''s antitone eigenbasis onto an eigenbasis of the compression with the same eigenvalues, which — with the orthogonal compression's Rayleigh agreement — feeds the gallery's abstract cauchy_interlacing. Instantiating it with the coordinate isometry yields the operator form principalSubmatrix_eigenvalues_interlacing; the bookkeeping lemma eigenvalues_finrank_congr then re-expresses it in Mathlib's Matrix.IsHermitian.eigenvalues₀ indexing as eigenvalues₀_principalSubmatrix_interlacing: λ_{k+1} ≤ μ_k ≤ λ_k."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Cauchy, A.-L.",
+      "title": "Sur l'équation à l'aide de laquelle on détermine les inégalités séculaires des mouvements des planètes",
+      "year": "1829",
+      "note": "Original interlacing theorem"
+    },
+    {
+      "authors": "Horn, R. A. and Johnson, C. R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "note": "Cauchy interlacing and the compression/principal-submatrix correspondence (Theorem 4.3.17)"
+    },
+    {
+      "authors": "Bhatia, R.",
+      "title": "Matrix Analysis",
+      "year": "1997",
+      "note": "Eigenvalue interlacing and majorization (Chapter III)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Closes its first open question: upgrades the form-level identification compress_inner_eq_principalSubmatrix to the spectral statement that the principal submatrix's eigenvalues interlace the parent matrix's."
+    },
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling entry that proved the eigenvalue-uniqueness keystone (sorted eigenvalues determined by any orthonormal eigenbasis) and posed assembling the headline corollary λ_{k+1}(A) ≤ λ_k(A) ≤ λ_k(A) as its open question. This entry answers that question via an independent transfer-engine route that carries eigenvalues along the transported eigenbasis, so it never needs the uniqueness lemma."
+    },
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-01",
+      "relationship": "related",
+      "description": "Supplies the matrix-level eigenvalue corollary of the abstract compression interlacing inequality proved there."
+    },
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-02",
+      "relationship": "related",
+      "description": "The abstract codimension-m Poincaré separation theorem, whose matrix-level identification for multi-index deletions is the natural next step."
+    }
+  ],
+  "sorries": 0
+}
