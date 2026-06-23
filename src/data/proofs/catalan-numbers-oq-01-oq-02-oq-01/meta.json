@@ -164,16 +164,63 @@
   ],
   "crossReferences": [
     {
-      "id": "catalan-numbers-oq-01-oq-02",
-      "reason": "Parent entry: the 2-adic valuation v₂(catalan n) = s₂(n+1) − 1 and oddness ⟺ n = 2ᵏ−1. This entry answers that entry's first open question by generalising the valuation to an arbitrary prime p."
+      "proofId": "catalan-numbers-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "Parent entry: the 2-adic valuation v₂(catalan n) = s₂(n+1) − 1 and oddness ⟺ n = 2ᵏ−1. This entry answers that entry's first open question by generalising the valuation to an arbitrary prime p."
     },
     {
-      "id": "kummer-theorem-oq-04",
-      "reason": "Provides the central-binomial valuation in carry form; this entry re-derives it via Legendre and divides by the Catalan denominator n+1 at a general prime."
+      "proofId": "kummer-theorem-oq-04",
+      "relationship": "related",
+      "description": "Provides the central-binomial valuation in carry form; this entry re-derives it via Legendre and divides by the Catalan denominator n+1 at a general prime."
     },
     {
-      "id": "catalan-numbers-oq-01-oq-01",
-      "reason": "Sibling entry on the central-binomial reflection form of the Catalan numbers, also built on succ_mul_catalan_eq_centralBinom."
+      "proofId": "catalan-numbers-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling entry on the central-binomial reflection form of the Catalan numbers, also built on succ_mul_catalan_eq_centralBinom."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview: from p = 2 to an Arbitrary Prime",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Imports Mathlib, opens Nat, opens namespace CatalanPAdic with a variable prime p. The docstring explains why the sibling's 2-adic argument was special (s₂(2n) = s₂(n)) and that at a general prime the invariant 2·s_p(n) − s_p(2n) — (p−1) times Kummer's carry count for n+n in base p — genuinely appears. Names the two ingredients: Legendre's formula and the factorisation (2n)! = C(2n,n)·(n!)²."
+    },
+    {
+      "id": "catalan-ne-zero",
+      "title": "Nonvanishing of the Catalan Numbers",
+      "startLine": 44,
+      "endLine": 49,
+      "summary": "catalan_ne_zero (Cₙ ≠ 0), from (n+1)·Cₙ = C(2n,n) and positivity of the central binomial coefficient — the side condition every p-adic valuation split below requires."
+    },
+    {
+      "id": "central-binom",
+      "title": "Central-Binomial Valuation at a General Prime",
+      "startLine": 51,
+      "endLine": 80,
+      "summary": "sub_one_mul_padicValNat_centralBinom: (p−1)·v_p(C(2n,n)) + s_p(2n) = 2·s_p(n). Applies Legendre to (2n)! and n! (exact via digit_sum_le), uses the factorisation (2n)! = C(2n,n)·(n!)² with valuation additivity to get v_p((2n)!) = v_p(C(2n,n)) + 2·v_p(n!), distributes (p−1) over that split in one ring step, and closes with omega — no digit-sum Kummer lemma, no truncated subtraction."
+    },
+    {
+      "id": "catalan-valuation",
+      "title": "The Catalan Valuation Identity",
+      "startLine": 82,
+      "endLine": 97,
+      "summary": "sub_one_mul_padicValNat_catalan: (p−1)·(v_p(Cₙ) + v_p(n+1)) + s_p(2n) = 2·s_p(n). Takes v_p across (n+1)·Cₙ = C(2n,n), splitting v_p(C(2n,n)) = v_p(n+1) + v_p(Cₙ) by additivity; a single ring step distributes (p−1) and omega combines with the central-binomial identity."
+    },
+    {
+      "id": "divisibility-criterion",
+      "title": "The p-Divisibility Criterion",
+      "startLine": 99,
+      "endLine": 129,
+      "summary": "not_dvd_catalan_iff: p ∤ Cₙ ⟺ (p−1)·v_p(n+1) + s_p(2n) = 2·s_p(n). Forward: p ∤ Cₙ ⟺ v_p(Cₙ)=0 (padicValNat_dvd_iff_le), substituted into the valuation identity. Reverse: from (p−1)·v_p(Cₙ) = 0 and p ≥ 2 (so p−1 ≠ 0), Nat.mul_eq_zero forces v_p(Cₙ)=0. Generalises the sibling's parity law (p=2 gives v₂(n+1) = s₂(n) ⟺ n+1 a power of two)."
+    },
+    {
+      "id": "example",
+      "title": "Concrete Witness at p = 3",
+      "startLine": 131,
+      "endLine": 137,
+      "summary": "3 ∤ C₂ = 2, matching the criterion's right side (3−1)·v₃(3) + s₃(4) = 2·1 + 2 = 4 = 2·s₃(2); proved by catalan_two then kernel decide on ¬ 3 ∣ 2 — no native_decide."
     }
   ],
   "conclusion": {
