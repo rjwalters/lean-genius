@@ -1,0 +1,117 @@
+{
+  "id": "urysohns-lemma-oq-01-oq-02",
+  "slug": "urysohns-lemma-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Metric"
+    ],
+    "namespace": "UrysohnsLemmaOQ01OQ02",
+    "lineCount": 198,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/UrysohnsLemmaOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "title": "The Metric Urysohn Function Is Lipschitz for Positively Separated Sets",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/UrysohnsLemmaOQ01OQ02.lean",
+    "tags": [
+      "topology",
+      "metric-space",
+      "urysohns-lemma",
+      "lipschitz",
+      "infdist",
+      "separation",
+      "uniform-continuity",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 198,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "sep_le_infDist_add: the separation lower bound — if nonempty s, t are separated by a gap δ (δ ≤ dist a b for all a ∈ s, b ∈ t) then δ ≤ infDist x s + infDist x t for every x, proved by taking the infimum over a ∈ s then over b ∈ t (Metric.le_infDist) of the triangle inequality δ ≤ dist a b ≤ dist x a + dist x b; in particular the Urysohn denominator is ≥ δ > 0 everywhere",
+      "abs_infDist_sub_le: the distance-to-a-set function x ↦ infDist x s is 1-Lipschitz, |infDist x s − infDist y s| ≤ dist x y, from the two-sided Metric.infDist_le_infDist_add_dist",
+      "mul_dist_urysohnFn_le: the sharp pointwise estimate δ · |f(x) − f(y)| ≤ dist x y for f = urysohnFn s t, via the quotient identity f(x) − f(y) = (u(x)v(y) − u(y)v(x))/(g(x)g(y)) and the numerator bound |u(x)v(y) − u(y)v(x)| ≤ g(x)·dist x y with g = infDist·s + infDist·t",
+      "dist_urysohnFn_le: the explicit Lipschitz modulus |f(x) − f(y)| ≤ δ⁻¹ · dist x y, the gap δ governing the constant",
+      "lipschitzWith_urysohnFn: the bundled statement that the explicit metric Urysohn function for sets separated by gap δ > 0 is δ⁻¹-Lipschitz (LipschitzWith (Real.toNNReal δ⁻¹))",
+      "uniformContinuous_urysohnFn: uniform continuity of the explicit Urysohn function, an immediate corollary of the Lipschitz bound",
+      "dist_urysohnFn_lt: the explicit modulus of continuity in terms of the gap — dist x y < δ·ε implies |f(x) − f(y)| < ε",
+      "Concrete instance: on ℝ the sets {0} and {1} have gap 1, so the explicit Urysohn function separating them is 1-Lipschitz (LipschitzWith 1)"
+    ],
+    "prerequisites": [
+      "Metric.infDist (distance from a point to a set) and its API: infDist_nonneg, Metric.le_infDist, Metric.infDist_le_infDist_add_dist",
+      "The explicit metric Urysohn function urysohnFn s t x = infDist x s / (infDist x s + infDist x t) from the parent entry",
+      "LipschitzWith and the characterisation lipschitzWith_iff_dist_le_mul; LipschitzWith.uniformContinuous",
+      "Elementary real-analysis manipulation of quotients and absolute values (div_sub_div, abs_div, abs_add_le)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Metric.le_infDist",
+        "description": "r ≤ infDist x s ↔ ∀ y ∈ s, r ≤ dist x y for nonempty s — the infimum characterisation used twice to derive the separation lower bound δ ≤ infDist x s + infDist x t.",
+        "module": "Mathlib.Topology.MetricSpace.HausdorffDistance"
+      },
+      {
+        "theorem": "Metric.infDist_le_infDist_add_dist",
+        "description": "infDist x s ≤ infDist y s + dist x y — the 1-Lipschitz/triangle property of the distance-to-a-set function, yielding |infDist x s − infDist y s| ≤ dist x y.",
+        "module": "Mathlib.Topology.MetricSpace.HausdorffDistance"
+      },
+      {
+        "theorem": "lipschitzWith_iff_dist_le_mul",
+        "description": "LipschitzWith K f ↔ ∀ x y, dist (f x) (f y) ≤ K · dist x y — converts the explicit real estimate into the bundled LipschitzWith statement.",
+        "module": "Mathlib.Topology.MetricSpace.Lipschitz"
+      },
+      {
+        "theorem": "LipschitzWith.uniformContinuous",
+        "description": "A Lipschitz map is uniformly continuous — gives uniformContinuous_urysohnFn for free.",
+        "module": "Mathlib.Topology.MetricSpace.Lipschitz"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "urysohns-lemma-oq-01-oq-02-oq-01",
+      "question": "Is the modulus sharp? For s = {0}, t = {δ} on ℝ the explicit Urysohn function f(x) = |x|/(|x| + |x − δ|) is exactly δ⁻¹-Lipschitz; determine whether δ⁻¹ is the optimal Lipschitz constant for general separated sets or can be improved to (something)·δ⁻¹ with a smaller absolute factor.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "urysohns-lemma-oq-01",
+      "relationship": "Parent entry constructing the explicit metric Urysohn function urysohnFn and proving it continuous; this entry supplies the quantitative Lipschitz refinement the parent records as an open question."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Topology.MetricSpace.HausdorffDistance",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the Metric.infDist API (le_infDist, infDist_le_infDist_add_dist) underpinning the separation lower bound and the 1-Lipschitz distance functions."
+    },
+    {
+      "title": "Paul Urysohn, Über die Mächtigkeit der zusammenhängenden Mengen",
+      "author": "P. Urysohn",
+      "year": "1925",
+      "venue": "Mathematische Annalen",
+      "description": "Origin of Urysohn's lemma; the explicit metric witness whose Lipschitz regularity is established here."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The parent entry urysohns-lemma-oq-01 constructs the explicit metric Urysohn function f(x) = infDist x s / (infDist x s + infDist x t) separating two disjoint nonempty closed sets and proves it continuous — a purely qualitative statement. This entry supplies the quantitative regularity left open: when s and t are a fixed positive distance apart (δ ≤ dist a b for every a ∈ s, b ∈ t with δ > 0), f is Lipschitz with modulus δ⁻¹. The argument is elementary and needs neither closedness nor disjointness as separate hypotheses, since positive separation subsumes both. The three steps are: (1) the separation lower bound δ ≤ infDist x s + infDist x t for every x (sep_le_infDist_add), obtained by taking the infimum over a ∈ s then over b ∈ t of δ ≤ dist a b ≤ dist x a + dist x b — this also pins the denominator ≥ δ > 0; (2) the 1-Lipschitz property of the distance-to-a-set functions (abs_infDist_sub_le); (3) the quotient estimate, where f(x) − f(y) = (u(x)v(y) − u(y)v(x))/(g(x)g(y)) and the numerator is bounded by g(x)·dist x y. These give the sharp pointwise estimate δ·|f(x) − f(y)| ≤ dist x y (mul_dist_urysohnFn_le), the Lipschitz modulus |f(x) − f(y)| ≤ δ⁻¹·dist x y (dist_urysohnFn_le), the bundled LipschitzWith (Real.toNNReal δ⁻¹) statement (lipschitzWith_urysohnFn), uniform continuity (uniformContinuous_urysohnFn), and an explicit gap-dependent modulus of continuity (dist_urysohnFn_lt). A concrete instance on ℝ ({0} and {1}, gap 1) yields a 1-Lipschitz function. 198 lines, 7 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "The qualitative continuity of the metric Urysohn separator is upgraded to a quantitative Lipschitz bound whose constant δ⁻¹ is governed entirely by the separation gap, making explicit how the regularity of the separating function degrades as the two sets approach each other. This is the form needed in quantitative analysis (e.g. controlling the modulus of partitions of unity, or smoothing arguments where the Lipschitz constant must be tracked) and shows the textbook infDist construction is automatically Lipschitz off the diagonal of separated sets, with no appeal to closedness or the abstract Urysohn machinery.",
+    "openQuestions": [
+      "Determine whether the Lipschitz constant δ⁻¹ is optimal or can be improved by an absolute factor for general separated sets."
+    ]
+  }
+}
