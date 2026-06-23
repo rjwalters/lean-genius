@@ -1,0 +1,117 @@
+{
+  "id": "combinations-formula-oq-05-oq-01-oq-01-oq-01",
+  "title": "Two-Coefficient Closed Form for the Quadratically-Weighted Alternating Binomial Sum",
+  "slug": "combinations-formula-oq-05-oq-01-oq-01-oq-01",
+  "description": "Proves the two-coefficient closed form for the quadratically weighted partial alternating binomial sum: ∑_{k=0}^{j} (-1)^k k² C(n,k) = (-1)^j ( n(n-1) C(n-3,j-2) + n C(n-2,j-1) ) for n ≥ 3. This answers the parent's open question by absorbing k² = k(k-1) + k into two row shifts: the k(k-1) part lands on row n-3 scaled by n(n-1), and the leftover k part reproduces the parent's single coefficient on row n-2. Where the linearly weighted partial sum needed one binomial of the row two below, the quadratically weighted partial sum needs exactly two — one from row n-3, one from row n-2. The full quadratically weighted row vanishing ∑_{k=0}^{n} (-1)^k k² C(n,k) = 0 (n ≥ 3) is recovered as the special case j = n.",
+  "meta": {
+    "author": "Lean Genius researcher-3",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ05OQ01OQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 181,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "assumptions": "None. All identities are fully machine-checked for every n and j. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms); the two worked examples use kernel `decide`, so no Lean.ofReduceBool is involved.",
+    "tags": [
+      "combinatorics",
+      "pascals-triangle",
+      "binomial-coefficients",
+      "alternating-sum",
+      "weighted-sum",
+      "absorption-identity",
+      "telescoping",
+      "finset-sums"
+    ],
+    "dateAdded": "2026-06-23",
+    "originalContributions": [
+      "quad_weighted_partial_alternating_sum: the subtraction-free two-coefficient closed form ∑_{k=0}^{i+2} (-1)^k k² C(m+3,k) = (-1)^i ( (m+3)(m+2) C(m,i) + (m+3) C(m+1,i+1) ), valid for all m and i, proved by induction on i; the new term (i+3)² C(m+3,i+3) is reduced by two applications of the absorption identity Nat.add_one_mul_choose_eq and two Pascal steps Nat.choose_succ_succ, all discharged by linear_combination",
+      "quad_weighted_partial_alternating_sum_sub: the literal form ∑_{k=0}^{j+2} (-1)^k k² C(n,k) = (-1)^j ( n(n-1) C(n-3,j) + n C(n-2,j+1) ) for n ≥ 3, obtained from the m+3 form by writing n = m+3",
+      "quad_weighted_partial_alternating_sum_stabilizes: the quadratically weighted partial sums are already 0 once j ≥ n (n ≥ 3), since both C(n-3,j-2) and C(n-2,j-1) vanish there",
+      "quad_weighted_full_row_eq_zero: the full quadratically weighted alternating row sum ∑_{k=0}^{n} (-1)^k k² C(n,k) = 0 (n ≥ 3) recovered as the case j = n of the partial closed form",
+      "Worked verifications: row 4 cut at j=2 gives 0−4+24 = 20 = 4·3·C(1,0) + 4·C(2,1); row 4 cut at j=3 gives 0−4+24−36 = −16 = (−1)^3 ( 4·3·C(1,1) + 4·C(2,2) )"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ05OQ01OQ01OQ01.lean",
+    "namespace": "CombinationsFormulaOQ05OQ01OQ01OQ01",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 181,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The full quadratically weighted alternating row sum ∑_{k=0}^{n} (-1)^k k² C(n,k) = 0 (n ≥ 3) is the second-derivative-at-x=1 companion of the binomial theorem at x = -1: applying the operator (x d/dx)² to (1-x)^n and evaluating at x = 1 produces the doubly-weighted cancellation, which vanishes once the degree of the surviving differential operator drops below n. The grandparent (CombinationsFormulaOQ05) records the linear vanishing; the parent (CombinationsFormulaOQ05OQ01OQ01) records the linearly weighted partial closed form n (-1)^j C(n-2,j-1). What the truncated quadratically weighted sum equals — before it cancels — was the parent's first open question. The answer is no longer a single binomial: the weight k² splits as k(k-1) + k, and each piece absorbs into a different row shift, producing a fixed combination of two binomial coefficients.",
+    "problemStatement": "Open Question OQ-05-OQ-01-OQ-01-OQ-01 (the first follow-up posed by the parent): does the quadratically weighted partial sum ∑_{k=0}^{j} (-1)^k k² C(n,k) admit a closed form, obtained by absorbing k² = k(k-1) + k into two row shifts?",
+    "proofStrategy": "Work in ℤ and prove the subtraction-free form ∑_{k=0}^{i+2} (-1)^k k² C(m+3,k) = (-1)^i ( (m+3)(m+2) C(m,i) + (m+3) C(m+1,i+1) ) by induction on i. The base case i = 0 evaluates the range-3 sum −C(m+3,1) + 4 C(m+3,2), with 2 C(m+3,2) = (m+3)(m+2) supplied by one absorption. The inductive step adds the term (-1)^{i+3} (i+3)² C(m+3,i+3); applying the absorption identity (K+1) C(N+1,K+1) = (N+1) C(N,K) (Nat.add_one_mul_choose_eq) twice gives (i+3)² C(m+3,i+3) = (m+3)(m+2) C(m+1,i+1) + (m+3) C(m+2,i+2), and two Pascal steps C(N+1,K+1) = C(N,K) + C(N,K+1) (Nat.choose_succ_succ) telescope the sum down to the two surviving coefficients; all rewrites and the (-1)-power bookkeeping are discharged by a single linear_combination over ring. The literal C(n-3,·)/C(n-2,·) form follows by writing n = m+3, and the full-row vanishing follows from both binomials being 0 for j ≥ n.",
+    "keyInsights": [
+      "The quadratic weight splits cleanly as k² = k(k-1) + k, and each summand absorbs into its own row shift: k(k-1) C(n,k) = n(n-1) C(n-2,k-2) lands on row n-3 after telescoping, while k C(n,k) = n C(n-1,k-1) reproduces the parent's coefficient on row n-2 verbatim.",
+      "Two coefficients are necessary, not an artefact of the proof: the surviving combination n(n-1) C(n-3,j-2) + n C(n-2,j-1) cannot collapse to a single binomial because the two terms come from rows of different parity-shifted depth (n-3 and n-2).",
+      "Stated with C(m+3,k) and cut-off i+2 the identity needs no natural-number subtraction and holds for all m, making the induction clean; the literal n ≥ 3 form is a one-line specialisation.",
+      "linear_combination scales to the second-order step: the single new term needs two absorptions and two Pascals, but supplying them all as linear hypotheses lets ring handle the signed-power algebra without any rewriting under the (-1)^{i+3} factor.",
+      "The mechanism is uniform in the weight degree r: degree-1 needs one coefficient (parent), degree-2 needs two (this entry), and the falling-factorial expansion k^r = ∑ S(r,j) (k)_j predicts a closed form with r coefficients for the general weighted alternating partial sum."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and the Two-Coefficient Refinement",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Header stating OQ-05-OQ-01-OQ-01-OQ-01: the quadratically weighted partial sums admit the two-coefficient closed form (-1)^j ( n(n-1) C(n-3,j-2) + n C(n-2,j-1) ), obtained by absorbing k² = k(k-1) + k into two row shifts. Explains the double-absorption-then-telescope mechanism."
+    },
+    {
+      "id": "main-identity",
+      "title": "Main Identity (Subtraction-Free Form)",
+      "startLine": 64,
+      "endLine": 134,
+      "summary": "quad_weighted_partial_alternating_sum: ∑_{k=0}^{i+2} (-1)^k k² C(m+3,k) = (-1)^i ( (m+3)(m+2) C(m,i) + (m+3) C(m+1,i+1) ) for all m, by induction on i. The inductive step reduces the new term via two absorptions (Nat.add_one_mul_choose_eq) and two Pascal steps (Nat.choose_succ_succ), closed by linear_combination."
+    },
+    {
+      "id": "literal-form",
+      "title": "Literal C(n-3,·) / C(n-2,·) Form",
+      "startLine": 136,
+      "endLine": 152,
+      "summary": "quad_weighted_partial_alternating_sum_sub: the literal ∑_{k=0}^{j+2} (-1)^k k² C(n,k) = (-1)^j ( n(n-1) C(n-3,j) + n C(n-2,j+1) ) for n ≥ 3, obtained by writing n = m+3."
+    },
+    {
+      "id": "stabilization",
+      "title": "Stabilisation and Full-Row Recovery",
+      "startLine": 154,
+      "endLine": 170,
+      "summary": "quad_weighted_partial_alternating_sum_stabilizes: the quadratically weighted partial sums are 0 once j ≥ n, since both C(n-3,j-2) and C(n-2,j-1) vanish. quad_weighted_full_row_eq_zero: the full quadratically weighted row sum vanishes for n ≥ 3 as the case j = n."
+    },
+    {
+      "id": "verification",
+      "title": "Worked Verifications",
+      "startLine": 171,
+      "endLine": 181,
+      "summary": "examples: row 4 cut at j=2 gives 0−4+24 = 20 = 4·3·C(1,0) + 4·C(2,1); row 4 cut at j=3 gives 0−4+24−36 = −16 = (−1)^3 ( 4·3·C(1,1) + 4·C(2,2) )."
+    }
+  ],
+  "conclusion": {
+    "summary": "4 theorems, 0 sorries, 0 axioms. Establishes the two-coefficient closed form ∑_{k=0}^{j} (-1)^k k² C(n,k) = (-1)^j ( n(n-1) C(n-3,j-2) + n C(n-2,j-1) ) for every partial sum of a quadratically weighted alternating binomial row (n ≥ 3), and recovers the full quadratically weighted row vanishing as the special case j = n.",
+    "implications": "Extends the OQ-05 weighted-sum thread one degree higher: the linearly weighted partial sum is one binomial of the row two below (parent), and the quadratically weighted partial sum is a fixed combination of two binomials, of rows three and two below. The absorb-then-telescope template scales by weight degree — degree r consumes r absorptions and produces an r-coefficient closed form — pointing directly at a uniform falling-factorial-weighted identity governed by Stirling numbers of the second kind.",
+    "openQuestions": [
+      "Does the falling-factorial-weighted partial sum ∑_{k=0}^{j} (-1)^k (k)_r C(n,k) equal (-1)^j (n)_r C(n-r-1, j-r) for every r, unifying the parent (r = 1) and the k(k-1) component of this entry (r = 2) under a single absorption-depth formula?",
+      "For the general power weight k^r, is the number of binomial coefficients in the closed form exactly the number of nonzero Stirling numbers S(r,j), and are their scalars the products (n)_j predicted by the falling-factorial decomposition k^r = ∑_j S(r,j) (k)_j?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-05-oq-01-oq-01",
+      "relationship": "parent — answers its first open question by giving the quadratically weighted analogue of its single-coefficient linearly weighted partial closed form n (-1)^j C(n-2,j-1)"
+    },
+    {
+      "targetId": "combinations-formula-oq-05-oq-01",
+      "relationship": "grandparent — the unweighted partial telescoping (-1)^j C(n-1,j) whose absorption-then-telescope mechanism is applied twice here"
+    },
+    {
+      "targetId": "combinations-formula-oq-05",
+      "relationship": "great-grandparent — the linear full-row vanishing anchor, here lifted to the quadratic full-row vanishing ∑ (-1)^k k² C(n,k) = 0 (n ≥ 3)"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,115 @@
+[
+  {
+    "id": "double-absorb-context",
+    "proofId": "combinations-formula-oq-05-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Quadratic Weight: Absorb Twice, then Telescope",
+    "content": "The parent records the linearly weighted partial closed form ∑_{k=0}^{j} (-1)^k k C(n,k) = n (-1)^j C(n-2,j-1) — one absorption, one telescoping, one surviving binomial. Its first open question asks for the quadratic weight. The answer needs two coefficients: ∑_{k=0}^{j} (-1)^k k² C(n,k) = (-1)^j ( n(n-1) C(n-3,j-2) + n C(n-2,j-1) ). The mechanism is the splitting k² = k(k-1) + k. The falling factorial k(k-1) absorbs into a double row shift k(k-1) C(n,k) = n(n-1) C(n-2,k-2), telescoping to row n-3; the leftover k reproduces the parent's term on row n-2. Two pieces, two rows, two coefficients.",
+    "mathContext": "Write $a_k = (-1)^k k^2 \\binom{n}{k}$. Splitting $k^2 = k(k-1) + k$ gives $\\sum_{k=0}^{j} a_k = n(n-1)\\sum_{k}(-1)^k\\binom{n-2}{k-2} + n\\sum_{k}(-1)^k\\binom{n-1}{k-1}$. Each inner sum is an unweighted alternating partial sum of a shifted row, evaluated by the grandparent's telescoping to $(-1)^{j}\\binom{n-3}{j-2}$ and $(-1)^{j}\\binom{n-2}{j-1}$ respectively, yielding $\\sum_{k=0}^{j} a_k = (-1)^j\\big(n(n-1)\\binom{n-3}{j-2} + n\\binom{n-2}{j-1}\\big)$. The full-row vanishing is the case $j=n$, where both binomials are zero.",
+    "significance": "key",
+    "relatedConcepts": [
+      "absorption identity k C(n,k) = n C(n-1,k-1)",
+      "double absorption k(k-1) C(n,k) = n(n-1) C(n-2,k-2)",
+      "falling-factorial weight decomposition k^r = Σ S(r,j) (k)_j",
+      "Pascal's rule",
+      "telescoping sums"
+    ],
+    "prerequisites": [
+      "Nat.choose binomial coefficients",
+      "absorption Nat.add_one_mul_choose_eq",
+      "Pascal's rule Nat.choose_succ_succ",
+      "induction over Finset.range"
+    ]
+  },
+  {
+    "id": "main-identity-induction",
+    "proofId": "combinations-formula-oq-05-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 134
+    },
+    "type": "proof-technique",
+    "title": "Subtraction-Free Induction with a Second-Order Step",
+    "content": "The main identity is proved in the shifted form ∑_{k=0}^{i+2} (-1)^k k² C(m+3,k) = (-1)^i ( (m+3)(m+2) C(m,i) + (m+3) C(m+1,i+1) ), which avoids all natural-number subtraction and holds for every m and i. The base case i = 0 is the range-3 sum −C(m+3,1) + 4 C(m+3,2), where 2 C(m+3,2) = (m+3)(m+2) is supplied by one absorption. The inductive step adds the term (-1)^{i+3} (i+3)² C(m+3,i+3); the key local lemma absorbA reduces it via two absorptions to (m+3)(m+2) C(m+1,i+1) + (m+3) C(m+2,i+2), and two Pascal steps then telescope the running sum down to the two surviving coefficients.",
+    "mathContext": "The induction reduces $(i+3)^2\\binom{m+3}{i+3}$ by absorbing twice: $(i+3)\\binom{m+3}{i+3} = (m+3)\\binom{m+2}{i+2}$, then $(i+2)\\binom{m+2}{i+2} = (m+2)\\binom{m+1}{i+1}$, giving $(i+3)^2\\binom{m+3}{i+3} = (m+3)(m+2)\\binom{m+1}{i+1} + (m+3)\\binom{m+2}{i+2}$. Pascal on $\\binom{m+1}{i+1}=\\binom{m}{i}+\\binom{m}{i+1}$ and $\\binom{m+2}{i+2}=\\binom{m+1}{i+1}+\\binom{m+1}{i+2}$ then cancels everything except the two target binomials.",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction over a Finset.range cut-off",
+      "subtraction-free reformulation",
+      "binomial absorption chained twice"
+    ],
+    "prerequisites": [
+      "Finset.sum_range_succ",
+      "Nat.add_one_mul_choose_eq",
+      "Nat.choose_succ_succ"
+    ]
+  },
+  {
+    "id": "linear-combination-finisher",
+    "proofId": "combinations-formula-oq-05-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 100,
+      "endLine": 134
+    },
+    "type": "proof-technique",
+    "title": "linear_combination over the Signed-Power Algebra",
+    "content": "The inductive step never rewrites under the (-1)^{i+3} factor — associativity makes that brittle. Instead the two absorption equalities and two Pascal equalities are supplied as linear hypotheses with explicit scalar coefficients, and linear_combination hands the entire signed-power polynomial identity to ring. The decisive coefficient is the double-absorption lemma absorbA, itself proved by linear_combination ((i:ℤ)+3) * absorb_a + ((m:ℤ)+3) * absorb_b: scaling the first absorption by (i+3) supplies the second factor of k², and scaling the second by (m+3) clears the leftover.",
+    "mathContext": "The step goal, after dividing by $(-1)^i$, is $\\big(P a + Q p\\big) - \\big(P p + Q r\\big) = -\\big(P b + Q q\\big)$ with $P=(m+3)(m+2)$, $Q=m+3$, $a=\\binom{m}{i}$, $b=\\binom{m}{i+1}$, $p=\\binom{m+1}{i+1}=a+b$, $q=\\binom{m+1}{i+2}$, $r=\\binom{m+2}{i+2}=p+q$. Substituting the two Pascal relations collapses the left side to $-Pb-Qq$, matching the right.",
+    "significance": "important",
+    "relatedConcepts": [
+      "linear_combination tactic",
+      "ring normalisation of signed powers",
+      "supplying rewrites as linear hypotheses"
+    ],
+    "prerequisites": [
+      "linear_combination",
+      "ring"
+    ]
+  },
+  {
+    "id": "literal-and-stabilization",
+    "proofId": "combinations-formula-oq-05-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 136,
+      "endLine": 170
+    },
+    "type": "concept",
+    "title": "Literal Form, Stabilisation, and Full-Row Vanishing",
+    "content": "Writing n = m+3 turns the subtraction-free identity into the literal ∑_{k=0}^{j+2} (-1)^k k² C(n,k) = (-1)^j ( n(n-1) C(n-3,j) + n C(n-2,j+1) ) for n ≥ 3. Stabilisation is immediate: once j ≥ n both C(n-3,j-2) and C(n-2,j-1) have lower index exceeding their upper row, so each is 0 and the partial sum is already 0. The full-row vanishing ∑_{k=0}^{n} (-1)^k k² C(n,k) = 0 (n ≥ 3) is the case j = n — derived here, not assumed, so the entry is strictly stronger than a bare statement of the quadratic cancellation.",
+    "mathContext": "For $j \\ge n$: $\\binom{n-3}{j-2} = 0$ because $j-2 \\ge n-2 > n-3$, and $\\binom{n-2}{j-1} = 0$ because $j-1 \\ge n-1 > n-2$. Hence $\\sum_{k=0}^{j}(-1)^k k^2\\binom{n}{k} = 0$ for all $j \\ge n \\ge 3$, recovering and refining the second-derivative binomial cancellation.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Nat.choose_eq_zero_of_lt",
+      "stabilisation of partial sums",
+      "second-derivative binomial identity"
+    ],
+    "prerequisites": [
+      "Nat.choose_eq_zero_of_lt",
+      "natural-number subtraction bookkeeping"
+    ]
+  },
+  {
+    "id": "worked-verifications",
+    "proofId": "combinations-formula-oq-05-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 171,
+      "endLine": 181
+    },
+    "type": "example",
+    "title": "Numerical Checks of the Two-Coefficient Form",
+    "content": "Two kernel-checked examples pin down the closed form. Row 4 cut at j = 2: 0 − 1·C(4,1) + 4·C(4,2) = −4 + 24 = 20, and the closed form gives (+1)·(4·3·C(1,0) + 4·C(2,1)) = 12 + 8 = 20. Row 4 cut at j = 3: the previous 20 plus −9·C(4,3) = −36 gives −16, and the closed form gives (−1)·(4·3·C(1,1) + 4·C(2,2)) = −(12 + 4) = −16. Both use kernel `decide`, so no Lean.ofReduceBool axiom is incurred.",
+    "mathContext": "At $n=4$: $n(n-1)=12$, so the closed form reads $(-1)^j\\big(12\\binom{1}{j-2} + 4\\binom{2}{j-1}\\big)$. For $j=2$ this is $12\\binom{1}{0}+4\\binom{2}{1}=12+8=20$; for $j=3$ it is $-(12\\binom{1}{1}+4\\binom{2}{2})=-(12+4)=-16$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "kernel decide vs native_decide",
+      "numerical verification of closed forms"
+    ],
+    "prerequisites": [
+      "Decidable evaluation of Finset sums"
+    ]
+  }
+]
