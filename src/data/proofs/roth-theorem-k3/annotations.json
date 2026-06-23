@@ -53,7 +53,7 @@
     },
     "type": "concept",
     "title": "Part III: Fourier Analysis on Z/NZ (356 lines)",
-    "content": "Defines `fourierCoeff A r` as the discrete Fourier transform and builds a comprehensive character theory infrastructure (225 lines of fully proved ψ properties including character orthogonality via the shift argument). **Key proved results**: (1) `fourierCoeff_norm_le`: $|\\hat{1_A}(r)| \\leq |A|$ via triangle inequality, (2) `parseval_on_zmod` (PROVED, 43 lines): Parseval's identity $\\sum_r |\\hat{1_A}(r)|^2 = |A| \\cdot N$ via character orthogonality, (3) `triple_count_fourier` (PROVED, 32 lines): the AP counting Fourier identity. One sorry remains in the helper `tripleCount_add_card_eq_triple_sum` (combinatorial identity). The Parseval proof is particularly elegant: it expands Fourier products into double character sums, applies orthogonality to collapse to the diagonal, and simplifies.",
+    "content": "Defines `fourierCoeff A r` as the discrete Fourier transform and builds a comprehensive character theory infrastructure (225 lines of fully proved ψ properties including character orthogonality via the shift argument). **Key proved results**: (1) `fourierCoeff_norm_le`: $|\\hat{1_A}(r)| \\leq |A|$ via triangle inequality, (2) `parseval_on_zmod` (PROVED, 43 lines): Parseval's identity $\\sum_r |\\hat{1_A}(r)|^2 = |A| \\cdot N$ via character orthogonality, (3) `triple_count_fourier` (PROVED, 32 lines): the AP counting Fourier identity. The entire section is fully proved with no sorries. The Parseval proof is particularly elegant: it expands Fourier products into double character sums, applies orthogonality to collapse to the diagonal, and simplifies.",
     "mathContext": "$\\hat{1_A}(r) = \\sum_{x \\in A} e^{2\\pi i rx/N}$. Parseval: $\\sum_r |\\hat{1_A}(r)|^2 = N|A|$. 3-AP identity: $\\Lambda_3(A) = N^{-1} \\sum_r \\hat{1_A}(r)^2 \\overline{\\hat{1_A}(2r)}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -77,7 +77,7 @@
     },
     "type": "concept",
     "title": "Part IV: Large Fourier Coefficient from AP-Freeness",
-    "content": "The key analytic step: if $A$ has density $\\delta$ and no 3-AP, then some nonzero Fourier coefficient has $|\\hat{1_A}(r)| \\geq \\delta^2 N/2$. The proof (sorry'd) combines AP-freeness ($\\Lambda_3 = 0$), the Fourier identity (Part III), and Parseval. Since $\\hat{1_A}(0) = |A| = \\delta N$ and $\\Lambda_3 = 0$, the nonzero terms must cancel the $r=0$ contribution, forcing some $|\\hat{1_A}(r)|$ to be large.",
+    "content": "The key analytic step: if $A$ has density $\\delta$ and no 3-AP, then some nonzero Fourier coefficient has $|\\hat{1_A}(r)| \\geq \\delta^2 N/2$. The proof (`fourier_large_coefficient`, fully proved) combines AP-freeness ($\\Lambda_3 = 0$), the Fourier identity (Part III), and Parseval. Since $\\hat{1_A}(0) = |A| = \\delta N$ and $\\Lambda_3 = 0$, the nonzero terms must cancel the $r=0$ contribution, forcing some $|\\hat{1_A}(r)|$ to be large.",
     "mathContext": "AP-free + density $\\delta$ $\\implies$ $\\exists r \\neq 0$: $|\\hat{1_A}(r)| \\geq \\delta^2 N/2$.",
     "significance": "key",
     "relatedConcepts": [
@@ -122,9 +122,9 @@
       "endLine": 594
     },
     "type": "insight",
-    "title": "Part VI: Iteration Argument and Roth's Theorem",
-    "content": "Contains two key results: (1) `density_iteration` (PROVED): $k$ applications of the density increment boost density from $\\delta$ to at least $\\delta + k\\delta^2/100$. The proof uses the fact that the density $d_k \\geq \\delta$ at each step, so each increment $d_k^2/100 \\geq \\delta^2/100$, giving a linear lower bound on the cumulative increment. (2) `roth_density_bound` (sorry'd): the final theorem $r_3(N) = o(N)$. After $K = \\lceil 100(1-\\delta)/\\delta^2 \\rceil + 1$ iterations, density would exceed 1, contradicting $|A| \\leq N$.",
-    "mathContext": "After $k$ density increments: density $\\geq \\delta + k\\delta^2/100$. When $k > 100(1-\\delta)/\\delta^2$, density $> 1$. Contradiction with $|A| \\leq N$. Therefore $r_3(N) = o(N)$.",
+    "title": "Part VI: Roth's Theorem (Fully Proved)",
+    "content": "The final theorem `roth_density_bound` ($r_3(N) = o(N)$) is fully proved with no sorries and no axioms. For every $\\delta > 0$ it produces an $N_0$ such that any $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ with $|A| \\geq \\delta N$ and $N \\geq N_0$ contains a 3-AP. The proof transports $A$ to $\\mathbb{N}$ via `ZMod.val` (injective, so density and AP-freeness are preserved by `apFree_imp_threeAPFree_val`) and applies Mathlib's Roth theorem through the corners-theorem chain (Regularity Lemma → Triangle Removal → Corners → Roth), instantiating $N_0 = \\text{cornersTheoremBound}(\\delta/3) + 1$. The custom Fourier-analytic machinery (Parts I–V) — character orthogonality, Parseval, the AP-counting identity, the large-coefficient bound, and `density_increment_lemma` — is independently verified and stands as a from-scratch development of the density-increment strategy.",
+    "mathContext": "$A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ with $|A| \\geq \\delta N$ maps injectively to $S = \\text{val}(A) \\subseteq [N]$ with $|S| = |A|$ and $S$ ThreeAPFree iff $A$ is APFree; Mathlib's `roth_3ap_theorem_nat` then forces a 3-AP once $N \\geq \\text{cornersTheoremBound}(\\delta/3)$.",
     "significance": "key",
     "relatedConcepts": [
       "Szemerédi's theorem",
@@ -132,8 +132,8 @@
       "Green-Tao theorem"
     ],
     "prerequisites": [
-      "density increment lemma",
-      "iteration arguments"
+      "Mathlib corners theorem",
+      "ZMod.val injectivity"
     ],
     "importance": "high"
   },
@@ -169,7 +169,7 @@
     },
     "type": "concept",
     "title": "Density Increment via Dirichlet Approximation (732 lines)",
-    "content": "The technical core of the formalization. Uses Dirichlet's approximation theorem to extract a density increment on a subprogression. When a large Fourier coefficient $|\\hat{1}_A(r)| \\geq \\delta^2 N/2$ is found, Dirichlet approximation gives a rational approximation $|\\text{val}(r)/N - a/q| \\leq 1/(qQ)$ with $q \\leq Q$. This produces a subprogression of length $\\geq N/q \\geq \\sqrt{N}$ where $A$ has increased density. The coset restriction technique decomposes $\\mathbb{Z}/N\\mathbb{Z}$ into $g$ arithmetic progressions (where $g = \\gcd(\\text{val}(r), N)$) and selects the densest coset. The one sorry (line 1438) is for the edge case $N=1$ with $\\delta > 0.99$, an architectural gap requiring Bohr set techniques.",
+    "content": "The technical core of the formalization. Uses Dirichlet's approximation theorem to extract a density increment on a subprogression. When a large Fourier coefficient $|\\hat{1}_A(r)| \\geq \\delta^2 N/2$ is found, Dirichlet approximation gives a rational approximation $|\\text{val}(r)/N - a/q| \\leq 1/(qQ)$ with $q \\leq Q$. This produces a subprogression of length $\\geq N/q \\geq \\sqrt{N}$ where $A$ has increased density. The coset restriction technique decomposes $\\mathbb{Z}/N\\mathbb{Z}$ into $g$ arithmetic progressions (where $g = \\gcd(\\text{val}(r), N)$) and selects the densest coset. The resulting `density_increment_lemma` is fully proved with no sorries; it stands as an independently verified component of the formalization (the final $r_3(N) = o(N)$ bound is then obtained via Mathlib's corners theorem).",
     "mathContext": "Dirichlet: $\\forall r, Q$, $\\exists a, q$ with $1 \\leq q \\leq Q$ and $|\\frac{\\text{val}(r)}{N} - \\frac{a}{q}| \\leq \\frac{1}{qQ}$. This gives a subprogression of length $\\geq N/q \\geq \\sqrt{N}$ with density $\\geq \\delta + \\delta^2/100$.",
     "significance": "key",
     "relatedConcepts": [
