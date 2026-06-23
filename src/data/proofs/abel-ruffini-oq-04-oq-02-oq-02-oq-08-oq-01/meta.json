@@ -25,7 +25,7 @@
       "research",
       "transport"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -67,7 +67,7 @@
     "dateAdded": "2026-06-21",
     "axiomCount": 0,
     "lineCount": 174,
-    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions. No `native_decide` is used. `#print axioms` on perm_solvable_iff_card, alternating_solvable_iff_card, alternating_solvable_iff_of_card_eq, nonempty_alternatingCongr_of_card_eq, and sharp_threshold_card reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no `Lean.ofReduceBool`, no `sorryAx`. (The classification corollaries depend transitively on the parent's Fin n results, which are themselves decide-based and native_decide-free.)",
+    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions (core result via Mathlib bridge: the solvability conclusions are transported by Mathlib's `solvable_of_surjective`/`permCongrHom`/`sign_permCongr` machinery composed with the parent's classification — this file supplies the cardinality-invariance transport, not an independent solvability proof, hence the `mathlib` badge). No `native_decide` is used. `#print axioms` on perm_solvable_iff_card, alternating_solvable_iff_card, alternating_solvable_iff_of_card_eq, nonempty_alternatingCongr_of_card_eq, and sharp_threshold_card reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no `Lean.ofReduceBool`, no `sorryAx`. (The classification corollaries depend transitively on the parent's Fin n results, which are themselves decide-based and native_decide-free.)",
     "mathlib_version": "4.26.0",
     "theoremCount": 12,
     "definitionCount": 1,
