@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ann-pos-of-prime",
+    "proofId": "infinitude-primes-4k1-oq-02",
+    "range": { "startLine": 76, "endLine": 88 },
+    "type": "lemma",
+    "title": "pos_of_prime_eq_sq_add_sq — A Prime Is Never a Perfect Square",
+    "content": "If p is prime and p = a² + b², then both a and b are strictly positive. The auxiliary fact `not_sq : ∀ n, p ≠ n²` is proved by noting that a divisor n of p = n² must be 1 or p (Nat.Prime.eq_one_or_self_of_dvd applied to n ∣ p via dvd_pow_self), and either choice forces p = 1, contradicting primality. Were a = 0 we would have p = b² (and symmetrically for b = 0), contradicting not_sq. This positivity is exactly what later rules out the degenerate branch in which a Brahmagupta cofactor equals ±p.",
+    "mathContext": "$p\\ \\text{prime},\\ p = a^2+b^2 \\Rightarrow 0 < a \\wedge 0 < b$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "primes are not perfect squares",
+      "divisors of a prime",
+      "positivity of the legs"
+    ],
+    "prerequisites": [
+      "Nat.Prime.eq_one_or_self_of_dvd",
+      "dvd_pow_self n (h : k ≠ 0) : n ∣ n^k"
+    ]
+  },
+  {
+    "id": "ann-pair-eq-of-cross",
+    "proofId": "infinitude-primes-4k1-oq-02",
+    "range": { "startLine": 90, "endLine": 115 },
+    "type": "lemma",
+    "title": "pair_eq_of_cross — Equal Norm + Cross Relation ⇒ Equal Pairs",
+    "content": "If a·y = b·x and a²+b² = x²+y², then (a, b) = (x, y). The crux is the cancellation a²·(a²+b²) = a²x² + (a·y)² = a²x² + (b·x)² = x²·(a²+b²), a calc chain whose only non-ring step rewrites (a·y)² to (b·x)² using the cross relation. Cancelling the positive factor a²+b² (Nat.eq_of_mul_eq_mul_right) gives a² = x²; the equal-norm hypothesis then forces b² = y² by omega, and squaring's injectivity on ℕ (nat_sq_inj) yields a = x and b = y. This lemma is the bridge that converts a vanishing Brahmagupta cross term into genuine equality of the unordered pairs.",
+    "mathContext": "$a y = b x,\\ a^2+b^2 = x^2+y^2 \\Rightarrow a = x \\wedge b = y$",
+    "significance": "key",
+    "relatedConcepts": [
+      "proportional integer pairs",
+      "cancellation in ℕ",
+      "injectivity of squaring"
+    ],
+    "prerequisites": [
+      "Nat.eq_of_mul_eq_mul_right",
+      "ring identities and omega over square-atoms"
+    ]
+  },
+  {
+    "id": "ann-brahmagupta",
+    "proofId": "infinitude-primes-4k1-oq-02",
+    "range": { "startLine": 117, "endLine": 126 },
+    "type": "lemma",
+    "title": "brahmagupta_diff / brahmagupta_sum — The Two-Squares Multiplication Identity",
+    "content": "The Brahmagupta–Fibonacci identity in its two sign variants: (ac+bd)² + (ad−bc)² = (a²+b²)(c²+d²) and (ac−bd)² + (ad+bc)² = (a²+b²)(c²+d²), each proved by `ring` over ℤ. Applied with a²+b² = p = c²+d², they exhibit p² as a sum of two squares in two different ways. Their non-negative companion squares (ac±bd)² give the bounds (ad∓bc)² ≤ p², and their vanishing pins the cross terms when a cofactor reaches ±p.",
+    "mathContext": "$(ac \\pm bd)^2 + (ad \\mp bc)^2 = (a^2+b^2)(c^2+d^2)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brahmagupta–Fibonacci identity",
+      "norm of a product in ℤ[i]",
+      "sum of two squares is multiplicative"
+    ],
+    "prerequisites": [
+      "polynomial arithmetic over ℤ (ring)"
+    ]
+  },
+  {
+    "id": "ann-cross-factor-dvd",
+    "proofId": "infinitude-primes-4k1-oq-02",
+    "range": { "startLine": 127, "endLine": 134 },
+    "type": "lemma",
+    "title": "cross_factor_dvd — The Divisibility Identity",
+    "content": "(ad − bc)(ad + bc) = (ad)² − (bc)² = d²(a²+b²) − b²(c²+d²), which after substituting p = a²+b² = c²+d² collapses to p·(d² − b²). This exhibits p as a divisor of the product of the two cross terms, which is the precise hook for Euclid's lemma in the main theorem: a prime dividing (ad−bc)(ad+bc) must divide one of the two factors.",
+    "mathContext": "$(ad - bc)(ad + bc) = p\\,(d^2 - b^2)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "difference of squares",
+      "Euclid's lemma setup",
+      "divisibility identity"
+    ],
+    "prerequisites": [
+      "ring rewriting and substitution of the two representations"
+    ]
+  },
+  {
+    "id": "ann-two-squares-unique",
+    "proofId": "infinitude-primes-4k1-oq-02",
+    "range": { "startLine": 136, "endLine": 235 },
+    "type": "theorem",
+    "title": "two_squares_unique — Uniqueness of the Representation",
+    "content": "The main result: a prime p with p = a²+b² = c²+d² satisfies (a=c ∧ b=d) ∨ (a=d ∧ b=c). After establishing positivity of all four legs and casting to ℤ, the divisibility identity plus Euclid's lemma (Nat.prime_iff_prime_int transports primality to ℤ; Prime.dvd_mul splits the product) give p ∣ (ad−bc) or p ∣ (ad+bc). The Brahmagupta bounds (each cross term squared is ≤ p²) force the divisible cross term to be 0 or ±p; the ±p cases make a companion square vanish, impossible since all legs are positive. The surviving case ad = bc (resp. ac = bd) feeds pair_eq_of_cross to deliver (a,b) = (c,d) (resp. (a,b) = (d,c)). The declaration runs under maxHeartbeats 400000, with the degree-4 reasoning kept to ring-checked identities and linarith over the square-atoms to stay within budget.",
+    "mathContext": "$(a=c \\wedge b=d) \\vee (a=d \\wedge b=c)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Euclid's lemma",
+      "Brahmagupta–Fibonacci identity",
+      "uniqueness up to units in ℤ[i]"
+    ],
+    "prerequisites": [
+      "Prime.dvd_mul and Nat.prime_iff_prime_int",
+      "the Brahmagupta identities and pair_eq_of_cross",
+      "le_of_mul_le_mul_left for the square bounds"
+    ]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "infinitude-primes-4k1-oq-02",
+    "range": { "startLine": 243, "endLine": 260 },
+    "type": "theorem",
+    "title": "representation_unique_up_to_order / two_repr_unique — Corollaries",
+    "content": "Two packagings of the main theorem: representation_unique_up_to_order restates uniqueness as the Multiset equality {a,b} = {c,d} (the swapped case uses Multiset.pair_comm), and two_repr_unique specializes to p = 2 to conclude that 2 = 1² + 1² is the only way to write 2 as a sum of two squares.",
+    "mathContext": "$\\{a,b\\} = \\{c,d\\};\\quad 2 = a^2+b^2 \\Rightarrow a = b = 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Multiset equality",
+      "the prime 2 as 1²+1²"
+    ],
+    "prerequisites": [
+      "Multiset.pair_comm",
+      "two_squares_unique"
+    ]
+  }
+]
