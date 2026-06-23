@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-nested-overview",
+    "proofId": "compactness-finite-subcover-oq-01-oq-02-oq-01",
+    "range": { "startLine": 3, "endLine": 28 },
+    "type": "context",
+    "title": "Pinning the Intersection of Nested Shrinking Intervals",
+    "content": "The docstring frames the result as the uniqueness half of Cantor's intersection theorem. The parent entry (compactness-finite-subcover-oq-01-oq-02) used Cantor's theorem to show that a nest of closed real intervals has NONEMPTY intersection. This file sharpens that to an EXACT value: when the interval lengths shrink to 0, the intersection is a single point — the supremum of the left endpoints (equivalently the infimum of the right endpoints). Cantor gives existence; the shrinking-length hypothesis supplies uniqueness via a squeeze. The concrete corollary then upgrades the parent's [0, 1/(n+1)] example from 'nonempty' to exactly {0}.",
+    "mathContext": "If $a$ is monotone, $b$ antitone, $a_n \\le b_n$, and $b_n - a_n \\to 0$, then $\\bigcap_n [a_n, b_n] = \\{\\sup_n a_n\\}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Cantor's intersection theorem",
+      "nested intervals",
+      "completeness of ℝ",
+      "compactness"
+    ],
+    "prerequisites": [
+      "supremum / infimum in ℝ",
+      "monotone and antitone sequences",
+      "limits of sequences"
+    ]
+  },
+  {
+    "id": "ann-nested-existence",
+    "proofId": "compactness-finite-subcover-oq-01-oq-02-oq-01",
+    "range": { "startLine": 34, "endLine": 65 },
+    "type": "technique",
+    "title": "The Supremum Exists and Lies in Every Interval",
+    "content": "The existence half of nested_intervals_iInter_singleton. The crux is the cross bound `key : ∀ m n, a m ≤ b n` — every left endpoint sits below every right endpoint — proved by case-splitting on m ≤ n vs n ≤ m and chaining monotonicity/antitonicity through a single interval. This bound does two jobs at once: (1) it shows the range of a is bounded above (by b 0), so the supremum ⨆ j, a j exists (BddAbove); (2) it places that supremum inside every interval, since a n ≤ ⨆ a (le_ciSup) and ⨆ a ≤ b n (ciSup_le over the cross bound). Membership in the intersection then follows by unfolding mem_iInter / mem_Icc.",
+    "mathContext": "$a_m \\le b_n$ for all $m,n$ (via $a_m \\le a_{\\max} \\le b_{\\max} \\le b_n$). Hence $\\sup_j a_j$ exists and $a_n \\le \\sup_j a_j \\le b_n$, so $\\sup_j a_j \\in [a_n, b_n]$ for all $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "BddAbove",
+      "le_ciSup / ciSup_le",
+      "conditional supremum",
+      "Monotone / Antitone"
+    ],
+    "prerequisites": [
+      "least upper bound property of ℝ",
+      "conditionally complete lattices",
+      "Set.mem_iInter"
+    ]
+  },
+  {
+    "id": "ann-nested-squeeze",
+    "proofId": "compactness-finite-subcover-oq-01-oq-02-oq-01",
+    "range": { "startLine": 66, "endLine": 75 },
+    "type": "insight",
+    "title": "Uniqueness by the Shrinking-Length Squeeze",
+    "content": "The uniqueness half — the new mathematical content beyond Cantor. Any common point x of all intervals satisfies a n ≤ x ≤ b n and a n ≤ ⨆ a ≤ b n, so both x and the supremum lie in [a n, b n]; hence |x − ⨆ a| ≤ b n − a n for every n (proved via abs_le and two linarith calls). Since the lengths b n − a n → 0, the order-limit lemma ge_of_tendsto' forces |x − ⨆ a| ≤ 0, so x = ⨆ a by abs_nonpos_iff. This is the classic 'two points trapped in arbitrarily short intervals must coincide' argument, and it is exactly where the shrinking-length hypothesis is used.",
+    "mathContext": "$|x - \\sup_j a_j| \\le b_n - a_n \\to 0 \\Rightarrow |x - \\sup_j a_j| = 0 \\Rightarrow x = \\sup_j a_j$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squeeze theorem",
+      "ge_of_tendsto'",
+      "abs_nonpos_iff",
+      "order limits"
+    ],
+    "prerequisites": [
+      "limits and inequalities (order topology)",
+      "absolute value bounds",
+      "Set.eq_singleton_iff_unique_mem"
+    ]
+  },
+  {
+    "id": "ann-nested-concrete",
+    "proofId": "compactness-finite-subcover-oq-01-oq-02-oq-01",
+    "range": { "startLine": 77, "endLine": 98 },
+    "type": "context",
+    "title": "Sharpening the Concrete Example to {0}",
+    "content": "iInter_Icc_zero_one_div_eq_zero specialises the general theorem to the parent's example: constant left endpoint 0 and right endpoint 1/(n+1). The three hypotheses are discharged concretely — antitonicity of 1/(n+1) via one_div_le_one_div_of_le, the bound 0 ≤ 1/(n+1) by positivity, and 1/(n+1) → 0 from Mathlib's tendsto_one_div_add_atTop_nhds_zero_nat. The supremum of the constant-0 left endpoints is 0 (ciSup_const), so the singleton ⨆ a = {0}. This turns the parent's qualitative 'nonempty' into the exact value {0}.",
+    "mathContext": "$\\bigcap_n [0, 1/(n+1)] = \\{0\\}$, since $\\sup_n 0 = 0$ and $1/(n+1) \\to 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "one_div_le_one_div_of_le",
+      "tendsto_one_div_add_atTop_nhds_zero_nat",
+      "ciSup_const",
+      "positivity"
+    ],
+    "prerequisites": [
+      "harmonic sequence 1/(n+1)",
+      "specialising general theorems",
+      "constant suprema"
+    ]
+  }
+]
