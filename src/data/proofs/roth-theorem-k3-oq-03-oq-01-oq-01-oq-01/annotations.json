@@ -1,0 +1,62 @@
+[
+  {
+    "id": "roth-oq03010101-header",
+    "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "context",
+    "title": "The geometric symmetries of the k-AP counting operator Λ_k",
+    "content": "In the Gowers-norm approach to Roth/Szemerédi the central object is Λ_k(f₀,…,f_{k−1}) = E_{x,d ∈ ZMod N} ∏ᵢ fᵢ(x + i·d), the normalized k-term AP count. The grandparent defines it and proves normalization identities; the parent proves multilinearity. This file records the *geometric* symmetries of the underlying configuration {x, x+d, …, x+(k−1)d} — genuinely new facts, not consequences of multilinearity, arising from reindexing bijections of the averaging variables (x, d): **translation invariance** (a common shift of every function is absorbed by x ↦ x+t) and **reflection symmetry** (reversing the tuple equals reversing the progression via (x,d) ↦ (x+(k−1)d, −d)). These normalize AP counts and explain the symmetric role of the two endpoints in the van der Corput / generalized von Neumann estimates.",
+    "mathContext": "$\\Lambda_k(f_0,\\dots,f_{k-1}) = \\mathbb{E}_{x,d}\\prod_i f_i(x + i\\cdot d)$",
+    "significance": "context",
+    "relatedConcepts": ["Gowers norms", "arithmetic progressions", "Roth/Szemerédi", "additive combinatorics"],
+    "prerequisites": ["the operator Λ_k", "multilinearity (parent)", "reindexing finite sums"]
+  },
+  {
+    "id": "roth-oq03010101-translate",
+    "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 52, "endLine": 65 },
+    "type": "theorem",
+    "title": "kAPCount_translate: translation invariance",
+    "content": "`kAPCount_translate`: replacing every fᵢ by its translate y ↦ fᵢ(y+t) leaves Λ_k unchanged. The key observation is that fᵢ((x+i·d)+t) = fᵢ((x+t)+i·d) — the common translate lands entirely on the base point x for every term simultaneously. So `Fintype.sum_equiv (Equiv.addRight t)` reindexes the x-average (the d-average and the product untouched), and the per-term shift is closed by `abel`. The whole AP is shifted by −t and absorbed by the base-point average.",
+    "mathContext": "$\\Lambda_k(f_0(\\cdot+t),\\dots) = \\Lambda_k(f_0,\\dots);\\quad (x+i d)+t = (x+t)+i d$",
+    "significance": "key",
+    "relatedConcepts": ["translation invariance", "Fintype.sum_equiv", "Equiv.addRight", "reindexing"],
+    "prerequisites": ["reindexing a finite sum along an equivalence"]
+  },
+  {
+    "id": "roth-oq03010101-index-rev",
+    "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 71, "endLine": 80 },
+    "type": "theorem",
+    "title": "prod_rev_reindex: reversing the index inside the product",
+    "content": "`prod_rev_reindex` is the first of the two bijections behind reflection: reversing which function is paired with which AP term equals reversing the AP terms. ∏ᵢ f(rev i)(x+i·d) = ∏ᵢ f i (x+(rev i)·d), proved by `Equiv.Perm.prod_comp'` with `Fin.revPerm` (which permutes one slot of a two-slot product and is its own inverse). This handles the index reversal i ↦ k−1−i separately from the AP-variable reversal.",
+    "mathContext": "$\\prod_i f(\\mathrm{rev}\\,i)(x+i d) = \\prod_i f_i(x + (\\mathrm{rev}\\,i) d)$",
+    "significance": "supporting",
+    "relatedConcepts": ["Equiv.Perm.prod_comp'", "Fin.revPerm", "index reversal"],
+    "prerequisites": ["reindexing finite products along a permutation"]
+  },
+  {
+    "id": "roth-oq03010101-involution",
+    "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 82, "endLine": 106 },
+    "type": "definition",
+    "title": "reflectShift: the AP-reversal involution",
+    "content": "`reflectShift (x,d) = (x+(k−1)d, −d)` is the second bijection: it sends a progression to the same progression read backwards (base point x+(k−1)d, common difference −d). `reflectShift_involutive` proves it is an involution of (ZMod N)² (applying it twice returns (x,d), by `smul_neg`/`abel`/`neg_neg`). `reflect_shift_eq` is the pointwise identity x+(k−1−i)·d = (x+(k−1)d)+i·(−d) — the reversed-AP shift equals the forward shift of the reflected progression — proved via `Fin.val_rev`, `add_nsmul`, and `omega`. An AP read backwards is an AP.",
+    "mathContext": "$(x,d) \\mapsto (x+(k-1)d,\\ -d);\\quad x+(k-1-i)d = (x+(k-1)d) + i(-d)$",
+    "significance": "key",
+    "relatedConcepts": ["involution", "Function.Involutive.toPerm", "AP reversal", "Fin.val_rev"],
+    "prerequisites": ["nsmul arithmetic in ZMod N", "involutions as permutations"]
+  },
+  {
+    "id": "roth-oq03010101-reflect",
+    "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 108, "endLine": 132 },
+    "type": "theorem",
+    "title": "kAPCount_reflect: reflection symmetry of Λ_k",
+    "content": "`kAPCount_reflect`: Λ_k(f₀,…,f_{k−1}) = Λ_k(f_{k−1},…,f₀), i.e. reversing the tuple `fun i => f (Fin.rev i)` fixes the count. The proof composes the two reversals: uncurry the (x,d) double average with `Fintype.sum_prod_type'`, reindex it by `Equiv.sum_comp` of `reflectShift.toPerm` (using `reflect_shift_eq` per term), then insert the index reversal via `prod_rev_reindex`. Reversing the index (which function sits where) and reversing the progression (base point and difference) together leave Λ_k invariant — directly answering the parent's open question.",
+    "mathContext": "$\\Lambda_k(f_0,\\dots,f_{k-1}) = \\Lambda_k(f_{k-1},\\dots,f_0)$",
+    "significance": "key",
+    "relatedConcepts": ["reflection symmetry", "Equiv.sum_comp", "Fintype.sum_prod_type'", "two commuting reversals"],
+    "prerequisites": ["prod_rev_reindex", "the reflectShift involution", "uncurrying a double sum"]
+  }
+]
