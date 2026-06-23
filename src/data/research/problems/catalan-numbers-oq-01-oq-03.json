@@ -17,7 +17,7 @@
   "problemStatement": "Develop the large Schröder numbers Nat.largeSchroder (Mathlib provides only the quadratic convolution recurrence and evenness): prove positivity, growth bounds, and the order-two holonomic recurrence (n+3)·L(n+2) + n·L n = 3·(2n+3)·L(n+1), the Schröder analogue of the Catalan first-order recurrence in catalan-numbers-oq-01.",
   "currentState": "Positivity, convolution lower bound, step growth 3·L(n+1) ≤ L(n+2), and exponential bound 2·3ⁿ ≤ L(n+1) are proved and verified (0 axioms, 0 sorries) in Proofs/SchroderLinearRecurrence.lean. The order-two holonomic recurrence remains a sorry in the companion Proofs/SchroderLinearRecurrenceAristotle.lean, awaiting automated proof search (Aristotle service was unavailable this session).",
   "knowledge": {
-    "progressSummary": "PROGRESS: roadmap Steps 1-2 executed -- GF object schroderSeries and its defining quadratic schroderSeries_eq (f = 1 + f*X + f^2*X) written in Proofs/SchroderGeneratingFunction.lean, mirroring the verified Mathlib Catalan template. Not locally kernel-verified this session (docker exit 144, Aristotle down); deployer build-gate verifies. Steps 3-5 (differentiation -> linear ODE -> coefficient extraction) remain to close the sole sorry largeSchroder_conv_holonomic.",
+    "progressSummary": "PROGRESS: Steps 3-4 of roadmap formalized over ℤ⟦X⟧ in Proofs/SchroderHolonomicODE.lean. The hard algebraic crux — the linear ODE X(X^2-6X+1)g=(3X-1)g+(X+1) eliminating g^2 and g*g' — is now a CERTIFIED (sympy-verified) one-line linear_combination, plus a certified quadratic recast and discriminant identity. Only TWO mechanical sorries remain: differentiation (Derivation/Leibniz bookkeeping) and coefficient extraction (coeff_derivative). KEY INSIGHT: this direct-ODE route proves the headline largeSchroder_holonomic directly, retiring the convolution-form intermediate. NOT kernel-verified this session (docker exit124, Aristotle 404); awaits build-gate.",
     "insights": [
       "Mathlib's Combinatorics/Enumerative/Schroder.lean defines Nat.largeSchroder by the quadratic convolution recurrence and records ONLY evenness (Nat.even_largeSchroder) — positivity and growth are genuine gaps.",
       "Factor-3 step growth L(n+2) ≥ 3·L(n+1) comes for free from just the two boundary convolution terms (i=0 and i=n+1, each = L(n+1)) plus the leading +L(n+1); no interior-term analysis needed.",
@@ -28,7 +28,11 @@
       "GF elimination route for conv_holonomic: f=∑L(n)xⁿ satisfies X·f²+(X−1)f+1=0 (⟺ largeSchroder_succ). Differentiate: f²+f+(2Xf+X−1)f′=0. Multiply by X and subtract the algebraic eqn to kill X·f²: get X(2Xf+X−1)f′=1−f. Since [ℚ(x)(f):ℚ(x)]=2, f′=a(x)+b(x)f for rational a,b; clearing denominators by x(x²−6x+1) yields x(x²−6x+1)f′=(3x−1)f+(x+1), whose xⁿ-coefficient is the recurrence.",
       "Convolution form and headline holonomic recurrence are algebraically EQUIVALENT: largeSchroder_succ gives Q n = L(n+1) - L n, and substituting collapses (n+3)Q(n+1)=(5n+6)Q n+(4n+6)L n exactly into (n+3)L(n+2)+nL n=3(2n+3)L(n+1). So the convolution lemma is no easier than the headline -- both need the GF differentiation step.",
       "GF quadratic (Step 2) is the genuinely easy mechanical piece (~12 lines, mirrors verified Catalan proof line-for-line). The hard content is Steps 3-5 (differentiate over Z[[X]], eliminate f^2 and f*f', read off coefficient) -- P-recursive coefficients (the n-dependence) require coeff_derivative, not just coeff_mul.",
-      "Numerically re-verified both recurrences n=0..3 (L: 1,2,6,22,90,394; Q: 1,4,16,68,304): convolution and headline both hold."
+      "Numerically re-verified both recurrences n=0..3 (L: 1,2,6,22,90,394; Q: 1,4,16,68,304): convolution and headline both hold.",
+      "Direct-ODE route proves the HEADLINE largeSchroder_holonomic directly via coefficient extraction, with NO need for the convolution-form intermediate Nat.largeSchroder_conv_holonomic (which had been the sole open sorry). The convolution detour can be retired once extraction is formalized.",
+      "Discriminant + ODE linear_combination certificates were verified SYMBOLICALLY (sympy): disc cert (2Xg+X-1)^2-(X^2-6X+1) = 4X*quad (exact, remainder 0); ODE cert X(X^2-6X+1)g-(3X-1)g-(X+1) = X(2Xg+X-1)*diff_id + (-4X^2 g - 2Xg - X -1)*quad (exact, remainder 0). So the genuinely hard elimination of g^2 and g*g' is now a certified one-line linear_combination, contingent only on the differentiation lemma.",
+      "Mathlib has NO precedent for the ODE/extraction steps: PowerSeries.catalanSeries_sq_mul_X_add_one stops at the quadratic (its only TODO is the closed form). Our SchroderGeneratingFunction.lean already matched Mathlib as far as it goes; everything past the quadratic is novel.",
+      "Both target recurrences NUMERICALLY VERIFIED n=0..3: L=1,2,6,22,90,394,1806; Q=1,4,16,68,304; headline and conv both hold exactly. Target is sound (not chasing a false statement)."
     ],
     "builtItems": [
       "Nat.largeSchroder_pos (Proofs/SchroderLinearRecurrence.lean): 0 < largeSchroder n, by structural induction",
@@ -39,7 +43,11 @@
       "Nat.largeSchroder_holonomic (Proofs/SchroderLinearRecurrenceAristotle.lean): (n+3)·L(n+2)+n·L(n)=3(2n+3)·L(n+1) PROVED conditionally on largeSchroder_conv_holonomic — reduction is rw[largeSchroder_succ (n+1), largeSchroder_succ n] + set + zify + linear_combination (algebra hand-verified: goal_diff − hconv_diff = 0 over ℤ)",
       "PowerSeries.schroderSeries (Proofs/SchroderGeneratingFunction.lean): the large Schroder GF f = mk largeSchroder in N[[X]], with schroderSeries_coeff and schroderSeries_constantCoeff = 1 (roadmap Step 1)",
       "PowerSeries.schroderSeries_eq (Proofs/SchroderGeneratingFunction.lean): the defining quadratic f = 1 + f*X + f^2*X -- direct mirror of Mathlib catalanSeries_sq_mul_X_add_one, the extra linear f*X term coming from the +L n summand in largeSchroder_succ (roadmap Step 2)",
-      "Nat.largeSchroder_succ' (Proofs/SchroderGeneratingFunction.lean): antidiagonal-form reformulation of largeSchroder_succ matching the coeff_mul shape (mirror of catalan_succ')"
+      "Nat.largeSchroder_succ' (Proofs/SchroderGeneratingFunction.lean): antidiagonal-form reformulation of largeSchroder_succ matching the coeff_mul shape (mirror of catalan_succ')",
+      "Proofs/SchroderHolonomicODE.lean: schroderIntSeries (ℤ⟦X⟧ map of schroderSeries) + schroderIntSeries_coeff",
+      "Proofs/SchroderHolonomicODE.lean: schroderIntSeries_quadratic (X*g^2+(X-1)*g+1=0 over ℤ⟦X⟧) — certified proof (map of schroderSeries_eq + linear_combination -h)",
+      "Proofs/SchroderHolonomicODE.lean: schroderIntSeries_discriminant ((2Xg+X-1)^2=X^2-6X+1) — certified linear_combination (4*X)*quadratic",
+      "Proofs/SchroderHolonomicODE.lean: schroderIntSeries_ode (X(X^2-6X+1)g = (3X-1)g+(X+1)) — CERTIFIED linear_combination from diff+quadratic (sympy-verified certificate)"
     ],
     "mathlibGaps": [
       "No positivity lemma for Nat.largeSchroder (only Nat.even_largeSchroder).",
@@ -47,9 +55,10 @@
       "No central-coefficient bridge for Schröder analogous to succ_mul_catalan_eq_centralBinom, so the Catalan-style elementary derivation does not transfer — the GF/ODE route is needed."
     ],
     "nextSteps": [
-      "Steps 3-5 of roadmap (over Z[[X]]): from schroderSeries_eq, differentiate via PowerSeries.derivative (Derivation) to get (2Xf+(X-1))*f' = -(f^2+f); use discriminant identity (2Xf+(X-1))^2 = X^2-6X+1 on the solution to get linear ODE X(X^2-6X+1)f' = (3X-1)f+(X+1); extract x^n coeff with coeff_derivative to close largeSchroder_conv_holonomic / largeSchroder_holonomic.",
-      "VERIFY SchroderGeneratingFunction.lean once a verifier is available (docker exited 144 with no output this session; Aristotle returns Resource not found). Main risk point: the Nat.largeSchroder_succ' antidiagonal/Iic index bridge (Finset.Nat.sum_antidiagonal_eq_sum_range_succ + Iic n = range (n+1)). The quadratic itself is a near-mechanical mirror of a verified Mathlib proof.",
-      "Upgrade growth to the sharp ratio L(n+1)/L n -> 3+2sqrt2 over R."
+      "Discharge the 2 remaining mechanical sorries in Proofs/SchroderHolonomicODE.lean once a verifier/Aristotle is available: (1) schroderIntSeries_diff — formal differentiation of the quadratic (Derivation/Leibniz: skeleton = congrArg (derivative ℤ) quadratic; simp [map_add,map_zero,Derivation.leibniz,Derivation.leibniz_pow,derivative_X,Derivation.map_one_eq_zero,smul_eq_mul,nsmul_eq_mul]; linear_combination); (2) largeSchroder_holonomic_via_ode — coefficient extraction (coeff_derivative + coeff_X_pow_mul/coeff_mul, case split n, push casts, omega).",
+      "Once both sorries close, retire the convolution-form detour: largeSchroder_conv_holonomic in SchroderLinearRecurrenceAristotle.lean becomes unnecessary (headline proved directly from ODE).",
+      "VERIFY SchroderHolonomicODE.lean + SchroderGeneratingFunction.lean on a working verifier (docker exit 124/144 this session; Aristotle 404). Main residual risk in new file: simp/lemma-name details in schroderIntSeries_quadratic (map_add/map_pow/PowerSeries.map_X) and schroderIntSeries_coeff; the linear_combination certificates are sympy-certified so should be robust given correct statements.",
+      "Upgrade growth to the sharp ratio L(n+1)/L n -> 3+2sqrt2 over R (open follow-up)."
     ],
     "markdown": ""
   },

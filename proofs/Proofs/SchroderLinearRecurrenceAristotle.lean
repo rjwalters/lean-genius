@@ -73,6 +73,24 @@ now executed** in the sibling file `Proofs/SchroderGeneratingFunction.lean`; Ste
 The single remaining `sorry` is therefore HARD-but-classical and fully scoped: it awaits either
 automated proof search or a manual session with a working Lean verifier (this session had neither
 Aristotle nor a responsive docker build available).
+
+## Update (2026-06-23): direct-ODE route supersedes the convolution detour
+
+Steps 3–5 have now been executed in the sibling file `Proofs/SchroderHolonomicODE.lean`, working
+over `ℤ⟦X⟧`.  Crucially, the coefficient extraction of the linear ODE
+`X*(X²-6X+1)*g' = (3X-1)*g + (X+1)` yields the **headline recurrence directly**, so the
+convolution-form intermediate `largeSchroder_conv_holonomic` below is *not* on the critical path.
+
+The hard algebra (eliminating `g²` and the `g·g'` cross term) is now a single `linear_combination`
+whose certificate was verified symbolically:
+  `X*(X²-6X+1)*g' − (3X-1)*g − (X+1)
+     = X*(2*X*g + (X-1)) · [diff. of quadratic] + (−4*X²*g' − 2*X*g − X − 1) · [quadratic]`.
+The discriminant `(2*X*g + (X-1))² = X²-6X+1 = 4*X·[quadratic]` is likewise a certified one-liner.
+
+Only two *mechanical* `sorry`s remain in `SchroderHolonomicODE.lean`:
+`schroderIntSeries_diff` (Leibniz/`Derivation` bookkeeping) and `largeSchroder_holonomic_via_ode`
+(coefficient extraction via `coeff_derivative`).  Once discharged, `largeSchroder_conv_holonomic`
+below can be deleted.
 -/
 
 namespace Nat
