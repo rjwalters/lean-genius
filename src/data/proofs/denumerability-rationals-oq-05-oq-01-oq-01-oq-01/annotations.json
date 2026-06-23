@@ -1,0 +1,50 @@
+[
+  {
+    "id": "denum-loc-ann-header",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 42 },
+    "type": "concept",
+    "title": "Localization Preserves Denumerability",
+    "content": "The root of this family is Cantor's denumerability of ℚ. Since ℚ is by construction the field of fractions of ℤ, this entry asks whether the construction that builds ℚ — inverting a multiplicative set — can ever escape countability. The answer is no: a localization is always a surjective image of R × M, so countability is automatic. The file delivers the denumerable analogue of Mathlib's `IsLocalization.fintype'` (which Mathlib notes 'cannot be an instance') and closes the loop by recovering #ℚ = ℵ₀ as a corollary. Imports Mathlib, opens Cardinal.",
+    "mathContext": "$\\mathbb{Q} = \\mathrm{Frac}(\\mathbb{Z}), \\qquad \\#(\\mathrm{FractionRing}\\,R) = \\aleph_0,\\ \\#\\mathbb{Q} = \\aleph_0.$",
+    "significance": "key",
+    "relatedConcepts": ["denumerability", "localization", "fraction field", "cardinal ℵ₀"],
+    "prerequisites": ["countable types", "localization of rings", "cardinal arithmetic"]
+  },
+  {
+    "id": "denum-loc-ann-countable",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01-oq-01",
+    "range": { "startLine": 43, "endLine": 65 },
+    "type": "theorem",
+    "title": "Localizations Preserve Countability",
+    "content": "`countable_of_isLocalization` is the headline: for a countable commutative semiring R and any localization S of R at a submonoid M (`[IsLocalization M S]`), S is countable. The one-line proof uses `IsLocalization.mk'_surjective` — every z : S is `mk' S r m` for some (r, m) ∈ R × M — so S is a surjective image of the countable type R × M, and `Function.Surjective.countable` finishes. The concrete `Localization.instCountable` and `instCountableFractionRing` then register countability as honest instances (the latter using `IsFractionRing R (FractionRing R)` = localization at the nonzero divisors).",
+    "mathContext": "$R \\text{ countable},\\ [IsLocalization\\,M\\,S] \\implies S \\text{ countable}; \\qquad R \\times M \\twoheadrightarrow S.$",
+    "significance": "critical",
+    "relatedConcepts": ["mk'_surjective", "surjective image of countable", "IsLocalization", "instance"],
+    "prerequisites": ["IsLocalization.mk'", "Function.Surjective.countable"]
+  },
+  {
+    "id": "denum-loc-ann-cardinality",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 84 },
+    "type": "theorem",
+    "title": "Cardinality Bounds",
+    "content": "`mk_le_aleph0_of_isLocalization`: any localization of a countable ring has #S ≤ ℵ₀ (countability + `Cardinal.mk_le_aleph0`). `mk_fractionRing_eq_aleph0`: for an infinite countable integral domain the fraction field is countably infinite, #(FractionRing R) = ℵ₀. Countability comes from the instance; infinitude from the injective `algebraMap R (FractionRing R)` (`IsFractionRing.injective`) via `Infinite.of_injective`, and `Cardinal.mk_eq_aleph0` pins the value at ℵ₀.",
+    "mathContext": "$\\#S \\le \\aleph_0; \\qquad R \\text{ infinite countable domain} \\implies \\#(\\mathrm{FractionRing}\\,R) = \\aleph_0.$",
+    "significance": "key",
+    "relatedConcepts": ["mk_le_aleph0", "mk_eq_aleph0", "Infinite.of_injective", "IsFractionRing.injective"],
+    "prerequisites": ["countability ⟹ #S ≤ ℵ₀", "injective coefficient map"]
+  },
+  {
+    "id": "denum-loc-ann-rationals",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01-oq-01",
+    "range": { "startLine": 85, "endLine": 100 },
+    "type": "theorem",
+    "title": "Closing the Loop: the Rationals",
+    "content": "`mk_rat_eq_aleph0` re-derives #ℚ = ℵ₀ — not by an explicit enumeration but by feeding `Rat.isFractionRing` (`IsFractionRing ℤ ℚ` = localization of ℤ at its nonzero divisors) into the general principle: ℚ is countable by `countable_of_isLocalization`, infinite, hence ℵ₀ via `mk_eq_aleph0`. `mk_nnrat_eq_aleph0` does the same for ℚ≥0 via `NNRat.isFractionRing` over ℕ. This exhibits Cantor's denumerability of the rationals as one instance of 'localizations of countable rings stay countable', closing the loop back to the family's root.",
+    "mathContext": "$\\#\\mathbb{Q} = \\aleph_0 \\text{ via } IsFractionRing\\,\\mathbb{Z}\\,\\mathbb{Q}; \\qquad \\#\\mathbb{Q}_{\\ge 0} = \\aleph_0.$",
+    "significance": "critical",
+    "relatedConcepts": ["Rat.isFractionRing", "denumerability of ℚ", "specialization", "NNRat"],
+    "prerequisites": ["countable_of_isLocalization", "Rat.isFractionRing / NNRat.isFractionRing"]
+  }
+]
