@@ -134,5 +134,60 @@
       "Read the row-end values ⟨m,0⟩ = ⟨m,m−1⟩ = 1 and unimodality off the explicit formula.",
       "Re-derive the closed form by inverting Worpitzky's identity (alternating binomial transform / finite-difference inversion)."
     ]
-  }
+  },
+  "description": "Proves the celebrated explicit closed form solving the Eulerian triangle recurrence outright: ⟨m,k⟩ = ∑_{j=0}^{k} (−1)ʲ·C(m+1,j)·(k+1−j)ᵐ, a single alternating binomial sum with no recursion. The proof shows the candidate sum A(m,k) satisfies the same recurrence and boundary values as the parent's combinatorial Eulerian numbers, via Pascal's rule, binomial absorption, and an index shift — all over ℤ, 0 axioms.",
+  "overview": {
+    "historicalContext": "The Eulerian numbers ⟨m,k⟩, counting permutations of {1,…,m} with k descents, were studied by Leonhard Euler (1755) through the polynomials Aₘ(t) = ∑ₖ ⟨m,k⟩ tᵏ. Beyond the triangle recurrence and Worpitzky's identity, the numbers admit a striking non-recursive description: the alternating inclusion–exclusion sum ⟨m,k⟩ = ∑_{j=0}^{k} (−1)ʲ·C(m+1,j)·(k+1−j)ᵐ, which expresses each Eulerian number directly as a finite signed sum of powers. This formula is the discrete-derivative / finite-difference reading of the descent count and appears in Graham–Knuth–Patashnik's Concrete Mathematics and Comtet's Advanced Combinatorics. Within this gallery it sits alongside the sibling entries on Worpitzky's identity (oq-03) and the palindromy (oq-02) as one of the four classical facts proved from the parent's from-scratch Eulerian triangle; Mathlib has none of these, so the closed form and its proof are built here on top of the parent's recurrence.",
+    "problemStatement": "For the combinatorial Eulerian numbers ⟨m,k⟩ defined by the parent via the triangle recurrence ⟨m+1,k+1⟩ = (k+2)⟨m,k+1⟩ + (m−k)⟨m,k⟩ with ⟨m,0⟩ = 1, prove the explicit closed form ⟨m,k⟩ = ∑_{j=0}^{k} (−1)ʲ·C(m+1,j)·(k+1−j)ᵐ (as an identity over ℤ) — a single alternating binomial sum that solves the recurrence with no recursion of its own.",
+    "proofStrategy": "Define the candidate A(m,k) = ∑_{j=0}^{k} (−1)ʲ·C(m+1,j)·(k+1−j)ᵐ and prove ⟨m,k⟩ = A(m,k) by showing A satisfies the SAME defining data as eulerian — the standard 'verify the closed form obeys the recurrence' technique. (1) BOUNDARY: A(m,0) = 1 and A(0,k) = [k=0] are direct. (2) RECURRENCE (the core, `eulExpl_recurrence`): split (k+2−j)^{m+1} = (k+2−j)·(k+2−j)ᵐ; the resulting j-weighted sum collapses via the absorption identity (i+1)C(m+1,i+1) = (m+1)C(m,i) plus an index shift (`absorbed_sum`) to −(m+1) times an order-m sum; Pascal's rule on C(m+2,j) writes A(m+1,k+1) as a difference of order-(m+1) sums; and a Pascal re-summation identity (`eulExpl_pascal_step`) closes everything by a single linear_combination. (3) INDUCTION (`eulerian_explicit`): induct on m; the only subtlety is reconciling the parent's ℕ-truncated coefficient (m−k) with the integer (m:ℤ)−k, handled by case-splitting on k ≤ m (using ⟨m,k⟩ = 0 when k > m). All over ℤ, 0-axiom.",
+    "keyInsights": [
+      "The closed form is proved not by deriving it but by VERIFYING it: show the candidate sum A(m,k) satisfies the same recurrence and boundary values as ⟨m,k⟩, then uniqueness of the recurrence forces equality. This sidesteps any need to 'guess and check' the inclusion–exclusion coefficients.",
+      "Splitting the power (k+2−j)^{m+1} = (k+2−j)·(k+2−j)ᵐ is the move that drops the order by one: the leftover linear factor produces a j-weight that the absorption identity converts into a clean order-m sum, so the order-(m+1) recurrence reduces to order-m data.",
+      "Two distinct binomial identities do all the work — Pascal's rule (for the additive C(m+2,j) split and the re-summation) and absorption (i+1)C(m+1,i+1) = (m+1)C(m,i) (for the multiplicative j-weight). Isolating each as its own lemma keeps the intricate core recurrence a single linear_combination.",
+      "The whole development lives over ℤ precisely to avoid ℕ's truncated subtraction; the only place the gap matters is the final induction, where (m−k) is reconciled with (m:ℤ)−k by noting both sides vanish (⟨m,k⟩ = 0) exactly when the truncation would bite (k > m).",
+      "The formula is the finite-difference signature of the descent statistic: ∑_j (−1)ʲ C(m+1,j)(k+1−j)ᵐ is the (m+1)-st forward difference of the power, so the Eulerian numbers are literally the difference table of nᵐ — the dual view to Worpitzky's expansion of nᵐ in the binomial basis (sibling oq-03)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "def-boundary",
+      "title": "The Explicit Sum and Boundary Values",
+      "startLine": 46,
+      "endLine": 72,
+      "summary": "Defines eulExpl A(m,k) = ∑ⱼ (−1)ʲ·C(m+1,j)·(k+1−j)ᵐ over ℤ and proves the boundary lemmas eulExpl_zero_right (A(m,0)=1) and eulExpl_zero_left (A(0,k)=[k=0]).",
+      "mathContext": "$A(m,k)=\\sum_{j=0}^{k}(-1)^j\\binom{m+1}{j}(k{+}1{-}j)^m$."
+    },
+    {
+      "id": "pascal",
+      "title": "The Pascal Re-Summation Identity",
+      "startLine": 74,
+      "endLine": 111,
+      "summary": "eulExpl_pascal_step: the order-m sum over range(k+1) minus its shifted partner over range(k) equals A(m,k), by peeling leading terms and matching via Pascal's rule C(m+1,i+1)=C(m,i)+C(m,i+1).",
+      "mathContext": "Pascal re-summation gluing the order-$m$ sums into $A(m,k)$."
+    },
+    {
+      "id": "absorption",
+      "title": "Absorption and the Weighted Sum",
+      "startLine": 113,
+      "endLine": 134,
+      "summary": "habsorb ((i+1)C(m+1,i+1)=(m+1)C(m,i)) and absorbed_sum, which collapses the j-weighted alternating sum to −(m+1) times an order-m sum via absorption and an index shift — the order-reduction mechanism.",
+      "mathContext": "$(i{+}1)\\binom{m+1}{i+1}=(m{+}1)\\binom{m}{i}$."
+    },
+    {
+      "id": "recurrence",
+      "title": "The Core Recurrence",
+      "startLine": 136,
+      "endLine": 226,
+      "summary": "eulExpl_recurrence: A satisfies A(m+1,k+1)=(k+2)A(m,k+1)+(m−k)A(m,k) over ℤ, by splitting the power, collapsing via absorbed_sum, applying Pascal to C(m+2,j), and closing with eulExpl_pascal_step in one linear_combination.",
+      "mathContext": "$A(m{+}1,k{+}1)=(k{+}2)A(m,k{+}1)+(m{-}k)A(m,k)$."
+    },
+    {
+      "id": "explicit",
+      "title": "The Explicit Formula and Examples",
+      "startLine": 228,
+      "endLine": 265,
+      "summary": "eulerian_explicit: ⟨m,k⟩ = A(m,k) by induction on m (boundaries + recurrence), reconciling the ℕ-truncated (m−k) with (m:ℤ)−k via ⟨m,k⟩=0 for k>m. Worked examples reproduce rows 1,1 / 1,4,1 / 1,11,11,1 by kernel decide.",
+      "mathContext": "$\\langle m,k\\rangle=\\sum_{j=0}^{k}(-1)^j\\binom{m+1}{j}(k{+}1{-}j)^m$."
+    }
+  ]
 }
