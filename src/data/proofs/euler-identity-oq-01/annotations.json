@@ -82,20 +82,19 @@
     "id": "ann-axioms",
     "proofId": "euler-identity-oq-01",
     "range": {
-      "startLine": 88,
-      "endLine": 135
+      "startLine": 113,
+      "endLine": 151
     },
     "type": "concept",
-    "title": "Three Axioms: Even/Odd Tsum Split, Cosine and Sine Taylor Series",
-    "content": "Three axioms bridge the gap between the formal series computation and Mathlib's definitions. (1) `tsum_even_add_odd`: for summable `a`, `∑_n a_n = ∑_k a_{2k} + ∑_k a_{2k+1}`. This even/odd rearrangement holds for absolutely convergent series; Mathlib has `HasSum.even_add_odd` but the `tsum` API requires additional work. (2) `cos_eq_tsum`: `cos(x) = ∑_k (-1)^k x^{2k}/(2k)!`. (3) `sin_eq_tsum`: `sin(x)·I = ∑_k oddTerm x k`. Both cos/sin are defined in Mathlib via exp rather than Taylor series directly. The helper `expSeries_summable` (lines 132-135) proves the expTerm series is summable by translating Mathlib's `NormedSpace.expSeries_summable` through the `expTerm` definition.",
-    "mathContext": "The analytic gap: Mathlib defines $\\cos z = \\tfrac{1}{2}(e^{iz}+e^{-iz})$ and $\\sin z = \\tfrac{1}{2i}(e^{iz}-e^{-iz})$, not via Taylor series. Proving $\\cos(x) = \\sum_k (-1)^k x^{2k}/(2k)!$ from this definition requires expanding $e^{\\pm ix}$ and collecting even terms. Axiom elimination roadmap: (1) is LOW difficulty (~50 lines via `Equiv.tsum_eq` with the even/odd bijection $\\mathbb{N} \\simeq \\mathbb{N} \\sqcup \\mathbb{N}$); (2)(3) are MODERATE (~150-200 lines, expand $e^{\\pm iz}$ and compare).",
+    "title": "Three Proved Bridge Lemmas: Even/Odd Tsum Split, Cosine and Sine Taylor Series",
+    "content": "Three proved theorems bridge the gap between the formal series computation and Mathlib's definitions — all are theorems in this file, not axioms. (1) `tsum_even_add_odd` (lines 116-122): for summable `a`, `∑_n a_n = ∑_k a_{2k} + ∑_k a_{2k+1}`, proved by `Summable.comp_injective` to establish summability of both subseries, then Mathlib's `tsum_even_add_odd`. (2) `cos_eq_tsum` (lines 130-134): `cos(x) = ∑_k (-1)^k x^{2k}/(2k)!`, proved via `Complex.cos_eq_tsum` and `ofReal_cos`. (3) `sin_eq_tsum` (lines 138-142): `sin(x)·I = ∑_k oddTerm x k`, proved via `Complex.sin_eq_tsum`, `ofReal_sin`, and `tsum_mul_right`. Both cos/sin are defined in Mathlib via exp rather than Taylor series directly, so these lemmas translate between the two presentations. The helper `expSeries_summable` (lines 149-151) proves the expTerm series is summable by translating Mathlib's `NormedSpace.expSeries_summable` through the `expTerm` definition.",
+    "mathContext": "The analytic gap: Mathlib defines $\\cos z = \\tfrac{1}{2}(e^{iz}+e^{-iz})$ and $\\sin z = \\tfrac{1}{2i}(e^{iz}-e^{-iz})$, not via Taylor series. Proving $\\cos(x) = \\sum_k (-1)^k x^{2k}/(2k)!$ from this definition requires expanding $e^{\\pm ix}$ and collecting even terms; here that work is delegated to Mathlib's `Complex.cos_eq_tsum` / `Complex.sin_eq_tsum`. The even/odd rearrangement (1) holds for absolutely convergent series, with summability of each subseries obtained via the injection $k \\mapsto 2k$ (resp. $k \\mapsto 2k+1$).",
     "significance": "key",
     "relatedConcepts": [
       "tsum_even_add_odd",
       "HasSum.even_add_odd",
       "cos_eq_tsum",
       "sin_eq_tsum",
-      "axiom elimination",
       "absolute convergence"
     ],
     "prerequisites": [
@@ -136,20 +135,20 @@
     "id": "ann-independence",
     "proofId": "euler-identity-oq-01",
     "range": {
-      "startLine": 175,
-      "endLine": 210
+      "startLine": 195,
+      "endLine": 208
     },
     "type": "concept",
-    "title": "Axiom Elimination Roadmap: Three Approaches to a Fully Verified Proof",
-    "content": "The file concludes with a detailed axiom elimination roadmap. Axiom 1 (`tsum_even_add_odd`): LOW difficulty (~50 lines). Use the bijection `ℕ ≃ ℕ ⊕ ℕ` sending n to (n/2, n%2 = 0), then apply `Equiv.tsum_eq` or build on `HasSum.sigma`. Axioms 2/2b (`cos_eq_tsum`, `sin_eq_tsum`): MODERATE (~150-200 lines). Three approaches: (A) from Mathlib's `cos = (exp(iz)+exp(-iz))/2`, expand both exponentials and collect even/odd terms; (B) from the ODE `y'' = -y` with initial conditions (requires ODE existence theory); (C) use `TaylorSinCosConvergence.lean`'s partial sum convergence results. The note on independence explains the Mathlib circularity: since Mathlib defines cos/sin via exp, proving the Taylor series formula for cos/sin requires 'going around' the definition.",
-    "mathContext": "The circularity issue in Mathlib: $\\cos$ is *defined* as $\\text{Re}(e^{i\\cdot})$ (or equivalently $(e^{iz}+e^{-iz})/2$), so proving $\\cos x = \\sum_k (-1)^k x^{2k}/(2k)!$ amounts to proving a property of the exponential function applied to imaginary arguments. Resolution via Approach A: expand $e^{ix}+e^{-ix} = 2\\sum_k (-1)^k x^{2k}/(2k)!$ (only even powers of $ix$ survive, since $i^{2k}+(-i)^{2k} = 2(-1)^k$ while $i^{2k+1}+(-i)^{2k+1} = 0$).",
+    "title": "Axiom Status and Independence: All Three Lemmas Proved, Independent of exp_mul_I",
+    "content": "The file concludes with an axiom-status note confirming that all three formerly-axiomatized lemmas are now proved theorems (0 axioms): `tsum_even_add_odd` via `Summable.comp_injective` + Mathlib's `tsum_even_add_odd`; `cos_eq_tsum` via `Complex.cos_eq_tsum` + `ofReal_cos`; `sin_eq_tsum` via `Complex.sin_eq_tsum` + `ofReal_sin` + `tsum_mul_right`. The accompanying note on independence records that the proof is logically independent of `Complex.exp_mul_I`: it derives Euler's formula from the even/odd Taylor-series splitting rather than invoking the closed-form identity directly. Since Mathlib defines cos/sin via exp, `Complex.cos_eq_tsum` / `Complex.sin_eq_tsum` supply the bridge between the two presentations.",
+    "mathContext": "The circularity issue in Mathlib: $\\cos$ is *defined* as $\\text{Re}(e^{i\\cdot})$ (or equivalently $(e^{iz}+e^{-iz})/2$), so proving $\\cos x = \\sum_k (-1)^k x^{2k}/(2k)!$ amounts to proving a property of the exponential function applied to imaginary arguments. Mathlib resolves this internally (`Complex.cos_eq_tsum`) by expanding $e^{ix}+e^{-ix} = 2\\sum_k (-1)^k x^{2k}/(2k)!$ — only even powers of $ix$ survive, since $i^{2k}+(-i)^{2k} = 2(-1)^k$ while $i^{2k+1}+(-i)^{2k+1} = 0$ — and this file reuses those results.",
     "significance": "supporting",
     "relatedConcepts": [
-      "axiom elimination",
-      "TaylorSinCosConvergence",
+      "logical independence",
+      "Complex.exp_mul_I",
       "HasSum.even_add_odd",
-      "ODE characterization of sin/cos",
-      "Equiv.tsum_eq"
+      "Mathlib cos/sin definitions",
+      "Taylor series"
     ],
     "prerequisites": [
       "complex analysis",
