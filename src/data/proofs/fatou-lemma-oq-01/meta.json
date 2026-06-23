@@ -79,6 +79,60 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Fatou's lemma is due to Pierre Fatou, who introduced it in his 1906 thesis 'Séries trigonométriques et séries de Taylor' (Acta Mathematica 30) while studying boundary behaviour of analytic functions and the convergence of trigonometric series. It is one of the three pillars of Lebesgue integration — alongside the monotone convergence theorem (Beppo Levi) and the dominated convergence theorem — and in fact the logical hub of the trio: MCT yields Fatou, and Fatou yields DCT (applied to g ± fₙ for an integrable majorant g). The lemma's defining feature is that it is an INEQUALITY, not an equality, and the reason is the phenomenon of mass escaping to infinity. The unit bumps 𝟙_[n,n+1) marching off along ℝ are the textbook illustration (Folland Thm 2.18 and its discussion), showing that integral and pointwise-liminf genuinely disagree. Mathlib formalizes the inequality (lintegral_liminf_le) but records no witness that it is strict; this entry supplies that witness, and ties it to the same escaping-mass sequence behind the Egorov finiteness counterexample.",
+    "problemStatement": "Restate Fatou's lemma for the gallery (∫⁻ liminfₙ fₙ ≤ liminfₙ ∫⁻ fₙ for nonnegative measurable fₙ, in both Measurable and AEMeasurable forms) and prove that the inequality is genuinely strict by an explicit witness. Concretely, for the escaping-mass sequence escaping n = 𝟙_[n,n+1) on (ℝ, Lebesgue): each bump has ∫⁻ escaping n = 1, yet liminfₙ escaping n x = 0 at every x, so ∫⁻ liminfₙ escaping n = 0 < 1 = liminfₙ ∫⁻ escaping n.",
+    "proofStrategy": "The headline inequalities are direct re-exports of Mathlib's lintegral_liminf_le / lintegral_liminf_le'. The strictness witness is built from three computations on escaping n = 𝟙_[n,n+1). (1) escaping_lintegral: ∫⁻ escaping n = 1, via lintegral_indicator_one and Real.volume_Ico (the block has length 1). (2) escaping_liminf_zero: at fixed x the sequence is eventually 0 — once n ≥ ⌊x⌋₊ + 1 the block sits strictly right of x (Nat.lt_floor_add_one) — so it converges to 0 and Tendsto.liminf_eq gives liminf = 0. (3) fatou_strict_on_escaping: the left side is ∫⁻ 0 = 0 (lintegral_zero), the right side is liminf of the constant sequence 1 = 1 (liminf_const), hence 0 < 1. The gap is exactly the unit mass that every integral sees but the pointwise liminf loses.",
+    "keyInsights": [
+      "Fatou is an inequality precisely because mass can leak to infinity: the escaping bumps keep their unit mass in every integral, but no fixed point retains any of it, so the pointwise liminf collapses to 0. The strict gap 0 < 1 is the formal fingerprint of that leakage.",
+      "The witness pinpoints why the stronger convergence theorems need their hypotheses. The escaping-mass sequence has NO integrable majorant (sup over n of escaping n is 𝟙_[0,∞), of infinite integral), so the dominated convergence theorem does not apply — exactly the hypothesis that would have forced equality.",
+      "It is the SAME sequence that breaks Egorov on an infinite-measure space: loss of mass to infinity is one phenomenon viewed through two lenses — the integral here, uniform convergence in the Egorov entry. The cross-reference makes the unity explicit.",
+      "Strictness is the maximally strong failure: the gap is not a small ε but the full unit mass (0 versus 1). The inequality is as far from equality as the normalization allows, so no quantitative weakening of the hypotheses could rescue equality on this example.",
+      "The clean separation — import the inequality, originate only the witness — keeps the 'mathlib' badge honest: the deep theorem is Mathlib's, the new mathematical content is the explicit demonstration that it cannot be improved to an equality."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Fatou and the Strict Gap",
+      "startLine": 5,
+      "endLine": 57,
+      "summary": "States Fatou's lemma (∫⁻ liminf ≤ liminf ∫⁻), names the Mathlib vehicle lintegral_liminf_le, and lays out the escaping-mass witness 𝟙_[n,n+1) showing strictness: unit mass per bump, pointwise liminf 0, strict gap 0 < 1. Explains why this is the reason Fatou is only an inequality (mass escapes to infinity) and notes Mathlib records no strict witness. Confirms 0 sorries, 0 axioms, no native_decide.",
+      "mathContext": "$\\int^- \\liminf_n f_n \\le \\liminf_n \\int^- f_n$; strict on the escaping-mass example."
+    },
+    {
+      "id": "restatements",
+      "title": "Fatou's Lemma: Mathlib Restatements",
+      "startLine": 64,
+      "endLine": 80,
+      "summary": "fatou_lintegral_liminf_le (Measurable) and fatou_lintegral_liminf_le' (AEMeasurable) re-export Mathlib's lintegral_liminf_le / lintegral_liminf_le' as the headline gallery statements of Fatou's inequality for nonnegative ℝ≥0∞-valued sequences.",
+      "mathContext": "For nonnegative (AE)measurable $f_n$: $\\int^- \\liminf_n f_n \\le \\liminf_n \\int^- f_n$."
+    },
+    {
+      "id": "escaping-sequence",
+      "title": "The Escaping-Mass Sequence",
+      "startLine": 82,
+      "endLine": 98,
+      "summary": "escaping n = 𝟙_[n,n+1) (ℝ≥0∞-valued), measurable via escaping_measurable. escaping_lintegral computes its unit mass ∫⁻ escaping n = 1 using lintegral_indicator_one and Real.volume_Ico (the block has length 1). This is the conserved quantity that escapes to infinity.",
+      "mathContext": "$\\mathrm{escaping}\\,n = \\mathbf{1}_{[n,n+1)}$, with $\\int^- \\mathrm{escaping}\\,n = 1$ for every $n$."
+    },
+    {
+      "id": "liminf-zero",
+      "title": "Pointwise Liminf Is Zero Everywhere",
+      "startLine": 100,
+      "endLine": 119,
+      "summary": "escaping_liminf_zero: at every x the sequence n ↦ escaping n x is eventually 0 (once n ≥ ⌊x⌋₊ + 1 the block lies strictly right of x, via Nat.lt_floor_add_one), so it converges to 0 and Tendsto.liminf_eq gives liminf = 0. The left-hand integrand of Fatou is thus identically 0.",
+      "mathContext": "For fixed $x$, $\\mathrm{escaping}\\,n\\,x = 0$ for all $n > \\lfloor x \\rfloor$, hence $\\liminf_n \\mathrm{escaping}\\,n\\,x = 0$."
+    },
+    {
+      "id": "strict-gap",
+      "title": "The Headline: Fatou Is Strict",
+      "startLine": 121,
+      "endLine": 140,
+      "summary": "fatou_strict_on_escaping: left side ∫⁻ liminfₙ escaping n = ∫⁻ 0 = 0 (escaping_liminf_zero + lintegral_zero), right side liminfₙ ∫⁻ escaping n = liminf of constant 1 = 1 (escaping_lintegral + liminf_const), so 0 < 1 strictly. The unit mass survives in every integral but vanishes from the pointwise liminf — the witness that Fatou cannot be upgraded to equality.",
+      "mathContext": "$\\int^- \\liminf_n \\mathrm{escaping}\\,n = 0 < 1 = \\liminf_n \\int^- \\mathrm{escaping}\\,n$."
+    }
+  ],
   "openQuestions": [
     {
       "id": "fatou-lemma-oq-01-oq-01",
