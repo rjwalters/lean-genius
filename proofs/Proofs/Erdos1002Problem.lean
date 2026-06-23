@@ -16,13 +16,7 @@ Does f(α, n) have an asymptotic distribution function?
 Reference: https://erdosproblems.com/1002
 -/
 
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.AtTopBot.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
-import Mathlib.Topology.Instances.Real.Basic
-import Mathlib.Data.Int.Floor
+import Mathlib
 
 open MeasureTheory Set Filter Real Int
 

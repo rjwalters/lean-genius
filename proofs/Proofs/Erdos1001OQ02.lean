@@ -30,15 +30,7 @@ Neither has been proved in this gallery with explicit error bounds.
 **Status**: AXIOMATIZED (deep analytic number theory)
 -/
 
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.NumberTheory.Diophantine
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Order.Filter.AtTopBot.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Topology.Instances.Real.Basic
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib
 
 open MeasureTheory Set Filter Real Asymptotics
 open scoped Topology

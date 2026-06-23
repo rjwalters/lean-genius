@@ -17,13 +17,7 @@ for some N ≤ y ≤ cN with gcd(x,y) = 1.
 Reference: https://erdosproblems.com/1001
 -/
 
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.NumberTheory.Diophantine
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Order.Filter.AtTopBot.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.Instances.Real.Basic
+import Mathlib
 
 open MeasureTheory Set Filter Real
 

@@ -25,11 +25,7 @@ References:
 Tags: number-theory, binary-digits, algebraic-numbers, recurrence, solved
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Data.Int.Floor
-import Mathlib.Data.Nat.Digits
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib
 
 open Real Int
 
