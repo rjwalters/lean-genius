@@ -157,7 +157,18 @@
       "url": "https://en.wikipedia.org/wiki/Meagre_set"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "algebraic-reals-meager-oq-02",
+      "relationship": "extends",
+      "description": "Supplies the dual missing half: oq-02 proves comeagre ⇏ conull (Liouville numbers comeagre yet null); this entry proves meagre ⇏ null (a meagre set of full measure) and combines both into the Oxtoby decomposition, reusing oq-02's verified liouville_residual and liouville_null."
+    },
+    {
+      "targetId": "algebraic-reals-meager",
+      "relationship": "related",
+      "description": "The parent proves the topological (Baire-category) smallness of the algebraic reals; this entry shows category-smallness and measure-smallness are logically independent, so the parent's meagreness and the measure-zero fact are genuinely distinct theorems."
+    }
+  ],
   "conclusion": "Measure-smallness and category-smallness are independent on ℝ. Dual to oq-02's comeagre null set, the complement of the Liouville numbers is a meagre set of full Lebesgue measure, and the two combine into the Oxtoby decomposition ℝ = A ⊔ B with A meagre and B null. So neither notion of smallness implies the other, and the algebraic reals being both meagre and Lebesgue-null is a conjunction of two genuinely separate facts — all formalized with zero axioms on top of the verified Liouville infrastructure.",
   "sorries": []
 }
