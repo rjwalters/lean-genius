@@ -3251,6 +3251,7 @@ import Proofs.QuadraticGaussSumSignSmall
 import Proofs.QuadraticGaussSumSignSmallEleven
 import Proofs.QuadraticGaussSumSignSmallFive
 import Proofs.QuadraticGaussSumSignSmallSeven
+import Proofs.QuadraticGaussSumSignSmallThirteen
 import Proofs.QuadraticGaussSumSquare
 import Proofs.QuadraticGaussSumSquareOQ01
 import Proofs.QuadraticGaussSumSquareOQ02
