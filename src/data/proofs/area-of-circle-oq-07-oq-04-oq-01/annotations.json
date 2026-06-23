@@ -1,0 +1,59 @@
+[
+  {
+    "id": "ann-aoc07oq04oq01-context",
+    "proofId": "area-of-circle-oq-07-oq-04-oq-01",
+    "range": { "startLine": 5, "endLine": 44 },
+    "type": "concept",
+    "title": "From Algebraic Squaring to a Literal 2-D Area",
+    "content": "The parent `area-of-circle-oq-07-oq-04` obtained `(∫_ℝ e^{-b x²})² = π/b` by *squaring* Mathlib's one-dimensional Gaussian value — an algebraic shortcut that hides the geometry. This entry restores the geometry: it identifies the square with a genuine integral over the plane, `(∫_ℝ e^{-b x²} dx)² = ∫_{ℝ²} e^{-b(x²+y²)} d(x,y)`. That equality is exactly the Fubini/Tonelli step that opens the classical polar-coordinate computation `(∫ e^{-x²})² = ∫∫ e^{-(x²+y²)} = π` underlying the whole `area-of-circle` Gaussian story.",
+    "mathContext": "The radial weight is *separable*: $e^{-b(x^2+y^2)} = e^{-bx^2}\\,e^{-by^2}$. A product of one-variable functions integrated against a product measure factors as the product of the one-variable integrals, so the planar integral is literally the square of the line integral.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fubini–Tonelli theorem",
+      "product measure",
+      "separable integrand",
+      "Gaussian integral",
+      "two-dimensional squaring trick"
+    ],
+    "prerequisites": [
+      "Bochner integral against a product measure",
+      "parent area-of-circle-oq-07-oq-04 (the squared Gaussian = π/b)"
+    ]
+  },
+  {
+    "id": "ann-aoc07oq04oq01-separate",
+    "proofId": "area-of-circle-oq-07-oq-04-oq-01",
+    "range": { "startLine": 46, "endLine": 55 },
+    "type": "technique",
+    "title": "Separating the Radial Weight",
+    "content": "`exp_neg_mul_add_sq` records the algebraic heart of the factorization: `e^{-b(x²+y²)} = e^{-b x²} · e^{-b y²}`. The proof rewrites the product with `Real.exp_add` in reverse, fusing the two exponents into `e^{-b x² + (-b y²)}`, then closes the resulting exponent identity `-b(x²+y²) = -b x² + -b y²` with `congr 1; ring`. This pointwise identity is what lets the two-dimensional integrand be viewed as `f(x)·g(y)`.",
+    "mathContext": "Separability is precisely the property of the Gaussian (and of any $e^{-Q}$ with $Q$ a sum of one-variable terms) that makes the multi-dimensional integral collapse to a product; it is the analytic content behind the rotational symmetry exploited by the polar-coordinate method.",
+    "significance": "important",
+    "relatedConcepts": ["Real.exp_add", "separable function", "exponential of a sum"],
+    "prerequisites": ["the exponential law e^{x+y} = e^x e^y"]
+  },
+  {
+    "id": "ann-aoc07oq04oq01-fubini",
+    "proofId": "area-of-circle-oq-07-oq-04-oq-01",
+    "range": { "startLine": 57, "endLine": 77 },
+    "type": "technique",
+    "title": "The Product-Integral Law (Fubini Step)",
+    "content": "`gaussian_integral_sq_eq_integral_plane` is the headline. After replacing the integrand by its separated form (`funext` with `exp_neg_mul_add_sq`) and expanding the square with `pow_two`, the goal is closed by `integral_prod_mul`, Mathlib's product-integral law `∫ z, f z.1 · g z.2 ∂(μ.prod ν) = (∫ f)·(∫ g)`. Crucially this lemma is *unconditional* — it needs no integrability hypothesis — so the area identity holds for **every** real `b`, with both sides vanishing when `b ≤ 0`. The plane's volume is the product measure `volume.prod volume` definitionally (`Measure.volume_eq_prod` is `rfl`), so the planar Bochner integral is literally the product integral and the proof finishes by `exact … .symm`.",
+    "mathContext": "`integral_prod_mul` sidesteps the usual integrability bookkeeping of Fubini's theorem by being stated as an identity that degenerates consistently: if either factor fails to be integrable the corresponding one-dimensional integral is $0$, and the product integral is $0$ as well, so the equation still holds.",
+    "significance": "key",
+    "relatedConcepts": ["integral_prod_mul", "Measure.volume_eq_prod", "Fubini–Tonelli", "product measure"],
+    "prerequisites": ["product measure on ℝ × ℝ", "Bochner integral of a product of one-variable functions"]
+  },
+  {
+    "id": "ann-aoc07oq04oq01-value",
+    "proofId": "area-of-circle-oq-07-oq-04-oq-01",
+    "range": { "startLine": 79, "endLine": 93 },
+    "type": "technique",
+    "title": "Recovering the Value π/b",
+    "content": "`integral_plane_gaussian_eq` closes the loop with the parent: for `0 < b` the planar integral equals `π/b`. It rewrites the area integral back to `(∫_ℝ e^{-b x²})²` (the headline identity, used in reverse), inserts Mathlib's closed form `integral_gaussian : ∫ e^{-b x²} = √(π/b)`, and collapses `(√(π/b))² = π/b` with `Real.sq_sqrt`, whose nonnegativity side goal `0 ≤ π/b` is discharged by `positivity`. The `b = 1` specialization `integral_plane_gaussian_one` gives `∫_{ℝ²} e^{-(x²+y²)} = π`, the two-dimensional form of `(∫_ℝ e^{-x²})² = π`. Here `π/b` is recovered through the one-dimensional closed form rather than a literal polar change of variables — that genuinely two-dimensional evaluation is left as the follow-up question.",
+    "mathContext": "Squaring the closed form $\\sqrt{\\pi/b}$ is valid because $\\pi/b \\ge 0$ for $b>0$; `Real.sq_sqrt` is exactly the statement $\\sqrt{x}^2 = x$ for $x \\ge 0$, so no branch subtlety arises in the real-parameter setting (contrast the complex parent, which needs `Complex.cpow_add`).",
+    "significance": "important",
+    "relatedConcepts": ["integral_gaussian", "Real.sq_sqrt", "positivity", "polar coordinates"],
+    "prerequisites": ["the real Gaussian closed form √(π/b)", "headline factorization gaussian_integral_sq_eq_integral_plane"]
+  }
+]

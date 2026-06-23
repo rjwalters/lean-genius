@@ -1,0 +1,132 @@
+{
+  "id": "area-of-circle-oq-07-oq-04-oq-01",
+  "slug": "area-of-circle-oq-07-oq-04-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.MeasureTheory.Integral.Prod",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "AreaOfCircleOQ07OQ04OQ01",
+    "lineCount": 93,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ07OQ04OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Squared Gaussian Integral as a Literal 2-D Area (∫ e^{-b x²})² = ∫∫ e^{-b(x²+y²)}",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ04OQ01.lean",
+    "tags": [
+      "analysis",
+      "gaussian-integral",
+      "fubini",
+      "product-measure",
+      "measure-theory",
+      "special-functions",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 93,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "gaussian_integral_sq_eq_integral_plane: for every real b, (∫_ℝ e^{-b x²} dx)² = ∫_{ℝ²} e^{-b(x²+y²)} d(x,y) — the literal two-dimensional area form of the parent's algebraic squaring, obtained by separating the radial weight e^{-b(x²+y²)} = e^{-b x²}·e^{-b y²} and applying Mathlib's unconditional product-integral law integral_prod_mul together with Measure.volume_eq_prod. Holds for all real b (both sides vanish for b ≤ 0).",
+      "integral_plane_gaussian_eq: for 0 < b, the planar integral ∫_{ℝ²} e^{-b(x²+y²)} = π/b, recovering the parent's rational value as a genuine two-dimensional area via the one-dimensional closed form integral_gaussian.",
+      "integral_plane_gaussian_one: the b = 1 specialization ∫_{ℝ²} e^{-(x²+y²)} = π, the two-dimensional form of the classical (∫_ℝ e^{-x²})² = π.",
+      "exp_neg_mul_add_sq: the separation identity e^{-b(x²+y²)} = e^{-b x²}·e^{-b y²} underlying the Fubini factorization."
+    ],
+    "prerequisites": [
+      "Bochner integration over a product measure (MeasureTheory)",
+      "Mathlib's product-integral law integral_prod_mul for separable integrands",
+      "Identification of the plane's volume with the product measure (Measure.volume_eq_prod)",
+      "Mathlib's real Gaussian closed form integral_gaussian : ∫ e^{-b x²} = √(π/b)",
+      "Parent: area-of-circle-oq-07-oq-04 (the squared Gaussian (∫_ℝ e^{-b x²})² = π/b)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_prod_mul",
+        "description": "For f : α → L, g : β → L (L an RCLike field), ∫ z, f z.1 * g z.2 ∂(μ.prod ν) = (∫ f) * (∫ g) — unconditionally (the product of one-dimensional integrals, with both sides degenerating consistently when a factor is not integrable). Applied with f = g = e^{-b ·²} to factor the planar Gaussian into the square of the one-dimensional integral.",
+        "module": "Mathlib.MeasureTheory.Integral.Prod"
+      },
+      {
+        "theorem": "MeasureTheory.Measure.volume_eq_prod",
+        "description": "(volume : Measure (α × β)) = (volume).prod volume — identifies the planar Lebesgue measure with the product of the line measures, so the Bochner integral over ℝ × ℝ is literally the product integral integral_prod_mul evaluates.",
+        "module": "Mathlib.MeasureTheory.Measure.Prod"
+      },
+      {
+        "theorem": "integral_gaussian",
+        "description": "For b : ℝ, ∫ x : ℝ, exp (-b * x²) = √(π/b) — the real Gaussian closed form (unconditional; both sides vanish for b ≤ 0). Squared via Real.sq_sqrt to give the planar value π/b for 0 < b.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "Real.exp_add",
+        "description": "exp (x + y) = exp x * exp y — used in reverse to separate the radial Gaussian weight e^{-b(x²+y²)} into the product e^{-b x²}·e^{-b y²}.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Exp"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "area-of-circle-oq-07-oq-04-oq-01-oq-01",
+      "question": "Evaluate the planar integral ∫_{ℝ²} e^{-b(x²+y²)} directly by a polar-coordinate change of variables (Mathlib's integral_comp_polarCoord_symm / Measure.polarCoord), obtaining π/b from ∫₀^{2π}∫₀^{∞} e^{-b r²} r dr dθ rather than from the one-dimensional closed form — the genuinely two-dimensional evaluation the parent's open question asked for.",
+      "significance": "medium"
+    },
+    {
+      "id": "area-of-circle-oq-07-oq-04-oq-01-oq-02",
+      "question": "Generalize the separable factorization to anisotropic Gaussians: (∫_ℝ e^{-a x²})(∫_ℝ e^{-c y²}) = ∫_{ℝ²} e^{-(a x² + c y²)} = π/√(ac) for a, c > 0, and identify the n-dimensional product form ∫_{ℝⁿ} e^{-b|x|²} = (π/b)^{n/2}.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07-oq-04",
+      "relationship": "extends",
+      "description": "Parent. Answers its open question by replacing the algebraic squaring of the one-dimensional Gaussian value with the literal two-dimensional area integral ∫_{ℝ²} e^{-b(x²+y²)}, made equal to (∫_ℝ e^{-b x²})² via Fubini/Tonelli (integral_prod_mul) and equal to π/b via the closed form."
+    },
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "related",
+      "description": "Grandparent. The b = 1 case integral_plane_gaussian_one gives ∫_{ℝ²} e^{-(x²+y²)} = π, the two-dimensional area underlying the classical Gaussian/area-of-circle computation."
+    },
+    {
+      "targetId": "gaussian-integral",
+      "relationship": "related",
+      "description": "Uses the real Gaussian closed form ∫ e^{-b x²} = √(π/b) to evaluate the planar integral; this entry recasts the squaring trick as a genuine product-measure integral."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: MeasureTheory.Integral.Prod",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_prod_mul : ∫ z, f z.1 * g z.2 ∂(μ.prod ν) = (∫ f)(∫ g), the unconditional product-integral law that factors the separable planar Gaussian."
+    },
+    {
+      "title": "Fourier Analysis",
+      "author": "Elias M. Stein and Rami Shakarchi",
+      "year": "2003",
+      "venue": "Princeton University Press",
+      "description": "Classical treatment of the two-dimensional squaring trick (∫ e^{-x²})² = ∫∫ e^{-(x²+y²)} = π that this entry formalizes as a literal product-measure integral."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The square of the one-dimensional Gaussian integral is realized as a genuine two-dimensional integral over the plane: for every real b, (∫_ℝ e^{-b x²} dx)² = ∫_{ℝ²} e^{-b(x²+y²)} d(x,y). The radial weight separates, e^{-b(x²+y²)} = e^{-b x²}·e^{-b y²}, so Mathlib's unconditional product-integral law integral_prod_mul — combined with Measure.volume_eq_prod identifying the plane's volume with the product measure — factors the planar integral into the product of the two equal one-dimensional integrals, i.e. the square. Feeding in the closed form integral_gaussian gives the planar value π/b for 0 < b, and π for b = 1. 93 lines, 4 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "This is the Fubini/Tonelli step that turns the parent's purely algebraic squaring into the literal two-dimensional area whose polar evaluation classically yields π/b — the object at the heart of the area-of-circle Gaussian story. Because integral_prod_mul carries no integrability hypothesis, the area identity is unconditional in b, with both sides vanishing for b ≤ 0. The value π/b is here recovered through the one-dimensional closed form rather than a polar change of variables; the genuinely two-dimensional polar evaluation ∫₀^{2π}∫₀^{∞} e^{-b r²} r dr dθ remains as the natural follow-up.",
+    "openQuestions": [
+      "Evaluate ∫_{ℝ²} e^{-b(x²+y²)} directly by polar coordinates (Measure.polarCoord), realizing π/b as ∫₀^{2π}∫₀^{∞} e^{-b r²} r dr dθ.",
+      "Generalize to anisotropic and n-dimensional Gaussians: ∫_{ℝⁿ} e^{-b|x|²} = (π/b)^{n/2}."
+    ]
+  }
+}
