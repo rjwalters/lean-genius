@@ -695,6 +695,7 @@ import Proofs.ChebyshevSumMonotoneOQ01
 import Proofs.ChebyshevSumIntegralOQ01OQ01OQ01
 import Proofs.ChebyshevSumWeightedOQ01OQ01
 import Proofs.ChebyshevSumWeightedOQ01OQ01OQ02
+import Proofs.ChebyshevSumWeightedOQ01OQ01OQ03
 import Proofs.ChevalleyWarningTheoremOQ01
 import Proofs.ChineseRemainderConstructive
 import Proofs.ChineseRemainderConstructiveOQ05
