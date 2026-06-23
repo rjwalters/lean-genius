@@ -1,5 +1,5 @@
 /-
-  CANDIDATE (UNVERIFIED) proof of the shared Zolotarev blocker
+  CANDIDATE (VERIFIED — see STATUS below) proof of the shared Zolotarev blocker
 
       sign (gridTranspose m n) = (-1) ^ (C(m,2) * C(n,2)).
 
@@ -22,9 +22,19 @@
   (strictly-increasing row pairs) × (strictly-increasing col pairs), each of
   cardinality `choose · 2`.
 
-  STATUS: written against Mathlib source, API audit COMPLETE, but NOT yet
-  kernel-verified — Docker daemon is wedged (no container spawns; `docker ps`/
-  `images` empty) and Aristotle MCP returns "Resource not found".
+  STATUS: VERIFIED and PORTED (researcher-9, 2026-06-23, S4).  This candidate
+  has been kernel-checked against pinned Mathlib (rev 2df2f0150c, Lean v4.26.0)
+  via `lake env lean` over the restored Mathlib olean cache, and the proof is now
+  the live definition of `ZolotarevQR.sign_gridTranspose` in
+  `proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean`
+  (0 sorry; `#print axioms` = `[propext, Classical.choice, Quot.sound]`).
+  Two small fixes were needed vs. this draft: `Finset.sum_product'` (HO-pattern
+  rewrite) → `Finset.sum_product` + `dsimp only`, and `Finset.card_Iio` →
+  `Fin.card_Iio`.  This file is retained as the standalone derivation record.
+
+  ORIGINAL STATUS (pre-verification): written against Mathlib source, API audit
+  COMPLETE, but not yet kernel-verified — Docker daemon was wedged and Aristotle
+  MCP returned "Resource not found".
 
   API AUDIT (researcher-9, 2026-06-23, S3).  Every lemma name used below was
   checked against the pinned Mathlib source on disk (rev 2df2f0150c, Lean
@@ -136,13 +146,14 @@ theorem card_strict_pairs (k : ℕ) :
   have h1 : (univ.filter (fun p : Fin k × Fin k => p.1 < p.2)).card
       = ∑ b : Fin k, (b : ℕ) := by
     rw [Finset.card_filter]
-    rw [← Finset.univ_product_univ, Finset.sum_product']
+    rw [← Finset.univ_product_univ, Finset.sum_product]
+    dsimp only
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl (fun b _ => ?_)
     rw [← Finset.card_filter]
     have : (univ.filter (fun a : Fin k => a < b)) = Finset.Iio b := by
       ext a; simp [Finset.mem_Iio]
-    rw [this, Finset.card_Iio]
+    rw [this, Fin.card_Iio]
   rw [h1, Fin.sum_univ_eq_sum_range (fun i => i), Finset.sum_range_id, ← Nat.choose_two_right]
 
 theorem sign_gridTranspose (m n : ℕ) :
@@ -164,12 +175,16 @@ theorem sign_gridTranspose (m n : ℕ) :
     univ.filter (fun p => p.1 < p.2 ∧ ¬ (T p.1 < T p.2)) with hInv
   have hsum : (∑ J : Fin (m * n), ((Iio J).filter (fun i => ¬ (T i < T J))).card)
       = Inv.card := by
-    rw [hInv, Finset.card_filter, ← Finset.univ_product_univ, Finset.sum_product']
+    rw [hInv, Finset.card_filter, ← Finset.univ_product_univ, Finset.sum_product]
+    dsimp only
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl (fun J _ => ?_)
-    rw [Finset.card_filter, ← Finset.sum_filter]
-    refine Finset.sum_congr ?_ (fun i _ => rfl)
-    ext i; simp [Finset.mem_Iio]
+    rw [Finset.card_filter]
+    have hIio : (Iio J) = univ.filter (fun i => i < J) := by
+      ext i; simp [Finset.mem_Iio]
+    rw [hIio, Finset.sum_filter]
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    by_cases hh : i < J <;> simp [hh]
   rw [hsum, ← card_strict_pairs m, ← card_strict_pairs n, ← Finset.card_product]
   -- The bijection: (I,J) ↦ ((row I, row J), (col J, col I)).
   refine Finset.card_bij'

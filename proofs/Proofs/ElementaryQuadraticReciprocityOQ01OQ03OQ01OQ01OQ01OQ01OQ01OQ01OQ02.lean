@@ -10,7 +10,7 @@
      reciprocity law (a/p)(p/a) = (-1)^… directly via the sign of a suitable
      shuffle permutation, as in Zolotarev's 1872 derivation."
 
-  ## Status of THIS file (honest WIP infrastructure — NOT a finished proof)
+  ## Status of THIS file (0 sorries / 0 axioms — the combinatorial blocker is proved)
 
   The parent program already supplies, with 0 sorries / 0 axioms, the
   Frobenius/Zolotarev sign identity for EVERY odd modulus:
@@ -28,11 +28,11 @@
       the sign of the rectangular **transpose / perfect-shuffle** permutation
       of a p × q grid.
 
-  This file pins that ingredient down precisely as `sign_gridTranspose`
-  (currently a `sorry`, classified HARD-but-known — see the strategy note on it)
-  and proves the structural lemma `gridTranspose_apply` confirming the object is
-  genuinely the row-major ↔ column-major reindexing.  Once `sign_gridTranspose`
-  is discharged, Quadratic Reciprocity follows by the assembly sketched below.
+  This file proves that ingredient as `sign_gridTranspose`
+  (0 sorry, kernel-checked, axioms `[propext, Classical.choice, Quot.sound]` only)
+  together with the structural lemma `gridTranspose_apply` confirming the object
+  is genuinely the row-major ↔ column-major reindexing.  With `sign_gridTranspose`
+  discharged, Quadratic Reciprocity follows by the assembly sketched below.
 
   ## The Zolotarev / Frobenius derivation of QR (the plan)
 
@@ -66,11 +66,15 @@
   * `gridTranspose`, `gridTranspose_apply` — proved (0 sorry): the shuffle
     permutation and the confirmation that it sends row-major index `n·i + j` to
     column-major index `m·j + i`.
-  * `sign_gridTranspose` — STATED, proof is `sorry`.  This is the single
-    remaining ingredient; it is a *known* result (HARD, not OPEN), a good target
-    for proof search (Aristotle) or an inductive `sign_prodCongr*` / `finRotate`
-    argument.  Do NOT mark the gallery entry `verified` while this `sorry`
-    stands.
+  * supporting lemmas `fpe_val`, `fpe_symm`, `fpe_divNat`, `fpe_modNat`,
+    `gridTranspose_val`, `finCongr_lt`, `encode_lt`, `card_strict_pairs` — all
+    proved (0 sorry): the mixed-radix encoding facts and the count
+    `#{(i,j) : i < j} = C(k,2)` of strictly-increasing pairs over `Fin k`.
+  * `sign_gridTranspose` — PROVED (0 sorry), kernel-checked.  This was the single
+    remaining ingredient (a *known* result, HARD not OPEN); it is proved here via
+    `Equiv.Perm.sign_eq_prod_prod_Iio` (sign as a product over inversions) and a
+    `Finset.card_bij'` bijection counting the `C(m,2)·C(n,2)` inversions of the
+    reindexing.
   * `neg_one_pow_choose_two_mul_odd` — proved (0 sorry): the parity bridge
     `(-1)^(C(m,2)·C(n,2)) = (-1)^(((m-1)/2)·((n-1)/2))` for odd `m, n`, i.e. the
     exponent simplification flagged in the plan above.  This is the elementary
@@ -78,8 +82,8 @@
     reciprocity factor; it does NOT depend on `sign_gridTranspose`.
   * `sign_gridTranspose_odd` — the classical-form corollary
     `sign (gridTranspose m n) = (-1)^(((m-1)/2)·((n-1)/2))` for odd `m, n`,
-    obtained by feeding the parity bridge into `sign_gridTranspose` (so it still
-    rests on that single `sorry`).
+    obtained by feeding the parity bridge into `sign_gridTranspose`; now fully
+    proved (0 sorry).
   * The full QR assembly (`α = β ∘ γ`, identifying `α, β` with `ringMulPerm`
     through the CRT isomorphism) is documented above but not yet formalized.
 
@@ -93,7 +97,7 @@ set_option maxHeartbeats 800000
 
 namespace ZolotarevQR
 
-open Equiv Equiv.Perm
+open Equiv Equiv.Perm Finset
 
 /-- The row-major ↔ column-major **transpose** (perfect-shuffle) permutation of
     an `m × n` grid, realized as a permutation of `Fin (m * n)`.
@@ -117,6 +121,75 @@ def gridTranspose (m n : ℕ) : Equiv.Perm (Fin (m * n)) :=
       = finCongr (Nat.mul_comm n m) (finProdFinEquiv (j, i)) := by
   simp [gridTranspose]
 
+/-- Value of the canonical row-major encoding: `finProdFinEquiv (a,c)` has value
+    `c + q * a` (row `a` weighted by the column count `q`). -/
+theorem fpe_val {p q : ℕ} (a : Fin p) (c : Fin q) :
+    (finProdFinEquiv (a, c) : Fin (p * q)).val = (c : ℕ) + q * (a : ℕ) := rfl
+
+/-- `finProdFinEquiv.symm` is decode-by-div/mod. -/
+theorem fpe_symm {p q : ℕ} (x : Fin (p * q)) :
+    finProdFinEquiv.symm x = (x.divNat, x.modNat) := rfl
+
+theorem fpe_divNat {p q : ℕ} (a : Fin p) (c : Fin q) :
+    (finProdFinEquiv (a, c)).divNat = a := by
+  have h := finProdFinEquiv.symm_apply_apply (a, c)
+  rw [fpe_symm] at h
+  exact (Prod.ext_iff.mp h).1
+
+theorem fpe_modNat {p q : ℕ} (a : Fin p) (c : Fin q) :
+    (finProdFinEquiv (a, c)).modNat = c := by
+  have h := finProdFinEquiv.symm_apply_apply (a, c)
+  rw [fpe_symm] at h
+  exact (Prod.ext_iff.mp h).2
+
+/-- Value of the grid transpose on an encoded index: `(a,d)` (row `a`, col `d`)
+    maps to value `a + m * d`. -/
+theorem gridTranspose_val {m n : ℕ} (a : Fin m) (d : Fin n) :
+    (gridTranspose m n (finProdFinEquiv (a, d))).val = (a : ℕ) + m * (d : ℕ) := by
+  rw [gridTranspose_apply, finCongr_apply, Fin.coe_cast, fpe_val]
+
+/-- `finCongr` preserves the order. -/
+theorem finCongr_lt {a b : ℕ} (h : a = b) (x y : Fin a) :
+    (finCongr h x < finCongr h y) ↔ x < y := by
+  rw [Fin.lt_def, Fin.lt_def, finCongr_apply, finCongr_apply,
+    Fin.coe_cast, Fin.coe_cast]
+
+/-- The mixed-radix comparison: the linear order on `Fin (p*q)` of two encoded
+    indices is the lexicographic order on `(row, col)`. -/
+theorem encode_lt {p q : ℕ} (a b : Fin p) (c d : Fin q) :
+    (finProdFinEquiv (a, c) : Fin (p * q)) < finProdFinEquiv (b, d)
+      ↔ (a : ℕ) < b ∨ ((a : ℕ) = b ∧ (c : ℕ) < d) := by
+  rw [Fin.lt_def, fpe_val, fpe_val]
+  have hc := c.isLt
+  have hd := d.isLt
+  rcases lt_trichotomy (a : ℕ) (b : ℕ) with h | h | h
+  · have hmul : q * (a : ℕ) + q ≤ q * (b : ℕ) := by
+      have := Nat.mul_le_mul_left (k := q) (show (a : ℕ) + 1 ≤ b by omega)
+      simpa [Nat.mul_add] using this
+    omega
+  · have hmul : q * (a : ℕ) = q * (b : ℕ) := by rw [h]
+    omega
+  · have hmul : q * (b : ℕ) + q ≤ q * (a : ℕ) := by
+      have := Nat.mul_le_mul_left (k := q) (show (b : ℕ) + 1 ≤ a by omega)
+      simpa [Nat.mul_add] using this
+    omega
+
+/-- The number of strictly-increasing pairs over `Fin k` is `C(k,2)`. -/
+theorem card_strict_pairs (k : ℕ) :
+    (univ.filter (fun p : Fin k × Fin k => p.1 < p.2)).card = k.choose 2 := by
+  have h1 : (univ.filter (fun p : Fin k × Fin k => p.1 < p.2)).card
+      = ∑ b : Fin k, (b : ℕ) := by
+    rw [Finset.card_filter]
+    rw [← Finset.univ_product_univ, Finset.sum_product]
+    dsimp only
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl (fun b _ => ?_)
+    rw [← Finset.card_filter]
+    have : (univ.filter (fun a : Fin k => a < b)) = Finset.Iio b := by
+      ext a; simp [Finset.mem_Iio]
+    rw [this, Fin.card_Iio]
+  rw [h1, Fin.sum_univ_eq_sum_range (fun i => i), Finset.sum_range_id, ← Nat.choose_two_right]
+
 /-- **Sign of the rectangular transpose / perfect-shuffle permutation.**
 
     The number of inversions of the row-major ↔ column-major reindexing of an
@@ -131,15 +204,16 @@ def gridTranspose (m n : ℕ) : Equiv.Perm (Fin (m * n)) :=
     `ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd` without appealing to
     Mathlib's `legendreSym.quadratic_reciprocity`.
 
-    STATUS: `sorry`.  This is a KNOWN result (HARD, not OPEN).
+    STATUS: PROVEN (0 sorry).  This is a KNOWN result (HARD, not OPEN), and the
+    long-standing blocker of the elementary-Zolotarev program is now discharged.
 
     CROSS-REFERENCE / NON-DUPLICATION NOTE.  The *identical* obligation also
     stands in the sibling "algorithm" lineage as
     `QuadraticReciprocityAlgorithmOQ03M2.sign_gridTranspose_eq_choose`
     (merged #25053, currently unregistered).
 
-    UPDATED ROUTE (researcher-9, 2026-06-23) — the earlier "no Mathlib lemma"
-    assessment is OUT OF DATE.  Mathlib now provides the exact inversion-count
+    PROOF ROUTE (researcher-9, 2026-06-23) — the earlier "no Mathlib lemma"
+    assessment was OUT OF DATE.  Mathlib provides the exact inversion-count
     bridge for an arbitrary `Perm (Fin N)`:
 
         `Equiv.Perm.sign_eq_prod_prod_Iio`
@@ -151,23 +225,91 @@ def gridTranspose (m n : ℕ) : Equiv.Perm (Fin (m * n)) :=
     elementary count `#{(I,J) : I < J ∧ T I > T J} = C(m,2)·C(n,2)` via the
     bijection `(I,J) ↦ ((row I, row J), (col J, col I))` onto
     (strictly-increasing row pairs) × (strictly-increasing column pairs), each of
-    cardinality `Nat.choose · 2` (counted by the Gauss sum `∑ b, b`).
+    cardinality `C(·,2)` (counted by the Gauss sum `∑ b, b`, see
+    `card_strict_pairs`).  The mixed-radix order on `Fin (m*n)` via
+    `finProdFinEquiv` is lexicographic on `(row, col)` (`encode_lt`).
 
-    A complete CANDIDATE proof along these lines is written out in
-    `research/problems/elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02/sign_gridTranspose_candidate.lean`.
-    It is NOT yet kernel-verified (Docker daemon wedged + Aristotle MCP returning
-    "Resource not found" across sessions).  Its API has now been fully audited
-    against the pinned Mathlib (rev 2df2f0150c, v4.26.0): every lemma it uses is
-    present with a compatible signature (notably `sign_eq_prod_prod_Iio`,
-    `prod_pow_eq_pow_sum`, and `card_bij'` with matching argument order), so the
-    only remaining risk is whether the `rw`/`simp` steps fire — a build backend
-    just needs to run it.  The numerical inversion bijection is also certified
-    in `research/problems/quadratic-reciprocity-algorithm-oq-03/verify_grid_inversions.py`
+    VERIFICATION.  Kernel-checked against pinned Mathlib (rev 2df2f0150c, Lean
+    v4.26.0) via `lake env lean` over the restored Mathlib olean cache;
+    `#print axioms` reports only `[propext, Classical.choice, Quot.sound]`
+    (no `sorryAx`, no `Lean.ofReduceBool`).  The numerical inversion bijection is
+    independently certified in
+    `research/problems/quadratic-reciprocity-algorithm-oq-03/verify_grid_inversions.py`
     and `verify_inversion_bijection.py`. -/
 theorem sign_gridTranspose (m n : ℕ) :
     Equiv.Perm.sign (gridTranspose m n)
       = (-1 : ℤˣ) ^ (Nat.choose m 2 * Nat.choose n 2) := by
-  sorry
+  set T := gridTranspose m n with hT
+  rw [Equiv.Perm.sign_eq_prod_prod_Iio]
+  -- Each inner product over `Iio J` is `(-1)^(# inversions ending at J)`.
+  have inner : ∀ J : Fin (m * n),
+      (∏ i ∈ Iio J, (if T i < T J then (1 : ℤˣ) else -1))
+        = (-1) ^ ((Iio J).filter (fun i => ¬ (T i < T J))).card := by
+    intro J
+    rw [Finset.prod_ite, Finset.prod_const_one, one_mul, Finset.prod_const]
+  simp_rw [inner]
+  rw [Finset.prod_pow_eq_pow_sum]
+  congr 1
+  -- Reduce the total inversion count to the cardinality of an inversion Finset.
+  set Inv : Finset (Fin (m * n) × Fin (m * n)) :=
+    univ.filter (fun p => p.1 < p.2 ∧ ¬ (T p.1 < T p.2)) with hInv
+  have hsum : (∑ J : Fin (m * n), ((Iio J).filter (fun i => ¬ (T i < T J))).card)
+      = Inv.card := by
+    rw [hInv, Finset.card_filter, ← Finset.univ_product_univ, Finset.sum_product]
+    dsimp only
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl (fun J _ => ?_)
+    rw [Finset.card_filter]
+    have hIio : (Iio J) = univ.filter (fun i => i < J) := by
+      ext i; simp [Finset.mem_Iio]
+    rw [hIio, Finset.sum_filter]
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    by_cases hh : i < J <;> simp [hh]
+  rw [hsum, ← card_strict_pairs m, ← card_strict_pairs n, ← Finset.card_product]
+  -- The bijection: (I,J) ↦ ((row I, row J), (col J, col I)).
+  refine Finset.card_bij'
+    (i := fun p _ => ((p.1.divNat, p.2.divNat), (p.2.modNat, p.1.modNat)))
+    (j := fun q _ => (finProdFinEquiv (q.1.1, q.2.2), finProdFinEquiv (q.1.2, q.2.1)))
+    ?_ ?_ ?_ ?_
+  · -- i maps Inv into the product
+    rintro ⟨I, J⟩ hp
+    simp only [hInv, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+    obtain ⟨hIJ, hTIJ⟩ := hp
+    obtain ⟨a, d, rfl⟩ : ∃ a d, I = finProdFinEquiv (a, d) :=
+      ⟨I.divNat, I.modNat, (finProdFinEquiv.apply_symm_apply I).symm⟩
+    obtain ⟨b, c, rfl⟩ : ∃ b c, J = finProdFinEquiv (b, c) :=
+      ⟨J.divNat, J.modNat, (finProdFinEquiv.apply_symm_apply J).symm⟩
+    rw [encode_lt] at hIJ
+    rw [hT, gridTranspose_apply, gridTranspose_apply, finCongr_lt, encode_lt] at hTIJ
+    simp only [fpe_divNat, fpe_modNat, Finset.mem_product, Finset.mem_filter,
+      Finset.mem_univ, true_and, Fin.lt_def]
+    -- hIJ : a < b ∨ (a = b ∧ d < c);  hTIJ : ¬ (d < c ∨ (d = c ∧ a < b))
+    -- goal : a < b ∧ c < d
+    omega
+  · -- j maps the product into Inv
+    rintro ⟨⟨a, b⟩, ⟨c, d⟩⟩ hq
+    simp only [Finset.mem_product, Finset.mem_filter, Finset.mem_univ, true_and,
+      Fin.lt_def] at hq
+    obtain ⟨hab, hcd⟩ := hq
+    simp only [hInv, Finset.mem_filter, Finset.mem_univ, true_and]
+    refine ⟨?_, ?_⟩
+    · rw [encode_lt]; exact Or.inl hab
+    · rw [hT, not_lt, Fin.le_def, gridTranspose_val, gridTranspose_val]
+      have hb := b.isLt
+      have hmul : m * (c : ℕ) + m ≤ m * (d : ℕ) := by
+        have := Nat.mul_le_mul_left (k := m) (show (c : ℕ) + 1 ≤ d by omega)
+        simpa [Nat.mul_add] using this
+      omega
+  · -- left inverse
+    rintro ⟨I, J⟩ hp
+    obtain ⟨a, d, rfl⟩ : ∃ a d, I = finProdFinEquiv (a, d) :=
+      ⟨I.divNat, I.modNat, (finProdFinEquiv.apply_symm_apply I).symm⟩
+    obtain ⟨b, c, rfl⟩ : ∃ b c, J = finProdFinEquiv (b, c) :=
+      ⟨J.divNat, J.modNat, (finProdFinEquiv.apply_symm_apply J).symm⟩
+    simp [fpe_divNat, fpe_modNat]
+  · -- right inverse
+    rintro ⟨⟨a, b⟩, ⟨c, d⟩⟩ hq
+    simp [fpe_divNat, fpe_modNat]
 
 /-- `(-1 : ℤˣ)` has order dividing `2`, so its powers depend only on the
     exponent modulo `2`.  This is the bookkeeping lemma that lets us pass between
@@ -223,9 +365,9 @@ theorem neg_one_pow_choose_two_mul_odd {m n : ℕ} (hm : Odd m) (hn : Odd n) :
         `sign (gridTranspose m n) = (-1) ^ (((m-1)/2)·((n-1)/2))`,
 
     which is exactly the reciprocity factor `(-1)^((p-1)/2·(q-1)/2)` of the
-    quadratic reciprocity law.  This still rests on the single open ingredient
-    `sign_gridTranspose` (a `sorry`); it is recorded here to show how that one
-    lemma feeds the final QR assembly. -/
+    quadratic reciprocity law.  Now fully proved (0 sorry), combining the
+    kernel-checked `sign_gridTranspose` with the parity bridge; recorded here to
+    show how that ingredient feeds the final QR assembly. -/
 theorem sign_gridTranspose_odd {m n : ℕ} (hm : Odd m) (hn : Odd n) :
     Equiv.Perm.sign (gridTranspose m n)
       = (-1 : ℤˣ) ^ (((m - 1) / 2) * ((n - 1) / 2)) := by
