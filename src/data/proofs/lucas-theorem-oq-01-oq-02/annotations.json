@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-context",
+    "proofId": "lucas-theorem-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "Pascal mod 2 and the Sierpiński Gasket",
+    "content": "Reducing Pascal's triangle modulo 2 — colouring each odd binomial coefficient black — produces the Sierpiński triangle (gasket, Sierpiński 1915; the connection to Pascal's triangle was popularised by Wolfram). The parent entry proves Glaisher's per-row population oddCount n = 2^(s₂ n). This entry sums that over a power-of-two block of rows and gets the clean total 3^m. The 3-versus-2 ratio (the odd-count triples while the row range doubles) is exactly the self-similarity that gives the gasket its Hausdorff dimension log₂ 3 ≈ 1.585.",
+    "mathContext": "$\\sum_{n<2^m}\\mathrm{oddCount}(n) = 3^m$; the gasket dimension is $\\log_2 3 \\approx 1.585$.",
+    "significance": "context",
+    "relatedConcepts": ["Sierpiński gasket", "Pascal's triangle mod 2", "fractal dimension", "Glaisher's formula", "binary digit sum"],
+    "prerequisites": ["binomial coefficients", "binary representations"]
+  },
+  {
+    "id": "ann-digit-sum",
+    "proofId": "lucas-theorem-oq-01-oq-02",
+    "range": { "startLine": 39, "endLine": 71 },
+    "type": "insight",
+    "title": "The Leading-Bit Lemma s₂(2^m + k) = s₂(k) + 1",
+    "content": "This single arithmetic fact carries the whole result. For k < 2^m, the binary expansion of 2^m + k is that of k with a fresh top 1-bit at position m, so the digit sum goes up by exactly 1. s2_step first extends the parent's recursion s₂ n = (n mod 2) + s₂(n/2) to n = 0. Then s2_two_pow_add proves the leading-bit lemma by induction on m: the successor step rewrites (2^{m+1}+k) % 2 = k % 2 (the new top bit is even, low bit unchanged) and (2^{m+1}+k)/2 = 2^m + k/2 (halving drops one level), both via omega after rw [pow_succ], and applies the inductive hypothesis. Everything downstream is summation bookkeeping.",
+    "mathContext": "For $k < 2^m$: $s_2(2^m + k) = s_2(k) + 1$ — a new top bit adds one to the digit sum.",
+    "significance": "key",
+    "relatedConcepts": ["binary digit sum", "leading bit", "induction", "digit-sum recursion"],
+    "prerequisites": ["binary representations", "induction", "omega tactic"]
+  },
+  {
+    "id": "ann-sierpinski-sum",
+    "proofId": "lucas-theorem-oq-01-oq-02",
+    "range": { "startLine": 73, "endLine": 93 },
+    "type": "concept",
+    "title": "The Block-Doubling Recursion T(m+1) = 3·T(m)",
+    "content": "sum_two_pow_s2 proves the abstract identity ∑_{n<2^m} 2^(s₂ n) = 3^m by induction. The midpoint split [0, 2^{m+1}) = [0, 2^m) ⊔ [2^m, 2^{m+1}) (via 2^{m+1} = 2^m + 2^m and Finset.sum_range_add) mirrors the recursive subdivision of the gasket. By the leading-bit lemma every upper-half term satisfies 2^(s₂(2^m+n)) = 2·2^(s₂ n), so the upper block is exactly twice the lower block; combined with the inductive hypothesis this gives T(m+1) = T(m) + 2·T(m) = 3·T(m), hence 3^m. The factor 3 = 1 + 2 (block plus its doubled mirror) against a doubling row count is the discrete origin of log₂ 3.",
+    "mathContext": "$T(m+1) = T(m) + 2\\,T(m) = 3\\,T(m)$, $T(0) = 1$, so $\\sum_{n<2^m} 2^{s_2(n)} = 3^m$.",
+    "significance": "key",
+    "relatedConcepts": ["self-similarity", "Finset.sum_range_add", "recursion", "Sierpiński subdivision"],
+    "prerequisites": ["finite sums", "induction"]
+  },
+  {
+    "id": "ann-pascal-count",
+    "proofId": "lucas-theorem-oq-01-oq-02",
+    "range": { "startLine": 95, "endLine": 115 },
+    "type": "concept",
+    "title": "The Sierpiński Count and Its Witnesses",
+    "content": "sum_oddCount_eq_three_pow is the headline: the first 2^m rows of Pascal's triangle together contain exactly 3^m odd entries. The proof simply rewrites oddCount = 2^(s₂ ·) under the sum using the parent's Glaisher formula (oddCount_eq_two_pow_s2) and invokes the abstract sum identity — Glaisher's per-row formula is what reduces a cumulative combinatorial count to the transparent digit-sum series. The two kernel-decide examples confirm 9 = 3² odd entries in the first 4 rows and 27 = 3³ in the first 8, with no native_decide so the axiom-free claim holds.",
+    "mathContext": "$\\sum_{n<2^m}\\mathrm{oddCount}(n) = 3^m$; e.g. $1+2+2+4 = 9 = 3^2$ for the first 4 rows.",
+    "significance": "key",
+    "relatedConcepts": ["Glaisher's formula", "odd binomial coefficients", "kernel decide", "Sierpiński count"],
+    "prerequisites": ["binomial coefficient parity", "finite sums"]
+  }
+]
