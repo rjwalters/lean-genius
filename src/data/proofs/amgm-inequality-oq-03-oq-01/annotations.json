@@ -103,7 +103,7 @@
     },
     "type": "concept",
     "title": "The Power Mean Interpolation Chain: Status Summary",
-    "content": "A documentation theorem summarizing the full power mean chain $\\min(z) \\leq \\cdots \\leq \\text{HM} \\leq \\text{GM} \\leq \\text{AM} \\leq M_2 \\leq \\cdots \\leq \\max(z)$, marking which links are proved. Seven results are marked [✓]: GM ≤ AM (from Mathlib), AM ≤ M_p for p ≥ 1 (Mathlib), GM ≤ M_p for p ≥ 1, Jensen's inequality, HM ≤ GM (proved here), positive monotonicity (proved here), and negative monotonicity (proved here via duality). Only the mixed-sign crossing (r < 0 < s, requiring the r → 0 limit) remains as an axiom.",
+    "content": "A summary comment block documenting the full power mean chain $\\min(z) \\leq \\cdots \\leq \\text{HM} \\leq \\text{GM} \\leq \\text{AM} \\leq M_2 \\leq \\cdots \\leq \\max(z)$, marking which links are proved. Seven results are established: GM ≤ AM (from Mathlib), AM ≤ M_p for p ≥ 1 (Mathlib), GM ≤ M_p for p ≥ 1, Jensen's inequality, HM ≤ GM (proved here), positive monotonicity (proved here), and negative monotonicity (proved here via duality). Only the mixed-sign crossing (r < 0 < s, crossing the geometric-mean limit at r = 0) is left out of scope: it is not formalized in this file. The file contains no axioms — this case is simply omitted, not assumed.",
     "mathContext": "$\\min(z) \\leq \\cdots \\leq M_{-1} = \\text{HM} \\leq M_0 = \\text{GM} \\leq M_1 = \\text{AM} \\leq M_2 \\leq \\cdots \\leq \\max(z)$. Proved: $M_r \\leq M_s$ for $0 < r \\leq s$ and for $r \\leq s < 0$. Remaining: $r < 0 < s$ (mixed sign).",
     "significance": "supporting",
     "relatedConcepts": [
