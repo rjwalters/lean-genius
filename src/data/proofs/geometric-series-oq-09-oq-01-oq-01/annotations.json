@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-overview-reindex",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01",
+    "range": { "startLine": 4, "endLine": 63 },
+    "type": "context",
+    "title": "The q-Fold Splitting as a Reindexing of the Summation",
+    "content": "The parent geometric-series-oq-09-oq-01 proved the q-fold splitting ∑_n r^(q·n+a) = r^a/(1−r^q) and the recombination ∑_{a<q} (subseries_a) = 1/(1−r) by computing the q closed forms and reassembling them via the factorisation 1−r^q = (1−r)(1+r+⋯+r^{q−1}). Its open question asked for the conceptual route: obtain the splitting as a property of the summation itself. The point is that ℕ = ⨆_{a<q} {q·n+a} is exactly the bijection ℕ ≃ ℕ × Fin q, m ↦ (m/q, m%q) (Mathlib's Nat.divModEquiv), so the full geometric HasSum transports along it; unconditional convergence then makes the two-dimensional sum independent of grouping, and Fubini-style fiberwise summation reproduces the blocks or the residue subseries.",
+    "mathContext": "$\\mathbb{N}\\simeq\\mathbb{N}\\times\\mathrm{Fin}\\,q$, $m\\mapsto(m/q,m\\%q)$; transport $\\sum_m r^m=(1-r)^{-1}$.",
+    "significance": "context",
+    "relatedConcepts": ["multisection", "reindexing", "Fubini", "Nat.divModEquiv", "unconditional convergence"],
+    "prerequisites": ["geometric series", "infinite sums", "equivalences"]
+  },
+  {
+    "id": "ann-residue-subseries",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01",
+    "range": { "startLine": 66, "endLine": 84 },
+    "type": "technique",
+    "title": "Residue Subseries Summability (Self-Contained)",
+    "content": "`norm_pow_lt_one`: ‖r^q‖ = ‖r‖^q < 1 for ‖r‖ < 1 and q ≠ 0 (norm_pow + pow_lt_one₀), the one analytic fact letting Mathlib's geometric lemma apply at ratio r^q. `summable_geometric_residue`: the residue subseries ∑_n r^(q·n+a) is summable, via the reindexing r^(q·n+a) = r^a·(r^q)ⁿ (pow_add, pow_mul, ring) and HasSum.mul_left (r^a). These are restated locally (the entry does not import the parent) and provide the fiber summability consumed by the residue regrouping.",
+    "mathContext": "$\\|r^q\\|=\\|r\\|^q<1$; $\\sum_n r^{qn+a}=r^a\\sum_n(r^q)^n$ converges.",
+    "significance": "supporting",
+    "relatedConcepts": ["norm_pow", "pow_lt_one₀", "HasSum.mul_left", "geometric series"],
+    "prerequisites": ["norms", "summability"]
+  },
+  {
+    "id": "ann-reindexing",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01",
+    "range": { "startLine": 85, "endLine": 112 },
+    "type": "theorem",
+    "title": "The Reindexing Theorem: HasSum over ℕ × Fin q",
+    "content": "`hasSum_residue_prod` (the open-question target): HasSum (fun p : ℕ × Fin q => r^(q·p.1 + p.2)) (1−r)⁻¹. Proof: apply (Nat.divModEquiv q).symm.hasSum_iff.mpr to Mathlib's hasSum_geometric_of_norm_lt_one. Because (Nat.divModEquiv q).symm (n,a) = n·q + a, simp [Function.comp_def, Nat.divModEquiv_symm_apply] turns the transported series into fun p => r^(p.1·q + p.2); a single Nat.mul_comm rewrites it to the stated q·p.1 form. tsum_residue_prod and summable_residue_prod are the immediate tsum and summability corollaries. This is precisely the pattern Mathlib uses for the cos/sin Taylor series with Nat.divModEquiv 2.",
+    "mathContext": "$\\sum_{(n,a)\\in\\mathbb{N}\\times\\mathrm{Fin}\\,q} r^{qn+a}=(1-r)^{-1}$ via $\\mathrm{Equiv.hasSum\\_iff}$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.divModEquiv", "Equiv.hasSum_iff", "hasSum_geometric_of_norm_lt_one", "reindexing"],
+    "prerequisites": ["equivalences", "HasSum", "geometric series"]
+  },
+  {
+    "id": "ann-regrouping",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01",
+    "range": { "startLine": 113, "endLine": 147 },
+    "type": "theorem",
+    "title": "Fubini Regrouping: Blocks and Residues",
+    "content": "Two complementary fiberwise sums of the same two-dimensional series. `hasSum_block`: grouping by the block index n : ℕ (finite inner sums over the q residues) gives HasSum (fun n => ∑_{a:Fin q} r^(q·n+a)) (1−r)⁻¹, via HasSum.prod_fiberwise + hasSum_fintype. `hasSum_residue_fiberwise`: grouping by the residue a : Fin q (after swapping coordinates with Equiv.prodComm) gives HasSum (fun a => ∑_n r^(q·n+a)) (1−r)⁻¹, each ℕ-fiber summed by summable_geometric_residue. `tsum_residues_eq_geometric_via_reindex`: recovers the parent recombination ∑_{a∈range q} ∑_n r^(q·n+a) = ∑ rᵐ = 1/(1−r) via HasSum.unique (against hasSum_fintype) and Fin.sum_univ_eq_sum_range — now a corollary of the regrouping, not of the closed forms.",
+    "mathContext": "$\\sum_{a<q}\\sum_n r^{qn+a}=\\sum_m r^m=\\tfrac{1}{1-r}$ by fiberwise summation.",
+    "significance": "key",
+    "relatedConcepts": ["HasSum.prod_fiberwise", "Equiv.prodComm", "hasSum_fintype", "Fin.sum_univ_eq_sum_range", "Fubini"],
+    "prerequisites": ["HasSum", "finite sums", "infinite sums"]
+  },
+  {
+    "id": "ann-specialisation",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01",
+    "range": { "startLine": 148, "endLine": 160 },
+    "type": "example",
+    "title": "The q = 2 Even/Odd Case and a Concrete Value",
+    "content": "`hasSum_residue_prod_two`: the q=2 specialisation splits ∑ rᵐ into the even/odd blocks (n,a) ↦ r^(2n+a), a ∈ {0,1} — mirroring Mathlib's Nat.divModEquiv 2 for the cos/sin series. A concrete check confirms ∑_{(n,a)∈ℕ×Fin 3} (1/2)^(3n+a) = 1/(1 − 1/2) = 2.",
+    "mathContext": "$q=2$: even/odd blocks; $\\sum_{(n,a)\\in\\mathbb{N}\\times\\mathrm{Fin}\\,3}(1/2)^{3n+a}=2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.divModEquiv", "specialisation", "concrete computation"],
+    "prerequisites": ["geometric series"]
+  }
+]
