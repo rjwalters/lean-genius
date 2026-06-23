@@ -96,12 +96,51 @@
   ],
   "crossReferences": [
     {
-      "id": "catalan-numbers-oq-01",
-      "reason": "The parent entry: the O(1) linear (holonomic) recurrence (n+2)*catalan(n+1) = 2(2n+1)*catalan n, also derived from the central-binomial bridge. This entry gives the closed difference form rather than the step recurrence."
+      "proofId": "catalan-numbers-oq-01",
+      "relationship": "parent",
+      "description": "The parent entry: the O(1) linear (holonomic) recurrence (n+2)*catalan(n+1) = 2(2n+1)*catalan n, also derived from the central-binomial bridge. This entry gives the closed difference form rather than the step recurrence."
     },
     {
-      "id": "dyck-catalan-count-oq-01",
-      "reason": "Counts Dyck paths by the Catalan numbers — the combinatorial objects whose enumeration the reflection identity C(2n,n) - C(2n,n+1) computes."
+      "proofId": "dyck-catalan-count-oq-01",
+      "relationship": "related",
+      "description": "Counts Dyck paths by the Catalan numbers — the combinatorial objects whose enumeration the reflection identity C(2n,n) - C(2n,n+1) computes."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "The Reflection Identity and Its Arithmetic Plan",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Imports Mathlib and frames the goal: Mathlib has the division form catalan n = centralBinom n / (n+1) and the bridge (n+1)*catalan n = centralBinom n, but not the reflection/ballot form catalan n = C(2n,n) − C(2n,n+1). Sketches the 0-axiom plan: with B = C(2n,n), R = C(2n,n+1), C = catalan n, combine (n+1)*C = B and (n+1)*R = n*B, multiply the target B = C + R by n+1, cancel the positive factor, and pass to ℕ subtraction via omega."
+    },
+    {
+      "id": "partition",
+      "title": "The Additive Near-Central Partition",
+      "startLine": 35,
+      "endLine": 62,
+      "summary": "centralBinom_eq_catalan_add_choose: C(2n,n) = catalan n + C(2n,n+1), the additive heart of the identity stated without ℕ truncated subtraction. Uses centralBinom n = (2n).choose n by rfl, the Catalan bridge succ_mul_catalan_eq_centralBinom for (n+1)*catalan n = C(2n,n), and the neighbour relation (n+1)*C(2n,n+1) = n*C(2n,n) derived from Nat.choose_succ_right_eq at (2n,n) with 2n−n=n; multiplying by n+1 and cancelling via Nat.eq_of_mul_eq_mul_left closes it."
+    },
+    {
+      "id": "reflection-form",
+      "title": "The Reflection / Ballot Form",
+      "startLine": 64,
+      "endLine": 82,
+      "summary": "catalan_eq_centralBinom_sub_choose: catalan n = C(2n,n) − C(2n,n+1), obtained from the additive partition by omega. catalan_eq_centralBinom_sub restates it against Mathlib's Nat.centralBinom (catalan n = centralBinom n − C(2n,n+1)) by rewriting centralBinom n = (2n).choose n via rfl — bridging the two notations."
+    },
+    {
+      "id": "genuine-difference",
+      "title": "Certifying the Difference Is Genuine",
+      "startLine": 84,
+      "endLine": 90,
+      "summary": "choose_succ_le_centralBinom: C(2n,n+1) ≤ C(2n,n), read off the additive partition by omega. This certifies the ℕ subtraction in the reflection form is a real difference and not silently truncated to 0 — without it the headline identity would be vacuous where the subtrahend exceeds the minuend."
+    },
+    {
+      "id": "sanity",
+      "title": "Numerical Witnesses via Kernel decide",
+      "startLine": 92,
+      "endLine": 101,
+      "summary": "Three examples confirm the identity on small values: catalan 3 = C(6,3) − C(6,4) (an instance of the general theorem), and the arithmetic checks C(6,3)−C(6,4)=20−15=5 and C(8,4)−C(8,5)=70−56=14 (= catalan 4) by kernel decide — no native_decide, so no Lean.ofReduceBool dependency."
     }
   ],
   "conclusion": {
