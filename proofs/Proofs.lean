@@ -879,6 +879,7 @@ import Proofs.EhrhartPolynomialOQ03
 import Proofs.EhrhartPolynomials
 import Proofs.EhrhartSimplexProven
 import Proofs.EisensteinCriterionOQ01
+import Proofs.EisensteinCriterionOQ01OQ03
 import Proofs.ElementaryQuadraticReciprocity
 import Proofs.ElementaryQuadraticReciprocityOQ01
 import Proofs.ElementaryQuadraticReciprocityOQ01OQ01
