@@ -5,7 +5,7 @@
   "description": "Supplies the divisibility structure of the per-type symmetry multiplier in the four-square type decomposition: the sign-change subgroup of order 2^(nonzeroCount) always divides a type's contribution. This is the '2^k' half of the hyperoctahedral symmetry B₄ = (ℤ/2)⁴ ⋊ S₄ underlying Jacobi's factor of 8, isolated per type — in particular 8 ∣ contribution once a type has ≥ 3 nonzero entries, and 16 ∣ contribution when all four are nonzero. The parent file proved only the bounds (≤ 384) and no divisibility.",
   "meta": {
     "author": "Lean Genius",
-    "date": "2026-06-21",
+    "date": "2026-06-23",
     "status": "verified",
     "proofRepoPath": "Proofs/FourSquareDistributionOQ05.lean",
     "tags": [
@@ -22,15 +22,19 @@
     "axiomCount": 0,
     "assumptions": "No assumptions. Fully machine-checked with only Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). Builds on the parent file FourSquareDistribution.lean's RepType / contribution / signFactor definitions.",
     "dateAdded": "2026-06-21",
-    "lineCount": 110,
-    "theoremCount": 7,
+    "lineCount": 213,
+    "theoremCount": 13,
     "definitionCount": 0,
     "originalContributions": [
       "two_pow_nonzeroCount_dvd_contribution (PROVED): 2^(nonzeroCount t) ∣ contribution t — the sign-change subgroup order divides the per-type multiplier (the parent file records no divisibility property of contribution)",
       "two_pow_dvd_contribution_of_le (PROVED): k ≤ nonzeroCount t → 2^k ∣ contribution t — the full 2-adic divisibility tower",
       "eight_dvd_contribution_of_three_le (PROVED): 8 ∣ contribution t when nonzeroCount t ≥ 3 — the 'factor of 8' from sign symmetry at the type level",
       "sixteen_dvd_contribution_of_four (PROVED): 16 ∣ contribution t when all four entries are nonzero",
-      "signFactor_dvd_contribution / two/four_dvd_contribution (PROVED): supporting divisibility lemmas and low-order specializations"
+      "signFactor_dvd_contribution / two/four_dvd_contribution (PROVED): supporting divisibility lemmas and low-order specializations",
+      "eight_dvd_contribution_of_pos (PROVED, this revision): 1 ≤ nonzeroCount t → 8 ∣ contribution t — the FULL type-level factor of 8 behind Jacobi 8 ∣ r₄(n). Upgrades the earlier nonzeroCount ≥ 3 result to ALL nonzero types by handling the permutation parity in the 1- and 2-nonzero cases.",
+      "permutations_one_nonzero (PROVED): a one-nonzero type (0,0,0,a₄) has exactly 4 permutations, so its contribution is 4·2 = 8.",
+      "two_dvd_permutations_two_nonzero (PROVED): a two-nonzero type (0,0,a₃,a₄) has an even permutation count (6 or 12), so its contribution perm·4 is a multiple of 8.",
+      "zero_pattern_one / zero_pattern_two (PROVED): sortedness pins the zero pattern from the nonzero count — the structural bridge that makes the permutation computation explicit."
     ],
     "mathlibDependencies": [
       {
@@ -106,24 +110,10 @@
     ]
   },
   "mainTheorems": [
-    {
-      "name": "two_pow_nonzeroCount_dvd_contribution",
-      "type": "theorem",
-      "description": "The sign-change subgroup order 2^(nonzeroCount) divides a type's contribution.",
-      "leanType": "{n : ℕ} → (t : RepType n) → 2 ^ t.nonzeroCount ∣ t.contribution"
-    },
-    {
-      "name": "two_pow_dvd_contribution_of_le",
-      "type": "theorem",
-      "description": "The 2-adic divisibility tower: 2^k ∣ contribution t for any k ≤ nonzeroCount t.",
-      "leanType": "{n : ℕ} → (t : RepType n) → {k : ℕ} → k ≤ t.nonzeroCount → 2 ^ k ∣ t.contribution"
-    },
-    {
-      "name": "eight_dvd_contribution_of_three_le",
-      "type": "theorem",
-      "description": "Factor of 8 at the type level: 8 ∣ contribution t when nonzeroCount t ≥ 3.",
-      "leanType": "{n : ℕ} → (t : RepType n) → 3 ≤ t.nonzeroCount → 8 ∣ t.contribution"
-    }
+    "eight_dvd_contribution_of_pos",
+    "two_pow_nonzeroCount_dvd_contribution",
+    "permutations_one_nonzero",
+    "two_dvd_permutations_two_nonzero"
   ],
   "sorries": 0,
   "leanFile": {
@@ -133,10 +123,10 @@
     ],
     "opens": [],
     "namespace": "FourSquareDistribution",
-    "lineCount": 110,
+    "lineCount": 213,
     "axiomCount": 0,
-    "theoremCount": 7,
-    "substantiveTheoremCount": 5,
+    "theoremCount": 13,
+    "substantiveTheoremCount": 11,
     "duplicateTheorems": 0,
     "definitionCount": 0,
     "path": "Proofs/FourSquareDistributionOQ05.lean",
