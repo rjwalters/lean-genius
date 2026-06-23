@@ -16,14 +16,14 @@
       "cauchy-schwarz",
       "newton-identities"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-06-22",
     "axiomCount": 0,
     "lineCount": 130,
     "theoremCount": 3,
     "definitionCount": 0,
-    "assumptions": "None. All three theorems are fully machine-checked with 0 axioms and 0 sorries, building only on the parent AmgmInequalityOQ02 public API and Mathlib's Cauchy-Schwarz inequality (sq_sum_le_card_mul_sum_sq).",
+    "assumptions": "0 axioms, 0 sorries (core inequality via Mathlib bridge). All three theorems are fully machine-checked, but the analytic engine is imported: the headline maclaurin_step_one obtains its M₁ ≥ M₂ bound from newton_inequality_k1, which delegates to the parent AmgmInequalityOQ02's maclaurin_sq_m1_ge_m2_general — itself a packaging of Mathlib's Cauchy-Schwarz inequality (sq_sum_le_card_mul_sum_sq). This file's independent content is the Real.sqrt-monotonicity assembly de-axiomatizing the k=1 step and the resolution of the Newton-identities open question; the core positivity input is Mathlib's. Hence the `mathlib` badge (Tier B).",
     "originalContributions": [
       "Resolves the open question (No): Mathlib's NewtonIdentities are ring equalities (e_k ↔ p_k) over an arbitrary CommRing and carry no order information, so they cannot yield Newton's log-concavity inequality e_k² ≥ e_{k-1}·e_{k+1} that maclaurin_step depends on",
       "Identifies the correct engine: Cauchy-Schwarz (cauchy_schwarz_engine, from Mathlib's sq_sum_le_card_mul_sum_sq) is the ℝ-specific positivity input that NewtonIdentities cannot supply",
