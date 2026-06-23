@@ -1,0 +1,188 @@
+{
+  "id": "denumerability-rationals-oq-05-oq-01-oq-01-oq-01-oq-01",
+  "title": "Localization Preserves Cardinality for Infinite Rings: #(FractionRing R) = #R",
+  "slug": "denumerability-rationals-oq-05-oq-01-oq-01-oq-01-oq-01",
+  "description": "The parent entry showed localization never escapes countability — the fraction field of a countable ring is countable, #(FractionRing R) = ℵ₀. That argument is really a cardinal-arithmetic fact specialized to ℵ₀. This entry isolates the quantitative core and proves it for an arbitrary INFINITE ring, answering the parent's first open question: inverting a multiplicative set never changes cardinality. The headline mk_isLocalization_le shows that for an infinite commutative semiring R, any submonoid M, and any localization S of R at M, #S ≤ #R — because IsLocalization.mk'_surjective exhibits S as a surjective image of R × M, and for infinite R one has #(R × M) = #R · #M ≤ #R · #R = #R (Cardinal.mul_eq_self). When M ≤ R⁰ the structure map is injective, upgrading the bound to an equality (mk_localization_eq_of_le_nonZeroDivisors), and for an infinite integral domain the fraction field satisfies #(FractionRing R) = #R exactly (mk_isFractionRing_eq, mk_fractionRing_eq). Specializing to ℚ = Frac(ℤ) yields #ℚ = #ℤ (mk_rat_eq_int) and re-derives the parent's #ℚ = ℵ₀ — now via the equality #ℚ = #ℤ rather than an ℵ₀ bound.",
+  "meta": {
+    "author": "Cantor (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Aleph_number",
+    "date": "1874",
+    "status": "verified",
+    "tags": [
+      "set-theory",
+      "cardinality",
+      "cardinal-arithmetic",
+      "localization",
+      "fraction-field",
+      "ring-theory",
+      "infinite-rings",
+      "denumerability",
+      "rational-numbers",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/DenumerabilityRationalsOQ05OQ01OQ01OQ01OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsLocalization.mk'_surjective",
+        "description": "Surjective (fun ((r, m) : R × M) ↦ mk' S r m) — every element of a localization S is mk' S r m for some (r, m) ∈ R × M; the surjection that carries the cardinality bound from R × M onto S",
+        "module": "Mathlib.RingTheory.Localization.Defs"
+      },
+      {
+        "theorem": "Cardinal.mul_eq_self",
+        "description": "ℵ₀ ≤ c → c * c = c — the cardinal-arithmetic core: for an infinite cardinal #R, #R · #R = #R, collapsing #(R × M) ≤ #R · #R to #R",
+        "module": "Mathlib.SetTheory.Cardinal.Arithmetic"
+      },
+      {
+        "theorem": "Cardinal.mk_prod",
+        "description": "#(α × β) = lift #α * lift #β — turns #(R × M) into the product #R · #M (lifts trivial in a single universe), the bridge between the surjection and cardinal multiplication",
+        "module": "Mathlib.SetTheory.Cardinal.Defs"
+      },
+      {
+        "theorem": "Cardinal.mk_le_of_surjective / Cardinal.mk_le_of_injective",
+        "description": "Surjective f → #β ≤ #α and Injective f → #α ≤ #β — convert the mk' surjection into #S ≤ #(R × M) and the injective algebraMap into the reverse bound #R ≤ #S",
+        "module": "Mathlib.SetTheory.Cardinal.Order"
+      },
+      {
+        "theorem": "Cardinal.aleph0_le_mk",
+        "description": "[Infinite α] → ℵ₀ ≤ #α — supplies the infinitude hypothesis of mul_eq_self directly from Infinite R",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "IsLocalization.injective / IsFractionRing.injective",
+        "description": "M ≤ nonZeroDivisors R → Injective (algebraMap R S), and the fraction-ring instance — upgrade the bound #S ≤ #R to the equality #S = #R",
+        "module": "Mathlib.RingTheory.Localization.FractionRing"
+      },
+      {
+        "theorem": "Rat.isFractionRing",
+        "description": "IsFractionRing ℤ ℚ — identifies ℚ as Frac(ℤ), so #ℚ = #ℤ is the equality specialized; with Cardinal.mk_eq_aleph0 on ℤ this recovers #ℚ = ℵ₀",
+        "module": "Mathlib.RingTheory.Localization.FractionRing"
+      }
+    ],
+    "originalContributions": [
+      "mk_isLocalization_le: #S ≤ #R for any localization S of an infinite commutative semiring R at a submonoid M — the quantitative generalization of the parent's countability result, dropping [Countable R] entirely; proved via the mk' surjection R × M ↠ S and Cardinal.mul_eq_self",
+      "mk_localization_eq_of_le_nonZeroDivisors: #S = #R when M ≤ nonZeroDivisors R, upgrading the bound to an equality through injectivity of algebraMap R S",
+      "mk_isFractionRing_eq: #S = #R for any field of fractions S of an infinite integral domain R",
+      "mk_fractionRing_eq: #(FractionRing R) = #R for an infinite integral domain — directly answering the parent entry's first open question (whether the ℵ₀ result extends to general infinite R)",
+      "mk_rat_eq_int: #ℚ = #ℤ as the equality specialized to IsFractionRing ℤ ℚ",
+      "mk_rat_eq_aleph0: #ℚ = ℵ₀ re-derived from the equality #ℚ = #ℤ together with the denumerability of ℤ — recovering the parent's headline through the sharper equality"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 100,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The denumerability of ℚ — that the rationals can be listed — is the root of this problem family, and ℚ is by construction the field of fractions of ℤ. The parent entry showed that the construction producing ℚ, localization, preserves COUNTABILITY: #(FractionRing R) = ℵ₀ for a countable domain R, recovering #ℚ = ℵ₀ as an instance of a general principle. But that argument used ℵ₀ in an essential way (countability of R × M). The natural next question, posed explicitly by the parent, is whether the phenomenon is really about ℵ₀ at all, or whether localization preserves cardinality at every infinite level — the analogue of the polynomial cardinality-preservation results #(R[X]) = #R for infinite R proved elsewhere in this family.",
+    "problemStatement": "**Open Question (denumerability-rationals-oq-05-oq-01-oq-01-oq-01, posed as that entry's first open question)**: For an uncountable ring R, #(FractionRing R) = #R = 𝔠 is expected. Is #(FractionRing R) = #R provable in general for infinite R, giving a localization analogue of the polynomial cardinality-preservation results?\n\n**Result**: Yes. mk_isLocalization_le establishes #S ≤ #R for any localization of an infinite commutative semiring; mk_localization_eq_of_le_nonZeroDivisors and mk_isFractionRing_eq / mk_fractionRing_eq give the equality #(FractionRing R) = #R for an infinite integral domain; and mk_rat_eq_int / mk_rat_eq_aleph0 recover #ℚ = #ℤ = ℵ₀ as the ℤ instance.",
+    "text": "For an infinite commutative semiring R and any localization S of R at a submonoid M, #S ≤ #R. When the inverted submonoid lies in the non-zero-divisors the structure map algebraMap R S is injective, so the bound becomes an equality #S = #R; in particular #(FractionRing R) = #R for an infinite integral domain. Specializing to ℚ = Frac(ℤ) gives #ℚ = #ℤ, recovering #ℚ = ℵ₀.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. `mk_isLocalization_le`: `IsLocalization.mk'_surjective` gives that `fun ((r, m) : R × M) ↦ mk' S r m` is surjective onto S, so `Cardinal.mk_le_of_surjective` yields #S ≤ #(R × M). Then `Cardinal.mk_prod` rewrites #(R × M) = #R · #M (the universe lifts are identities since R and M share a universe), the subtype bound #M ≤ #R (`mk_le_of_injective Subtype.val_injective`) and monotonicity give #R · #M ≤ #R · #R, and `Cardinal.mul_eq_self (aleph0_le_mk R)` collapses #R · #R = #R. Chaining: #S ≤ #R.\n2. `mk_localization_eq_of_le_nonZeroDivisors`: when M ≤ R⁰, `IsLocalization.injective` makes algebraMap R S injective, so `mk_le_of_injective` gives the reverse #R ≤ #S; `le_antisymm` yields #S = #R.\n3. `mk_isFractionRing_eq` / `mk_fractionRing_eq`: IsFractionRing R S has nonZeroDivisors R as its inverted monoid and `IsFractionRing.injective` for the reverse bound, so #S = #R; FractionRing R is the canonical instance.\n4. `mk_rat_eq_int` / `mk_rat_eq_aleph0`: ℚ carries `IsFractionRing ℤ ℚ`, so #ℚ = #ℤ; since ℤ is countably infinite, `Cardinal.mk_eq_aleph0` gives #ℤ = ℵ₀ and hence #ℚ = ℵ₀ — the parent's headline, now through the equality.",
+    "keyInsights": [
+      "**The result was never about ℵ₀.** The parent's countability proof and this cardinality equality share one surjection R × M ↠ S; the only difference is whether one invokes Function.Surjective.countable or Cardinal.mul_eq_self afterward. Dropping [Countable R] and replacing the countability closure with mul_eq_self generalizes ℵ₀ to every infinite cardinal in a single stroke.",
+      "**One inequality, two readings.** #S ≤ #R holds for ANY localization (no domain or injectivity hypothesis); the equality needs only that the inverted monoid avoids zero divisors so the base embeds. Separating the bound from the equality keeps the general semiring statement maximally weak-hypothesis.",
+      "**Cardinal arithmetic does all the work.** Beyond the localization surjection the proof is pure Cardinal.mul_eq_self — #R · #R = #R for infinite #R. The multiplicative and ring structure of S, and the size of M, are irrelevant to the count.",
+      "**The loop closes through an equality, not a bound.** Where the parent obtained #ℚ = ℵ₀ from countability + infinitude, here it factors through #ℚ = #ℤ: the rationals have exactly the cardinality of the integers because Frac is cardinality-preserving, and #ℤ = ℵ₀ supplies the value."
+    ],
+    "prerequisites": [
+      "Cardinal arithmetic in Mathlib (ℵ₀, mk_prod, mul_eq_self for infinite cardinals, aleph0_le_mk, mk_le_of_surjective/injective)",
+      "Localization of a commutative ring: IsLocalization M S, mk', mk'_surjective, and injectivity of algebraMap when M ≤ nonZeroDivisors R",
+      "Fraction fields: FractionRing R, IsFractionRing, IsFractionRing.injective, and the canonical IsFractionRing ℤ ℚ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring framing the entry as the quantitative (infinite-cardinality) core of the parent's countability result and the answer to its first open question, the Mathlib import, the Cardinal open, the universe variable u, and the namespace.",
+      "mathContext": "$\\#(\\mathrm{FractionRing}\\,R) = \\#R$ for infinite $R$ as the cardinal-arithmetic generalization of $\\#(\\mathrm{FractionRing}\\,R)=\\aleph_0$."
+    },
+    {
+      "id": "bound",
+      "title": "Localization Never Increases Cardinality",
+      "startLine": 41,
+      "endLine": 61,
+      "summary": "mk_isLocalization_le: #S ≤ #R for any localization S of an infinite commutative semiring R at a submonoid M, via the mk' surjection R × M ↠ S, mk_prod, and Cardinal.mul_eq_self.",
+      "mathContext": "$\\#S \\le \\#(R\\times M) = \\#R\\cdot\\#M \\le \\#R\\cdot\\#R = \\#R$ for infinite $R$."
+    },
+    {
+      "id": "equality",
+      "title": "Equality When the Structure Map Is Injective",
+      "startLine": 62,
+      "endLine": 86,
+      "summary": "mk_localization_eq_of_le_nonZeroDivisors (#S = #R when M ≤ R⁰), mk_isFractionRing_eq (#S = #R for any fraction field of an infinite domain), and mk_fractionRing_eq (#(FractionRing R) = #R) — the answer to the parent's open question.",
+      "mathContext": "Injectivity of $\\mathrm{algebraMap}\\,R\\,S$ gives $\\#R \\le \\#S$, so $\\#S = \\#R$ by antisymmetry."
+    },
+    {
+      "id": "rationals",
+      "title": "Closing the Loop: the Rationals",
+      "startLine": 87,
+      "endLine": 100,
+      "summary": "mk_rat_eq_int (#ℚ = #ℤ via IsFractionRing ℤ ℚ) and mk_rat_eq_aleph0 (#ℚ = ℵ₀ recovered from the equality #ℚ = #ℤ plus the denumerability of ℤ).",
+      "mathContext": "$\\mathbb{Q} = \\mathrm{Frac}(\\mathbb{Z})$, so $\\#\\mathbb{Q} = \\#\\mathbb{Z} = \\aleph_0$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "denumerability-rationals-oq-05-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Answers the parent entry's first open question, generalizing its countability result #(FractionRing R) = ℵ₀ to the cardinality equality #(FractionRing R) = #R for an arbitrary infinite integral domain, and recovering #ℚ = ℵ₀ through the sharper #ℚ = #ℤ"
+    },
+    {
+      "targetId": "denumerability-rationals-oq-05-oq-01",
+      "relationship": "related",
+      "description": "Part of OQ-05's program on which constructions preserve cardinality over a ring; here localization is shown to preserve cardinality at every infinite level, not just ℵ₀"
+    },
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "related",
+      "description": "Recovers the root #ℚ = ℵ₀ as the ℤ instance of the localization cardinality-preservation principle, factored through #ℚ = #ℤ"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) generalization of the parent's countability result to arbitrary infinite rings: for an infinite commutative semiring R, every localization S of R at a submonoid M satisfies #S ≤ #R (mk_isLocalization_le), with equality #S = #R whenever the inverted monoid avoids zero divisors (mk_localization_eq_of_le_nonZeroDivisors) — in particular #(FractionRing R) = #R for an infinite integral domain (mk_fractionRing_eq), directly answering the parent's open question. Specializing to ℚ = Frac(ℤ) gives #ℚ = #ℤ and recovers #ℚ = ℵ₀.",
+    "implications": "Localization joins univariate and multivariate polynomial/monoid-algebra constructions as a cardinality-preserving operation on infinite rings: it never changes #R. The ℵ₀ result of the parent is exposed as the countable shadow of a general cardinal-arithmetic fact, and #ℚ = ℵ₀ is recovered through the equality #ℚ = #ℤ.",
+    "openQuestions": [
+      "The p-adic completion ℤ_p of ℤ has cardinality 𝔠 while every localization of ℤ stays at ℵ₀; can the exact place where 'enlarging' a countable ring jumps from ℵ₀ to 𝔠 — localization/polynomial extension (ℵ₀) versus completion/power series (𝔠) — be characterized by which limits the operation takes?",
+      "Does the bound #S ≤ #R extend verbatim to localized modules #(LocalizedModule M N) ≤ max #R #N, and more generally to any S-algebra finitely presented over a localization, isolating a 'cardinality-bounded' closure of the infinite base ring?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": "DenumerabilityRationalsOQ05OQ01OQ01OQ01OQ01",
+    "lineCount": 100,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/DenumerabilityRationalsOQ05OQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Cantor, Georg",
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 77, pp. 258–262",
+      "note": "Denumerability of ℚ; here #ℚ = ℵ₀ recovered via the equality #ℚ = #ℤ"
+    },
+    {
+      "authors": "Atiyah, M. F. and Macdonald, I. G.",
+      "title": "Introduction to Commutative Algebra",
+      "year": "1969",
+      "venue": "Addison-Wesley",
+      "note": "Localization S⁻¹R, fraction fields, and injectivity of the structure map when the inverted set avoids zero divisors"
+    }
+  ],
+  "sorries": 0
+}
