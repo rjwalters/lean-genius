@@ -3,6 +3,104 @@
   "title": "Multiplicativity and the Euler Product of Jordan's Totient $J_k$",
   "slug": "erdos-1000-oq-03-oq-01-oq-01",
   "description": "Builds the multiplicative theory of Jordan's totient J_k on top of erdos-1000-oq-03-oq-01, which proved that the count C_k(n) = #{ k-tuples mod n jointly coprime to n } equals the Dirichlet-convolution closed form J_k = μ * pow k. That established what J_k is; this entry establishes its multiplicative structure — the heart of the classical theory. Proves, with 0 axioms and 0 sorries (no native_decide): J_k = μ * pow k is a multiplicative arithmetic function, so J_k(mn) = J_k(m)·J_k(n) for coprime m, n (it is the Dirichlet convolution of the two multiplicative functions μ and pow k); the closed form J_k(n) = ∑_{d∣n} μ(d)·(n/d)^k; the value on prime powers J_k(p^i) = p^{ki} − p^{k(i−1)} for prime p and i ≥ 1 (only the squarefree divisors 1 and p survive the Möbius weights); the integer Euler product J_k(n) = ∏_{p∣n} (p^{k·v_p} − p^{k·(v_p−1)}) over the prime factors of n; positivity J_k(n) > 0 for k ≥ 1, n ≥ 1 (J_k is a genuine totient); the Euler-totient recovery J_1 = φ via Möbius inversion of Gauss's ∑_{d∣n} φ(d) = n; and the real Euler product J_k(n) = n^k · ∏_{p∣n}(1 − p^{−k}), the familiar closed form. Everything rests on Mathlib's arithmetic-function multiplicativity infrastructure (IsMultiplicative.mul, multiplicative_factorization); no analysis beyond the final cast to ℝ.",
+  "overview": {
+    "historicalContext": "Jordan's totient J_k was introduced by the French mathematician Camille Jordan around 1870 in his Traité des substitutions et des équations algébriques, where it counts the k-tuples of residues mod n that, together with n, are jointly coprime — equivalently, the order of certain matrix groups over ℤ/n. It is the natural higher-dimensional generalization of Euler's totient φ = J_1, and it shares φ's entire structural theory: multiplicativity, an Euler product, and a Möbius-convolution closed form. In the modern language of Dirichlet series, J_k corresponds to ζ(s-k)/ζ(s), placing it alongside the divisor-power sums σ_k (which correspond to ζ(s)ζ(s-k)). Mathlib already formalizes σ_k = ζ * pow k and its multiplicativity; this entry develops the parallel μ-side theory J_k = μ * pow k, with the Möbius function μ replacing the constant function ζ. The parent entry (erdos-1000-oq-03-oq-01) supplied the combinatorial meaning — that the count of jointly coprime k-tuples equals this convolution — and this entry supplies the algebra.",
+    "problemStatement": "Develop the multiplicative theory of Jordan's totient J_k(n) = ∑_{d∣n} μ(d)(n/d)^k in Lean 4: prove it is a multiplicative arithmetic function, compute its value on prime powers, derive both the integer and the real Euler product, establish positivity, and recover Euler's totient as the case k = 1 — all with 0 axioms and 0 sorries.",
+    "proofStrategy": "Define J_k as the Dirichlet convolution μ * pow k so that multiplicativity comes for free from IsMultiplicative.mul. Unfold the convolution to the explicit divisor-sum closed form (jordan_apply). Compute the prime-power value J_k(p^i) = p^{ki} − p^{k(i−1)} by observing only the squarefree divisors 1 and p survive the Möbius weights (jordan_prime_pow). Combine multiplicativity with the prime-power value via multiplicative_factorization to get the integer Euler product (jordan_eq_prod_primeFactors). Specialize to k = 1 by Möbius-inverting Gauss's ∑_{d∣n} φ(d) = n to recover φ (jordan_one_apply). Establish positivity factorwise (jordan_pos), and finally cast to ℝ and factor n^k out of the product to obtain the classical real Euler product (jordan_eq_mul_prod_primeFactors).",
+    "keyInsights": [
+      "The right definition does the work: choosing J_k := μ * pow k as a Dirichlet convolution of two known-multiplicative functions reduces the central structural theorem (multiplicativity) to a one-line application of IsMultiplicative.mul — the exact μ-analogue of Mathlib's σ_k = ζ * pow k.",
+      "On a prime power p^i, the Möbius weights annihilate every divisor except 1 and p, collapsing the i+1-term divisor sum to the two-term value p^{ki} − p^{k(i−1)}; multiplicativity then propagates this single computation to all n.",
+      "J_k is a genuine generalization of Euler's φ, not a formal analogue: J_1 = φ is recovered by Möbius inversion of Gauss's divisor-sum identity, and the real Euler product J_k(n) = n^k ∏(1 − p^{−k}) reduces at k = 1 to the textbook φ(n) = n ∏(1 − p^{−1}).",
+      "Positivity confirms J_k counts something: each Euler factor p^{k v_p}(1 − p^{−k}) is strictly positive, so J_k(n) > 0 — consistent with the parent entry's interpretation as a cardinality of jointly coprime k-tuples.",
+      "Working over ℤ throughout (with a single final cast to ℝ) keeps the entire development algebraic and axiom-free; no analytic machinery beyond ℝ-arithmetic is needed for the Euler products."
+    ]
+  },
+  "sections": [
+    {
+      "id": "context-docstring",
+      "title": "Context: from the count to the structure",
+      "startLine": 3,
+      "endLine": 34,
+      "summary": "Module docstring situating the entry as the multiplicative-structure follow-up to the parent count C_k(n) = J_k, and enumerating the eight results proved (0 axioms, 0 sorries)."
+    },
+    {
+      "id": "definition",
+      "title": "Definition: J_k as μ * pow k",
+      "startLine": 36,
+      "endLine": 43,
+      "summary": "Opens Finset and ArithmeticFunction, and defines jordan k = moebius * (pow k) over ℤ — the μ-analogue of Mathlib's σ_k = ζ * pow k."
+    },
+    {
+      "id": "closed-form",
+      "title": "Closed form (jordan_apply)",
+      "startLine": 45,
+      "endLine": 55,
+      "summary": "Unfolds the convolution to J_k(n) = ∑_{d∣n} μ(d)(n/d)^k, recovering the divisor-sum formula proved combinatorially by the parent entry."
+    },
+    {
+      "id": "multiplicativity",
+      "title": "Multiplicativity (isMultiplicative_jordan)",
+      "startLine": 57,
+      "endLine": 61,
+      "summary": "One-line proof that J_k is multiplicative as the convolution of the multiplicative μ and pow k, via IsMultiplicative.mul."
+    },
+    {
+      "id": "prime-power",
+      "title": "Value on prime powers (jordan_prime_pow)",
+      "startLine": 63,
+      "endLine": 89,
+      "summary": "Computes J_k(p^i) = p^{ki} − p^{k(i−1)} by peeling the j=0 and j=1 terms of the prime-power divisor sum; all higher terms vanish because μ(p^j)=0 for j≥2."
+    },
+    {
+      "id": "integer-euler-product",
+      "title": "Integer Euler product (jordan_eq_prod_primeFactors)",
+      "startLine": 91,
+      "endLine": 102,
+      "summary": "Combines multiplicativity and the prime-power value via multiplicative_factorization to give J_k(n) = ∏_{p∣n}(p^{k v_p} − p^{k(v_p−1)})."
+    },
+    {
+      "id": "positivity",
+      "title": "Positivity (jordan_pos)",
+      "startLine": 104,
+      "endLine": 118,
+      "summary": "Shows J_k(n) > 0 for k,n ≥ 1: each Euler factor is positive since k(v_p−1) < k v_p and p ≥ 2."
+    },
+    {
+      "id": "euler-recovery",
+      "title": "Euler totient recovery (jordan_one_apply)",
+      "startLine": 120,
+      "endLine": 135,
+      "summary": "Proves J_1 = φ by Möbius inversion of Gauss's identity ∑_{d∣n} φ(d) = n, anchoring J_k as the generalization of Euler's totient."
+    },
+    {
+      "id": "real-euler-product",
+      "title": "Real Euler product (jordan_eq_mul_prod_primeFactors)",
+      "startLine": 137,
+      "endLine": 168,
+      "summary": "Casts to ℝ and factors n^k = ∏ p^{k v_p} out of the integer product to obtain the classical J_k(n) = n^k ∏_{p∣n}(1 − p^{−k})."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry develops the full multiplicative theory of Jordan's totient J_k on top of the parent's combinatorial identity, all with 0 axioms and 0 sorries. By defining J_k = μ * pow k as a Dirichlet convolution, multiplicativity follows immediately (isMultiplicative_jordan); the prime-power value J_k(p^i) = p^{ki} − p^{k(i−1)} (jordan_prime_pow) and multiplicative_factorization then yield the integer Euler product (jordan_eq_prod_primeFactors), its positivity (jordan_pos), and — after casting to ℝ — the classical real Euler product J_k(n) = n^k ∏_{p∣n}(1 − p^{−k}) (jordan_eq_mul_prod_primeFactors). The case k = 1 recovers Euler's totient φ via Möbius inversion (jordan_one_apply), confirming J_k as the faithful higher-dimensional generalization of φ. The development is the exact μ-side mirror of Mathlib's existing σ_k theory.",
+    "implications": "Multiplicativity plus the prime-power value reduce any computation of J_k(n) to the prime factorization of n, exactly as for φ and σ_k. The closed forms make J_k a drop-in tool for the surrounding Erdős-totient thread (counting jointly coprime tuples, density questions) without re-deriving structure each time, and the μ * pow k packaging means it inherits, for free, any future Mathlib lemma about Dirichlet convolutions of multiplicative functions.",
+    "openQuestions": [
+      "Formalize the Dirichlet series identity ∑_n J_k(n)/n^s = ζ(s−k)/ζ(s), placing J_k in the analytic framework alongside σ_k's ζ(s)ζ(s−k) and enabling average-order and density results.",
+      "Derive the average order ∑_{n≤x} J_k(n) ∼ x^{k+1}/((k+1)ζ(k+1)) and the natural density of jointly coprime k-tuples, generalizing the classical asymptotic for φ.",
+      "Establish the converse Möbius-side relations (e.g. ∑_{d∣n} J_k(d) = n^k) as a formal counterpart to Gauss's identity, completing the convolution-inverse pair within Mathlib's arithmetic-function library."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1000-oq-03-oq-01",
+      "relationship": "depends-on",
+      "description": "Parent entry. Proves the count C_k(n) = #{ jointly coprime k-tuples mod n } equals the Dirichlet-convolution closed form J_k = μ * pow k. That fixes the meaning of J_k; this entry develops its multiplicative structure (multiplicativity, prime-power value, Euler products, φ recovery, positivity)."
+    },
+    {
+      "targetId": "erdos-1000-oq-03",
+      "relationship": "related",
+      "description": "Grandparent entry on generalized totients with restricted denominator conditions, the source of the Jordan-totient thread descending through oq-03-oq-01 to this entry."
+    }
+  ],
   "meta": {
     "author": "Classical theory of Jordan's totient (Camille Jordan, 1870); formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Jordan%27s_totient_function",
