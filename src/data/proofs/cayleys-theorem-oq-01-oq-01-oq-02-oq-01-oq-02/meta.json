@@ -1,0 +1,161 @@
+{
+  "id": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02",
+  "title": "Infinite converse to Cayley: a free transitive H ≤ Sym(α) has #H = #α",
+  "slug": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02",
+  "description": "The parent entry (cayleys-theorem-oq-01-oq-01-oq-02-oq-01) proves the finite converse to Cayley: a subgroup H ≤ Sₙ = Equiv.Perm α acting freely and transitively on a finite nonempty α is regular of order n = |α|, via the orbit bijection regularEquiv : H ≃ α. Its order statement is phrased with Nat.card, which collapses to the vacuous 0 = 0 when α is infinite. This entry answers the parent's second open question by recording the genuine infinite generalisation. The same orbit map σ ↦ σ a is a bijection H ≃ α for ARBITRARY nonempty α — the parent's regularEquiv is built with no finiteness hypothesis — so transporting cardinality across it gives the honest converse over any α: (1) Cardinal equality #H = #α (Cardinal.mk H = Cardinal.mk α), non-vacuous precisely when α is infinite and specialising back to the finite count; (2) Infinitude transfer, H is infinite iff α is, so a free transitive subgroup of Sym(α) over an infinite α is itself infinite of the same cardinality; (3) Sharp transitivity carries over verbatim from the parent (already proved for arbitrary α). The packaged statement regular_iff_cardinalMk_and_sharp records cardinal equality plus unique transitivity, and natCard_eq_of_cardinalMk confirms consistency with the finite parent. Everything reduces to the parent's one explicit bijection — no new mathematics, only the correct cardinal invariant for the infinite regime.",
+  "meta": {
+    "author": "Arthur Cayley (1854); infinite converse formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Regular_representation",
+    "date": "1854",
+    "status": "verified",
+    "tags": [
+      "group-theory",
+      "cayley",
+      "permutation-group",
+      "regular-representation",
+      "sharply-transitive",
+      "free-action",
+      "transitive-action",
+      "group-action",
+      "symmetric-group",
+      "cardinality",
+      "infinite-group",
+      "cardinal-arithmetic",
+      "converse",
+      "algebra",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.mk_congr",
+        "description": "an equivalence of types preserves the cardinal Cardinal.mk — transports the parent's regular equivalence H ≃ α to the cardinal equality #H = #α, the engine of the infinite converse",
+        "module": "Mathlib.SetTheory.Cardinal.Defs"
+      },
+      {
+        "theorem": "Equiv.infinite_iff",
+        "description": "an equivalence α ≃ β yields Infinite α ↔ Infinite β — transfers infinitude across the orbit bijection so that H is infinite exactly when α is",
+        "module": "Mathlib.Data.Finite.Defs"
+      }
+    ],
+    "originalContributions": [
+      "cardinalMk_eq_of_free_transitive: the infinite converse to Cayley — Cardinal.mk H = Cardinal.mk α for a free transitive subgroup over arbitrary nonempty α, the non-vacuous generalisation of the parent's Nat.card order count",
+      "infinite_iff_of_free_transitive: infinitude transfer — H is infinite iff the underlying point set α is, via the orbit bijection",
+      "infinite_of_free_transitive: a free transitive subgroup of Sym(α) over an infinite α is itself infinite (and of the same cardinality)",
+      "regular_iff_cardinalMk_and_sharp: the packaged infinite converse — cardinal equality #H = #α together with sharp transitivity, valid over arbitrary nonempty α",
+      "natCard_eq_of_cardinalMk: consistency with the finite parent — the cardinal equality refines to Nat.card H = Fintype.card α for finite α, so the infinite statement extends rather than replaces the finite one"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 90,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, the latter via Classical.arbitrary to pick a basepoint). No decide/native_decide is used. α is assumed nonempty (required: an empty α would give #H = 1 ≠ 0 = #α). The cardinal equality holds for arbitrary α, finite or infinite; the infinitude statements require α infinite as stated.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Cayley's theorem (1854) realises an abstract group inside a symmetric group as the left-regular representation, whose image is a regular (simply transitive) permutation group: it acts transitively (one orbit) and freely (only the identity fixes a point). The parent entry proves the finite converse — a free transitive subgroup of Sₙ has order n and is sharply transitive — using the orbit map σ ↦ σ a as an explicit bijection H ≃ α. That argument never invokes finiteness; only the order statement, phrased with Nat.card, becomes vacuous for infinite α (where Nat.card returns 0). For infinite permutation groups the correct invariant is the cardinal #H, and the regular representation of an infinite group G acts freely and transitively on the set G with |G| elements. This entry records the honest infinite statement: a free transitive subgroup of Sym(α) has cardinality exactly #α, the abstract characterisation of regular permutation groups in the infinite setting.",
+    "problemStatement": "**Open Question (cayleys-theorem-oq-01-oq-01-oq-02-oq-01, second follow-up)**: Drop finiteness — for an infinite set α, a free transitive subgroup H ≤ Sym(α) is in bijection with α via the same orbit map (the parent's argument never used finiteness except to read |H| = n); record the cardinal equality #H = #α.\n\n**Result**: For any subgroup H ≤ Equiv.Perm α over an arbitrary nonempty type α, ActsTransitively H ∧ ActsFreely H implies Cardinal.mk H = Cardinal.mk α (cardinalMk_eq_of_free_transitive) and ∀ i j, ∃! σ ∈ H with σ i = j (reused from the parent), assembled in regular_iff_cardinalMk_and_sharp. Infinitude transfers: Infinite H ↔ Infinite α.",
+    "text": "Let α be an arbitrary nonempty type and H ≤ Equiv.Perm α a subgroup that is transitive (∀ i j, ∃ σ ∈ H with σ i = j) and free (any σ ∈ H fixing a single point is the identity). The parent's orbit map σ ↦ σ a is a bijection H ≃ α at any basepoint a — surjective by transitivity, injective by the freeness rigidity lemma — with no use of finiteness. Transporting cardinality along this equivalence with Cardinal.mk_congr gives #H = #α. When α is finite this recovers the parent's Nat.card H = Fintype.card α; when α is infinite it is the genuine content the Nat.card count cannot express. Infinitude transfers across the same equivalence via Equiv.infinite_iff, so H is infinite exactly when α is.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Reuse the parent's regularEquiv : H ≃ α — the orbit map σ ↦ σ a packaged as an equivalence via Equiv.ofBijective, built from rigidity (freeness pins an element down by one value) and transitivity (surjectivity), with no finiteness hypothesis.\n2. Cardinal equality (cardinalMk_eq_of_free_transitive). Apply Cardinal.mk_congr to regularEquiv at basepoint Classical.arbitrary α to get Cardinal.mk H = Cardinal.mk α. This is non-vacuous for infinite α, where the parent's Nat.card statement reads 0 = 0.\n3. Infinitude transfer (infinite_iff_of_free_transitive, infinite_of_free_transitive). Apply Equiv.infinite_iff to the same equivalence: Infinite H ↔ Infinite α, hence H is infinite whenever α is.\n4. Packaging (regular_iff_cardinalMk_and_sharp). IsRegular H = ActsTransitively H ∧ ActsFreely H yields the cardinal equality together with the parent's existsUnique_of_free_transitive (sharp transitivity, already proved for arbitrary α).\n5. Consistency (natCard_eq_of_cardinalMk). For finite α the result refines to the parent's Nat.card H = Fintype.card α, confirming the infinite statement extends the finite one.",
+    "keyInsights": [
+      "**Nat.card hides the infinite content.** The parent's order statement Nat.card H = Nat.card α is the vacuous 0 = 0 for infinite α, because Nat.card returns 0 on infinite types. The cardinal equality #H = #α is the same fact stated with the invariant that survives — and it specialises back to the finite count.",
+      "**The bijection was always finiteness-free.** The parent's regularEquiv : H ≃ α uses only rigidity (freeness) and transitivity, never that α is finite. So the entire infinite converse is just the correct cardinal transport of an equivalence the parent already built — no new construction.",
+      "**Regularity forces cardinality, even infinitely.** A free transitive subgroup of Sym(α) has exactly #α elements: order equals degree as cardinals. This is why the regular action of an infinite group G on its underlying set is the universal transitive G-set.",
+      "**Infinitude is an invariant of regularity.** H and α are infinite together; a free transitive permutation group on an infinite set is necessarily an infinite group of the same cardinality."
+    ],
+    "prerequisites": [
+      "The parent entry's orbit bijection regularEquiv : H ≃ α and its predicates ActsTransitively, ActsFreely, IsRegular (cayleys-theorem-oq-01-oq-01-oq-02-oq-01)",
+      "Cardinals and Cardinal.mk: Cardinal.mk_congr transporting #· along an equivalence; the fact that Nat.card vanishes on infinite types while Cardinal.mk does not",
+      "Infinitude transfer along equivalences: Equiv.infinite_iff (Infinite α ↔ Infinite β from α ≃ β)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring explaining that the parent's Nat.card order count is vacuous for infinite α and that the genuine generalisation is the cardinal equality #H = #α, obtained by transporting the parent's finiteness-free orbit bijection regularEquiv. Imports the parent file (Proofs.CayleysTheoremOQ01OQ01OQ02OQ01) and reopens the CayleyConverse namespace; reuses ActsTransitively, ActsFreely, IsRegular and regularEquiv.",
+      "mathContext": "Parent gives $H \\simeq \\alpha$ with no finiteness; restate $|H| = |\\alpha|$ as cardinals."
+    },
+    {
+      "id": "cardinal-equality",
+      "title": "Cardinal Equality #H = #α",
+      "startLine": 41,
+      "endLine": 53,
+      "summary": "cardinalMk_eq_of_free_transitive: for arbitrary nonempty α, a free transitive subgroup has Cardinal.mk H = Cardinal.mk α, via Cardinal.mk_congr applied to regularEquiv at basepoint Classical.arbitrary α. The non-vacuous infinite converse to Cayley.",
+      "mathContext": "$\\#H = \\#\\alpha$ — order equals degree as cardinals, for any $\\alpha$."
+    },
+    {
+      "id": "infinitude",
+      "title": "Infinitude Transfer",
+      "startLine": 54,
+      "endLine": 70,
+      "summary": "infinite_iff_of_free_transitive: Infinite H ↔ Infinite α via Equiv.infinite_iff on regularEquiv. infinite_of_free_transitive: for infinite α a free transitive subgroup H is itself infinite (and of the same cardinality).",
+      "mathContext": "$\\mathrm{Infinite}\\,H \\iff \\mathrm{Infinite}\\,\\alpha$."
+    },
+    {
+      "id": "conclusion",
+      "title": "Packaged Converse and Consistency",
+      "startLine": 71,
+      "endLine": 90,
+      "summary": "regular_iff_cardinalMk_and_sharp: from IsRegular H over arbitrary nonempty α, both #H = #α and sharp transitivity (parent's existsUnique_of_free_transitive). natCard_eq_of_cardinalMk: for finite α the result refines to the parent's Nat.card H = Fintype.card α, confirming the infinite statement extends the finite one.",
+      "mathContext": "Regular $H \\Rightarrow \\#H = \\#\\alpha \\wedge$ sharply transitive; refines to $|H| = n$ when finite."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: the finite converse to Cayley (a free transitive subgroup of Sₙ has order n and is sharply transitive), built on the orbit bijection regularEquiv : H ≃ α. This entry answers its second open question by dropping finiteness — the same bijection gives the cardinal equality #H = #α for arbitrary α, with the parent's sharp transitivity reused verbatim."
+    },
+    {
+      "targetId": "cayleys-theorem-oq-01-oq-01-oq-02",
+      "relationship": "builds-on",
+      "description": "Grandparent entry: the finite Cayley embedding and its regular range. The infinite converse here abstractly characterises regular subgroups of Sym(α) in the infinite setting, complementing the grandparent's construction."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) proof of the infinite converse to Cayley: a subgroup H ≤ Sym(α) = Equiv.Perm α over an arbitrary nonempty type α that acts freely and transitively has Cardinal.mk H = Cardinal.mk α (cardinalMk_eq_of_free_transitive), is infinite exactly when α is (infinite_iff_of_free_transitive), and is sharply transitive — assembled in regular_iff_cardinalMk_and_sharp. The proof transports the parent's finiteness-free orbit bijection regularEquiv : H ≃ α across Cardinal.mk_congr and Equiv.infinite_iff; natCard_eq_of_cardinalMk confirms it refines to the parent's finite count.",
+    "implications": "Gives the honest order statement of the converse to Cayley in the infinite regime, where the parent's Nat.card count is the vacuous 0 = 0. A regular permutation group has cardinality exactly equal to the set it acts on, finite or infinite — the structural reason the regular action of any group is the universal transitive action. No new mathematics beyond the parent: only the correct cardinal invariant applied to an equivalence the parent already established.",
+    "openQuestions": [
+      "Make the regular representation explicit in the infinite setting: for a free transitive H ≤ Sym(α), construct a group isomorphism between H and the abstract group whose left-regular action on its own underlying set (of cardinality #α) recovers H, completing the structural classification beyond cardinality.",
+      "Compare #H with the ambient #Sym(α) = 2^#α: record that a regular subgroup is a proper subgroup of strictly smaller cardinality whenever α is infinite, quantifying how far the regular representation sits below the full symmetric group."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.CayleysTheoremOQ01OQ01OQ02OQ01"
+    ],
+    "opens": [
+      "Equiv"
+    ],
+    "namespace": "CayleyConverse",
+    "lineCount": 90,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Cayley, Arthur",
+      "title": "On the theory of groups, as depending on the symbolic equation θⁿ = 1",
+      "year": "1854",
+      "venue": "Philosophical Magazine, Series 4, 7(42)",
+      "note": "Original statement of the regular representation; the converse characterises its image"
+    },
+    {
+      "authors": "Dixon, John D.; Mortimer, Brian",
+      "title": "Permutation Groups",
+      "year": "1996",
+      "venue": "Springer GTM 163",
+      "note": "Regular permutation groups and simple transitivity, including the infinite case"
+    }
+  ],
+  "sorries": 0
+}
