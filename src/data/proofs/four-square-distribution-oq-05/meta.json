@@ -98,7 +98,12 @@
   ],
   "conclusion": {
     "summary": "Machine-verified divisibility structure of the four-square symmetry multiplier: 2^(nonzeroCount t) ∣ contribution t for every type, hence 8 ∣ contribution t once a type has ≥ 3 nonzero entries and 16 ∣ contribution t when all four are nonzero. Zero sorries, zero axioms beyond the foundational ones.",
-    "implications": "Isolates the sign-change half of the hyperoctahedral symmetry behind Jacobi's factor of 8 at the per-type level, complementing the parent's upper bound. The full 8 ∣ r₄(n) refinement (needing the permutation parity in the one- and two-nonzero cases) is identified as the remaining step."
+    "implications": "Isolates the sign-change half of the hyperoctahedral symmetry behind Jacobi's factor of 8 at the per-type level, complementing the parent's upper bound. The full 8 ∣ r₄(n) refinement (needing the permutation parity in the one- and two-nonzero cases) is identified as the remaining step.",
+    "openQuestions": [
+      "Can the permutation parity in the one- and two-nonzero cases be supplied so that 8 ∣ contribution t holds for every type with ≥ 1 nonzero entry, yielding a fully type-local proof of Jacobi's 8 ∣ r₄(n) for n ≥ 1?",
+      "Does the same sign-part argument generalize to sums of 2k squares, giving 2^(nonzeroCount) ∣ contribution under the hyperoctahedral group B_{2k} = (ℤ/2)^{2k} ⋊ S_{2k}, and how does the resulting power of two compare with the known factor in r_{2k}(n)?",
+      "What is the exact 2-adic valuation v₂(contribution t) — i.e. when does the permutation count permutations(t) contribute additional factors of 2 beyond the sign part established here?"
+    ]
   },
   "mainTheorems": [
     {
