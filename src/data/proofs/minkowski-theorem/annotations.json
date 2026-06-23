@@ -54,7 +54,7 @@
     },
     "type": "concept",
     "title": "Origin Membership Lemma",
-    "content": "**Theorem**: The origin lies in any nonempty, centrally symmetric, convex set $S$.\n\n**Proof**: Pick $x \\in S$ (nonemptiness). Then $-x \\in S$ (symmetry). By convexity with weights $1/2$ each, the midpoint $\\frac{1}{2}x + \\frac{1}{2}(-x) = 0 \\in S$.\n\nThis is the only fully proved theorem in the file (not axiomatized).",
+    "content": "**Theorem**: The origin lies in any nonempty, centrally symmetric, convex set $S$.\n\n**Proof**: Pick $x \\in S$ (nonemptiness). Then $-x \\in S$ (symmetry). By convexity with weights $1/2$ each, the midpoint $\\frac{1}{2}x + \\frac{1}{2}(-x) = 0 \\in S$.\n\nThis is one of the file's supporting lemmas; the main result `minkowski_fundamental` is likewise fully proved from Mathlib's geometry of numbers (no axioms in the file).",
     "mathContext": "Uses Mathlib's `Convex ℝ S` applied to $x$ and $-x$ with coefficients $1/2$, combined with the definition `CentrallySymmetric`.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -142,16 +142,16 @@
     "id": "ann-main-theorem",
     "proofId": "minkowski-theorem",
     "range": {
-      "startLine": 273,
-      "endLine": 275
+      "startLine": 356,
+      "endLine": 360
     },
     "type": "concept",
-    "title": "Main Theorem (Axiomatized)",
-    "content": "**Minkowski's Fundamental Theorem**:\n\n$$\\text{vol}(S) > 2^n \\cdot \\text{covol}(L) \\Rightarrow \\exists x \\in S \\cap L, x \\neq 0$$\n\n**Status**: Axiomatized because the full proof requires measure-theoretic machinery (Fubini's theorem, change of variables) and a careful infinite pigeonhole argument that is beyond current scope.\n\nThe equivalent formulation `minkowski_fundamental'` unfolds `criticalVolume` explicitly.",
-    "mathContext": "Stated as `axiom` rather than `theorem` because the proof requires integration over lattice translates and measure-theoretic pigeonhole, which needs Mathlib's `MeasureTheory.Measure.Lebesgue` in a way not yet set up in this file.",
+    "title": "Main Theorem: Proved from Mathlib's Geometry of Numbers",
+    "content": "**Minkowski's Fundamental Theorem**:\n\n$$\\text{vol}(S) > 2^n \\cdot \\text{covol}(L) \\Rightarrow \\exists x \\in S \\cap L, x \\neq 0$$\n\n**Status**: Fully proved (no axioms, no sorries). `minkowski_fundamental` discharges the goal by bridging the file's custom `Lattice`/`ConvexBody` types to Mathlib's lattice infrastructure and applying `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`, Mathlib's formalization of the classical pigeonhole/covering argument. The volume hypothesis is transported from ℝ to ENNReal and `latticePoints` is identified with the integer span.\n\nThe equivalent formulation `minkowski_fundamental'` unfolds `criticalVolume` explicitly.",
+    "mathContext": "Proved, not axiomatized: the measure-theoretic core (integration over lattice translates and the infinite pigeonhole) is supplied by Mathlib's `MeasureTheory.Measure.Lebesgue` and `GeometryOfNumbers` machinery, which this file imports and applies directly.",
     "significance": "key",
     "relatedConcepts": [
-      "axiom",
+      "geometry of numbers",
       "volume threshold",
       "lattice point",
       "pigeonhole principle"
@@ -173,7 +173,7 @@
     },
     "type": "concept",
     "title": "Integer Lattice Specialization",
-    "content": "**For $\\mathbb{Z}^n$**: If $\\text{vol}(S) > 2^n$, then $S$ contains a nonzero integer point.\n\nThis is the most commonly stated form. The proof rewrites `criticalVolume (standardLattice n) = 2^n` using `standardLattice_covolume` and applies the main axiom.",
+    "content": "**For $\\mathbb{Z}^n$**: If $\\text{vol}(S) > 2^n$, then $S$ contains a nonzero integer point.\n\nThis is the most commonly stated form. The proof rewrites `criticalVolume (standardLattice n) = 2^n` using `standardLattice_covolume` and applies the main theorem `minkowski_fundamental`.",
     "mathContext": "Derives the standard-lattice case from the general theorem by showing $\\text{covol}(\\mathbb{Z}^n) = 1$, so $\\text{critVol} = 2^n \\cdot 1 = 2^n$.",
     "significance": "key",
     "relatedConcepts": [
