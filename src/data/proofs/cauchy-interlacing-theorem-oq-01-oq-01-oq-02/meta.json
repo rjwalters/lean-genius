@@ -4,11 +4,44 @@
   "title": "Cauchy Interlacing for a Principal Submatrix: the Eigenvalue Corollary",
   "description": "Assembles the literal matrix Cauchy interlacing theorem: the descending eigenvalues of a Hermitian (n+1)×(n+1) matrix and of any principal submatrix obtained by deleting one row and the matching column interlace, λ_{k+1} ≤ μ_k ≤ λ_k. The bridge is a coordinate isometry under which the orthogonal compression of the matrix operator IS the submatrix operator, so the submatrix's spectral eigenbasis transports to an eigenbasis of the compression with the same antitone eigenvalues, which feeds the gallery's abstract Cauchy interlacing theorem. 0 axioms, 0 sorries.",
   "meta": {
+    "author": "Cauchy (interlacing); formalized for lean-genius",
     "status": "verified",
     "badge": "mathlib",
+    "proofRepoPath": "Proofs/CauchyInterlacingOQ01OQ01OQ02.lean",
     "axiomCount": 0,
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "lineCount": 292,
+    "theoremCount": 11,
+    "definitionCount": 2,
     "difficulty": "advanced",
     "category": "linear-algebra",
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.IsHermitian.eigenvalues₀",
+        "description": "the descending (antitone) eigenvalue list of a Hermitian matrix — the indexing the literal corollary is stated against",
+        "module": "Mathlib.LinearAlgebra.Matrix.Spectrum"
+      },
+      {
+        "theorem": "OrthonormalBasis.mk",
+        "description": "assembles an orthonormal spanning family into an orthonormal basis — used to build coordBasis on the coordinate hyperplane",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "Matrix.toEuclideanLin_apply",
+        "description": "toEuclideanLin M v = toLp (M *ᵥ ofLp v) — the matrix acts as the Euclidean operator whose compression is identified with the submatrix operator",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      }
+    ],
+    "originalContributions": [
+      "coordEquiv: the coordinate isometry EuclideanSpace 𝕜 (Fin n) ≃ₗᵢ H sending e_i ↦ e_{j.succAbove i}, built from coordBasis via OrthonormalBasis.mk + repr.symm",
+      "compress_intertwine: the intertwining compress (toEuclideanLin A) H (coordEquiv x) = coordEquiv (toEuclideanLin A' x) — the spectral-level form of the previous entry's form-level identification",
+      "interlacing_of_intertwine: a reusable transfer engine that converts an isometric intertwining into the interlacing conclusion by transporting the eigenbasis, requiring no eigenvalue-uniqueness lemma",
+      "principalSubmatrix_eigenvalues_interlacing: the operator-eigenvalue form of the corollary λ_{k+1} ≤ μ_k ≤ λ_k",
+      "eigenvalues₀_principalSubmatrix_interlacing: the literal matrix statement against Mathlib's Matrix.IsHermitian.eigenvalues₀ indexing, via the bookkeeping lemma eigenvalues_finrank_congr"
+    ],
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. The core spectral-theorem and Hermitian-eigenvalue infrastructure (Matrix.IsHermitian.eigenvalues₀, the orthonormal-basis machinery) is supplied by Mathlib; this entry provides the coordinate isometry, the intertwining, and the transfer engine that assemble the matrix-level corollary. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound.",
     "tags": [
       "Cauchy interlacing",
       "eigenvalues",
