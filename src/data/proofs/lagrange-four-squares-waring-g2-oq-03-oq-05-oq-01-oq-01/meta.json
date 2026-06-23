@@ -1,0 +1,165 @@
+{
+  "id": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
+  "slug": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
+  "title": "The Normalized One-Sided Density Error Converges to 4 Along the Extremal Family",
+  "description": "Determines the exact normalized extremal constant of the non-three-square density error. The parent oq-03-oq-05-oq-01 built the extremal family a k = (4^{k+2}+2)/3, along which the one-sided error E(N) = N − 6·excludedCount N takes the exact value 4k+6, and asked for the precise constant in E(a k)/log₄(a k). This entry proves the limit is exactly 4: from the closed form 3·a k = 4^{k+2}+2 one gets (k+2) − log₄3 ≤ log₄(a k) ≤ k+2, so (4k+6)/log₄(a k) → 4 by a squeeze, pinning the normalized extremal constant of the explicit subsequence to 4.",
+  "overview": {
+    "historicalContext": "Second-order density laws come with a remainder term, and once its size and sign are known the next natural question is its exact normalized constant — the analogue, for the three-square exceptional family, of asking for the precise constant in an error-term asymptotic. The sibling chain established the density 1/6 (oq-03-oq-05), then the one-sidedness and Θ(log N) order of the error E(N) = N − 6·excludedCount N (oq-03-oq-05-oq-01) via the explicit extremal family a k = (4^{k+2}+2)/3 on which E(a k) = 4k+6 exactly. Because a k ≈ 4^k, the parent observed E(a k) ≈ 4·log₄(a k) and asked for the exact normalized constant. This entry confirms the limit is exactly 4.",
+    "problemStatement": "For the extremal family a k = (4^{k+2}+2)/3 of the non-three-square error (a 0 = 6, a (k+1) = 4·a k − 2), with one-sided error E(a k) = a k − 6·excludedCount (a k) = 4k+6, determine the limit of the normalized error E(a k)/log₄(a k) as k → ∞.",
+    "proofStrategy": "Establish the integer closed form 3·a k = 4^{k+2}+2 by induction on the recurrence, giving the real identity a k = (4^{k+2}+2)/3 and the elementary two-sided bound 4^{k+2}/3 ≤ a k ≤ 4^{k+2}. Apply monotonicity of log₄ and log₄(4^{k+2}) = k+2 to get (k+2) − log₄3 ≤ log₄(a k) ≤ k+2. The numerator is the exact value 4k+6 (parent error_eq, cast to ℝ). Combine into |E(a k)/log₄(a k) − 4| ≤ (2 + 4·log₄3)/log₄(a k): since log₄(a k) → ∞ (it dominates k, because log₄3 ≤ 1), the bound tends to 0, and a two-sided squeeze gives the limit 4.",
+    "keyInsights": [
+      "The numerator needs no asymptotics: the parent already pins E(a k) = 4k+6 exactly, so the entire problem is a clean estimate of the denominator log₄(a k).",
+      "The closed form 3·a k = 4^{k+2}+2 sandwiches a k between 4^{k+2}/3 and 4^{k+2}, giving log₄(a k) = (k+2) + O(1) with the O(1) error pinned between −log₄3 and 0.",
+      "The whole limit collapses to |E(a k)/log₄(a k) − 4| ≤ (2 + 4·log₄3)/log₄(a k): the numerator 4k+6 and 4·log₄(a k) ≈ 4(k+2) differ by a bounded constant, so dividing by the diverging log kills the gap.",
+      "Divergence of the denominator is itself elementary: log₄3 ≤ 1 forces log₄(a k) ≥ (k+2) − log₄3 ≥ k, so it dominates k directly with no constant-shift bookkeeping.",
+      "The constant 4 is the limit along this explicit extremal subsequence; whether it is also the limsup of the normalized one-sided error over all N is a strictly separate question left open here."
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup-section",
+      "title": "Setup: closed form and real-number bounds",
+      "startLine": 1,
+      "endLine": 86,
+      "summary": "Docstring framing the open question oq-03-oq-05-oq-01-oq-01, then the integer closed form three_mul_a: 3·a k = 4^{k+2}+2 by induction on the recurrence a (k+1) = 4·a k − 2 (the ℕ-subtraction safe since a k ≥ 6). This gives a_real: a k = (4^{k+2}+2)/3 over ℝ, and the elementary sandwich a_lb / a_ub: 4^{k+2}/3 ≤ a k ≤ 4^{k+2}, plus positivity a_pos.",
+      "mathContext": "3·a k = 4^{k+2}+2, so 4^{k+2}/3 ≤ a k ≤ 4^{k+2} over ℝ."
+    },
+    {
+      "id": "logb-bounds-section",
+      "title": "Two-sided bounds on log₄(a k)",
+      "startLine": 88,
+      "endLine": 116,
+      "summary": "logb_a_ub: log₄(a k) ≤ k+2 (from a k ≤ 4^{k+2} and log₄(4^{k+2}) = k+2), logb_a_lb: (k+2) − log₄3 ≤ log₄(a k) (from 4^{k+2}/3 ≤ a k and log₄(4^{k+2}/3) = (k+2) − log₄3), and positivity logb_a_pos. Uses monotonicity of log₄, log₄(4^{k+2}) = (k+2)·log₄4 = k+2, and the quotient law log₄(x/y) = log₄x − log₄y.",
+      "mathContext": "(k+2) − log₄3 ≤ log₄(a k) ≤ k+2, and log₄(a k) > 0."
+    },
+    {
+      "id": "numerator-section",
+      "title": "The numerator is the exact value 4k+6",
+      "startLine": 118,
+      "endLine": 125,
+      "summary": "error_real casts the parent's exact identity error_eq (a k − 6·excludedCount (a k) = 4k+6 over ℤ) to the reals, supplying the numerator of the normalized error with no approximation.",
+      "mathContext": "a k − 6·excludedCount (a k) = 4k+6 over ℝ."
+    },
+    {
+      "id": "limit-section",
+      "title": "The normalized error converges to 4",
+      "startLine": 127,
+      "endLine": 177,
+      "summary": "normalized_error_tendsto_four: (a k − 6·excludedCount (a k))/log₄(a k) → 4. The denominator → ∞ (it dominates k since log₄3 ≤ 1), so the constant-over-log error bound (2 + 4·log₄3)·log₄(a k)⁻¹ → 0; clearing the positive denominator gives 4 − bound ≤ E/log₄ ≤ 4 + bound, and a two-sided squeeze yields the limit 4.",
+      "mathContext": "(4k+6)/log₄(a k) → 4 as k → ∞."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.LagrangeFourSquaresWaringG2OQ03OQ05OQ01"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "LagrangeFourSquaresWaringG2OQ03OQ05",
+      "LagrangeFourSquaresWaringG2OQ03OQ05OQ01"
+    ],
+    "namespace": "LagrangeFourSquaresWaringG2OQ03OQ05OQ01OQ01",
+    "lineCount": 177,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/LagrangeFourSquaresWaringG2OQ03OQ05OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeFourSquaresWaringG2OQ03OQ05OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "sums-of-squares",
+      "three-square-theorem",
+      "legendre-three-square",
+      "waring-problem",
+      "natural-density",
+      "asymptotic-density",
+      "error-term",
+      "asymptotics",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 177,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "normalized_error_tendsto_four: the headline — the normalized one-sided density error of the three-square exceptional family converges to exactly 4 along the parent's extremal family, Tendsto (fun k => (a k − 6·excludedCount (a k))/log₄(a k)) atTop (𝓝 4). This pins the exact normalized extremal constant left open by oq-03-oq-05-oq-01. The numerator is the parent's exact value 4k+6; the denominator is squeezed by (k+2) − log₄3 ≤ log₄(a k) ≤ k+2, and the whole limit reduces to the bound |E(a k)/log₄(a k) − 4| ≤ (2 + 4·log₄3)/log₄(a k) → 0. No Mathlib theorem packages this limit; the squeeze and the two-sided logb bound are assembled in-file from elementary monotonicity and quotient laws of log₄.",
+      "three_mul_a + a_real: the exact integer closed form 3·a k = 4^{k+2}+2 of the parent's recurrence a (k+1) = 4·a k − 2, proved by induction with the ℕ-subtraction discharged by omega, and its real form a k = (4^{k+2}+2)/3. This is the quantitative bridge that converts the parent's purely recursive family into the sharp two-sided estimate 4^{k+2}/3 ≤ a k ≤ 4^{k+2} the logarithm needs.",
+      "logb_a_ub + logb_a_lb: the explicit two-sided bound (k+2) − log₄3 ≤ log₄(a k) ≤ k+2 for the extremal family, isolating the O(1) deviation of log₄(a k) from k+2 to the interval [−log₄3, 0]. These are exactly the inputs that make the normalized-error squeeze elementary and constant-free.",
+      "The reduction to |E(a k)/log₄(a k) − 4| ≤ (2 + 4·log₄3)·log₄(a k)⁻¹: the conceptual core. Because the numerator 4k+6 and 4·log₄(a k) ≈ 4(k+2) differ by a bounded constant, the normalized error is forced to 4 by dividing through the diverging denominator — turning the parent's 'error ≈ 4·log₄ N' heuristic into a proved limit."
+    ],
+    "prerequisites": [
+      "The extremal family a, its membership facts a_ge / a_mod8, and the exact error identity error_eq (a k − 6·excludedCount (a k) = 4k+6) from the parent oq-03-oq-05-oq-01 — imported and reused verbatim; this entry adds only the asymptotic analysis of the already-pinned error along the same family.",
+      "Real.logb monotonicity (Real.logb_le_logb_of_le), the power and quotient laws (Real.logb_pow, Real.logb_div) and Real.logb_self_eq_one, used to bound log₄(a k) between (k+2) − log₄3 and k+2.",
+      "Filter limits: tendsto_atTop_mono and tendsto_natCast_atTop_atTop (denominator → ∞), Filter.Tendsto.inv_tendsto_atTop and Filter.Tendsto.const_mul (error bound → 0), and tendsto_of_tendsto_of_tendsto_of_le_of_le (the two-sided squeeze)."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.logb_le_logb_of_le",
+        "description": "Monotonicity of log₄, turning 4^{k+2}/3 ≤ a k ≤ 4^{k+2} into the two-sided bound on log₄(a k).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Base"
+      },
+      {
+        "theorem": "Real.logb_pow",
+        "description": "log₄(4^{k+2}) = (k+2)·log₄4, which with Real.logb_self_eq_one gives log₄(4^{k+2}) = k+2.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Base"
+      },
+      {
+        "theorem": "tendsto_of_tendsto_of_tendsto_of_le_of_le",
+        "description": "The two-sided squeeze: 4 − bound ≤ E(a k)/log₄(a k) ≤ 4 + bound with both comparison functions tending to 4.",
+        "module": "Mathlib.Topology.Order.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto.inv_tendsto_atTop",
+        "description": "log₄(a k) → ∞ gives log₄(a k)⁻¹ → 0, hence (2 + 4·log₄3)·log₄(a k)⁻¹ → 0.",
+        "module": "Mathlib.Topology.Algebra.Order.Field"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01-oq-01",
+      "question": "Is 4 the limsup of the normalized one-sided error (N − 6·excludedCount N)/log₄ N over ALL N, or can a different residue chain — or an interleaving of 4-descents that does not stay on a single residue — realize a strictly larger normalized constant?",
+      "significance": "medium"
+    },
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01-oq-02",
+      "question": "Does the normalized error along a k admit a sharper second-order expansion, e.g. E(a k)/log₄(a k) = 4 − c/k + o(1/k) with an explicit c, capturing the rate of convergence to 4 rather than only the limit?",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01",
+      "relationship": "extends",
+      "description": "Answers the first follow-up question posed by oq-03-oq-05-oq-01: the exact normalized extremal constant of the one-sided density error. Reuses that entry's extremal family a and its exact error identity error_eq verbatim, adding only the asymptotic analysis E(a k)/log₄(a k) → 4."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-05",
+      "relationship": "depends-on",
+      "description": "Transitively relies on the density-1/6 entry's counting function excludedCount and its 4-descent recursion, through which the parent's error identity and extremal family are defined."
+    }
+  ],
+  "references": [
+    {
+      "title": "Essai sur la théorie des nombres",
+      "author": "Adrien-Marie Legendre",
+      "year": "1798",
+      "venue": "Three-square theorem",
+      "description": "n = x²+y²+z² is solvable iff n ≠ 4^a(8b+7). This entry pins the normalized constant of the second-order error term in the counting function of the exceptional family 4^a(8b+7)."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Along the extremal family a k = (4^{k+2}+2)/3 of the non-three-square density error (a 0 = 6, a (k+1) = 4·a k − 2), the normalized one-sided error E(a k)/log₄(a k) converges to exactly 4. The numerator is the parent's exact value E(a k) = a k − 6·excludedCount (a k) = 4k+6; the integer closed form 3·a k = 4^{k+2}+2 (three_mul_a) sandwiches the family as 4^{k+2}/3 ≤ a k ≤ 4^{k+2}, giving the two-sided bound (k+2) − log₄3 ≤ log₄(a k) ≤ k+2. Hence |E(a k)/log₄(a k) − 4| ≤ (2 + 4·log₄3)/log₄(a k), and since log₄(a k) → ∞ the bound vanishes, so a two-sided squeeze (normalized_error_tendsto_four) yields the limit 4. 177 lines, 10 theorems, 0 definitions, 0 axioms, 0 sorries; the single decide is a kernel decision on small numerals (no native_decide), so #print axioms = [propext, Classical.choice, Quot.sound].",
+    "implications": "The normalized extremal constant of the three-square density error is exactly 4 along the explicit worst-case family — a proved companion to the parent's Θ(log N) order. The result is a clean limit, not a limsup claim: whether some other residue chain or interleaved descent pushes the normalized constant strictly above 4 over all N remains open, as does the precise rate of convergence to 4."
+  }
+}

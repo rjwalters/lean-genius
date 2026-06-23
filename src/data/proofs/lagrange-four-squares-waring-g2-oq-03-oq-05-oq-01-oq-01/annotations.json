@@ -1,0 +1,112 @@
+[
+  {
+    "id": "strategy-overview",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
+    "range": {
+      "startLine": 20,
+      "endLine": 49
+    },
+    "type": "insight",
+    "title": "The Whole Problem Is an Estimate of the Denominator",
+    "content": "The docstring records the conceptual shape of the proof. The parent oq-03-oq-05-oq-01 already pinned the numerator exactly — the one-sided error along the extremal family a k = (4^{k+2}+2)/3 is E(a k) = 4k+6, with no approximation. So the normalized error E(a k)/log₄(a k) is entirely controlled by the denominator. The closed form 3·a k = 4^{k+2}+2 sandwiches the family between 4^{k+2}/3 and 4^{k+2}, hence (k+2) − log₄3 ≤ log₄(a k) ≤ k+2: the logarithm equals k+2 up to a bounded constant. Since 4·log₄(a k) ≈ 4(k+2) and the numerator is 4k+6, the two differ by O(1), and dividing by the diverging log forces the ratio to 4.",
+    "mathContext": "$E(a_k)=4k+6$ exactly; $(k+2)-\\log_4 3 \\le \\log_4(a_k) \\le k+2$, so $\\dfrac{4k+6}{\\log_4(a_k)}\\to 4$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "normalized error term",
+      "squeeze theorem",
+      "logarithmic asymptotics",
+      "extremal family"
+    ],
+    "prerequisites": [
+      "asymptotic density",
+      "real logarithm base b"
+    ]
+  },
+  {
+    "id": "closed-form",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
+    "range": {
+      "startLine": 53,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "Closed Form 3·a k = 4^{k+2}+2 and the Real Sandwich",
+    "content": "`three_mul_a` proves the exact integer closed form 3·a k = 4^{k+2}+2 by induction on the parent's recurrence a (k+1) = 4·a k − 2; the ℕ-subtraction is safe because a k ≥ 6, and omega discharges the step given pow_succ. Casting to ℝ gives `a_real`: a k = (4^{k+2}+2)/3, and dropping/inflating the +2 yields the sandwich `a_lb`/`a_ub`: 4^{k+2}/3 ≤ a k ≤ 4^{k+2}. This is the quantitative bridge that converts the parent's purely recursive family into the explicit two-sided bound the logarithm needs.",
+    "mathContext": "$3a_k = 4^{k+2}+2$, hence $\\dfrac{4^{k+2}}{3} \\le a_k \\le 4^{k+2}$ over $\\mathbb{R}$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "linear recurrence closed form",
+      "induction",
+      "natural-number subtraction"
+    ],
+    "prerequisites": [
+      "geometric recurrence",
+      "omega decision procedure"
+    ]
+  },
+  {
+    "id": "logb-bounds",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 116
+    },
+    "type": "theorem",
+    "title": "Two-Sided Bound (k+2) − log₄3 ≤ log₄(a k) ≤ k+2",
+    "content": "`logb_a_ub` and `logb_a_lb` push the real sandwich through log₄. Monotonicity of log₄ (Real.logb_le_logb_of_le) plus log₄(4^{k+2}) = (k+2)·log₄4 = k+2 (Real.logb_pow with Real.logb_self_eq_one) gives the upper bound; the lower bound uses the quotient law log₄(4^{k+2}/3) = (k+2) − log₄3. The deviation of log₄(a k) from k+2 is thereby trapped in the constant interval [−log₄3, 0]. `logb_a_pos` records positivity (a k ≥ 6 > 1), needed to clear the denominator later.",
+    "mathContext": "$(k+2)-\\log_4 3 \\le \\log_4(a_k) \\le k+2$, with $\\log_4(a_k) > 0$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "logarithm monotonicity",
+      "logarithm of a power",
+      "quotient law"
+    ],
+    "prerequisites": [
+      "real logarithm base b",
+      "monotone functions"
+    ]
+  },
+  {
+    "id": "numerator-exact",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "The Numerator Is the Exact Value 4k+6",
+    "content": "`error_real` casts the parent's exact integer identity error_eq (a k − 6·excludedCount (a k) = 4k+6) to the reals. Crucially the numerator is exact, not asymptotic — this is what makes the limit a clean squeeze rather than an estimate with two-sided error in both numerator and denominator.",
+    "mathContext": "$a_k - 6\\,\\mathrm{excludedCount}(a_k) = 4k+6$ over $\\mathbb{R}$.",
+    "significance": "medium",
+    "relatedConcepts": [
+      "exact error term",
+      "integer-to-real cast"
+    ],
+    "prerequisites": [
+      "Int/Real coercion"
+    ]
+  },
+  {
+    "id": "the-limit",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
+    "range": {
+      "startLine": 127,
+      "endLine": 177
+    },
+    "type": "theorem",
+    "title": "Normalized Error → 4 (the Headline)",
+    "content": "`normalized_error_tendsto_four`: (a k − 6·excludedCount (a k))/log₄(a k) → 4. First the denominator diverges — log₄(a k) ≥ (k+2) − log₄3 ≥ k because log₄3 ≤ 1, so it dominates the cast of k (tendsto_atTop_mono against tendsto_natCast_atTop_atTop). Then (2 + 4·log₄3)·log₄(a k)⁻¹ → 0 (inv_tendsto_atTop, const_mul). Clearing the positive denominator turns the two-sided logb bound into 4 − bound ≤ E/log₄ ≤ 4 + bound, and tendsto_of_tendsto_of_tendsto_of_le_of_le squeezes the ratio to 4. This pins the normalized extremal constant left open by the parent.",
+    "mathContext": "$\\mathrm{Tendsto}\\;\\big(k\\mapsto \\tfrac{a_k-6\\,\\mathrm{excludedCount}(a_k)}{\\log_4(a_k)}\\big)\\;\\mathrm{atTop}\\;(\\mathcal N\\,4)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "squeeze theorem",
+      "filter limits",
+      "atTop divergence",
+      "normalized extremal constant"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "squeeze theorem"
+    ]
+  }
+]
