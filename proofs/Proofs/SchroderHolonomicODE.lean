@@ -20,10 +20,14 @@ Working over `ℤ⟦X⟧` (subtraction is needed for differentiation), let
 * read off the `Xⁿ`-coefficient to obtain the order-two holonomic recurrence
     `(n + 3) * L (n+2) + n * L n = 3 * (2n + 3) * L (n+1)`  (`Nat.largeSchroder_holonomic_via_ode`).
 
-## Status (research session 2026-06-23)
+## Status (research sessions 2026-06-23)
 
-This session had **no working Lean verifier** (docker build unresponsive) and **no Aristotle**
-(service 404).  The file is therefore *not* kernel-verified yet; it awaits the deployer build-gate.
+These sessions had **no working Lean verifier** (docker build unresponsive, no prebuilt Mathlib
+oleans) and **no Aristotle** (service 404).  The file is therefore *not* kernel-verified yet; it
+awaits the deployer build-gate.  Progress this session: `schroderIntSeries_diff` is now **proved**
+(was a `sorry`), reducing the file to a **single** remaining `sorry`
+(`largeSchroder_holonomic_via_ode`, the coefficient extraction — full case analysis now worked out
+inline below).
 
 What *is* established with certainty this session:
 
@@ -31,20 +35,20 @@ What *is* established with certainty this session:
   (`L = 1,2,6,22,90,394,1806`; convolution `Q = 1,4,16,68,304`).
 * The **discriminant** and **ODE** `linear_combination` certificates below were verified
   *symbolically* (sympy): the ring identity `goalLHS − goalRHS − (certificate) = 0` reduces to `0`.
-  These are the genuinely hard algebraic steps (elimination of `g²` and `g·g'`), and they are
-  now **certified** modulo the two mechanical lemmas marked `sorry`:
-    1. `schroderIntSeries_diff` — formal differentiation of the quadratic (pure `Derivation` /
-       Leibniz bookkeeping; documented inline);
-    2. `Nat.largeSchroder_holonomic_via_ode` — coefficient extraction via `coeff_derivative`
-       and `coeff_mul`/`coeff_X_pow_mul` (documented inline).
-  Both are HARD-but-mechanical and ideal for Aristotle.
+  These are the genuinely hard algebraic steps (elimination of `g²` and `g·g'`), and the ODE is
+  now **certified** modulo a single remaining mechanical lemma marked `sorry`:
+    * `Nat.largeSchroder_holonomic_via_ode` — coefficient extraction via `coeff_derivative`
+       and `coeff_X_pow_mul'` (documented inline, full case analysis worked out).
+  The differentiation step `schroderIntSeries_diff` (pure `Derivation` / Leibniz bookkeeping)
+  is now **proved** by applying `derivative ℤ` to the defining quadratic and expanding with the
+  `Derivation` simp set.  The remaining extraction is HARD-but-mechanical and ideal for Aristotle.
 
 ## Architectural note
 
 This **direct ODE route proves the headline recurrence directly**, without the convolution-form
 intermediate `Nat.largeSchroder_conv_holonomic` (the sole remaining `sorry` in
-`SchroderLinearRecurrenceAristotle.lean`).  Once the two `sorry`s below are discharged, the
-convolution detour can be retired.  Mathlib's `PowerSeries.catalanSeries_sq_mul_X_add_one`
+`SchroderLinearRecurrenceAristotle.lean`).  Once the remaining extraction `sorry` below is
+discharged, the convolution detour can be retired.  Mathlib's `PowerSeries.catalanSeries_sq_mul_X_add_one`
 stops at the analogous quadratic (its only TODO is the closed form), so there is **no Mathlib
 precedent** for the ODE/extraction steps performed here.
 -/
@@ -97,18 +101,21 @@ API.  Writing `D = derivative ℤ` and using `D 1 = 0`, `D X = 1`, additivity, a
   `D((X-1)*g) = (X-1) * D g + g * D (X-1) = (X-1)*g' + g`        (`leibniz`, `derivative_X`, `map_one_eq_zero`)
   `D 1 = 0`                                                       (`Derivation.map_one_eq_zero`)
 
-Summing and using `smul_eq_mul` / `nsmul_eq_mul` gives the stated identity.  Purely mechanical
-`Derivation` bookkeeping — left as a scoped `sorry` for a verifier-backed session or Aristotle.
-The proof skeleton is:
-  `have h := congrArg (⇑(derivative ℤ)) schroderIntSeries_quadratic`
-  then `simp` with `[map_add, map_zero, Derivation.leibniz, Derivation.leibniz_pow,
-       derivative_X, Derivation.map_one_eq_zero, smul_eq_mul, nsmul_eq_mul]`
-  and finish with `linear_combination h` / `ring_nf`. -/
+Summing and using `smul_eq_mul` / `nsmul_eq_mul` gives the stated identity.
+
+Note this differentiated identity holds for **any** `g` satisfying the defining quadratic — it is
+just `D` (a `Derivation`) applied to `schroderIntSeries_quadratic`, with no use of the specific
+coefficients of `g`.  The proof applies `congrArg (⇑(derivative ℤ))` and expands the single
+hypothesis with the `Derivation` simp set; `linear_combination` then closes the ring identity. -/
 theorem schroderIntSeries_diff :
     schroderIntSeries ^ 2
         + 2 * X * schroderIntSeries * (derivative ℤ) schroderIntSeries
       + (X - 1) * (derivative ℤ) schroderIntSeries + schroderIntSeries = 0 := by
-  sorry
+  have h := congrArg (⇑(derivative ℤ)) schroderIntSeries_quadratic
+  simp only [map_add, map_sub, map_zero, Derivation.leibniz, Derivation.leibniz_pow,
+    derivative_X, Derivation.map_one_eq_zero, pow_one, smul_eq_mul, nsmul_eq_mul,
+    Nat.cast_ofNat, mul_one] at h
+  linear_combination h
 
 /-- **Linear ODE of the large Schröder generating function.**
 `X * (X² - 6*X + 1) * g' = (3*X - 1) * g + (X + 1)`.
@@ -138,21 +145,33 @@ open PowerSeries Finset
 /-- **Order-two holonomic recurrence for the large Schröder numbers, via the generating-function
 ODE.**  `(n + 3) * L (n+2) + n * L n = 3 * (2n + 3) * L (n+1)`.
 
-Read off the `Xⁿ`-coefficient of `schroderIntSeries_ode`.  Using
-`coeff_derivative : coeff n (d⁄dX g) = coeff (n+1) g * (n+1)` together with
-`coeff_X_pow_mul` / `coeff_X_mul` / `coeff_mul`, the coefficient of `Xⁿ` (for `n ≥ 2`) reads
+Read off the `X^{n+2}`-coefficient of `schroderIntSeries_ode`.  **Full extraction (worked out
+2026-06-23):** apply `coeff (n+2)` to the ODE.  Because `coeff` is *linear but not
+multiplicative*, first distribute `X*(X²-6X+1)*g' = X³*g' − 6*(X²*g') + X*g'` and use the
+boundary-aware lemma
 
-  LHS:  `(n-2)*L(n-2) − 6*(n-1)*L(n-1) + n*L(n)`        (from `(X³ - 6X² + X) * g'`)
-  RHS:  `3*L(n-1) − L(n)`                               (from `(3X - 1)*g + (X + 1)`)
+  `coeff_X_pow_mul' (p) (k d) : coeff d (X^k * p) = if k ≤ d then coeff (d-k) p else 0`
 
-so `(n-2)*L(n-2) − 6*(n-1)*L(n-1) + n*L(n) = 3*L(n-1) − L(n)`, i.e.
-`(n+1)*L(n) + (n-2)*L(n-2) = 3*(2n-1)*L(n-1)`; reindexing `n ↦ n+2` gives the statement.
-Numerically verified for `n = 0..3`.
+together with `coeff_derivative : coeff m g' = coeff (m+1) g * (m+1)` and `hL : coeff k g = L k`:
 
-Coefficient extraction over `ℤ` is mechanical (case split on `n`, `coeff_derivative`,
-`coeff_mul`, push casts, `omega`/`linarith`); left as a scoped `sorry` for a verifier-backed
-session or Aristotle.  This route supersedes the convolution-form intermediate
-`Nat.largeSchroder_conv_holonomic`. -/
+  LHS `coeff (n+2)`:  `(if 1 ≤ n then n*L n else 0) − 6*(n+1)*L(n+1) + (n+2)*L(n+2)`
+       (the three terms are `coeff (n-1) g'`, `coeff n g'`, `coeff (n+1) g'`; only the X³ term
+        is boundary-gated, vanishing at `n = 0` — and there `n*L n = 0` too, so the gate is
+        equivalent to `n*L n` *uniformly* in `n`).
+  RHS `coeff (n+2)`:  `3*L(n+1) − L(n+2)`   (the `X` and `1` of `(X+1)` contribute `0` since `n+2 ≥ 2`).
+
+Equating and simplifying (valid for **all** `n ≥ 0`):
+`n*L n − 6*(n+1)*L(n+1) + (n+2)*L(n+2) = 3*L(n+1) − L(n+2)`, i.e.
+`(n+3)*L(n+2) + n*L n = (6n+9)*L(n+1) = 3*(2n+3)*L(n+1)` — the statement.
+Numerically verified for `n = 0..3` (`L = 1,2,6,22,90`).
+
+Lean recipe: `have key := congrArg (coeff (n+2)) schroderIntSeries_ode`; rewrite the products into
+`X^k * g'` / `X^k * g` form (`ring_nf` or explicit `sub`/`mul` lemmas), push `coeff` through with
+`map_add`/`map_sub`/`coeff_X_pow_mul'`/`coeff_derivative`/`schroderIntSeries_coeff`, split on
+`n = 0 | n+1` for the `if 1 ≤ n` gate, then `push_cast`/`ring`/`omega`.  The pitfalls (numerals as
+constant series, `coeff` non-multiplicativity, `coeff_derivative` index) make this ideal for a
+verifier-backed session or Aristotle; left as a scoped `sorry`.  This route supersedes the
+convolution-form intermediate `Nat.largeSchroder_conv_holonomic`. -/
 theorem largeSchroder_holonomic_via_ode (n : ℕ) :
     (n + 3) * largeSchroder (n + 2) + n * largeSchroder n
       = 3 * (2 * n + 3) * largeSchroder (n + 1) := by
