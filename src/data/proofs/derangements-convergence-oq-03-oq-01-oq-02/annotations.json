@@ -1,0 +1,112 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "derangements-convergence-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 65
+    },
+    "type": "context",
+    "title": "Recovering the Sign and Sharp Rate of the Derangement Gap",
+    "content": "The grandparent proved $|D(n)/n! - e^{-1}| \\le 1/(n+1)!$ and the parent packaged $D(n) = \\mathrm{round}(n!/e)$ from $|D(n) - n!/e| < 1/2$ — both using the error only in absolute value. This entry studies the **signed** gap $G(n) = n!\\,e^{-1} - D(n)$ directly. The headline results: $G(n)$ has the sign of $(-1)^{n+1}$ (so $D(n)$ alternately exceeds and falls short of $n!/e$), and $1/(n+2) \\le |G(n)| \\le 1/(n+1)$ for every $n$. The lower bound is the genuinely new content; it answers the parent's own closing open question verbatim.",
+    "mathContext": "$G(n) = n!\\,e^{-1} - D(n) = n!\\sum_{k \\ge n+1} \\frac{(-1)^k}{k!}$, with $\\operatorname{sign} G(n) = (-1)^{n+1}$ and $\\frac{1}{n+2} \\le |G(n)| \\le \\frac{1}{n+1}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "derangements",
+      "alternating series",
+      "asymptotic expansion",
+      "Euler's number"
+    ],
+    "prerequisites": [
+      "alternating series estimation",
+      "infinite sums (tsum)"
+    ]
+  },
+  {
+    "id": "ann-cterm-envelopes",
+    "proofId": "derangements-convergence-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 66,
+      "endLine": 131
+    },
+    "type": "technique",
+    "title": "The Sign-Factored Tail and Its Sharp Lower Envelope",
+    "content": "Writing $c_k = (-1)^k/(m+k)!$ (the tail term with the global sign $(-1)^m$ removed), the base entry's partial-sum lemmas $\\texttt{alt\\_partial\\_sum\\_nonneg}$ and $\\texttt{alt\\_partial\\_sum\\_le\\_first}$ give $0 \\le S(m) \\le 1/m!$ after $\\texttt{le\\_of\\_tendsto}$. The new ingredient is $\\texttt{tsum\\_cTerm\\_ge\\_first\\_two}$: peeling the first two terms via $\\texttt{Summable.sum\\_add\\_tsum\\_nat\\_add 2}$ writes $S(m) = 1/m! - 1/(m+1)! + S(m+2)$ with $S(m+2) \\ge 0$ (the same nonnegativity, reindexed by $\\texttt{cTerm\\_add\\_two}$), upgrading the lower bound to the sharp $1/m! - 1/(m+1)! \\le S(m)$.",
+    "mathContext": "$S(m) = \\sum_{k \\ge 0} \\frac{(-1)^k}{(m+k)!}$; Leibniz gives $a_0 - a_1 \\le S(m) \\le a_0$ with $a_k = 1/(m+k)!$, i.e. $\\frac{1}{m!} - \\frac{1}{(m+1)!} \\le S(m) \\le \\frac{1}{m!}$.",
+    "significance": "Sharp envelopes for an alternating tail, obtained by lifting the base entry's finite partial-sum bounds and peeling two terms — this is what makes both the strict sign and the lower decay bound possible.",
+    "relatedConcepts": [
+      "alternating series estimation",
+      "tail of a convergent series",
+      "Leibniz criterion"
+    ],
+    "prerequisites": [
+      "summability",
+      "le_of_tendsto"
+    ]
+  },
+  {
+    "id": "ann-gap-formula",
+    "proofId": "derangements-convergence-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 132,
+      "endLine": 161
+    },
+    "type": "key-step",
+    "title": "Signed Gap as a Scaled Alternating Tail",
+    "content": "Substituting $D(n) = n!\\cdot(\\text{partial sum})$ and $e^{-1} = (\\text{partial sum}) + (\\text{tail})$ (base lemmas $\\texttt{numDerangements\\_eq\\_factorial\\_mul\\_altSum}$, $\\texttt{exp\\_neg\\_one\\_eq\\_tsum\\_alt}$, $\\texttt{tsum\\_eq\\_partial\\_sum\\_add\\_tail}$) collapses the partial sums and leaves $G(n) = n!\\cdot\\sum_{k \\ge n+1}(-1)^k/k!$ exactly — $\\texttt{ring}$ closes it. Then $\\texttt{tail\\_eq\\_sign\\_mul\\_cTerm}$ factors $\\mathrm{altFactTerm}(n+1+k) = (-1)^{n+1}c_k$ and pulls $(-1)^{n+1}$ out via $\\texttt{tsum\\_mul\\_left}$, giving the sign form $G(n) = (-1)^{n+1}\\,n!\\,S(n+1)$ with $S(n+1) \\ge 0$.",
+    "mathContext": "$G(n) = n!\\sum_{k \\ge n+1}\\frac{(-1)^k}{k!} = (-1)^{n+1}\\,n!\\,S(n+1)$, $\\quad S(n+1) = \\sum_{k\\ge 0}\\frac{(-1)^k}{(n+1+k)!} \\ge 0$.",
+    "significance": "The exact signed identity for the gap — every downstream sign and bound is read off this single equation.",
+    "relatedConcepts": [
+      "tsum_mul_left",
+      "telescoping partial sums",
+      "Taylor remainder"
+    ],
+    "prerequisites": [
+      "infinite sums",
+      "factoring constants out of a sum"
+    ]
+  },
+  {
+    "id": "ann-sign",
+    "proofId": "derangements-convergence-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 162,
+      "endLine": 224
+    },
+    "type": "key-step",
+    "title": "The Counts Straddle n!/e",
+    "content": "Since $S(n+1) \\ge 1/(n+1)! - 1/(n+2)! > 0$ ($\\texttt{tsum\\_cTerm\\_pos}$) and $n! > 0$, multiplying the sign form by $(-1)^{n+1}$ kills the sign (the square $((-1)^{n+1})^2 = 1$) and leaves $(-1)^{n+1}G(n) = n!\\,S(n+1) > 0$ ($\\texttt{gap\\_sign}$). Specialising $(-1)^{n+1} = -1$ for even $n$ and $+1$ for odd $n$ gives $D(n) > n!/e$ (even, $\\texttt{gap\\_neg\\_of\\_even}$) and $D(n) < n!/e$ (odd, $\\texttt{gap\\_pos\\_of\\_odd}$): the integers $D(n)$ oscillate around $n!/e$.",
+    "mathContext": "$0 < (-1)^{n+1}G(n)$; even $n \\Rightarrow n!/e < D(n)$, odd $n \\Rightarrow D(n) < n!/e$.",
+    "significance": "The sign result: $D(n)$ does not approach $n!/e$ monotonically from one side — the discrete signature of the alternating series for $e^{-1}$.",
+    "relatedConcepts": [
+      "parity",
+      "alternating convergence",
+      "subfactorial"
+    ],
+    "prerequisites": [
+      "Even.neg_one_pow / Odd.neg_one_pow"
+    ]
+  },
+  {
+    "id": "ann-decay",
+    "proofId": "derangements-convergence-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 225,
+      "endLine": 271
+    },
+    "type": "key-step",
+    "title": "Squeezed Between Consecutive Unit Fractions",
+    "content": "From $|G(n)| = n!\\,S(n+1)$ ($\\texttt{abs\\_gap\\_eq}$), multiply the envelope $1/m! - 1/(m+1)! \\le S(m) \\le 1/m!$ ($m = n+1$) by $n!$. Using $n!/(n+1)! = 1/(n+1)$ and $n!/(n+2)! = 1/((n+1)(n+2))$ the endpoints collapse: the upper bound is $1/(n+1)$ ($\\texttt{abs\\_gap\\_le}$) and the lower bound is $1/(n+1) - 1/((n+1)(n+2)) = 1/(n+2)$ ($\\texttt{abs\\_gap\\_ge}$). Hence $1/(n+2) \\le |G(n)| \\le 1/(n+1)$ ($\\texttt{abs\\_gap\\_bounds}$), so $|G(n)|\\cdot(n+1) \\to 1$ — the rate is sharp at the leading term.",
+    "mathContext": "$\\frac{1}{n+2} \\le |n!\\,e^{-1} - D(n)| \\le \\frac{1}{n+1}$, with $\\frac{1}{n+1} - \\frac{1}{(n+1)(n+2)} = \\frac{1}{n+2}$.",
+    "significance": "The new lower bound completes the parent's one-sided $< 1/2$ estimate into a sharp two-sided sandwich, showing no faster-than-$1/(n+1)$ decay is possible.",
+    "relatedConcepts": [
+      "factorial ratios",
+      "consecutive unit fractions",
+      "sharp rate of convergence"
+    ],
+    "prerequisites": [
+      "factorial identities",
+      "monotonicity of multiplication"
+    ]
+  }
+]
