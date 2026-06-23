@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-sqrt2oq02-context",
+    "proofId": "sqrt2-irrational-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "context",
+    "title": "From algebraic irrationals to transcendence",
+    "content": "The parent entry proves √n irrational for non-square n — but each such number is ALGEBRAIC, a root of x² − n. The natural follow-up: are there irrationals that are roots of NO polynomial? This file answers yes, concretely and axiom-free, via Mathlib's Liouville theory. Liouville's constant ∑_k 2^{-k!} is transcendental over ℤ — not a root of any nonzero integer polynomial — and in particular irrational, an irrational lying strictly beyond the algebraic numbers of the parent.",
+    "mathContext": "Algebraic: a root of some nonzero $p\\in\\mathbb{Z}[x]$. Transcendental $=\\neg$ algebraic. $\\sqrt n$ is irrational but algebraic; transcendence is strictly stronger.",
+    "significance": "context",
+    "relatedConcepts": ["algebraic number", "transcendental number", "irrationality", "Liouville number"],
+    "prerequisites": ["polynomials over ℤ", "irrational numbers"]
+  },
+  {
+    "id": "ann-sqrt2oq02-liouville-const",
+    "proofId": "sqrt2-irrational-oq-02",
+    "range": {
+      "startLine": 31,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Liouville's constant: a Liouville number, irrational and transcendental",
+    "content": "liouvilleConst := liouvilleNumber 2 = ∑_k 2^{-k!}, the canonical concrete transcendental. Three facts are read off Mathlib's Liouville theory: liouvilleConst_liouville (it is a Liouville number, liouville_liouvilleNumber), liouvilleConst_irrational (Liouville numbers are irrational, .irrational), and liouvilleConst_transcendental (transcendental over ℤ, transcendental_liouvilleNumber). The defining feature of a Liouville number is that it is approximable by rationals far better than any algebraic number can be — which forces transcendence.",
+    "mathContext": "$L=\\sum_{k\\ge 1} 2^{-k!}$. A Liouville number $x$ admits, for every $n$, a rational $p/q$ with $0<|x-p/q|<q^{-n}$ — impossible for an algebraic irrational by Liouville's inequality, hence $x$ is transcendental.",
+    "significance": "key",
+    "relatedConcepts": ["Liouville number", "liouvilleNumber", "rational approximation", "transcendence"],
+    "prerequisites": ["Liouville's theorem on approximation", "series"]
+  },
+  {
+    "id": "ann-sqrt2oq02-existence",
+    "proofId": "sqrt2-irrational-oq-02",
+    "range": {
+      "startLine": 47,
+      "endLine": 59
+    },
+    "type": "insight",
+    "title": "Answer to OQ-02: irrational transcendentals exist",
+    "content": "exists_irrational_transcendental bundles liouvilleConst with its irrationality and transcendence to witness ∃ x, Irrational x ∧ Transcendental ℤ x. not_forall_irrational_isAlgebraic restates this as ∃ x, Irrational x ∧ ¬IsAlgebraic ℤ x — using that Transcendental ℤ x is definitionally ¬IsAlgebraic ℤ x — so the algebraic irrationals (the parent's √n) do NOT exhaust the irrationals. A single explicit construction settles the existence question without invoking Cantor's counting argument.",
+    "mathContext": "$\\exists x\\in\\mathbb{R},\\ \\text{Irrational }x\\wedge\\neg\\text{IsAlgebraic}_{\\mathbb{Z}}x$. Transcendence is strictly stronger than irrationality.",
+    "significance": "key",
+    "relatedConcepts": ["existence statement", "Transcendental", "IsAlgebraic", "non-exhaustion"],
+    "prerequisites": ["existential statements", "algebraic vs transcendental"]
+  }
+]
