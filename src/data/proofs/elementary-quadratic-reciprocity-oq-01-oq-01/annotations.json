@@ -143,11 +143,11 @@
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01",
     "range": {
       "startLine": 93,
-      "endLine": 109
+      "endLine": 114
     },
-    "type": "definition",
-    "title": "The Axiomatized Gauss Sum Squared Identity",
-    "content": "This is the one piece of the Gauss sum proof not yet in Mathlib 4.26: the evaluation $\\tau_p^2 = (-1)^{(p-1)/2} \\cdot p$. The proof in $\\mathbb{Z}[\\zeta_p]$ uses character orthogonality: $\\tau^2 = \\sum_{a,b} \\left(\\frac{a}{p}\\right)\\left(\\frac{b}{p}\\right) \\zeta^{a+b} = \\sum_c \\left(\\frac{c}{p}\\right) \\sum_a \\zeta^{a(c+1)}$. The inner sum $\\sum_a \\zeta^{ak}$ is $p$ when $k \\equiv 0 \\pmod{p}$ and $0$ otherwise. So only $c = -1$ survives: $\\tau^2 = \\left(\\frac{-1}{p}\\right) \\cdot p$. The axiom `gauss_sum_sq` states: there exists $\\tau \\in \\mathbb{Z}$ with $\\tau^2 = (-1)^{p/2} \\cdot p$ (using integer arithmetic where $(-1)^{p/2}$ encodes the sign). Both `gauss_sum_norm` and `gauss_sum_sign` are immediate corollaries that call this axiom.",
+    "type": "insight",
+    "title": "The Gauss Sum Squared Identity (Stated, Not Axiomatized)",
+    "content": "This block states — as prose, with no `axiom` declaration — the one piece of the Gauss sum proof not yet in Mathlib 4.26: the evaluation $\\tau_p^2 = (-1)^{(p-1)/2} \\cdot p$ in the cyclotomic ring $\\mathbb{Z}[\\zeta_p]$. The character-orthogonality sketch is $\\tau^2 = \\sum_{a,b} \\left(\\frac{a}{p}\\right)\\left(\\frac{b}{p}\\right) \\zeta^{a+b} = \\sum_c \\left(\\frac{c}{p}\\right) \\sum_a \\zeta^{a(c+1)}$; the inner sum $\\sum_a \\zeta^{ak}$ is $p$ when $k \\equiv 0 \\pmod{p}$ and $0$ otherwise, so only $c = -1$ survives, giving $\\tau^2 = \\left(\\frac{-1}{p}\\right) \\cdot p$. An earlier version of this file carried an `axiom gauss_sum_sq` stating this over $\\mathbb{Z}$; that statement is **false** (no integer $\\tau$ satisfies $\\tau^2 = \\pm p$ for a prime $p > 1$) and has been removed. The correct $\\mathbb{Z}[\\zeta_p]$ form needs cyclotomic-field infrastructure not yet in Mathlib, so it is left unformalized. This file is axiom-free: quadratic reciprocity itself is fully proved via Mathlib's Eisenstein lattice-point method (`legendreSym.quadratic_reciprocity`), so no axiom is required for any result here.",
     "mathContext": "$\\tau_p^2 = \\left(\\frac{-1}{p}\\right) \\cdot p = (-1)^{(p-1)/2} \\cdot p$; proved via $\\sum_{k=0}^{p-1} \\zeta_p^{km} = \\begin{cases} p & p \\mid m \\\\ 0 & p \\nmid m \\end{cases}$",
     "significance": "key",
     "relatedConcepts": [
@@ -159,8 +159,7 @@
     "prerequisites": [
       "roots of unity",
       "character orthogonality",
-      "cyclotomic fields",
-      "Lean axiom declarations"
+      "cyclotomic fields"
     ]
   },
   {
