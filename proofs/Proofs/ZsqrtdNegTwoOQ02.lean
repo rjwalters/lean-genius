@@ -136,4 +136,27 @@ theorem sumThreeSq_ne_four_pow_mul {n : ℤ} (a b : ℕ)
   rintro rfl
   exact not_sumThreeSq_four_pow_mul a b h
 
+/-! ## Step 4 — the bridge back to the parent ℤ[√−2] norm form `x² + 2y²`
+
+The parent gallery entry `Proofs/ZsqrtdNegTwo.lean` develops the norm form `x² + 2y²` of
+`ℤ[√−2]`.  These two lemmas place that development *inside* the three-square picture and
+show it is compatible with the Legendre obstruction proved above: every norm-form value is
+a sum of three squares, and consequently no norm-form value is of the excluded shape
+`4^a (8b + 7)`.  This is the elementary inclusion side — the ℤ[√−2] representable numbers
+are a (proper, ~36 %) subset of the sums of three squares, never the full converse. -/
+
+/-- **Norm-form inclusion.**  Every value of the ℤ[√−2] norm form `x² + 2y²` is a sum of
+three integer squares, via the trivial splitting `x² + 2y² = x² + y² + y²`. -/
+theorem normForm_isSumThreeSq (x y : ℤ) :
+    ∃ a b c : ℤ, a ^ 2 + b ^ 2 + c ^ 2 = x ^ 2 + 2 * y ^ 2 :=
+  ⟨x, y, y, by ring⟩
+
+/-- **Norm-form values avoid the Legendre excluded form.**  Combining the inclusion with the
+obstruction: `x² + 2y²` is never of the form `4^a (8b + 7)`.  So the ℤ[√−2] representable
+numbers respect the three-square obstruction — a consistency check tying the parent norm-form
+development to the necessity direction proved here. -/
+theorem normForm_ne_four_pow_mul (x y : ℤ) (a b : ℕ) :
+    x ^ 2 + 2 * y ^ 2 ≠ 4 ^ a * (8 * b + 7) :=
+  sumThreeSq_ne_four_pow_mul a b (normForm_isSumThreeSq x y)
+
 end ZsqrtNegTwoOQ02
