@@ -1,0 +1,112 @@
+{
+  "id": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-02",
+  "title": "Sharpness of the Automorphism Bound: |Aut_F(K)| = [K : F]_s ⟺ K/F Normal",
+  "slug": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-02",
+  "description": "Completes the parent's automorphism-bound story into a sharp characterisation: for a finite extension K/F (inside a normal ambient field L), the count of F-automorphisms equals the number of F-embeddings K →ₐ[F] L — equivalently the separable degree [K:F]_s when L is algebraically closed — if and only if K/F is normal. The parent entry (…-oq-05) proved the inequality |Aut_F(K)| ≤ [K:F]_s; a sibling (…-oq-05-oq-01) proved equality for normal extensions. This entry proves the CONVERSE — equality forces normality — so the bound is attained exactly on the normal locus and is strict off it (card_aut_lt_finSepDegree_of_not_normal). The converse upgrades the parent's injection Aut ↪ Emb to a bijection by a cardinality count (Nat.bijective_iff_injective_and_card), then reads off normality from Mathlib's normal_iff_forall_fieldRange_le; the forward direction is Normal.algHomEquivAut.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05OQ02.lean",
+    "tags": [
+      "algebra",
+      "galois-theory",
+      "field-extensions",
+      "normal-extension",
+      "separability",
+      "separable-degree",
+      "automorphism-group"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlibDependencies": [
+      {
+        "theorem": "normal_iff_forall_fieldRange_le",
+        "description": "Normal F K ↔ ∀ σ : K →ₐ[F] L, σ.fieldRange ≤ K, for an intermediate field K of a normal extension L/F. The criterion that converts surjectivity of the automorphism-to-embedding map into normality of K/F.",
+        "module": "Mathlib.FieldTheory.Normal.Closure"
+      },
+      {
+        "theorem": "Normal.algHomEquivAut",
+        "description": "For K/F normal, the bijection (K →ₐ[F] L) ≃ (K ≃ₐ[F] K) — every embedding into the ambient normal field is the inclusion of an automorphism. Supplies the forward (normal ⟹ equality) direction directly by Nat.card_congr.",
+        "module": "Mathlib.FieldTheory.Normal.Defs"
+      },
+      {
+        "theorem": "Nat.bijective_iff_injective_and_card",
+        "description": "For [Finite β], a map f : α → β is bijective iff it is injective and Nat.card α = Nat.card β. Upgrades the injection Aut ↪ Emb to a bijection from the cardinality hypothesis, giving surjectivity.",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      },
+      {
+        "theorem": "Field.finSepDegree_eq_of_isAlgClosed",
+        "description": "For K/F algebraic and L algebraically closed, finSepDegree F K = Nat.card (K →ₐ[F] L). Identifies the embedding count with the separable degree [K:F]_s in the headline form.",
+        "module": "Mathlib.FieldTheory.SeparableDegree"
+      },
+      {
+        "theorem": "AlgHom.mem_fieldRange",
+        "description": "y ∈ f.fieldRange ↔ ∃ x, f x = y; used to destructure membership in an embedding's field range and exhibit the witness, whose value ↑(e x) lies in K by SetLike.coe_mem.",
+        "module": "Mathlib.FieldTheory.IntermediateField.Basic"
+      },
+      {
+        "theorem": "minpoly.AlgHom.fintype",
+        "description": "For a finite extension, the type K →ₐ[F] L of F-algebra homomorphisms is finite — the [Finite β] hypothesis of the bijectivity counting step.",
+        "module": "Mathlib.FieldTheory.Minpoly.Field"
+      }
+    ],
+    "originalContributions": [
+      "normal_iff_card_aut_eq_card_algHom: the biconditional Nat.card (K ≃ₐ[F] K) = Nat.card (K →ₐ[F] L) ↔ Normal F K, for a finite intermediate field K of a normal extension L/F. Mathlib has the forward map (Normal.algHomEquivAut) but not the characterisation that equal cardinality is EQUIVALENT to normality.",
+      "normal_iff_card_aut_eq_finSepDegree: the separable-degree headline Nat.card (K ≃ₐ[F] K) = Field.finSepDegree F K ↔ Normal F K (ambient L algebraically closed), exhibiting the parent's bound |Aut| ≤ [K:F]_s as an equality attained exactly when K/F is normal.",
+      "card_aut_lt_finSepDegree_of_not_normal: the strict-inequality corollary — off the normal locus the bound is strict, |Aut_F(K)| < [K:F]_s — the quantitative sharpness statement.",
+      "The converse direction (equality ⟹ normal) is the genuinely new content: the parent's injection Aut ↪ Emb becomes a bijection purely by counting (equal finite cardinalities), so every embedding K →ₐ[F] L is the inclusion of an automorphism, hence has field range K; normal_iff_forall_fieldRange_le then yields normality with no splitting-field computation."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-checked over Mathlib v4.26; #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no axiom declarations, no structure-encoded assumptions, no native_decide).",
+    "lineCount": 147,
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "leanFile": {
+    "path": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05OQ02.lean",
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "lineCount": 147,
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "The inequality |Aut_F(K)| ≤ [K:F]_s and its sharp case form the cardinality core of Artin's theorem (Artin, Galois Theory, 1942; Lang, Algebra, V §4–6): the F-automorphisms of K are exactly those F-embeddings K ↪ \\bar K whose image lands back in K, so equality between automorphisms and embeddings is precisely the statement that K is stable under the Galois action — i.e. normal. For separable extensions [K:F]_s = [K:F] and the equality |Aut| = [K:F] is the classical Galois criterion, so this entry's biconditional is the separable-degree refinement valid without a separability hypothesis. Mathlib packages the normal ⟹ equality direction as Normal.algHomEquivAut and the Galois corollary as IsGalois.card_aut_eq_finrank, and provides the normality criterion normal_iff_forall_fieldRange_le, but does not record the converse characterisation that attaining the automorphism bound forces normality.",
+    "problemStatement": "The parent entry proved |Aut_F(K)| ≤ [K:F]_s and a sibling proved equality when K/F is normal. Open question: is normality NECESSARY for equality — i.e. does |Aut_F(K)| = [K:F]_s imply K/F normal, making the bound a sharp characterisation? Answer: yes. We prove the biconditional Nat.card (K ≃ₐ[F] K) = Nat.card (K →ₐ[F] L) ↔ Normal F K (L a normal ambient field), specialise it to the separable degree when L is algebraically closed (Nat.card (K ≃ₐ[F] K) = Field.finSepDegree F K ↔ Normal F K), and record the strict-inequality consequence off the normal locus.",
+    "keyInsights": [
+      "Equality of the two finite counts upgrades the parent's INJECTION Aut ↪ Emb to a BIJECTION for free, via Nat.bijective_iff_injective_and_card — no new map is constructed, only counted.",
+      "Surjectivity means every embedding σ : K →ₐ[F] L is K.val ∘ e for an automorphism e, so every value σ x = ↑(e x) already lies in K and σ.fieldRange ≤ K (SetLike.coe_mem). Every embedding lands back in K — which is exactly the hypothesis of the normality criterion.",
+      "Mathlib's normal_iff_forall_fieldRange_le packages exactly 'every embedding's range ≤ K ⟺ K/F normal', so the converse needs no minimal-polynomial or splitting-field manipulation — it is a one-line consequence of the surjectivity.",
+      "The forward direction is not re-proved by hand: Normal.algHomEquivAut already gives the bijection (K →ₐ[F] L) ≃ (K ≃ₐ[F] K) for normal K/F, so Nat.card_congr closes it.",
+      "Sharpness has a quantitative face: lt_of_le_of_ne against the parent inequality yields |Aut_F(K)| < [K:F]_s whenever K/F is not normal."
+    ],
+    "proofStrategy": "1. Define autToAlgHom : (K ≃ₐ[F] K) → (K →ₐ[F] L), e ↦ K.val.comp e.toAlgHom, and prove it injective (K.val is injective).\n2. autToAlgHom_fieldRange_le: (autToAlgHom K e).fieldRange ≤ K, since each value autToAlgHom K e x = ↑(e x) lies in K (AlgHom.mem_fieldRange + SetLike.coe_mem).\n3. normal_iff_card_aut_eq_card_algHom (←): Nat.card_congr (Normal.algHomEquivAut F L K).symm. (→): from equal Nat.card and injectivity, Nat.bijective_iff_injective_and_card gives bijectivity; for any σ pick the automorphism e with autToAlgHom K e = σ, so σ.fieldRange ≤ K; conclude with normal_iff_forall_fieldRange_le.\n4. normal_iff_card_aut_eq_finSepDegree: rewrite finSepDegree F K = Nat.card (K →ₐ[F] L) by Field.finSepDegree_eq_of_isAlgClosed (L alg. closed) and apply step 3.\n5. card_aut_lt_finSepDegree_of_not_normal: the parent inequality (Nat.card_le_card_of_injective on autToAlgHom) plus ≠ from step 4 gives strict <.\n6. Capstone example with L = AlgebraicClosure F.",
+    "prerequisites": [
+      "Normal field extensions and Mathlib's criteria normal_iff_forall_fieldRange_le / Normal.algHomEquivAut",
+      "Separable degree [K:F]_s = number of F-embeddings into an algebraic closure (Field.finSepDegree, Field.finSepDegree_eq_of_isAlgClosed)",
+      "Intermediate fields, the inclusion K.val, AlgHom.fieldRange and AlgEquiv.fieldRange_eq_top",
+      "Counting under injections and the upgrade to bijection for finite types of equal cardinality (Nat.bijective_iff_injective_and_card)",
+      "The parent entry's automorphism-to-embedding injection and the bound |Aut_F(K)| ≤ [K:F]_s"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05",
+      "description": "Parent entry: proves the inequality |Aut_F(K)| ≤ [K:F]_s via the injection Aut ↪ Emb. This entry sharpens it to an equality-iff-normal characterisation and a strict inequality off the normal locus."
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-01",
+      "description": "Sibling entry: proves equality |Aut_F(K)| = [K:F]_s for normal extensions (recovering IsGalois.card_aut_eq_finrank). This entry adds the converse, so the two together give the biconditional."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, fully verified (0 sorries, 0 axioms) proof that the automorphism bound of the parent entry is SHARP: for a finite extension K/F inside a normal ambient field L, |Aut_F(K)| equals the number of F-embeddings K →ₐ[F] L (the separable degree [K:F]_s when L is algebraically closed) if and only if K/F is normal, and is strictly smaller otherwise. The forward direction is Mathlib's Normal.algHomEquivAut; the converse upgrades the parent's injection to a bijection by counting and reads off normality from normal_iff_forall_fieldRange_le.",
+    "openQuestions": [
+      "Quantify the defect [K:F]_s − |Aut_F(K)| for a non-normal K in terms of the normal closure: is it controlled by the index [normalClosure(K) : K] or by the number of distinct conjugate subfields of K?",
+      "State and prove the separable analogue purely in terms of fixed fields: for a finite group G ≤ Aut_F(K), |G| = [K : K^G] with K^G the fixed field, and relate the 'equality ⟹ normal' phenomenon here to Artin's theorem K/K^G is Galois."
+    ]
+  }
+}
