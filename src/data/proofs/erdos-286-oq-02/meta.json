@@ -1,0 +1,114 @@
+{
+  "id": "erdos-286-oq-02",
+  "slug": "erdos-286-oq-02",
+  "title": "Erdős #286: Discharging the Monotonicity Axiom — Unit-Fraction Existence Without Croot",
+  "description": "Open question oq-02 of Erdős #286 asks to prove the parent's representation_monotone step from the splitting identity 1/m = 1/(m+1) + 1/(m(m+1)). We prove it (0 axioms) for k ≥ 2 by splitting the largest denominator, then use it to re-derive the bounded-interval existence theorem with zero axioms — and observe that the unrestricted axiom is actually false at k = 1.",
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "namespace": "Erdos286OQ02",
+    "lineCount": 233,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos286MonotoneOQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Erdős Problem #286 (Erdős–Graham, 1980, p. 33) asks whether 1 can be written as a sum of k distinct unit fractions whose denominators lie in a short interval of width ≈ (e-1)k. Croot (2001) proved this affirmatively with the sharp constant (e-1) ≈ 1.718, optimal. The parent gallery entry (Erdos286Problem.lean) encodes Croot's sharp result as an axiom (croot_theorem) and the inductive step k → k+1 as a second axiom (representation_monotone), combining them to prove the bounded-interval existence statement erdos_286 for all k ≥ 3. Its conclusion lists, as open question oq-02, the task of replacing the monotonicity axiom by a genuine proof from the unit-fraction splitting identity 1/n = 1/(n+1) + 1/(n(n+1)).",
+    "problemStatement": "Prove representation_monotone — that a k-denominator representation of 1 yields a (k+1)-denominator one — as a theorem from the splitting identity, rather than as an axiom. More ambitiously: how much of the parent's axiomatic scaffolding does the bounded-interval existence result actually require?",
+    "proofStrategy": "Given a representation S of 1 with k ≥ 2 positive denominators, let m = max S. Because at least two denominators sum their reciprocals to 1, the value 1 cannot be a denominator, so m ≥ 2. Split the largest term: replace m by the two denominators m+1 and m(m+1). Maximality of m forces m+1 > m and m(m+1) > m, so both new denominators are absent from S and (since m ≥ 2) distinct from each other; hence the cardinality increases by exactly one. The reciprocal sum is preserved because 1/(m+1) + 1/(m(m+1)) = 1/m (partial fractions, closed by field_simp; ring). This is representation_monotone_ge2 — a 0-axiom theorem. Feeding it into a Nat.le_induction from the explicit base case 1 = 1/2 + 1/3 + 1/6 yields erdos_286_exists: the parent's exact existence statement for all k ≥ 3, with zero axioms. Finally, unrestricted_monotone_false shows the parent's unrestricted axiom is unsound: {1} is a valid k=1 representation, so the axiom would force a k=2 representation, which no_k2_representation rules out via (x-1)(y-1) = 1.",
+    "keyInsights": [
+      "Bounded-interval existence for all k ≥ 3 needs only the elementary splitting step, NOT Croot's deep theorem: pure induction from k = 3 suffices. Croot (2001) is required solely for the SHARP width ⌈(e-1+ε)k⌉, which this file deliberately does not claim. The result therefore discharges BOTH of the parent's axioms from the existence theorem.",
+      "Splitting the MAXIMUM denominator is what makes the step clean: maximality is exactly the condition that guarantees the two replacements m+1 and m(m+1) are fresh, so cardinality grows by precisely one with no case analysis on which denominators already occur.",
+      "The hypothesis k ≥ 2 is necessary, not cosmetic. The single subtle point is m ≥ 2: with two or more positive reciprocals summing to 1, the denominator 1 cannot appear, so the maximum is at least 2 and the two replacements never collide (they collide only when m = 1, giving m+1 = m(m+1) = 2).",
+      "Soundness finding: the parent's representation_monotone is stated for all k, but it is FALSE at k = 1. A k=1 representation exists ({1}), and monotonicity would manufacture a k=2 representation — impossible since 1/x + 1/y = 1 forces (x-1)(y-1) = 1, i.e. x = y = 2, violating distinctness. The correct theorem is the k ≥ 2 form proved here.",
+      "The interval width is not tracked sharply: splitting the maximum m blows the largest denominator up to m(m+1), so the width grows rapidly under iteration. This is exactly why Croot's probabilistic argument (Lovász Local Lemma) is needed for the sharp constant and why mere monotonicity cannot recover it."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Denominator definitions (self-contained)",
+      "startLine": 55,
+      "endLine": 70,
+      "summary": "Re-declares IsUnitFractionSum, SumsToOne, and HasShortIntervalRepresentation from the parent so the file stands alone: k distinct positive integers in an interval of given width whose reciprocals sum to 1."
+    },
+    {
+      "id": "base-case",
+      "title": "Axiom-free base case k = 3",
+      "startLine": 72,
+      "endLine": 84,
+      "summary": "Proves HasShortIntervalRepresentation 3 4 via the witness {2,3,6} using kernel decide for the cardinality/interval/positivity facts and an explicit Finset.sum_insert chain + norm_num for 1/2 + 1/3 + 1/6 = 1 — no native_decide, so the base case stays 0-axiom."
+    },
+    {
+      "id": "monotone",
+      "title": "The splitting step as a theorem (oq-02)",
+      "startLine": 86,
+      "endLine": 167,
+      "summary": "representation_monotone_ge2: for k ≥ 2, split the largest denominator m via 1/m = 1/(m+1) + 1/(m(m+1)). Establishes m ≥ 2, freshness/distinctness of the new denominators from maximality, cardinality +1, and sum preservation (field_simp; ring)."
+    },
+    {
+      "id": "existence",
+      "title": "Bounded-interval existence with zero axioms",
+      "startLine": 169,
+      "endLine": 183,
+      "summary": "erdos_286_exists: the parent's exact statement ∀ k ≥ 3, ∃ width, HasShortIntervalRepresentation k width, proved by Nat.le_induction from base_k3 using representation_monotone_ge2 — discharging both of the parent's axioms from the existence result."
+    },
+    {
+      "id": "soundness",
+      "title": "The unrestricted axiom is false",
+      "startLine": 185,
+      "endLine": 232,
+      "summary": "no_k2_representation ((x-1)(y-1)=1 ⇒ x=y=2), has_rep_one (the k=1 witness {1}), and unrestricted_monotone_false: the parent's all-k monotonicity axiom is unsound because at k=1 it would force the impossible k=2 case."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-286",
+      "relationship": "parent-problem",
+      "description": "The parent encodes the inductive step k → k+1 as the axiom representation_monotone and Croot's sharp result as croot_theorem, combining them to prove erdos_286 (existence for k ≥ 3). This child discharges the monotonicity axiom as a theorem (for k ≥ 2), re-derives the existence theorem with 0 axioms, and shows the unrestricted axiom is false at k = 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Erdős #286 monotonicity step is proved (0 axioms) for k ≥ 2 by splitting the largest denominator via 1/m = 1/(m+1) + 1/(m(m+1)); maximality keeps the two new denominators fresh and distinct, so cardinality grows by one and the reciprocal sum is preserved. This re-derives the parent's bounded-interval existence theorem (all k ≥ 3) with zero axioms — neither Croot's theorem nor an axiomatized induction step is needed for mere existence — and reveals that the parent's unrestricted monotonicity axiom is unsound at k = 1.",
+    "implications": "Separating bounded-interval EXISTENCE (elementary, axiom-free) from the SHARP-width statement (Croot's deep theorem, genuinely axiomatized) clarifies exactly where the difficulty of #286 lives: not in producing some representation, but in confining all denominators to an interval of width (e-1+o(1))k. The maximum-denominator splitting also gives an explicit, if width-inefficient, algorithm extending any representation by one term.",
+    "openQuestions": [
+      "Can the width growth under the splitting step be bounded well enough to give a self-contained (non-sharp) interval-width bound — e.g. polynomial in k — without Croot's probabilistic argument?",
+      "Croot's sharp width ⌈(e-1+ε)k⌉ remains axiomatized in the parent (croot_theorem): is any portion of the Lovász-Local-Lemma argument formalizable, or is it currently out of reach of Mathlib?",
+      "Does the maximum-splitting construction give a canonical normal form for short-interval representations that could be used to study their count or extremal structure?"
+    ]
+  },
+  "meta": {
+    "author": "Erdős–Graham (1980), Croot (2001); formalization: Lean Genius Researcher",
+    "sourceUrl": "https://erdosproblems.com/286",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos286MonotoneOQ02.lean",
+    "tags": [
+      "egyptian-fractions",
+      "unit-fractions",
+      "number-theory",
+      "induction",
+      "axiom-discharge",
+      "erdos",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 233,
+    "assumptions": "Fully machine-checked, 0 sorries, 0 axiom declarations; #print axioms reports every theorem (representation_monotone_ge2, erdos_286_exists, unrestricted_monotone_false, no_k2_representation, base_k3) depends only on the foundational axioms propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool — the base case uses kernel decide + norm_num, NOT native_decide). Honest scope: this file proves bounded-interval EXISTENCE for all k ≥ 3 and discharges the parent's representation_monotone axiom (in its actual regime of use, k ≥ 2). It does NOT prove the SHARP width ⌈(e-1+ε)k⌉ — Croot's 2001 theorem (croot_theorem in the parent) remains an axiom and is the genuinely deep content of #286. The interval width produced here grows rapidly under iteration and is not claimed to be near-optimal.",
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "representation_monotone_ge2: proves the parent's representation_monotone AXIOM as a 0-axiom theorem for k ≥ 2, via splitting the maximum denominator m using 1/m = 1/(m+1) + 1/(m(m+1))",
+      "erdos_286_exists: re-derives the parent's bounded-interval existence theorem (∀ k ≥ 3) with ZERO axioms, eliminating both croot_theorem and representation_monotone from the existence proof",
+      "Identifies that mere bounded-interval existence never required Croot's deep theorem — only the elementary splitting step plus the explicit base case 1 = 1/2 + 1/3 + 1/6",
+      "unrestricted_monotone_false: shows the parent's representation_monotone, as stated for all k, is unsound — at k = 1 it would force the impossible k = 2 representation, so the k ≥ 2 hypothesis is necessary",
+      "base_k3: a native_decide-free k = 3 base case (kernel decide + explicit sum), keeping the whole development 0-axiom"
+    ],
+    "theoremCount": 6,
+    "definitionCount": 3
+  }
+}
