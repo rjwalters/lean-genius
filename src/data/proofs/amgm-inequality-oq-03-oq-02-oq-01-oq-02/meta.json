@@ -17,11 +17,11 @@
       "amgm",
       "equality-case"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 243,
-    "assumptions": "",
+    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions; no `native_decide` (`#print axioms` reports only propext, Classical.choice, Quot.sound). The equality engine is NOT independent: the core characterization `GM = ∑ wᵢ zᵢ` (constant data) ⟺ equality bottoms out at Mathlib's `Real.geom_mean_eq_arith_mean_weighted_iff'`, reached one step away through the local `weighted_amgm_eq_iff` (JensenInequalityOQ01), which is a direct `rw`-restatement of that Mathlib lemma. This file's independent content is the transport on top of that core: extending the equality locus to power means of every order r ≠ 0 via injectivity of x ↦ xʳ on the positives (`Real.rpow_left_inj`), the sign-independence observation, the crossing-zero converse, and the strict (off-diagonal) forms. Because the central ⟺ rests on a Mathlib theorem, the badge is `mathlib` (Tier B) rather than `original`.",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "power_mean_eq_geom_mean_iff: M_r = GM ↔ data constant, for EVERY r ≠ 0 — the equality locus is identical for positive and negative orders even though the inequality reverses across zero (sign-independent unification)",
