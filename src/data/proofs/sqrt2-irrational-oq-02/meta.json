@@ -15,11 +15,11 @@
       "liouville-numbers",
       "algebraic-numbers"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-06-21",
     "axiomCount": 0,
-    "assumptions": "None. #print axioms reports only propext, Classical.choice, Quot.sound. The transcendence and irrationality come from Mathlib's verified Liouville theory.",
+    "assumptions": "None (0 axioms, 0 sorries); core results via Mathlib bridge. #print axioms reports only propext, Classical.choice, Quot.sound. Irrationality and transcendence are direct Mathlib re-exports (Liouville.irrational, transcendental_liouvilleNumber); this file instantiates Liouville's constant at base 2 and packages the existence statements.",
     "lineCount": 61,
     "theoremCount": 5,
     "definitionCount": 1,
