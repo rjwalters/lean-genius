@@ -35,20 +35,24 @@ recurrence is equivalent to
 
 Both statements below are over `ℕ` with no subtraction.
 
-## Buildable-in-Lean roadmap (Mathlib `PowerSeries` API — NOT yet executed)
+## Buildable-in-Lean roadmap (Mathlib `PowerSeries` API)
 
 This recurrence is *not* a deep gap: every ingredient now exists in Mathlib, so it is BUILDABLE
-(~150–250 lines), not blocked.  Concrete plan, mirroring the Catalan precedent:
+(~150–250 lines), not blocked.  Concrete plan, mirroring the Catalan precedent.  **Steps 1–2 are
+now executed** in the sibling file `Proofs/SchroderGeneratingFunction.lean`; Steps 3–5 remain.
 
-1. **GF object.** Work over `ℤ` (the ODE needs subtraction).  Set
-   `f : ℤ⟦X⟧ := PowerSeries.mk (fun n => (largeSchroder n : ℤ))`, with
-   `coeff n f = largeSchroder n` and `constantCoeff f = 1`.
+1. **GF object.** [DONE — `PowerSeries.schroderSeries : ℕ⟦X⟧ := PowerSeries.mk largeSchroder`,
+   with `schroderSeries_coeff` and `schroderSeries_constantCoeff = 1`.]  (The ODE in Step 3
+   onward will re-cast this over `ℤ⟦X⟧`, since differentiation/elimination need subtraction.)
 
-2. **GF quadratic** `X * f^2 + (X - 1) * f + 1 = 0`  (equivalently `f = 1 + X*f + X*f^2`).
-   This is a *direct mirror* of Mathlib's
+2. **GF quadratic** `f = 1 + f*X + f^2*X`  (equivalently `X * f^2 + (X - 1) * f + 1 = 0`).
+   [DONE — `PowerSeries.schroderSeries_eq`, plus the antidiagonal helper
+   `Nat.largeSchroder_succ'`.]  This is a *direct mirror* of Mathlib's
    `PowerSeries.catalanSeries_sq_mul_X_add_one : catalanSeries ^ 2 * X + 1 = catalanSeries`
    (file `Mathlib/RingTheory/PowerSeries/Catalan.lean`): `ext n; cases n`, then
-   `coeff_succ_mul_X`, `sq`, `coeff_mul`, and `largeSchroder_succ` in place of `catalan_succ'`.
+   `coeff_succ_mul_X`, `sq`, `coeff_mul`, and `largeSchroder_succ'` in place of `catalan_succ'`.
+   The extra linear `f*X` term (vs. Catalan) comes from the `+ largeSchroder n` summand in
+   `largeSchroder_succ`.
 
 3. **Differentiate.** `PowerSeries.derivative` (`Mathlib/RingTheory/PowerSeries/Derivative.lean`)
    is a `Derivation` (`d⁄dX`), giving `derivative_X = 1`, `derivative_C = 0`, additivity, and the
