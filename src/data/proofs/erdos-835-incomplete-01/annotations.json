@@ -1,0 +1,38 @@
+[
+  {
+    "id": "erdos835-inc01-ann-defs",
+    "proofId": "erdos-835-incomplete-01",
+    "range": { "startLine": 1, "endLine": 76 },
+    "type": "definition",
+    "title": "The Erdős–Rosenfeld Property, Re-declared",
+    "content": "Erdős Problem #835 asks whether for some k > 2 the k-subsets of {1,…,2k} admit a (k+1)-colouring that is 'rainbow' on every (k+1)-subset — equivalently whether the Johnson graph J(2k,k) has chromatic number k+1 (answer: NO for 3 ≤ k ≤ 8). Because the scaffold Erdos835Problem.lean fails to parse on the pinned toolchain, this file re-declares the definitions verbatim: `baseSet n` = {1,…,n}, `kSubsets n k` = the subtype of k-element subsets, `hasErdosRosenfeldProperty` (every (k+1)-subset A sees all k+1 colours among its k-subsets), and `ErdosRosenfeldQuestion`. `baseSet_card` supplies the elementary count |{1,…,n}| = n via card_map + card_range.",
+    "mathContext": "$\\mathrm{baseSet}(n) = \\{1,\\dots,n\\}, \\quad |\\mathrm{baseSet}(n)| = n; \\quad \\chi(J(2k,k)) \\overset{?}{=} k+1.$",
+    "significance": "key",
+    "relatedConcepts": ["Johnson graph", "chromatic number", "k-subset colouring", "Erdős problems"],
+    "prerequisites": ["Finset", "subtypes", "graph colouring"]
+  },
+  {
+    "id": "erdos835-inc01-ann-surjective",
+    "proofId": "erdos-835-incomplete-01",
+    "range": { "startLine": 78, "endLine": 90 },
+    "type": "theorem",
+    "title": "The Property Forces Surjectivity",
+    "content": "`erdosRosenfeld_surjective` is the headline structural fact: for k ≥ 1, any colouring χ with the Erdős–Rosenfeld property is surjective onto Fin(k+1). The proof picks a single (k+1)-subset A of the 2k-element ground set — one exists because k+1 ≤ 2k for k ≥ 1, via `Finset.exists_subset_card_eq` with `baseSet_card` and `omega` — and the property then hands back, for every colour c, a k-subset of A coloured c. So every colour has a preimage. Crucially this needs no chromatic-number machinery and no explicit colouring, so it is independent of the scaffold's two sorries.",
+    "mathContext": "$k \\ge 1,\\ \\text{property} \\implies \\chi\\ \\text{surjective onto } \\mathrm{Fin}(k+1).$",
+    "significance": "critical",
+    "relatedConcepts": ["surjectivity", "exists_subset_card_eq", "rainbow colouring", "colour-exhausting condition"],
+    "prerequisites": ["the Erdős–Rosenfeld property", "Finset.exists_subset_card_eq"]
+  },
+  {
+    "id": "erdos835-inc01-ann-corollaries",
+    "proofId": "erdos-835-incomplete-01",
+    "range": { "startLine": 92, "endLine": 127 },
+    "type": "theorem",
+    "title": "Range and Question Corollaries",
+    "content": "Two corollaries package the consequence. `erdosRosenfeld_range_univ`: the range of an Erdős–Rosenfeld colouring is all of Fin(k+1) (via `Function.Surjective.range_eq`), so exactly k+1 colours are used. `erdosRosenfeldQuestion_surjective`: a positive answer to the question for k ≥ 1 yields a surjective (k+1)-colouring. Together these pin the 'lower side' of the equivalence property ⇔ χ(J(2k,k)) = k+1 — a valid colouring cannot waste any colour, which is exactly why the obstruction (χ > k+1 for k ≥ 3) is about packing all colours rainbow-style on every window rather than mere properness.",
+    "mathContext": "$\\mathrm{range}\\,\\chi = \\mathrm{Fin}(k+1); \\qquad \\mathrm{ErdosRosenfeldQuestion}(k) \\implies \\exists \\chi\\ \\text{surjective}.$",
+    "significance": "key",
+    "relatedConcepts": ["range = univ", "equivalence to chromatic number", "Johnson graph colouring"],
+    "prerequisites": ["surjectivity", "Function.Surjective.range_eq"]
+  }
+]
