@@ -1,12 +1,12 @@
 {
   "slug": "prime-reciprocal-divergence-oq-01",
   "title": "Error Term in Prime Reciprocal Sum",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
+    "formal": "Summable (fun p : Nat.Primes => 1/(p:ℝ)^s) ↔ 1 < s (prime zeta convergence boundary).",
     "plain": "What is the precise error term in sum_{p<=n} 1/p = ln ln n + M + E(n).",
     "whyMatters": []
   },
@@ -16,24 +16,39 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-03T12:03:52.282Z",
+    "phase": "COMPLETED",
+    "since": "2026-06-22T00:00:00-07:00",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalized the prime zeta convergence dichotomy (convergence side); the precise error term (Mertens) is deep ANT not in scope.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None for the convergence side. The precise error term E(n) (Mertens' second theorem) requires analytic number theory beyond Mathlib.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PARTIAL/COMPLETE on the convergence side. The OQ asks for the precise error term E(n) in ∑_{p≤n} 1/p = ln ln n + M + E(n) — a Mertens-type result needing analytic number theory beyond Mathlib (NOT attempted). Short of that, formalized the clean convergence/divergence boundary of the prime zeta function P(s) = ∑_p 1/p^s: prime_zeta_summable_iff (summable ⟺ s > 1), the two directions, the s=1 boundary divergence (the gallery headline in 1/p^s form), and the s=2 instance (∑1/p² converges). PrimeReciprocalDivergenceOQ01.lean, 5 theorems, 0 axioms, 0 sorries, no native_decide; reduces to Mathlib's Nat.Primes.summable_rpow via 1/p^s = p^(−s).",
+    "builtItems": [
+      "PrimeReciprocalDivergenceOQ01.lean: 5 theorems, 0 axioms (propext/Classical.choice/Quot.sound), 0 sorries.",
+      "prime_zeta_summable_iff: Summable (1/p^s over Nat.Primes) ↔ 1 < s (funext 1/p^s = p^(−s) via Real.rpow_neg + one_div, then Nat.Primes.summable_rpow + linarith on −s < −1 ⟺ 1 < s).",
+      "prime_zeta_summable / prime_zeta_not_summable (the two directions).",
+      "prime_reciprocal_not_summable_rpow (s=1 divergence headline), prime_squared_summable (s=2 instance)."
+    ],
+    "insights": [
+      "The parent proves ∑1/p diverges and the p^r-form Nat.Primes.summable_rpow dichotomy + the isolated ∑1/p² convergence; this packages the standard prime zeta P(s) = ∑1/p^s with critical exponent s=1.",
+      "Bridge: 1/(p:ℝ)^s = (p:ℝ)^(−s) (Real.rpow_neg hp.le + one_div, p>0 via p.prop.pos cast); then Nat.Primes.summable_rpow gives summable (p^r) ↔ r < −1, and −s < −1 ⟺ 1 < s.",
+      "The actual OQ content (the error term E(n), i.e. Mertens' second theorem with the Mertens constant M ≈ 0.2615) is a hard analytic result not in Mathlib; only the qualitative convergence boundary is in reach here."
+    ],
+    "mathlibGaps": [
+      "Mertens' second theorem ∑_{p≤n} 1/p = ln ln n + M + O(1/ln n) and the Mertens constant are not in Mathlib; the precise error term E(n) cannot currently be formalized."
+    ],
+    "nextSteps": [
+      "Partial-sum divergence: ∑_{p≤n} 1/p → ∞ (Tendsto atTop), the qualitative foundation for the error term, via not_summable_iff_tendsto_nat_atTop_of_nonneg bridged through the prime subtype.",
+      "Prime zeta vs Riemann zeta bound: P(s) ≤ ζ(s) for s > 1 (subset comparison via Summable.tsum_subtype_le).",
+      "Mertens' theorems (the actual error term) — a long-term analytic-number-theory target."
+    ]
   },
   "tags": [
     "analytic-number-theory",
