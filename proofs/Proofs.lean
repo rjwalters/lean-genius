@@ -1857,6 +1857,7 @@ import Proofs.Erdos501ProblemProvable
 import Proofs.Erdos502Problem
 import Proofs.Erdos503Problem
 import Proofs.Erdos504Problem
+import Proofs.Erdos504OQ01
 import Proofs.Erdos505Problem
 import Proofs.Erdos506Problem
 import Proofs.Erdos507Problem

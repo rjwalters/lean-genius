@@ -1,0 +1,73 @@
+{
+  "id": "erdos-504-oq-01",
+  "title": "Cube Vertices Realise 2^d Non-Obtuse Points in ℝ^d",
+  "slug": "erdos-504-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "RealInnerProductSpace",
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "Erdos504OQ01",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos504OQ01.lean",
+    "sorries": 0
+  },
+  "description": "Erdős Problem #504 (Blumenthal's problem, solved by Sendov 1993) studies α_n, the largest angle α such that every n-point planar set contains three points forming an angle ≥ α. The natural higher-dimensional analogue (open question OQ-01) asks the same in ℝ^d: for which n is an obtuse angle forced? The answer is governed by the Danzer–Grünbaum theorem (1962): the maximum number of points in ℝ^d with all pairwise angles non-obtuse (≤ π/2) is exactly 2^d, achieved by the vertices of a cube — so one cannot guarantee an obtuse angle until n > 2^d. This entry formalises the sharp lower-bound (construction) half of that theorem, which is fully elementary. The crux (inner_edge_nonneg) is that for any three cube vertices a, b, c ∈ {0,1}^d the edge vectors satisfy ⟪a − b, c − b⟫ ≥ 0: expanding the inner product over EuclideanSpace ℝ (Fin d) as a sum of per-coordinate products, every term (a i − b i)(c i − b i) is non-negative, because coordinate by coordinate the two factors share a sign — both ≥ 0 when b i = 0, both ≤ 0 when b i = 1. Via Real.arccos_le_pi_div_two this gives angle_le_pi_div_two: every angle ∠ a b c at a cube vertex is ≤ π/2. The construction is packaged in cubeVertices (the Finset of all 2^d vertices, indexed injectively by subsets of Fin d), with cubeVertices_card proving |cubeVertices| = 2^d and cubeVertices_pairwise_nonobtuse confirming every angle among them is non-obtuse. The matching upper bound — that 2^d + 1 points force an obtuse angle — is the deep half of Danzer–Grünbaum and is left open. Fully machine-verified: no axioms, no sorries, no native_decide.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos504OQ01.lean",
+    "tags": [
+      "discrete-geometry",
+      "combinatorial-geometry",
+      "angles",
+      "danzer-grunbaum",
+      "hypercube",
+      "euclidean-space",
+      "inner-product",
+      "erdos-504",
+      "higher-dimensional"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 141,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "assumptions": ""
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #504 (Blumenthal's problem) asks for the function $\\alpha_n$: the supremum of angles $\\alpha$ guaranteed to appear as an angle $\\angle xyz$ among some three of any $n$ points in the plane. Sendov gave the complete answer in 1993, with the optimal configurations related to vertices of regular polygons. The higher-dimensional version replaces $\\mathbb{R}^2$ by $\\mathbb{R}^d$ and immediately runs into the classical Danzer–Grünbaum theorem (1962): the largest set of points in $\\mathbb{R}^d$ no three of which form an obtuse angle has exactly $2^d$ elements, and the extremal example is the vertex set of a hypercube. The non-trivial direction (that $2^d+1$ points must contain an obtuse angle) uses a clever volume argument on translated convex bodies; the easy and sharp direction — that the $2^d$ cube vertices already avoid obtuse angles — is a one-line coordinate computation. That easy direction is exactly the foundational fact for the $d$-dimensional analogue of $\\alpha_n$: it shows the guaranteed maximum angle stays at most $\\pi/2$ for all $n \\le 2^d$.",
+    "problemStatement": "Work in $\\mathbb{R}^d = \\operatorname{EuclideanSpace}\\ \\mathbb{R}\\ (\\operatorname{Fin} d)$. Call a point a cube vertex if every coordinate lies in $\\{0,1\\}$. Show that the $2^d$ cube vertices form a point configuration in which every angle is non-obtuse: for any three cube vertices $a, b, c$, the angle $\\angle a b c$ at $b$ satisfies $\\angle a b c \\le \\pi/2$. This is the sharp construction underlying the Danzer–Grünbaum bound and the higher-dimensional analogue of Erdős #504.",
+    "proofStrategy": "Three steps. (1) `inner_edge_nonneg` proves the inequality $\\langle a - b,\\, c - b\\rangle \\ge 0$ for cube vertices. The real inner product on $\\operatorname{EuclideanSpace}\\ \\mathbb{R}\\ (\\operatorname{Fin} d)$ expands (`inner_eq_sum`, via `PiLp.inner_apply`) as $\\sum_i (a_i - b_i)(c_i - b_i)$; `Finset.sum_nonneg` reduces to a per-coordinate claim. Splitting on $b_i \\in \\{0,1\\}$: when $b_i = 0$ both factors equal the (non-negative) coordinates $a_i, c_i$ so the product is $\\ge 0$ by `mul_nonneg`; when $b_i = 1$ both factors are $\\le 0$ (`coord_sub_one_nonpos`) so the product is $\\ge 0$ by `nlinarith`. (2) `angle_le_pi_div_two` converts this to a geometric statement: unfolding `EuclideanGeometry.angle` and `InnerProductGeometry.angle` to $\\arccos\\!\\big(\\langle a-b, c-b\\rangle / (\\lVert a-b\\rVert\\,\\lVert c-b\\rVert)\\big)$, the lemma `Real.arccos_le_pi_div_two` reduces $\\angle a b c \\le \\pi/2$ to the non-negativity of that quotient, which follows from `inner_edge_nonneg` and `positivity`. (3) The configuration is assembled: `cubeVertex` indexes a vertex by a subset $s \\subseteq \\operatorname{Fin} d$ (coordinate $i$ is $1$ iff $i \\in s$), `cubeVertex_injective` shows distinct subsets give distinct vertices, and `cubeVertices_card` computes the cardinality $2^d$ via `Fintype.card_finset`. `cubeVertices_pairwise_nonobtuse` then states the headline result over the explicit $2^d$-element set.",
+    "keyInsights": [
+      "The whole construction rests on a single sign observation: for cube vertices, the two edge-vector coordinates $a_i - b_i$ and $c_i - b_i$ always share a sign. If $b_i = 0$ both are $\\ge 0$; if $b_i = 1$ both are $\\le 0$. Either way their product is non-negative, so the inner product — a sum of such products — is non-negative, i.e. no angle is obtuse.",
+      "Non-obtuseness is most cleanly captured by the inner product, not the angle itself: $\\angle a b c \\le \\pi/2 \\iff \\langle a-b, c-b\\rangle \\ge 0$. Working with the inner product keeps the argument purely algebraic (a sum of squares-like terms) and defers all trigonometry to the single library lemma `Real.arccos_le_pi_div_two`.",
+      "The bound $2^d$ is sharp and is exactly the count of cube vertices: indexing vertices by subsets of $\\operatorname{Fin} d$ gives a bijection with $2^d$ points, so the construction is not merely an example but a witness that the Danzer–Grünbaum maximum is attained.",
+      "The formalisation establishes the easy, sharp half of Danzer–Grünbaum; the converse — that $2^d + 1$ points in $\\mathbb{R}^d$ must contain an obtuse angle — is the deep half (a volume/translation argument) and remains open here."
+    ]
+  },
+  "conclusion": {
+    "summary": "For every dimension $d$, the $2^d$ vertices of the unit cube in $\\mathbb{R}^d$ form a point configuration in which every angle is non-obtuse ($\\le \\pi/2$). The proof is fully elementary — the inner product of any two edge vectors expands as a sum of per-coordinate products, each non-negative by a sign argument — and is machine-verified with no axioms, no sorries, and no native_decide.",
+    "implications": "This is the sharp construction half of the Danzer–Grünbaum theorem and the foundational input for the higher-dimensional analogue of Erdős #504: since $2^d$ points in $\\mathbb{R}^d$ can avoid obtuse angles entirely, the guaranteed maximum angle $\\alpha_n^{(d)}$ stays $\\le \\pi/2$ for all $n \\le 2^d$, and an obtuse angle can only be forced once $n > 2^d$. The hypercube is therefore the extremal obstruction in the dimension-$d$ problem.",
+    "openQuestions": [
+      "Can the matching upper bound — that any $2^d + 1$ points in $\\mathbb{R}^d$ must contain an obtuse angle (the deep half of Danzer–Grünbaum) — be formalised, completing the determination that the maximum non-obtuse set has size exactly $2^d$?",
+      "Is the cube the unique extremal configuration up to affine equivalence, and can one quantify how far below $\\pi/2$ all angles of the cube actually lie (the largest angle in the cube configuration as a function of $d$)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-504",
+      "relationship": "extends",
+      "description": "The parent entry states Erdős #504 in the plane (Sendov's determination of α_n). This entry treats the higher-dimensional analogue in ℝ^d, formalising the sharp construction (the 2^d cube vertices avoid obtuse angles) that underlies the Danzer–Grünbaum threshold."
+    }
+  ]
+}
