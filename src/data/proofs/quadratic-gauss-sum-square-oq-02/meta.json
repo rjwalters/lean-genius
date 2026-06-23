@@ -76,5 +76,49 @@
       "relationship": "related",
       "description": "Equidistribution of residues and non-residues is part of the elementary theory of the Legendre symbol that underlies quadratic reciprocity."
     }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Equidistribution from Character Orthogonality",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Docstring framing the result: the quadratic character χ = quadraticChar (ZMod p) has vanishing total sum ∑ χ(a) = 0 (Mathlib's quadraticChar_sum_zero), and this file reads off the counting consequence that nonzero residues and non-residues are equinumerous with (p−1)/2 elements each. Notes the logical independence from the parent's square identity g² = (−1)^((p−1)/2)·p. Imports Mathlib, opens BigOperators/Finset, opens the namespace with a Fact p.Prime variable."
+    },
+    {
+      "id": "vanishing-sum",
+      "title": "The Vanishing Character Sum",
+      "startLine": 38,
+      "endLine": 45,
+      "summary": "quadraticChar_sum_eq_zero specialises Mathlib's quadraticChar_sum_zero to ZMod p, discharging the characteristic hypothesis ringChar ≠ 2 from p ≠ 2 via ZMod.ringChar_zmod_n. This is the orthogonality input the whole count rests on."
+    },
+    {
+      "id": "filters-split",
+      "title": "Splitting the Sum into Filter Cardinalities",
+      "startLine": 47,
+      "endLine": 76,
+      "summary": "Defines the residues filter {a : χ(a) = 1} and nonresidues filter {a : χ(a) = −1}. sum_eq_card_sub_card rewrites each summand χ(a) as the difference of Boolean indicators [χ(a)=1] − [χ(a)=−1] — valid because quadraticChar_isQuadratic says χ(a) ∈ {0,1,−1} — and applies Finset.sum_boole to turn the two indicator sums into the filter cardinalities, giving ∑ χ(a) = #residues − #nonresidues."
+    },
+    {
+      "id": "equidistribution",
+      "title": "Equidistribution: #residues = #nonresidues",
+      "startLine": 78,
+      "endLine": 85,
+      "summary": "card_residues_eq_card_nonresidues combines the two previous results: substituting ∑ χ(a) = 0 into ∑ χ(a) = #residues − #nonresidues forces the two counts to agree (via linarith and a ℤ cast). Equidistribution is a direct reading of orthogonality, not a separate theorem."
+    },
+    {
+      "id": "partition",
+      "title": "The Two Classes Exhaust the Nonzero Elements",
+      "startLine": 87,
+      "endLine": 116,
+      "summary": "card_residues_add_card_nonresidues: #residues + #nonresidues = p − 1. The filters are disjoint (χ(a) cannot be both 1 and −1) and their union is exactly the nonzero elements (using χ(a)=0 ⟺ a=0 via quadraticChar_eq_zero_iff), whose count is p−1 by rewriting to univ.erase 0 and ZMod.card."
+    },
+    {
+      "id": "counts",
+      "title": "Each Class Has Exactly (p−1)/2 Elements",
+      "startLine": 118,
+      "endLine": 134,
+      "summary": "card_residues_eq and card_nonresidues_eq: two equal halves summing to p−1 give (p−1)/2 each, discharged by omega. The headline counts of quadratic residues and non-residues mod an odd prime."
+    }
   ]
 }
