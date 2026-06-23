@@ -1,8 +1,8 @@
 {
   "slug": "cube-root-3-irrational-oq-03",
   "title": "Linear independence of {1, ∛3, (∛3)²} over Q: extending cube root irrationality",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -31,9 +31,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: irreducibility of X³−3 over ℚ, minpoly ℚ ∛3 = X³−3, [ℚ(∛3):ℚ]=3, and ℚ-linear independence of {1,∛3,∛9}; all 0-axiom verified.",
+    "builtItems": [
+      "no_rat_cube_three / no_rat_cube_neg_three in CubeRoot3IrrationalOQ03.lean (3 has no rational cube root via Odd.strictMono_pow injectivity)",
+      "irreducible_X_cubed_sub_C_three: Irreducible (X^3 - C 3 : ℚ[X]) via irreducible_of_degree_le_three_of_not_isRoot",
+      "minpoly_cbrt3: minpoly ℚ cbrt3 = X^3 - C 3",
+      "finrank_adjoin_cbrt3: Module.finrank ℚ ℚ⟮cbrt3⟯ = 3",
+      "linindep_triple + linearIndependent_cbrt3_powers (Fin 3 LinearIndependent predicate form)"
+    ],
+    "insights": [
+      "Sibling oq-04 (CubeRoot3IrrationalOQ04NotQuadratic.lean) already proved {1,t,t²} lin indep for any irrational t with t³=3; the new frontier is the field-theoretic layer (irreducibility/minpoly/finrank) the sibling deliberately avoids.",
+      "Cubic irreducibility over a field reduces to a no-root check: irreducible_of_degree_le_three_of_not_isRoot + the elementary no_rat_cube_three."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },

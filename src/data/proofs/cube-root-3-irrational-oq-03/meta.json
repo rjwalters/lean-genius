@@ -1,0 +1,86 @@
+{
+  "id": "cube-root-3-irrational-oq-03",
+  "slug": "cube-root-3-irrational-oq-03",
+  "title": "∛3 has degree 3 over ℚ: irreducibility of X³ − 3 and [ℚ(∛3):ℚ] = 3",
+  "description": "Extends the irrationality of ∛3 to the full degree-3 statement: X³ − 3 is irreducible over ℚ, it is the minimal polynomial of ∛3, the field extension ℚ(∛3)/ℚ has degree 3, and {1, ∛3, (∛3)²} is linearly independent over ℚ — all reduced to the single arithmetic fact that 3 has no rational cube root.",
+  "overview": "The parent entry proves ∛3 ∉ ℚ. This open-question child upgrades that to the sharp algebraic statement that ∛3 has degree exactly 3 over ℚ.\n\nEverything rests on one arithmetic input, `no_rat_cube_three`: there is no q ∈ ℚ with q³ = 3. (If q³ = 3 then (q:ℝ) is a real cube root of 3, hence equal to ∛3 since x ↦ x³ is injective on ℝ — making ∛3 rational, contradicting the parent.)\n\nFrom this single fact we obtain, via Mathlib's degree-≤3 \"no root ⇒ irreducible\" criterion, that **X³ − 3 is irreducible over ℚ**. Monicity plus (∛3)³ = 3 then identify it as the **minimal polynomial** of ∛3, and the simple-extension dimension formula gives **[ℚ(∛3) : ℚ] = 3**. We also record the linear independence of {1, ∛3, (∛3)²} directly — in explicit form and in Mathlib's `LinearIndependent` predicate form.\n\nA sibling entry (cube-root-3-irrational-oq-04, file CubeRoot3IrrationalOQ04NotQuadratic.lean) had already proved the elementary \"no quadratic relation\" half by an abstract elimination that deliberately avoids field-theory machinery. The new contribution here is the field-theoretic layer — irreducibility, minimal polynomial, and field degree — together with the `LinearIndependent` packaging, none of which the sibling provides.",
+  "conclusion": "X³ − 3 is irreducible over ℚ and is the minimal polynomial of ∛3, so [ℚ(∛3) : ℚ] = 3 and {1, ∛3, (∛3)²} is a basis-sized ℚ-linearly-independent set. All eleven theorems are fully machine-checked with no sorries and no axioms beyond Lean/Mathlib's foundational propext, Classical.choice, and Quot.sound (no native_decide). The entire development bottoms out at the lemma that 3 has no rational cube root.",
+  "leanFile": {
+    "lineCount": 185,
+    "path": "Proofs/CubeRoot3IrrationalOQ03.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 11,
+    "additionalFiles": []
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius (Researcher)",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ03.lean",
+    "tags": [
+      "irrationality",
+      "number-theory",
+      "field-theory",
+      "minimal-polynomial",
+      "irreducibility",
+      "linear-algebra",
+      "cube-roots"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "axiomCount": 0,
+    "assumptions": "None — fully machine-verified (0 axioms, 0 sorries; only the foundational propext / Classical.choice / Quot.sound). Builds on the parent file CubeRoot3Irrational (for cbrt3, cbrt3_cubed, irrational_cbrt3). Uses Mathlib's degree-≤3 irreducibility criterion (irreducible_of_degree_le_three_of_not_isRoot), minpoly.eq_of_irreducible_of_monic, and IntermediateField.adjoin.finrank.",
+    "lineCount": 185,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "originalContributions": [
+      "no_rat_cube_three: 3 has no rational cube root, derived from the parent's irrational_cbrt3 via injectivity of x ↦ x³ on ℝ (Odd.strictMono_pow). This standalone lemma is the single arithmetic input for every downstream result.",
+      "irreducible_X_cubed_sub_C_three: X³ − 3 is irreducible over ℚ, obtained from no_rat_cube_three via Mathlib's degree-≤3 'no root ⇒ irreducible' criterion. The sibling NotQuadratic file deliberately avoids irreducibility; this establishes it.",
+      "minpoly_cbrt3: X³ − 3 is the minimal polynomial of ∛3 over ℚ (irreducibility + monicity + (∛3)³ = 3).",
+      "finrank_adjoin_cbrt3: the field extension degree [ℚ(∛3) : ℚ] = Module.finrank ℚ ℚ⟮cbrt3⟯ = 3.",
+      "linindep_triple: a self-contained elementary proof that a·1 + b·∛3 + c·(∛3)² = 0 (a,b,c ∈ ℚ) forces a = b = c = 0, by a finite elimination reducing to no_rat_cube_three (overlaps mathematically with the sibling oq-04 NotQuadratic result).",
+      "linearIndependent_cbrt3_powers: the same fact in Mathlib's LinearIndependent predicate form for the family ![1, ∛3, (∛3)²] : Fin 3 → ℝ over ℚ (not provided by the sibling).",
+      "cbrt3_no_quadratic_relation: ∛3 satisfies no rational polynomial of degree ≤ 2."
+    ]
+  },
+  "references": [
+    {
+      "title": "Mathlib: Polynomial.irreducible_of_degree_le_three_of_not_isRoot",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/SpecificDegree.html"
+    },
+    {
+      "title": "Eisenstein's criterion (X³ − 3 is Eisenstein at 3)",
+      "url": "https://en.wikipedia.org/wiki/Eisenstein%27s_criterion"
+    },
+    {
+      "title": "Degree of a field extension",
+      "url": "https://en.wikipedia.org/wiki/Degree_of_a_field_extension"
+    }
+  ],
+  "crossReferences": [
+    "cube-root-3-irrational",
+    "cube-root-3-irrational-oq-04"
+  ],
+  "sections": [
+    {
+      "title": "The single arithmetic input: 3 is not a rational cube",
+      "content": "no_rat_cube_three shows q³ ≠ 3 for all q ∈ ℚ. The proof casts q to ℝ, notes (q:ℝ)³ = (∛3)³, and uses injectivity of the odd power x ↦ x³ on ℝ (Odd.strictMono_pow) to conclude (q:ℝ) = ∛3, contradicting irrational_cbrt3. The companion no_rat_cube_neg_three handles −3."
+    },
+    {
+      "title": "Irreducibility of X³ − 3 over ℚ",
+      "content": "A monic cubic over a field is irreducible iff it has no root. The polynomial X³ − 3 has natDegree 3 ∈ [1,3], and (X³ − 3).eval x = x³ − 3 ≠ 0 for every x ∈ ℚ exactly by no_rat_cube_three, so Mathlib's irreducible_of_degree_le_three_of_not_isRoot yields irreducibility."
+    },
+    {
+      "title": "Minimal polynomial and field degree",
+      "content": "Since ∛3 is a root of the monic irreducible X³ − 3, minpoly.eq_of_irreducible_of_monic gives minpoly ℚ ∛3 = X³ − 3. The simple-extension dimension formula IntermediateField.adjoin.finrank then gives [ℚ(∛3) : ℚ] = natDegree(X³ − 3) = 3."
+    },
+    {
+      "title": "Linear independence of {1, ∛3, (∛3)²}",
+      "content": "An elementary elimination: from a + b∛3 + c(∛3)² = 0, multiplying by ∛3 and reducing (∛3)³ = 3 gives a second relation; eliminating (∛3)² yields (ac − b²)∛3 = ab − 3c². If ac − b² ≠ 0 then ∛3 is rational; otherwise ab = 3c² and ac = b² force b³ = 3c³, i.e. (b/c)³ = 3 — impossible. This is packaged both explicitly (linindep_triple) and as Mathlib's LinearIndependent ℚ ![1, ∛3, (∛3)²]."
+    }
+  ]
+}
