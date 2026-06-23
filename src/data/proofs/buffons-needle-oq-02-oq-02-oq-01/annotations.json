@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-buf-oq020201-recurrence-def",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "definition",
+    "title": "The crossing-factor recurrence",
+    "content": "The $n$-dimensional Buffon crossing factor $\\alpha_n = \\mathbb{E}_{S^{n-1}}[|u_1|]$ — the mean absolute first coordinate of a uniformly random direction — is defined by the two-step recurrence $\\alpha_{n+2} = \\tfrac{n}{n+1}\\alpha_n$ with base values $\\alpha_2 = 2/\\pi$, $\\alpha_3 = 1/2$ (and $1$ for $n\\le 1$ by convention). It is re-declared verbatim here because the companion file BuffonsNeedleOQ02OQ01.lean no longer builds on the pinned Mathlib (a Filter.Tendsto.div API drift). The even and odd indices form two independent descending subsequences.",
+    "mathContext": "$\\alpha_{n+4} = \\dfrac{n+2}{n+3}\\,\\alpha_{n+2},\\quad \\alpha_2 = \\dfrac{2}{\\pi},\\ \\alpha_3 = \\dfrac12$",
+    "significance": "key",
+    "relatedConcepts": ["Buffon's needle", "Barbier's noodle theorem", "Gamma function ratio", "uniform distribution on the sphere", "integral geometry"],
+    "prerequisites": ["geometric probability", "recursive definitions", "expected value"]
+  },
+  {
+    "id": "ann-buf-oq020201-base-values",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01",
+    "range": { "startLine": 57, "endLine": 63 },
+    "type": "technique",
+    "title": "Base values and the step lemma by rfl",
+    "content": "Because the recurrence is given by structural pattern-matching on $\\mathbb{N}$, the base evaluations $\\alpha_2 = 2/\\pi$ and $\\alpha_3 = 1/2$ and the step identity $\\alpha_{n+4} = \\tfrac{n+2}{n+3}\\alpha_{n+2}$ all hold by definitional unfolding (rfl), and are exposed as @[simp] lemmas so later proofs can rewrite with them automatically. This turns the recurrence into a reusable rewriting engine for the monotonicity arguments.",
+    "mathContext": "$\\alpha_2 = 2/\\pi$, $\\alpha_3 = 1/2$, $\\alpha_{n+4} = \\tfrac{n+2}{n+3}\\alpha_{n+2}$ — all definitional (rfl)",
+    "significance": "supporting",
+    "relatedConcepts": ["definitional equality", "simp normal form", "structural recursion"],
+    "prerequisites": ["Lean pattern matching", "rfl proofs"]
+  },
+  {
+    "id": "ann-buf-oq020201-positivity",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01",
+    "range": { "startLine": 65, "endLine": 77 },
+    "type": "technique",
+    "title": "Positivity by two-step strong induction",
+    "content": "Positivity $\\alpha_n > 0$ for $n \\ge 2$ is proved by strong induction on $n$. The cases $n < 4$ ($n=2,3$) are discharged from the base values via interval_cases; for $n = m+4$ the recurrence factor $\\tfrac{m+2}{m+3}$ is positive and multiplies the inductive hypothesis $\\alpha_{m+2} > 0$. Strong induction (reaching back two steps) is exactly what the two-step recurrence demands, and positivity is the prerequisite that lets a factor $<1$ force a strict decrease later.",
+    "mathContext": "$\\forall n \\ge 2,\\ \\alpha_n > 0$, via $\\alpha_{m+4} = \\tfrac{m+2}{m+3}\\,\\alpha_{m+2}$ and the IH",
+    "significance": "supporting",
+    "relatedConcepts": ["strong induction", "positivity", "well-founded recursion"],
+    "prerequisites": ["Nat.strong_induction_on", "interval_cases"]
+  },
+  {
+    "id": "ann-buf-oq020201-two-step-decrease",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01",
+    "range": { "startLine": 83, "endLine": 92 },
+    "type": "insight",
+    "title": "Strict two-step monotonicity",
+    "content": "The structural heart of the entry: $\\alpha_{n+2} < \\alpha_n$ for every $n \\ge 2$. Writing $n = m+2$ and applying the recurrence, $\\alpha_{n+2} = \\tfrac{m+2}{m+3}\\alpha_n$ with ratio $\\tfrac{m+2}{m+3} < 1$ acting on the positive $\\alpha_n$, so the product is strictly smaller. The strict gap comes from multiplying a positive quantity by a factor strictly below one — closed by nlinarith from positivity and $1 - \\tfrac{m+2}{m+3} > 0$.",
+    "mathContext": "$\\alpha_{n+2} = \\dfrac{n}{n+1}\\,\\alpha_n < \\alpha_n$ since $\\dfrac{n}{n+1} < 1$ and $\\alpha_n > 0$",
+    "significance": "key",
+    "relatedConcepts": ["monotone sequence", "strict inequality", "even/odd subsequences", "dimensional thinning"],
+    "prerequisites": ["the recurrence", "positivity", "nlinarith"]
+  },
+  {
+    "id": "ann-buf-oq020201-three-lt-two",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01",
+    "range": { "startLine": 94, "endLine": 97 },
+    "type": "concept",
+    "title": "The seed comparison α₃ < α₂",
+    "content": "The first cross-parity comparison $\\alpha_3 < \\alpha_2$, i.e. $\\tfrac12 < \\tfrac{2}{\\pi}$, made concrete. After clearing the denominator with $\\pi > 0$ it reduces to $\\pi < 4$, supplied by Mathlib's pi_lt_four. This is the seed of the odd-versus-even interleaving: the odd subsequence already starts below the even one, so $\\alpha_2$ dominates both.",
+    "mathContext": "$\\alpha_3 = \\tfrac12 < \\tfrac{2}{\\pi} = \\alpha_2 \\iff \\pi < 4$",
+    "significance": "supporting",
+    "relatedConcepts": ["pi bounds", "interleaving subsequences", "concrete inequality"],
+    "prerequisites": ["Real.pi_lt_four", "div_lt_iff"]
+  },
+  {
+    "id": "ann-buf-oq020201-maximum",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01",
+    "range": { "startLine": 103, "endLine": 121 },
+    "type": "insight",
+    "title": "The maximum is the classical value 2/π",
+    "content": "The global maximum: $\\alpha_n \\le 2/\\pi$ for all $n \\ge 2$, so the crossing factor peaks at the classical planar Buffon value $\\alpha_2 = 2/\\pi$. Proved by two-step strong induction — the base cases $\\alpha_2 = 2/\\pi$ and $\\alpha_3 = 1/2 \\le 2/\\pi$ (from $\\pi \\le 4$) start both subsequences at or below the bound, and each inductive step multiplies by a factor $\\le 1$, preserving it. Both even and odd dimensions descend from their first term, so no later dimension can exceed the plane.",
+    "mathContext": "$\\forall n \\ge 2,\\ \\alpha_n \\le \\dfrac{2}{\\pi} = \\alpha_2$; the maximum is attained only at $n=2$",
+    "significance": "key",
+    "relatedConcepts": ["global maximum", "monotone descent", "classical Buffon constant", "two-step induction"],
+    "prerequisites": ["the recurrence", "Real.pi_le_four", "nlinarith"]
+  },
+  {
+    "id": "ann-buf-oq020201-lt-one",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01",
+    "range": { "startLine": 123, "endLine": 130 },
+    "type": "insight",
+    "title": "Uniformly below one in every dimension",
+    "content": "The clean a priori bound: $\\alpha_n < 1$ for all $n \\ge 2$. It follows immediately by chaining the maximum bound $\\alpha_n \\le 2/\\pi$ with $2/\\pi < 1$, which holds because $\\pi > 2$ (Mathlib's pi_gt_three). Concretely, the expected number of hyperplane crossings of a unit-length curve per spacing $L/d$ never reaches one in any dimension — a uniform control on the Buffon noodle phenomenon.",
+    "mathContext": "$\\alpha_n \\le \\dfrac{2}{\\pi} < 1$ since $\\pi > 2 \\Rightarrow$ expected crossings $< L/d$",
+    "significance": "key",
+    "relatedConcepts": ["a priori bound", "expected crossings", "noodle formula", "dimensional concentration"],
+    "prerequisites": ["the maximum bound", "Real.pi_gt_three"]
+  }
+]
