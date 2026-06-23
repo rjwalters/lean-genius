@@ -1,0 +1,173 @@
+{
+  "id": "solution-of-cubic-oq-01-oq-02",
+  "title": "The Negative-Discriminant Case: Completing the Real Sign Trichotomy of the Cubic",
+  "slug": "solution-of-cubic-oq-01-oq-02",
+  "description": "Completes the real sign trichotomy for the cubic by supplying the missing Δ < 0 leg. A real cubic with one real root ρ and a complex-conjugate pair u ± vi factors as a(x−ρ)(x²−2ux+(u²+v²)); its Mathlib discriminant is the closed form Δ = −4a⁴v²((ρ−u)²+v²)², which is ≤ 0 always and strictly < 0 exactly when the pair is genuinely complex (v ≠ 0). Together with the complementary all-real form Δ = a⁴·∏(differences)² ≥ 0 and the sibling entries' Δ > 0 (three distinct real roots) and Δ = 0 (repeated root), this pins the sign of the discriminant to the nature of the roots over ℝ. Answers the open question of solution-of-cubic-oq-01-oq-01.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cubic_equation#The_nature_of_the_roots",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SolutionOfCubicOQ01OQ02.lean",
+    "tags": [
+      "algebra",
+      "cubic-equations",
+      "discriminant",
+      "sign-trichotomy",
+      "complex-conjugate-roots",
+      "vieta",
+      "polynomial-arithmetic",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      "Cubic.discr (Mathlib.Algebra.CubicDiscriminant): the discriminant b²c² − 4ac³ − 4b³d − 27a²d² + 18abcd of a cubic, used directly as the discriminant of the conjugate-pair and Vieta cubics",
+      "Even.pow_pos / pow_pos / mul_pos / add_pos_of_nonneg_of_pos / sq_nonneg (Mathlib.Algebra.Order): strict positivity of a⁴, v², and the squared base for the Δ < 0 argument",
+      "Real.sq_sqrt (Mathlib.Analysis.SpecialFunctions.Sqrt): √6² = 6 for the explicit conjugate-pair sanity check"
+    ],
+    "originalContributions": [
+      "conjPairCubic / discr_conjPair: the real cubic a(x−ρ)(x²−2ux+(u²+v²)) with one real root ρ and conjugate pair u ± vi, and the closed discriminant identity Δ = −4a⁴v²((ρ−u)²+v²)² — the negative-discriminant computation absent from the gallery's Δ > 0 / Δ = 0 treatments",
+      "discr_conjPair_nonpos: Δ ≤ 0 always in the conjugate-pair form",
+      "discr_conjPair_neg_iff: the headline characterization Δ < 0 ⟺ v ≠ 0 (the pair is genuinely complex) — the Δ < 0 leg of the real sign trichotomy",
+      "discr_conjPair_eq_zero_iff: the boundary Δ = 0 ⟺ v = 0 (the pair degenerates to a real double root)",
+      "discr_conjPair_sign: the synthesis — for a ≠ 0 the conjugate-pair discriminant is never positive, is zero iff v = 0, and is negative iff v ≠ 0",
+      "vietaCubic / discr_vieta / discr_vieta_nonneg: the complementary all-real regime, Δ = a⁴·((r−s)(s−t)(t−r))² ≥ 0, so Δ < 0 forces a non-real root"
+    ],
+    "dateAdded": "2026-06-23",
+    "prerequisites": [
+      "The Tschirnhaus reduction of the general cubic (parent proof, OQ-01)",
+      "The discriminant of the general cubic in coefficient and root form (sibling OQ-01-OQ-01)",
+      "Vieta's formulas; ordered-field arithmetic and complex-conjugate root structure over ℝ"
+    ],
+    "relatedProblems": [
+      {
+        "id": "solution-of-cubic-oq-01-oq-01",
+        "relationship": "Parent question: formalizes the general-cubic discriminant and its Δ > 0 / Δ = 0 root criteria and explicitly leaves the Δ < 0 sign trichotomy over ℝ as an open question — answered here."
+      },
+      {
+        "id": "solution-of-cubic-oq-03-oq-01",
+        "relationship": "Sibling: proves Δ > 0 ⟹ three distinct real roots and Δ = 0 ⟹ a repeated root, both assuming a real root triple. This entry supplies the complementary Δ < 0 (one real, two complex) case."
+      },
+      {
+        "id": "solution-of-cubic-oq-03-oq-02",
+        "relationship": "Sibling: the casus irreducibilis (Δ > 0 ⟹ Cardano's √D imaginary, three real roots). This entry completes the sign analysis at the opposite end (Δ < 0)."
+      },
+      {
+        "id": "solution-of-cubic-oq-01",
+        "relationship": "Grandparent: the Tschirnhaus shift reducing the general cubic to depressed form."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 196,
+    "assumptions": "None. All theorems fully proved from Mathlib with 0 axioms and 0 sorries. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms); no native_decide, no Lean.ofReduceBool, no sorryAx.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "For a real cubic a x³ + b x² + c x + d the sign of the discriminant Δ classifies the geometry of its roots: Δ > 0 gives three distinct real roots, Δ = 0 a repeated root, and Δ < 0 one real root with a pair of complex-conjugate roots. This trichotomy is the classical bridge between the algebra of the discriminant and the analysis of the cubic's graph, and it underlies the casus irreducibilis — the historically pivotal observation that the three-real-root case (Δ > 0) forces Cardano's formula through imaginary numbers. The gallery already formalized the Δ > 0 and Δ = 0 regimes (assuming the roots are real) and the casus irreducibilis. The remaining, genuinely complex regime — Δ < 0 — is the case where two roots leave the real line entirely, and its discriminant must be computed from the conjugate-pair factorization a(x−ρ)(x²−2ux+(u²+v²)). The result is a single closed identity, Δ = −4a⁴v²((ρ−u)²+v²)², that is manifestly ≤ 0 and strictly negative exactly when the imaginary part v is nonzero.",
+    "problemStatement": "Complete the real sign trichotomy of the cubic by computing and signing the discriminant in the complex-conjugate-root case: show that a real cubic with one real root and a conjugate pair u ± vi has Δ = −4a⁴v²((ρ−u)²+v²)², hence Δ ≤ 0 with Δ < 0 ⟺ v ≠ 0, and that an all-real factored cubic has Δ ≥ 0.",
+    "proofStrategy": "Each discriminant is computed against Mathlib's Cubic.discr by unfolding and a single ring call: discr_vieta for the all-real Vieta coefficients and discr_conjPair for the real coefficients (b = −a(2u+ρ), c = a(u²+v²+2uρ), d = −aρ(u²+v²)) of the conjugate-pair factorization. Nonnegativity of the all-real form and nonpositivity of the conjugate-pair form follow from positivity of the squared factors. The strict sign Δ < 0 ⟺ v ≠ 0 requires genuine strict positivity of a⁴ and v² from a ≠ 0 and v ≠ 0; since the positivity tactic only yields nonnegativity for even powers of an unsigned variable, this is supplied explicitly via Even.pow_pos, pow_pos, add_pos_of_nonneg_of_pos and mul_pos, then closed with linarith. The boundary Δ = 0 ⟺ v = 0 is derived from the strict version together with a trivial ring computation at v = 0.",
+    "keyInsights": [
+      "A real cubic with non-real roots factors as a(x−ρ)(x²−2ux+(u²+v²)) where u ± vi is the conjugate pair; the irreducible quadratic has discriminant −4v² < 0, and feeding its real coefficients into Mathlib's Cubic.discr collapses to Δ = −4a⁴v²((ρ−u)²+v²)².",
+      "The factor −4a⁴v² < 0 (for a, v ≠ 0) times the square ((ρ−u)²+v²)² > 0 makes the negativity of Δ structural: it is negative precisely because the pair is genuinely complex, i.e. v ≠ 0.",
+      "Setting v = 0 degenerates the conjugate pair into a real double root at u and sends Δ to 0, recovering the boundary between the Δ < 0 and Δ = 0 regimes without any case analysis.",
+      "The all-real form Δ = a⁴·((r−s)(s−t)(t−r))² ≥ 0 and the conjugate-pair form Δ ≤ 0 are mutually exclusive in sign, so the discriminant's sign alone decides whether the cubic's roots are all real or include a complex pair — the trichotomy needs no fundamental theorem of algebra, only the two factored forms.",
+      "Mathlib's positivity tactic proves 0 ≤ a⁴ but not 0 < a⁴ from a ≠ 0 (its pow extension returns nonzero, not positive, for even powers of an unsigned variable), so the strict-sign leg must be assembled from Even.pow_pos and mul_pos by hand."
+    ],
+    "prerequisites": [
+      "Mathlib's Cubic structure and Cubic.discr",
+      "Vieta's formulas and the conjugate-pair factorization of a real cubic with complex roots",
+      "Ordered-field positivity lemmas (Even.pow_pos, mul_pos, sq_nonneg) and the ring / linarith tactics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "all-real-regime",
+      "title": "Part 1: The All-Real Regime (Δ ≥ 0)",
+      "startLine": 53,
+      "endLine": 80,
+      "summary": "Defines vietaCubic a r s t = a(x−r)(x−s)(x−t) over a commutative ring, proves discr_vieta: Δ = a⁴·((r−s)(s−t)(t−r))², and discr_vieta_nonneg: Δ ≥ 0 over ℝ.",
+      "mathContext": "The classical Vandermonde-square form of the discriminant; over ℝ it is nonnegative, so Δ < 0 is impossible when all roots are real."
+    },
+    {
+      "id": "complex-regime",
+      "title": "Part 2: The Genuinely Complex Regime (Δ < 0)",
+      "startLine": 82,
+      "endLine": 127,
+      "summary": "Defines conjPairCubic a ρ u v = a(x−ρ)(x²−2ux+(u²+v²)), proves discr_conjPair: Δ = −4a⁴v²((ρ−u)²+v²)², discr_conjPair_nonpos: Δ ≤ 0, and the headline discr_conjPair_neg_iff: Δ < 0 ⟺ v ≠ 0.",
+      "mathContext": "The missing negative-discriminant computation: a real cubic with a conjugate pair has strictly negative discriminant exactly when the pair is non-real."
+    },
+    {
+      "id": "synthesis",
+      "title": "Part 3: Synthesis — the Sign Trichotomy",
+      "startLine": 128,
+      "endLine": 162,
+      "summary": "discr_conjPair_eq_zero_iff: Δ = 0 ⟺ v = 0 (degenerate real double root); discr_conjPair_sign: the conjugate-pair discriminant is never positive, zero iff v = 0, negative iff v ≠ 0.",
+      "mathContext": "Combined with discr_vieta_nonneg and the siblings' Δ > 0 / Δ = 0 results, this pins the sign of Δ to the nature of the roots."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Part 4: Sanity Checks",
+      "startLine": 163,
+      "endLine": 186,
+      "summary": "x³ − x (three distinct real roots, Δ = 4 > 0); (x − 1)³ (triple root, Δ = 0); x³ − 6x − 40 (real root 4, conjugate pair −2 ± √6 i, Δ = −42336 < 0), the last also exhibited via conjPairCubic.",
+      "mathContext": "Concrete confirmations of all three regimes, with the parent's worked example x³ − 6x − 40 placed in the Δ < 0 case."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) formalization of the negative-discriminant case of the cubic. A real cubic with one real root ρ and conjugate pair u ± vi has Δ = −4a⁴v²((ρ−u)²+v²)² (discr_conjPair), hence Δ ≤ 0 with Δ < 0 ⟺ v ≠ 0 (discr_conjPair_neg_iff) and Δ = 0 ⟺ v = 0 (discr_conjPair_eq_zero_iff); the all-real form has Δ = a⁴·∏(differences)² ≥ 0 (discr_vieta_nonneg). 196 lines, 7 theorems, 2 definitions.",
+    "implications": "This closes the open question raised by solution-of-cubic-oq-01-oq-01: the gallery now proves all three legs of the real sign trichotomy. The sibling entries handle Δ > 0 (three distinct real roots) and Δ = 0 (repeated root) under the hypothesis of real roots; this entry supplies the Δ < 0 (one real, two complex) leg with an explicit closed discriminant, completing the dictionary between the sign of Δ and the nature of the cubic's roots over ℝ — and doing so without the fundamental theorem of algebra, using only the two factored forms.",
+    "openQuestions": [
+      "Assemble the full decision theorem: for an arbitrary real cubic (a ≠ 0), use the fundamental theorem of algebra plus the conjugate-root theorem to show every real cubic is in exactly one of the two factored forms, yielding Δ > 0 ⟺ three distinct real roots, Δ = 0 ⟺ repeated root, Δ < 0 ⟺ one real and two complex roots as a single iff.",
+      "Generalize the conjugate-pair discriminant identity to the quartic: a real quartic with two conjugate pairs, or one real pair and one complex pair, and the sign pattern of its discriminant."
+    ]
+  },
+  "status": "verified",
+  "badge": "verified",
+  "leanFile": {
+    "imports": [
+      "Proofs.SolutionOfCubicOQ01",
+      "Mathlib.Algebra.CubicDiscriminant"
+    ],
+    "opens": [],
+    "namespace": "SolutionOfCubicOQ01OQ02",
+    "lineCount": 196,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "path": "Proofs/SolutionOfCubicOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "solution-of-cubic-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent question: formalizes the general-cubic discriminant in coefficient and root form and its Δ > 0 / Δ = 0 criteria, explicitly leaving the Δ < 0 sign trichotomy over ℝ as an open question. This entry answers it with the closed conjugate-pair discriminant."
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03-oq-01",
+      "relationship": "complementary",
+      "description": "Sibling proving Δ > 0 ⟹ three distinct real roots and Δ = 0 ⟹ a repeated root (assuming a real root triple). This entry supplies the missing Δ < 0 (one real, two complex) leg."
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03-oq-02",
+      "relationship": "complementary",
+      "description": "Sibling proving the casus irreducibilis (Δ > 0 forces Cardano's √D imaginary, three real roots). This entry completes the sign analysis at the opposite end (Δ < 0, genuinely complex roots)."
+    }
+  ],
+  "references": [
+    {
+      "key": "Ti01",
+      "citation": "Tignol, J.-P., Galois' Theory of Algebraic Equations, World Scientific (2001), Chapters 3–5.",
+      "type": "book"
+    },
+    {
+      "key": "CLO15",
+      "citation": "Cox, D., Little, J., O'Shea, D., Ideals, Varieties, and Algorithms, 4th ed., Springer (2015), Chapter 3: resultants and discriminants.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

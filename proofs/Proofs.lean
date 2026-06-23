@@ -3469,6 +3469,7 @@ import Proofs.SkolemNoetherMatrixAutAristotle
 import Proofs.SolutionOfCubic
 import Proofs.SolutionOfCubicOQ01
 import Proofs.SolutionOfCubicOQ01OQ01
+import Proofs.SolutionOfCubicOQ01OQ02
 import Proofs.SolutionOfCubicOQ03
 import Proofs.SolutionOfCubicOQ03OQ01
 import Proofs.SolutionOfCubicOQ03OQ02
