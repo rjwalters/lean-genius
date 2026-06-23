@@ -728,6 +728,7 @@ import Proofs.CompositionPartsChooseOQ01
 import Proofs.CompositionPartsChooseOQ01OQ01
 import Proofs.ConjugacyClassEquationOQ01
 import Proofs.ConnectedSpaceOQ01
+import Proofs.ConnectedSpaceOQ01OQ01
 import Proofs.ContinuumHypothesis
 import Proofs.ContinuumHypothesisOQ01
 import Proofs.ContinuumHypothesisOQ02

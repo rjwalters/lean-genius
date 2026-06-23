@@ -1,0 +1,164 @@
+{
+  "id": "connected-space-oq-01-oq-01",
+  "title": "Closure and Path-Connectedness: the Connected Salvage and Path-Component Rigidity",
+  "slug": "connected-space-oq-01-oq-01",
+  "description": "Answers the parent entry's open question on how closure behaves for path-connectedness. Negative half: closure only preserves connectedness, not path-connectedness — the closure of a path-connected set is connected, the 'bark and tree' sandwich is connected, and a dense path-connected subset gives a ConnectedSpace (not a PathConnectedSpace). Positive half: in a LocPathConnectedSpace path components are clopen, so closure fixes them — closure (pathComponent x) = pathComponent x = connectedComponent x and is path-connected; connected open sets are path-connected and a connected locally-path-connected space is path-connected. 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Locally_connected_space",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ConnectedSpaceOQ01OQ01.lean",
+    "tags": [
+      "topology",
+      "path-connectedness",
+      "local-connectedness",
+      "closure",
+      "path-components",
+      "point-set-topology",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsPathConnected.isConnected",
+        "description": "A path-connected set is connected",
+        "module": "Mathlib.Topology.Connected.PathConnected"
+      },
+      {
+        "theorem": "IsConnected.closure / IsConnected.subset_closure",
+        "description": "The closure of a connected set is connected; any set between s and closure s is connected",
+        "module": "Mathlib.Topology.Connected.Basic"
+      },
+      {
+        "theorem": "IsClosed.pathComponent",
+        "description": "In a locally path-connected space each path component is closed (in fact clopen)",
+        "module": "Mathlib.Topology.Connected.LocPathConnected"
+      },
+      {
+        "theorem": "pathComponent_eq_connectedComponent",
+        "description": "In a locally path-connected space, path components equal connected components",
+        "module": "Mathlib.Topology.Connected.LocPathConnected"
+      },
+      {
+        "theorem": "IsOpen.isConnected_iff_isPathConnected / PathConnectedSpace.of_locPathConnectedSpace",
+        "description": "Open connected sets are path-connected; a connected locally-path-connected space is path-connected",
+        "module": "Mathlib.Topology.Connected.LocPathConnected"
+      }
+    ],
+    "originalContributions": [
+      "isConnected_closure_of_isPathConnected: the closure of a path-connected set is connected (path-connectedness itself fails — the topologist's sine curve)",
+      "isConnected_of_isPathConnected_subset_closure: the honest path analogue of 'bark and tree' — any set between a path-connected set and its closure is connected (conclusion weakened from path-connected to connected)",
+      "connectedSpace_of_dense_isPathConnected: a dense path-connected subset gives a ConnectedSpace, NOT a PathConnectedSpace — the precise weakening of the parent's dense corollary",
+      "closure_pathComponent: in a LocPathConnectedSpace, closure (pathComponent x) = pathComponent x (path components are closed)",
+      "isPathConnected_closure_pathComponent: hence that closure is path-connected — the exact setting where closure DOES preserve path-connectedness",
+      "closure_pathComponent_eq_connectedComponent: that closure equals the connected component",
+      "isPathConnected_of_isConnected_of_isOpen and pathConnectedSpace_of_connected: the open-set and global recovery of path-connectedness under local path-connectedness"
+    ],
+    "axiomCount": 0,
+    "lineCount": 126,
+    "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound] for all eight results. The closure/connectedness and path-component facts are invoked from Mathlib; the negative-half weakenings and the positive-half closure-fixing assembly are proved here. The negative claims (closure does not preserve path-connectedness; dense path-connected subset does not path-connect the space) are documented in prose via the topologist's sine curve but are not themselves formalized — only the salvaged connectedness statements are.",
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "prerequisites": [
+      "Topological spaces, closure, and dense subsets",
+      "Connected and path-connected sets; path components",
+      "Locally path-connected spaces and clopen sets",
+      "Connected vs path-connected components"
+    ],
+    "relatedProblems": [
+      "connected-space-oq-01"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The parent entry shows connectedness is stable under closure. Path-connectedness is strictly stronger than connectedness and behaves worse: the standard counterexample is the topologist's sine curve S = {(x, sin(1/x)) : 0 < x} ⊆ ℝ², which is path-connected, while its closure adds the segment {0} × [-1,1] and is connected but not path-connected (no path reaches the segment from the curve). So closure preserves connectedness but not path-connectedness. The right positive statement requires local path-connectedness: there path components are clopen (each point has a neighbourhood basis of path-connected open sets), and a clopen set is its own closure. This entry pins down exactly this negative/positive dichotomy, which is what the parent's open question asks for.",
+    "problemStatement": "Determine how taking closures interacts with path-connectedness and local connectedness, in contrast to the closure-stability of connectedness proved in the parent entry.",
+    "proofStrategy": "Negative half: compose IsPathConnected.isConnected with the parent's closure/sandwich/dense results, so every conclusion drops to mere connectedness. Positive half: in a LocPathConnectedSpace use IsClosed.pathComponent to get closure (pathComponent x) = pathComponent x via IsClosed.closure_eq, then isPathConnected_pathComponent and pathComponent_eq_connectedComponent to identify it; recover path-connectedness on open sets with IsOpen.isConnected_iff_isPathConnected and globally with PathConnectedSpace.of_locPathConnectedSpace.",
+    "keyInsights": [
+      "Closure preserves connectedness but not path-connectedness: the sine curve is path-connected, its closure only connected.",
+      "Every parent theorem weakens by exactly one notch when 'connected' is upgraded to 'path-connected' in the hypothesis: the conclusion stays merely connected.",
+      "Density plus path-connectedness of a subset yields a ConnectedSpace, never a PathConnectedSpace.",
+      "Local path-connectedness is precisely the property that makes closure harmless for path-connectedness, because it makes path components clopen — and a clopen set equals its closure.",
+      "In a locally path-connected space the closure of a path component coincides with the connected component, tying the path and connected component theories together."
+    ],
+    "prerequisites": [
+      "Closure and dense subsets",
+      "Connected and path-connected sets",
+      "Path components and connected components",
+      "Locally path-connected spaces; clopen sets"
+    ]
+  },
+  "sections": [
+    {
+      "id": "negative-half",
+      "title": "Section I: Closure Only Preserves Connectedness",
+      "startLine": 59,
+      "endLine": 85,
+      "summary": "isConnected_closure_of_isPathConnected, isConnected_of_isPathConnected_subset_closure, and connectedSpace_of_dense_isPathConnected: the path-connected hypotheses of the parent's theorems yield only connected conclusions.",
+      "mathContext": "The topologist's sine curve shows path-connectedness genuinely fails to survive closure."
+    },
+    {
+      "id": "positive-half",
+      "title": "Section II: Local Path-Connectedness Restores Rigidity",
+      "startLine": 87,
+      "endLine": 125,
+      "summary": "closure_pathComponent, isPathConnected_closure_pathComponent, closure_pathComponent_eq_connectedComponent, isPathConnected_of_isConnected_of_isOpen, pathConnectedSpace_of_connected: in a LocPathConnectedSpace path components are clopen, so closure fixes them, and connectedness recovers path-connectedness on open sets and globally.",
+      "mathContext": "Clopen path components are their own closures — exactly where closure preserves path-connectedness."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 126 lines and 8 theorems resolving the parent's open question on closure and path-connectedness: closure preserves only connectedness (the closure, the sandwich, and the dense-subset corollary all drop to connected), while local path-connectedness restores closure-stability by making path components clopen, so their closure is themselves (= the connected component) and connectedness recovers path-connectedness on open sets and globally.",
+    "implications": "Cleanly separates the negative phenomenon (path-connectedness is not closure-stable — the sine curve) from the precise positive recovery (local path-connectedness makes path components clopen). The path-component rigidity result is a reusable bridge between path components and connected components.",
+    "openQuestions": [
+      "Formalize the topologist's sine curve in ℝ² as an explicit witness that the closure of a path-connected set need not be path-connected.",
+      "Study whether local connectedness (as opposed to local path-connectedness) is itself stable under closure, and formalize a counterexample if not."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Connected.PathConnected",
+      "Mathlib.Topology.Connected.LocPathConnected",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Topology"
+    ],
+    "namespace": "ConnectedSpaceOQ01OQ01",
+    "lineCount": 126,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/ConnectedSpaceOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "slug": "connected-space-oq-01",
+      "reason": "Parent entry: closure preserves connectedness; this entry answers its open question on path-connectedness."
+    }
+  ],
+  "references": [
+    {
+      "key": "Munkres",
+      "citation": "Munkres, J.R., Topology, 2nd ed., Prentice Hall (2000), §24-§25 (Connected and Path-Connected Spaces; Local Connectedness).",
+      "type": "book"
+    },
+    {
+      "key": "SteenSeebach",
+      "citation": "Steen, L.A. and Seebach, J.A., Counterexamples in Topology, 2nd ed., Springer (1978), Example 118 (The Topologist's Sine Curve).",
+      "type": "book"
+    },
+    {
+      "key": "Willard",
+      "citation": "Willard, S., General Topology, Addison-Wesley (1970), §27 (Local Connectedness).",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}
