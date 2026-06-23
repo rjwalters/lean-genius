@@ -30,15 +30,7 @@ Neither has been proved in this gallery with explicit error bounds.
 **Status**: AXIOMATIZED (deep analytic number theory)
 -/
 
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.NumberTheory.Diophantine
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Order.Filter.AtTopBot.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Topology.Instances.Real.Basic
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib
 
 open MeasureTheory Set Filter Real Asymptotics
 open scoped Topology
@@ -171,7 +163,7 @@ theorem convergence_faster_than_sqrtN (A c : ℝ) (hA : 0 < A) (hc : c > 1)
   -- log x / x^(1/2) → 0, so A * log N / √N → 0 on ℕ
   have hA_log_sqrt : Tendsto (fun n : ℕ => A * (Real.log ↑n / Real.sqrt ↑n)) atTop (nhds 0) := by
     have hlog12 : Tendsto (fun x : ℝ => Real.log x / x ^ ((1:ℝ)/2)) atTop (nhds 0) :=
-      Real.tendsto_log_div_rpow_atTop (1/2) (by norm_num)
+      (isLittleO_log_rpow_atTop (r := (1:ℝ)/2) (by norm_num)).tendsto_div_nhds_zero
     have h : Tendsto (fun n : ℕ => A * (Real.log ↑n / (↑n : ℝ) ^ ((1:ℝ)/2))) atTop (nhds 0) := by
       have := (hlog12.comp tendsto_natCast_atTop_atTop).const_mul A
       simpa [mul_zero] using this
@@ -186,22 +178,23 @@ theorem convergence_faster_than_sqrtN (A c : ℝ) (hA : 0 < A) (hc : c > 1)
   -- hN : |A * (log N / sqrt N)| < c'
   -- Derive: A * |log N| / sqrt N < c'
   have hN_abs : A * |Real.log ↑N| / Real.sqrt ↑N < c' := by
-    rwa [abs_mul, abs_div, abs_of_pos hA, abs_of_pos hsqrt_pos] at hN
+    rwa [abs_mul, abs_div, abs_of_pos hA, abs_of_pos hsqrt_pos, ← mul_div_assoc] at hN
   -- Multiply out: A * |log N| < c' * sqrt N
   -- Then: A * |log N| * sqrt N < c' * (sqrt N)² = c' * N
   have hkey : A * |Real.log ↑N| * Real.sqrt ↑N < c' * (Real.sqrt ↑N * Real.sqrt ↑N) := by
     have hmul : A * |Real.log ↑N| < c' * Real.sqrt ↑N := by
-      rwa [div_lt_iff hsqrt_pos] at hN_abs
+      rwa [div_lt_iff₀ hsqrt_pos] at hN_abs
     calc A * |Real.log ↑N| * Real.sqrt ↑N
         < c' * Real.sqrt ↑N * Real.sqrt ↑N := mul_lt_mul_of_pos_right hmul hsqrt_pos
       _ = c' * (Real.sqrt ↑N * Real.sqrt ↑N) := by ring
   -- Rewrite goal norms explicitly then use div_le_div_iff
   have h1 : ‖A * (Real.log ↑N / ↑N)‖ = A * |Real.log ↑N| / ↑N := by
-    rw [Real.norm_eq_abs, abs_mul, abs_of_pos hA, abs_div, abs_of_pos hNr]
+    rw [Real.norm_eq_abs, abs_mul, abs_of_pos hA, abs_div, abs_of_pos hNr, mul_div_assoc]
   have h2 : c' * ‖1 / Real.sqrt ↑N‖ = c' / Real.sqrt ↑N := by
     rw [Real.norm_eq_abs, abs_div, abs_one, abs_of_pos hsqrt_pos]; ring
   -- A * |log N| / N ≤ c' / sqrt N ↔ A * |log N| * sqrt N ≤ c' * N = c' * (sqrt N)²
-  rw [h1, h2, div_le_div_iff hNr hsqrt_pos, ← hsq]
+  rw [h1, h2, div_le_div_iff₀ hNr hsqrt_pos]
+  conv_rhs => rw [← hsq]
   linarith [hkey]
 
 /-- The rate is sharper than the a priori O(1) bound (trivially).
@@ -218,7 +211,7 @@ theorem rate_is_nontrivial (A c : ℝ) (hA : 0 < A) (hc : c > 1)
   simp only [div_one]
   -- log x / x → 0 on ℝ (from tendsto_log_div_rpow_atTop with p = 1)
   have hlogdiv : Tendsto (fun x : ℝ => Real.log x / x) atTop (nhds 0) := by
-    have h := Real.tendsto_log_div_rpow_atTop 1 one_pos
+    have h := (isLittleO_log_rpow_atTop (r := (1:ℝ)) one_pos).tendsto_div_nhds_zero
     simpa [Real.rpow_one] using h
   -- Pull back to ℕ via Nat.cast coercion
   have hlogdiv_nat : Tendsto (fun n : ℕ => Real.log ↑n / (↑n : ℝ)) atTop (nhds 0) :=
@@ -238,7 +231,7 @@ theorem convergence_effective (A c ε : ℝ) (hA : 0 < A) (hc : c > 1)
   -- From rate_is_nontrivial: |S N - f| = o(1)
   have ho := rate_is_nontrivial A c hA hc hregime
   rw [isLittleO_iff] at ho
-  have h_ev := ho (ε/2) (by linarith)
+  have h_ev := ho (show (0:ℝ) < ε / 2 by linarith)
   simp only [norm_one, mul_one] at h_ev
   rw [Filter.eventually_atTop] at h_ev
   obtain ⟨N₀, hN₀⟩ := h_ev
