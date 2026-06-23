@@ -114,6 +114,7 @@ import Proofs.AngleTrisectionOQ02OQ01
 import Proofs.AngleTrisectionOQ02OQ01OQ01
 import Proofs.AngleTrisectionOQ02OQ01OQ01OQ01
 import Proofs.AngleTrisectionOQ02OQ01OQ01OQ01OQ01
+import Proofs.AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05
 import Proofs.AngleTrisectionOQ02OQ01OQ02
 import Proofs.AngleTrisectionOQ02OQ01OQ02Aristotle
 import Proofs.AngleTrisectionOQ02OQ01OQ02Incomplete01
