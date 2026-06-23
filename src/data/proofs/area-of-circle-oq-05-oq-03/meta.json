@@ -16,10 +16,22 @@
       "complex-analysis",
       "probability"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 172,
+    "mathlibDependencies": [
+      {
+        "theorem": "GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I",
+        "description": "∫ e^{-b x² + (real linear)·x} dx in closed form (vertical-strip shift of the complex Gaussian integral). The engine behind gaussian_fourier_real — the self-Fourier identity of the Gaussian is obtained by completing the square and applying this Mathlib theorem.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.FourierTransform"
+      },
+      {
+        "theorem": "MeasureTheory.integral_mul_const / MeasureTheory.integral_div",
+        "description": "Pull the constant e^{-t²/2} factor and the normalizing 1/√(2π) out of the Lebesgue integral to pass from the un-normalized to the normalized Fourier identity.",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner"
+      }
+    ],
     "assumptions": "0 axioms, 0 sorries. Builds on Mathlib's Gaussian Fourier transform infrastructure (GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I — the vertical-strip shift of the real Gaussian integral). HONEST SCOPE: CentralLimitTheorem.lean states its gaussian_fourier_identity against an abstract stdGaussian measure introduced by `axiom`; this file proves the full mathematical content as a concrete Lebesgue integral, but discharging that particular CLT axiom additionally requires replacing the abstract measure by ProbabilityTheory.gaussianReal 0 1, a separate bridge not attempted here.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-06-21",
