@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-context-deficiency",
+    "proofId": "halls-theorem-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "context",
+    "title": "Ore's Deficiency Version of the Marriage Theorem",
+    "content": "Frames the result: the classical marriage theorem (Mathlib's `all_card_le_biUnion_card_iff_exists_injective`) gives a full system of distinct representatives iff Hall's condition #s ≤ #(s.biUnion t) holds. Ore's deficiency form measures how far a family is from a full SDR by a slack parameter d: relaxing the condition to #s ≤ #(s.biUnion t) + d corresponds to a partial SDR that leaves at most d indices unrepresented. Mathlib has only the d = 0 case; `defect_hall` supplies the general equivalence.",
+    "mathContext": "Ordinary: $(\\forall s,\\ \\#s \\le \\#(s.\\mathrm{biUnion}\\,t)) \\iff \\exists$ SDR. Defect-$d$: $(\\forall s,\\ \\#s \\le \\#(s.\\mathrm{biUnion}\\,t) + d) \\iff \\exists$ partial SDR missing $\\le d$ indices.",
+    "significance": "context",
+    "relatedConcepts": ["Hall's marriage theorem", "system of distinct representatives", "deficiency / defect", "bipartite matching"],
+    "prerequisites": ["Hall's condition", "finite set families", "Finset.biUnion"]
+  },
+  {
+    "id": "ann-strategy-forward",
+    "proofId": "halls-theorem-oq-01-oq-01",
+    "range": { "startLine": 34, "endLine": 41 },
+    "type": "technique",
+    "title": "Reduction Strategy: Adjoin d Universal Dummies",
+    "content": "The forward direction's engine. Work over α ⊕ Fin d and enlarge each set to t' i = (t i).image inl ∪ (all d dummies). For nonempty s the enlarged neighbourhood is the old one disjointly unioned with the d dummies, so #(s.biUnion t') = #(s.biUnion t) + d; the relaxed condition for t becomes ordinary Hall for t'. Mathlib's marriage theorem then yields an injective f : ι → α ⊕ Fin d; since f is injective and there are only d dummies, at most d indices land on a dummy — those are the `rejected` ones — and the rest map injectively into α, giving the partial SDR.",
+    "mathContext": "$t'\\,i = (t\\,i).\\mathrm{image}\\,\\mathrm{inl} \\cup D,\\ \\#D=d$; for nonempty $s$, $\\#(s.\\mathrm{biUnion}\\,t') = \\#(s.\\mathrm{biUnion}\\,t)+d$, so defect-$d$ Hall for $t$ $\\Rightarrow$ ordinary Hall for $t'$.",
+    "significance": "key",
+    "relatedConcepts": ["sum type α ⊕ Fin d", "dummy vertices", "reduction to ordinary Hall", "injective SDR extraction"],
+    "prerequisites": ["sum types", "Finset cardinality of disjoint unions", "Mathlib marriage theorem"]
+  },
+  {
+    "id": "ann-strategy-converse",
+    "proofId": "halls-theorem-oq-01-oq-01",
+    "range": { "startLine": 42, "endLine": 46 },
+    "type": "insight",
+    "title": "Converse: An Elementary Counting Split",
+    "content": "The easy direction needs no dummy machinery. Given a partial SDR, split any s as (s ∩ rejected) ⊎ (s \\ rejected). The rejected part has size ≤ #rejected ≤ d; the rest injects via e into s.biUnion t, so its size is ≤ #(s.biUnion t). Summing the two pieces yields the relaxed Hall bound #s ≤ #(s.biUnion t) + d. The nonemptiness of α is the standard hypothesis ensuring representatives exist.",
+    "mathContext": "$\\#s = \\#(s\\cap\\mathrm{rejected}) + \\#(s\\setminus\\mathrm{rejected}) \\le d + \\#(s.\\mathrm{biUnion}\\,t)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["counting argument", "Finset partition", "injective image bound", "InjOn"],
+    "prerequisites": ["card_inter_add_card_sdiff", "injective functions on finite sets"]
+  },
+  {
+    "id": "ann-defect-hall-statement",
+    "proofId": "halls-theorem-oq-01-oq-01",
+    "range": { "startLine": 56, "endLine": 64 },
+    "type": "theorem",
+    "title": "defect_hall: The Deficiency Equivalence",
+    "content": "The main theorem. The relaxed Hall condition with slack d is equivalent to a partial system of distinct representatives: a `rejected` set with #rejected ≤ d, an assignment e injective off `rejected` (`Set.InjOn e rejectedᶜ`), and e i ∈ t i for every i ∉ rejected. This is the precise quantitative refinement of the parent entry's qualitative `exists_violating_of_no_matching`.",
+    "mathContext": "$\\big(\\forall s,\\ \\#s \\le \\#(s.\\mathrm{biUnion}\\,t) + d\\big) \\iff \\exists\\,e,\\,\\mathrm{rejected}:\\ \\#\\mathrm{rejected}\\le d \\,\\land\\, \\mathrm{InjOn}\\,e\\,\\mathrm{rejected}^c \\,\\land\\, \\forall i\\notin\\mathrm{rejected},\\ e\\,i\\in t\\,i.$",
+    "significance": "key",
+    "relatedConcepts": ["Hall's marriage theorem", "partial SDR", "Set.InjOn", "Finset.biUnion"],
+    "prerequisites": ["Hall's condition", "injective assignments", "Finset operations"]
+  },
+  {
+    "id": "ann-defect-hall-zero",
+    "proofId": "halls-theorem-oq-01-oq-01",
+    "range": { "startLine": 178, "endLine": 196 },
+    "type": "theorem",
+    "title": "defect_hall_zero: d = 0 Recovers the Classical Theorem",
+    "content": "Specializing to d = 0 collapses the defect form to Hall's original marriage theorem. With slack 0, #rejected ≤ 0 forces rejected = ∅, so `InjOn e ∅ᶜ` (= InjOn e univ) becomes ordinary injectivity and 'represented off rejected' becomes 'represented everywhere'. This confirms the deficiency theorem genuinely generalizes the SDR theorem, with the classical statement as its boundary case.",
+    "mathContext": "At $d=0$: $\\#\\mathrm{rejected}\\le 0 \\Rightarrow \\mathrm{rejected}=\\varnothing$, recovering $(\\forall s,\\ \\#s\\le\\#(s.\\mathrm{biUnion}\\,t)) \\iff \\exists\\,e\\text{ injective},\\ \\forall i,\\ e\\,i\\in t\\,i.$",
+    "significance": "supporting",
+    "relatedConcepts": ["Hall's marriage theorem", "specialization", "empty rejected set", "Set.injOn_univ"],
+    "prerequisites": ["Hall's theorem", "Finset.card_eq_zero", "complement of empty set"]
+  }
+]
