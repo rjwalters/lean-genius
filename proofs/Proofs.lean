@@ -212,6 +212,7 @@ import Proofs.ArsinhLogFormulaOQ01
 import Proofs.AutomorphicNumberOQ01
 import Proofs.AutomorphicNumberOQ01OQ01
 import Proofs.AutomorphicNumberOQ01OQ02
+import Proofs.AutomorphicNumberOQ01OQ03
 import Proofs.BallotProblem
 import Proofs.BallotProblemOQ01
 import Proofs.BallotProblemOQ01OQ01
