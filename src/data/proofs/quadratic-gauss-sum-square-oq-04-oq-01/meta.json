@@ -18,6 +18,36 @@
     "path": "Proofs/QuadraticGaussSumSquareOQ04OQ01.lean",
     "sorries": 0
   },
+  "sections": [
+    {
+      "id": "overview-header",
+      "title": "Overview: p* is a fundamental discriminant",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring: extends the parent's field identity ℚ(g) = ℚ(√p*) by classifying p* arithmetically. The first supplement gives p* = ±p; the new point is p* ≡ 1 (mod 4) uniformly, which with squarefreeness (|p*| = p prime) makes p* a fundamental discriminant — the actual discriminant of ℚ(√p*)."
+    },
+    {
+      "id": "character-and-square",
+      "title": "The character and the square formula (re-derived)",
+      "startLine": 54,
+      "endLine": 92,
+      "summary": "chiC p (ℂ-valued quadratic character) with χ(−1) = (−1)^((p−1)/2); pstar p := (−1)^((p−1)/2)·p; gaussSum_sq_eq re-derives g² = (p* : ℂ) from Mathlib's gaussSum_sq so the file stands alone."
+    },
+    {
+      "id": "arithmetic-of-pstar",
+      "title": "The arithmetic type of p*",
+      "startLine": 94,
+      "endLine": 160,
+      "summary": "mod_four_cases (p ≡ 1 or 3 mod 4); pstar_eq_self / pstar_eq_neg (p* = p resp. −p); pstar_natAbs (|p*| = p); pstar_pos_iff / pstar_neg_iff (sign ↔ residue); pstar_one_mod_four (p* ≡ 1 mod 4 in both classes); pstar_squarefree (|p*| = p prime); pstar_isFundamentalDiscriminant bundles squarefree ∧ ≡ 1 (mod 4)."
+    },
+    {
+      "id": "capstone",
+      "title": "The Gauss sum squares to a fundamental discriminant",
+      "startLine": 162,
+      "endLine": 171,
+      "summary": "gaussSum_sq_isFundamentalDiscriminant: ∃ D, g² = (D : ℂ) ∧ Squarefree D ∧ D ≡ 1 (mod 4) — g² is the fundamental discriminant p* = disc ℚ(g)."
+    }
+  ],
   "description": "The parent oq-04 proves the quadratic Gauss sum g = gaussSum(χ, ψ) of an odd prime p generates the unique quadratic subfield ℚ(√p*) of the cyclotomic field ℚ(ζ_p), where p* = (−1)^((p−1)/2)·p and g² = p*; the sibling oq-01 settles the real/imaginary sign of g. This entry settles the arithmetic type of the discriminant p* itself. The first supplement to quadratic reciprocity gives p* = p when p ≡ 1 (mod 4) and p* = −p when p ≡ 3 (mod 4), so |p*| = p is prime and p* is squarefree; the new arithmetic point is that in BOTH residue classes p* ≡ 1 (mod 4) (for p ≡ 1 the value p is ≡ 1; for p ≡ 3 the value −p ≡ −3 ≡ 1). Squarefree together with ≡ 1 (mod 4) means p* is a fundamental discriminant — it is exactly the discriminant of the quadratic field ℚ(√p*) = ℚ(g) the Gauss sum generates, not merely a number whose square root lies there. The congruence p* ≡ 1 (mod 4) is the arithmetic reason that field is ramified only at p (conductor p, not 4p) and that the order ℤ[g], of polynomial discriminant 4p*, is the index-2 non-maximal suborder of the ring of integers ℤ[(1+√p*)/2]. The capstone gaussSum_sq_isFundamentalDiscriminant packages this as a single statement about the Gauss sum: g² equals an integer that is a fundamental discriminant. This is distinct from oq-01 (the reality dichotomy) and oq-04 (minimal polynomial and field degree); neither identifies p* as a fundamental discriminant. The parent square identity gaussSum_sq_eq is re-derived in-file from Mathlib's generic gaussSum_sq so the file is self-contained. Fully machine-verified with no axioms and no sorries.",
   "meta": {
     "author": "Lean Genius",
