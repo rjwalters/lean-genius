@@ -3781,3 +3781,4 @@ import Proofs.Erdos396OQ04OQ01OQ01OQ02OQ02OQ02OQ01OQ01
 import Proofs.BezoutIdentityOQ03OQ01OQ01OQ03
 
 import Proofs.CombinationsFormulaOQ05OQ01OQ01
+import Proofs.GeometricSeriesOQ09OQ01OQ01OQ02
