@@ -1,0 +1,163 @@
+{
+  "id": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+  "title": "The power-map dichotomy: x ↦ xⁿ is a bijection iff gcd(n, |G|) = 1",
+  "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.OrderOfElement",
+      "Mathlib.GroupTheory.Perm.Cycle.Type",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Function"],
+    "namespace": "CauchyGroupTheoremOQ01OQ01OQ01",
+    "lineCount": 160,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "description": "Answers the parent entry's lead open question by characterizing exactly when raising to a fixed power permutes a finite group: for a finite group G and exponent n, the map x ↦ xⁿ is a bijection if and only if gcd(n, |G|) = 1. The easy direction (coprime ⟹ bijection) is Mathlib's Nat.Coprime.pow_left_bijective, whose inverse is again a power map x ↦ xᵃ obtained from Bézout. The substantive converse is proved by contrapositive: if gcd(n, |G|) ≠ 1, pick a prime p = minFac dividing it; Cauchy's theorem (exists_prime_orderOf_dvd_card') produces an element g of order exactly p, and since p ∣ n we get gⁿ = 1 = 1ⁿ with g ≠ 1, so the map is not injective. On a finite group injectivity, surjectivity and bijectivity of the power map coincide (Finite.injective_iff_surjective), so all three are equivalent to coprimality. The n = 2 slice recovers the parent (squaring is a bijection iff |G| is odd), and concrete 0-axiom witnesses on S₃ (order 6) show the fifth-power map is a bijection while squaring is not — coprimality decided by kernel decide, no native_decide.",
+  "overview": {
+    "historicalContext": "Cauchy's 1845 theorem detects a prime divisor p of |G| by producing an element of order p. That element is precisely the obstruction to the power map x ↦ xᵖ being injective, so quantifying Cauchy over all prime divisors of gcd(n, |G|) turns an existence statement into a sharp characterization of when x ↦ xⁿ permutes the group. The result is the multiplicative analogue of the elementary fact that multiplication by n is invertible modulo m iff gcd(n, m) = 1, and it is the structural reason exponentiation maps (as in RSA over finite abelian groups, or the regular elements of a finite group) are bijective exactly in the coprime regime. The parent entry CauchyGroupTheoremOQ01OQ01 isolated the n = 2 case — squaring is a bijection iff the order is odd — and explicitly posed the general statement as its first open question; this entry settles it for every exponent.",
+    "problemStatement": "Characterize, for a finite group G and a natural number n, exactly when the n-th power map x ↦ xⁿ : G → G is a bijection. Prove the dichotomy: it is a bijection if and only if n is coprime to the order |G| of the group, and deduce that injectivity, surjectivity and bijectivity of the power map are mutually equivalent on a finite group.",
+    "proofStrategy": "Split into the two implications. Coprime ⟹ bijection is supplied directly by Mathlib's Nat.Coprime.pow_left_bijective: Bézout gives a, b with an + b|G| = 1, so x ↦ xᵃ inverts x ↦ xⁿ using x^|G| = 1; the inverse is itself a power map, so the argument is valid for non-abelian groups. The converse is the contrapositive: assuming gcd(n, |G|) ≠ 1, let p be its minFac (a prime by Nat.minFac_prime); then p ∣ |G| and p ∣ n. Cauchy (exists_prime_orderOf_dvd_card') yields g with orderOf g = p, so orderOf g ∣ n gives gⁿ = 1 (orderOf_dvd_iff_pow_eq_one) while g ≠ 1 since orderOf g = p ≥ 2 — two distinct points with the same image, defeating injectivity. Finiteness (Finite.injective_iff_surjective) collapses the injective, surjective and bijective forms into one. Specializing n = 2 with Nat.coprime_two_right recovers the parent's odd-order squaring result, and S₃ witnesses use kernel decide on Nat.gcd to stay 0-axiom.",
+    "keyInsights": [
+      "A single element of order p — the output of Cauchy's theorem — is the entire obstruction to injectivity of x ↦ xᵖ; the power map collapses it onto the identity. Coprimality is exactly the absence of every such obstruction.",
+      "The dichotomy is sharp and symmetric: the coprime side is constructive (the inverse is the explicit power map x ↦ xᵃ from Bézout), the non-coprime side is destructive (Cauchy hands back a concrete collision), so the iff is witnessed in both directions.",
+      "On a finite group the three notions injective / surjective / bijective for a self-map coincide by pigeonhole, so the seemingly weaker 'x ↦ xⁿ is injective' already forces coprimality — there is no room between the conditions.",
+      "Setting n = 2 reduces to gcd(2, |G|) = 1 ⟺ |G| odd, recovering the parent entry exactly; the general theorem subsumes the squaring boundary as one slice of a uniform threshold over all n.",
+      "Axiom hygiene is preserved: the concrete S₃ witnesses decide gcd(5,6)=1 and gcd(2,6)≠1 with kernel decide, avoiding Lean.ofReduceBool, so the entry is genuinely 0-axiom."
+    ]
+  },
+  "sections": [
+    {
+      "id": "directions",
+      "title": "The Two Directions of the Dichotomy",
+      "startLine": 76,
+      "endLine": 110,
+      "summary": "pow_left_bijective_of_coprime records the easy half (Mathlib's Nat.Coprime.pow_left_bijective). not_injective_pow_of_not_coprime proves the substantive converse by contrapositive: a prime p = minFac(gcd(n,|G|)) yields, via Cauchy, an element of order p that the map sends to 1 alongside 1, breaking injectivity.",
+      "mathContext": "gcd(n,|G|)=1 ⟹ bijection (Bézout inverse); gcd(n,|G|)≠1 ⟹ a Cauchy element of order p∣gcd collides with 1."
+    },
+    {
+      "id": "equivalences",
+      "title": "Headline Iff and Injective/Surjective Forms",
+      "startLine": 111,
+      "endLine": 136,
+      "summary": "pow_bijective_iff_coprime is the headline equivalence. pow_injective_iff_coprime and pow_surjective_iff_coprime use Finite.injective_iff_surjective to show that on a finite group injectivity, surjectivity and bijectivity of the power map are all equivalent to coprimality.",
+      "mathContext": "On a finite group: Injective(·ⁿ) ⟺ Surjective(·ⁿ) ⟺ Bijective(·ⁿ) ⟺ (|G|).Coprime n."
+    },
+    {
+      "id": "specializations",
+      "title": "Recovering the Parent and Concrete Witnesses",
+      "startLine": 137,
+      "endLine": 160,
+      "summary": "sq_bijective_iff_odd_card is the n = 2 slice (squaring is a bijection iff |G| is odd) via Nat.coprime_two_right, recovering CauchyGroupTheoremOQ01OQ01. card_perm_fin3, pow5_bijective_perm_fin3 and pow2_not_bijective_perm_fin3 instantiate on S₃ (order 6): the fifth-power map is a bijection, squaring is not, decided by kernel decide.",
+      "mathContext": "n=2: bijection ⟺ |G| odd. On S₃ (|G|=6): x↦x⁵ bijective (gcd 5,6=1), x↦x² not (gcd 2,6=2)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The bijectivity of the n-th power map on a finite group is governed by a single arithmetic condition: x ↦ xⁿ permutes G if and only if gcd(n, |G|) = 1. The coprime direction is Mathlib's Bézout-based power inverse; the converse extracts, from any common prime factor of n and |G|, a Cauchy element of that prime order that the map collapses onto the identity. Finiteness makes injectivity, surjectivity and bijectivity interchangeable, the n = 2 slice recovers the parent's odd-order squaring boundary, and 0-axiom S₃ witnesses make the threshold concrete.",
+    "implications": [
+      "Settles the parent entry's lead open question, upgrading the n = 2 squaring boundary to the full uniform threshold over every exponent n.",
+      "Exhibits Cauchy's theorem as the exact engine of the converse: each prime divisor of gcd(n, |G|) furnishes a concrete injectivity-breaking collision, so coprimality is precisely the absence of all of them.",
+      "Provides the finite-group form of 'exponentiation by n is invertible iff gcd(n, order) = 1', the structural fact underlying power/regular-element maps and exponentiation cryptography over finite abelian groups."
+    ],
+    "openQuestions": [
+      "When x ↦ xⁿ fails to be a bijection, what is the exact size of its image and fibers in terms of the p-parts of |G| for primes p ∣ gcd(n, |G|)?",
+      "For which finite groups is the power-map inverse on the coprime regime realized by a single uniform exponent independent of the element (always true here via Bézout), and how does the minimal such exponent relate to the group exponent?",
+      "Does an analogous coprime-exponent characterization hold for the n-th power map on a finite monoid or on the regular elements of a finite semigroup, where Cauchy's theorem is unavailable?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-group-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Generalizes the parent's n = 2 result (squaring is a bijection iff |G| is odd) to arbitrary exponents, directly answering its lead open question; sq_bijective_iff_odd_card recovers the parent as the n = 2 slice."
+    },
+    {
+      "targetId": "cauchy-group-theorem-oq-01",
+      "relationship": "uses",
+      "description": "Cauchy's theorem (exists_prime_orderOf_dvd_card') is the engine of the converse direction: a prime divisor of gcd(n, |G|) produces an element of that order which the power map collapses onto the identity."
+    }
+  ],
+  "meta": {
+    "author": "Lean formalization original (structural follow-up to Cauchy's theorem)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "finite-groups",
+      "cauchy-theorem",
+      "order-of-element",
+      "power-map",
+      "coprime-exponent",
+      "bijection",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime.pow_left_bijective",
+        "description": "If gcd(|G|, n) = 1 then x ↦ xⁿ is bijective, with inverse the power map x ↦ x^(gcdB) from Bézout; supplies the easy direction directly.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "exists_prime_orderOf_dvd_card'",
+        "description": "Cauchy's theorem (Finite form): a prime p ∣ Nat.card G yields an element of order exactly p; the engine of the converse direction.",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      },
+      {
+        "theorem": "Nat.minFac_prime",
+        "description": "For d ≠ 1, minFac d is prime; supplies the prime divisor of gcd(n, |G|) fed to Cauchy.",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "orderOf_dvd_iff_pow_eq_one",
+        "description": "orderOf g ∣ n ↔ gⁿ = 1; converts orderOf g = p ∣ n into the collision gⁿ = 1.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "Finite.injective_iff_surjective",
+        "description": "A self-map of a finite type is injective iff surjective; collapses the injective, surjective and bijective forms of the power map into one.",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      },
+      {
+        "theorem": "Nat.coprime_two_right",
+        "description": "n.Coprime 2 ↔ Odd n; reduces the n = 2 slice to the parent's odd-order statement.",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Fintype.card_perm",
+        "description": "Fintype.card (Equiv.Perm α) = (Fintype.card α)!; gives |S₃| = 6 for the concrete witnesses.",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      }
+    ],
+    "references": [
+      {
+        "authors": "Cauchy, Augustin-Louis",
+        "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
+        "year": "1845",
+        "note": "Exercices d'analyse et de physique mathématique 3, 151–252 — the theorem producing an element of order p for each prime p ∣ |G|, the engine of the converse direction."
+      },
+      {
+        "authors": "Isaacs, I. Martin",
+        "title": "Finite Group Theory",
+        "year": "2008",
+        "note": "Graduate Studies in Mathematics 92, AMS — power maps and regular elements of finite groups; the coprime-exponent regime where x ↦ xⁿ is a permutation."
+      },
+      {
+        "authors": "Rivest, Ronald L.; Shamir, Adi; Adleman, Leonard",
+        "title": "A Method for Obtaining Digital Signatures and Public-Key Cryptosystems",
+        "year": "1978",
+        "note": "Communications of the ACM 21(2), 120–126 — invertibility of exponentiation modulo the group order exemplifies the coprime-exponent bijection in finite abelian groups."
+      }
+    ]
+  }
+}
