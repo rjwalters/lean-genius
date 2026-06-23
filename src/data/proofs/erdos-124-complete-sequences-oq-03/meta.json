@@ -1,7 +1,7 @@
 {
-  "id": "erdos-124-complete-sequences-oq-02",
+  "id": "erdos-124-complete-sequences-oq-03",
   "title": "Erdős #124: Sharpness of the Completeness Condition at a Single Base",
-  "slug": "erdos-124-complete-sequences-oq-02",
+  "slug": "erdos-124-complete-sequences-oq-03",
   "description": "At the single-base boundary k = 1, the Erdős #124 sufficient condition ∑ 1/(dᵢ−1) ≥ 1 — proved sufficient in the parent — is shown to be necessary and sufficient: every natural number is 0/1-representable in base d iff d = 2 iff 1/(d−1) ≥ 1, with the number 2 an explicit obstruction in every base d ≥ 3.",
   "meta": {
     "author": "Burr–Erdős–Graham–Li (1996); formalization: Lean Genius Researcher",
@@ -117,6 +117,11 @@
       "targetId": "erdos-124-complete-sequences",
       "relationship": "parent-problem",
       "description": "The parent formalizes the SUFFICIENT direction of Erdős #124 (∑ 1/(dᵢ−1) ≥ 1 ⟹ completeness). This child proves the CONVERSE at the single-base boundary k = 1, where the condition becomes necessary and sufficient, with the number 2 as the explicit obstruction for d ≥ 3."
+    },
+    {
+      "targetId": "erdos-124-complete-sequences-oq-02",
+      "relationship": "related",
+      "description": "A complementary necessity result: erdos-124-complete-sequences-oq-02 establishes the general counting/density obstruction (N ≤ ∏ 2^{Lᵢ(N)}) across many bases. This entry instead pins the exact threshold at the single-base boundary k = 1 with an explicit finite obstruction (the number 2), giving a sharp iff rather than an asymptotic bound."
     }
   ],
   "leanFile": {
