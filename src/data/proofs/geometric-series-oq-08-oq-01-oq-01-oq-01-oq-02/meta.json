@@ -21,6 +21,45 @@
     "sorries": 0
   },
   "title": "The Infinite-Limit Recurrence: ∑_{k≥0} kᵐ·xᵏ for |x| < 1",
+  "description": "The infinite-series companion of the parent's finite moment recurrence. For a real ratio x with |x| < 1, the infinite m-th moment infMoment m x = ∑'_{k} kᵐ·xᵏ satisfies the clean binomial-convolution recurrence (★∞) (1−x)·infMoment m x = 0ᵐ + x·∑_{i<m} C(m,i)·infMoment i x — a first-order-in-m recursion through ALL lower moments with Pascal weights, no derivatives, no special functions. It is the n → ∞ limit of the finite master recurrence (★): the partial sums converge to infMoment, and the boundary term nᵐ·xⁿ — the general term of a convergent series — washes out. Solving (★∞) at m = 0, 1, 2 recovers the gallery's closed forms 1/(1−x), x/(1−x)², x(1+x)/(1−x)³.",
+  "overview": {
+    "historicalContext": "The weighted geometric series ∑ kᵐ·xᵏ and their rational closed forms (with Eulerian-polynomial numerators) are classical, going back to Euler and catalogued in Graham–Knuth–Patashnik's Concrete Mathematics. The gallery had reached this point along the geometric-series lineage: the parent (geometric-series-oq-08-oq-01-oq-01-oq-01) proved a uniform FINITE recurrence (★) for the partial sums momentSum m n x over any commutative ring, and two sibling entries give the infinite moments in explicit one-shot closed form (the Stirling form geometric-series-oq-07-oq-01 and the Frobenius/Eulerian form geometric-series-oq-07-oq-01-oq-01). This entry supplies the missing piece: passing the finite recurrence to the analytic limit |x| < 1 to obtain the INFINITE recurrence (★∞), the cleanest bridge from the finite algebra to the infinite analysis. Mathlib has summability of ∑ kᵐ·xᵏ but neither the moment as a named object nor any recurrence across m.",
+    "problemStatement": "For real x with |x| < 1, define infMoment m x = ∑'_{k} kᵐ·xᵏ and prove the infinite-limit recurrence (★∞) (1−x)·infMoment m x = 0ᵐ + x·∑_{i<m} C(m,i)·infMoment i x as the n → ∞ limit of the parent's finite recurrence, then solve it at m = 0, 1, 2 to recover 1/(1−x), x/(1−x)², and x(1+x)/(1−x)³.",
+    "proofStrategy": "Pass the finite recurrence (★) to the limit in five steps. (1) Summability: summable_pow_mul_geometric_of_norm_lt_one gives Summable (k ↦ kᵐ·xᵏ) for every m. (2) Convergence of partial sums: HasSum.tendsto_sum_nat turns summability into momentSum m n x → infMoment m x (the partial sums ARE the parent's momentSum). (3) The boundary vanishes: Summable.tendsto_atTop_zero gives nᵐ·xⁿ → 0 structurally — it is the general term of the summable series, requiring no separate polynomial-times-geometric decay estimate. (4) Pass to the limit: both sides of (★) are sequences in n; the LHS converges by continuity of (1−x)·•, the RHS by linearity of limits over the finite inner sum (tendsto_finset_sum), and tendsto_nhds_unique equates the two limits to give (★∞). (5) Specialisations solve (★∞) at m = 0, 1, 2 via field_simp and linarith, each feeding the lower-moment values into the next.",
+    "keyInsights": [
+      "The boundary term's vanishing is structural, not estimated: nᵐ·xⁿ → 0 because it is the general term of the SAME summable series whose partial sums define infMoment — Summable.tendsto_atTop_zero gives it directly, with no polynomial-times-geometric decay bound needed.",
+      "Taking n → ∞ genuinely simplifies the recurrence: the finite (★) carries an n-dependent correction nᵐ·xⁿ that the infinite (★∞) does not, so the infinite recursion is strictly cleaner than its finite parent — the analysis removes a term the algebra had to track.",
+      "(★∞) is a binomial CONVOLUTION recurrence: it expresses the m-th infinite moment through ALL lower moments using only the Pascal weights C(m,i), with no derivatives and no special functions — complementary to the gallery's two one-shot closed forms (Stirling and Frobenius/Eulerian).",
+      "The proof is a textbook limit-of-an-identity argument made rigorous: an identity true for every n, each side a convergent sequence, passed to the limit by uniqueness in a Hausdorff space (tendsto_nhds_unique) — the inner finite sum commutes with the limit because it has finitely many terms (tendsto_finset_sum).",
+      "Solving (★∞) recursively recovers exactly the gallery's closed forms: m = 0 gives 1/(1−x), m = 1 feeds that in to give x/(1−x)², and m = 2 uses both to give x(1+x)/(1−x)³ — so the convolution recurrence is a complete, derivative-free generator of the rational moment formulas."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition-limits",
+      "title": "The Infinite Moment and Its Limit Infrastructure",
+      "startLine": 80,
+      "endLine": 99,
+      "summary": "Defines infMoment m x = ∑'_{k} kᵐ·xᵏ (a tsum), the convergent companion of the parent's finite momentSum. summable_moment gives summability of ∑ kᵐ·xᵏ for |x| < 1 from summable_pow_mul_geometric_of_norm_lt_one. tendsto_momentSum: the partial sums converge, momentSum m n x → infMoment m x (HasSum.tendsto_sum_nat). tendsto_boundary: nᵐ·xⁿ → 0 structurally as the general term of the summable series.",
+      "mathContext": "$\\mathrm{infMoment}\\,m\\,x=\\sum'_k k^m x^k$; partial sums $\\to$ it, and $n^m x^n\\to 0$ as the summable series' general term."
+    },
+    {
+      "id": "infinite-recurrence",
+      "title": "The Master Infinite Recurrence (★∞)",
+      "startLine": 101,
+      "endLine": 142,
+      "summary": "infMoment_recurrence proves (★∞) (1−x)·infMoment m x = 0ᵐ + x·∑_{i<m} C(m,i)·infMoment i x by passing the finite recurrence to the limit: the LHS converges by const_mul, the inner finite sum by tendsto_finset_sum, the boundary term vanishes, and tendsto_nhds_unique equates the two limits. infMoment_recurrence_succ drops the 0ᵐ term for m ≥ 1, giving the pure convolution form.",
+      "mathContext": "$(1-x)\\,\\mathrm{infMoment}\\,m\\,x = 0^m + x\\sum_{i<m}\\binom{m}{i}\\mathrm{infMoment}\\,i\\,x$ for $|x|<1$."
+    },
+    {
+      "id": "specialisations",
+      "title": "Solving (★∞) at m = 0, 1, 2",
+      "startLine": 144,
+      "endLine": 186,
+      "summary": "Recursively recovers the gallery's closed forms. infMoment_zero: 1/(1−x) (from the 0⁰ = 1 constant term). infMoment_one: x/(1−x)², the infinite arithmetico-geometric sum, using infMoment_zero. infMoment_two: x(1+x)/(1−x)³, the infinite second moment, using infMoment_zero and infMoment_one. Each clears the (1−x) ≠ 0 denominator with field_simp and finishes by ring_nf / linarith.",
+      "mathContext": "$\\mathrm{infMoment}\\,0=\\frac{1}{1-x}$, $\\mathrm{infMoment}\\,1=\\frac{x}{(1-x)^2}$, $\\mathrm{infMoment}\\,2=\\frac{x(1+x)}{(1-x)^3}$."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
