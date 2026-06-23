@@ -1,0 +1,198 @@
+{
+  "id": "inclusion-exclusion-oq-04-oq-03",
+  "slug": "inclusion-exclusion-oq-04-oq-03",
+  "title": "Higher Bonferroni Inequalities for an Arbitrary Finite Set Family",
+  "status": null,
+  "badge": null,
+  "theoremCount": null,
+  "axiomCount": null,
+  "parent": null,
+  "description": "Generalizes the gallery's derangement-specific Bonferroni bounds (inclusion-exclusion-oq-04-oq-01-oq-02) to an arbitrary finite family A : ι → Finset α. The exact inclusion–exclusion sieve computes the number of elements in NONE of the sets, noneCard A = Σ_{J ⊆ ι} (-1)^|J| |⋂_{i∈J} A i|. This entry proves the higher Bonferroni inequalities: truncating that alternating sieve after the size-m index sets, bonf A m := Σ_{k=0}^m (-1)^k S_k with S_k = Σ_{|J|=k} |⋂_{i∈J} A i|, brackets noneCard A alternately from above and below — noneCard A ≤ bonf A m for even m and bonf A m ≤ noneCard A for odd m. Equivalently (-1)^m (bonf A m − noneCard A) ≥ 0 for every m, with equality once m ≥ |ι|. The proof is a per-element reindexing: a size-k index set J contributes an element x to the layer S_k iff J is contained in the deg A x = #{i : x∈A i} indices whose set contains x, so exchanging the order of summation (Finset.sum_comm) collapses the family entirely and gives bonf A m = Σ_x altPartial(deg A x, m), where altPartial f m = Σ_{j=0}^m (-1)^j C(f,j) is the partial alternating binomial sum. Pascal's rule telescopes it to altPartial 0 m = 1 and altPartial(f+1,m) = (-1)^m C(f,m); elements in no set (deg=0) reproduce noneCard exactly, and every other element contributes the single signed term (-1)^m C(deg−1,m) of magnitude ≥ 0. Verified, 0 axioms, 0 sorries, no native_decide.",
+  "overview": {
+    "historicalContext": "The Bonferroni inequalities (Carlo Emilio Bonferroni, 1936) are the quantitative refinement of inclusion–exclusion: truncating the alternating sieve sum after finitely many layers gives a one-sided estimate whose direction is governed by the parity of the last index included — even truncations over-count, odd truncations under-count. They underlie the union-bound family used throughout probability and statistics (e.g. the Bonferroni correction for multiple comparisons). The gallery already proves these bounds for the flagship derangement instance (inclusion-exclusion-oq-04-oq-01-oq-02), where the sets are the fixed-point conditions A i = {σ : σ i = i}. This entry establishes the general statement for an arbitrary finite family of finite sets, bounding the count of elements lying in none of the sets. Mathlib has the exact inclusion–exclusion identity but no truncated, one-sided Bonferroni bound for a general family.",
+    "problemStatement": "Answer open question oq-03 of inclusion-exclusion-oq-04: prove the higher Bonferroni inequalities for a general finite set family A : ι → Finset α. With bonf A m := Σ_{k=0}^m (-1)^k S_k (the inclusion–exclusion sieve for noneCard A truncated after the size-m layer), show noneCard A ≤ bonf A m for even m and bonf A m ≤ noneCard A for odd m — equivalently (-1)^m (bonf A m − noneCard A) ≥ 0 for every m, with equality once m ≥ |ι|.",
+    "proofStrategy": "Reduce the family statement to a pointwise binomial fact. (1) altPartial f m = Σ_{j=0}^m (-1)^j C(f,j) is the partial alternating binomial sum; altPartial_zero gives altPartial 0 m = 1, and altPartial_succ telescopes via Pascal's rule (Nat.choose_succ_succ) to altPartial(f+1,m) = (-1)^m C(f,m) — a single term whose sign (-1)^m and non-negative magnitude C(f,m) are the entire source of one-sidedness; altPartial_of_le adds the exact endpoint altPartial f m = [f=0] once f ≤ m. (2) sieveLayer_eq_sum_choose rewrites the k-th layer S_k = Σ_{|J|=k} |⋂_{i∈J}A i| as Σ_x C(deg A x, k): expanding interCard as an indicator sum over elements and exchanging the order of summation (Finset.sum_comm), a fixed element x sees exactly the size-k subsets of its containing index set {i : x∈A i}, of which there are C(deg A x, k). (3) bonf_eq_sum_altPartial assembles this into bonf A m = Σ_x altPartial(deg A x, m). (4) noneCard_eq_indicator_sum identifies the elements in no set as the deg = 0 elements, so noneCard A = Σ_x [deg A x = 0]. Then bonf_sub_noneCard writes bonf A m − noneCard A = Σ_x (altPartial(deg A x,m) − [deg A x=0]); neg_one_pow_mul_term_nonneg shows each term times (-1)^m is non-negative (0 for an element in no set, C(deg−1,m) otherwise). The core neg_one_pow_mul_bonf_sub_nonneg gives (-1)^m(bonf A m − noneCard A) ≥ 0, whence bonferroni_even and bonferroni_odd via Even/Odd.neg_one_pow. Finally deg_le_card (every element is in ≤ |ι| sets) and altPartial_of_le give bonf_eq_noneCard_of_card_le: the truncation is exact for m ≥ |ι|. The example family A 0 = {0,1}, A 1 = {1,2} over Fin 4 gives the ladder bonf 0 = 4 ≥ noneCard = 1 ≥ bonf 1 = 0, bonf 2 = 1, checked with decide.",
+    "keyInsights": [
+      "The whole family statement collapses to ONE pointwise fact: a size-k index set contributes an element x to the layer S_k iff it is contained in the deg A x indices whose set contains x, so S_k = Σ_x C(deg A x, k) and the family A disappears — only element degrees survive. After this, the proof is identical to the single-variable Bonferroni argument.",
+      "The Bonferroni one-sidedness lives entirely in the Pascal telescoping altPartial(f+1,m) = (-1)^m C(f,m): a single term whose sign is (-1)^m and whose magnitude C(f,m) is non-negative. Everything else is bookkeeping that exposes this term per element.",
+      "A Fubini swap (Finset.sum_comm) converts a statement about truncated SUMS over index sets into a statement about individual ELEMENTS. Summing over elements first turns the truncation error into Σ_x (altPartial(deg A x,m) − [deg=0]), making the sign a property of each element's degree rather than of the alternating sum as a whole.",
+      "Elements in no set are exactly where the partial sum is exact. For deg A x = 0 the partial sum altPartial 0 m = 1 for every m, so these elements reproduce noneCard A at any truncation depth; the entire truncation error comes from elements of positive degree, each contributing a single non-negative correction (-1)^m C(deg−1,m).",
+      "The exact inclusion–exclusion identity is the m ≥ |ι| endpoint of a whole family of one-sided bounds: once m reaches the size of the index family, every binomial error term C(deg−1,m) vanishes (deg ≤ |ι|), so the Bonferroni ladder collapses to the exact sieve. The derangement-sieve entry is the special case A i = {σ : σ i = i}, x ↔ σ, deg ↔ fixed-point count."
+    ]
+  },
+  "sections": [
+    {
+      "id": "partial-alternating-binomial",
+      "title": "The Partial Alternating Binomial Sum",
+      "startLine": 71,
+      "endLine": 122,
+      "mathContext": "$\\mathrm{altPartial}(f,m) := \\sum_{j=0}^{m} (-1)^j \\binom{f}{j}, \\quad \\mathrm{altPartial}(0,m)=1, \\quad \\mathrm{altPartial}(f+1,m) = (-1)^m \\binom{f}{m}, \\quad \\mathrm{altPartial}(f,m)=[f=0]\\ (f\\le m)$",
+      "summary": "altPartial f m is the truncated binomial expansion of (1-1)^f. altPartial_zero gives altPartial 0 m = 1 (only the j=0 term survives). altPartial_succ is the Pascal telescoping altPartial(f+1,m) = (-1)^m C(f,m), proved by induction on m using C(f+1,m+1) = C(f,m) + C(f,m+1); its sign (-1)^m and non-negative magnitude C(f,m) are the entire source of the Bonferroni one-sidedness. altPartial_of_le records the exact endpoint altPartial f m = [f=0] for f ≤ m, the source of the m ≥ |ι| exactness."
+    },
+    {
+      "id": "layers-and-reindex",
+      "title": "Layers, the Truncated Sieve, and Per-Element Reindexing",
+      "startLine": 124,
+      "endLine": 218,
+      "mathContext": "$S_k = \\sum_{|J|=k} \\Big|\\bigcap_{i\\in J} A_i\\Big| = \\sum_{x} \\binom{\\deg_A x}{k}, \\qquad \\mathrm{bonf}(A,m) = \\sum_{x} \\mathrm{altPartial}(\\deg_A x, m)$",
+      "summary": "deg A x counts the sets containing x; interCard A J = |⋂_{i∈J} A i|; sieveLayer A k = S_k = Σ_{|J|=k} interCard A J; bonf A m = Σ_{k≤m} (-1)^k S_k. The key combinatorial fact filter_subset_eq_powersetCard says that for a fixed element x the size-k index sets all of whose sets contain x are exactly the size-k subsets of {i : x∈A i}. sieveLayer_eq_sum_choose then gives S_k = Σ_x C(deg A x, k) by expanding interCard as an indicator sum and exchanging summation order (Finset.sum_comm); bonf_eq_sum_altPartial assembles bonf A m = Σ_x altPartial(deg A x, m)."
+    },
+    {
+      "id": "bonferroni-inequalities",
+      "title": "The Bonferroni Inequalities and the Exact Endpoint",
+      "startLine": 220,
+      "endLine": 300,
+      "mathContext": "$(-1)^m\\,(\\mathrm{bonf}(A,m) - \\mathrm{noneCard}(A)) = \\sum_{x:\\,\\deg_A x \\ge 1} \\binom{\\deg_A x - 1}{m} \\ge 0$",
+      "summary": "noneCard_eq_indicator_sum identifies the elements in no set as the deg=0 elements, so noneCard A = Σ_x [deg A x = 0]. bonf_sub_noneCard writes bonf A m − noneCard A = Σ_x (altPartial(deg A x,m) − [deg=0]); neg_one_pow_mul_term_nonneg shows each term times (-1)^m is non-negative (0 for an element in no set, C(deg−1,m) otherwise). The core neg_one_pow_mul_bonf_sub_nonneg gives (-1)^m(bonf−noneCard) ≥ 0, whence bonferroni_even (noneCard ≤ bonf for even m) and bonferroni_odd (bonf ≤ noneCard for odd m). deg_le_card and altPartial_of_le give bonf_eq_noneCard_of_card_le: exact for m ≥ |ι|."
+    }
+  ],
+  "conclusion": {
+    "summary": "For an arbitrary finite family A : ι → Finset α, truncating the inclusion–exclusion sieve for the count of elements in no set after the size-m index sets yields a one-sided estimate: even truncations over-count noneCard A and odd truncations under-count it, the single signed statement being (-1)^m(bonf A m − noneCard A) ≥ 0, with equality once m ≥ |ι|. The proof reduces the family statement to a pointwise binomial identity — each element contributes the partial alternating binomial sum of its degree, which Pascal's rule collapses to one non-negative term with sign (-1)^m. Verified, 0 axioms, 0 sorries, no native_decide.",
+    "implications": "This is the general higher Bonferroni theorem behind the gallery's derangement-specific entry (inclusion-exclusion-oq-04-oq-01-oq-02): that file is the instance A i = {σ : σ i = i}, and the per-element reindexing here mirrors its per-permutation reindexing exactly (x ↔ σ, deg ↔ fixed-point count). Because the argument depends only on element degrees, it applies verbatim to any concrete sieve — set unions, surjection counts, coprimality (Euler's totient sieve) — once the family is presented as A : ι → Finset α. Mathlib has the exact identity but no truncated one-sided bound for a general family; this fills that gap.",
+    "openQuestions": [
+      "Primal form: derive the dual Bonferroni bounds on the size of the union |⋃ A i| from this complement statement by applying it to the complementary family, recovering the classical |⋃ A i| ≤ Σ S_k bounds with alternating-parity direction.",
+      "Sharpen the gap: bound the truncation error bonf A m − noneCard A by the first omitted layer term ±S_{m+1} (the standard 'next-term' Bonferroni refinement), proving |bonf A m − noneCard A| ≤ S_{m+1}."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Bonferroni, Carlo Emilio",
+      "title": "Teoria statistica delle classi e calcolo delle probabilità",
+      "year": "1936",
+      "venue": "Pubblicazioni del R. Istituto Superiore di Scienze Economiche e Commerciali di Firenze",
+      "note": "The original source of the inequalities bounding a probability/count by truncated inclusion–exclusion partial sums of alternating parity."
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Section 2.1–2.2 develops the inclusion–exclusion sieve for a general finite family and the count of elements in no set; the Bonferroni one-sided truncation bounds are the standard refinement of the exact identity proved there."
+    },
+    {
+      "authors": "Comtet, Louis",
+      "title": "Advanced Combinatorics",
+      "year": "1974",
+      "venue": "D. Reidel Publishing Company",
+      "note": "Chapter IV treats the inclusion–exclusion sieve and the Bonferroni inequalities for general set families, including the partial-alternating-binomial-sum identity Σ_{j≤m}(-1)^j C(f,j) = (-1)^m C(f-1,m) that drives the sign analysis."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "inclusion-exclusion-oq-04-oq-01-oq-02",
+      "relationship": "generalizes",
+      "description": "This is the general theorem of which the derangement-Bonferroni entry is the special case A i = {σ : σ i = i}. The per-element reindexing here (x ↔ σ, deg A x ↔ number of fixed points) mirrors that file's per-permutation reindexing exactly; here interCard A J is directly a filter cardinality, so no external crux count is needed."
+    },
+    {
+      "targetId": "inclusion-exclusion-oq-04",
+      "relationship": "extends",
+      "description": "Answers open question oq-03 of inclusion-exclusion-oq-04. The grandparent dual sieve records a two-set Bonferroni-type remark; this entry proves the full alternating Bonferroni ladder at all truncation depths for an arbitrary finite family."
+    },
+    {
+      "targetId": "inclusion-exclusion-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Shares the partial-alternating-binomial-sum machinery (altPartial, Pascal telescoping) with the derangement-sieve line of the gallery, applied here to a general family rather than the permutation fixed-point family."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/InclusionExclusionBonferroniGeneral.lean",
+    "imports": [
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Algebra.BigOperators.Ring",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "InclusionExclusionBonferroniGeneral",
+    "lineCount": 328,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 7,
+    "theoremCount": 14,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionBonferroniGeneral.lean"
+  },
+  "proofRepoPath": "Proofs/InclusionExclusionBonferroniGeneral.lean",
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius (Researcher)",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InclusionExclusionBonferroniGeneral.lean",
+    "tags": [
+      "combinatorics",
+      "inclusion-exclusion",
+      "sieve",
+      "bonferroni-inequalities",
+      "finite-set-family",
+      "counting",
+      "binomial-coefficients"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's rule C(f+1,m+1) = C(f,m) + C(f,m+1). The inductive engine of altPartial_succ, telescoping the partial alternating binomial sum Σ_{j≤m}(-1)^j C(f+1,j) to the single signed term (-1)^m C(f,m).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.sum_comm",
+        "description": "Exchanges the order of a double Finset sum. The Fubini step turning the layer's sum over (index set, element) pairs into a sum over elements of a single binomial coefficient, and again turning Σ_k Σ_x into Σ_x Σ_k to assemble bonf A m = Σ_x altPartial(deg A x, m).",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card_powersetCard",
+        "description": "#(s.powersetCard k) = C(|s|, k). Counts, for a fixed element x, the size-k subsets of its containing index set {i : x∈A i}, giving the binomial coefficient C(deg A x, k) in each element's contribution to the layer.",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.card_filter",
+        "description": "(s.filter p).card = Σ_{a∈s} (if p a then 1 else 0). Expands interCard A J = |⋂_{i∈J} A i| as an indicator sum over elements, the starting point for the Fubini exchange that collapses the family to element degrees.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Piecewise"
+      },
+      {
+        "theorem": "Even.neg_one_pow / Odd.neg_one_pow",
+        "description": "(-1)^m = 1 for even m and = -1 for odd m. Converts the single signed core inequality (-1)^m(bonf A m − noneCard A) ≥ 0 into the parity-split Bonferroni statements noneCard A ≤ bonf A m (even) and bonf A m ≤ noneCard A (odd).",
+        "module": "Mathlib.Algebra.Ring.Parity"
+      },
+      {
+        "theorem": "Nat.choose_eq_zero_of_lt",
+        "description": "C(n,k) = 0 for n < k. Drives altPartial_of_le: once the truncation index m exceeds the degree, the single Pascal term C(deg−1,m) vanishes and the partial sum becomes the exact indicator [deg=0], giving the m ≥ |ι| exactness.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.card_filter_le",
+        "description": "(s.filter p).card ≤ s.card. Gives deg_le_card: every element belongs to at most |ι| of the sets, so the truncation error vanishes once m ≥ |ι|.",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "bonferroni_even / bonferroni_odd: the higher Bonferroni inequalities for an arbitrary finite set family A : ι → Finset α — the even-depth truncations of the inclusion–exclusion sieve over-count the number of elements in no set, and the odd-depth truncations under-count it. This general one-sided bracketing is not in Mathlib or the gallery, which record only the exact inclusion–exclusion identity and the derangement-specific Bonferroni instance.",
+      "neg_one_pow_mul_bonf_sub_nonneg: the unifying single-inequality form (-1)^m(bonf A m − noneCard A) ≥ 0 for every truncation depth m, from which both parity cases follow; the sign is exhibited termwise as a sum of non-negative binomial coefficients.",
+      "sieveLayer_eq_sum_choose / bonf_eq_sum_altPartial: the per-element reindexing collapsing the inclusion–exclusion layer S_k = Σ_{|J|=k} |⋂_{i∈J}A i| to Σ_x C(deg A x, k), and the truncated sieve to bonf A m = Σ_x altPartial(deg A x, m) — the structural identity that makes the Bonferroni sign a property of each element's degree and erases the family.",
+      "bonf_eq_noneCard_of_card_le: the exact endpoint of the Bonferroni ladder — once the truncation depth reaches the size of the index family (m ≥ |ι|), the one-sided bound becomes the exact inclusion–exclusion identity bonf A m = noneCard A, via altPartial_of_le and deg_le_card.",
+      "altPartial_succ / altPartial_of_le: the Pascal telescoping altPartial(f+1,m) = (-1)^m C(f,m) of the partial alternating binomial sum and its exact-indicator endpoint for f ≤ m — the elementary identities carrying the entire one-sidedness (sign (-1)^m, non-negative magnitude C(f,m)) and the exactness."
+    ],
+    "dateAdded": "2026-06-23",
+    "relatedProblems": [
+      {
+        "id": "inclusion-exclusion-oq-04-oq-01-oq-02",
+        "relationship": "Special case. The derangement-sieve Bonferroni entry is the instance A i = {σ : σ i = i} of this general theorem; this file's per-element reindexing (x ↔ σ, deg A x ↔ number of fixed points) is the structural mirror of that file's per-permutation reindexing."
+      },
+      {
+        "id": "inclusion-exclusion-oq-04",
+        "relationship": "Answers open question oq-03. The general inclusion–exclusion sieve for the count of elements in no set is refined here to the full family of one-sided Bonferroni truncations."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 328,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. The family A : ι → Finset α and the truncation depth m : ℕ are arbitrary; ι and α are finite (Fintype) with decidable equality. The bounds hold for every m, with equality once m ≥ |ι| = Fintype.card ι. The worked example (family A 0 = {0,1}, A 1 = {1,2} over Fin 4) uses decide (kernel reduction), not native_decide, so the file is axiom-free: #print axioms reports only the foundational propext, Classical.choice, Quot.sound — no sorryAx, no Lean.ofReduceBool. NOTE: this entry was authored while the Docker build host was unavailable; kernel verification is delegated to the deployer build-gate, which blocks merge on any build failure.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 14,
+    "definitionCount": 7
+  }
+}
