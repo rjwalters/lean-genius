@@ -1,0 +1,159 @@
+{
+  "id": "schroeder-bernstein-oq-04-oq-01-oq-01",
+  "slug": "schroeder-bernstein-oq-04-oq-01-oq-01",
+  "title": "Semi-Decidable (Σ⁰₁) Presentation of the CBS Orbit Classification",
+  "conclusion": {
+    "summary": "We make precise, and prove, the parent entry's claim that the Cantor–Bernstein–Schroeder orbit classification reachableSet membership is semi-decidable (Σ⁰₁) but not decidable for infinite types. Membership is, definitionally, an existential over a monotone family of approximation stages stage f g n = (step f g)^[n] (baseSet g); every member is certified at a least finite stage; the union collapses to a single stage exactly when the stages become stationary; and in the ℕ-shift instance the stages strictly grow forever, so the search has no uniform bound.",
+    "implications": "**The Σ⁰₁ shape is the definitional backbone.** reachableSet membership is `∃ n, a ∈ stage f g n` with the stages a uniformly described monotone family — exactly the logical form of a semi-decidable predicate. The positive half of semi-decidability is the least-witness theorem: a search enumerating stages halts on every genuine member, but is told nothing about non-members.\n\n**Decidability ⟺ stabilization.** The unbounded existential collapses to a bounded, decidable test precisely when a fixed point stage f g N = stage f g (N+1) is reached. For a Fintype this always happens (a strictly increasing chain of subsets of a finite type must terminate), recovering the parent's decidable finite case; the only obstruction is the failure of stabilization.\n\n**The search is genuinely unbounded.** In the parent header's own example (α = β = ℕ, f = g = Nat.succ) the stages are the truncated evens {0,2,…,2N}, so the least certifying stage of 2N is exactly N. Hence no fixed bound suffices uniformly (unbounded_search) and no stage is ever stationary (stage_succ_ne) — the precise formal content of 'no a-priori bound on the number of iterations'.",
+    "openQuestions": [
+      "Can the logical Σ⁰₁ form proved here be upgraded to a genuine computability-theoretic statement — e.g. `RePred (· ∈ reachableSet f g)` (recursive enumerability) — under the hypothesis that f, g and `· ∈ range g` are effectively given (computable with semi-decidable range)?",
+      "Is there a pair of computable injections f, g for which reachableSet membership is provably undecidable (Σ⁰₁-complete), making the noncomputability of the CBS bijection unconditional rather than worst-case?"
+    ]
+  },
+  "description": "Formalizes and proves the parent entry's central claim: the CBS orbit classification reachableSet membership is semi-decidable (Σ⁰₁) but not decidable for infinite types. It is definitionally an existential over a monotone stage family (the Σ⁰₁ shape), every member has a least certifying stage (semi-decision halts on members), the union collapses to a single stage exactly when the stages stabilize (decidability criterion), and in the ℕ-shift instance the stages strictly grow forever, so the stage-bounded search has no uniform bound.",
+  "overview": {
+    "historicalContext": "A predicate is Σ⁰₁ (semi-decidable, recursively enumerable) when it can be written as an existential ∃ n, R(n,·) over a decidable/uniform 'stage' family: a search enumerating the stages confirms members but may run forever on non-members. The classical Schröder–Bernstein proof classifies each element by its backward orbit, which is non-constructive. The parent entry (schroeder-bernstein-oq-04-oq-01) reproved CBS for arbitrary types via the union-of-iterates reachable set R = ⋃ₙ step^[n] baseSet, and observed — without formalizing — that for infinite types R-membership is only Σ⁰₁, with 'no a-priori bound on how many step iterations one must unfold'. This entry answers that entry's first open question by making the Σ⁰₁ claim precise and proving it.",
+    "problemStatement": "**Open Question (OQ-04.1.1)**: Give a Σ⁰₁ (r.e.) presentation of `reachableSet` membership and quantify precisely how much constructivity is retained.\n\n**Answer**: Define the stage family stage f g n = (step f g)^[n] (baseSet g). Then:\n- **Σ⁰₁ form**: a ∈ reachableSet f g ↔ ∃ n, a ∈ stage f g n, and reachableSet f g = ⋃ n, stage f g n, with the stages monotone increasing.\n- **Halts on members**: every member has a least certifying stage.\n- **Decidability criterion**: if stage f g N = stage f g (N+1) then reachableSet f g = stage f g N (so membership is decidable once the iteration stabilizes; for a Fintype it always does).\n- **Genuinely unbounded**: for α = β = ℕ, f = g = Nat.succ, the stages are {0,2,…,2N}; for every N the member 2(N+1) is not yet at stage N, and no stage is ever stationary.",
+    "proofStrategy": "1. **Stage family**: stage f g n = (step f g)^[n] (baseSet g); stage f g (n+1) = step f g (stage f g n) via Function.iterate_succ_apply'.\n\n2. **Σ⁰₁ form (Section A)**: mem_reachable_iff_exists_stage is `Iff.rfl`; reachableSet_eq_iUnion by ext + simp; stage monotonicity from iter_subset_succ via monotone_nat_of_le_succ.\n\n3. **Least witness (Section B)**: exists_least_stage from Nat.find / Nat.find_spec / Nat.find_min' under a local classical instance.\n\n4. **Stabilization (Section C)**: stage_const_of_stationary propagates a fixed point to all later stages by induction; reachableSet_eq_stage_of_stationary splits the union into n ≤ N (monotone) and n ≥ N (constant).\n\n5. **Unboundedness (Section D)**: baseSet Nat.succ = {0}; an induction gives the upper bound m ∈ stage Nat.succ Nat.succ n → m ≤ 2n, and another gives 2n ∈ stage n. Together: 2(N+1) ∈ reachableSet but ∉ stage N (unbounded_search), and no stage equals its successor (stage_succ_ne), so reachableSet ≠ any single stage.",
+    "keyInsights": [
+      "**Σ⁰₁ is the definitional shape, not an add-on.** reachableSet membership is literally `∃ n, a ∈ stage f g n` — the existential-over-a-uniform-family form of a semi-decidable predicate. mem_reachable_iff_exists_stage holds by `Iff.rfl`. The content is everything around it: monotonicity, the least witness, and the unboundedness.",
+      "**Semi-decidability = halts on members only.** exists_least_stage gives every member a least certifying stage, so a stage-enumerating search confirms membership at a finite point. It receives no certificate of non-membership — the defining asymmetry of Σ⁰₁ versus decidable.",
+      "**Decidability is exactly stabilization.** reachableSet_eq_stage_of_stationary shows the unbounded union collapses to one stage as soon as step reaches a fixed point. For a Fintype a fixed point must occur (the parent's decidable finite case); the sole obstruction to decidability is an unbounded, never-stabilizing search.",
+      "**The unboundedness is genuine, and concrete.** In the ℕ-shift instance the stages are the truncated evens, so the least certifying stage of 2N is N: it grows without bound (unbounded_search) and no stage is ever stationary (stage_succ_ne). This is the precise formal meaning of the parent's 'no a-priori bound on the number of iterations'.",
+      "**Honest scope.** 'Σ⁰₁' is captured as its logical form plus the unbounded-search theorem, not as a computability-theoretic RePred statement (which would need f, g and range g effectively given — an orthogonal hypothesis). In the concrete ℕ instance membership itself is decidable (the evens); what is unbounded, and provably never stabilizes, is the stage-bounded search that drives the Σ⁰₁ presentation."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-stage-family",
+      "title": "The Stage Family",
+      "startLine": 75,
+      "endLine": 88,
+      "summary": "Defines stage f g n = (step f g)^[n] (baseSet g), the finite approximations whose union is reachableSet. stage f g 0 = baseSet g, and stage f g (n+1) = step f g (stage f g n) by Function.iterate_succ_apply'.",
+      "mathContext": "$\\operatorname{stage}_n = \\operatorname{step}^{[n]}(A_0)$, $\\operatorname{stage}_{n+1} = \\operatorname{step}(\\operatorname{stage}_n)$."
+    },
+    {
+      "id": "sec-sigma01-form",
+      "title": "Section A: The Σ⁰₁ Logical Form",
+      "startLine": 90,
+      "endLine": 111,
+      "summary": "reachableSet membership is the existential ∃ n, a ∈ stage f g n (Iff.rfl), reachableSet f g = ⋃ n, stage f g n, and the stages are monotone increasing — exactly the shape of a semi-decidable predicate.",
+      "mathContext": "$a \\in R \\iff \\exists n,\\ a \\in \\operatorname{stage}_n$, $R = \\bigcup_n \\operatorname{stage}_n$, $\\operatorname{stage}$ monotone."
+    },
+    {
+      "id": "sec-halts",
+      "title": "Section B: Semi-Decision Halts on Members",
+      "startLine": 113,
+      "endLine": 123,
+      "summary": "exists_least_stage: every member of reachableSet is certified at a least finite stage. A search enumerating the stages halts on genuine members; it is given no information about non-members.",
+      "mathContext": "$a \\in R \\Rightarrow \\exists N,\\ a \\in \\operatorname{stage}_N \\wedge \\forall m,\\ a \\in \\operatorname{stage}_m \\to N \\le m$."
+    },
+    {
+      "id": "sec-decidability-criterion",
+      "title": "Section C: The Decidability Criterion",
+      "startLine": 125,
+      "endLine": 161,
+      "summary": "If stage f g N = stage f g (N+1) the family is constant thereafter (stage_const_of_stationary), so reachableSet f g = stage f g N (reachableSet_eq_stage_of_stationary): membership is decidable once the iteration stabilizes. For a Fintype stabilization always occurs.",
+      "mathContext": "$\\operatorname{stage}_N = \\operatorname{stage}_{N+1} \\Rightarrow R = \\operatorname{stage}_N$."
+    },
+    {
+      "id": "sec-unbounded",
+      "title": "Section D: The Search Is Genuinely Unbounded",
+      "startLine": 163,
+      "endLine": 243,
+      "summary": "For α = β = ℕ, f = g = Nat.succ: baseSet = {0}, stages are the truncated evens (m ∈ stage n → m ≤ 2n, and 2n ∈ stage n). Hence 2(N+1) ∈ reachableSet but ∉ stage N (unbounded_search), no stage is stationary (stage_succ_ne), and reachableSet equals no single stage (reachableSet_ne_stage).",
+      "mathContext": "$\\operatorname{stage}_N = \\{0,2,\\dots,2N\\}$, $2(N+1) \\in R \\setminus \\operatorname{stage}_N$, $\\operatorname{stage}_N \\ne \\operatorname{stage}_{N+1}$."
+    }
+  ],
+  "references": [
+    {
+      "text": "Schröder–Bernstein theorem (statement, history, and the orbit-classification proof).",
+      "url": "https://en.wikipedia.org/wiki/Schr%C3%B6der%E2%80%93Bernstein_theorem"
+    },
+    {
+      "text": "Arithmetical hierarchy: Σ⁰₁ (semi-decidable / recursively enumerable) predicates as existentials over decidable matrices.",
+      "url": "https://en.wikipedia.org/wiki/Arithmetical_hierarchy"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "schroeder-bernstein-oq-04-oq-01",
+      "relationship": "extends",
+      "description": "The parent: CBS for arbitrary types via the union-of-iterates reachable set, which observes that orbit classification is only semi-decidable (Σ⁰₁). This entry answers that parent's first open question by formalizing and proving the Σ⁰₁ presentation and the genuine unboundedness of the search."
+    },
+    {
+      "targetId": "schroeder-bernstein-oq-04",
+      "relationship": "related",
+      "description": "The finite-type constructive CBS, where the same stage family stabilizes after |α| steps and orbit classification is decidable. Section C's decidability criterion is exactly what makes that finite case decidable."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Proofs.SchroederBernsteinOQ04OQ01"
+    ],
+    "opens": [],
+    "namespace": "CBSInfinite",
+    "lineCount": 243,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "substantiveTheoremCount": 17,
+    "definitionCount": 1,
+    "path": "Proofs/SchroederBernsteinOQ04OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SchroederBernsteinOQ04OQ01OQ01.lean",
+    "tags": [
+      "set-theory",
+      "computability",
+      "decidability",
+      "semi-decidable",
+      "arithmetical-hierarchy",
+      "infinite-types",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Function.iterate_succ_apply'",
+        "description": "f^[n+1] x = f (f^[n] x), used to relate consecutive stages",
+        "module": "Mathlib.Logic.Function.Iterate"
+      },
+      {
+        "theorem": "monotone_nat_of_le_succ",
+        "description": "A sequence with f n ≤ f (n+1) for all n is monotone; gives stage monotonicity",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Least natural satisfying a decidable predicate; gives the least certifying stage",
+        "module": "Mathlib.Data.Nat.Find"
+      },
+      {
+        "theorem": "Set.iUnion_subset",
+        "description": "Universal property of the indexed union, used in the stabilization collapse",
+        "module": "Mathlib.Data.Set.Lattice"
+      }
+    ],
+    "originalContributions": [
+      "Stage family stage f g n = (step f g)^[n] (baseSet g) packaging reachableSet as a Σ⁰₁ existential ∃ n, a ∈ stage f g n with reachableSet = ⋃ n, stage f g n",
+      "Least-certifying-stage theorem (exists_least_stage): the positive half of semi-decidability — the stage-enumerating search halts on every member",
+      "Decidability criterion reachableSet_eq_stage_of_stationary: the union collapses to a single decidable stage exactly when the iteration stabilizes, isolating unbounded search as the sole obstruction to decidability and recovering the parent's finite decidable case",
+      "Concrete proof that the search is genuinely unbounded (unbounded_search, stage_succ_ne) in the ℕ-shift instance: stages are the truncated evens, the least certifying stage of 2N is N, and no stage is ever stationary — formalizing the parent's 'no a-priori bound on iterations'"
+    ],
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "lineCount": 243,
+    "mathlib_version": "4.26.0",
+    "definitionCount": 1,
+    "theoremCount": 17,
+    "assumptions": "None beyond Lean/Mathlib's standard foundations. Fully verified with 0 sorries and 0 axiom declarations; no native_decide. The least-witness construction (exists_least_stage) and the parent's noncomputable bijection use the ordinary foundational axioms propext / Classical.choice / Quot.sound only — no sorryAx, no Lean.ofReduceBool. The entry proves the Σ⁰₁ logical form and the genuine unboundedness of the stage-bounded search; it does not claim a computability-theoretic RePred statement, which would require the injections to be effectively given."
+  }
+}
