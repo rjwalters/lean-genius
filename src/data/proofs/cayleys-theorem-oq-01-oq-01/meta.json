@@ -21,7 +21,7 @@
       "research"
     ],
     "proofRepoPath": "Proofs/CayleysTheoremOQ01OQ01.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "mathlibDependencies": [
@@ -49,10 +49,15 @@
         "theorem": "MonoidHom.ofInjective",
         "description": "an injective group hom f : G →* N yields an isomorphism G ≃* f.range — upgrades the finite Cayley embedding to the subgroup form G ≃* range ≤ Sₙ",
         "module": "Mathlib.Algebra.Group.Subgroup.Ker"
+      },
+      {
+        "theorem": "Equiv.permCongrHom",
+        "description": "Equiv.permCongr e : Perm α ≃ Perm β bundled as a MulEquiv (Perm α ≃* Perm β) — the exact multiplicative-isomorphism construction that this file re-derives in-file as permCongrMulEquiv",
+        "module": "Mathlib.Algebra.Group.End"
       }
     ],
     "originalContributions": [
-      "permCongrMulEquiv: conjugation by a bijection e : α ≃ β packaged as a MulEquiv (Equiv.Perm α ≃* Equiv.Perm β) — Mathlib's Equiv.permCongr is only an Equiv; the multiplicative-isomorphism bundling is supplied here (map_mul' from permCongr_apply)",
+      "permCongrMulEquiv: conjugation by a bijection e : α ≃ β packaged as a MulEquiv (Equiv.Perm α ≃* Equiv.Perm β), built locally from Equiv.permCongr with map_mul' discharged by permCongr_apply. (Mathlib already provides this exact bundling as Equiv.permCongrHom; permCongrMulEquiv is an in-file re-derivation, not a new construction.)",
       "cayleyFinHom: the finite Cayley homomorphism G →* Equiv.Perm (Fin n) obtained by conjugating the regular representation along e : G ≃ Fin n, with cayleyFinHom_apply : cayleyFinHom e g i = e (g * e.symm i)",
       "cayleyFinHom_injective: injectivity of the finite Cayley embedding, from injectivity of the regular representation composed with the bijective relabelling",
       "cayley_fin: ∃ injective f : G →* Equiv.Perm (Fin (Fintype.card G)) — the textbook finite Cayley statement that a group of order n embeds in Sₙ",
@@ -61,7 +66,7 @@
     ],
     "dateAdded": "2026-06-23",
     "lineCount": 107,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used.",
+    "assumptions": "None beyond Mathlib. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used. Tier B: the embedding's injectivity rests on Mathlib's MulAction.toPerm_injective (faithfulness of the regular representation — the mathematical heart, inherited from the parent entry); this file supplies the codomain-refinement bridge (relabelling along G ≃ Fin n) and packaging, hence badge 'mathlib'.",
     "mathlib_version": "4.26.0",
     "theoremCount": 4,
     "definitionCount": 4
@@ -73,7 +78,7 @@
     "proofStrategy": "**Proof Strategy.**\n\n1. Relabel permutations. A bijection e : α ≃ β induces the conjugation map Equiv.permCongr e : Perm α ≃ Perm β, σ ↦ e ∘ σ ∘ e⁻¹. Conjugation by a fixed bijection respects composition, so this is a *multiplicative* isomorphism; permCongrMulEquiv e bundles it as Equiv.Perm α ≃* Equiv.Perm β (map_mul' discharged by permCongr_apply + Perm.mul_apply).\n2. Transport the regular representation. The left-regular representation is Mathlib's regular self-action homomorphism MulAction.toPermHom G G : G →* Equiv.Perm G (the parent entry). Composing with the relabelling gives cayleyFinHom e := (permCongrMulEquiv e).toMonoidHom.comp (MulAction.toPermHom G G) : G →* Equiv.Perm (Fin n), with cayleyFinHom e g i = e (g * e.symm i).\n3. Injectivity. cayleyFinHom e is a composite of an injective map (the regular representation, injective by MulAction.toPerm_injective via the faithful self-action of a group) with a bijection (the relabelling permCongrMulEquiv e), hence injective.\n4. Specialise and package. Taking e = Fintype.equivFin G : G ≃ Fin (Fintype.card G) yields cayley_fin and the bundled embedding cayleyFinEmbedding; MonoidHom.ofInjective upgrades injectivity to the isomorphism cayleyFinRangeEquiv : G ≃* (cayleyFinHom e).range, the 'subgroup of Sₙ' form.",
     "keyInsights": [
       "**The codomain refinement is a relabelling, not new content.** The mathematical heart — faithfulness of the regular representation — is the parent's; the finite form is obtained purely by conjugating along a numbering G ≃ Fin n, which is an isomorphism of symmetric groups and therefore preserves injectivity.",
-      "**Conjugation is multiplicative.** Equiv.permCongr e is stated in Mathlib only as an Equiv; recognising that σ ↦ e ∘ σ ∘ e⁻¹ is a group isomorphism (permCongrMulEquiv) is what lets the regular representation be composed with it as a homomorphism, keeping the result a G →* Equiv.Perm (Fin n).",
+      "**Conjugation is multiplicative.** σ ↦ e ∘ σ ∘ e⁻¹ is a group isomorphism Equiv.Perm α ≃* Equiv.Perm β (Mathlib bundles it as Equiv.permCongrHom; re-derived here as permCongrMulEquiv), and composing the regular representation with it keeps the result a homomorphism G →* Equiv.Perm (Fin n).",
       "**Fintype.equivFin supplies the numbering.** Any finite group has a canonical bijection to Fin n with n = Fintype.card G; instantiating the general relabelled embedding there gives the textbook 'order n ⟹ embeds in Sₙ'.",
       "**Three packagings.** Existence of an injective hom, a bundled embedding G ↪ Sₙ, and the isomorphism onto a subgroup G ≃* range are equivalent faces; MonoidHom.ofInjective converts the first into the last."
     ],
