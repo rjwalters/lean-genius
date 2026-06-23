@@ -2665,6 +2665,7 @@ import Proofs.FourSquareDistributionOQ04Decomp
 import Proofs.FourSquareDistributionOQ04Keystone
 import Proofs.FourSquareDistributionOQ04M8
 import Proofs.FourSquareDistributionOQ04Sign
+import Proofs.FourSquareDistributionOQ06OQ01
 import Proofs.FourSquareRepresentations
 import Proofs.FourierSeries
 import Proofs.FourierSeriesOQ01
