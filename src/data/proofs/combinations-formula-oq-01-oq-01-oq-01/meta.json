@@ -41,7 +41,8 @@
     "keyInsights": [
       "Phrasing the Lucas–Fibonacci link as L(n)+F(n)=2·F(n+1) avoids natural-number subtraction entirely and makes a single two-step induction suffice for everything downstream.",
       "A Lucas number is the sum of two consecutive shallow diagonals of Pascal's triangle, because L(n+2)=F(n+3)+F(n+1) and each Fibonacci number is one shallow diagonal — so the parent's identity is reused verbatim, twice.",
-      "The 'mixed' product identity F(2n)=F(n)·L(n) is exactly Mathlib's Nat.fib_two_mul once the bridge identifies 2·F(n+1)−F(n) as L(n)."
+      "The 'mixed' product identity F(2n)=F(n)·L(n) is exactly Mathlib's Nat.fib_two_mul once the bridge identifies 2·F(n+1)−F(n) as L(n).",
+      "Lucas and Fibonacci numbers are the two canonical solutions of the same recurrence (L_n=φ^n+ψ^n versus F_n=(φ^n−ψ^n)/√5); the entire file is an exercise in transferring facts between them through the single additive bridge, never invoking the closed forms."
     ],
     "prerequisites": [
       "Fibonacci numbers Nat.fib and the recurrence Nat.fib_add_two, the doubling identity Nat.fib_two_mul",
