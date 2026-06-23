@@ -1,0 +1,161 @@
+{
+  "id": "chebyshev-sum-inequality-oq-01-oq-02",
+  "title": "Strict Chebyshev Sum Inequality Unless a Sequence Is Constant",
+  "slug": "chebyshev-sum-inequality-oq-01-oq-02",
+  "description": "Mathlib states Chebyshev's sum inequality (∑ f)(∑ g) ≤ #s·∑ f·g for monovarying f, g but records neither when equality holds nor the resulting strict statement. The parent entry rearrangement-inequality-oq-01 supplies the equality case via the discrete covariance identity. This entry combines the two into the single textbook-quoted form: the Chebyshev inequality is strict unless one of the two sequences is constant. We give three layers — a general monovariance form triggered by a single doubly-varying pair, the monotone textbook form (neither sequence constant ⇒ strict), and the clean strictly-monotone specialisation (≥ 2 indices ⇒ strict) — each obtained as lt_of_le_of_ne from the parent's ≤ bound and the negation of its equality characterisation.",
+  "meta": {
+    "author": "Classical (Chebyshev); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev%27s_sum_inequality",
+    "date": "1882",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "inequalities",
+      "order",
+      "chebyshev-sum-inequality",
+      "monotone",
+      "rearrangement",
+      "strict-inequality"
+    ],
+    "proofRepoPath": "Proofs/RearrangementChebyshevStrictOQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 83,
+    "mathlibDependencies": [
+      {
+        "theorem": "lt_of_le_of_ne",
+        "description": "Upgrades a ≤ bound to a strict < once the equality is excluded — the single combinator that turns the parent's inequality plus its negated equality case into the strict statement",
+        "module": "Mathlib.Order.Basic"
+      },
+      {
+        "theorem": "Monotone.monovary",
+        "description": "Two monotone functions monovary — the bridge feeding the parent's chebyshev_sum and equality lemmas in the monotone form",
+        "module": "Mathlib.Order.Monotone.Monovary"
+      },
+      {
+        "theorem": "Finset.one_lt_card",
+        "description": "1 < #s yields two distinct indices a ≠ b in s, the witnesses that strict monotonicity turns into f a ≠ f b and g a ≠ g b",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "StrictMono.injective",
+        "description": "A strictly monotone function is injective — converts the distinct indices a ≠ b into f a ≠ f b for the strictly-monotone specialisation",
+        "module": "Mathlib.Order.Monotone.Basic"
+      }
+    ],
+    "originalContributions": [
+      "chebyshev_sum_strict_of_pair: the general monovariance strict form — a single pair a, b ∈ s with f a ≠ f b and g a ≠ g b already forces (∑ f)(∑ g) < #s·∑ f·g, with no order or monotonicity hypotheses beyond MonovaryOn",
+      "chebyshev_sum_strict: the textbook monotone form — for monotone f, g on a linearly ordered index with s nonempty, the inequality is strict whenever neither f nor g is constant on s",
+      "chebyshev_sum_strict_strictMono: the clean specialisation — strictly monotone f, g over a set with at least two elements always give the strict inequality"
+    ],
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Chebyshev's sum inequality (1880s) states that for two real sequences sorted the same way the mean of their products dominates the product of their means, (1/n)∑ aᵢbᵢ ≥ ((1/n)∑ aᵢ)((1/n)∑ bᵢ). It is the discrete shadow of the fact that two comonotone random variables have nonnegative covariance. The textbook statement always carries a rigidity clause — equality holds exactly when one of the sequences is constant, so the inequality is otherwise strict — yet Mathlib records only the non-strict bound through the order-correlation predicate MonovaryOn. The parent entry supplied the missing equality case from the discrete covariance identity; this entry completes the picture by packaging the strict statement people actually quote.",
+    "problemStatement": "Let $f, g$ be monotone real sequences on a finite index set $s$ that is nonempty. If neither $f$ nor $g$ is constant on $s$, then Chebyshev's sum inequality is strict:\n\n$$\\Big(\\sum_{i\\in s} f_i\\Big)\\Big(\\sum_{i\\in s} g_i\\Big) \\;<\\; \\#s \\sum_{i\\in s} f_i g_i.$$\n\nMore generally, for $f, g$ merely monovarying on $s$, a single pair $a, b \\in s$ with $f_a \\ne f_b$ and $g_a \\ne g_b$ already forces the strict inequality.",
+    "proofStrategy": "Every result is `lt_of_le_of_ne` applied to the parent's ≤ bound (`chebyshev_sum`) and the negation of the parent's equality characterisation.\n\n1. chebyshev_sum_strict_of_pair: from MonovaryOn f g s we have the ≤ bound. Were equality to hold, `chebyshev_sum_eq_iff` would force f a = f b ∨ g a = g b on the given pair, contradicting the two hypotheses; hence the inequality is strict.\n\n2. chebyshev_sum_strict: the monotone bridge `(hf.monovary hg).monovaryOn s` supplies the ≤ bound. Equality would, by `chebyshev_sum_eq_iff_const`, make f or g constant on s, contradicting the non-constancy witnesses.\n\n3. chebyshev_sum_strict_strictMono: `Finset.one_lt_card` extracts distinct a ≠ b ∈ s; `StrictMono.injective` upgrades this to f a ≠ f b and g a ≠ g b, and the result follows from chebyshev_sum_strict (or directly from the pair form).",
+    "keyInsights": [
+      "The strict statement is not new mathematics on top of the equality case — it is exactly `lt_of_le_of_ne` of (parent inequality) and (¬ parent equality), so the whole content lives in the rigidity lemma proved upstream.",
+      "Strictness is local: a single index pair that varies in both coordinates is enough to make the global inequality strict, which is why the cleanest hypothesis is one doubly-varying pair rather than a global non-constancy assumption.",
+      "For monotone sequences the doubly-varying pair always exists at the extremes (min', max') once neither sequence is constant, which is precisely what the parent's `chebyshev_sum_eq_iff_const` packages.",
+      "Strict monotonicity plus two distinct indices is the slickest sufficient condition: injectivity removes any need to exhibit the varying pair by hand."
+    ],
+    "prerequisites": [
+      "Finite sums over a Finset and Finset.card",
+      "Monotone / StrictMono functions and the MonovaryOn order-correlation predicate",
+      "Chebyshev's sum inequality and its equality (rigidity) case",
+      "The lt_of_le_of_ne pattern for upgrading ≤ to < by excluding equality"
+    ]
+  },
+  "conclusion": {
+    "summary": "We packaged the strict form of Chebyshev's sum inequality that Mathlib omits: for monovarying sequences a single pair varying in both coordinates forces (∑ f)(∑ g) < #s·∑ f·g, and for monotone sequences the inequality is strict unless one of the two is constant — with a clean strictly-monotone specialisation. All three results are fully machine-checked and depend only on the foundational axioms (0 sorries, 0 axioms).",
+    "implications": "Together with the parent equality case (rearrangement-inequality-oq-01) and the non-strict monotone packaging (chebyshev-sum-inequality-oq-01), this gives the complete inequality-plus-rigidity picture for Chebyshev's sum inequality in the monotone case: the bound, exactly when it is tight, and exactly when it is strict.",
+    "openQuestions": [
+      "Prove the strict reverse inequality for a monotone and an antitone sequence (the AntivaryOn analogue: strict unless one sequence is constant).",
+      "State the strict form of the continuous (integral) Chebyshev inequality for strictly monotone functions on an interval."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports (Mathlib and the parent equality-case file), an expository docstring relating the strict statement to the parent's inequality and equality lemmas, and namespace setup opening RearrangementChebyshevEq."
+    },
+    {
+      "id": "pair-form",
+      "title": "Strict Form from a Single Doubly-Varying Pair",
+      "startLine": 40,
+      "endLine": 57,
+      "summary": "chebyshev_sum_strict_of_pair — for monovarying f, g, one pair a, b ∈ s with f a ≠ f b and g a ≠ g b forces the strict inequality, via lt_of_le_of_ne and the negated chebyshev_sum_eq_iff."
+    },
+    {
+      "id": "monotone-form",
+      "title": "Textbook Monotone Form",
+      "startLine": 58,
+      "endLine": 71,
+      "summary": "chebyshev_sum_strict — for monotone f, g on a linearly ordered index with s nonempty, strict inequality whenever neither f nor g is constant, via the negated chebyshev_sum_eq_iff_const."
+    },
+    {
+      "id": "strictmono-form",
+      "title": "Strictly Monotone Specialisation",
+      "startLine": 72,
+      "endLine": 83,
+      "summary": "chebyshev_sum_strict_strictMono — strictly monotone f, g over a set with at least two elements always give the strict inequality, extracting the varying pair from Finset.one_lt_card and StrictMono.injective."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-sum-inequality-oq-01",
+      "relationship": "extends",
+      "description": "The non-strict monotone-sequence packaging whose ≤ bound this entry upgrades to a strict inequality"
+    },
+    {
+      "targetId": "rearrangement-inequality-oq-01",
+      "relationship": "depends",
+      "description": "The equality case (discrete covariance identity) whose negation drives every strict statement here"
+    },
+    {
+      "targetId": "chebyshev-sum-inequality",
+      "relationship": "extends",
+      "description": "Chebyshev's Sum Inequality"
+    }
+  ],
+  "references": [
+    {
+      "text": "Hardy, G. H., Littlewood, J. E., Pólya, G. (1952). Inequalities, 2nd ed., Cambridge University Press (Chebyshev's inequality and its equality case).",
+      "url": "https://archive.org/details/Inequalities_201705"
+    },
+    {
+      "text": "Chebyshev's sum inequality.",
+      "url": "https://en.wikipedia.org/wiki/Chebyshev%27s_sum_inequality"
+    },
+    {
+      "text": "Mathlib4: Algebra.Order.Chebyshev and Order.Monotone.Monovary.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Order/Chebyshev.html"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.RearrangementChebyshevEqOQ01"
+    ],
+    "opens": [
+      "Finset",
+      "RearrangementChebyshevEq"
+    ],
+    "namespace": "RearrangementChebyshevStrict",
+    "lineCount": 83,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/RearrangementChebyshevStrictOQ01OQ02.lean",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "sorries": 0
+}
