@@ -1,0 +1,120 @@
+{
+  "id": "combinations-formula-oq-01-oq-01-oq-01",
+  "title": "Companion Lucas-Number Shallow-Diagonal Identities",
+  "slug": "combinations-formula-oq-01-oq-01-oq-01",
+  "description": "Answers the parent's second open question: the companion Lucas-number diagonal identities and a mixed Fibonacci–Lucas identity. Mathlib has Fibonacci numbers but no Lucas sequence, so this entry introduces the Lucas numbers L(0)=2, L(1)=1, L(n+2)=L(n)+L(n+1) and proves (i) the bridge L(n)+F(n)=2·F(n+1), (ii) the Lucas–Fibonacci relation L(n+1)=F(n+2)+F(n), (iii) that L(n+2) is the sum of two consecutive shallow diagonals of Pascal's triangle (in both index conventions), reducing to the parent's fib_shallow_diagonal, and (iv) the mixed product identity F(2n)=F(n)·L(n) via Mathlib's Nat.fib_two_mul. Axiom-free.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ01OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "fibonacci",
+      "lucas-numbers",
+      "pascal-triangle",
+      "finite-sums"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "None. #print axioms reports only propext, Classical.choice, Quot.sound for all five named results. No axiom declarations, no sorries, and no native_decide (the two base cases use decide on concrete fib values, which reduces in the kernel without ofReduceBool).",
+    "lineCount": 146,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "originalContributions": [
+      "lucas: the Lucas sequence L(0)=2, L(1)=1, L(n+2)=L(n)+L(n+1), absent from Mathlib (which has only the unrelated Lucas–Lehmer primality test)",
+      "lucas_add_fib: the subtraction-free bridge L(n) + F(n) = 2·F(n+1)",
+      "lucas_eq: the Lucas–Fibonacci relation L(n+1) = F(n+2) + F(n)",
+      "lucas_shallow_diagonal: L(n+2) = ∑_j C(n+2−j, j) + ∑_j C(n−j, j), the companion Lucas diagonal identity (sum of two consecutive shallow diagonals of Pascal's triangle)",
+      "lucas_shallow_diagonal_alt: the mirror form L(n+2) = ∑_k C(k, n+2−k) + ∑_k C(k, n−k)",
+      "fib_two_mul_lucas: the mixed Fibonacci–Lucas product identity F(2n) = F(n)·L(n)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The shallow (rising) diagonals of Pascal's triangle sum to the Fibonacci numbers; the parent entry (combinations-formula-oq-01-oq-01) proved this as ∑_j C(n−j, j) = F(n+1), axiom-free, and posed as its second open question the companion Lucas-number diagonal identities and the mixed Fibonacci–Lucas diagonal sums. The Lucas numbers L_n = φ^n + ψ^n are the second canonical solution of the Fibonacci recurrence (L_0=2, L_1=1), satisfying L_n = F_{n−1} + F_{n+1}. Mathlib formalizes F (Nat.fib) but not L, so a self-contained development is required.",
+    "problemStatement": "Introduce the Lucas numbers in Lean and express them through the shallow diagonals of Pascal's triangle, together with a mixed Fibonacci–Lucas identity, reusing the parent's Fibonacci diagonal sum.",
+    "text": "We define lucas by the two-step recurrence and prove the subtraction-free bridge L(n) + F(n) = 2·F(n+1) by two-step induction (Nat.twoStepInduction), the inductive step matching the Lucas and Fibonacci recurrences term by term. From the bridge and Nat.fib_add_two we read off the Lucas–Fibonacci relation L(n+1) = F(n+2) + F(n). For the diagonal identities we use L(n+2) = F(n+3) + F(n+1) and replace each Fibonacci number by its shallow-diagonal sum (the parent's fib_shallow_diagonal and its mirror form, replicated here so the file is self-contained), giving L(n+2) as the sum of the (n+2)-nd and n-th shallow diagonals. Finally, Mathlib's Nat.fib_two_mul writes F(2n) = F(n)·(2·F(n+1) − F(n)); the bridge identifies the second factor as L(n), yielding F(2n) = F(n)·L(n).",
+    "proofStrategy": "Prove one subtraction-free bridge L+F=2F' by two-step induction; derive the Lucas–Fibonacci relation, the two diagonal identities (by reduction to the parent's Fibonacci diagonal sums), and the mixed product identity (from Nat.fib_two_mul) all from it, discharging natural-number arithmetic with omega.",
+    "keyInsights": [
+      "Phrasing the Lucas–Fibonacci link as L(n)+F(n)=2·F(n+1) avoids natural-number subtraction entirely and makes a single two-step induction suffice for everything downstream.",
+      "A Lucas number is the sum of two consecutive shallow diagonals of Pascal's triangle, because L(n+2)=F(n+3)+F(n+1) and each Fibonacci number is one shallow diagonal — so the parent's identity is reused verbatim, twice.",
+      "The 'mixed' product identity F(2n)=F(n)·L(n) is exactly Mathlib's Nat.fib_two_mul once the bridge identifies 2·F(n+1)−F(n) as L(n)."
+    ],
+    "prerequisites": [
+      "Fibonacci numbers Nat.fib and the recurrence Nat.fib_add_two, the doubling identity Nat.fib_two_mul",
+      "Two-step induction on ℕ (Nat.twoStepInduction)",
+      "The parent's shallow-diagonal Fibonacci identity ∑_j C(n−j, j) = F(n+1)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The companion Lucas-number diagonal identities are proved: after defining the Lucas sequence (absent from Mathlib), L(n+2) is shown to be the sum of two consecutive shallow diagonals of Pascal's triangle (both index conventions), the Lucas–Fibonacci relation L(n+1)=F(n+2)+F(n) is established, and the mixed identity F(2n)=F(n)·L(n) is derived from Nat.fib_two_mul. 10 theorems, 1 definition, 146 lines, axiom-free.",
+    "implications": "Resolves the parent's second open question and adds the first Lucas-number development to the gallery, with the Lucas sequence packaged for reuse (recurrence, Fibonacci bridge, doubling identity).",
+    "openQuestions": [
+      "Prove the single-diagonal Lucas identity L_n = ∑_k (n/(n−k))·C(n−k, k) directly (the weighted form), rather than as a sum of two unweighted shallow diagonals.",
+      "Establish the Lucas analogue of Cassini's identity, L(n−1)·L(n+1) − L(n)² = (−1)^{n−1}·5, over ℤ."
+    ]
+  },
+  "leanFile": {
+    "namespace": "CombinationsFormulaOQ01OQ01OQ01",
+    "lineCount": 146,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/CombinationsFormulaOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the Fibonacci shallow-diagonal sum ∑_j C(n−j, j) = F(n+1). This entry answers its second open question — the companion Lucas-number diagonal identities — by reusing that identity twice."
+    },
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "related",
+      "description": "Fibonacci summation identities; this entry adds the Lucas sequence and the mixed Fibonacci–Lucas product identity F(2n)=F(n)·L(n)."
+    }
+  ],
+  "sections": [
+    {
+      "title": "Module header and context",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "States the goal — the parent's second open question on companion Lucas-number diagonal identities — and notes that Mathlib has Nat.fib but no Lucas sequence (only the unrelated Lucas–Lehmer test). Lists the five results and imports Mathlib."
+    },
+    {
+      "title": "The Lucas sequence",
+      "startLine": 44,
+      "endLine": 53,
+      "summary": "Defines lucas by L(0)=2, L(1)=1, L(n+2)=L(n)+L(n+1), with the base evaluations and the recurrence lucas_add_two as definitional (rfl) facts."
+    },
+    {
+      "title": "The Lucas–Fibonacci bridge",
+      "startLine": 55,
+      "endLine": 76,
+      "summary": "lucas_add_fib: L(n)+F(n)=2·F(n+1), proved subtraction-free by two-step induction. lucas_eq: the Lucas–Fibonacci relation L(n+1)=F(n+2)+F(n), read off from the bridge via Nat.fib_add_two and omega."
+    },
+    {
+      "title": "Shallow-diagonal sums of Pascal's triangle",
+      "startLine": 78,
+      "endLine": 98,
+      "summary": "fib_shallow_diagonal_alt and fib_shallow_diagonal: the parent's Fibonacci diagonal identity ∑_j C(n−j, j) = F(n+1) in both index conventions, replicated so the file is self-contained."
+    },
+    {
+      "title": "Companion Lucas-number diagonal identities",
+      "startLine": 100,
+      "endLine": 133,
+      "summary": "lucas_shallow_diagonal and lucas_shallow_diagonal_alt: L(n+2) equals the sum of the (n+2)-nd and n-th shallow diagonals of Pascal's triangle, obtained from L(n+2)=F(n+3)+F(n+1) by expanding each Fibonacci term as a shallow diagonal."
+    },
+    {
+      "title": "Mixed Fibonacci–Lucas identity",
+      "startLine": 135,
+      "endLine": 146,
+      "summary": "fib_two_mul_lucas: F(2n)=F(n)·L(n), obtained from Mathlib's Nat.fib_two_mul together with the bridge identifying 2·F(n+1)−F(n) as L(n)."
+    }
+  ],
+  "sorries": []
+}
