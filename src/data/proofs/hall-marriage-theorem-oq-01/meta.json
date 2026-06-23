@@ -73,6 +73,81 @@
       }
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "no_sdr_of_deficiency",
+      "type": "main",
+      "description": "The deficiency / failure obstruction (new content): a deficient sub-family (#(s.biUnion t) < #s) certifies that NO system of distinct representatives exists. The contrapositive of necessity, valid for an arbitrary index type — the form used in practice to rule out a matching.",
+      "leanType": "{t : ι → Finset α} {s : Finset ι} (hs : (s.biUnion t).card < s.card) : ¬ ∃ f : ι → α, Function.Injective f ∧ ∀ x, f x ∈ t x"
+    },
+    {
+      "name": "hall_condition_of_sdr",
+      "type": "main",
+      "description": "Necessity proved directly: an injective transversal f forces Hall's condition #s ≤ #(s.biUnion t), via #s = #(s.image f) ≤ #(s.biUnion t). Needs no finiteness of ι and no compactness — strictly cheaper than the biconditional. Mathlib does not isolate this direction.",
+      "leanType": "{t : ι → Finset α} {f : ι → α} (hinj : Function.Injective f) (hf : ∀ x, f x ∈ t x) (s : Finset ι) : s.card ≤ (s.biUnion t).card"
+    },
+    {
+      "name": "hall_marriage_iff",
+      "type": "core",
+      "description": "Hall's marriage theorem (set-system form), re-exported from Mathlib: an injective SDR exists iff every sub-family satisfies Hall's condition #s ≤ #(s.biUnion t).",
+      "leanType": "(t : ι → Finset α) : (∀ s : Finset ι, s.card ≤ (s.biUnion t).card) ↔ ∃ f : ι → α, Function.Injective f ∧ ∀ x, f x ∈ t x"
+    },
+    {
+      "name": "exists_sdr_of_hall",
+      "type": "lemma",
+      "description": "Sufficiency direction as a standalone corollary: Hall's condition for every sub-family ⟹ a transversal exists (the substantive half, via Mathlib's compactness argument).",
+      "leanType": "{t : ι → Finset α} (h : ∀ s : Finset ι, s.card ≤ (s.biUnion t).card) : ∃ f : ι → α, Function.Injective f ∧ ∀ x, f x ∈ t x"
+    },
+    {
+      "name": "hall_satisfiable_example",
+      "type": "example",
+      "description": "A satisfiable Fin 3 instance: the family {0,1},{1,2},{0,2} admits the transversal ![0,1,2] (kernel decide over the 3³ candidate maps).",
+      "leanType": "∃ f : Fin 3 → Fin 3, Function.Injective f ∧ ∀ x, f x ∈ (![{0,1}, {1,2}, {0,2}]) x"
+    },
+    {
+      "name": "hall_violating_example",
+      "type": "example",
+      "description": "A violating Fin 3 instance: t₀=t₁=t₂={0,1} has no transversal (three indices, two values), established via no_sdr_of_deficiency rather than brute force — exactly how Hall's theorem rules out a matching.",
+      "leanType": "¬ ∃ f : Fin 3 → Fin 3, Function.Injective f ∧ ∀ x, f x ∈ (![{0,1}, {0,1}, {0,1}]) x"
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 3,
+      "endLine": 55,
+      "description": "Docstring framing the set-system formulation, the two practical faces added (direct necessity, deficiency obstruction), and the variable setup {ι α} [DecidableEq α] keeping the index type general."
+    },
+    {
+      "id": "biconditional",
+      "title": "The Biconditional and Sufficiency",
+      "startLine": 57,
+      "endLine": 73,
+      "description": "hall_marriage_iff (re-export of Mathlib's Hall biconditional) and exists_sdr_of_hall (the sufficiency direction extracted as a corollary)."
+    },
+    {
+      "id": "necessity",
+      "title": "Necessity, Proved Directly",
+      "startLine": 75,
+      "endLine": 96,
+      "description": "hall_condition_of_sdr and hall_condition_of_exists_sdr: the easy direction by the counting inequality #s = #(s.image f) ≤ #(s.biUnion t), compactness-free and valid for any index type."
+    },
+    {
+      "id": "deficiency",
+      "title": "The Deficiency Obstruction",
+      "startLine": 98,
+      "endLine": 105,
+      "description": "no_sdr_of_deficiency: a deficient sub-family certifies no transversal exists (the contrapositive of necessity, the impossibility certificate used in applications)."
+    },
+    {
+      "id": "witnesses",
+      "title": "Concrete Fin 3 Witnesses",
+      "startLine": 107,
+      "endLine": 135,
+      "description": "hall_satisfiable_example (transversal ![0,1,2] for {0,1},{1,2},{0,2}), hall_violating_deficiency, and hall_violating_example (t₀=t₁=t₂={0,1} has no transversal, via the deficiency theorem). All kernel decide, axiom-free."
+    }
+  ],
   "references": [
     {
       "authors": "Hall, Philip",
