@@ -679,6 +679,7 @@ import Proofs.ChebyshevPNTBridgeOQ03
 import Proofs.ChebyshevPolynomialsOQ01
 import Proofs.ChebyshevSumMonotoneOQ01
 import Proofs.ChebyshevSumWeightedOQ01OQ01
+import Proofs.ChebyshevSumWeightedOQ01OQ01OQ02
 import Proofs.ChevalleyWarningTheoremOQ01
 import Proofs.ChineseRemainderConstructive
 import Proofs.ChineseRemainderConstructiveOQ05
