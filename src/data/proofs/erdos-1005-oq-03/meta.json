@@ -126,5 +126,37 @@
       "relationship": "extends",
       "description": "Supplies the adjacency criterion the parent's run problem presupposes. The parent proves the unimodular gap formula, mediant coprimality, and mediant betweenness; this entry uses those facts to determine exactly when two Farey fractions are neighbours (b + d > n) and to locate the order at which the mediant first appears."
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "farey_adjacency_iff",
+      "type": "headline",
+      "description": "The adjacency criterion: a unimodular pair a/b < c/d is adjacent in the Farey sequence F_n if and only if b + d > n. Packages sufficiency and sharpness into a single equivalence.",
+      "leanType": "∀ {n : ℕ} (f g : FareyFraction n), IsConsecutiveFarey f g → f.toRat < g.toRat → (adjacent in F_n ↔ f.q + g.q > n)"
+    },
+    {
+      "name": "intermediate_denom_ge",
+      "type": "core",
+      "description": "The engine: any fraction p/q strictly between two unimodular neighbours a/b < c/d (with bc − ad = 1) has denominator q ≥ b + d. Proved from the identity q·(bc − ad) = d·(pb − aq) + b·(cq − pd) collapsing under bc − ad = 1, with both bracketed integers ≥ 1.",
+      "leanType": "∀ {n : ℕ} (f g h : FareyFraction n), IsConsecutiveFarey f g → f.toRat < h.toRat → h.toRat < g.toRat → f.q + g.q ≤ h.q"
+    },
+    {
+      "name": "farey_adjacent_of_denom_sum_gt",
+      "type": "core",
+      "description": "Sufficiency: a unimodular pair a/b < c/d with b + d > n is adjacent in F_n, since any intermediate order-n fraction would need denominator ≥ b + d > n.",
+      "leanType": "∀ {n : ℕ} (f g : FareyFraction n), IsConsecutiveFarey f g → f.toRat < g.toRat → f.q + g.q > n → adjacent in F_n"
+    },
+    {
+      "name": "mediant_lt_n_not_adjacent",
+      "type": "core",
+      "description": "Sharpness: if b + d ≤ n the mediant (a+c)/(b+d) is a genuine order-n Farey fraction strictly between a/b and c/d, so the pair is NOT adjacent — equivalently the mediant first enters the Farey sequence at order exactly b + d (Stern–Brocot insertion order).",
+      "leanType": "∀ {n : ℕ} (f g : FareyFraction n), IsConsecutiveFarey f g → f.toRat < g.toRat → f.q + g.q ≤ n → ¬ adjacent in F_n"
+    },
+    {
+      "name": "toRat_lt_iff",
+      "type": "supporting",
+      "description": "Order bridge: two Farey fractions compare by cross-multiplication of their numerator/denominator pairs (f.p·g.q < g.p·f.q), the link between rational ordering and the integer arithmetic that drives every proof.",
+      "leanType": "∀ {n : ℕ} (f g : FareyFraction n), f.toRat < g.toRat ↔ f.p * g.q < g.p * f.q"
+    }
   ]
 }
