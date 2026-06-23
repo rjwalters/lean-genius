@@ -62,6 +62,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview, scope, and imports",
+      "summary": "Docstring positioning the file against the parent (F(n) = C(n,⌊n/2⌋) with the upper bound routed through Problem 447) and stating the three axiom-free lower-bound points: every layer is an antichain, the central binomial bounds the row, and together they give 2ⁿ ≤ (n+1)·F(n). Lists the Mathlib API used (Nat.choose_le_middle, Nat.sum_range_choose, the sum/div lemmas), imports the Finset/Choose/Lattice modules, opens Finset, and enters the Erdos1023OQ03 namespace.",
+      "startLine": 1,
+      "endLine": 61,
+      "mathContext": "Scope: the unconditional lower bound F(n) ≥ 2ⁿ/(n+1), re-declaring the parent's axiom-free infrastructure so nothing depends on its Problem-447 axioms."
+    },
+    {
       "id": "infrastructure",
       "title": "Lower-bound infrastructure (re-declared, axiom-free)",
       "summary": "Set families, familyUnion, isUnionOf/isUnionFree, isAntichain, antichain_unionFree, the boundedness of achievable sizes, the extremal function unionFreeMax, and the layer construction with layer_card.",
