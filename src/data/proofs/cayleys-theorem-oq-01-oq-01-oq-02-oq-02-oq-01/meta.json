@@ -86,7 +86,19 @@
     "sorries": 0
   },
   "sorries": 0,
-  "overview": "Cayley's theorem embeds a group G into its symmetric group Sym(G) = Equiv.Perm G as the left-regular representation L(G), L_g : x ↦ g·x. The parent entry identifies the centralizer of L(G) as the right-regular image R(G). This file takes the next structural step and identifies the normalizer of L(G) — the holomorph Hol(G) = N_{Sym(G)}(L(G)) — over an arbitrary group G.\n\nThe engine is a single equivariance computation: for an automorphism φ of G, φ(g·x) = φ(g)·φ(x) says precisely that φ (viewed as a permutation of G) intertwines left translations, φ ∘ L_g = L_{φ g} ∘ φ. Conjugating gives φ L_g φ⁻¹ = L_{φ g}, so φ permutes the generators of L(G) and therefore normalizes it. Conversely, a permutation σ that normalizes L(G) and fixes the identity must satisfy σ(a·b) = σ(a)·σ(b): writing σ L_a σ⁻¹ = L_c and reading the equation off at 1 forces c = σ(a), and reading it off at a general point forces multiplicativity, so σ is an automorphism. This proves Aut(G) is realised exactly as the stabiliser of 1 inside the normalizer.\n\nThe full holomorph decomposition N(L(G)) = L(G)·Aut(G) then follows by a one-line reduction: given any normalizing σ, the permutation L_{σ 1}⁻¹ ∘ σ still normalizes L(G) and now fixes 1, hence equals some automorphism φ, so σ = L_{σ 1} ∘ φ. Everything is proved over an arbitrary, possibly infinite group with 0 sorries and 0 axioms.",
+  "overview": {
+    "historicalContext": "The holomorph of a group is a classical 19th–20th century construction, studied by Camille Jordan, William Burnside, and especially G. A. Miller around 1900–1910. Cayley's theorem (1854) realises any group $G$ as the left-regular permutation group $L(G) \\le \\mathrm{Sym}(G)$, acting by $L_g : x \\mapsto g \\cdot x$. The symmetric group $\\mathrm{Sym}(G)$ then contains two natural images of $G$: the left-regular $L(G)$ and the right-regular $R(G)$. The holomorph is defined as the normalizer $\\mathrm{Hol}(G) = N_{\\mathrm{Sym}(G)}(L(G))$, and the classical theorem (Burnside, *Theory of Groups of Finite Order*, 1897/1911; Miller) identifies it as the semidirect product $L(G) \\rtimes \\mathrm{Aut}(G)$. It is the smallest permutation group simultaneously containing $G$ (as $L(G)$) and acting on it through all of $\\mathrm{Aut}(G)$; for $G = \\mathbb{Z}/n$ it is exactly the group of affine maps $x \\mapsto ax+b$. This file is a self-generated follow-up to the parent entry, which identified the *centralizer* of $L(G)$ as $R(G)$; here the *normalizer* is identified, completing the structural picture.",
+    "problemStatement": "Work inside the symmetric group $\\mathrm{Sym}(G) = \\mathrm{Equiv.Perm}\\,G$ on the underlying set of an arbitrary (possibly infinite) group $G$. Let $L(G)$ be the left-regular image $\\{L_g : g \\in G\\}$, where $L_g(x) = g \\cdot x$. Identify the normalizer $N_{\\mathrm{Sym}(G)}(L(G))$ — the holomorph $\\mathrm{Hol}(G)$. Concretely: (1) show every automorphism $\\varphi \\in \\mathrm{Aut}(G)$, viewed as a permutation of $G$, normalizes $L(G)$ and fixes $1$; (2) show conversely that a permutation $\\sigma$ normalizing $L(G)$ with $\\sigma(1)=1$ is exactly an automorphism, so $\\mathrm{Aut}(G)$ is the stabiliser of the identity inside the normalizer; (3) deduce the holomorph decomposition $N_{\\mathrm{Sym}(G)}(L(G)) = L(G) \\cdot \\mathrm{Aut}(G)$.",
+    "proofStrategy": "The engine is a single equivariance computation: for $\\varphi \\in \\mathrm{Aut}(G)$, the homomorphism identity $\\varphi(g \\cdot x) = \\varphi(g) \\cdot \\varphi(x)$ says precisely that $\\varphi$ (as a permutation) intertwines left translations, $\\varphi \\circ L_g = L_{\\varphi g} \\circ \\varphi$. Conjugating yields $\\varphi\\, L_g\\, \\varphi^{-1} = L_{\\varphi g}$, so $\\varphi$ permutes the generators of $L(G)$ and hence normalizes it (autPerm_mem_normalizer). For the converse, a normalizing $\\sigma$ with $\\sigma(1)=1$ is shown multiplicative by the classical \\\"evaluate at $1$\\\" argument: from $\\sigma L_a \\sigma^{-1} = L_c$ pass to the inverse-free form $L_c \\sigma = \\sigma L_a$, read off $c = \\sigma(a)$ at the point $1$, then read off $\\sigma(a \\cdot b) = \\sigma(a) \\cdot \\sigma(b)$ at a general point $b$; bundling $\\sigma$ as a monoid hom and applying MulEquiv.ofBijective recovers an automorphism (mem_normalizer_and_fixes_one_iff). Finally the full decomposition follows by a one-line reduction: for any normalizing $\\sigma$, the permutation $L_{\\sigma 1}^{-1} \\circ \\sigma$ still normalizes $L(G)$ and now fixes $1$, hence equals some $\\mathrm{autPerm}\\,\\varphi$, giving $\\sigma = L_{\\sigma 1} \\circ \\mathrm{autPerm}\\,\\varphi$ (mem_normalizer_iff_exists).",
+    "keyInsights": [
+      "The holomorph is captured by a single equivariance identity: $\\varphi \\circ L_g = L_{\\varphi g} \\circ \\varphi$ is literally the homomorphism property $\\varphi(g \\cdot x) = \\varphi(g) \\cdot \\varphi(x)$ re-read as a statement about permutations — automorphisms intertwine the regular representation.",
+      "$\\mathrm{Aut}(G)$ is recovered without any group-theoretic machinery as the point stabiliser of $1$ inside the normalizer: the only extra datum needed to upgrade a normalizing permutation to an automorphism is that it fixes the identity.",
+      "The converse direction is the classical 'evaluate at a point' trick: the abstract relation $\\sigma L_a \\sigma^{-1} = L_c$ is collapsed to scalar facts by feeding it the inputs $1$ (which pins down $c = \\sigma a$) and $b$ (which yields multiplicativity) — turning an equation of permutations into the homomorphism law.",
+      "The whole decomposition $N(L(G)) = L(G) \\cdot \\mathrm{Aut}(G)$ reduces to a one-line normalisation: left-translating by $L_{\\sigma 1}^{-1}$ moves the identity back to a fixed point, separating the $L(G)$ factor from the $\\mathrm{Aut}(G)$ factor — the set-level shadow of the semidirect product $G \\rtimes \\mathrm{Aut}(G)$.",
+      "Everything is proved over an arbitrary, possibly infinite group with no finiteness, no decidability, and 0 axioms: the holomorph is a purely algebraic object, and Mathlib's normalizer API (Subgroup.mem_normalizer_iff, le_normalizer) plus MulEquiv.ofBijective suffice to formalise it cleanly.",
+      "Together with the parent entry's centralizer result $C_{\\mathrm{Sym}(G)}(L(G)) = R(G)$, this pins down both fundamental subgroups attached to the regular representation: the centralizer is the opposite regular image, the normalizer is the holomorph."
+    ]
+  },
   "conclusion": {
     "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) 178-line file with 12 theorems and 3 definitions identifying the normalizer of the left-regular image L(G) inside Sym(G) — the holomorph of G — over an arbitrary group. The automorphisms are realised exactly as the normalizing permutations fixing the identity (mem_normalizer_and_fixes_one_iff), and the full normalizer decomposes as L(G)·Aut(G) (mem_normalizer_iff_exists). Built on Mathlib's normalizer API and MulEquiv.ofBijective, with the equivariance and 'evaluate at 1' arguments proved here.",
     "implications": "This completes the structural picture begun by the parent entry: the centralizer of L(G) is R(G), and the normalizer of L(G) is L(G)·Aut(G). Together they exhibit the holomorph Hol(G) = N_{Sym(G)}(L(G)) ≅ G ⋊ Aut(G) at the level of the underlying subgroups, with Aut(G) embedded (autPermHom_injective) as the identity-stabiliser. The autPerm_mul_leftReg equivariance lemma — that an automorphism intertwines the regular representation — is a reusable building block for further work on the holomorph and its semidirect-product structure.",
@@ -108,5 +120,55 @@
   "crossReferences": [
     "cayleys-theorem-oq-01-oq-01-oq-02-oq-02"
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement & Roadmap",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Docstring framing the holomorph as a self-generated follow-up to the parent centralizer result: the normalizer N_{Sym(G)}(L(G)) is to be identified as L(G)·Aut(G) over an arbitrary group, via the equivariance identity φ∘L_g = L_{φg}∘φ and the 'evaluate at 1' converse. Sets up the namespace Holomorph and the variable group G."
+    },
+    {
+      "id": "left-regular",
+      "title": "The Left-Regular Representation",
+      "startLine": 54,
+      "endLine": 67,
+      "summary": "Defines leftReg : G →* Equiv.Perm G sending g to the permutation Equiv.mulLeft g (x ↦ g·x), packaged as a group homomorphism via Equiv.mulLeft_one and Equiv.mulLeft_mul. leftReg_injective re-proves Cayley's theorem (faithfulness) by evaluating L_a = L_b at the identity."
+    },
+    {
+      "id": "aut-perm",
+      "title": "Automorphisms as Permutations: autPerm / autPermHom",
+      "startLine": 69,
+      "endLine": 91,
+      "summary": "Defines autPerm φ = φ.toEquiv, the permutation of the underlying set induced by an automorphism, and bundles it as a monoid homomorphism autPermHom : MulAut G →* Equiv.Perm G (using MulAut.mul_apply and Equiv.Perm.mul_apply). autPermHom_injective gives the holomorph embedding Aut(G) ↪ Sym(G)."
+    },
+    {
+      "id": "equivariance",
+      "title": "Equivariance and Conjugation of Generators",
+      "startLine": 93,
+      "endLine": 104,
+      "summary": "Proves the engine of the whole file: autPerm_mul_leftReg (autPerm φ · L_g = L_{φg} · autPerm φ), the equivariance φ∘L_g = L_{φg}∘φ which is just map_mul read off pointwise, and its conjugation corollary autPerm_conj_leftReg (φ L_g φ⁻¹ = L_{φg})."
+    },
+    {
+      "id": "aut-normalizes",
+      "title": "Every Automorphism Normalizes L(G)",
+      "startLine": 106,
+      "endLine": 125,
+      "summary": "autPerm_mem_normalizer shows each automorphism lies in (leftReg G).range.normalizer, checking both membership directions of Subgroup.mem_normalizer_iff using the conjugation lemma and the inverse φ.symm. autPerm_one_eq records that an automorphism fixes the identity 1."
+    },
+    {
+      "id": "aut-as-stabiliser",
+      "title": "Aut(G) as the Identity-Stabiliser in the Normalizer",
+      "startLine": 127,
+      "endLine": 156,
+      "summary": "mem_normalizer_and_fixes_one_iff: σ normalizes L(G) and fixes 1 ⟺ σ = autPerm φ for some automorphism φ. The forward direction runs the classical 'evaluate at 1' argument to prove σ(a·b)=σa·σb, then promotes σ to an automorphism via MulEquiv.ofBijective; the reverse direction is the two preceding lemmas."
+    },
+    {
+      "id": "holomorph-decomposition",
+      "title": "The Holomorph Decomposition N(L(G)) = L(G)·Aut(G)",
+      "startLine": 158,
+      "endLine": 178,
+      "summary": "mem_normalizer_iff_exists: σ ∈ N(L(G)) ⟺ σ = leftReg g · autPerm φ. Given a normalizing σ, left-translating by L_{σ1}⁻¹ produces a normalizing permutation fixing 1, which the previous theorem turns into an automorphism φ; the converse uses Subgroup.le_normalizer and the automorphism-normalizer lemma."
+    }
+  ]
 }
