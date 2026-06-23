@@ -71,18 +71,62 @@
       "description": "Parent: irrationality of √n (algebraic irrationals). This entry answers its open question by exhibiting irrational numbers that are not algebraic at all (transcendentals)."
     }
   ],
-  "sections": [
+  "mainTheorems": [
     {
-      "title": "Liouville's constant: irrational and transcendental",
-      "startLine": 31,
-      "endLine": 50,
-      "summary": "liouvilleConst = liouvilleNumber 2, with its Liouville property, irrationality, and transcendence over ℤ from Mathlib."
+      "name": "exists_irrational_transcendental",
+      "type": "headline",
+      "description": "The answer to OQ-02: there exists an irrational real that is transcendental over ℤ — not a root of any nonzero integer polynomial. Witnessed by Liouville's constant.",
+      "leanType": "∃ x : ℝ, Irrational x ∧ Transcendental ℤ x"
     },
     {
+      "name": "not_forall_irrational_isAlgebraic",
+      "type": "core",
+      "description": "Transcendence is strictly stronger than irrationality: there is an irrational real that is NOT algebraic over ℤ, so the parent's algebraic irrationals √n do not exhaust the irrationals.",
+      "leanType": "∃ x : ℝ, Irrational x ∧ ¬ IsAlgebraic ℤ x"
+    },
+    {
+      "name": "liouvilleConst_transcendental",
+      "type": "core",
+      "description": "Liouville's constant ∑_k 2^{-k!} is transcendental over ℤ, via Mathlib's transcendental_liouvilleNumber.",
+      "leanType": "Transcendental ℤ liouvilleConst"
+    },
+    {
+      "name": "liouvilleConst_irrational",
+      "type": "supporting",
+      "description": "Liouville's constant is irrational (a Liouville number is irrational).",
+      "leanType": "Irrational liouvilleConst"
+    },
+    {
+      "name": "liouvilleConst_liouville",
+      "type": "supporting",
+      "description": "Liouville's constant is a Liouville number (liouville_liouvilleNumber at base 2) — the source of both irrationality and transcendence.",
+      "leanType": "Liouville liouvilleConst"
+    }
+  ],
+  "sections": [
+    {
+      "id": "context",
+      "title": "From algebraic irrationals to transcendence",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Module docstring: the parent's √n are irrational but algebraic; OQ-02 asks for irrationals that are roots of no polynomial. This file answers concretely and axiom-free via Mathlib's Liouville theory.",
+      "mathContext": "Transcendental = not algebraic; transcendence is strictly stronger than irrationality."
+    },
+    {
+      "id": "liouville-const",
+      "title": "Liouville's constant: irrational and transcendental",
+      "startLine": 31,
+      "endLine": 45,
+      "summary": "liouvilleConst = liouvilleNumber 2, with its Liouville property (liouvilleConst_liouville), irrationality (liouvilleConst_irrational), and transcendence over ℤ (liouvilleConst_transcendental) from Mathlib.",
+      "mathContext": "$L=\\sum_k 2^{-k!}$; super-fast rational approximability forces transcendence."
+    },
+    {
+      "id": "existence",
       "title": "Existence and non-exhaustion",
-      "startLine": 52,
+      "startLine": 47,
       "endLine": 61,
-      "summary": "exists_irrational_transcendental and not_forall_irrational_isAlgebraic: irrational transcendentals exist, so algebraic irrationals do not exhaust the irrationals."
+      "summary": "exists_irrational_transcendental and not_forall_irrational_isAlgebraic: irrational transcendentals exist, so algebraic irrationals do not exhaust the irrationals.",
+      "mathContext": "$\\exists x,\\ \\text{Irrational }x\\wedge\\neg\\text{IsAlgebraic}_{\\mathbb Z}x$."
     }
   ],
   "sorries": []
