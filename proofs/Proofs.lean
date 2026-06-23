@@ -728,6 +728,7 @@ import Proofs.CombinationsFormulaOQ07OQ05
 import Proofs.CombinationsFormulaOQ08
 import Proofs.CombinationsFormulaOQ09
 import Proofs.CompactnessFiniteSubcover
+import Proofs.CompactnessFiniteSubcoverOq01Oq01
 import Proofs.ComplexityCore
 import Proofs.CompositionCard2PowOQ01
 import Proofs.CompositionPartsChooseOQ01
