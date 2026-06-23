@@ -523,6 +523,7 @@ import Proofs.CarnotTheorem
 import Proofs.CarnotTheoremOQ01OQ01
 import Proofs.CarnotTheoremOQ01OQ02
 import Proofs.CarnotTheoremOQ01OQ03
+import Proofs.CarnotTheoremOQ01OQ03OQ01
 import Proofs.CatalanNumbersOQ01
 import Proofs.CauchyGroupTheoremOQ01
 import Proofs.CauchyGroupTheoremOQ01OQ01
